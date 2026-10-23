@@ -13,8 +13,8 @@ config_version=5
 config/name="Rainfall"
 config/version="0.1.0"
 run/main_scene="res://scenes/app.tscn"
-config/features=PackedStringArray("4.7", "Mobile")
 config/quit_on_go_back=false
+config/features=PackedStringArray("4.7", "Mobile")
 
 [autoload]
 
