@@ -43,6 +43,7 @@ static func theme() -> Theme:
 ## Force la reconstruction (après livraison d'assets, ou pour les tests).
 static func reset_cache() -> void:
 	_theme = null
+	_body_font = null
 
 
 ## Pose le thème sur `root` et impose la taille tactile minimale (88 px) aux boutons et curseurs.
@@ -239,17 +240,56 @@ static func _btn_styles(primary_style: Variant) -> Dictionary:
 	return d
 
 
-## Police des titres : capitales espacées (maquette U1). Même police que le thème, interlettrage ajouté.
+## Polices (SIL OFL, assets/fonts/<police>/OFL.txt). Un seul point d'entrée : tout le jeu passe par le thème.
+## Titres = TitleLabel / title_font() ; texte courant = police par défaut du thème (chiffres tabulaires pour le HUD).
+const FONT_TITLE_FILE := "res://assets/fonts/cinzel/Cinzel-Variable.ttf"
+const FONT_BODY_FILE := "res://assets/fonts/alegreyasans/AlegreyaSans-Medium.ttf"
+## Finalistes écartés (23/10/2026, re-téléchargeables depuis github.com/google/fonts/ofl/) : Marcellus SC + Barlow Semi Condensed
+## Medium (titres trop fins, texte neutre) ; Metamorphous + Fira Sans Condensed Medium (titres en bas de casse fantaisistes).
+## Pour les captures comparatives : chemins imposés (vide = valeurs ci-dessus).
+static var override_title_file := ""
+static var override_body_file := ""
+static var override_title_weight := 0
+static var _body_font: Font = null
+
+
+static func _load_font(path: String) -> FontFile:
+	if ResourceLoader.exists(path):
+		var f := load(path) as FontFile
+		if f != null:
+			return f
+	return null
+
+
+## Police du texte courant : chiffres tabulaires et alignés sur la ligne de base (colonnes de HUD stables), repli sur la police Godot.
+static func body_font() -> Font:
+	if _body_font == null:
+		var base := _load_font(override_body_file if override_body_file != "" else FONT_BODY_FILE)
+		if base == null:
+			return ThemeDB.fallback_font
+		var fv := FontVariation.new()
+		fv.base_font = base
+		fv.opentype_features = {"tnum": 1, "lnum": 1}
+		_body_font = fv
+	return _body_font
+
+
+## Police des titres : capitales gravées espacées. Repli sur la police du thème si le fichier manque.
 static func title_font() -> Font:
 	var fv := FontVariation.new()
-	fv.base_font = ThemeDB.fallback_font
+	var base := _load_font(override_title_file if override_title_file != "" else FONT_TITLE_FILE)
+	fv.base_font = base if base != null else body_font()
 	fv.spacing_glyph = 4
+	if base != null:
+		fv.variation_opentype = {"wght": override_title_weight if override_title_weight > 0 else 700}
 	return fv
 
 
 static func _build() -> Theme:
 	var t := Theme.new()
 	t.default_font_size = FONT_BODY
+	t.default_font = body_font()
+	ThemeDB.fallback_font = body_font() # HUD, barres, tout contrôle sans thème explicite
 
 	# Boutons
 	var st := _btn_styles(false)

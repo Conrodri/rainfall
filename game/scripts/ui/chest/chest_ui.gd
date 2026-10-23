@@ -468,6 +468,7 @@ func _build() -> void:
 
 	_quality = _label(60)
 	_quality.custom_minimum_size = Vector2(0, 76)
+	_quality.clip_text = true # largeur minimale 0 : la taille de police s'ajuste (_fit_quality), jamais de débordement
 	header.add_child(_quality)
 	_build_items_button(header) # lot L6 : avant la rangée de relances (_button réaffecte ensuite _ad_key)
 
@@ -907,6 +908,19 @@ func _make_tile(q: StringName) -> Control:
 	return tile
 
 
+## Ajuste la police du nom de rareté à la largeur du bandeau (l'échelle 1,2 x de l'animation compris).
+func _fit_quality() -> void:
+	var w := _quality.size.x
+	if w < 10.0:
+		w = _quality.get_parent_control().size.x if _quality.get_parent_control() != null else 0.0
+	var fs := 60
+	if w >= 10.0:
+		var font := _quality.get_theme_font(&"font")
+		while fs > HudMetrics.floor_px() and font.get_string_size(_quality.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x * 1.2 > w:
+			fs -= 2
+	_quality.add_theme_font_size_override("font_size", fs)
+
+
 func _layout_reel() -> void:
 	if _reel == null or _reel.size.x < 10.0:
 		return
@@ -1022,6 +1036,7 @@ func _process(delta: float) -> void:
 		if k >= 0 and k < _reel_seq.size(): # nom de la case au centre, en sourdine
 			var cq: StringName = _reel_seq[k]
 			_quality.text = QUALITY_NAMES.get(cq, "")
+			_fit_quality()
 			_quality.add_theme_color_override("font_color", (QUALITY_COLORS.get(cq, Color.WHITE) as Color).darkened(0.35))
 		if u >= 1.0:
 			_land_rarity(true)
@@ -1047,6 +1062,7 @@ func _land_rarity(fx: bool) -> void:
 	var qc: Color = QUALITY_COLORS.get(session.quality, Color.WHITE)
 	_set_chest_state(&"open", Color.WHITE.lerp(qc, 0.25))
 	_quality.text = QUALITY_NAMES.get(session.quality, "")
+	_fit_quality()
 	_quality.add_theme_color_override("font_color", qc)
 	if session != null and Audio.has_method(&"chest_sequence_land"):
 		Audio.chest_sequence_land() # frappe légendaire calée sur l'arrêt réel (ou le skip)
