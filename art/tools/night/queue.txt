@@ -125,3 +125,7 @@
 37 art/tools/night/_ardv.txt art/tools/night/_logardv.txt medium
 # VFX des variantes de sorts de Taliant : Taille lente, Fendoir, Trempe (23/10/2026, lot TALV ; code : game/scripts/spells/morfil_kit.gd)
 38 art/tools/night/_talv.txt art/tools/night/_logtalv.txt low
+# re-rendu a la taille d affichage pour l AAB <= 200 Mo (23/10/2026)
+39 art/tools/night/_r2a.txt art/tools/night/_logr2a.txt medium
+39 art/tools/night/_r2b.txt art/tools/night/_logr2b.txt medium
+39 art/tools/night/_r2c.txt art/tools/night/_logr2c.txt medium
