@@ -18,7 +18,8 @@ const QUALITY_COLORS := {
 }
 const LONG_PRESS_S := 0.45
 const DRAG_CANCEL_PX := 18.0
-const MAX_ROWS := 4
+const MAX_ROWS := 4 ## lignes max au clavier-souris / manette
+const MAX_ROWS_TOUCH := 2 ## lignes max en tactile (moins de place sous les PV)
 
 var wrap := true
 var max_width := 400.0
@@ -108,12 +109,13 @@ class ItemSlot extends Control:
 		icon.offset_top = inset
 		icon.offset_right = -inset
 		icon.offset_bottom = -inset
-		var fs := int(maxf(14.0, 20.0 * s))
+		var fs := maxi(int(20.0 * s), HudMetrics.floor_px()) # plancher 18 px PC / 26 px mobile
 		badge.add_theme_font_size_override("font_size", fs)
 		badge.add_theme_constant_override("outline_size", 0)
-		var bw := fs * 2.0
-		badge.size = Vector2(bw, fs * 1.25)
-		badge.position = Vector2(px - bw + 2.0, px - fs * 1.25 + 2.0)
+		var bw := minf(fs * 2.6, px) # reste dans la case : aucun chevauchement avec la voisine
+		var bh := maxf(fs * 1.3, badge.get_minimum_size().y)
+		badge.size = Vector2(bw, bh)
+		badge.position = Vector2(px - bw, px - bh)
 		if fallback != null:
 			fallback.add_theme_font_size_override("font_size", int(px * 0.35))
 
@@ -222,35 +224,42 @@ func relayout() -> void:
 		return
 	var n := _order.size()
 	var step := slot_px + gap
-	var fit := maxi(1, int(floor((max_width + gap) / step)))
-	var cols := fit if wrap else maxi(n, 1)
-	# tactile : si tout ne tient pas, la dernière case visible devient « +N » (audit H19)
+	var cols := maxi(1, int(floor((max_width + gap) / step)))
+	var max_rows := MAX_ROWS if wrap else MAX_ROWS_TOUCH
+	# grille à retour à la ligne dans une zone bornée ; au-delà de max_rows lignes, la dernière case devient « +N »
 	var shown := n
 	overflow_count = 0
-	if not wrap and n > fit and fit >= 2:
-		shown = fit - 1
+	if n > cols * max_rows and cols * max_rows >= 2:
+		shown = cols * max_rows - 1
 		overflow_count = n - shown
 	for i in n:
 		var sl: ItemSlot = _slots[_order[i]]
 		sl.apply_size(slot_px, ui_scale)
 		sl.visible = i < shown
 		sl.position = Vector2((i % cols) * step, (i / cols) * step)
-	var rows := int(ceil(float(n) / float(cols))) if wrap else 1
-	var cells := n if wrap else shown + (1 if overflow_count > 0 else 0)
+	var cells := shown + (1 if overflow_count > 0 else 0)
+	var rows := int(ceil(float(cells) / float(cols)))
 	var content := Vector2(mini(cells, cols) * step - gap, rows * step - gap) if n > 0 else Vector2.ZERO
-	_layout_more(shown, step)
+	_layout_more(shown, step, cols)
 	_content.custom_minimum_size = content
 	_content.size = content
-	if wrap:
-		horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER if rows > MAX_ROWS else ScrollContainer.SCROLL_MODE_DISABLED
-		custom_minimum_size = Vector2(minf(content.x, max_width), minf(content.y, MAX_ROWS * step - gap))
-	else:
-		horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
-		vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		custom_minimum_size = Vector2(minf(content.x, max_width), slot_px if n > 0 else 0.0)
+	horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	custom_minimum_size = Vector2(minf(content.x, max_width), content.y)
 	visible = n > 0
 	size = custom_minimum_size
+
+
+## Rectangles écran des cases visibles et de la pastille « +N » (tests, zones réservées).
+func cell_rects() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for id in _order:
+		var sl: ItemSlot = _slots[id]
+		if sl.visible:
+			out.append(sl.get_global_rect())
+	if _more != null and _more.visible:
+		out.append(_more.get_global_rect())
+	return out
 
 
 # --- Pastille « +N » ---------------------------------------------------------
@@ -275,7 +284,7 @@ func _build_more() -> void:
 	_content.add_child(_more)
 
 
-func _layout_more(shown: int, step: float) -> void:
+func _layout_more(shown: int, step: float, cols: int) -> void:
 	if _more == null:
 		return
 	_more.visible = overflow_count > 0
@@ -284,8 +293,8 @@ func _layout_more(shown: int, step: float) -> void:
 	_more.text = "+%d" % overflow_count
 	_more.size = Vector2(slot_px, slot_px)
 	_more.custom_minimum_size = _more.size
-	_more.position = Vector2(shown * step, 0.0)
-	_more.add_theme_font_size_override("font_size", int(maxf(26.0, 30.0 * ui_scale))) # >= 26 px mobile
+	_more.position = Vector2((shown % cols) * step, (shown / cols) * step)
+	_more.add_theme_font_size_override("font_size", maxi(int(30.0 * ui_scale), HudMetrics.floor_px() + 4)) # plancher 18 PC / 26 mobile
 
 
 ## Ouvre le menu pause (onglet Items) ; appel tolérant : l'ouverture directe de l'onglet dépend du menu.

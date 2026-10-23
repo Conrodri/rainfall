@@ -181,12 +181,12 @@ func _ready() -> void:
 	await _frames(3)
 	_check(bb.count() == 0 and not bb.visible, "barre de boss retirée à sa mort")
 
-	# --- Tactile (mobile paysage) : rangée défilante, pas de chevauchement des contrôles
+	# --- Tactile (mobile paysage) : grille de 2 lignes max (« +N » au-delà), pas de chevauchement des contrôles
 	Platform.set_input_mode(Platform.InputMode.TOUCH)
 	await _frames(4)
 	ir = ib.get_global_rect()
 	mr = mm.get_global_rect()
-	_check(ir.size.y <= ib.slot_px + 1.0 and ib.horizontal_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED, "tactile : rangée unique défilante")
+	_check(ir.size.y <= ItemBar.MAX_ROWS_TOUCH * (ib.slot_px + ib.gap) and ib.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED, "tactile : grille de %d lignes max, sans défilement" % ItemBar.MAX_ROWS_TOUCH)
 	var joy := hud.joystick.get_global_rect()
 	_check(ir.end.y < joy.position.y and mr.end.y < joy.position.y, "tactile : au-dessus de la zone du joystick")
 	for b in hud.spell_buttons:

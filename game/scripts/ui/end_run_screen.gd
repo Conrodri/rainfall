@@ -38,7 +38,13 @@ var info := {}
 var animating := true
 var shown_rubies := 0 ## valeur affichée du compteur (tests, capture)
 
-var _content: VBoxContainer
+var _content: VBoxContainer ## contenu défilant (au-dessus des boutons)
+var _frame: PanelContainer
+var _scroll: ScrollContainer
+var _btn_row: HBoxContainer ## zone de boutons fixe, toujours visible en bas
+var _variant_name: Label
+var _variant_cells: Array[Button] = []
+var _variant_caps: Array = [] ## [{holder: Control, slot: int}]
 var _ruby_label: Label
 var _continue_btn: Button
 var _replay_btn: Button
@@ -109,11 +115,21 @@ func _build() -> void:
 	center.set_anchors_preset(Control.PRESET_FULL_RECT)
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(center)
-	var frame := PanelContainer.new() # grand panneau DA
-	center.add_child(frame)
+	_frame = PanelContainer.new() # grand panneau DA
+	center.add_child(_frame)
+	var outer := VBoxContainer.new() # [contenu défilant | boutons fixes]
+	outer.set_meta(&"sep", 20)
+	_frame.add_child(outer)
+	_scroll = ScrollContainer.new()
+	_scroll.name = "Scroll"
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	outer.add_child(_scroll)
 	_content = VBoxContainer.new()
 	_content.alignment = BoxContainer.ALIGNMENT_CENTER
-	frame.add_child(_content)
+	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.add_child(_content)
 	_box = _content
 
 	var victory := bool(info.get("victory", false))
@@ -128,6 +144,12 @@ func _build() -> void:
 	_labels.append(tl)
 	_add(_label(info_line(info), 36, COL_DIM))
 	_content.add_child(HSeparator.new())
+	var variant_keys: Array[StringName] = []
+	for u0 in info.get("unlocks", []):
+		if String(u0).begins_with("spell:"):
+			variant_keys.append(StringName(u0))
+	_add_variants_block(variant_keys) # en haut : visible sans défiler
+
 
 	var tiles := HBoxContainer.new()
 	tiles.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -161,9 +183,10 @@ func _build() -> void:
 		dl.custom_minimum_size = Vector2(1000, 0)
 		_add(dl)
 
-	_add_items_strip()
 	for u in info.get("unlocks", []):
 		var key := StringName(u)
+		if String(key).begins_with("spell:"):
+			continue # regroupées dans UN bloc compact (évite de pousser les boutons hors écran)
 		var urow := HBoxContainer.new()
 		urow.alignment = BoxContainer.ALIGNMENT_CENTER
 		urow.set_meta(&"sep", 16)
@@ -176,12 +199,15 @@ func _build() -> void:
 		var ul := _label(unlock_text(key), 40, COL_UNLOCK)
 		urow.add_child(ul)
 		_labels.append(ul)
+	_add_items_strip()
 
 	_add_next_objective()
 	var buttons := HBoxContainer.new()
+	buttons.name = "Buttons"
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.set_meta(&"sep", 48)
-	_content.add_child(buttons)
+	_btn_row = buttons
+	_frame.get_child(0).add_child(buttons) # hors du défilement : toujours visibles
 	_replay_btn = Button.new()
 	_replay_btn.text = "Rejouer"
 	_replay_btn.set_meta(&"base", Vector2(620, 120))
@@ -193,8 +219,10 @@ func _build() -> void:
 	_continue_btn.pressed.connect(_on_continue)
 	buttons.add_child(_continue_btn)
 	UiTheme.primary(_continue_btn)
-	_content.move_child(buttons, _content.get_child_count() - 1)
 	_buttons = [_replay_btn, _continue_btn]
+	if not _variant_cells.is_empty():
+		_replay_btn.focus_neighbor_top = _replay_btn.get_path_to(_variant_cells[0])
+		_continue_btn.focus_neighbor_top = _continue_btn.get_path_to(_variant_cells[_variant_cells.size() - 1])
 	_replay_btn.focus_neighbor_right = _replay_btn.get_path_to(_continue_btn)
 	_continue_btn.focus_neighbor_left = _continue_btn.get_path_to(_replay_btn)
 	UiTheme.apply(_root)
@@ -271,6 +299,143 @@ func _add_next_objective() -> void:
 		bar.add_theme_stylebox_override("background", bg)
 		bar.add_theme_stylebox_override("fill", fg)
 		box.add_child(bar)
+
+
+## Bloc unique « Nouvelles variantes débloquées » : une rangée d'icônes (variante, sinon sort de base désaturé),
+## touche du slot dessous (« Auto » pour le slot 1), nom en infobulle / au focus.
+func _add_variants_block(keys: Array[StringName]) -> void:
+	if keys.is_empty():
+		return
+	var box := VBoxContainer.new()
+	box.name = "NewVariants"
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.set_meta(&"sep", 10)
+	_content.add_child(box)
+	var head := _label("Nouvelles variantes débloquées", 40, COL_UNLOCK)
+	head.name = "VariantsTitle"
+	box.add_child(head)
+	_labels.append(head)
+	var flow := HFlowContainer.new()
+	flow.name = "VariantRow"
+	flow.alignment = FlowContainer.ALIGNMENT_CENTER
+	flow.set_meta(&"sep", 24)
+	flow.add_theme_constant_override("v_separation", 12)
+	box.add_child(flow)
+	var first_name := ""
+	for k in keys:
+		var vi := variant_info(k)
+		var full := str(vi.name) if str(vi.character) == "" else "%s : %s" % [vi.character, vi.name]
+		if first_name == "":
+			first_name = full
+		var cell := VBoxContainer.new()
+		cell.alignment = BoxContainer.ALIGNMENT_CENTER
+		cell.set_meta(&"sep", 4)
+		flow.add_child(cell)
+		var b := Button.new()
+		b.name = "Variant_" + String(k).get_slice(":", 1)
+		b.flat = true
+		b.tooltip_text = full
+		b.set_meta(&"base", Vector2(96, 96))
+		b.set_meta(&"square", true) # cible >= 88 px dans les deux sens
+		b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		var tex := vi.icon as Texture2D
+		if tex != null:
+			var tr := TextureRect.new()
+			tr.texture = tex
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 6)
+			tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			if bool(vi.placeholder):
+				tr.modulate = Color(0.5, 0.5, 0.5, 0.9) # icône de base désaturée en attendant celle de la variante
+			b.add_child(tr)
+		else:
+			b.text = str(vi.name).left(2) # aucune icône : initiales (provisoire)
+		b.focus_entered.connect(_show_variant_name.bind(full))
+		b.mouse_entered.connect(_show_variant_name.bind(full))
+		b.pressed.connect(_show_variant_name.bind(full))
+		cell.add_child(b)
+		_variant_cells.append(b)
+		var holder := CenterContainer.new()
+		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_child(holder)
+		_variant_caps.append({"holder": holder, "slot": int(vi.slot)})
+	_variant_name = _label(first_name, 30, COL_TEXT)
+	_variant_name.name = "VariantName"
+	box.add_child(_variant_name)
+	_labels.append(_variant_name)
+	_refresh_variant_keys()
+	if not Platform.input_mode_changed.is_connected(_refresh_variant_keys_mode):
+		Platform.input_mode_changed.connect(_refresh_variant_keys_mode)
+
+
+func _exit_tree() -> void:
+	if Platform.input_mode_changed.is_connected(_refresh_variant_keys_mode):
+		Platform.input_mode_changed.disconnect(_refresh_variant_keys_mode)
+
+
+func _show_variant_name(full: String) -> void:
+	if _variant_name != null:
+		_variant_name.text = full
+
+
+func _refresh_variant_keys_mode(_m: int) -> void:
+	_refresh_variant_keys()
+
+
+## Touche attribuée au slot selon le mode d'entrée : « Auto » (slot 1), invite de touche (clavier-souris,
+## manette), « Sort N » en tactile (pas de touche).
+func _refresh_variant_keys() -> void:
+	for d in _variant_caps:
+		var holder := d.holder as Control
+		if not is_instance_valid(holder):
+			continue
+		for c in holder.get_children():
+			holder.remove_child(c)
+			c.queue_free()
+		holder.add_child(variant_key_widget(int(d.slot), 26))
+
+
+## Widget de la touche d'un slot : Label (« Auto », « Sort N ») ou KeyPrompt.
+static func variant_key_widget(slot: int, px: int) -> Control:
+	var txt := ""
+	if slot == 1:
+		txt = "Auto"
+	elif slot > 1:
+		var kp := KeyPrompt.new()
+		kp.set_height(float(maxi(px + 8, HudMetrics.floor_px() + 10)))
+		kp.set_action(StringName("spell_%d" % slot))
+		if kp.text() != "":
+			return kp
+		kp.queue_free()
+		txt = "Sort %d" % slot
+	var l := Label.new()
+	l.text = txt
+	l.add_theme_font_size_override("font_size", maxi(px, HudMetrics.floor_px()))
+	l.add_theme_color_override("font_color", COL_DIM)
+	l.add_theme_color_override("font_outline_color", COL_OUTLINE)
+	l.add_theme_constant_override("outline_size", 6)
+	return l
+
+
+## Infos d'une clé « spell:<id> » : {name, character, slot (1-4, 0 inconnu), icon (variante, sinon sort de base), placeholder}.
+static func variant_info(key: StringName) -> Dictionary:
+	var s := String(key)
+	var id := s.substr(s.find(":") + 1)
+	for c in CharacterCard.load_characters():
+		var spells: Array = c.get("spells", []) if c.get("spells") is Array else []
+		for i in spells.size():
+			var sp: Dictionary = spells[i]
+			for v in sp.get("variants", []):
+				if str(v.get("id", "")) == id or str(v.get("unlock_key", "")) == s:
+					var icon := ArdentKit.spell_icon(StringName(str(v.get("id", id))))
+					var ph := icon == null
+					if ph:
+						icon = ArdentKit.spell_icon(StringName(str(sp.get("id", ""))))
+					return {"name": str(v.get("name", _humanize(id))), "character": str(c.get("name", "")),
+						"slot": i + 1, "icon": icon, "placeholder": ph}
+	return {"name": _humanize(id), "character": "", "slot": 0, "icon": null, "placeholder": true}
 
 
 ## Objets ramassés : icône dans son cadre de rareté + nombre d'exemplaires (RunState.items à la fin de la run).
@@ -350,7 +515,25 @@ func _apply_layout() -> void:
 	if s <= 0.0:
 		s = 1.0
 	_content.add_theme_constant_override("separation", int(28 * s))
-	_scale_tree(_content, s)
+	_scale_tree(_frame, s)
+	_fit()
+	_fit.call_deferred()
+
+
+## Borne la hauteur du panneau à l'écran (zone sûre incluse) : le contenu défile, les boutons restent en bas.
+func _fit() -> void:
+	if _frame == null or _btn_row == null or not is_inside_tree():
+		return
+	var vp := get_viewport().get_visible_rect().size
+	var safe: Dictionary = Platform.safe_margins()
+	var margin := 24.0
+	var avail := vp.y - float(safe.get("top", 0.0)) - float(safe.get("bottom", 0.0)) - 2.0 * margin
+	var outer := _frame.get_child(0) as VBoxContainer
+	var sb := _frame.get_theme_stylebox(&"panel")
+	var pad := (sb.get_margin(SIDE_TOP) + sb.get_margin(SIDE_BOTTOM)) if sb != null else 0.0
+	var need := _content.get_combined_minimum_size().y + _btn_row.get_combined_minimum_size().y \
+		+ float(outer.get_theme_constant(&"separation")) + pad
+	_frame.custom_minimum_size.y = minf(need, maxf(avail, 200.0))
 
 
 func _scale_tree(n: Node, s: float) -> void:
@@ -364,6 +547,8 @@ func _scale_tree(n: Node, s: float) -> void:
 			c.custom_minimum_size = (c.get_meta(&"base") as Vector2) * s
 			if c is Button:
 				c.custom_minimum_size.y = maxf(c.custom_minimum_size.y, UiTheme.MIN_TOUCH) # taille tactile
+				if c.has_meta(&"square"):
+					c.custom_minimum_size.x = maxf(c.custom_minimum_size.x, UiTheme.MIN_TOUCH)
 				c.add_theme_font_size_override("font_size", int(UiTheme.FONT_BUTTON * s))
 		if c is BoxContainer and c.has_meta(&"sep"):
 			c.add_theme_constant_override("separation", int(int(c.get_meta(&"sep")) * s))
@@ -545,3 +730,12 @@ func _on_continue() -> void:
 
 func _on_replay() -> void:
 	replay_pressed.emit()
+
+
+## Manette : le stick droit fait défiler le contenu quand il dépasse l'écran (les boutons restent fixes).
+func _process(delta: float) -> void:
+	if _scroll == null:
+		return
+	var a := Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
+	if absf(a) > 0.3:
+		_scroll.scroll_vertical += int(a * 900.0 * delta)
