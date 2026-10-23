@@ -21,3 +21,9 @@ Arrêt demandé par le joueur (quota hebdo à 3 %). Chaque agent s'est arrêté 
 2. Lancer une simulation globale des 10 personnages (`balance_sim.py --seeds 3`) une fois les kits stables, puis la suite complète des tests.
 3. Machine calme : refaire les 3 tests de perf.
 4. Relancer la file Codex pour les briefs de variantes.
+
+## Builds (23/10 matin)
+- Dépôt git : https://github.com/Conrodri/rainfall (privé), commit initial poussé.
+- Installés : templates Godot 4.7.2 (`%APPDATA%/Godot/export_templates/4.7.2.stable`), JDK 17 (`%LOCALAPPDATA%/Programs/jdk-17.0.20.1+1`, renseigné dans editor_settings-4.7.tres, sauvegarde .bak), Android cmdline-tools (`%LOCALAPPDATA%/Android/Sdk/cmdline-tools/latest`).
+- `build/windows/Rainfall.exe` exporté (1,4 Go : le filtre d'export inclut tests et sources, à restreindre).
+- Preset Android : AAB Gradle, package `com.rainfall.game` (= Play Console). RESTE : `sdkmanager --licenses` (accord du joueur requis) + platform-tools/build-tools/platforms ; installer le gabarit de build Android (Projet > Installer le modèle de build Android) ; clé de publication créée PAR LE JOUEUR (keytool) et saisie par lui dans le preset ; export AAB ; upload dans Tests internes (liste de testeurs : le joueur en crée une nouvelle, NE PAS cocher « Testeur »).
