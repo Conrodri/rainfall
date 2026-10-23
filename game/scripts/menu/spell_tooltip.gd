@@ -34,6 +34,9 @@ static func other_user_bubble_open(source: StringName) -> bool:
 
 
 var anchor_control: Control
+## Zone où poser l'infobulle (centrée dedans, largeur bornée) au lieu de l'ancrer au-dessus du contrôle ; Rect2() = ancrage normal.
+var area: Control
+var _width := WIDTH
 var _title: Label
 var _tag: Label
 var _body: Label
@@ -61,8 +64,12 @@ func _init() -> void:
 
 
 ## Affiche l'infobulle au-dessus (ou au-dessous) de `ctrl`, bornée à l'écran.
-func show_for(ctrl: Control, title: String, tag: String, body: String) -> void:
+func show_for(ctrl: Control, title: String, tag: String, body: String, in_area: Control = null) -> void:
 	anchor_control = ctrl
+	area = in_area
+	var w := clampf(in_area.size.x - 16.0, 360.0, _width) if in_area != null else _width
+	custom_minimum_size = Vector2(w, 0)
+	_body.custom_minimum_size = Vector2(w - 32.0, 0)
 	_title.text = title
 	_tag.text = tag
 	_tag.visible = tag != ""
@@ -77,6 +84,7 @@ func hide_tip(for_ctrl: Control = null) -> void:
 		return
 	visible = false
 	anchor_control = null
+	area = null
 
 
 ## Tailles de texte et largeur (HUD tactile : plus grand). Défaut : 32 / 26 / 26, WIDTH.
@@ -84,6 +92,7 @@ func set_text_sizes(title_px: int, tag_px: int, body_px: int, width := WIDTH) ->
 	_title.add_theme_font_size_override("font_size", title_px)
 	_tag.add_theme_font_size_override("font_size", tag_px)
 	_body.add_theme_font_size_override("font_size", body_px)
+	_width = width
 	custom_minimum_size = Vector2(width, 0)
 	_body.custom_minimum_size = Vector2(width - 32, 0)
 
@@ -101,7 +110,9 @@ func _place() -> void:
 	var sz := get_combined_minimum_size()
 	size = sz
 	var pos := Vector2(r.get_center().x - sz.x * 0.5, r.position.y - sz.y - 12)
-	if pos.y < vis.position.y + 16:
+	if area != null and is_instance_valid(area):
+		pos = area.get_global_rect().get_center() - sz * 0.5
+	elif pos.y < vis.position.y + 16:
 		pos.y = r.end.y + 12
 	pos.x = clampf(pos.x, vis.position.x + 16, vis.end.x - sz.x - 16)
 	pos.y = clampf(pos.y, vis.position.y + 16, vis.end.y - sz.y - 16)

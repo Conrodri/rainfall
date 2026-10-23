@@ -93,20 +93,20 @@ func _run() -> void:
 	pa.queue_free()
 	await get_tree().process_frame
 
-	print("Membre de Tocsin (jambe au sol)")
+	print("Membre de Tocsin (bras au sol)")
 	var pt := await _make_player(&"tocsin")
 	var tkit := pt.kit as TocsinKit
 	pt.spells.aim_override = Vector2(10 * U, 0)
-	_check("jambe lancée", pt.spells.cast(3))
-	for i in int(0.8 / DT):
+	_check("bras lancé", pt.spells.cast(2))
+	for i in int(6.8 / DT):
 		pt.spells._remaining[1] = 99.0
 		pt.tick(DT)
 		for l in tkit.limbs.values():
 			if is_instance_valid(l):
 				l.set_physics_process(false)
 				l.step(DT)
-	var leg: TocsinLimb = tkit.limbs.get(&"leg_l")
-	_check("jambe au sol", leg != null and is_instance_valid(leg) and leg.phase == TocsinLimb.Phase.GROUND and leg.pickup != null)
+	var leg: TocsinLimb = tkit.limbs.get(&"arm_l")
+	_check("bras au sol", leg != null and is_instance_valid(leg) and leg.phase == TocsinLimb.Phase.GROUND and leg.pickup != null)
 	if leg != null and is_instance_valid(leg) and leg.pickup != null:
 		var lp := leg.pickup
 		_check("pickup visible (repère affiché même avec le sprite du membre)", lp.visible)

@@ -80,6 +80,7 @@ Base : Dagues en demi-lune 0,8 / 0,6 s, 2,5 u 180° (1,33/s par cible dans l'arc
   - Déblocage : **Atteindre l'étage 3 avec Rictus** (`floor_reached` 3).
 
 ### 2.3 Tocsin, automate de crue — second style : « le bélier à vapeur »
+> **Mise à jour 23/10/2026 (retours du joueur).** Tocsin ne lance plus ses jambes. Slot 2 : *Bras-grappins* remplacé par le *Bras-pilier* (bras lancé au point visé, décharge électrique 5 s, rayon 2,2 u, puis ramassable). Slot 3 : *Coups de botte* remplacés par le *Coup de tocsin* (onde autour de lui, 3 u). Les variantes **Bras-harpon** (slot 2) et **Jambes-ressorts** (slot 3) sont **retirées** (code et déblocages `tocsin.imprisoned` / `tocsin.pushed` supprimés) ; restent **Vapeur** et **Tête-fumigène**. Les paragraphes Bras-harpon et Jambes-ressorts ci-dessous sont historiques.
 Base : Rivets rougis 0,8 / 0,6 s, traverse 1, 8 u (5 sans tête), Surchauffe +12 % cadence par membre absent · Bras-grappins 2 ch. / 8 s, 1,8, couloir 7 u, prison 2,5 s (6 points) · Coups de botte 2 ch. / 9 s, 3,0, couloir 5 u, poussée 4 u × masse (×1,5 prison) · Tête-cloche 22 s, 12 (18 sur prisonniers, +30 % boss), 4 u.
 
 - **Vapeur** (remplace *Rivets rougis*, auto)

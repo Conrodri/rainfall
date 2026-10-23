@@ -167,7 +167,7 @@
     "title": "Automate de crue",
     "style": "Tank, cloche, contrôle",
     "config": "4 sorts",
-    "difficulty": 3,
+    "difficulty": 2,
     "unlocked": true,
     "unlock_text": "Ouvert pendant les tests",
     "hidden": false,
@@ -179,7 +179,7 @@
         "id": "tocsin_rivets_rougis",
         "name": "Rivets rougis",
         "slot": "auto",
-        "desc": "Le foyer crache des rivets chauffés au rouge sur l'ennemi le plus proche. Surchauffe : +12 % de cadence par membre lancé ; sans tête, il tire à l'oreille (portée réduite).",
+        "desc": "Le foyer crache des rivets chauffés au rouge sur l'ennemi le plus proche. Surchauffe : +12 % de cadence par bras ou tête lancés ; sans tête, il tire à l'oreille (portée réduite).",
         "variants": [
           {
             "id": "tocsin_vapeur",
@@ -192,42 +192,24 @@
         ]
       },
       {
-        "id": "tocsin_bras_grappins",
-        "name": "Bras-grappins",
+        "id": "tocsin_bras_pilier",
+        "name": "Bras-pilier",
         "slot": "cd",
-        "desc": "2 charges. Le bras balaie un couloir, accroche jusqu'à 6 points de monstres, les ramène en paquet devant Tocsin et les emprisonne 2,5 s. Ramasse-le au sol pour récupérer la charge.",
-        "variants": [
-          {
-            "id": "tocsin_bras_harpon",
-            "name": "Bras-harpon",
-            "desc": "Le bras harponne le premier monstre touché, même un boss, et tire Tocsin jusqu'à lui.",
-            "unlock_text": "Emprisonner 400 monstres avec les Bras-grappins.",
-            "unlock_key": "spell:tocsin_bras_harpon",
-            "unlock_rule": {"type": "counter", "key": "tocsin.imprisoned", "value": 400}
-          }
-        ]
+        "desc": "2 charges. Tocsin lance un bras au point visé : il se plante comme un pilier et décharge de l'électricité autour de lui pendant 5 s (cercle bleu au sol), ce qui blesse et ralentit les monstres. Marche dessus pour le récupérer tout de suite.",
+        "variants": []
       },
       {
-        "id": "tocsin_coups_de_botte",
-        "name": "Coups de botte",
+        "id": "tocsin_coup_de_tocsin",
+        "name": "Coup de tocsin",
         "slot": "cd",
-        "desc": "2 charges, il faut au moins un bras. La jambe part comme un bélier : 300 % et poussée massive ; un paquet emprisonné part en boule de quilles. Sans jambes, Tocsin marche sur les mains, rampe ou roule.",
-        "variants": [
-          {
-            "id": "tocsin_jambes_ressorts",
-            "name": "Jambes-ressorts",
-            "desc": "La jambe te propulse : saute jusqu'à 5 u et écrase l'atterrissage. La jambe reste au point de départ.",
-            "unlock_text": "Pousser 300 monstres avec les Coups de botte.",
-            "unlock_key": "spell:tocsin_jambes_ressorts",
-            "unlock_rule": {"type": "counter", "key": "tocsin.pushed", "value": 300}
-          }
-        ]
+        "desc": "Tocsin frappe sa cloche : une onde de choc autour de lui blesse et repousse les monstres proches (3 u). Aucun membre lancé, aucune perte de vitesse.",
+        "variants": []
       },
       {
         "id": "tocsin_tete_cloche",
         "name": "Tête-cloche",
         "slot": "ultime",
-        "desc": "La pression fait sauter la tête : lob, tintement, explosion de 4 u à 1 000 % (+50 % sur les emprisonnés). Sans tête, la portée de ciblage baisse.",
+        "desc": "La pression fait sauter la tête : lob, tintement, explosion de 4 u à 1 000 % (+30 % sur les boss). Sans tête, la portée de ciblage baisse.",
         "variants": [
           {
             "id": "tocsin_tete_fumigene",

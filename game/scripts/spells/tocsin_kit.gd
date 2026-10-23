@@ -1,14 +1,18 @@
 class_name TocsinKit
 extends Node
 ## Kit de Tocsin, l'automate de crue (docs/Design_Personnages.md §1) : 4 sorts / 0 passif. Le corps est
-## l'arsenal : chaque membre lancé n'est plus sur le robot tant que sa recharge court, et son absence change
-## la locomotion (§1.4). Données : character(). Logique : ce nœud, enfant « Kit » du joueur, interrogé par les
-## hooks du joueur et de SpellCaster (blocks_slot, cast_spell, speed_mult, dodge_distance_u, visual_anim…).
+## l'arsenal : les bras et la tête sont lancés et ne sont plus sur le robot tant que leur recharge court.
+## Refonte du 23/10/2026 (retours du joueur) : les JAMBES ne sont plus jamais lancées (plus de perte de vitesse,
+## plus de blocage) ; le Bras-grappin devient le Bras-pilier ; le slot 3 est un Coup de tocsin autour de lui.
+## Données : character(). Logique : ce nœud, enfant « Kit » du joueur, interrogé par les hooks du joueur et de
+## SpellCaster (blocks_slot, cast_spell, speed_mult, dodge_distance_u, visual_anim…).
 ## - Sort 1 Rivets rougis : projectile auto (SpellCaster) ; Surchauffe +12 % de vitesse d'attaque par membre
 ##   absent (foyer plus vif) ; sans tête, ciblage 8 -> 5 u.
-## - Sort 2 Bras-grappins (2 charges) / Sort 3 Coups de botte (2 charges, bloqué sans bras) / Sort 4 Tête-cloche :
-##   SpellData KIT, membres TocsinLimb lancés à la frame d'impact de throw_<membre>.
-## Charges séquentielles (S1) tenues ici : un membre présent = une charge ; un seul membre se recharge à la fois
+## - Sort 2 Bras-pilier (2 charges) : le bras est lancé au point visé, se plante et décharge en zone 5 s, puis reste
+##   au sol : le toucher le rattache TOUT DE SUITE (capacité, calque et recharge rendus dans la même frame).
+## - Sort 3 Coup de tocsin : onde de choc autour de Tocsin, sans membre ni charge.
+## - Sort 4 Tête-cloche : lob puis explosion, SpellData KIT, membre TocsinLimb lancé à la frame d'impact de throw_head.
+## Charges séquentielles tenues ici : un membre présent = une charge ; un seul membre se recharge à la fois
 ## par sort ; la recharge du SpellCaster est recalée à chaque frame (0 s'il reste une charge, sinon le temps
 ## avant le prochain membre) : HUD et sauvegarde inchangés.
 ## Rendu : TocsinLayers (7 calques du lot T5) ; sans calques : composite tocsin.tres ; sans rien : Ardent teinté.
@@ -37,7 +41,6 @@ const BASE_REGEN := 0.8
 const REGEN_PER_LEVEL := 0.16
 const BASE_SPEED_U := 4.0
 const HITBOX_U := 0.5
-const HITBOX_GROUND_U := 0.45 ## rampe / tonneau
 
 # --- Sort 1 : Rivets rougis ---------------------------------------------------------------------------
 const RIVET_COEF := 0.8
@@ -52,59 +55,45 @@ const FURNACE_PER_LIMB := 0.2 ## +20 % par membre absent (1,0 -> 2,0 à 5 membre
 const FURNACE_KICK := 0.6 ## bouffée à chaque rivet
 const FURNACE_KICK_S := 0.12
 
-# --- Sort 2 : Bras-grappins -------------------------------------------------------------------------
-const ARM_COEF := 1.8 ## équilibrage 22/10 : 1,5 -> 1,8
-const ARM_CD_S := 8.0
-const ARM_RANGE_U := 7.0
-const ARM_RANGE_HEADLESS_U := 4.0
-const ARM_WIDTH_U := 1.2
-const ARM_SPEED_U := 16.0
-const ARM_PROC := 0.7
-const ARM_CAPACITY := 6 ## points par bras (T1 1, T2 1, élite 2, T3 3)
-const ARM_DROP_U := 2.0
-const ARM_LATERAL_U := 0.8 ## deux paquets côte à côte
-const ARM_BACK_MAX_S := 1.2 ## sécurité : le bras finit toujours par se planter
-const ARM_RELEASE_SLOW_PCT := 0.4
-const ARM_RELEASE_SLOW_S := 2.0
-const ARM_BOSS_SLOW_PCT := 0.2
-const ARM_BOSS_SLOW_S := 1.0
-const PACK_RADIUS_U := 1.0
-const CLAMP_S := 2.5
+# --- Sort 2 : Bras-pilier (23/10/2026, remplace le Bras-grappin) -------------------------------------
+const PILLAR_COEF := 0.75 ## par tick de décharge, à tout monstre de la zone
+const PILLAR_CD_S := 8.0 ## recharge par bras (2 charges)
+const PILLAR_RANGE_U := 7.0 ## portée du lancer
+const PILLAR_RANGE_HEADLESS_U := 4.0
+const PILLAR_RADIUS_U := 2.2 ## rayon de la zone de décharge
+const PILLAR_FLIGHT_S := 0.6 ## lob
+const PILLAR_LOB_HEIGHT_U := 2.0
+const PILLAR_TICK_S := 0.5
+const PILLAR_TICKS := 10 ## 10 ticks = 5 s ; le premier à la pose
+const PILLAR_S := PILLAR_TICK_S * PILLAR_TICKS ## durée de la décharge (5 s)
+const PILLAR_PROC := 0.25
+const PILLAR_SLOW_PCT := 0.25 ## ralentissement rafraîchi à chaque tick (décharge qui engourdit)
 
-# --- Sort 3 : Coups de botte --------------------------------------------------------------------------
-const LEG_COEF := 3.0
-const LEG_CD_S := 9.0
-const LEG_RANGE_U := 5.0
-const LEG_RANGE_HEADLESS_U := 4.0
-const LEG_WIDTH_U := 1.5
-const LEG_TRAVEL_S := 0.4
-const LEG_PUSH_U := 4.0 ## × masse (T1 4 u, T2 2,8 u, T3 1,6 u)
-const LEG_PRISONER_PUSH_MULT := 1.5
-const QUILLE_TRANSFER := 0.5
-const QUILLE_COEF := 1.0
-const QUILLE_PROC := 0.5
+# --- Sort 3 : Coup de tocsin (23/10/2026, remplace les Coups de botte) ----------------------------------
+const TOLL_COEF := 2.5
+const TOLL_CD_S := 7.0
+const TOLL_RADIUS_U := 3.0 ## onde autour de Tocsin (zone_size_add compte)
+const TOLL_PUSH_U := 2.5 ## × masse (comme la poussée de la Tête-cloche, sans effet sur les boss)
+const TOLL_PROC := 1.0
+const TOLL_SHAKE_PX := 6.0
 
 # --- Sort 4 : Tête-cloche -----------------------------------------------------------------------------
 const HEAD_COEF := 10.0 ## équilibrage 23/10 : 12 -> 10 (22/10 : 10 -> 12)
-const PICKUP_CD_REFUND := 0.5 ## équilibrage 23/10 : ramasser un membre ne rend que 50 % de la recharge restante (avant : charge pleine)
 const HEAD_CD_S := 22.0
 const HEAD_RANGE_U := 6.0
 const HEAD_RADIUS_U := 4.0
 const HEAD_FLIGHT_S := 0.9
 const HEAD_RING_S := 0.3
 const HEAD_LOB_HEIGHT_U := 2.2
-const HEAD_PRISONER_BONUS := 0.5 ## +50 % sur les emprisonnés / accrochés
 const HEAD_PUSH_EXTRA_U := 1.4 ## + le recul du coup (0,6 u) = 2 u × masse
 const HEAD_SHAKE_PX := 10.0
 const HEAD_BOSS_ADD := 0.3 ## équilibrage 22/10 : la cloche sonne plus fort sur les boss (+30 % additif)
 
-# --- Variantes de sorts (docs/Variantes_Sorts.md §2.3 : « le bélier à vapeur ») ----------------------------
+# --- Variantes de sorts (docs/Variantes_Sorts.md §2.3) ------------------------------------------------
+## Retirées le 23/10/2026 avec leur sort de base : Bras-harpon (le grappin n'existe plus) et Jambes-ressorts
+## (les jambes ne sont plus lancées). Restent Vapeur (slot 1) et Tête-fumigène (slot 4).
 const V_VAPEUR := &"tocsin_vapeur" ## slot 1 (remplace Rivets rougis)
-const V_HARPON := &"tocsin_bras_harpon" ## slot 2 (remplace Bras-grappins)
-const V_RESSORTS := &"tocsin_jambes_ressorts" ## slot 3 (remplace Coups de botte)
 const V_FUMIGENE := &"tocsin_tete_fumigene" ## slot 4 (remplace Tête-cloche)
-const COUNTER_IMPRISONED := "tocsin.imprisoned" ## monstres emprisonnés par les Bras-grappins (+1 par monstre)
-const COUNTER_PUSHED := "tocsin.pushed" ## monstres poussés par les Coups de botte (+1 par monstre et par botte, quilles comprises)
 const COUNTER_HEADLESS_BOSS := "tocsin.headless_boss_kills" ## boss d'étage tué tête en recharge
 ## Vapeur : cône 60° à 3 u, anneau 360° de 2 u sans tête. Coef réglé par balance_sim (±15 % des Rivets).
 const VAPEUR_COEF := 0.55
@@ -116,30 +105,6 @@ const VAPEUR_PROC := 0.6
 const VAPEUR_KNOCK_U := 0.2
 const VAPEUR_SLOW_PCT := 0.2
 const VAPEUR_SLOW_S := 0.6
-## Bras-harpon : tir droit, premier monstre touché, traction du joueur.
-const HARPON_COEF := 1.8
-const HARPON_RANGE_U := 8.0
-const HARPON_RANGE_HEADLESS_U := 5.0
-const HARPON_SPEED_U := 20.0
-const HARPON_WIDTH_U := 1.0
-const HARPON_PROC := 0.7
-const HARPON_PULL_SPEED_U := 16.0
-const HARPON_PULL_MAX_S := 0.5
-const HARPON_STOP_U := 1.0 ## Tocsin s'arrête à 1 u de la cible (+ son rayon)
-const HARPON_WAVE_U := 1.5
-const HARPON_WAVE_PUSH_U := 1.0 ## × masse, sans dégâts
-const HARPON_PLANT_S := 2.5
-const HARPON_PLANT_SLOW_PCT := 0.4
-## Jambes-ressorts : saut LOB, atterrissage en disque.
-const RESSORTS_COEF := 3.0
-const RESSORTS_RANGE_U := 5.0
-const RESSORTS_RANGE_HEADLESS_U := 4.0
-const RESSORTS_FLIGHT_S := 0.5
-const RESSORTS_HEIGHT_U := 1.5
-const RESSORTS_RADIUS_U := 2.0
-const RESSORTS_PUSH_U := 2.0 ## × masse (×1,5 et libération sur les emprisonnés)
-const RESSORTS_PROC := 1.0
-const RESSORTS_SHAKE_PX := 8.0
 ## Tête-fumigène : lob 6 u (comme la Tête-cloche), tintement, puis zone de fumée 5 s (10 ticks de 0,5 s).
 const FUMI_COEF := 1.25 ## par tick
 const FUMI_RADIUS_U := 4.0
@@ -149,15 +114,12 @@ const FUMI_STUN_S := 1.0
 const FUMI_SLOW_PCT := 0.5
 const FUMI_BOSS_SLOW_PCT := 0.4
 const FUMI_PROC := 0.3
-const FUMI_PRISONER_BONUS := 0.5
+const FUMI_PRISONER_BONUS := 0.5 ## +50 % sur les monstres étourdis par l'entrée de la zone
 
-# --- Membres au sol, roulade, états (§1.4, §1.5) -----------------------------------------------------
+# --- Membres au sol, roulade, états ------------------------------------------------------------------
 const PICKUP_CONTACT_U := 0.6
-const PICKUP_DELAY_S := 0.8
+const PICKUP_DELAY_S := 0.0 ## 23/10/2026 : plus de délai, le contact rattache le membre tout de suite
 const DODGE_U := 3.0
-const DODGE_HOP_U := 1.5
-const DODGE_ROLL_U := 2.0
-const FALL_S := 0.2
 const GHOST_EVERY_S := 0.04
 const GHOST_FADE_S := 0.3
 const GHOST_COLOR := Color(1.0, 0.62, 0.35, 0.45)
@@ -170,25 +132,21 @@ const SOCKETS_PX := {&"arm_l": Vector2(64, 70), &"arm_r": Vector2(128, 70), &"le
 	&"leg_r": Vector2(106, 108), &"head": Vector2(96, 50)}
 const CELL_PIVOT := Vector2(96, 136.32)
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
-const SLOT_LIMBS := {2: [&"arm_l", &"arm_r"], 3: [&"leg_l", &"leg_r"], 4: [&"head"]}
+## Membres lancés par slot (les jambes ne partent plus). Le slot 3 n'a pas de membre.
+const SLOT_LIMBS := {2: [&"arm_l", &"arm_r"], 4: [&"head"]}
+const THROWN_KEYS := [&"arm_l", &"arm_r", &"head"]
+const ALL_KEYS := [&"arm_l", &"arm_r", &"leg_l", &"leg_r", &"head"]
 
 var player: CharacterBody2D = null
-var present := {&"arm_l": true, &"arm_r": true, &"leg_l": true, &"leg_r": true, &"head": true}
-var limbs := {} ## clé -> TocsinLimb en jeu (vol, pince, sol)
-var queue := {2: [], 3: [], 4: []} ## membres en recharge, dans l'ordre de lancer (le premier se recharge)
-var recharge_left := {2: 0.0, 3: 0.0, 4: 0.0}
+var present := {&"arm_l": true, &"arm_r": true, &"leg_l": true, &"leg_r": true, &"head": true} ## les jambes restent true
+var limbs := {} ## clé -> TocsinLimb en jeu (vol, décharge, sol)
+var queue := {2: [], 4: []} ## membres en recharge, dans l'ordre de lancer (le premier se recharge)
+var recharge_left := {2: 0.0, 4: 0.0}
 var layers: TocsinLayers = null
-var quille_spell: SpellData = null
-var blast_bonus_spell: SpellData = null
-var smoke_bonus_spell: SpellData = null ## Tête-fumigène : +50 % sur les emprisonnés, sans proc
-var _pull: Dictionary = {} ## Bras-harpon : traction en cours {e, left, limb}
-var _jump: Dictionary = {} ## Jambes-ressorts : saut en cours {start, target, t, spell}
-var _visual_y0 := 0.0
+var smoke_bonus_spell: SpellData = null ## Tête-fumigène : +50 % sur les étourdis, sans proc
 var _visual: AnimatedSprite2D = null
 var _pending: Array = [] ## lancers en attente de la frame d'impact : {key, spell, dir, aim}
 var _last_action: StringName = &""
-var _fall_left := 0.0
-var _legs_before := 2
 var _ghost_t := 0.0
 var _kick_left := 0.0
 var _absent_cache := -1
@@ -244,18 +202,21 @@ static func character() -> CharacterData:
 	s1.light_preset = &"tocsin_rivet"
 	s1.projectile_frames = RIVET_FRAMES if ResourceLoader.exists(RIVET_FRAMES) else ""
 
-	var s2 := _spell(&"tocsin_bras_grappins", "Bras-grappins", 2, SpellData.Behavior.KIT, ARM_COEF, ARM_CD_S)
-	s2.range_u = ARM_RANGE_U
-	s2.radius_u = ARM_WIDTH_U * 0.5
-	s2.proc_coef = ARM_PROC
+	var s2 := _spell(&"tocsin_bras_pilier", "Bras-pilier", 2, SpellData.Behavior.KIT, PILLAR_COEF, PILLAR_CD_S)
+	s2.range_u = PILLAR_RANGE_U
+	s2.radius_u = PILLAR_RADIUS_U
+	s2.duration = PILLAR_S
+	s2.tick = PILLAR_TICK_S
+	s2.proc_coef = PILLAR_PROC
 	s2.target_mode = &"densest"
-	s2.trigger_range_u = ARM_RANGE_U
+	s2.trigger_range_u = PILLAR_RANGE_U
 
-	var s3 := _spell(&"tocsin_coups_de_botte", "Coups de botte", 3, SpellData.Behavior.KIT, LEG_COEF, LEG_CD_S)
-	s3.range_u = LEG_RANGE_U
-	s3.radius_u = LEG_WIDTH_U * 0.5
-	s3.proc_coef = 1.0
-	s3.trigger_range_u = LEG_RANGE_U
+	var s3 := _spell(&"tocsin_coup_de_tocsin", "Coup de tocsin", 3, SpellData.Behavior.KIT, TOLL_COEF, TOLL_CD_S)
+	s3.range_u = TOLL_RADIUS_U
+	s3.radius_u = TOLL_RADIUS_U
+	s3.proc_coef = TOLL_PROC
+	s3.trigger_range_u = TOLL_RADIUS_U
+	s3.light_preset = &"tocsin_blast"
 
 	var s4 := _spell(&"tocsin_tete_cloche", "Tête-cloche", 4, SpellData.Behavior.KIT, HEAD_COEF, HEAD_CD_S)
 	s4.range_u = HEAD_RANGE_U
@@ -272,8 +233,8 @@ static func _force_for(knock_u: float) -> float:
 	return clampf(inverse_lerp(Balance.KB_MIN_U, Balance.KB_MAX_U, knock_u), 0.0, 1.0)
 
 
-## Variantes (contrat CONTRACTS.md) : SpellData de la variante `variant_id` pour `slot`, ou null (non codée).
-## Coefficients ajustés par balance_sim (±15 % du sort de base) ; le style ne change pas.
+## Variantes (contrat CONTRACTS.md) : SpellData de la variante `variant_id` pour `slot`, ou null (non codée ou retirée :
+## le jeu retombe sur le sort de base). Coefficients ajustés par balance_sim (±15 % du sort de base).
 static func variant(slot: int, variant_id: StringName) -> SpellData:
 	match [slot, variant_id]:
 		[1, V_VAPEUR]:
@@ -287,23 +248,6 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s1.hit_force = _force_for(VAPEUR_KNOCK_U)
 			s1.light_preset = &"tocsin_rivet"
 			return s1
-		[2, V_HARPON]:
-			var s2 := _spell(V_HARPON, "Bras-harpon", 2, SpellData.Behavior.KIT, HARPON_COEF, ARM_CD_S)
-			s2.range_u = HARPON_RANGE_U
-			s2.radius_u = HARPON_WIDTH_U * 0.5
-			s2.proc_coef = HARPON_PROC
-			s2.is_zone = false
-			s2.target_mode = &"densest"
-			s2.trigger_range_u = HARPON_RANGE_U
-			return s2
-		[3, V_RESSORTS]:
-			var s3 := _spell(V_RESSORTS, "Jambes-ressorts", 3, SpellData.Behavior.KIT, RESSORTS_COEF, LEG_CD_S)
-			s3.range_u = RESSORTS_RANGE_U
-			s3.radius_u = RESSORTS_RADIUS_U
-			s3.proc_coef = RESSORTS_PROC
-			s3.target_mode = &"densest"
-			s3.trigger_range_u = RESSORTS_RANGE_U
-			return s3
 		[4, V_FUMIGENE]:
 			var s4 := _spell(V_FUMIGENE, "Tête-fumigène", 4, SpellData.Behavior.KIT, FUMI_COEF, HEAD_CD_S)
 			s4.range_u = HEAD_RANGE_U
@@ -317,15 +261,6 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 	return null
 
 
-## Points d'emprisonnement d'un monstre (§1.3 : T1 1, T2 1, élite 2, T3 3).
-static func capture_cost(e: Node) -> int:
-	if not (e is Enemy):
-		return 1
-	var en := e as Enemy
-	var c := 3 if en.tier >= 3 else 1
-	return maxi(c, 2) if en.is_elite else c
-
-
 # --- Mise en place ------------------------------------------------------------------------------
 
 func setup(p: CharacterBody2D) -> void:
@@ -334,21 +269,13 @@ func setup(p: CharacterBody2D) -> void:
 	if _visual != null and TocsinLayers.available(ASSET_DIR) and _visual.sprite_frames != null \
 			and _visual.sprite_frames.has_animation(&"walk_s"):
 		layers = TocsinLayers.attach(_visual, ASSET_DIR)
-	quille_spell = _spell(&"quilles", "Quilles", 3, SpellData.Behavior.KIT, QUILLE_COEF, 0.0)
-	quille_spell.proc_coef = QUILLE_PROC
-	blast_bonus_spell = _spell(&"tocsin_tete_cloche", "Tête-cloche (confinée)", 4, SpellData.Behavior.KIT,
-			HEAD_COEF * HEAD_PRISONER_BONUS, 0.0)
-	blast_bonus_spell.proc_coef = 0.0 # le bonus n'est pas un second coup : pas de proc
-	smoke_bonus_spell = _spell(V_FUMIGENE, "Tête-fumigène (confinée)", 4, SpellData.Behavior.KIT,
+	smoke_bonus_spell = _spell(V_FUMIGENE, "Tête-fumigène (étourdie)", 4, SpellData.Behavior.KIT,
 			FUMI_COEF * FUMI_PRISONER_BONUS, 0.0)
 	smoke_bonus_spell.proc_coef = 0.0
 	if ResourceLoader.exists(REGEN_FRAMES):
 		_regen_frames = load(REGEN_FRAMES) as SpriteFrames
-	if _visual != null:
-		_visual_y0 = _visual.position.y
 	Events.floor_started.connect(_on_floor_started)
 	Events.player_died.connect(_on_player_died)
-	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.boss_killed.connect(_on_boss_killed)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
@@ -356,7 +283,7 @@ func setup(p: CharacterBody2D) -> void:
 
 
 func _exit_tree() -> void:
-	for sig: Signal in [Events.floor_started, Events.player_died, Events.enemy_killed, Events.boss_killed]:
+	for sig: Signal in [Events.floor_started, Events.player_died, Events.boss_killed]:
 		for cn in sig.get_connections():
 			if cn["callable"].get_object() == self:
 				sig.disconnect(cn["callable"])
@@ -380,16 +307,18 @@ func arms() -> int:
 	return int(present[&"arm_l"]) + int(present[&"arm_r"])
 
 
+## Les jambes ne partent jamais (23/10/2026) : toujours 2.
 func legs() -> int:
-	return int(present[&"leg_l"]) + int(present[&"leg_r"])
+	return 2
 
 
 func has_head() -> bool:
 	return bool(present[&"head"])
 
 
+## Membres lancés absents (2 bras + la tête : 0 à 3).
 func absent_count() -> int:
-	return 5 - arms() - legs() - int(has_head())
+	return 3 - arms() - int(has_head())
 
 
 ## Charges disponibles d'un sort (membres présents).
@@ -400,17 +329,17 @@ func charges(slot: int) -> int:
 	return n
 
 
-## Hook SpellCaster.slot_charges : pastilles de charges des boutons (bras, jambes ; la tête n'en a pas).
+## Hook SpellCaster.slot_charges : pastilles de charges des boutons (bras ; la tête et le Coup de tocsin n'en ont pas).
 func slot_charges(slot: int) -> Vector2i:
 	var n: int = (SLOT_LIMBS.get(slot, []) as Array).size()
 	return Vector2i(charges(slot), n) if n > 1 else Vector2i(-1, 0)
 
 
-## Ressource (contrat KitResource) : membres présents (5 pastilles : bras, jambes, tête).
+## Ressource (contrat KitResource) : membres lancés présents (3 pastilles : bras, bras, tête).
 func resource_state() -> Dictionary:
-	var n := 5 - absent_count()
+	var n := 3 - absent_count()
 	return KitResource.make(&"limbs", "Membres", 0.0, ACCENT,
-		{"pips": 5, "filled": n, "blocked": blocks_slot(3)})
+		{"pips": 3, "filled": n, "blocked": false})
 
 
 ## Sauvegarde de run : membres présents et recharges (les membres lancés repartent en recharge à la reprise).
@@ -433,14 +362,16 @@ func load_state(d: Dictionary) -> void:
 	clear_transients()
 	for k: StringName in present:
 		present[k] = bool((d["present"] as Dictionary).get(String(k), true))
+	present[&"leg_l"] = true # anciennes sauvegardes : les jambes ne partent plus
+	present[&"leg_r"] = true
 	for slot: int in queue:
 		var q: Array = []
 		for k in (d.get("queue", {}) as Dictionary).get(str(slot), []):
-			if present.has(StringName(k)) and not present[StringName(k)]:
+			if present.has(StringName(k)) and not present[StringName(k)] and _slot_of(StringName(k)) == slot:
 				q.append(StringName(k))
 		queue[slot] = q
 		recharge_left[slot] = float((d.get("recharge_left", {}) as Dictionary).get(str(slot), 0.0)) if not q.is_empty() else 0.0
-	for k: StringName in present: # membre absent sans recharge (sauvegarde incohérente) : rendu
+	for k: StringName in THROWN_KEYS: # membre absent sans recharge (sauvegarde incohérente) : rendu
 		if not present[k] and not ((queue[_slot_of(k)] as Array).has(k)):
 			present[k] = true
 	_refresh_state()
@@ -462,77 +393,30 @@ static func _slot_of(key: StringName) -> int:
 	return 0
 
 
-## Locomotion (§1.4) : &"walk", &"hop", &"handwalk", &"crawl", &"roll".
+## Le membre est-il en recharge (lancé et pas encore revenu) ?
+func is_queued(key: StringName) -> bool:
+	var slot := _slot_of(key)
+	return slot != 0 and (queue[slot] as Array).has(key)
+
+
+## Locomotion : toujours &"walk" (les jambes ne sont plus lancées, 23/10/2026).
 func locomotion() -> StringName:
-	var l := legs()
-	if l == 2:
-		return &"walk"
-	if l == 1:
-		return &"hop"
-	match arms():
-		2:
-			return &"handwalk"
-		1:
-			return &"crawl"
-	return &"roll"
-
-
-## Le monstre est-il accroché ou emprisonné par un bras ?
-func is_captured(e: Node) -> bool:
-	for k: StringName in [&"arm_l", &"arm_r"]:
-		var l: TocsinLimb = _limb(k)
-		if l != null and l.holds(e):
-			return true
-	return false
-
-
-## Libère un prisonnier (jambe qui le frappe, explosion de la tête).
-func free_enemy(e: Node) -> void:
-	for k: StringName in [&"arm_l", &"arm_r"]:
-		var l: TocsinLimb = _limb(k)
-		if l != null:
-			l.release(e)
+	return &"walk"
 
 
 # --- Hooks du joueur et de SpellCaster ----------------------------------------------------------
 
-## Seul vrai blocage : les jambes sans bras (les charges épuisées passent par la recharge du SpellCaster).
-func blocks_slot(slot: int) -> bool:
-	if (slot == 2 or slot == 3) and (is_pulling() or is_jumping()):
-		return true # une traction / un saut à la fois
-	return slot == 3 and not _spring() and arms() == 0 and legs() > 0
+## Aucun blocage : plus de jambes à bloquer sans bras, les charges épuisées passent par la recharge du SpellCaster.
+func blocks_slot(_slot: int) -> bool:
+	return false
 
 
 func can_dodge() -> bool:
-	return not is_pulling() and not is_jumping()
+	return true
 
 
-## Variante active du slot (sort du joueur).
-func _is_variant(slot: int, vid: StringName) -> bool:
-	var s := _spell_of(slot)
-	return s != null and s.id == vid
-
-
-func _spring() -> bool:
-	return _is_variant(3, V_RESSORTS)
-
-
-func is_pulling() -> bool:
-	return not _pull.is_empty()
-
-
-func is_jumping() -> bool:
-	return not _jump.is_empty()
-
-
-## Auto-cast (SpellCaster._auto_cast_ok) : les bottes exigent un bras présent. Tant qu'une jambe est là,
-## le dernier bras reste sur le corps (sinon les deux bras partent et les bottes restent bloquées : 0 lancer
-## au simulateur du 22/10/2026). En manuel le joueur décide seul.
-func auto_cast_ok(slot: int) -> bool:
-	if slot == 2:
-		return arms() >= 2 or legs() == 0 or _spring() # les ressorts n'ont pas besoin de bras
-	if slot == 3: # une botte à la fois : jamais à ramper au milieu du combat
-		return legs() >= 2
+## Auto-cast (SpellCaster._auto_cast_ok) : plus de combo à protéger, tout part tout de suite.
+func auto_cast_ok(_slot: int) -> bool:
 	return true
 
 
@@ -543,27 +427,12 @@ func damage_add(s: SpellData, enemy: Node) -> float:
 	return 0.0
 
 
+## Aucune perte de vitesse liée aux membres lancés (23/10/2026).
 func speed_mult() -> float:
-	if is_pulling() or is_jumping():
-		return 0.0 # la traction / le saut portent Tocsin : l'entrée ne lutte pas
-	match locomotion():
-		&"hop":
-			return 0.5 # cloche-pied 2,0 u/s
-		&"handwalk":
-			return 0.6 # 2,4 u/s
-		&"crawl":
-			return 0.35 # 1,4 u/s
-		&"roll":
-			return 0.5 # tonneau 2,0 u/s
 	return 1.0
 
 
 func dodge_distance_u() -> float:
-	match locomotion():
-		&"hop", &"crawl":
-			return DODGE_HOP_U
-		&"roll":
-			return DODGE_ROLL_U
 	return DODGE_U
 
 
@@ -591,15 +460,12 @@ func on_dodge_start(_dir: Vector2) -> void:
 func cast_spell(s: SpellData, aim: Variant) -> bool:
 	if player == null or player.dead:
 		return false
-	match s.id: # variantes sans lancer de membre standard
-		V_VAPEUR:
-			return _cast_vapeur(s)
-		V_RESSORTS:
-			return _cast_spring(s, aim)
+	if s.id == V_VAPEUR:
+		return _cast_vapeur(s)
+	if s.slot == 3:
+		return _cast_toll(s)
 	var key := _next_limb(s.slot)
 	if key == &"":
-		return false
-	if s.slot == 3 and arms() == 0:
 		return false
 	var origin := player.global_position
 	var point: Variant = aim
@@ -623,7 +489,7 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 		_pending.append(pend)
 	else:
 		_last_action = &""
-		_launch(pend) # rampe / tonneau : pas d'anim de lancer debout, le membre part tout de suite
+		_launch(pend)
 	_refresh_state()
 	return true
 
@@ -636,23 +502,15 @@ func _next_limb(slot: int) -> StringName:
 	return &""
 
 
-## Les anims de lancer sont rendues debout : sans jambe, le membre part sans elles.
+## Les anims de lancer (throw_arm_*, throw_head) sont rendues debout : toujours disponibles, jambes présentes.
 func _has_throw_anim() -> bool:
-	return legs() >= 1
+	return true
 
 
-## Ciblage automatique (tactile, stick au repos) : jambes -> paquet emprisonné sinon le plus dense ;
-## tête -> paquet emprisonné sinon le plus dense à 6 u ; bras -> le plus dense (SpellCaster, S5).
+## Ciblage automatique (tactile, stick au repos) : le paquet le plus dense à portée (SpellCaster, S5).
 func _auto_target(s: SpellData) -> Variant:
-	var r := _range_px(s)
-	if s.slot == 3 or s.slot == 4:
-		for k: StringName in [&"arm_l", &"arm_r"]:
-			var l: TocsinLimb = _limb(k)
-			if l != null and l.is_clamping() \
-					and l.global_position.distance_to(player.global_position) <= r + PACK_RADIUS_U * Balance.UNIT_PX:
-				return l.global_position
 	var c := _caster()
-	return c.densest_point(r) if c != null else null
+	return c.densest_point(_range_px(s)) if c != null else null
 
 
 func _range_px(s: SpellData) -> float:
@@ -664,11 +522,11 @@ func _cooldown(s: SpellData) -> float:
 	return Balance.effective_cooldown(s.base_cooldown, m if m > 0.0 else 1.0)
 
 
-## Anim d'action (Player.play_action) : throw_<membre> pour les sorts 2-4 ; `attack` pour les rivets
-## seulement à l'arrêt, debout, sans autre action en cours (en marche, le corps continue de marcher).
+## Anim d'action (Player.play_action) : throw_<membre> pour les bras et la tête, `cast` pour le Coup de tocsin ;
+## `attack` pour les rivets seulement à l'arrêt, sans autre action en cours (en marche, le corps continue de marcher).
 func action_for(s: SpellData) -> StringName:
 	if s.slot == 1:
-		if legs() == 2 and not player.is_moving and player.action_base() == &"":
+		if not player.is_moving and player.action_base() == &"":
 			return &"attack"
 		return &""
 	var a := _last_action
@@ -703,34 +561,17 @@ func _launch(pend: Dictionary) -> void:
 	l.key = key
 	l.dir = d
 	l.name = "Tocsin_%s" % key
+	l.phase = TocsinLimb.Phase.FLY
+	l.start = player.global_position
+	var aim: Vector2 = pend["aim"]
+	l.target = player.global_position + (aim - player.global_position).limit_length(_range_px(s))
 	var zone: float = 1.0 + player.stat(&"zone_size_add")
 	match s.slot:
 		2:
 			l.kind = &"arm"
-			l.phase = TocsinLimb.Phase.OUT
-			l.speed_px = ARM_SPEED_U * Balance.UNIT_PX
-			l.travel_left_px = _range_px(s)
-			l.half_width_px = ARM_WIDTH_U * 0.5 * zone * Balance.UNIT_PX
-			if s.id == V_HARPON: # tir droit, s'arrête au premier monstre
-				l.harpoon = true
-				l.speed_px = HARPON_SPEED_U * Balance.UNIT_PX
-				l.half_width_px = HARPON_WIDTH_U * 0.5 * Balance.UNIT_PX
-			else:
-				var other: TocsinLimb = _limb(&"arm_r" if key == &"arm_l" else &"arm_l")
-				if other != null and other.phase != TocsinLimb.Phase.GROUND:
-					l.lateral = -ARM_LATERAL_U if other.lateral >= 0.0 else ARM_LATERAL_U
-		3:
-			l.kind = &"leg"
-			l.phase = TocsinLimb.Phase.OUT
-			l.travel_left_px = _range_px(s)
-			l.speed_px = l.travel_left_px / LEG_TRAVEL_S
-			l.half_width_px = LEG_WIDTH_U * 0.5 * zone * Balance.UNIT_PX
+			l.radius_px = PILLAR_RADIUS_U * zone * Balance.UNIT_PX
 		4:
 			l.kind = &"head"
-			l.phase = TocsinLimb.Phase.FLY
-			l.start = player.global_position
-			var aim: Vector2 = pend["aim"]
-			l.target = player.global_position + (aim - player.global_position).limit_length(_range_px(s))
 			l.smoke = s.id == V_FUMIGENE
 			l.radius_px = (FUMI_RADIUS_U if l.smoke else HEAD_RADIUS_U) * zone * Balance.UNIT_PX
 	parent.add_child(l)
@@ -754,20 +595,29 @@ func _untrack_limb(key: StringName, l: TocsinLimb) -> void:
 		limbs.erase(key)
 
 
-## Membre au sol ramassé : équilibrage 23/10 : le membre ne revient plus tout de suite, la recharge restante
-## du sort est réduite de PICKUP_CD_REFUND (avant : charge pleine rendue).
+## Membre au sol ramassé (contact) : il se rattache TOUT DE SUITE, dans la frame du contact.
+## Cause racine du retour du 23/10/2026 : l'ancien code ne rendait pas le membre, il se contentait de raccourcir
+## la recharge restante de 50 % (PICKUP_CD_REFUND) après un délai de pose de 0,8 s ; le bras ne revenait donc que
+## quand la recharge finissait. Maintenant : sortie de la file de recharge, présence, calque, charge du bouton et
+## recharge du SpellCaster recalés dans le même appel (pas de délai, pas de seconde action).
 func collect_limb(l: TocsinLimb) -> void:
 	if l == null or player == null or player.dead:
 		return
 	var key := l.key
-	l.release_all(ARM_RELEASE_SLOW_PCT, ARM_RELEASE_SLOW_S)
 	l.queue_free()
 	limbs.erase(key)
 	var slot := _slot_of(key)
-	if (queue[slot] as Array).has(key):
-		recharge_left[slot] = float(recharge_left[slot]) * PICKUP_CD_REFUND
-	else:
+	if slot != 0:
+		var q: Array = queue[slot]
+		var idx := q.find(key)
+		if idx >= 0:
+			q.remove_at(idx)
+			if q.is_empty():
+				recharge_left[slot] = 0.0
+			# tête de file retirée : le suivant reprend le temps restant (il ne repart pas de zéro)
+	if not bool(present[key]):
 		_regen(key)
+	_sync_caster()
 	Audio.play(&"pickup.coin", player.global_position, -6.0, 0.7)
 
 
@@ -776,11 +626,7 @@ func on_head_blast(l: TocsinLimb, at: Vector2) -> void:
 	limbs.erase(l.key)
 	LightRig.flash(at, &"tocsin_blast", 0.7)
 	Audio.play(&"enemy.shockwave.heavy", at, 2.0, 0.8)
-	var n := player.get_parent()
-	while n != null and not n.has_method(&"shake"):
-		n = n.get_parent()
-	if n != null:
-		n.shake(HEAD_SHAKE_PX, 18.0, 0.35)
+	_shake(HEAD_SHAKE_PX)
 	_blast_vfx(at, l.radius_px)
 
 
@@ -814,7 +660,57 @@ func _blast_vfx(at: Vector2, radius: float) -> void:
 		crea.animation_finished.connect(crea.queue_free)
 
 
-# --- Variantes : Vapeur, Bras-harpon, Jambes-ressorts, Tête-fumigène -----------------------------------
+# --- Bras-pilier : retours du membre ----------------------------------------------------------------
+
+## Le pilier se plante : lumière, secousse légère (la décharge et ses ticks sont tenus par le membre).
+func on_pillar_planted(_l: TocsinLimb, at: Vector2) -> void:
+	LightRig.flash(at, &"tocsin_limb", 0.5)
+	_shake(HEAD_SHAKE_PX * 0.4)
+
+
+## Un tick de décharge : petit éclat de lumière au pied du pilier.
+func on_pillar_tick(_l: TocsinLimb, at: Vector2) -> void:
+	LightRig.flash(at, &"tocsin_limb", 0.25)
+
+
+# --- Sort 3 : Coup de tocsin ------------------------------------------------------------------------
+
+## Onde de choc autour de Tocsin : coef 2,5 à tout monstre dans 3 u (+ zone_size_add), poussée 2,5 u × masse.
+## Rien à portée en auto : pas de lancer (le sort auto ne consomme rien) ; en manuel il sonne même à vide.
+func _cast_toll(s: SpellData) -> bool:
+	var c := _caster()
+	if c == null:
+		return false
+	var zone: float = 1.0 + player.stat(&"zone_size_add")
+	var r: float = TOLL_RADIUS_U * zone * Balance.UNIT_PX
+	var at := player.global_position
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
+			continue
+		if (e as Node2D).global_position.distance_to(at) > r + TocsinLimb._radius_of(e) * 0.5:
+			continue
+		c.deal_damage(e, s, {"source_pos": at})
+		if TocsinLimb._alive(e) and not TocsinLimb._is_boss(e):
+			var away: Vector2 = (e as Node2D).global_position - at
+			TocsinLimb._push(e, (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * TOLL_PUSH_U)
+	if _visual != null and _resolve("cast") != &"":
+		_last_action = &"cast"
+	TocsinSteamFx.spawn(player.get_parent(), at, TocsinSteamFx.Mode.WAVE, r, Vector2.RIGHT, 0.3)
+	LightRig.flash(at, &"tocsin_blast", 0.4)
+	Audio.play(&"enemy.shockwave.heavy", at, -4.0, 1.25) # la cloche sonne
+	_shake(TOLL_SHAKE_PX)
+	return true
+
+
+func _shake(px: float) -> void:
+	var n := player.get_parent()
+	while n != null and not n.has_method(&"shake"):
+		n = n.get_parent()
+	if n != null:
+		n.shake(px, 18.0, 0.3)
+
+
+# --- Variantes : Vapeur, Tête-fumigène ----------------------------------------------------------------
 
 ## Vapeur : cône de 60° vers le monstre le plus proche (portée 3 u, + range_add × 0,5), anneau 360° sans tête.
 ## Rien à portée : pas de lancer (le sort auto ne consomme rien).
@@ -856,178 +752,6 @@ func _cast_vapeur(s: SpellData) -> bool:
 	return true
 
 
-## Bras-harpon accroché : Tocsin est tiré vers la cible (16 u/s, 0,5 s max, traverse les monstres, invulnérable).
-func begin_pull(l: TocsinLimb, e: Node2D) -> void:
-	if player == null or player.dead or e == null:
-		return
-	_pull = {"e": e, "left": HARPON_PULL_MAX_S, "limb": l}
-	var d := e.global_position - player.global_position
-	if d.length_squared() > 1.0:
-		player.facing = d.normalized()
-	player.grant_invulnerability(HARPON_PULL_MAX_S + 0.05)
-	Audio.play(&"hit.heavy", player.global_position, -6.0, 1.3) # le treuil
-
-
-func _pull_step(delta: float) -> void:
-	if _pull.is_empty():
-		return
-	var e: Variant = _pull["e"]
-	_pull["left"] = float(_pull["left"]) - delta
-	if e == null or not is_instance_valid(e) or not TocsinLimb._alive(e as Node) or float(_pull["left"]) <= 0.0:
-		_end_pull()
-		return
-	var target := e as Node2D
-	var to := target.global_position - player.global_position
-	var stop := HARPON_STOP_U * Balance.UNIT_PX + TocsinLimb._radius_of(target)
-	var dist := to.length()
-	if dist <= stop:
-		_end_pull()
-		return
-	var step := minf(HARPON_PULL_SPEED_U * Balance.UNIT_PX * delta, dist - stop)
-	var moved: Vector2 = player.move_swept(to.normalized() * step)
-	player.grant_invulnerability(delta * 2.0)
-	if moved.length() < step * 0.25: # mur : la traction s'arrête
-		_end_pull()
-
-
-## Arrivée : onde de 1,5 u, recul 1 u × masse, aucun dégât (il écarte le paquet).
-func _end_pull() -> void:
-	if _pull.is_empty():
-		return
-	_pull = {}
-	var zone: float = 1.0 + player.stat(&"zone_size_add")
-	var r: float = HARPON_WAVE_U * zone * Balance.UNIT_PX
-	shockwave(player.global_position, r, HARPON_WAVE_PUSH_U, false)
-	TocsinSteamFx.spawn(player.get_parent(), player.global_position, TocsinSteamFx.Mode.WAVE, r, Vector2.RIGHT, 0.25)
-	Audio.play(&"enemy.shockwave.heavy", player.global_position, -8.0, 1.5)
-
-
-## Poussée radiale autour de `center` : `push_u` × masse (×1,5 et libération des emprisonnés si `free_prisoners`).
-## Sans effet sur un boss (Enemy.push).
-func shockwave(center: Vector2, radius_px: float, push_u: float, free_prisoners: bool) -> void:
-	for e in player.get_tree().get_nodes_in_group(&"enemies"):
-		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
-			continue
-		if (e as Node2D).global_position.distance_to(center) > radius_px + TocsinLimb._radius_of(e) * 0.5:
-			continue
-		var mult := 1.0
-		if free_prisoners and is_captured(e):
-			free_enemy(e)
-			mult = LEG_PRISONER_PUSH_MULT
-		if TocsinLimb._alive(e) and not TocsinLimb._is_boss(e):
-			var away: Vector2 = (e as Node2D).global_position - center
-			TocsinLimb._push(e, (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * push_u * mult)
-
-
-## Jambes-ressorts : saut LOB 0,5 s vers le point visé (≤ 5 u, 4 sans tête) ; la jambe reste au décollage.
-func _cast_spring(s: SpellData, aim: Variant) -> bool:
-	if is_jumping() or is_pulling():
-		return false
-	var key := _next_limb(3)
-	if key == &"":
-		return false
-	var origin := player.global_position
-	var point: Variant = aim
-	if point == null:
-		point = _auto_target(s)
-	var d: Vector2 = player.facing
-	if point != null and ((point as Vector2) - origin).length_squared() > 1.0:
-		d = ((point as Vector2) - origin).normalized()
-	if d == Vector2.ZERO:
-		d = Vector2.DOWN
-	var reach := _range_px(s) * 0.6
-	if point != null:
-		reach = minf(((point as Vector2) - origin).length(), _range_px(s))
-	present[key] = false
-	(queue[3] as Array).append(key)
-	if (queue[3] as Array).size() == 1:
-		recharge_left[3] = _cooldown(s)
-	player.facing = d
-	_plant_leg(key, s, origin, d)
-	_jump = {"start": origin, "target": origin + d * reach, "t": 0.0, "spell": s}
-	if _visual != null:
-		_visual_y0 = _visual.position.y
-	player.grant_invulnerability(RESSORTS_FLIGHT_S + 0.05)
-	_refresh_state()
-	Audio.play(&"enemy.shot.medium", origin, -4.0, 0.5) # ressort comprimé
-	return true
-
-
-## La jambe reste au point de décollage (ramassable après PICKUP_DELAY_S, comme une jambe tombée).
-func _plant_leg(key: StringName, s: SpellData, at: Vector2, d: Vector2) -> void:
-	var parent := player.get_parent()
-	if parent == null:
-		return
-	var l := TocsinLimb.new()
-	l.kit = self
-	l.caster = _caster()
-	l.spell = s
-	l.key = key
-	l.dir = d
-	l.kind = &"leg"
-	l.phase = TocsinLimb.Phase.GROUND
-	l.name = "Tocsin_%s" % key
-	parent.add_child(l)
-	l.global_position = at
-	l.setup_visual()
-	l.plant_ground()
-	_track_limb(key, l)
-
-
-func _jump_step(delta: float) -> void:
-	if _jump.is_empty():
-		return
-	_jump["t"] = float(_jump["t"]) + delta
-	var k := clampf(float(_jump["t"]) / RESSORTS_FLIGHT_S, 0.0, 1.0)
-	var want: Vector2 = (_jump["start"] as Vector2).lerp(_jump["target"] as Vector2, k)
-	var off := want - player.global_position
-	if off.length_squared() > 0.01:
-		player.move_swept(off)
-	player.grant_invulnerability(delta * 2.0)
-	if _visual != null:
-		_visual.position.y = _visual_y0 + Iso.lift_logical(RESSORTS_HEIGHT_U) * sin(PI * k)
-	if k >= 1.0:
-		_land_spring()
-
-
-## Atterrissage : disque 2 u (+ zone_size_add), coef 3,0, poussée radiale 2 u × masse (×1,5 et libération des prisonniers).
-func _land_spring() -> void:
-	var s: SpellData = _jump["spell"]
-	_jump = {}
-	if _visual != null:
-		_visual.position.y = _visual_y0
-	var c := _caster()
-	var at := player.global_position
-	var r: float = RESSORTS_RADIUS_U * (1.0 + player.stat(&"zone_size_add")) * Balance.UNIT_PX
-	if c != null:
-		var victims: Array = []
-		for e in player.get_tree().get_nodes_in_group(&"enemies"):
-			if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") \
-					and (e as Node2D).global_position.distance_to(at) <= r + TocsinLimb._radius_of(e) * 0.5:
-				victims.append(e)
-		for e: Node2D in victims:
-			var held := is_captured(e)
-			if held:
-				free_enemy(e)
-			c.deal_damage(e, s, {"source_pos": at})
-			if TocsinLimb._alive(e) and not TocsinLimb._is_boss(e):
-				var away := e.global_position - at
-				TocsinLimb._push(e, (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT)
-						* RESSORTS_PUSH_U * (LEG_PRISONER_PUSH_MULT if held else 1.0))
-	TocsinSteamFx.spawn(player.get_parent(), at, TocsinSteamFx.Mode.WAVE, r, Vector2.RIGHT, 0.3)
-	LightRig.flash(at, &"tocsin_blast", 0.35)
-	Audio.play(&"enemy.shockwave.heavy", at, -2.0, 1.1) # choc de fonte
-	_shake(RESSORTS_SHAKE_PX)
-
-
-func _shake(px: float) -> void:
-	var n := player.get_parent()
-	while n != null and not n.has_method(&"shake"):
-		n = n.get_parent()
-	if n != null:
-		n.shake(px, 18.0, 0.3)
-
-
 ## Tête-fumigène posée (tintement fini) : lumière, secousse ; la zone et ses ticks sont tenus par le membre.
 func on_smoke_start(_l: TocsinLimb, at: Vector2) -> void:
 	LightRig.flash(at, &"tocsin_blast", 0.5)
@@ -1048,13 +772,9 @@ func tick(delta: float) -> void:
 	for slot: int in queue:
 		_recharge_step(slot, delta)
 	_sync_caster()
-	if _fall_left > 0.0:
-		_fall_left = maxf(_fall_left - delta, 0.0)
 	if _kick_left > 0.0:
 		_kick_left = maxf(_kick_left - delta, 0.0)
 	_update_overheat()
-	_pull_step(delta)
-	_jump_step(delta)
 	if layers != null:
 		var e := FURNACE_ENERGY * (1.0 + FURNACE_PER_LIMB * absent_count()) + (FURNACE_KICK if _kick_left > 0.0 else 0.0)
 		layers.set_furnace(e)
@@ -1074,7 +794,7 @@ func _recharge_step(slot: int, delta: float) -> void:
 		var key: StringName = q.pop_front()
 		var l: TocsinLimb = _limb(key)
 		if l != null and l.kind != &"head":
-			l.vanish() # le membre au sol part en braises
+			l.expire() # le membre au sol part en braises ; un pilier en décharge finit d'abord
 		limbs.erase(key)
 		_regen(key)
 		if not q.is_empty():
@@ -1166,28 +886,17 @@ func _update_overheat() -> void:
 	s1.trigger_range_u = s1.range_u
 	var s2 := _spell_of(2)
 	if s2 != null:
-		var har := s2.id == V_HARPON
-		s2.range_u = (HARPON_RANGE_U if har else ARM_RANGE_U) if head else (HARPON_RANGE_HEADLESS_U if har else ARM_RANGE_HEADLESS_U)
+		s2.range_u = PILLAR_RANGE_U if head else PILLAR_RANGE_HEADLESS_U
 		s2.trigger_range_u = s2.range_u
-	var s3 := _spell_of(3)
-	if s3 != null:
-		var spr := s3.id == V_RESSORTS
-		s3.range_u = (RESSORTS_RANGE_U if spr else LEG_RANGE_U) if head else (RESSORTS_RANGE_HEADLESS_U if spr else LEG_RANGE_HEADLESS_U)
-		s3.trigger_range_u = s3.range_u
 
 
-## Hitbox, calques visibles, vignette, transition `fall` après un changement de membres.
+## Hitbox, calques visibles, vignette après un changement de membres.
 func _refresh_state() -> void:
 	if player == null:
 		return
-	var l := legs()
-	if l == 0 and _legs_before > 0:
-		_fall_left = FALL_S # perd la 2e jambe : il tombe
-	_legs_before = l
-	var loco := locomotion()
-	player.set_hitbox_u(HITBOX_GROUND_U if loco == &"crawl" or loco == &"roll" else HITBOX_U)
+	player.set_hitbox_u(HITBOX_U)
 	if layers != null:
-		for k: StringName in [&"arm_l", &"arm_r", &"leg_l", &"leg_r", &"head"]:
+		for k: StringName in ALL_KEYS:
 			layers.set_wanted(k, bool(present[k]))
 		layers.set_wanted(&"neck_steam", not has_head())
 	_update_vignette()
@@ -1239,32 +948,14 @@ func _resolve(base: String) -> StringName:
 	return a if _visual.sprite_frames.has_animation(a) else &""
 
 
-## Anim du corps (Player._update_visual) : l'anim d'action en cours, sinon la locomotion de l'état (§1.4).
-## `fallback` = anim d'action ou idle/run_<dir> d'Ardent : run devient walk ; sans jambe, le corps ne tient pas debout.
+## Anim du corps (Player._update_visual) : l'anim d'action en cours, sinon marche / repos (jambes toujours là).
+## `fallback` = anim d'action ou idle/run_<dir> d'Ardent : run devient walk.
 func visual_anim(fallback: StringName) -> StringName:
 	if _visual == null or _visual.sprite_frames == null or not _visual.sprite_frames.has_animation(&"walk_s"):
 		return fallback # repli Ardent teinté : ses anims idle/run
 	if player.action_anim() != &"" and fallback == player.action_anim():
 		return fallback
-	if _fall_left > 0.0:
-		var f := _resolve("fall")
-		if f != &"":
-			return f
-	var base := "idle"
-	match locomotion():
-		&"walk":
-			base = "walk" if player.is_moving else "idle"
-		&"hop":
-			base = ("hop_r" if present[&"leg_r"] else "hop_l") if player.is_moving else "idle"
-		&"handwalk":
-			base = "handwalk"
-		&"crawl":
-			base = "crawl_l" if present[&"arm_l"] else "crawl_r"
-		&"roll":
-			base = "roll"
-	var a := _resolve(base)
-	if a == &"" and base.begins_with("crawl"):
-		a = _resolve("roll") # §1.12 : crawl coupable, repli roll
+	var a := _resolve("walk" if player.is_moving else "idle")
 	return a if a != &"" else fallback
 
 
@@ -1272,11 +963,6 @@ func visual_anim(fallback: StringName) -> StringName:
 
 func clear_transients() -> void:
 	_pending.clear()
-	_pull = {}
-	if not _jump.is_empty():
-		_jump = {}
-		if _visual != null:
-			_visual.position.y = _visual_y0
 	for k in limbs.keys():
 		var l: TocsinLimb = _limb(k)
 		if l != null:
@@ -1301,13 +987,6 @@ func _on_floor_started(_n: int) -> void:
 	regen_all()
 
 
-func _on_enemy_killed(e: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
-	for k: StringName in [&"arm_l", &"arm_r"]:
-		var l: TocsinLimb = _limb(k)
-		if l != null:
-			l.forget(e)
-
-
 ## Mort : le corps se disloque (anim `death` de tous les calques encore présents).
 func _on_player_died() -> void:
 	clear_transients()
@@ -1318,13 +997,12 @@ func _on_player_died() -> void:
 			_visual.play(a)
 
 
-
 # --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
 
 static func passive_info() -> Dictionary:
 	return KitResource.passive("Membres", &"membres",
-		"Le corps de Tocsin est son arsenal : 5 membres (2 bras, 2 jambes, la tête). Chaque sort lance les siens ; les pastilles du HUD montrent ceux qui sont sur le robot.",
-		"un membre lancé revient quand la recharge de son sort est finie (un seul membre se recharge à la fois par sort).",
-		"lancer un membre le retire du robot tant que sa recharge court : jambes absentes = autre façon de marcher, tête absente = visée plus courte.",
-		"Surchauffe : +%s de vitesse d'attaque par membre absent, et le foyer brille plus fort. Sans ses 2 bras ou 2 jambes, le sort concerné est bloqué. La tête sonne +%s sur les boss." % [
+		"Les bras et la tête de Tocsin sont des armes : il les lance, ils reviennent. Les pastilles du HUD montrent ceux qui sont sur le robot. Ses jambes ne partent jamais, il court toujours à pleine vitesse.",
+		"un bras lancé revient dès que tu marches dessus (même quand le pilier a fini de décharger), sinon quand la recharge de son sort est finie. Un seul membre se recharge à la fois par sort.",
+		"un membre lancé n'est plus sur le robot tant que sa recharge court ; sans tête, ta visée est plus courte.",
+		"Surchauffe : +%s de vitesse d'attaque par membre absent, et le foyer brille plus fort. La tête sonne +%s sur les boss." % [
 			KitResource.pct(OVERHEAT_PER_LIMB), KitResource.pct(HEAD_BOSS_ADD)])

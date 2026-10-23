@@ -1,7 +1,7 @@
 extends Node
 ## Test headless de Tocsin (docs/Design_Personnages.md §1) : stats, calques (T5), 4 sorts, charges séquentielles,
-## membres au sol ramassables, emprisonnement, poussée, explosion confinée, Surchauffe, table d'états (§1.4),
-## anims de lancer et frame d'impact, lumières, régénération, changement d'étage.
+## membres au sol ramassables, Surchauffe (jambes jamais lancées : 23/10/2026), anims de lancer et frame d'impact,
+## lumières, régénération, changement d'étage. Bras-pilier et ramassage immédiat : voir aussi tocsin_pillar_test.
 ## godot --headless --path game res://tests/tocsin_test.tscn
 
 class FakeEnemy extends Node2D:
@@ -129,7 +129,7 @@ func _run() -> void:
 
 	print("Personnage et rendu")
 	_check("kit Tocsin", _kit != null)
-	_check("4 sorts / ids", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["tocsin_rivets_rougis", "tocsin_bras_grappins", "tocsin_coups_de_botte", "tocsin_tete_cloche"])
+	_check("4 sorts / ids", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["tocsin_rivets_rougis", "tocsin_bras_pilier", "tocsin_coup_de_tocsin", "tocsin_tete_cloche"])
 	_check("PV L1 = 130", _near(_player.max_hp, 130.0), str(_player.max_hp))
 	_check("armure 20", _near(_player.armor(), 20.0))
 	_check("régén 0,8", _near(_player.regen_per_s(), 0.8))
@@ -172,19 +172,19 @@ func _run() -> void:
 	var s1: SpellData = _kit._spell_of(1)
 	_check("cadence 0,6 s", _near(Balance.attack_interval(s1.base_cooldown, 0.0), 0.6, 0.001))
 	_kit.present[&"arm_l"] = false
-	_kit.present[&"leg_l"] = false
+	_kit.present[&"arm_r"] = false
 	_kit._refresh_state()
 	_check("Surchauffe : +24 % à 2 membres", _near(Balance.attack_interval(s1.base_cooldown, 0.0), 0.6 / 1.24, 0.001), str(s1.base_cooldown))
 	_player.is_moving = true
 	_check("en marche : pas d'anim attack (le corps marche)", _kit.action_for(s1) == &"")
 	_player.is_moving = false
 
-	print("Sort 2 : Bras-grappins")
+	print("Sort 2 : Bras-pilier")
 	_reset()
-	var a1 := _fake(Vector2(3.0 * U, 0))
-	var a2 := _fake(Vector2(5.0 * U, 10))
-	var far := _fake(Vector2(5.0 * U, 2.0 * U))
-	_player.spells.aim_override = Vector2(10 * U, 0)
+	var a1 := _fake(Vector2(5.0 * U, 0))
+	var a2 := _fake(Vector2(5.5 * U, 60))
+	var far := _fake(Vector2(5.0 * U, 4.0 * U))
+	_player.spells.aim_override = Vector2(5.0 * U, 0)
 	_check("bras lancé", _player.spells.cast(2))
 	_check("anim throw_arm_l", _player.action_base() == &"throw_arm_l", String(_player.action_base()))
 	_check("bras gauche détaché, 1 charge", not _kit.present[&"arm_l"] and _kit.charges(2) == 1)
@@ -195,84 +195,43 @@ func _run() -> void:
 		t_imp += DT
 	_check("parti à la frame d'impact", t_imp > 0.05 and t_imp < 0.5, str(t_imp))
 	_check("charge restante : sort prêt", _near(_player.spells._remaining[2], 0.0))
+	_sim(0.3)
+	var pil := _limb(&"arm_l")
+	_check("en vol (lob)", pil != null and pil.phase == TocsinLimb.Phase.FLY)
 	_sim(0.5)
-	_check("180 % au passage", a1.taken.size() == 1 and _near(a1.taken[0], TocsinKit.ARM_COEF * BASE), str(a1.taken))
-	_check("deuxième cible accrochée", a2.taken.size() == 1 and _kit.is_captured(a2))
-	_check("hors couloir intact", far.taken.is_empty())
-	_sim(0.8)
-	var arm := _limb(&"arm_l")
-	_check("pince plantée", arm != null and arm.phase == TocsinLimb.Phase.CLAMP, str(arm.phase if arm else -1))
-	var drop := Vector2(2.0 * U, 0)
-	_check("paquet déposé 2 u devant", arm != null and arm.global_position.distance_to(drop) < 8.0, str(arm.global_position if arm else Vector2.ZERO))
-	_check("prisonniers tenus sur 1 u", a1.global_position.distance_to(drop) <= U and a2.global_position.distance_to(drop) <= U,
-			"%s %s" % [a1.global_position, a2.global_position])
-	a1.global_position += Vector2(200, 0) # le monde tente de le déplacer
-	_sim(DT)
-	_check("emprisonné : la position est tenue", a1.global_position.distance_to(drop) <= U)
+	pil = _limb(&"arm_l")
+	_check("planté au point visé (5 u)", pil != null and pil.phase == TocsinLimb.Phase.PILLAR and _near(pil.global_position.x, 5.0 * U, 6.0))
+	_check("premier tick à la pose", a1.taken.size() == 1 and _near(a1.taken[0], TocsinKit.PILLAR_COEF * BASE), str(a1.taken))
+	_check("hors zone intact", far.taken.is_empty())
+	_sim(1.0)
+	_check("ticks réguliers (0,5 s)", a1.taken.size() >= 3 and a1.taken.size() <= 4, str(a1.taken.size()))
+	_check("ralentissement de décharge", a2.statuses.has(&"slow"))
 	_check("second bras : dernière charge", _player.spells.cast(2))
 	_sim(0.3)
 	_check("0 charge : recharge affichée (8 s - écoulé)", _player.spells._remaining[2] > 5.0 and _player.spells._remaining[2] < 8.0, str(_player.spells._remaining[2]))
-	_check("sans bras : jambes bloquées", _player.spells.is_slot_blocked(3) and not _player.spells.cast(3))
-	_check("sans bras : vitesse inchangée (4,0)", _near(_player.move_speed(), 4.0 * U))
-	_sim(2.6)
-	_check("fin de pince : prisonnier libéré", not _kit.is_captured(a1))
-	arm = _limb(&"arm_l")
-	_check("bras au sol", arm != null and arm.phase == TocsinLimb.Phase.GROUND and arm.pickup != null)
-	if arm != null and arm.pickup != null:
-		var rl_before := float(_kit.recharge_left[2])
-		_player.global_position = arm.global_position
-		arm.pickup._t = TocsinKit.PICKUP_DELAY_S # délai de pose écoulé
-		arm.pickup.step(DT)
-		_sim(DT)
-		_check("ramassé : recharge restante x0,5 (23/10), pas de charge immédiate", _near(float(_kit.recharge_left[2]), rl_before * TocsinKit.PICKUP_CD_REFUND, 0.1) and not _kit.present[&"arm_l"], "%s -> %s" % [rl_before, _kit.recharge_left[2]])
-	_player.global_position = Vector2.ZERO
+	_check("deux bras lancés : vitesse inchangée (4,0)", _near(_player.move_speed(), 4.0 * U))
+	_check("sort 3 jamais bloqué", not _player.spells.is_slot_blocked(3))
 	_sim(16.0)
-	_check("recharge : les bras reviennent d'eux-mêmes", _kit.present[&"arm_r"] and _kit.present[&"arm_l"] and _limb(&"arm_r") == null)
+	_check("recharge : les bras reviennent d'eux-mêmes", _kit.present[&"arm_r"] and _kit.present[&"arm_l"])
 	_player.spells.aim_override = null
 
-	print("Sort 3 : Coups de botte")
+	print("Sort 3 : Coup de tocsin")
 	_reset()
-	var l1 := _fake(Vector2(2.0 * U, 0))
-	_player.spells.aim_override = Vector2(10 * U, 0)
-	_check("jambe lancée", _player.spells.cast(3))
-	_check("anim throw_leg_l", _player.action_base() == &"throw_leg_l", String(_player.action_base()))
-	_sim(0.7)
-	_check("300 %", l1.taken.size() == 1 and _near(l1.taken[0], 3.0 * BASE), str(l1.taken))
-	var leg := _limb(&"leg_l")
-	_check("jambe au sol au bout du couloir (5 u)", leg != null and leg.phase == TocsinLimb.Phase.GROUND and _near(leg.global_position.x, 5.0 * U, 6.0),
-			str(leg.global_position if leg else Vector2.ZERO))
-	_check("cloche-pied : 2,0 u/s", _kit.locomotion() == &"hop" and _near(_player.move_speed(), 2.0 * U))
-	_check("roulade 1,5 u", _near(_kit.dodge_distance_u(), 1.5))
-	_player.is_moving = true
-	var hop := _kit.visual_anim(&"run_s")
-	_check("anim hop_r (jambe droite restante)", not layered or String(hop).begins_with("hop_r"), String(hop))
-	_player.is_moving = false
-	_check("deuxième jambe", _player.spells.cast(3))
-	_sim(0.3)
-	_check("2 bras 0 jambe : marche sur les mains 2,4 u/s", _kit.locomotion() == &"handwalk" and _near(_player.move_speed(), 2.4 * U))
-	_check("transition fall jouée", not layered or String(_kit.visual_anim(&"idle_s")).begins_with("fall") or _kit._fall_left == 0.0)
-	_kit.present[&"arm_l"] = false
-	_kit._refresh_state()
-	_check("1 bras : rampe 1,4 u/s, hitbox 0,45", _kit.locomotion() == &"crawl" and _near(_player.move_speed(), 1.4 * U) and _near(shape.radius, 24.0 * 0.9))
-	_kit.present[&"arm_r"] = false
-	_kit._refresh_state()
-	_check("tonneau 2,0 u/s, roulade 2 u", _kit.locomotion() == &"roll" and _near(_player.move_speed(), 2.0 * U) and _near(_kit.dodge_distance_u(), 2.0))
-	_check("tonneau : anim roll", not layered or String(_kit.visual_anim(&"idle_s")).begins_with("roll"), String(_kit.visual_anim(&"idle_s")))
-	_check("Surchauffe à 4 membres : +48 %", _near(Balance.attack_interval(_kit._spell_of(1).base_cooldown, 0.0), 0.6 / 1.48, 0.001))
-	_player.spells.aim_override = null
+	var t1 := _fake(Vector2(2.0 * U, 0))
+	var t2 := _fake(Vector2(0, 2.5 * U))
+	var t3 := _fake(Vector2(4.0 * U, 0))
+	_check("coup lancé", _player.spells.cast(3))
+	_check("coef 2,5 dans 3 u", t1.taken.size() == 1 and _near(t1.taken[0], TocsinKit.TOLL_COEF * BASE) and t2.taken.size() == 1, str(t1.taken))
+	_check("hors de 3 u : rien", t3.taken.is_empty())
+	_check("recharge 7 s", _near(_player.spells._remaining[3], 7.0, 0.1), str(_player.spells._remaining[3]))
+	_check("aucun membre perdu, vitesse 4,0", _kit.absent_count() == 0 and _near(_player.move_speed(), 4.0 * U))
 
-	print("Sort 4 : Tête-cloche et explosion confinée")
+	print("Sort 4 : Tête-cloche")
 	_reset()
 	var free_t := _fake(Vector2(4.0 * U, 1.0 * U))
-	var pris := _fake(Vector2(3.0 * U, 0))
-	_player.spells.aim_override = Vector2(10 * U, 0)
-	_player.spells.cast(2) # bras : emprisonne `pris`
-	_sim(1.3)
-	_check("prisonnier en place", _kit.is_captured(pris))
-	_player.spells.aim_override = Vector2(2.0 * U, 0) # la tête vise le paquet
-	var before_p := pris.total()
+	_player.spells.aim_override = Vector2(4.0 * U, 0)
 	var before_f := free_t.total()
-	_check("tête lancée (sans bras requis)", _player.spells.cast(4))
+	_check("tête lancée", _player.spells.cast(4))
 	_check("anim throw_head", _player.action_base() == &"throw_head")
 	var t_head := 0.0
 	while _limb(&"head") == null and t_head < 1.0:
@@ -288,9 +247,7 @@ func _run() -> void:
 	_sim(0.75)
 	_check("tintement avant l'explosion", head != null and is_instance_valid(head) and head.phase == TocsinLimb.Phase.RING)
 	_sim(0.4)
-	_check("1 200 % sur une cible libre", _near(free_t.total() - before_f, TocsinKit.HEAD_COEF * BASE), str(free_t.taken))
-	_check("+50 % sur l'emprisonné (1 800 %)", _near(pris.total() - before_p, TocsinKit.HEAD_COEF * (1.0 + TocsinKit.HEAD_PRISONER_BONUS) * BASE), str(pris.taken))
-	_check("prisonnier libéré par l'explosion", not _kit.is_captured(pris))
+	_check("1 000 % sur une cible", _near(free_t.total() - before_f, TocsinKit.HEAD_COEF * BASE), str(free_t.taken))
 	_check("tête jamais ramassable", _limb(&"head") == null)
 	_check("recharge 22 s", _player.spells._remaining[4] > 20.0, str(_player.spells._remaining[4]))
 	_sim(21.0)
@@ -300,13 +257,13 @@ func _run() -> void:
 	_reset()
 	_player.spells.aim_override = Vector2(10 * U, 0)
 	_player.spells.cast(2)
-	_player.spells.cast(3)
+	_player.spells.cast(2)
 	_sim(0.6)
 	Events.floor_started.emit(2)
 	_check("changement d'étage : membres régénérés", _kit.absent_count() == 0 and _kit.limbs.is_empty())
 	await get_tree().process_frame
 	_check("aucun membre libéré gardé dans `limbs`", _kit.limbs.values().all(func(l): return is_instance_valid(l)))
-	_check("recharges remises à zéro", _near(_player.spells._remaining[2], 0.0) and _near(_player.spells._remaining[3], 0.0))
+	_check("recharges remises à zéro", _near(_player.spells._remaining[2], 0.0))
 	_player.spells.aim_override = null
 
 	print("Socle commun : charges, ressource, sauvegarde")
@@ -317,7 +274,7 @@ func _run() -> void:
 	var cd2: Dictionary = _player.get_spell_cooldowns().filter(func(c): return c.slot == 2)[0]
 	_check("pastilles de charges du bouton (bras : 1/2)", cd2["charges"] == Vector2i(1, 2), str(cd2["charges"]))
 	var res := _kit.resource_state()
-	_check("ressource KitResource : 4/5 membres", res["id"] == &"limbs" and res["pips"] == 5 and res["filled"] == 4)
+	_check("ressource KitResource : 2/3 membres lancés présents", res["id"] == &"limbs" and res["pips"] == 3 and res["filled"] == 2)
 	var st := _kit.save_state()
 	var rl := float(_kit.recharge_left[2])
 	_kit.regen_all()
@@ -328,15 +285,10 @@ func _run() -> void:
 	_check("reprise : le bras repousse", _kit.present[&"arm_l"])
 	_player.spells.aim_override = null
 
-	print("Équilibrage 22/10 : auto-cast (un bras gardé pour les bottes)")
+	print("Auto-cast et jambes (23/10/2026)")
 	_reset()
-	_check("tous membres : bras permis", _kit.auto_cast_ok(2) and _kit.auto_cast_ok(3))
-	_kit.present[&"arm_l"] = false
-	_check("dernier bras gardé tant qu'une jambe est là", not _kit.auto_cast_ok(2))
-	_kit.present[&"leg_l"] = false
-	_check("une botte à la fois", not _kit.auto_cast_ok(3))
-	_kit.present[&"leg_r"] = false
-	_check("sans jambe : le dernier bras peut partir", _kit.auto_cast_ok(2))
+	_check("auto-cast : jamais retenu", _kit.auto_cast_ok(2) and _kit.auto_cast_ok(3) and _kit.auto_cast_ok(4))
+	_check("jambes toujours là, locomotion marche", _kit.legs() == 2 and _kit.locomotion() == &"walk")
 	_check("rivets perforants", _player.character.spells[0].pierce == TocsinKit.RIVET_PIERCE)
 	_reset()
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)

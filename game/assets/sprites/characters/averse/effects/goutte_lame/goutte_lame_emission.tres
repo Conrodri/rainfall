@@ -4,19 +4,23 @@
 
 [sub_resource type="AtlasTexture" id="a0_0"]
 atlas = ExtResource("1")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 110, 26)
+margin = Rect2(2, 42, 18, 102)
 
 [sub_resource type="AtlasTexture" id="a0_1"]
 atlas = ExtResource("1")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(110, 0, 110, 26)
+margin = Rect2(2, 42, 18, 102)
 
 [sub_resource type="AtlasTexture" id="a0_2"]
 atlas = ExtResource("1")
-region = Rect2(256, 0, 128, 128)
+region = Rect2(220, 0, 110, 26)
+margin = Rect2(2, 42, 18, 102)
 
 [sub_resource type="AtlasTexture" id="a0_3"]
 atlas = ExtResource("1")
-region = Rect2(384, 0, 128, 128)
+region = Rect2(330, 0, 110, 26)
+margin = Rect2(2, 42, 18, 102)
 
 [resource]
 animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a0_0")}, {"duration": 1.0, "texture": SubResource("a0_1")}, {"duration": 1.0, "texture": SubResource("a0_2")}, {"duration": 1.0, "texture": SubResource("a0_3")}], "loop": true, "name": &"default", "speed": 12.0}]

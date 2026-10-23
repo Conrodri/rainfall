@@ -24,7 +24,9 @@ const MODE_Y := 880.0
 const MODE_SIZE := Vector2(290, 96)
 const MODE_GAP := 16.0
 const BACK_SIZE := Vector2(240, 96)
-const START_SIZE := Vector2(600, 120)
+const START_SIZE := Vector2(600, 96) ## même hauteur que Retour et les modes (cible tactile ≥ 88 px)
+const BAR_GAP := 24.0 ## entre Retour, le groupe des modes et Commencer
+const LEGEND_H := 52.0 ## légende des modes (2 lignes à 20 px) ; 72 en tactile (26 px)
 
 ## Profil (autoload `Profile` par défaut ; un objet factice peut être injecté avant _ready).
 var profile: Object
@@ -72,7 +74,9 @@ func _ready() -> void:
 	_wire_focus()
 	var plat := get_node_or_null("/root/Platform")
 	if plat != null and plat.has_signal("input_mode_changed"):
-		plat.input_mode_changed.connect(func(_m: int) -> void: _apply_focus_for_mode())
+		plat.input_mode_changed.connect(func(_m: int) -> void:
+			_layout()
+			_apply_focus_for_mode())
 	_apply_focus_for_mode()
 	CharacterCard.play_ui(&"ui.hover", -4.0, 1.15)
 
@@ -185,7 +189,11 @@ func _layout() -> void:
 	_banner.size = BANNER_SIZE
 	_banner.size = Vector2(BANNER_SIZE.x, maxf(_banner.size.y, 1.0))
 	var bottom: float = vs.y - m.bottom
-	var mode_y := minf(880.0, bottom - MODE_SIZE.y - 30.0)
+	# Barre du bas : Retour, modes et Commencer sur UNE rangée (même hauteur, mêmes écarts) ; les légendes des modes
+	# sont dessous. Retour et Commencer se centrent verticalement sur les boutons de mode.
+	var touch := _touch_mode()
+	var legend_h := 72.0 if touch else LEGEND_H
+	var mode_y := bottom - MODE_SIZE.y - legend_h - 4.0
 	var main_y := maxf(MAIN_Y, _banner.position.y + _banner.size.y + 16.0)
 	var main_h := mode_y - 16.0 - main_y
 	var avail_w: float = vs.x - m.left - m.right
@@ -220,24 +228,28 @@ func _layout() -> void:
 	sheet.custom_minimum_size = Vector2(avail_w, 0)
 	sheet.allotted_h = main_h
 	sheet.visible = detail_open
-	back_button.position = Vector2(m.left, bottom - BACK_SIZE.y)
-	# Barre du bas adaptative : Retour | 3 modes | Commencer, rétrécie si la zone sûre est étroite.
-	var avail: float = vs.x - m.left - m.right - BACK_SIZE.x - 48.0
+	back_button.position = Vector2(m.left, mode_y)
+	# Largeurs adaptatives si la zone sûre est étroite ; le groupe des modes est centré entre Retour et Commencer.
+	var avail: float = vs.x - m.left - m.right - BACK_SIZE.x - 2.0 * BAR_GAP
 	var start_w := clampf(avail - 3 * MODE_SIZE.x - 2 * MODE_GAP, 420.0, START_SIZE.x)
 	var mode_w := clampf((avail - start_w - 2 * MODE_GAP) / 3.0, 200.0, MODE_SIZE.x)
-	var mx: float = m.left + BACK_SIZE.x + 24
+	var group_w := 3.0 * mode_w + 2.0 * MODE_GAP
+	var free_x0: float = m.left + BACK_SIZE.x + BAR_GAP
+	var free_x1: float = vs.x - m.right - start_w - BAR_GAP
+	var mx := free_x0 + maxf((free_x1 - free_x0 - group_w) * 0.5, 0.0)
 	for i in MODES.size():
 		var b: Button = mode_buttons[MODES[i]]
 		b.custom_minimum_size = Vector2(mode_w, MODE_SIZE.y)
 		b.size = b.custom_minimum_size
 		b.position = Vector2(mx + i * (mode_w + MODE_GAP), mode_y)
 		var l: Label = mode_labels[MODES[i]]
-		l.size = Vector2(mode_w + MODE_GAP, 56)
+		l.add_theme_font_size_override("font_size", 26 if touch else 20)
+		l.size = Vector2(mode_w + MODE_GAP, legend_h)
 		l.position = Vector2(b.position.x - MODE_GAP * 0.5, mode_y + MODE_SIZE.y + 4)
 	start_button.custom_minimum_size = Vector2(start_w, START_SIZE.y)
 	start_button.size = start_button.custom_minimum_size
-	start_button.position = Vector2(vs.x - m.right - start_w, bottom - START_SIZE.y)
-	start_reason.position = Vector2(start_button.position.x, start_button.position.y - 36)
+	start_button.position = Vector2(vs.x - m.right - start_w, mode_y)
+	start_reason.position = Vector2(start_button.position.x, start_button.position.y + START_SIZE.y + 4)
 	start_reason.size = Vector2(start_w, 32)
 
 
@@ -290,9 +302,11 @@ func open_sheet_for(i: int, animate := true) -> void:
 	UiTheme.hook_sounds(sheet)
 	_wire_focus()
 	if not _touch_mode():
-		var first: Control = sheet.passive_button
-		if first == null and not sheet.focus_rows().is_empty():
+		var first: Control = null # 1er sort (le passif ouvrirait son infobulle sur le modèle dès l'arrivée)
+		if not sheet.focus_rows().is_empty():
 			first = sheet.focus_rows()[0][0]
+		if first == null:
+			first = sheet.passive_button
 		if first == null:
 			first = back_button
 		first.grab_focus.call_deferred()

@@ -1,12 +1,12 @@
 class_name CharacterSheet
 extends PanelContainer
 ## Fiche d'un personnage en gros plan (Nouvelle run, refonte du 23/10/2026) : AUCUN défilement.
-## Tiers gauche : le modèle animé en grand (scène d'aperçu : au clic sur un sort, son animation d'action et son VFX
-## sont joués sans ennemi ni dégâts) puis la description complète du sort survolé / choisi.
-## Deux tiers droits : nom, style et difficulté ; le passif (icône + résumé, infobulle complète) ; les 4 sorts en
-## grille 2×2 (icône, nom, rôle, description courte, chiffres, dégâts au niveau 1 et par niveau ; variantes choisies
-## en dessous de l'icône). Le détail complet est dans le panneau de gauche et dans l'infobulle (survol, focus
-## manette, appui long), jamais derrière un défilement.
+## Tiers gauche : le modèle animé en grand sur un fond sobre (halo de l'accent du personnage ; scène d'aperçu : au
+## clic sur un sort, son animation d'action et son VFX sont joués sans ennemi ni dégâts).
+## Deux tiers droits : en-tête (nom, style, difficulté en losanges, passif à droite), les 4 sorts en grille 2×2
+## (icône, nom, rôle, chiffres discrets, dégâts « Niv. 1 : X · +Y/niv. » ; variantes sous le texte), puis UNE seule
+## zone de détail (nom, type, description complète du sort survolé / choisi). Les infobulles (passif, variantes) sont
+## ancrées sur le tiers gauche : elles ne masquent jamais la grille. Jamais de défilement.
 ## Placeholder : icône de variante manquante = icône du sort de base désaturée (§7).
 
 signal option_chosen(slot: int, spell_id: StringName)
@@ -25,8 +25,8 @@ const COL_BODY := Color(0.9, 0.9, 0.93)
 const COL_DIM := Color(0.62, 0.64, 0.68)
 ## Cadrage générique de l'aperçu animé : part de la hauteur de la scène remplie par le personnage, marge sous les
 ## pieds (fractions de la hauteur), largeur maximale. Aucune valeur par personnage.
-const PREVIEW_FILL := 0.8
-const PREVIEW_FOOT_MARGIN := 0.09
+const PREVIEW_FILL := 0.86
+const PREVIEW_FOOT_MARGIN := 0.07
 const PREVIEW_MAX_WIDTH := 0.96
 const IDLE_ANIMS: Array[StringName] = [&"idle_s", &"idle_se", &"idle"]
 ## Anims d'action essayées (dans l'ordre, suffixe de direction `_s` / `_se` ou nue) pour l'aperçu d'un sort, par slot.
@@ -72,6 +72,10 @@ var _detail_name: Label
 var _detail_tag: Label
 var _detail_desc: Label
 var _detail_stats: Label
+var _detail_dmg: Label
+var _head_row: HBoxContainer
+var _glow: TextureRect
+var _floor: TextureRect
 var _passive_labels: Array[Label] = []
 var _spell_data: Dictionary = {} ## id -> SpellData
 var _press_token := 0
@@ -84,9 +88,11 @@ var _slim := false ## dernier recours : chiffres des cases masqués (ils restent
 var _compact := false
 var _shrink_desc := false ## dernier recours du fit : descriptions de cases sur une seule ligne
 const TEXT_SCALES: Array[float] = [1.0, 0.94, 0.88, 0.82]
-const ROW_FONTS := {"name": 28, "role": 24, "desc": 20, "stats": 20, "dmg": 20}
-const DETAIL_FONTS := {"name": 30, "tag": 20, "desc": 20, "stats": 20}
-const PASSIVE_FONTS := {"name": 28, "text": 20}
+const ROW_FONTS := {"name": 28, "role": 24, "desc": 20, "stats": 20, "dmg": 22}
+const DETAIL_FONTS := {"name": 32, "tag": 22, "desc": 22, "stats": 20, "dmg": 22}
+const PASSIVE_FONTS := {"name": 26, "text": 20}
+const COL_DMG := Color("#9BE29B")
+const COL_STATS := Color(0.72, 0.74, 0.8)
 
 
 func _init() -> void:
@@ -178,29 +184,34 @@ static func _font_floor() -> int:
 # --- Construction ------------------------------------------------------------
 
 func _build_identity() -> void:
-	# Colonne gauche : scène d'aperçu (grande), puis, si le kit est ouvert, le détail du sort (_build_kit).
+	# Tiers gauche : le modèle seul, en grand, sur un fond sombre sobre (aucune boîte) avec un halo de l'accent.
 	var left := VBoxContainer.new()
 	left.name = "Left"
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left.size_flags_stretch_ratio = 1.0 if (size.x >= 1700.0 or not _big_text()) else 1.5 # tactile en 4:3 : détail plus large
-	left.add_theme_constant_override("separation", 10)
+	left.size_flags_stretch_ratio = 1.0
 	_root.add_child(left)
-	var stage := Panel.new()
+	var acc := CharacterCard.accent_color(character)
+	var stage := Control.new()
 	stage.name = "PreviewStage"
 	stage.custom_minimum_size = Vector2(160, 200)
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stage.clip_contents = true
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var acc := CharacterCard.accent_color(character)
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.06, 0.05, 0.08, 0.85)
-	bg.set_corner_radius_all(18)
-	# Liseré de l'accent du personnage (un seul accent émissif par personnage).
-	bg.border_color = COL_DIM.darkened(0.4) if locked else Color(acc, 0.85)
-	bg.set_border_width_all(2)
-	bg.shadow_color = Color(acc, 0.0 if locked else 0.3)
-	bg.shadow_size = 10
-	stage.add_theme_stylebox_override("panel", bg)
+	var bg := Panel.new()
+	bg.name = "Backdrop"
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var bgs := StyleBoxFlat.new()
+	bgs.bg_color = Color(0.035, 0.03, 0.045, 0.62)
+	bgs.set_corner_radius_all(20)
+	bg.add_theme_stylebox_override("panel", bgs)
+	stage.add_child(bg)
+	_glow = _blob(Color(COL_DIM if locked else acc, 0.1 if locked else 0.2))
+	_glow.name = "Glow"
+	stage.add_child(_glow)
+	_floor = _blob(Color(0.0, 0.0, 0.0, 0.6))
+	_floor.name = "FloorShadow"
+	stage.add_child(_floor)
 	left.add_child(stage)
 	preview_stage = stage
 	preview = null
@@ -215,52 +226,88 @@ func _build_identity() -> void:
 		preview.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		if locked:
 			preview.material = CharacterCard.grayscale_material(0.4)
+		else:
+			preview.modulate = Color(1.3, 1.25, 1.2) # modèle éclairé : les rendus bruts sont sombres sur ce fond
 		stage.add_child(preview)
 		preview.play(anim)
-		stage.resized.connect(_frame_preview)
-		_frame_preview()
 	else:
 		var q := CharacterCard.make_label("?", 90, COL_DIM)
 		q.set_anchors_preset(Control.PRESET_FULL_RECT)
 		q.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		q.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		stage.add_child(q)
+	stage.resized.connect(_frame_preview)
+	_frame_preview()
 	_fx = Node2D.new()
 	_fx.name = "Fx"
 	stage.add_child(_fx)
-	# Colonne droite : en-tête (nom, style, difficulté), puis passif et sorts (_build_kit) ou message verrouillé.
+	# Deux tiers droits : en-tête (nom, style, difficulté + passif), puis sorts et détail (_build_kit) ou message verrouillé.
 	_right = VBoxContainer.new()
 	_right.name = "Right"
 	_right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_right.size_flags_stretch_ratio = 2.0
 	_right.add_theme_constant_override("separation", 10)
 	_root.add_child(_right)
+	_head_row = HBoxContainer.new()
+	_head_row.name = "HeadRow"
+	_head_row.add_theme_constant_override("separation", 24)
+	_right.add_child(_head_row)
 	var head := VBoxContainer.new()
-	head.add_theme_constant_override("separation", 0)
-	_right.add_child(head)
-	var nm := CharacterCard.make_label(String(character.get("name", "?")), 46, COL_DIM if locked else CharacterCard.COL_TEXT)
+	head.name = "Head"
+	head.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_theme_constant_override("separation", 2)
+	_head_row.add_child(head)
+	var name_row := HFlowContainer.new() # nom puis difficulté ; la difficulté passe dessous si la place manque
+	name_row.name = "NameRow"
+	name_row.add_theme_constant_override("h_separation", 24)
+	name_row.add_theme_constant_override("v_separation", 0)
+	name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	head.add_child(name_row)
+	var nm := CharacterCard.make_label(String(character.get("name", "?")), maxi(46, _font_floor()), COL_DIM if locked else CharacterCard.COL_TEXT)
 	nm.name = "Name"
 	nm.add_theme_font_override("font", UiTheme.title_font())
-	head.add_child(nm)
+	name_row.add_child(nm)
 	var title := String(character.get("title", ""))
 	var style := String(character.get("style", ""))
 	var sub_txt := ("%s · %s" % [title, style]) if title != "" else style
 	var cfg_txt := String(character.get("config", ""))
 	if cfg_txt != "":
 		sub_txt += " · " + cfg_txt
-	var sub := CharacterCard.make_label(sub_txt, 22, COL_DIM if locked else acc.lerp(CharacterCard.COL_TEXT, 0.35), 4)
+	var sub := CharacterCard.make_label(sub_txt, _font(22, 1.0), COL_DIM if locked else acc.lerp(CharacterCard.COL_TEXT, 0.35), 4)
 	sub.name = "Subtitle"
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sub.custom_minimum_size = Vector2(120, 0)
 	head.add_child(sub)
 	var lvl := CharacterCard.difficulty_of(character)
 	if lvl > 0:
+		# Même badge que sur la carte de la liste : 3 losanges pleins jusqu'au niveau + libellé coloré.
 		var drow := HBoxContainer.new()
 		drow.name = "DifficultyRow"
-		drow.add_theme_constant_override("separation", 10)
+		drow.add_theme_constant_override("separation", 12)
 		drow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		drow.add_child(CharacterCard.make_label("Difficulté", 22, COL_DIM, 4))
-		drow.add_child(CharacterCard.make_difficulty_badge(lvl, 20.0, true, 22))
-		head.add_child(drow)
+		drow.size_flags_vertical = Control.SIZE_SHRINK_END
+		drow.add_child(CharacterCard.make_difficulty_badge(lvl, 28.0, true, _font(24, 1.0)))
+		name_row.add_child(drow)
+
+
+## Tache radiale douce (halo, ombre au sol) : dégradé de `col` vers transparent, étirée sur son rectangle.
+static func _blob(col: Color) -> TextureRect:
+	var g := Gradient.new()
+	g.colors = PackedColorArray([col, Color(col, col.a * 0.5), Color(col, col.a * 0.15), Color(col, 0.0)]) # chute douce, sans bord visible
+	g.offsets = PackedFloat32Array([0.0, 0.25, 0.6, 1.0])
+	var t := GradientTexture2D.new()
+	t.gradient = g
+	t.width = 256
+	t.height = 256
+	t.fill = GradientTexture2D.FILL_RADIAL
+	t.fill_from = Vector2(0.5, 0.5)
+	t.fill_to = Vector2(1.0, 0.5)
+	var r := TextureRect.new()
+	r.texture = t
+	r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	r.stretch_mode = TextureRect.STRETCH_SCALE
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
 
 
 # --- Cadrage de l'aperçu ----------------------------------------------------------
@@ -346,11 +393,19 @@ static func fit_transform(content: Rect2, frame_size: Vector2, box: Vector2) -> 
 
 
 func _frame_preview() -> void:
-	if preview == null or preview_stage == null or preview.sprite_frames == null:
+	if preview_stage == null:
 		return
 	var box := preview_stage.size
 	if box.x < 2.0 or box.y < 2.0:
 		box = preview_stage.custom_minimum_size
+	if _glow != null and is_instance_valid(_glow):
+		_glow.size = Vector2(box.x * 1.0, box.y * 0.95)
+		_glow.position = Vector2(box.x * 0.5 - _glow.size.x * 0.5, box.y * 0.56 - _glow.size.y * 0.5)
+	if _floor != null and is_instance_valid(_floor):
+		_floor.size = Vector2(box.x * 0.8, box.y * 0.12)
+		_floor.position = Vector2(box.x * 0.5 - _floor.size.x * 0.5, box.y * (1.0 - PREVIEW_FOOT_MARGIN) - _floor.size.y * 0.5)
+	if preview == null or preview.sprite_frames == null:
+		return
 	var anim := preview.animation
 	var tex := preview.sprite_frames.get_frame_texture(anim, 0)
 	if tex == null:
@@ -401,7 +456,6 @@ func _build_kit() -> void:
 		_right.add_child(l)
 		return
 	_build_passive()
-	_build_detail()
 	_grid = GridContainer.new()
 	_grid.name = "Spells"
 	_grid.columns = 2
@@ -429,24 +483,31 @@ func _build_kit() -> void:
 			chosen[slot] = saved[slot]
 			_refresh_row(r)
 	if not show_variants and variant_count > 0:
-		var note := CharacterCard.make_label("%d variante%s de sorts à débloquer en jouant" % [variant_count, "s" if variant_count > 1 else ""], CharacterCard.MIN_FONT, COL_DIM, 4)
+		# Rappel sous le modèle (le tiers gauche a de la place ; la colonne droite est comptée au pixel).
+		var note := CharacterCard.make_label("%d variante%s de sorts à débloquer en jouant" % [variant_count, "s" if variant_count > 1 else ""], _font_floor(), COL_DIM, 4)
 		note.name = "VariantsNote"
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_right.add_child(note)
+		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		note.custom_minimum_size = Vector2(120, 0)
+		(_root.get_node("Left") as VBoxContainer).add_child(note)
+	_build_detail()
 	_show_detail(1, _option_for_slot(1))
 
 
-## Passif du personnage : icône (bouton focusable) + résumé ; infobulle complète au survol / focus / appui long.
+## Passif du personnage, à droite de l'en-tête : icône (bouton focusable, même taille et même style qu'une icône de
+## sort) + résumé ; infobulle complète (ancrée sur le tiers gauche) au survol / focus / appui long.
 func _build_passive() -> void:
 	var info: Dictionary = PASSIVE_BADGE.info_for(StringName(String(character.get("id", ""))))
-	if info.is_empty():
+	if info.is_empty() or _head_row == null:
 		return
 	var box := PanelContainer.new()
 	box.name = "Passive"
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.size_flags_stretch_ratio = 1.5
+	box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	box.add_theme_stylebox_override("panel", _cell_box(false))
 	var h := HBoxContainer.new()
-	h.add_theme_constant_override("separation", 14)
+	h.add_theme_constant_override("separation", 12)
 	box.add_child(h)
 	var b := Button.new()
 	b.name = "PassiveButton"
@@ -454,7 +515,16 @@ func _build_passive() -> void:
 	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	b.focus_mode = Control.FOCUS_ALL
 	b.add_theme_stylebox_override("focus", CharacterCard.focus_box())
-	var sb := CharacterCard.panel_box(Color("#1a1620"), Color(CharacterCard.accent_color(character), 0.9), 2, 0.85, false)
+	var pbox := _cell_box(false)
+	if pbox is StyleBoxTexture:
+		pbox.content_margin_top = 14.0
+		pbox.content_margin_bottom = 14.0
+	box.add_theme_stylebox_override("panel", pbox)
+	var sb := CharacterCard.panel_box(Color("#1a1620"), Color(0.35, 0.38, 0.45), 1, 0.8, false) # = icône de sort non choisie
+	sb.content_margin_left = 4
+	sb.content_margin_right = 4
+	sb.content_margin_top = 4
+	sb.content_margin_bottom = 4
 	for st in ["normal", "hover", "pressed", "disabled"]:
 		b.add_theme_stylebox_override(st, sb)
 	var tex: Texture2D = PASSIVE_BADGE.icon_for(info)
@@ -470,6 +540,9 @@ func _build_passive() -> void:
 	else: # placeholder en code : initiale du passif (remplacée par l'icône Codex)
 		b.text = String(info.get("name", "?")).substr(0, 1).to_upper()
 		b.add_theme_font_size_override("font_size", 44)
+		var ac := CharacterCard.accent_color(character)
+		for cn in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+			b.add_theme_color_override(cn, ac)
 	b.pressed.connect(_show_passive_tip.bind(b))
 	b.focus_entered.connect(_show_passive_tip.bind(b))
 	b.mouse_entered.connect(_show_passive_tip.bind(b))
@@ -481,52 +554,64 @@ func _build_passive() -> void:
 	passive_button = b
 	var txt := VBoxContainer.new()
 	txt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	txt.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	txt.add_theme_constant_override("separation", 0)
 	h.add_child(txt)
 	var nm := CharacterCard.make_label("Passif · " + String(info.get("name", "")), PASSIVE_FONTS.name, COL_ROLE)
 	nm.name = "PassiveName"
+	nm.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	nm.custom_minimum_size = Vector2(60, 0)
 	txt.add_child(nm)
 	var summary := CharacterCard.make_label(String(info.get("intro", info.get("desc", ""))), PASSIVE_FONTS.text, COL_BODY, 4)
 	summary.name = "PassiveText"
 	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	summary.max_lines_visible = 2
+	summary.max_lines_visible = 3
 	summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	summary.custom_minimum_size = Vector2(120, 0)
+	summary.custom_minimum_size = Vector2(60, 0)
 	txt.add_child(summary)
 	_passive_labels = [nm, summary]
-	_right.add_child(box)
+	_head_row.add_child(box)
 
 
-## Panneau de détail (colonne gauche, sous la scène) : sort survolé / focalisé / joué, description complète.
+## Zone de détail UNIQUE (bas de la colonne droite) : sort survolé / focalisé / joué, description complète.
+## Sa hauteur est réservée pour le plus long texte du kit (_reserve_detail) : rien ne saute au survol.
 func _build_detail() -> void:
-	var left := _root.get_node("Left") as VBoxContainer
 	var box := PanelContainer.new()
 	box.name = "Detail"
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_stylebox_override("panel", _cell_box(false))
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 2)
 	box.add_child(v)
+	var top := HBoxContainer.new()
+	top.add_theme_constant_override("separation", 16)
+	v.add_child(top)
 	_detail_name = CharacterCard.make_label("", DETAIL_FONTS.name, CharacterCard.COL_TEXT)
 	_detail_name.name = "DetailName"
 	_detail_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_name.custom_minimum_size = Vector2(120, 0)
-	v.add_child(_detail_name)
+	_detail_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(_detail_name)
 	_detail_tag = CharacterCard.make_label("", DETAIL_FONTS.tag, COL_ROLE, 4)
 	_detail_tag.name = "DetailTag"
-	_detail_tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_detail_tag.custom_minimum_size = Vector2(120, 0)
-	v.add_child(_detail_tag)
+	_detail_tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(_detail_tag)
 	_detail_desc = CharacterCard.make_label("", DETAIL_FONTS.desc, COL_BODY, 4)
 	_detail_desc.name = "DetailDesc"
 	_detail_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_desc.custom_minimum_size = Vector2(120, 0)
 	v.add_child(_detail_desc)
-	_detail_stats = CharacterCard.make_label("", DETAIL_FONTS.stats, COL_ROLE, 4)
+	_detail_stats = CharacterCard.make_label("", DETAIL_FONTS.stats, COL_STATS, 4)
 	_detail_stats.name = "DetailStats"
 	_detail_stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_stats.custom_minimum_size = Vector2(120, 0)
 	v.add_child(_detail_stats)
-	left.add_child(box)
+	_detail_dmg = CharacterCard.make_label("", DETAIL_FONTS.dmg, COL_DMG, 4)
+	_detail_dmg.name = "DetailDamage"
+	_detail_dmg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_dmg.custom_minimum_size = Vector2(120, 0)
+	v.add_child(_detail_dmg)
+	_right.add_child(box)
 
 
 func _cell_box(selected: bool) -> StyleBox:
@@ -551,23 +636,14 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	var row := {"spell": spell, "buttons": [], "cell": box}
 	var base_id := StringName(spell.get("id", ""))
 	var base_icon := ArdentKit.spell_icon(base_id)
-	# Colonne gauche : sort de base (icône 84) puis, dessous, ses variantes (icônes 52).
-	var left := VBoxContainer.new()
-	left.add_theme_constant_override("separation", 4)
-	left.alignment = BoxContainer.ALIGNMENT_CENTER
-	h.add_child(left)
 	var base_btn := _option_button(ICON_BASE, base_icon, false, null)
 	base_btn.set_meta("slot", slot)
 	base_btn.set_meta("option", spell)
 	base_btn.set_meta("is_base", true)
 	base_btn.name = "Base_" + String(base_id)
-	base_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	left.add_child(base_btn)
+	base_btn.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	h.add_child(base_btn)
 	row.buttons.append(base_btn)
-	var vrow := HBoxContainer.new()
-	vrow.alignment = BoxContainer.ALIGNMENT_CENTER
-	vrow.add_theme_constant_override("separation", 4)
-	left.add_child(vrow)
 
 	var txt := VBoxContainer.new()
 	txt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -576,6 +652,7 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 10)
 	txt.add_child(head)
+	# Hiérarchie : nom + type en haut, chiffres discrets, dégâts en vert ; la description complète est dans la zone de détail.
 	row.name = CharacterCard.make_label("", ROW_FONTS.name)
 	row.name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART # nom long + rôle sur un panneau étroit : retour à la ligne
 	row.name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -586,11 +663,15 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	row.role.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(row.role)
 	row.desc = _short_label(ROW_FONTS.desc, COL_BODY, 2)
+	row.desc.visible = false # description complète = zone de détail (plus de texte tronqué dans les cases)
 	txt.add_child(row.desc)
-	row.stats = _short_label(ROW_FONTS.stats, COL_ROLE, 1)
+	row.stats = _short_label(ROW_FONTS.stats, COL_STATS, 3)
 	txt.add_child(row.stats)
-	row.dmg = _short_label(ROW_FONTS.dmg, Color("#9BE29B"), 1)
+	row.dmg = _short_label(ROW_FONTS.dmg, COL_DMG, 1)
 	txt.add_child(row.dmg)
+	var vrow := HBoxContainer.new()
+	vrow.add_theme_constant_override("separation", 6)
+	txt.add_child(vrow)
 
 	var variants: Array = spell.get("variants", []) if show_variants else []
 	for v in variants:
@@ -696,7 +777,7 @@ func _option_for_slot(slot: int) -> Dictionary:
 	return {}
 
 
-## Panneau de gauche : nom, type, description COMPLÈTE, chiffres et scaling de dégâts de l'option `o` du `slot`.
+## Zone de détail : nom, type, description COMPLÈTE, chiffres et scaling de dégâts de l'option `o` du `slot`.
 func _show_detail(slot: int, o: Dictionary) -> void:
 	if _detail_name == null or o.is_empty():
 		return
@@ -707,16 +788,8 @@ func _show_detail(slot: int, o: Dictionary) -> void:
 	_detail_name.text = String(o.get("name", ""))
 	_detail_tag.text = "Sort %d · %s" % [slot, role] if role != "" else "Sort %d" % slot
 	_detail_desc.text = String(o.get("desc", ""))
-	var lines: Array[String] = []
-	if sd != null:
-		var st := spell_stats_text(sd)
-		if st != "":
-			lines.append(st)
-		var sc := scaling_text(sd, false)
-		if sc != "":
-			lines.append(sc)
-	_detail_stats.text = "\n".join(lines)
-	_detail_stats.visible = not lines.is_empty()
+	_detail_stats.text = "" # chiffres de portée / recharge : déjà dans la case du sort (pas de doublon)
+	_detail_dmg.text = scaling_text(sd, false) if sd != null else ""
 
 
 ## Dégâts d'un sort au niveau 1 et par niveau, depuis le coef du sort et Balance.player_base_damage (même base que le jeu).
@@ -727,8 +800,7 @@ static func scaling_text(sd: SpellData, short: bool) -> String:
 	var per := sd.coef * (Balance.player_base_damage(2) - Balance.player_base_damage(1))
 	if short:
 		return "Niv. 1 : %s · +%s/niv." % [CharacterCard.fmt_num(snappedf(d1, 0.1)), CharacterCard.fmt_num(snappedf(per, 0.1))]
-	return "Dégâts : %s %% du dégât de base (niv. 1 : %s, +%s par niveau) + objets" % [
-		CharacterCard.fmt_num(snappedf(sd.coef * 100.0, 0.1)), CharacterCard.fmt_num(snappedf(d1, 0.1)), CharacterCard.fmt_num(snappedf(per, 0.1))]
+	return "Dégâts : %s %% du dégât de base + bonus d'objets" % CharacterCard.fmt_num(snappedf(sd.coef * 100.0, 0.1))
 
 
 ## Met en avant les cases : bordure du sort `selected_slot`.
@@ -807,11 +879,11 @@ func _show_tip(b: Button) -> void:
 		return
 	var o: Dictionary = b.get_meta("option")
 	if bool(b.get_meta("locked", false)):
-		tooltip.show_for(b, String(o.get("name", "")), "Quête de déblocage", variant_quest(profile, character, b.get_meta("slot"), o))
+		tooltip.show_for(b, String(o.get("name", "")), "Quête de déblocage", variant_quest(profile, character, b.get_meta("slot"), o), _tip_area())
 	else:
 		var slot: int = b.get_meta("slot")
 		var sel: bool = StringName(o.get("id", "")) == chosen.get(slot, &"")
-		tooltip.show_for(b, String(o.get("name", "")), "Sélectionnée pour la run" if sel else "Débloquée · appuyer pour choisir", String(o.get("desc", "")))
+		tooltip.show_for(b, String(o.get("name", "")), "Sélectionnée pour la run" if sel else "Débloquée · appuyer pour choisir", String(o.get("desc", "")), _tip_area())
 
 
 ## Infobulle du passif (survol, focus, appui long) : explication complète, chiffres lus dans le kit.
@@ -819,7 +891,13 @@ func _show_passive_tip(b: Button) -> void:
 	if tooltip == null or not is_instance_valid(b):
 		return
 	var info: Dictionary = b.get_meta("info", {})
-	tooltip.show_for(b, "Passif · " + String(info.get("name", "")), "", String(info.get("desc", "")))
+	tooltip.show_for(b, "Passif · " + String(info.get("name", "")), "", String(info.get("desc", "")), _tip_area())
+
+
+## Zone où poser les infobulles : le tiers gauche (modèle), pour ne jamais masquer la grille des sorts
+## (le contrôle, pas son rectangle : la taille n'est pas encore fixée à l'ouverture de la fiche).
+func _tip_area() -> Control:
+	return preview_stage if preview_stage != null and is_instance_valid(preview_stage) else null
 
 
 func _hide_tip_for(b: Button) -> void:
@@ -992,6 +1070,9 @@ func _fit_text() -> void:
 	if not is_inside_tree():
 		return
 	_fit_key = Vector2(size.x, allotted_h)
+	await get_tree().process_frame # largeurs de libellés connues avant de réserver la hauteur du détail
+	if tok != _fit_token or not is_instance_valid(self):
+		return
 	var steps: Array = []
 	for k in TEXT_SCALES:
 		steps.append([k, false, false])
@@ -1004,6 +1085,7 @@ func _fit_text() -> void:
 		_set_compact(st[2])
 		_set_slim(st.size() > 3 and st[3])
 		_apply_text_scale(st[0])
+		_reserve_detail()
 		await get_tree().process_frame
 		await get_tree().process_frame
 		if tok != _fit_token or not is_instance_valid(self):
@@ -1012,10 +1094,58 @@ func _fit_text() -> void:
 			return
 
 
+## Réserve la hauteur du plus long texte de détail du kit (toutes les options : base et variantes), à la largeur
+## courante : changer de sort ne fait ni sauter ni déborder la fiche.
+func _reserve_detail() -> void:
+	if _detail_desc == null:
+		return
+	var w := _detail_desc.size.x
+	if w < 80.0:
+		w = maxf(size.x * 0.5, 240.0)
+	var hd := 0.0
+	var hs := 0.0
+	var hg := 0.0
+	for r in _rows:
+		for b in r.buttons:
+			var o: Dictionary = b.get_meta("option")
+			var sd: SpellData = _spell_data.get(StringName(o.get("id", "")))
+			hd = maxf(hd, _text_h(_detail_desc, String(o.get("desc", "")), w))
+			if sd != null:
+				hg = maxf(hg, _text_h(_detail_dmg, scaling_text(sd, false), w))
+	_detail_desc.custom_minimum_size.y = hd
+	_detail_stats.custom_minimum_size.y = hs
+	_detail_stats.visible = hs > 0.0
+	_detail_dmg.custom_minimum_size.y = hg
+	_detail_dmg.visible = hg > 0.0
+
+
+static func _text_h(l: Label, t: String, w: float) -> float:
+	if t == "":
+		return 0.0
+	var f := l.get_theme_font(&"font")
+	var fs := l.get_theme_font_size(&"font_size")
+	return f.get_multiline_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, w, fs, -1, TextServer.BREAK_WORD_BOUND | TextServer.BREAK_MANDATORY).y + 4.0
+
+
 func _set_slim(on: bool) -> void:
 	if on == _slim:
 		return
 	_slim = on
+	# Dernier recours de hauteur : en-tête resserré (résumé du passif masqué, il reste dans l'infobulle ; sous-titre
+	# sur 2 lignes ; nom plus petit) en plus des chiffres des cases.
+	if _passive_labels.size() == 2 and _passive_labels[1].get_parent() != null:
+		_passive_labels[1].visible = not on
+		var pbox := _passive_labels[1].get_parent().get_parent().get_parent() as Control
+		pbox.size_flags_stretch_ratio = 0.7 if on else 1.5
+	var head := _head_row.get_node_or_null("Head") if _head_row != null else null
+	if head != null:
+		var sub := head.get_node_or_null("Subtitle") as Label
+		if sub != null:
+			sub.max_lines_visible = 2 if on else -1
+			sub.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS if on else TextServer.OVERRUN_NO_TRIMMING
+		var nmr := head.find_child("Name", true, false) as Label
+		if nmr != null:
+			nmr.add_theme_font_size_override("font_size", maxi(38 if on else 46, _font_floor()))
 	for r in _rows:
 		r.stats.visible = r.stats.text != "" and not on
 		r.dmg.visible = r.dmg.text != "" and not on
@@ -1061,15 +1191,15 @@ func _apply_text_scale(k: float) -> void:
 			var l: Label = r.get(key)
 			if l != null:
 				l.add_theme_font_size_override("font_size", _font(ROW_FONTS[key], k))
-		(r.desc as Label).max_lines_visible = 1 if _shrink_desc else 2
-	var dl := {"name": _detail_name, "tag": _detail_tag, "desc": _detail_desc, "stats": _detail_stats}
+		(r.stats as Label).max_lines_visible = 2 if _shrink_desc else 3
+	var dl := {"name": _detail_name, "tag": _detail_tag, "desc": _detail_desc, "stats": _detail_stats, "dmg": _detail_dmg}
 	for key in dl:
 		if dl[key] != null:
 			(dl[key] as Label).add_theme_font_size_override("font_size", _font(DETAIL_FONTS[key], k))
 	if _passive_labels.size() == 2:
 		_passive_labels[0].add_theme_font_size_override("font_size", _font(PASSIVE_FONTS.name, k))
 		_passive_labels[1].add_theme_font_size_override("font_size", _font(PASSIVE_FONTS.text, k))
-		_passive_labels[1].max_lines_visible = 1 if _shrink_desc else 2
+		_passive_labels[1].max_lines_visible = 2 if _shrink_desc else 3
 
 
 ## Vrai si le contenu dépasse la hauteur allouée à la fiche (la fiche ne défile pas : on réduit le texte).
@@ -1135,8 +1265,7 @@ Progression : %s / %s" % [CharacterCard.fmt_num(minf(float(pr.value), float(pr.t
 ## Chiffres clés tirés de SpellData (rien d'inventé : un champ absent ou nul n'est pas affiché).
 static func spell_stats_text(sd: SpellData) -> String:
 	var parts: Array[String] = []
-	if sd.coef > 0.0: # jamais « Dégâts ×0 » (Aiguisage, utilitaires)
-		parts.append("Dégâts ×%s" % CharacterCard.fmt_num(sd.coef))
+	# Pas de « Dégâts ×N » : la ligne de dégâts (scaling_text) donne déjà le coefficient et les dégâts par niveau.
 	if sd.is_auto:
 		parts.append("Tir toutes les %s s" % CharacterCard.fmt_num(sd.base_cooldown))
 	elif sd.base_cooldown > 0.0:

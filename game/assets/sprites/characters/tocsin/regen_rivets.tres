@@ -3,27 +3,33 @@
 
 [sub_resource type="AtlasTexture" id="f0"]
 atlas = ExtResource("1")
-region = Rect2(0, 0, 192, 192)
+region = Rect2(0, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [sub_resource type="AtlasTexture" id="f1"]
 atlas = ExtResource("1")
-region = Rect2(192, 0, 192, 192)
+region = Rect2(104, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [sub_resource type="AtlasTexture" id="f2"]
 atlas = ExtResource("1")
-region = Rect2(384, 0, 192, 192)
+region = Rect2(208, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [sub_resource type="AtlasTexture" id="f3"]
 atlas = ExtResource("1")
-region = Rect2(576, 0, 192, 192)
+region = Rect2(312, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [sub_resource type="AtlasTexture" id="f4"]
 atlas = ExtResource("1")
-region = Rect2(768, 0, 192, 192)
+region = Rect2(416, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [sub_resource type="AtlasTexture" id="f5"]
 atlas = ExtResource("1")
-region = Rect2(960, 0, 192, 192)
+region = Rect2(520, 0, 104, 70)
+margin = Rect2(46, 60, 88, 122)
 
 [resource]
 animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}, {"duration": 1.0, "texture": SubResource("f1")}, {"duration": 1.0, "texture": SubResource("f2")}, {"duration": 1.0, "texture": SubResource("f3")}, {"duration": 1.0, "texture": SubResource("f4")}, {"duration": 1.0, "texture": SubResource("f5")}], "loop": false, "name": &"regen_rivets", "speed": 15.0}]

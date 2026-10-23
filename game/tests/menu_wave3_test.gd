@@ -164,7 +164,7 @@ func _test_spell_text_fits() -> void:
 
 
 func _test_difficulty_data() -> void:
-	var want := {"rainette": 3, "tocsin": 3, "arpenteuse": 3, "ardent": 1, "vigie": 1, "morfil": 1}
+	var want := {"rainette": 3, "tocsin": 2, "arpenteuse": 3, "ardent": 1, "vigie": 1, "morfil": 1}
 	for c in CharacterCard.load_characters():
 		var id := str(c.get("id", ""))
 		var d := CharacterCard.difficulty_of(c)
