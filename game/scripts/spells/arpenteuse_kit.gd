@@ -5,12 +5,13 @@ extends Node
 ## Ressource = la chaîne au sol : les CHAIN_MAX_U derniers u de son trajet. Elle ne blesse que ce qu'elle a parcouru.
 ## - Sort 1 Chaîne (auto) : la traîne elle-même ; tick de zone-ligne (cadence = vitesse d'attaque), ralentit.
 ##   Immobile : le touret rembobine la chaîne (CHAIN_IDLE_S puis CHAIN_REEL_U_S) : rester sur place = ne rien faire.
-## - Sort 2 Boucle : ferme la chaîne d'un trait droit ; le polygone s'embrase (dedans + contour), attire vers
-##   le centre ; la chaîne est consommée. Exige BOUCLE_MIN_U de chaîne.
+## - Sort 2 Boucle (24/10 : « Halage », zone le long de TOUTE la chaîne) : bande de BOUCLE_BAND_U autour de la
+##   chaîne posée, frappe et attire vers la chaîne. Rien n'est consommé. Exige BOUCLE_MIN_U de chaîne.
 ## - Sort 3 Piquet : piquet planté au point visé (6 u) ; ligne tendue piquet -> elle 5 s qui balaie
 ##   (immunité par monstre) ; arrachée au-delà de PEG_SNAP_U.
-## - Sort 4 Tendeur : la chaîne (et la ligne du piquet) claque, puis se rembobine en traînant les monstres
-##   touchés jusqu'à elle, emprisonnés 1 s (statut `imprisoned` d'Enemy, partagé avec Tocsin).
+## - Sort 4 Tendeur : la chaîne (et la ligne du piquet) claque, traîne les monstres touchés jusqu'à elle,
+##   emprisonnés 1,5 s (statut `imprisoned`). Chaîne et piquet restent posés (24/10 : plus de rembobinage).
+## Combo : Boucle (attire) -> Chaîne (brûle) -> Piquet (balaie la ligne tendue).
 ## Variantes (docs/Variantes_Sorts.md §2.5, lot 7 du 23/10/2026) : Chaîne lestée (slot 1), Nœud (2), Jalons (3),
 ## Cerceau (4) ; `variant(slot, id)` rend leur SpellData, le kit lit l'id du sort du slot pour se comporter.
 ## Effets à la frame d'impact des anims d'action (loop / plant / whip, lot AR1). Rendu : ArpenteuseChainLine.
@@ -25,6 +26,8 @@ const LOOP_BLAZE_RADIUS_PX := 108.0 ## rayon de l'hexagone dans la cellule (mesu
 const TOP_PX_PER_U := 128.0 ## rig TOP
 const PEG_OFFSET := Vector2(0, -40.32) ## pivot des pieds des rendus CREA (136,32 px dans la cellule 192)
 const PLACEHOLDER_TINT := Color(0.62, 0.45, 0.34) ## Ardent teinté ciré brun si AR1 manque
+const HAND_H_U := 0.45 ## hauteur de la main : la tête de la chaîne y est accrochée (rendu seulement)
+const HAND_RAMP_U := 1.0 ## la chaîne monte du sol à la main sur ce dernier tronçon
 const ACCENT := Color("#FF7A1F") ## cuivre chauffé : accent unique (la chaîne), rien d'émissif sur elle
 
 # --- Gameplay : chaîne (sort 1) --------------------------------------------------------------------
@@ -54,11 +57,10 @@ const CHAIN_LIGHTS := 2
 const BOUCLE_COEF := 3.5 ## équilibrage 22/10 : 3,0 -> 3,5
 const BOUCLE_CD := 6.0
 const BOUCLE_MIN_U := 3.0 ## en dessous, pas de boucle (rien n'est lancé, aucune recharge)
-const BOUCLE_PULL_U := 1.0
+const BOUCLE_PULL_U := 1.5 ## attraction vers la chaîne
+const BOUCLE_BAND_U := 1.2 ## demi-largeur de la bande de la Boucle (24/10 : zone le long de TOUTE la chaîne, plus de fermeture)
 const BOUCLE_FLARE_S := 0.45 ## contour embrasé
 const BOUCLE_EDGE_U := 0.5 ## aide 23/10 : tolérance du contour (trait de fermeture compris) 0,25 -> 0,5 u, une boucle ratée de justesse touche quand même
-const PREVIEW_WIDTH_PX := 3.0 ## aperçu du trait de fermeture de la Boucle (placeholder)
-const PREVIEW_ALPHA := 0.5
 # --- Piquet (sort 3) -------------------------------------------------------------------------------
 const PIQUET_COEF := 1.0
 const PIQUET_CD := 8.0
@@ -78,7 +80,6 @@ const TENDEUR_MIN_U := 2.0 ## chaîne minimale (ou piquet planté)
 const TENDEUR_STUN_S := 1.5 ## équilibrage 22/10 : 1,0 -> 1,5
 const TENDEUR_KEEP_U := 1.0 ## les monstres traînés s'arrêtent à 1 u d'elle
 const SNAP_S := 0.25
-const REWIND_S := 0.5
 ## Frames d'impact (index 0) des anims d'action d'AR1 (planches vérifiées : geste au sol / bras tendu).
 const ACTION_IMPACT_FRAMES := {&"plant": 2, &"loop": 2, &"whip": 2, &"attack": 3, &"cast": 2, &"cast_ult": 3}
 const PENDING_TIMEOUT_S := 1.0
@@ -140,8 +141,6 @@ var _heat_t := 0.0
 var _last_head := Vector2.ZERO
 var _pending := {} ## base d'anim -> {spell, aim, t}
 var snap_left := 0.0
-var rewind_left := 0.0
-var _rewind_speed := 0.0
 var _dragged: Array = []
 # Piquet
 var peg_left := 0.0
@@ -173,7 +172,6 @@ var _visual: AnimatedSprite2D = null
 var fx_root: Node2D = null
 var line: ArpenteuseChainLine = null
 var peg_line: ArpenteuseChainLine = null
-var preview: Line2D = null ## trait de fermeture de la Boucle quand elle est prête
 var _lights: Array = []
 ## Compteurs pour les tests : coups de chaîne, ticks, dernière boucle {hits, area_px}.
 var chain_hits := 0
@@ -225,7 +223,7 @@ static func character() -> CharacterData:
 	s1.proc_coef = CHAIN_PROC
 	s1.hit_force = CHAIN_FORCE
 
-	var s2 := _spell(&"arpenteuse_boucle", "Boucle", 2, BOUCLE_COEF, BOUCLE_CD, &"arpenteuse_blaze")
+	var s2 := _spell(&"arpenteuse_boucle", "Halage", 2, BOUCLE_COEF, BOUCLE_CD, &"arpenteuse_blaze")
 	s2.range_u = CHAIN_MAX_U
 	s2.proc_coef = 1.0
 	s2.hit_force = 1.0
@@ -315,13 +313,6 @@ func setup(p: CharacterBody2D) -> void:
 	fx_root.add_child(peg_line)
 	peg_line.setup(CHAIN_VIS_WIDTH_U * Balance.UNIT_PX, ACCENT)
 	peg_line.visible = false
-	preview = Line2D.new()
-	preview.name = "BouclePreview"
-	preview.width = PREVIEW_WIDTH_PX
-	preview.default_color = Color(ACCENT.r, ACCENT.g, ACCENT.b, PREVIEW_ALPHA)
-	preview.z_index = 1
-	preview.visible = false
-	fx_root.add_child(preview)
 	_last_head = p.global_position
 	chain = PackedVector2Array([p.global_position])
 	Events.floor_started.connect(_on_floor_started)
@@ -418,7 +409,7 @@ func on_cast(_s: SpellData) -> void:
 
 
 func is_busy() -> bool:
-	return snap_left > 0.0 or rewind_left > 0.0 or not _pending.is_empty()
+	return snap_left > 0.0 or not _pending.is_empty()
 
 
 func cast_spell(s: SpellData, aim: Variant) -> bool:
@@ -619,14 +610,9 @@ func tick(delta: float) -> void:
 		snap_left = maxf(snap_left - delta, 0.0)
 		_last_head = player.global_position
 		if snap_left <= 0.0:
-			_start_rewind()
-	elif rewind_left > 0.0:
-		rewind_left = maxf(rewind_left - delta, 0.0)
-		_m = fposmod(_m + _trim_tail(_rewind_speed * delta), _tile_px())
-		_last_head = player.global_position
-		if rewind_left <= 0.0:
-			_cut_chain()
+			_drag_and_stun()
 			line.set_sheet(&"tile")
+			peg_line.set_sheet(&"tile")
 	else:
 		_lay(delta)
 		_tick_t += delta
@@ -687,32 +673,34 @@ func _do_boucle(s: SpellData) -> void:
 	var pts := chain_points()
 	if pts.size() < 2:
 		return
-	var closed := pts.duplicate()
-	closed.append(pts[0]) # trait droit d'elle à la queue
-	var center := polygon_centroid(pts)
-	var reach := BOUCLE_EDGE_U * Balance.UNIT_PX
-	var box := _bounds(closed, reach + Balance.UNIT_PX)
+	var reach := BOUCLE_BAND_U * Balance.UNIT_PX
 	var hits := 0
-	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
-			continue
+	for e in _enemies_on(pts, reach):
 		var pos: Vector2 = e.global_position
-		if not box.has_point(pos):
-			continue
-		var inside := pts.size() >= 3 and Geometry2D.is_point_in_polygon(pos, pts)
-		if not inside and dist_to_polyline(pos, closed) > reach + _radius_of(e):
-			continue
+		var c := _closest_on(pts, pos)
 		_caster().deal_damage(e, s, {})
 		hits += 1
 		if is_instance_valid(e) and e.has_method(&"push") and not e.is_in_group(&"bosses"):
-			e.push((center - pos).limit_length(BOUCLE_PULL_U * Balance.UNIT_PX))
-	var area := polygon_area(pts)
-	last_loop = {"hits": hits, "area_px": area, "center": center}
-	var r := maxf(sqrt(area / PI), 0.6 * Balance.UNIT_PX)
-	_spawn_blaze(center, r)
-	_spawn_flare(closed)
-	LightRig.flash(center, s.light_preset, 0.6, {"radius": clampf(r / (2.2 * Balance.UNIT_PX), 0.6, 1.6)})
-	_cut_chain() # la chaîne est consommée : elle repousse en marchant
+			e.push((c - pos).limit_length(BOUCLE_PULL_U * Balance.UNIT_PX))
+	last_loop = {"hits": hits, "length_px": chain_length()}
+	_spawn_flare(smooth_polyline(pts))
+	var l := chain_length()
+	for k in 3:
+		LightRig.flash(_point_at(pts, l * (float(k) + 0.5) / 3.0), s.light_preset, 0.5, {"radius": 0.9})
+	# la chaîne reste posée (24/10) : rien n'est consommé
+
+
+## Point de la polyligne le plus proche de `p`.
+static func _closest_on(pts: PackedVector2Array, p: Vector2) -> Vector2:
+	var best := pts[0]
+	var bd := INF
+	for i in range(1, pts.size()):
+		var c := Geometry2D.get_closest_point_to_segment(p, pts[i - 1], pts[i])
+		var d := p.distance_squared_to(c)
+		if d < bd:
+			bd = d
+			best = c
+	return best
 
 
 func _spawn_blaze(center: Vector2, r: float) -> void:
@@ -875,13 +863,11 @@ func _do_tendeur(s: SpellData) -> void:
 		peg_line.set_sheet(&"snap")
 
 
-func _start_rewind() -> void:
-	var l := chain_length()
-	rewind_left = REWIND_S
-	_rewind_speed = l / REWIND_S
-	line.set_sheet(&"rewind")
+## Fin du claquement : les monstres touchés sont traînés jusqu'à elle puis étourdis. La chaîne et le piquet
+## restent posés (24/10 : plus de rembobinage).
+func _drag_and_stun() -> void:
 	var head := player.global_position
-	for e in _dragged: # traînés jusqu'à elle, puis étourdis
+	for e in _dragged:
 		if not is_instance_valid(e) or not e.is_in_group(&"enemies"):
 			continue
 		var v: Vector2 = head - e.global_position
@@ -891,24 +877,18 @@ func _start_rewind() -> void:
 		if e.has_method(&"apply_status"):
 			e.apply_status(&"imprisoned", {"duration": TENDEUR_STUN_S})
 	_dragged.clear()
-	if peg_left > 0.0:
-		peg_line.set_sheet(&"tile")
-		_end_peg(true) # le piquet est arraché par le rembobinage
 
 
 func is_rewinding() -> bool:
-	return snap_left > 0.0 or rewind_left > 0.0
+	return snap_left > 0.0
 
 
 # --- Nettoyage (étage, mort) ------------------------------------------------------------------------
 
 func clear_transients() -> void:
 	_pending.clear()
-	if preview != null:
-		preview.visible = false
 	_dragged.clear()
 	snap_left = 0.0
-	rewind_left = 0.0
 	_end_peg(false)
 	if player != null:
 		_cut_chain()
@@ -951,9 +931,8 @@ func _update_visuals(delta: float) -> void:
 	line.energy = lerpf(HEAT_ENERGY, HEAT_FLASH_ENERGY, _heat_t / HEAT_FLASH_S)
 	if snap_left > 0.0:
 		line.energy = HEAT_FLASH_ENERGY * 1.4
-	line.set_line(smooth_polyline(pts))
+	line.set_line(_lift_head(smooth_polyline(pts)))
 	line.advance(delta)
-	_update_preview(pts)
 	if peg_left > 0.0:
 		var seg := peg_segment()
 		peg_line.u_offset = 0.0
@@ -962,6 +941,25 @@ func _update_visuals(delta: float) -> void:
 		peg_line.advance(delta)
 		_orient_peg()
 	_update_lights(pts)
+
+
+## Rendu : le dernier tronçon (HAND_RAMP_U) monte du sol jusqu'à la main d'Arpenteuse (la tête touche son corps,
+## plus d'écart visible). Les dégâts restent calculés au sol.
+static func _lift_head(pts: PackedVector2Array) -> PackedVector2Array:
+	if pts.size() < 2:
+		return pts
+	var out := pts.duplicate()
+	var ramp := HAND_RAMP_U * Balance.UNIT_PX
+	var lift := Iso.lift_logical(HAND_H_U)
+	var run := 0.0
+	var last := out.size() - 1
+	out[last].y += lift
+	for i in range(last - 1, -1, -1):
+		run += pts[i].distance_to(pts[i + 1])
+		if run >= ramp:
+			break
+		out[i].y += lift * (1.0 - run / ramp)
+	return out
 
 
 ## Lissage de rendu (Chaikin, un passage) : les angles du trajet s'arrondissent, extrémités conservées.
@@ -980,20 +978,6 @@ static func smooth_polyline(pts: PackedVector2Array) -> PackedVector2Array:
 			out.append(a.lerp(b, 0.75))
 	out.append(pts[pts.size() - 1])
 	return out
-
-
-## Aide à la prise en main : le trait droit qui fermera la Boucle (queue -> elle) s'affiche quand elle est prête.
-func _update_preview(pts: PackedVector2Array) -> void:
-	if preview == null:
-		return
-	var show := false
-	var c := _caster()
-	var s2 := _spell_of(2)
-	if c != null and s2 != null and s2.id == &"arpenteuse_boucle" and pts.size() >= 2 and not is_busy() 			and c.cooldown_remaining(2) <= 0.0 and chain_length() >= BOUCLE_MIN_U * Balance.UNIT_PX:
-		show = true
-	preview.visible = show
-	if show:
-		preview.points = PackedVector2Array([pts[0], pts[pts.size() - 1]])
 
 
 ## Deux lueurs cuivre le long de la chaîne (au tiers et aux deux tiers), énergie selon la longueur.

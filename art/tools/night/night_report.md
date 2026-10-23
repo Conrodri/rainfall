@@ -6,3 +6,55 @@
 - 23/10 10:07 == groupe 3
 - 23/10 10:07 groupe 3 déjà fini, sauté
 - 23/10 10:07 == groupe 4
+- 23/10 10:07 groupe 4 déjà fini, sauté
+- 23/10 10:07 == groupe 5
+- 23/10 10:07 groupe 5 déjà fini, sauté
+- 23/10 10:07 == groupe 6
+- 23/10 10:07 groupe 6 déjà fini, sauté
+- 23/10 10:07 == groupe 7
+- 23/10 10:07 groupe 7 déjà fini, sauté
+- 23/10 10:07 == groupe 8
+- 23/10 10:07 groupe 8 déjà fini, sauté
+- 23/10 10:07 == groupe 9
+- 23/10 10:07 groupe 9 déjà fini, sauté
+- 23/10 10:07 == groupe 10
+- 23/10 10:07 groupe 10 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 10
+- 23/10 10:07 groupe 10 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 14
+- 23/10 10:07 groupe 14 déjà fini, sauté
+- 23/10 10:07 == groupe 15
+- 23/10 10:07 groupe 15 déjà fini, sauté
+- 23/10 10:07 == groupe 16
+- 23/10 10:07 groupe 16 déjà fini, sauté
+- 23/10 10:07 == groupe 17
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_tocsin.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_tocsin.txt), reprise vers 13:19
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_c.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_c.txt), reprise vers 13:19
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_d.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_d.txt), reprise vers 13:19
+- 23/10 10:08 lancement art/tools/night/_cel_heroes_e.txt
+- 23/10 10:08 quota Codex épuisé (art/tools/night/_logcel_heroes_e.txt), reprise vers 13:19
+- 23/10 10:08 lancement art/tools/night/_vg2.txt
+- 23/10 10:08 quota Codex épuisé (art/tools/night/_logvg2.txt), reprise vers 13:19

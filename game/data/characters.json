@@ -319,9 +319,9 @@
       },
       {
         "id": "arpenteuse_boucle",
-        "name": "Boucle",
+        "name": "Halage",
         "slot": "cd",
-        "desc": "Ferme la chaîne d'un trait droit : tout ce qui est dedans s'embrase et est attiré vers le centre. La chaîne est consommée.",
+        "desc": "Zone sur toute la longueur de la chaîne posée : les monstres proches sont frappés et attirés contre elle. La chaîne reste au sol.",
         "variants": []
       },
       {
@@ -335,7 +335,7 @@
         "id": "arpenteuse_tendeur",
         "name": "Tendeur",
         "slot": "ultime",
-        "desc": "La chaîne claque sur toute sa longueur puis se rembobine en traînant les monstres jusqu'à elle, étourdis.",
+        "desc": "La chaîne claque sur toute sa longueur et traîne les monstres touchés jusqu'à elle, étourdis. La chaîne et le piquet restent posés.",
         "variants": []
       }
     ]
