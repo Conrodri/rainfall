@@ -1316,3 +1316,15 @@ func _on_player_died() -> void:
 		if a != &"":
 			_visual.sprite_frames.set_animation_loop(a, false)
 			_visual.play(a)
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	return KitResource.passive("Membres", &"membres",
+		"Le corps de Tocsin est son arsenal : 5 membres (2 bras, 2 jambes, la tête). Chaque sort lance les siens ; les pastilles du HUD montrent ceux qui sont sur le robot.",
+		"un membre lancé revient quand la recharge de son sort est finie (un seul membre se recharge à la fois par sort).",
+		"lancer un membre le retire du robot tant que sa recharge court : jambes absentes = autre façon de marcher, tête absente = visée plus courte.",
+		"Surchauffe : +%s de vitesse d'attaque par membre absent, et le foyer brille plus fort. Sans ses 2 bras ou 2 jambes, le sort concerné est bloqué. La tête sonne +%s sur les boss." % [
+			KitResource.pct(OVERHEAT_PER_LIMB), KitResource.pct(HEAD_BOSS_ADD)])

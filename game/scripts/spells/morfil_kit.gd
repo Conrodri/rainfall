@@ -1003,3 +1003,21 @@ func _update_look() -> void:
 		_twin_blade.facing = player.facing
 		_twin_blade.fade = clampf(twin_left / 1.0, 0.0, 1.0) # s'éteint sur la dernière seconde
 		_twin_blade.queue_redraw()
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Aiguisage", &"aiguisage",
+		"Le katana s'émousse à chaque geste. Tes dégâts suivent le fil de la lame.",
+		"le sort Aiguisage (recharge %s s) remonte la lame à %s %%." % [f.call(SHARPEN_CD), f.call(SHARP_MAX)],
+		"chaque geste de lame retire des points : Taille ou estoc %s, Fauche-lune %s, roulade Iaï %s. Jamais sous %s %%." % [
+			f.call(COST_CIRCLE), f.call(COST_CRESCENT), f.call(COST_IAI), f.call(SHARP_MIN)],
+		"tes coups infligent autant de pour cent de leurs dégâts que d'aiguisage (100 %% = dégâts pleins, 50 %% = moitié). Lames jumelles (sort 4) : %s %% minimum." % f.call(SHARP_ULT_MIN))
+
+
+## SpellHint : les coups réels portent déjà l'aiguisage dans leur coef (`_scaled`), l'aperçu l'applique ici.
+func preview_mult(_s: SpellData) -> float:
+	return damage_mult()

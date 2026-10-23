@@ -525,13 +525,13 @@ func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
 		add += player.stat(&"cd_damage_add")
 	if s.is_zone and not s.is_auto: # l'attaque auto ne prend que auto_damage_add (équilibrage 23/10, décision du joueur)
 		add += player.stat(&"zone_damage_add")
-	if enemy.get("is_elite") == true or enemy.is_in_group("bosses"):
+	if enemy != null and (enemy.get("is_elite") == true or enemy.is_in_group("bosses")):
 		add += player.stat(&"elite_boss_damage_add")
 	if player.max_hp > 0.0 and player.hp / player.max_hp <= LOW_HP_THRESHOLD:
 		add += player.stat(&"low_hp_damage_add")
 	if player.is_moving:
 		add += player.stat(&"moving_damage_add")
-	if enemy.has_method("is_slowed") and enemy.is_slowed():
+	if enemy != null and enemy.has_method("is_slowed") and enemy.is_slowed():
 		add += player.stat(&"slowed_target_damage_add")
 	var kit := _kit() # bonus additif propre au personnage (Avare : puissance de l'or)
 	if kit != null and kit.has_method(&"damage_add"):
@@ -543,6 +543,17 @@ func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
 	if is_crit:
 		dmg *= player.crit_mult()
 	return dmg
+
+
+## Aperçu pour l'infobulle de sort (SpellHint) : dégâts d'un coup sans critique, sur une cible neutre (ni élite, ni
+## boss, ni ralentie). Même formule que compute_damage ; seul le facteur propre au kit (`preview_mult`, ex. aiguisage
+## de Taliant, déjà appliqué au coef des coups réels) s'y ajoute.
+func preview_damage(s: SpellData) -> float:
+	var m := 1.0
+	var kit := _kit()
+	if kit != null and kit.has_method(&"preview_mult"):
+		m = float(kit.preview_mult(s))
+	return compute_damage(s, null, false) * m
 
 
 ## Procs d'items (RoR2) : chance × proc coefficient du coup (pc). Les DoT reçoivent leur total de dégâts :

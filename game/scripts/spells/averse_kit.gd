@@ -1338,3 +1338,18 @@ func visual_anim(fallback: StringName) -> StringName:
 		if _visual.sprite_frames.has_animation(a):
 			return a
 	return fallback
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Eau", &"eau",
+		"L'amphore d'Averse est sa seule ressource : les sorts 2 à 4 n'ont pas de recharge, ils coûtent de l'eau.",
+		"la pluie (%s par seconde, ×%s à ×%s selon la carte), chaque monstre tué (+%s), chaque goutte qui touche (+%s, +%s sur élite ou boss), sa Flaque-miroir (+%s par seconde)." % [
+			f.call(RAIN_GAIN_PER_S), f.call(RAIN_MULT_MIN), f.call(RAIN_MULT_MAX), f.call(KILL_GAIN), f.call(HIT_WATER), f.call(BIG_HIT_WATER), f.call(PUDDLE_GAIN_PER_S)],
+		"Vague %s, Flaque %s, Crue : toute l'eau (minimum %s). Sous %s d'eau, plus aucun gain pendant %s s." % [
+			f.call(WAVE_COST), f.call(PUDDLE_COST), f.call(CRUE_MIN), f.call(DRY_BELOW), f.call(DRY_LOCK_S)],
+		"plus l'amphore est pleine, plus Averse est lente (%s u/s à sec, %s u/s pleine) ; au-delà de %s elle trébuche à la roulade. La Goutte-lame gagne +%s de coef pour 100 d'eau." % [
+			f.call(SPEED_EMPTY_U), f.call(SPEED_FULL_U), f.call(STUMBLE_WATER), f.call(GOUTTE_COEF_WATER)])

@@ -50,3 +50,35 @@ static func of(player: Object) -> Dictionary:
 	if (kit as Object).has_method(&"resource_regen_per_s"):
 		d["regen"] = float(kit.resource_regen_per_s())
 	return d
+
+
+# --- Passif / ressource expliqué (infobulle du HUD, 23/10/2026) --------------------------------------
+## Contrat : chaque kit expose `static func passive_info() -> Dictionary` construit par `KitResource.passive()`,
+## lu par PassiveBadge.info_for(id). Les chiffres sont lus dans les constantes du kit (aucune valeur dupliquée) ;
+## les kits sans kit_script (Ardent) passent par ArdentKit.passive_info().
+
+## Nombre à la française : « 2,2 », « 12 » (une décimale au plus, zéro final retiré).
+static func fmt(v: float) -> String:
+	if is_equal_approx(v, roundf(v)):
+		return str(int(roundf(v)))
+	return ("%.1f" % v).replace(".", ",")
+
+
+static func pct(v: float) -> String:
+	return "%s %%" % fmt(v * 100.0)
+
+
+## {name, icon, intro, fills, drains, tiers, desc, hud} : `desc` assemble les blocs non vides.
+## `hud` faux = pas d'icône au HUD (personnage sans passif ni ressource), l'infobulle reste lisible ailleurs.
+static func passive(pname: String, icon: StringName, intro: String, fills: String, drains: String, tiers: String, hud := true) -> Dictionary:
+	var parts: Array[String] = []
+	if intro != "":
+		parts.append(intro)
+	if fills != "":
+		parts.append("Remplit : " + fills)
+	if drains != "":
+		parts.append("Vide : " + drains)
+	if tiers != "":
+		parts.append("Effet : " + tiers)
+	return {"name": pname, "icon": icon, "intro": intro, "fills": fills, "drains": drains, "tiers": tiers,
+		"desc": "\n".join(parts), "hud": hud}

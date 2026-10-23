@@ -1002,3 +1002,16 @@ func _update_rig() -> void:
 		(_shadow as RainetteShadow).set_height(h)
 	if _sac_light != null:
 		_sac_light.set_energy(1.0 + 0.35 * sin(Time.get_ticks_msec() * 0.012))
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Souffle", &"souffle",
+		"Rainette ne marche pas, elle bondit : chaque bond coûte du souffle. En l'air, elle est intouchable au contact.",
+		"+1 par %s s au sol (maximum %d). Le Chant de crue le rend illimité." % [f.call(BREATH_REGEN_S), BREATH_MAX],
+		"chaque bond : 1. Le Grand saut ne coûte rien.",
+		"à 0, elle est essoufflée %s s sur place (sorts 1 et 3 suspendus, vulnérable). Passif : un petit monstre tué par la Langue est avalé, +%s des PV max." % [
+			f.call(BREATHLESS_S), KitResource.pct(SWALLOW_HEAL_PCT)])

@@ -10,10 +10,12 @@ extends Control
 ## pendant une pause (menu pause, coffre). La bulle ignore la souris et le toucher.
 
 const CHAR_PATH := "res://data/characters.json"
+const PASSIVE_BADGE := preload("res://scripts/ui/passive_badge.gd")
 
 var hud: Hud
 var tip: SpellTooltip
 var button: SpellButton = null ## bouton dont la description est affichée (null = cachée)
+var passive_anchor: Control = null ## icône ou jauge dont l'infobulle de passif est affichée (null = aucune)
 var _mouse := Vector2(-1.0e6, -1.0e6) ## dernière position de la souris (coordonnées du HUD)
 var _mouse_in := true
 var _cache_char: StringName = &"__none__"
@@ -60,23 +62,64 @@ func _exit_tree() -> void:
 
 func _process(_delta: float) -> void:
 	var target := _target()
+	var ptarget: Control = null if target != null else _passive_target()
 	# arbitre (H5) : une bulle d'item déjà ouverte garde la main ; la bulle de sort attend
-	if target != null and target != button and SpellTooltip.other_user_bubble_open(&"spell_hint"):
+	if (target != null and target != button or ptarget != null and ptarget != passive_anchor) and SpellTooltip.other_user_bubble_open(&"spell_hint"):
 		target = null
-	if target == button:
+		ptarget = null
+	if target == button and ptarget == passive_anchor:
 		return
 	button = target
-	SpellTooltip.set_user_bubble(&"spell_hint", target != null)
-	if target == null:
+	passive_anchor = ptarget
+	SpellTooltip.set_user_bubble(&"spell_hint", target != null or ptarget != null)
+	var s := hud.ui_scale
+	if target == null and ptarget == null:
 		tip.hide_tip()
+		return
+	if Platform.input_mode == Platform.InputMode.TOUCH: # lisible au doigt, sur petit écran
+		tip.set_text_sizes(int(38 * s), int(30 * s), int(32 * s), 620.0 * s)
 	else:
+		tip.set_text_sizes(int(32 * s), int(26 * s), int(26 * s), 520.0 * s)
+	if target != null:
 		var info := describe(target)
-		var s := hud.ui_scale
-		if Platform.input_mode == Platform.InputMode.TOUCH: # lisible au doigt, sur petit écran
-			tip.set_text_sizes(int(38 * s), int(30 * s), int(32 * s), 620.0 * s)
-		else:
-			tip.set_text_sizes(int(32 * s), int(26 * s), int(26 * s), 520.0 * s)
 		tip.show_for(target, info.title, info.tag, info.body)
+	else:
+		var pinfo := describe_passive()
+		tip.show_for(ptarget, pinfo.title, pinfo.tag, pinfo.body)
+
+
+## Icône du passif, ou jauge de ressource, désignée cette image (survol / appui long / Select maintenu), sinon null.
+func _passive_target() -> Control:
+	var badge: Control = hud.passive_badge if hud != null else null
+	if badge == null or not is_instance_valid(badge) or not badge.visible or not badge.is_visible_in_tree():
+		return null
+	if get_tree().paused or not hud.visible:
+		return null
+	if hud.pause_menu != null and hud.pause_menu.is_open:
+		return null
+	match Platform.input_mode:
+		Platform.InputMode.TOUCH:
+			if badge.is_long_pressed():
+				return badge
+		Platform.InputMode.KBM:
+			if not _mouse_in:
+				return null
+			if badge.get_global_rect().has_point(_mouse):
+				return badge
+			var g: Control = hud.bar_gauge
+			if g != null and g.visible and g.is_visible_in_tree() and g.get_global_rect().has_point(_mouse):
+				return g
+		Platform.InputMode.GAMEPAD:
+			for pad in Input.get_connected_joypads():
+				if Input.is_joy_button_pressed(pad, JOY_BUTTON_BACK):
+					return badge
+	return null
+
+
+## Texte de l'infobulle du passif : {title, tag, body} (PassiveBadge.info_for du personnage joué).
+func describe_passive() -> Dictionary:
+	var info := PASSIVE_BADGE.info_for(_char_id())
+	return {"title": String(info.get("name", "")), "tag": "Passif", "body": String(info.get("desc", ""))}
 
 
 ## Bouton à décrire cette image, ou null.
@@ -129,7 +172,46 @@ func describe(b: SpellButton) -> Dictionary:
 		parts.append("Variante de %s" % String(info.base_name))
 	if b.charges >= 0 and b.max_charges > 0:
 		parts.append("%d/%d charges" % [b.charges, b.max_charges])
-	return {"title": title, "tag": " · ".join(parts), "body": String(info.get("desc", ""))}
+	var body := String(info.get("desc", ""))
+	var dmg := damage_text(sd)
+	if dmg != "":
+		body += "
+" + dmg
+	return {"title": title, "tag": " · ".join(parts), "body": body}
+
+
+## Dégâts réels actuels d'un sort et origine du scaling (niveau, objets, kit). Aucune formule recopiée :
+## SpellCaster.preview_damage (= compute_damage sur cible neutre) et Balance.player_base_damage. "" = sort sans dégâts.
+func damage_text(sd: SpellData) -> String:
+	if sd == null or sd.coef <= 0.0 or hud == null or hud.player == null or not is_instance_valid(hud.player):
+		return ""
+	var caster: SpellCaster = hud.player.get(&"spells") as SpellCaster
+	if caster == null:
+		return ""
+	var dmg := caster.preview_damage(sd)
+	var lvl := RunState.level
+	var base := Balance.player_base_damage(lvl)
+	var kit: Variant = hud.player.get(&"kit")
+	var kit_mult := 1.0
+	if kit != null and (kit as Object).has_method(&"preview_mult"):
+		kit_mult = maxf(float(kit.preview_mult(sd)), 0.0001)
+	var raw := sd.coef * base
+	var bonus := dmg / kit_mult / maxf(raw, 0.0001) - 1.0
+	var f := KitResource.fmt
+	var lines: Array[String] = ["Dégâts : %s par coup" % f.call(snappedf(dmg, 0.1))]
+	var src := "%s %% du dégât de base (niv. %d : %s)" % [f.call(snappedf(sd.coef * 100.0, 0.1)), lvl, f.call(snappedf(base, 0.1))]
+	if absf(bonus) >= 0.005:
+		src += ", %+d %% objets" % roundi(bonus * 100.0)
+		var zone: float = hud.player.stat(&"zone_damage_add") if sd.is_zone and not sd.is_auto else 0.0
+		if zone > 0.0:
+			src += " (dont zone +%d %%)" % roundi(zone * 100.0)
+	if absf(kit_mult - 1.0) >= 0.005:
+		src += ", × %d %% (passif)" % roundi(kit_mult * 100.0)
+	lines.append(src)
+	var per_level := dmg * (Balance.player_base_damage(lvl + 1) / maxf(base, 0.0001) - 1.0)
+	lines.append("Chaque niveau : +%s par coup" % f.call(snappedf(per_level, 0.1)))
+	return "
+".join(lines)
 
 
 ## Texte visible de la bulle (tests).

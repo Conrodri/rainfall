@@ -800,3 +800,15 @@ func _update_rig() -> void:
 		companion.sync(_dir_name(), &"pull" if taut else &"hover")
 	if strings != null:
 		strings.tension = 1.0 if taut else 0.0
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	return KitResource.passive("Fils du Montreur", &"fils",
+		"Pas de jauge : deux effets passifs. Les fils tirent le pantin hors des coups, et se tendent pour le réparer.",
+		"",
+		"",
+		"Garde : -%s de dégâts subis pendant %s s après chaque demi-lune. Fils tendus : +%s des PV max rendus en fin de Toupie et à la première explosion de chaque Doublures." % [
+			KitResource.pct(1.0 - GUARD_TAKEN_MULT), KitResource.fmt(GUARD_S), KitResource.pct(HEAL_PCT)])

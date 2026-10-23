@@ -104,6 +104,8 @@ func _test_selection() -> void:
 	pr.unlocked_spells = ["flame_pillar"]
 	var s := _spawn(pr, c)
 	await _frames(3)
+	s.open_sheet_for(0, false) # la fiche s'ouvre à la validation depuis la liste
+	await _frames(3)
 	_check(s.sheet.show_variants, "une variante débloquée : colonne de variantes visible")
 	var vb := _variant_button(s, 2, "flame_pillar")
 	var lb := _variant_button(s, 1, "roaming_embers")
@@ -138,6 +140,8 @@ func _test_selection() -> void:
 	plat_mode(1)
 	var s2 := _spawn(pr, c)
 	await _frames(3)
+	s2.open_sheet_for(0, false)
+	await _frames(3)
 	_check(s2.sheet.chosen.get(2) == &"flame_pillar", "réouverture : variante restaurée")
 	var ctr := CharacterSheet.variant_quest(pr, c, 2, (c["spells"][1]["variants"] as Array)[0])
 	_check(ctr.contains("Compteur de test.") and ctr.contains("120 / 500"), "quête à compteur avec progression : " + ctr)
@@ -157,6 +161,8 @@ func plat_mode(m: int) -> void:
 func _test_hidden() -> void:
 	var pr := FakeProfile.new()
 	var s := _spawn(pr, _test_character())
+	await _frames(3)
+	s.open_sheet_for(0, false)
 	await _frames(3)
 	_check(not s.sheet.show_variants, "aucune variante débloquée : colonne masquée")
 	var note: Label = s.sheet.find_child("VariantsNote", true, false)
@@ -189,7 +195,7 @@ func _test_loading() -> void:
 	var cd2 := CharacterData.for_id(&"fake", {"2": "inconnue", "9": "x"})
 	_check(cd2.spells[1].id == &"nova_ardente" and cd2.spells.size() == 4, "variante inconnue / slot inconnu : base + warning, pas de plantage")
 	var cd3 := CharacterData.for_id(&"ardent", {1: &"roaming_embers"})
-	_check(cd3.spells[0].id == &"eclat_de_braise", "variante d'Ardent non codée : base")
+	_check(cd3.spells[0].id == &"roaming_embers" and cd3.variant_of(1) == &"roaming_embers", "variante d'Ardent codée : chargée au slot 1")
 	_check(CharacterData.for_id(&"fake", {2: &"nova_ardente"}).loadout.is_empty(), "id de base dans le loadout : rien de remplacé")
 	# RunState : transmission + sauvegarde (to_dict / from_dict), anciennes sauvegardes sans clé.
 	var keep_char := RunState.character
@@ -312,5 +318,5 @@ func _test_announce() -> void:
 		"unlocks": [&"spell:roaming_embers"]}
 	var s := EndRunScreen.create(info)
 	add_child(s)
-	_check(_all_text(s).contains("Nouvelle variante pour Ardent : Braises errantes !"), "écran de fin : ligne de déblocage de variante")
+	_check(_all_text(s).contains("Nouvelles variantes débloquées") and _all_text(s).contains("Braises errantes"), "écran de fin : bloc des variantes débloquées")
 	s.queue_free()

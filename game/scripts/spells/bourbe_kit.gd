@@ -1099,3 +1099,16 @@ func _update_look() -> void:
 	var target := SINK_ALPHA if sunk_left > 0.0 and not has_sink else 1.0
 	if not is_equal_approx(_visual.modulate.a, target):
 		_visual.modulate.a = move_toward(_visual.modulate.a, target, 0.08)
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Masse", &"masse",
+		"Bourbe se divise en mottes (jusqu'à %d dehors). Les pastilles du HUD montrent les charges de Détacher disponibles." % MAX_MOTTES,
+		"recoller une motte (Rappel, ou elle rampe seule vers toi) lui rend sa masse ; le Bourbier rend tout de suite toute la masse.",
+		"chaque motte dehors retire %s des PV max (plancher %s). Une motte écrasée perd sa masse pendant %s s." % [
+			KitResource.pct(MASS_PER_MOTTE), KitResource.pct(MAX_HP_FLOOR_FRAC), f.call(DEAD_MASS_S)],
+		"plus Bourbe est divisée, plus elle est vive (+%s u/s par motte) et petite (hitbox plus fine)." % f.call(SPEED_PER_MOTTE_U))

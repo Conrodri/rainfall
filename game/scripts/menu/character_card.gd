@@ -613,6 +613,24 @@ static func difficulty_of(c: Dictionary) -> int:
 	return clampi(int(v), 0, 3)
 
 
+## Liste triée du plus facile au plus dur (`difficulty` de characters.json), ordre d'origine conservé à difficulté
+## égale (tri stable). Une difficulté absente (0) passe en dernier. Verrouillés et cachés suivent la même règle.
+static func sorted_by_difficulty(list: Array) -> Array:
+	var idx: Array = []
+	for i in list.size():
+		idx.append(i)
+	idx.sort_custom(func(a: int, b: int) -> bool:
+		var da := difficulty_of(list[a]) if list[a] is Dictionary else 0
+		var db := difficulty_of(list[b]) if list[b] is Dictionary else 0
+		da = da if da > 0 else 99
+		db = db if db > 0 else 99
+		return da < db if da != db else a < b)
+	var out: Array = []
+	for i in idx:
+		out.append(list[i])
+	return out
+
+
 ## Pastilles de difficulté (3 losanges : pleins jusqu'au niveau) + libellé optionnel. Style d'UI (placeholder
 ## jusqu'à une icône DA `ui/menu/difficulty_pip.png`), pas un asset de jeu.
 static func make_difficulty_badge(level: int, pip: float, with_label: bool, font_size := 22) -> HBoxContainer:

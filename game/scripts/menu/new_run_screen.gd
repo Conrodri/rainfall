@@ -6,6 +6,9 @@ extends Control
 ## Le focus sélectionne (audit M2) : clavier / manette, la fiche suit le focus, comme au toucher ; une seule carte
 ## paraît donc choisie. Parcourir un perso verrouillé le sélectionne aussi : « Commencer » est alors désactivé.
 ## Mode choisi = fond braise + coche ; verrouillé = cadenas (audit M3). Tous les textes font au moins 18 px.
+## Refonte du 23/10/2026 : deux vues sans défilement. LISTE (grille des personnages, triée du plus facile au plus
+## dur, ordre stable à difficulté égale) puis FICHE en gros plan (CharacterSheet : modèle à gauche, passif et sorts à
+## droite). Une carte cliquée / validée ouvre la fiche ; Retour, Échap ou B la referment (puis la liste revient au titre).
 
 signal start_requested(config: Dictionary)
 signal back_requested
@@ -38,6 +41,8 @@ var hint: Label
 var title_label: Label
 var side_panel: Panel ## plaque DA derrière le panneau du personnage (visible aussi tant que la fiche est fermée)
 var grid_cols := 4
+## Vrai quand la fiche en gros plan remplace la grille.
+var detail_open := false
 var _banner: PanelContainer
 var selected_index := 0
 var mode: StringName = &"moyen"
@@ -50,6 +55,7 @@ func _ready() -> void:
 		profile = CharacterCard.default_profile()
 	if characters.is_empty(): # une liste peut être injectée avant _ready (tests)
 		characters = CharacterCard.load_characters()
+	characters = CharacterCard.sorted_by_difficulty(characters)
 	_build()
 	UiTheme.apply(self)
 	UiTheme.hook_sounds(self)
@@ -60,7 +66,7 @@ func _ready() -> void:
 	for i in characters.size():
 		if String(characters[i].get("id", "")) == last:
 			selected_index = i
-	_select_character(selected_index, true, false) # fiche du perso présélectionné visible tout de suite (PC, tactile, manette)
+	_select_character(selected_index, false, false) # liste : le dernier personnage joué est présélectionné
 	var lm := StringName(String(CharacterCard.pget(profile, "last_mode", "moyen")))
 	_set_mode(lm if (lm in MODES and CharacterCard.is_mode_unlocked(profile, lm)) else &"moyen", false)
 	_wire_focus()
@@ -184,8 +190,7 @@ func _layout() -> void:
 	var main_h := mode_y - 16.0 - main_y
 	var avail_w: float = vs.x - m.left - m.right
 	# Gauche : grille de cartes verticales (ratio du cadre) ; droite : panneau du personnage sélectionné.
-	var panel_w := clampf(avail_w * 0.40, 600.0, 920.0) # 40 % (audit M7) : cartes plus grandes
-	var grid_w := avail_w - panel_w - PANEL_GAP
+	var grid_w := avail_w # liste : toute la largeur ; la fiche en gros plan remplace la grille
 	var ratio := 384.0 / 560.0
 	var best_h := 0.0
 	var n := maxi(cards.size(), 1)
@@ -207,14 +212,14 @@ func _layout() -> void:
 		var c := i % grid_cols
 		cards[i].set_card_size(Vector2(cw, ch))
 		cards[i].position = Vector2(gx + c * (cw + CARD_GAP), gy + r * (ch + CARD_GAP))
-	var px: float = vs.x - m.right - panel_w
-	side_panel.position = Vector2(px, main_y)
-	side_panel.size = Vector2(panel_w, main_h)
-	sheet.position = Vector2(px, main_y)
-	sheet.size = Vector2(panel_w, main_h)
-	sheet.custom_minimum_size = Vector2(panel_w, 0)
-	hint.position = Vector2(px + 48.0, main_y)
-	hint.size = Vector2(panel_w - 96.0, main_h)
+		cards[i].visible = not detail_open
+	side_panel.visible = false
+	hint.visible = false
+	sheet.position = Vector2(m.left, main_y)
+	sheet.size = Vector2(avail_w, main_h)
+	sheet.custom_minimum_size = Vector2(avail_w, 0)
+	sheet.allotted_h = main_h
+	sheet.visible = detail_open
 	back_button.position = Vector2(m.left, bottom - BACK_SIZE.y)
 	# Barre du bas adaptative : Retour | 3 modes | Commencer, rétrécie si la zone sûre est étroite.
 	var avail: float = vs.x - m.left - m.right - BACK_SIZE.x - 48.0
@@ -254,14 +259,14 @@ func _on_card_pressed(i: int) -> void:
 	_select_character(i, true)
 
 
-## Le focus (clavier, manette, ou clic qui prend le focus) sélectionne le personnage.
+## Le focus (clavier, manette, ou clic qui prend le focus) sélectionne le personnage (la fiche s'ouvre à la validation).
 func _on_card_focused(i: int) -> void:
-	_select_character(i, true)
+	_select_character(i, false)
 
 
 func _select_character(i: int, open_sheet: bool, animate := true) -> void:
 	# Fiche déjà ouverte pour ce perso : on ne la reconstruit pas (garde les variantes choisies, évite le double fondu).
-	var same_sheet := sheet.visible and String(sheet.character.get("id", "")) == String(characters[i].get("id", ""))
+	var same_sheet := detail_open and sheet.visible and String(sheet.character.get("id", "")) == String(characters[i].get("id", ""))
 	selected_index = i
 	for j in cards.size():
 		cards[j].selected = j == i
@@ -273,17 +278,41 @@ func _select_character(i: int, open_sheet: bool, animate := true) -> void:
 		open_sheet_for(i, animate)
 
 
-## Ouvre (ou rafraîchit) la fiche du personnage `i`.
+## Ouvre (ou rafraîchit) la fiche en gros plan du personnage `i`.
 func open_sheet_for(i: int, animate := true) -> void:
+	selected_index = i
+	detail_open = true
 	hint.visible = false
-	sheet.visible = true
+	side_panel.visible = false
+	back_button.text = "Liste"
+	_layout()
 	sheet.open(characters[i], cards[i].locked, animate)
 	UiTheme.hook_sounds(sheet)
 	_wire_focus()
+	if not _touch_mode():
+		var first: Control = sheet.passive_button
+		if first == null and not sheet.focus_rows().is_empty():
+			first = sheet.focus_rows()[0][0]
+		if first == null:
+			first = back_button
+		first.grab_focus.call_deferred()
+
+
+## Referme la fiche : retour à la liste des personnages, focus sur la carte du personnage.
+func close_sheet() -> void:
+	if not detail_open:
+		return
+	detail_open = false
+	tooltip.hide_tip()
+	back_button.text = "Retour"
+	_layout()
+	_wire_focus()
+	if not _touch_mode() and selected_index < cards.size():
+		cards[selected_index].grab_focus.call_deferred()
 
 
 func is_sheet_open() -> bool:
-	return sheet.visible
+	return detail_open and sheet.visible
 
 
 func _on_mode_pressed(m: StringName) -> void:
@@ -361,6 +390,9 @@ func _on_start() -> void:
 
 
 func _on_back() -> void:
+	if detail_open:
+		close_sheet()
+		return
 	back_requested.emit()
 
 
@@ -436,7 +468,7 @@ func _wire_focus() -> void:
 			var up: Control
 			var down: Control
 			if line == 0:
-				up = cards[selected_index]
+				up = sheet.passive_button if sheet.passive_button != null else back_button
 			else:
 				var above: Array = rows[r - 2]
 				up = above[mini(k, above.size() - 1)]
@@ -447,6 +479,12 @@ func _wire_focus() -> void:
 				down = mode_buttons[mode]
 			b.focus_neighbor_top = _np(b, up)
 			b.focus_neighbor_bottom = _np(b, down)
+	if sheet.visible and sheet.passive_button != null and not rows.is_empty():
+		var pb := sheet.passive_button
+		pb.focus_neighbor_left = _np(pb, pb)
+		pb.focus_neighbor_right = _np(pb, pb)
+		pb.focus_neighbor_top = _np(pb, back_button)
+		pb.focus_neighbor_bottom = _np(pb, first_opt)
 	# Modes, Retour, Commencer.
 	for i in MODES.size():
 		var b: Button = mode_buttons[MODES[i]]

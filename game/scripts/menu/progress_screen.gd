@@ -39,7 +39,7 @@ func _ready() -> void:
 	if profile == null:
 		profile = CharacterCard.default_profile()
 	if characters.is_empty(): # une liste peut être injectée avant _ready (tests)
-		characters = CharacterCard.load_characters()
+		characters = CharacterCard.sorted_by_difficulty(CharacterCard.load_characters())
 	_build()
 	UiTheme.apply(self)
 	UiTheme.hook_sounds(self)

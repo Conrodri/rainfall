@@ -108,8 +108,11 @@ func _test_sheet_on_arrival(touch: bool) -> void:
 	var s := _spawn(Vector2(1920, 1080), host)
 	await _frames(2)
 	var tag := "tactile" if touch else "souris"
-	_check(s.is_sheet_open(), "%s : fiche ouverte à l'arrivée sans clic" % tag)
-	_check(String(s.sheet.character.get("id", "")) == "tocsin", "%s : fiche du perso présélectionné (dernier choix)" % tag)
+	_check(not s.is_sheet_open(), "%s : arrivée sur la liste (fiche fermée)" % tag)
+	_check(String(s.characters[s.selected_index].get("id", "")) == "tocsin", "%s : perso présélectionné (dernier choix)" % tag)
+	s.cards[s.selected_index].pressed.emit()
+	await _frames(4)
+	_check(s.is_sheet_open() and String(s.sheet.character.get("id", "")) == "tocsin", "%s : fiche du perso présélectionné ouverte à la validation" % tag)
 	_check(not s.hint.visible, "%s : invite « Choisissez un personnage » masquée" % tag)
 	_check(s.sheet.focus_rows().size() == 4, "%s : sorts listés" % tag)
 	host.queue_free()
@@ -128,12 +131,12 @@ func _test_spell_text_fits() -> void:
 			if s.cards[i].locked:
 				continue
 			s.cards[i].pressed.emit()
-			await _frames(16)
+			await _frames(30) # fit du texte : jusqu'à 6 paliers de 2 images
 			var cid := String(s.characters[i].get("id", ""))
 			var sh := s.sheet
-			var scroll: ScrollContainer = sh._scroll
 			var sheet_r := Rect2(sh.global_position, sh.size)
-			_check(sh._content.size.x <= scroll.size.x + 1.0, "%s %s : contenu pas plus large que le panneau (%.0f > %.0f)" % [tag, cid, sh._content.size.x, scroll.size.x])
+			_check(not sh.needs_scroll(), "%s %s : la fiche tient sans défiler (%.0f > %.0f)" % [tag, cid, sh.get_combined_minimum_size().y, sh.allotted_h])
+			_check(sh.find_children("*", "ScrollContainer", true, false).is_empty(), "%s %s : aucune barre de défilement" % [tag, cid])
 			for r in sh._rows:
 				var box: Node = (r.name as Control).get_parent()
 				while box != null and not (box is PanelContainer):
@@ -149,9 +152,8 @@ func _test_spell_text_fits() -> void:
 					_check(lr.end.x <= sheet_r.end.x + 1.0, "%s %s %s : dans le panneau" % [tag, cid, key])
 					_check(l.get_minimum_size().y <= l.size.y + 1.0, "%s %s %s : texte non tronqué (%.0f > %.0f)" % [tag, cid, key, l.get_minimum_size().y, l.size.y])
 					_check(l.get_theme_font_size(&"font_size") >= 12, "%s %s %s : police lisible" % [tag, cid, key])
-			if sh.needs_scroll():
-				_check(scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED, "%s %s : défilement possible" % [tag, cid])
-				print("  %s %s : défilement (échelle de texte %.2f)" % [tag, cid, sh.text_scale])
+			if sh.text_scale < 1.0:
+				print("  %s %s : texte réduit (échelle %.2f)" % [tag, cid, sh.text_scale])
 			# Difficulté sur la fiche (et la carte).
 			if CharacterCard.difficulty_of(s.characters[i]) > 0:
 				_check(sh.find_child("DifficultyRow", true, false) != null, "%s %s : difficulté sur la fiche" % [tag, cid])
@@ -162,7 +164,7 @@ func _test_spell_text_fits() -> void:
 
 
 func _test_difficulty_data() -> void:
-	var want := {"rainette": 3, "tocsin": 3, "arpenteuse": 3, "ardent": 1}
+	var want := {"rainette": 3, "tocsin": 3, "arpenteuse": 3, "ardent": 1, "vigie": 1, "morfil": 1}
 	for c in CharacterCard.load_characters():
 		var id := str(c.get("id", ""))
 		var d := CharacterCard.difficulty_of(c)

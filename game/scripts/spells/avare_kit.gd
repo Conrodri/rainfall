@@ -1117,3 +1117,16 @@ func _play_bleed_fx() -> void:
 	fx.sprite_frames.set_animation_loop(&"default", false)
 	fx.play(&"default")
 	fx.animation_finished.connect(fx.queue_free)
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	return KitResource.passive("Bourse", &"bourse",
+		"L'or que tu portes fait ta force : +%s de dégâts par prix de petit coffre en bourse (un repère sur la jauge), plafond +%s." % [
+			KitResource.pct(GOLD_POWER_PER_P), KitResource.pct(GOLD_POWER_CAP)],
+		"l'or ramassé, et les pièces de la Poignée que tu reprends au sol.",
+		"la Poignée coûte %s de l'or, la Faillite la moitié, et chaque coup subi fait tomber %s de l'or en pièces à ramasser. À chaque étage, tu gardes %s de ta bourse." % [
+			KitResource.pct(COINS_COST_FRAC), KitResource.pct(BLEED_FRAC), KitResource.pct(FLOOR_GOLD_KEEP)],
+		"bourse vide : la Poignée part gratuite, sans pièces à reprendre.")

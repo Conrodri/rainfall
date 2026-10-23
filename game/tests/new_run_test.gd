@@ -192,9 +192,11 @@ func _test_navigation_and_start() -> void:
 			await _action(&"ui_left")
 	_check(_focus() == s.mode_buttons[&"facile"], "ui_left → Facile")
 	# Le focus sélectionne : les cartes parcourues ont changé le perso ; on revient à Ardent avant de lancer.
-	s.cards[0].pressed.emit()
+	s.cards[0].grab_focus() # le focus sélectionne (la fiche s'ouvre à la validation)
 	await _frames(2)
 	_check(s.selected_index == 0 and not s.start_button.disabled, "retour à Ardent avant le départ")
+	s.mode_buttons[&"facile"].grab_focus()
+	await _frames(1)
 	var got: Array = []
 	s.start_requested.connect(func(cfg: Dictionary) -> void: got.append(cfg))
 	await _action(&"ui_accept") # choisit Facile, focus → Commencer
@@ -221,7 +223,7 @@ func _test_navigation_and_start() -> void:
 	var got2: Array = []
 	s.start_requested.connect(func(cfg: Dictionary) -> void: got2.append(cfg))
 	s.start_button.pressed.emit()
-	_check(got2.size() == 1 and String(got2[0].character) == String(_json[last].id), "départ avec %s" % _json[last].id)
+	_check(got2.size() == 1 and String(got2[0].character) == String(s.characters[last].id), "départ avec %s" % s.characters[last].id)
 	s.queue_free()
 	await _frames(2)
 
@@ -237,7 +239,7 @@ func _variant_button(s: NewRunScreen, vid: String) -> Button:
 func _test_sheet_and_variants() -> void:
 	var s := _spawn(FakeProfile.new())
 	await _frames(3)
-	_check(s.is_sheet_open() and String(s.sheet.character.get("id", "")) == String(s.characters[s.selected_index].get("id", "")), "fiche du perso présélectionné ouverte dès l'arrivée (vague 3)")
+	_check(not s.is_sheet_open() and s.cards[s.selected_index].selected, "arrivée sur la liste, perso présélectionné, fiche fermée")
 	s.cards[0].pressed.emit()
 	await _frames(12)
 	_check(s.is_sheet_open(), "fiche d'Ardent ouverte")
@@ -251,7 +253,7 @@ func _test_sheet_and_variants() -> void:
 	locked_b.grab_focus()
 	await _frames(3)
 	_check(s.tooltip.visible and s.tooltip.text_content().contains("Quête de déblocage"), "infobulle de quête au focus")
-	_check(s.tooltip.text_content().contains("Tuer 500 monstres"), "texte de quête affiché")
+	_check(s.tooltip.text_content().contains(String(locked_b.get_meta("option").get("unlock_text", "?"))), "texte de quête affiché (unlock_text de characters.json)")
 	# Survol souris.
 	s.tooltip.hide_tip()
 	locked_b.mouse_entered.emit()
@@ -274,14 +276,20 @@ func _test_sheet_and_variants() -> void:
 	# Navigation fiche : bas depuis un portrait → première option de la fiche.
 	# Le focus sélectionne le personnage (M-B) : la fiche est reconstruite pour le portrait focalisé,
 	# ses lignes (et boutons de variantes) précédentes sont libérées -> on relit la fiche.
-	s.cards[((s.cards.size() - 1) / s.grid_cols) * s.grid_cols].grab_focus() # dernière rangée de la grille
-	await _frames(6)
+	# Fiche : ui_up depuis la 1re rangée de sorts → bouton du passif ; Retour (Liste) referme la fiche.
 	rows = s.sheet.focus_rows()
-	await _action(&"ui_down")
-	_check(not rows.is_empty() and _focus() == rows[0][0], "ui_down depuis un portrait (dernière rangée) → fiche")
-	# ui_cancel : ferme d'abord l'infobulle, puis retour (retour sur Ardent pour sa variante verrouillée).
-	s.cards[0].grab_focus()
-	await _frames(6)
+	rows[0][0].grab_focus()
+	await _frames(2)
+	await _action(&"ui_up")
+	_check(_focus() == s.sheet.passive_button, "ui_up depuis la 1re rangée de sorts → passif (obtenu %s)" % _focus())
+	await _action(&"ui_up")
+	_check(_focus() == s.back_button, "ui_up depuis le passif → bouton Liste")
+	s.back_button.pressed.emit()
+	await _frames(3)
+	_check(not s.is_sheet_open() and s.cards[0].visible, "bouton Liste : retour à la grille")
+	_check(_focus() == s.cards[s.selected_index], "retour à la grille : focus sur la carte du perso")
+	s.cards[0].pressed.emit()
+	await _frames(8)
 	locked_b = _variant_button(s, "roaming_embers")
 	_check(locked_b != null, "fiche d'Ardent reconstruite au retour du focus")
 	if locked_b == null:
@@ -292,9 +300,11 @@ func _test_sheet_and_variants() -> void:
 	locked_b.grab_focus()
 	await _frames(2)
 	await _action(&"ui_cancel")
-	_check(not s.tooltip.visible and back[0] == 0, "ui_cancel ferme l'infobulle")
+	_check(not s.tooltip.visible and back[0] == 0 and s.is_sheet_open(), "ui_cancel ferme d'abord l'infobulle")
 	await _action(&"ui_cancel")
-	_check(back[0] == 1, "ui_cancel → back_requested")
+	_check(not s.is_sheet_open() and back[0] == 0, "ui_cancel ferme la fiche (retour à la liste)")
+	await _action(&"ui_cancel")
+	_check(back[0] == 1, "ui_cancel sur la liste → back_requested")
 	s.queue_free()
 	await _frames(2)
 
@@ -311,12 +321,12 @@ func _test_mb_lisible() -> void:
 		if c._ember.visible:
 			chosen += 1
 	_check(chosen == 1 and s.selected_index == 2 and s.cards[2]._ember.visible, "focus sur la carte 3 : une seule carte choisie (obtenu %d)" % chosen)
-	_check(String(s.sheet.character.get("id", "")) == String(s.characters[2].get("id", "")), "la fiche suit le focus")
-	# Retour sur la même carte depuis la fiche : les choix de variantes ne sont pas réinitialisés.
-	var sheet_before := s.sheet.chosen.duplicate()
-	s.cards[2].grab_focus()
+	_check(not s.is_sheet_open(), "le focus seul n'ouvre pas la fiche (liste)")
+	s.cards[2].pressed.emit()
+	await _frames(8)
+	_check(s.is_sheet_open() and String(s.sheet.character.get("id", "")) == String(s.characters[2].get("id", "")), "valider la carte ouvre sa fiche")
+	s.close_sheet()
 	await _frames(2)
-	_check(s.sheet.chosen == sheet_before, "refocaliser la carte ne reconstruit pas la fiche")
 	# M3 : mode choisi = fond braise opaque ; verrouillé = cadenas ; plus de jargon « Scaling ».
 	var sel_box := s.mode_buttons[&"moyen"].get_theme_stylebox("normal") as StyleBoxFlat
 	_check(sel_box != null and sel_box.bg_color == Color("#C23B12") and sel_box.bg_color.a == 1.0, "mode choisi : fond braise #C23B12 opaque")
@@ -328,7 +338,7 @@ func _test_mb_lisible() -> void:
 	_check(s.mode_labels[&"facile"].text == "Plus doux · rubis −20 %", "légende Facile : '%s'" % s.mode_labels[&"facile"].text)
 	_check(s.mode_labels[&"moyen"].text == "Normal", "légende Moyen : '%s'" % s.mode_labels[&"moyen"].text)
 	# M7 / M8 : tout texte visible fait au moins 18 px (cartes, fiche, barre du bas).
-	s.cards[0].grab_focus()
+	s.cards[0].pressed.emit()
 	await _frames(14)
 	var small: Array[String] = []
 	_collect_small_texts(s, small)
@@ -337,6 +347,8 @@ func _test_mb_lisible() -> void:
 	var fp := FakeProfile.new()
 	fp.unlocked_spells = []
 	var s2 := _spawn(fp)
+	await _frames(4)
+	s2.cards[0].pressed.emit()
 	await _frames(12)
 	var variant_btns := 0
 	for row in s2.sheet.focus_rows():
@@ -411,7 +423,7 @@ func _test_preview_framing() -> void:
 		if sh.preview_stage == null:
 			continue
 		var box := sh.preview_stage.size
-		_check(absf(box.x - box.y) < 1.0, "%s : disque d'aperçu non carré (%s)" % [id, box])
+		_check(box.x > 200.0 and box.y > 200.0, "%s : scène d'aperçu en gros plan (%s)" % [id, box])
 		if not has_sf:
 			_check(sh.preview == null, "%s : aperçu sans sprite" % id)
 			continue
@@ -478,7 +490,6 @@ func _test_ratios() -> void:
 		for i in s.cards.size():
 			var r := s.cards[i].get_rect()
 			_check(area.encloses(r) and r.end.y < modes_y, "%d px : carte %d dans l'écran (%s)" % [int(w), i, r])
-			_check(r.end.x < s.side_panel.position.x, "%d px : carte %d à gauche de la fiche" % [int(w), i])
 			if i > 0:
 				_check(not r.intersects(s.cards[i - 1].get_rect()), "%d px : cartes %d/%d sans chevauchement" % [int(w), i - 1, i])
 		s.queue_free()

@@ -198,3 +198,12 @@ static func variant_a() -> CharacterData:
 
 	c.spells = [s1, s2, s3, s4]
 	return c
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	return KitResource.passive("Braise", &"braise",
+		"Ardent n'a ni jauge ni passif : ses sorts ne dépendent que de leurs recharges. Le sort 1 tire tout seul.",
+		"", "", "", false)

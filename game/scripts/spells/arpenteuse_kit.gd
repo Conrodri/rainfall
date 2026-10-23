@@ -1003,3 +1003,16 @@ static func _point_at(pts: PackedVector2Array, s: float) -> Vector2:
 			return pts[i - 1].lerp(pts[i], s / d)
 		s -= d
 	return pts[pts.size() - 1]
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Chaîne", &"chaine",
+		"La chaîne est la traîne d'Arpenteuse : elle ne blesse que ce qu'elle a parcouru (largeur %s u, un tick toutes les %s s, ralentit de %s)." % [
+			f.call(CHAIN_HALF_WIDTH_U * 2.0), f.call(CHAIN_TICK_S), KitResource.pct(CHAIN_SLOW_PCT)],
+		"chaque pas : les %s derniers u de ton trajet restent posés au sol." % f.call(CHAIN_MAX_U),
+		"immobile plus de %s s, le touret rembobine la chaîne (%s u par seconde) : rester sur place, c'est perdre ta zone." % [f.call(CHAIN_IDLE_S), f.call(CHAIN_REEL_U_S)],
+		"la Boucle (sort 2) exige au moins %s u de chaîne et frappe toute sa longueur. Les sorts 2 à 4 font +%s de dégâts sur élites et boss." % [f.call(BOUCLE_MIN_U), KitResource.pct(BIG_TARGET_ADD)])

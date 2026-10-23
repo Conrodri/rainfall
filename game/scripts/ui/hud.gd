@@ -29,6 +29,7 @@ const HELP_DURATION_S := 8.0
 const HELP_FADE_S := 1.0
 const KEY_HINTS_SHOW_S := 5.0 ## invites de touches sous les sorts : durée affichée en début de partie (réglage « toujours » désactivé)
 const KEY_HINTS_FADE_S := 0.8 ## puis fondu
+const PASSIVE_BADGE := preload("res://scripts/ui/passive_badge.gd") ## icône du passif près des sorts (infobulle : SpellHint)
 const KEY_HINTS_POLL_S := 0.5 ## relecture du réglage (changé dans les paramètres en cours de partie)
 
 var player: Node
@@ -41,6 +42,7 @@ var auto_indicator: SpellButton ## tactile : petite icône du sort 1 (automatiqu
 var bar_dodge: DodgeButton ## recharge de la roulade, à droite de la barre de sorts
 var bar_gauge: ResourceGauge ## ressource du kit (KitResource), à gauche de la barre de sorts (clavier-souris / manette)
 var touch_gauge: ResourceGauge ## ressource du kit, au-dessus de la grappe de sorts tactiles
+var passive_badge: Control ## icône du passif du personnage (PassiveBadge), à gauche de la jauge ; ouvre l'infobulle de passif
 var bar_dodge_key: KeyPrompt
 var pause_button: PauseButton
 var interact_button: InteractButton
@@ -204,6 +206,7 @@ func _process(delta: float) -> void:
 	touch_gauge.set_state(res)
 	if bar_gauge.visible:
 		_place_bar_gauge()
+	_update_passive_badge()
 
 
 static func _fmt_time(s: float) -> String:
@@ -495,6 +498,9 @@ func _build() -> void:
 	bar_gauge = ResourceGauge.new() # ressource du kit : à gauche du sort 1, hors de la barre (qui reste centrée)
 	bar_gauge.name = "BarGauge"
 	root.add_child(bar_gauge)
+	passive_badge = PASSIVE_BADGE.new()
+	passive_badge.name = "PassiveBadge"
+	root.add_child(passive_badge)
 	for i in 4:
 		var col := VBoxContainer.new()
 		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -615,6 +621,8 @@ func _apply_layout() -> void:
 	bar_dodge.setup(0, bar_size * 0.8)
 	bar_gauge.apply_scale(s)
 	touch_gauge.apply_scale(s)
+	passive_badge.apply_scale(s)
+	passive_badge.sync_input_mode()
 	bar_dodge_key.set_height(56.0 * s)
 	bar_dodge_key.custom_minimum_size.x = bar_size + 24.0 * s
 	_spell_bar.add_theme_constant_override("separation", int(22 * s))
@@ -840,6 +848,28 @@ func _place_bar_gauge() -> void:
 	bar_gauge.position = Vector2(br.position.x - bar_gauge.size.x - 22.0 * ui_scale, icons_bottom - bar_gauge.size.y)
 
 
+## Icône du passif : suit le personnage joué, posée à gauche de la jauge de ressource (ou de la barre de sorts si le
+## personnage n'a pas de jauge). Tactile : à gauche de la jauge de la grappe.
+func _update_passive_badge() -> void:
+	var cid: StringName = RunState.character
+	var c: Variant = player.get(&"character") if player != null else null
+	if c is CharacterData:
+		cid = (c as CharacterData).id
+	if cid != passive_badge.char_id:
+		passive_badge.set_character(cid, _accent())
+	if not passive_badge.visible:
+		return
+	var gap := 14.0 * ui_scale
+	if Platform.input_mode == Platform.InputMode.TOUCH:
+		var gh := touch_gauge.size.y
+		passive_badge.global_position = touch_gauge.global_position + Vector2(-passive_badge.size.x - gap, gh - passive_badge.size.y)
+	else:
+		var br := _spell_bar.get_rect()
+		var icons_bottom := br.end.y - (56.0 + 4.0) * ui_scale
+		var left := bar_gauge.position.x if bar_gauge.visible else br.position.x - 22.0 * ui_scale
+		passive_badge.position = Vector2(left - passive_badge.size.x - gap, icons_bottom - passive_badge.size.y)
+
+
 ## Taille de base de la jauge de kit pour la plateforme (ResourceGauge.apply_scale applique le facteur mobile lui-même).
 func _gauge_px() -> Vector2:
 	return ResourceGauge.MOBILE_SIZE if HudMetrics.is_mobile() else ResourceGauge.BASE_SIZE
@@ -857,9 +887,9 @@ func reserved_rects() -> Array[Rect2]:
 		ctrls.append(objectives)
 	if Platform.input_mode == Platform.InputMode.TOUCH:
 		ctrls.append_array(spell_buttons)
-		ctrls.append_array([dodge_button, auto_indicator, touch_gauge, interact_button])
+		ctrls.append_array([dodge_button, auto_indicator, touch_gauge, interact_button, passive_badge])
 	else:
-		ctrls.append_array([_spell_bar, bar_gauge])
+		ctrls.append_array([_spell_bar, bar_gauge, passive_badge])
 	for c in ctrls:
 		var ctl := c as Control
 		if ctl != null and is_instance_valid(ctl) and ctl.is_visible_in_tree():

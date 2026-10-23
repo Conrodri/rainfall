@@ -1,29 +1,45 @@
 class_name CharacterSheet
 extends PanelContainer
-## Fiche d'un personnage (Nouvelle run, §3.2 MISE À JOUR) : aperçu animé `idle_s`, nom, style,
-## config, puis un bloc par sort : icône 96, nom, rôle, description, chiffres clés lus dans
-## `SpellData` (ArdentKit) et, à côté, les variantes en icônes 72 (grisées + cadenas si verrouillées).
-## Survol / focus / appui long sur une variante → infobulle (quête de déblocage ou description).
+## Fiche d'un personnage en gros plan (Nouvelle run, refonte du 23/10/2026) : AUCUN défilement.
+## Tiers gauche : le modèle animé en grand (scène d'aperçu : au clic sur un sort, son animation d'action et son VFX
+## sont joués sans ennemi ni dégâts) puis la description complète du sort survolé / choisi.
+## Deux tiers droits : nom, style et difficulté ; le passif (icône + résumé, infobulle complète) ; les 4 sorts en
+## grille 2×2 (icône, nom, rôle, description courte, chiffres, dégâts au niveau 1 et par niveau ; variantes choisies
+## en dessous de l'icône). Le détail complet est dans le panneau de gauche et dans l'infobulle (survol, focus
+## manette, appui long), jamais derrière un défilement.
 ## Placeholder : icône de variante manquante = icône du sort de base désaturée (§7).
 
 signal option_chosen(slot: int, spell_id: StringName)
+## Un sort vient d'être joué en aperçu (clic, tap, A) : slot et id de l'option jouée.
+signal spell_previewed(slot: int, spell_id: StringName)
 
 const VariantUnlocks := preload("res://scripts/save/variant_unlocks.gd")
+const PASSIVE_BADGE := preload("res://scripts/ui/passive_badge.gd")
 
 const ROLE_TEXT := {"auto": "Auto", "cd": "Recharge", "ultime": "Ultime"}
 const LONG_PRESS_S := 0.45
-const ICON_BASE := 84
-const ICON_VARIANT := 60
+const ICON_BASE := 76
+const ICON_VARIANT := 46
 const COL_ROLE := Color("#FFB347")
 const COL_BODY := Color(0.9, 0.9, 0.93)
 const COL_DIM := Color(0.62, 0.64, 0.68)
-## Cadrage générique de l'aperçu animé : côté du disque, part de la hauteur remplie par le personnage,
-## marge sous les pieds (fractions de la hauteur du disque). Aucune valeur par personnage.
-const STAGE_SIDE := 112.0
+## Cadrage générique de l'aperçu animé : part de la hauteur de la scène remplie par le personnage, marge sous les
+## pieds (fractions de la hauteur), largeur maximale. Aucune valeur par personnage.
 const PREVIEW_FILL := 0.8
 const PREVIEW_FOOT_MARGIN := 0.09
 const PREVIEW_MAX_WIDTH := 0.96
 const IDLE_ANIMS: Array[StringName] = [&"idle_s", &"idle_se", &"idle"]
+## Anims d'action essayées (dans l'ordre, suffixe de direction `_s` / `_se` ou nue) pour l'aperçu d'un sort, par slot.
+## Aucune trouvée = squash générique du sprite (jamais d'erreur).
+const ACTION_ANIMS := {
+	1: [&"attack", &"slash", &"swing", &"shoot", &"draw"],
+	2: [&"cast", &"throw", &"wave", &"flare", &"loop", &"net"],
+	3: [&"cast", &"slam", &"plant", &"net", &"throw"],
+	4: [&"cast_ult", &"ult", &"cast", &"volley", &"summon", &"lift"],
+}
+const ACTION_DIRS: Array[String] = ["_s", "_se", ""]
+const PREVIEW_MAX_S := 1.6 ## durée maximale d'un aperçu (anim d'action ou VFX bouclé), puis retour à l'attente
+const SQUASH := 0.08
 ## Boîte englobante des pixels opaques de l'animation idle, par SpriteFrames + animation (calculée une fois).
 static var _bbox_cache: Dictionary = {}
 
@@ -34,22 +50,43 @@ var locked := false
 ## slot (1-4) -> id du sort choisi pour la run (base par défaut).
 var chosen: Dictionary = {}
 var preview: AnimatedSprite2D
-## Disque d'aperçu (parent de `preview`), carré STAGE_SIDE.
+## Scène d'aperçu (parent de `preview` et de la couche d'effets).
 var preview_stage: Control
-## Vrai si au moins une variante du personnage est débloquée (sinon la colonne de variantes est masquée).
+## Vrai si au moins une variante du personnage est débloquée (sinon les variantes sont masquées).
 var show_variants := false
+## Bouton du passif (focusable : manette / clavier) ; null si la fiche est verrouillée.
+var passive_button: Button
+## Slot du sort mis en avant (dernier sort joué en aperçu), 0 = aucun.
+var selected_slot := 0
+## Hauteur allouée par l'écran (NewRunScreen) : la fiche doit y tenir sans défiler (needs_scroll).
+var allotted_h := 0.0
+## Échelle de texte appliquée par _fit_text() (1 = tailles nominales).
+var text_scale := 1.0
 
-var _content: VBoxContainer ## en-tête (aperçu, nom) puis un bloc par sort, dans un ScrollContainer (filet de sécurité)
-var _scroll: ScrollContainer
-var _rows: Array = [] ## par slot : {buttons: Array[Button], name: Label, role: Label, desc: Label, stats: Label, spell: Dictionary}
+var _root: HBoxContainer ## colonne gauche (scène + détail) puis colonne droite
+var _right: VBoxContainer
+var _grid: GridContainer
+var _fx: Node2D ## couche d'effets de l'aperçu (frames de VFX, projectile), vidée à chaque sort
+var _rows: Array = [] ## par slot : {buttons, name, role, desc, stats, dmg, cell, spell}
+var _detail_name: Label
+var _detail_tag: Label
+var _detail_desc: Label
+var _detail_stats: Label
+var _passive_labels: Array[Label] = []
 var _spell_data: Dictionary = {} ## id -> SpellData
 var _press_token := 0
+var _play_token := 0
 var _tween: Tween
+var _squash: Tween
 var _fit_token := 0
-## Échelle de texte appliquée par _fit_text() (1 = tailles nominales) : texte réduit avant de recourir au défilement.
-var text_scale := 1.0
-const TEXT_SCALES: Array[float] = [1.0, 0.95, 0.9] ## plancher 0,9 (audit M8) puis défilement ; jamais sous MIN_FONT
-const ROW_FONTS := {"name": 28, "role": 24, "desc": 20, "stats": 20}
+var _fit_key := Vector2.ZERO
+var _slim := false ## dernier recours : chiffres des cases masqués (ils restent dans le panneau de gauche)
+var _compact := false
+var _shrink_desc := false ## dernier recours du fit : descriptions de cases sur une seule ligne
+const TEXT_SCALES: Array[float] = [1.0, 0.94, 0.88, 0.82]
+const ROW_FONTS := {"name": 28, "role": 24, "desc": 20, "stats": 20, "dmg": 20}
+const DETAIL_FONTS := {"name": 30, "tag": 20, "desc": 20, "stats": 20}
+const PASSIVE_FONTS := {"name": 28, "text": 20}
 
 
 func _init() -> void:
@@ -57,16 +94,15 @@ func _init() -> void:
 	var da := UiTheme.da_box("panel_9slice", 0.5)
 	add_theme_stylebox_override("panel", da if da != null else CharacterCard.panel_box(Color("#1a1620"), CharacterCard.COL_BORDER, 2, 0.9, false))
 	mouse_filter = Control.MOUSE_FILTER_PASS
-	_scroll = ScrollContainer.new()
-	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_scroll.mouse_filter = Control.MOUSE_FILTER_PASS
-	_scroll.follow_focus = true # manette / clavier : le bloc focalisé reste visible
-	add_child(_scroll)
-	_content = VBoxContainer.new()
-	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_content.add_theme_constant_override("separation", 6)
-	_scroll.add_child(_content)
+	var margin := MarginContainer.new()
+	margin.name = "Margin"
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 14)
+	add_child(margin)
+	_root = HBoxContainer.new()
+	_root.add_theme_constant_override("separation", 26)
 	resized.connect(_on_resized)
+	margin.add_child(_root)
 
 
 ## Remplit la fiche et la fait apparaître (fondu + glissement 0,18 s).
@@ -75,9 +111,16 @@ func open(c: Dictionary, is_locked: bool, animate := true) -> void:
 	locked = is_locked
 	chosen.clear()
 	_rows.clear()
+	_passive_labels.clear()
+	passive_button = null
+	selected_slot = 0
+	_play_token += 1
+	_compact = false
+	_slim = false
+	text_scale = 1.0
 	_spell_data = _load_spell_data(String(c.get("id", "")))
-	for ch in _content.get_children():
-		_content.remove_child(ch)
+	for ch in _root.get_children():
+		_root.remove_child(ch)
 		ch.queue_free()
 	_build_identity()
 	if locked:
@@ -88,7 +131,6 @@ func open(c: Dictionary, is_locked: bool, animate := true) -> void:
 		tooltip.hide_tip()
 	var was_visible := visible
 	visible = true
-	_scroll.scroll_vertical = 0
 	_fit_text.call_deferred()
 	if animate and is_inside_tree():
 		if _tween != null:
@@ -116,29 +158,50 @@ func chosen_spells() -> Dictionary:
 	return chosen.duplicate()
 
 
+## Taille de police effective : base × échelle de fit × facteur tactile, jamais sous le plancher (18 px PC / 26 px mobile).
+func _font(base: int, k := -1.0) -> int:
+	var kk := text_scale if k < 0.0 else k
+	var touch_k := 1.3 if _big_text() else 1.0
+	return maxi(int(round(base * kk * touch_k)), _font_floor())
+
+
+static func _big_text() -> bool:
+	var loop := Engine.get_main_loop() as SceneTree
+	var p := loop.root.get_node_or_null("Platform") if loop != null else null
+	return p != null and (bool(p.call("is_touch_mode")) or bool(p.call("is_mobile")))
+
+
+static func _font_floor() -> int:
+	return 26 if _big_text() else CharacterCard.MIN_FONT
+
+
 # --- Construction ------------------------------------------------------------
 
 func _build_identity() -> void:
-	# En-tête : petit aperçu animé (le grand rendu est sur la carte), nom, titre / style, prise en main.
-	var head := HBoxContainer.new()
-	head.add_theme_constant_override("separation", 18)
-	_content.add_child(head)
+	# Colonne gauche : scène d'aperçu (grande), puis, si le kit est ouvert, le détail du sort (_build_kit).
+	var left := VBoxContainer.new()
+	left.name = "Left"
+	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	left.size_flags_stretch_ratio = 1.0 if (size.x >= 1700.0 or not _big_text()) else 1.5 # tactile en 4:3 : détail plus large
+	left.add_theme_constant_override("separation", 10)
+	_root.add_child(left)
 	var stage := Panel.new()
 	stage.name = "PreviewStage"
-	stage.custom_minimum_size = Vector2(STAGE_SIDE, STAGE_SIDE)
-	stage.size_flags_vertical = Control.SIZE_SHRINK_CENTER # carré : l'en-tête ne l'étire pas en ovale
+	stage.custom_minimum_size = Vector2(160, 200)
+	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stage.clip_contents = true
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var disc := StyleBoxFlat.new()
-	disc.bg_color = Color(0.06, 0.05, 0.08, 0.85)
-	disc.set_corner_radius_all(int(STAGE_SIDE * 0.5))
+	var acc := CharacterCard.accent_color(character)
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.06, 0.05, 0.08, 0.85)
+	bg.set_corner_radius_all(18)
 	# Liseré de l'accent du personnage (un seul accent émissif par personnage).
-	disc.border_color = COL_DIM.darkened(0.4) if locked else Color(CharacterCard.accent_color(character), 0.85)
-	disc.set_border_width_all(2)
-	disc.shadow_color = Color(CharacterCard.accent_color(character), 0.0 if locked else 0.35)
-	disc.shadow_size = 10
-	stage.add_theme_stylebox_override("panel", disc)
-	head.add_child(stage)
+	bg.border_color = COL_DIM.darkened(0.4) if locked else Color(acc, 0.85)
+	bg.set_border_width_all(2)
+	bg.shadow_color = Color(acc, 0.0 if locked else 0.3)
+	bg.shadow_size = 10
+	stage.add_theme_stylebox_override("panel", bg)
+	left.add_child(stage)
 	preview_stage = stage
 	preview = null
 	var sf_path := String(character.get("sprite_frames", ""))
@@ -157,28 +220,38 @@ func _build_identity() -> void:
 		stage.resized.connect(_frame_preview)
 		_frame_preview()
 	else:
-		var q := CharacterCard.make_label("?", 70, COL_DIM)
+		var q := CharacterCard.make_label("?", 90, COL_DIM)
 		q.set_anchors_preset(Control.PRESET_FULL_RECT)
 		q.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		q.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		stage.add_child(q)
-	var col := VBoxContainer.new()
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.add_theme_constant_override("separation", 0)
-	head.add_child(col)
-	var nm := CharacterCard.make_label(String(character.get("name", "?")), 42, COL_DIM if locked else CharacterCard.COL_TEXT)
+	_fx = Node2D.new()
+	_fx.name = "Fx"
+	stage.add_child(_fx)
+	# Colonne droite : en-tête (nom, style, difficulté), puis passif et sorts (_build_kit) ou message verrouillé.
+	_right = VBoxContainer.new()
+	_right.name = "Right"
+	_right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_right.size_flags_stretch_ratio = 2.0
+	_right.add_theme_constant_override("separation", 10)
+	_root.add_child(_right)
+	var head := VBoxContainer.new()
+	head.add_theme_constant_override("separation", 0)
+	_right.add_child(head)
+	var nm := CharacterCard.make_label(String(character.get("name", "?")), 46, COL_DIM if locked else CharacterCard.COL_TEXT)
+	nm.name = "Name"
 	nm.add_theme_font_override("font", UiTheme.title_font())
-	col.add_child(nm)
+	head.add_child(nm)
 	var title := String(character.get("title", ""))
 	var style := String(character.get("style", ""))
 	var sub_txt := ("%s · %s" % [title, style]) if title != "" else style
 	var cfg_txt := String(character.get("config", ""))
 	if cfg_txt != "":
 		sub_txt += " · " + cfg_txt
-	var sub := CharacterCard.make_label(sub_txt, 22, COL_DIM if locked else CharacterCard.accent_color(character).lerp(CharacterCard.COL_TEXT, 0.35), 4)
+	var sub := CharacterCard.make_label(sub_txt, 22, COL_DIM if locked else acc.lerp(CharacterCard.COL_TEXT, 0.35), 4)
+	sub.name = "Subtitle"
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	col.add_child(sub)
+	head.add_child(sub)
 	var lvl := CharacterCard.difficulty_of(character)
 	if lvl > 0:
 		var drow := HBoxContainer.new()
@@ -187,7 +260,7 @@ func _build_identity() -> void:
 		drow.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		drow.add_child(CharacterCard.make_label("Difficulté", 22, COL_DIM, 4))
 		drow.add_child(CharacterCard.make_difficulty_badge(lvl, 20.0, true, 22))
-		col.add_child(drow)
+		head.add_child(drow)
 
 
 # --- Cadrage de l'aperçu ----------------------------------------------------------
@@ -303,7 +376,7 @@ func _build_locked() -> void:
 	v.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	v.alignment = BoxContainer.ALIGNMENT_CENTER
 	v.add_theme_constant_override("separation", 16)
-	_content.add_child(v)
+	_right.add_child(v)
 	v.add_child(CharacterCard.make_label("Personnage verrouillé", 44, CharacterCard.COL_TEXT))
 	var obj := ""
 	if bool(character.get("hidden", false)):
@@ -320,18 +393,23 @@ func _build_locked() -> void:
 
 
 func _build_kit() -> void:
-	var grid := GridContainer.new()
-	grid.columns = 1
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	grid.add_theme_constant_override("v_separation", 8)
-	_content.add_child(grid)
 	var spells: Array = character.get("spells", [])
 	if spells.is_empty():
 		# Personnage ouvert dont le kit n'est pas encore décrit dans characters.json.
 		var l := CharacterCard.make_label("Kit en préparation : les sorts apparaîtront ici.", 28, COL_DIM)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_content.add_child(l)
+		_right.add_child(l)
 		return
+	_build_passive()
+	_build_detail()
+	_grid = GridContainer.new()
+	_grid.name = "Spells"
+	_grid.columns = 2
+	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_grid.add_theme_constant_override("h_separation", 10)
+	_grid.add_theme_constant_override("v_separation", 10)
+	_right.add_child(_grid)
 	# Variantes masquées tant qu'aucune n'est débloquée (audit M8, divulgation progressive) : une seule ligne
 	# de rappel ; dès qu'une variante du personnage est débloquée, toutes ses variantes apparaissent.
 	show_variants = false
@@ -342,7 +420,7 @@ func _build_kit() -> void:
 			if CharacterCard.is_variant_unlocked(profile, v):
 				show_variants = true
 	for i in spells.size():
-		grid.add_child(_build_row(i + 1, spells[i]))
+		_grid.add_child(_build_row(i + 1, spells[i]))
 	# Choix mémorisé pour ce personnage (Profile.loadout), seulement les variantes encore débloquées.
 	var saved := resolve_loadout(profile, character)
 	for r in _rows:
@@ -354,66 +432,165 @@ func _build_kit() -> void:
 		var note := CharacterCard.make_label("%d variante%s de sorts à débloquer en jouant" % [variant_count, "s" if variant_count > 1 else ""], CharacterCard.MIN_FONT, COL_DIM, 4)
 		note.name = "VariantsNote"
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_content.add_child(note)
+		_right.add_child(note)
+	_show_detail(1, _option_for_slot(1))
+
+
+## Passif du personnage : icône (bouton focusable) + résumé ; infobulle complète au survol / focus / appui long.
+func _build_passive() -> void:
+	var info: Dictionary = PASSIVE_BADGE.info_for(StringName(String(character.get("id", ""))))
+	if info.is_empty():
+		return
+	var box := PanelContainer.new()
+	box.name = "Passive"
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_theme_stylebox_override("panel", _cell_box(false))
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 14)
+	box.add_child(h)
+	var b := Button.new()
+	b.name = "PassiveButton"
+	b.custom_minimum_size = Vector2(ICON_BASE + 14, ICON_BASE + 14)
+	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	b.focus_mode = Control.FOCUS_ALL
+	b.add_theme_stylebox_override("focus", CharacterCard.focus_box())
+	var sb := CharacterCard.panel_box(Color("#1a1620"), Color(CharacterCard.accent_color(character), 0.9), 2, 0.85, false)
+	for st in ["normal", "hover", "pressed", "disabled"]:
+		b.add_theme_stylebox_override(st, sb)
+	var tex: Texture2D = PASSIVE_BADGE.icon_for(info)
+	if tex != null:
+		var tr := TextureRect.new()
+		tr.texture = tex
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.size = Vector2(ICON_BASE, ICON_BASE)
+		tr.position = Vector2(7, 7)
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(tr)
+	else: # placeholder en code : initiale du passif (remplacée par l'icône Codex)
+		b.text = String(info.get("name", "?")).substr(0, 1).to_upper()
+		b.add_theme_font_size_override("font_size", 44)
+	b.pressed.connect(_show_passive_tip.bind(b))
+	b.focus_entered.connect(_show_passive_tip.bind(b))
+	b.mouse_entered.connect(_show_passive_tip.bind(b))
+	b.focus_exited.connect(_hide_tip_for.bind(b))
+	b.mouse_exited.connect(_hide_tip_for.bind(b))
+	b.gui_input.connect(_on_passive_input.bind(b))
+	b.set_meta("info", info)
+	h.add_child(b)
+	passive_button = b
+	var txt := VBoxContainer.new()
+	txt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	txt.add_theme_constant_override("separation", 0)
+	h.add_child(txt)
+	var nm := CharacterCard.make_label("Passif · " + String(info.get("name", "")), PASSIVE_FONTS.name, COL_ROLE)
+	nm.name = "PassiveName"
+	txt.add_child(nm)
+	var summary := CharacterCard.make_label(String(info.get("intro", info.get("desc", ""))), PASSIVE_FONTS.text, COL_BODY, 4)
+	summary.name = "PassiveText"
+	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	summary.max_lines_visible = 2
+	summary.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	summary.custom_minimum_size = Vector2(120, 0)
+	txt.add_child(summary)
+	_passive_labels = [nm, summary]
+	_right.add_child(box)
+
+
+## Panneau de détail (colonne gauche, sous la scène) : sort survolé / focalisé / joué, description complète.
+func _build_detail() -> void:
+	var left := _root.get_node("Left") as VBoxContainer
+	var box := PanelContainer.new()
+	box.name = "Detail"
+	box.add_theme_stylebox_override("panel", _cell_box(false))
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 2)
+	box.add_child(v)
+	_detail_name = CharacterCard.make_label("", DETAIL_FONTS.name, CharacterCard.COL_TEXT)
+	_detail_name.name = "DetailName"
+	_detail_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_name.custom_minimum_size = Vector2(120, 0)
+	v.add_child(_detail_name)
+	_detail_tag = CharacterCard.make_label("", DETAIL_FONTS.tag, COL_ROLE, 4)
+	_detail_tag.name = "DetailTag"
+	_detail_tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_tag.custom_minimum_size = Vector2(120, 0)
+	v.add_child(_detail_tag)
+	_detail_desc = CharacterCard.make_label("", DETAIL_FONTS.desc, COL_BODY, 4)
+	_detail_desc.name = "DetailDesc"
+	_detail_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_desc.custom_minimum_size = Vector2(120, 0)
+	v.add_child(_detail_desc)
+	_detail_stats = CharacterCard.make_label("", DETAIL_FONTS.stats, COL_ROLE, 4)
+	_detail_stats.name = "DetailStats"
+	_detail_stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_detail_stats.custom_minimum_size = Vector2(120, 0)
+	v.add_child(_detail_stats)
+	left.add_child(box)
+
+
+func _cell_box(selected: bool) -> StyleBox:
+	var sb := CharacterCard.panel_box(CharacterCard.COL_PANEL, CharacterCard.COL_FOCUS if selected else Color(0.35, 0.38, 0.45), 3 if selected else 1, 0.7)
+	if sb is StyleBoxTexture:
+		sb.content_margin_top = 4.0
+		sb.content_margin_bottom = 4.0
+		if selected:
+			(sb as StyleBoxTexture).modulate_color = Color(1.0, 0.85, 0.55)
+	return sb
 
 
 func _build_row(slot: int, spell: Dictionary) -> Control:
 	var box := PanelContainer.new()
+	box.name = "Spell%d" % slot
 	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var rp := CharacterCard.panel_box(CharacterCard.COL_PANEL, Color(0.35, 0.38, 0.45), 1, 0.7)
-	if rp is StyleBoxTexture:
-		rp.content_margin_top = 3.0
-		rp.content_margin_bottom = 3.0
-	box.add_theme_stylebox_override("panel", rp)
+	box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	box.add_theme_stylebox_override("panel", _cell_box(false))
 	var h := HBoxContainer.new()
-	h.add_theme_constant_override("separation", 14)
+	h.add_theme_constant_override("separation", 12)
 	box.add_child(h)
-	var row := {"spell": spell, "buttons": []}
+	var row := {"spell": spell, "buttons": [], "cell": box}
 	var base_id := StringName(spell.get("id", ""))
 	var base_icon := ArdentKit.spell_icon(base_id)
-	# Colonne gauche : sort de base (icône 96) puis, dessous, ses variantes (icônes 72).
+	# Colonne gauche : sort de base (icône 84) puis, dessous, ses variantes (icônes 52).
 	var left := VBoxContainer.new()
-	left.add_theme_constant_override("separation", 6)
+	left.add_theme_constant_override("separation", 4)
 	left.alignment = BoxContainer.ALIGNMENT_CENTER
 	h.add_child(left)
 	var base_btn := _option_button(ICON_BASE, base_icon, false, null)
 	base_btn.set_meta("slot", slot)
 	base_btn.set_meta("option", spell)
 	base_btn.set_meta("is_base", true)
+	base_btn.name = "Base_" + String(base_id)
 	base_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	left.add_child(base_btn)
 	row.buttons.append(base_btn)
 	var vrow := HBoxContainer.new()
 	vrow.alignment = BoxContainer.ALIGNMENT_CENTER
-	vrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	vrow.add_theme_constant_override("separation", 4)
+	left.add_child(vrow)
 
 	var txt := VBoxContainer.new()
 	txt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	txt.add_theme_constant_override("separation", 2)
+	txt.add_theme_constant_override("separation", 0)
 	h.add_child(txt)
 	var head := HBoxContainer.new()
-	head.add_theme_constant_override("separation", 12)
+	head.add_theme_constant_override("separation", 10)
 	txt.add_child(head)
-	row.name = CharacterCard.make_label("", 28)
+	row.name = CharacterCard.make_label("", ROW_FONTS.name)
 	row.name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART # nom long + rôle sur un panneau étroit : retour à la ligne
 	row.name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.name.custom_minimum_size = Vector2(80, 0)
+	row.name.custom_minimum_size = Vector2(60, 0)
 	head.add_child(row.name)
 	# « role » facultatif dans characters.json (Averse : « 20 d'eau ») remplace le type par défaut (« Recharge »)
-	row.role = CharacterCard.make_label(String(spell.get("role", ROLE_TEXT.get(String(spell.get("slot", "")), ""))), 24, COL_ROLE)
+	row.role = CharacterCard.make_label(String(spell.get("role", ROLE_TEXT.get(String(spell.get("slot", "")), ""))), ROW_FONTS.role, COL_ROLE)
 	row.role.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(row.role)
-	row.desc = CharacterCard.make_label("", 20, COL_BODY, 4)
-	row.desc.add_theme_constant_override("line_spacing", 0)
-	row.desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	row.desc.custom_minimum_size = Vector2(160, 0)
+	row.desc = _short_label(ROW_FONTS.desc, COL_BODY, 2)
 	txt.add_child(row.desc)
-	row.stats = CharacterCard.make_label("", ROW_FONTS["stats"], COL_ROLE, 4)
-	row.stats.add_theme_constant_override("line_spacing", 0)
-	row.stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	row.stats.custom_minimum_size = Vector2(160, 0)
+	row.stats = _short_label(ROW_FONTS.stats, COL_ROLE, 1)
 	txt.add_child(row.stats)
-	h.add_child(vrow) # variantes à droite du texte
+	row.dmg = _short_label(ROW_FONTS.dmg, Color("#9BE29B"), 1)
+	txt.add_child(row.dmg)
 
 	var variants: Array = spell.get("variants", []) if show_variants else []
 	for v in variants:
@@ -435,6 +612,17 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	_refresh_row(row)
 	_rows.append(row)
 	return box
+
+
+## Libellé de case : retour à la ligne, `lines` lignes au plus (ellipse), le détail complet est dans le panneau de gauche.
+func _short_label(font_size: int, col: Color, lines: int) -> Label:
+	var l := CharacterCard.make_label("", font_size, col, 4)
+	l.add_theme_constant_override("line_spacing", 0)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.max_lines_visible = lines
+	l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	l.custom_minimum_size = Vector2(60, 0)
+	return l
 
 
 func _option_button(icon_size: int, icon: Texture2D, gray: bool, _variant: Variant) -> Button:
@@ -488,7 +676,67 @@ func _refresh_row(row: Dictionary) -> void:
 	row.desc.text = String(opt.get("desc", ""))
 	var sd: SpellData = _spell_data.get(StringName(opt.get("id", "")))
 	row.stats.text = spell_stats_text(sd) if sd != null else ""
-	row.stats.visible = row.stats.text != ""
+	row.stats.visible = row.stats.text != "" and not _slim
+	row.dmg.text = scaling_text(sd, true) if sd != null else ""
+	row.dmg.visible = row.dmg.text != "" and not _slim
+	if _detail_name != null and selected_slot == slot:
+		_show_detail(slot, opt)
+
+
+## Option (base ou variante) actuellement choisie pour `slot`, {} sinon.
+func _option_for_slot(slot: int) -> Dictionary:
+	for r in _rows:
+		if int(r.buttons[0].get_meta("slot")) != slot:
+			continue
+		for b in r.buttons:
+			var o: Dictionary = b.get_meta("option")
+			if StringName(o.get("id", "")) == chosen.get(slot, &""):
+				return o
+		return r.spell
+	return {}
+
+
+## Panneau de gauche : nom, type, description COMPLÈTE, chiffres et scaling de dégâts de l'option `o` du `slot`.
+func _show_detail(slot: int, o: Dictionary) -> void:
+	if _detail_name == null or o.is_empty():
+		return
+	var spells: Array = character.get("spells", [])
+	var sp: Dictionary = spells[slot - 1] if slot >= 1 and slot <= spells.size() else {}
+	var sd: SpellData = _spell_data.get(StringName(o.get("id", "")))
+	var role := String(sp.get("role", ROLE_TEXT.get(String(sp.get("slot", "")), "")))
+	_detail_name.text = String(o.get("name", ""))
+	_detail_tag.text = "Sort %d · %s" % [slot, role] if role != "" else "Sort %d" % slot
+	_detail_desc.text = String(o.get("desc", ""))
+	var lines: Array[String] = []
+	if sd != null:
+		var st := spell_stats_text(sd)
+		if st != "":
+			lines.append(st)
+		var sc := scaling_text(sd, false)
+		if sc != "":
+			lines.append(sc)
+	_detail_stats.text = "\n".join(lines)
+	_detail_stats.visible = not lines.is_empty()
+
+
+## Dégâts d'un sort au niveau 1 et par niveau, depuis le coef du sort et Balance.player_base_damage (même base que le jeu).
+static func scaling_text(sd: SpellData, short: bool) -> String:
+	if sd == null or sd.coef <= 0.0:
+		return ""
+	var d1 := sd.coef * Balance.player_base_damage(1)
+	var per := sd.coef * (Balance.player_base_damage(2) - Balance.player_base_damage(1))
+	if short:
+		return "Niv. 1 : %s · +%s/niv." % [CharacterCard.fmt_num(snappedf(d1, 0.1)), CharacterCard.fmt_num(snappedf(per, 0.1))]
+	return "Dégâts : %s %% du dégât de base (niv. 1 : %s, +%s par niveau) + objets" % [
+		CharacterCard.fmt_num(snappedf(sd.coef * 100.0, 0.1)), CharacterCard.fmt_num(snappedf(d1, 0.1)), CharacterCard.fmt_num(snappedf(per, 0.1))]
+
+
+## Met en avant les cases : bordure du sort `selected_slot`.
+func _highlight() -> void:
+	for r in _rows:
+		var cell := r.get("cell") as PanelContainer
+		if cell != null:
+			cell.add_theme_stylebox_override("panel", _cell_box(int(r.buttons[0].get_meta("slot")) == selected_slot))
 
 
 ## Cadenas sur une variante verrouillée : `ui/menu/icon_lock.png` (§7) ou libellé en attendant.
@@ -515,11 +763,13 @@ func _on_option_pressed(b: Button) -> void:
 		if r.buttons.has(b):
 			_refresh_row(r)
 	option_chosen.emit(slot, chosen[slot])
+	preview_spell(slot, o)
 	if not bool(b.get_meta("is_base", false)):
 		_show_tip(b)
 
 
 func _on_option_hover(b: Button) -> void:
+	_show_detail(int(b.get_meta("slot")), b.get_meta("option"))
 	if bool(b.get_meta("is_base", false)):
 		if tooltip != null:
 			tooltip.hide_tip()
@@ -564,6 +814,168 @@ func _show_tip(b: Button) -> void:
 		tooltip.show_for(b, String(o.get("name", "")), "Sélectionnée pour la run" if sel else "Débloquée · appuyer pour choisir", String(o.get("desc", "")))
 
 
+## Infobulle du passif (survol, focus, appui long) : explication complète, chiffres lus dans le kit.
+func _show_passive_tip(b: Button) -> void:
+	if tooltip == null or not is_instance_valid(b):
+		return
+	var info: Dictionary = b.get_meta("info", {})
+	tooltip.show_for(b, "Passif · " + String(info.get("name", "")), "", String(info.get("desc", "")))
+
+
+func _hide_tip_for(b: Button) -> void:
+	if tooltip != null and not _is_touch() and not b.has_focus():
+		tooltip.hide_tip(b)
+
+
+func _on_passive_input(ev: InputEvent, b: Button) -> void:
+	if ev is InputEventScreenTouch:
+		if ev.pressed:
+			_press_token += 1
+			var tok := _press_token
+			get_tree().create_timer(LONG_PRESS_S, true).timeout.connect(func() -> void:
+				if tok == _press_token and is_instance_valid(b):
+					_show_passive_tip(b))
+		else:
+			_press_token += 1
+
+
+# --- Aperçu d'un sort sur le modèle -------------------------------------------------
+
+## Joue le sort `o` du `slot` sur le modèle : anim d'action du personnage (attack / cast / cast_ult… selon le slot),
+## puis VFX du sort s'il existe (zone ou projectile) dans la scène d'aperçu. Ni ennemi ni dégâts. Sans anim ni VFX,
+## repli propre : léger squash du sprite. Les effets précédents sont libérés avant (aucune fuite de nœuds).
+func preview_spell(slot: int, o: Dictionary) -> void:
+	selected_slot = slot
+	_highlight()
+	_show_detail(slot, o)
+	_play_token += 1
+	var tok := _play_token
+	_clear_fx()
+	var sd: SpellData = _spell_data.get(StringName(o.get("id", "")))
+	var t := _play_action(slot)
+	var tv := _play_vfx(sd)
+	if is_inside_tree():
+		var back := minf(maxf(t, tv), PREVIEW_MAX_S)
+		get_tree().create_timer(back, true).timeout.connect(_back_to_idle.bind(tok))
+	spell_previewed.emit(slot, StringName(o.get("id", "")))
+
+
+func _clear_fx() -> void:
+	if _fx == null:
+		return
+	for ch in _fx.get_children():
+		_fx.remove_child(ch)
+		ch.queue_free()
+
+
+## Anim d'action du modèle pour ce slot ; retourne sa durée (s) ou celle du squash de repli.
+func _play_action(slot: int) -> float:
+	if preview == null or preview.sprite_frames == null:
+		return 0.0
+	var sf := preview.sprite_frames
+	var anim := action_anim(sf, slot)
+	if _squash != null:
+		_squash.kill()
+	_frame_preview()
+	if anim != &"":
+		preview.play(anim)
+		var fps := sf.get_animation_speed(anim)
+		var total := 0.0
+		for i in sf.get_frame_count(anim):
+			total += sf.get_frame_duration(anim, i)
+		return total / fps if fps > 0.0 else 0.3
+	# repli générique : squash du sprite (anim d'action absente)
+	var k := preview.scale
+	_squash = create_tween()
+	_squash.tween_property(preview, "scale", Vector2(k.x * (1.0 + SQUASH), k.y * (1.0 - SQUASH)), 0.08)
+	_squash.tween_property(preview, "scale", k, 0.14)
+	return 0.3
+
+
+## Anim d'action à jouer pour un slot (suffixes de direction essayés), &"" si le modèle n'en a aucune.
+static func action_anim(sf: SpriteFrames, slot: int) -> StringName:
+	if sf == null:
+		return &""
+	for name: StringName in ACTION_ANIMS.get(slot, []):
+		for suf in ACTION_DIRS:
+			var a := StringName(String(name) + suf)
+			if sf.has_animation(a) and sf.get_frame_count(a) > 0:
+				return a
+	return &""
+
+
+## VFX du sort dans la scène d'aperçu (zone : frames `vfx_frames` à l'échelle du rayon du sort ; sinon projectile
+## qui traverse la scène). Retourne sa durée (s), 0 sans VFX.
+func _play_vfx(sd: SpellData) -> float:
+	if sd == null or _fx == null or preview_stage == null:
+		return 0.0
+	var path := sd.vfx_frames if sd.vfx_frames != "" else sd.projectile_frames
+	if path == "" or not ResourceLoader.exists(path):
+		return 0.0
+	var frames := load(path) as SpriteFrames
+	if frames == null:
+		return 0.0
+	var anim: StringName = &"default" if frames.has_animation(&"default") else &""
+	if anim == &"":
+		var names := frames.get_animation_names()
+		if names.is_empty():
+			return 0.0
+		anim = StringName(names[0])
+	if frames.get_frame_count(anim) == 0:
+		return 0.0
+	var box := preview_stage.size
+	var cr := preview_content_rect()
+	var center := cr.get_center() if cr.size.x > 0.0 else box * 0.5
+	var px_u := maxf(cr.size.y if cr.size.y > 0.0 else box.y * 0.7, 1.0) # 1 u = hauteur du personnage
+	var tex := frames.get_frame_texture(anim, 0)
+	var fsize := tex.get_size() if tex != null else Vector2(128, 128)
+	var spr := AnimatedSprite2D.new()
+	spr.sprite_frames = frames
+	spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	spr.position = center
+	if sd.vfx_additive:
+		var mat := CanvasItemMaterial.new()
+		mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		spr.material = mat
+	var dur := 0.0
+	var fps := frames.get_animation_speed(anim)
+	for i in frames.get_frame_count(anim):
+		dur += frames.get_frame_duration(anim, i)
+	dur = dur / fps if fps > 0.0 else 0.5
+	if sd.vfx_frames != "":
+		var s := (sd.radius_u * px_u / sd.vfx_radius_px) if (sd.radius_u > 0.0 and sd.vfx_radius_px > 0.0) else (px_u * 2.5 / maxf(fsize.x, 1.0))
+		s = minf(s, box.x * 1.1 / maxf(fsize.x, 1.0))
+		var aspect := sd.vfx_floor_aspect if sd.vfx_radius_px > 0.0 else 1.0
+		spr.scale = Vector2(s, s * aspect)
+		_fx.add_child(spr)
+		spr.play(anim)
+		get_tree().create_timer(minf(dur, PREVIEW_MAX_S), true).timeout.connect(_free_fx.bind(spr))
+	else: # projectile : traverse la scène vers la droite
+		var s2 := px_u * 0.6 / maxf(fsize.y, 1.0)
+		spr.scale = Vector2.ONE * s2
+		_fx.add_child(spr)
+		spr.play(anim)
+		var tw := spr.create_tween()
+		tw.tween_property(spr, "position", Vector2(box.x * 0.98, center.y), 0.5)
+		tw.tween_callback(_free_fx.bind(spr))
+		dur = 0.5
+	return dur
+
+
+func _free_fx(n: Variant) -> void:
+	if is_instance_valid(n) and (n as Node).get_parent() != null:
+		(n as Node).get_parent().remove_child(n)
+		(n as Node).queue_free()
+
+
+func _back_to_idle(tok: int) -> void:
+	if tok != _play_token or preview == null or not is_instance_valid(preview) or preview.sprite_frames == null:
+		return
+	var a := idle_anim(preview.sprite_frames)
+	if a != &"" and preview.animation != a:
+		preview.play(a)
+
+
 static func _is_touch() -> bool:
 	var loop := Engine.get_main_loop() as SceneTree
 	var p := loop.root.get_node_or_null("Platform") if loop != null else null
@@ -572,25 +984,72 @@ static func _is_touch() -> bool:
 
 # --- Ajustement du texte ----------------------------------------------------------
 
-## Réduit le texte des blocs de sorts (TEXT_SCALES) jusqu'à ce que la fiche tienne dans le panneau ; au-delà,
-## le ScrollContainer prend le relais (défilement tactile / molette / focus manette). Les libellés retournent à
-## la ligne (autowrap) : aucun texte ne dépasse horizontalement de son encart.
+## Réduit le texte (TEXT_SCALES, puis descriptions de cases sur une ligne) jusqu'à ce que la fiche tienne dans la
+## hauteur allouée : jamais de défilement. Les libellés retournent à la ligne (autowrap) ; rien ne déborde.
 func _fit_text() -> void:
 	_fit_token += 1
 	var tok := _fit_token
-	if _rows.is_empty() or not is_inside_tree():
+	if not is_inside_tree():
 		return
+	_fit_key = Vector2(size.x, allotted_h)
+	var steps: Array = []
 	for k in TEXT_SCALES:
-		_apply_text_scale(k)
+		steps.append([k, false, false])
+	var kmin: float = TEXT_SCALES[TEXT_SCALES.size() - 1]
+	steps.append([kmin, true, false]) # descriptions de cases sur une ligne
+	steps.append([kmin, true, true, false]) # puis icônes plus petites
+	steps.append([kmin, true, true, true]) # enfin, chiffres des cases masqués
+	for st in steps:
+		_shrink_desc = st[1]
+		_set_compact(st[2])
+		_set_slim(st.size() > 3 and st[3])
+		_apply_text_scale(st[0])
 		await get_tree().process_frame
 		await get_tree().process_frame
-		if tok != _fit_token or not is_instance_valid(self) or _rows.is_empty():
+		if tok != _fit_token or not is_instance_valid(self):
 			return
 		if not needs_scroll():
 			return
 
 
+func _set_slim(on: bool) -> void:
+	if on == _slim:
+		return
+	_slim = on
+	for r in _rows:
+		r.stats.visible = r.stats.text != "" and not on
+		r.dmg.visible = r.dmg.text != "" and not on
+
+
+## Dernier recours du fit : icônes de sort réduites (base et variantes) pour gagner de la hauteur.
+func _set_compact(on: bool) -> void:
+	if on == _compact:
+		return
+	_compact = on
+	if preview_stage != null:
+		preview_stage.custom_minimum_size.y = 100.0 if on else 200.0
+	for r in _rows:
+		for b in r.buttons:
+			var is_base: bool = bool(b.get_meta("is_base", false))
+			var icon_px: int = (ICON_BASE if is_base else ICON_VARIANT) - (16 if on else 0)
+			var side := icon_px + 14
+			b.custom_minimum_size = Vector2(side, side)
+			var tr := b.get_child(0) as TextureRect
+			if tr != null:
+				tr.size = Vector2(icon_px, icon_px)
+				tr.position = Vector2((side - icon_px) * 0.5, (side - icon_px) * 0.5)
+			var lk := b.get_node_or_null("Lock") as Control
+			if lk != null:
+				lk.position = Vector2(side - 38, side - 38)
+
+
 func _on_resized() -> void:
+	# Le fit change la hauteur minimale donc la taille de la fiche : on ne le relance que si la largeur ou la
+	# hauteur allouée ont changé (sinon boucle infinie de paliers).
+	var key := Vector2(size.x, allotted_h)
+	if key == _fit_key:
+		return
+	_fit_key = key
 	if visible and not _rows.is_empty():
 		_fit_text.call_deferred()
 
@@ -601,12 +1060,22 @@ func _apply_text_scale(k: float) -> void:
 		for key in ROW_FONTS:
 			var l: Label = r.get(key)
 			if l != null:
-				l.add_theme_font_size_override("font_size", maxi(int(round(ROW_FONTS[key] * k)), CharacterCard.MIN_FONT))
+				l.add_theme_font_size_override("font_size", _font(ROW_FONTS[key], k))
+		(r.desc as Label).max_lines_visible = 1 if _shrink_desc else 2
+	var dl := {"name": _detail_name, "tag": _detail_tag, "desc": _detail_desc, "stats": _detail_stats}
+	for key in dl:
+		if dl[key] != null:
+			(dl[key] as Label).add_theme_font_size_override("font_size", _font(DETAIL_FONTS[key], k))
+	if _passive_labels.size() == 2:
+		_passive_labels[0].add_theme_font_size_override("font_size", _font(PASSIVE_FONTS.name, k))
+		_passive_labels[1].add_theme_font_size_override("font_size", _font(PASSIVE_FONTS.text, k))
+		_passive_labels[1].max_lines_visible = 1 if _shrink_desc else 2
 
 
-## Vrai si le contenu dépasse la hauteur visible (défilement nécessaire).
+## Vrai si le contenu dépasse la hauteur allouée à la fiche (la fiche ne défile pas : on réduit le texte).
 func needs_scroll() -> bool:
-	return _content.get_combined_minimum_size().y > _scroll.size.y + 0.5
+	var h := allotted_h if allotted_h > 0.0 else size.y
+	return get_combined_minimum_size().y > h + 0.5
 
 
 # --- Données des sorts -----------------------------------------------------------

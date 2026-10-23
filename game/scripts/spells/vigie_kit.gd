@@ -959,3 +959,16 @@ func visual_anim(fallback: StringName) -> StringName:
 		if _visual.sprite_frames.has_animation(a):
 			return a
 	return fallback
+
+
+
+# --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
+
+static func passive_info() -> Dictionary:
+	var f := KitResource.fmt
+	return KitResource.passive("Tension", &"tension",
+		"La corde de Vigie se bande toute seule. Pleine, elle arme ton prochain tir automatique.",
+		"0 à 100 %% en %s s en marchant, %s s immobile (ancrée) ; la vitesse d'attaque accélère le tout. Le Filet lesté la remplit d'un coup." % [f.call(TENSION_MOVING_S), f.call(TENSION_STILL_S)],
+		"le tir qui part à 100 % relâche la corde : retour à 0.",
+		"à 100 %% (« PRÊTE »), le Trait devient un Trait d'allonge : dégâts ×%s (coef %s au lieu de %s), perce tous les monstres, portée %s u au lieu de %s." % [
+			f.call(ALLONGE_COEF / TRAIT_COEF), f.call(ALLONGE_COEF), f.call(TRAIT_COEF), f.call(ALLONGE_RANGE_U), f.call(TRAIT_RANGE_U)])

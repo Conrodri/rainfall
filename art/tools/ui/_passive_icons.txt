@@ -1,0 +1,16 @@
+LOT PASSIFS : 10 icones de passif de personnage (HUD + fiche personnage).
+Style : identique aux icones de sorts existantes (game/assets/sprites/ui/icons/spells/), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map.
+Format : PNG RGBA 128x128, fond transparent, symbole centre lisible a 48 px, aucun texte.
+Sortie : game/assets/sprites/ui/icons/passives/<id>.png (le jeu charge ce chemin s'il existe, sinon pastille a l'initiale).
+Ids et symboles :
+- tension (Vigie) : corde d'arc bandee, arc tendu, accent dore.
+- aiguisage (Taliant) : lame de katana sur pierre a aiguiser, etincelles, accent acier clair.
+- eau (Averse) : goutte et flaque concentrique, accent bleu pale.
+- membres (Tocsin) : bras mecanique articule, accent orange.
+- chaine (Arpenteuse) : chaine tendue trainant derriere un compas, accent cuivre.
+- souffle (Rainette) : bond de grenouille et traces d'air, accent vert.
+- bourse (Avare) : bourse d'or ficelee, accent or.
+- masse (Bourbe) : masse de vase qui se divise en deux, accent vert-bleu.
+- fils (Rictus) : fils de marionnette tendus vers une croix, accent rouge sourd.
+- braise (Ardent) : braise vive, accent orange (pas de passif au HUD : fiche seulement).
+Noms et textes exacts : `static func passive_info()` de game/scripts/spells/<perso>_kit.gd, cle "icon".
