@@ -1,0 +1,4482 @@
+{
+  "source": "Claude p0a/p0b/p1p2, racine uniquement; rain/ conserve",
+  "files": [
+    {
+      "file": "arc_8x64.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "68ba24a92b5236829db8bfbd2c69b3edae7a4edeb51a500a7eb9f8418fe58ac3"
+    },
+    {
+      "file": "arc_8x64_2.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "1787fc6b942236308f3c01063a78901681003f6be78c0dd78a23d2a49fec358f"
+    },
+    {
+      "file": "arc_8x64_3.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "3e5038ebab5e8720be27f17ee3bda35fb55274fa7c52582ce740dd7a6ea8d14e"
+    },
+    {
+      "file": "ash_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          123
+        ],
+        [
+          0,
+          108
+        ],
+        [
+          0,
+          97
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "5087a0b50beb8baec92e41667968f0f31225afb744f8059cf4a9a2a5d4ae5efb"
+    },
+    {
+      "file": "ash_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          176
+        ],
+        [
+          0,
+          91
+        ],
+        [
+          0,
+          59
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "45656d9f5469ba955863ba626526023bc59c7ea227d4057e73b9d839d0f54076"
+    },
+    {
+      "file": "aura_ring_128.png",
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          249,
+          255
+        ],
+        [
+          249,
+          255
+        ],
+        [
+          249,
+          255
+        ],
+        [
+          1,
+          242
+        ]
+      ],
+      "sha256": "8cf294094ecc08f84748083d28ab1613396d9b81fc34adb0ccde3459af42dc87"
+    },
+    {
+      "file": "bubble_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          245
+        ]
+      ],
+      "sha256": "f6fc718e005422cd39dfa3b2e03e98ff91752444dcdc45529c176044b21a5727"
+    },
+    {
+      "file": "bubble_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          206
+        ]
+      ],
+      "sha256": "584cd7941f6b94cfcfdc4558a52cd811ea5db11f9a94756309219e609aef8c54"
+    },
+    {
+      "file": "canopy_shadow_2048.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          199
+        ]
+      ],
+      "sha256": "5e9cb272203984a89e422d3db3e132552e33716d3b8aa4de25593a96bfc918f0"
+    },
+    {
+      "file": "canopy_shadow_2048_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          199
+        ]
+      ],
+      "sha256": "2b488848f698920c8acb1b5b22fdbde688812ad72acabe9826e22c765bf4cf6c"
+    },
+    {
+      "file": "cloud_shadow_2048.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          184
+        ]
+      ],
+      "sha256": "a458ba66245200eff71e830b258a04c52caf7e8e2bcfdbcd48767840e6dfc12f"
+    },
+    {
+      "file": "cloud_shadow_2048_2.png",
+      "size": [
+        2048,
+        2048
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          184
+        ]
+      ],
+      "sha256": "165acc1012dff4eb8fd55c1af544d63bab9fa57ba2c9d71bfed2f7f25c055b2d"
+    },
+    {
+      "file": "drop_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9f57a06a2ae4b6b82557323457a12b243fa6417c1d0bca24d7af23facb8f33b1"
+    },
+    {
+      "file": "drop_32_2.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "b6a4fd7ed7e04c1dae4f653c081aaa59c9d11de007faf87e0637005fc83c3458"
+    },
+    {
+      "file": "drop_32_3.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "1576a45897ca585053c58ec73e7d8ea5fd6f42d743e57d871520b86e1e71cf3d"
+    },
+    {
+      "file": "drop_32_4.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "4e6371385cde533e739f054ad72b9752f7670ee22cfdaf55a6aec70812bc7463"
+    },
+    {
+      "file": "drop_window_64.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          239
+        ]
+      ],
+      "sha256": "b57d1949c8b6f82eee0bb78940991ff5efd60df7fa6e47131283d866aab6ac60"
+    },
+    {
+      "file": "drop_window_64_2.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          234
+        ]
+      ],
+      "sha256": "75f7e3587b8029008575fe28c9e1821fb33fb895925bdf0a2de1f0ed1eb2a5e8"
+    },
+    {
+      "file": "drop_window_64_2_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          211
+        ],
+        [
+          0,
+          210
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "ba57f87a0fb6b9734d3061d201ae10a2ae3fb30beaa01b0e1d51a8c697c7af7e"
+    },
+    {
+      "file": "drop_window_64_3.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          236
+        ]
+      ],
+      "sha256": "0ea385149eab49749a542c4ca723fc5c7bd3dc9bdbf9eb2453c2aef2095e5bfb"
+    },
+    {
+      "file": "drop_window_64_3_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          209
+        ],
+        [
+          0,
+          211
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "e50de739a42ab2236ff6366799ef2a6e9afef59bc7ad4ec738193de06f27800a"
+    },
+    {
+      "file": "drop_window_64_4.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          234
+        ]
+      ],
+      "sha256": "abee96ed5e120ea4ac6390a7c68cb06e9eaf45fa5be090e42a8438582cf992bb"
+    },
+    {
+      "file": "drop_window_64_4_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          209
+        ],
+        [
+          0,
+          210
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9735a624d6ac27551e811744ab10bafed7d546d9eb6dd418b6076245b7c8774c"
+    },
+    {
+      "file": "drop_window_64_5.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          230
+        ]
+      ],
+      "sha256": "e08c36a100af70db707b4aa8da05f8df54e2c7b5e4ec0cb19b5d61ef8ecbcc0c"
+    },
+    {
+      "file": "drop_window_64_5_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          209
+        ],
+        [
+          0,
+          208
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "17ca1d3f1bb50f12cea40d1c49e9bc2c9a2ca5f7dc9da61137aea035e90c5242"
+    },
+    {
+      "file": "drop_window_64_6.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          222
+        ]
+      ],
+      "sha256": "6a6ae49ffc5677bc92aee32931cbc7780aff1d013475a5f0f20188368c2a11c4"
+    },
+    {
+      "file": "drop_window_64_6_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          202
+        ],
+        [
+          0,
+          204
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "3f7c3886bb6d5a64ed51cc28202ef81272a4e3ad12464775e09ca9d76847e017"
+    },
+    {
+      "file": "drop_window_64_n.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          209
+        ],
+        [
+          0,
+          208
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "17d5b58f375588d1e02e1cfb2cc695769bd118be8800d4a4482a295b51037736"
+    },
+    {
+      "file": "ember_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          253
+        ],
+        [
+          0,
+          216
+        ],
+        [
+          0,
+          133
+        ],
+        [
+          0,
+          251
+        ]
+      ],
+      "sha256": "cccf8eec4ade34906b8b0226f9b78c002bf41277253bbbbb8ffe0f1e6f130c11"
+    },
+    {
+      "file": "ember_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          251
+        ],
+        [
+          0,
+          185
+        ],
+        [
+          0,
+          92
+        ],
+        [
+          0,
+          248
+        ]
+      ],
+      "sha256": "d721845c81215c4d9e428b9be6788af73efb1058b81ffe6c80fd1d875bdcb76b"
+    },
+    {
+      "file": "ember_16_3.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          254
+        ],
+        [
+          0,
+          233
+        ],
+        [
+          0,
+          169
+        ],
+        [
+          0,
+          253
+        ]
+      ],
+      "sha256": "6d05fe009e298481eda47524f8fe429443fc76420253dc7ae1ebf3c6caa964e3"
+    },
+    {
+      "file": "firefly_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          100,
+          201
+        ],
+        [
+          210,
+          251
+        ],
+        [
+          99,
+          113
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "c30c7e6b6917c440ede1e47c8fe71709e68a24d254b4e9b97c72b17b5e812757"
+    },
+    {
+      "file": "firefly_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          105,
+          150
+        ],
+        [
+          221,
+          251
+        ],
+        [
+          104,
+          186
+        ],
+        [
+          2,
+          255
+        ]
+      ],
+      "sha256": "f7576448cb061350ecd39bd4d3422ef3dd3aebcee2cac070ed49b5c0d28d85ea"
+    },
+    {
+      "file": "fog_puff_512.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          147
+        ]
+      ],
+      "sha256": "a34f0f5882ca9b37c664c97844853da9f4f1daa03d6ae85c6ce2e18edcf8b666"
+    },
+    {
+      "file": "fog_puff_512_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          153
+        ]
+      ],
+      "sha256": "3324fc99afcc80947b1b3b2b6d040454b7047037bae0910bc758efcfee41d755"
+    },
+    {
+      "file": "fog_puff_512_2_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          138
+        ],
+        [
+          0,
+          140
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "36895a46d782762fd216a9d879b46c7f935e12f151de665b8cbfc1d24239526b"
+    },
+    {
+      "file": "fog_puff_512_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          150
+        ]
+      ],
+      "sha256": "938af70f15169149450ead0be59f93f6abbe3ee940d58e4064c2a3b814b6aed1"
+    },
+    {
+      "file": "fog_puff_512_3_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          139
+        ],
+        [
+          0,
+          139
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "15714891a5ac7e5f00eca663fef8ab552e76fb8586c18a94d65af6f59d0544bc"
+    },
+    {
+      "file": "fog_puff_512_4.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          142
+        ]
+      ],
+      "sha256": "674f9a5c7b2d6e9802ed4cce08c0522240751ad26c4fc0c2de26c66880bc35af"
+    },
+    {
+      "file": "fog_puff_512_4_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          139
+        ],
+        [
+          0,
+          138
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "c34fa2c772daf861bb113905b6c42210681751c65b9cb80e93954e002aa32693"
+    },
+    {
+      "file": "fog_puff_512_5.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          151
+        ]
+      ],
+      "sha256": "1dfa48ceda6688f7b10ee6fd7457d07465dced38e8b94b6a54ef7a7e66fa3c76"
+    },
+    {
+      "file": "fog_puff_512_5_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          140
+        ],
+        [
+          0,
+          139
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "d5ad96ac6cbedc5550863d9a36445c559c0503a1071a6c63e8514da52f647123"
+    },
+    {
+      "file": "fog_puff_512_6.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          149
+        ]
+      ],
+      "sha256": "a0f4650b7f1c026da22d8ce79b84e647d5cb2c5c0408bd8164e2a65116843010"
+    },
+    {
+      "file": "fog_puff_512_6_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          140
+        ],
+        [
+          0,
+          137
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "48149b73b1a2b8b1f28be43a0cb2cd6dac77155dafdc21c0096bbf32e49c4ff0"
+    },
+    {
+      "file": "fog_puff_512_n.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          140
+        ],
+        [
+          0,
+          140
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "582db78180a2c420293bce526c023af7b9c94b2ef344f9f3fef727ea234d79a2"
+    },
+    {
+      "file": "fog_tile_1024.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          195,
+          255
+        ],
+        [
+          195,
+          255
+        ],
+        [
+          195,
+          255
+        ],
+        [
+          0,
+          141
+        ]
+      ],
+      "sha256": "dc6765cac6def5d87417e310b6e0a28bb21e2e85e1eddf3424b9f214dee269e7"
+    },
+    {
+      "file": "fog_tile_1024_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          153
+        ]
+      ],
+      "sha256": "813979ab987dc850e7907acfe8aaf57277ca376b0126448e89a2188ef7fd2fff"
+    },
+    {
+      "file": "fog_volume_tile_1024.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          100
+        ]
+      ],
+      "sha256": "53cc00566c82f976a8d9e3be29b8706f43b853f2dafcfdc730a445a6018b8506"
+    },
+    {
+      "file": "fog_volume_tile_1024_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          101
+        ]
+      ],
+      "sha256": "0f75379828e5e81bbcef1f477af7b43fbe385aea327c361f3215fea22aaf97b4"
+    },
+    {
+      "file": "frost_crystal_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          250
+        ],
+        [
+          0,
+          254
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "a1590dc11c09582f4c4cd5485c497e7f880aa6de1d8099d85575f53e9f5c60f7"
+    },
+    {
+      "file": "frost_crystal_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          250
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "bf4c5b5cb46a6dd9477badd8d91b83ac2cd2e8d865fd3d5a0d06e4a4b6142389"
+    },
+    {
+      "file": "frost_crystal_16_3.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          250
+        ],
+        [
+          0,
+          254
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "bcae02c3d68cb59d4944a4932b31ebf4758011e51fb5ffe3584ff5c197eaf23f"
+    },
+    {
+      "file": "glint_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "07d2592658dcdaecb4984e70d51b772aff72542cffe6b046800b69b6ba8498e9"
+    },
+    {
+      "file": "glint_32_2.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "212e34272419e5b6e4397f8ecddcb4fd1cabb82acbe9479739012baed9a9bd70"
+    },
+    {
+      "file": "godray_512x1024.png",
+      "size": [
+        512,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          104
+        ]
+      ],
+      "sha256": "9d5a57f499626737a24518cb0780f69b9fe94789cc2916a8491942ab9a99275e"
+    },
+    {
+      "file": "godray_512x1024_2.png",
+      "size": [
+        512,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          114
+        ]
+      ],
+      "sha256": "50516f8748188e8690df5e6afa1dffc7a40781653b8d1593be1698b2bf74db9e"
+    },
+    {
+      "file": "godray_512x1024_3.png",
+      "size": [
+        512,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          98
+        ]
+      ],
+      "sha256": "dc2e51eae38922eda8e760a2a6254640c94020186a30fb3d47f3f0dd2438d0b0"
+    },
+    {
+      "file": "halo_soft_256.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "d40f0cda9ddd374e89c417b6a549268185818ba15913d8554b59db17610982a1"
+    },
+    {
+      "file": "horizon_glow_1024x256.png",
+      "size": [
+        1024,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          231
+        ],
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "b111c81769a5cf299480f38fe1872e939777d8923551023b5b00c0c24af20aa0"
+    },
+    {
+      "file": "horizon_glow_1024x256_2.png",
+      "size": [
+        1024,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          241
+        ],
+        [
+          0,
+          231
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "4c802c6b8b933376ba5749dacd65af934375d7c6cd6499fb844067d92e9de347"
+    },
+    {
+      "file": "impact_8x64.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "dabb9d78df4edc034ab35c1a8f6d703bf1658b6d5818de02ca6fd6c4315bb585"
+    },
+    {
+      "file": "impact_8x64_2.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "b30708232efbdc13cc16768a4bc4b619bc9b03f41b2029cfd4b66a051f2ca9dc"
+    },
+    {
+      "file": "lantern_flare_128.png",
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          244
+        ],
+        [
+          0,
+          220
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9fdc737aae595236f43f1b81315ba1d75796b2909de2d67eb4fd1578c3434f79"
+    },
+    {
+      "file": "lantern_flare_128_2.png",
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          244
+        ],
+        [
+          0,
+          220
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "3b92edcf8097a4932f82c9540ce770afb36e1e466d4046578d6a89554d0226f2"
+    },
+    {
+      "file": "leaf_cedar_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          134
+        ],
+        [
+          0,
+          179
+        ],
+        [
+          0,
+          111
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "10f060e5f21edc83f28f5395b6b9636c0f50b394f862b28a7311c1c859bf91d5"
+    },
+    {
+      "file": "leaf_cedar_32_2.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          155
+        ],
+        [
+          0,
+          193
+        ],
+        [
+          0,
+          121
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "500dcef1474c5495460b207c7cd5ba0b7807d1e5bea44248a5257c7169067cdb"
+    },
+    {
+      "file": "leaf_cedar_32_3.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          123
+        ],
+        [
+          0,
+          163
+        ],
+        [
+          0,
+          103
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "340b3f4fe483f20124c8778d4d346e3a578723c7b56407528033090a859b186a"
+    },
+    {
+      "file": "leaf_pine_32.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          125
+        ],
+        [
+          0,
+          168
+        ],
+        [
+          0,
+          100
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "3c61da001891ebbec2895b8b74e50d4f752efcbd599a8eeb6cae1768e8cc9d34"
+    },
+    {
+      "file": "leaf_pine_32_2.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          126
+        ],
+        [
+          0,
+          169
+        ],
+        [
+          0,
+          100
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "aa07c307fc29ae949120121aa907319bcad2904b0030460fcc20674e2b4fb60f"
+    },
+    {
+      "file": "leaf_pine_32_3.png",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          126
+        ],
+        [
+          0,
+          88
+        ],
+        [
+          0,
+          51
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9b9b0cebccebf39209ce57880f0a0a74e95ae30cbf12a9df08cee903d1463aae"
+    },
+    {
+      "file": "light_hard_256.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9c85a359d03802591cc907b88e02f02e1924c44064f67ae441ce8e74492a3cd8"
+    },
+    {
+      "file": "light_ring_256.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "9c37f4939e0c1fbc0857d572efb001f9a78826762c2b5303f837799687b0e21c"
+    },
+    {
+      "file": "light_ring_256_2.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "3511f3cb1c81bd204a2eb1ced93f49a5cac892483f315ebd9a7ad0b83359066d"
+    },
+    {
+      "file": "light_soft_256.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "048175264c3b05dac2f9f43a9f09e8e52f117b2f11bf01aa876cc746f0b8731f"
+    },
+    {
+      "file": "lightcone_256x512.png",
+      "size": [
+        256,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          199
+        ]
+      ],
+      "sha256": "f9ed467f5ca8e383e922c500be80dd0152586cdc27f484884294218fb278fb4e"
+    },
+    {
+      "file": "lightcone_256x512_2.png",
+      "size": [
+        256,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          165
+        ]
+      ],
+      "sha256": "8b3107b54a2941f736673d40e359d0349166b6a02215c0bba3da0179856c6752"
+    },
+    {
+      "file": "lightning_bolt_256x1024.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "0b868c83f365e848cef473883e11c91f7b81a219671cc3ec8c33430e31e0410e"
+    },
+    {
+      "file": "lightning_bolt_256x1024_2.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "600732495a7d5a78be9f2772105f032d9e2524b011b410d1c1ebd967d227c22f"
+    },
+    {
+      "file": "lightning_bolt_256x1024_2_e.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "emission",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "7b64a98a98de17cbf5b4f736462aeacd94367b521b9164fe43f12a68ef6aa87a"
+    },
+    {
+      "file": "lightning_bolt_256x1024_3.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "c70c9e527be0f39b889e08a346ea3b53c9a8cb8f78e76f8c16b1cbe162c9f84e"
+    },
+    {
+      "file": "lightning_bolt_256x1024_3_e.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "emission",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "e2c9d824fab31950cc339b0219c2a282d6560eb8e66dad311e598b8a01b56881"
+    },
+    {
+      "file": "lightning_bolt_256x1024_4.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "0ceb32ec8a414cf7fd0f16efceb1e83ccc8dd91a7d682841f16856876de449fa"
+    },
+    {
+      "file": "lightning_bolt_256x1024_4_e.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "emission",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "6f1360fb8f82953a4b3a90a5de38f52fe0d70f0b8804e56819421830b6ac9cb4"
+    },
+    {
+      "file": "lightning_bolt_256x1024_e.png",
+      "size": [
+        256,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "emission",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "6176e1c85a72e66eca68b88c110c90e95301cb4c850c743d97d8da0329aa033a"
+    },
+    {
+      "file": "mote_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          93,
+          255
+        ],
+        [
+          93,
+          255
+        ],
+        [
+          93,
+          255
+        ],
+        [
+          0,
+          229
+        ]
+      ],
+      "sha256": "1b85be723c3fff937644831b82d36dced9b087e059900c696d84b835b2ad9d7f"
+    },
+    {
+      "file": "mote_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          250,
+          255
+        ],
+        [
+          250,
+          255
+        ],
+        [
+          250,
+          255
+        ],
+        [
+          2,
+          232
+        ]
+      ],
+      "sha256": "6dca04ab26b3a32fbfd6c1afdabdb751e1bcf55cfb20609f4de415f5b3cfe1f9"
+    },
+    {
+      "file": "puddle_mask_1024.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "puddle_rgb",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "0409d72b4c4caf9525622bc912e58da3e40c98fcee4aafdd1e7a20b1459cf3b8"
+    },
+    {
+      "file": "puddle_mask_1024_2.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "puddle_rgb",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "3de20d85ed267977a0004932f4c89554719ae6ea3b1fd41a0cb30373d1e8e2f1"
+    },
+    {
+      "file": "puddle_mask_1024_2_n.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          3,
+          252
+        ],
+        [
+          3,
+          253
+        ],
+        [
+          147,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "0ed0d8ff0a5817a49c1bd05bc4eaa0df387e6dfd00bdff809255b4e2a964576e"
+    },
+    {
+      "file": "puddle_mask_1024_3.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "puddle_rgb",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "34f477e563b298bf6247996ea41368c6b8914e428a8837e57fcb2654b09476b2"
+    },
+    {
+      "file": "puddle_mask_1024_3_n.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          6,
+          245
+        ],
+        [
+          6,
+          247
+        ],
+        [
+          162,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "1bfbd206ee5b433ccb6718336d4b85650518d27c7c5105db35e252b00e4f892d"
+    },
+    {
+      "file": "puddle_mask_1024_4.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "puddle_rgb",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "4eab64b800129891cf4abe38319530b37b6e47f389a78a99cee7ad6ac1da09a5"
+    },
+    {
+      "file": "puddle_mask_1024_4_n.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          3,
+          253
+        ],
+        [
+          2,
+          253
+        ],
+        [
+          145,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "b068809f17d086dfcf7a5b6a7bc1796eeb4a18edc461c0caf894129d62e082f8"
+    },
+    {
+      "file": "puddle_mask_1024_n.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          5,
+          248
+        ],
+        [
+          4,
+          247
+        ],
+        [
+          159,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "67f520c9954e7c464742df1de9b889c77098858e237906c6adae801e3616a529"
+    },
+    {
+      "file": "rain_sheet_512.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "rain_rgb",
+      "family": "drops",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          230
+        ],
+        [
+          0,
+          228
+        ],
+        [
+          0,
+          220
+        ],
+        [
+          0,
+          221
+        ]
+      ],
+      "sha256": "90baeb669c31b973eab0ff0a50489b1349d92198b04e630665756f2b80cfe214"
+    },
+    {
+      "file": "rain_sheet_512_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "rain_rgb",
+      "family": "drops",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          239
+        ],
+        [
+          0,
+          235
+        ],
+        [
+          0,
+          238
+        ]
+      ],
+      "sha256": "d7056e57f11dfc53467bf3dd6998ece6d7dd0121b0ebec8bf9e46dd551acda69"
+    },
+    {
+      "file": "rain_streak_far_512.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          130
+        ]
+      ],
+      "sha256": "c8dd2ade56c10fec449a2251f9826ee66185f71b885e640150fcc630bff2052b"
+    },
+    {
+      "file": "ripple_8x64.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          205
+        ]
+      ],
+      "sha256": "502eac7acf6bd9e49244a95beb4796d8f16afcbc4adc3f53936cefddaee3050f"
+    },
+    {
+      "file": "ripple_8x64_2.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          196
+        ]
+      ],
+      "sha256": "c33059d4c43fca65724abf1a47089e92d481f9532ac9a5864ec4898780ca6c17"
+    },
+    {
+      "file": "ripple_normal_256.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          58,
+          208
+        ],
+        [
+          64,
+          197
+        ],
+        [
+          223,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "0cdd2c95b072c79a69a2f7d3d10446de8acf485ef97c7d48f0ba62e01ee05777"
+    },
+    {
+      "file": "ripple_normal_256_2.png",
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "normal",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          37,
+          206
+        ],
+        [
+          53,
+          202
+        ],
+        [
+          217,
+          255
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "d223e007e83ba28e72d4da7cc83f1b7c5a0c6c695a4da0be0af5d5e6c2cdd1e6"
+    },
+    {
+      "file": "sky_dawn_256x64.png",
+      "size": [
+        256,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          21,
+          167
+        ],
+        [
+          34,
+          210
+        ],
+        [
+          62,
+          192
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "a26ddc23b9adc0319eaabf0bb5c5bd20e385126d51ad6b846db351e5199589cc"
+    },
+    {
+      "file": "sky_storm_256x64.png",
+      "size": [
+        256,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          28,
+          189
+        ],
+        [
+          29,
+          184
+        ],
+        [
+          37,
+          212
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "bfa67de96fc5d94898f6973dcf5df80148766e5bb759537853d376459515df60"
+    },
+    {
+      "file": "sky_sunset_256x64.png",
+      "size": [
+        256,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          135,
+          247
+        ],
+        [
+          151,
+          216
+        ],
+        [
+          136,
+          156
+        ],
+        [
+          251,
+          255
+        ]
+      ],
+      "sha256": "7b0e9ae5bf4b755e601c058b88491a186e31d6b9948c72d3d5380c0a40411774"
+    },
+    {
+      "file": "spark_16.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          22,
+          255
+        ],
+        [
+          22,
+          255
+        ],
+        [
+          22,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "0af43f1cb8a0d778e76c156116f1bc8f5d2adc08ce0e94e727394e5422bef065"
+    },
+    {
+      "file": "spark_16_2.png",
+      "size": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "particles",
+      "seamless": false,
+      "extrema": [
+        [
+          12,
+          255
+        ],
+        [
+          12,
+          255
+        ],
+        [
+          12,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "76760a151e19a1abc19e219b8e2b9fe0c453656f7ea0531fa999d3cf7b5640fb"
+    },
+    {
+      "file": "splash_8x64.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "21e724f4f0e6b49a158d323e63afd993ae8ec802da69d217d5ed89e7d6d5bd01"
+    },
+    {
+      "file": "splash_8x64_2.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "d7e40c27a79c4412b4d460c5a34eea24f4c7f6951a2f9b9fd62cb5faba574aee"
+    },
+    {
+      "file": "splash_8x64_3.png",
+      "size": [
+        512,
+        64
+      ],
+      "frames": 8,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "drops",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "1be3aca0eeb4d39e5b47b44e31c2be7a8c21d2c2e8b4b472240bfab1feda69cb"
+    },
+    {
+      "file": "steam_puff_64.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          140
+        ]
+      ],
+      "sha256": "80cc6ba187b6e2cf0cb3e21b3c9692f17e56b2639530287169e4dc8b83269af0"
+    },
+    {
+      "file": "steam_puff_64_2.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          143
+        ]
+      ],
+      "sha256": "06087b0a0eb025ef9cd1b6e0e7181ce7b4ad1bc407d0033eef52cb1993f565ec"
+    },
+    {
+      "file": "steam_puff_64_3.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          143
+        ]
+      ],
+      "sha256": "bde2723c775e6b53e8c3e79c64dffbfafae93b1ed6cffad101be78f8568de954"
+    },
+    {
+      "file": "steam_puff_64_4.png",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "fog",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          142
+        ]
+      ],
+      "sha256": "7c686e1e18d7393394ccbdf53e07914d545f1f7859cabfaf07f72380da2c0f19"
+    },
+    {
+      "file": "trail_64x256.png",
+      "size": [
+        64,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          246
+        ]
+      ],
+      "sha256": "1b90bed9cdc13f061df2929780c994270d4774b5d1ba38f6e4972f4e11153f7e"
+    },
+    {
+      "file": "trail_64x256_2.png",
+      "size": [
+        64,
+        256
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "sha256": "21a7295903dec9cfb824dc9c2814754e57bdab86512fad35a19df4b14900fda1"
+    },
+    {
+      "file": "vignette_1024.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          224
+        ]
+      ],
+      "sha256": "b4c1121584617977671038c593eda50b1450ae6c7901a153282486637c757515"
+    },
+    {
+      "file": "water_caustics_512.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          217
+        ]
+      ],
+      "sha256": "f475c2cd790f5239ded700e2535b4b86224bbd8690bbfa38faefeaae3db1918d"
+    },
+    {
+      "file": "water_caustics_512_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "water",
+      "seamless": true,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          217
+        ]
+      ],
+      "sha256": "079db14553d4ed7aba64f9824b3474a7e33a7ad972b7a56c9bb898948ced33b0"
+    },
+    {
+      "file": "wind_streak_128.png",
+      "size": [
+        128,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          178
+        ]
+      ],
+      "sha256": "0156d11ac7a9e8930ce9637e6c45e43f4d4981d0b2fa88df6cf15801e543cf5d"
+    },
+    {
+      "file": "wind_streak_128_2.png",
+      "size": [
+        128,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          154
+        ]
+      ],
+      "sha256": "1b144a105fe9bd02b9056cf5fee2f0ddae76c1e9e8b1a00c1e6a8550f6e307b6"
+    },
+    {
+      "file": "wind_streak_128_3.png",
+      "size": [
+        128,
+        32
+      ],
+      "frames": 1,
+      "mode": "RGBA",
+      "bands": [
+        "R",
+        "G",
+        "B",
+        "A"
+      ],
+      "use": "diffuse_alpha",
+      "family": "sky_light",
+      "seamless": false,
+      "extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          193
+        ]
+      ],
+      "sha256": "e71a7c30c04a092e3c636e95f5f2ddbc78f4007950e1db221410bc572f2d4d3d"
+    }
+  ]
+}

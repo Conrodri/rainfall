@@ -1,0 +1,47 @@
+[gd_resource type="SpriteFrames" load_steps=12 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/arm_ground.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f0_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f1_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f2_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f3_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f4_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f5_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f6_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="f7_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 1344, 192, 192)
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("f0_0")}], "loop": true, "name": &"arm_ground_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f1_0")}], "loop": true, "name": &"arm_ground_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f2_0")}], "loop": true, "name": &"arm_ground_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f3_0")}], "loop": true, "name": &"arm_ground_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f4_0")}], "loop": true, "name": &"arm_ground_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f5_0")}], "loop": true, "name": &"arm_ground_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f6_0")}], "loop": true, "name": &"arm_ground_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f7_0")}], "loop": true, "name": &"arm_ground_ne", "speed": 12.0}
+]

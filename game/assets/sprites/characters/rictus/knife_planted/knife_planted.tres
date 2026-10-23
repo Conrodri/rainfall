@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" load_steps=12 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/knife_planted/default.png" id="default"]
+
+[sub_resource type="AtlasTexture" id="default_e_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_se_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_s_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_sw_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_w_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 256, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_nw_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_n_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="default_ne_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 448, 64, 64)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("default_e_0")}], "loop": true, "name": &"default_e", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_se_0")}], "loop": true, "name": &"default_se", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_s_0")}], "loop": true, "name": &"default_s", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_sw_0")}], "loop": true, "name": &"default_sw", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_w_0")}], "loop": true, "name": &"default_w", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_nw_0")}], "loop": true, "name": &"default_nw", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_n_0")}], "loop": true, "name": &"default_n", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_ne_0")}], "loop": true, "name": &"default_ne", "speed": 16.0}]

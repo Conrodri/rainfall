@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "source": "cd_bourbe.blend",
+  "cell": 192,
+  "pivot": [
+    96,
+    136.32
+  ],
+  "px_per_u": 90.50966799187809,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "animations": {
+    "idle": 8,
+    "run": 8,
+    "slap": 4,
+    "throw": 4,
+    "recall": 4,
+    "sink": 4,
+    "rise": 4,
+    "attack": 4,
+    "cast": 4,
+    "cast_ult": 6,
+    "death": 8
+  },
+  "impact_frame": {
+    "slap": 2,
+    "attack": 2,
+    "throw": 2,
+    "cast": 2,
+    "recall": 2,
+    "sink": 2,
+    "cast_ult": 3
+  },
+  "accent": "#8DDBA8",
+  "lot": "1/3: actor + spell icons; familiars and ground VFX reserved for following lots"
+}

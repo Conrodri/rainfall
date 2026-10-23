@@ -1,0 +1,81 @@
+{
+  "frames": 424,
+  "sheets": 33,
+  "clipped": [],
+  "static": [],
+  "alpha_bounds": {
+    "rictus/idle": [
+      53,
+      27,
+      139,
+      147
+    ],
+    "rictus/run": [
+      53,
+      22,
+      139,
+      150
+    ],
+    "rictus/slash": [
+      18,
+      11,
+      175,
+      147
+    ],
+    "rictus/throw": [
+      24,
+      13,
+      168,
+      147
+    ],
+    "rictus/spin": [
+      17,
+      27,
+      175,
+      147
+    ],
+    "rictus/stagger": [
+      53,
+      27,
+      139,
+      147
+    ],
+    "rictus/summon": [
+      49,
+      27,
+      143,
+      147
+    ],
+    "rictus/lift": [
+      51,
+      25,
+      141,
+      147
+    ],
+    "rictus/death": [
+      20,
+      22,
+      173,
+      176
+    ],
+    "montreur/hover": [
+      44,
+      56,
+      148,
+      155
+    ],
+    "montreur/pull": [
+      44,
+      56,
+      148,
+      155
+    ]
+  },
+  "editor_shutdown_diagnostics": [
+    "ERROR: 26 resources still in use at exit (run with --verbose for details).",
+    "ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketSmallE"
+  ],
+  "import": "PASS",
+  "load": "PASS",
+  "sprites_test": "PASS"
+}

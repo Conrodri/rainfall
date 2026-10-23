@@ -1,0 +1,6 @@
+C8a : 54 PNG, 44 animations dans recluse.tres, source recluse_iso.blend animee et script c8a_build.py.
+DA : moine de sel sculpte, capuche vide, chapelet osseux, cloche creuse vert-de-gris ; seul accent cristal cyan, fissures puis levitation.
+Cel boss : trois tons, encre 2 px, normales quantifiees, CEL_Accent ; corps moyen 136/255, pied y=215, aucune frame de corps tronquee.
+Contrats : dimensions existantes conservees ; atlas <=4096 ; rayon 896x64 separe en deux atlas de quatre frames. Poids mobile Reclus : 7,19 Mio.
+Import sans erreur ; recluse_boss_test et sprites_test : RESULT: OK. texture_budget_test : RESULT: FAIL (1), textures globales 242/180 Mo ; bosses 65,3/45, monsters 16,1/12. Hors perimetre C8a, plafonds inchanges.
+Planche : art/tools/night/_c8a_contact.png ; controles : _c8a_verify.json. Aucun .gd/.tscn modifie ; fenetre Blender interactive ignoree.

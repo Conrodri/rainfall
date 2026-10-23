@@ -1,0 +1,28 @@
+{
+  "lot": "F5",
+  "design": [
+    "Sanctuary paving polished by rain, incised concentric runnels and erased bone/slate mosaic",
+    "Same crypt limestone and sparse embedded bones, reduced salt",
+    "Clear cool basin paving; darker water reserved for the abyss",
+    "Broken fluted 2.4u columns on 2u bases; cyan BFF4FF vein and embedded wall crystal",
+    "Tile cel profile, quantized normals, no baked central rain-column light; complete TOP shadows"
+  ],
+  "png_count": 41,
+  "normal_unit_checks": "PASS",
+  "geometry": {
+    "status": "PASS",
+    "errors": []
+  },
+  "validation": "PASS",
+  "tests": {
+    "source_arena": "OK",
+    "sprites": "OK",
+    "texture_budget": "FAIL"
+  },
+  "budget_scope": "Terrain category within budget; global mobile limit exceeded outside F5 (bosses/monsters and existing atlases).",
+  "import": "PASS",
+  "budget_failure": [
+    "FAIL textures embarqu\u00e9es sur mobile (ASTC deflat\u00e9) : 249 Mo <= 180 Mo"
+  ],
+  "runtime_exit_note": ""
+}

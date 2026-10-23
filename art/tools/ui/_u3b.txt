@@ -1,0 +1,6 @@
+LOT U3b (correctif de U3, mêmes 25 fichiers, mêmes formats, même inventaire _u3_inventory.json). La planche _u3_contact.png est dans la bonne matière mais illisible en jeu : tout est brun foncé, peu contrasté, les icônes se ressemblent et manquent de détail à 64 px.
+Corrections (reprends art/tools/ui/u3* et art/blender/ui/u3*) :
+- Valeurs : sujet nettement plus clair que le fond de carte (albédo des parties principales 0,25-0,5), éclairage clé haut-gauche plus fort + liseré (rim) froid ou chaud sur le contour, AO conservée ; lisible sur cadre sombre à 64 px.
+- Couleur : chaque objet garde la DA (usé, désaturé) mais a une matière/teinte dominante qui le distingue (fer bleui, bronze vert-de-gris, laiton, cuir rouge sombre, os, verre teinté, pierre, tissu) ; pas deux voisins identiques. L'accent émissif propre reste unique et bien visible.
+- Forme : silhouette pleine et reconnaissable qui remplit ~80 % du cadre, détails sculptés (gravures, rivets, coutures, fêlures) visibles à 128 px, cadrage 3/4 légèrement plongeant.
+Revérifie (PASS) et refais _u3_contact.png. Même périmètre que U3 ; U4 tourne en parallèle : n'y touche pas. Aucun .gd/.tscn/.tres.

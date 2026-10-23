@@ -1,0 +1,1262 @@
+[
+  {
+    "path": "impacts/hit_medium_01.ogg",
+    "duration_s": 0.274898,
+    "loop": false,
+    "level": "medium",
+    "usage": "Coup physique de poids intermédiaire",
+    "gain_db": -1,
+    "peak_dbfs": -3.642,
+    "rms_dbfs": -18.019
+  },
+  {
+    "path": "impacts/hit_medium_02.ogg",
+    "duration_s": 0.266054,
+    "loop": false,
+    "level": "medium",
+    "usage": "Coup physique de poids intermédiaire",
+    "gain_db": -1,
+    "peak_dbfs": -4.199,
+    "rms_dbfs": -17.98
+  },
+  {
+    "path": "impacts/hit_medium_03.ogg",
+    "duration_s": 0.272426,
+    "loop": false,
+    "level": "medium",
+    "usage": "Coup physique de poids intermédiaire",
+    "gain_db": -1,
+    "peak_dbfs": -4.086,
+    "rms_dbfs": -18.017
+  },
+  {
+    "path": "impacts/hit_fire_light_01.ogg",
+    "duration_s": 0.314467,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact fire, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -2.972,
+    "rms_dbfs": -18.027
+  },
+  {
+    "path": "impacts/hit_fire_light_02.ogg",
+    "duration_s": 0.325374,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact fire, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -3.019,
+    "rms_dbfs": -18.002
+  },
+  {
+    "path": "impacts/hit_fire_light_03.ogg",
+    "duration_s": 0.323719,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact fire, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -2.474,
+    "rms_dbfs": -17.991
+  },
+  {
+    "path": "impacts/hit_fire_medium_01.ogg",
+    "duration_s": 0.489252,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact fire, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -2.48,
+    "rms_dbfs": -17.99
+  },
+  {
+    "path": "impacts/hit_fire_medium_02.ogg",
+    "duration_s": 0.474717,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact fire, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -3.121,
+    "rms_dbfs": -18.016
+  },
+  {
+    "path": "impacts/hit_fire_medium_03.ogg",
+    "duration_s": 0.488073,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact fire, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -2.665,
+    "rms_dbfs": -17.965
+  },
+  {
+    "path": "impacts/hit_fire_heavy_01.ogg",
+    "duration_s": 0.708526,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact fire, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.687,
+    "rms_dbfs": -18.008
+  },
+  {
+    "path": "impacts/hit_fire_heavy_02.ogg",
+    "duration_s": 0.721111,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact fire, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.807,
+    "rms_dbfs": -17.978
+  },
+  {
+    "path": "impacts/hit_fire_heavy_03.ogg",
+    "duration_s": 0.71712,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact fire, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.526,
+    "rms_dbfs": -17.992
+  },
+  {
+    "path": "impacts/hit_ice_light_01.ogg",
+    "duration_s": 0.316848,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact ice, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -4.451,
+    "rms_dbfs": -17.988
+  },
+  {
+    "path": "impacts/hit_ice_light_02.ogg",
+    "duration_s": 0.321224,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact ice, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -4.904,
+    "rms_dbfs": -18.059
+  },
+  {
+    "path": "impacts/hit_ice_light_03.ogg",
+    "duration_s": 0.321769,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact ice, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -4.838,
+    "rms_dbfs": -18.064
+  },
+  {
+    "path": "impacts/hit_ice_medium_01.ogg",
+    "duration_s": 0.475737,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact ice, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -4.978,
+    "rms_dbfs": -17.994
+  },
+  {
+    "path": "impacts/hit_ice_medium_02.ogg",
+    "duration_s": 0.48805,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact ice, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.309,
+    "rms_dbfs": -18.006
+  },
+  {
+    "path": "impacts/hit_ice_medium_03.ogg",
+    "duration_s": 0.484603,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact ice, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.149,
+    "rms_dbfs": -18.011
+  },
+  {
+    "path": "impacts/hit_ice_heavy_01.ogg",
+    "duration_s": 0.726395,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact ice, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.56,
+    "rms_dbfs": -17.998
+  },
+  {
+    "path": "impacts/hit_ice_heavy_02.ogg",
+    "duration_s": 0.713197,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact ice, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -4.892,
+    "rms_dbfs": -18.014
+  },
+  {
+    "path": "impacts/hit_ice_heavy_03.ogg",
+    "duration_s": 0.709524,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact ice, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.857,
+    "rms_dbfs": -17.997
+  },
+  {
+    "path": "impacts/hit_poison_light_01.ogg",
+    "duration_s": 0.316621,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact poison, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -6.677,
+    "rms_dbfs": -17.994
+  },
+  {
+    "path": "impacts/hit_poison_light_02.ogg",
+    "duration_s": 0.322721,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact poison, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -6.364,
+    "rms_dbfs": -17.976
+  },
+  {
+    "path": "impacts/hit_poison_light_03.ogg",
+    "duration_s": 0.324263,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact poison, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -5.893,
+    "rms_dbfs": -18.002
+  },
+  {
+    "path": "impacts/hit_poison_medium_01.ogg",
+    "duration_s": 0.487664,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact poison, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.984,
+    "rms_dbfs": -18.017
+  },
+  {
+    "path": "impacts/hit_poison_medium_02.ogg",
+    "duration_s": 0.485306,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact poison, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -2.698,
+    "rms_dbfs": -18.015
+  },
+  {
+    "path": "impacts/hit_poison_medium_03.ogg",
+    "duration_s": 0.473129,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact poison, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -6.498,
+    "rms_dbfs": -18.002
+  },
+  {
+    "path": "impacts/hit_poison_heavy_01.ogg",
+    "duration_s": 0.710726,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact poison, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -6.62,
+    "rms_dbfs": -18.019
+  },
+  {
+    "path": "impacts/hit_poison_heavy_02.ogg",
+    "duration_s": 0.71941,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact poison, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -6.732,
+    "rms_dbfs": -18.063
+  },
+  {
+    "path": "impacts/hit_poison_heavy_03.ogg",
+    "duration_s": 0.724014,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact poison, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -3.325,
+    "rms_dbfs": -18.057
+  },
+  {
+    "path": "impacts/hit_lightning_light_01.ogg",
+    "duration_s": 0.322313,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact lightning, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -4.942,
+    "rms_dbfs": -18.016
+  },
+  {
+    "path": "impacts/hit_lightning_light_02.ogg",
+    "duration_s": 0.317574,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact lightning, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -5.764,
+    "rms_dbfs": -18.044
+  },
+  {
+    "path": "impacts/hit_lightning_light_03.ogg",
+    "duration_s": 0.318685,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact lightning, intensité light",
+    "gain_db": -2,
+    "peak_dbfs": -5.751,
+    "rms_dbfs": -18.041
+  },
+  {
+    "path": "impacts/hit_lightning_medium_01.ogg",
+    "duration_s": 0.48483,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact lightning, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.171,
+    "rms_dbfs": -18.064
+  },
+  {
+    "path": "impacts/hit_lightning_medium_02.ogg",
+    "duration_s": 0.479229,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact lightning, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.182,
+    "rms_dbfs": -18.065
+  },
+  {
+    "path": "impacts/hit_lightning_medium_03.ogg",
+    "duration_s": 0.489365,
+    "loop": false,
+    "level": "medium",
+    "usage": "Impact lightning, intensité medium",
+    "gain_db": -2,
+    "peak_dbfs": -5.209,
+    "rms_dbfs": -18.046
+  },
+  {
+    "path": "impacts/hit_lightning_heavy_01.ogg",
+    "duration_s": 0.710295,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact lightning, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -5.879,
+    "rms_dbfs": -17.984
+  },
+  {
+    "path": "impacts/hit_lightning_heavy_02.ogg",
+    "duration_s": 0.733855,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact lightning, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -3.138,
+    "rms_dbfs": -17.99
+  },
+  {
+    "path": "impacts/hit_lightning_heavy_03.ogg",
+    "duration_s": 0.728912,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Impact lightning, intensité heavy",
+    "gain_db": -2,
+    "peak_dbfs": -3.419,
+    "rms_dbfs": -17.988
+  },
+  {
+    "path": "impacts/death_t4_01.ogg",
+    "duration_s": 1.809796,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de gros monstre ou mini-boss avec sub",
+    "gain_db": -4,
+    "peak_dbfs": -7.259,
+    "rms_dbfs": -18.026
+  },
+  {
+    "path": "impacts/death_t4_02.ogg",
+    "duration_s": 1.772132,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de gros monstre ou mini-boss avec sub",
+    "gain_db": -4,
+    "peak_dbfs": -3.011,
+    "rms_dbfs": -18.027
+  },
+  {
+    "path": "impacts/death_t4_03.ogg",
+    "duration_s": 1.764671,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de gros monstre ou mini-boss avec sub",
+    "gain_db": -4,
+    "peak_dbfs": -4.941,
+    "rms_dbfs": -18.033
+  },
+  {
+    "path": "impacts/boss_spawn_01.ogg",
+    "duration_s": 3.639342,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Apparition de boss : grondement, cloche distante et montée",
+    "gain_db": -6,
+    "peak_dbfs": -7.275,
+    "rms_dbfs": -17.984
+  },
+  {
+    "path": "impacts/boss_spawn_02.ogg",
+    "duration_s": 3.628776,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Apparition de boss : grondement, cloche distante et montée",
+    "gain_db": -6,
+    "peak_dbfs": -7.636,
+    "rms_dbfs": -17.982
+  },
+  {
+    "path": "impacts/boss_spawn_03.ogg",
+    "duration_s": 3.627551,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Apparition de boss : grondement, cloche distante et montée",
+    "gain_db": -6,
+    "peak_dbfs": -7.169,
+    "rms_dbfs": -17.977
+  },
+  {
+    "path": "impacts/boss_defeat_01.ogg",
+    "duration_s": 4.63127,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de boss puis résolution apaisée",
+    "gain_db": -5,
+    "peak_dbfs": -6.869,
+    "rms_dbfs": -17.989
+  },
+  {
+    "path": "impacts/boss_defeat_02.ogg",
+    "duration_s": 4.573129,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de boss puis résolution apaisée",
+    "gain_db": -5,
+    "peak_dbfs": -6.981,
+    "rms_dbfs": -17.981
+  },
+  {
+    "path": "impacts/boss_defeat_03.ogg",
+    "duration_s": 4.585147,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement de boss puis résolution apaisée",
+    "gain_db": -5,
+    "peak_dbfs": -7.201,
+    "rms_dbfs": -17.99
+  },
+  {
+    "path": "impacts/stage_cleared_01.ogg",
+    "duration_s": 2.610862,
+    "loop": false,
+    "level": "none",
+    "usage": "Étage terminé : cordes et cloches soulagées",
+    "gain_db": -5,
+    "peak_dbfs": -9.234,
+    "rms_dbfs": -19.972
+  },
+  {
+    "path": "impacts/stage_cleared_02.ogg",
+    "duration_s": 2.609002,
+    "loop": false,
+    "level": "none",
+    "usage": "Étage terminé : cordes et cloches soulagées",
+    "gain_db": -5,
+    "peak_dbfs": -9.224,
+    "rms_dbfs": -19.978
+  },
+  {
+    "path": "impacts/stage_cleared_03.ogg",
+    "duration_s": 2.565692,
+    "loop": false,
+    "level": "none",
+    "usage": "Étage terminé : cordes et cloches soulagées",
+    "gain_db": -5,
+    "peak_dbfs": -9.178,
+    "rms_dbfs": -19.981
+  },
+  {
+    "path": "footsteps/step_player_stone_01.ogg",
+    "duration_s": 0.125442,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.741,
+    "rms_dbfs": -25.943
+  },
+  {
+    "path": "footsteps/step_player_stone_02.ogg",
+    "duration_s": 0.124921,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.634,
+    "rms_dbfs": -25.943
+  },
+  {
+    "path": "footsteps/step_player_stone_03.ogg",
+    "duration_s": 0.121043,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.29,
+    "rms_dbfs": -25.977
+  },
+  {
+    "path": "footsteps/step_player_stone_04.ogg",
+    "duration_s": 0.12195,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.907,
+    "rms_dbfs": -26.015
+  },
+  {
+    "path": "footsteps/step_player_stone_05.ogg",
+    "duration_s": 0.121519,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.024,
+    "rms_dbfs": -25.93
+  },
+  {
+    "path": "footsteps/step_player_water_01.ogg",
+    "duration_s": 0.121746,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.806,
+    "rms_dbfs": -26.059
+  },
+  {
+    "path": "footsteps/step_player_water_02.ogg",
+    "duration_s": 0.122834,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.726,
+    "rms_dbfs": -26.078
+  },
+  {
+    "path": "footsteps/step_player_water_03.ogg",
+    "duration_s": 0.122268,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.552,
+    "rms_dbfs": -25.969
+  },
+  {
+    "path": "footsteps/step_player_water_04.ogg",
+    "duration_s": 0.124172,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.481,
+    "rms_dbfs": -26.078
+  },
+  {
+    "path": "footsteps/step_player_water_05.ogg",
+    "duration_s": 0.12415,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.204,
+    "rms_dbfs": -26.01
+  },
+  {
+    "path": "footsteps/step_player_grass_01.ogg",
+    "duration_s": 0.125646,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.19,
+    "rms_dbfs": -25.995
+  },
+  {
+    "path": "footsteps/step_player_grass_02.ogg",
+    "duration_s": 0.12254,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -11.275,
+    "rms_dbfs": -26.003
+  },
+  {
+    "path": "footsteps/step_player_grass_03.ogg",
+    "duration_s": 0.122902,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.255,
+    "rms_dbfs": -25.966
+  },
+  {
+    "path": "footsteps/step_player_grass_04.ogg",
+    "duration_s": 0.12381,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -15.338,
+    "rms_dbfs": -26.039
+  },
+  {
+    "path": "footsteps/step_player_grass_05.ogg",
+    "duration_s": 0.125374,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas player sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.403,
+    "rms_dbfs": -25.983
+  },
+  {
+    "path": "footsteps/step_monster_t1_stone_01.ogg",
+    "duration_s": 0.096644,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.475,
+    "rms_dbfs": -25.987
+  },
+  {
+    "path": "footsteps/step_monster_t1_stone_02.ogg",
+    "duration_s": 0.096236,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.952,
+    "rms_dbfs": -26.033
+  },
+  {
+    "path": "footsteps/step_monster_t1_stone_03.ogg",
+    "duration_s": 0.094717,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.01,
+    "rms_dbfs": -26.01
+  },
+  {
+    "path": "footsteps/step_monster_t1_stone_04.ogg",
+    "duration_s": 0.095805,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.673,
+    "rms_dbfs": -26.019
+  },
+  {
+    "path": "footsteps/step_monster_t1_stone_05.ogg",
+    "duration_s": 0.096508,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.424,
+    "rms_dbfs": -26.077
+  },
+  {
+    "path": "footsteps/step_monster_t1_water_01.ogg",
+    "duration_s": 0.096259,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -11.642,
+    "rms_dbfs": -26.026
+  },
+  {
+    "path": "footsteps/step_monster_t1_water_02.ogg",
+    "duration_s": 0.09551,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.018,
+    "rms_dbfs": -25.98
+  },
+  {
+    "path": "footsteps/step_monster_t1_water_03.ogg",
+    "duration_s": 0.097506,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -11.559,
+    "rms_dbfs": -25.987
+  },
+  {
+    "path": "footsteps/step_monster_t1_water_04.ogg",
+    "duration_s": 0.095397,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.541,
+    "rms_dbfs": -25.927
+  },
+  {
+    "path": "footsteps/step_monster_t1_water_05.ogg",
+    "duration_s": 0.09542,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -15.296,
+    "rms_dbfs": -25.996
+  },
+  {
+    "path": "footsteps/step_monster_t1_grass_01.ogg",
+    "duration_s": 0.096735,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -15.656,
+    "rms_dbfs": -26.005
+  },
+  {
+    "path": "footsteps/step_monster_t1_grass_02.ogg",
+    "duration_s": 0.097642,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.607,
+    "rms_dbfs": -25.991
+  },
+  {
+    "path": "footsteps/step_monster_t1_grass_03.ogg",
+    "duration_s": 0.095465,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.293,
+    "rms_dbfs": -25.997
+  },
+  {
+    "path": "footsteps/step_monster_t1_grass_04.ogg",
+    "duration_s": 0.095079,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.191,
+    "rms_dbfs": -25.925
+  },
+  {
+    "path": "footsteps/step_monster_t1_grass_05.ogg",
+    "duration_s": 0.095714,
+    "loop": false,
+    "level": "light",
+    "usage": "Pas monster_t1 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.528,
+    "rms_dbfs": -26.03
+  },
+  {
+    "path": "footsteps/step_monster_t2_stone_01.ogg",
+    "duration_s": 0.115692,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur stone; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.097,
+    "rms_dbfs": -26.041
+  },
+  {
+    "path": "footsteps/step_monster_t2_stone_02.ogg",
+    "duration_s": 0.206417,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur stone; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.635,
+    "rms_dbfs": -26.019
+  },
+  {
+    "path": "footsteps/step_monster_t2_stone_03.ogg",
+    "duration_s": 0.115306,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur stone; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -13.87,
+    "rms_dbfs": -25.969
+  },
+  {
+    "path": "footsteps/step_monster_t2_stone_04.ogg",
+    "duration_s": 0.198345,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur stone; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.509,
+    "rms_dbfs": -25.977
+  },
+  {
+    "path": "footsteps/step_monster_t2_stone_05.ogg",
+    "duration_s": 0.116032,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur stone; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -13.811,
+    "rms_dbfs": -25.925
+  },
+  {
+    "path": "footsteps/step_monster_t2_water_01.ogg",
+    "duration_s": 0.115646,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur water; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -13.355,
+    "rms_dbfs": -25.913
+  },
+  {
+    "path": "footsteps/step_monster_t2_water_02.ogg",
+    "duration_s": 0.20034,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur water; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.426,
+    "rms_dbfs": -26.055
+  },
+  {
+    "path": "footsteps/step_monster_t2_water_03.ogg",
+    "duration_s": 0.116825,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur water; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -13.564,
+    "rms_dbfs": -26.006
+  },
+  {
+    "path": "footsteps/step_monster_t2_water_04.ogg",
+    "duration_s": 0.200272,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur water; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -13.878,
+    "rms_dbfs": -25.972
+  },
+  {
+    "path": "footsteps/step_monster_t2_water_05.ogg",
+    "duration_s": 0.115782,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur water; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.338,
+    "rms_dbfs": -25.973
+  },
+  {
+    "path": "footsteps/step_monster_t2_grass_01.ogg",
+    "duration_s": 0.118345,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur grass; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -14.116,
+    "rms_dbfs": -26.017
+  },
+  {
+    "path": "footsteps/step_monster_t2_grass_02.ogg",
+    "duration_s": 0.203696,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur grass; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -11.468,
+    "rms_dbfs": -26.081
+  },
+  {
+    "path": "footsteps/step_monster_t2_grass_03.ogg",
+    "duration_s": 0.117891,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur grass; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -15.103,
+    "rms_dbfs": -26.0
+  },
+  {
+    "path": "footsteps/step_monster_t2_grass_04.ogg",
+    "duration_s": 0.2061,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur grass; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -11.554,
+    "rms_dbfs": -26.024
+  },
+  {
+    "path": "footsteps/step_monster_t2_grass_05.ogg",
+    "duration_s": 0.114626,
+    "loop": false,
+    "level": "medium",
+    "usage": "Pas monster_t2 sur grass; alterner les cinq variantes; impair tireur, pair bondisseur",
+    "gain_db": 0,
+    "peak_dbfs": -11.988,
+    "rms_dbfs": -26.037
+  },
+  {
+    "path": "footsteps/step_monster_t3_stone_01.ogg",
+    "duration_s": 0.212472,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.753,
+    "rms_dbfs": -25.944
+  },
+  {
+    "path": "footsteps/step_monster_t3_stone_02.ogg",
+    "duration_s": 0.213673,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.084,
+    "rms_dbfs": -25.952
+  },
+  {
+    "path": "footsteps/step_monster_t3_stone_03.ogg",
+    "duration_s": 0.212789,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.027,
+    "rms_dbfs": -26.039
+  },
+  {
+    "path": "footsteps/step_monster_t3_stone_04.ogg",
+    "duration_s": 0.21254,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.608,
+    "rms_dbfs": -26.001
+  },
+  {
+    "path": "footsteps/step_monster_t3_stone_05.ogg",
+    "duration_s": 0.219909,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur stone; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.875,
+    "rms_dbfs": -25.997
+  },
+  {
+    "path": "footsteps/step_monster_t3_water_01.ogg",
+    "duration_s": 0.21127,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.864,
+    "rms_dbfs": -26.04
+  },
+  {
+    "path": "footsteps/step_monster_t3_water_02.ogg",
+    "duration_s": 0.212608,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.926,
+    "rms_dbfs": -26.038
+  },
+  {
+    "path": "footsteps/step_monster_t3_water_03.ogg",
+    "duration_s": 0.21415,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.174,
+    "rms_dbfs": -25.995
+  },
+  {
+    "path": "footsteps/step_monster_t3_water_04.ogg",
+    "duration_s": 0.219501,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.603,
+    "rms_dbfs": -26.078
+  },
+  {
+    "path": "footsteps/step_monster_t3_water_05.ogg",
+    "duration_s": 0.213832,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur water; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -12.449,
+    "rms_dbfs": -26.049
+  },
+  {
+    "path": "footsteps/step_monster_t3_grass_01.ogg",
+    "duration_s": 0.214921,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.381,
+    "rms_dbfs": -25.968
+  },
+  {
+    "path": "footsteps/step_monster_t3_grass_02.ogg",
+    "duration_s": 0.219478,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.085,
+    "rms_dbfs": -26.04
+  },
+  {
+    "path": "footsteps/step_monster_t3_grass_03.ogg",
+    "duration_s": 0.218345,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -14.339,
+    "rms_dbfs": -25.994
+  },
+  {
+    "path": "footsteps/step_monster_t3_grass_04.ogg",
+    "duration_s": 0.217778,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -11.22,
+    "rms_dbfs": -25.975
+  },
+  {
+    "path": "footsteps/step_monster_t3_grass_05.ogg",
+    "duration_s": 0.218707,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas monster_t3 sur grass; alterner les cinq variantes",
+    "gain_db": 0,
+    "peak_dbfs": -13.266,
+    "rms_dbfs": -25.99
+  },
+  {
+    "path": "footsteps/step_boss_stone_01.ogg",
+    "duration_s": 0.217687,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur stone; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.928,
+    "rms_dbfs": -25.942
+  },
+  {
+    "path": "footsteps/step_boss_stone_02.ogg",
+    "duration_s": 0.225986,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur stone; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.905,
+    "rms_dbfs": -25.973
+  },
+  {
+    "path": "footsteps/step_boss_stone_03.ogg",
+    "duration_s": 0.215102,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur stone; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.797,
+    "rms_dbfs": -25.972
+  },
+  {
+    "path": "footsteps/step_boss_stone_04.ogg",
+    "duration_s": 0.226281,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur stone; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.923,
+    "rms_dbfs": -25.926
+  },
+  {
+    "path": "footsteps/step_boss_stone_05.ogg",
+    "duration_s": 0.215057,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur stone; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.403,
+    "rms_dbfs": -25.928
+  },
+  {
+    "path": "footsteps/step_boss_water_01.ogg",
+    "duration_s": 0.214376,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur water; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.439,
+    "rms_dbfs": -25.941
+  },
+  {
+    "path": "footsteps/step_boss_water_02.ogg",
+    "duration_s": 0.229048,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur water; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -12.273,
+    "rms_dbfs": -26.063
+  },
+  {
+    "path": "footsteps/step_boss_water_03.ogg",
+    "duration_s": 0.220181,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur water; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -12.711,
+    "rms_dbfs": -26.022
+  },
+  {
+    "path": "footsteps/step_boss_water_04.ogg",
+    "duration_s": 0.229524,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur water; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.38,
+    "rms_dbfs": -26.06
+  },
+  {
+    "path": "footsteps/step_boss_water_05.ogg",
+    "duration_s": 0.213946,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur water; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -13.071,
+    "rms_dbfs": -26.019
+  },
+  {
+    "path": "footsteps/step_boss_grass_01.ogg",
+    "duration_s": 0.220816,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur grass; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -14.279,
+    "rms_dbfs": -25.999
+  },
+  {
+    "path": "footsteps/step_boss_grass_02.ogg",
+    "duration_s": 0.229501,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur grass; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -14.714,
+    "rms_dbfs": -25.935
+  },
+  {
+    "path": "footsteps/step_boss_grass_03.ogg",
+    "duration_s": 0.21839,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur grass; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -14.806,
+    "rms_dbfs": -26.034
+  },
+  {
+    "path": "footsteps/step_boss_grass_04.ogg",
+    "duration_s": 0.222517,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur grass; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -10.796,
+    "rms_dbfs": -25.933
+  },
+  {
+    "path": "footsteps/step_boss_grass_05.ogg",
+    "duration_s": 0.219683,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Pas boss sur grass; alterner les cinq variantes; impair mini-boss, pair boss",
+    "gain_db": 0,
+    "peak_dbfs": -12.617,
+    "rms_dbfs": -26.026
+  }
+]

@@ -1,0 +1,247 @@
+{
+  "idle_p1": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "idle_p2": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "idle_p3": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "walk_p1": {
+    "size": [
+      2048,
+      1024
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ]
+  },
+  "walk_p2": {
+    "size": [
+      2048,
+      1024
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ]
+  },
+  "walk_p3": {
+    "size": [
+      2048,
+      1024
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ]
+  },
+  "auto": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "spell_a": {
+    "size": [
+      2048,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  },
+  "spell_b": {
+    "size": [
+      2048,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  },
+  "trans_p2": {
+    "size": [
+      2048,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  },
+  "trans_p3": {
+    "size": [
+      2048,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  },
+  "death": {
+    "size": [
+      2560,
+      256
+    ],
+    "frames": 10,
+    "directions": [
+      "s"
+    ]
+  },
+  "bell_ring": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "boiler_open": {
+    "size": [
+      1536,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "auto_dirs": {
+    "size": [
+      1536,
+      768
+    ],
+    "frames": 6,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ]
+  },
+  "spell_a_dirs": {
+    "size": [
+      2048,
+      768
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ]
+  },
+  "spell_b_dirs": {
+    "size": [
+      2048,
+      768
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ]
+  },
+  "bolt": {
+    "size": [
+      192,
+      32
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "ground_lightning": {
+    "size": [
+      768,
+      128
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ]
+  },
+  "ground_scorch": {
+    "size": [
+      512,
+      128
+    ],
+    "frames": 4,
+    "directions": [
+      "s"
+    ]
+  },
+  "ground_steam": {
+    "size": [
+      512,
+      384
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  },
+  "lightning": {
+    "size": [
+      512,
+      768
+    ],
+    "frames": 4,
+    "directions": [
+      "s"
+    ]
+  },
+  "steam_vent": {
+    "size": [
+      512,
+      384
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ]
+  }
+}

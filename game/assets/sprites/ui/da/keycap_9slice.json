@@ -1,0 +1,25 @@
+{
+  "name": "keycap_9slice",
+  "size": [
+    64,
+    64
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse"
+  ],
+  "normal": "none: face-on UI",
+  "emission": false,
+  "nine_slice": {
+    "left": 14,
+    "top": 14,
+    "right": 14,
+    "bottom": 14
+  },
+  "content_insets": {
+    "left": 14,
+    "top": 14,
+    "right": 14,
+    "bottom": 14
+  }
+}

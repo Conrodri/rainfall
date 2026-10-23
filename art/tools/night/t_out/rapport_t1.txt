@@ -1,0 +1,6 @@
+T1 TERMINE : source tocsin.blend, derivee du chara design valide.
+7 modules et pivots : torso, head, neck_steam, arm_l/r, leg_l/r.
+Choix DA : fer pique, bronze noye, cloche felee, raccords demontables ; foyer orange unique.
+CREA 30 degres, 90.5097 px/u, cellule 192, pivot Ardent (96 ; 136.32).
+PASS : source rechargee, 8 directions diffuse/normale/emission, marges alpha ; Godot RESULT: OK.
+Suite T2 : locomotion/calques ; T3 : lancers/death ; T5 : atlas et .tres, attack impact N/2, cast, cast_ult. Aucun fichier game ni .gd/.tscn modifie.

@@ -1,0 +1,8 @@
+LOT UXREGLAGES : interrupteurs visuels de l'écran Réglages (code branché, repli en forme provisoire : game/scripts/ui/settings_panel.gd classe ToggleSwitch, chargés s'ils existent). Lisibilité avant tout : l'état doit se lire SANS la couleur (position du curseur + lanterne allumée/éteinte), sur fond sombre #1c1f26 et #2B3340.
+Sorties game/assets/sprites/ui/menu/ (PNG RGBA, fond transparent ; noms EXACTS) :
+1) toggle_on.png 160x88 : piste horizontale arrondie (hauteur ~52 px, centrée), curseur rond à DROITE en forme de petite lanterne ALLUMÉE (accent braise #FFB347, lueur chaude contenue dans le cadre), piste teintée braise sombre, contour clair #E8EEF8 net.
+2) toggle_off.png 160x88 : même piste, curseur à GAUCHE, lanterne ÉTEINTE (métal usé gris #3A4250, verre sombre), piste gris-bleu sombre, même contour clair.
+Script art/tools/night/uxreglages_build.py (Blender --background, caméra orthographique de face, Eevee échantillons modestes). Périmètre : ce dossier de sortie uniquement. Aucun .gd/.tscn. PNG optimisés.
+DA : art/briefs/STYLE.md en tête ; RENDU CEL OBLIGATOIRE : art/briefs/STYLE_cel.md + art/tools/cel/cel_style.py profil 'ui' (2 tons, sans _n). Masque d'émission inutile.
+Vérification : planche art/tools/night/_uxreglages_contact.png : les 2 états côte à côte à 160x88 et à 88x48, sur #1c1f26 et #2B3340, plus une version en niveaux de gris (l'état doit rester lisible). Rapport final court en français.
+NORMAL MAPS SUPPRIMÉES (décision du joueur, 22/10/2026 ; PRIORITAIRE sur toute mention contraire) : aucun <f>_n.png produit ni livré ; cel.install(<profil>, normals=False).

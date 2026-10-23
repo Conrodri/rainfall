@@ -1,0 +1,52 @@
+{
+ "_doc": "Budget textures (mobile d'abord). Partagé par art/tools/texture_budget.py (mesure, --apply-policy) et tests/texture_budget_test. Tailles en Mio. apk_textures_mb = textures embarquées dans l'APK (ASTC deflaté) ; category_mobile_mb idem par catégorie. oversize_allowlist : planches > max_side tolérées jusqu'au re-rendu Codex du lot indiqué (règle dure ajoutée au brief). Aucune normal map <f>_n.png à côté d'un diffus (retirées le 22/10/2026, archives art/archive_normals/ hors projet). import_policy : VRAM haute qualité (BPTC sur PC, ASTC 4x4 sur Android/iOS : VRAM ÷4, le PC garde la définition) sauf UI/icônes en lossless ; jamais de mipmaps en 2D. Paliers : apk_textures_mb = plafond actuel testé (palier 1 : VRAM ASTC/BPTC + découpe > 4096) ; apk_textures_target_mb = cible pour un APK <= 200 Mo avec l'audio actuel (palier 2 : re-rendus Codex à la taille d'affichage, couches de Tocsin rognées).",
+ "max_side_px": 4096,
+ "apk_mb": 200,
+ "apk_textures_mb": 180,
+ "category_mobile_mb": {
+  "characters/*": 30,
+  "characters/tocsin": 50,
+  "bosses": 45,
+  "ambiance": 15,
+  "vfx": 15,
+  "terrain": 15,
+  "monsters": 12,
+  "ui": 5,
+  "icons": 5,
+  "props": 5
+ },
+ "import_policy": {
+  "default": {
+   "compress/mode": 2,
+   "compress/high_quality": true,
+   "mipmaps/generate": false
+  },
+  "lossless_dirs": [
+   "assets/sprites/ui/",
+   "assets/sprites/icons/"
+  ],
+  "lossless": {
+   "compress/mode": 0,
+   "mipmaps/generate": false
+  },
+  "overrides": {
+   "assets/sprites/ambiance/cloud_shadow_2048.png": {
+    "process/size_limit": 1024
+   },
+   "assets/sprites/ambiance/cloud_shadow_2048_2.png": {
+    "process/size_limit": 1024
+   },
+   "assets/sprites/ambiance/canopy_shadow_2048.png": {
+    "process/size_limit": 1024
+   },
+   "assets/sprites/ambiance/canopy_shadow_2048_2.png": {
+    "process/size_limit": 1024
+   }
+  }
+ },
+ "oversize_allowlist": {
+  "assets/sprites/characters/averse/effects/wave_cone/wave_cone.png": "AV3",
+  "assets/sprites/characters/averse/effects/wave_cone/wave_cone_e.png": "AV3"
+ },
+ "apk_textures_target_mb": 95
+}

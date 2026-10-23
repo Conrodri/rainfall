@@ -1,0 +1,99 @@
+{
+  "result": "PASS",
+  "cell": 170,
+  "bottom": 140,
+  "ortho_scale": 4.051028251647949,
+  "impact_1based": {
+    "attack": 3,
+    "cast_a": 4,
+    "cast_b": 4
+  },
+  "normals": false,
+  "emission_scale": 0.5,
+  "assets": [
+    {
+      "id": "blind_lamplighter",
+      "animation": "idle",
+      "frames": 6,
+      "rows": 1
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "run",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "attack",
+      "frames": 6,
+      "rows": 4
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "cast_a",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "cast_b",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "phase2",
+      "frames": 8,
+      "rows": 1
+    },
+    {
+      "id": "blind_lamplighter",
+      "animation": "death",
+      "frames": 10,
+      "rows": 1
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "idle",
+      "frames": 6,
+      "rows": 1
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "run",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "attack",
+      "frames": 6,
+      "rows": 4
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "cast_a",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "cast_b",
+      "frames": 8,
+      "rows": 4
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "phase2",
+      "frames": 8,
+      "rows": 1
+    },
+    {
+      "id": "sarcophagus_crab",
+      "animation": "death",
+      "frames": 10,
+      "rows": 1
+    }
+  ]
+}

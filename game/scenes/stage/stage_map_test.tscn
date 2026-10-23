@@ -1,0 +1,253 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/stage_map.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="wall_h"]
+size = Vector2(4096, 128)
+
+[sub_resource type="RectangleShape2D" id="wall_v"]
+size = Vector2(128, 4096)
+
+[sub_resource type="RectangleShape2D" id="ob0"]
+size = Vector2(320, 192)
+
+[sub_resource type="RectangleShape2D" id="ob1"]
+size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="ob2"]
+size = Vector2(192, 384)
+
+[sub_resource type="RectangleShape2D" id="ob3"]
+size = Vector2(384, 160)
+
+[sub_resource type="RectangleShape2D" id="ob4"]
+size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="ob5"]
+size = Vector2(160, 320)
+
+[sub_resource type="RectangleShape2D" id="ob6"]
+size = Vector2(192, 192)
+
+[sub_resource type="RectangleShape2D" id="ob7"]
+size = Vector2(160, 160)
+
+[node name="StageMap" type="Node2D"]
+script = ExtResource("1")
+metadata/size_u = Vector2(60, 60)
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Floor" type="Polygon2D" parent="Visual"]
+color = Color(0.2, 0.27, 0.19, 1)
+polygon = PackedVector2Array(-1920, -1920, 1920, -1920, 1920, 1920, -1920, 1920)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="WallN" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, -1984)
+shape = SubResource("wall_h")
+
+[node name="WallS" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, 1984)
+shape = SubResource("wall_h")
+
+[node name="WallW" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-1984, 0)
+shape = SubResource("wall_v")
+
+[node name="WallE" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1984, 0)
+shape = SubResource("wall_v")
+
+[node name="Obstacles" type="Node2D" parent="."]
+
+[node name="Obstacle0" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(-900, -700)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle0"]
+shape = SubResource("ob0")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle0"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-160, -96, 160, -96, 160, 96, -160, 96)
+
+[node name="Obstacle1" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(700, -1200)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle1"]
+shape = SubResource("ob1")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle1"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-128, -128, 128, -128, 128, 128, -128, 128)
+
+[node name="Obstacle2" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(-1300, 300)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle2"]
+shape = SubResource("ob2")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle2"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-96, -192, 96, -192, 96, 192, -96, 192)
+
+[node name="Obstacle3" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(500, 500)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle3"]
+shape = SubResource("ob3")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle3"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-192, -80, 192, -80, 192, 80, -192, 80)
+
+[node name="Obstacle4" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(-300, 1100)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle4"]
+shape = SubResource("ob4")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle4"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-128, -128, 128, -128, 128, 128, -128, 128)
+
+[node name="Obstacle5" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(1200, 1000)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle5"]
+shape = SubResource("ob5")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle5"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-80, -160, 80, -160, 80, 160, -80, 160)
+
+[node name="Obstacle6" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(-200, -250)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle6"]
+shape = SubResource("ob6")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle6"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-96, -96, 96, -96, 96, 96, -96, 96)
+
+[node name="Obstacle7" type="StaticBody2D" parent="Obstacles"]
+position = Vector2(250, -600)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape2D" parent="Obstacles/Obstacle7"]
+shape = SubResource("ob7")
+
+[node name="Visual" type="Polygon2D" parent="Obstacles/Obstacle7"]
+color = Color(0.32, 0.3, 0.28, 1)
+polygon = PackedVector2Array(-80, -80, 80, -80, 80, 80, -80, 80)
+
+[node name="PlayerStart" type="Marker2D" parent="." groups=["player_start"]]
+position = Vector2(0, 0)
+
+[node name="ChestSpawns" type="Node2D" parent="."]
+
+[node name="Chest0" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-1470, -1020)
+
+[node name="Chest1" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-1340, -380)
+
+[node name="Chest2" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-1210, 260)
+
+[node name="Chest3" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-1340, 900)
+
+[node name="Chest4" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-830, -990)
+
+[node name="Chest5" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-700, -350)
+
+[node name="Chest6" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-570, 290)
+
+[node name="Chest7" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-700, 930)
+
+[node name="Chest8" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-190, -960)
+
+[node name="Chest9" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-60, -120)
+
+[node name="Chest10" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(70, 320)
+
+[node name="Chest11" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(-60, 960)
+
+[node name="Chest12" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(450, -930)
+
+[node name="Chest13" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(580, -290)
+
+[node name="Chest14" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(710, 350)
+
+[node name="Chest15" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(580, 990)
+
+[node name="Chest16" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(1090, -900)
+
+[node name="Chest17" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(1220, -260)
+
+[node name="Chest18" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(1350, 380)
+
+[node name="Chest19" type="Marker2D" parent="ChestSpawns" groups=["chest_spawn"]]
+position = Vector2(1220, 1020)
+
+[node name="PillarSpawns" type="Node2D" parent="."]
+
+[node name="Pillar0" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(-1300, -1300)
+
+[node name="Pillar1" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(1300, -1300)
+
+[node name="Pillar2" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(-1500, 0)
+
+[node name="Pillar3" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(1500, 100)
+
+[node name="Pillar4" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(-1200, 1400)
+
+[node name="Pillar5" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(1100, 1450)
+
+[node name="Pillar6" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(0, -1500)
+
+[node name="Pillar7" type="Marker2D" parent="PillarSpawns" groups=["pillar_spawn"]]
+position = Vector2(0, 1500)
+

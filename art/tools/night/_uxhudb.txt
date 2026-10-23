@@ -1,0 +1,6 @@
+LOT UXHUDB : remplissage VERT de la barre de PV du joueur dans le HUD (décision du joueur 22/10/2026 : PV du joueur en vert partout, rouge réservé aux ennemis). Code branché : game/scripts/ui/hud.gd charge game/assets/sprites/ui/da/bar_fill_hp_green.png s'il existe, sinon un aplat vert #52C45A (placeholder).
+Sortie : game/assets/sprites/ui/da/bar_fill_hp_green.png, MÊME taille, même découpe et même texture que bar_fill_hp.png (déjà livré, rouge), seule la teinte change : vert #52C45A au centre, liseré haut #B4E6A6, bas plus sombre #2F7A36 ; contraste ≥ 3:1 contre le fond #0B0907. Optionnel : bar_fill_hp_green_e.png (masque d'émission, demi-résolution).
+Script art/tools/night/uxhudb_build.py (Blender --background, ou recoloration du rendu source de bar_fill_hp.png dans Blender : pas de PIL pour dessiner). Périmètre : ce fichier de sortie uniquement. Aucun .gd/.tscn. PNG optimisé.
+DA : art/briefs/STYLE.md en tête ; RENDU CEL OBLIGATOIRE : art/briefs/STYLE_cel.md + art/tools/cel/cel_style.py profil 'ui' (2 tons, sans _n).
+Vérification : planche art/tools/night/_uxhudb_contact.png : barre pleine, à 60 % et à 20 % sur #0B0907. Rapport final court en français.
+NORMAL MAPS SUPPRIMÉES (décision du joueur, 22/10/2026 ; PRIORITAIRE sur toute mention contraire) : aucun <f>_n.png produit ni livré ; cel.install(<profil>, normals=False).

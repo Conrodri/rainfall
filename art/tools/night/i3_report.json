@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "icons": 8,
+  "exact_bounds": true,
+  "protected_imports": 8,
+  "errors": [],
+  "parallel_resource_changes": [
+    "game/assets/sprites/vfx/ardent_ashes/ardent_ashes.tres",
+    "game/assets/sprites/vfx/ardent_brasier/ardent_brasier.tres",
+    "game/assets/sprites/vfx/ardent_nova/ardent_nova.tres",
+    "game/assets/sprites/characters/ardent/ardent.tres"
+  ],
+  "resource_note": "Existing resources are read only for I3; parallel batch changes are recorded separately."
+}

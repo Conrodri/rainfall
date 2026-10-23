@@ -1,0 +1,142 @@
+{
+  "swarm_tier1": {
+    "frames": 64,
+    "min_margin": 7,
+    "emissive_frames": 64,
+    "animations": {
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 96
+      }
+    }
+  },
+  "shooter_tier2": {
+    "frames": 128,
+    "min_margin": 6,
+    "emissive_frames": 120,
+    "animations": {
+      "attack": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 112
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 112
+      }
+    }
+  },
+  "leaper_tier2": {
+    "frames": 128,
+    "min_margin": 6,
+    "emissive_frames": 128,
+    "animations": {
+      "charge": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 112
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 112
+      }
+    }
+  },
+  "brute_tier3": {
+    "frames": 192,
+    "min_margin": 6,
+    "emissive_frames": 132,
+    "animations": {
+      "attack": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 160
+      },
+      "cast": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 160
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "se",
+          "s",
+          "sw",
+          "w",
+          "nw",
+          "n",
+          "ne"
+        ],
+        "frame_size": 160
+      }
+    }
+  }
+}

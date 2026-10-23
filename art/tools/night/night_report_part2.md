@@ -1,0 +1,178 @@
+# Rapport de la file de nuit Codex
+- 22/10 07:17 == groupe 1
+- 22/10 07:18 sprites_test après groupe 1 : RESULT: OK
+- 22/10 07:18 == groupe 2
+- 22/10 07:20 sprites_test après groupe 2 : RESULT: OK
+- 22/10 07:20 == groupe 3
+- 22/10 07:21 sprites_test après groupe 3 : RESULT: OK
+- 22/10 07:21 == groupe 4
+- 22/10 07:21 lancement art/tools/night/_t2.txt
+- 22/10 07:21 quota Codex épuisé (art/tools/night/_logt2.txt), reprise vers 08:05
+- 22/10 07:22 lancement art/tools/night/_ar1.txt
+- 22/10 07:22 quota Codex épuisé (art/tools/night/_logar1.txt), reprise vers 08:05
+- 22/10 08:05 lancement art/tools/night/_t2.txt
+- 22/10 08:05 lancement art/tools/night/_ar1.txt
+- 22/10 08:05 lancement art/tools/night/_t2.txt
+- 22/10 08:05 lancement art/tools/night/_ar1.txt
+- 22/10 08:07 fin art/tools/night/_ar1.txt : s 64/128 px. Contrôles : aucune frame dupliquée ou rognée ; SpriteFrames chargé sans erreur ; Godot `RESULT: OK`. [Planche de contrôle](art/tools/night/_ar1_contact.png). Sources et script conservés ; aucun `.gd`/`.tscn` modifié. Effets `chain_tile`, `peg`, `loop_blaze` réservés au lot AR2.
+- 22/10 08:07 fin art/tools/night/_ar1.txt : n médaillons 64/128 px. Godot : `RESULT: OK` ; 72 animations chargées sans erreur, aucun cadrage coupé. [Planche de contrôle](art/tools/night/_ar1_contact.png) — effets `chain_tile`, `peg`, `loop_blaze` réservés au lot AR2. Sources Blender et script conservés ; aucun `.gd`/`.tscn` modifié.
+- 22/10 08:09 fin art/tools/night/_t2.txt : 3 animations, 7 calques et 664 poses. Godot : `RESULT: OK` ; 16 `.tres` chargés sans erreur. [Planche de contrôle](art/tools/night/_t2_contact.png) · [Rapport](art/tools/night/t_out/rapport_t2.txt) Budget mémoire dépassé : rognage des atlas indispensable au T5. Aucun `.gd` ni `.tscn` modifié.
+- 22/10 08:09 fin art/tools/night/_t2.txt : teFrames chargés sans erreur. DA : bronze usé, fer sombre, foyer orange unique. Budget mémoire dépassé : optimisation des atlas nécessaire au T5. [Planche de contrôle](art/tools/night/_t2_contact.png) · [Rapport](art/tools/night/t_out/rapport_t2_controle.txt) Aucun `.gd` ni `.tscn` modifié.
+- 22/10 08:09 sprites_test après groupe 4 : RESULT: OK
+- 22/10 08:09 == groupe 5
+- 22/10 08:09 lancement art/tools/night/_t3.txt
+- 22/10 08:09 sprites_test après groupe 4 : RESULT: OK
+- 22/10 08:09 == groupe 5
+- 22/10 08:09 lancement art/tools/night/_t3.txt
+- 22/10 08:10 lancement art/tools/night/_av2.txt
+- 22/10 08:10 lancement art/tools/night/_av2.txt
+- 22/10 08:10 lancement art/tools/night/_ar2.txt
+- 22/10 08:10 lancement art/tools/night/_ar2.txt
+- 22/10 08:17 fin art/tools/night/_ar2.txt : _n/_e, 4 icônes PBR et portrait. Cuivre forgé incandescent, bronze patiné ; animations AR1 conservées. Godot : **RESULT: OK**, 6 `.tres` chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_ar2_contact.png) · [Rapport](art/tools/night/_logar2.txt.last.txt)
+- 22/10 08:17 fin art/tools/night/_av2.txt : s contrôlé. 66 frames VFX, projectile, portrait et 4 icônes ; variantes `_n`/`_e` présentes. DA : eau sombre sculptée, écume métallique, accent cyan. Godot : `RESULT: OK` ; 10 `.tres` chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_av2_contact.png).
+- 22/10 08:18 fin art/tools/night/_av2.txt : 28 px et portrait. DA : eau noire réfléchissante, crêtes déchirées, accent cyan et bronze gravé. Godot : 10 ressources chargées sans erreur ; `RESULT: OK`. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_av2_contact.png) · [Rapport](art/tools/night/_logav2.txt.last.txt)
+- 22/10 08:18 fin art/tools/night/_ar2.txt : atiné ; animations AR1 conservées. Godot : **RESULT: OK**, 6 `.tres` chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](/C:/Users/const/Documents/Rainfall/art/tools/night/_ar2_contact.png) · [Rapport](/C:/Users/const/Documents/Rainfall/art/tools/night/_logar2.txt.last.txt)
+- 22/10 08:20 fin art/tools/night/_t3.txt :  rivets, vapeur et attaques. DA : métal usé, bronze oxydé, braise orange unique. Godot : `RESULT: OK` ; 18 `.tres` chargés sans erreur. Aucun `.gd` ni `.tscn` modifié. [Planche de contrôle](art/tools/night/_t3_contact.png) · [Rapport](art/tools/night/t_out/rapport_t3_controle_independant.txt)
+- 22/10 08:21 sprites_test après groupe 5 : RESULT: OK
+- 22/10 08:21 == groupe 6
+- 22/10 08:21 lancement art/tools/night/_t4.txt
+- 22/10 08:21 lancement art/tools/night/_ra1.txt
+- 22/10 08:21 fin art/tools/night/_t3.txt : onservée : métal usé, recul lourd, foyer orange unique. Vérifications : 2 624 cellules conformes ; Godot `RESULT: OK` ; 18 SpriteFrames chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_t3_contact.png) · [Rapport](art/tools/night/t_out/rapport_t3.txt)
+- 22/10 08:21 sprites_test après groupe 5 : RESULT: OK
+- 22/10 08:21 == groupe 6
+- 22/10 08:21 lancement art/tools/night/_t4.txt
+- 22/10 08:21 lancement art/tools/night/_aa1.txt
+- 22/10 08:22 lancement art/tools/night/_ra1.txt
+- 22/10 08:22 lancement art/tools/night/_aa1.txt
+- 22/10 08:30 fin art/tools/night/_aa1.txt :  chêne noir, chaîne articulée et or émissif. Godot : `RESULT: OK` ; les deux `.tres` chargent sans erreur. Aucun `.gd/.tscn` modifié. [Planche de contrôle](art/tools/night/_aa1_contact.png) vérifiée ; sources et `aa1_build.py` livrés. VFX `coin_burst` et `ransom_ring` réservés au lot AA2.
+- 22/10 08:30 fin art/tools/night/_aa1.txt : nches diffuse/_n/_e et 4 icônes PBR. Choix : cuir gras, coffre cerclé, chaîne articulée, or sous pression comme unique accent. Pivot Ardent conservé ; ressources chargées sans erreur ; Godot : **RESULT: OK**. [Planche de contrôle](art/tools/night/_aa1_contact.png) — VFX réservés au lot 2.
+- 22/10 08:32 fin art/tools/night/_t4.txt : 
+- 22/10 08:32 fin art/tools/night/_ra1.txt : e, fer rouillé, lance dorsale, sac vocal vert pâle gonflable. Quatre icônes PBR, présentées en médaillons à 64 et 128 px auprès d’Ardent. Godot : `RESULT: OK` ; les deux `.tres` chargent sans erreur. [Planche de contrôle](art/tools/night/_ra1_contact.png) — aucun `.gd`/`.tscn` modifié.
+- 22/10 08:32 sprites_test après groupe 6 : RESULT: OK
+- 22/10 08:32 == groupe 7
+- 22/10 08:32 lancement art/tools/night/_t5.txt
+- 22/10 08:32 lancement art/tools/night/_ra2.txt
+- 22/10 08:33 lancement art/tools/night/_aa2.txt
+- 22/10 08:33 fin art/tools/night/_ra1.txt : ons 64/128 px. Godot : `RESULT: OK` ; deux SpriteFrames chargés, 1 104 frames vérifiées sans erreur. Sources `rainette*.blend` et script `art/tools/night/ra1_build.py` livrés ; aucun `.gd/.tscn` modifié. [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_ra1_contact.png).
+- 22/10 08:35 fin art/tools/night/_t4.txt : A : bronze usé, joints incandescents, pinces fumantes, accent orange unique. 168 cellules vérifiées ; Godot `RESULT: OK` ; 38 SpriteFrames chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_t4_contact.png) · [Rapport](art/tools/night/t_out/rapport_t4.txt)
+- 22/10 08:35 sprites_test après groupe 6 : RESULT: OK
+- 22/10 08:35 == groupe 7
+- 22/10 08:35 lancement art/tools/night/_t5.txt
+- 22/10 08:36 lancement art/tools/night/_ra2.txt
+- 22/10 08:36 lancement art/tools/night/_aa2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logt5.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_t5.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logaa2.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_aa2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logt5.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_t5.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logt5.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_t5.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logaa2.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_aa2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logaa2.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_aa2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logt5.txt), reprise vers 13:08
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logt5.txt), reprise vers 13:08
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logaa2.txt), reprise vers 13:08
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logra2.txt), reprise vers 01:03
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logaa2.txt), reprise vers 13:08
+- 22/10 08:36 lancement art/tools/night/_ra2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logra2.txt), reprise vers 01:03
+- 22/10 08:36 lancement art/tools/night/_ra2.txt
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logra2.txt), reprise vers 13:08
+- 22/10 08:36 quota Codex épuisé (art/tools/night/_logra2.txt), reprise vers 13:08
+- 22/10 13:08 lancement art/tools/night/_aa2.txt
+- 22/10 13:08 lancement art/tools/night/_aa2.txt
+- 22/10 13:08 lancement art/tools/night/_ra2.txt
+- 22/10 13:08 lancement art/tools/night/_t5.txt
+- 22/10 13:08 lancement art/tools/night/_t5.txt
+- 22/10 13:08 lancement art/tools/night/_ra2.txt
+- 22/10 13:11 fin art/tools/night/_t5.txt : /`.tscn` modifié. [Format pour l’agent de code](game/assets/sprites/characters/tocsin/FORMAT_T5.md) · [Planche](art/tools/night/_t5_contact.png). Audit global encore non conforme hors périmètre : Averse, Rainette et budget APK ; détails dans le [rapport](art/tools/night/t_out/rapport_t5.txt).
+- 22/10 13:11 fin art/tools/night/_aa2.txt : PBR AA1 conservées. Godot : 14 ressources chargées sans erreur, **RESULT: OK**. Aucun atlas Avare >4096 ; trois dépassements Averse hors périmètre subsistent. Aucun `.gd`/`.tscn` édité. [Planche de contrôle](art/tools/night/_aa2_contact.png) · [Rapport](art/tools/night/_logaa2.txt.last.txt)
+- 22/10 13:12 fin art/tools/night/_t5.txt : gés sans erreur. DA conservée : métal usé, bronze patiné, foyer orange unique. [Planche](art/tools/night/_t5_contact.png). Contrôles globaux encore bloqués hors périmètre : Averse, imports Rainette et budget APK. Aucun `.gd`/`.tscn` modifié. [Rapport](art/tools/night/t_out/rapport_t5.txt).
+- 22/10 13:12 fin art/tools/night/_aa2.txt :  dette fissuré ; pivots Ardent respectés. 14 SpriteFrames chargés sans erreur ; Godot : **RESULT: OK**. Avare : atlas ≤ 3072 px. Contrôle global : dépassements Averse et APK hors budget. [Planche vérifiée](art/tools/night/_aa2_contact.png) · [Rapport](art/tools/night/_logaa2.txt.last.txt).
+- 22/10 13:14 fin art/tools/night/_ra2.txt : s globaux hors périmètre persistants. Raccord restant côté gameplay : constantes des rayons Gluant/anneau **320→160** pour les zones natives 64 px/u ; aucun `.gd/.tscn` modifié. [Planche](art/tools/night/_ra2_contact.png) · [Rapport et reprise](art/blender/characters/rainette_ra2_report.txt)
+- 22/10 13:14 sprites_test après groupe 7 : RESULT: OK
+- 22/10 13:14 == groupe 8
+- 22/10 13:14 lancement art/tools/night/_bo1.txt
+- 22/10 13:14 fin art/tools/night/_ra2.txt :  sans erreur. Rainette : 58 PNG, maximum 2 112 px ; passes alignées. Aucun `.gd/.tscn` modifié. Budget global non conforme : trois atlases Averse >4096 et dépassement APK, hors périmètre. [Planche de contrôle](art/tools/night/_ra2_contact.png) · [Rapport](art/tools/night/_logra2.txt.last.txt)
+- 22/10 13:14 sprites_test après groupe 7 : RESULT: OK
+- 22/10 13:14 == groupe 8
+- 22/10 13:14 lancement art/tools/night/_bo1.txt
+- 22/10 13:14 lancement art/tools/night/_bo2.txt
+- 22/10 13:15 lancement art/tools/night/_bo2.txt
+- 22/10 13:21 fin art/tools/night/_bo2.txt : s incluses. Godot : `RESULT: OK` ; les deux `.tres` chargent sans erreur. Atlas BO2 ≤ 1536 px ; contrôle global bloqué par 3 atlases Averse > 4096, hors périmètre. Sources et script `bo2_build.py` présents ; aucun `.gd/.tscn` modifié. [Planche de contrôle](art/tools/night/_bo2_contact.png).
+- 22/10 13:22 fin art/tools/night/_bo2.txt : 128 px. Tests Godot sprites et Bourbe : RESULT: OK. Aucun .gd/.tscn modifié. BO2 respecte 4096 px ; audit global encore hors budget : 3 atlas Averse surdimensionnés, APK estimé 284 Mo. [Planche de contrôle](art/tools/night/_bo2_contact.png) · [Script reproductible](art/tools/night/bo2_build.py)
+- 22/10 13:26 fin art/tools/night/_bo1.txt : `.gd/.tscn` modifié. Budget Bourbe respecté ; contrôle global encore en échec : 3 textures Averse >4096 et APK estimé à 285 Mo. [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_bo1_contact.png) · [Script](C:/Users/const/Documents/Rainfall/art/tools/night/bo1_build.py)
+- 22/10 13:26 sprites_test après groupe 8 : RESULT: OK
+- 22/10 13:26 == groupe 9
+- 22/10 13:26 lancement art/tools/night/_bo3.txt
+- 22/10 13:28 fin art/tools/night/_bo1.txt : odot sprites_test : RESULT: OK ; test Bourbe : OK, avec ressources retenues à la fermeture. Atlases BO1 ≤1536 px ; budget global non conforme : 3 textures Averse >4096 et APK estimé 285 Mo. Sources bourbe* et script [bo1_build.py](art/tools/night/bo1_build.py) livrés ; aucun .gd/.tscn modifié.
+- 22/10 13:28 sprites_test après groupe 8 : RESULT: OK
+- 22/10 13:28 == groupe 9
+- 22/10 13:28 lancement art/tools/night/_bo3.txt
+- 22/10 13:33 fin art/tools/night/_bo3.txt : gés sans erreur. Atlas BO3 ≤ 2592 px. Aucun `.gd/.tscn` modifié. Budget global en échec : 185/180 Mo mobiles et 3 atlas Averse >4096, hors périmètre. [Planche](art/tools/night/_bo3_contact.png) · [Rapport](art/blender/characters/bourbe_bo3_report.md) · [Script](art/tools/night/bo3_build.py)
+- 22/10 13:33 sprites_test après groupe 9 : RESULT: OK
+- 22/10 13:33 FILE TERMINÉE
+- 22/10 13:35 fin art/tools/night/_bo3.txt : mes chargés sans erreur. Atlases BO3 ≤3600 px ; audit global encore non conforme : 3 atlas Averse >4096, hors périmètre. [Planche](art/tools/night/_bo3_contact.png) · [Script](art/tools/night/bo3_build.py) · [Rapport](art/blender/characters/bourbe_bo3_report.md). Aucun `.gd`/`.tscn` modifié.
+- 22/10 13:35 sprites_test après groupe 9 : RESULT: OK
+- 22/10 13:35 == groupe 10
+- 22/10 13:35 lancement art/tools/night/_n2a.txt
+- 22/10 13:36 lancement art/tools/night/_n2b.txt
+- 22/10 13:36 lancement art/tools/night/_n2e.txt
+- 22/10 13:36 lancement art/tools/night/_f2p.txt
+- 22/10 13:43 fin art/tools/night/_n2e.txt : , pivots et animations préservés ; test sprites et chargement des quatre `.tres` : **OK**.   Budget monstres : **9,1/12 Mo** ; audit global bloqué par trois atlases Averse >4096, hors périmètre.   [Planche de contrôle](art/tools/night/_n2e_contact.png) · [Script](art/tools/night/n2e_build.py)
+- 22/10 13:43 fin art/tools/night/_f2p.txt :  pieds calibrés, fondu du cèdre activé. Contrôles F2P PASS ; Godot `RESULT: OK` ; aucun `.gd/.tscn` modifié. Budget F2P conforme ; contrôle global : 3 textures Averse hors périmètre dépassent 4096 px. [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_f2p_contact.png)
+- 22/10 13:46 fin art/tools/night/_n2b.txt : e, source Blender et script. Contrôles locaux et chargement Godot : PASS ; sprites_test : RESULT: OK. Textures du lot ≤1700 px ; trois textures Averse hors périmètre restent >4096. Aucun .gd/.tscn modifié. [Planche](art/tools/night/_n2b_contact.png) · [Rapport](art/tools/night/_n2b_report.md)
+- 22/10 13:48 fin art/tools/night/_n2a.txt : ntrats 170 px, pivot et échelle R9 respectés ; atlas ≤ 1360 × 680. Trois .tres chargés sans erreur ; sprites_test → RESULT: OK. Budget global encore dépassé hors N2A, dont trois textures Averse > 4096. [Planche](art/tools/night/_n2a_contact.png) · [Rapport](art/tools/night/_n2a_report.md)
+- 22/10 13:48 sprites_test après groupe 10 : RESULT: OK
+- 22/10 13:48 == groupe 11
+- 22/10 13:48 lancement art/tools/night/_n2c.txt
+- 22/10 13:48 lancement art/tools/night/_n2d.txt
+- 22/10 13:49 lancement art/tools/night/_c7d.txt
+- 22/10 13:49 lancement art/tools/night/_p1.txt
+- 22/10 13:49 lancement art/tools/night/_n3e.txt
+- 22/10 13:50 lancement art/tools/night/_av3.txt
+- 22/10 13:50 lancement art/tools/night/_t6.txt
+- 22/10 13:50 quota Codex épuisé (art/tools/night/_logav3.txt), reprise vers 18:11
+- 22/10 13:50 quota Codex épuisé (art/tools/night/_logt6.txt), reprise vers 18:11
+- 22/10 13:50 lancement art/tools/night/_c7e.txt
+- 22/10 13:50 quota Codex épuisé (art/tools/night/_logc7e.txt), reprise vers 18:11
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logp1.txt), reprise vers 18:11
+- 22/10 13:51 lancement art/tools/night/_au1.txt
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logau1.txt), reprise vers 18:11
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logn3e.txt), reprise vers 18:11
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logc7d.txt), reprise vers 18:11
+- 22/10 13:51 lancement art/tools/night/_u1.txt
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logu1.txt), reprise vers 18:11
+- 22/10 13:51 lancement art/tools/night/_f3p.txt
+- 22/10 13:51 quota Codex épuisé (art/tools/night/_logf3p.txt), reprise vers 18:11
+- 22/10 13:52 quota Codex épuisé (art/tools/night/_logn2d.txt), reprise vers 18:11
+- 22/10 13:52 quota Codex épuisé (art/tools/night/_logn2c.txt), reprise vers 18:11
+- 22/10 18:11 lancement art/tools/night/_c7d.txt
+- 22/10 18:11 lancement art/tools/night/_n2c.txt
+- 22/10 18:11 lancement art/tools/night/_p1.txt
+- 22/10 18:11 lancement art/tools/night/_av3.txt
+- 22/10 18:11 lancement art/tools/night/_n3e.txt
+- 22/10 18:11 lancement art/tools/night/_au1.txt
+- 22/10 18:11 lancement art/tools/night/_c7e.txt
+- 22/10 18:11 lancement art/tools/night/_u1.txt
+- 22/10 18:11 lancement art/tools/night/_n2d.txt
+- 22/10 18:11 lancement art/tools/night/_f3p.txt
+- 22/10 18:11 lancement art/tools/night/_t6.txt
+- 22/10 18:13 fin art/tools/night/_au1.txt : uild.py` ; registres et manifests complétés. Vérification : PASS, crête maximale −2,544 dBFS ; RMS −21,45 à −18,95 ; contrôle des clics réussi. Tests Godot : tous deux `RESULT: OK` ; le directeur signale des ressources restantes à la fermeture. Aucun `.gd`, `.tscn` ou `.tres` modifié.
+- 22/10 18:14 fin art/tools/night/_p1.txt : nimation ni fichier `.gd/.tscn/.tres` modifié. Godot : `RESULT: OK`. Budget P1 conforme ; contrôle global en échec : trois atlas Averse préexistants dépassent 4096 px, hors périmètre. [Planche](art/tools/night/_p1_contact.png) · [Rapport et choix artistiques](art/tools/night/_p1_report.txt).
+- 22/10 18:15 fin art/tools/night/_u1.txt :  et reflets de mercure. 9-patch du cadre : gauche/droite **12 px**, haut/bas **8 px**. [Planche vérifiée, 8 accents — 1024×768](art/tools/night/_u1_contact.png). Script : `art/tools/night/u1_build.py` ; assets : `game/assets/sprites/ui/resource_gauge/`. Aucun `.gd`, `.tscn` ou `.tres` modifié.
+- 22/10 18:16 fin art/tools/night/_av3.txt : xture >4096 ; dépassements globaux persistants hors périmètre. Godot : `RESULT: FAIL (11)` sur les règles de gameplay ; aucune erreur de chargement. Aucun `.gd/.tscn` modifié ; goutte_lame inchangée. [Planche](art/tools/night/_av3_contact.png) · [Rapport](art/tools/night/_logav3.txt.last.txt)
+- 22/10 18:17 fin art/tools/night/_n3e.txt : s, pivots et animations préservés ; aucun `.gd/.tscn` modifié. Tests Godot fauna et sprites : `RESULT: OK`. Atlases ≤1280 px ; aucun dépassement 4096 global. Budget monstres toutefois dépassé : 16,1/12 Mio. [Planche](art/tools/night/_n3e_contact.png) · [Script](art/tools/night/n3e_build.py)
+- 22/10 18:18 fin art/tools/night/_f3p.txt : laiton terni et réverbères ambre sans halo. Contrôles F3P : PASS ; les deux tests demandés : `RESULT: OK`. Budget global : échecs hors lot documentés ; aucune texture >4096 px. [Planche](art/tools/night/_f3p_contact.png) · [Rapport et coordonnées des globes](art/blender/props/f3p_report.md).
+- 22/10 18:19 fin art/tools/night/_c7d.txt : op dissymétrique, lanternes traînantes, follet effilé. `cerf_boss_test` et `sprites_test` : **RESULT: OK**. Atlases C7D ≤ 2048 px ; aucune texture > 4096. Budget global encore hors seuil, hors périmètre. [Planche](art/tools/night/_c7d_contact.png) · [Rapport](art/tools/night/_c7d_report.txt)
+- 22/10 18:20 fin art/tools/night/_t6.txt : t global encore dépassé hors périmètre. Attention : `BLAST_TOP_RING_PX` reste à 59 côté code, à adapter à 512 ; aucun `.gd/.tscn` modifié. [Script](C:/Users/const/Documents/Rainfall/art/tools/night/t6_build.py) · [Planche](C:/Users/const/Documents/Rainfall/art/tools/night/_t6_contact.png)
+- 22/10 18:23 fin art/tools/night/_c7e.txt : sprites : **RESULT: OK**. Atlas ≤ 3072 px ; budget global encore dépassé hors Sonneur. Aucun son, `.gd` ou `.tscn` modifié. [Planche avant/après](/C:/Users/const/Documents/Rainfall/art/tools/night/_c7e_contact.png) · [Rapport](/C:/Users/const/Documents/Rainfall/art/tools/night/_c7e_report.md)
+- 22/10 18:25 fin art/tools/night/_n2c.txt :  ; 13 ressources retenues à la fermeture du test Weaver. Budget global : FAIL (imports et poids mobile) ; aucune texture > 4096 px. [Script](art/tools/night/n2c_build.py), [source Blender](art/blender/monsters/weaver_iso.blend), [planche](art/tools/night/_n2c_contact.png). Aucun .gd/.tscn modifié.
+- 22/10 18:26 fin art/tools/night/_n2d.txt : ement. Godot : sprites_test et hermit_cedar_boss_test → OK. Atlases ≤ 4096 px ; lot mobile : 7,07 Mio. Budget global : FAIL — textures 236/180 Mo et 8 imports UI hors périmètre. [Planche](art/tools/night/_n2d_contact.png) · [Script](art/tools/night/n2d_build.py) · Aucun .gd/.tscn modifié.
+- 22/10 18:26 sprites_test après groupe 11 : RESULT: OK
+- 22/10 18:26 == groupe 10
+- 22/10 18:28 sprites_test après groupe 10 : RESULT: OK
+- 22/10 18:28 FILE TERMINÉE

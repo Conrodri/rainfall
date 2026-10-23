@@ -1,0 +1,40 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/head_blast_top_e.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f0_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_1"]
+atlas = ExtResource("1")
+region = Rect2(1032, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_2"]
+atlas = ExtResource("1")
+region = Rect2(2064, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_3"]
+atlas = ExtResource("1")
+region = Rect2(0, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_4"]
+atlas = ExtResource("1")
+region = Rect2(1032, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_5"]
+atlas = ExtResource("1")
+region = Rect2(2064, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_6"]
+atlas = ExtResource("1")
+region = Rect2(0, 2064, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="f0_7"]
+atlas = ExtResource("1")
+region = Rect2(1032, 2064, 1032, 1032)
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("f0_0")}, {"duration": 1.0, "texture": SubResource("f0_1")}, {"duration": 1.0, "texture": SubResource("f0_2")}, {"duration": 1.0, "texture": SubResource("f0_3")}, {"duration": 1.0, "texture": SubResource("f0_4")}, {"duration": 1.0, "texture": SubResource("f0_5")}, {"duration": 1.0, "texture": SubResource("f0_6")}, {"duration": 1.0, "texture": SubResource("f0_7")}], "loop": false, "name": &"head_blast_top_top", "speed": 15.0}
+]

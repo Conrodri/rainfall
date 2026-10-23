@@ -1,0 +1,92 @@
+{
+  "tongue": {
+    "rig": "CREA",
+    "cell": 512,
+    "frames": 4,
+    "directions": 1,
+    "loop": false,
+    "native_px_per_u": 90.50966799187809,
+    "pivot_px": [
+      256.0,
+      256.0
+    ],
+    "max_length_u": 4.5,
+    "peak_frame_zero_based": 2,
+    "mouth_pivot_px": [
+      40,
+      248
+    ],
+    "direction": "east; rotated by game; mouth anchor at local x=-216/R"
+  },
+  "goo": {
+    "rig": "TOP",
+    "cell": 352,
+    "frames": 6,
+    "directions": 1,
+    "loop": true,
+    "native_px_per_u": 64,
+    "pivot_px": [
+      176.0,
+      176.0
+    ],
+    "radius_u": 2.5,
+    "duration_s": 5,
+    "meaning": "inward filaments show adhesive attraction; static area scale"
+  },
+  "land_ring": {
+    "rig": "TOP",
+    "cell": 384,
+    "frames": 4,
+    "directions": 1,
+    "loop": false,
+    "native_px_per_u": 64,
+    "pivot_px": [
+      192.0,
+      192.0
+    ],
+    "max_radius_u": 2.5,
+    "ultimate_radius_u": 3,
+    "ultimate_scale": 1.2,
+    "meaning": "same crown for Grand saut and Chant de crue impacts"
+  },
+  "goo_projectile": {
+    "rig": "CREA",
+    "cell": 128,
+    "frames": 4,
+    "directions": 1,
+    "loop": true,
+    "native_px_per_u": 90.50966799187809,
+    "pivot_px": [
+      64.0,
+      64.0
+    ],
+    "direction": "east",
+    "meaning": "Gluant travelling spit before pool deployment"
+  },
+  "texture_policy": {
+    "max_side": 4096,
+    "TOP_px_per_u": 64,
+    "CREA_px_per_u": 90.50966799187809,
+    "reason": "Native display cells; all passes share identical atlas layouts."
+  },
+  "integration_pending": {
+    "file": "game/scripts/spells/rainette_kit.gd",
+    "required_by_native_64px_u": "GOO_RADIUS_PX and LAND_RING_RADIUS_PX: 320 -> 160; comments TOP 128 -> 64. Gameplay scripts excluded from RA2 scope."
+  },
+  "shadow": {
+    "path": "effects/shadow/shadow.png",
+    "size": 104,
+    "radius_px": 45,
+    "method": "Blender radial alpha contact lens"
+  },
+  "portrait": {
+    "path": "portrait.png",
+    "size": 256,
+    "passes": [
+      "diffuse",
+      "normal",
+      "emission"
+    ]
+  },
+  "icons": "Four RA1 bevelled PBR emblems retained byte for byte, 128px; no other existing sizes found. Medallions at 64/128 beside Ardent."
+}

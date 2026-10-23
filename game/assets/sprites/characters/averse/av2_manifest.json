@@ -1,0 +1,61 @@
+{
+  "wave_cone": {
+    "rig": "CREA",
+    "cell": 1024,
+    "frames": 6,
+    "directions": 8,
+    "pivot": [
+      512.0,
+      512.0
+    ],
+    "px_per_u": 90.50966799187809,
+    "loop": false
+  },
+  "puddle_mirror": {
+    "rig": "TOP",
+    "cell": 768,
+    "frames": 6,
+    "directions": 1,
+    "pivot": [
+      384.0,
+      384.0
+    ],
+    "px_per_u": 128,
+    "loop": true
+  },
+  "crue_ring": {
+    "rig": "TOP",
+    "cell": 1664,
+    "frames": 8,
+    "directions": 1,
+    "pivot": [
+      832.0,
+      832.0
+    ],
+    "px_per_u": 128,
+    "loop": false
+  },
+  "goutte_lame": {
+    "rig": "CREA",
+    "cell": 128,
+    "frames": 4,
+    "directions": 1,
+    "pivot": [
+      64.0,
+      64.0
+    ],
+    "px_per_u": 90.50966799187809,
+    "loop": true
+  },
+  "portrait": "portrait.png, 256px, original AV1 geometry",
+  "icons": "AV1 four bevelled bronze emblems, 128px; shared studio / cyan water",
+  "integration": "CREA cone eight rows e,se,s,sw,w,nw,n,ne; TOP zones centered; projectile points east; animate at 12fps; TOP projected by game ground transform",
+  "verification": {
+    "frame_checks": "PASS: 66 unique VFX frames, all diffuse/normal/emission dimensions and alpha margins",
+    "sprites_test": "RESULT: OK",
+    "resources": "10 SpriteFrames / 1076 textures: loaded without errors",
+    "godot_log": "art/blender/characters/averse_av2_godot.log",
+    "contact": "art/tools/night/_av2_contact.png",
+    "editor_exit": "Import completes; Godot reports allocations still in use on editor shutdown. Runtime resource load and sprites_test have no errors."
+  }
+}

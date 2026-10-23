@@ -1,0 +1,161 @@
+{
+  "idle_p1": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      5
+    ]
+  },
+  "idle_p2": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "idle_p3": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "walk_p1": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      7,
+      7,
+      7,
+      8
+    ]
+  },
+  "walk_p2": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      8,
+      8,
+      8,
+      8
+    ]
+  },
+  "walk_p3": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      8,
+      8,
+      8,
+      8
+    ]
+  },
+  "auto": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "spell_a": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "spell_b": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "trans_p2": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "trans_p3": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "death": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      10
+    ]
+  },
+  "bell_ring": {
+    "minimum_margin": 9,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "boiler_open": {
+    "minimum_margin": 24,
+    "unique_frames_by_direction": [
+      3
+    ]
+  },
+  "auto_dirs": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      6,
+      6,
+      6
+    ]
+  },
+  "spell_a_dirs": {
+    "minimum_margin": 7,
+    "unique_frames_by_direction": [
+      8,
+      8,
+      8
+    ]
+  },
+  "spell_b_dirs": {
+    "minimum_margin": 6,
+    "unique_frames_by_direction": [
+      8,
+      8,
+      8
+    ]
+  },
+  "bolt": {
+    "minimum_margin": 4,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "ground_lightning": {
+    "minimum_margin": 13,
+    "unique_frames_by_direction": [
+      6
+    ]
+  },
+  "ground_scorch": {
+    "minimum_margin": 4,
+    "unique_frames_by_direction": [
+      4
+    ]
+  },
+  "ground_steam": {
+    "minimum_margin": 26,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "lightning": {
+    "minimum_margin": 49,
+    "unique_frames_by_direction": [
+      4
+    ]
+  },
+  "steam_vent": {
+    "minimum_margin": 28,
+    "unique_frames_by_direction": [
+      8
+    ]
+  },
+  "summary": {
+    "legacy_png": 60,
+    "png_total": 69,
+    "animations": 38,
+    "errors": []
+  }
+}

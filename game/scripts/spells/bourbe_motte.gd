@@ -1,0 +1,398 @@
+class_name BourbeMotte
+extends Decoy
+## Motte de Bourbe (docs/Design_Personnages.md §2.5, S10 léger) : un morceau d'elle, familier autonome.
+## Étend Decoy (S14) pour réutiliser sans rien toucher la provocation des monstres (Enemy.tick : leurre le
+## plus proche à Decoy.PROVOKE_RANGE_U) et les tirs ennemis reçus (EnemyProjectilePool : Decoy.hit_by).
+## États :
+## - FLY : lancée en cloche du corps de Bourbe vers le point visé ; à l'atterrissage, « plouf » (land_spell).
+## - FIGHT : FIGHT_S s ; chasse l'ennemi le plus proche dans un rayon de CHASE_U autour de Bourbe, coup de
+##   contact (contact_spell) toutes les CONTACT_INTERVAL_S ; sans cible, suit Bourbe.
+## - RETURN : rampe vers Bourbe (sans traverser les murs : la vase s'infiltre) ; se recolle au contact.
+## - RECALL (sort 3) : fonce vers Bourbe, chaque monstre traversé prend recall_spell (une fois), se recolle.
+## Mort (PV à 0) ou recollage : sort de Decoy.live, prévient le kit (masse rendue ou perdue 8 s).
+## Visuel : motte/motte.tres (lot BO2 : idle_/run_/die_<dir>) ; absente = sprite de Bourbe (ou d'Ardent
+## teinté) réduit et assombri. Anneau d'allié : ally_ring.tres (lot BO3, TOP) ou contour dessiné.
+
+enum State { FLY, FIGHT, RETURN, RECALL, GONE }
+
+const DIR_NAMES_M := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
+const RETARGET_S := 0.2
+const STUCK_STEP := 0.5 ## glissement le long d'un mur : on retente chaque axe
+
+var kit: Node = null ## BourbeKit
+var bourbe: Node2D = null
+var state: State = State.FLY
+var contact_spell: SpellData = null
+var land_spell: SpellData = null
+var recall_spell: SpellData = null
+var costed := true ## false : motte gratuite (sortie du Bourbier)
+var big := false ## grosse motte (variante Bouture) : sprite x1,5, plus lente, plus durable
+var weight := 1 ## places occupées sur les MAX_MOTTES (grosse motte : 2)
+var fight_s := BourbeKit.MOTTE_FIGHT_S
+var speed_u := BourbeKit.MOTTE_SPEED_U
+var radius_u := BourbeKit.MOTTE_RADIUS_U
+var ring_u := BourbeKit.ALLY_RING_U
+var paid_hp := 0.0 ## PV actuels payés par Bourbe au Détacher (rendus au recollage × PV restants)
+var mass_frac := 0.0 ## part des PV max (non divisés) retirée à Bourbe tant que la motte est dehors (0 : motte gratuite)
+var fight_left := 0.0
+var target: Node2D = null
+var hits := 0 ## coups de contact portés (tests)
+var _fly_from := Vector2.ZERO
+var _fly_to := Vector2.ZERO
+var _fly_t := 0.0
+var _attack_cd := 0.0
+var _retarget := 0.0
+var _recall_hits: Array = []
+var _moving := false
+var _ring: AnimatedSprite2D = null
+var _base_scale := Vector2.ONE
+var _fallback_look := false ## motte.tres absent : sprite de Bourbe réduit + follet dessiné
+
+
+func _ready() -> void:
+	super._ready()
+	lures_bosses = false # audit 23/10 (P4) : la vase ne provoque plus les boss ni les mini-boss (immunité de fait sinon)
+	z_index = 0
+	LightRig.attach(self, &"bourbe_motte")
+
+
+# --- Constantes de gameplay lues sur le kit (une seule source : BourbeKit) ----------------------
+
+func _u() -> float:
+	return Balance.UNIT_PX
+
+
+func _speed_px() -> float:
+	return speed_u * _u()
+
+
+# --- Lancement ---------------------------------------------------------------------------------
+
+## Lancée en cloche de `from` à `to` (le kit l'a déjà ajoutée à l'arbre).
+func launch(from: Vector2, to: Vector2) -> void:
+	_fly_from = from
+	_fly_to = to
+	_fly_t = 0.0
+	state = State.FLY
+	global_position = from
+	var d := to - from
+	if d.length_squared() > 1.0:
+		facing = d.normalized()
+
+
+## Apparition sur place (sortie du Bourbier) : déjà au combat.
+func pop_at(pos: Vector2, dir: Vector2) -> void:
+	global_position = pos
+	facing = dir.normalized() if dir.length_squared() > 0.0001 else Vector2.DOWN
+	state = State.FIGHT
+	fight_left = fight_s
+	appear()
+
+
+func recall() -> void:
+	if state == State.GONE:
+		return
+	state = State.RECALL
+	_recall_hits.clear()
+	if _sprite != null:
+		_sprite.position.y = 0.0
+
+
+func is_out() -> bool:
+	return state != State.GONE
+
+
+# --- Visuel ------------------------------------------------------------------------------------
+
+## Sprite : motte.tres si livré, sinon le sprite de Bourbe réduit (src = Visual du joueur).
+func build_look(src: AnimatedSprite2D) -> void:
+	_sprite = AnimatedSprite2D.new()
+	_sprite.name = "Body"
+	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var sf: SpriteFrames = null
+	if ResourceLoader.exists(BourbeKit.MOTTE_FRAMES):
+		sf = load(BourbeKit.MOTTE_FRAMES) as SpriteFrames
+	if sf != null:
+		EmissiveOverlay.apply(_sprite, sf)
+		_base_scale = src.scale if src != null else Vector2(Iso.SPRITE_K, Iso.SPRITE_K * Iso.UNSQUASH.y)
+		_sprite.offset = src.offset if src != null else Vector2.ZERO
+	elif src != null and src.sprite_frames != null:
+		_sprite.sprite_frames = src.sprite_frames
+		_base_scale = src.scale * BourbeKit.MOTTE_FALLBACK_SCALE
+		_sprite.offset = src.offset
+		_sprite.self_modulate = BourbeKit.MOTTE_FALLBACK_TINT
+		_fallback_look = true
+	if big: # grosse motte (Bouture) : la motte existante agrandie, sans rendu nouveau
+		_base_scale *= BourbeKit.BIG_SCALE
+	_sprite.scale = _base_scale
+	add_child(_sprite)
+	_build_ring()
+	_play_dir(&"idle")
+
+
+func _build_ring() -> void:
+	if not ResourceLoader.exists(BourbeKit.ALLY_RING_FRAMES):
+		return # repli : _draw (contour au sol)
+	var sf := load(BourbeKit.ALLY_RING_FRAMES) as SpriteFrames
+	if sf == null or not sf.has_animation(&"default") or sf.get_frame_count(&"default") == 0:
+		return
+	_ring = AnimatedSprite2D.new()
+	_ring.name = "AllyRing"
+	_ring.z_index = -1
+	EmissiveOverlay.apply(_ring, sf)
+	var tex := sf.get_frame_texture(&"default", 0)
+	var w := float(tex.get_width()) if tex != null else 128.0
+	# rig TOP : l'anneau occupe ~90 % de la frame ; on le cale sur le rayon réel (ALLY_RING_U)
+	var k := ring_u * _u() / maxf(w * 0.45, 1.0)
+	_ring.scale = Vector2(k, k)
+	add_child(_ring)
+	move_child(_ring, 0)
+	_ring.play(&"default")
+
+
+func _draw() -> void:
+	if state == State.GONE:
+		return
+	var c: Color = BourbeKit.ACCENT
+	if _ring == null: # repli de l'anneau d'allié (BO3) : contour au sol
+		var r := ring_u * _u()
+		draw_circle(Vector2.ZERO, r, Color(c.r, c.g, c.b, 0.07))
+		draw_arc(Vector2.ZERO, r, 0.0, TAU, 40, Color(c.r * 1.4, c.g * 1.4, c.b * 1.4, 0.6), 2.0)
+	if _fallback_look and _sprite != null: # repli du feu follet de la motte (BO2) : braise froide au cœur
+		var h := _sprite.position.y + Iso.lift_logical(BourbeKit.MOTTE_FOLLET_U)
+		draw_circle(Vector2(0.0, h), 4.0, Color(c.r * 2.2, c.g * 2.2, c.b * 2.2, 0.9))
+
+
+func _dir_name_m() -> String:
+	var i := roundi(facing.angle() / (TAU / 8.0)) % 8
+	return DIR_NAMES_M[(i + 8) % 8]
+
+
+func _play_dir(base: StringName) -> void:
+	if _sprite == null or _sprite.sprite_frames == null:
+		return
+	for a: StringName in [StringName("%s_%s" % [base, _dir_name_m()]), base, StringName("%s_s" % base)]:
+		if _sprite.sprite_frames.has_animation(a):
+			if _sprite.animation != a:
+				_sprite.play(a)
+			return
+
+
+# --- Contrat « cible » des monstres --------------------------------------------------------------
+
+func take_damage(amount: float, _source: Node = null) -> void:
+	if state == State.GONE or exploded or amount <= 0.0:
+		return
+	hp -= amount
+	if _sprite != null:
+		_sprite.modulate = Color(1.8, 0.7, 0.6)
+		create_tween().tween_property(_sprite, "modulate", Color.WHITE, 0.12)
+	if hp <= 0.0:
+		die()
+
+
+## Écrasée : la vase s'étale (die_<dir>), la masse est perdue BourbeKit.DEAD_MASS_S s.
+func die() -> void:
+	if state == State.GONE:
+		return
+	leave()
+	HitFx.impact(global_position, facing, &"physical", 0.5)
+	Audio.play(&"enemy.contact.light", global_position, -6.0, 0.6)
+	if kit != null and is_instance_valid(kit):
+		kit.on_motte_died(self)
+	var anim := StringName("die_" + _dir_name_m())
+	if _sprite != null and _sprite.sprite_frames != null and _sprite.sprite_frames.has_animation(anim):
+		_sprite.sprite_frames.set_animation_loop(anim, false)
+		_sprite.play(anim)
+		get_tree().create_timer(_anim_len(_sprite.sprite_frames, anim) + 0.1, false).timeout.connect(queue_free)
+	elif _sprite != null and is_inside_tree():
+		var tw := create_tween().set_parallel(true)
+		tw.tween_property(_sprite, "scale", Vector2(_base_scale.x * 1.5, _base_scale.y * 0.25), 0.3)
+		tw.tween_property(_sprite, "modulate:a", 0.0, 0.35)
+		tw.chain().tween_callback(queue_free)
+	else:
+		queue_free()
+
+
+static func _anim_len(sf: SpriteFrames, anim: StringName) -> float:
+	var fps := sf.get_animation_speed(anim)
+	if fps <= 0.0:
+		return 0.3
+	var t := 0.0
+	for i in sf.get_frame_count(anim):
+		t += sf.get_frame_duration(anim, i)
+	return t / fps
+
+
+## Recollée à Bourbe : disparaît dans son corps (masse rendue par le kit).
+func merge() -> void:
+	if state == State.GONE:
+		return
+	leave()
+	if kit != null and is_instance_valid(kit):
+		kit.on_motte_merged(self)
+	if _sprite != null and is_inside_tree():
+		var tw := create_tween().set_parallel(true)
+		tw.tween_property(_sprite, "scale", _base_scale * 0.3, 0.12)
+		tw.tween_property(_sprite, "modulate:a", 0.0, 0.12)
+		tw.chain().tween_callback(queue_free)
+	else:
+		queue_free()
+
+
+## Retire la motte (fin de vie, changement d'étage) : plus de provocation ni de cible.
+func leave() -> void:
+	state = State.GONE
+	exploded = true # hors de la provocation et des tirs (Decoy.nearest_to / hit_by)
+	Decoy.live.erase(self)
+	queue_redraw()
+	if _ring != null:
+		_ring.visible = false
+
+
+## Jamais d'explosion de doublure : une motte meurt ou se recolle.
+func explode(_s: SpellData) -> void:
+	die()
+
+
+func push(_dir := Vector2.ZERO) -> bool:
+	return false
+
+
+# --- Boucle ------------------------------------------------------------------------------------
+
+func step(delta: float) -> void:
+	if state == State.GONE:
+		return
+	if bourbe == null or not is_instance_valid(bourbe):
+		die()
+		return
+	_moving = false
+	match state:
+		State.FLY:
+			_step_fly(delta)
+		State.FIGHT:
+			_step_fight(delta)
+		State.RETURN:
+			_step_home(delta, _speed_px(), false)
+		State.RECALL:
+			_step_home(delta, BourbeKit.RECALL_SPEED_U * _u(), true)
+	if state != State.GONE and state != State.FLY:
+		_play_dir(&"run" if _moving else &"idle")
+
+
+func _step_fly(delta: float) -> void:
+	_fly_t = minf(_fly_t + delta / BourbeKit.MOTTE_FLY_S, 1.0)
+	global_position = _fly_from.lerp(_fly_to, _fly_t)
+	if _sprite != null: # cloche : la motte monte puis retombe (hauteur en y logique)
+		_sprite.position.y = Iso.lift_logical(BourbeKit.MOTTE_FLY_HEIGHT_U) * sin(PI * _fly_t)
+		if _fallback_look:
+			queue_redraw()
+	if _fly_t >= 1.0:
+		if _sprite != null:
+			_sprite.position.y = 0.0
+		queue_redraw()
+		state = State.FIGHT
+		fight_left = fight_s
+		if caster != null and is_instance_valid(caster) and land_spell != null:
+			caster.spawn_zone(land_spell, global_position)
+		HitFx.impact(global_position, facing, &"physical", 0.45)
+		Audio.play_cast(&"detacher", global_position, 0.6)
+
+
+func _step_fight(delta: float) -> void:
+	fight_left -= delta
+	_attack_cd = maxf(_attack_cd - delta, 0.0)
+	if fight_left <= 0.0:
+		state = State.RETURN
+		target = null
+		return
+	_retarget -= delta
+	if _retarget <= 0.0 or target == null or not _valid(target):
+		_retarget = RETARGET_S
+		target = _find_target()
+	var u := _u()
+	if target != null:
+		var er: float = float(target.get(&"radius_px")) if &"radius_px" in target else 0.0
+		var reach := radius_u * u + er + 2.0
+		var to := target.global_position - global_position
+		if to.length() > reach:
+			_move(to.normalized() * minf(_speed_px() * delta, to.length() - reach))
+		elif _attack_cd <= 0.0 and caster != null and is_instance_valid(caster):
+			_attack_cd = BourbeKit.MOTTE_CONTACT_INTERVAL_S
+			if to.length_squared() > 1.0:
+				facing = to.normalized()
+			hits += 1
+			caster.deal_damage(target, contact_spell, {"source_pos": global_position})
+	else: # sans cible : reste au pied de Bourbe
+		var home := bourbe.global_position - global_position
+		var keep := BourbeKit.MOTTE_FOLLOW_U * u
+		if home.length() > keep:
+			_move(home.normalized() * minf(_speed_px() * delta, home.length() - keep))
+
+
+func _step_home(delta: float, speed: float, ram: bool) -> void:
+	var u := _u()
+	var home := bourbe.global_position - global_position
+	var dist := home.length()
+	if dist <= BourbeKit.ATTACH_U * u:
+		merge()
+		return
+	var step_px := minf(speed * delta, dist)
+	var dir := home / maxf(dist, 0.001)
+	global_position += dir * step_px # la vase rampe et s'infiltre : jamais coincée derrière un mur
+	facing = dir
+	_moving = true
+	if ram and caster != null and is_instance_valid(caster):
+		for e in get_tree().get_nodes_in_group(&"enemies"):
+			if not (e is Node2D) or e in _recall_hits or not _valid(e):
+				continue
+			var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
+			if e.global_position.distance_to(global_position) <= BourbeKit.RECALL_WIDTH_U * u + er:
+				_recall_hits.append(e)
+				RunState.add_counter(BourbeKit.COUNTER_RAPPEL_HITS) # déblocage de l'Éclatement
+				caster.deal_damage(e, recall_spell, {"source_pos": global_position - dir * u})
+				HitFx.impact(e.global_position, dir, &"physical", 0.8)
+	if global_position.distance_to(bourbe.global_position) <= BourbeKit.ATTACH_U * u:
+		merge()
+
+
+func _valid(e: Node) -> bool:
+	return is_instance_valid(e) and e.is_inside_tree() and e.is_in_group(&"enemies") and e.get(&"active") != false
+
+
+## Ennemi le plus proche de la motte parmi ceux à CHASE_U de Bourbe (la laisse), ou null.
+func _find_target() -> Node2D:
+	var leash := BourbeKit.MOTTE_CHASE_U * _u()
+	var bp := bourbe.global_position
+	var best: Node2D = null
+	var best_d := INF
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not _valid(e) or not e.has_method(&"take_damage"):
+			continue
+		if e.global_position.distance_to(bp) > leash:
+			continue
+		var d: float = e.global_position.distance_squared_to(global_position)
+		if d < best_d:
+			best_d = d
+			best = e
+	return best
+
+
+## Déplacement au sol qui glisse le long des murs (couche 1).
+func _move(motion: Vector2) -> void:
+	if motion.length_squared() < 0.0001:
+		return
+	facing = motion.normalized()
+	_moving = true
+	if not is_inside_tree():
+		global_position += motion
+		return
+	var space := get_world_2d().direct_space_state
+	for m: Vector2 in [motion, Vector2(motion.x, 0.0), Vector2(0.0, motion.y)]:
+		if m.length_squared() < 0.0001:
+			continue
+		var q := PhysicsRayQueryParameters2D.create(global_position, global_position + m * (1.0 + STUCK_STEP), WALL_MASK)
+		if space.intersect_ray(q).is_empty():
+			global_position += m
+			return

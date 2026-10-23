@@ -1,0 +1,196 @@
+{
+  "idle": {
+    "start": 1,
+    "end": 8,
+    "frames": 8,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "walk": {
+    "start": 9,
+    "end": 16,
+    "frames": 8,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "hop_l": {
+    "start": 17,
+    "end": 22,
+    "frames": 6,
+    "fps": 12,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l"
+    ],
+    "impact_frame": null
+  },
+  "hop_r": {
+    "start": 23,
+    "end": 28,
+    "frames": 6,
+    "fps": 12,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "handwalk": {
+    "start": 29,
+    "end": 36,
+    "frames": 8,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r"
+    ],
+    "impact_frame": null
+  },
+  "crawl_l": {
+    "start": 37,
+    "end": 42,
+    "frames": 6,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l"
+    ],
+    "impact_frame": null
+  },
+  "crawl_r": {
+    "start": 43,
+    "end": 48,
+    "frames": 6,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_r"
+    ],
+    "impact_frame": null
+  },
+  "roll": {
+    "start": 49,
+    "end": 56,
+    "frames": 8,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam"
+    ],
+    "impact_frame": null
+  },
+  "fall": {
+    "start": 57,
+    "end": 59,
+    "frames": 3,
+    "fps": 15,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "attack": {
+    "start": 60,
+    "end": 65,
+    "frames": 6,
+    "fps": 12,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": 3
+  },
+  "cast": {
+    "start": 66,
+    "end": 71,
+    "frames": 6,
+    "fps": 12,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "cast_ult": {
+    "start": 72,
+    "end": 77,
+    "frames": 6,
+    "fps": 12,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  },
+  "death": {
+    "start": 78,
+    "end": 83,
+    "frames": 6,
+    "fps": 10,
+    "layers": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "impact_frame": null
+  }
+}

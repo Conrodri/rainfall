@@ -1,0 +1,344 @@
+{
+  "checks": [
+    {
+      "file": "characters/ardent/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        960,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 0.9996786632390745
+    },
+    {
+      "file": "characters/ardent/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 0.9992105263157894
+    },
+    {
+      "file": "characters/ardent/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 0.9987515605493134
+    },
+    {
+      "file": "characters/ardent/idle.png",
+      "silhouette_iou": 0.9992613412123604,
+      "e_half": true,
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 0.9973242953977881
+    },
+    {
+      "file": "characters/ardent/portrait.png",
+      "silhouette_iou": 0.9998618975279657,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/ardent/run.png",
+      "silhouette_iou": 0.9990644873075104,
+      "e_half": true,
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 0.9950422328314359
+    },
+    {
+      "file": "characters/rictus/dagger_arc/default.png",
+      "silhouette_iou": 0.9942631379552958,
+      "e_half": true,
+      "size": [
+        2688,
+        672
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/double_burst/crea.png",
+      "silhouette_iou": 0.9861083936607318,
+      "e_half": true,
+      "size": [
+        3072,
+        512
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/double_burst/top.png",
+      "silhouette_iou": 0.9934910303222734,
+      "e_half": true,
+      "size": [
+        3072,
+        512
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/knife/default.png",
+      "silhouette_iou": 0.9980171844018506,
+      "size": [
+        256,
+        64
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rictus/knife_planted/default.png",
+      "silhouette_iou": 0.9970657276995305,
+      "size": [
+        64,
+        512
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rictus/lift.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        576,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/run.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/slash.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/spin.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1536,
+        192
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/spin_blur/default.png",
+      "silhouette_iou": 0.9812490772183671,
+      "e_half": true,
+      "size": [
+        1152,
+        288
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/stagger.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        576,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/summon.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/throw.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "characters/rictus/throw_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS",
+      "accent_iou": 1.0
+    },
+    {
+      "file": "ui/portraits/rictus.png",
+      "silhouette_iou": 0.9993927125506072,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    }
+  ],
+  "errors": [],
+  "profiles": [
+    "creature",
+    "prop",
+    "vfx"
+  ],
+  "choices": "Original source tints, camera, poses. Shared night shadow floor. Ardent CS1 byte copies. Approved half-resolution emission masks reused verbatim to retain radiance and subpixel coverage. No normals. Legacy pass enumeration adapted in memory; original scripts untouched.",
+  "bytes_before": 10787737,
+  "bytes_after": 10618778,
+  "external_code_changes_observed": [
+    "game\\tests\\averse_test.gd",
+    "game\\scripts\\spells\\arpenteuse_kit.gd",
+    "game\\scripts\\spells\\avare_kit.gd",
+    "game\\scripts\\spells\\averse_kit.gd",
+    "game\\scripts\\spells\\bourbe_motte.gd",
+    "game\\scripts\\spells\\morfil_kit.gd",
+    "game\\scripts\\spells\\rainette_kit.gd",
+    "game\\scripts\\spells\\rictus_kit.gd",
+    "game\\scripts\\spells\\tocsin_kit.gd",
+    "game\\scripts\\spells\\vigie_kit.gd"
+  ],
+  "runtime_checks": [
+    {
+      "name": "texture_budget",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": false
+    },
+    {
+      "name": "import",
+      "exit_code": 0,
+      "pass": false,
+      "cleanup_resource_warning": false
+    },
+    {
+      "name": "sprites_test",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": false,
+      "result_ok": true
+    },
+    {
+      "name": "player_test",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": false,
+      "result_ok": true
+    },
+    {
+      "name": "rictus_test",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": true,
+      "result_ok": true
+    },
+    {
+      "name": "render_style_test",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": false,
+      "result_ok": true
+    },
+    {
+      "name": "texture_budget_test",
+      "exit_code": 0,
+      "pass": true,
+      "cleanup_resource_warning": false,
+      "result_ok": true
+    }
+  ]
+}

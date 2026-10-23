@@ -1,0 +1,97 @@
+{
+  "contract": "PASS",
+  "files": 43,
+  "creatures": {
+    "rust_archon": {
+      "frames": 78,
+      "passes": 3,
+      "minimum_margin": 7,
+      "unique_frames": [
+        {
+          "animation": "idle",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "run",
+          "direction": "e",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "w",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "n",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "attack",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "cast_a",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "cast_b",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "phase2",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "death",
+          "direction": "s",
+          "frames": 10,
+          "unique": 10
+        }
+      ],
+      "idle_occupancy": {
+        "bounds": [
+          62,
+          26,
+          115,
+          123
+        ],
+        "alpha_pixels": 1845
+      }
+    }
+  },
+  "camera_elevation": 30,
+  "contact_pixels_per_world_unit": 70,
+  "contact_cells": [
+    "ash_lord/idle",
+    "sonneur/idle_p1",
+    "bramble_queen/idle",
+    "rust_archon/idle",
+    "rust_archon/attack",
+    "rust_archon/cast_a",
+    "rust_archon/cast_b",
+    "rust_archon/idle_e"
+  ],
+  "tres_unchanged": {
+    "rust_archon": "65722ee458841938bd25b815c5d378a954f5e33afa623434c5a0a170351374e0"
+  }
+}

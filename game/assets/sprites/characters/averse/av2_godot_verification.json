@@ -1,0 +1,17 @@
+{
+  "import": {
+    "returncode": 0,
+    "errors": [
+      "ERROR: 26 resources still in use at exit (run with --verbose for details).",
+      "ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketSmallE"
+    ]
+  },
+  "resources": {
+    "returncode": 0,
+    "errors": []
+  },
+  "sprites": {
+    "returncode": 0,
+    "errors": []
+  }
+}

@@ -1,0 +1,6 @@
+T3 livr? : cinq lancers, death, attack, cast, cast_ult, vapeur de cou et regen_rivets.
+Choix DA : fer piqu?, bronze noy?, recul de chaudi?re, cloche ?ject?e par pression ; braise orange unique.
+Cellules 192, huit directions CREA 30 degr?s, pivot Ardent ; regen en six frames et une direction.
+PASS : 32 planches v?rifi?es, retrait des membres ? N/2, animations distinctes ; 18 SpriteFrames charg?s sans erreur.
+Godot sprites_test.tscn : RESULT: OK ; planche art/tools/night/_t3_contact.png.
+Aucun .gd/.tscn modifi? ; sources tocsin_t3.blend et tocsin_t3_regen.blend, script t3_build.py.

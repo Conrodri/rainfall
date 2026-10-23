@@ -1,0 +1,194 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_kwkvj"]
+
+[resource]
+script = ExtResource("1_kwkvj")
+map_id = &"cite_rouille"
+display_name = "Cité de rouille"
+mood = "Crépuscule d'orage (19 h 30), nuit qui tombe sur le canal ; lampes à vapeur orange, rideaux de pluie, éclairs. La plus sombre : garde-fous stricts (§2.3, §3.3)."
+ambient_color = Color(0.48, 0.4894117, 0.5741177, 1)
+ambient_low = Color(0.48, 0.4894117, 0.5741177, 1)
+sun_color = Color(0.6588235, 0.6745098, 0.8, 1.0)
+sun_rotation_deg = 320.0
+sun_shadow_color = Color(0.0392157, 0.0470588, 0.0784314, 0.7)
+sun_shadow_length_u = 1.8
+sun_shadow_filter = 1
+lift_color = Color(0.0470588, 0.0627451, 0.1254902, 1.0)
+lift_amount = 0.36
+gain_color = Color(1.0, 0.8235294, 0.627451, 1.0)
+gain_amount = 0.12
+saturation = 0.9
+contrast = 1.16
+contrast_pivot = 0.36
+vignette_strength = 0.4
+vignette_radius = 0.68
+vignette_color = Color(0.0196078, 0.0235294, 0.0470588, 1.0)
+fill_color = Color(0.6588235, 0.6901961, 0.7843137, 1.0)
+fill_energy = 0.58
+fill_energy_low = 0.68
+sun_energy = 0.4
+sun_height = 0.4
+sun_shadow_smooth = 1.5
+vignette_softness = 0.5
+lights_energy = 2
+rain_intensity = 0.45
+rain_angle_deg = 18.0
+rain_opacity = 0.08
+rain_speed_u = 12.0
+rain_length_u = 0.5
+rain_tint = Color(0.7529412, 0.78431374, 0.8784314, 1)
+rain_gusts = 0.4
+splash_rate = 90.0
+fog_low_color = Color(0.62352943, 0.65882355, 0.72156864, 1)
+fog_low_opacity = 0.06
+fog_low_speed = Vector2(-1.3113417e-08, 0.3)
+fog2_opacity = 0.0
+fog_high_color = Color(0.65882355, 0.6901961, 0.7529412, 1)
+fog_high_opacity = 0.04
+fog_high_speed = Vector2(-0.9829825, -0.68829167)
+puffs_count = 6.0
+puffs_opacity = 0.09
+puffs_color = Color(0.72156864, 0.69803923, 0.65882355, 1)
+sky_texture = &"sky_storm_256x64"
+sky_reflect = 0.1
+puddle_reflect = 0.3
+water_reflect = 0.45
+ripple_hz = 0.8
+mirror_alpha = 0.3
+particle_defs = Array[Dictionary]([{
+"additive": false,
+"alpha": 0.5,
+"behavior": &"wind",
+"color": Color(0.5411765, 0.41568628, 0.28235295, 1),
+"name": "cendres et rouille",
+"size_u": Vector2(0.08, 0.14),
+"speed_u": 1.2,
+"texture": &"ash_16"
+}])
+p1_amount = 25.0
+point_lights = Array[Dictionary]([{
+"pos_u": Vector2(24, 77),
+"preset": &"alarm_bell"
+}])
+light_rules = Array[Dictionary]([{
+"char": "~",
+"edge": true,
+"energy": 1.5,
+"max": 32,
+"preset": &"steam_lamp",
+"spacing_u": 6.0
+}])
+tier_overrides = {
+&"Cataclysme": {
+&"lights_energy": 2.2,
+&"vignette_strength": 0.48,
+&"sun_shadow_length_u": 2.4,
+&"fill_energy_low": 0.8,
+&"fill_energy": 0.7,
+&"fill_color": Color(0.6117647, 0.6431373, 0.7843137, 1.0),
+&"sun_energy": 0.46,
+&"ambient_low": Color(0.442353, 0.4517647, 0.5082353, 1),
+&"ambient_color": Color(0.442353, 0.4517647, 0.5082353, 1),
+&"cloud_cover": 1.0,
+&"contrast": 1.24,
+&"fog_low_opacity": 0.12,
+&"lamp_outage_scale": 0.35,
+&"lightning_double_chance": 0.3,
+&"lightning_interval_max": 12.0,
+&"lightning_interval_min": 6.0,
+&"p1_amount": 80.0,
+&"player_light_scale": 1.15,
+&"puddle_reflect": 0.4,
+&"puffs_count": 8.0,
+&"puffs_opacity": 0.14,
+&"rain_angle_deg": 25.0,
+&"rain_gusts": 0.5,
+&"rain_intensity": 1.0,
+&"rain_opacity": 0.12,
+&"saturation": 0.78,
+&"splash_rate": 220.0,
+&"sun_color": Color(0.5490196, 0.5803922, 0.7529412, 1.0),
+&"wind_mult": 3.2
+},
+&"Furieux": {
+&"lights_energy": 2.1,
+&"vignette_strength": 0.46,
+&"sun_shadow_length_u": 2.2,
+&"fill_energy_low": 0.76,
+&"fill_energy": 0.66,
+&"fill_color": Color(0.627451, 0.6588235, 0.7843137, 1.0),
+&"ambient_low": Color(0.4517647, 0.4611764, 0.517647, 1),
+&"ambient_color": Color(0.4517647, 0.4611764, 0.517647, 1),
+&"cloud_cover": 0.9,
+&"contrast": 1.22,
+&"fog_low_opacity": 0.1,
+&"lightning_flash": 1.0,
+&"lightning_interval_max": 20.0,
+&"lightning_interval_min": 10.0,
+&"map_lights_energy": 1.4,
+&"p1_amount": 60.0,
+&"player_light_scale": 1.1,
+&"puffs_opacity": 0.13,
+&"rain_angle_deg": 23.0,
+&"rain_intensity": 0.9,
+&"rain_opacity": 0.11,
+&"saturation": 0.8,
+&"splash_rate": 200.0,
+&"sun_color": Color(0.572549, 0.5960784, 0.7529412, 1.0),
+&"sun_energy": 0.44,
+&"wind_mult": 2.5
+},
+&"Hostile": {
+&"lights_energy": 2.05,
+&"vignette_strength": 0.44,
+&"sun_shadow_length_u": 2.0,
+&"fill_energy_low": 0.72,
+&"fill_energy": 0.62,
+&"fill_color": Color(0.6431373, 0.6745098, 0.7843137, 1.0),
+&"ambient_low": Color(0.4611764, 0.4705883, 0.5458824, 1),
+&"ambient_color": Color(0.4611764, 0.4705883, 0.5458824, 1),
+&"cloud_cover": 0.7,
+&"contrast": 1.2,
+&"fog_low_opacity": 0.08,
+&"lightning_flash": 0.4,
+&"lightning_interval_max": 40.0,
+&"lightning_interval_min": 25.0,
+&"lightning_rays": 1.5,
+&"map_lights_energy": 1.2,
+&"p1_amount": 40.0,
+&"player_light_scale": 1.05,
+&"puffs_opacity": 0.11,
+&"rain_angle_deg": 21.0,
+&"rain_intensity": 0.75,
+&"rain_opacity": 0.1,
+&"saturation": 0.83,
+&"splash_rate": 160.0,
+&"sun_color": Color(0.6039216, 0.6196078, 0.7686275, 1.0),
+&"sun_energy": 0.42,
+&"wind_mult": 1.8
+},
+&"Tendu": {
+&"vignette_strength": 0.42,
+&"sun_shadow_length_u": 1.8,
+&"fill_energy_low": 0.7,
+&"fill_energy": 0.6,
+&"fill_color": Color(0.6588235, 0.6901961, 0.7843137, 1.0),
+&"sun_energy": 0.4,
+&"ambient_low": Color(0.4705883, 0.48, 0.5647058, 1),
+&"ambient_color": Color(0.4705883, 0.48, 0.5647058, 1),
+&"cloud_cover": 0.5,
+&"contrast": 1.18,
+&"horizon_interval_max": 60.0,
+&"horizon_interval_min": 30.0,
+&"p1_amount": 30.0,
+&"rain_angle_deg": 19.0,
+&"rain_intensity": 0.6,
+&"rain_layers": 2.0,
+&"rain_opacity": 0.09,
+&"saturation": 0.86,
+&"splash_rate": 120.0,
+&"sun_color": Color(0.627451, 0.6509804, 0.7843137, 1.0),
+&"wind_mult": 1.3
+}
+}

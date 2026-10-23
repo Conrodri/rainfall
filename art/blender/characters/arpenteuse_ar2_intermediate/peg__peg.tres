@@ -1,0 +1,51 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/peg/peg.png" id="1"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/peg/peg_n.png" id="2"]
+
+[sub_resource type="CanvasTexture" id="c"]
+diffuse_texture = ExtResource("1")
+normal_texture = ExtResource("2")
+
+[sub_resource type="AtlasTexture" id="a0_0"]
+atlas = SubResource("c")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a1_0"]
+atlas = SubResource("c")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a2_0"]
+atlas = SubResource("c")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a3_0"]
+atlas = SubResource("c")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a4_0"]
+atlas = SubResource("c")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a5_0"]
+atlas = SubResource("c")
+region = Rect2(0, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a6_0"]
+atlas = SubResource("c")
+region = Rect2(0, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a7_0"]
+atlas = SubResource("c")
+region = Rect2(0, 1344, 192, 192)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a0_0")}], "loop": true, "name": &"peg_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a1_0")}], "loop": true, "name": &"peg_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a2_0")}], "loop": true, "name": &"peg_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a3_0")}], "loop": true, "name": &"peg_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a4_0")}], "loop": true, "name": &"peg_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a5_0")}], "loop": true, "name": &"peg_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a6_0")}], "loop": true, "name": &"peg_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a7_0")}], "loop": true, "name": &"peg_ne", "speed": 12.0}]

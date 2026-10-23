@@ -1,0 +1,69 @@
+{
+  "result": "PASS",
+  "bosses": {
+    "ash_lord": {
+      "result": "PASS",
+      "checks": [
+        "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+      ],
+      "minimum_margin": 4,
+      "new_animations": 9,
+      "attack_impact_index": 3,
+      "existing_animations_preserved": 10,
+      "camera_and_pivot": "R8 unchanged"
+    },
+    "bramble_queen": {
+      "result": "PASS",
+      "checks": [
+        "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+      ],
+      "minimum_margin": 4,
+      "new_animations": 9,
+      "attack_impact_index": 3,
+      "existing_animations_preserved": 10,
+      "camera_and_pivot": "R8 unchanged"
+    },
+    "brood_mother": {
+      "result": "PASS",
+      "checks": [
+        "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+      ],
+      "minimum_margin": 6,
+      "new_animations": 9,
+      "attack_impact_index": 3,
+      "existing_animations_preserved": 10,
+      "camera_and_pivot": "R8 unchanged"
+    }
+  },
+  "new_animations": 27,
+  "impact_index": 3,
+  "frame_count": 6,
+  "sprites_test": "RESULT: OK",
+  "contact": "_r9b_contact.png",
+  "contact_layout": {
+    "boss_columns": [
+      "ash_lord",
+      "bramble_queen",
+      "brood_mother"
+    ],
+    "direction_rows": [
+      "s",
+      "e",
+      "w",
+      "n"
+    ],
+    "pose_columns": [
+      2,
+      3,
+      5
+    ]
+  },
+  "directional_cast_adjustment": "ash_lord cast_a: arm elevation factor 0.62 to retain fixed camera/cell; original south animation untouched",
+  "gd_tscn_written": false
+}

@@ -1,0 +1,36 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/chain_snap/chain_snap.png" id="1"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/chain_snap/chain_snap_n.png" id="2"]
+
+[sub_resource type="CanvasTexture" id="c"]
+diffuse_texture = ExtResource("1")
+normal_texture = ExtResource("2")
+
+[sub_resource type="AtlasTexture" id="a0_0"]
+atlas = SubResource("c")
+region = Rect2(0, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a0_1"]
+atlas = SubResource("c")
+region = Rect2(384, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a0_2"]
+atlas = SubResource("c")
+region = Rect2(768, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a0_3"]
+atlas = SubResource("c")
+region = Rect2(1152, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a0_4"]
+atlas = SubResource("c")
+region = Rect2(1536, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a0_5"]
+atlas = SubResource("c")
+region = Rect2(1920, 0, 384, 384)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a0_0")}, {"duration": 1.0, "texture": SubResource("a0_1")}, {"duration": 1.0, "texture": SubResource("a0_2")}, {"duration": 1.0, "texture": SubResource("a0_3")}, {"duration": 1.0, "texture": SubResource("a0_4")}, {"duration": 1.0, "texture": SubResource("a0_5")}], "loop": false, "name": &"default", "speed": 12.0}]

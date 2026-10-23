@@ -1,0 +1,588 @@
+{
+  "files": {
+    "game/assets/sprites/icons/items/givre.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "21afe1d8b3e636873f221d5736b2d305ff3384f16fea83dba414c6f861588f39"
+    },
+    "game/assets/sprites/icons/items/horloge_arcanique.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "83e7cd73a6eda4d712619f8341f0c0a7bbc7858c1aca1e3d9c84f7b1dd2796a1"
+    },
+    "game/assets/sprites/icons/items/lame_jumelle.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        19,
+        12,
+        238,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "a6f02c2ed21d84f6afeadeef6d2b4851bb9a097a61b359b00b5136dab711880c"
+    },
+    "game/assets/sprites/icons/items/lentille_aiguisee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "1a8e71d9fbacc9653785209bb69fec950b1d3bcfbc0807e3ca9d4abfd40c75a6"
+    },
+    "game/assets/sprites/icons/items/marque_du_chasseur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "57dba83b5e67f378d9428c8ab1c0e31d594f54f17333cb78ccffe1f809d0953d"
+    },
+    "game/assets/sprites/icons/items/moisson.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        34,
+        244,
+        222
+      ],
+      "mode": "RGBA",
+      "sha256": "84963278ccbd8f2a03e146a7833b64e3a0ee5ee6b107fa19fc651f52723224fe"
+    },
+    "game/assets/sprites/icons/items/morsure_vorace.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        27,
+        244,
+        229
+      ],
+      "mode": "RGBA",
+      "sha256": "98d90f1a3a980bdf8271e17c31bec1ed1f8bb375e54329476305d07363d744d6"
+    },
+    "game/assets/sprites/icons/items/nova_infinie.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "mode": "RGBA",
+      "sha256": "172f95d510a405a3293a411a0058dcd857fc7960255738ca74706f37c7ad8ecc"
+    },
+    "game/assets/sprites/icons/items/oeil_du_predateur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        24,
+        244,
+        232
+      ],
+      "mode": "RGBA",
+      "sha256": "fe8dd9136d08b06f78e1cd9466145bf178540f6229ed99642761949985ef4e44"
+    },
+    "game/assets/sprites/icons/items/orbe_de_veille.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        30,
+        12,
+        226,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "45d6efa699f11cb16be5b28df1974b50ed2180b2c32ca9a36026718f1ca7fb1c"
+    },
+    "game/assets/sprites/icons/items/pavois_fele.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "mode": "RGBA",
+      "sha256": "d21251ef4725eebe1c7859bb8c91fc7a5ec69c1b983beedaa93de39d01b3ce7c"
+    },
+    "game/assets/sprites/icons/items/peste_vivante.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        21,
+        244,
+        235
+      ],
+      "mode": "RGBA",
+      "sha256": "9f7fe05908e702ddf6bca8a63f6567997cd1984a391e4f2e3d15bb32d28dbcee"
+    },
+    "game/assets/sprites/icons/items/phenix_de_poche.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "e3854d59ab70e82dcc1acc855e1e7f514790caf91cf7b537b59033b916b7af00"
+    },
+    "game/assets/sprites/icons/items/piece_porte_bonheur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        18,
+        244,
+        238
+      ],
+      "mode": "RGBA",
+      "sha256": "17fd305fabfe14184958533e98f02485632997908d3072a593558dd510117efd"
+    },
+    "game/assets/sprites/icons/items/pierre_a_aiguiser.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        42,
+        244,
+        213
+      ],
+      "mode": "RGBA",
+      "sha256": "42250f8c7b6e7d32ec4ee5fb4db75b8c7290072488f4941024635ba311032251"
+    },
+    "game/assets/sprites/icons/items/plume_d_empenne.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "40cc97bc604c748830dae81260b819ac39860484427c607d69b798b64e60c333"
+    },
+    "game/assets/sprites/icons/items/pointe_perforante.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        74,
+        12,
+        182,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "6df0f57edc3401e6d3786cc3e22282fd47c8fd715529a106dca019ef04bda751"
+    },
+    "game/assets/sprites/icons/items/rafale_d_acier.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        28,
+        244,
+        228
+      ],
+      "mode": "RGBA",
+      "sha256": "3b1f78b6e5334ded8e68c76e4a3f3ccac4cfece9250f77f6d6606191a60f30ab"
+    },
+    "game/assets/sprites/icons/items/rune_de_portee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "aee515bffdeabcea5a486277a8456c9102483c8490ecae3928a8a6d2e515b4b8"
+    },
+    "game/assets/sprites/icons/items/sablier_fele.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "d9610b4dc5c5c3125f59b7420744feaf40e29b08b0ab2d080e1990d6a5e99094"
+    },
+    "game/assets/sprites/icons/items/sang_chaud.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        39,
+        12,
+        217,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "d15f2f2052fddb407476de565ae0303dae7a114d1c8d413c74ad54d2bf3c77ce"
+    },
+    "game/assets/sprites/icons/items/sifflet_de_chasse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        78,
+        244,
+        179
+      ],
+      "mode": "RGBA",
+      "sha256": "2375d59713973b0b93d492d34f87947b2d34b927a83aee8687da01df992073bb"
+    },
+    "game/assets/sprites/icons/items/tempete_de_braises.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        34,
+        12,
+        222,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "31d555aae5001340cff75d8732d07c8c37cc54371c3ed24a7deb6fbbad78205c"
+    },
+    "game/assets/sprites/icons/items/tonique_vital.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        41,
+        12,
+        215,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "8bff86d5048c880d5ae5cb93102ed2efae2ec6063f171ba121cc2604d3b4457a"
+    },
+    "game/assets/sprites/icons/items/venin_concentre.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "mode": "RGBA",
+      "sha256": "d26c54d821e66e01e985c2d32d900d30ed372cd9f92a7b8020d815ee04fb4fa9"
+    },
+    "game/assets/sprites/icons/spells/braises_errantes.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        11,
+        21,
+        118,
+        120
+      ],
+      "mode": "RGBA",
+      "sha256": "6d0385f9a4bf8151eb5bbd0cd7700e76c97fc62b87712d820c4a74c6272b8eec"
+    },
+    "game/assets/sprites/icons/spells/brasier.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        120
+      ],
+      "mode": "RGBA",
+      "sha256": "59216f427a12747f9771c1f3fa1c6ce30b600c8767e9692360cd3673fc12b7b5"
+    },
+    "game/assets/sprites/icons/spells/cendres.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        11,
+        7,
+        117,
+        121
+      ],
+      "mode": "RGBA",
+      "sha256": "06ca58a76239263d72298abbcb3af740dbbe7aa0eae0e1efbec577c385c2ceba"
+    },
+    "game/assets/sprites/icons/spells/eclat_de_braise.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        9,
+        46,
+        119,
+        113
+      ],
+      "mode": "RGBA",
+      "sha256": "8812695bb219cd625121af6257521057655700045e9eb8490808601f5649a1d6"
+    },
+    "game/assets/sprites/icons/spells/nova_ardente.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "mode": "RGBA",
+      "sha256": "1bf3db697a78d0c0356f5d296fc5061c1a6592f3834f4dcbc578d87dfcdb48aa"
+    },
+    "game/assets/sprites/icons/spells/phenix.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        8,
+        121,
+        121
+      ],
+      "mode": "RGBA",
+      "sha256": "e1ca4091dfc5a86b428460f1d4a5dd9eea4c76b788bf1a5fd731ec21e265d745"
+    },
+    "game/assets/sprites/icons/spells/pilier_de_flamme.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        38,
+        7,
+        90,
+        121
+      ],
+      "mode": "RGBA",
+      "sha256": "663e1c57af0831a6a819f17fbfa48ce9ce624e1a79ec3618a9be7d2d5e712e55"
+    },
+    "game/assets/sprites/icons/spells/pluie_de_meteores.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        25,
+        11,
+        115,
+        116
+      ],
+      "mode": "RGBA",
+      "sha256": "5c3e92caef8ae0427134e1a8a81bb2499b0c871eaa98725d95d4ecb7bba2eca2"
+    },
+    "game/assets/sprites/ui/interact/interact_disabled.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "mode": "RGBA",
+      "sha256": "5bb9ac12a23d162b716ccf7fdd6c6a16034cfa395a3b96a159045870cee75def"
+    },
+    "game/assets/sprites/ui/interact/interact_normal.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "mode": "RGBA",
+      "sha256": "4cbc3492c89799e6540b109d39578038e5120172dae7c28f3dbc0fc8d1f83677"
+    },
+    "game/assets/sprites/ui/interact/interact_pressed.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "mode": "RGBA",
+      "sha256": "0b68f8fcc1b93155c6aad5e2d6c7ea0fa8e7a6ce709f874d862dff08bbfff8e4"
+    },
+    "game/assets/sprites/ui/hud/icon_interact_hand.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "mode": "RGBA",
+      "sha256": "220409ac29d17b01e7bb2a59ca5f92d03f3f07d1e9b1d4b8824dd9775940a0ce"
+    }
+  },
+  "protected": {
+    "game/assets/sprites/icons/items/givre.png.import": "bc8725874e4a95df7b102618bc465318885795421720998531dd7d2d49dd21a9",
+    "game/assets/sprites/icons/items/horloge_arcanique.png.import": "f264980be839a061d9b0184d627ba00e58455dd493eca051e6fff89f6b16deec",
+    "game/assets/sprites/icons/items/lame_jumelle.png.import": "d9a4138e72384db2d7df56526b72e94f2b4cad0930ad7d49a09f9ce934ed5411",
+    "game/assets/sprites/icons/items/lentille_aiguisee.png.import": "bc84bda25d09484bccfce8e9d6ed86dee5a5816fbb882a4907287d148d4f3bc5",
+    "game/assets/sprites/icons/items/marque_du_chasseur.png.import": "5aeeb149b4fe4072ed1519d23d0f9a98e42c8bab851a62ab878602fb3f19e0ac",
+    "game/assets/sprites/icons/items/moisson.png.import": "db3f724a9582d4458aba4f7d5c4d11db1e02fd59a19110b855a83532a30df3b6",
+    "game/assets/sprites/icons/items/morsure_vorace.png.import": "bf7a15d78f8a5613e4b95b46e1f0249adc9dd9bfc5f406b21757dcb5af28ff37",
+    "game/assets/sprites/icons/items/nova_infinie.png.import": "e64a3b56320dd7ba7604b2218d42f36160c1e3938927794f46c00bb9d0eecf0f",
+    "game/assets/sprites/icons/items/oeil_du_predateur.png.import": "5f39599a40f8840c6227cca140fd4d5a86d7c4deae96435f0cdc91b223a3d78a",
+    "game/assets/sprites/icons/items/orbe_de_veille.png.import": "512b484258bc8c90d4ade86aca3e03cc37dd31de5133583a51b07ed5a5fd88d1",
+    "game/assets/sprites/icons/items/pavois_fele.png.import": "90a77c4c8173cc5a9d69a5c016a703c2fb74e7d64fd3736fd38d9beb62ca6779",
+    "game/assets/sprites/icons/items/peste_vivante.png.import": "b89d1b8dc0d715b6d8b28c29a9d9cefc0015de86fbac59d15282f9437ed197e4",
+    "game/assets/sprites/icons/items/phenix_de_poche.png.import": "ed757b06dfe36fd8fa8843e55f2df312e2adba80b951f50e250497ae260bcd53",
+    "game/assets/sprites/icons/items/piece_porte_bonheur.png.import": "a06f191e9e72d6d8ec0619f5100962cdadd8c1d702b7bd4d453cb02f716b21bd",
+    "game/assets/sprites/icons/items/pierre_a_aiguiser.png.import": "489ba7c0a8ddbdcb056dc46311d4a01d0db0c5ae737ea9cda071b1d54751a6b1",
+    "game/assets/sprites/icons/items/plume_d_empenne.png.import": "97c242895d0985d97d973f2b894e99abf6603e76f3484a0fd3c12b0c87a85661",
+    "game/assets/sprites/icons/items/pointe_perforante.png.import": "e72c493ec9792e59212939c6cb5135bb13a528e7238863a572d738b4cd78b4c1",
+    "game/assets/sprites/icons/items/rafale_d_acier.png.import": "30d5263d2d81e840ff9e3e2cd4d2e6233333b69413b8b9f7c3b292f3a2b96fac",
+    "game/assets/sprites/icons/items/rune_de_portee.png.import": "754fa38d58d3ff4004c7502209886be9b04ba0d088449bcc93adf0f7f8303e97",
+    "game/assets/sprites/icons/items/sablier_fele.png.import": "42dbd047194a3f4185045da66047509545681eed2edfbf174480cac6983f5c72",
+    "game/assets/sprites/icons/items/sang_chaud.png.import": "8937b3ac3af0c4291b6a4586ada949c409e425bcec18173016e4a11ab461c14f",
+    "game/assets/sprites/icons/items/sifflet_de_chasse.png.import": "27766b7dbf659d82a0bf7d6ff718825b6f1bb976ec16d0ca3deab38ff9411e00",
+    "game/assets/sprites/icons/items/tempete_de_braises.png.import": "01504ceb6add4b09c47885e1706930c9908bef32ada3037b2b56fac03a2ceae4",
+    "game/assets/sprites/icons/items/tonique_vital.png.import": "7e5839f7b8e543ae3f86ec7c095644f886cf8a42249d3ed80081df57c3456551",
+    "game/assets/sprites/icons/items/venin_concentre.png.import": "673a65272c0f9d79f07e41d2f96f8cf16b8d8553702b2e0c98131bffc5bfd14a",
+    "game/assets/sprites/icons/spells/braises_errantes.png.import": "78b57124ff40a6229d4461527fc6ecb343128aa45fdc243ba62e23effba89cf0",
+    "game/assets/sprites/icons/spells/brasier.png.import": "643a73dcd04d54bd964bd58479b3da316eebbbb13b3b74a2bf46b845be87b050",
+    "game/assets/sprites/icons/spells/cendres.png.import": "8747018189ba7bb2b42f61ba78745cf65b29312a73e1c55cb7374f51ae8ad34c",
+    "game/assets/sprites/icons/spells/eclat_de_braise.png.import": "6fdb23f61f5cd67fa79afaf6f336f21ccc11ca1bc23f5ec66b1e85cb564f7bdb",
+    "game/assets/sprites/icons/spells/nova_ardente.png.import": "1bd5bb6579376c90cba4eb344161d7eaa7c8587d89681564131a2958c342ac03",
+    "game/assets/sprites/icons/spells/phenix.png.import": "af55f572a0962b804da919839c5ad321a96dcd8687efc398f2ed60ed2550409d",
+    "game/assets/sprites/icons/spells/pilier_de_flamme.png.import": "955f0628dae8036252ae845cde61acc188338ccef7810e72ade8b75201c55dc7",
+    "game/assets/sprites/icons/spells/pluie_de_meteores.png.import": "2fab54c8fa56b08b57a4fa31d948bafffb4e73e34ecb8a07a2432266549bbffa",
+    "game/assets/sprites/ui/interact/interact_disabled.png.import": "c87e9f4c482c2e90f6f7cb21ade470e9ed4ffc3fda6bd9c151fc47a62ccff139",
+    "game/assets/sprites/ui/interact/interact_normal.png.import": "a8fec2fb5a22233a0c19684021007752eb40e72c15065e020ba439f1dc772f0a",
+    "game/assets/sprites/ui/interact/interact_pressed.png.import": "47b7d3ce054c87574dcde7a958e0f9e175ad806d4ae975aa0f9e552a51762324",
+    "game/assets/sprites/ui/hud/icon_interact_hand.png.import": "7ad26bff19dcc0d5136fcb82eae8627224daa85d2f4a898300a66e24d8f0cfe6"
+  },
+  "items": [
+    "givre",
+    "horloge_arcanique",
+    "lame_jumelle",
+    "lentille_aiguisee",
+    "marque_du_chasseur",
+    "moisson",
+    "morsure_vorace",
+    "nova_infinie",
+    "oeil_du_predateur",
+    "orbe_de_veille",
+    "pavois_fele",
+    "peste_vivante",
+    "phenix_de_poche",
+    "piece_porte_bonheur",
+    "pierre_a_aiguiser",
+    "plume_d_empenne",
+    "pointe_perforante",
+    "rafale_d_acier",
+    "rune_de_portee",
+    "sablier_fele",
+    "sang_chaud",
+    "sifflet_de_chasse",
+    "tempete_de_braises",
+    "tonique_vital",
+    "venin_concentre"
+  ]
+}

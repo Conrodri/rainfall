@@ -1,0 +1,512 @@
+{
+  "files": 63,
+  "total_duration_s": 48.805235,
+  "size_bytes": 5298792,
+  "failures": [],
+  "measurements": [
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_light_01.ogg",
+      "true_peak_dbfs": -5.887,
+      "rms_dbfs": -21.159,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_light_02.ogg",
+      "true_peak_dbfs": -4.83,
+      "rms_dbfs": -21.167,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_light_03.ogg",
+      "true_peak_dbfs": -3.985,
+      "rms_dbfs": -22.008,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_medium_01.ogg",
+      "true_peak_dbfs": -4.789,
+      "rms_dbfs": -20.127,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_medium_02.ogg",
+      "true_peak_dbfs": -4.457,
+      "rms_dbfs": -20.141,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_medium_03.ogg",
+      "true_peak_dbfs": -4.391,
+      "rms_dbfs": -20.095,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_heavy_01.ogg",
+      "true_peak_dbfs": -4.099,
+      "rms_dbfs": -19.04,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_heavy_02.ogg",
+      "true_peak_dbfs": -5.117,
+      "rms_dbfs": -19.035,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_chaine_hit_heavy_03.ogg",
+      "true_peak_dbfs": -5.09,
+      "rms_dbfs": -18.98,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_light_01.ogg",
+      "true_peak_dbfs": -3.561,
+      "rms_dbfs": -21.183,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_light_02.ogg",
+      "true_peak_dbfs": -4.597,
+      "rms_dbfs": -21.382,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_medium_01.ogg",
+      "true_peak_dbfs": -3.805,
+      "rms_dbfs": -20.179,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.821,
+      "rms_dbfs": -20.177,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_heavy_01.ogg",
+      "true_peak_dbfs": -3.454,
+      "rms_dbfs": -19.427,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_boucle_cast_heavy_02.ogg",
+      "true_peak_dbfs": -2.979,
+      "rms_dbfs": -19.61,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_light_01.ogg",
+      "true_peak_dbfs": -5.49,
+      "rms_dbfs": -20.972,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_light_02.ogg",
+      "true_peak_dbfs": -4.617,
+      "rms_dbfs": -20.965,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_medium_01.ogg",
+      "true_peak_dbfs": -3.704,
+      "rms_dbfs": -19.969,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.294,
+      "rms_dbfs": -19.966,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_heavy_01.ogg",
+      "true_peak_dbfs": -3.696,
+      "rms_dbfs": -18.978,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_piquet_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.554,
+      "rms_dbfs": -19.1,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_light_01.ogg",
+      "true_peak_dbfs": -5.09,
+      "rms_dbfs": -21.048,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_light_02.ogg",
+      "true_peak_dbfs": -5.312,
+      "rms_dbfs": -21.044,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_medium_01.ogg",
+      "true_peak_dbfs": -4.487,
+      "rms_dbfs": -20.058,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_medium_02.ogg",
+      "true_peak_dbfs": -4.355,
+      "rms_dbfs": -20.023,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_heavy_01.ogg",
+      "true_peak_dbfs": -4.187,
+      "rms_dbfs": -19.031,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_arpenteuse_tendeur_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.231,
+      "rms_dbfs": -19.076,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_light_01.ogg",
+      "true_peak_dbfs": -3.66,
+      "rms_dbfs": -22.208,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_light_02.ogg",
+      "true_peak_dbfs": -4.063,
+      "rms_dbfs": -22.389,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_light_03.ogg",
+      "true_peak_dbfs": -4.554,
+      "rms_dbfs": -21.222,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_light_01.ogg",
+      "true_peak_dbfs": -6.381,
+      "rms_dbfs": -21.143,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_light_02.ogg",
+      "true_peak_dbfs": -5.503,
+      "rms_dbfs": -21.088,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_light_03.ogg",
+      "true_peak_dbfs": -4.272,
+      "rms_dbfs": -21.164,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_medium_01.ogg",
+      "true_peak_dbfs": -3.64,
+      "rms_dbfs": -21.079,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.843,
+      "rms_dbfs": -21.69,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_medium_03.ogg",
+      "true_peak_dbfs": -3.971,
+      "rms_dbfs": -22.072,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_medium_01.ogg",
+      "true_peak_dbfs": -5.707,
+      "rms_dbfs": -20.122,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_medium_02.ogg",
+      "true_peak_dbfs": -5.511,
+      "rms_dbfs": -20.148,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_medium_03.ogg",
+      "true_peak_dbfs": -4.687,
+      "rms_dbfs": -20.121,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_heavy_01.ogg",
+      "true_peak_dbfs": -3.561,
+      "rms_dbfs": -22.144,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.669,
+      "rms_dbfs": -21.169,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_cast_heavy_03.ogg",
+      "true_peak_dbfs": -3.256,
+      "rms_dbfs": -21.31,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_heavy_01.ogg",
+      "true_peak_dbfs": -4.771,
+      "rms_dbfs": -19.089,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_heavy_02.ogg",
+      "true_peak_dbfs": -3.9,
+      "rms_dbfs": -19.079,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_langue_hit_heavy_03.ogg",
+      "true_peak_dbfs": -3.547,
+      "rms_dbfs": -19.174,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_light_01.ogg",
+      "true_peak_dbfs": -4.462,
+      "rms_dbfs": -21.091,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_light_02.ogg",
+      "true_peak_dbfs": -4.075,
+      "rms_dbfs": -21.087,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_medium_01.ogg",
+      "true_peak_dbfs": -3.166,
+      "rms_dbfs": -20.437,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.208,
+      "rms_dbfs": -20.422,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_heavy_01.ogg",
+      "true_peak_dbfs": -3.283,
+      "rms_dbfs": -19.593,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_grand_saut_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.369,
+      "rms_dbfs": -20.922,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_light_01.ogg",
+      "true_peak_dbfs": -3.811,
+      "rms_dbfs": -21.356,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_light_02.ogg",
+      "true_peak_dbfs": -3.906,
+      "rms_dbfs": -21.205,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_medium_01.ogg",
+      "true_peak_dbfs": -2.817,
+      "rms_dbfs": -20.41,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.078,
+      "rms_dbfs": -20.295,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_heavy_01.ogg",
+      "true_peak_dbfs": -4.377,
+      "rms_dbfs": -21.601,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_gluant_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.736,
+      "rms_dbfs": -20.563,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_light_01.ogg",
+      "true_peak_dbfs": -5.459,
+      "rms_dbfs": -21.021,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_light_02.ogg",
+      "true_peak_dbfs": -5.554,
+      "rms_dbfs": -21.024,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_medium_01.ogg",
+      "true_peak_dbfs": -5.147,
+      "rms_dbfs": -20.008,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_medium_02.ogg",
+      "true_peak_dbfs": -3.622,
+      "rms_dbfs": -20.009,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_heavy_01.ogg",
+      "true_peak_dbfs": -3.686,
+      "rms_dbfs": -19.549,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/spell_rainette_chant_de_crue_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.474,
+      "rms_dbfs": -20.735,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    }
+  ]
+}

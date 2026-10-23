@@ -1,0 +1,10 @@
+﻿P1 — Portrait buste Ardent
+Livré : portrait.png, portrait_n.png, portrait_e.png ; RGBA 256×256, transparence, passes au même cadrage.
+Source : art/blender/characters/ardent_iso.blend (C4 validé), pose de repos ; aucune animation/source modifiée.
+Rapports T1/T2 lus : portraits finalisés au T4. Caméra reprise de tocsin_t4_portraits.blend : orthographique 1,02, angle inchangé ; cible remontée de 0,32 m pour les épaules humaines, décentrement horizontal 0,055 pour préserver toute la flamme. Buste coupé volontairement au bord inférieur comme Tocsin ; côtés et capuche non tronqués.
+DA : cuir huilé, bronze martelé patiné, capuche de pluie et visage enfoui ; lumière chaude haut-gauche Tocsin, remplissage froid, seules braises orange émissives. Géométrie C4 conservée, aucune recoloration fantaisie.
+Script reproductible : art/tools/night/p1_build.py. Eevee 24 samples, rendu 512 réduit à 256 par la recette commune ; normales écran et émission via boss_common/iso_rig.
+Contrôle visuel : _p1_contact.png, rangée Ardent/Tocsin/Averse/Arpenteuse ; dessous diffus/normales/émission et références C4/M2/C1. Pillow utilisé uniquement pour assemblage et vérification, aucun dessin.
+Godot new_run_test : RESULT: OK ; avertissements de ressources/RID en sortie présents dans _p1_godot.log.
+Budget : portraits P1 conformes 256×256. Contrôle global NON conforme : 3 atlas Averse wave_cone préexistants de 6144×8192 ; APK 313 Mo > 200, textures mobiles 207 Mo > 180. Non modifiés car hors périmètre P1. Détails _p1_budget.log.
+Aucun .gd, .tscn ou .tres modifié. Aucune animation Ardent modifiée.

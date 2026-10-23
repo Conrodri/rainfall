@@ -1,0 +1,3491 @@
+{
+ "char": "arpenteuse",
+ "fights": [
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 110.415335463258,
+   "dtps": 1.43769968051117,
+   "duration": 10.4333333333334,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.88098039215686,
+   "kills": 64,
+   "kpm": 368.051118210859,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.482416352278864,
+   "res_uptime": 0.426517571884984,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 15.0,
+   "total": 64,
+   "ttk": 10.4166666666668
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 103.628185907045,
+   "dtps": 1.34932533733132,
+   "duration": 11.1166666666668,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.885882352941173,
+   "kills": 64,
+   "kpm": 345.427286356817,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.471867321188907,
+   "res_uptime": 0.394302848575712,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 15.0,
+   "total": 64,
+   "ttk": 11.1000000000001
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 79.6313364055283,
+   "dtps": 0.691244239631322,
+   "duration": 14.466666666667,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.89,
+   "kills": 64,
+   "kpm": 265.437788018428,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.546835963210108,
+   "res_uptime": 0.539170506912442,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 10.0,
+   "total": 64,
+   "ttk": 14.4500000000003
+  },
+  {
+   "casts": {
+    "2": 9,
+    "3": 8,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 1,
+   "dodges": 2,
+   "dps": 20.2807597027257,
+   "dtps": 2.47729149463262,
+   "duration": 60.5499999999978,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'death_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": 42.4833333333322,
+   "hits_taken": 15,
+   "hp_min": 0.0829248366012908,
+   "kills": 25,
+   "kpm": 24.7729149463262,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.625262081971555,
+   "res_uptime": 0.616845582163501,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 150.0,
+   "total": 25,
+   "ttk": 60.5333333333312
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 7,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 23.9376218323594,
+   "dtps": 2.14424951267063,
+   "duration": 51.2999999999984,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 11,
+   "hp_min": 0.0907393790849529,
+   "kills": 25,
+   "kpm": 29.2397660818723,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.596169273086301,
+   "res_uptime": 0.574398960363873,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 110.0,
+   "total": 25,
+   "ttk": 51.2833333333317
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 6,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 29.5903614457839,
+   "dtps": 0.963855421686772,
+   "duration": 41.4999999999989,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 4,
+   "hp_min": 0.657696078431365,
+   "kills": 25,
+   "kpm": 36.1445783132539,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.565286771036452,
+   "res_uptime": 0.531726907630522,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 40.0,
+   "total": 25,
+   "ttk": 41.4833333333323
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 31.1015118790504,
+   "dtps": 0.0,
+   "duration": 38.5833333333324,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 1.55507559395252,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.584011090470735,
+   "res_uptime": 0.546868250539957,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 38.5666666666658
+  },
+  {
+   "casts": {
+    "2": 6,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 34.6487006737254,
+   "dtps": 0.0,
+   "duration": 34.6333333333327,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 1.73243503368627,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.546692271871451,
+   "res_uptime": 0.510105871029836,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 34.616666666666
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 6,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 29.641827912722,
+   "dtps": 0.0,
+   "duration": 40.4833333333323,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 1.4820913956361,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.572549719784491,
+   "res_uptime": 0.540963359407163,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 40.4666666666657
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 1,
+   "dodges": 0,
+   "dps": 32.8048113723351,
+   "dtps": 5.41279387643529,
+   "duration": 30.4833333333329,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'death_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": 21.95,
+   "hits_taken": 12,
+   "hp_min": 0.00221707516339258,
+   "kills": 1,
+   "kpm": 1.96828868234011,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.593305543430248,
+   "res_uptime": 0.57353745215965,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 165.0,
+   "total": 1,
+   "ttk": 30.4666666666662
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 1,
+   "dodges": 0,
+   "dps": 29.9102691924233,
+   "dtps": 4.54636091724834,
+   "duration": 33.4333333333327,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'death_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": 23.2666666666666,
+   "hits_taken": 14,
+   "hp_min": 0.0495998366012962,
+   "kills": 1,
+   "kpm": 1.7946161515454,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.588034798782798,
+   "res_uptime": 0.563310069790628,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 152.0,
+   "total": 1,
+   "ttk": 33.4166666666661
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 2,
+   "dodges": 0,
+   "dps": 28.0767430978012,
+   "dtps": 5.53111839026684,
+   "duration": 35.6166666666659,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'death_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'death_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": 22.15,
+   "hits_taken": 14,
+   "hp_min": 0.000191176470582467,
+   "kills": 1,
+   "kpm": 1.68460458586807,
+   "max_hp": 85.0,
+   "pref_u": 4.2,
+   "res_mean": 0.548296215262631,
+   "res_uptime": 0.549368273280299,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 197.0,
+   "total": 1,
+   "ttk": 35.5999999999993
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 197.485714285714,
+   "dtps": 2.72727272727271,
+   "duration": 9.33333333333338,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 4,
+   "hp_min": 0.926705351386202,
+   "kills": 64,
+   "kpm": 411.42857142857,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.451476412683628,
+   "res_uptime": 0.408928571428571,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 25.4545454545455,
+   "total": 64,
+   "ttk": 9.31666666666671
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 165.556886227543,
+   "dtps": 1.14316820903646,
+   "duration": 11.1333333333335,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.973062540296583,
+   "kills": 64,
+   "kpm": 344.910179640714,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.468615013877393,
+   "res_uptime": 0.453592814371257,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 12.7272727272727,
+   "total": 64,
+   "ttk": 11.1166666666668
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 159.125179856113,
+   "dtps": 0.549378678875074,
+   "duration": 11.5833333333335,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.973062540296583,
+   "kills": 64,
+   "kpm": 331.510791366902,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.4826751346027,
+   "res_uptime": 0.487769784172662,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 6.36363636363636,
+   "total": 64,
+   "ttk": 11.5666666666668
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 6,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 51.7506584723454,
+   "dtps": 3.01700055870388,
+   "duration": 37.9666666666658,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 9,
+   "hp_min": 0.740773694390706,
+   "kills": 25,
+   "kpm": 39.5083406496936,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.558687684022567,
+   "res_uptime": 0.541703248463565,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 114.545454545455,
+   "total": 25,
+   "ttk": 37.9499999999991
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 6,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 51.7052631578959,
+   "dtps": 2.34449760765556,
+   "duration": 37.9999999999991,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 7,
+   "hp_min": 0.812727272727271,
+   "kills": 25,
+   "kpm": 39.4736842105272,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.540657979854154,
+   "res_uptime": 0.517543859649123,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 89.0909090909091,
+   "total": 25,
+   "ttk": 37.9833333333325
+  },
+  {
+   "casts": {
+    "2": 7,
+    "3": 6,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 50.4657534246588,
+   "dtps": 1.96139476961399,
+   "duration": 38.9333333333324,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 6,
+   "hp_min": 0.847362991618304,
+   "kills": 25,
+   "kpm": 38.5273972602749,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.550647242657485,
+   "res_uptime": 0.530821917808219,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 76.3636363636364,
+   "total": 25,
+   "ttk": 38.9166666666657
+  },
+  {
+   "casts": {
+    "2": 4,
+    "3": 3,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 100.6993006993,
+   "dtps": 0.0,
+   "duration": 19.0666666666669,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 3.14685314685311,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.542466254454818,
+   "res_uptime": 0.535839160839161,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 19.0500000000002
+  },
+  {
+   "casts": {
+    "2": 4,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 81.6442239546423,
+   "dtps": 0.0,
+   "duration": 23.5166666666666,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 2.55138199858257,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.520419942152947,
+   "res_uptime": 0.518072289156627,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 23.4999999999999
+  },
+  {
+   "casts": {
+    "2": 4,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 81.2985179957659,
+   "dtps": 0.0,
+   "duration": 23.6166666666666,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 2.54057868736768,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.51120198829459,
+   "res_uptime": 0.506704304869443,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 23.5999999999999
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 89.4824153623869,
+   "dtps": 8.70226199963224,
+   "duration": 24.7166666666665,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 12,
+   "hp_min": 0.178158779282177,
+   "kills": 1,
+   "kpm": 2.4275118004046,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.55409612304621,
+   "res_uptime": 0.542144302090357,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 215.090909090909,
+   "total": 1,
+   "ttk": 24.6999999999999
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 89.0620281761206,
+   "dtps": 7.84136668700431,
+   "duration": 24.8333333333332,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 11,
+   "hp_min": 0.266684312271646,
+   "kills": 1,
+   "kpm": 2.41610738255035,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.553070385940394,
+   "res_uptime": 0.538255033557047,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 194.727272727273,
+   "total": 1,
+   "ttk": 24.8166666666665
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 4,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 85.6697365929116,
+   "dtps": 8.57796819062158,
+   "duration": 25.8166666666665,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 13,
+   "hp_min": 0.143985054803345,
+   "kills": 1,
+   "kpm": 2.32408005164624,
+   "max_hp": 235.0,
+   "pref_u": 4.2,
+   "res_mean": 0.537032874527594,
+   "res_uptime": 0.519044544867657,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 221.454545454546,
+   "total": 1,
+   "ttk": 25.7999999999998
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 253.86310517529,
+   "dtps": 0.0,
+   "duration": 9.98333333333341,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 384.641068447409,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.394545297215022,
+   "res_uptime": 0.370617696160267,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 9.96666666666674
+  },
+  {
+   "casts": {
+    "2": 2,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 253.86310517529,
+   "dtps": 0.0,
+   "duration": 9.98333333333341,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 384.641068447409,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.393177004030937,
+   "res_uptime": 0.373956594323873,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 9.96666666666674
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 2,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 227.30044843049,
+   "dtps": 0.0,
+   "duration": 11.1500000000001,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 344.394618834077,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.452336678262931,
+   "res_uptime": 0.418535127055306,
+   "resource": "chain",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 11.1333333333335
+  },
+  {
+   "casts": {
+    "2": 5,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 110.72131147541,
+   "dtps": 1.84426229508198,
+   "duration": 24.3999999999999,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.93821037037037,
+   "kills": 25,
+   "kpm": 61.4754098360658,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.396928346643574,
+   "res_uptime": 0.35724043715847,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 45.0,
+   "total": 25,
+   "ttk": 24.3833333333332
+  },
+  {
+   "casts": {
+    "2": 6,
+    "3": 5,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 98.9597069597079,
+   "dtps": 3.29670329670333,
+   "duration": 27.2999999999997,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 6,
+   "hp_min": 0.946891851851852,
+   "kills": 25,
+   "kpm": 54.9450549450555,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.487237829515983,
+   "res_uptime": 0.457875457875458,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 90.0,
+   "total": 25,
+   "ttk": 27.2833333333331
+  },
+  {
+   "casts": {
+    "2": 6,
+    "3": 6,
+    "4": 3
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 91.8390934844204,
+   "dtps": 4.58923512747881,
+   "duration": 29.4166666666663,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 9,
+   "hp_min": 0.91104,
+   "kills": 25,
+   "kpm": 50.9915014164313,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.422331086065082,
+   "res_uptime": 0.357507082152975,
+   "resource": "chain",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 135.0,
+   "total": 25,
+   "ttk": 29.3999999999996
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 190.843373493972,
+   "dtps": 0.0,
+   "duration": 13.8333333333336,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 4.33734939759028,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.442384595455675,
+   "res_uptime": 0.380722891566265,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 13.8166666666669
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 189.700598802392,
+   "dtps": 0.0,
+   "duration": 13.9166666666669,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_ne' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 4.3113772455089,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.445637056947398,
+   "res_uptime": 0.389221556886228,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 13.9000000000003
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 1
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 196.526054590567,
+   "dtps": 0.0,
+   "duration": 13.4333333333336,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_s' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_nw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 4.46650124069471,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.444368481188296,
+   "res_uptime": 0.380893300248139,
+   "resource": "chain",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 13.4166666666669
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 209.952021669208,
+   "dtps": 7.26385809312623,
+   "duration": 15.0333333333337,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.875958518518518,
+   "kills": 1,
+   "kpm": 3.99113082039903,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.493036262195564,
+   "res_uptime": 0.466740576496674,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 109.2,
+   "total": 1,
+   "ttk": 15.016666666667
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 209.952021669207,
+   "dtps": 7.26385809312623,
+   "duration": 15.0333333333337,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_sw' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.875958518518518,
+   "kills": 1,
+   "kpm": 3.99113082039903,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.49438890102686,
+   "res_uptime": 0.463414634146341,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 109.2,
+   "total": 1,
+   "ttk": 15.016666666667
+  },
+  {
+   "casts": {
+    "2": 3,
+    "3": 3,
+    "4": 2
+   },
+   "char": "arpenteuse",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 209.952021669208,
+   "dtps": 7.26385809312623,
+   "duration": 15.0333333333337,
+   "errors": [
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_n' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'loop_w' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'plant_e' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    },
+    {
+     "func": "get_frame_count",
+     "msg": "Animation 'whip_se' doesn't exist.",
+     "type": 0,
+     "where": "res://scripts/ambiance/normal_maps.gd:257"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.875958518518518,
+   "kills": 1,
+   "kpm": 3.99113082039903,
+   "max_hp": 450.0,
+   "pref_u": 4.2,
+   "res_mean": 0.495465913191026,
+   "res_uptime": 0.472283813747228,
+   "resource": "chain",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 109.2,
+   "total": 1,
+   "ttk": 15.016666666667
+  }
+ ],
+ "load_errors": [],
+ "note": "",
+ "ok": true,
+ "skip": false,
+ "script_errors": [],
+ "wall_s": 79.8
+}

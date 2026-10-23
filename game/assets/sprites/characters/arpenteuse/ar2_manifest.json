@@ -1,0 +1,83 @@
+{
+  "effects": {
+    "chain_tile": {
+      "cell": [
+        128,
+        64
+      ],
+      "frames": 4,
+      "directions": 1,
+      "rig": "TOP",
+      "loop": true,
+      "emission": "FF7A1F",
+      "normal": true
+    },
+    "peg": {
+      "cell": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "directions": 8,
+      "rig": "CREA",
+      "loop": true,
+      "emission": "FF7A1F",
+      "normal": true
+    },
+    "loop_blaze": {
+      "cell": [
+        256,
+        256
+      ],
+      "frames": 6,
+      "directions": 1,
+      "rig": "TOP",
+      "loop": false,
+      "emission": "FF7A1F",
+      "normal": true
+    },
+    "chain_snap": {
+      "cell": [
+        128,
+        64
+      ],
+      "frames": 6,
+      "directions": 1,
+      "rig": "TOP",
+      "loop": false,
+      "emission": "FF7A1F",
+      "normal": true
+    },
+    "chain_rewind": {
+      "cell": [
+        128,
+        64
+      ],
+      "frames": 6,
+      "directions": 1,
+      "rig": "TOP",
+      "loop": false,
+      "emission": "FF7A1F",
+      "normal": true
+    }
+  },
+  "portrait": "PASS",
+  "icons": 4,
+  "clipped": [],
+  "import": {
+    "returncode": 0,
+    "errors": [
+      "ERROR: 26 resources still in use at exit (run with --verbose for details).",
+      "ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketSmallE"
+    ]
+  },
+  "load": {
+    "returncode": 0,
+    "errors": []
+  },
+  "sprites_test": {
+    "returncode": 0,
+    "errors": []
+  },
+  "choices": "Forged interlocking copper links; scorched welds; bronze survey anchor; inward polygon filaments. No projectile in design. Portrait kept inside authorized character directory."
+}

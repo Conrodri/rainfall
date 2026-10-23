@@ -1,0 +1,64 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Rainfall"
+config/version="0.1.0"
+run/main_scene="res://scenes/app.tscn"
+config/features=PackedStringArray("4.7", "Mobile")
+config/quit_on_go_back=false
+
+[autoload]
+
+InputSetup="*res://scripts/core/input_setup.gd"
+Events="*res://scripts/core/events.gd"
+Balance="*res://scripts/core/balance.gd"
+RunState="*res://scripts/core/run_state.gd"
+Platform="*res://scripts/core/platform.gd"
+Profile="*res://scripts/save/profile.gd"
+Audio="*res://scripts/audio/audio_manager.gd"
+Quality="*res://scripts/ambiance/quality.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_height"
+window/handheld/orientation=4
+
+[importer_defaults]
+
+texture={
+"compress/high_quality": true,
+"compress/mode": 2,
+"mipmaps/generate": false
+}
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[layer_names]
+
+2d_physics/layer_1="world"
+2d_physics/layer_2="player"
+2d_physics/layer_3="enemies"
+2d_physics/layer_4="player_projectiles"
+2d_physics/layer_5="enemy_projectiles"
+2d_physics/layer_6="pickups"
+2d_physics/layer_7="interactables"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+viewport/hdr_2d=true

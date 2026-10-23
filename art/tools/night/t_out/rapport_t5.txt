@@ -1,0 +1,9 @@
+T5 — assemblage final termine, 22/10/2026.
+113 animations de calques, 5160 frames, 4531 rectangles uniques ; diffuse/normales/emission alignes, restitution exacte de tous les pixels visibles et de l'alpha.
+Atlas des calques : 1834,875 -> 140,133 Mio bruts (-92,36 %). Les 659 PNG Tocsin font au maximum 1536 px de cote. Planches historiques, noms, timings, cellules logiques 192 et pivot Ardent (96 ; 136,32) conserves.
+Godot sprites_test : RESULT: OK. Les 38 SpriteFrames sont charges et chaque frame logique controlee sans erreur (godot_resources.log).
+Choix DA : conserver les rendus T1-T4, fer noir, bronze patine, rouille et laiton uses, foyer orange unique ; aucun repeint ni changement d'echelle. Planche finale : art/tools/night/_t5_contact.png.
+Contrat pour l'agent de code : game/assets/sprites/characters/tocsin/FORMAT_T5.md ; inventaire resource_animations.json, ordre et ressources layers_order.json, regions/marges atlas_manifest.json. Les .tres de calques pointent vers layers/<calque>/packed/ ; AtlasTexture.margin restaure le cadre 192, ne pas ajouter un second offset.
+Budget global execute : Tocsin 46,5 Mio mobiles / plafond 50. Le controle global reste en echec hors perimetre : 3 PNG Averse wave_cone 6144x8192 (lot AV3) ; APK estime 274 Mio / 200. Ces fichiers et les budgets partages n'ont pas ete modifies. Reprendre cette verification apres les lots externes : python art/tools/texture_budget.py.
+Test Godot texture_budget_test : regions d'atlas et dimensions _n/_e conformes ; RESULT: FAIL (1), uniquement pour deux imports Rainette portrait_e__Image.png / portrait_n__Image.png hors politique. Lots externes en cours : les mesures globales sont un instantane.
+Aucun .gd/.tscn cree ou modifie ; Blender interactif ignore. Reconstruction : python art/tools/night/t5_build.py. Journaux : art/tools/night/t_out/t5/ ; mesure budget : art/tools/night/t_out/t5_budget.txt.

@@ -1,0 +1,79 @@
+{
+  "rust_archon": {
+    "status": "PASS",
+    "rig": "CREA",
+    "elevation": 30,
+    "samples": 16,
+    "triangles": 4384,
+    "mesh_objects": 148,
+    "all_meshes_closed": true,
+    "animations": {
+      "idle": {
+        "start": 1,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 10,
+        "loop": true
+      },
+      "run": {
+        "start": 21,
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "fps": 12,
+        "loop": true
+      },
+      "attack": {
+        "start": 41,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_a": {
+        "start": 61,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_b": {
+        "start": 81,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "phase2": {
+        "start": 101,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 8,
+        "loop": false
+      },
+      "death": {
+        "start": 121,
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      }
+    }
+  }
+}

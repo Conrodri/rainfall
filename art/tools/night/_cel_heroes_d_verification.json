@@ -1,0 +1,500 @@
+{
+  "checks": [
+    {
+      "file": "characters/avare/attack.png",
+      "silhouette_iou": 0.9994990862236971,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/cast.png",
+      "silhouette_iou": 0.9995806557637166,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/cast_ult.png",
+      "silhouette_iou": 0.9995895645798217,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/death.png",
+      "silhouette_iou": 0.9995630182330643,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/coffre_arc/coffre_arc.png",
+      "silhouette_iou": 0.9761055634807418,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/coin_burst/coin_burst.png",
+      "silhouette_iou": 0.9858067729083665,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        3072,
+        512
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/gold_bleed/gold_bleed.png",
+      "silhouette_iou": 0.9907329401853412,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        192
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/ransom_ring/ransom_ring.png",
+      "silhouette_iou": 0.9900036256280106,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1024,
+        256
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/idle.png",
+      "silhouette_iou": 0.9995933677133965,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/portrait.png",
+      "silhouette_iou": 0.9998376676081946,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/run.png",
+      "silhouette_iou": 0.9995895280702547,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/slam.png",
+      "silhouette_iou": 0.9996378154140187,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/swing.png",
+      "silhouette_iou": 0.9994990862236971,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/throw.png",
+      "silhouette_iou": 0.9995806557637166,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/ult.png",
+      "silhouette_iou": 0.9995895645798217,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/attack.png",
+      "silhouette_iou": 0.9973916171973376,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/belch.png",
+      "silhouette_iou": 0.9973490663715234,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/breathe.png",
+      "silhouette_iou": 0.9970898708287005,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/cast.png",
+      "silhouette_iou": 0.997208135520069,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/cast_ult.png",
+      "silhouette_iou": 0.9973490663715234,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/crouch.png",
+      "silhouette_iou": 0.997542789357736,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        384,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/death.png",
+      "silhouette_iou": 0.9972648352955167,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/dodge.png",
+      "silhouette_iou": 0.9976006546190865,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/effects/goo/goo.png",
+      "silhouette_iou": 0.9997886465922371,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        2112,
+        352
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/effects/goo_projectile/goo_projectile.png",
+      "silhouette_iou": 0.9928918817807707,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        512,
+        128
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/effects/land_ring/land_ring.png",
+      "silhouette_iou": 0.9968717413972888,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        384
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/effects/tongue/tongue.png",
+      "silhouette_iou": 0.9926826856521309,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        2048,
+        512
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/idle.png",
+      "silhouette_iou": 0.9974417069801936,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1536,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/jump.png",
+      "silhouette_iou": 0.9975816034109177,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/land.png",
+      "silhouette_iou": 0.9976913547805849,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        576,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/leap.png",
+      "silhouette_iou": 0.9975178434274368,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        1152,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/portrait.png",
+      "silhouette_iou": 0.9995494593512214,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/run.png",
+      "silhouette_iou": 0.9975534398635518,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/rainette/spit.png",
+      "silhouette_iou": 0.997208135520069,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived radiance and alpha retained",
+      "size": [
+        768,
+        1536
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    }
+  ],
+  "errors": [
+    "('characters/avare/effects/coin_pickup/coin_pickup.png', 'alpha _e')",
+    "('characters/avare/effects/coin_projectile/coin_projectile.png', 'alpha _e')",
+    "protected changed ['game\\\\tests\\\\ardent_variants_bench.gd', 'game\\\\scripts\\\\spells\\\\arpenteuse_kit.gd', 'game\\\\scripts\\\\spells\\\\avare_bounce_coin.gd', 'game\\\\scripts\\\\spells\\\\avare_kit.gd', 'game\\\\scripts\\\\spells\\\\averse_kit.gd', 'game\\\\scripts\\\\spells\\\\morfil_kit.gd', 'game\\\\scripts\\\\spells\\\\rictus_kit.gd', 'game\\\\scripts\\\\spells\\\\spell_caster.gd', 'game\\\\scripts\\\\spells\\\\tocsin_kit.gd', 'game\\\\scripts\\\\spells\\\\vigie_flare.gd', 'game\\\\scripts\\\\spells\\\\vigie_kit.gd']"
+  ],
+  "profiles": [
+    "creature",
+    "prop",
+    "vfx"
+  ],
+  "choices": "Original models, animation, cameras, materials as tint sources. Shared night shadow floor. Archived half-resolution emission retained verbatim for exact accent/radiance/alpha. Ring light uses vfx; physical effects prop. No source saves or normal maps.",
+  "bytes_before": 16169201,
+  "bytes_after": 12713328,
+  "runtime_checks": [
+    {
+      "name": "texture_budget",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "import",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "sprites_test",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "avare_test",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "rainette_test",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "player_test",
+      "pass": true,
+      "exit_code": 0,
+      "errors": []
+    },
+    {
+      "name": "texture_budget_test",
+      "pass": false,
+      "exit_code": 1,
+      "errors": []
+    }
+  ]
+}

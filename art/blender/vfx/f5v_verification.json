@@ -1,0 +1,43 @@
+{
+  "dimensions": [
+    3072,
+    1024
+  ],
+  "frames": 12,
+  "fps": 12,
+  "pivot": [
+    128,
+    942.08
+  ],
+  "normal_colors": 5,
+  "alpha_equal": true,
+  "unique_frames": true,
+  "adjacent_differences": [
+    148.91622161865234,
+    147.93488693237305,
+    150.1175079345703,
+    150.1368064880371,
+    149.51271057128906,
+    147.84003829956055,
+    146.5567169189453,
+    149.6783561706543,
+    151.8258399963379,
+    151.23140716552734,
+    150.4100227355957,
+    150.14714813232422
+  ],
+  "source": "f5v_rain.blend",
+  "design": "Broken cylindrical silver filaments, needle spray, fragmented impact crown, rising slate mist; single cold accent; no floor light.",
+  "tests": {
+    "import": "OK",
+    "source_arena_test": "RESULT: OK",
+    "sprites_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (1): global mobile textures 249 MiB > 180 MiB"
+  },
+  "budget": {
+    "policy_applied": true,
+    "oversize_textures": 0,
+    "lot_astc_mobile_mib": 5.44,
+    "strict": "FAIL: project category and APK limits; vfx 16.0 MiB > 15 MiB, bosses 65.3 > 45, monsters 16.1 > 12, APK 359 > 200"
+  }
+}

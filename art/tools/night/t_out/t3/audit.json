@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "layer_cells": 2624,
+  "intentionally_absent": 112,
+  "normal_alpha_checks": 2624,
+  "SpriteFrames": 18,
+  "errors": [],
+  "godot_sprites": "RESULT: OK",
+  "godot_resources": "18 loaded; errors=0",
+  "regen_unique_frames": 6,
+  "contact": "art/tools/night/_t3_contact.png",
+  "source": [
+    "art/blender/characters/tocsin_t3.blend",
+    "art/blender/characters/tocsin_t3_regen.blend"
+  ],
+  "next_T5": "Optimiser les atlas par rognage en conservant cadre logique 192 et pivots.",
+  "editor_import_notes": "Godot editor import reports resource allocator leaks on exit; runtime sprite and all resource loading tests exit cleanly."
+}

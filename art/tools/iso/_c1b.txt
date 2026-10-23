@@ -1,0 +1,9 @@
+LOT C1b (correctif de C1, mêmes livrables, mêmes noms, mêmes tailles, mêmes pivots, même inventaire art/tools/iso/_c1_inventory.json) : la planche _c1_contact.png est trop claire et trop pauvre à côté d'ash_lord. Reprends art/tools/terrain/terraces_iso_build.py et art/blender/terrain/terraces_iso.blend.
+Corrections (DA officielle : art/briefs/STYLE.md en tête + STYLE_boss_da.md ; référence ash_lord_build.py) :
+- Sol : nettement plus sombre et désaturé (albédo moyen 0,15-0,25, jamais beige) ; pierre humide à léger reflet spéculaire (roughness 0,35-0,55 par endroits, flaques), joints sombres, sillons d'eau noire conservés, pousses de riz vert sombre.
+- Bronze vert-de-gris (#5F8F80, #8DBBA8) visible : liserés, bornes ou ferrures sur les murs/remparts et quelques plaques au sol.
+- Blocs, falaises, remparts : pierre taillée biseautée en vrai relief (blocs, chanfreins, éclats, usure), mousse sombre, coulures d'eau ; plus de textures floues (détail net à 90,51 px/u, texel suffisant). AO marquée au pied des parois.
+- Accent émissif bleu froid rare : 1-2 lanternes ou runes sur block_b et rampart_corner_n (+ _e non noir) ; supprime cliff_corner_e_e s'il est vide.
+- Eau : plus profonde et noire, reflets froids.
+Garde l'éclairage cohérent avec les monstres (haut-gauche). Vérifie à nouveau tailles/pivots (PASS) et refais la planche _c1_contact.png (même composition).
+Périmètre identique à C1 : art/blender/terrain/terraces_iso*, art/tools/terrain/terraces_iso*, art/tools/iso/, game/assets/sprites/terrain/terraces/iso/. Aucun .gd/.tscn/.tres.

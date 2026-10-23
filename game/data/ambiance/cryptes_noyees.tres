@@ -1,0 +1,129 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_cry4"]
+
+[resource]
+script = ExtResource("1_cry4")
+map_id = &"cryptes_noyees"
+display_name = "Cryptes noyées"
+mood = "Biome cryptes (étage 4, docs/Design_Etages.md §3) : sous la cité, sans soleil ni pluie. Pierre humide, sel, os, eau noire ; lumière = veines de cristal blanc-cyan (#BFF4FF, pulsation lente 0,1 Hz) et le joueur, seule chaleur. Gouttes qui tombent des voûtes, vapeur froide au ras du lac. Le plus sombre : vignette 0,38, garde-fous de lisibilité de l'AmbianceManager."
+ambient_color = Color(0.5411765, 0.5882353, 0.6431373, 1)
+ambient_low = Color(0.5803922, 0.627451, 0.6784314, 1)
+fill_color = Color(0.6, 0.7019608, 0.7803922, 1)
+fill_energy = 0.55
+fill_energy_low = 0.7
+sun_color = Color(0.7490196, 0.9568627, 1, 1)
+sun_energy = 0.34
+sun_rotation_deg = 315.0
+sun_height = 0.8
+sun_shadow_color = Color(0.0196078, 0.0313726, 0.0470588, 0.6)
+sun_shadow_length_u = 0.4
+sun_shadow_smooth = 2.0
+sun_shadow_filter = 1
+lift_color = Color(0.0313726, 0.0627451, 0.0941176, 1)
+lift_amount = 0.32
+gain_color = Color(0.8, 0.95, 1, 1)
+gain_amount = 0.1
+saturation = 0.85
+contrast = 1.15
+contrast_pivot = 0.36
+vignette_strength = 0.38
+vignette_radius = 0.7
+vignette_softness = 0.5
+vignette_color = Color(0.0117647, 0.0196078, 0.0313726, 1)
+rain_intensity = 0.0
+rain_opacity = 0.0
+rain_layers = 1.0
+drops_amount = 30.0
+splash_rate = 20.0
+wind_mult = 0.3
+fog_low_color = Color(0.6, 0.7019608, 0.7490196, 1)
+fog_low_opacity = 0.06
+fog_low_speed = Vector2(0.06, 0.02)
+fog2_opacity = 0.0
+fog_high_opacity = 0.0
+puffs_count = 3.0
+puffs_opacity = 0.07
+puffs_color = Color(0.6588235, 0.7529412, 0.8, 1)
+cloud_opacity = 0.0
+cloud_cover = 1.0
+rays_count = 0.0
+sky_texture = &""
+sky_reflect = 0.05
+puddle_reflect = 0.35
+water_reflect = 0.3
+ripple_hz = 0.35
+mirror_alpha = 0.25
+particle_defs = Array[Dictionary]([{
+"additive": false,
+"alpha": 0.45,
+"behavior": &"fall",
+"color": Color(0.7490196, 0.8980392, 0.9607843, 1),
+"name": "gouttes des voûtes",
+"size_u": Vector2(0.06, 0.12),
+"speed_u": 6.0,
+"texture": &"drop_32"
+}, {
+"additive": true,
+"alpha": 0.5,
+"behavior": &"drift",
+"color": Color(0.7490196, 0.9568627, 1, 1),
+"name": "poussière de sel",
+"size_u": Vector2(0.04, 0.08),
+"speed_u": 0.15,
+"texture": &"ash_16"
+}])
+p1_amount = 18.0
+p2_amount = 14.0
+point_lights = Array[Dictionary]([])
+light_rules = Array[Dictionary]([{
+"char": "#",
+"edge": true,
+"energy": 1.1,
+"max": 36,
+"preset": &"crystal_vein",
+"spacing_u": 9.0
+}, {
+"char": "~",
+"edge": true,
+"energy": 0.8,
+"max": 8,
+"preset": &"crystal_vein",
+"spacing_u": 7.0
+}])
+map_lights_energy = 1.0
+player_light_scale = 1.15
+lights_energy = 1.8
+tier_overrides = {
+&"Tendu": {
+&"p1_amount": 24.0,
+&"puffs_opacity": 0.08,
+&"vignette_strength": 0.4
+},
+&"Hostile": {
+&"p1_amount": 30.0,
+&"fog_low_opacity": 0.08,
+&"puddle_reflect": 0.42,
+&"vignette_strength": 0.41,
+&"contrast": 1.18
+},
+&"Furieux": {
+&"p1_amount": 36.0,
+&"fog_low_opacity": 0.09,
+&"map_lights_energy": 0.8,
+&"lamp_outage_scale": 0.6,
+&"vignette_strength": 0.43,
+&"contrast": 1.2,
+&"player_light_scale": 1.2
+},
+&"Cataclysme": {
+&"p1_amount": 44.0,
+&"fog_low_opacity": 0.1,
+&"map_lights_energy": 0.75,
+&"lamp_outage_scale": 0.4,
+&"vignette_strength": 0.45,
+&"contrast": 1.22,
+&"saturation": 0.8,
+&"player_light_scale": 1.25
+}
+}

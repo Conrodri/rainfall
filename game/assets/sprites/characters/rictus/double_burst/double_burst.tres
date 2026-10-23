@@ -1,0 +1,86 @@
+[gd_resource type="SpriteFrames" load_steps=27 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/double_burst/top.png" id="top"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/double_burst/top_e.png" id="top_e"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/double_burst/crea.png" id="crea"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/double_burst/crea_e.png" id="crea_e"]
+
+[sub_resource type="AtlasTexture" id="default_0"]
+atlas = ExtResource("top")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_1"]
+atlas = ExtResource("top")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_2"]
+atlas = ExtResource("top")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_3"]
+atlas = ExtResource("top")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_4"]
+atlas = ExtResource("top")
+region = Rect2(2048, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_5"]
+atlas = ExtResource("top")
+region = Rect2(2560, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_0"]
+atlas = ExtResource("top")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_1"]
+atlas = ExtResource("top")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_2"]
+atlas = ExtResource("top")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_3"]
+atlas = ExtResource("top")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_4"]
+atlas = ExtResource("top")
+region = Rect2(2048, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_top_5"]
+atlas = ExtResource("top")
+region = Rect2(2560, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_0"]
+atlas = ExtResource("crea")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_1"]
+atlas = ExtResource("crea")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_2"]
+atlas = ExtResource("crea")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_3"]
+atlas = ExtResource("crea")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_4"]
+atlas = ExtResource("crea")
+region = Rect2(2048, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="default_crea_5"]
+atlas = ExtResource("crea")
+region = Rect2(2560, 0, 512, 512)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("default_0")}, {"duration": 1.0, "texture": SubResource("default_1")}, {"duration": 1.0, "texture": SubResource("default_2")}, {"duration": 1.0, "texture": SubResource("default_3")}, {"duration": 1.0, "texture": SubResource("default_4")}, {"duration": 1.0, "texture": SubResource("default_5")}], "loop": false, "name": &"default", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_top_0")}, {"duration": 1.0, "texture": SubResource("default_top_1")}, {"duration": 1.0, "texture": SubResource("default_top_2")}, {"duration": 1.0, "texture": SubResource("default_top_3")}, {"duration": 1.0, "texture": SubResource("default_top_4")}, {"duration": 1.0, "texture": SubResource("default_top_5")}], "loop": false, "name": &"default_top", "speed": 16.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("default_crea_0")}, {"duration": 1.0, "texture": SubResource("default_crea_1")}, {"duration": 1.0, "texture": SubResource("default_crea_2")}, {"duration": 1.0, "texture": SubResource("default_crea_3")}, {"duration": 1.0, "texture": SubResource("default_crea_4")}, {"duration": 1.0, "texture": SubResource("default_crea_5")}], "loop": false, "name": &"default_crea", "speed": 16.0}]

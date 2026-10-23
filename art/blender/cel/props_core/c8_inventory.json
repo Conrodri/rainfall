@@ -1,0 +1,858 @@
+{
+  "rig": "MAP",
+  "elevation": 30,
+  "yaw": 45,
+  "px_per_u": 64,
+  "note": "64 px/u, overriding C0 R=90.50966799. SE front +X (model +90 deg), SW front -Y (model 0 deg); independent Blender renders, never mirrored.",
+  "assets": [
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_large/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "663c668c020e8bff755ffa8909ac8afdc0dcd7e25bf581f7f8806978462d6c31"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_large/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "7228c9fbd9afe3822b3d51884b88ec2a55e02fdd1e2e45602f1d4af10147c03c"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_legendary/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "cd8067d2c960bb0ab396ca1901e459b977f6f83437a0b4a38d199b5b88812dca"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_legendary/closed_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "fbce3dae8f1869897bcd6e4383362daf197588c355c00426b0fa63a54a247d47"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_legendary/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "ebd061339895c8a704e4379d3cde78b6b8ce5d9552d983fa867a6c7cbd8e1179"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_legendary/open_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "8e21baa943d5a8290050db5dcd536222134e64c5c078dac6cb9f256bd54bd71a"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_small/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        41,
+        116,
+        107
+      ],
+      "sha256": "0b3281f12419836ad8e25ff6de747c417a2002a4707e3692279517e320afa2f8"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/chests/chest_small/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        7,
+        116,
+        107
+      ],
+      "sha256": "f1f6cccab7a504ad080fad13b410ae5032405e6eeaa4c2010cd351a0b80f1e23"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/gold_capsule/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        48,
+        37,
+        80,
+        82
+      ],
+      "sha256": "0f8f7a00b0edcdb3ee1444d7b691972dfcbf8891f2636ec6f36c2e76cfaa591a"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/gold_capsule/closed_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        48,
+        37,
+        80,
+        82
+      ],
+      "sha256": "9eb7dac7e96b62dd13af8461605d0de0dc4105d3c97492e285bbe90d89e64261"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/gold_capsule/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        48,
+        13,
+        80,
+        82
+      ],
+      "sha256": "a1d3da775db8a2364c073378b663cf00499688a09c1e19a6ee0f0d55698669f9"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/gold_capsule/open_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        48,
+        13,
+        80,
+        82
+      ],
+      "sha256": "167cb4b9123221d2cb4f9f311513f4f54d8d092ed7c16bf702fa34ee7947c935"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_large_active.png",
+      "size": [
+        2048,
+        256
+      ],
+      "columns": 8,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        75,
+        62,
+        1972,
+        226
+      ],
+      "sha256": "9318a9dc450bc93597f64a32cc5111bf5089535408e9171c4e2e528d4444117a"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_large_active_e.png",
+      "size": [
+        2048,
+        256
+      ],
+      "columns": 8,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        75,
+        62,
+        1972,
+        226
+      ],
+      "sha256": "f009449c4f16c40d26c6b878b728023795a9df5a57054f52bf6f59711da02c78"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_large_done.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        75,
+        67,
+        180,
+        226
+      ],
+      "sha256": "d775c9d6f3455b733a6d18ddd302f2a5bef1414ee00c344cf7da73dbc3380bdc"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_large_done_e.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        75,
+        67,
+        180,
+        226
+      ],
+      "sha256": "646ae22db4fbd660b46aa0b98903d957cbc7992350aef83cf52587daae1b181f"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_large_off.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        75,
+        67,
+        180,
+        226
+      ],
+      "sha256": "7c8ac03d0d93cceefd1817c64a8aa9606e89fd2a429efcd0f31dfe3abb5836b6"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_small_active.png",
+      "size": [
+        1024,
+        128
+      ],
+      "columns": 8,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        33,
+        25,
+        991,
+        120
+      ],
+      "sha256": "1131d5dee79af5d9e9fdd051b5a82f23207eccc201f2f5c1f2e1da7f631e0770"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_small_active_e.png",
+      "size": [
+        1024,
+        128
+      ],
+      "columns": 8,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        33,
+        25,
+        991,
+        120
+      ],
+      "sha256": "1918611b2ded500bb38a4a6126ac86c99471daaaeb9f74aa4f10f1ec1184843c"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_small_done.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        33,
+        28,
+        95,
+        120
+      ],
+      "sha256": "5d8c1cede1a76ea299ffbf84dbbad63f1c3542cc9caaefda00d789ded20e774d"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_small_done_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        33,
+        28,
+        95,
+        120
+      ],
+      "sha256": "3eb6190d48e16fbc306412b9b6e47ae675f6ac5ff356aced12f4a38621348a46"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/pillar_small_off.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        33,
+        28,
+        95,
+        120
+      ],
+      "sha256": "249b8d80d96b5df30fbeb0d5c786a03d28b5a0bec34cecaf0ae310c2834f1dd7"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/teleporter_active.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        45,
+        46,
+        211,
+        212
+      ],
+      "sha256": "8e581daff158ac79c926afdbcfc2d9a54b470cb28c096abcb5909b6e402d9aad"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/teleporter_active_e.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        45,
+        46,
+        211,
+        212
+      ],
+      "sha256": "e66915a0be954d3fad14ca946e861d153d03518221ec385a852317a2f5fdd3cb"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/teleporter_idle.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        45,
+        56,
+        211,
+        200
+      ],
+      "sha256": "a6fb96cfd577b18fa1669d1166f87ed25da11850f734a01d5485dac588bec145"
+    },
+    {
+      "path": "art/blender/cel/props_core/c8/props/teleporter_idle_e.png",
+      "size": [
+        256,
+        256
+      ],
+      "columns": 1,
+      "frame": [
+        256,
+        256
+      ],
+      "bbox": [
+        45,
+        56,
+        211,
+        200
+      ],
+      "sha256": "2bf88e95474a11860a8907ae191b86b821bbfc2fe75a698fdb1d1fc6fa6b7814"
+    }
+  ],
+  "protected": {
+    "game/assets/sprites/chests/chest_large/chest_large.tres": "13b34c18565690e533450ab063b949576c7bee40dc5903174429ad8768d72db7",
+    "game/assets/sprites/chests/chest_large/closed.png.import": "058260c910b2fa9d5e33eeb87938e90c49cea17fe23756b60114dd7aaf9d7c05",
+    "game/assets/sprites/chests/chest_large/closed_n.png.import": "42fcc36f7ec85a1331d85fd10470dba1d07b6f4899a03e318010ae1aba17b42c",
+    "game/assets/sprites/chests/chest_large/open.png.import": "6ce4e882dacd2b17bc2e9a7835bec2e78f68d30aa141c16342a07c68a91779e5",
+    "game/assets/sprites/chests/chest_large/open_n.png.import": "dff39be830215487c625b6ab603b6f4bd549cb67301d7514b9c66c48caa5ae15",
+    "game/assets/sprites/chests/chest_legendary/chest_legendary.tres": "88e82e316bf57627c35e995b0b8b0a55c1e11cd5f2423b42baf27a63c20a4b12",
+    "game/assets/sprites/chests/chest_legendary/closed.png.import": "6db3fe526e71ea8e0f1e8f0f24025368ab7a183ffa7e15863f18770aed7a3c88",
+    "game/assets/sprites/chests/chest_legendary/closed_e.png.import": "f5bdc7a2563a8ca621fb3aa6208e390ed3bc041c6426176c4c6ff69fbe3d2e87",
+    "game/assets/sprites/chests/chest_legendary/closed_n.png.import": "a0377aec6f66119124d6ee1c0864db6dadd93f748bd9297838f3ddb18395a2d0",
+    "game/assets/sprites/chests/chest_legendary/open.png.import": "7aeda5859c514b85f74e18f2b49f2760c74c6e675881a55ccdf60719a2295bd4",
+    "game/assets/sprites/chests/chest_legendary/open_e.png.import": "47fc6a4177e1112e261fd09dadcea05c728ea6589aa18872bf1334724df073e0",
+    "game/assets/sprites/chests/chest_legendary/open_n.png.import": "974d0f89ea83a23867d0b55e6819c074d17d6984bb963f579e6170f2b28d51f7",
+    "game/assets/sprites/chests/chest_small/chest_small.tres": "63adde551e6e7fe913b2ea052899cac4d44ed85e4f663f467dc28743d92f51c6",
+    "game/assets/sprites/chests/chest_small/closed.png.import": "72c03a685053a19bf1aeb35ff8666fb99c1618537d9c75eaadeba1e56e62235d",
+    "game/assets/sprites/chests/chest_small/closed_n.png.import": "c09d30e86c01c387a9da07fe495e83f04b829c5f4fbf5a3ce306de4278daf8f0",
+    "game/assets/sprites/chests/chest_small/open.png.import": "b5e4d7dc9cc6a98e79244f45a8fab89fd105e9ce0a1c6b1eba5df9a190aafd70",
+    "game/assets/sprites/chests/chest_small/open_n.png.import": "c8002a409207edebd77ab3bb56b6d96fa60aabab4f2ad79d7362081d7cf6d9c2",
+    "game/assets/sprites/props/boat.png.import": "02541eace3184bfc00b88020a93a09fc4a2ab5af41a10db2b90fe29cba1451e6",
+    "game/assets/sprites/props/boat_n.png.import": "0d3ae9ac307786618b5ccf2e60bbf3ea9310766e19fe667979e3b760805543dd",
+    "game/assets/sprites/props/jar.png.import": "afd903a86f535cdbd9972017276544f79b9f22a9af444d023f46153e38931ca8",
+    "game/assets/sprites/props/jar_n.png.import": "cf13ac76f0818def262cdcfc1d67e1320de473aa8a3b0b31f3f88900e5d9a256",
+    "game/assets/sprites/props/pillar_large_active.png.import": "28748169e7f636e83daed03828eadb495c1bb2e04021644635a02c0526e5e89a",
+    "game/assets/sprites/props/pillar_large_active_e.png.import": "8fb0e9979058c03a9a8d44aee036bd5f367e0befd929478a40a0169bdf3341d6",
+    "game/assets/sprites/props/pillar_large_active_n.png.import": "7576f8aa8037c15c64d7837d7ff37c1f7e8f5724eab7f3b5d8416614f5ce1df7",
+    "game/assets/sprites/props/pillar_large_done.png.import": "ed6006395416123967d9d9cddae6a3df151d252ae6ce6855cef4e8e763295279",
+    "game/assets/sprites/props/pillar_large_done_e.png.import": "3f25cafa9b699c16aa21c682981e1bf3b3849d239bdfbfa4a212deba61dfd45d",
+    "game/assets/sprites/props/pillar_large_done_n.png.import": "9c600fa23c0429488256b36176ed3e647c798e51a0614c0212aa7b0355742d45",
+    "game/assets/sprites/props/pillar_large_off.png.import": "b5db8ba64412af63462cf943363a1125b5f1191f96e5e36898375d88af2c7430",
+    "game/assets/sprites/props/pillar_large_off_n.png.import": "e5675cdc9150d5e2b5c2f092e114bf332d0af755a7aa6462d789dc09e71d9f96",
+    "game/assets/sprites/props/pillar_small_active.png.import": "8e85e9f65e7bc69677e438b65451dc1a6dfc60156a2375ce5ba50456f6a054d3",
+    "game/assets/sprites/props/pillar_small_active_e.png.import": "9b7c43ad472a3fda0518ecdeb1c28fe3e7b4fd48638308dc9f98b1aa2b33f3bc",
+    "game/assets/sprites/props/pillar_small_active_n.png.import": "3dcd3749f7bb4fd8d6a5f33aff4e8fe471a0fcc497b1c9d87d972d4d6dbc0cec",
+    "game/assets/sprites/props/pillar_small_done.png.import": "a1731c796edf3e9fefe52adbb607b5ff97369d75567715a8e7f0575844cb4622",
+    "game/assets/sprites/props/pillar_small_done_e.png.import": "f6b4b4dbf36850d84a5dcae81edcd883ce1f161ba836a37d4c6dd85c7c4c1b37",
+    "game/assets/sprites/props/pillar_small_done_n.png.import": "3faf23a576d4a6ed8bdaa133239c7223b22fbd0c40d8b10424e63491652145cb",
+    "game/assets/sprites/props/pillar_small_off.png.import": "4b6487b61c75377736c6bd5745b4e5a7405136faa1ac482da6078dacd8ef6174",
+    "game/assets/sprites/props/pillar_small_off_n.png.import": "56136b8f5b5d994f4ce9ec8ec4b8d92d74858096c9f7c97f5213a849ba966156",
+    "game/assets/sprites/props/rock.png.import": "b69138f82c5f3f776d51adb66edeb58920aeafa985f8a839fac84b5acc056bf6",
+    "game/assets/sprites/props/rock_n.png.import": "2627dbdc2c4a4d0f6248a11b02f1bf2620cc27b6dd6262d91fc6ee1a67732a77",
+    "game/assets/sprites/props/stele.png.import": "11d101792c6f058a350c0495d5ab0ef7dc1dd7fb7778e03acb27713e04496994",
+    "game/assets/sprites/props/stele_n.png.import": "f15ef5163930b24d73e0ec7369b37fb311f7ee684fbe65b1364afdef3e5e1351",
+    "game/assets/sprites/props/stone_lantern.png.import": "c436ddd13c32f74d8659ee0b04c430f76eb0940a0be70d70ed55b77e775a9960",
+    "game/assets/sprites/props/stone_lantern_e.png.import": "7a3a5d9b4c18881a3a0a07c8170fb4d8ad38840d1913cef6bcecb9e5a8203e31",
+    "game/assets/sprites/props/stone_lantern_n.png.import": "5fc3d5c4ba88ca81eb6fd9a3bf706b24eb74ed7dffcedd2c6705c78f84c3bb24",
+    "game/assets/sprites/props/stone_wall_corner.png.import": "a076fb3730f0de450b64a3f9be16329e9d01f8538843239f69fc18d5e287c4e2",
+    "game/assets/sprites/props/stone_wall_corner_n.png.import": "ca14f8ed7efc87c3b30969df34d018b91f3428d8af9305a57267f74cf839a36a",
+    "game/assets/sprites/props/stone_wall_gap_stairs.png.import": "b506eff0f8fed99e5816eed80bc2d31aaa39fa7a2c99d1df5afb25fb54e18e36",
+    "game/assets/sprites/props/stone_wall_gap_stairs_n.png.import": "738de9db19494561dc7a1107b279512a2f02c1cce79caacdf964089a8c173235",
+    "game/assets/sprites/props/stone_wall_straight.png.import": "085723d333a6ed2cd5ac051800d5ebb0c5a75c14a8bbb9e63bc578883fd295c3",
+    "game/assets/sprites/props/stone_wall_straight_n.png.import": "82bc790c1fdbf11284a5cdd7605f20142410dc8ba66633ffdf8bc1dc03fc2dbe",
+    "game/assets/sprites/props/teleporter_active.png.import": "f6c6a85fd01f574c20c4519b69ada6f0e790b817c835487bd65947581357f9dd",
+    "game/assets/sprites/props/teleporter_active_e.png.import": "2b01fce5642a0ffb99a71c6da4329725b8091d494caacf72603cda60d29c302d",
+    "game/assets/sprites/props/teleporter_active_n.png.import": "33d45773af0ba0db7de39429e5392c2fa4611f78c7fcf642e6f9b349966cb9c4",
+    "game/assets/sprites/props/teleporter_idle.png.import": "117af1ed0af77080c84847fc6b942d98eb89e0a12e13f4f24e744cae409fbc55",
+    "game/assets/sprites/props/teleporter_idle_e.png.import": "4991b586a9aaefc7592670d261f47ae084c3176ee175fe2bf2cdc87ae1a34568",
+    "game/assets/sprites/props/teleporter_idle_n.png.import": "4394d0ec780d1405b575ca87d0e398c651c83fe6bd84f7ca2159e0ada12b8586",
+    "game/assets/sprites/props/twisted_pine.png.import": "76a89231d4c9900c87876b07e816a9e9f5116036be35f8b8632daafcc59a998c",
+    "game/assets/sprites/props/twisted_pine_n.png.import": "3ac43b3e9a38734dde7ef3ad811fde8a273b450e7c337e3f5d25dd7ea9c8e659",
+    "game/assets/sprites/props/fog_forest/cedar_giant.png.import": "0a5eb5f6cb57cbff5cc4cd6a1c4b07e172d994ef291b6087dabfb39704dbb936",
+    "game/assets/sprites/props/fog_forest/cedar_giant_n.png.import": "47e28d60858e10b507e47571493cb872dbf6bcf4f9161d53211a33dcc2bfefae",
+    "game/assets/sprites/props/fog_forest/lantern_shrine.png.import": "010038c56eca03a35fc62afc8d933f0d2de175ddaecd8959b6d1b735cedaae58",
+    "game/assets/sprites/props/fog_forest/lantern_shrine_e.png.import": "195cb52a78471a2a2dd88ee8fc3b7a20223c7591b27fa9618128cb9392c07b3b",
+    "game/assets/sprites/props/fog_forest/lantern_shrine_n.png.import": "16292822329d4bfabb427b11bcbeb52676cf42b34292352a375e132c1474e532",
+    "game/assets/sprites/props/fog_forest/mushrooms.png.import": "769269052ba6fd0f3c90331a94ab9099e1a2db5f0fe43b603370e194f6e02941",
+    "game/assets/sprites/props/fog_forest/mushrooms_n.png.import": "8dce63bd576639dceb8753c9f90e7c81ba0655d5b447806d886905e79d564712",
+    "game/assets/sprites/props/fog_forest/root_arch_a.png.import": "2a4a4d1ef03b1fa62f4ec126c1ed87c7f9edad247d3cef4bf6ec00c885011261",
+    "game/assets/sprites/props/fog_forest/root_arch_a_n.png.import": "bba06306efd85eaddbd82b502f4ab623371101a7f1053f06375a917d042efafb",
+    "game/assets/sprites/props/fog_forest/root_arch_b.png.import": "7510ad4eb0925345ce874e1030419eb8bc4243e5ce3875a2f08a3feb33bb1d94",
+    "game/assets/sprites/props/fog_forest/root_arch_b_n.png.import": "4c50dd33fc5f6274932a22f68770c1677f3f7cb19332e54d577d290c857dca5a",
+    "game/assets/sprites/props/fog_forest/root_arch_c.png.import": "f08bd2cb19df5ac77dcaebcf749abde533c960d2c186c17dd2ef208f488e2e00",
+    "game/assets/sprites/props/fog_forest/root_arch_corner.png.import": "edba4dd545ae2f62983a07404c3f4aaa84e907b3e549e1d69cd8a9630c47d4c3",
+    "game/assets/sprites/props/fog_forest/root_arch_corner_n.png.import": "54bffe55483fc379ddefca2de6840fb5d01233729e2cc6cf82f45e1529f2ab41",
+    "game/assets/sprites/props/fog_forest/root_arch_c_n.png.import": "a5bfbc86e94b0245b392f951c5c916d1d6c59d71cd936541fa638033ada2e8a5",
+    "game/assets/sprites/props/fog_forest/standing_stone.png.import": "caace8f52a1b4edd14d34660931fefb6fff08c0f13914dd0ffbfc3bcb7129285",
+    "game/assets/sprites/props/fog_forest/standing_stone_n.png.import": "411bf659dc4adf6fec3c9fa1a49f99b13e2cf98a606ce669493f12ee53ad89df",
+    "game/assets/sprites/props/fog_forest/stump.png.import": "b98ab329ce0941871487c974fe54f8a62ef683e62c141471162cdedafd9786ad",
+    "game/assets/sprites/props/fog_forest/stump_n.png.import": "f835cd5a6d99dceec897532bd450e1d477b20e5baf4f4145839e3396728285c3",
+    "game/assets/sprites/props/gold_capsule/closed.png.import": "c9883d47b7b9fad15d90c22c06c32e8f9e5dfb5478cfe4666cc1abd7b2ca5e2e",
+    "game/assets/sprites/props/gold_capsule/closed_e.png.import": "98306c537da3b524257b7f6c18254540e436b801ec93fbeafeec09c14f8854c1",
+    "game/assets/sprites/props/gold_capsule/closed_n.png.import": "1b6f24ed551277f8dd8d080d2be92177fc0cb000890e91a7f3b0a6bc46db7fdc",
+    "game/assets/sprites/props/gold_capsule/gold_capsule.tres": "b67a227d17bd2c042214b4a6f47f968ffad48d09d82571780f59613fa0de42af",
+    "game/assets/sprites/props/gold_capsule/open.png.import": "7f5afb9244f0794a8e8a43adb30466954dd24ea57717fb282fac6b68e672a54e",
+    "game/assets/sprites/props/gold_capsule/open_e.png.import": "e87118178aa0e1436f87a8f4cb7c97321dfa94410b2e4b133ec0b6c11865c134",
+    "game/assets/sprites/props/gold_capsule/open_n.png.import": "7ae06e9b6a10d825e5a11ebea7bb6aae3194c4d41ce30d02a32555f63090e6b9",
+    "game/assets/sprites/props/rain/grass_a.png.import": "489445abcb61d8b5dd0e07c730e3a2b00c154c0995ac0bde1f2c633e1e711a0a",
+    "game/assets/sprites/props/rain/grass_a_n.png.import": "bba5f0b3ba6f2fc9f926a6ea01b5d70a5f109a4514f532d6a9e7c36e983a391f",
+    "game/assets/sprites/props/rain/grass_b.png.import": "f2497b42ae531a5c0272c75798b97dd83bd644478837bcc6b749266838a099a2",
+    "game/assets/sprites/props/rain/grass_b_n.png.import": "f9cde6c34e59e7aa95f7b21146015cd4683994a823f6645575eaa9103504ecd0",
+    "game/assets/sprites/props/rain/grass_c.png.import": "e7e2e78c4e81036c5eab06678c10a50c2132802c7e54d811f9998cc2e2479f3f",
+    "game/assets/sprites/props/rain/grass_c_n.png.import": "5da55d5165508316a6e76d2872937474c86a95f846362736bcb547b00b6591b1",
+    "game/assets/sprites/props/rain/puddle_a.png.import": "eb14911b6fbc34bdb669a103e626392dca725964e3df6ed617eb2a6cbeb06acf",
+    "game/assets/sprites/props/rain/puddle_a_n.png.import": "86ffdd95d8b791af1f5f18c5fdd89b309948a620f23d8f6600f97d7515d8b5e6",
+    "game/assets/sprites/props/rain/puddle_b.png.import": "60c37368a67c1e26b127ffa3dd84dbe2cc1cb91803c92c1e05e4dab2866bdead",
+    "game/assets/sprites/props/rain/puddle_b_n.png.import": "6fd3a3a51d108afbe2753a9d16266c806dd5784aa75c8bcc5b02924520e59cec",
+    "game/assets/sprites/props/rain/puddle_c.png.import": "177f0c289f2300e723c2628d92e9a5b16829ee2764bbfb059dae356e556af7c1",
+    "game/assets/sprites/props/rain/puddle_c_n.png.import": "be86a12503404ebcc71e9e07a4995a57b9be7df4d46cc63c29c805b95d5e829a",
+    "game/assets/sprites/props/rain/splash.png.import": "b26a64c504146ca3a8ddb7babc69173563b2eb21570bae138d947be1cbcecf03",
+    "game/assets/sprites/props/rain/splash8.png.import": "044e1dd2e5eefa6a9817bdb2be80d612dd12b7bd6a058f3dcf2fab4bda0717e7",
+    "game/assets/sprites/props/rain/splash8_n.png.import": "5ac59b5f72e64e9581ccfd2b8cd70bbdc93dc5ab75bb10def4002a742b198373",
+    "game/assets/sprites/props/rain/splash_n.png.import": "3f4808eff2a6e96a0e5680c411e23456ddaad6a87726356f9c245b4d929845bd",
+    "game/assets/sprites/props/rust_city/bell.png.import": "27f90b22bb8413de391f834d199a3a168eee97481834e6592cd2a4a805c2c047",
+    "game/assets/sprites/props/rust_city/bell_n.png.import": "cf61a669102c936cf81c414a6de0fdac21d28d460abb8130cb0e418b650a3290",
+    "game/assets/sprites/props/rust_city/cables.png.import": "aa83f4924e44c7c285eac7d2c9118f5fbb15d2596ebd94d9fa6a2d0b894053c1",
+    "game/assets/sprites/props/rust_city/cables_n.png.import": "2bcfe5c633175da9a50ba7c7f8ada628b2709bc2d0ee2e5c237d9f5b0006c738",
+    "game/assets/sprites/props/rust_city/catwalk.png.import": "502e6efcb1d006277b027db30c9fad575944173c5a11670dff04ba3ef6ffdb55",
+    "game/assets/sprites/props/rust_city/catwalk_n.png.import": "2e3cb98bb9634fada0062bdb212cf4f3a0722474aace8b9c886cd527295c975b",
+    "game/assets/sprites/props/rust_city/crate.png.import": "932083f803f8d2c2722d5a5132db7da456d8d3a6e7edffaa7a631ba117f94d54",
+    "game/assets/sprites/props/rust_city/crate_n.png.import": "a2e5917d756d013f2756b977d50d3b79d3f03dd7a958f8a7e1bc412d917e3216",
+    "game/assets/sprites/props/rust_city/steam_lamp.png.import": "8580d8b04353ab3d3f121e8e3b795dae00963d2fb2c78caad3eb6a5396c77051",
+    "game/assets/sprites/props/rust_city/steam_lamp_e.png.import": "21f6c0357666910a68332dc1fc2e1c3c473ee50e4a258a829db9c01139299fd7",
+    "game/assets/sprites/props/rust_city/steam_lamp_n.png.import": "3cd5b50e21c810decf85513f25fdb65c9f0e809bdb23b2bd61c09f6454cabead",
+    "game/assets/sprites/props/rust_city/tank_large.png.import": "1c3b8dd7d936cfd889baafaffcaf5d694b7258a5962e7792d3d323b386832f5c",
+    "game/assets/sprites/props/rust_city/tank_large_n.png.import": "8ba00649eee606ca685dd7a4642b5a1eb036b22a85f8e8c80f011934507cc66c",
+    "game/assets/sprites/props/rust_city/tank_small.png.import": "d00c208d05b438a5cc968038ba88dfb69f6699768bdcc5d71bb08f2632e1d4dd",
+    "game/assets/sprites/props/rust_city/tank_small_n.png.import": "1042d4dae8e7b36db8017568a7f3d3e12d09ffbac5df02f1a2d5d51a7c5ade19",
+    "game/assets/sprites/props/rust_city/ticket_booth.png.import": "e9edafb76d7cc046283396c926e08634980932b42573bf8d45e42f7689f9ccc4",
+    "game/assets/sprites/props/rust_city/ticket_booth_n.png.import": "6b7eeb0b040074b05224db28c8c6674faa44d166951d057c6659eb8d1923918a",
+    "game/assets/sprites/props/rust_city/valve.png.import": "44fda78937ea3d4a89e259f9722f2910ac26336958cab88fe478266b5377f847",
+    "game/assets/sprites/props/rust_city/valve_n.png.import": "15bb40aa94ad4149023f6eeff0d82624f691ac15920e97168f55c755d91b47e6"
+  },
+  "verification": "PASS",
+  "pivots": {
+    "art/blender/cel/props_core/c8/chests/chest_large/closed.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_large/open.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_legendary/closed.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_legendary/closed_e.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_legendary/open.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_legendary/open_e.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_small/closed.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/chests/chest_small/open.png": [
+      64,
+      89.6
+    ],
+    "art/blender/cel/props_core/c8/props/gold_capsule/closed.png": [
+      64,
+      76.8
+    ],
+    "art/blender/cel/props_core/c8/props/gold_capsule/closed_e.png": [
+      64,
+      76.8
+    ],
+    "art/blender/cel/props_core/c8/props/gold_capsule/open.png": [
+      64,
+      76.8
+    ],
+    "art/blender/cel/props_core/c8/props/gold_capsule/open_e.png": [
+      64,
+      76.8
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_large_active.png": [
+      128,
+      183.71764705882353
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_large_active_e.png": [
+      128,
+      183.71764705882353
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_large_done.png": [
+      128,
+      183.71764705882353
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_large_done_e.png": [
+      128,
+      183.71764705882353
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_large_off.png": [
+      128,
+      183.71764705882353
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_small_active.png": [
+      64,
+      95.28888888888889
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_small_active_e.png": [
+      64,
+      95.28888888888889
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_small_done.png": [
+      64,
+      95.28888888888889
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_small_done_e.png": [
+      64,
+      95.28888888888889
+    ],
+    "art/blender/cel/props_core/c8/props/pillar_small_off.png": [
+      64,
+      95.28888888888889
+    ],
+    "art/blender/cel/props_core/c8/props/teleporter_active.png": [
+      128.0,
+      144.86286163330078
+    ],
+    "art/blender/cel/props_core/c8/props/teleporter_active_e.png": [
+      128.0,
+      144.86286163330078
+    ],
+    "art/blender/cel/props_core/c8/props/teleporter_idle.png": [
+      128.0,
+      133.06488800048828
+    ],
+    "art/blender/cel/props_core/c8/props/teleporter_idle_e.png": [
+      128.0,
+      133.06488800048828
+    ]
+  },
+  "contact": "3x3 C1 ground_a with C4 Ardent; all resized by the same physical px/u ratio",
+  "errors": [],
+  "contact_panels": [
+    {
+      "asset": "game/assets/sprites/chests/chest_large/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/props/gold_capsule/closed.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/gold_capsule/open.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_active.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_done.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_off.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_active.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_done.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_off.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_active.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_active.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_idle.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_idle.png",
+      "orientation": "sw"
+    }
+  ],
+  "sources": [
+    "art/blender/props/c8_chest_large_closed_se.blend",
+    "art/blender/props/c8_chest_large_closed_sw.blend",
+    "art/blender/props/c8_chest_large_open_se.blend",
+    "art/blender/props/c8_chest_large_open_sw.blend",
+    "art/blender/props/c8_chest_legendary_closed_se.blend",
+    "art/blender/props/c8_chest_legendary_closed_sw.blend",
+    "art/blender/props/c8_chest_legendary_open_se.blend",
+    "art/blender/props/c8_chest_legendary_open_sw.blend",
+    "art/blender/props/c8_chest_small_closed_se.blend",
+    "art/blender/props/c8_chest_small_closed_sw.blend",
+    "art/blender/props/c8_chest_small_open_se.blend",
+    "art/blender/props/c8_chest_small_open_sw.blend",
+    "art/blender/props/c8_gold_capsule_closed_se.blend",
+    "art/blender/props/c8_gold_capsule_open_se.blend",
+    "art/blender/props/c8_pillar_large_active_pillar_large_active_se.blend",
+    "art/blender/props/c8_pillar_large_done_pillar_large_done_se.blend",
+    "art/blender/props/c8_pillar_large_off_pillar_large_off_se.blend",
+    "art/blender/props/c8_pillar_small_active_pillar_small_active_se.blend",
+    "art/blender/props/c8_pillar_small_done_pillar_small_done_se.blend",
+    "art/blender/props/c8_pillar_small_off_pillar_small_off_se.blend",
+    "art/blender/props/c8_teleporter_active_teleporter_active_se.blend",
+    "art/blender/props/c8_teleporter_active_teleporter_active_sw.blend",
+    "art/blender/props/c8_teleporter_idle_teleporter_idle_se.blend",
+    "art/blender/props/c8_teleporter_idle_teleporter_idle_sw.blend"
+  ],
+  "shadows": "Contact AO composited into diffuse; matching ground cast-shadow atlases rendered by C0 projection"
+}

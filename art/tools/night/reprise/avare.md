@@ -1,0 +1,8 @@
+# Reprise Avare (23/10/2026) : resserrage base + variantes lot 9
+FAIT : base resserrée dans `game/scripts/spells/avare_kit.gd` (GOLD_POWER_CAP 0,30 ; SWING_COEF 0,8 ; RANSOM_COEF 1,8 ; RUIN_BASE 5,0 / BONUS 3,5). Sim (3 graines, vs Ardent) : mono 1,00 / 1,06 / 1,17 (L1/L6/L12), mini-boss 1,06 / 1,14 / 1,21, zone 0,82 / 0,99 / 1,18. `avare_test` RESULT: OK (constantes lues).
+FAIT : SWING_RADIUS_U 2,0 -> 2,6 (retour joueur 23/10). Le fx `_play_arc_fx` s'échelonne sur radius_u (non vérifié à l'écran en iso 2:1).
+FAIT : 4 variantes codées (`AvareKit.variant(slot, id)`, `avare_bounce_coin.gd`, `avare_mine.gd`) et déclarées dans `game/data/characters.json` (entrée avare, règles `counter` clés `avare.coins_picked` 500, `avare.ransom_gold` 2000, `avare.floor2_boss_kills` 1 ; bélier = `win_with`).
+Coefs variantes : bélier 0,9 (largeur 1,4 u), pièce truquée 1,5 (ricoche sur cible isolée), Saisie 2,0, Trésor 4,0 + 2,5 (remboursement 100 %).
+Ratios sim vs base (avant portée 2,6) : bélier 0,81-1,13 (essaim L1 0,81, L6 0,87), pièce 0,74-1,32 (très bruité, mini-boss 0,74-0,77), Saisie 0,96-1,12, Trésor 0,88-1,03.
+RESTE : relancer v1/v2 après portée 2,6 (cmd : `godot --headless --path game res://tests/balance_sim_run.tscn -- --chars=avare --seeds=3 --loadout=1:avare_coffre_belier`) ; affiner bélier (essaim) et pièce (mini-boss) ; écrire `game/tests/avare_variants_test.gd/.tscn` ; relancer economy_test, test_balance, boss_pace_test, integration_test ; brief `art/tools/night/_avav.txt` + ligne `queue.txt` (nouveau groupe, max + 1) ; CONTRACTS/Variantes_Sorts Annexe B (type `counter` = champ `value`, clés `avare.*`).
+Besoin de contrat : aucun (compteurs via RunState.add_counter ; boss étage 2 par compteur kit).

@@ -1,0 +1,165 @@
+{
+  "character": "vigie",
+  "lot": "VG1",
+  "cell": 192,
+  "pivot": [
+    96,
+    136.32
+  ],
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "rig": {
+    "name": "CREA",
+    "elevation": 30,
+    "px_per_unit": 90.50966799187809,
+    "height_u": 1.35
+  },
+  "animations": {
+    "idle": {
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "impact": null,
+      "source_start": 1
+    },
+    "run": {
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "impact": null,
+      "source_start": 21
+    },
+    "brace": {
+      "frames": 4,
+      "fps": 10,
+      "loop": true,
+      "impact": null,
+      "source_start": 41
+    },
+    "attack": {
+      "frames": 4,
+      "fps": 12,
+      "loop": false,
+      "impact": 2,
+      "source_start": 61
+    },
+    "draw": {
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "impact": 4,
+      "source_start": 81
+    },
+    "flare": {
+      "frames": 5,
+      "fps": 12,
+      "loop": false,
+      "impact": 3,
+      "source_start": 101
+    },
+    "net": {
+      "frames": 5,
+      "fps": 12,
+      "loop": false,
+      "impact": 2,
+      "source_start": 121
+    },
+    "volley": {
+      "frames": 7,
+      "fps": 12,
+      "loop": false,
+      "impact": 4,
+      "source_start": 141
+    },
+    "death": {
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "impact": null,
+      "source_start": 161
+    }
+  },
+  "aliases": {
+    "cast": "flare",
+    "cast_ult": "volley"
+  },
+  "unique_renders": 424,
+  "normal_maps": false,
+  "emission_scale": 0.5,
+  "accent": "#FF3A4F",
+  "emission_parts": [
+    "bowstring",
+    "quiver flare heads",
+    "smouldering hip fuse"
+  ],
+  "design": [
+    "gaunt stooped watcher, realistic proportions",
+    "asymmetric woven reed roof with frayed tips",
+    "blackened longbow with verdigris bindings",
+    "dented brass hip tube and telescope",
+    "mud layered fisher gaiters, scarf covering nose",
+    "bow canted for readable archery and full 192px framing in every direction"
+  ],
+  "contact": {
+    "rows": [
+      "idle",
+      "run",
+      "brace",
+      "attack",
+      "draw",
+      "flare",
+      "net",
+      "volley",
+      "death"
+    ],
+    "columns": [
+      "Vigie se",
+      "Vigie s",
+      "Vigie nw",
+      "Ardent cel s",
+      "Rictus s"
+    ],
+    "scale": "native 192px cells, no rescaling",
+    "ground": "terrain/terraces/iso/ground_a.png"
+  },
+  "verification": {
+    "blender": "5.2.2 LTS / Eevee / 8 samples / 2x reduction",
+    "renders": 424,
+    "directions_distinct": true,
+    "geometry_min_margin_px": 3.98,
+    "normal_files": 0,
+    "sheets_max_side_px": 1536,
+    "emission_ratio": 0.5,
+    "godot_import": "completed; no stderr",
+    "sprites_test": "RESULT: OK",
+    "vigie_test": "RESULT: OK",
+    "vigie_test_exit_warnings": [
+      "26 ObjectDB instances were leaked at exit",
+      "6 resources still in use at exit"
+    ],
+    "global_texture_budget_test": "RESULT: FAIL (1): 184 Mo <= 180 Mo",
+    "global_python_budget": [
+      "bosses 74.2 Mo > 45 Mo",
+      "APK 295 Mo > 200 Mo",
+      "textures 183 Mo > 180 Mo"
+    ],
+    "source_sha256": "0b8ecd2e12d5867a7dfad51eecbb760231764f49c636e20141d38c91d3836d17",
+    "godot_resource_load": {
+      "vigie/vigie.tres": "PASS",
+      "vigie_cel/vigie.tres": "PASS"
+    },
+    "concurrent_editor_errors_resolved": [
+      "res://scripts/spells/ardent_variant_kit.gd:115 rng_px type inference",
+      "res://scripts/spells/ardent_variant_kit.gd:147 rng type inference",
+      "res://scripts/spells/ardent_variant_kit.gd:149 k type inference"
+    ]
+  }
+}

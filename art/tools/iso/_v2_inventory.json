@@ -1,0 +1,96 @@
+{
+  "ember_shard": {
+    "files": {
+      "default.png": {
+        "sha256": "c16d4e0ab76da1165d46031fb5c3619be486856c3f8d69c6a99034d9d714f10b",
+        "size": [
+          192,
+          48
+        ]
+      },
+      "default.png.import": {
+        "sha256": "d09909171d464e150504dce768ae827e7494318b3f9f9679557cc69e29e20257"
+      },
+      "default_e.png": {
+        "sha256": "445ba08c922d4a0f8a8b538d5eaee747a414884f90ae1c0da4961bc2349200cb",
+        "size": [
+          192,
+          48
+        ]
+      },
+      "default_e.png.import": {
+        "sha256": "3003e5aa83556bf0c872fd68c21e7f468355d7617dbb145f988a70f8591c71e1"
+      },
+      "default_n.png": {
+        "sha256": "3e60dd0e9ae661abcf904435ac37aa3804046bcb08fd6602f65ad784b28d167e",
+        "size": [
+          192,
+          48
+        ]
+      },
+      "default_n.png.import": {
+        "sha256": "96a14224b0a90ce5a85a22b13144e4e4fd48c0eb9e5e811d06ef15e6f07a25ae"
+      },
+      "ember_shard.tres": {
+        "sha256": "d55c2e24c5c95b89971a5cd5d4768104d8dc3e0541cf84e82b602bb44a98c8f7"
+      }
+    },
+    "frames": 4,
+    "fps": 14,
+    "pivot": "unchanged atlas regions; centered VFX",
+    "loop": true
+  },
+  "ember_shard_impact": {
+    "files": {
+      "default.png": {
+        "sha256": "e9c44a3ba1d72e144fc9af744d25e462c819d18c11c0efdb88092b4dda9a8abe",
+        "size": [
+          576,
+          96
+        ]
+      },
+      "default.png.import": {
+        "sha256": "4eb0f3ed8f4f67ac3861bae13f775cfff76613c52087831b4df0c7918f9a4950"
+      },
+      "default_e.png": {
+        "sha256": "785f1bc78e4f5deea9412576b0e5fa2736b3c78782fbd5a688c7c1a90e864396",
+        "size": [
+          576,
+          96
+        ]
+      },
+      "default_e.png.import": {
+        "sha256": "02514812058935e4645dac0917d6fd7b6ef99b00618de4ec9ad5f8e495d99510"
+      },
+      "default_n.png": {
+        "sha256": "9382cf6b972e855eecb7960da30bcc5882677e2d4be4ba8c8e6558cfc173f049",
+        "size": [
+          576,
+          96
+        ]
+      },
+      "default_n.png.import": {
+        "sha256": "c6a3815f2b8be2b616fe4793f618cd0aad58d8e72943353fb396dab8f45a9977"
+      },
+      "ember_shard_impact.tres": {
+        "sha256": "9b48d987fdca17f1be98d393df28e95caf1f5fd861d3071523cb04e1100f3ad0"
+      }
+    },
+    "frames": 6,
+    "fps": 18,
+    "pivot": "unchanged atlas regions; centered VFX",
+    "loop": false
+  },
+  "verification": {
+    "result": "PASS",
+    "errors": [],
+    "render": "Blender Eevee 16 samples, 2x AA",
+    "passes": [
+      "diffuse",
+      "emission",
+      "camera-space geometry normals"
+    ],
+    "godot_sprites_test": "RESULT: OK",
+    "protected_files": "PASS"
+  }
+}

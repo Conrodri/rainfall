@@ -1,0 +1,3438 @@
+{
+ "char": "morfil",
+ "fights": [
+  {
+   "casts": {
+    "1": 16,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 102.857142857142,
+   "dtps": 0.0,
+   "duration": 11.2000000000001,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 342.857142857139,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.793928571428573,
+   "res_uptime": 0.976190476190476,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 11.1833333333335
+  },
+  {
+   "casts": {
+    "1": 14,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 117.551020408162,
+   "dtps": 0.0,
+   "duration": 9.80000000000007,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 391.836734693875,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.78515306122449,
+   "res_uptime": 0.972789115646258,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 9.7833333333334
+  },
+  {
+   "casts": {
+    "1": 16,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1152.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 103.164179104476,
+   "dtps": 0.197014925373132,
+   "duration": 11.1666666666668,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.980985507246377,
+   "kills": 64,
+   "kpm": 343.880597014921,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.793537313432837,
+   "res_uptime": 0.976119402985075,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 2.2,
+   "total": 64,
+   "ttk": 11.1500000000001
+  },
+  {
+   "casts": {
+    "1": 41,
+    "2": 6,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 0,
+   "dodges": 5,
+   "dps": 39.5491143317236,
+   "dtps": 2.07149758454109,
+   "duration": 31.0499999999995,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 11,
+   "hp_min": 0.615188405797128,
+   "kills": 25,
+   "kpm": 48.3091787439621,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.715974235104677,
+   "res_uptime": 0.862587224906065,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 64.32,
+   "total": 25,
+   "ttk": 31.0333333333329
+  },
+  {
+   "casts": {
+    "1": 47,
+    "2": 7,
+    "3": 4,
+    "4": 2
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 0,
+   "dodges": 6,
+   "dps": 32.9369691551192,
+   "dtps": 1.06213679034423,
+   "duration": 37.2833333333325,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 9,
+   "hp_min": 0.846840579710174,
+   "kills": 25,
+   "kpm": 40.2324541797059,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.713772910147521,
+   "res_uptime": 0.874832364774251,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 39.6,
+   "total": 25,
+   "ttk": 37.2666666666658
+  },
+  {
+   "casts": {
+    "1": 44,
+    "2": 6,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1228.0,
+   "deaths": 0,
+   "dodges": 5,
+   "dps": 38.7789473684217,
+   "dtps": 0.750315789473697,
+   "duration": 31.6666666666661,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 4,
+   "hp_min": 0.868405797101455,
+   "kills": 25,
+   "kpm": 47.3684210526324,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.720552631578942,
+   "res_uptime": 0.873684210526316,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 23.76,
+   "total": 25,
+   "ttk": 31.6499999999995
+  },
+  {
+   "casts": {
+    "1": 57,
+    "2": 8,
+    "3": 4,
+    "4": 2
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 9,
+   "dps": 26.4123257520184,
+   "dtps": 1.11371973587677,
+   "duration": 45.433333333332,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 4,
+   "hp_min": 0.287149758454151,
+   "kills": 1,
+   "kpm": 1.32061628760092,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.720029347028612,
+   "res_uptime": 0.881144534115921,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 50.6,
+   "total": 1,
+   "ttk": 45.4166666666654
+  },
+  {
+   "casts": {
+    "1": 58,
+    "2": 8,
+    "3": 4,
+    "4": 2
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 11,
+   "dps": 26.3061746437713,
+   "dtps": 0.554621848739512,
+   "duration": 45.6166666666654,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.666599516908239,
+   "kills": 1,
+   "kpm": 1.31530873218857,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.703792473511145,
+   "res_uptime": 0.861892583120205,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 25.3,
+   "total": 1,
+   "ttk": 45.5999999999987
+  },
+  {
+   "casts": {
+    "1": 58,
+    "2": 8,
+    "3": 4,
+    "4": 2
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1200.0,
+   "deaths": 0,
+   "dodges": 11,
+   "dps": 25.4327092900043,
+   "dtps": 0.804309431296386,
+   "duration": 47.1833333333319,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.455758454106294,
+   "kills": 1,
+   "kpm": 1.27163546450021,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.726598375132463,
+   "res_uptime": 0.910632285411515,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 37.95,
+   "total": 1,
+   "ttk": 47.1666666666653
+  },
+  {
+   "casts": {
+    "1": 39,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 36.1663652802897,
+   "dtps": 1.89511754068718,
+   "duration": 27.6499999999997,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 15,
+   "hp_min": 0.503640579710103,
+   "kills": 1,
+   "kpm": 2.16998191681738,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.697775768535256,
+   "res_uptime": 0.850512356841471,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 52.4,
+   "total": 1,
+   "ttk": 27.633333333333
+  },
+  {
+   "casts": {
+    "1": 43,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 32.8407224958954,
+   "dtps": 2.8939244663383,
+   "duration": 30.4499999999996,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 22,
+   "hp_min": 0.138086956521725,
+   "kills": 1,
+   "kpm": 1.97044334975372,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.718604269293925,
+   "res_uptime": 0.864258347016968,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 88.12,
+   "total": 1,
+   "ttk": 30.4333333333329
+  },
+  {
+   "casts": {
+    "1": 40,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L1",
+   "dealt": 1000.0,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 35.2733686067023,
+   "dtps": 2.06701940035276,
+   "duration": 28.3499999999997,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 17,
+   "hp_min": 0.44374492753619,
+   "kills": 1,
+   "kpm": 2.11640211640214,
+   "max_hp": 115.0,
+   "pref_u": 1.61,
+   "res_mean": 0.704479717813045,
+   "res_uptime": 0.854203409758965,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 58.6,
+   "total": 1,
+   "ttk": 28.333333333333
+  },
+  {
+   "casts": {
+    "1": 18,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 162.874815905742,
+   "dtps": 0.0,
+   "duration": 11.3166666666668,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 339.322533136962,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.786332842415317,
+   "res_uptime": 0.976435935198822,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 11.3000000000001
+  },
+  {
+   "casts": {
+    "1": 18,
+    "2": 3,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 157.988571428569,
+   "dtps": 0.0,
+   "duration": 11.6666666666668,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 329.142857142853,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.797542857142856,
+   "res_uptime": 0.977142857142857,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 11.6500000000002
+  },
+  {
+   "casts": {
+    "1": 17,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1843.2,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 173.070422535209,
+   "dtps": 0.0,
+   "duration": 10.6500000000001,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 360.563380281686,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.79305164319249,
+   "res_uptime": 0.974960876369327,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 10.6333333333334
+  },
+  {
+   "casts": {
+    "1": 39,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 4,
+   "dps": 72.0586797066022,
+   "dtps": 0.627546862265695,
+   "duration": 27.2666666666664,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.981977660199882,
+   "kills": 25,
+   "kpm": 55.0122249388758,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.729932762836189,
+   "res_uptime": 0.871638141809291,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 17.1111111111111,
+   "total": 25,
+   "ttk": 27.2499999999997
+  },
+  {
+   "casts": {
+    "1": 33,
+    "2": 5,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 2,
+   "dps": 85.5500725689406,
+   "dtps": 0.248347040799871,
+   "duration": 22.9666666666666,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.981977660199882,
+   "kills": 25,
+   "kpm": 65.312046444122,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.73637880986938,
+   "res_uptime": 0.935413642960813,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 5.7037037037037,
+   "total": 25,
+   "ttk": 22.95
+  },
+  {
+   "casts": {
+    "1": 34,
+    "2": 5,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1964.8,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 85.5500725689406,
+   "dtps": 2.30466053862281,
+   "duration": 22.9666666666666,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 6,
+   "hp_min": 0.903840094062251,
+   "kills": 25,
+   "kpm": 65.312046444122,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.731044992743109,
+   "res_uptime": 0.955732946298984,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 52.9303703703704,
+   "total": 25,
+   "ttk": 22.95
+  },
+  {
+   "casts": {
+    "1": 38,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 5,
+   "dps": 74.6597537265073,
+   "dtps": 4.4413480233312,
+   "duration": 25.7166666666665,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 4,
+   "hp_min": 0.505167548500895,
+   "kills": 1,
+   "kpm": 2.33311730395335,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.695567077122487,
+   "res_uptime": 0.850291639662994,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 114.216666666667,
+   "total": 1,
+   "ttk": 25.6999999999998
+  },
+  {
+   "casts": {
+    "1": 40,
+    "2": 6,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 8,
+   "dps": 66.8601276842725,
+   "dtps": 0.953375894757218,
+   "duration": 28.7166666666663,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.87499118165785,
+   "kills": 1,
+   "kpm": 2.08937899013351,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.728728961114338,
+   "res_uptime": 0.891468369123622,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 27.3777777777778,
+   "total": 1,
+   "ttk": 28.6999999999997
+  },
+  {
+   "casts": {
+    "1": 38,
+    "2": 6,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 1920.0,
+   "deaths": 0,
+   "dodges": 7,
+   "dps": 66.6281087333727,
+   "dtps": 1.90013495276656,
+   "duration": 28.8166666666663,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.782913580246888,
+   "kills": 1,
+   "kpm": 2.0821283979179,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.748288027761715,
+   "res_uptime": 0.894736842105263,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 54.7555555555556,
+   "total": 1,
+   "ttk": 28.7999999999996
+  },
+  {
+   "casts": {
+    "1": 32,
+    "2": 4,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 109.762135634754,
+   "dtps": 2.88980792206597,
+   "duration": 20.1500000000001,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 13,
+   "hp_min": 0.790134744268063,
+   "kills": 1,
+   "kpm": 2.97766749379651,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.735210918114145,
+   "res_uptime": 0.885856079404467,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 58.2296296296296,
+   "total": 1,
+   "ttk": 20.1333333333335
+  },
+  {
+   "casts": {
+    "1": 40,
+    "2": 5,
+    "3": 3,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 88.6455724665463,
+   "dtps": 3.6576857418541,
+   "duration": 24.9499999999999,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 21,
+   "hp_min": 0.663192004703089,
+   "kills": 1,
+   "kpm": 2.40480961923849,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.685571142284568,
+   "res_uptime": 0.830995323981296,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 91.2592592592593,
+   "total": 1,
+   "ttk": 24.9333333333332
+  },
+  {
+   "casts": {
+    "1": 37,
+    "2": 5,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L6",
+   "dealt": 2211.70703304032,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 95.9525827783219,
+   "dtps": 3.31806861091026,
+   "duration": 23.05,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 15,
+   "hp_min": 0.730805690770118,
+   "kills": 1,
+   "kpm": 2.60303687635575,
+   "max_hp": 315.0,
+   "pref_u": 1.61,
+   "res_mean": 0.715965292841649,
+   "res_uptime": 0.899493853940709,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 76.4814814814815,
+   "total": 1,
+   "ttk": 23.0333333333333
+  },
+  {
+   "casts": {
+    "1": 15,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 270.576512455514,
+   "dtps": 0.0,
+   "duration": 9.36666666666671,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 409.964412811386,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.787758007117442,
+   "res_uptime": 0.97153024911032,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 1234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 9.35000000000004
+  },
+  {
+   "casts": {
+    "1": 13,
+    "2": 2,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 312.888888888889,
+   "dtps": 0.0,
+   "duration": 8.09999999999998,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 474.074074074075,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.775370370370374,
+   "res_uptime": 0.967078189300412,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 2234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 8.08333333333331
+  },
+  {
+   "casts": {
+    "1": 15,
+    "2": 3,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2534.4,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 254.713567839194,
+   "dtps": 0.0,
+   "duration": 9.95000000000007,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 64,
+   "kpm": 385.929648241203,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.792311557788945,
+   "res_uptime": 0.97319932998325,
+   "resource": "sharpness",
+   "scenario": "swarm",
+   "seed": 3234,
+   "spawned": 64,
+   "taken": 0.0,
+   "total": 64,
+   "ttk": 9.93333333333341
+  },
+  {
+   "casts": {
+    "1": 17,
+    "2": 3,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 153.209829867672,
+   "dtps": 0.774395410990145,
+   "duration": 17.6333333333336,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.985099707773235,
+   "kills": 25,
+   "kpm": 85.0661625708871,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.76159735349716,
+   "res_uptime": 0.984877126654064,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 1234,
+   "spawned": 25,
+   "taken": 13.6551724137931,
+   "total": 25,
+   "ttk": 17.6166666666669
+  },
+  {
+   "casts": {
+    "1": 20,
+    "2": 3,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 1,
+   "dps": 144.72857142857,
+   "dtps": 0.731527093596051,
+   "duration": 18.6666666666669,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 2,
+   "hp_min": 0.988644769140853,
+   "kills": 25,
+   "kpm": 80.3571428571419,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.780116071428582,
+   "res_uptime": 0.985714285714286,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 2234,
+   "spawned": 25,
+   "taken": 13.6551724137931,
+   "total": 25,
+   "ttk": 18.6500000000002
+  },
+  {
+   "casts": {
+    "1": 19,
+    "2": 4,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2701.6,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 151.917525773194,
+   "dtps": 1.68929968005685,
+   "duration": 17.7833333333336,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.972443717124489,
+   "kills": 25,
+   "kpm": 84.3486410496707,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.772764761012186,
+   "res_uptime": 0.970009372071228,
+   "resource": "sharpness",
+   "scenario": "mixed",
+   "seed": 3234,
+   "spawned": 25,
+   "taken": 30.0413793103448,
+   "total": 25,
+   "ttk": 17.7666666666669
+  },
+  {
+   "casts": {
+    "1": 20,
+    "2": 3,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 2,
+   "dps": 212.048192771081,
+   "dtps": 0.0,
+   "duration": 12.4500000000002,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 0,
+   "hp_min": 1.0,
+   "kills": 1,
+   "kpm": 4.81927710843366,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.766746987951811,
+   "res_uptime": 0.978580990629183,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 0.0,
+   "total": 1,
+   "ttk": 12.4333333333335
+  },
+  {
+   "casts": {
+    "1": 15,
+    "2": 3,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 3,
+   "dps": 277.894736842104,
+   "dtps": 3.44972776769508,
+   "duration": 9.50000000000005,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.944467095265927,
+   "kills": 1,
+   "kpm": 6.31578947368418,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.822210526315791,
+   "res_uptime": 0.971929824561404,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 32.7724137931035,
+   "total": 1,
+   "ttk": 9.48333333333338
+  },
+  {
+   "casts": {
+    "1": 15,
+    "2": 3,
+    "3": 1,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 2640.0,
+   "deaths": 0,
+   "dodges": 2,
+   "dps": 263.999999999998,
+   "dtps": 3.27724137931032,
+   "duration": 10.0000000000001,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1182 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 1,
+   "hp_min": 0.944467095265927,
+   "kills": 1,
+   "kpm": 5.99999999999995,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.816750000000004,
+   "res_uptime": 0.973333333333333,
+   "resource": "sharpness",
+   "scenario": "elite",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 32.7724137931035,
+   "total": 1,
+   "ttk": 9.98333333333341
+  },
+  {
+   "casts": {
+    "1": 24,
+    "2": 4,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 227.616254261569,
+   "dtps": 2.28953912466839,
+   "duration": 13.8666666666669,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/thrust_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.972443717124489,
+   "kills": 1,
+   "kpm": 4.32692307692299,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.757259615384619,
+   "res_uptime": 0.925480769230769,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 1234,
+   "spawned": 1,
+   "taken": 31.748275862069,
+   "total": 1,
+   "ttk": 13.8500000000003
+  },
+  {
+   "casts": {
+    "1": 24,
+    "2": 4,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 227.616254261569,
+   "dtps": 2.28953912466839,
+   "duration": 13.8666666666669,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/thrust_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.972443717124489,
+   "kills": 1,
+   "kpm": 4.32692307692299,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.757259615384619,
+   "res_uptime": 0.925480769230769,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 2234,
+   "spawned": 1,
+   "taken": 31.748275862069,
+   "total": 1,
+   "ttk": 13.8500000000003
+  },
+  {
+   "casts": {
+    "1": 24,
+    "2": 4,
+    "3": 2,
+    "4": 1
+   },
+   "char": "morfil",
+   "cleared": true,
+   "config": "L12",
+   "dealt": 3156.27872576049,
+   "deaths": 0,
+   "dodges": 0,
+   "dps": 227.616254261569,
+   "dtps": 2.28953912466839,
+   "duration": 13.8666666666669,
+   "errors": [
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/sharpen.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/twin_draw.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/dodge.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/hurt.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/death.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/idle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/run_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/cut_circle_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "No loader found for resource: res://assets/sprites/characters/morfil/thrust_dual.png (expected type: Texture2D)",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_printerr",
+     "msg": "res://assets/sprites/characters/morfil/morfil.tres:1184 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    },
+    {
+     "func": "_load",
+     "msg": "Failed loading resource: res://assets/sprites/characters/morfil/morfil.tres.",
+     "type": 0,
+     "where": "res://scripts/player/player.gd:357"
+    }
+   ],
+   "first_death_t": -1.0,
+   "hits_taken": 3,
+   "hp_min": 0.972443717124489,
+   "kills": 1,
+   "kpm": 4.32692307692299,
+   "max_hp": 590.0,
+   "pref_u": 1.61,
+   "res_mean": 0.757259615384619,
+   "res_uptime": 0.925480769230769,
+   "resource": "sharpness",
+   "scenario": "miniboss",
+   "seed": 3234,
+   "spawned": 1,
+   "taken": 31.748275862069,
+   "total": 1,
+   "ttk": 13.8500000000003
+  }
+ ],
+ "load_errors": [],
+ "note": "",
+ "ok": true,
+ "skip": false,
+ "script_errors": [
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1176 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1178 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png.",
+  "ERROR: res://assets/sprites/characters/morfil/morfil.tres:1180 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/sprites/characters/morfil/sharpen.png."
+ ],
+ "wall_s": 72.7
+}

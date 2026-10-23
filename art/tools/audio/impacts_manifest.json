@@ -1,0 +1,832 @@
+[
+  {
+    "path": "impacts/hit_normal_light_01.ogg",
+    "duration_s": 0.16449,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact physique courant sur un monstre",
+    "gain_db": -1,
+    "peak_dbfs": -3.735,
+    "rms_dbfs": -18.301
+  },
+  {
+    "path": "impacts/hit_normal_light_02.ogg",
+    "duration_s": 0.163651,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact physique courant sur un monstre",
+    "gain_db": -1,
+    "peak_dbfs": -4.08,
+    "rms_dbfs": -18.279
+  },
+  {
+    "path": "impacts/hit_normal_light_03.ogg",
+    "duration_s": 0.165828,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact physique courant sur un monstre",
+    "gain_db": -1,
+    "peak_dbfs": -3.937,
+    "rms_dbfs": -18.27
+  },
+  {
+    "path": "impacts/hit_normal_light_04.ogg",
+    "duration_s": 0.157959,
+    "loop": false,
+    "level": "light",
+    "usage": "Impact physique courant sur un monstre",
+    "gain_db": -1,
+    "peak_dbfs": -4.94,
+    "rms_dbfs": -18.284
+  },
+  {
+    "path": "impacts/hit_crit_heavy_01.ogg",
+    "duration_s": 0.38161,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Coup critique, fracture et poids grave",
+    "gain_db": -2,
+    "peak_dbfs": -6.364,
+    "rms_dbfs": -18.29
+  },
+  {
+    "path": "impacts/hit_crit_heavy_02.ogg",
+    "duration_s": 0.376054,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Coup critique, fracture et poids grave",
+    "gain_db": -2,
+    "peak_dbfs": -7.043,
+    "rms_dbfs": -18.293
+  },
+  {
+    "path": "impacts/hit_crit_heavy_03.ogg",
+    "duration_s": 0.374649,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Coup critique, fracture et poids grave",
+    "gain_db": -2,
+    "peak_dbfs": -7.535,
+    "rms_dbfs": -18.289
+  },
+  {
+    "path": "impacts/hit_crit_heavy_04.ogg",
+    "duration_s": 0.400862,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Coup critique, fracture et poids grave",
+    "gain_db": -2,
+    "peak_dbfs": -7.456,
+    "rms_dbfs": -18.265
+  },
+  {
+    "path": "impacts/status_burn_light_01.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de brûlure crépitant",
+    "gain_db": -4,
+    "peak_dbfs": -3.702,
+    "rms_dbfs": -18.518
+  },
+  {
+    "path": "impacts/status_burn_light_02.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de brûlure crépitant",
+    "gain_db": -4,
+    "peak_dbfs": -3.878,
+    "rms_dbfs": -18.457
+  },
+  {
+    "path": "impacts/status_burn_light_03.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de brûlure crépitant",
+    "gain_db": -4,
+    "peak_dbfs": -4.105,
+    "rms_dbfs": -18.474
+  },
+  {
+    "path": "impacts/status_burn_light_04.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de brûlure crépitant",
+    "gain_db": -4,
+    "peak_dbfs": -2.984,
+    "rms_dbfs": -18.474
+  },
+  {
+    "path": "impacts/status_poison_light_01.ogg",
+    "duration_s": 0.376576,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de poison, bulle acide visqueuse",
+    "gain_db": -4,
+    "peak_dbfs": -7.958,
+    "rms_dbfs": -18.282
+  },
+  {
+    "path": "impacts/status_poison_light_02.ogg",
+    "duration_s": 0.392857,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de poison, bulle acide visqueuse",
+    "gain_db": -4,
+    "peak_dbfs": -7.668,
+    "rms_dbfs": -18.254
+  },
+  {
+    "path": "impacts/status_poison_light_03.ogg",
+    "duration_s": 0.378776,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de poison, bulle acide visqueuse",
+    "gain_db": -4,
+    "peak_dbfs": -7.993,
+    "rms_dbfs": -18.258
+  },
+  {
+    "path": "impacts/status_poison_light_04.ogg",
+    "duration_s": 0.373197,
+    "loop": false,
+    "level": "light",
+    "usage": "Tick de poison, bulle acide visqueuse",
+    "gain_db": -4,
+    "peak_dbfs": -8.301,
+    "rms_dbfs": -18.285
+  },
+  {
+    "path": "impacts/status_frost_light_01.ogg",
+    "duration_s": 0.426281,
+    "loop": false,
+    "level": "light",
+    "usage": "Cristallisation et brisure de givre",
+    "gain_db": -4,
+    "peak_dbfs": -4.174,
+    "rms_dbfs": -18.414
+  },
+  {
+    "path": "impacts/status_frost_light_02.ogg",
+    "duration_s": 0.434422,
+    "loop": false,
+    "level": "light",
+    "usage": "Cristallisation et brisure de givre",
+    "gain_db": -4,
+    "peak_dbfs": -3.945,
+    "rms_dbfs": -18.456
+  },
+  {
+    "path": "impacts/status_frost_light_03.ogg",
+    "duration_s": 0.434853,
+    "loop": false,
+    "level": "light",
+    "usage": "Cristallisation et brisure de givre",
+    "gain_db": -4,
+    "peak_dbfs": -4.477,
+    "rms_dbfs": -18.416
+  },
+  {
+    "path": "impacts/status_frost_light_04.ogg",
+    "duration_s": 0.441995,
+    "loop": false,
+    "level": "light",
+    "usage": "Cristallisation et brisure de givre",
+    "gain_db": -4,
+    "peak_dbfs": -3.858,
+    "rms_dbfs": -18.452
+  },
+  {
+    "path": "impacts/lightning_chain_medium_01.ogg",
+    "duration_s": 0.579524,
+    "loop": false,
+    "level": "medium",
+    "usage": "Sauts successifs de foudre en chaîne",
+    "gain_db": -3,
+    "peak_dbfs": -3.591,
+    "rms_dbfs": -18.4
+  },
+  {
+    "path": "impacts/lightning_chain_medium_02.ogg",
+    "duration_s": 0.578095,
+    "loop": false,
+    "level": "medium",
+    "usage": "Sauts successifs de foudre en chaîne",
+    "gain_db": -3,
+    "peak_dbfs": -3.121,
+    "rms_dbfs": -18.394
+  },
+  {
+    "path": "impacts/lightning_chain_medium_03.ogg",
+    "duration_s": 0.577324,
+    "loop": false,
+    "level": "medium",
+    "usage": "Sauts successifs de foudre en chaîne",
+    "gain_db": -3,
+    "peak_dbfs": -3.088,
+    "rms_dbfs": -18.401
+  },
+  {
+    "path": "impacts/lightning_chain_medium_04.ogg",
+    "duration_s": 0.548617,
+    "loop": false,
+    "level": "medium",
+    "usage": "Sauts successifs de foudre en chaîne",
+    "gain_db": -3,
+    "peak_dbfs": -3.834,
+    "rms_dbfs": -18.393
+  },
+  {
+    "path": "impacts/death_tier1_light_01.ogg",
+    "duration_s": 0.235873,
+    "loop": false,
+    "level": "light",
+    "usage": "Petit éclatement de monstre de tier 1",
+    "gain_db": -2,
+    "peak_dbfs": -4.444,
+    "rms_dbfs": -18.325
+  },
+  {
+    "path": "impacts/death_tier1_light_02.ogg",
+    "duration_s": 0.238458,
+    "loop": false,
+    "level": "light",
+    "usage": "Petit éclatement de monstre de tier 1",
+    "gain_db": -2,
+    "peak_dbfs": -4.876,
+    "rms_dbfs": -18.352
+  },
+  {
+    "path": "impacts/death_tier1_light_03.ogg",
+    "duration_s": 0.230771,
+    "loop": false,
+    "level": "light",
+    "usage": "Petit éclatement de monstre de tier 1",
+    "gain_db": -2,
+    "peak_dbfs": -4.482,
+    "rms_dbfs": -18.344
+  },
+  {
+    "path": "impacts/death_tier1_light_04.ogg",
+    "duration_s": 0.22517,
+    "loop": false,
+    "level": "light",
+    "usage": "Petit éclatement de monstre de tier 1",
+    "gain_db": -2,
+    "peak_dbfs": -5.319,
+    "rms_dbfs": -18.382
+  },
+  {
+    "path": "impacts/death_tier2_medium_01.ogg",
+    "duration_s": 0.386576,
+    "loop": false,
+    "level": "medium",
+    "usage": "Effondrement de monstre de tier 2",
+    "gain_db": -2,
+    "peak_dbfs": -4.713,
+    "rms_dbfs": -18.354
+  },
+  {
+    "path": "impacts/death_tier2_medium_02.ogg",
+    "duration_s": 0.383288,
+    "loop": false,
+    "level": "medium",
+    "usage": "Effondrement de monstre de tier 2",
+    "gain_db": -2,
+    "peak_dbfs": -3.423,
+    "rms_dbfs": -18.364
+  },
+  {
+    "path": "impacts/death_tier2_medium_03.ogg",
+    "duration_s": 0.390249,
+    "loop": false,
+    "level": "medium",
+    "usage": "Effondrement de monstre de tier 2",
+    "gain_db": -2,
+    "peak_dbfs": -3.491,
+    "rms_dbfs": -18.356
+  },
+  {
+    "path": "impacts/death_tier2_medium_04.ogg",
+    "duration_s": 0.376077,
+    "loop": false,
+    "level": "medium",
+    "usage": "Effondrement de monstre de tier 2",
+    "gain_db": -2,
+    "peak_dbfs": -4.708,
+    "rms_dbfs": -18.361
+  },
+  {
+    "path": "impacts/death_tier3_heavy_01.ogg",
+    "duration_s": 0.622154,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement massif de monstre de tier 3",
+    "gain_db": -3,
+    "peak_dbfs": -5.15,
+    "rms_dbfs": -18.361
+  },
+  {
+    "path": "impacts/death_tier3_heavy_02.ogg",
+    "duration_s": 0.618254,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement massif de monstre de tier 3",
+    "gain_db": -3,
+    "peak_dbfs": -4.921,
+    "rms_dbfs": -18.355
+  },
+  {
+    "path": "impacts/death_tier3_heavy_03.ogg",
+    "duration_s": 0.615057,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement massif de monstre de tier 3",
+    "gain_db": -3,
+    "peak_dbfs": -3.686,
+    "rms_dbfs": -18.369
+  },
+  {
+    "path": "impacts/death_tier3_heavy_04.ogg",
+    "duration_s": 0.630272,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Effondrement massif de monstre de tier 3",
+    "gain_db": -3,
+    "peak_dbfs": -4.404,
+    "rms_dbfs": -18.376
+  },
+  {
+    "path": "impacts/death_elite_heavy_01.ogg",
+    "duration_s": 0.939819,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort élite avec résonance sombre",
+    "gain_db": -4,
+    "peak_dbfs": -5.303,
+    "rms_dbfs": -18.339
+  },
+  {
+    "path": "impacts/death_elite_heavy_02.ogg",
+    "duration_s": 0.959524,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort élite avec résonance sombre",
+    "gain_db": -4,
+    "peak_dbfs": -4.121,
+    "rms_dbfs": -18.344
+  },
+  {
+    "path": "impacts/death_elite_heavy_03.ogg",
+    "duration_s": 0.931338,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort élite avec résonance sombre",
+    "gain_db": -4,
+    "peak_dbfs": -3.552,
+    "rms_dbfs": -18.35
+  },
+  {
+    "path": "impacts/death_elite_heavy_04.ogg",
+    "duration_s": 0.926939,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort élite avec résonance sombre",
+    "gain_db": -4,
+    "peak_dbfs": -4.49,
+    "rms_dbfs": -18.354
+  },
+  {
+    "path": "impacts/death_boss_heavy_01.ogg",
+    "duration_s": 2.661293,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort de boss, ruptures puis effondrement grave",
+    "gain_db": -5,
+    "peak_dbfs": -4.3,
+    "rms_dbfs": -18.321
+  },
+  {
+    "path": "impacts/death_boss_heavy_02.ogg",
+    "duration_s": 2.581247,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort de boss, ruptures puis effondrement grave",
+    "gain_db": -5,
+    "peak_dbfs": -4.901,
+    "rms_dbfs": -18.307
+  },
+  {
+    "path": "impacts/death_boss_heavy_03.ogg",
+    "duration_s": 2.748934,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort de boss, ruptures puis effondrement grave",
+    "gain_db": -5,
+    "peak_dbfs": -4.316,
+    "rms_dbfs": -18.307
+  },
+  {
+    "path": "impacts/enemy_contact_light_01.ogg",
+    "duration_s": 0.180113,
+    "loop": false,
+    "level": "light",
+    "usage": "Contact ou morsure ennemie",
+    "gain_db": -2,
+    "peak_dbfs": -3.595,
+    "rms_dbfs": -18.327
+  },
+  {
+    "path": "impacts/enemy_contact_light_02.ogg",
+    "duration_s": 0.178912,
+    "loop": false,
+    "level": "light",
+    "usage": "Contact ou morsure ennemie",
+    "gain_db": -2,
+    "peak_dbfs": -3.229,
+    "rms_dbfs": -18.318
+  },
+  {
+    "path": "impacts/enemy_contact_light_03.ogg",
+    "duration_s": 0.186553,
+    "loop": false,
+    "level": "light",
+    "usage": "Contact ou morsure ennemie",
+    "gain_db": -2,
+    "peak_dbfs": -4.316,
+    "rms_dbfs": -18.321
+  },
+  {
+    "path": "impacts/enemy_contact_light_04.ogg",
+    "duration_s": 0.174898,
+    "loop": false,
+    "level": "light",
+    "usage": "Contact ou morsure ennemie",
+    "gain_db": -2,
+    "peak_dbfs": -4.377,
+    "rms_dbfs": -18.345
+  },
+  {
+    "path": "impacts/enemy_shot_medium_01.ogg",
+    "duration_s": 0.251179,
+    "loop": false,
+    "level": "medium",
+    "usage": "Départ de projectile ennemi mat",
+    "gain_db": -3,
+    "peak_dbfs": -5.84,
+    "rms_dbfs": -18.304
+  },
+  {
+    "path": "impacts/enemy_shot_medium_02.ogg",
+    "duration_s": 0.253107,
+    "loop": false,
+    "level": "medium",
+    "usage": "Départ de projectile ennemi mat",
+    "gain_db": -3,
+    "peak_dbfs": -4.529,
+    "rms_dbfs": -18.344
+  },
+  {
+    "path": "impacts/enemy_shot_medium_03.ogg",
+    "duration_s": 0.253492,
+    "loop": false,
+    "level": "medium",
+    "usage": "Départ de projectile ennemi mat",
+    "gain_db": -3,
+    "peak_dbfs": -4.733,
+    "rms_dbfs": -18.325
+  },
+  {
+    "path": "impacts/enemy_shot_medium_04.ogg",
+    "duration_s": 0.263401,
+    "loop": false,
+    "level": "medium",
+    "usage": "Départ de projectile ennemi mat",
+    "gain_db": -3,
+    "peak_dbfs": -4.189,
+    "rms_dbfs": -18.326
+  },
+  {
+    "path": "impacts/enemy_brute_cone_heavy_01.ogg",
+    "duration_s": 0.6,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Souffle et rugissement large de la brute",
+    "gain_db": -4,
+    "peak_dbfs": -4.742,
+    "rms_dbfs": -18.407
+  },
+  {
+    "path": "impacts/enemy_brute_cone_heavy_02.ogg",
+    "duration_s": 0.6,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Souffle et rugissement large de la brute",
+    "gain_db": -4,
+    "peak_dbfs": -5.43,
+    "rms_dbfs": -18.386
+  },
+  {
+    "path": "impacts/enemy_brute_cone_heavy_03.ogg",
+    "duration_s": 0.6,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Souffle et rugissement large de la brute",
+    "gain_db": -4,
+    "peak_dbfs": -5.901,
+    "rms_dbfs": -18.384
+  },
+  {
+    "path": "impacts/enemy_brute_cone_heavy_04.ogg",
+    "duration_s": 0.6,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Souffle et rugissement large de la brute",
+    "gain_db": -4,
+    "peak_dbfs": -5.029,
+    "rms_dbfs": -18.377
+  },
+  {
+    "path": "impacts/enemy_shockwave_heavy_01.ogg",
+    "duration_s": 0.98254,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Onde de choc grave et déferlement",
+    "gain_db": -5,
+    "peak_dbfs": -3.107,
+    "rms_dbfs": -18.315
+  },
+  {
+    "path": "impacts/enemy_shockwave_heavy_02.ogg",
+    "duration_s": 1.016168,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Onde de choc grave et déferlement",
+    "gain_db": -5,
+    "peak_dbfs": -3.714,
+    "rms_dbfs": -18.312
+  },
+  {
+    "path": "impacts/enemy_shockwave_heavy_03.ogg",
+    "duration_s": 1.02356,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Onde de choc grave et déferlement",
+    "gain_db": -5,
+    "peak_dbfs": -5.236,
+    "rms_dbfs": -18.312
+  },
+  {
+    "path": "impacts/enemy_shockwave_heavy_04.ogg",
+    "duration_s": 1.049478,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Onde de choc grave et déferlement",
+    "gain_db": -5,
+    "peak_dbfs": -3.982,
+    "rms_dbfs": -18.322
+  },
+  {
+    "path": "impacts/telegraph_warn_light_light_01.ogg",
+    "duration_s": 0.784626,
+    "loop": false,
+    "level": "light",
+    "usage": "Alerte de danger léger, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -5.837,
+    "rms_dbfs": -18.307
+  },
+  {
+    "path": "impacts/telegraph_warn_light_light_02.ogg",
+    "duration_s": 0.759501,
+    "loop": false,
+    "level": "light",
+    "usage": "Alerte de danger léger, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -4.977,
+    "rms_dbfs": -18.299
+  },
+  {
+    "path": "impacts/telegraph_warn_light_light_03.ogg",
+    "duration_s": 0.795782,
+    "loop": false,
+    "level": "light",
+    "usage": "Alerte de danger léger, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -6.227,
+    "rms_dbfs": -18.316
+  },
+  {
+    "path": "impacts/telegraph_warn_light_light_04.ogg",
+    "duration_s": 0.803107,
+    "loop": false,
+    "level": "light",
+    "usage": "Alerte de danger léger, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -3.181,
+    "rms_dbfs": -18.312
+  },
+  {
+    "path": "impacts/telegraph_warn_heavy_heavy_01.ogg",
+    "duration_s": 1.068481,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Alerte de danger lourd, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -5.312,
+    "rms_dbfs": -18.319
+  },
+  {
+    "path": "impacts/telegraph_warn_heavy_heavy_02.ogg",
+    "duration_s": 1.098571,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Alerte de danger lourd, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -5.755,
+    "rms_dbfs": -18.328
+  },
+  {
+    "path": "impacts/telegraph_warn_heavy_heavy_03.ogg",
+    "duration_s": 1.088186,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Alerte de danger lourd, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -5.503,
+    "rms_dbfs": -18.317
+  },
+  {
+    "path": "impacts/telegraph_warn_heavy_heavy_04.ogg",
+    "duration_s": 1.108299,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Alerte de danger lourd, tension croissante",
+    "gain_db": -5,
+    "peak_dbfs": -5.327,
+    "rms_dbfs": -18.327
+  },
+  {
+    "path": "impacts/telegraph_boss_heavy_01.ogg",
+    "duration_s": 1.717551,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Annonce grave de danger de boss",
+    "gain_db": -6,
+    "peak_dbfs": -3.219,
+    "rms_dbfs": -18.345
+  },
+  {
+    "path": "impacts/telegraph_boss_heavy_02.ogg",
+    "duration_s": 1.746349,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Annonce grave de danger de boss",
+    "gain_db": -6,
+    "peak_dbfs": -3.963,
+    "rms_dbfs": -18.34
+  },
+  {
+    "path": "impacts/telegraph_boss_heavy_03.ogg",
+    "duration_s": 1.755533,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Annonce grave de danger de boss",
+    "gain_db": -6,
+    "peak_dbfs": -3.919,
+    "rms_dbfs": -18.346
+  },
+  {
+    "path": "impacts/telegraph_boss_heavy_04.ogg",
+    "duration_s": 1.721156,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Annonce grave de danger de boss",
+    "gain_db": -6,
+    "peak_dbfs": -3.865,
+    "rms_dbfs": -18.352
+  },
+  {
+    "path": "impacts/player_hurt_medium_01.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "medium",
+    "usage": "Joueur blessé, chair et souffle grave",
+    "gain_db": -1,
+    "peak_dbfs": -5.566,
+    "rms_dbfs": -18.317
+  },
+  {
+    "path": "impacts/player_hurt_medium_02.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "medium",
+    "usage": "Joueur blessé, chair et souffle grave",
+    "gain_db": -1,
+    "peak_dbfs": -6.086,
+    "rms_dbfs": -18.283
+  },
+  {
+    "path": "impacts/player_hurt_medium_03.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "medium",
+    "usage": "Joueur blessé, chair et souffle grave",
+    "gain_db": -1,
+    "peak_dbfs": -5.355,
+    "rms_dbfs": -18.288
+  },
+  {
+    "path": "impacts/player_hurt_medium_04.ogg",
+    "duration_s": 0.3,
+    "loop": false,
+    "level": "medium",
+    "usage": "Joueur blessé, chair et souffle grave",
+    "gain_db": -1,
+    "peak_dbfs": -6.011,
+    "rms_dbfs": -18.3
+  },
+  {
+    "path": "impacts/player_death_heavy_01.ogg",
+    "duration_s": 1.5,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort du joueur, souffle et résonance descendante",
+    "gain_db": -3,
+    "peak_dbfs": -2.988,
+    "rms_dbfs": -18.294
+  },
+  {
+    "path": "impacts/player_death_heavy_02.ogg",
+    "duration_s": 1.5,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort du joueur, souffle et résonance descendante",
+    "gain_db": -3,
+    "peak_dbfs": -6.239,
+    "rms_dbfs": -18.303
+  },
+  {
+    "path": "impacts/player_death_heavy_03.ogg",
+    "duration_s": 1.5,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort du joueur, souffle et résonance descendante",
+    "gain_db": -3,
+    "peak_dbfs": -6.352,
+    "rms_dbfs": -18.296
+  },
+  {
+    "path": "impacts/player_death_heavy_04.ogg",
+    "duration_s": 1.5,
+    "loop": false,
+    "level": "heavy",
+    "usage": "Mort du joueur, souffle et résonance descendante",
+    "gain_db": -3,
+    "peak_dbfs": -6.052,
+    "rms_dbfs": -18.292
+  },
+  {
+    "path": "impacts/player_heal_none_01.ogg",
+    "duration_s": 0.709501,
+    "loop": false,
+    "level": "none",
+    "usage": "Soin doux, résonances lumineuses feutrées",
+    "gain_db": -5,
+    "peak_dbfs": -5.58,
+    "rms_dbfs": -18.25
+  },
+  {
+    "path": "impacts/player_heal_none_02.ogg",
+    "duration_s": 0.67746,
+    "loop": false,
+    "level": "none",
+    "usage": "Soin doux, résonances lumineuses feutrées",
+    "gain_db": -5,
+    "peak_dbfs": -4.942,
+    "rms_dbfs": -18.241
+  },
+  {
+    "path": "impacts/player_heal_none_03.ogg",
+    "duration_s": 0.683243,
+    "loop": false,
+    "level": "none",
+    "usage": "Soin doux, résonances lumineuses feutrées",
+    "gain_db": -5,
+    "peak_dbfs": -5.791,
+    "rms_dbfs": -18.24
+  },
+  {
+    "path": "impacts/player_heal_none_04.ogg",
+    "duration_s": 0.701565,
+    "loop": false,
+    "level": "none",
+    "usage": "Soin doux, résonances lumineuses feutrées",
+    "gain_db": -5,
+    "peak_dbfs": -5.424,
+    "rms_dbfs": -18.244
+  }
+]

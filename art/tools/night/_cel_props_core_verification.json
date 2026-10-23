@@ -1,0 +1,687 @@
+{
+  "profile": "prop",
+  "normals": false,
+  "choices": [
+    "Original ground shadow decals retained",
+    "Root pickup stills use C10, their recorded delivered source",
+    "Original tint and camera; shared night shadow floor",
+    "Original continuous emission masks retained; full-size masks reduced with project peak filter",
+    "XP cycle inherits 5 unique poses / 8 frames; translucent impact fade retained"
+  ],
+  "sheets": [
+    {
+      "file": "chests/chest_large/closed.png",
+      "silhouette_iou": 0.9997791031588248,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_large/closed_sw.png",
+      "silhouette_iou": 0.9997791031588248,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_large/open.png",
+      "silhouette_iou": 0.9996960948184167,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_large/open_sw.png",
+      "silhouette_iou": 0.9969678593086719,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_legendary/closed.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_legendary/closed_sw.png",
+      "silhouette_iou": 1.0,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_legendary/open.png",
+      "silhouette_iou": 0.9996837944664032,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_legendary/open_sw.png",
+      "silhouette_iou": 0.9968369444883758,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_small/closed.png",
+      "silhouette_iou": 0.9993512812195913,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_small/closed_sw.png",
+      "silhouette_iou": 0.9996754300551769,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_small/open.png",
+      "silhouette_iou": 0.9995427526291724,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "chests/chest_small/open_sw.png",
+      "silhouette_iou": 0.9997712194005949,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/coin.png",
+      "silhouette_iou": 0.998211091234347,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/gold_bag.png",
+      "silhouette_iou": 0.9968652037617555,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/gold_bag/default.png",
+      "silhouette_iou": 0.9968652037617555,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/gold_coin/default.png",
+      "silhouette_iou": 0.9988388969521045,
+      "frames": 8,
+      "unique_cells": 8,
+      "archive_unique_cells": 8,
+      "size": [
+        384,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/xp_gem.png",
+      "silhouette_iou": 1.0,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/xp_gem/default.png",
+      "silhouette_iou": 1.0,
+      "frames": 8,
+      "unique_cells": 5,
+      "archive_unique_cells": 5,
+      "inherited_duplicate_frames": 3,
+      "size": [
+        384,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/xp_gem_big.png",
+      "silhouette_iou": 0.9982456140350877,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "pickups/xp_gem_big/default.png",
+      "silhouette_iou": 0.9982456140350877,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        48,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "projectiles/ember_shard/default.png",
+      "silhouette_iou": 0.9895348837209302,
+      "e_half": true,
+      "frames": 4,
+      "unique_cells": 4,
+      "archive_unique_cells": 4,
+      "size": [
+        192,
+        48
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/gold_capsule/closed.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/gold_capsule/open.png",
+      "silhouette_iou": 0.9993315508021391,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_large_active.png",
+      "silhouette_iou": 0.9996282527881041,
+      "e_half": true,
+      "frames": 8,
+      "unique_cells": 8,
+      "archive_unique_cells": 8,
+      "size": [
+        2048,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_large_done.png",
+      "silhouette_iou": 0.9996282527881041,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_large_off.png",
+      "silhouette_iou": 0.9996282527881041,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_small_active.png",
+      "silhouette_iou": 0.9997070026369763,
+      "e_half": true,
+      "frames": 8,
+      "unique_cells": 8,
+      "archive_unique_cells": 8,
+      "size": [
+        1024,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_small_done.png",
+      "silhouette_iou": 0.9997070026369763,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/pillar_small_off.png",
+      "silhouette_iou": 0.9997070026369763,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/teleporter_active.png",
+      "silhouette_iou": 0.9994789405123752,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/teleporter_active_sw.png",
+      "silhouette_iou": 0.9993054349713492,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/teleporter_idle.png",
+      "silhouette_iou": 0.9998800383877159,
+      "e_half": true,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "props/teleporter_idle_sw.png",
+      "silhouette_iou": 0.9998800383877159,
+      "frames": 1,
+      "unique_cells": 1,
+      "archive_unique_cells": 1,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "vfx/ember_shard_impact/default.png",
+      "silhouette_iou": 0.9905660377358491,
+      "e_half": true,
+      "frames": 6,
+      "unique_cells": 6,
+      "archive_unique_cells": 6,
+      "size": [
+        576,
+        96
+      ],
+      "no_normal": true
+    }
+  ],
+  "emissions": [
+    {
+      "file": "chests/chest_legendary/closed_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 156.0
+    },
+    {
+      "file": "chests/chest_legendary/closed_e_sw.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 178.0
+    },
+    {
+      "file": "chests/chest_legendary/open_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 247.0
+    },
+    {
+      "file": "chests/chest_legendary/open_e_sw.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 246.0
+    },
+    {
+      "file": "pickups/xp_gem_big/default_e.png",
+      "size": [
+        24,
+        24
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 191.0
+    },
+    {
+      "file": "projectiles/ember_shard/default_e.png",
+      "size": [
+        96,
+        24
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/gold_capsule/closed_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/gold_capsule/open_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/pillar_large_active_e.png",
+      "size": [
+        1024,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/pillar_large_done_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/pillar_small_active_e.png",
+      "size": [
+        512,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/pillar_small_done_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/teleporter_active_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/teleporter_active_e_sw.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    },
+    {
+      "file": "props/teleporter_idle_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 172.0
+    },
+    {
+      "file": "props/teleporter_idle_e_sw.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 172.0
+    },
+    {
+      "file": "vfx/ember_shard_impact/default_e.png",
+      "size": [
+        288,
+        48
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archived_mask": true,
+      "peak": 255.0
+    }
+  ],
+  "removed_normals": [
+    "chests/chest_small/closed_n_sw.png",
+    "chests/chest_small/open_n_sw.png",
+    "chests/chest_large/closed_n_sw.png",
+    "chests/chest_large/open_n_sw.png",
+    "chests/chest_legendary/closed_n_sw.png",
+    "chests/chest_legendary/open_n_sw.png",
+    "props/teleporter_active_n_sw.png",
+    "props/teleporter_idle_n_sw.png"
+  ],
+  "protected_changed": [],
+  "before_bytes": 777532,
+  "after_bytes": 510089,
+  "checks": {
+    "budget": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": false,
+      "exit_resource_warnings": []
+    },
+    "import": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": false,
+      "exit_resource_warnings": []
+    },
+    "sprites_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": []
+    },
+    "capsule_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": [
+        "ERROR: 19 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "gold_pickup_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": [
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "loot_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": [
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "action_vfx_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": [
+        "ERROR: 18 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "texture_budget_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "result_ok": true,
+      "exit_resource_warnings": []
+    }
+  },
+  "protected_changed_after_import": []
+}

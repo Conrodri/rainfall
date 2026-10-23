@@ -1,0 +1,189 @@
+{
+  "files": {
+    "braises_errantes": {
+      "path": "game/assets/sprites/icons/spells/braises_errantes.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        11,
+        21,
+        118,
+        120
+      ],
+      "mode": "RGBA",
+      "hash": "4f80b942af92046329c97586c2606f3fbadbbffda152171b59ff3fbf3760282c"
+    },
+    "brasier": {
+      "path": "game/assets/sprites/icons/spells/brasier.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        120
+      ],
+      "mode": "RGBA",
+      "hash": "ae9eeda5a65885d5e62898af4d52d01470930b279e513a12da9c4f4bc84dfd7d"
+    },
+    "cendres": {
+      "path": "game/assets/sprites/icons/spells/cendres.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        11,
+        7,
+        117,
+        121
+      ],
+      "mode": "RGBA",
+      "hash": "394c9f59f4b06c99fbfcd99d8181d07d29a1fcd2b2a8915bb75b6c9cfd31d0cd"
+    },
+    "eclat_de_braise": {
+      "path": "game/assets/sprites/icons/spells/eclat_de_braise.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        9,
+        46,
+        119,
+        113
+      ],
+      "mode": "RGBA",
+      "hash": "d971cb1d5b036d92f7b484bd0a95e02813557aced775097d4198227e77d6a462"
+    },
+    "nova_ardente": {
+      "path": "game/assets/sprites/icons/spells/nova_ardente.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "mode": "RGBA",
+      "hash": "a5b4d6caeb3ac6166a4353687bbac8705e6761428df7436bcaa3eb1babf8fddb"
+    },
+    "phenix": {
+      "path": "game/assets/sprites/icons/spells/phenix.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        8,
+        121,
+        121
+      ],
+      "mode": "RGBA",
+      "hash": "7b308dabd01c85d1c1c6c49edbb8ef0cb3f2dfccf9801e0a5b71df619752894d"
+    },
+    "pilier_de_flamme": {
+      "path": "game/assets/sprites/icons/spells/pilier_de_flamme.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        38,
+        7,
+        90,
+        121
+      ],
+      "mode": "RGBA",
+      "hash": "3b32044d93e9895ef3caccca8016be96d6d2836645a4b87dc036a6b47cd1a62d"
+    },
+    "pluie_de_meteores": {
+      "path": "game/assets/sprites/icons/spells/pluie_de_meteores.png",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        25,
+        11,
+        115,
+        116
+      ],
+      "mode": "RGBA",
+      "hash": "dcccc4f7d7faf1e352db2085913d74a4272eb57327d8e40c2840d800c0df3244"
+    }
+  },
+  "protected": {
+    "game/assets/sprites/icons/spells/braises_errantes.png.import": "78b57124ff40a6229d4461527fc6ecb343128aa45fdc243ba62e23effba89cf0",
+    "game/assets/sprites/icons/spells/brasier.png.import": "643a73dcd04d54bd964bd58479b3da316eebbbb13b3b74a2bf46b845be87b050",
+    "game/assets/sprites/icons/spells/cendres.png.import": "8747018189ba7bb2b42f61ba78745cf65b29312a73e1c55cb7374f51ae8ad34c",
+    "game/assets/sprites/icons/spells/eclat_de_braise.png.import": "6fdb23f61f5cd67fa79afaf6f336f21ccc11ca1bc23f5ec66b1e85cb564f7bdb",
+    "game/assets/sprites/icons/spells/nova_ardente.png.import": "1bd5bb6579376c90cba4eb344161d7eaa7c8587d89681564131a2958c342ac03",
+    "game/assets/sprites/icons/spells/phenix.png.import": "af55f572a0962b804da919839c5ad321a96dcd8687efc398f2ed60ed2550409d",
+    "game/assets/sprites/icons/spells/pilier_de_flamme.png.import": "955f0628dae8036252ae845cde61acc188338ccef7810e72ade8b75201c55dc7",
+    "game/assets/sprites/icons/spells/pluie_de_meteores.png.import": "2fab54c8fa56b08b57a4fa31d948bafffb4e73e34ecb8a07a2432266549bbffa",
+    "game/default_bus_layout.tres": "d2949b4c6575921091a06202e59cd027a5184a06be8de9f880aff564a794d88b",
+    "game/data/ambiance/cite_rouille.tres": "9d50cd55e82736b78955260a383e27f9efefed455d609d22d4b01b2de3535fad",
+    "game/data/ambiance/foret_brume.tres": "8f50414d18a984c8cd6aa3de618b3bfafdca34b0f36c1cc87b51947992954f97",
+    "game/data/ambiance/terrasses_noyees.tres": "f6987fe1c6503c28289fa1829e943e589dcee510deb8399e4ae638702617a0d6",
+    "game/assets/sprites/vfx/ardent_ashes/ardent_ashes.tres": "960d8f7cbaf5aca3b88d6e9386059648161f6858ff8a43c29888a6db73623ee1",
+    "game/assets/sprites/vfx/ardent_brasier/ardent_brasier.tres": "8108d42d400b614e9e5562fbd5a6bfeca9ac833e7cbaf82b8bb6b8a0a0ed0c00",
+    "game/assets/sprites/vfx/ardent_nova/ardent_nova.tres": "32c78a374b4f0a53adb430547b29bda8358e586cac31e8164405623f41f89bbf",
+    "game/assets/sprites/vfx/charge_ring/charge_ring.tres": "c984c343652879606ea1487929f4c815bd86451ce6a534865207ef183ec931bd",
+    "game/assets/sprites/vfx/chest_open/chest_open.tres": "db4079e7fbbbde5d35b0ab0694f0cd639e8f32b28e3a40d09841e647c9eb098e",
+    "game/assets/sprites/vfx/ember_orbs/ember_orbs.tres": "d6bf7a04bb584d7aaee473f88ba2b21c56bd8c0b63409c3223bd90596653efd3",
+    "game/assets/sprites/vfx/ember_shard_impact/ember_shard_impact.tres": "9b48d987fdca17f1be98d393df28e95caf1f5fd861d3071523cb04e1100f3ad0",
+    "game/assets/sprites/vfx/flame_pillar/flame_pillar.tres": "c9fe24c7db04d4b492e106aaff71c39e95f04d8eecd36ff8803caee533009a1c",
+    "game/assets/sprites/vfx/level_up/level_up.tres": "ba4101ed243e4650d9a477fd04f4c31e5a26b7062b6f67912b387729f82dd82b",
+    "game/assets/sprites/vfx/lightning_arc/lightning_arc.tres": "e349b71d8ebc968894f8c7e91bdb47864d49ba19244c8d3e203a295850775e29",
+    "game/assets/sprites/vfx/meteor/meteor.tres": "845b29e5fe00ebc383eba15399cfc8986e2370723f0f440eb5b1b2116ff90082",
+    "game/assets/sprites/vfx/meteor_impact/meteor_impact.tres": "959ee657bbfac95245885faf8572cdcbf9de652ede51d0b3e23ce31694ebdf63",
+    "game/assets/sprites/vfx/monster_death/monster_death.tres": "78ded967876533b24e85231dd6824b5f84cd6ae19562eadde8d006fdf893b730",
+    "game/assets/sprites/vfx/phoenix/phoenix.tres": "d0f21c62fa6315efb41a45ea5c6e79a25872213c030aee76f4c274fce0ee378e",
+    "game/assets/sprites/vfx/pillar_zone_ring/pillar_zone_ring.tres": "75f8cab3780a2a7553c289e572042de36dcb8888a2e5f5e544d6605e36a91dc0",
+    "game/assets/sprites/vfx/status_burn/status_burn.tres": "445b19d598f66bf6e9760440329e3717513a75aacd931fc1e566c1ebd68dcc26",
+    "game/assets/sprites/vfx/status_frost/status_frost.tres": "9f4902aab7931d5da6f53d0761fbacd457c1ce9da1ceb4953818e728b7f4b2cf",
+    "game/assets/sprites/vfx/status_poison/status_poison.tres": "96151554a7d87ba6b90e0c199fbb849bcd964a500eaf494bac7d42fdf57abd85",
+    "game/assets/sprites/vfx/telegraph_circle/telegraph_circle.tres": "7638aab3fbe5eb74bed9794803fd19fbdb77738fc5f55f5061d577719c37500d",
+    "game/assets/sprites/vfx/telegraph_cone/telegraph_cone.tres": "79acbfa1ac67f90d3e4098306039ed5b01b8988be4436e78acfa479b02ddc292",
+    "game/assets/sprites/terrain/fog_forest/fog_forest.tres": "08ee5a8e9b1122cf1e205c89ac853361c94f1721bb086a79ed09903f0af39e66",
+    "game/assets/sprites/terrain/rust_city/rust_city.tres": "a2a5e2590138c543c71046642448c7d6c8e0fe5b14beb0bf88dc068351db8132",
+    "game/assets/sprites/terrain/terraces/terraces.tres": "bacbb94860f4fa43b1879e9a60c3d720f55ee8c86b9a2c01f2a99985889b4707",
+    "game/assets/sprites/props/gold_capsule/gold_capsule.tres": "b67a227d17bd2c042214b4a6f47f968ffad48d09d82571780f59613fa0de42af",
+    "game/assets/sprites/projectiles/ember_shard/ember_shard.tres": "d55c2e24c5c95b89971a5cd5d4768104d8dc3e0541cf84e82b602bb44a98c8f7",
+    "game/assets/sprites/pickups/gold_bag/gold_bag.tres": "bd6af4cdc999c7dcbbbc783a142b1e58cae67df168b8ea0e0e28f5a3c2ca7174",
+    "game/assets/sprites/pickups/gold_coin/gold_coin.tres": "db858bec087c17b4815fcb96356735c4c226e69a71c06c506625b00aeb4a68c7",
+    "game/assets/sprites/pickups/xp_gem/xp_gem.tres": "2803cd0741b8e2f13cadf0e87052e51067898cadc79531a22454251cf1a9603c",
+    "game/assets/sprites/pickups/xp_gem_big/xp_gem_big.tres": "937f1235325067b54611273fc94efe44fa005c2ee5fe52bb19a0ac2c9220508e",
+    "game/assets/sprites/monsters/brute_tier3/brute_tier3.tres": "4bb81368d4a441ffaa272e4a9331a2e0a67e9b78e8fe51952750ccb072d49084",
+    "game/assets/sprites/monsters/leaper_tier2/leaper_tier2.tres": "6f39db94f9d2f9ee7d0f638a791b1ee2fe7bf550e84fafd4f637a0fb64307531",
+    "game/assets/sprites/monsters/shooter_tier2/shooter_tier2.tres": "205d0da6a960ef821194018de434e3d3c28d67947628f4137a6d0434d2b0f4c5",
+    "game/assets/sprites/monsters/swarm_tier1/swarm_tier1.tres": "f055128101cf82fae0eb037eb248264733e6dee6cfb43a3535fc4d1f61526a8b",
+    "game/assets/sprites/fx/elites/elite_burn/elite_burn.tres": "f2d5c17be4a78c1b5cb7729fd863c812fe4c228be965822f39014eada4dca8bd",
+    "game/assets/sprites/fx/elites/elite_poison/elite_poison.tres": "a9ee3deb3cba191ad28359817091bc20e0cafb83f7913bf42a04c5c4405ec452",
+    "game/assets/sprites/fx/elites/elite_slow/elite_slow.tres": "8a91245095af2fbce51349f442adc9690a725997d58c7492d4b2c4bc585fd709",
+    "game/assets/sprites/chests/chest_large/chest_large.tres": "13b34c18565690e533450ab063b949576c7bee40dc5903174429ad8768d72db7",
+    "game/assets/sprites/chests/chest_legendary/chest_legendary.tres": "88e82e316bf57627c35e995b0b8b0a55c1e11cd5f2423b42baf27a63c20a4b12",
+    "game/assets/sprites/chests/chest_small/chest_small.tres": "63adde551e6e7fe913b2ea052899cac4d44ed85e4f663f467dc28743d92f51c6",
+    "game/assets/sprites/characters/ardent/ardent.tres": "0973635388aa5654c2a0ea1ebf7d1e79c9ecc1dadc0aa1067a4db6aee551dc54",
+    "game/assets/sprites/characters/montreur/montreur.tres": "950d3961a5190a846b5a8d9adfc335c9c7aa0123f3e539ca1e0de621eef397d8",
+    "game/assets/sprites/characters/rictus/rictus.tres": "d1fc0f22c3a636da55a0e78f4551988d3d89b040fc0fe2cf5b7c4d703413564f",
+    "game/assets/sprites/bosses/mini/ash_lord/ash_lord.tres": "ecb8f55e78a601c5b0eccffd37645b48b4bdeeb88de1a0699be6cb0f39ea2a42",
+    "game/assets/sprites/bosses/mini/bramble_queen/bramble_queen.tres": "a252a7d6f58b2b0e5384a7d50c10eccd28de9bfaae7198822aa3b8cffa03cc9b",
+    "game/assets/sprites/bosses/mini/brood_mother/brood_mother.tres": "ff2914bb61efc3bebd77d9ce724cd5ac66019bb3bd63d43ff2451201c26df007",
+    "game/assets/sprites/bosses/mini/frost_bear/frost_bear.tres": "e64cbaee772b427a7793f4f5cbec7168023cdb29e919145b7b15ed351cd4e8c6",
+    "game/assets/sprites/bosses/mini/rust_archon/rust_archon.tres": "7ac575bbb94629a476b546a27132c86edcf9badfbf1549348971f8b3832e3c43",
+    "game/assets/sprites/bosses/mini/stone_colossus/stone_colossus.tres": "7cbaad47ea86bb1ba7490a2fe0fbe75544a2820314eec619e07c320fc0284ad1",
+    "game/assets/sprites/bosses/etage/cerf/cerf.tres": "4dda49d5f1d3024788f7bac1b3f674a45d9b0076148b577f87e7c3739ebd6431",
+    "game/assets/sprites/bosses/etage/eclusier/eclusier.tres": "2407e21060f528b2273e12ec2d2f433f5b665868ed7ed3ea5bd9f6f956040f6d",
+    "game/assets/sprites/bosses/etage/sonneur/sonneur.tres": "bd5e7e92de5621aa4c9dfb6f2be760973dbc76d54dd9d5ab7164d3346da572c0"
+  }
+}

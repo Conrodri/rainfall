@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "changed": 37,
+  "total": 37,
+  "protected_files": 37,
+  "checks": [
+    "RGBA format and dimensions",
+    "exact alpha bounding boxes",
+    "all 37 targets changed",
+    "existing import and resource hashes"
+  ],
+  "companions": "No existing _n/_e PNG companions in the inventoried U4 targets; original file set preserved.",
+  "errors": [],
+  "remaining": []
+}

@@ -1,0 +1,178 @@
+{
+  "contract": "PASS",
+  "files": 86,
+  "creatures": {
+    "bramble_queen": {
+      "frames": 78,
+      "passes": 3,
+      "minimum_margin": 7,
+      "unique_frames": [
+        {
+          "animation": "idle",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "run",
+          "direction": "e",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "w",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "n",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "attack",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "cast_a",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "cast_b",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "phase2",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "death",
+          "direction": "s",
+          "frames": 10,
+          "unique": 10
+        }
+      ],
+      "idle_occupancy": {
+        "bounds": [
+          45,
+          16,
+          119,
+          131
+        ],
+        "alpha_pixels": 3930
+      }
+    },
+    "brood_mother": {
+      "frames": 78,
+      "passes": 3,
+      "minimum_margin": 6,
+      "unique_frames": [
+        {
+          "animation": "idle",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "run",
+          "direction": "e",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "w",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "n",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "attack",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "cast_a",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "cast_b",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "phase2",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "death",
+          "direction": "s",
+          "frames": 10,
+          "unique": 10
+        }
+      ],
+      "idle_occupancy": {
+        "bounds": [
+          26,
+          24,
+          144,
+          138
+        ],
+        "alpha_pixels": 6545
+      }
+    }
+  },
+  "camera_elevation": 30,
+  "contact_pixels_per_world_unit": 70,
+  "contact_cells": [
+    "ash_lord/idle",
+    "cerf/idle_p1",
+    "bramble_queen/idle",
+    "brood_mother/idle",
+    "bramble_queen/cast_a",
+    "bramble_queen/cast_b",
+    "brood_mother/cast_a",
+    "brood_mother/cast_b",
+    "bramble_queen/run",
+    "brood_mother/run",
+    "bramble_queen/idle_e",
+    "brood_mother/idle_e"
+  ],
+  "tres_unchanged": {
+    "bramble_queen": "2cac5dc258bfa524962de73f862b07e231d1e286fd048212e711620cd11f888c",
+    "brood_mother": "f1e5287daff173fb4b39032d6e43b84c1b29e25e31e3705632bb50931289b53c"
+  }
+}

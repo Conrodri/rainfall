@@ -1,0 +1,124 @@
+{
+  "result": "PASS",
+  "character_frames": 832,
+  "vfx_frames": 35,
+  "resources": [
+    "game\\assets\\sprites\\characters\\morfil\\morfil.tres",
+    "game\\assets\\sprites\\characters\\morfil\\cut_circle\\cut_circle.tres",
+    "game\\assets\\sprites\\characters\\morfil\\cut_crescent\\cut_crescent.tres",
+    "game\\assets\\sprites\\characters\\morfil\\cut_thrust\\cut_thrust.tres",
+    "game\\assets\\sprites\\characters\\morfil\\iai_trail\\iai_trail.tres",
+    "game\\assets\\sprites\\characters\\morfil\\sharpen_sparks\\sharpen_sparks.tres",
+    "game\\assets\\sprites\\characters\\morfil\\twin_draw\\twin_draw.tres"
+  ],
+  "sheets": [
+    {
+      "file": "characters/morfil/idle.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/run.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/cut_circle.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/thrust.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/crescent.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/sharpen.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/twin_draw.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/dodge.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/hurt.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/death.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/idle_dual.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/run_dual.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/cut_circle_dual.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/thrust_dual.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/crescent_dual.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/cut_circle/cut_circle.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/cut_thrust/cut_thrust.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/cut_crescent/cut_crescent.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/twin_draw/twin_draw.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/iai_trail/iai_trail.png",
+      "e_half": true
+    },
+    {
+      "file": "characters/morfil/sharpen_sparks/sharpen_sparks.png",
+      "e_half": true
+    }
+  ],
+  "clipped_frames": [],
+  "pivot": [
+    96,
+    136.32
+  ],
+  "normals": false,
+  "icons": "Excluded by player 2026-10-23",
+  "godot": {
+    "sprites_test": "RESULT: OK",
+    "morfil_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (1)",
+    "resources_loaded": 7,
+    "import_errors": 0
+  },
+  "budget": {
+    "morfil_mobile_mo": 8.2,
+    "morfil_budget_mo": 30,
+    "total_mobile_mo": 184,
+    "total_budget_mo": 180,
+    "bosses_mobile_mo": 74.2,
+    "bosses_budget_mo": 45,
+    "apk_mo": 295,
+    "apk_budget_mo": 200
+  }
+}

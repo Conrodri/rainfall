@@ -1,0 +1,71 @@
+{
+  "density": 0.05,
+  "props": [
+    {
+      "name": "stump",
+      "weight": 4,
+      "foot": [
+        64,
+        94
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "mushrooms",
+      "weight": 5,
+      "foot": [
+        64,
+        94
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "standing_stone",
+      "weight": 2,
+      "foot": [
+        96,
+        166
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "root_arch_a",
+      "weight": 2,
+      "foot": [
+        128,
+        224
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "lantern_shrine_se",
+      "weight": 1,
+      "foot": [
+        96,
+        158
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "cedar_giant",
+      "weight": 1,
+      "foot": [
+        192,
+        340
+      ],
+      "px_per_u": 90.51,
+      "fade": true,
+      "shadow_rig": "top"
+    }
+  ]
+}

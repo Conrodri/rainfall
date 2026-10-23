@@ -1,0 +1,209 @@
+{
+  "character": "averse",
+  "cell": 192,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "pivot": [
+    96,
+    136.32
+  ],
+  "R": 90.50966799187809,
+  "animations": {
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "sizes": [
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "run": {
+      "frames": 8,
+      "fps": 14,
+      "sizes": [
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "cast": {
+      "frames": 4,
+      "fps": 12,
+      "sizes": [
+        [
+          768,
+          1536
+        ],
+        [
+          768,
+          1536
+        ],
+        [
+          768,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "wave": {
+      "frames": 6,
+      "fps": 12,
+      "sizes": [
+        [
+          1152,
+          1536
+        ],
+        [
+          1152,
+          1536
+        ],
+        [
+          1152,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "crue": {
+      "frames": 8,
+      "fps": 12,
+      "sizes": [
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "stumble": {
+      "frames": 3,
+      "fps": 10,
+      "sizes": [
+        [
+          576,
+          1536
+        ],
+        [
+          576,
+          1536
+        ],
+        [
+          576,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "attack": {
+      "frames": 6,
+      "fps": 12,
+      "sizes": [
+        [
+          1152,
+          1536
+        ],
+        [
+          1152,
+          1536
+        ],
+        [
+          1152,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "cast_ult": {
+      "frames": 8,
+      "fps": 12,
+      "sizes": [
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ]
+      ],
+      "directions": 8
+    },
+    "death": {
+      "frames": 8,
+      "fps": 10,
+      "sizes": [
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ],
+        [
+          1536,
+          1536
+        ]
+      ],
+      "directions": 8
+    }
+  },
+  "attack_impact_frame_zero_based": 3,
+  "water_mask": "cyan sight glass in _e; local vertical fill",
+  "icons": [
+    "averse_goutte_lame",
+    "averse_vague",
+    "averse_flaque_miroir",
+    "averse_crue"
+  ],
+  "verification": {
+    "sprites_test": "RESULT: OK",
+    "resource_load": "averse.tres and averse_emission.tres loaded by Godot; RESULT: OK",
+    "frame_checks": "472 unique directional frames; alpha margins >=4px; diffuse normal emission sizes PASS",
+    "visual_contact": "art/tools/night/_av1_contact.png"
+  },
+  "body_frames": 472,
+  "lot_2_remaining": [],
+  "lot_2_manifest": "av2_manifest.json"
+}

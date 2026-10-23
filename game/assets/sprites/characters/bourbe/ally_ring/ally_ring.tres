@@ -1,0 +1,10 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/ally_ring/ally_ring.png" id="d0"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("d0")
+region = Rect2(0, 0, 64, 64)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}], "loop": true, "name": &"default", "speed": 1.0}]

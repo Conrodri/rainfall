@@ -1,0 +1,33 @@
+{
+  "description": "Marges 9-slice (px) : bords et centre unis, détails (rivets) dans les coins.",
+  "button_normal": {
+    "size": [
+      192,
+      96
+    ],
+    "margin_left": 24,
+    "margin_top": 24,
+    "margin_right": 24,
+    "margin_bottom": 24
+  },
+  "button_pressed": {
+    "size": [
+      192,
+      96
+    ],
+    "margin_left": 24,
+    "margin_top": 24,
+    "margin_right": 24,
+    "margin_bottom": 24
+  },
+  "button_primary": {
+    "size": [
+      256,
+      112
+    ],
+    "margin_left": 24,
+    "margin_top": 24,
+    "margin_right": 24,
+    "margin_bottom": 24
+  }
+}

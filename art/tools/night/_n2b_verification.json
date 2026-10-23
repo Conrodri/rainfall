@@ -1,0 +1,139 @@
+{
+  "animations": 19,
+  "frames": 144,
+  "clipped_frames": [],
+  "empty": [],
+  "alpha_mismatches": [],
+  "atlases": {
+    "attack.png": [
+      1020,
+      170
+    ],
+    "attack_dirs.png": [
+      1020,
+      510
+    ],
+    "attack_dirs_e.png": [
+      1020,
+      510
+    ],
+    "attack_dirs_n.png": [
+      1020,
+      510
+    ],
+    "attack_e.png": [
+      1020,
+      170
+    ],
+    "attack_n.png": [
+      1020,
+      170
+    ],
+    "cast_a.png": [
+      1360,
+      170
+    ],
+    "cast_a_dirs.png": [
+      1360,
+      510
+    ],
+    "cast_a_dirs_e.png": [
+      1360,
+      510
+    ],
+    "cast_a_dirs_n.png": [
+      1360,
+      510
+    ],
+    "cast_a_e.png": [
+      1360,
+      170
+    ],
+    "cast_a_n.png": [
+      1360,
+      170
+    ],
+    "cast_b.png": [
+      1360,
+      170
+    ],
+    "cast_b_dirs.png": [
+      1360,
+      510
+    ],
+    "cast_b_dirs_e.png": [
+      1360,
+      510
+    ],
+    "cast_b_dirs_n.png": [
+      1360,
+      510
+    ],
+    "cast_b_e.png": [
+      1360,
+      170
+    ],
+    "cast_b_n.png": [
+      1360,
+      170
+    ],
+    "death.png": [
+      1700,
+      170
+    ],
+    "death_e.png": [
+      1700,
+      170
+    ],
+    "death_n.png": [
+      1700,
+      170
+    ],
+    "idle.png": [
+      1020,
+      170
+    ],
+    "idle_e.png": [
+      1020,
+      170
+    ],
+    "idle_n.png": [
+      1020,
+      170
+    ],
+    "phase2.png": [
+      1360,
+      170
+    ],
+    "phase2_e.png": [
+      1360,
+      170
+    ],
+    "phase2_n.png": [
+      1360,
+      170
+    ],
+    "run.png": [
+      1360,
+      680
+    ],
+    "run_e.png": [
+      1360,
+      680
+    ],
+    "run_n.png": [
+      1360,
+      680
+    ]
+  },
+  "pivot": [
+    85,
+    119
+  ],
+  "camera_scale": 4.051028251647949,
+  "impact": {
+    "attack": 3,
+    "cast_a": 4,
+    "cast_b": 4
+  }
+}

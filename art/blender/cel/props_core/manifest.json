@@ -1,0 +1,487 @@
+{
+  "files": [
+    "chests/chest_large/closed.png",
+    "chests/chest_large/closed_shadow.png",
+    "chests/chest_large/closed_shadow_sw.png",
+    "chests/chest_large/closed_sw.png",
+    "chests/chest_large/open.png",
+    "chests/chest_large/open_shadow.png",
+    "chests/chest_large/open_shadow_sw.png",
+    "chests/chest_large/open_sw.png",
+    "chests/chest_legendary/closed.png",
+    "chests/chest_legendary/closed_e.png",
+    "chests/chest_legendary/closed_e_sw.png",
+    "chests/chest_legendary/closed_shadow.png",
+    "chests/chest_legendary/closed_shadow_sw.png",
+    "chests/chest_legendary/closed_sw.png",
+    "chests/chest_legendary/open.png",
+    "chests/chest_legendary/open_e.png",
+    "chests/chest_legendary/open_e_sw.png",
+    "chests/chest_legendary/open_shadow.png",
+    "chests/chest_legendary/open_shadow_sw.png",
+    "chests/chest_legendary/open_sw.png",
+    "chests/chest_small/closed.png",
+    "chests/chest_small/closed_shadow.png",
+    "chests/chest_small/closed_shadow_sw.png",
+    "chests/chest_small/closed_sw.png",
+    "chests/chest_small/open.png",
+    "chests/chest_small/open_shadow.png",
+    "chests/chest_small/open_shadow_sw.png",
+    "chests/chest_small/open_sw.png",
+    "pickups/coin.png",
+    "pickups/gold_bag.png",
+    "pickups/gold_bag/default.png",
+    "pickups/gold_coin/default.png",
+    "pickups/xp_gem.png",
+    "pickups/xp_gem/default.png",
+    "pickups/xp_gem_big.png",
+    "pickups/xp_gem_big/default.png",
+    "pickups/xp_gem_big/default_e.png",
+    "projectiles/ember_shard/default.png",
+    "projectiles/ember_shard/default_e.png",
+    "props/gold_capsule/closed.png",
+    "props/gold_capsule/closed_e.png",
+    "props/gold_capsule/closed_shadow.png",
+    "props/gold_capsule/open.png",
+    "props/gold_capsule/open_e.png",
+    "props/gold_capsule/open_shadow.png",
+    "props/pillar_large_active.png",
+    "props/pillar_large_active_e.png",
+    "props/pillar_large_active_shadow.png",
+    "props/pillar_large_done.png",
+    "props/pillar_large_done_e.png",
+    "props/pillar_large_done_shadow.png",
+    "props/pillar_large_off.png",
+    "props/pillar_large_off_shadow.png",
+    "props/pillar_small_active.png",
+    "props/pillar_small_active_e.png",
+    "props/pillar_small_active_shadow.png",
+    "props/pillar_small_done.png",
+    "props/pillar_small_done_e.png",
+    "props/pillar_small_done_shadow.png",
+    "props/pillar_small_off.png",
+    "props/pillar_small_off_shadow.png",
+    "props/teleporter_active.png",
+    "props/teleporter_active_e.png",
+    "props/teleporter_active_e_sw.png",
+    "props/teleporter_active_shadow.png",
+    "props/teleporter_active_shadow_sw.png",
+    "props/teleporter_active_sw.png",
+    "props/teleporter_idle.png",
+    "props/teleporter_idle_e.png",
+    "props/teleporter_idle_e_sw.png",
+    "props/teleporter_idle_shadow.png",
+    "props/teleporter_idle_shadow_sw.png",
+    "props/teleporter_idle_sw.png",
+    "vfx/ember_shard_impact/default.png",
+    "vfx/ember_shard_impact/default_e.png"
+  ],
+  "before_bytes": 618870,
+  "sizes": {
+    "chests/chest_small/closed.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/closed_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/closed_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/closed_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/open.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/open_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/open_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_small/open_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/closed.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/closed_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/closed_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/closed_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/open.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/open_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/open_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_large/open_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/closed.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/closed_e.png": [
+      64,
+      64
+    ],
+    "chests/chest_legendary/closed_e_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/closed_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/closed_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/closed_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/open.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/open_e.png": [
+      64,
+      64
+    ],
+    "chests/chest_legendary/open_e_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/open_shadow.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/open_shadow_sw.png": [
+      128,
+      128
+    ],
+    "chests/chest_legendary/open_sw.png": [
+      128,
+      128
+    ],
+    "props/pillar_large_active.png": [
+      2048,
+      256
+    ],
+    "props/pillar_large_active_e.png": [
+      1024,
+      128
+    ],
+    "props/pillar_large_active_shadow.png": [
+      2048,
+      256
+    ],
+    "props/pillar_large_done.png": [
+      256,
+      256
+    ],
+    "props/pillar_large_done_e.png": [
+      128,
+      128
+    ],
+    "props/pillar_large_done_shadow.png": [
+      256,
+      256
+    ],
+    "props/pillar_large_off.png": [
+      256,
+      256
+    ],
+    "props/pillar_large_off_shadow.png": [
+      256,
+      256
+    ],
+    "props/pillar_small_active.png": [
+      1024,
+      128
+    ],
+    "props/pillar_small_active_e.png": [
+      512,
+      64
+    ],
+    "props/pillar_small_active_shadow.png": [
+      1024,
+      128
+    ],
+    "props/pillar_small_done.png": [
+      128,
+      128
+    ],
+    "props/pillar_small_done_e.png": [
+      64,
+      64
+    ],
+    "props/pillar_small_done_shadow.png": [
+      128,
+      128
+    ],
+    "props/pillar_small_off.png": [
+      128,
+      128
+    ],
+    "props/pillar_small_off_shadow.png": [
+      128,
+      128
+    ],
+    "props/teleporter_active.png": [
+      256,
+      256
+    ],
+    "props/teleporter_active_e.png": [
+      128,
+      128
+    ],
+    "props/teleporter_active_e_sw.png": [
+      256,
+      256
+    ],
+    "props/teleporter_active_shadow.png": [
+      256,
+      256
+    ],
+    "props/teleporter_active_shadow_sw.png": [
+      256,
+      256
+    ],
+    "props/teleporter_active_sw.png": [
+      256,
+      256
+    ],
+    "props/teleporter_idle.png": [
+      256,
+      256
+    ],
+    "props/teleporter_idle_e.png": [
+      128,
+      128
+    ],
+    "props/teleporter_idle_e_sw.png": [
+      256,
+      256
+    ],
+    "props/teleporter_idle_shadow.png": [
+      256,
+      256
+    ],
+    "props/teleporter_idle_shadow_sw.png": [
+      256,
+      256
+    ],
+    "props/teleporter_idle_sw.png": [
+      256,
+      256
+    ],
+    "props/gold_capsule/closed.png": [
+      128,
+      128
+    ],
+    "props/gold_capsule/closed_e.png": [
+      64,
+      64
+    ],
+    "props/gold_capsule/closed_shadow.png": [
+      128,
+      128
+    ],
+    "props/gold_capsule/open.png": [
+      128,
+      128
+    ],
+    "props/gold_capsule/open_e.png": [
+      64,
+      64
+    ],
+    "props/gold_capsule/open_shadow.png": [
+      128,
+      128
+    ],
+    "pickups/coin.png": [
+      48,
+      48
+    ],
+    "pickups/gold_bag.png": [
+      48,
+      48
+    ],
+    "pickups/xp_gem.png": [
+      48,
+      48
+    ],
+    "pickups/xp_gem_big.png": [
+      48,
+      48
+    ],
+    "pickups/gold_bag/default.png": [
+      48,
+      48
+    ],
+    "pickups/gold_coin/default.png": [
+      384,
+      48
+    ],
+    "pickups/xp_gem/default.png": [
+      384,
+      48
+    ],
+    "pickups/xp_gem_big/default.png": [
+      48,
+      48
+    ],
+    "pickups/xp_gem_big/default_e.png": [
+      48,
+      48
+    ],
+    "projectiles/ember_shard/default.png": [
+      192,
+      48
+    ],
+    "projectiles/ember_shard/default_e.png": [
+      192,
+      48
+    ],
+    "vfx/ember_shard_impact/default.png": [
+      576,
+      96
+    ],
+    "vfx/ember_shard_impact/default_e.png": [
+      288,
+      48
+    ]
+  },
+  "protected": {
+    "chests/chest_small/chest_small.tres": "602f6efb7732f3eeaab835d814a7f36acd5d7601e671c3bb943d07f73544b153",
+    "chests/chest_small/closed.png.import": "456478fcd5813405660135432ec1dedb1fdcc8ec957bcb92e71fcc8285eb1a3b",
+    "chests/chest_small/closed_n_sw.png.import": "3587a4ce04f3764d06d6eaf398539ee4d03d6e988eff24999352fd2be8e0d1c4",
+    "chests/chest_small/closed_shadow.png.import": "d73d03383a5f40fd44a01907c99a66a1e51f948ff8611a2a851430a2dc2f05b2",
+    "chests/chest_small/closed_shadow_sw.png.import": "0e690c68bcfcbb03fb4e04122c550ff8117e8bce3db5d18fd695f6e3d242aa51",
+    "chests/chest_small/closed_sw.png.import": "1069409d7d920098547d528a6113d9e5ded92bb899e57ae8aa8dc8893cb41423",
+    "chests/chest_small/open.png.import": "0eebbdfb701736533ad7b1eae07ede6d0812545dce9523ad9dfdaa32cd989344",
+    "chests/chest_small/open_n_sw.png.import": "2d7b48678ac89f3b1cfe9cdbd6789f512463976a5a35825e15e51ba3389ae8d4",
+    "chests/chest_small/open_shadow.png.import": "a518a89497c89622590d83a11eeffc6f4d9a9b2f7e17f9f3319e3aa1a1a7d8c3",
+    "chests/chest_small/open_shadow_sw.png.import": "f78479d3af4eac3209446842221e2ef0e37a9c2a404c583a3f95d562a405a32d",
+    "chests/chest_small/open_sw.png.import": "e14312f28380b86de27810b4f2dc433fb8f5e0ddb7a7ad24947c902692db232e",
+    "chests/chest_large/chest_large.tres": "b9e45c4c1bc2b90b9beb35ba7af4af141c254a750303c1d72587cfa1a965b1cd",
+    "chests/chest_large/closed.png.import": "8ccc00c08726aa92103ea7c82352ba3aad23f755002967e3408bca1e635aa391",
+    "chests/chest_large/closed_n_sw.png.import": "122c0ca18228ae13aaa7426d15cccf65cb651c2f0fc514e200d7bbbece2332ac",
+    "chests/chest_large/closed_shadow.png.import": "7a7db039cb987ebef5bfc74dfd7b150053e264c3ff4ef768e709ba409189626c",
+    "chests/chest_large/closed_shadow_sw.png.import": "b75c01b696dd5be002173a8921789899376b3ddd4035559484ffd5a6b9193dae",
+    "chests/chest_large/closed_sw.png.import": "fa488aac9c0ffb39e5a0d4504863fdcc2cdeca0c9ec8d3073d519cbc8fdf1160",
+    "chests/chest_large/open.png.import": "2a7b3bd7a4bd8eba80490c37468c276a67a81b549a8977e722bcb6aa8d8f07ba",
+    "chests/chest_large/open_n_sw.png.import": "586d741cf7ef0f2bdd3fa46405cce5c3093642d6ce66ad7f4f1a7b516d70943a",
+    "chests/chest_large/open_shadow.png.import": "8be701fce34b721b9d89e54d6da3b864b645d6e817c0be62461ae3695ca6e3ec",
+    "chests/chest_large/open_shadow_sw.png.import": "6ef14ed301dda78a28dca4766eb102557d563427da006e5a6195f5fab736e371",
+    "chests/chest_large/open_sw.png.import": "165b48e0cb8d6fa4f85bd086288adc234fc7f99ef361e8ca15091e8befab28ee",
+    "chests/chest_legendary/chest_legendary.tres": "91f84f1893531b5cf222d03319318836bf56793da069547c6d5e8f0350105c3c",
+    "chests/chest_legendary/closed.png.import": "5293bad40a176b61076d2b3b1e2c5e244344dea456160aaf2435b7d6ce85b7e0",
+    "chests/chest_legendary/closed_e.png.import": "e9b1ce7dbe27ef71a83a509a72a65d247b248c3d0ace6d8639323f7f8317eb61",
+    "chests/chest_legendary/closed_e_sw.png.import": "4b98baef994b8f74036f77d2e61fa4cb7968aa9119d1306afe9d7d7816a368ff",
+    "chests/chest_legendary/closed_n_sw.png.import": "55b8ba822945a798fd5aff660f733c509e8647127b9f4a513643bc57ab98df9f",
+    "chests/chest_legendary/closed_shadow.png.import": "5221e24185949c5dab4e5515a2f571262dda8d836d9d3bb9fac0d53fd4595f8b",
+    "chests/chest_legendary/closed_shadow_sw.png.import": "a8b0e0790296b886fc53612e2e9cd6546414eff0b6a94177772423e9c7a634de",
+    "chests/chest_legendary/closed_sw.png.import": "10b493c30158295f998960bb2912415bf414dd2792a9785335347629f513187e",
+    "chests/chest_legendary/open.png.import": "ae17d0ae11e03ea62772cdba1bcfec3ad3bb24763be530d203785215c92da183",
+    "chests/chest_legendary/open_e.png.import": "813892d8b14311b521ac737e6e31ddc4b2a12b8c1b3dd8fc9ab0f0eefa8ff195",
+    "chests/chest_legendary/open_e_sw.png.import": "e846b724dfc481a19401c60f9ae9f6239f51365fd62f79ce8c2adb8285596684",
+    "chests/chest_legendary/open_n_sw.png.import": "8adaa49d11616d0d6e6ff589153c5c3d530b04fde0bf143c5eb5c1d732b99ebc",
+    "chests/chest_legendary/open_shadow.png.import": "11f72f50fedcd99b784e385cd5fb5750c5f784ad4b8d45088fb4f6a72c47cbc7",
+    "chests/chest_legendary/open_shadow_sw.png.import": "180400fc830ddf9d99ef9ccab483d7f330a499cf60c2532763e5bc6cae8bc59e",
+    "chests/chest_legendary/open_sw.png.import": "aef322f19e6a0d11e4e098664bdf73632d3ad71a103ceeab8798de396572f274",
+    "props/pillar_large_active.png.import": "385e11c33219fb0070da02408200bd23d6a3522eb565aa6ae0425e6e271b53f8",
+    "props/pillar_large_active_e.png.import": "5c14c15e585eb9434cf1263eed1f5eb24bbaf9810490cb26e7a54177044868b6",
+    "props/pillar_large_active_shadow.png.import": "74e0af46406cf983cfffe05beccb962b6a90179c328ad8e20fc29b2af0666605",
+    "props/pillar_large_done.png.import": "39ac41242dd11ec4983a9e86211b3d25bfab702461305996be02f5f5f853b54e",
+    "props/pillar_large_done_e.png.import": "2cab894108048106297774c5019e818ea58d6b0a35b32bc5a9210c800fbefb87",
+    "props/pillar_large_done_shadow.png.import": "f1897442357f0f8417c90bb39655e7ee8763e569ebe02a0b9fd57bc9028c63f7",
+    "props/pillar_large_off.png.import": "1f2873a5fdd78934ae160eeb9dcc6f41c2fa20d280b174a824890f29d3ded4bb",
+    "props/pillar_large_off_shadow.png.import": "aaefd4e8d3c7d6cf43612dc055e596eb1428329919e1c2702881b4258917021f",
+    "props/pillar_small_active.png.import": "677c2808319c84bc5e68e793dfc15fe52deca578df51a99ab19e79706504211e",
+    "props/pillar_small_active_e.png.import": "9ff85600959544f32b32e2b7115285ff3595bfee39eb943208b3fab756b5bcda",
+    "props/pillar_small_active_shadow.png.import": "44fd5eeddc6c2848c217415d00f893afea42bd2cb54d6d3b45448fbe8666db7f",
+    "props/pillar_small_done.png.import": "c6e65c5bcaf06d44664a270acc9301cde20a5fe44162accdf7e1bb4e3bdfc248",
+    "props/pillar_small_done_e.png.import": "831491e1073d227bab878ee51deefc943432d082facf012702d64fc825254183",
+    "props/pillar_small_done_shadow.png.import": "53077094dd49a373d671835636762835305a91c7120e4d23320558297c677cc1",
+    "props/pillar_small_off.png.import": "4166f2de0e863d8f18965d08c0af56826caf56a1c207dff76bf4f9d77207329d",
+    "props/pillar_small_off_shadow.png.import": "9ba353cca703e365446dab45897c8370ce2634b6a71336a580fe695a49137a41",
+    "props/teleporter_active.png.import": "624da77b799dfc815e42369cf8e00432c585e2c462ad770991e6956f648a781d",
+    "props/teleporter_active_e.png.import": "248e22eaaea138afc2f7f822bd8fbc71d4782f842f592bfdf22fbcb0681c3d5d",
+    "props/teleporter_active_e_sw.png.import": "40569500050513f1039648ebb9bb0ab45480e17b385853172cab17b9ccb32287",
+    "props/teleporter_active_n_sw.png.import": "f17c735a7cde435914b53df71ddaa40562a01197b08e768fe25b6f72e314f21a",
+    "props/teleporter_active_shadow.png.import": "322e7b3241ae3791dc367491da76b4de73ef96288af7890353c9e29df9799830",
+    "props/teleporter_active_shadow_sw.png.import": "8d083674084f696106de0150a5ecfd730ac46ca1b9649281ed3bf98486c17353",
+    "props/teleporter_active_sw.png.import": "b7afef68caae47f34e0f850f47c1196302a5eff816b955cd0cbb5963a4151794",
+    "props/teleporter_idle.png.import": "92a032696d1a21f15bbc9645a57de790e8f9cec39ad0fe1bb05c590f1de59f85",
+    "props/teleporter_idle_e.png.import": "ee84fc20a05e2c4363829b333419dba692190bd77dc0ef6659e6c589e3e522ca",
+    "props/teleporter_idle_e_sw.png.import": "8e8dbd19fb4e098525aabede63c602debcbf98b2456f4ccecc3451276b6a948c",
+    "props/teleporter_idle_n_sw.png.import": "8b5ad4c27dec2d8996a785d719167cc930ff4526a4db6305b892de79be1ac834",
+    "props/teleporter_idle_shadow.png.import": "8fb46cc1978d89d67201b06a865bde78349245b7c4e51d5c915a653843832fdc",
+    "props/teleporter_idle_shadow_sw.png.import": "03d939e00602ba72b3d3a3e48b52ba07023d5a666d58e60d824acb1c9a973718",
+    "props/teleporter_idle_sw.png.import": "255c802485713ace05dda0e21cd274191640bee74755a9fba87bdde8fec97b24",
+    "props/gold_capsule/closed.png.import": "d32fd97ad444a097676381fc291a976eceef9c04077c4fb5883dd09d3e604736",
+    "props/gold_capsule/closed_e.png.import": "2b69e276904db0148474feb2cab165075cdec36480f7af0228092bc3ae06116a",
+    "props/gold_capsule/closed_shadow.png.import": "6c08f2c6a0820a3aafeec30dcda4c32761507191ed7ad258710b8ea31eb2d99b",
+    "props/gold_capsule/gold_capsule.tres": "3b940c497136d239f8709fc4bad4c8845be223f9f4cdd8d90dd96b9491a05e3a",
+    "props/gold_capsule/open.png.import": "1eea8b222114bce9aad3fcbf5618646b2f5afe2d24ffe20d27e1cbe818663fdb",
+    "props/gold_capsule/open_e.png.import": "830acc4790d9a61690937efa61e6460a4bbcf722318329681bd9c5b9cfe34ddb",
+    "props/gold_capsule/open_shadow.png.import": "727d8c8c47030bba9b9935537d4d78ecac97a913a694a4ec0807769c6c623d47",
+    "pickups/coin.png.import": "063cb2d6b219ccef4510575af57bc690d6cd196848df9ae3642f18a0a2944191",
+    "pickups/gold_bag.png.import": "daa72726a48ebb5e4c54221b8361ced91cd0c3a33bf8d5da597defc83da80673",
+    "pickups/xp_gem.png.import": "32bf05af074199e6a2fc6c60ee60b42e969d8eb6f6aa292f2acfddd7bb965299",
+    "pickups/xp_gem_big.png.import": "0da514d96ea392587bfd57baa57b8b4cda46b64be6eee8281c18ec9eac2e0e3d",
+    "pickups/gold_bag/default.png.import": "b1d0d5135e0c53fd4bd2ad1d3aa9bec8342fc03b02d2bcf29d375d8ecf4ef3a4",
+    "pickups/gold_bag/gold_bag.tres": "d91c76c7ffc519ab1883bf6c17a0b047d9e4f19bb77bf0c96050f4c90b785a1a",
+    "pickups/gold_coin/default.png.import": "4b6b901519a513b1554b48d508c285a3848d8f80d8846ad75b1423400dcc4503",
+    "pickups/gold_coin/gold_coin.tres": "3550f374f0f110df82b98c09ec48ecb4c40d7b2d094687bc9e1461320be0fd68",
+    "pickups/xp_gem/default.png.import": "7bfc0b8233b51ac4bf8c3072663f3b914b8939d02a608a6710d1a3d264d3f007",
+    "pickups/xp_gem/xp_gem.tres": "e77de30e8958f687109502b5f31c3e5bda79b829fd22408416a2d91a84327ae4",
+    "pickups/xp_gem_big/default.png.import": "5152256e656e31d94e8f659c9459f9bcc518f8c7fa9098c99e7bccef0f6065f6",
+    "pickups/xp_gem_big/default_e.png.import": "c1da85ba76008757f94f1afa54bb6ed77498f25bb0e19733ad8d6bc99b585e86",
+    "pickups/xp_gem_big/xp_gem_big.tres": "cc1f6c993817ad940a164ec24f8fd7a2280bcf3458764a16edc58a40e17d0402",
+    "projectiles/ember_shard/default.png.import": "dc715747d8c3c4e8731373861020d06d1c8ec7d015bf8caac0c0e0318af19d2e",
+    "projectiles/ember_shard/default_e.png.import": "1f78cc6e2d1492a7d8ab28264e675a83639a8e23afd67158b5723f01fefa3549",
+    "projectiles/ember_shard/ember_shard.tres": "bfaac79c30b1480ac28a4e2c6b1faa2d472b35944027372f6e602bdfe9602c87",
+    "vfx/ember_shard_impact/default.png.import": "806606866bf7da7a6afd4e4e85d845092dd51204092559fe0113b97558b2d1dc",
+    "vfx/ember_shard_impact/default_e.png.import": "5ac1e48cc085497123bbb6a4685420582893ad63995e99f7b806dbe6033597c7",
+    "vfx/ember_shard_impact/ember_shard_impact.tres": "9b48d987fdca17f1be98d393df28e95caf1f5fd861d3071523cb04e1100f3ad0"
+  },
+  "normals": [
+    "chests/chest_small/closed_n_sw.png",
+    "chests/chest_small/open_n_sw.png",
+    "chests/chest_large/closed_n_sw.png",
+    "chests/chest_large/open_n_sw.png",
+    "chests/chest_legendary/closed_n_sw.png",
+    "chests/chest_legendary/open_n_sw.png",
+    "props/teleporter_active_n_sw.png",
+    "props/teleporter_idle_n_sw.png"
+  ]
+}

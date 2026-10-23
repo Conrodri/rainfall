@@ -1,0 +1,8 @@
+LOT UXMB : icônes d'UI de l'écran Nouvelle run (code branché, replis en formes : game/scripts/menu/character_card.gd make_lock_icon / make_check_icon). Lisibilité avant tout : lisibles à 40 px, sur fond sombre ET sur le fond braise #C23B12.
+Sorties game/assets/sprites/ui/menu/ (PNG RGBA, fond transparent ; noms EXACTS, chargés s'ils existent) :
+1) icon_lock.png 96² : cadenas fermé, vu de face, anse + corps, silhouette épaisse et simple, BLANC neutre (le code ne le teinte pas : blanc cassé #E8EEF8 avec un trait sombre de contour), centré, marge 8 px.
+2) icon_check.png 64² : coche épaisse arrondie, blanc #FFFFFF avec contour sombre fin, centrée, marge 6 px.
+Script art/tools/night/uxmb_build.py (Blender --background, caméra orthographique de face, Eevee échantillons modestes). Périmètre : ce dossier de sortie uniquement. Aucun .gd/.tscn. PNG optimisés.
+DA : art/briefs/STYLE.md en tête ; RENDU CEL OBLIGATOIRE : art/briefs/STYLE_cel.md + art/tools/cel/cel_style.py profil 'ui' (2 tons, sans _n).
+Vérification : planche art/tools/night/_uxmb_contact.png : les 2 icônes à 40 px sur fond #2B3340, #C23B12 et #1c1f26. Rapport final court en français.
+NORMAL MAPS SUPPRIMÉES (décision du joueur, 22/10/2026 ; PRIORITAIRE sur toute mention contraire) : aucun <f>_n.png produit ni livré ; cel.install(<profil>, normals=False) ; les masques _e restent (non requis ici).

@@ -1,0 +1,4 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree\nfunc _initialize():\n\tvar directory = DirAccess.open(\"res://assets/sprites/characters/tocsin\")\n\tvar count = 0\n\tvar failures = 0\n\tfor filename in directory.get_files():\n\t\tif filename.ends_with(\".tres\"):\n\t\t\tvar resource = load(\"res://assets/sprites/characters/tocsin/\" + filename)\n\t\t\tif not resource is SpriteFrames:\n\t\t\t\tfailures += 1\n\t\t\telse:\n\t\t\t\tcount += 1\n\tprint(\"T4_RESOURCES: \", count, \" loaded; errors=\", failures)\n\tquit(failures)\n"

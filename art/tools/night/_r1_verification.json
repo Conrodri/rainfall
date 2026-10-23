@@ -1,0 +1,50 @@
+{
+  "crue_ring": {
+    "frames": 8,
+    "unique_frames": 8,
+    "cell": 800,
+    "alpha_normal_emission": "identical",
+    "normal_colors": "<=27",
+    "clipping": "PASS",
+    "pivot": [
+      0.5,
+      0.5
+    ]
+  },
+  "puddle_mirror": {
+    "frames": 6,
+    "unique_frames": 6,
+    "cell": 416,
+    "alpha_normal_emission": "identical",
+    "normal_colors": "<=27",
+    "clipping": "PASS",
+    "pivot": [
+      0.5,
+      0.5
+    ]
+  },
+  "ardent_brasier": {
+    "frames": 12,
+    "unique_frames": 12,
+    "cell": 1088,
+    "alpha_normal_emission": "identical",
+    "normal_colors": "<=27",
+    "clipping": "PASS",
+    "pivot": [
+      0.5,
+      0.5
+    ]
+  },
+  "ardent_nova": {
+    "frames": 10,
+    "unique_frames": 10,
+    "cell": 616,
+    "alpha_normal_emission": "identical",
+    "normal_colors": "<=27",
+    "clipping": "PASS",
+    "pivot": [
+      0.5,
+      0.5
+    ]
+  }
+}

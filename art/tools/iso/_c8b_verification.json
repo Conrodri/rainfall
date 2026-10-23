@@ -1,0 +1,24 @@
+{
+  "result": "FAIL",
+  "errors": [
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_e.png.import protected"
+  ],
+  "files": 40,
+  "pivot": [
+    64,
+    89.6
+  ],
+  "px_per_u": 64,
+  "contact_rows": [
+    "small",
+    "large",
+    "legendary"
+  ],
+  "contact_columns": [
+    "SE closed/open with Ardent",
+    "SW closed/open with Ardent",
+    "SE closed x3",
+    "SE open x3"
+  ],
+  "emission_contract": "Existing _e files retained; small/large cavity emission baked into beauty, no new pass files."
+}

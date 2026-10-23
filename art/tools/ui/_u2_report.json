@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "png": 40,
+  "dice": 24,
+  "protected_files": 40,
+  "checks": [
+    "complete target coverage",
+    "all assets changed",
+    "RGBA dimensions",
+    "exact alpha bounding boxes",
+    "R7c inventory contract",
+    "import and tres hashes unchanged"
+  ],
+  "errors": [],
+  "notes": "R7c recorded contract; R7d inventory absent, snapshot of existing spell/interact/joystick assets. Rarity frames: icons/frame_*.png. Explicit toy-hand replacement: ui/hud/icon_interact_hand.png.",
+  "rarity_order": "commun iron / peu_commun green bronze / rare subdued violet-blue dice, blued steel frame / legendaire ember gold"
+}

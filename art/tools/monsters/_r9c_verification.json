@@ -1,0 +1,74 @@
+{
+  "result": "PASS",
+  "bosses": [
+    {
+      "result": "PASS",
+      "boss": "rust_archon",
+      "checks": [
+        "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+      ],
+      "minimum_margin": 4,
+      "new_animations": 9,
+      "attack_impact_index": 3,
+      "existing_animation_exception": "attack_s loop=false",
+      "contact_rows": [
+        "s",
+        "e",
+        "w",
+        "n"
+      ],
+      "contact_columns": [
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "result": "PASS",
+      "boss": "stone_colossus",
+      "checks": [
+        "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+        "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+      ],
+      "minimum_margin": 4,
+      "new_animations": 9,
+      "attack_impact_index": 3,
+      "existing_animation_exception": "attack_s loop=false",
+      "contact_rows": [
+        "s",
+        "e",
+        "w",
+        "n"
+      ],
+      "contact_columns": [
+        2,
+        3,
+        5
+      ]
+    }
+  ],
+  "contact": {
+    "boss_columns": [
+      "rust_archon",
+      "stone_colossus"
+    ],
+    "attack_rows": [
+      "s",
+      "e",
+      "w",
+      "n"
+    ],
+    "attack_columns": [
+      2,
+      3,
+      5
+    ],
+    "bottom_rows": [
+      "cast_a frame 4 e/w/n",
+      "cast_b frame 4 e/w/n"
+    ]
+  }
+}

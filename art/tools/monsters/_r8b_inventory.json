@@ -1,0 +1,727 @@
+{
+  "frame": 170,
+  "files": {
+    "bramble_queen\\attack.png": {
+      "bytes": 32822,
+      "sha256": "f36614dbf6094b60849a3cb41eeaae113ea65dccf3cf68596439926ff5ff4135",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\attack.png.import": {
+      "bytes": 963,
+      "sha256": "f3498142043d384cd6c1e1808bcd543bc45c1cd3d402d9e0557175edeed0fed4"
+    },
+    "bramble_queen\\attack_e.png": {
+      "bytes": 9034,
+      "sha256": "216d366adfae60a1c581def6b72b81206a95230e851bcf379482f5a9f796a956",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\attack_e.png.import": {
+      "bytes": 969,
+      "sha256": "39731d0a6eb44e86f54243f0df59ad67a8def1fd54fdcc9134c16c54379ad5c0"
+    },
+    "bramble_queen\\attack_n.png": {
+      "bytes": 27313,
+      "sha256": "5905c01a7385481e5d9cc752588e0f384da8244471dbddc06009ecc45a692e47",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\attack_n.png.import": {
+      "bytes": 969,
+      "sha256": "87f5a607b2a35628c7a72fbcb8170b7060ebb10735d1030b25e050f7d45a630a"
+    },
+    "bramble_queen\\bramble_queen.tres": {
+      "bytes": 13414,
+      "sha256": "2cac5dc258bfa524962de73f862b07e231d1e286fd048212e711620cd11f888c"
+    },
+    "bramble_queen\\cast_a.png": {
+      "bytes": 94128,
+      "sha256": "f583e96d0de64063c40a985d0bef1fb8db6e78ebc028dda08ad6447c3889206f",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_a.png.import": {
+      "bytes": 963,
+      "sha256": "ea0ea114b88b7d02f24fce220f8b9fdd556db4ba74cbac95a989ef1f60102f9d"
+    },
+    "bramble_queen\\cast_a_e.png": {
+      "bytes": 34632,
+      "sha256": "755d3d02de104a4ec52d3f09eba7a279107fb5d64668b063ad6ab3519ffabdba",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_a_e.png.import": {
+      "bytes": 969,
+      "sha256": "38ca9d8309a9cb9f88cd62028b724d723418076e6d5f16f0869539746fe52fa7"
+    },
+    "bramble_queen\\cast_a_n.png": {
+      "bytes": 80798,
+      "sha256": "a47ca308965221f4806d765eb76c5399e7447ec23ef14eaca4c94b7d5dcc75e2",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_a_n.png.import": {
+      "bytes": 969,
+      "sha256": "7a88539e195085901eda9267e1e091bd0fc99ad69d1a90054e765a14735f73db"
+    },
+    "bramble_queen\\cast_b.png": {
+      "bytes": 75730,
+      "sha256": "0c5fd4fc26f886f2d912917c3f782d7929bcda47205691f0768cc73102845682",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_b.png.import": {
+      "bytes": 963,
+      "sha256": "cf062e8c3fd3118a78483f55b92f7e593d06f9a5021ea659c6a2ed3437cd5e9a"
+    },
+    "bramble_queen\\cast_b_e.png": {
+      "bytes": 22195,
+      "sha256": "6df1c3ccf2d094fe4d759718002bf61d444411ce26e72c643bef9bf441bce1ce",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_b_e.png.import": {
+      "bytes": 969,
+      "sha256": "de0a399af7b4f51ebc9b1c604bd5f3ea13d0f8c91c7e949600b83819bd56e9fd"
+    },
+    "bramble_queen\\cast_b_n.png": {
+      "bytes": 64800,
+      "sha256": "07a30c07a6b6f16ea9dcacfc7f025d3ce1cd8b9aadbd7ebf444ffc71dab53bbc",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\cast_b_n.png.import": {
+      "bytes": 969,
+      "sha256": "887ff6882e5582f58461283a87cd169436dda50b9718addf8c5bba136ad909f9"
+    },
+    "bramble_queen\\death.png": {
+      "bytes": 141417,
+      "sha256": "f64b4022e4d42510718e5cf9d2896eac876e69ea04d066b1b484a1d6186b3be4",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bramble_queen\\death.png.import": {
+      "bytes": 960,
+      "sha256": "98fdd787370f2a605dc385f4bcc8960c62b99908a2b1397e924bc715d1e3c40d"
+    },
+    "bramble_queen\\death_e.png": {
+      "bytes": 47074,
+      "sha256": "be081f403b9dc4403c6232c7909eee4579e5f9a262f1f604447994fc770c51c1",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bramble_queen\\death_e.png.import": {
+      "bytes": 966,
+      "sha256": "732d31c39fb8284f5b011fae9cffa3a8ee7aa1c35343bc4308af7808c211c4f0"
+    },
+    "bramble_queen\\death_n.png": {
+      "bytes": 149230,
+      "sha256": "14fb35bc19be1a3135909d623d93201fd8b02a8a37f801fc00a39894338eba6f",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bramble_queen\\death_n.png.import": {
+      "bytes": 966,
+      "sha256": "ac8a8e166715860e686fc0b0e4432ea80d039f1da92dee238b3136a7d05edf46"
+    },
+    "bramble_queen\\idle.png": {
+      "bytes": 60122,
+      "sha256": "7532b806f9737b68c788686f555e4a0e7a54d4f63b6a43cde22a554aad853784",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\idle.png.import": {
+      "bytes": 957,
+      "sha256": "5bfb798e980caf61e374d3c9699fc33fc34eeeb412f350aec1867ab2d394a2f9"
+    },
+    "bramble_queen\\idle_e.png": {
+      "bytes": 19398,
+      "sha256": "89c6a9b457df88487c4d39ecad09427d68ef609970e8b4b1bf0d86a02c63a170",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\idle_e.png.import": {
+      "bytes": 963,
+      "sha256": "75fadf29621c0961d5c855c18071eb56d4c9dccd7a44c1ef2da21556b717a112"
+    },
+    "bramble_queen\\idle_n.png": {
+      "bytes": 65508,
+      "sha256": "8bffe4625a9dba6fdaf293a696f74cab841bed292ade1ce6b0db658fe5790de1",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bramble_queen\\idle_n.png.import": {
+      "bytes": 963,
+      "sha256": "8e96a350216e5c1ea4fd81f459c4f15e932db4f6aed9ce873559c2bdbac84971"
+    },
+    "bramble_queen\\phase2.png": {
+      "bytes": 129792,
+      "sha256": "c5fb993787ae762a9abc6f8b442f6263aa8ee027cd5e4b26bddccdea611dd230",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\phase2.png.import": {
+      "bytes": 963,
+      "sha256": "dbe1fc01c1d865daf8ba381f807fa366f0ab2b712a7e7c2e7d2bbc494b48bcce"
+    },
+    "bramble_queen\\phase2_e.png": {
+      "bytes": 39756,
+      "sha256": "5008c97951b1baeb4db878c1d5a93155a024e07977fe99abcd990db2e7416c50",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\phase2_e.png.import": {
+      "bytes": 969,
+      "sha256": "75ccf510e651327f8f579b46190c155b174fca1c251eeb3ec355284f1aaa0041"
+    },
+    "bramble_queen\\phase2_n.png": {
+      "bytes": 134884,
+      "sha256": "1db5f57bde32ab4a0199f4c7f91b387e2a3b462a1f3cf2fb7554632074488b8b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bramble_queen\\phase2_n.png.import": {
+      "bytes": 968,
+      "sha256": "8a10b0886ed64c81e88bf2c2eeee1a006591ca76b3aa1aa5cb8618a4b479f3bf"
+    },
+    "bramble_queen\\run.png": {
+      "bytes": 435895,
+      "sha256": "60f953f8ba008de9e119637f1f25d6edae2e151120182831551887efe4ac6886",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bramble_queen\\run.png.import": {
+      "bytes": 954,
+      "sha256": "434cf1a14d29c6acd39466ad1e8a543e89a53100007d6e9ae1990d6bfdea3f87"
+    },
+    "bramble_queen\\run_e.png": {
+      "bytes": 127142,
+      "sha256": "1052cc28e732cd6e04c12c2054032955e62346c37217d783d98eb34e6f0fed1d",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bramble_queen\\run_e.png.import": {
+      "bytes": 960,
+      "sha256": "3bc0707cd62ae5ebdc90f0be997369412b1c7ed623b0c6d95da4612fa73e840a"
+    },
+    "bramble_queen\\run_n.png": {
+      "bytes": 479758,
+      "sha256": "c177a5d49e90e297867da0ff8cb34cf701c89d4f25ddd063eeaeffbde7141f98",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bramble_queen\\run_n.png.import": {
+      "bytes": 959,
+      "sha256": "f0a8a5083619bb30d90673d7b9dd5e986179d555d2c996b2f6a4e5398e72d23e"
+    },
+    "brood_mother\\attack.png": {
+      "bytes": 71028,
+      "sha256": "643692553ed7da51bf153a55a7f55cfe9741f9c97d0f0ad2afbadad667cefd49",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\attack.png.import": {
+      "bytes": 962,
+      "sha256": "19d522bcb08f84acf7113c139ae63de189a36ff01851d76db03a2d8d8254ece0"
+    },
+    "brood_mother\\attack_e.png": {
+      "bytes": 32262,
+      "sha256": "49f3426f8958bdbf9f5f6e19faa3023494fc3c9b619ef793a67a7682df19910a",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\attack_e.png.import": {
+      "bytes": 967,
+      "sha256": "c07625595a245b3fa72e12820aad30ec96bed05413dd42b3c402914c810e3f10"
+    },
+    "brood_mother\\attack_n.png": {
+      "bytes": 58796,
+      "sha256": "db9984f8d527ec5ebe1fbb269a3134c5ec088eb4d77932eff9d27fe52bd9924d",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\attack_n.png.import": {
+      "bytes": 968,
+      "sha256": "74a2200e7f124ac4128472f081e2191ac49dc9a7554e5c9df858add505333cae"
+    },
+    "brood_mother\\brood_mother.tres": {
+      "bytes": 13407,
+      "sha256": "f1e5287daff173fb4b39032d6e43b84c1b29e25e31e3705632bb50931289b53c"
+    },
+    "brood_mother\\cast_a.png": {
+      "bytes": 98920,
+      "sha256": "c5b788e953a7b5e58dcf0c13bd9e60903db30608f1b37fa61d7b740b8354f304",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_a.png.import": {
+      "bytes": 961,
+      "sha256": "2b8a947c2eb7b2de4025cbc64aff36203d9bd15a2dd2289bd26eb5312ec21075"
+    },
+    "brood_mother\\cast_a_e.png": {
+      "bytes": 46401,
+      "sha256": "aec18a6f82f36c9a966ca4a2ccb2b894652c040254c8b9f838c32301378ab44b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_a_e.png.import": {
+      "bytes": 967,
+      "sha256": "cfc879b2ae22359a1d8bb17c9c614f81a9000159d00a5cabcb4fa9a57a3d126b"
+    },
+    "brood_mother\\cast_a_n.png": {
+      "bytes": 65400,
+      "sha256": "699726fb33957627aa4c7be585679e840c399af47d7023b0f5d09ccb1c8dffb2",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_a_n.png.import": {
+      "bytes": 968,
+      "sha256": "c25bcfd933218044d9c0c373b4bc979093336c079fcf1c8c07b924e1cc1b15d1"
+    },
+    "brood_mother\\cast_b.png": {
+      "bytes": 84088,
+      "sha256": "d5ecccb8d6d01250d2ac8c5ba082ef2fed8ff50bf6e4ab739814fd5532f9afba",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_b.png.import": {
+      "bytes": 962,
+      "sha256": "e606ad9c17a028be1dc5c949e655275da7aeb842c89e5ca76bca5671f744fbc7"
+    },
+    "brood_mother\\cast_b_e.png": {
+      "bytes": 34154,
+      "sha256": "ac1ff641896a434457322a536169b7672e1fdbe051f06ca254d82039732a2bc7",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_b_e.png.import": {
+      "bytes": 968,
+      "sha256": "e4d3973a8a39cbd096e99aea975763471e45e5a1def8b9e093ce2673f2ff70a6"
+    },
+    "brood_mother\\cast_b_n.png": {
+      "bytes": 63747,
+      "sha256": "e54db0d3ac66ae85f868706f25034b2a3e1926a91385cff5a3ae79710be5c581",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\cast_b_n.png.import": {
+      "bytes": 968,
+      "sha256": "47e64f71236600214a146a1de99ab68504aae3fa371bb374e4da0b26300037e0"
+    },
+    "brood_mother\\death.png": {
+      "bytes": 130738,
+      "sha256": "d4aeb732ac9073db02c6ce7eaff47013856eed245adae315ed3204351ae08a2d",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "brood_mother\\death.png.import": {
+      "bytes": 959,
+      "sha256": "17478eda026f1da2da066b7935d18a2d7cb2a207554b4d07ffc880bd57c8d9ec"
+    },
+    "brood_mother\\death_e.png": {
+      "bytes": 70287,
+      "sha256": "8fd0b3bcf5328c0ca823d7bc922cccb6cda24247d86a1cc8ef5f9057c09d5441",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "brood_mother\\death_e.png.import": {
+      "bytes": 965,
+      "sha256": "bdc8f10ab8dc1b0e72c367e52b7cae9324eb13be73c31cf318883f313d88fd41"
+    },
+    "brood_mother\\death_n.png": {
+      "bytes": 135499,
+      "sha256": "e2e8249ac8f828a2441edbe53a57aa686bf63ddd4fa00ab9f087d55a12d8d107",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "brood_mother\\death_n.png.import": {
+      "bytes": 965,
+      "sha256": "5036faa04e0c2a254480d9bf1346c58e3ee44aff21d163ee780920093f1073ea"
+    },
+    "brood_mother\\idle.png": {
+      "bytes": 61211,
+      "sha256": "b749f7aac0ecbaef068d571969efa2e05986bf705dd85f4be6d4be75cb5bbc69",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\idle.png.import": {
+      "bytes": 956,
+      "sha256": "5f79ba85c2a8762bdea0817171987ed7e722e5d2f4dd7e87f81c135496723092"
+    },
+    "brood_mother\\idle_e.png": {
+      "bytes": 27803,
+      "sha256": "f4b67dbaedce7f55d79a48178364dda8378bee959fd1e78d79d76a061fb66865",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\idle_e.png.import": {
+      "bytes": 961,
+      "sha256": "4b3758d11a6d58941ccd8a8c92dccc05dd1ba05ef96998bb4a912dfb880b2112"
+    },
+    "brood_mother\\idle_n.png": {
+      "bytes": 65185,
+      "sha256": "f1860580feeb8e7ccff47f6969c6d3f3d486d732085a216611da910986ea8131",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "brood_mother\\idle_n.png.import": {
+      "bytes": 961,
+      "sha256": "c0a9b417fb3baa3270f07e9ebf46e81a2139fdd81edf4725c4c1f15f30034080"
+    },
+    "brood_mother\\phase2.png": {
+      "bytes": 86873,
+      "sha256": "379977b855369e073d41b9e0250429a73bc1b0ccdf3fbd396cbc524febd89266",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\phase2.png.import": {
+      "bytes": 962,
+      "sha256": "84e66eea36f060e0cf60db31c996f222304e6544d32211a6a89566eba1497c3a"
+    },
+    "brood_mother\\phase2_e.png": {
+      "bytes": 48605,
+      "sha256": "3e4a78b885d1a29b22f6d6e91a7b850940f30ee5b6b797c0375876b3b376cb84",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\phase2_e.png.import": {
+      "bytes": 968,
+      "sha256": "662707cfbdc5f9d12b91b8b641002e8e90374d329e662856c1f0b28462c1a8b2"
+    },
+    "brood_mother\\phase2_n.png": {
+      "bytes": 74675,
+      "sha256": "f353e2157760d7671eab60152108f32cf5d130108877f50ee8a03c94ff341642",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "brood_mother\\phase2_n.png.import": {
+      "bytes": 968,
+      "sha256": "0505aa18a8d6b59989f2b638a8beeef31790ac6a26a960a61775465fe1a93a3c"
+    },
+    "brood_mother\\run.png": {
+      "bytes": 417082,
+      "sha256": "f7c357a4c583025f12c192156acf8a8678a7aa81ae1470d31d8a3de5e84e081e",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "brood_mother\\run.png.import": {
+      "bytes": 953,
+      "sha256": "cef61921c681c14d8f4ebd065761afd6e45da59378513022159cae5db8b4cbf8"
+    },
+    "brood_mother\\run_e.png": {
+      "bytes": 206083,
+      "sha256": "b910a502c347ba2275be529d03f1310383786f3460eec39d9bc4ebc98391feb2",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "brood_mother\\run_e.png.import": {
+      "bytes": 959,
+      "sha256": "1e182e58b4f6160ff9f6f1c2b606809e0132a0f43cdda566f45918f9c8c30562"
+    },
+    "brood_mother\\run_n.png": {
+      "bytes": 403996,
+      "sha256": "4125a9dbdea1b81e841a0589fc24acdb07d95547ed867960f4a831b58bbea6c6",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "brood_mother\\run_n.png.import": {
+      "bytes": 959,
+      "sha256": "5c733b18f8b477c883401b234a59123c68353afaebd3ee8b18f67cd8ccf8b71b"
+    }
+  }
+}

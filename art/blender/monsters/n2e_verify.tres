@@ -1,0 +1,34 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+func _initialize() -> void:
+    var total := 0
+    for name in ['swarm_tier1', 'shooter_tier2', 'leaper_tier2', 'brute_tier3']:
+        var path: String = 'res://assets/sprites/monsters/' + name + '_moss/' + name + '_moss.tres'
+        var frames = ResourceLoader.load(path, '', ResourceLoader.CACHE_MODE_IGNORE)
+        var original = ResourceLoader.load('res://assets/sprites/monsters/' + name + '/' + name + '.tres')
+        if not frames is SpriteFrames or not original is SpriteFrames:
+            printerr('FAIL N2E SpriteFrames ', name)
+            quit(1)
+            return
+        if frames.get_animation_names() != original.get_animation_names():
+            printerr('FAIL N2E animations ', name)
+            quit(1)
+            return
+        for anim in frames.get_animation_names():
+            if frames.get_frame_count(anim) != original.get_frame_count(anim) or frames.get_animation_speed(anim) != original.get_animation_speed(anim) or frames.get_animation_loop(anim) != original.get_animation_loop(anim):
+                printerr('FAIL N2E animation contract ', name, '/', anim)
+                quit(1)
+                return
+            for i in range(frames.get_frame_count(anim)):
+                var tex = frames.get_frame_texture(anim, i)
+                if tex == null or tex.get_width() <= 0 or tex.get_size() != original.get_frame_texture(anim, i).get_size():
+                    printerr('FAIL N2E texture ', name, '/', anim, '/', i)
+                    quit(1)
+                    return
+                total += 1
+        print('PASS N2E load ', name, '_moss.tres')
+    print('RESULT: OK N2E 4 SpriteFrames, ', total, ' frames')
+    quit(0)
+"

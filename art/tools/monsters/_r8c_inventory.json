@@ -1,0 +1,366 @@
+{
+  "frame": 170,
+  "files": {
+    "rust_archon\\attack.png": {
+      "bytes": 47237,
+      "sha256": "760bb776546b7b4cb96e45e4c68473dfe87bbe8fb5d0c15165baafe720acfb7f",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\attack.png.import": {
+      "bytes": 961,
+      "sha256": "11e8551c02bd87dab146fde9d315e9d526d4b913308b6b1733694c9041fc4806"
+    },
+    "rust_archon\\attack_e.png": {
+      "bytes": 13067,
+      "sha256": "f2541c8bf84a5c3bf50eac6bbf4b41815e1e3537d7fb5c5eb3f6dff1c5a9de31",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\attack_e.png.import": {
+      "bytes": 967,
+      "sha256": "4db40bdc6002345b9a7813cd4707507a8ed70a7f47152b62d4a155b013e4f7b5"
+    },
+    "rust_archon\\attack_n.png": {
+      "bytes": 38291,
+      "sha256": "033e51e299c800fbf2efc54378fd031225f9f984e839b8788afb5c55832fd107",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\attack_n.png.import": {
+      "bytes": 966,
+      "sha256": "1029af20b2bf13c2729630f4a0fd58638cddfb893e6b90f4b35f37ca18fe3e66"
+    },
+    "rust_archon\\cast_a.png": {
+      "bytes": 48688,
+      "sha256": "24e5f07c4b3cd30746f56462d83a37e3180f05accb75cf43adaf2919f1f29aa2",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_a.png.import": {
+      "bytes": 960,
+      "sha256": "1f1ebce054d495d28dc0e4f73ab9f63d3a014fee2872d5bddbeea21bed55c5bf"
+    },
+    "rust_archon\\cast_a_e.png": {
+      "bytes": 13786,
+      "sha256": "3b20c83e363489c9cd5b3dc545dd442a13a01f276115ea4402536177f949c653",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_a_e.png.import": {
+      "bytes": 966,
+      "sha256": "c15d17c5a652b00bc5a4f6d1107784fd76770247b5ce62335741438d5097e5d4"
+    },
+    "rust_archon\\cast_a_n.png": {
+      "bytes": 43640,
+      "sha256": "b6e1928554a6eef1881430dae0cc87a7bd3507cd3dccf778a5d74943f7c4a177",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_a_n.png.import": {
+      "bytes": 967,
+      "sha256": "de411dd52bd651f11288af3a48729e1564b5e73a4460c1b032cd315aaa414d7d"
+    },
+    "rust_archon\\cast_b.png": {
+      "bytes": 52878,
+      "sha256": "b8d266bb0f1078d8b8fc7476d68168b8e217820f5e868e9900cc14ec9c6fe67a",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_b.png.import": {
+      "bytes": 961,
+      "sha256": "d8cfa1cb5528d95fa19414d0cbf3a5dcc3c8b1e203ab168e8edf83f425fb712b"
+    },
+    "rust_archon\\cast_b_e.png": {
+      "bytes": 15316,
+      "sha256": "d66bc56ec3e812272732a6c9bc07249d4311d4a2249e6c6b0dbea32762938b22",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_b_e.png.import": {
+      "bytes": 967,
+      "sha256": "aa624820af5ef670af0035b5a0a166c3f55a34d5acb576ccb494e8c33e907870"
+    },
+    "rust_archon\\cast_b_n.png": {
+      "bytes": 49238,
+      "sha256": "ce90d321fc9879e43e2dd94fdb0ba3a0d9a7ea14d2e8251f4e067a528eeae2a2",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\cast_b_n.png.import": {
+      "bytes": 967,
+      "sha256": "b3063f4f67e31712963eb9cbb573f7c980b4f2b21280cb2435136fae76093b92"
+    },
+    "rust_archon\\death.png": {
+      "bytes": 141978,
+      "sha256": "d20d4101547bfec544a9bd3af71f6cd31ce84e3dd3423ba1f73e201c15344f47",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "rust_archon\\death.png.import": {
+      "bytes": 958,
+      "sha256": "316443ae591b756beb3d35863abc6e4c567d44f1ce6394d450a1e0320e7c5b3d"
+    },
+    "rust_archon\\death_e.png": {
+      "bytes": 42979,
+      "sha256": "b1f46f91794cc512f910225c21de4f440173dc5ad9986c5165e3644b8d742528",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "rust_archon\\death_e.png.import": {
+      "bytes": 964,
+      "sha256": "b15534fc82ef58082706d2e7d207911e630351fcc58d7cfccccaaaccc5daca8e"
+    },
+    "rust_archon\\death_n.png": {
+      "bytes": 147697,
+      "sha256": "00262080c97f7d85a263444453789c799a518a0d33d16e1d09d9ae1e489c3d0e",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "rust_archon\\death_n.png.import": {
+      "bytes": 964,
+      "sha256": "55f5fd2728ec7639f2d8345b51f1c0465b02a1a7f04140b7f53e985d7aee9af6"
+    },
+    "rust_archon\\idle.png": {
+      "bytes": 36498,
+      "sha256": "fba907a61acd66e919e0cfa90ded43818ca46b33fcc67a176a5cb00f743caf19",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\idle.png.import": {
+      "bytes": 955,
+      "sha256": "f9c1caa0a8b180d0254bfbbeebb1d300ecf3782678144cfee8047f95b8106228"
+    },
+    "rust_archon\\idle_e.png": {
+      "bytes": 12214,
+      "sha256": "1a97c86c91142d0b6cd17b43404cf4430d524a04ac9e87bb0851d67de8a95d42",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\idle_e.png.import": {
+      "bytes": 961,
+      "sha256": "ebf1281b245231f26b78d1efd679b3cfcb8f163b476e8b2d0e46ab9da4058549"
+    },
+    "rust_archon\\idle_n.png": {
+      "bytes": 41481,
+      "sha256": "55e46df904e45b31b4e5ddb52fb3819a20fffeb27e87d342d09b75b50877c5d2",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "rust_archon\\idle_n.png.import": {
+      "bytes": 960,
+      "sha256": "d3d00e750301ee875c79a8b5d3bf32056684e41f85bcbcae2e610da614c06f01"
+    },
+    "rust_archon\\phase2.png": {
+      "bytes": 85598,
+      "sha256": "a4cd718a8c25b407f1f1a8052e33e1362517e2f4a36c7fd03c17bcb458c6385a",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\phase2.png.import": {
+      "bytes": 961,
+      "sha256": "c8dd73e6a2c346c118e2595665926ab7337c5cfe4c18cf8674a2e427a9d2f7f0"
+    },
+    "rust_archon\\phase2_e.png": {
+      "bytes": 21807,
+      "sha256": "4be27b39f9095f5416a81bdf7ffa59c68c88f69e9a3ee5483bc0bac1fcfd5bae",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\phase2_e.png.import": {
+      "bytes": 967,
+      "sha256": "3c4f346753f5694c3bd4533a050d8f746773214b67cb455de39956c42de3f4de"
+    },
+    "rust_archon\\phase2_n.png": {
+      "bytes": 89561,
+      "sha256": "6f708bf00858a994c56fa8d964aa4d28c4cf5170e04e590b46024606fb33f0ec",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "rust_archon\\phase2_n.png.import": {
+      "bytes": 967,
+      "sha256": "72db04f14408e571d8ed6f731356bc3ecc579f9866800f79c506571e48ed5a82"
+    },
+    "rust_archon\\run.png": {
+      "bytes": 199887,
+      "sha256": "68a60ab8a37c9f7b5ab7e00336a2aa2f064a679ff8628ae42eaeb5c5f424becc",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "rust_archon\\run.png.import": {
+      "bytes": 952,
+      "sha256": "cb4ec8f7cefc8c3d88be0038d7909f69918179bebf19c2952287044cda250148"
+    },
+    "rust_archon\\run_e.png": {
+      "bytes": 65636,
+      "sha256": "1140db183219add9f4474190bc7f5f8afccd60d5bf226e4351d9e25989b3468f",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "rust_archon\\run_e.png.import": {
+      "bytes": 958,
+      "sha256": "831d8e0e33f37e8818799c6f558afdc5e6b510a071b708b4236319ad163084bf"
+    },
+    "rust_archon\\run_n.png": {
+      "bytes": 219497,
+      "sha256": "04ec440d87f6481bc7f4ac0bad3b25e3da4f8d1e44a7a60f4779c9e5892994a0",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "rust_archon\\run_n.png.import": {
+      "bytes": 957,
+      "sha256": "a17af8e060ae70d53eca937854d311c83bedd6e0fcf803b488e9cc994582eecf"
+    },
+    "rust_archon\\rust_archon.tres": {
+      "bytes": 13400,
+      "sha256": "65722ee458841938bd25b815c5d378a954f5e33afa623434c5a0a170351374e0"
+    }
+  }
+}

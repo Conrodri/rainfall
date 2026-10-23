@@ -1,0 +1,46 @@
+# Rapport de la file de nuit Codex
+- 22/10 01:27 == groupe 1
+- 22/10 01:27 lancement art/tools/characters/_cd1.txt
+- 22/10 01:28 quota Codex épuisé (art/tools/characters/_logcd1.txt), reprise vers 03:02
+- 22/10 01:28 lancement art/tools/characters/_cd2.txt
+- 22/10 01:28 quota Codex épuisé (art/tools/characters/_logcd2.txt), reprise vers 03:02
+- 22/10 01:28 lancement art/tools/characters/_cd3.txt
+- 22/10 01:28 quota Codex épuisé (art/tools/characters/_logcd3.txt), reprise vers 03:02
+- 22/10 01:28 lancement art/tools/characters/_m2b.txt
+- 22/10 01:29 quota Codex épuisé (art/tools/characters/_logm2b.txt), reprise vers 03:02
+- 22/10 03:02 lancement art/tools/characters/_cd2.txt
+- 22/10 03:02 lancement art/tools/characters/_m2b.txt
+- 22/10 03:02 lancement art/tools/characters/_cd3.txt
+- 22/10 03:02 lancement art/tools/characters/_cd1.txt
+- 22/10 03:10 fin art/tools/characters/_cd2.txt : png) : arcades lourdes, pieds palmés tendus, épaulière asymétrique ; vignette en plein bond avec sac gonflé. Deux planches 2400×1350, sources `.blend` et scripts `cd_*` livrés. Contrôles PASS : poses, cadrage CREA, échelle commune avec Ardent sur sol C1. Aucun fichier dans `game/` modifié.
+- 22/10 03:10 fin art/tools/characters/_cd1.txt : et scripts. Tocsin : manomètre déporté, collecteurs de vapeur latéraux, sabots articulés en coin. Averse : cape d’orage superposée, vanne de vidange déportée, graduations sur le voyant d’eau. Vues, détails, sorts, états démontés/pleine/vide et comparaison CREA avec Ardent vérifiés.
+- 22/10 03:12 fin art/tools/characters/_cd3.txt : png) : visage fermé, revers anguleux, coffre riveté avec fuite d’or sous pression. [Bourbe](art/tools/characters/_cd_bourbe.png) : tête sans yeux, cerclages interrompus, motte dimensionnée par volume. Chaque planche comprend les vues, détails, sort, palette et comparaison avec Ardent sur C1. 
+- 22/10 03:14 fin art/tools/characters/_m2b.txt : , bonnet agrandi, taille +15 %, pivot conservé ; `strings.json` actualisé.   472 frames vérifiées sans rognage ; `.tres` chargés et `sprites_test RESULT: OK`. Aucun `.gd/.tscn` modifié.   [Planche comparative avec Ardent](C:/Users/const/Documents/Rainfall/art/tools/characters/_m2b_contact.png)
+- 22/10 03:14 sprites_test après groupe 1 : RESULT: OK
+- 22/10 03:14 == groupe 2
+- 22/10 03:14 lancement art/tools/night/_i3.txt
+- 22/10 03:14 lancement art/tools/iso/_a2.txt
+- 22/10 03:15 lancement art/tools/night/_m3.txt
+- 22/10 03:15 lancement art/tools/night/_c7b.txt
+- 22/10 03:15 lancement art/tools/night/_f2.txt
+- 22/10 03:20 fin art/tools/night/_i3.txt : tinctes et fond de fer gravé. Tailles, marges alpha et .import conservés ; aucun .gd/.tscn modifié. Godot : `RESULT: OK` ; 65 ressources `.tres` chargées sans erreur. [Planche de contrôle 64/128 px](art/tools/night/_i3_contact.png) · [Rapport et choix artistiques](art/tools/night/i3_notes.md).
+- 22/10 03:24 fin art/tools/night/_f2.txt : e détrempé, tourbe, racines et lanternes vert pâle. Formats, pivots, normales, émissions et ombres : PASS. Godot : **RESULT: OK** ; 65 `.tres` chargés sans erreur. Aucun `.gd`, `.tscn` ou `.tres` modifié. [Planche](art/tools/night/_f2_contact.png) · [Rapport](art/blender/terrain/f2_report.md)
+- 22/10 03:24 fin art/tools/night/_m3.txt : ne fissurée du modèle validé, argent spectral. Assets M3 absents initialement : création nécessaire ; aucun `.gd/.tscn` modifié. Vérifications : `RESULT: OK` ; 10 `.tres` chargés sans erreur. [Planche de contrôle](art/tools/night/_m3_contact.png) · [Rapport](art/tools/night/m3_report.json)
+- 22/10 03:26 fin art/tools/iso/_a2.txt : nservés. Godot : `RESULT: OK` ; quatre `.tres` chargés. Nova : `radius_px=189.02`, `floor_aspect=0.4895`. Cendres : `radius_px=155.57`, `floor_aspect=0.4829`. Brasier : `radius_px=224.60`, `floor_aspect=0.4895`. [Planche finale](art/tools/iso/_a2_contact.png) · [Script](art/tools/iso/a2_build.py)
+- 22/10 03:27 fin art/tools/night/_c7b.txt : placés, 9 planches directionnelles ajoutées ; 28 animations conservées, 9 ajoutées. 276 frames vérifiées ; Godot **RESULT: OK**, `cerf.tres` chargé sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](art/tools/night/_c7b_contact.png) · [Rapport](art/tools/night/_c7b_report.txt)
+- 22/10 03:28 sprites_test après groupe 2 : RESULT: OK
+- 22/10 03:28 == groupe 3
+- 22/10 03:28 lancement art/tools/night/_t1.txt
+- 22/10 03:28 lancement art/tools/night/_c7c.txt
+- 22/10 03:28 lancement art/tools/night/_f3.txt
+- 22/10 03:33 fin art/tools/night/_f3.txt : aiton unique. Godot : **RESULT: OK** ; 42 ressources chargées sans erreur. Import terminé, avec avertissement Godot de nettoyage à la fermeture. Aucun .gd/.tscn ni .tres existant modifié. [Planche de contrôle](art/tools/night/_f3_contact.png) · [Rapport](art/blender/terrain/f3_validation.json)
+- 22/10 03:34 fin art/tools/night/_t1.txt : s/Rainfall/art/tools/night/_t1_contact.png) avec Ardent et ash_lord à la même échelle. Vérifications sources et passes : PASS ; Godot : `RESULT: OK`. Aucun fichier `game/`, `.gd` ou `.tscn` modifié. [Rapport et reprise T2](C:/Users/const/Documents/Rainfall/art/tools/night/t_out/rapport_t1.txt).
+- 22/10 03:40 fin art/tools/night/_c7c.txt : s directionnelles ajoutées. Godot : `RESULT: OK` ; `.tres` chargé sans erreur — 38 animations, 276 textures. Contrôles pixels, normales, mouvement et marges : PASS. Aucun `.gd`/`.tscn` touché. [Planche de contrôle](art/tools/night/_c7c_contact.png) · [Rapport](art/tools/night/_c7c_report.md)
+- 22/10 03:40 sprites_test après groupe 3 : RESULT: OK
+- 22/10 03:40 == groupe 4
+- 22/10 03:40 lancement art/tools/night/_t2.txt
+- 22/10 03:40 lancement art/tools/night/_av1.txt
+- 22/10 03:41 lancement art/tools/night/_ar1.txt
+- 22/10 03:49 fin art/tools/night/_av1.txt : �, démarche chargée, jauge cyan ; 4 icônes PBR 128 px. Godot : `RESULT: OK` ; deux `.tres` chargés sans erreur. Aucun `.gd`/`.tscn` modifié. [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_av1_contact.png). Lot 2 restant : VFX `wave_cone`, `puddle_mirror`, `crue_ring`.
+- 22/10 03:52 quota Codex épuisé (art/tools/night/_logt2.txt), reprise vers 08:05
+- 22/10 03:52 quota Codex épuisé (art/tools/night/_logar1.txt), reprise vers 08:05

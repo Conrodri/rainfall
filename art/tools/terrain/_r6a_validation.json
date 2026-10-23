@@ -1,0 +1,299 @@
+{
+  "errors": [],
+  "metrics": [
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/cliff_edge.png",
+      "seam_x": 0.53,
+      "seam_y": 0.473,
+      "neighbor_x": 0.496,
+      "neighbor_y": 1.277
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/cliff_edge_n.png",
+      "seam_x": 5.216,
+      "seam_y": 2.012,
+      "neighbor_x": 5.888,
+      "neighbor_y": 6.876
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_moss.png",
+      "seam_x": 0.781,
+      "seam_y": 0.75,
+      "neighbor_x": 0.75,
+      "neighbor_y": 0.74
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_moss_n.png",
+      "seam_x": 2.431,
+      "seam_y": 2.445,
+      "neighbor_x": 2.783,
+      "neighbor_y": 2.783
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_mud.png",
+      "seam_x": 0.665,
+      "seam_y": 0.595,
+      "neighbor_x": 0.642,
+      "neighbor_y": 0.628
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_mud_n.png",
+      "seam_x": 3.451,
+      "seam_y": 2.863,
+      "neighbor_x": 3.396,
+      "neighbor_y": 3.398
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_needles.png",
+      "seam_x": 1.078,
+      "seam_y": 2.043,
+      "neighbor_x": 1.562,
+      "neighbor_y": 1.557
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_needles_n.png",
+      "seam_x": 3.486,
+      "seam_y": 4.578,
+      "neighbor_x": 4.3,
+      "neighbor_y": 4.256
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_roots.png",
+      "seam_x": 0.445,
+      "seam_y": 0.44,
+      "neighbor_x": 0.492,
+      "neighbor_y": 0.536
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/ground_roots_n.png",
+      "seam_x": 3.738,
+      "seam_y": 2.893,
+      "neighbor_x": 4.669,
+      "neighbor_y": 5.809
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/water_deep.png",
+      "seam_x": 0.079,
+      "seam_y": 0.094,
+      "neighbor_x": 0.09,
+      "neighbor_y": 0.091
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/water_deep_n.png",
+      "seam_x": 0.023,
+      "seam_y": 0.018,
+      "neighbor_x": 0.023,
+      "neighbor_y": 0.022
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/water_shallow.png",
+      "seam_x": 0.389,
+      "seam_y": 0.546,
+      "neighbor_x": 0.443,
+      "neighbor_y": 0.387
+    },
+    {
+      "path": "game/assets/sprites/terrain/fog_forest/water_shallow_n.png",
+      "seam_x": 0.066,
+      "seam_y": 0.059,
+      "neighbor_x": 0.064,
+      "neighbor_y": 0.05
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/cliff_edge.png",
+      "seam_x": 0.645,
+      "seam_y": 0.577,
+      "neighbor_x": 0.597,
+      "neighbor_y": 1.366
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/cliff_edge_n.png",
+      "seam_x": 5.216,
+      "seam_y": 2.012,
+      "neighbor_x": 5.888,
+      "neighbor_y": 6.876
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_bridge.png",
+      "seam_x": 2.806,
+      "seam_y": 0.576,
+      "neighbor_x": 1.308,
+      "neighbor_y": 3.378
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_bridge_n.png",
+      "seam_x": 4.677,
+      "seam_y": 2.702,
+      "neighbor_x": 5.688,
+      "neighbor_y": 8.483
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_concrete.png",
+      "seam_x": 0.391,
+      "seam_y": 0.332,
+      "neighbor_x": 1.106,
+      "neighbor_y": 1.108
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_concrete_n.png",
+      "seam_x": 3.944,
+      "seam_y": 3.772,
+      "neighbor_x": 3.228,
+      "neighbor_y": 3.222
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_grate.png",
+      "seam_x": 0.426,
+      "seam_y": 0.443,
+      "neighbor_x": 2.848,
+      "neighbor_y": 4.013
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_grate_n.png",
+      "seam_x": 0.833,
+      "seam_y": 0.764,
+      "neighbor_x": 3.372,
+      "neighbor_y": 4.851
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_rust.png",
+      "seam_x": 0.288,
+      "seam_y": 0.22,
+      "neighbor_x": 1.373,
+      "neighbor_y": 1.36
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/ground_rust_n.png",
+      "seam_x": 0.858,
+      "seam_y": 0.82,
+      "neighbor_x": 5.046,
+      "neighbor_y": 5.048
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/water_deep.png",
+      "seam_x": 0.083,
+      "seam_y": 0.091,
+      "neighbor_x": 0.094,
+      "neighbor_y": 0.096
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/water_deep_n.png",
+      "seam_x": 0.023,
+      "seam_y": 0.018,
+      "neighbor_x": 0.023,
+      "neighbor_y": 0.022
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/water_shallow.png",
+      "seam_x": 0.129,
+      "seam_y": 0.628,
+      "neighbor_x": 0.154,
+      "neighbor_y": 0.57
+    },
+    {
+      "path": "game/assets/sprites/terrain/rust_city/water_shallow_n.png",
+      "seam_x": 0.034,
+      "seam_y": 0.128,
+      "neighbor_x": 0.039,
+      "neighbor_y": 0.118
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/cliff_edge.png",
+      "seam_x": 0.65,
+      "seam_y": 0.372,
+      "neighbor_x": 0.593,
+      "neighbor_y": 1.223
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/cliff_edge_n.png",
+      "seam_x": 5.216,
+      "seam_y": 2.012,
+      "neighbor_x": 5.888,
+      "neighbor_y": 6.876
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_grass.png",
+      "seam_x": 2.408,
+      "seam_y": 1.059,
+      "neighbor_x": 1.604,
+      "neighbor_y": 1.121
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_grass_n.png",
+      "seam_x": 7.799,
+      "seam_y": 3.964,
+      "neighbor_x": 6.409,
+      "neighbor_y": 4.785
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_moss.png",
+      "seam_x": 0.781,
+      "seam_y": 0.75,
+      "neighbor_x": 0.75,
+      "neighbor_y": 0.74
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_moss_n.png",
+      "seam_x": 2.431,
+      "seam_y": 2.445,
+      "neighbor_x": 2.783,
+      "neighbor_y": 2.783
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_mud.png",
+      "seam_x": 0.741,
+      "seam_y": 0.845,
+      "neighbor_x": 0.76,
+      "neighbor_y": 0.752
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_mud_n.png",
+      "seam_x": 3.236,
+      "seam_y": 3.299,
+      "neighbor_x": 3.773,
+      "neighbor_y": 3.771
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_stone.png",
+      "seam_x": 0.698,
+      "seam_y": 0.564,
+      "neighbor_x": 1.333,
+      "neighbor_y": 1.312
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/ground_stone_n.png",
+      "seam_x": 3.547,
+      "seam_y": 2.042,
+      "neighbor_x": 6.699,
+      "neighbor_y": 6.717
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/water_deep.png",
+      "seam_x": 0.077,
+      "seam_y": 0.061,
+      "neighbor_x": 0.074,
+      "neighbor_y": 0.075
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/water_deep_n.png",
+      "seam_x": 0.023,
+      "seam_y": 0.018,
+      "neighbor_x": 0.023,
+      "neighbor_y": 0.022
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/water_shallow.png",
+      "seam_x": 0.268,
+      "seam_y": 0.375,
+      "neighbor_x": 0.293,
+      "neighbor_y": 0.255
+    },
+    {
+      "path": "game/assets/sprites/terrain/terraces/water_shallow_n.png",
+      "seam_x": 0.066,
+      "seam_y": 0.059,
+      "neighbor_x": 0.064,
+      "neighbor_y": 0.05
+    }
+  ]
+}

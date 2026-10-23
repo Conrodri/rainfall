@@ -1,0 +1,179 @@
+{
+  "lot": "T1",
+  "base": "art/blender/characters/cd_tocsin.blend",
+  "source": "art\\blender\\characters\\tocsin.blend",
+  "cell": 192,
+  "pivot_px": [
+    96,
+    136.32
+  ],
+  "R_px_per_u": 90.50966799187809,
+  "elevation_degrees": 30,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "modules": {
+    "torso": {
+      "object": "torso",
+      "pivot_u": [
+        0.0,
+        0.0,
+        0.7400000095367432
+      ],
+      "meshes": 91
+    },
+    "head": {
+      "object": "head",
+      "pivot_u": [
+        0.0,
+        0.0,
+        1.059999942779541
+      ],
+      "meshes": 14
+    },
+    "arm_l": {
+      "object": "arm_l",
+      "pivot_u": [
+        -0.30000001192092896,
+        0.0,
+        0.9399999976158142
+      ],
+      "meshes": 9
+    },
+    "arm_r": {
+      "object": "arm_r",
+      "pivot_u": [
+        0.30000001192092896,
+        0.0,
+        0.9399999976158142
+      ],
+      "meshes": 9
+    },
+    "leg_l": {
+      "object": "leg_l",
+      "pivot_u": [
+        -0.14499999582767487,
+        0.0,
+        0.5
+      ],
+      "meshes": 13
+    },
+    "leg_r": {
+      "object": "leg_r",
+      "pivot_u": [
+        0.14499999582767487,
+        0.0,
+        0.5
+      ],
+      "meshes": 13
+    },
+    "neck_steam": {
+      "object": "neck_steam",
+      "pivot_u": [
+        0.0,
+        0.0,
+        1.0449999570846558
+      ],
+      "meshes": 3
+    }
+  },
+  "game_files_changed": 0,
+  "design": "Approved CD geometry: boiler, split bell, asymmetric finial, long three-finger claws; black iron, verdigris, brass fasteners, rust, moss, orange furnace only.",
+  "next": "T2: animate seven roots from tocsin.blend; preserve 192px / shift_y .21; steam hidden unless head absent. T3/T5 include attack (impact N/2), cast, cast_ult, death.",
+  "direction_checks": [
+    {
+      "direction": "e",
+      "alpha_bbox": [
+        69,
+        22,
+        125,
+        148
+      ]
+    },
+    {
+      "direction": "se",
+      "alpha_bbox": [
+        57,
+        22,
+        144,
+        151
+      ]
+    },
+    {
+      "direction": "s",
+      "alpha_bbox": [
+        41,
+        23,
+        155,
+        146
+      ]
+    },
+    {
+      "direction": "sw",
+      "alpha_bbox": [
+        46,
+        25,
+        134,
+        151
+      ]
+    },
+    {
+      "direction": "w",
+      "alpha_bbox": [
+        67,
+        25,
+        123,
+        148
+      ]
+    },
+    {
+      "direction": "nw",
+      "alpha_bbox": [
+        48,
+        25,
+        135,
+        147
+      ]
+    },
+    {
+      "direction": "n",
+      "alpha_bbox": [
+        37,
+        24,
+        151,
+        141
+      ]
+    },
+    {
+      "direction": "ne",
+      "alpha_bbox": [
+        58,
+        22,
+        146,
+        147
+      ]
+    }
+  ],
+  "checks": "PASS seven roots, fixed foot pivot, 8 alpha margins, native 192px, normal/emission passes, common-scale cast",
+  "saved_source_check": {
+    "result": "PASS",
+    "mesh_objects": 152,
+    "base_triangles": 16152,
+    "modules": 7,
+    "normal_alpha_matches_diffuse": true
+  },
+  "black_emission_omitted_per_STYLE": [
+    "nw",
+    "n",
+    "ne"
+  ],
+  "godot_sprites_test": "RESULT: OK; no errors",
+  "tres": "No T1 SpriteFrames: source-only lot. Existing .tres unchanged; T5 owns assembly."
+}

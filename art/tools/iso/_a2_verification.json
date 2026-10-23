@@ -1,0 +1,79 @@
+{
+  "unchanged_idle_run": true,
+  "actions": {
+    "attack": {
+      "frames": 5,
+      "impact": 2,
+      "pivot": [
+        96,
+        136.32
+      ],
+      "bounds": [
+        30,
+        7,
+        162,
+        161
+      ]
+    },
+    "cast": {
+      "frames": 6,
+      "impact": 3,
+      "pivot": [
+        96,
+        136.32
+      ],
+      "bounds": [
+        33,
+        7,
+        159,
+        165
+      ]
+    },
+    "cast_ult": {
+      "frames": 8,
+      "impact": 4,
+      "pivot": [
+        96,
+        136.32
+      ],
+      "bounds": [
+        24,
+        7,
+        168,
+        165
+      ]
+    }
+  },
+  "vfx": {
+    "ardent_nova": {
+      "frames": 10,
+      "radius_px": 189.02,
+      "floor_aspect": 0.4895,
+      "measurement": "projected z=0 incandescent bed mesh bounding box",
+      "frame_px": 512,
+      "atlas_columns": 14,
+      "loop": false,
+      "measured_frame_0_index": 6
+    },
+    "ardent_ashes": {
+      "frames": 8,
+      "radius_px": 155.57,
+      "floor_aspect": 0.4829,
+      "measurement": "projected z=0 incandescent bed mesh bounding box",
+      "frame_px": 384,
+      "atlas_columns": 8,
+      "loop": true,
+      "measured_frame_0_index": 6
+    },
+    "ardent_brasier": {
+      "frames": 12,
+      "radius_px": 224.6,
+      "floor_aspect": 0.4895,
+      "measurement": "projected z=0 incandescent bed mesh bounding box",
+      "frame_px": 640,
+      "atlas_columns": 18,
+      "loop": false,
+      "measured_frame_0_index": 6
+    }
+  }
+}

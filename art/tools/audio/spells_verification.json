@@ -1,0 +1,680 @@
+{
+  "files": 84,
+  "total_duration_s": 149.780512,
+  "size_bytes": 2876426,
+  "failures": [],
+  "measurements": [
+    {
+      "path": "spells/ember_bolt_cast_light_01.ogg",
+      "true_peak_dbfs": -2.719,
+      "rms_dbfs": -18.056,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_light_02.ogg",
+      "true_peak_dbfs": -4.0,
+      "rms_dbfs": -18.053,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_light_03.ogg",
+      "true_peak_dbfs": -4.071,
+      "rms_dbfs": -18.07,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_medium_01.ogg",
+      "true_peak_dbfs": -4.025,
+      "rms_dbfs": -18.027,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_medium_02.ogg",
+      "true_peak_dbfs": -4.373,
+      "rms_dbfs": -18.013,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_medium_03.ogg",
+      "true_peak_dbfs": -4.641,
+      "rms_dbfs": -18.023,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_heavy_01.ogg",
+      "true_peak_dbfs": -6.313,
+      "rms_dbfs": -17.984,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_heavy_02.ogg",
+      "true_peak_dbfs": -3.793,
+      "rms_dbfs": -17.999,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_cast_heavy_03.ogg",
+      "true_peak_dbfs": -4.836,
+      "rms_dbfs": -18.022,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_light_01.ogg",
+      "true_peak_dbfs": -3.275,
+      "rms_dbfs": -19.186,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_light_02.ogg",
+      "true_peak_dbfs": -2.531,
+      "rms_dbfs": -19.123,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_light_03.ogg",
+      "true_peak_dbfs": -3.511,
+      "rms_dbfs": -19.087,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_medium_01.ogg",
+      "true_peak_dbfs": -3.501,
+      "rms_dbfs": -18.118,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_medium_02.ogg",
+      "true_peak_dbfs": -2.969,
+      "rms_dbfs": -18.089,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_medium_03.ogg",
+      "true_peak_dbfs": -3.114,
+      "rms_dbfs": -18.082,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_heavy_01.ogg",
+      "true_peak_dbfs": -3.254,
+      "rms_dbfs": -18.056,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_heavy_02.ogg",
+      "true_peak_dbfs": -3.768,
+      "rms_dbfs": -18.05,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ember_bolt_impact_heavy_03.ogg",
+      "true_peak_dbfs": -3.997,
+      "rms_dbfs": -18.059,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_light_01.ogg",
+      "true_peak_dbfs": -3.184,
+      "rms_dbfs": -18.266,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_light_02.ogg",
+      "true_peak_dbfs": -3.439,
+      "rms_dbfs": -18.25,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_light_03.ogg",
+      "true_peak_dbfs": -3.177,
+      "rms_dbfs": -18.124,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_medium_01.ogg",
+      "true_peak_dbfs": -2.603,
+      "rms_dbfs": -18.154,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_medium_02.ogg",
+      "true_peak_dbfs": -3.114,
+      "rms_dbfs": -18.159,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_medium_03.ogg",
+      "true_peak_dbfs": -3.317,
+      "rms_dbfs": -18.149,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_heavy_01.ogg",
+      "true_peak_dbfs": -3.005,
+      "rms_dbfs": -18.635,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_heavy_02.ogg",
+      "true_peak_dbfs": -2.608,
+      "rms_dbfs": -18.527,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/ardent_nova_heavy_03.ogg",
+      "true_peak_dbfs": -3.155,
+      "rms_dbfs": -18.131,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_light_01.ogg",
+      "true_peak_dbfs": -3.278,
+      "rms_dbfs": -18.129,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_light_02.ogg",
+      "true_peak_dbfs": -2.94,
+      "rms_dbfs": -18.144,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_light_03.ogg",
+      "true_peak_dbfs": -2.774,
+      "rms_dbfs": -18.149,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_medium_01.ogg",
+      "true_peak_dbfs": -2.937,
+      "rms_dbfs": -18.143,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_medium_02.ogg",
+      "true_peak_dbfs": -3.75,
+      "rms_dbfs": -18.136,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_medium_03.ogg",
+      "true_peak_dbfs": -3.909,
+      "rms_dbfs": -18.148,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_heavy_01.ogg",
+      "true_peak_dbfs": -2.969,
+      "rms_dbfs": -18.583,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_heavy_02.ogg",
+      "true_peak_dbfs": -3.234,
+      "rms_dbfs": -18.232,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/brasier_heavy_03.ogg",
+      "true_peak_dbfs": -3.418,
+      "rms_dbfs": -18.145,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_light_01.ogg",
+      "true_peak_dbfs": -3.125,
+      "rms_dbfs": -18.462,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_light_02.ogg",
+      "true_peak_dbfs": -3.902,
+      "rms_dbfs": -18.179,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_light_03.ogg",
+      "true_peak_dbfs": -3.52,
+      "rms_dbfs": -18.141,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_medium_01.ogg",
+      "true_peak_dbfs": -2.623,
+      "rms_dbfs": -18.189,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_medium_02.ogg",
+      "true_peak_dbfs": -3.89,
+      "rms_dbfs": -18.24,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_medium_03.ogg",
+      "true_peak_dbfs": -3.522,
+      "rms_dbfs": -18.203,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_heavy_01.ogg",
+      "true_peak_dbfs": -3.855,
+      "rms_dbfs": -18.623,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_heavy_02.ogg",
+      "true_peak_dbfs": -3.372,
+      "rms_dbfs": -18.171,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_start_heavy_03.ogg",
+      "true_peak_dbfs": -3.523,
+      "rms_dbfs": -18.182,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_light_01.ogg",
+      "true_peak_dbfs": -3.7,
+      "rms_dbfs": -18.135,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_light_02.ogg",
+      "true_peak_dbfs": -3.356,
+      "rms_dbfs": -18.132,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_light_03.ogg",
+      "true_peak_dbfs": -4.11,
+      "rms_dbfs": -18.13,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_medium_01.ogg",
+      "true_peak_dbfs": -3.627,
+      "rms_dbfs": -18.151,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_medium_02.ogg",
+      "true_peak_dbfs": -4.071,
+      "rms_dbfs": -18.138,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_medium_03.ogg",
+      "true_peak_dbfs": -4.027,
+      "rms_dbfs": -18.125,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_heavy_01.ogg",
+      "true_peak_dbfs": -3.394,
+      "rms_dbfs": -18.124,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_heavy_02.ogg",
+      "true_peak_dbfs": -3.073,
+      "rms_dbfs": -18.113,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/flame_pillar_heavy_03.ogg",
+      "true_peak_dbfs": -3.278,
+      "rms_dbfs": -18.716,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_light_01.ogg",
+      "true_peak_dbfs": -3.341,
+      "rms_dbfs": -18.106,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_light_02.ogg",
+      "true_peak_dbfs": -2.748,
+      "rms_dbfs": -18.135,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_light_03.ogg",
+      "true_peak_dbfs": -3.312,
+      "rms_dbfs": -18.124,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_medium_01.ogg",
+      "true_peak_dbfs": -4.244,
+      "rms_dbfs": -18.146,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_medium_02.ogg",
+      "true_peak_dbfs": -2.795,
+      "rms_dbfs": -18.126,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_medium_03.ogg",
+      "true_peak_dbfs": -2.904,
+      "rms_dbfs": -18.343,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_heavy_01.ogg",
+      "true_peak_dbfs": -4.174,
+      "rms_dbfs": -18.138,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_heavy_02.ogg",
+      "true_peak_dbfs": -3.388,
+      "rms_dbfs": -18.157,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/meteor_rain_heavy_03.ogg",
+      "true_peak_dbfs": -3.912,
+      "rms_dbfs": -18.175,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_light_01.ogg",
+      "true_peak_dbfs": -6.133,
+      "rms_dbfs": -18.134,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_light_02.ogg",
+      "true_peak_dbfs": -5.38,
+      "rms_dbfs": -18.131,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_light_03.ogg",
+      "true_peak_dbfs": -6.132,
+      "rms_dbfs": -18.133,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_medium_01.ogg",
+      "true_peak_dbfs": -6.048,
+      "rms_dbfs": -18.142,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_medium_02.ogg",
+      "true_peak_dbfs": -6.223,
+      "rms_dbfs": -18.133,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_medium_03.ogg",
+      "true_peak_dbfs": -5.982,
+      "rms_dbfs": -18.143,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_heavy_01.ogg",
+      "true_peak_dbfs": -5.247,
+      "rms_dbfs": -18.149,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_heavy_02.ogg",
+      "true_peak_dbfs": -5.151,
+      "rms_dbfs": -18.141,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/phoenix_heavy_03.ogg",
+      "true_peak_dbfs": -5.457,
+      "rms_dbfs": -18.134,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_light_01.ogg",
+      "true_peak_dbfs": -11.99,
+      "rms_dbfs": -24.101,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_light_02.ogg",
+      "true_peak_dbfs": -11.99,
+      "rms_dbfs": -24.097,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_medium_01.ogg",
+      "true_peak_dbfs": -13.851,
+      "rms_dbfs": -24.135,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_medium_02.ogg",
+      "true_peak_dbfs": -13.655,
+      "rms_dbfs": -24.125,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_heavy_01.ogg",
+      "true_peak_dbfs": -14.842,
+      "rms_dbfs": -24.159,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/cinders_loop_heavy_02.ogg",
+      "true_peak_dbfs": -14.472,
+      "rms_dbfs": -24.153,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_light_01.ogg",
+      "true_peak_dbfs": -11.765,
+      "rms_dbfs": -24.224,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_light_02.ogg",
+      "true_peak_dbfs": -11.248,
+      "rms_dbfs": -24.239,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_medium_01.ogg",
+      "true_peak_dbfs": -12.481,
+      "rms_dbfs": -24.215,
+      "seam_delta": 7.781649401294999e-06,
+      "seam_derivative_ratio": 0.0002949527348102993,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_medium_02.ogg",
+      "true_peak_dbfs": -13.05,
+      "rms_dbfs": -24.212,
+      "seam_delta": 0.0,
+      "seam_derivative_ratio": 0.0,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_heavy_01.ogg",
+      "true_peak_dbfs": -13.503,
+      "rms_dbfs": -24.23,
+      "seam_delta": 1.7665198583927122e-06,
+      "seam_derivative_ratio": 7.777521957606017e-05,
+      "errors": []
+    },
+    {
+      "path": "spells/roaming_embers_loop_heavy_02.ogg",
+      "true_peak_dbfs": -13.934,
+      "rms_dbfs": -24.237,
+      "seam_delta": 8.76569356478285e-06,
+      "seam_derivative_ratio": 0.0003855201090224424,
+      "errors": []
+    }
+  ]
+}

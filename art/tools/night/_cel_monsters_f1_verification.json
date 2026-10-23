@@ -1,0 +1,202 @@
+{
+  "profile": "creature",
+  "normals": false,
+  "choices": "CS1 copied; C5 geometry, animations, camera and material hues preserved; shared shadow floor for night readability. Shooter/leaper keep archived half-resolution emission masks: AOV edge coverage differs on their tiny accents; only diffuse shading changes.",
+  "sheets": [
+    {
+      "file": "monsters/swarm_tier1/run.png",
+      "silhouette_iou": 0.9976513236833372,
+      "e_half": true,
+      "size": [
+        768,
+        768
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 0.9923371647509579,
+      "emission_size": [
+        384,
+        384
+      ],
+      "emission_source": "CS1",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.8746926550136349,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/shooter_tier2/run.png",
+      "silhouette_iou": 0.9958214486855731,
+      "e_half": true,
+      "size": [
+        896,
+        896
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 1.0,
+      "emission_size": [
+        448,
+        448
+      ],
+      "emission_source": "archive, byte-identical",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.8574293413548912,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/shooter_tier2/attack.png",
+      "silhouette_iou": 0.9962913672256233,
+      "e_half": true,
+      "size": [
+        896,
+        896
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 1.0,
+      "emission_size": [
+        448,
+        448
+      ],
+      "emission_source": "archive, byte-identical",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.8505481120584653,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/leaper_tier2/run.png",
+      "silhouette_iou": 0.9965866290018832,
+      "e_half": true,
+      "size": [
+        896,
+        896
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 1.0,
+      "emission_size": [
+        448,
+        448
+      ],
+      "emission_source": "archive, byte-identical",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.8412806539509536,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/leaper_tier2/charge.png",
+      "silhouette_iou": 0.9965140797170453,
+      "e_half": true,
+      "size": [
+        896,
+        896
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 1.0,
+      "emission_size": [
+        448,
+        448
+      ],
+      "emission_source": "archive, byte-identical",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.8427270631627478,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/brute_tier3/run.png",
+      "silhouette_iou": 0.9985884497399191,
+      "e_half": true,
+      "size": [
+        1280,
+        1280
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 0.9841688654353562,
+      "emission_size": [
+        640,
+        640
+      ],
+      "emission_source": "CS1",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.9150981830033407,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/brute_tier3/attack.png",
+      "silhouette_iou": 0.9985259081167525,
+      "e_half": true,
+      "size": [
+        1280,
+        1280
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 0.978021978021978,
+      "emission_size": [
+        640,
+        640
+      ],
+      "emission_source": "CS1",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.9109939309521441,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    },
+    {
+      "file": "monsters/brute_tier3/cast.png",
+      "silhouette_iou": 0.9984406545967861,
+      "e_half": true,
+      "size": [
+        1280,
+        1280
+      ],
+      "normals_absent": true,
+      "cells_nonempty_unique": "64/64",
+      "accent_iou_half": 0.9782016348773842,
+      "emission_size": [
+        640,
+        640
+      ],
+      "emission_source": "CS1",
+      "alpha_half_exact": false,
+      "alpha_emission_iou_half": 0.9100726604918556,
+      "alpha_validation": "half-resolution: dimensions checked; exact alpha equality only applies at full resolution (STYLE_cel.md)"
+    }
+  ],
+  "protected_unchanged": true,
+  "tests": {
+    "sprites": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "enemies_map": {
+      "result": "RESULT: OK (0 echec(s))",
+      "errors": [
+        "ERROR: 17 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "biome_fauna": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "render_style": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "texture_budget": {
+      "result": "RESULT: OK",
+      "errors": []
+    }
+  },
+  "godot_import": {
+    "status": "FAIL: unrelated parse error",
+    "location": "res://scripts/spells/bourbe_kit.gd:544",
+    "error": "Cannot infer the type of \"lost\" variable because the value does not have a set type."
+  },
+  "budget_monsters": {
+    "before": "monsters                        56     150.9      37.7     14.8      75.5       7.9      12",
+    "after": "monsters                        56     150.9      37.7     14.9      75.5       7.8      12",
+    "policy_changes": 0
+  }
+}

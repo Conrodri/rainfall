@@ -1,0 +1,265 @@
+{
+  "_doc": "Mini-boss pilotés par données (MiniBossBrain, scripts/enemies/miniboss_brain.gd ; motifs : miniboss_patterns.gd). Source de design : docs/Design_Boss_Cartes.md §2 (6 historiques) et docs/Design_Etages.md §5 (14 nouveaux). Unités : u (1 u = 64 px), degrés, secondes. coef = multiplicateur de Enemy.damage passé par Balance.mini_attack_damage ; windup = télégraphe (sorts >= Balance.MINI_SPELL_WINDUP_MIN, autos >= MINI_AUTO_WINDUP_MIN) ; les dégâts tombent à la fin du télégraphe = frame d'impact de l'anim (EnemyVisual.play_attack). Champs d'un motif : id, type (cone, line, charge, projectile_fan, ring, circles, summon, leap, beam, burrow), anim (attack | cast_a | cast_b), auto (attaque de base), cd, first_cd, min_u/max_u (portée de déclenchement), phase (2 = seulement en phase 2), p2 (surcharges en phase 2), status (slow | burn | poison), push_u/pull_u, repeat/repeat_gap, recover_s (immobile après le coup), zone (trace au sol : linger_s, tick_s, coef, status, color, slow_only, water (flaque d'eau : ralentit par slow_mult, conduit la foudre : shock_coef, rend in_water vrai), salt (croûte de sel), style). Mécaniques de terrain (MiniHazards) : obstacle {r_u, life_s, style ice|rock|bones} (circles : un bloc réel par impact), obstacles {count, r_u, life_s, style, at ring|area} (ring), cover (cone/beam : les obstacles couvrent le joueur), gaps + gap_u (ring : anneau à brèches, zone en chaînes), bounces (projectile_fan : rebonds sur les murs), radius_u (projectile spécial), jam_s (brouille la minimap du joueur touché), summon_sprite (+ summon_bodies.<id> {scale, offset_y, render_px_per_u} au niveau du mini). Statuts transmis (coups, zones, projectiles) : burn, poison, slow, frost (gel : Player.apply_slow fort et court, réglable par frost {mult, s}). Mini : name, biome, speed_u (vitesse de design, rapportée à Balance.MINI_DESIGN_SPEED_REF_U), keep_u (distance d'arrêt), kite_u (recule sous cette distance), aim_lag_s (vise la position du joueur d'il y a N s), passives (front_guard, flat_guard, summon_guard, far_guard, summon_regen, summon_rage, rage_on_hit, haste_after, echo_speed, shroud, obstacle_rage {style, near_u, mult}, wader {mult : vitesse dans l'eau}, dry_vuln {mult : dégâts reçus hors de l'eau}, dissolve {pct_s : PV max perdus par s dans l'eau}), phase2 {threshold, speed_mult, cd_mult, stagger_s, on_enter, drop_passives}, light {preset, color, energy [p1, p2] (énergie ABSOLUE de la lumière, convertie en multiplicateur du preset), radius [p1, p2], rim {color, energy absolue}}, body_gain (éclaircit le corps : lisibilité de nuit ; × biome_gain[biome] ; liseré × biome_rim[biome], biomes nocturnes), fallback {sprite, tint, scale} : corps emprunté tant que le .tres du mini n'est pas livré (chemins attendus : data/fauna.json boss_sprites).",
+  "defaults": {
+    "speed_u": 2.6,
+    "keep_u": 1.8,
+    "body_gain": 1.6,
+    "biome_gain": {"terrasses": 1.0, "foret": 1.15, "cite": 1.45, "cryptes": 1.35},
+    "outline": {"alpha": 0.42, "px": 2.5},
+    "biome_rim": {"terrasses": 1.0, "foret": 1.4, "cite": 2.0, "cryptes": 1.6},
+    "phase2": {"threshold": 0.5, "speed_mult": 1.0, "cd_mult": 0.85, "stagger_s": 0.9},
+    "light": {"preset": "boss", "energy": [1.7, 2.1], "radius": [1.0, 1.25], "rim": {"color": "#CFE8FF", "energy": 0.9}}
+  },
+  "minis": {
+    "frost_bear": {
+      "name": "Ours de givre", "biome": "terrasses", "speed_u": 2.8, "keep_u": 1.9,
+      "light": {"preset": "boss_ours", "color": "#5EC8FF", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#CFE8FF", "energy": 0.9}},
+      "fallback": {"sprite": "frost_bear"},
+      "passives": [{"type": "obstacle_rage", "style": "ice", "near_u": 2.0, "mult": 0.2}],
+      "phase2": {"speed_mult": 1.1, "on_enter": "leap"},
+      "patterns": [
+        {"id": "paw", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.8, "windup": 0.6, "max_u": 2.6, "range_u": 2.5, "half_deg": 60, "status": "slow"},
+        {"id": "frost_spit", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.6, "cd": 2.0, "first_cd": 0.0, "windup": 0.45, "min_u": 2.7, "max_u": 9.0, "count": 3, "spread_deg": 14, "speed_u": 7.0, "status": "frost"},
+        {"id": "breath", "type": "beam", "anim": "cast_a", "coef": 0.5, "cd": 10, "first_cd": 5, "windup": 1.0, "max_u": 7.0, "shape": "cone", "range_u": 8.0, "half_deg": 30, "channel_s": 1.5, "tick_s": 0.5, "status": "slow", "cover": true, "p2": {"sweep_deg": 40}},
+        {"id": "stalactites", "type": "circles", "anim": "cast_b", "coef": 1.3, "cd": 12, "first_cd": 8, "windup": 1.2, "max_u": 10, "count": 6, "radius_u": 1.5, "spread_u": 5.0, "obstacle": {"r_u": 0.5, "life_s": 4.0, "style": "ice"}},
+        {"id": "leap", "type": "leap", "anim": "cast_b", "phase": 2, "coef": 2.2, "cd": 9, "windup": 1.0, "air_s": 0.45, "max_u": 9, "radius_u": 3.0, "push_u": 2.0}
+      ]
+    },
+    "stone_colossus": {
+      "name": "Colosse de pierre", "biome": "terrasses", "speed_u": 2.2, "keep_u": 1.9,
+      "light": {"preset": "boss_colosse", "color": "#FF8A30", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#FFD9A8", "energy": 0.9}},
+      "fallback": {"sprite": "stone_colossus"},
+      "passives": [{"type": "flat_guard", "mult": 0.7, "off_after_crash_s": 4.0}],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "mallet", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.8, "windup": 0.5, "max_u": 2.6, "range_u": 2.5, "half_deg": 45},
+        {"id": "charge", "type": "charge", "anim": "cast_a", "coef": 1.8, "cd": 10, "first_cd": 3, "windup": 1.0, "min_u": 3.0, "max_u": 12, "length_u": 14, "width_u": 2.0, "speed_u": 12, "push_u": 2.0, "stun_wall_s": 1.5, "p2": {"chain": 1}},
+        {"id": "shockwave", "type": "ring", "anim": "cast_b", "coef": 1.4, "cd": 12, "first_cd": 6, "windup": 0.9, "max_u": 5.5, "radius_u": 6.0, "inner_u": 1.0, "push_u": 2.0, "p2": {"obstacles": {"count": 3, "r_u": 0.5, "life_s": 6.0, "style": "rock", "at": "ring"}}}
+      ]
+    },
+    "iron_heron": {
+      "name": "Héron de fer", "biome": "terrasses", "speed_u": 2.6, "keep_u": 2.4,
+      "light": {"color": "#5EC8FF", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#FFD9A8", "energy": 0.9}},
+      "fallback": {"sprite": "rust_archon", "tint": "#E6D2A6", "scale": 0.95},
+      "body_gain": 1.9,
+      "passives": [{"type": "wader", "mult": 1.3}],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "beak", "type": "line", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.6, "windup": 0.5, "max_u": 3.0, "length_u": 3.0, "width_u": 0.8},
+        {"id": "dart", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.8, "cd": 2.2, "windup": 0.45, "min_u": 3.2, "max_u": 10, "count": 1, "speed_u": 11},
+        {"id": "harpoon", "type": "line", "anim": "cast_a", "coef": 1.6, "cd": 8, "first_cd": 3, "windup": 1.0, "max_u": 11, "length_u": 12, "width_u": 1.0, "p2": {"angles_deg": [0, 90, 180, 270]}},
+        {"id": "flight", "type": "leap", "anim": "cast_b", "coef": 1.3, "cd": 11, "first_cd": 7, "windup": 1.0, "air_s": 1.0, "vanish": true, "max_u": 12, "radius_u": 3.0, "zone": {"water": true, "linger_s": 6.0, "slow_only": true, "slow_mult": 0.8, "shock_coef": 0.6, "color": "#5EC8FF"}}
+      ]
+    },
+    "vat_toad": {
+      "name": "Crapaud-cuve", "biome": "terrasses", "speed_u": 2.2, "keep_u": 3.6,
+      "light": {"color": "#E8B060", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#CFE8FF", "energy": 0.9}},
+      "fallback": {"sprite": "brood_mother", "tint": "#D8C48C", "scale": 1.0},
+      "passives": [{"type": "dry_vuln", "mult": 1.3}, {"type": "wader", "mult": 1.15}],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "tongue", "type": "line", "anim": "attack", "auto": true, "coef": 1.0, "cd": 2.0, "windup": 0.8, "max_u": 5.0, "length_u": 5.0, "width_u": 1.0, "pull_u": 1.5},
+        {"id": "mud_bubbles", "type": "circles", "anim": "cast_a", "coef": 0.8, "cd": 9, "first_cd": 3, "windup": 1.0, "max_u": 10, "count": 4, "radius_u": 1.5, "spread_u": 4.0, "status": "slow", "zone": {"water": true, "linger_s": 5.0, "slow_only": true, "slow_mult": 0.75, "shock_coef": 0.5, "color": "#7A8A70"}},
+        {"id": "hop", "type": "leap", "anim": "cast_b", "coef": 1.4, "cd": 8, "first_cd": 6, "windup": 0.9, "air_s": 0.5, "min_u": 2.5, "max_u": 9, "radius_u": 3.0},
+        {"id": "spit_pool", "type": "circles", "anim": "cast_a", "phase": 2, "coef": 0.6, "cd": 10, "windup": 1.0, "max_u": 10, "count": 1, "radius_u": 4.0, "spread_u": 0, "status": "poison", "zone": {"linger_s": 6.0, "tick_s": 0.5, "coef": 0.25, "status": "poison", "color": "#7BE04B"}}
+      ]
+    },
+    "scarecrow_reaper": {
+      "name": "Épouvantail faucheur", "biome": "terrasses", "speed_u": 2.8, "keep_u": 2.2,
+      "light": {"color": "#E0A060", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#CFE8FF", "energy": 0.9}},
+      "fallback": {"sprite": "ash_lord", "tint": "#D2C8B4", "scale": 1.0},
+      "passives": [],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "scythe", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.8, "windup": 0.6, "max_u": 3.0, "range_u": 3.0, "half_deg": 90, "p2": {"range_u": 4.0, "max_u": 4.0}},
+        {"id": "harvest", "type": "line", "anim": "cast_a", "coef": 1.2, "cd": 9, "first_cd": 3, "windup": 1.0, "max_u": 9, "length_u": 10, "width_u": 1.0, "offsets_u": [-1.6, 0.0, 1.6], "recover_s": 2.0},
+        {"id": "crows", "type": "projectile_fan", "anim": "cast_b", "coef": 0.5, "cd": 10, "first_cd": 6, "windup": 0.8, "max_u": 11, "count": 8, "spread_deg": 70, "speed_u": 4.5, "p2": {"count": 12, "spread_deg": 100}}
+      ]
+    },
+    "bramble_queen": {
+      "name": "Reine des ronces", "biome": "foret", "speed_u": 2.4, "keep_u": 4.0,
+      "light": {"preset": "boss_reine", "color": "#94C878", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#C2E6E0", "energy": 0.9}},
+      "fallback": {"sprite": "bramble_queen"},
+      "passives": [{"type": "summon_regen", "min": 3, "pct_s": 0.01, "cap": 0.08}],
+      "phase2": {"speed_mult": 1.25},
+      "patterns": [
+        {"id": "thorns", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.6, "cd": 2.0, "windup": 0.45, "max_u": 9, "count": 3, "spread_deg": 20, "speed_u": 9, "status": "poison", "p2": {"count": 5, "spread_deg": 34}},
+        {"id": "poison_pools", "type": "circles", "anim": "cast_a", "coef": 0.4, "cd": 10, "first_cd": 3, "windup": 0.9, "max_u": 10, "count": 3, "radius_u": 2.5, "spread_u": 4.0, "status": "poison", "zone": {"linger_s": 6.0, "tick_s": 0.5, "coef": 0.4, "status": "poison", "color": "#7BE04B"}, "p2": {"count": 4}},
+        {"id": "call_brambles", "type": "summon", "anim": "cast_b", "cd": 12, "first_cd": 6, "windup": 1.0, "count": 6, "ring_u": 4.0, "hp_frac": 0.5, "affix": "poison", "p2": {"count": 8}}
+      ]
+    },
+    "brood_mother": {
+      "name": "Essaim-mère", "biome": "foret", "speed_u": 3.0, "keep_u": 3.5,
+      "light": {"preset": "boss_essaim", "color": "#D6E85A", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#C2E6E0", "energy": 0.9}},
+      "fallback": {"sprite": "brood_mother"},
+      "passives": [{"type": "summon_guard", "min": 6, "mult": 0.65}],
+      "phase2": {"speed_mult": 1.4},
+      "patterns": [
+        {"id": "spit", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.8, "cd": 2.2, "windup": 0.5, "max_u": 9, "count": 1, "speed_u": 6, "status": "poison", "radius_u": 0.25, "p2": {"volleys": 2}},
+        {"id": "lay", "type": "summon", "anim": "cast_a", "cd": 9, "first_cd": 2, "windup": 1.0, "count": 8, "ring_u": 3.0, "hp_frac": 0.4, "hatch_s": 1.5, "p2": {"count": 12}},
+        {"id": "swarm", "type": "circles", "anim": "cast_b", "coef": 1.2, "cd": 12, "first_cd": 6, "windup": 1.0, "max_u": 10, "count": 1, "radius_u": 2.5, "spread_u": 0}
+      ]
+    },
+    "mist_wolf": {
+      "name": "Loup de brume", "biome": "foret", "speed_u": 3.2, "keep_u": 1.6,
+      "light": {"color": "#9CF0C8", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#C2E6E0", "energy": 0.9}},
+      "fallback": {"sprite": "frost_bear", "tint": "#C8DCCC", "scale": 0.9},
+      "body_gain": 1.9,
+      "summon_bodies": {"mist_wolf_cub": {"scale": 2.0, "offset_y": -58.0, "energy": 2.0, "render_px_per_u": 90.50967, "gain": 1.4}},
+      "passives": [{"type": "summon_rage", "per": 0.1}],
+      "phase2": {"speed_mult": 1.15, "on_enter": "howl"},
+      "patterns": [
+        {"id": "bite", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.4, "windup": 0.45, "max_u": 2.2, "range_u": 2.0, "half_deg": 35},
+        {"id": "pounce", "type": "leap", "anim": "cast_a", "coef": 1.3, "cd": 7, "first_cd": 3, "windup": 0.9, "air_s": 0.35, "min_u": 2.5, "max_u": 9, "radius_u": 2.0, "p2": {"chain": 1}},
+        {"id": "mist_step", "type": "leap", "anim": "cast_b", "coef": 1.0, "cd": 10, "first_cd": 7, "windup": 1.0, "air_s": 0.6, "vanish": true, "target": "behind", "behind_u": 1.6, "max_u": 10, "radius_u": 2.0},
+        {"id": "howl", "type": "summon", "anim": "cast_a", "cd": 14, "first_cd": 0.5, "windup": 1.0, "count": 4, "ring_u": 2.5, "hp_frac": 0.6, "summon_sprite": "mist_wolf_cub"}
+      ]
+    },
+    "lantern_owl": {
+      "name": "Chouette-lanterne", "biome": "foret", "speed_u": 3.2, "keep_u": 4.5, "kite_u": 3.0,
+      "light": {"color": "#9CF0C8", "energy": [1.9, 2.3], "radius": [1.5, 1.7], "rim": {"color": "#C2E6E0", "energy": 0.9}},
+      "fallback": {"sprite": "brood_mother", "tint": "#D2E6D6", "scale": 0.9},
+      "body_gain": 1.9,
+      "passives": [{"type": "far_guard", "min_u": 4.0, "mult": 0.7}],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "talons", "type": "line", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.6, "windup": 0.5, "max_u": 3.2, "length_u": 3.0, "width_u": 1.0},
+        {"id": "screech", "type": "cone", "anim": "cast_a", "coef": 1.2, "cd": 9, "first_cd": 3, "windup": 1.0, "max_u": 7.5, "range_u": 8.0, "half_deg": 30, "status": "slow", "p2": {"type": "beam", "shape": "cone", "coef": 0.6, "channel_s": 1.2, "tick_s": 0.4, "sweep_deg": 60}},
+        {"id": "wisps", "type": "circles", "anim": "cast_b", "coef": 0.75, "cd": 10, "first_cd": 6, "windup": 1.4, "max_u": 11, "count": 3, "radius_u": 1.25, "spread_u": 3.0, "stagger_s": 0.3, "p2": {"count": 5}}
+      ]
+    },
+    "moss_mantis": {
+      "name": "Mante de mousse", "biome": "foret", "speed_u": 3.0, "keep_u": 1.9,
+      "light": {"color": "#B8E89C", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#C2E6E0", "energy": 0.9}},
+      "fallback": {"sprite": "bramble_queen", "tint": "#C8E2B4", "scale": 1.0},
+      "passives": [{"type": "front_guard", "mult": 0.6, "half_deg": 60}],
+      "phase2": {"speed_mult": 1.25},
+      "patterns": [
+        {"id": "blade", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.5, "windup": 0.5, "max_u": 2.5, "range_u": 2.4, "half_deg": 50},
+        {"id": "scissors", "type": "line", "anim": "cast_a", "coef": 1.4, "cd": 8, "first_cd": 3, "windup": 1.0, "max_u": 7, "length_u": 8, "width_u": 1.0, "angles_deg": [-18, 18], "p2": {"angles_deg": [45, -45, 135, -135]}},
+        {"id": "ambush", "type": "charge", "anim": "cast_b", "coef": 1.8, "cd": 11, "first_cd": 6, "windup": 1.5, "camo": true, "min_u": 2.5, "max_u": 9, "length_u": 10, "width_u": 2.0, "speed_u": 16}
+      ]
+    },
+    "ash_lord": {
+      "name": "Seigneur des cendres", "biome": "cite", "speed_u": 2.6, "keep_u": 4.5,
+      "light": {"preset": "boss_seigneur", "color": "#E8A070", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#B9BCD6", "energy": 0.9}},
+      "fallback": {"sprite": "ash_lord"},
+      "passives": [],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "fireball", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.9, "cd": 2.0, "windup": 0.45, "max_u": 10, "count": 1, "speed_u": 10, "status": "burn", "radius_u": 0.25},
+        {"id": "meteors", "type": "circles", "anim": "cast_a", "coef": 1.6, "cd": 11, "first_cd": 3, "windup": 1.0, "max_u": 11, "count": 5, "radius_u": 2.0, "spread_u": 3.5, "stagger_s": 0.4, "status": "burn", "p2": {"count": 7}},
+        {"id": "flame_wall", "type": "line", "anim": "cast_b", "coef": 0.5, "cd": 13, "first_cd": 7, "windup": 1.2, "max_u": 9, "from": "player", "length_u": 12, "width_u": 1.5, "angles_deg": [90], "status": "burn", "zone": {"linger_s": 5.0, "tick_s": 0.5, "coef": 0.5, "status": "burn", "color": "#FF8A30"}, "p2": {"angles_deg": [90, 0], "zone": {"linger_s": 4.0, "tick_s": 0.5, "coef": 0.5, "status": "burn", "color": "#FF8A30"}}}
+      ]
+    },
+    "rust_archon": {
+      "name": "Archonte rouillé", "biome": "cite", "speed_u": 2.6, "keep_u": 2.4,
+      "light": {"preset": "boss_archonte", "color": "#6AE0FF", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#FF9A3C", "energy": 0.9}},
+      "fallback": {"sprite": "rust_archon"},
+      "passives": [{"type": "front_guard", "mult": 0.6, "half_deg": 60}],
+      "phase2": {"speed_mult": 1.3, "drop_passives": ["front_guard"]},
+      "patterns": [
+        {"id": "sweep", "type": "cone", "anim": "attack", "auto": true, "coef": 1.1, "cd": 2.0, "windup": 0.5, "max_u": 3.0, "range_u": 3.0, "half_deg": 90},
+        {"id": "judgment", "type": "line", "anim": "cast_a", "coef": 2.0, "cd": 9, "first_cd": 3, "windup": 1.0, "max_u": 14, "length_u": 16, "width_u": 1.5, "flash_s": 0.4, "p2": {"angles_deg": [0, 90, 180, 270]}},
+        {"id": "chains", "type": "ring", "anim": "cast_b", "coef": 1.5, "cd": 13, "first_cd": 6, "windup": 1.2, "max_u": 10, "center": "player", "radius_u": 5.5, "inner_u": 4.5, "status": "slow", "gaps": 2, "gap_u": 2.0, "zone": {"linger_s": 4.0, "tick_s": 0.5, "coef": 0.75, "status": "slow", "style": "chain", "color": "#8FA3B0"}}
+      ]
+    },
+    "steam_hound": {
+      "name": "Molosse à vapeur", "biome": "cite", "speed_u": 3.0, "keep_u": 1.7,
+      "light": {"color": "#FF9A3C", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#B9BCD6", "energy": 0.9}},
+      "fallback": {"sprite": "frost_bear", "tint": "#E6C4A0", "scale": 0.92},
+      "passives": [{"type": "haste_after", "pattern": "charge", "mult": 1.2, "for_s": 5.0}],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "bite", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.4, "windup": 0.45, "max_u": 2.2, "range_u": 2.0, "half_deg": 40},
+        {"id": "charge", "type": "charge", "anim": "cast_a", "coef": 1.6, "cd": 8, "first_cd": 2.5, "windup": 1.0, "min_u": 3.0, "max_u": 11, "length_u": 12, "width_u": 2.0, "speed_u": 14, "stun_wall_s": 3.0, "p2": {"chain": 1}},
+        {"id": "vents", "type": "line", "anim": "cast_b", "coef": 0.8, "cd": 9, "first_cd": 6, "windup": 0.9, "max_u": 5, "length_u": 6, "width_u": 1.0, "angles_deg": [90, -90], "status": "burn", "p2": {"angles_deg": [0, 90, 180, 270]}}
+      ]
+    },
+    "grinder": {
+      "name": "Le Rémouleur", "biome": "cite", "speed_u": 2.4, "keep_u": 1.8,
+      "light": {"color": "#FF9A3C", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#B9BCD6", "energy": 0.9}},
+      "fallback": {"sprite": "rust_archon", "tint": "#E8CCB0", "scale": 0.88},
+      "passives": [{"type": "rage_on_hit", "per": 0.05, "max": 0.5, "reset_on": "whirl"}],
+      "phase2": {"speed_mult": 1.1},
+      "patterns": [
+        {"id": "grind", "type": "cone", "anim": "attack", "auto": true, "coef": 0.45, "cd": 1.8, "windup": 0.5, "max_u": 2.2, "range_u": 2.0, "half_deg": 40, "repeat": 2, "repeat_gap": 0.22},
+        {"id": "discs", "type": "projectile_fan", "anim": "cast_a", "coef": 0.8, "cd": 7, "first_cd": 2.5, "windup": 0.8, "max_u": 11, "count": 3, "spread_deg": 30, "speed_u": 9, "bounces": 1, "radius_u": 0.4, "color": "#D8DCE0", "p2": {"count": 5, "spread_deg": 48, "bounces": 2}},
+        {"id": "whirl", "type": "ring", "anim": "cast_b", "coef": 1.3, "cd": 9, "first_cd": 5, "windup": 0.9, "max_u": 4.0, "radius_u": 4.0, "inner_u": 1.0}
+      ]
+    },
+    "blind_pump": {
+      "name": "Pompe aveugle", "biome": "cite", "speed_u": 2.2, "keep_u": 3.5, "aim_lag_s": 0.5,
+      "light": {"color": "#D8A050", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#B9BCD6", "energy": 0.9}},
+      "fallback": {"sprite": "stone_colossus", "tint": "#D2C2A2", "scale": 1.0},
+      "passives": [],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "oil_jet", "type": "projectile_fan", "anim": "attack", "auto": true, "coef": 0.7, "cd": 2.0, "windup": 0.5, "max_u": 9, "count": 1, "speed_u": 5, "status": "slow"},
+        {"id": "suction", "type": "ring", "anim": "cast_a", "coef": 1.2, "cd": 10, "first_cd": 3, "windup": 1.0, "max_u": 5.0, "radius_u": 5.0, "inner_u": 0.0, "pull_u": 2.0, "p2": {"radius_u": 6.0, "pull_u": 3.0, "max_u": 6.0}},
+        {"id": "geysers", "type": "circles", "anim": "cast_b", "coef": 1.0, "cd": 10, "first_cd": 6, "windup": 1.0, "max_u": 10, "count": 4, "radius_u": 2.0, "spread_u": 4.0, "status": "burn", "zone": {"linger_s": 2.0, "slow_only": true, "color": "#3A3428"}, "p2": {"count": 6}}
+      ]
+    },
+    "ossuary_bearer": {
+      "name": "Porte-ossuaire", "biome": "cryptes", "speed_u": 2.2, "keep_u": 1.9,
+      "light": {"color": "#BFF4FF", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#8FA3B0", "energy": 0.9}},
+      "fallback": {"sprite": "stone_colossus", "tint": "#E4E0D4", "scale": 1.0},
+      "passives": [{"type": "summon_guard", "min": 3, "mult": 0.65}],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "fist", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.8, "windup": 0.55, "max_u": 2.4, "range_u": 2.2, "half_deg": 40},
+        {"id": "raise_dead", "type": "summon", "anim": "cast_a", "cd": 12, "first_cd": 1.5, "windup": 1.0, "count": 6, "ring_u": 3.0, "hp_frac": 0.5, "p2": {"count": 8}},
+        {"id": "collapse", "type": "ring", "anim": "cast_b", "coef": 1.4, "cd": 10, "first_cd": 6, "windup": 1.2, "max_u": 4.0, "radius_u": 4.0, "inner_u": 0.0, "obstacles": {"count": 3, "r_u": 0.5, "life_s": 5.0, "style": "bones", "at": "area"}, "p2": {"repeat": 1, "repeat_gap": 0.8}}
+      ]
+    },
+    "blind_swarm": {
+      "name": "Nuée aveugle", "biome": "cryptes", "speed_u": 3.0, "keep_u": 1.8,
+      "light": {"color": "#BFF4FF", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#8FA3B0", "energy": 0.9}},
+      "fallback": {"sprite": "brood_mother", "tint": "#D0D8E8", "scale": 0.95},
+      "passives": [{"type": "echo_speed", "mult": 0.2}],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "claws", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.5, "windup": 0.45, "max_u": 2.2, "range_u": 2.0, "half_deg": 45},
+        {"id": "swarm", "type": "circles", "anim": "cast_a", "coef": 1.2, "cd": 9, "first_cd": 3, "windup": 1.0, "max_u": 10, "count": 1, "radius_u": 2.5, "spread_u": 0, "p2": {"count": 2, "spread_u": 3.0}},
+        {"id": "screech", "type": "cone", "anim": "cast_b", "coef": 1.0, "cd": 10, "first_cd": 6, "windup": 1.0, "max_u": 6.5, "range_u": 7.0, "half_deg": 45, "jam_s": 3.0}
+      ]
+    },
+    "salt_golem": {
+      "name": "Golem de sel", "biome": "cryptes", "speed_u": 2.0, "keep_u": 2.0,
+      "light": {"color": "#BFF4FF", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#8FA3B0", "energy": 0.9}},
+      "fallback": {"sprite": "stone_colossus", "tint": "#F2F6FF", "scale": 1.05},
+      "passives": [{"type": "dissolve", "pct_s": 0.02}],
+      "phase2": {"speed_mult": 1.0, "on_enter": "split"},
+      "patterns": [
+        {"id": "slam", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 2.0, "windup": 0.6, "max_u": 2.6, "range_u": 2.5, "half_deg": 50},
+        {"id": "shockwave", "type": "ring", "anim": "cast_a", "coef": 1.4, "cd": 10, "first_cd": 3, "windup": 0.9, "max_u": 5.5, "radius_u": 6.0, "inner_u": 1.0},
+        {"id": "salt_shards", "type": "line", "anim": "cast_b", "coef": 1.2, "cd": 12, "first_cd": 7, "windup": 1.0, "max_u": 7, "length_u": 8, "width_u": 1.0, "angles_deg": [0, 90, 180, 270], "zone": {"salt": true, "linger_s": 4.0, "slow_only": true, "slow_mult": 0.75, "color": "#DDE8F0"}},
+        {"id": "split", "type": "summon", "anim": "cast_a", "phase": 2, "cd": 30, "windup": 1.0, "count": 2, "ring_u": 2.0, "tier": 3, "hp_frac": 0.4}
+      ]
+    },
+    "blind_lamplighter": {
+      "name": "Lanternier aveugle", "biome": "cryptes", "speed_u": 2.4, "keep_u": 3.6,
+      "light": {"color": "#BFF4FF", "energy": [2.1, 2.5], "radius": [1.6, 1.8], "rim": {"color": "#8FA3B0", "energy": 0.9}},
+      "fallback": {"sprite": "ash_lord", "tint": "#DCE8F0", "scale": 1.0},
+      "passives": [{"type": "shroud", "alpha": 0.35, "near_u": 4.0}],
+      "phase2": {"speed_mult": 1.0},
+      "patterns": [
+        {"id": "pole", "type": "line", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.6, "windup": 0.5, "max_u": 4.0, "length_u": 4.0, "width_u": 0.8},
+        {"id": "light_cone", "type": "beam", "anim": "cast_a", "coef": 0.5, "cd": 10, "first_cd": 3, "windup": 1.0, "max_u": 9, "shape": "cone", "range_u": 10, "half_deg": 22.5, "channel_s": 1.5, "tick_s": 0.5, "sweep_deg": 30, "status": "burn", "p2": {"angles_deg": [-28, 28]}},
+        {"id": "lantern", "type": "circles", "anim": "cast_b", "coef": 0.8, "cd": 12, "first_cd": 6, "windup": 1.0, "max_u": 9, "count": 1, "radius_u": 1.2, "spread_u": 0, "zone": {"linger_s": 8.0, "slow_only": true, "light": true, "radius_u": 4.0, "color": "#BFF4FF"}, "p2": {"count": 2, "spread_u": 3.0}}
+      ]
+    },
+    "sarcophagus_crab": {
+      "name": "Crabe-sarcophage", "biome": "cryptes", "speed_u": 2.4, "keep_u": 2.4,
+      "light": {"color": "#BFF4FF", "energy": [1.7, 2.1], "radius": [1.3, 1.5], "rim": {"color": "#8FA3B0", "energy": 0.9}},
+      "fallback": {"sprite": "frost_bear", "tint": "#DCD8CC", "scale": 1.0},
+      "passives": [{"type": "front_guard", "mult": 0.5, "half_deg": 60}],
+      "phase2": {"speed_mult": 1.3, "drop_passives": ["front_guard"]},
+      "patterns": [
+        {"id": "pincer", "type": "cone", "anim": "attack", "auto": true, "coef": 1.1, "cd": 1.8, "windup": 0.55, "max_u": 3.0, "range_u": 3.0, "half_deg": 60},
+        {"id": "snap", "type": "line", "anim": "cast_a", "coef": 1.6, "cd": 8, "first_cd": 3, "windup": 0.9, "max_u": 7.5, "length_u": 8, "width_u": 1.5, "push_u": 2.0, "p2": {"repeat": 1, "repeat_gap": 0.6}},
+        {"id": "burrow", "type": "burrow", "anim": "cast_b", "coef": 1.4, "cd": 12, "first_cd": 6, "windup": 1.0, "under_s": 2.0, "max_u": 10, "radius_u": 3.0}
+      ]
+    }
+  }
+}

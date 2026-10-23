@@ -1,0 +1,6 @@
+BO3 livré : bog_zone TOP 8 (720 px), ally_ring TOP 1 (64 px), mud_slap TOP 4 (288 px), mud_splash TOP 6 (288 px), portrait CD3 256 px, quatre icônes PBR 128 px.
+Choix DA : vase noire mouillée, rive déchirée, racines noyées, bronze oxydé, fines fissures de feu follet #8DDBA8 ; icônes sculptées BO2 reprises avec éclairage studio explicite et cadrage resserré, comparées à Ardent en médaillons 64/128.
+Diffus/_n/_e alignés, alpha identique ; frames distinctes, marges vérifiées ; bog_zone réparti sur deux atlas (3600×720 et 2160×720), CanvasTexture diffuse+normal, ressources d'émission séparées.
+Godot import : 0 erreur ; sprites_test : RESULT: OK ; vérificateur existant : 11 SpriteFrames, 758 frames, 0 erreur. Aucun .gd/.tscn modifié ; ressources BO1/BO2 conservées.
+Budget Bourbe : PASS, aucun côté >4096 ; audit global toujours non conforme hors périmètre : 3 atlas Averse wave_cone 6144×8192, APK estimé 293 Mo et textures mobiles 188 Mo. Leur correction appartient au lot AV3.
+Reproduction : art/tools/night/bo3_build.py (--resume pour réutiliser les rendus VFX, --contact pour vérifier/assembler) ; planche unique art/tools/night/_bo3_contact.png ; sources bourbe_{bog_zone,ally_ring,mud_slap,mud_splash,portrait,icon_*}.blend.

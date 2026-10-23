@@ -1,0 +1,11 @@
+LOT UXL9 : flèches de menace hors écran (audit A-12, lot UX A11y-L9). Le code dessine des PLACEHOLDERS (game/scripts/ui/offscreen_cues.gd, draw_cue) ; il chargera ces fichiers dès qu'ils existent (noms EXACTS). La FORME porte le sens, lisible en niveaux de gris ; la couleur n'est qu'un renfort.
+
+Sortie game/assets/sprites/ui/cues/ : cue_boss.png, cue_elite.png, cue_telegraph.png. 96x96 RGBA (affichées à 48 px PC / 64 px mobile), fond transparent, ORIENTÉES VERS LA DROITE (+X, le code les tourne), pointe au bord droit, centre de rotation au centre de l'image, marge 4 px.
+- cue_boss : double chevron plein (deux pointes emboîtées), rouge-orangé #FF5238, contour sombre #0A0505 de 3 px.
+- cue_elite : chevron simple plein, or #FFC74D, même contour.
+- cue_telegraph : pastille ronde rouge #F21A1A (rayon ~26 px, à gauche du centre) cerclée d'un double liseré (sombre #0A0505 extérieur 4 px, clair #FFE2C8 intérieur 2 px, comme les télégraphes au sol) + petite pointe claire #FFE2C8 vers la droite.
+Silhouettes distinctes à 32 px, contraste >= 3:1 sur sol sombre #14110C ET clair #B9AE98.
+
+Script art/tools/night/uxl9_build.py (Blender --background, caméra orthographique de face, Eevee échantillons modestes). Périmètre : ce dossier de sortie uniquement. Aucun .gd/.tscn. PNG optimisés.
+DA : art/briefs/STYLE.md en tête ; RENDU CEL OBLIGATOIRE : art/briefs/STYLE_cel.md + art/tools/cel/cel_style.py profil 'ui' (2 tons). Vérification : planche art/tools/night/_uxl9_contact.png (taille réelle, 48 et 32 px, couleur et niveaux de gris, sur #14110C, #2B3340, #B9AE98). Rapport final court en français.
+NORMAL MAPS SUPPRIMÉES (décision du joueur, 22/10/2026 ; PRIORITAIRE) : aucun <f>_n.png ; cel.install(<profil>, normals=False) ; pas de masque d'émission (_e) pour ces icônes.

@@ -1,0 +1,29 @@
+{
+  "name": "steam_lamp_sw",
+  "foot": [
+    128.0,
+    220.0
+  ],
+  "px_per_u": 90.51,
+  "footprint": [
+    0.37,
+    0.33
+  ],
+  "envelope": [
+    0.7862,
+    0.3423
+  ],
+  "height_u": 2.2,
+  "rig": "MAP",
+  "yaw": 45,
+  "elevation": 30,
+  "globe_px": [
+    155.52,
+    91.886
+  ],
+  "globe_height_px": 128.114,
+  "globe_height_u": 1.81,
+  "shadow_rig": "TOP",
+  "shadow_px_per_u": 128,
+  "fade": true
+}

@@ -1,0 +1,1087 @@
+{
+  "passed": true,
+  "count": 120,
+  "total_duration_s": 20.83795918367347,
+  "results": [
+    {
+      "path": "footsteps/step_ardent_stone_wet_01.ogg",
+      "duration_s": 0.12129251700680273,
+      "true_peak_dbfs": -9.68472957611084,
+      "rms_dbfs": -25.936946868896484,
+      "boundary_amplitude": 0.00020162474538665265,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_stone_wet_02.ogg",
+      "duration_s": 0.12090702947845805,
+      "true_peak_dbfs": -9.634564399719238,
+      "rms_dbfs": -25.962257385253906,
+      "boundary_amplitude": 0.000266190996626392,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_stone_wet_03.ogg",
+      "duration_s": 0.11832199546485261,
+      "true_peak_dbfs": -9.51700210571289,
+      "rms_dbfs": -26.065982818603516,
+      "boundary_amplitude": 2.080320700770244e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_stone_wet_04.ogg",
+      "duration_s": 0.12120181405895691,
+      "true_peak_dbfs": -9.734421730041504,
+      "rms_dbfs": -26.05328369140625,
+      "boundary_amplitude": 0.0001132052784669213,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_stone_wet_05.ogg",
+      "duration_s": 0.12065759637188209,
+      "true_peak_dbfs": -9.815348625183105,
+      "rms_dbfs": -25.96611785888672,
+      "boundary_amplitude": 0.0001593835768289864,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_mud_leaves_01.ogg",
+      "duration_s": 0.14657596371882087,
+      "true_peak_dbfs": -11.884532928466797,
+      "rms_dbfs": -26.034534454345703,
+      "boundary_amplitude": 2.0265939967845092e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_mud_leaves_02.ogg",
+      "duration_s": 0.1181859410430839,
+      "true_peak_dbfs": -12.667533874511719,
+      "rms_dbfs": -25.86667251586914,
+      "boundary_amplitude": 7.562566315755248e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_mud_leaves_03.ogg",
+      "duration_s": 0.14657596371882087,
+      "true_peak_dbfs": -10.810822486877441,
+      "rms_dbfs": -26.014707565307617,
+      "boundary_amplitude": 4.202584391599373e-10,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_mud_leaves_04.ogg",
+      "duration_s": 0.1209297052154195,
+      "true_peak_dbfs": -12.25909423828125,
+      "rms_dbfs": -25.870746612548828,
+      "boundary_amplitude": 4.913545853924006e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_mud_leaves_05.ogg",
+      "duration_s": 0.121859410430839,
+      "true_peak_dbfs": -12.882095336914062,
+      "rms_dbfs": -25.899112701416016,
+      "boundary_amplitude": 6.284055416472256e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_rust_metal_01.ogg",
+      "duration_s": 0.12219954648526077,
+      "true_peak_dbfs": -10.419983863830566,
+      "rms_dbfs": -25.893627166748047,
+      "boundary_amplitude": 5.413830149336718e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_rust_metal_02.ogg",
+      "duration_s": 0.11884353741496599,
+      "true_peak_dbfs": -10.028716087341309,
+      "rms_dbfs": -25.874530792236328,
+      "boundary_amplitude": 0.0004984794650226831,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_rust_metal_03.ogg",
+      "duration_s": 0.11913832199546485,
+      "true_peak_dbfs": -10.745580673217773,
+      "rms_dbfs": -25.875118255615234,
+      "boundary_amplitude": 0.00017335836309939623,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_rust_metal_04.ogg",
+      "duration_s": 0.12249433106575963,
+      "true_peak_dbfs": -10.216651916503906,
+      "rms_dbfs": -25.88404655456543,
+      "boundary_amplitude": 0.00029824895318597555,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_ardent_rust_metal_05.ogg",
+      "duration_s": 0.12138321995464853,
+      "true_peak_dbfs": -11.107839584350586,
+      "rms_dbfs": -25.885719299316406,
+      "boundary_amplitude": 0.00013519791536964476,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_stone_wet_01.ogg",
+      "duration_s": 0.0926077097505669,
+      "true_peak_dbfs": -11.86965560913086,
+      "rms_dbfs": -26.100189208984375,
+      "boundary_amplitude": 6.904721431055805e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_stone_wet_02.ogg",
+      "duration_s": 0.09242630385487528,
+      "true_peak_dbfs": -13.91597843170166,
+      "rms_dbfs": -26.079788208007812,
+      "boundary_amplitude": 1.015941847981594e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_stone_wet_03.ogg",
+      "duration_s": 0.09240362811791383,
+      "true_peak_dbfs": -12.7864351272583,
+      "rms_dbfs": -26.10934066772461,
+      "boundary_amplitude": 5.628210146824131e-07,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_stone_wet_04.ogg",
+      "duration_s": 0.09401360544217686,
+      "true_peak_dbfs": -12.645153045654297,
+      "rms_dbfs": -26.044034957885742,
+      "boundary_amplitude": 2.0212387425999623e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_stone_wet_05.ogg",
+      "duration_s": 0.091859410430839,
+      "true_peak_dbfs": -11.58220100402832,
+      "rms_dbfs": -26.109390258789062,
+      "boundary_amplitude": 1.074623014574172e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_mud_leaves_01.ogg",
+      "duration_s": 0.09485260770975057,
+      "true_peak_dbfs": -14.00382137298584,
+      "rms_dbfs": -25.979061126708984,
+      "boundary_amplitude": 7.0644141487719025e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_mud_leaves_02.ogg",
+      "duration_s": 0.0947392290249433,
+      "true_peak_dbfs": -13.523334503173828,
+      "rms_dbfs": -25.934141159057617,
+      "boundary_amplitude": 5.719063210563036e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_mud_leaves_03.ogg",
+      "duration_s": 0.0935374149659864,
+      "true_peak_dbfs": -14.489492416381836,
+      "rms_dbfs": -25.96584701538086,
+      "boundary_amplitude": 5.751604135184607e-07,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_mud_leaves_04.ogg",
+      "duration_s": 0.0927891156462585,
+      "true_peak_dbfs": -13.507842063903809,
+      "rms_dbfs": -25.934024810791016,
+      "boundary_amplitude": 8.847814569890033e-07,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_mud_leaves_05.ogg",
+      "duration_s": 0.09292517006802721,
+      "true_peak_dbfs": -13.54175090789795,
+      "rms_dbfs": -26.03956413269043,
+      "boundary_amplitude": 0.0,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_rust_metal_01.ogg",
+      "duration_s": 0.09235827664399093,
+      "true_peak_dbfs": -10.317895889282227,
+      "rms_dbfs": -25.94792366027832,
+      "boundary_amplitude": 2.0991162728023482e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_rust_metal_02.ogg",
+      "duration_s": 0.09387755102040816,
+      "true_peak_dbfs": -12.747859954833984,
+      "rms_dbfs": -25.88311767578125,
+      "boundary_amplitude": 3.929205831809668e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_rust_metal_03.ogg",
+      "duration_s": 0.09317460317460317,
+      "true_peak_dbfs": -11.210160255432129,
+      "rms_dbfs": -25.957433700561523,
+      "boundary_amplitude": 0.0,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_rust_metal_04.ogg",
+      "duration_s": 0.09433106575963719,
+      "true_peak_dbfs": -10.718541145324707,
+      "rms_dbfs": -25.960237503051758,
+      "boundary_amplitude": 1.189586146210786e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_swarm_rust_metal_05.ogg",
+      "duration_s": 0.09294784580498866,
+      "true_peak_dbfs": -11.164958953857422,
+      "rms_dbfs": -25.913713455200195,
+      "boundary_amplitude": 0.0,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_stone_wet_01.ogg",
+      "duration_s": 0.11530612244897959,
+      "true_peak_dbfs": -9.230955123901367,
+      "rms_dbfs": -25.967731475830078,
+      "boundary_amplitude": 5.269711255095899e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_stone_wet_02.ogg",
+      "duration_s": 0.14077097505668934,
+      "true_peak_dbfs": -9.733271598815918,
+      "rms_dbfs": -26.011449813842773,
+      "boundary_amplitude": 2.2501005225716852e-10,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_stone_wet_03.ogg",
+      "duration_s": 0.14077097505668934,
+      "true_peak_dbfs": -8.647462844848633,
+      "rms_dbfs": -25.991058349609375,
+      "boundary_amplitude": 1.6850906520843312e-12,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_stone_wet_04.ogg",
+      "duration_s": 0.1136734693877551,
+      "true_peak_dbfs": -8.757170677185059,
+      "rms_dbfs": -25.969959259033203,
+      "boundary_amplitude": 0.00036179274320602417,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_stone_wet_05.ogg",
+      "duration_s": 0.11444444444444445,
+      "true_peak_dbfs": -9.848854064941406,
+      "rms_dbfs": -25.992664337158203,
+      "boundary_amplitude": 0.00019915972370654345,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_mud_leaves_01.ogg",
+      "duration_s": 0.11308390022675736,
+      "true_peak_dbfs": -13.222864151000977,
+      "rms_dbfs": -26.07375144958496,
+      "boundary_amplitude": 0.00017950712935999036,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_mud_leaves_02.ogg",
+      "duration_s": 0.11478458049886621,
+      "true_peak_dbfs": -13.053464889526367,
+      "rms_dbfs": -25.881790161132812,
+      "boundary_amplitude": 0.00025189146981574595,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_mud_leaves_03.ogg",
+      "duration_s": 0.11412698412698413,
+      "true_peak_dbfs": -13.031850814819336,
+      "rms_dbfs": -25.869792938232422,
+      "boundary_amplitude": 8.903643902158365e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_mud_leaves_04.ogg",
+      "duration_s": 0.11122448979591837,
+      "true_peak_dbfs": -12.826742172241211,
+      "rms_dbfs": -25.870140075683594,
+      "boundary_amplitude": 9.97018360067159e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_mud_leaves_05.ogg",
+      "duration_s": 0.11195011337868481,
+      "true_peak_dbfs": -13.021881103515625,
+      "rms_dbfs": -25.91942024230957,
+      "boundary_amplitude": 1.7266720533370972e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_rust_metal_01.ogg",
+      "duration_s": 0.13786848072562358,
+      "true_peak_dbfs": -9.341197967529297,
+      "rms_dbfs": -25.99771499633789,
+      "boundary_amplitude": 1.3732338877137096e-10,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_rust_metal_02.ogg",
+      "duration_s": 0.13786848072562358,
+      "true_peak_dbfs": -10.73779582977295,
+      "rms_dbfs": -26.015460968017578,
+      "boundary_amplitude": 2.389782260969753e-10,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_rust_metal_03.ogg",
+      "duration_s": 0.13786848072562358,
+      "true_peak_dbfs": -10.445042610168457,
+      "rms_dbfs": -26.020383834838867,
+      "boundary_amplitude": 3.471323783976743e-10,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_rust_metal_04.ogg",
+      "duration_s": 0.11160997732426303,
+      "true_peak_dbfs": -11.799545288085938,
+      "rms_dbfs": -25.880203247070312,
+      "boundary_amplitude": 0.0002303142100572586,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_shooter_rust_metal_05.ogg",
+      "duration_s": 0.14077097505668934,
+      "true_peak_dbfs": -11.267202377319336,
+      "rms_dbfs": -26.033906936645508,
+      "boundary_amplitude": 6.782709116581742e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_stone_wet_01.ogg",
+      "duration_s": 0.19877551020408163,
+      "true_peak_dbfs": -8.018281936645508,
+      "rms_dbfs": -25.9748477935791,
+      "boundary_amplitude": 2.3935946956044063e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_stone_wet_02.ogg",
+      "duration_s": 0.19768707482993197,
+      "true_peak_dbfs": -7.811456680297852,
+      "rms_dbfs": -25.99168586730957,
+      "boundary_amplitude": 0.0001038689588312991,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_stone_wet_03.ogg",
+      "duration_s": 0.19938775510204082,
+      "true_peak_dbfs": -8.112607955932617,
+      "rms_dbfs": -26.02774429321289,
+      "boundary_amplitude": 6.777417729608715e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_stone_wet_04.ogg",
+      "duration_s": 0.2010204081632653,
+      "true_peak_dbfs": -7.761163711547852,
+      "rms_dbfs": -26.017549514770508,
+      "boundary_amplitude": 6.186586688272655e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_stone_wet_05.ogg",
+      "duration_s": 0.20294784580498867,
+      "true_peak_dbfs": -7.544071197509766,
+      "rms_dbfs": -26.00030517578125,
+      "boundary_amplitude": 1.9288068870082498e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_mud_leaves_01.ogg",
+      "duration_s": 0.20206349206349206,
+      "true_peak_dbfs": -11.020356178283691,
+      "rms_dbfs": -25.922067642211914,
+      "boundary_amplitude": 8.907201117835939e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_mud_leaves_02.ogg",
+      "duration_s": 0.2010204081632653,
+      "true_peak_dbfs": -10.29947280883789,
+      "rms_dbfs": -25.95124053955078,
+      "boundary_amplitude": 0.0001343115873169154,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_mud_leaves_03.ogg",
+      "duration_s": 0.2001814058956916,
+      "true_peak_dbfs": -8.910908699035645,
+      "rms_dbfs": -25.91602325439453,
+      "boundary_amplitude": 4.5217831939226016e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_mud_leaves_04.ogg",
+      "duration_s": 0.19755102040816327,
+      "true_peak_dbfs": -10.006991386413574,
+      "rms_dbfs": -25.925064086914062,
+      "boundary_amplitude": 3.680157897179015e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_mud_leaves_05.ogg",
+      "duration_s": 0.20020408163265307,
+      "true_peak_dbfs": -10.447760581970215,
+      "rms_dbfs": -25.932865142822266,
+      "boundary_amplitude": 7.287981861736625e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_rust_metal_01.ogg",
+      "duration_s": 0.2014512471655329,
+      "true_peak_dbfs": -6.844074726104736,
+      "rms_dbfs": -25.915626525878906,
+      "boundary_amplitude": 4.0712213376536965e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_rust_metal_02.ogg",
+      "duration_s": 0.19979591836734695,
+      "true_peak_dbfs": -9.083491325378418,
+      "rms_dbfs": -25.89748764038086,
+      "boundary_amplitude": 1.6008794773370028e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_rust_metal_03.ogg",
+      "duration_s": 0.19791383219954647,
+      "true_peak_dbfs": -8.818387031555176,
+      "rms_dbfs": -25.894014358520508,
+      "boundary_amplitude": 2.0333260181359947e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_rust_metal_04.ogg",
+      "duration_s": 0.20263038548752835,
+      "true_peak_dbfs": -8.695133209228516,
+      "rms_dbfs": -25.923297882080078,
+      "boundary_amplitude": 2.0639330614358187e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_leaper_rust_metal_05.ogg",
+      "duration_s": 0.1989342403628118,
+      "true_peak_dbfs": -9.121941566467285,
+      "rms_dbfs": -25.93207359313965,
+      "boundary_amplitude": 0.00017977778043132275,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_stone_wet_01.ogg",
+      "duration_s": 0.1784126984126984,
+      "true_peak_dbfs": -9.673324584960938,
+      "rms_dbfs": -25.987686157226562,
+      "boundary_amplitude": 3.703612310346216e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_stone_wet_02.ogg",
+      "duration_s": 0.1839002267573696,
+      "true_peak_dbfs": -9.078150749206543,
+      "rms_dbfs": -26.03177833557129,
+      "boundary_amplitude": 4.686430474976078e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_stone_wet_03.ogg",
+      "duration_s": 0.1811111111111111,
+      "true_peak_dbfs": -8.7965726852417,
+      "rms_dbfs": -25.987709045410156,
+      "boundary_amplitude": 5.536013486562297e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_stone_wet_04.ogg",
+      "duration_s": 0.18081632653061225,
+      "true_peak_dbfs": -9.50363540649414,
+      "rms_dbfs": -26.002384185791016,
+      "boundary_amplitude": 9.927578503265977e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_stone_wet_05.ogg",
+      "duration_s": 0.18317460317460318,
+      "true_peak_dbfs": -9.07551097869873,
+      "rms_dbfs": -25.997732162475586,
+      "boundary_amplitude": 1.5562553016934544e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_mud_leaves_01.ogg",
+      "duration_s": 0.18498866213151927,
+      "true_peak_dbfs": -10.314631462097168,
+      "rms_dbfs": -25.883886337280273,
+      "boundary_amplitude": 9.858186240307987e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_mud_leaves_02.ogg",
+      "duration_s": 0.21043083900226758,
+      "true_peak_dbfs": -10.554279327392578,
+      "rms_dbfs": -25.982587814331055,
+      "boundary_amplitude": 2.819704539303025e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_mud_leaves_03.ogg",
+      "duration_s": 0.1824263038548753,
+      "true_peak_dbfs": -10.23775863647461,
+      "rms_dbfs": -25.95635414123535,
+      "boundary_amplitude": 4.620054460247047e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_mud_leaves_04.ogg",
+      "duration_s": 0.17884353741496598,
+      "true_peak_dbfs": -10.133766174316406,
+      "rms_dbfs": -25.982553482055664,
+      "boundary_amplitude": 1.1914927199541125e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_mud_leaves_05.ogg",
+      "duration_s": 0.17979591836734693,
+      "true_peak_dbfs": -11.883312225341797,
+      "rms_dbfs": -25.93288230895996,
+      "boundary_amplitude": 2.7248468541074544e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_rust_metal_01.ogg",
+      "duration_s": 0.17829931972789115,
+      "true_peak_dbfs": -10.158140182495117,
+      "rms_dbfs": -25.888904571533203,
+      "boundary_amplitude": 3.095285501331091e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_rust_metal_02.ogg",
+      "duration_s": 0.1819047619047619,
+      "true_peak_dbfs": -10.324158668518066,
+      "rms_dbfs": -25.892162322998047,
+      "boundary_amplitude": 7.53863132558763e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_rust_metal_03.ogg",
+      "duration_s": 0.18077097505668935,
+      "true_peak_dbfs": -11.15731430053711,
+      "rms_dbfs": -25.890825271606445,
+      "boundary_amplitude": 2.397160278633237e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_rust_metal_04.ogg",
+      "duration_s": 0.17868480725623584,
+      "true_peak_dbfs": -11.31226634979248,
+      "rms_dbfs": -25.920948028564453,
+      "boundary_amplitude": 6.609444972127676e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_light_rust_metal_05.ogg",
+      "duration_s": 0.21043083900226758,
+      "true_peak_dbfs": -10.788345336914062,
+      "rms_dbfs": -26.00503921508789,
+      "boundary_amplitude": 6.998047280548647e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_stone_wet_01.ogg",
+      "duration_s": 0.2153968253968254,
+      "true_peak_dbfs": -9.285286903381348,
+      "rms_dbfs": -26.009052276611328,
+      "boundary_amplitude": 2.842522553692106e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_stone_wet_02.ogg",
+      "duration_s": 0.23365079365079366,
+      "true_peak_dbfs": -9.582401275634766,
+      "rms_dbfs": -26.040626525878906,
+      "boundary_amplitude": 1.058058588659927e-12,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_stone_wet_03.ogg",
+      "duration_s": 0.21138321995464854,
+      "true_peak_dbfs": -8.492208480834961,
+      "rms_dbfs": -26.03908348083496,
+      "boundary_amplitude": 1.2673884157266002e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_stone_wet_04.ogg",
+      "duration_s": 0.21349206349206348,
+      "true_peak_dbfs": -9.031595230102539,
+      "rms_dbfs": -25.97116470336914,
+      "boundary_amplitude": 6.056566093093352e-08,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_stone_wet_05.ogg",
+      "duration_s": 0.23365079365079366,
+      "true_peak_dbfs": -7.941765308380127,
+      "rms_dbfs": -26.01005744934082,
+      "boundary_amplitude": 1.3275649676791623e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_mud_leaves_01.ogg",
+      "duration_s": 0.21621315192743765,
+      "true_peak_dbfs": -10.452316284179688,
+      "rms_dbfs": -25.926101684570312,
+      "boundary_amplitude": 4.637297934095841e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_mud_leaves_02.ogg",
+      "duration_s": 0.21485260770975056,
+      "true_peak_dbfs": -10.518251419067383,
+      "rms_dbfs": -25.91120147705078,
+      "boundary_amplitude": 1.1771296613005688e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_mud_leaves_03.ogg",
+      "duration_s": 0.2365532879818594,
+      "true_peak_dbfs": -11.340389251708984,
+      "rms_dbfs": -25.961389541625977,
+      "boundary_amplitude": 2.848546745704006e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_mud_leaves_04.ogg",
+      "duration_s": 0.23365079365079366,
+      "true_peak_dbfs": -11.3523530960083,
+      "rms_dbfs": -25.976974487304688,
+      "boundary_amplitude": 2.730318228449935e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_mud_leaves_05.ogg",
+      "duration_s": 0.23365079365079366,
+      "true_peak_dbfs": -11.100586891174316,
+      "rms_dbfs": -26.053789138793945,
+      "boundary_amplitude": 3.305426949946205e-13,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_rust_metal_01.ogg",
+      "duration_s": 0.21090702947845805,
+      "true_peak_dbfs": -11.798822402954102,
+      "rms_dbfs": -25.881290435791016,
+      "boundary_amplitude": 3.637389818322845e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_rust_metal_02.ogg",
+      "duration_s": 0.21392290249433107,
+      "true_peak_dbfs": -9.501914024353027,
+      "rms_dbfs": -25.88014793395996,
+      "boundary_amplitude": 7.207907765405253e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_rust_metal_03.ogg",
+      "duration_s": 0.21428571428571427,
+      "true_peak_dbfs": -11.989978790283203,
+      "rms_dbfs": -25.971237182617188,
+      "boundary_amplitude": 4.3291634938213974e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_rust_metal_04.ogg",
+      "duration_s": 0.21244897959183673,
+      "true_peak_dbfs": -11.02791976928711,
+      "rms_dbfs": -25.89373016357422,
+      "boundary_amplitude": 1.3497921145244618e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_brute_heavy_rust_metal_05.ogg",
+      "duration_s": 0.2164625850340136,
+      "true_peak_dbfs": -11.383866310119629,
+      "rms_dbfs": -25.894567489624023,
+      "boundary_amplitude": 4.955244003213011e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_stone_wet_01.ogg",
+      "duration_s": 0.21918367346938775,
+      "true_peak_dbfs": -9.635236740112305,
+      "rms_dbfs": -25.98950958251953,
+      "boundary_amplitude": 1.7313112039119005e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_stone_wet_02.ogg",
+      "duration_s": 0.21233560090702946,
+      "true_peak_dbfs": -8.377765655517578,
+      "rms_dbfs": -26.01318359375,
+      "boundary_amplitude": 1.680651621427387e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_stone_wet_03.ogg",
+      "duration_s": 0.21927437641723355,
+      "true_peak_dbfs": -8.340216636657715,
+      "rms_dbfs": -26.0307674407959,
+      "boundary_amplitude": 1.738845821819268e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_stone_wet_04.ogg",
+      "duration_s": 0.21936507936507937,
+      "true_peak_dbfs": -8.422831535339355,
+      "rms_dbfs": -26.011255264282227,
+      "boundary_amplitude": 8.152533155225683e-07,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_stone_wet_05.ogg",
+      "duration_s": 0.21757369614512473,
+      "true_peak_dbfs": -8.823128700256348,
+      "rms_dbfs": -25.977615356445312,
+      "boundary_amplitude": 2.2557640022569103e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_mud_leaves_01.ogg",
+      "duration_s": 0.2365532879818594,
+      "true_peak_dbfs": -9.89698600769043,
+      "rms_dbfs": -25.972463607788086,
+      "boundary_amplitude": 1.3570306336974092e-11,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_mud_leaves_02.ogg",
+      "duration_s": 0.2191609977324263,
+      "true_peak_dbfs": -9.524608612060547,
+      "rms_dbfs": -25.946596145629883,
+      "boundary_amplitude": 2.0098095774301328e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_mud_leaves_03.ogg",
+      "duration_s": 0.21653061224489795,
+      "true_peak_dbfs": -10.43242073059082,
+      "rms_dbfs": -25.936370849609375,
+      "boundary_amplitude": 4.746992635773495e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_mud_leaves_04.ogg",
+      "duration_s": 0.21501133786848073,
+      "true_peak_dbfs": -11.2620267868042,
+      "rms_dbfs": -25.92967987060547,
+      "boundary_amplitude": 1.8953134713228792e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_mud_leaves_05.ogg",
+      "duration_s": 0.21489795918367346,
+      "true_peak_dbfs": -11.483356475830078,
+      "rms_dbfs": -25.96959686279297,
+      "boundary_amplitude": 1.7333180949208327e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_rust_metal_01.ogg",
+      "duration_s": 0.22015873015873016,
+      "true_peak_dbfs": -11.66981315612793,
+      "rms_dbfs": -25.901473999023438,
+      "boundary_amplitude": 3.4960587072419e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_rust_metal_02.ogg",
+      "duration_s": 0.2145124716553288,
+      "true_peak_dbfs": -11.312521934509277,
+      "rms_dbfs": -25.93828582763672,
+      "boundary_amplitude": 4.721588265965693e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_rust_metal_03.ogg",
+      "duration_s": 0.2154421768707483,
+      "true_peak_dbfs": -11.680320739746094,
+      "rms_dbfs": -25.888517379760742,
+      "boundary_amplitude": 1.8724366555034067e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_rust_metal_04.ogg",
+      "duration_s": 0.21297052154195012,
+      "true_peak_dbfs": -11.505478858947754,
+      "rms_dbfs": -25.901199340820312,
+      "boundary_amplitude": 4.147061554249376e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_miniboss_rust_metal_05.ogg",
+      "duration_s": 0.21861678004535148,
+      "true_peak_dbfs": -12.346820831298828,
+      "rms_dbfs": -25.89023780822754,
+      "boundary_amplitude": 1.3683448969459278e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_stone_wet_01.ogg",
+      "duration_s": 0.2208843537414966,
+      "true_peak_dbfs": -9.164763450622559,
+      "rms_dbfs": -25.967609405517578,
+      "boundary_amplitude": 1.5529712982242927e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_stone_wet_02.ogg",
+      "duration_s": 0.22646258503401362,
+      "true_peak_dbfs": -9.092692375183105,
+      "rms_dbfs": -25.9453182220459,
+      "boundary_amplitude": 1.3074298294668552e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_stone_wet_03.ogg",
+      "duration_s": 0.21868480725623582,
+      "true_peak_dbfs": -10.222293853759766,
+      "rms_dbfs": -25.97945785522461,
+      "boundary_amplitude": 5.250271897239145e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_stone_wet_04.ogg",
+      "duration_s": 0.22122448979591836,
+      "true_peak_dbfs": -8.921585083007812,
+      "rms_dbfs": -25.92977523803711,
+      "boundary_amplitude": 5.448026058729738e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_stone_wet_05.ogg",
+      "duration_s": 0.22603174603174603,
+      "true_peak_dbfs": -8.590848922729492,
+      "rms_dbfs": -25.97650718688965,
+      "boundary_amplitude": 1.062317664946022e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_mud_leaves_01.ogg",
+      "duration_s": 0.2220861678004535,
+      "true_peak_dbfs": -11.008443832397461,
+      "rms_dbfs": -25.934097290039062,
+      "boundary_amplitude": 2.595654768811073e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_mud_leaves_02.ogg",
+      "duration_s": 0.24235827664399093,
+      "true_peak_dbfs": -9.47884464263916,
+      "rms_dbfs": -26.01101303100586,
+      "boundary_amplitude": 6.862779875632663e-12,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_mud_leaves_03.ogg",
+      "duration_s": 0.2253514739229025,
+      "true_peak_dbfs": -10.978191375732422,
+      "rms_dbfs": -25.931041717529297,
+      "boundary_amplitude": 6.5458580138511024e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_mud_leaves_04.ogg",
+      "duration_s": 0.2191609977324263,
+      "true_peak_dbfs": -10.766606330871582,
+      "rms_dbfs": -25.91118812561035,
+      "boundary_amplitude": 8.866082680469844e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_mud_leaves_05.ogg",
+      "duration_s": 0.22580498866213153,
+      "true_peak_dbfs": -9.746612548828125,
+      "rms_dbfs": -25.979049682617188,
+      "boundary_amplitude": 1.5040698144730413e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_rust_metal_01.ogg",
+      "duration_s": 0.22160997732426305,
+      "true_peak_dbfs": -11.177006721496582,
+      "rms_dbfs": -25.937509536743164,
+      "boundary_amplitude": 3.504125925246626e-05,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_rust_metal_02.ogg",
+      "duration_s": 0.22433106575963718,
+      "true_peak_dbfs": -11.197447776794434,
+      "rms_dbfs": -25.886768341064453,
+      "boundary_amplitude": 0.00016470476111862808,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_rust_metal_03.ogg",
+      "duration_s": 0.22240362811791384,
+      "true_peak_dbfs": -11.770587921142578,
+      "rms_dbfs": -25.923749923706055,
+      "boundary_amplitude": 0.00019907292153220624,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_rust_metal_04.ogg",
+      "duration_s": 0.22510204081632654,
+      "true_peak_dbfs": -10.351682662963867,
+      "rms_dbfs": -25.900436401367188,
+      "boundary_amplitude": 8.131260983645916e-06,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    },
+    {
+      "path": "footsteps/step_boss_rust_metal_05.ogg",
+      "duration_s": 0.223265306122449,
+      "true_peak_dbfs": -11.094970703125,
+      "rms_dbfs": -25.92520523071289,
+      "boundary_amplitude": 0.00010774214752018452,
+      "loop_check": "not_applicable_one_shot",
+      "errors": []
+    }
+  ]
+}

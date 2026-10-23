@@ -1,0 +1,11 @@
+LOT CD2 : Arpenteuse (§2.2 ; avec sa chaîne incandescente au sol derrière elle) et Rainette (§2.3 ; une vignette en plein bond, sac vocal gonflé).
+CHARA DESIGN (planches de présentation pour le joueur, AUCUN asset de jeu). Lis docs/Design_Personnages.md (section du personnage : Concept, Aspect, Animations ; pour Tocsin §1.1, §1.11, §1.12) et la DA : art/briefs/STYLE.md en tête + STYLE_boss_da.md ; références validées : Ardent art/tools/iso/_c4_contact.png, Rictus art/tools/characters/_m2_contact.png, ash_lord_build.py. PBR usé, palette sombre désaturée, UN accent émissif par personnage (celui de la fiche), proportions réalistes, malsain/sérieux par la forme et la matière, jamais cartoon (pas d'yeux ronds, pas d'aplats, pas de rondeurs de jouet).
+Pour CHAQUE personnage de ton lot : un vrai modèle Blender détaillé (pas un blockout grossier : matières, accessoires de la fiche, silhouette lisible), rendu en Eevee/Cycles avec éclairage de studio sombre + liseré, fond gris-bleu sombre uni. Planche art/tools/characters/_cd_<id>.png 2400×1350 :
+- grand rendu 3/4 face (hauteur ~900 px) avec le nom et le titre du personnage en haut à gauche ;
+- face, profil, dos (plus petits) ;
+- 2-3 gros plans de détails signature (accessoire, accent émissif, visage/tête) ;
+- une vignette « en jeu » : rendu au rig CREA iso (art/tools/iso/iso_rig.py, R = 90,51 px/u) direction se, sur sol C1, à côté d'Ardent à la même échelle, pour juger la lisibilité ;
+- une vignette de pose de sort signature (ex. son ultime) ;
+- palette (pastilles des 5-6 couleurs de la fiche avec leur hex).
+Sources : art/blender/characters/cd_<id>.blend, script art/tools/characters/cd_<id>_build.py. Rapport final court en français : pour chaque perso, 2-3 choix de design que tu as faits au-delà de la fiche.
+Périmètre : ces fichiers seulement (art/blender/characters/cd_*, art/tools/characters/cd_*, _cd_*). Rien dans game/. D'autres lots chara design tournent en parallèle sur d'autres personnages : ne touche pas à leurs fichiers.

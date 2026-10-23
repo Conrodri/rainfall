@@ -1,0 +1,503 @@
+{
+  "choices": [
+    "Original models, rigs, poses, cameras and material hues. Night shadow floor from shared cel module.",
+    "creature: Bourbe, portrait, Montreur; prop: motte; vfx without ink: four ground effects.",
+    "Exact archived emission masks retained: luminous materials unchanged; original half-resolution coverage preserved.",
+    "Two legacy bog_zone_0/1 atlases are absent from all SpriteFrames references; preserved byte-identically because their historical geometry differs from the available source. Rendered all referenced bog_zone atlases."
+  ],
+  "sheets": [
+    {
+      "file": "characters/bourbe/ally_ring/ally_ring.png",
+      "silhouette_iou": 0.9968553459119497,
+      "e_half": true,
+      "emission_size": [
+        32,
+        32
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        64,
+        64
+      ],
+      "cell": 64,
+      "frames": 1,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/bog_zone/bog_zone.png",
+      "silhouette_iou": 0.9999816749129559,
+      "e_half": true,
+      "emission_size": [
+        1800,
+        360
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        3600,
+        720
+      ],
+      "cell": 720,
+      "frames": 5,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/bog_zone/bog_zone_01.png",
+      "silhouette_iou": 0.9999799910907698,
+      "e_half": true,
+      "emission_size": [
+        1080,
+        360
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        2160,
+        720
+      ],
+      "cell": 720,
+      "frames": 3,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        576,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1152,
+        1536
+      ],
+      "cell": 192,
+      "frames": 6,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        768,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1536,
+        1536
+      ],
+      "cell": 192,
+      "frames": 8,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        768,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1536,
+        1536
+      ],
+      "cell": 192,
+      "frames": 8,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/motte/die.png",
+      "silhouette_iou": 0.9984635893264647,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/motte/idle.png",
+      "silhouette_iou": 0.9986447803299545,
+      "e_half": true,
+      "emission_size": [
+        576,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1152,
+        1536
+      ],
+      "cell": 192,
+      "frames": 6,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/motte/run.png",
+      "silhouette_iou": 0.9991550544366568,
+      "e_half": true,
+      "emission_size": [
+        576,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1152,
+        1536
+      ],
+      "cell": 192,
+      "frames": 6,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/mud_slap/mud_slap.png",
+      "silhouette_iou": 0.9997063817292839,
+      "e_half": true,
+      "emission_size": [
+        576,
+        144
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1152,
+        288
+      ],
+      "cell": 288,
+      "frames": 4,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/mud_splash/mud_splash.png",
+      "silhouette_iou": 0.9995357433017579,
+      "e_half": true,
+      "emission_size": [
+        864,
+        144
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1728,
+        288
+      ],
+      "cell": 288,
+      "frames": 6,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/portrait.png",
+      "silhouette_iou": 0.9999494349354031,
+      "e_half": true,
+      "emission_size": [
+        128,
+        128
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "cell": 256,
+      "frames": 1,
+      "rows": 1,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/recall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/rise.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/run.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        768,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1536,
+        1536
+      ],
+      "cell": 192,
+      "frames": 8,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/sink.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/slap.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/bourbe/throw.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/montreur/hover.png",
+      "silhouette_iou": 0.9932506670852299,
+      "e_half": true,
+      "emission_size": [
+        576,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        1152,
+        1536
+      ],
+      "cell": 192,
+      "frames": 6,
+      "rows": 8,
+      "normals_absent": true
+    },
+    {
+      "file": "characters/montreur/pull.png",
+      "silhouette_iou": 0.9937355788928902,
+      "e_half": true,
+      "emission_size": [
+        384,
+        768
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        768,
+        1536
+      ],
+      "cell": 192,
+      "frames": 4,
+      "rows": 8,
+      "normals_absent": true
+    }
+  ],
+  "errors": [],
+  "bytes_before": 18036428,
+  "bytes_after": 14298372,
+  "checks": [
+    {
+      "name": "policy",
+      "exit_code": 0,
+      "passed": true,
+      "log": "art\\tools\\night\\_cel_heroes_e_policy.log"
+    },
+    {
+      "name": "budget",
+      "exit_code": 1,
+      "passed": false,
+      "log": "art\\tools\\night\\_cel_heroes_e_budget.log"
+    },
+    {
+      "name": "import",
+      "exit_code": 0,
+      "passed": false,
+      "log": "art\\tools\\night\\_cel_heroes_e_import.log"
+    },
+    {
+      "name": "sprites",
+      "exit_code": 0,
+      "passed": true,
+      "log": "art\\tools\\night\\_cel_heroes_e_sprites.log"
+    },
+    {
+      "name": "bourbe",
+      "exit_code": -1,
+      "passed": false,
+      "log": "art\\tools\\night\\_cel_heroes_e_bourbe.log"
+    },
+    {
+      "name": "rictus",
+      "exit_code": 0,
+      "passed": true,
+      "log": "art\\tools\\night\\_cel_heroes_e_rictus.log"
+    },
+    {
+      "name": "player",
+      "exit_code": 0,
+      "passed": true,
+      "log": "art\\tools\\night\\_cel_heroes_e_player.log"
+    },
+    {
+      "name": "texture_budget",
+      "exit_code": 1,
+      "passed": false,
+      "log": "art\\tools\\night\\_cel_heroes_e_texture_budget.log"
+    }
+  ]
+}

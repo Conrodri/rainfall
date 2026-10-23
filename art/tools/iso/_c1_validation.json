@@ -1,0 +1,153 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "assets": [
+    {
+      "name": "ground_a",
+      "pivot": [
+        256,
+        128
+      ],
+      "bytes": 508667
+    },
+    {
+      "name": "ground_b",
+      "pivot": [
+        256,
+        128
+      ],
+      "bytes": 505327
+    },
+    {
+      "name": "ground_c",
+      "pivot": [
+        256,
+        128
+      ],
+      "bytes": 508667
+    },
+    {
+      "name": "ground_d",
+      "pivot": [
+        256,
+        128
+      ],
+      "bytes": 505327
+    },
+    {
+      "name": "water_shallow",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 69532
+    },
+    {
+      "name": "water_deep",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 67759
+    },
+    {
+      "name": "block_a",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 186979
+    },
+    {
+      "name": "block_b",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 195577
+    },
+    {
+      "name": "block_c",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 187023
+    },
+    {
+      "name": "rampart_ne",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 77226
+    },
+    {
+      "name": "rampart_nw",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 75451
+    },
+    {
+      "name": "rampart_corner_n",
+      "pivot": [
+        128,
+        192
+      ],
+      "bytes": 135000
+    },
+    {
+      "name": "cliff_sw",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 180070
+    },
+    {
+      "name": "cliff_se",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 181654
+    },
+    {
+      "name": "cliff_corner_s",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 277289
+    },
+    {
+      "name": "cliff_corner_w",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 180342
+    },
+    {
+      "name": "cliff_corner_e",
+      "pivot": [
+        128,
+        64
+      ],
+      "bytes": 181887
+    },
+    {
+      "name": "void_1024",
+      "pivot": [
+        512,
+        512
+      ],
+      "bytes": 2822352
+    }
+  ],
+  "ash_R": 90.50966799187809,
+  "ash_resize": 2.0658910644039703,
+  "no_emission": "Cold blue accents on block_b and rampart_corner_n only; no black masks exported."
+}

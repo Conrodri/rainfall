@@ -1,0 +1,6 @@
+C8b livr? : 354 frames originales, 23 atlas diffus + 23 normales + 23 ?missions ; rain_sower.tres cr?? au chemin attendu (aucun asset ant?rieur dans inventaire).
+DA : manteau-cloche de bronze rainur? et vert-de-gris, capuche-paratonnerre creuse, doubles cha?nes articul?es, c?ur-goutte blanc ; crue en p2, manteau ouvert et ancrage en croix en p3.
+CEL boss partag? : 3 tons, encre int?rieure 2 px, plis, CEL_Accent ; 2x/Lanczos, Eevee 8 ; normales finies, alpha identique, cellules uniques, marges v?rifi?es, corps moyen 97,3/255, aucune planche >4096.
+Import Godot sans erreur ; sprites_test et rain_sower_boss_test : RESULT: OK. Le test du boss laisse 15 ressources en usage ? sa fermeture (log conserv?) ; aucun .gd/.tscn modifi?.
+texture_budget_test : RESULT: FAIL (1), poids global 260/180 Mo ; C8b 11.23 Mo, hors lot 248.44 Mo. Budgets globaux bosses/monsters/vfx et APK ?galement d?pass?s ; correction hors p?rim?tre, seuils inchang?s ; politique appliqu?e.
+Source : art/blender/bosses/rain_sower_iso.blend ; script : art/tools/night/c8b_build.py ; planche finale : art/tools/night/_c8b_contact.png. Livraison compl?te du lot ; reste l?optimisation globale du projet pour obtenir le test budget OK.

@@ -1,0 +1,211 @@
+{
+  "result": "PASS",
+  "assets": {
+    "boss_frame": {
+      "size": [
+        512,
+        64
+      ],
+      "alpha_bbox": [
+        0,
+        6,
+        512,
+        58
+      ]
+    },
+    "mini_frame": {
+      "size": [
+        512,
+        64
+      ],
+      "alpha_bbox": [
+        2,
+        6,
+        510,
+        58
+      ]
+    },
+    "elite_frame": {
+      "size": [
+        256,
+        24
+      ],
+      "alpha_bbox": [
+        0,
+        1,
+        256,
+        23
+      ]
+    },
+    "boss_fill": {
+      "size": [
+        256,
+        32
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        256,
+        32
+      ]
+    },
+    "notch": {
+      "size": [
+        16,
+        48
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        16,
+        48
+      ]
+    },
+    "notch_broken": {
+      "size": [
+        16,
+        48
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        16,
+        48
+      ]
+    },
+    "shard": {
+      "size": [
+        64,
+        16
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        63,
+        16
+      ]
+    },
+    "status_burn": {
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bbox": [
+        12,
+        13,
+        50,
+        56
+      ]
+    },
+    "status_poison": {
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bbox": [
+        14,
+        9,
+        50,
+        56
+      ]
+    },
+    "status_frost": {
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bbox": [
+        9,
+        11,
+        55,
+        53
+      ]
+    },
+    "status_stun": {
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bbox": [
+        10,
+        8,
+        55,
+        56
+      ]
+    },
+    "status_imprisoned": {
+      "size": [
+        64,
+        64
+      ],
+      "alpha_bbox": [
+        9,
+        12,
+        50,
+        54
+      ]
+    },
+    "fx_burn": {
+      "size": [
+        256,
+        32
+      ],
+      "alpha_bbox": [
+        0,
+        5,
+        256,
+        31
+      ]
+    },
+    "fx_poison": {
+      "size": [
+        256,
+        32
+      ],
+      "alpha_bbox": [
+        0,
+        2,
+        256,
+        31
+      ]
+    },
+    "fx_frost": {
+      "size": [
+        256,
+        32
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        256,
+        32
+      ]
+    }
+  },
+  "nine_patch": {
+    "boss_mini": [
+      32,
+      24
+    ],
+    "elite": [
+      8,
+      8
+    ]
+  },
+  "windows": {
+    "boss_mini": [
+      24,
+      22,
+      464,
+      20
+    ],
+    "elite": [
+      8,
+      8,
+      240,
+      8
+    ]
+  },
+  "seams": "RGBA exact, five tileable maps",
+  "preview": "880x16,560x18,650x18,100x8; icons 22/12"
+}

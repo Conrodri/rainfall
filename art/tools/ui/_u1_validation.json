@@ -1,0 +1,1045 @@
+{
+  "status": "PASS",
+  "assets": 38,
+  "png": 54,
+  "bytes": 2033042,
+  "checks": [
+    "dimensions",
+    "RGBA",
+    "transparent alpha",
+    "nonempty emission",
+    "nine-slice metadata",
+    "frame apertures",
+    "vignette clear centre",
+    "button diffuse/emission silhouettes identical; no overflowing object",
+    "button emission previews do not overlap diffuse"
+  ],
+  "files": [
+    {
+      "path": "game/assets/sprites/ui/da/panel_9slice.png",
+      "size": [
+        384,
+        384
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        384,
+        384
+      ],
+      "bytes": 106353,
+      "sha256": "b8441a0dceddc26dbbf283950419e4fa85bec5d498f9c439d51ac780fd2e7c18"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/panel_small_9slice.png",
+      "size": [
+        192,
+        192
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        192,
+        192
+      ],
+      "bytes": 32679,
+      "sha256": "9f7b3ca49bee78636861a232a86a7ca8ef4dc6735c5eed8a5711109c669c770c"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/header_banner.png",
+      "size": [
+        640,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        640,
+        96
+      ],
+      "bytes": 48310,
+      "sha256": "3674c317f83bfa141b2b914507a6ae70d463d6996c09b72542d1fd400f275bbc"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/timer_plate.png",
+      "size": [
+        256,
+        80
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        256,
+        80
+      ],
+      "bytes": 19787,
+      "sha256": "408200fbea336d010455ab0ed7c42adbfc2f82bd26cc53affc70c20628a02b56"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/keycap_9slice.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "bytes": 5348,
+      "sha256": "ee646211f7e9dc18b4c95e2d5ce1e187c201278f8694904193e247713600a2c0"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/divider.png",
+      "size": [
+        512,
+        24
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        3,
+        2,
+        509,
+        22
+      ],
+      "bytes": 3630,
+      "sha256": "26c124a3e73713b9fc878d467580c0787553d8ec20ba64c051098f58cc8e640e"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_normal.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 27527,
+      "sha256": "11b0dd31643982dd600e0fef4aac452e0c427ff78209d35b70c5bc5f61f6cb17"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_hover.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 28189,
+      "sha256": "aa6810ba034ee950d741656259e2fcdfcb4568eaf9b959f3d521239765050649"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_hover_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 3676,
+      "sha256": "e90d38f6e792796da43cab095fd5853cf33c836fe0d24140131a4815ba98f6fd"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_pressed.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 28232,
+      "sha256": "662fd12cf0a58efa0499a99f8028ae9d01d548f409a14d33625cf769e39a4b57"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_disabled.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 25723,
+      "sha256": "52e74979fb0d57a57d45b571b2da16a9b6425308426c400d2bc39788ae805589"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 28042,
+      "sha256": "0e499ef9aef0d074ad67d58baeea672f87600bf72cf554b297b748ad63da1dde"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 3799,
+      "sha256": "e4e8e5db6a7ccd0c14f9263cf1b56f7d637703bad1eca065bb188a277e433aa8"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary_hover.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 29131,
+      "sha256": "4da711ebc5cafdeeed04d88dbd5ee96bc3ff9e9eb84b40e1a7bdd785af5423a9"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary_hover_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 3785,
+      "sha256": "7f21ce3cb1f05d211090431653adaff4d49ac50d4093058c3ba8d616633fd190"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary_pressed.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 28572,
+      "sha256": "816112a93f833b59eaa3a6ed72f075b8720808beb723610540674bc724d3dbde"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_primary_pressed_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 4291,
+      "sha256": "094644ea1cb7810ac2304e5da841b1f9b2c2cd5d73cdebc35cd5b4e971116f46"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_danger.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 28145,
+      "sha256": "7af571f351317ebe3d804e8bd0cd1fc703c4c6f56f5f1243c3f0d89c918dff0d"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/button_danger_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        320,
+        96
+      ],
+      "bytes": 3782,
+      "sha256": "8cb3becf117aa59d0443836ecaf14fd5cdff67388cd2ff9af15ec9ce74498c01"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_frame_hp.png",
+      "size": [
+        512,
+        48
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        48
+      ],
+      "bytes": 8144,
+      "sha256": "f9e73461755ea2e82ed70a03f8d22d2aa77b1782cec25f91ea9b23c085a7db14"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_hp.png",
+      "size": [
+        512,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        32
+      ],
+      "bytes": 10554,
+      "sha256": "8bf2926a1b90df41bb3424eef193faa637f6b387c1673ac946f59782f5cb0a00"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_hp_e.png",
+      "size": [
+        512,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        32
+      ],
+      "bytes": 9372,
+      "sha256": "f9626b8a929a4e1a0a493dd5b83d44175e8bdf4e595e26ce3e03fe37b43b5637"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_frame_xp.png",
+      "size": [
+        512,
+        28
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        28
+      ],
+      "bytes": 7688,
+      "sha256": "404eecb8c5a8b3145d939ff4e0aa7d2eece447c80cd4f434ef0434e385ccaa0a"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_xp.png",
+      "size": [
+        512,
+        16
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        16
+      ],
+      "bytes": 4822,
+      "sha256": "c83d3c690ba734fe05ed172d87936dc41146cd497bca520329fbac015304b7be"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_xp_e.png",
+      "size": [
+        512,
+        16
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        16
+      ],
+      "bytes": 3772,
+      "sha256": "f50ff6d27ce3de3df2e00daef1c3ceb8180eab1ed7aac17fef783469dfca1365"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_frame_boss.png",
+      "size": [
+        1024,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        1024,
+        64
+      ],
+      "bytes": 15587,
+      "sha256": "194615bccad9c1df905d43ed8b034eaf10b0143382dbd0cbd75349c807a54076"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_boss.png",
+      "size": [
+        1024,
+        40
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        1024,
+        40
+      ],
+      "bytes": 25406,
+      "sha256": "eae16dc763d64487a7b6996d40d0fe1564d97da0133fedeed19815e8f218cb69"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_boss_e.png",
+      "size": [
+        1024,
+        40
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        1024,
+        40
+      ],
+      "bytes": 23116,
+      "sha256": "5d03e08471d3ee60cd76545f8dc9465925e380faf121c95f8ff30ef7eb056dbc"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/bar_fill_hp_lost.png",
+      "size": [
+        512,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        512,
+        32
+      ],
+      "bytes": 11708,
+      "sha256": "e9006afdf275a8ef7acdf0a251d1fd268d6f9cdae73bec57a29b833b0237e26e"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/level_badge.png",
+      "size": [
+        96,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        5,
+        5,
+        91,
+        91
+      ],
+      "bytes": 11880,
+      "sha256": "f85e0239a5a61c6a375a5fc788e9c4922af542d6548f3aaf99ec27770d06fd8d"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_gold.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        2,
+        2,
+        62,
+        62
+      ],
+      "bytes": 6537,
+      "sha256": "42ce10886d147ea0e8644c9a3ae568c07b90a812361b140b5f3908948a73f6b5"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_xp.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        10,
+        4,
+        56,
+        60
+      ],
+      "bytes": 3785,
+      "sha256": "898f6cf3fea5858238c670da326cf39a23c33222b845d871b1485ac01ab28640"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_xp_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        10,
+        4,
+        56,
+        60
+      ],
+      "bytes": 3072,
+      "sha256": "eab8101cf2641a77065747bb908ea6a069eecb5ae737560f9222422aede6ad4b"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_ruby.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        10,
+        4,
+        56,
+        60
+      ],
+      "bytes": 3485,
+      "sha256": "a764bf2fbded234f805f4ee0add1edef52c05bdd00bae6a76060ea255db8dd3d"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_ruby_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        10,
+        4,
+        56,
+        60
+      ],
+      "bytes": 2681,
+      "sha256": "ed97049a26f36395edf9c22a4afd5ecaa6d1c4d11eccb5a54f9829f237b0c44e"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_pause.png",
+      "size": [
+        96,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        3,
+        3,
+        93,
+        93
+      ],
+      "bytes": 9725,
+      "sha256": "034ef7882875ffaeae96eaa764b5e3283074be328ce47f64bd569163a2cee5dd"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_settings.png",
+      "size": [
+        96,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        11,
+        11,
+        85,
+        85
+      ],
+      "bytes": 8147,
+      "sha256": "db8ce03586b5c9c7424ad7f7f8df3ae9fe039b0f84a158d4e9377ba0a7c64568"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/icon_interact.png",
+      "size": [
+        96,
+        96
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        13,
+        9,
+        72,
+        86
+      ],
+      "bytes": 7228,
+      "sha256": "9deddbc67bf95e4f67b2e9114574f4bfe601b3ad6b5abc1f97aad327e6a96c50"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_frame.png",
+      "size": [
+        320,
+        320
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        3,
+        3,
+        317,
+        317
+      ],
+      "bytes": 51093,
+      "sha256": "2cffea2d7ca5c821bf75fab27747755f5d56cb9fff98500f8922be6bed36f83c"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_player.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        4,
+        1,
+        28,
+        28
+      ],
+      "bytes": 882,
+      "sha256": "e306b61aa26c135c85867d4e4684229ccc739be5148e9f0678b89f169beac34b"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_player_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        4,
+        1,
+        28,
+        28
+      ],
+      "bytes": 889,
+      "sha256": "bce1fcbd3df0254c3290f2edb65c0417b3ec5c3d87dbc711a80aa6e345a3db95"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_chest.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        2,
+        5,
+        30,
+        27
+      ],
+      "bytes": 1195,
+      "sha256": "b219e82fe06c4d1f1dd52ba6754f2025e12a1e983d031f7f4df852ec6106e35f"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_chest_large.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        2,
+        0,
+        30,
+        27
+      ],
+      "bytes": 1590,
+      "sha256": "78c9d603fa702cb5f6e31d7a3aa5b97088a3f1a41bae93b07bc6e89105463381"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_chest_legendary.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        2,
+        0,
+        30,
+        27
+      ],
+      "bytes": 1593,
+      "sha256": "ccbdc699312cd0db8ba13e24b97abf6ec9c7951ad09e3b0e0a5c598dd21074ea"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_chest_legendary_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        2,
+        0,
+        30,
+        27
+      ],
+      "bytes": 1110,
+      "sha256": "aea70e42a5f7c1f9e107348650df9c986b97fb481dde62e8248754561763142b"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_pillar.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        4,
+        1,
+        28,
+        31
+      ],
+      "bytes": 1281,
+      "sha256": "496ae05d1167ebf23ff8f9158fb866cb875728619f2fec5140dd88f35a3ad3e9"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_pillar_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        4,
+        1,
+        28,
+        31
+      ],
+      "bytes": 582,
+      "sha256": "9af8724e199b9856d74d641c55743203ea323fa3ed1f2956474c11dbe21a450e"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_teleporter.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        1,
+        1,
+        31,
+        31
+      ],
+      "bytes": 2038,
+      "sha256": "43b0bc9a6446d91da45578e22e1bf1513c73fc26f9cc0f67fe16f96dc95fb004"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_teleporter_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        1,
+        1,
+        31,
+        31
+      ],
+      "bytes": 1440,
+      "sha256": "39778ba5a6605f0e36232c9f5a8607e207c6cec8964fbabe8c38f28b4ae37f6a"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_boss.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        32,
+        28
+      ],
+      "bytes": 1561,
+      "sha256": "be3d012042096b4d513b4529ae3678c25e234ed5b784a106f0e14aeb6fd503ae"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_boss_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        32,
+        28
+      ],
+      "bytes": 704,
+      "sha256": "dfb1b664442f2d5eb96b01d941ffcb2ffbb10e555b958a94d244509554c94b72"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_capsule.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        5,
+        1,
+        27,
+        31
+      ],
+      "bytes": 1138,
+      "sha256": "b7ad8801683a9fd72f275580fab634c8d33f7bc8ebcff8053cd74a1418e22c26"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/minimap_capsule_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        5,
+        1,
+        27,
+        31
+      ],
+      "bytes": 808,
+      "sha256": "c8d34b186c98ee5b9f48fcf2f5ec023105f6a2f6372411792d781071c5611ada"
+    },
+    {
+      "path": "game/assets/sprites/ui/da/vignette_hit.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "bytes": 1329428,
+      "sha256": "9632b4d8cc3d0c9269c8a24269adfd10b1e97c202a088f9c894cc561ea84b128"
+    }
+  ]
+}

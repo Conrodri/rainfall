@@ -1,0 +1,32 @@
+{
+ "_doc": "Roster de la run (source de vérité, docs/Design_Etages.md §6.1), lu par FloorPlan (scripts/stage/floor_plan.gd). Étage -> biome (clé de data/fauna.json, qui garde les sprites de faune), nom affiché, cartes (variantes A/B : seules celles dont data/maps/<id>.json existe sont tirées), boss d'étage et mini-boss (ordre = préférence : le tirage ne garde que les sprites livrés, sinon le premier de la liste), `final` = étage du boss final (victoire / sans fin). Sans fin : étage n -> étage ((n - 1) % floors_per_loop) + 1, variante opposée à chaque boucle. draw_rules_override : fusionné par-dessus les draw_rules de la carte.",
+ "floors_per_loop": 5,
+ "floors": [
+  {"floor": 1, "biome": "terrasses", "name": "Terrasses noyées",
+   "maps": ["terrasses_noyees", "rizieres_hautes"],
+   "floor_bosses": ["eclusier", "ox_herder", "jar_bearer"],
+   "minis": ["frost_bear", "stone_colossus", "iron_heron", "vat_toad", "scarecrow_reaper"],
+   "ambiance": "terrasses", "music": "terrasses"},
+  {"floor": 2, "biome": "foret", "name": "Forêt-brume",
+   "maps": ["foret_brume", "mangrove_lanternes"],
+   "floor_bosses": ["cerf", "weaver", "hermit_cedar"],
+   "minis": ["bramble_queen", "brood_mother", "mist_wolf", "lantern_owl", "moss_mantis"],
+   "ambiance": "foret", "music": "foret"},
+  {"floor": 3, "biome": "cite", "name": "Cité de rouille",
+   "maps": ["cite_rouille", "fonderie_canal"],
+   "floor_bosses": ["sonneur", "crane", "smelter"],
+   "minis": ["ash_lord", "rust_archon", "steam_hound", "grinder", "blind_pump"],
+   "ambiance": "cite", "music": "cite"},
+  {"floor": 4, "biome": "cryptes", "name": "Cryptes noyées",
+   "maps": ["cryptes_noyees", "ossuaire_pluies"],
+   "floor_bosses": ["recluse", "crystal_mother", "deep_eel"],
+   "minis": ["ossuary_bearer", "blind_swarm", "salt_golem", "blind_lamplighter", "sarcophagus_crab"],
+   "ambiance": "cryptes", "music": "cryptes"},
+  {"floor": 5, "biome": "source", "name": "La Source", "final": true,
+   "maps": ["la_source"],
+   "floor_bosses": ["rain_sower"], "minis": [],
+   "ambiance": "source", "music": "source",
+   "draw_rules_override": {"small_chests": 6, "large_chests": 2, "legendary_chance": 1.0, "small_pillars": 0,
+    "final_zone_radius_u": 22.0, "final_boss_hp_mult": 2.0}}
+ ]
+}

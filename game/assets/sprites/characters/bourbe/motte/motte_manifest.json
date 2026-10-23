@@ -1,0 +1,44 @@
+{
+  "cell": 192,
+  "tight_envelope": 96,
+  "pivot": [
+    96,
+    136.32
+  ],
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "animations": {
+    "idle": {
+      "frames_per_direction": 6,
+      "total": 48,
+      "max_content_px": [
+        76,
+        63
+      ]
+    },
+    "run": {
+      "frames_per_direction": 6,
+      "total": 48,
+      "max_content_px": [
+        82,
+        66
+      ]
+    },
+    "die": {
+      "frames_per_direction": 4,
+      "total": 32,
+      "max_content_px": [
+        78,
+        59
+      ]
+    }
+  }
+}

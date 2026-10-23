@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "atlases": 33,
+  "max_side": 1536,
+  "animations": 88,
+  "frames": 464,
+  "min_margins": {
+    "idle": 27,
+    "run": 25,
+    "slap": 24,
+    "throw": 6,
+    "recall": 26,
+    "sink": 22,
+    "rise": 22,
+    "attack": 24,
+    "cast": 6,
+    "cast_ult": 22,
+    "death": 17
+  },
+  "issues": []
+}

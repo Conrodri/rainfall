@@ -1,0 +1,156 @@
+{
+  "bramble_queen": {
+    "status": "PASS",
+    "rig": "CREA",
+    "elevation": 30,
+    "samples": 16,
+    "triangles": 6844,
+    "mesh_objects": 154,
+    "all_meshes_closed": true,
+    "animations": {
+      "idle": {
+        "start": 1,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 10,
+        "loop": true
+      },
+      "run": {
+        "start": 21,
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "fps": 12,
+        "loop": true
+      },
+      "attack": {
+        "start": 41,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_a": {
+        "start": 61,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_b": {
+        "start": 81,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "phase2": {
+        "start": 101,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 8,
+        "loop": false
+      },
+      "death": {
+        "start": 121,
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      }
+    }
+  },
+  "brood_mother": {
+    "status": "PASS",
+    "rig": "CREA",
+    "elevation": 30,
+    "samples": 16,
+    "triangles": 9090,
+    "mesh_objects": 208,
+    "all_meshes_closed": true,
+    "animations": {
+      "idle": {
+        "start": 1,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 10,
+        "loop": true
+      },
+      "run": {
+        "start": 21,
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "fps": 12,
+        "loop": true
+      },
+      "attack": {
+        "start": 41,
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_a": {
+        "start": 61,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "cast_b": {
+        "start": 81,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      },
+      "phase2": {
+        "start": 101,
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "fps": 8,
+        "loop": false
+      },
+      "death": {
+        "start": 121,
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "fps": 12,
+        "loop": false
+      }
+    }
+  }
+}

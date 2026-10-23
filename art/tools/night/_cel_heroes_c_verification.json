@@ -1,0 +1,377 @@
+{
+ "profiles": {
+  "bodies": "creature",
+  "solid_effects": "prop",
+  "water_light": "vfx"
+ },
+ "choices": [
+  "Original models, rigs, palettes and cameras; night shadow floor from shared module",
+  "R1 crue_ring and puddle_mirror excluded",
+  "No normal maps; absent body/portrait emission not delivered",
+  "Original half-resolution chain_rewind_e and peg_e retained: regenerated threshold IoU 0.8984547461368654 / 0.9473684210526315; delivered coverage identical"
+ ],
+ "sheets": [
+  {
+   "file": "characters/averse/attack.png",
+   "silhouette_iou": 0.9989802391973496,
+   "e_half": true,
+   "accent_iou": 0.9885931558935361,
+   "size": [
+    1152,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/cast.png",
+   "silhouette_iou": 0.9987182647276313,
+   "e_half": true,
+   "accent_iou": 0.9940828402366864,
+   "size": [
+    768,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/cast_ult.png",
+   "silhouette_iou": 0.9988846892620361,
+   "e_half": true,
+   "accent_iou": 0.9940476190476191,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/crue.png",
+   "silhouette_iou": 0.9988846892620361,
+   "e_half": true,
+   "accent_iou": 0.9940476190476191,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/death.png",
+   "silhouette_iou": 0.9990175741269417,
+   "e_half": true,
+   "accent_iou": 0.9838472834067548,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/idle.png",
+   "silhouette_iou": 0.9988202476769185,
+   "e_half": true,
+   "accent_iou": 0.9937106918238994,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/portrait.png",
+   "silhouette_iou": 0.9996774193548387,
+   "size": [
+    256,
+    256
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/run.png",
+   "silhouette_iou": 0.9987751537147291,
+   "e_half": true,
+   "accent_iou": 0.9864253393665159,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/stumble.png",
+   "silhouette_iou": 0.9989251542691528,
+   "e_half": true,
+   "accent_iou": 0.9895287958115183,
+   "size": [
+    576,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/wave.png",
+   "silhouette_iou": 0.9989211159009845,
+   "e_half": true,
+   "accent_iou": 0.979381443298969,
+   "size": [
+    1152,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/effects/goutte_lame/goutte_lame.png",
+   "silhouette_iou": 0.9893094481363768,
+   "e_half": true,
+   "accent_iou": 0.9787234042553191,
+   "size": [
+    512,
+    128
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/effects/wave_cone/wave_cone.png",
+   "silhouette_iou": 1.0,
+   "e_half": true,
+   "accent_iou": 0.9899948249094359,
+   "size": [
+    4096,
+    3072
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/effects/wave_cone/wave_cone_atlas1.png",
+   "silhouette_iou": 1.0,
+   "e_half": true,
+   "accent_iou": 0.9903373730756633,
+   "size": [
+    4096,
+    3072
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/effects/wave_cone/wave_cone_atlas2.png",
+   "silhouette_iou": 1.0,
+   "e_half": true,
+   "accent_iou": 0.9922615592958018,
+   "size": [
+    4096,
+    3072
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/averse/effects/wave_cone/wave_cone_atlas3.png",
+   "silhouette_iou": 1.0,
+   "e_half": true,
+   "accent_iou": 0.9916577919772808,
+   "size": [
+    4096,
+    3072
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/attack.png",
+   "silhouette_iou": 0.9988728844908906,
+   "size": [
+    1152,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/cast.png",
+   "silhouette_iou": 0.9987483693544407,
+   "size": [
+    768,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/cast_ult.png",
+   "silhouette_iou": 0.9988785562705957,
+   "size": [
+    1152,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/death.png",
+   "silhouette_iou": 0.9987183595001602,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/idle.png",
+   "silhouette_iou": 0.9988596937084263,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/loop.png",
+   "silhouette_iou": 0.9987497395290685,
+   "size": [
+    768,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/plant.png",
+   "silhouette_iou": 0.9987483693544407,
+   "size": [
+    768,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/portrait.png",
+   "silhouette_iou": 0.999685336689742,
+   "size": [
+    256,
+    256
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/run.png",
+   "silhouette_iou": 0.9990552709074506,
+   "size": [
+    1536,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/whip.png",
+   "silhouette_iou": 0.9988728844908906,
+   "size": [
+    1152,
+    1536
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/effects/chain_rewind.png",
+   "silhouette_iou": 0.9951330640985814,
+   "e_half": true,
+   "accent_iou": 1.0,
+   "size": [
+    768,
+    64
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/effects/chain_snap.png",
+   "silhouette_iou": 0.9905012696322769,
+   "e_half": true,
+   "accent_iou": 0.971830985915493,
+   "size": [
+    768,
+    64
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/effects/chain_tile.png",
+   "silhouette_iou": 0.9983606557377049,
+   "e_half": true,
+   "accent_iou": 1.0,
+   "size": [
+    512,
+    64
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/effects/loop_blaze.png",
+   "silhouette_iou": 0.996266184884071,
+   "e_half": true,
+   "accent_iou": 0.9731006906579426,
+   "size": [
+    1536,
+    256
+   ],
+   "no_normal": true
+  },
+  {
+   "file": "characters/arpenteuse/effects/peg.png",
+   "silhouette_iou": 0.9973308789691671,
+   "e_half": true,
+   "accent_iou": 1.0,
+   "size": [
+    192,
+    1536
+   ],
+   "no_normal": true
+  }
+ ],
+ "errors": [],
+ "bytes_before": 14751608,
+ "bytes_after": 13414685,
+ "checks": [
+  {
+   "check": "budget",
+   "ok": true,
+   "log": "art\\tools\\night\\_cel_heroes_c_budget.log",
+   "errors": []
+  },
+  {
+   "check": "import",
+   "ok": true,
+   "log": "art\\tools\\night\\_cel_heroes_c_import.log",
+   "errors": []
+  },
+  {
+   "check": "sprites",
+   "ok": true,
+   "log": "art\\tools\\night\\_cel_heroes_c_sprites.log",
+   "errors": []
+  },
+  {
+   "check": "averse",
+   "ok": false,
+   "log": "art\\tools\\night\\_cel_heroes_c_averse.log",
+   "errors": [
+    "SCRIPT ERROR: Parse Error: Cannot infer the type of \"k\" variable because the value doesn't have a set type."
+   ]
+  },
+  {
+   "check": "arpenteuse",
+   "ok": false,
+   "log": "art\\tools\\night\\_cel_heroes_c_arpenteuse.log",
+   "errors": [
+    "ERROR: Animation 'plant_nw' doesn't exist."
+   ]
+  },
+  {
+   "check": "player",
+   "ok": false,
+   "log": "art\\tools\\night\\_cel_heroes_c_player.log",
+   "errors": [
+    "ERROR: 14 resources still in use at exit (run with --verbose for details)."
+   ]
+  },
+  {
+   "check": "texture_budget",
+   "ok": false,
+   "log": "art\\tools\\night\\_cel_heroes_c_texture_budget.log",
+   "errors": []
+  }
+ ],
+ "protected_unchanged": true
+}

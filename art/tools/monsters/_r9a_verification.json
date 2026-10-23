@@ -1,0 +1,25 @@
+{
+  "result": "PASS",
+  "checks": [
+    "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+    "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+    "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+  ],
+  "minimum_margin": 8,
+  "new_animations": 9,
+  "attack_impact_index": 3,
+  "vignette_zero_alpha_fraction": 0.6379985809326172,
+  "unchanged_existing_files": 39,
+  "existing_animation_exception": "attack_s loop=false",
+  "contact_rows": [
+    "s",
+    "e",
+    "w",
+    "n"
+  ],
+  "contact_columns": [
+    "windup index 2",
+    "impact index 3",
+    "recovery index 5"
+  ]
+}

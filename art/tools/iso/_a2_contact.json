@@ -1,0 +1,20 @@
+{
+  "actions_top_to_bottom": [
+    "attack s",
+    "attack e",
+    "cast s",
+    "cast e",
+    "cast_ult s",
+    "cast_ult e"
+  ],
+  "frames": "chronological left to right",
+  "reference_upper_right": "V2 projectile contact",
+  "vfx_below": [
+    "nova default 0..9",
+    "ashes default 0..7",
+    "ashes end 0..3",
+    "brasier default 0..11"
+  ],
+  "vfx_columns": 4,
+  "scale": "native CREA pixel density; C1 ground_a at native 512x256; Ardent pivot [96,136.32]"
+}

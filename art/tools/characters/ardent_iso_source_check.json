@@ -1,0 +1,31 @@
+{
+  "source": "PASS",
+  "background_only": true,
+  "camera_elevation": 30,
+  "R": 90.50967208401677,
+  "ground_pivot_measured_px": [
+    96.0,
+    136.32000160217285
+  ],
+  "meshes": 107,
+  "base_triangles": 26374,
+  "invisible_subdivision": false,
+  "refinement_applied": true,
+  "design_revision": "C4b",
+  "emission_sources": [
+    "torch flame",
+    "embers",
+    "discrete hood eyes"
+  ],
+  "torch_follows_hand": true,
+  "AO_and_direct_self_shadows_in_diffuse": true,
+  "emissive_materials": [
+    "Flame hot heart same orange",
+    "Single emissive accent - ash lord orange"
+  ],
+  "animation_markers": {
+    "idle": 1,
+    "run": 21
+  },
+  "samples": 16
+}

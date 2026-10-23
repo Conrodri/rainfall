@@ -1,0 +1,23 @@
+{
+  "name": "tank_large",
+  "foot": [
+    160.0,
+    268.0
+  ],
+  "px_per_u": 90.51,
+  "footprint": [
+    0.7724,
+    1.0242
+  ],
+  "envelope": [
+    1.08,
+    1.201
+  ],
+  "height_u": 2.5,
+  "rig": "MAP",
+  "yaw": 45,
+  "elevation": 30,
+  "shadow_rig": "TOP",
+  "shadow_px_per_u": 128,
+  "fade": true
+}

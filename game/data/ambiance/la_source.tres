@@ -1,0 +1,114 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_src5"]
+
+[resource]
+script = ExtResource("1_src5")
+map_id = &"la_source"
+display_name = "La Source"
+mood = "Biome source (étage 5, boss final, docs/Design_Etages.md §4) : caverne au fond des cryptes, ouverte sur le ciel par un puits. La pluie tombe en une seule colonne au centre (SourceColumn + lumière blanche froide source_column), sur le paratonnerre-mère planté dans le lac en anneau ; le reste dans la pénombre des cristaux. Pas de pluie générale ni de soleil ; éclairs lointains à partir de Furieux (l'orage au-dessus du puits)."
+ambient_color = Color(0.5568628, 0.6039216, 0.6823530, 1)
+ambient_low = Color(0.6, 0.6431373, 0.7137255, 1)
+fill_color = Color(0.6588235, 0.7529412, 0.8392157, 1)
+fill_energy = 0.6
+fill_energy_low = 0.72
+sun_color = Color(0.9019608, 0.9568627, 1, 1)
+sun_energy = 0.34
+sun_rotation_deg = 315.0
+sun_height = 0.9
+sun_shadow_color = Color(0.0196078, 0.0313726, 0.0588235, 0.6)
+sun_shadow_length_u = 0.4
+sun_shadow_smooth = 2.0
+sun_shadow_filter = 1
+lift_color = Color(0.0392157, 0.0627451, 0.1098039, 1)
+lift_amount = 0.3
+gain_color = Color(0.8705882, 0.9490196, 1, 1)
+gain_amount = 0.14
+saturation = 0.86
+contrast = 1.14
+contrast_pivot = 0.38
+vignette_strength = 0.36
+vignette_radius = 0.72
+vignette_softness = 0.5
+vignette_color = Color(0.0117647, 0.0196078, 0.0392157, 1)
+rain_intensity = 0.15
+rain_opacity = 0.0
+rain_layers = 1.0
+drops_amount = 20.0
+splash_rate = 30.0
+wind_mult = 0.4
+fog_low_color = Color(0.7019608, 0.7843137, 0.8392157, 1)
+fog_low_opacity = 0.07
+fog_low_speed = Vector2(0.05, 0.03)
+fog2_opacity = 0.0
+fog_high_opacity = 0.0
+puffs_count = 4.0
+puffs_opacity = 0.08
+puffs_color = Color(0.7490196, 0.8235294, 0.8784314, 1)
+cloud_opacity = 0.0
+cloud_cover = 1.0
+rays_count = 0.0
+sky_texture = &"sky_storm_256x64"
+sky_reflect = 0.12
+puddle_reflect = 0.5
+water_reflect = 0.4
+ripple_hz = 0.9
+mirror_alpha = 0.3
+particle_defs = Array[Dictionary]([{
+"additive": true,
+"alpha": 0.5,
+"behavior": &"drift",
+"color": Color(0.7490196, 0.9568627, 1, 1),
+"name": "embruns de la colonne",
+"size_u": Vector2(0.04, 0.09),
+"speed_u": 0.2,
+"texture": &"ash_16"
+}])
+p1_amount = 20.0
+point_lights = Array[Dictionary]([{
+"energy": 1.0,
+"pos_u": Vector2(25, 25),
+"preset": &"source_column"
+}])
+light_rules = Array[Dictionary]([{
+"char": "#",
+"edge": true,
+"energy": 1.0,
+"max": 24,
+"preset": &"crystal_vein",
+"spacing_u": 9.0
+}])
+map_lights_energy = 1.0
+player_light_scale = 1.1
+lights_energy = 1.8
+tier_overrides = {
+&"Tendu": {
+&"vignette_strength": 0.38,
+&"p1_amount": 26.0
+},
+&"Hostile": {
+&"vignette_strength": 0.4,
+&"contrast": 1.17,
+&"puddle_reflect": 0.55,
+&"p1_amount": 32.0
+},
+&"Furieux": {
+&"vignette_strength": 0.42,
+&"contrast": 1.2,
+&"lightning_flash": 0.5,
+&"lightning_interval_min": 18.0,
+&"lightning_interval_max": 32.0,
+&"lightning_bolt_chance": 0.0,
+&"p1_amount": 40.0
+},
+&"Cataclysme": {
+&"vignette_strength": 0.44,
+&"contrast": 1.22,
+&"saturation": 0.8,
+&"lightning_flash": 0.8,
+&"lightning_interval_min": 10.0,
+&"lightning_interval_max": 20.0,
+&"lightning_bolt_chance": 0.0,
+&"p1_amount": 48.0
+}
+}

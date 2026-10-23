@@ -1,0 +1,710 @@
+{
+  "style": "STYLE.md + STYLE_boss_da.md",
+  "camera": "orthographic front",
+  "render_scale": 2,
+  "samples": 16,
+  "assets": [
+    {
+      "name": "panel_9slice",
+      "size": [
+        384,
+        384
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 28,
+        "top": 28,
+        "right": 28,
+        "bottom": 28
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 28,
+        "right": 28,
+        "bottom": 28
+      }
+    },
+    {
+      "name": "panel_small_9slice",
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 24,
+        "top": 24,
+        "right": 24,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "header_banner",
+      "size": [
+        640,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 28,
+        "top": 20,
+        "right": 28,
+        "bottom": 20
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 20,
+        "right": 28,
+        "bottom": 20
+      }
+    },
+    {
+      "name": "timer_plate",
+      "size": [
+        256,
+        80
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 22,
+        "top": 22,
+        "right": 22,
+        "bottom": 22
+      },
+      "content_insets": {
+        "left": 22,
+        "top": 22,
+        "right": 22,
+        "bottom": 22
+      }
+    },
+    {
+      "name": "keycap_9slice",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 14,
+        "top": 14,
+        "right": 14,
+        "bottom": 14
+      },
+      "content_insets": {
+        "left": 14,
+        "top": 14,
+        "right": 14,
+        "bottom": 14
+      }
+    },
+    {
+      "name": "divider",
+      "size": [
+        512,
+        24
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "button_normal",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_hover",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_pressed",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_disabled",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_primary",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_primary_hover",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_primary_pressed",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "button_danger",
+      "size": [
+        320,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true,
+      "nine_slice": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      },
+      "content_insets": {
+        "left": 28,
+        "top": 24,
+        "right": 28,
+        "bottom": 24
+      }
+    },
+    {
+      "name": "bar_frame_hp",
+      "size": [
+        512,
+        48
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 18,
+        "top": 10,
+        "right": 18,
+        "bottom": 10
+      },
+      "content_insets": {
+        "left": 18,
+        "top": 10,
+        "right": 18,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "bar_fill_hp",
+      "size": [
+        512,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "bar_frame_xp",
+      "size": [
+        512,
+        28
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 18,
+        "top": 10,
+        "right": 18,
+        "bottom": 10
+      },
+      "content_insets": {
+        "left": 18,
+        "top": 10,
+        "right": 18,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "bar_fill_xp",
+      "size": [
+        512,
+        16
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "bar_frame_boss",
+      "size": [
+        1024,
+        64
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false,
+      "nine_slice": {
+        "left": 32,
+        "top": 10,
+        "right": 32,
+        "bottom": 10
+      },
+      "content_insets": {
+        "left": 32,
+        "top": 10,
+        "right": 32,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "bar_fill_boss",
+      "size": [
+        1024,
+        40
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "bar_fill_hp_lost",
+      "size": [
+        512,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "level_badge",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "icon_gold",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "icon_xp",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "icon_ruby",
+      "size": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "icon_pause",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "icon_settings",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "icon_interact",
+      "size": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "minimap_frame",
+      "size": [
+        320,
+        320
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "minimap_player",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "minimap_chest",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "minimap_chest_large",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    },
+    {
+      "name": "minimap_chest_legendary",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "minimap_pillar",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "minimap_teleporter",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "minimap_boss",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "minimap_capsule",
+      "size": [
+        32,
+        32
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse",
+        "emission"
+      ],
+      "normal": "none: face-on UI",
+      "emission": true
+    },
+    {
+      "name": "vignette_hit",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "passes": [
+        "diffuse"
+      ],
+      "normal": "none: face-on UI",
+      "emission": false
+    }
+  ]
+}

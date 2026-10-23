@@ -1,0 +1,94 @@
+{
+  "character": "rainette",
+  "cell": 192,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "pivot": [
+    96,
+    136.32
+  ],
+  "R": 90.50966799187809,
+  "attack_impact_frame_zero_based": 3,
+  "airborne_offset": "game lift_px",
+  "animations": {
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "directions": 8
+    },
+    "crouch": {
+      "frames": 2,
+      "fps": 12,
+      "directions": 8
+    },
+    "jump": {
+      "frames": 4,
+      "fps": 12,
+      "directions": 8
+    },
+    "land": {
+      "frames": 3,
+      "fps": 15,
+      "directions": 8
+    },
+    "leap": {
+      "frames": 6,
+      "fps": 14,
+      "directions": 8
+    },
+    "spit": {
+      "frames": 4,
+      "fps": 12,
+      "directions": 8
+    },
+    "breathe": {
+      "frames": 4,
+      "fps": 4,
+      "directions": 8
+    },
+    "belch": {
+      "frames": 6,
+      "fps": 12,
+      "directions": 8
+    },
+    "attack": {
+      "frames": 6,
+      "fps": 12,
+      "directions": 8
+    },
+    "cast": {
+      "frames": 4,
+      "fps": 12,
+      "directions": 8
+    },
+    "cast_ult": {
+      "frames": 6,
+      "fps": 12,
+      "directions": 8
+    },
+    "death": {
+      "frames": 8,
+      "fps": 10,
+      "directions": 8
+    },
+    "run": {
+      "frames": 4,
+      "fps": 12,
+      "directions": 8
+    },
+    "dodge": {
+      "frames": 4,
+      "fps": 12,
+      "directions": 8
+    }
+  },
+  "directional_frames": 552
+}

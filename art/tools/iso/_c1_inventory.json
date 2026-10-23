@@ -1,0 +1,374 @@
+{
+  "R": 90.50966799187809,
+  "assets": [
+    {
+      "name": "ground_a",
+      "size": [
+        512,
+        256
+      ],
+      "pivot": [
+        256,
+        128
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "ground_b",
+      "size": [
+        512,
+        256
+      ],
+      "pivot": [
+        256,
+        128
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "ground_c",
+      "size": [
+        512,
+        256
+      ],
+      "pivot": [
+        256,
+        128
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "ground_d",
+      "size": [
+        512,
+        256
+      ],
+      "pivot": [
+        256,
+        128
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "water_shallow",
+      "size": [
+        256,
+        128
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "water_deep",
+      "size": [
+        256,
+        128
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": 0,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "block_a",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "block_b",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "block_c",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "rampart_ne",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "rampart_nw",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "rampart_corner_n",
+      "size": [
+        256,
+        256
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "height_u": 1.25,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "cliff_sw",
+      "size": [
+        256,
+        384
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": -2.5,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "cliff_se",
+      "size": [
+        256,
+        384
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": -2.5,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "cliff_corner_s",
+      "size": [
+        256,
+        384
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": -2.5,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "cliff_corner_w",
+      "size": [
+        256,
+        384
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": -2.5,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "cliff_corner_e",
+      "size": [
+        256,
+        384
+      ],
+      "pivot": [
+        128,
+        64
+      ],
+      "height_u": -2.5,
+      "rig": "MAP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    },
+    {
+      "name": "void_1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "pivot": [
+        512,
+        512
+      ],
+      "height_u": 0,
+      "rig": "TOP",
+      "existing": [],
+      "passes": [
+        "diffuse",
+        "normal"
+      ],
+      "emission": "none; no black _e",
+      "shadow_size": null
+    }
+  ]
+}

@@ -1,0 +1,343 @@
+{
+  "files": [
+    {
+      "path": "game/assets/sprites/pickups/coin.png",
+      "sha256": "7e5dc5c19dc9a5d29005384b1278f3a872ad3596fcf49daed3f412527f62fb92",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        10,
+        40,
+        37
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/coin.png.import",
+      "sha256": "1d0781e2c0cb09d2e1524ceb4f45c04228a34c84d2f96397e7e49e5961b5cab7"
+    },
+    {
+      "path": "game/assets/sprites/pickups/coin_n.png",
+      "sha256": "1f7a1c22d8e748896ea99dd77b56e73c5d59445d86997c279c696fc9567f9283",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        10,
+        40,
+        37
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/coin_n.png.import",
+      "sha256": "d06fad29a363b5ef18efc6e4b7f70c7caf0f393d86d8863051e699f802112029"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag/default.png",
+      "sha256": "15a528fbd1748c0410b6c87529c5b04b54f049efad6116a4a94a73dd96820211",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        6,
+        8,
+        42,
+        41
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag/default.png.import",
+      "sha256": "d48d7c1a1b667b80e79a4e19da8ac09c81e8add985cd87044f342cb1748c6173"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag/default_n.png",
+      "sha256": "11f1a1fe154d16ca1020ce15aeb08e221770e860ebb55404256e6a9cc8d3571a",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        6,
+        8,
+        42,
+        41
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag/default_n.png.import",
+      "sha256": "3afc3567960de12ef2bfdffeac0a776652442c7e798a1acb4e6ef04d27639dc3"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag/gold_bag.tres",
+      "sha256": "bd6af4cdc999c7dcbbbc783a142b1e58cae67df168b8ea0e0e28f5a3c2ca7174"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag.png",
+      "sha256": "6bb8223f64057f69666abb9acdbd91da6f87310d2d2d7f64c849f3bcdf368a18",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        6,
+        8,
+        42,
+        41
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag.png.import",
+      "sha256": "d0d2d92fbe59c04cf16de4b3b5621d7f759fb64a98f23f174a79a76a7ce7ab4c"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag_n.png",
+      "sha256": "bb0fe8deb65a821a1537e34c540c6ef3945991432b1b97635dcc993c7ddfc78a",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        6,
+        8,
+        42,
+        41
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_bag_n.png.import",
+      "sha256": "a561df17bb3d5b5be529f792f591fc3be078a4a89c0b3db2dcce5482f6335a64"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_coin/default.png",
+      "sha256": "a4455ca1db8f1625984d492708fd059169e5a776f4a7268dd1090f87a8209f4b",
+      "size": [
+        384,
+        48
+      ],
+      "bbox": [
+        8,
+        8,
+        373,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_coin/default.png.import",
+      "sha256": "039c18af38166296905c6c01c09692bbdf4a06c7d97601af160afc016cc48485"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_coin/default_n.png",
+      "sha256": "204eb7d4523fe53df1cf63699f419c733e145d043be7ffdc34a9d2b3835cc719",
+      "size": [
+        384,
+        48
+      ],
+      "bbox": [
+        8,
+        8,
+        373,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_coin/default_n.png.import",
+      "sha256": "82a0c39041bc5387ecf4d3cc56ce3f7e7f6783fa12722034598c3ff988147aca"
+    },
+    {
+      "path": "game/assets/sprites/pickups/gold_coin/gold_coin.tres",
+      "sha256": "db858bec087c17b4815fcb96356735c4c226e69a71c06c506625b00aeb4a68c7"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem/default.png",
+      "sha256": "a3f4924b2291a132ed7fc6f66d01af62eca984f72538285eccf279d84f84defd",
+      "size": [
+        384,
+        48
+      ],
+      "bbox": [
+        11,
+        8,
+        371,
+        34
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem/default.png.import",
+      "sha256": "bc28f990976f5986753fed722f87aaac1817d884e55ffb1399503ced228eff75"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem/default_n.png",
+      "sha256": "0e15ca22aef9e3530e24bc74edc9ce445a7b3f21bd968c801f38d36742206633",
+      "size": [
+        384,
+        48
+      ],
+      "bbox": [
+        11,
+        8,
+        371,
+        34
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem/default_n.png.import",
+      "sha256": "32eb9276d5c9c418121adf845ea2a41bf423f79dc8218250653c0446a886d51e"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem/xp_gem.tres",
+      "sha256": "2803cd0741b8e2f13cadf0e87052e51067898cadc79531a22454251cf1a9603c"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem.png",
+      "sha256": "e285ef03b2820d9a6f6a01e9653e68d83b0ad23137c73c605b4bbc6c6e64f342",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        11,
+        8,
+        37,
+        34
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem.png.import",
+      "sha256": "17843a2b4c29495da8b93cf2d716dde5923987ef4b4cb9b4b352d1561bf937b1"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default.png",
+      "sha256": "209952cccb9bf0609da3f601e34dc013eaeb251e4ae6ee778966d1c174527476",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        40,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default.png.import",
+      "sha256": "46c081f63982026902073145245c678d4300adc0afa994142b281d0ff99dfac8"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default_e.png",
+      "sha256": "c1df720c8fd1b44fadb645e0a03d62429fa0d4f7e97bf4a66295f4193356387b",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        40,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default_e.png.import",
+      "sha256": "01a49b672ad5d3bfb2badaed01830b589c85d84507f3ae7e0ef467a7ccf47a98"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default_n.png",
+      "sha256": "400ffaf8bd930909d8b9524cacc233bc70589102451016a73953a07a458aac02",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        40,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/default_n.png.import",
+      "sha256": "6b16402334a38dd0c6826faf99a8f03650afe3d4e18a85e37c1975010c88f3fe"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big/xp_gem_big.tres",
+      "sha256": "937f1235325067b54611273fc94efe44fa005c2ee5fe52bb19a0ac2c9220508e"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big.png",
+      "sha256": "2664bc9592270241f268a09c61397a16a2eadc2fb6d43bf587607c2af7ba01ab",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        40,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big.png.import",
+      "sha256": "9edadbbda4bd7133c54d2f6214199dcd21a1420541b3730f7bb18fd20986e5bc"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big_n.png",
+      "sha256": "0be09ece580941ad3fd92c8190d4da6feb5d99f40c78457a8e68a05918467175",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        8,
+        6,
+        40,
+        39
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_big_n.png.import",
+      "sha256": "d0aa6b611cb372af3200bf65efb77756bd1301022b059dc114eede5144328b23"
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_n.png",
+      "sha256": "a97c1ab386ac6dfb7796b17f57ca99c8ddae70bf51537b66427c0c6e85c23a1b",
+      "size": [
+        48,
+        48
+      ],
+      "bbox": [
+        11,
+        8,
+        37,
+        34
+      ]
+    },
+    {
+      "path": "game/assets/sprites/pickups/xp_gem_n.png.import",
+      "sha256": "2b77fc4e9d0803ab41f90fd45494de58b5b09d63ebd599f48e63711b5dabf6a5"
+    }
+  ],
+  "verification": {
+    "result": "PASS",
+    "errors": [],
+    "scale_px_per_unit": 64,
+    "camera_elevation": 30,
+    "ground_pivot": [
+      24,
+      34
+    ],
+    "frames": {
+      "gold_coin": 8,
+      "gold_bag": 1,
+      "xp_gem": 8,
+      "xp_gem_big": 1
+    },
+    "emission": "Existing xp_gem_big/default_e.png only; no new files."
+  }
+}

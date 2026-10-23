@@ -1,0 +1,37 @@
+[
+  {
+    "character": "arpenteuse",
+    "mesh_objects": 276,
+    "signature": {
+      "lift": 0.0
+    },
+    "crea_bounds": [
+      0.493,
+      0.27,
+      0.678,
+      0.841
+    ],
+    "ppu": 90.50966799187809,
+    "pass_check": true
+  },
+  {
+    "character": "rainette",
+    "mesh_objects": 133,
+    "signature": {
+      "lift": 0.57,
+      "sac_scale": [
+        2.049999952316284,
+        2.0999999046325684,
+        1.9500000476837158
+      ]
+    },
+    "crea_bounds": [
+      0.574,
+      0.265,
+      0.681,
+      0.955
+    ],
+    "ppu": 90.50966799187809,
+    "pass_check": true
+  }
+]

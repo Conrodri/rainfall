@@ -1,0 +1,74 @@
+# Rapport de la file de nuit Codex
+- 23/10 00:01 == groupe 1
+- 23/10 00:02 sprites_test après groupe 1 : RESULT: OK
+- 23/10 00:02 == groupe 2
+- 23/10 00:04 sprites_test après groupe 2 : RESULT: OK
+- 23/10 00:04 == groupe 3
+- 23/10 00:05 sprites_test après groupe 3 : RESULT: OK
+- 23/10 00:05 == groupe 4
+- 23/10 00:07 sprites_test après groupe 4 : RESULT: OK
+- 23/10 00:07 == groupe 5
+- 23/10 00:08 sprites_test après groupe 5 : RESULT: OK
+- 23/10 00:08 == groupe 6
+- 23/10 00:09 sprites_test après groupe 6 : RESULT: OK
+- 23/10 00:09 == groupe 7
+- 23/10 00:10 sprites_test après groupe 7 : RESULT: OK
+- 23/10 00:10 == groupe 8
+- 23/10 00:11 sprites_test après groupe 8 : RESULT: OK
+- 23/10 00:11 == groupe 9
+- 23/10 00:12 sprites_test après groupe 9 : RESULT: OK
+- 23/10 00:12 == groupe 10
+- 23/10 00:13 sprites_test après groupe 10 : RESULT: OK
+- 23/10 00:13 == groupe 11
+- 23/10 00:17 sprites_test après groupe 11 : RESULT: OK
+- 23/10 00:17 == groupe 10
+- 23/10 00:19 sprites_test après groupe 10 : RESULT: OK
+- 23/10 00:19 == groupe 11
+- 23/10 00:23 sprites_test après groupe 11 : RESULT: OK
+- 23/10 00:23 == groupe 12
+- 23/10 00:25 sprites_test après groupe 12 : RESULT: OK
+- 23/10 00:25 == groupe 13
+- 23/10 00:27 sprites_test après groupe 13 : RESULT: OK
+- 23/10 00:27 == groupe 11
+- 23/10 00:31 sprites_test après groupe 11 : RESULT: OK
+- 23/10 00:31 == groupe 12
+- 23/10 00:33 sprites_test après groupe 12 : RESULT: OK
+- 23/10 00:33 == groupe 13
+- 23/10 00:35 sprites_test après groupe 13 : RESULT: OK
+- 23/10 00:35 == groupe 12
+- 23/10 00:37 sprites_test après groupe 12 : RESULT: OK
+- 23/10 00:37 == groupe 13
+- 23/10 00:39 sprites_test après groupe 13 : RESULT: OK
+- 23/10 00:39 == groupe 12
+- 23/10 00:41 sprites_test après groupe 12 : RESULT: OK
+- 23/10 00:41 == groupe 14
+- 23/10 00:42 lancement art/tools/night/_n1c.txt
+- 23/10 00:42 lancement art/tools/night/_n1d.txt
+- 23/10 00:42 lancement art/tools/night/_n2f.txt
+- 23/10 00:43 lancement art/tools/night/_n2g.txt
+- 23/10 00:43 lancement art/tools/night/_c9a.txt
+- 23/10 00:43 lancement art/tools/night/_c9b.txt
+- 23/10 00:44 lancement art/tools/night/_c8c.txt
+- 23/10 00:44 lancement art/tools/night/_c8d.txt
+- 23/10 00:45 fin art/tools/night/_n2f.txt : omises. 23 planches, 332 frames ; lisibilité validée sur la [planche contact](art/tools/night/_n2f_contact.png). Import Godot sans erreur ; sprites_test et weaver_boss_test → RESULT: OK. Aucune texture >4096 ; budget global dépassé : bosses 58,3/45 Mo, APK 265/200 Mo. Aucun .gd/.tscn modifié.
+- 23/10 00:47 fin art/tools/night/_n2g.txt : é. [Planche vérifiée](/C:/Users/const/Documents/Rainfall/art/tools/night/_n2g_contact.png). Import sans erreur ; sprites, boss et textures : `RESULT: OK` (ressources non libérées à la sortie du test boss). Aucun atlas >4096 ; dépassements globaux persistants : boss 58,3/45 Mo, APK 265/200 Mo.
+- 23/10 00:49 fin art/tools/night/_n1c.txt : cun `.gd/.tscn` modifié. Import sans erreur ; trois tests `RESULT: OK`, avec erreurs de libération de ressources à leur fermeture. Textures ≤4096 ; budget global boss/APK dépassé et 10 imports deep_eel hors politique. [Planche comparative avec l’Éclusier](art/tools/night/_n1c_contact.png).
+- 23/10 00:50 fin art/tools/night/_c9b.txt : auna.json.   [Planche comparative](art/tools/night/_c9b_contact.png) · [Rapport](art/tools/night/_c9b_report.txt).   Import sans erreur ; deux tests `RESULT: OK`, avec fuites signalées à la fermeture du test boss.   Aucune texture >4096 ; budget global dépassé : boss 58,8/45 Mo, APK 266/200 Mo.
+- 23/10 00:52 fin art/tools/night/_n1d.txt : rer_iso.blend). Import propre ; `sprites_test` et `floor1_boss_test` : OK, avec fuites signalées à la fermeture. `jar_bearer_boss_test` : FAIL confirmé deux fois — 5/6 octants, erreur `SpellCaster` sur objet libéré. Textures ≤4096 ; budget global dépassé : boss 63,1/45 Mo, APK 270/200 Mo.
+- 23/10 00:53 fin art/tools/night/_c8c.txt :  actualisés.   Import sans erreur ; les trois tests donnent `RESULT: OK` (2 instances ObjectDB signalées à l’arrêt).   Aucune texture >4096 px. Budget global dépassé : boss 63/45 Mo, APK 270/200 Mo.   [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_c8c_contact.png).
+- 23/10 00:55 fin art/tools/night/_c8d.txt : . Import Godot, sprites_test et floor4_boss_test : OK. deep_eel_boss_test : échec « eau vive » reproduit deux fois, détaillé au rapport. Aucun atlas >4096 ; lot 3,10 Mo. Budgets globaux boss/APK dépassés. [Planche](art/tools/night/_c8d_contact.png) · [Rapport](art/tools/night/_c8d_report.md)
+- 23/10 00:56 fin art/tools/night/_c9a.txt :  modifié. Import Godot et `sprites_test` : OK. `crane_boss_test` échoue deux fois : dérive en P3, correction hors périmètre. Textures ≤4096 ; budgets globaux dépassés : boss 63/45 Mo, APK 270/200 Mo. [Planche de contrôle](C:/Users/const/Documents/Rainfall/art/tools/night/_c9a_contact.png).
+- 23/10 00:56 sprites_test après groupe 14 : RESULT: OK
+- 23/10 00:56 == groupe 15
+- 23/10 00:56 lancement art/tools/night/_m1a.txt
+- 23/10 00:56 lancement art/tools/night/_m3a.txt
+- 23/10 00:57 lancement art/tools/night/_m4a.txt
+- 23/10 00:57 lancement art/tools/night/_m4b.txt
+- 23/10 00:57 lancement art/tools/night/_m5fx.txt
+- 23/10 00:58 lancement art/tools/night/_m6fx.txt
+- 23/10 01:03 fin art/tools/night/_m5fx.txt : /m5fx.blend` et script `art/tools/night/m5fx_build.py`. [Planche contact](art/tools/night/_m5fx_contact.png). Import sans erreur ; tests sprites et textures : `RESULT: OK` ; aucune planche >4096. Budget global encore dépassé hors lot : boss 63,4/45 Mo, APK 272/200 Mo. Aucun `.gd`/`.tscn` modifié.
+- 23/10 01:11 quota Codex épuisé (art/tools/night/_logm4a.txt), reprise vers 05:45
+- 23/10 01:11 fin art/tools/night/_m6fx.txt :  : OK. Test général : échec sur le Rémouleur hors périmètre ; budget : échecs externes détaillés au rapport. [Planche](C:/Users/const/Documents/Rainfall/art/tools/night/_m6fx_contact.png) · [Choix et vérifications](C:/Users/const/Documents/Rainfall/art/tools/night/_m6fx_verification.json)
+- 23/10 01:11 quota Codex épuisé (art/tools/night/_logm4b.txt), reprise vers 05:45
+- 23/10 01:11 quota Codex épuisé (art/tools/night/_logm3a.txt), reprise vers 05:45
+- 23/10 01:11 quota Codex épuisé (art/tools/night/_logm1a.txt), reprise vers 05:45

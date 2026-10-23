@@ -1,0 +1,25 @@
+{
+  "idle_row": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "run_row": "se, frames 0..7",
+  "terrain": "3x3 ground_a, 512x256 native MAP; CREA R=90.5097",
+  "ash_rescale": {
+    "original_frame": 170,
+    "original_R": 43.81144269966191,
+    "contact_frame": 351
+  },
+  "right_column": [
+    "ash_lord same R",
+    "R8a reference",
+    "R8d reference",
+    "C1 reference"
+  ]
+}

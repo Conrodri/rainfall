@@ -1,0 +1,26 @@
+{
+  "name": "button_hover",
+  "size": [
+    320,
+    96
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse",
+    "emission"
+  ],
+  "normal": "none: face-on UI",
+  "emission": true,
+  "nine_slice": {
+    "left": 28,
+    "top": 24,
+    "right": 28,
+    "bottom": 24
+  },
+  "content_insets": {
+    "left": 28,
+    "top": 24,
+    "right": 28,
+    "bottom": 24
+  }
+}

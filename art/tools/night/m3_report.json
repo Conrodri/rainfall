@@ -1,0 +1,67 @@
+{
+  "errors": [],
+  "checks": [
+    {
+      "asset": "knife/default",
+      "size": [
+        256,
+        64
+      ]
+    },
+    {
+      "asset": "knife_planted/default",
+      "size": [
+        64,
+        512
+      ]
+    },
+    {
+      "asset": "dagger_arc/default",
+      "size": [
+        2688,
+        672
+      ]
+    },
+    {
+      "asset": "spin_blur/default",
+      "size": [
+        1152,
+        288
+      ]
+    },
+    {
+      "asset": "double_burst/top",
+      "size": [
+        3072,
+        512
+      ]
+    },
+    {
+      "asset": "double_burst/crea",
+      "size": [
+        3072,
+        512
+      ]
+    }
+  ],
+  "choices": [
+    "Dagues de bois ferre, rivets et ligatures argent; axe +X.",
+    "Demi-lune au sol, rayon 320 px, centre (336,336), disparition en filaments.",
+    "Explosion de copeaux, porcelaine et fils rompus; pas de feu.",
+    "Icones: arche de deux dagues, eventail de cinq lames, vraie toupie de bois tournee; trois tetes reprises directement du modele valide Rictus (porcelaine, maquillage et fissures). Studio I2 commun, argent spectral #9FC8C0."
+  ],
+  "contracts": "Les sous-assets M3, les quatre icones et le portrait etaient absents au debut; creation necessaire. Aucun .tres existant modifie.",
+  "contact": "References et portrait; Rictus puis Ardent en medaillons 128/64; arc + passes, spin + couteaux plantes; explosions TOP puis CREA.",
+  "blend_source": "art/blender/characters/rictus.blend",
+  "additive": [
+    "spin_blur"
+  ],
+  "emission": "_e fournis seulement si non noirs; emission auto via NormalMaps; couteaux sans emission.",
+  "validation": {
+    "structure": "PASS: dimensions, marges, frames distinctes et references",
+    "sprites_test": "RESULT: OK",
+    "resources": "10 .tres charges, 0 erreur",
+    "import": "Assets importes; sortie editeur signale 26 ressources retenues au nettoyage (logs m3_import.log). Tests de jeu et chargement isole sans erreur."
+  },
+  "portrait": "Buste rapproche depuis le modele valide; cadrage calcule sur la tete et la fraise."
+}

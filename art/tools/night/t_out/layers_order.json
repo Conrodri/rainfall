@@ -1,0 +1,208 @@
+{
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "cell": 192,
+  "pivot_px": [
+    96,
+    136.32
+  ],
+  "order": "back_to_front",
+  "layers": [
+    "torso",
+    "head",
+    "neck_steam",
+    "arm_l",
+    "arm_r",
+    "leg_l",
+    "leg_r"
+  ],
+  "orders": {
+    "e": [
+      "leg_r",
+      "arm_r",
+      "torso",
+      "leg_l",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ],
+    "se": [
+      "leg_r",
+      "arm_r",
+      "leg_l",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ],
+    "s": [
+      "leg_l",
+      "leg_r",
+      "torso",
+      "arm_l",
+      "arm_r",
+      "neck_steam",
+      "head"
+    ],
+    "sw": [
+      "leg_l",
+      "arm_l",
+      "leg_r",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "w": [
+      "leg_l",
+      "arm_l",
+      "torso",
+      "leg_r",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "nw": [
+      "leg_l",
+      "arm_l",
+      "leg_r",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "n": [
+      "leg_l",
+      "leg_r",
+      "torso",
+      "arm_l",
+      "arm_r",
+      "neck_steam",
+      "head"
+    ],
+    "ne": [
+      "leg_r",
+      "arm_r",
+      "leg_l",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ]
+  },
+  "neck_steam": "visible only without head",
+  "animations": {
+    "idle": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "walk": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "hop_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l"
+    ],
+    "hop_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_r"
+    ],
+    "handwalk": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r"
+    ],
+    "crawl_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l"
+    ],
+    "crawl_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_r"
+    ],
+    "roll": [
+      "torso",
+      "head",
+      "neck_steam"
+    ],
+    "fall": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "attack": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "cast": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "cast_ult": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "death": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ]
+  },
+  "rendering": "complete isolated modules; camera-depth ordering from socket roots"
+}

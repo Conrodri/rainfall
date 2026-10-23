@@ -1,0 +1,9 @@
+CONTEXTE: projet Rainfall (survivor-like 2D vue de dessus, univers pluvieux). Tu produis des TEXTURES D'AMBIANCE PNG RGBA qui seront teintees/animees dans Godot.
+REGLES ABSOLUES:
+- Blender UNIQUEMENT en arriere-plan: "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python <script>.py . Ne touche JAMAIS a une fenetre Blender interactive et n'utilise PAS les outils MCP Blender (une autre session les utilise).
+- Tout est genere/rendu DANS Blender (shader nodes procéduraux: noise, musgrave/voronoi, wave, gradients, volumes, particules, simulations...) puis cuit/rendu en PNG. Interdit: PIL/Pillow, numpy pour dessiner, telechargement. Python hors Blender seulement pour assembler/rogner/verifier (et meme cela, prefere le faire dans Blender via bpy.data.images / compositor).
+- Rendu: Eevee ou Cycles (choisis le plus fiable en background), film transparent, view transform Standard, 8 bits RGBA, anti-aliasing, rendu a 2x puis reduction possible dans Blender.
+- Ecris tes scripts dans art/tools/ambiance/ (ex: rain.py), .blend dans art/blender/ambiance/, rendus bruts dans art/renders/ambiance/, livrables finaux (PNG) dans game/assets/sprites/ambiance/<sous-dossier>/ . Ne modifie AUCUN autre dossier.
+- Textures de brume/nuages/rayons/pluie: BLANCHES ou en niveaux de gris avec ALPHA (teintees dans Godot). Pas de couleur sauf indication.
+- Textures "seamless": tileables sans couture visible (bruit 3D/4D a coordonnees periodiques, ou texture cuite avec blend de bord). Verifie en assemblant 2x2.
+- A la fin, liste exactement les fichiers produits (chemin + taille px) et les erreurs eventuelles. Verifie toi-meme que les PNG existent, ont la bonne taille et un canal alpha non vide (via un script Blender de lecture bpy.data.images).

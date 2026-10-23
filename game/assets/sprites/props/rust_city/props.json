@@ -1,0 +1,69 @@
+{
+  "density": 0.05,
+  "props": [
+    {
+      "name": "crate_se",
+      "weight": 4,
+      "foot": [
+        64,
+        94
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "barrels",
+      "weight": 4,
+      "foot": [
+        80,
+        122
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "debris",
+      "weight": 4,
+      "foot": [
+        96,
+        108
+      ],
+      "px_per_u": 90.51,
+      "fade": false
+    },
+    {
+      "name": "valve",
+      "weight": 2,
+      "foot": [
+        64,
+        96
+      ],
+      "px_per_u": 90.51,
+      "fade": false
+    },
+    {
+      "name": "pipe_stub",
+      "weight": 2,
+      "foot": [
+        96,
+        148
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "tank_large",
+      "weight": 1,
+      "foot": [
+        160,
+        268
+      ],
+      "px_per_u": 90.51,
+      "fade": true,
+      "shadow_rig": "top"
+    }
+  ]
+}

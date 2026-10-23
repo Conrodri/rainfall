@@ -1,0 +1,89 @@
+{
+  "result": "PASS",
+  "cell": 170,
+  "camera_ortho": 4.051028251647949,
+  "pivot": [
+    85,
+    119
+  ],
+  "impact_frames": {
+    "attack": 3,
+    "cast_a": 4,
+    "cast_b": 4
+  },
+  "assets": [
+    {
+      "id": "steam_hound",
+      "animations": 19,
+      "normal_maps": 0,
+      "measured": {
+        "idle": {
+          "bbox": [
+            52,
+            22,
+            118,
+            140
+          ],
+          "rgb_mean": [
+            105.88,
+            90.34,
+            77.74
+          ]
+        }
+      }
+    },
+    {
+      "id": "grinder",
+      "animations": 20,
+      "normal_maps": 0,
+      "measured": {
+        "idle": {
+          "bbox": [
+            45,
+            29,
+            125,
+            138
+          ],
+          "rgb_mean": [
+            97.21,
+            97.69,
+            96.99
+          ]
+        },
+        "disc": {
+          "bbox": [
+            16,
+            9,
+            80,
+            87
+          ],
+          "rgb_mean": [
+            106.27,
+            112.13,
+            113.77
+          ]
+        }
+      }
+    },
+    {
+      "id": "blind_pump",
+      "animations": 19,
+      "normal_maps": 0,
+      "measured": {
+        "idle": {
+          "bbox": [
+            41,
+            16,
+            129,
+            139
+          ],
+          "rgb_mean": [
+            105.3,
+            96.53,
+            87.7
+          ]
+        }
+      }
+    }
+  ]
+}

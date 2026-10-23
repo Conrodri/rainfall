@@ -1,0 +1,141 @@
+{
+  "marotte": {
+    "frames": 8,
+    "passes": [
+      "diffuse",
+      "_n",
+      "_e"
+    ],
+    "bounds": [
+      [
+        85,
+        30,
+        113,
+        145
+      ],
+      [
+        77,
+        29,
+        134,
+        147
+      ],
+      [
+        58,
+        29,
+        134,
+        144
+      ],
+      [
+        58,
+        28,
+        115,
+        147
+      ],
+      [
+        79,
+        28,
+        107,
+        145
+      ],
+      [
+        58,
+        28,
+        115,
+        144
+      ],
+      [
+        58,
+        28,
+        134,
+        139
+      ],
+      [
+        77,
+        28,
+        134,
+        144
+      ]
+    ],
+    "black_emission_occluded": [
+      "nw",
+      "n"
+    ],
+    "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\characters\\marotte.blend"
+  },
+  "montreur": {
+    "frames": 8,
+    "passes": [
+      "diffuse",
+      "_n",
+      "_e"
+    ],
+    "bounds": [
+      [
+        63,
+        59,
+        147,
+        155
+      ],
+      [
+        57,
+        58,
+        137,
+        148
+      ],
+      [
+        56,
+        57,
+        136,
+        144
+      ],
+      [
+        55,
+        58,
+        135,
+        148
+      ],
+      [
+        45,
+        59,
+        129,
+        155
+      ],
+      [
+        55,
+        60,
+        134,
+        153
+      ],
+      [
+        55,
+        61,
+        137,
+        150
+      ],
+      [
+        58,
+        60,
+        137,
+        153
+      ]
+    ],
+    "black_emission_occluded": [],
+    "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\characters\\montreur.blend"
+  },
+  "contact": {
+    "directions": [
+      "se",
+      "s",
+      "sw",
+      "nw"
+    ],
+    "ghost_alpha": 0.8,
+    "wire_alpha": 0.35,
+    "wire_width_px": 1,
+    "lift_u": 1.4,
+    "offset_u": 0.3,
+    "terrain": "C1 ground_a",
+    "comparison_R": 90.50966799187809,
+    "detail_scale": 3
+  }
+}

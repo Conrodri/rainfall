@@ -1,0 +1,11 @@
+LOT ARDV : VFX et icônes des 4 variantes de sorts d'Ardent (23/10/2026). Le code (game/scripts/spells/ardent_variant_kit.gd, ardent_ember_ring.gd, ardent_phoenix.gd, ardent_telegraph.gd) dessine des PLACEHOLDERS ; il charge ces fichiers dès qu'ils existent (noms EXACTS). Caméra iso du projet (dimétrique 2:1, élévation 30°, vue à 45°, art/briefs/STYLE.md), 90,5 px/u au sol, éclairage haut-gauche, accent braise #FF8C33, DA des boss (STYLE_boss_da.md).
+
+Sortie game/assets/sprites/vfx/<nom>/ (default.png + default_e.png en DEMI-RÉSOLUTION + <nom>.tres SpriteFrames, anim `default`) :
+- ember_orbs_iso : UNE braise (orbe 0,7 u de diamètre, noyau blanc-jaune, halo orange, courte traînée), 6 frames en boucle 12 i/s, 1 direction, centrée ; le code en place 3 sur un cercle de 1,8 u.
+- flame_pillar (REFAIRE en iso) : colonne de feu rayon au sol 1,2 u (108 px), hauteur ~4 u, 12 frames, boucle de 10 frames + 2 d'extinction (anim `end`) ; lit incandescent au sol z=0 mesuré pour calibrer vfx_radius_px.
+- meteor_fall : météore en chute verticale vue iso (traînée vers le haut), 6 frames, 1 dir ; meteor_impact (REFAIRE en iso) : gerbe d'impact rayon 1 u (90 px), 10 frames non bouclées.
+- phoenix (REFAIRE en iso) : phénix de flammes, envergure ~1,5 u, 8 directions, anims `idle` (6 frames, boucle) et `dive` (4 frames, piqué), accent braise, traînée ; nommer `phoenix.tres` avec `idle_<dir>` / `dive_<dir>`.
+- telegraph_ring : anneau de télégraphe allié braise (cercle en pointillé court + remplissage), rayon 1 u (90 px), 1 frame, alpha 1 ; le code le met à l'échelle.
+Icônes game/assets/sprites/icons/spells/ : braises_errantes.png, pilier_de_flamme.png, pluie_de_meteores.png, phenix.png (existantes : les refaire en cel si leur style ne colle pas), 128x128, fond transparent.
+
+Rendu cel obligatoire : art/briefs/STYLE_cel.md, art/tools/cel/cel_style.py. NORMAL MAPS SUPPRIMÉES : aucun <f>_n.png ; masque d'émission <f>_e.png en demi-résolution. PNG optimisés, polycount utile, ombres cuites si pertinent. Scripts art/tools/night/ardv_build.py (Blender --background, Eevee échantillons modestes). Périmètre : ces dossiers seulement, aucun .gd/.tscn. Planche de contrôle art/tools/night/_ardv_contact.png. Rapport final court en français.

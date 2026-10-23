@@ -1,0 +1,33 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+var checked := 0
+var frames := 0
+var failed := 0
+func scan(path: String) -> void:
+    var dir := DirAccess.open(path)
+    if dir == null:
+        failed += 1
+        return
+    for name in dir.get_files():
+        if not name.ends_with('.tres'):
+            continue
+        var resource = ResourceLoader.load(path.path_join(name), '', ResourceLoader.CACHE_MODE_IGNORE)
+        if not resource is SpriteFrames:
+            failed += 1
+            continue
+        checked += 1
+        for anim in resource.get_animation_names():
+            for i in range(resource.get_frame_count(anim)):
+                var texture = resource.get_frame_texture(anim, i)
+                if texture == null or texture.get_width() <= 0:
+                    failed += 1
+                frames += 1
+    for name in dir.get_directories():
+        scan(path.path_join(name))
+func _initialize() -> void:
+    scan('res://assets/sprites/characters/bourbe')
+    print('BO1 RESOURCES ', 'PASS' if failed == 0 and checked > 0 else 'FAIL', ': ', checked, ' SpriteFrames; ', frames, ' frames; ', failed, ' errors')
+    quit(0 if failed == 0 and checked > 0 else 1)
+"

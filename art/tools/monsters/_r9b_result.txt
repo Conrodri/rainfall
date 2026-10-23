@@ -1,0 +1,8 @@
+R9b PASS: ash_lord, bramble_queen, brood_mother.
+Attack: 6 frames, impact index 3, non-looping, original 170px cells/camera/pivot.
+27 animations added: attack/cast_a/cast_b in e,w,n; matching normal/emission sheets.
+Existing animations preserved except required attack_s loop=false.
+Minimum margins: ash_lord 4px; bramble_queen 4px; brood_mother 6px.
+Directional ash_lord cast_a: arm elevation reduced to 62% to fit unchanged cell.
+Godot import: no errors. sprites_test RESULT: OK.
+Contact: _r9b_contact.png; bosses left to right, rows s/e/w/n, keys 2/3/5.

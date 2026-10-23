@@ -1,0 +1,607 @@
+{
+  "files": {
+    "game/assets/sprites/icons/frame_commun.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "5aa1da70fc10af57fdcc3d3251fc8e05992ebdbacb7b94086d2a6e28c5e916a1"
+    },
+    "game/assets/sprites/icons/frame_legendaire.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        4,
+        247,
+        252
+      ],
+      "sha256": "b5fa2b6cd256c44db6c37736d6e866ef160e4ea80fee0f5921eb96e1f1466b78"
+    },
+    "game/assets/sprites/icons/frame_peu_commun.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "4030d555a9ffaf58494aecd575009845508ed52a8b8f73bfeccfbe88003b91bc"
+    },
+    "game/assets/sprites/icons/frame_rare.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "ed4360f882115a0105846bf5df5cc9efc00b7d024e21cf00fe0b85355aa9521e"
+    },
+    "game/assets/sprites/ui/cards/card_back.png": {
+      "size": [
+        384,
+        560
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        0,
+        1,
+        384,
+        559
+      ],
+      "sha256": "2db463727ed7d906114409a3a6bd230c3ded2450b5fcccfd56e530c32b823250"
+    },
+    "game/assets/sprites/ui/cards/card_front.png": {
+      "size": [
+        384,
+        560
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        0,
+        1,
+        384,
+        559
+      ],
+      "sha256": "a7e23cba7b86b559ee9a836ead5f5dd88fc141c01806ffacee1eec8b53c9a51e"
+    },
+    "game/assets/sprites/ui/dice/d100_face_commun.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "f94afbc684243f396573e699537d1cd774dbd55473a3c744e6ecd3f22492e227"
+    },
+    "game/assets/sprites/ui/dice/d100_face_legendaire.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "0e6a42b34868dd6b252da4c5b354711ec2600814f77b6c97fec09ae23e8d2593"
+    },
+    "game/assets/sprites/ui/dice/d100_face_peu_commun.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "447108d2ee27aa74d3d3e69a52991b29a85960240a27feb594eedd8be985d571"
+    },
+    "game/assets/sprites/ui/dice/d100_face_rare.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "77beb7be9716f1bd629fe5e1fd8409eba5146acd75059d7000304058e28f4c79"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_00.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        7,
+        120,
+        121
+      ],
+      "sha256": "e79161f471dc2619d5010a048eefb9b6bbfbab75cf4b18ffe208740686352363"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_01.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "d5f27b5707ec2ac5030105cca9beb3cff567017c19fd8fb5465e32c42b0d55ea"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_02.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "da2c50895e3f4d22a5076a2b112c103e3a7b42a57ca0f53bc178e72da5e9f875"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_03.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "0a146e111b8fddb50c04ae48b9e255ab112bc7f55dabce6e8a9e3a01fe09c4b1"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_04.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        9,
+        122,
+        119
+      ],
+      "sha256": "f50c077abd1a517dc1e5340add4cf3d4e8107814c0d6cd87bfd8301789017d39"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_05.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "063a7a279086b324c72e74f7dd3612c07d02e35a4a28fb57ed2be736086ca5f9"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_06.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "54076e8bffde5a4f02d8e7a6c4ad0f3dcad5920617a131471823548b587dff27"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_07.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "dd94f8ac98b079a45aa1749569f9a64345a2dbe4ae5765773b913797fa8d8af2"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_08.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "b0d3797ea57dd4a6bcab8f51572d33db32c78a0f592cdbafdf7ca2e2a50a7cad"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_09.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "6770e2998aa0af54cad0fc8ac43f6934225db629db5a7f856dd59a9c0a7e2478"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_10.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "1c447f7941fbd952371eb6f16a10a89ec13fe7cadb3221fb57500afd3fbb96e5"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_11.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "sha256": "899df1ab6b47e933194d4af43a64bcaf59b4f120e752176694095d54b15a91dd"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_12.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        8,
+        7,
+        120,
+        121
+      ],
+      "sha256": "5dc24502c5a01fcd460751411540b8816a2d8d4ff7829315cdd84e28b382bdd5"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_13.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "d31b2c34a4b977edd26b105efb105e2e47e849c7cd7345e3c22f3a0486691a75"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_14.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "db7e12bd6e0e3df2392af5c397311694bb43bf36bda8013b72a8e685bf58b1b5"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_15.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "38c63e662829b2ba657e40d07aa796e7cc205725eadaa27a3dca8e9a4b7439d6"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_16.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        9,
+        6,
+        119,
+        122
+      ],
+      "sha256": "1bd9b6652bfde36497f3867758ff55847fa8432c427d79df6054ebf1cd963207"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_17.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "e361a786ac9d0b8180afe825a2f059ec38ad18de004386cb18fdd75991577a0d"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_18.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        8,
+        6,
+        120,
+        122
+      ],
+      "sha256": "9fa00af745d4eac5293206fc7e9765c496e0c922ae931ee373e16c1a102b192e"
+    },
+    "game/assets/sprites/ui/dice/d100_rot_19.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "b5643a8403d3c4a05d21b5b6be9dd4eeddfb840dac8b2859f10908cd5ec21212"
+    },
+    "game/assets/sprites/ui/hud/icon_interact_hand.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "sha256": "a184a53d8b05a221bb551e53fbc7180cb8fad73c4f565730e0f66da1479bcd28"
+    },
+    "game/assets/sprites/ui/interact/interact_disabled.png": {
+      "size": [
+        200,
+        200
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "c79eb5748d540009fb0d59820fa24cbd404b2299d4a89f0d0d09fc34156f1462"
+    },
+    "game/assets/sprites/ui/interact/interact_normal.png": {
+      "size": [
+        200,
+        200
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "886d03fabc7b942e0d67bbc2a58eebcf42c36a5a5fb958b47120ddf6396d608c"
+    },
+    "game/assets/sprites/ui/interact/interact_pressed.png": {
+      "size": [
+        200,
+        200
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "236ae05de46d8f45cbf2528662a88265289406edac2590fda94cb375d404fcea"
+    },
+    "game/assets/sprites/ui/joystick/joystick_base.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        4,
+        6,
+        252,
+        250
+      ],
+      "sha256": "881f947752f796db91a91d1f3305c565a4079700fa41bc6ae56da523e87ab552"
+    },
+    "game/assets/sprites/ui/joystick/joystick_knob.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        4,
+        4,
+        124,
+        124
+      ],
+      "sha256": "d0174d83805d234ce41698e17813481930b7e32b0a0469d1d52a7547b0d5cef5"
+    },
+    "game/assets/sprites/ui/spell_cooldown_ring.png": {
+      "size": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        1,
+        1,
+        159,
+        159
+      ],
+      "sha256": "ac8fef027cec99d7c3253b7fdc07ee2697861ef335f2adbaf5e8158dd6d13d9c"
+    },
+    "game/assets/sprites/ui/spell_frame.png": {
+      "size": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        0,
+        0,
+        160,
+        160
+      ],
+      "sha256": "50f36158c7ed65ef98afeb5997e3462122b4f6ff2c93393f2d4bd692b361f4ac"
+    },
+    "game/assets/sprites/ui/spell_frame_cooldown.png": {
+      "size": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        0,
+        0,
+        160,
+        160
+      ],
+      "sha256": "cbf3bd18eefef1daec55027a27e8b3967183ed8a83b89fda2c55520e86a58bce"
+    },
+    "game/assets/sprites/ui/spell_frame_pressed.png": {
+      "size": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        0,
+        0,
+        160,
+        160
+      ],
+      "sha256": "b5798809393dc6835a42ac74b4def66e3fa613f7aaa8abbe7b749cd9ff65ac53"
+    }
+  },
+  "protected": {
+    "game/assets/sprites/icons/frame_commun.png.import": "407b57dcd993b4b1f6297508a29f36b83754665faf82224b0bd1d43b3c5a6cde",
+    "game/assets/sprites/icons/frame_legendaire.png.import": "0f96492b50e742ac8596d90320f41bc07509c64905f422618d47832d81c3f780",
+    "game/assets/sprites/icons/frame_peu_commun.png.import": "d59e5181b02d480f1fd0b71e1676eded61367d0c3a191e7c9ccd9b218a6e2265",
+    "game/assets/sprites/icons/frame_rare.png.import": "a19074cab8cfe33723677527948053126e551f5f74eac10199135a9246216a81",
+    "game/assets/sprites/ui/cards/card_back.png.import": "354f317cb0349ba37c8c2dbea55658aa73e48e9c0d94d6e4d69001c28873530d",
+    "game/assets/sprites/ui/cards/card_front.png.import": "133681af6048c2c64eb88438e461321e1807a0662044309d1b29c83400dc7722",
+    "game/assets/sprites/ui/dice/d100_face_commun.png.import": "5f9a698e5dc32f86eab98e0a2eceebbb91f86cfecdef942e387b7fa972f4fe63",
+    "game/assets/sprites/ui/dice/d100_face_legendaire.png.import": "652d96e1a4c54c2584e54820faa9ebaf449671f173acba2d998b1795be319001",
+    "game/assets/sprites/ui/dice/d100_face_peu_commun.png.import": "d7bebb923779f5bc6aea58426173cca2f36e1fbe4905d9a5cfb62215fe9e86b7",
+    "game/assets/sprites/ui/dice/d100_face_rare.png.import": "4dee5d5f4712c6563ef330964c0fb139d7902e2b9e25e8b5f75185104c4d6978",
+    "game/assets/sprites/ui/dice/d100_rot_00.png.import": "a4935207e2bf8e83f7f9250afaea98d5ea9ee0962bb085bf9846e449953cc9ed",
+    "game/assets/sprites/ui/dice/d100_rot_01.png.import": "63ae275b33b675fad5fc2a19afb064d4e416cc1341249d9ec2b51c1437a39040",
+    "game/assets/sprites/ui/dice/d100_rot_02.png.import": "cb0413f798e8ab198c1a3d6bd5be0eb3d9d1c9447c2536c2779c7dee3cb76438",
+    "game/assets/sprites/ui/dice/d100_rot_03.png.import": "4f94cca62994c6c7aa6311c703bdc4e7632670b8c9be3d30787dafebca9b14e7",
+    "game/assets/sprites/ui/dice/d100_rot_04.png.import": "223686b492ae06569dd407d73d8dc296378e09d5c354756325d9a2227c2665a9",
+    "game/assets/sprites/ui/dice/d100_rot_05.png.import": "d427612ded3997378439ca5159a47c8fc84720f9eb5fcb8b3972c35734965ce7",
+    "game/assets/sprites/ui/dice/d100_rot_06.png.import": "6fb28992d94c6aa9c8ca7af6c9dd434febccfcf5a1f201cdfd299e7b793f469a",
+    "game/assets/sprites/ui/dice/d100_rot_07.png.import": "5dce44b1d0f43be52d8111a8b6f9bbb8499c7de912a5fc16b649da2ac0f5ea75",
+    "game/assets/sprites/ui/dice/d100_rot_08.png.import": "0485019b81c370bf334aea68ccfbadbcd1e684c8a4258e47db337531beab5211",
+    "game/assets/sprites/ui/dice/d100_rot_09.png.import": "31a721e428f595e01a0112a2b7b9366aeae41e233fbf7bd0852fb3fdbf3bc874",
+    "game/assets/sprites/ui/dice/d100_rot_10.png.import": "7c41c67840befb2572029b58ad3c19e4f407d2adcc661e5a91390f1135046477",
+    "game/assets/sprites/ui/dice/d100_rot_11.png.import": "6797823113bac834554fd0f356b85c8e3532700b3cb72d00e9fe9de3609b33d1",
+    "game/assets/sprites/ui/dice/d100_rot_12.png.import": "5795c5ead2748e506f1313c77e91cadd2b82dc517c3208988804a8b3941c7cfc",
+    "game/assets/sprites/ui/dice/d100_rot_13.png.import": "d6030e6b82650d841608787e4d576cb2d058ac2913637bc0540ac25fb142c6f2",
+    "game/assets/sprites/ui/dice/d100_rot_14.png.import": "e9cf3a68474d40877b12ee471aef7d5bb1dcc6f9409db0dd2ad6794ccdb86ec4",
+    "game/assets/sprites/ui/dice/d100_rot_15.png.import": "910032e10f40ddf5ae782cff924d4d95e4cb84269e0b97cb2d30f413251ad046",
+    "game/assets/sprites/ui/dice/d100_rot_16.png.import": "e33b2b4b3b9d71deba011ccdc59cf866fe547de4d203e1adda263603131a3873",
+    "game/assets/sprites/ui/dice/d100_rot_17.png.import": "9e459edbbae159fc6e6831cf362913af840399a56ed934f789caac3065088cff",
+    "game/assets/sprites/ui/dice/d100_rot_18.png.import": "42639b9942583bbd3facbb4f8673fafd4990c42d97ede7d6ddf31acb1deceb2e",
+    "game/assets/sprites/ui/dice/d100_rot_19.png.import": "be3040ca8fa8a407e0209582b2cecfaf5806182df720b25ae1762725d8295d71",
+    "game/assets/sprites/ui/hud/icon_interact_hand.png.import": "7ad26bff19dcc0d5136fcb82eae8627224daa85d2f4a898300a66e24d8f0cfe6",
+    "game/assets/sprites/ui/interact/interact_disabled.png.import": "c87e9f4c482c2e90f6f7cb21ade470e9ed4ffc3fda6bd9c151fc47a62ccff139",
+    "game/assets/sprites/ui/interact/interact_normal.png.import": "a8fec2fb5a22233a0c19684021007752eb40e72c15065e020ba439f1dc772f0a",
+    "game/assets/sprites/ui/interact/interact_pressed.png.import": "47b7d3ce054c87574dcde7a958e0f9e175ad806d4ae975aa0f9e552a51762324",
+    "game/assets/sprites/ui/joystick/joystick_base.png.import": "b2a907b70c5ebf45cf08c49097a4c2bc0e42a0d2bb5cf8b3f0926341507488e8",
+    "game/assets/sprites/ui/joystick/joystick_knob.png.import": "561f0868897aa507da81e81cda80a48e1b51b144558d69d8d0af469583d0f4f4",
+    "game/assets/sprites/ui/spell_cooldown_ring.png.import": "8ea9b97920a067cf068cb9144cdaad543e3f4d475d2aa96ab467775416a1882e",
+    "game/assets/sprites/ui/spell_frame.png.import": "cbbb8c1d0b67d72dd36f348011009ff7ef3ee169f6a0d02bfd7c17ea098f367b",
+    "game/assets/sprites/ui/spell_frame_cooldown.png.import": "ec59188180d40f7f6f6598ae5c0c0f57674c5cb11052c848412f45181d130ac9",
+    "game/assets/sprites/ui/spell_frame_pressed.png.import": "de3ee009f6257b4e658c2ab7763d5e9278fd5d38ea5fee293b7f7dcf996ac71b"
+  },
+  "notes": "R7c recorded contract; R7d inventory absent, snapshot of existing spell/interact/joystick assets. Rarity frames: icons/frame_*.png. Explicit toy-hand replacement: ui/hud/icon_interact_hand.png."
+}

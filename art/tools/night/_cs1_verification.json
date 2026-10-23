@@ -1,0 +1,264 @@
+{
+  "atlases": [
+    {
+      "subject": "ardent",
+      "file": "attack.png",
+      "size": [
+        960,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "attack_e.png",
+      "size": [
+        960,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "attack_n.png",
+      "size": [
+        960,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast.png",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast_e.png",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast_n.png",
+      "size": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast_ult.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast_ult_e.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "cast_ult_n.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "idle.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "idle_e.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "idle_n.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "run.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "run_e.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "ardent",
+      "file": "run_n.png",
+      "size": [
+        1536,
+        1536
+      ]
+    },
+    {
+      "subject": "swarm_tier1",
+      "file": "run.png",
+      "size": [
+        768,
+        768
+      ]
+    },
+    {
+      "subject": "swarm_tier1",
+      "file": "run_e.png",
+      "size": [
+        768,
+        768
+      ]
+    },
+    {
+      "subject": "swarm_tier1",
+      "file": "run_n.png",
+      "size": [
+        768,
+        768
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "attack.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "attack_e.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "attack_n.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "cast.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "cast_e.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "cast_n.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "run.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "run_e.png",
+      "size": [
+        1280,
+        1280
+      ]
+    },
+    {
+      "subject": "brute_tier3",
+      "file": "run_n.png",
+      "size": [
+        1280,
+        1280
+      ]
+    }
+  ],
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "originals_unchanged": true,
+  "normal_palette_sizes": {
+    "ardent/idle": 17,
+    "ardent/run": 17,
+    "ardent/attack": 17,
+    "ardent/cast": 17,
+    "ardent/cast_ult": 17,
+    "swarm_tier1/run": 17,
+    "brute_tier3/run": 17,
+    "brute_tier3/attack": 20,
+    "brute_tier3/cast": 20
+  },
+  "silhouette_iou": {
+    "ardent/idle": 0.9992613412123604,
+    "ardent/run": 0.9990644873075104,
+    "ardent/attack": 1.0,
+    "ardent/cast": 1.0,
+    "ardent/cast_ult": 1.0,
+    "swarm_tier1/run": 0.9976513236833372,
+    "brute_tier3/run": 0.9985884497399191,
+    "brute_tier3/attack": 0.9985259081167525,
+    "brute_tier3/cast": 0.9984406545967861
+  },
+  "emission_region_iou": {
+    "ardent/idle": 0.995345923207733,
+    "ardent/run": 0.9956166658976607,
+    "ardent/attack": 0.9994455445544554,
+    "ardent/cast": 0.9994067629029069,
+    "ardent/cast_ult": 0.9993750557985894,
+    "swarm_tier1/run": 0.9856459330143541,
+    "brute_tier3/run": 0.9809264305177112,
+    "brute_tier3/attack": 0.9757316202712348,
+    "brute_tier3/cast": 0.979136690647482
+  }
+}

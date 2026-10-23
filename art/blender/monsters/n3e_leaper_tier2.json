@@ -1,0 +1,33 @@
+{
+  "source_sha256": "2f9feb152c879cfb326100d1c854f0f74e6661688662bb8a642b1a6c75e8ceb6",
+  "original_tres_sha256": "6f39db94f9d2f9ee7d0f638a791b1ee2fe7bf550e84fafd4f637a0fb64307531",
+  "size": 112,
+  "grid": [
+    8,
+    8
+  ],
+  "anims": [
+    "run",
+    "charge"
+  ],
+  "dirs": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "geometry_objects": 19,
+  "geometry_preserved": true,
+  "ortho_scale": 1.75,
+  "shift_y": 0.20000000298023224,
+  "render_px_per_u": 64,
+  "pivot": [
+    56.0,
+    78.39999999999999
+  ],
+  "design": "Pitted sheet and cast iron, raised rivets, tar canvas hood, soot cables, spalled concrete boiler worker, oil rivulets, cold non-emissive condensation; sodium FF9A3C only"
+}

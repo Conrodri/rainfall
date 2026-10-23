@@ -1,0 +1,210 @@
+[gd_resource type="SpriteFrames" load_steps=51 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/layers/leg_r/death_e.png" id="1"]
+
+[sub_resource type="CanvasTexture" id="c1"]
+diffuse_texture = ExtResource("1")
+
+[sub_resource type="AtlasTexture" id="a2"]
+atlas = SubResource("c1")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a3"]
+atlas = SubResource("c1")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a4"]
+atlas = SubResource("c1")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a5"]
+atlas = SubResource("c1")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a6"]
+atlas = SubResource("c1")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a7"]
+atlas = SubResource("c1")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a8"]
+atlas = SubResource("c1")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a9"]
+atlas = SubResource("c1")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a10"]
+atlas = SubResource("c1")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a11"]
+atlas = SubResource("c1")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a12"]
+atlas = SubResource("c1")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a13"]
+atlas = SubResource("c1")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a14"]
+atlas = SubResource("c1")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a15"]
+atlas = SubResource("c1")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a16"]
+atlas = SubResource("c1")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a17"]
+atlas = SubResource("c1")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a18"]
+atlas = SubResource("c1")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a19"]
+atlas = SubResource("c1")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a20"]
+atlas = SubResource("c1")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a21"]
+atlas = SubResource("c1")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a22"]
+atlas = SubResource("c1")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a23"]
+atlas = SubResource("c1")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a24"]
+atlas = SubResource("c1")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a25"]
+atlas = SubResource("c1")
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a26"]
+atlas = SubResource("c1")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a27"]
+atlas = SubResource("c1")
+region = Rect2(192, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a28"]
+atlas = SubResource("c1")
+region = Rect2(384, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a29"]
+atlas = SubResource("c1")
+region = Rect2(576, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a30"]
+atlas = SubResource("c1")
+region = Rect2(768, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a31"]
+atlas = SubResource("c1")
+region = Rect2(960, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a32"]
+atlas = SubResource("c1")
+region = Rect2(0, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a33"]
+atlas = SubResource("c1")
+region = Rect2(192, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a34"]
+atlas = SubResource("c1")
+region = Rect2(384, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a35"]
+atlas = SubResource("c1")
+region = Rect2(576, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a36"]
+atlas = SubResource("c1")
+region = Rect2(768, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a37"]
+atlas = SubResource("c1")
+region = Rect2(960, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a38"]
+atlas = SubResource("c1")
+region = Rect2(0, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a39"]
+atlas = SubResource("c1")
+region = Rect2(192, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a40"]
+atlas = SubResource("c1")
+region = Rect2(384, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a41"]
+atlas = SubResource("c1")
+region = Rect2(576, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a42"]
+atlas = SubResource("c1")
+region = Rect2(768, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a43"]
+atlas = SubResource("c1")
+region = Rect2(960, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a44"]
+atlas = SubResource("c1")
+region = Rect2(0, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a45"]
+atlas = SubResource("c1")
+region = Rect2(192, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a46"]
+atlas = SubResource("c1")
+region = Rect2(384, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a47"]
+atlas = SubResource("c1")
+region = Rect2(576, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a48"]
+atlas = SubResource("c1")
+region = Rect2(768, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a49"]
+atlas = SubResource("c1")
+region = Rect2(960, 1344, 192, 192)
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}], "loop": false, "name": &"death_e", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}, {"duration": 1.0, "texture": SubResource("a13")}], "loop": false, "name": &"death_se", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}, {"duration": 1.0, "texture": SubResource("a17")}, {"duration": 1.0, "texture": SubResource("a18")}, {"duration": 1.0, "texture": SubResource("a19")}], "loop": false, "name": &"death_s", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a20")}, {"duration": 1.0, "texture": SubResource("a21")}, {"duration": 1.0, "texture": SubResource("a22")}, {"duration": 1.0, "texture": SubResource("a23")}, {"duration": 1.0, "texture": SubResource("a24")}, {"duration": 1.0, "texture": SubResource("a25")}], "loop": false, "name": &"death_sw", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a26")}, {"duration": 1.0, "texture": SubResource("a27")}, {"duration": 1.0, "texture": SubResource("a28")}, {"duration": 1.0, "texture": SubResource("a29")}, {"duration": 1.0, "texture": SubResource("a30")}, {"duration": 1.0, "texture": SubResource("a31")}], "loop": false, "name": &"death_w", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a32")}, {"duration": 1.0, "texture": SubResource("a33")}, {"duration": 1.0, "texture": SubResource("a34")}, {"duration": 1.0, "texture": SubResource("a35")}, {"duration": 1.0, "texture": SubResource("a36")}, {"duration": 1.0, "texture": SubResource("a37")}], "loop": false, "name": &"death_nw", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a38")}, {"duration": 1.0, "texture": SubResource("a39")}, {"duration": 1.0, "texture": SubResource("a40")}, {"duration": 1.0, "texture": SubResource("a41")}, {"duration": 1.0, "texture": SubResource("a42")}, {"duration": 1.0, "texture": SubResource("a43")}], "loop": false, "name": &"death_n", "speed": 10.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a44")}, {"duration": 1.0, "texture": SubResource("a45")}, {"duration": 1.0, "texture": SubResource("a46")}, {"duration": 1.0, "texture": SubResource("a47")}, {"duration": 1.0, "texture": SubResource("a48")}, {"duration": 1.0, "texture": SubResource("a49")}], "loop": false, "name": &"death_ne", "speed": 10.0}
+]

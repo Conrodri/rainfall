@@ -1,0 +1,61 @@
+[gd_resource type="TileSet" load_steps=15 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/ground_concrete.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/ground_rust.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/ground_grate.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/ground_bridge.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/water_deep.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/water_shallow.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/terrain/rust_city/cliff_edge.png" id="7"]
+
+[sub_resource type="TileSetAtlasSource" id="src1"]
+resource_name = "ground_concrete"
+texture = ExtResource("1")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src2"]
+resource_name = "ground_rust"
+texture = ExtResource("2")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src3"]
+resource_name = "ground_grate"
+texture = ExtResource("3")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src4"]
+resource_name = "ground_bridge"
+texture = ExtResource("4")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src5"]
+resource_name = "water_deep"
+texture = ExtResource("5")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src6"]
+resource_name = "water_shallow"
+texture = ExtResource("6")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src7"]
+resource_name = "cliff_edge"
+texture = ExtResource("7")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(256, 256)
+sources/0 = SubResource("src1")
+sources/1 = SubResource("src2")
+sources/2 = SubResource("src3")
+sources/3 = SubResource("src4")
+sources/4 = SubResource("src5")
+sources/5 = SubResource("src6")
+sources/6 = SubResource("src7")

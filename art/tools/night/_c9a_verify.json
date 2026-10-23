@@ -1,0 +1,87 @@
+{
+  "result": "PASS",
+  "errors": [],
+  "sheets": 31,
+  "stats": {
+    "idle_p1": {
+      "unique": 24,
+      "cells": 24,
+      "mean_rgb": 102.0
+    },
+    "idle_p2": {
+      "unique": 24,
+      "cells": 24,
+      "mean_rgb": 102.1
+    },
+    "idle_p3": {
+      "unique": 24,
+      "cells": 24,
+      "mean_rgb": 103.7
+    },
+    "walk_p1": {
+      "unique": 32,
+      "cells": 32,
+      "mean_rgb": 101.9
+    },
+    "walk_p2": {
+      "unique": 32,
+      "cells": 32,
+      "mean_rgb": 102.0
+    },
+    "walk_p3": {
+      "unique": 32,
+      "cells": 32,
+      "mean_rgb": 103.6
+    },
+    "auto": {
+      "unique": 24,
+      "cells": 24,
+      "mean_rgb": 100.1
+    },
+    "spell_a": {
+      "unique": 32,
+      "cells": 32,
+      "mean_rgb": 100.8
+    },
+    "spell_b": {
+      "unique": 32,
+      "cells": 32,
+      "mean_rgb": 100.8
+    },
+    "trans_p2": {
+      "unique": 8,
+      "cells": 8,
+      "mean_rgb": 105.0
+    },
+    "trans_p3": {
+      "unique": 8,
+      "cells": 8,
+      "mean_rgb": 105.7
+    },
+    "death": {
+      "unique": 10,
+      "cells": 10,
+      "mean_rgb": 100.7
+    },
+    "container": {
+      "unique": 4,
+      "cells": 4,
+      "mean_rgb": 100.9
+    },
+    "boom_shadow": {
+      "unique": 4,
+      "cells": 4,
+      "mean_rgb": 33.6
+    },
+    "arc": {
+      "unique": 6,
+      "cells": 6,
+      "mean_rgb": 37.5
+    },
+    "dust": {
+      "unique": 6,
+      "cells": 6,
+      "mean_rgb": 40.9
+    }
+  }
+}

@@ -1,0 +1,408 @@
+{
+  "objects": [
+    "aimant_d_ame",
+    "aimant_de_poche",
+    "amulette_de_cuir",
+    "antidote",
+    "armure_du_colosse",
+    "bague_de_vigueur",
+    "botte_rapiecee",
+    "bouclier_reactif",
+    "cape_de_brume",
+    "carquois_affute",
+    "chronometre_brise",
+    "coeur_de_glace",
+    "coeur_de_mousse",
+    "coeur_du_chronomancien",
+    "couronne_d_echo",
+    "cristal_de_feu",
+    "danseur",
+    "de_pipe",
+    "eclair_en_bouteille",
+    "eclat_d_experience",
+    "epines",
+    "etincelle",
+    "faveur_du_marchand",
+    "fiole_verte",
+    "flocon"
+  ],
+  "files": {
+    "aimant_d_ame.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "sha256": "8d64eface552a13fbeee84612b93d07070d5f1492a4f004c10d9d2156ddd1a0e"
+    },
+    "aimant_de_poche.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "sha256": "e76b57c6c3eadce92eed857da91127f61290deab86f4a4ee5fb7addab86a1dd2"
+    },
+    "amulette_de_cuir.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        49,
+        12,
+        207,
+        244
+      ],
+      "sha256": "0b428ae7ab428e913e2308d9af2f4b1a7486963d40eb88a575555f31725c325d"
+    },
+    "antidote.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        37,
+        12,
+        219,
+        244
+      ],
+      "sha256": "9a8f69804f35391d37bb4e3c53536b2c227aad1f44b0d848677984d7e4089621"
+    },
+    "armure_du_colosse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        53,
+        244,
+        203
+      ],
+      "sha256": "2675a6cf0d8a0a51904e302bcbce13fe130e2c98eb41f4da4324a7f6bfb8034d"
+    },
+    "bague_de_vigueur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "sha256": "002541b68f058f52035f54d4ee543f3995a95396f69b91ec9d7475a3bce4f246"
+    },
+    "botte_rapiecee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        35,
+        12,
+        221,
+        244
+      ],
+      "sha256": "dd7b586c6b66e0ae7bfa959b985e86176b9d2300a895a46835f5a10b11d31938"
+    },
+    "bouclier_reactif.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        19,
+        12,
+        237,
+        244
+      ],
+      "sha256": "42a05bc2666d1472c8ecaa2148c2af13994d4036cb68d0824dedb5f500be3ce3"
+    },
+    "cape_de_brume.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "47f951d79b2210e00d366fa77cf1b9bd1d1288232c9b05f1b196d3555bdff6b0"
+    },
+    "carquois_affute.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        54,
+        12,
+        201,
+        244
+      ],
+      "sha256": "fdcb2296c1450bbc494864b663c15bc4ee0abe19512926ec3a7f8841ba0f7b94"
+    },
+    "chronometre_brise.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        20,
+        12,
+        235,
+        244
+      ],
+      "sha256": "dc5732ad58355213c1c376eefe2f78847375bae8ec9a4fb3a39ea83a9f6fc35c"
+    },
+    "coeur_de_glace.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        29,
+        12,
+        227,
+        244
+      ],
+      "sha256": "40a80b10e72bbf0830b12994ba8cc12c7127795ffd3f5f6bae41b857fe0ef11d"
+    },
+    "coeur_de_mousse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        24,
+        244,
+        233
+      ],
+      "sha256": "e8fd9248688fd8c4211f555c3e949b6d8a0bc2248a279afc83c8c598f40b34b9"
+    },
+    "coeur_du_chronomancien.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "sha256": "3b455dff7568c00bee60b51c4186efd6319c36adf3d51a14f1fd6c915b42ed22"
+    },
+    "couronne_d_echo.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        26,
+        12,
+        230,
+        244
+      ],
+      "sha256": "20fe126fd1a1d0c5ba01d20684f3a2554244aacf51be7383a02f7033d19b6460"
+    },
+    "cristal_de_feu.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        16,
+        12,
+        240,
+        244
+      ],
+      "sha256": "ad445bd0d6550fbe8b869881885f2ffdc07b4ace01252a26742db53960993277"
+    },
+    "danseur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        15,
+        12,
+        241,
+        244
+      ],
+      "sha256": "ca9583043ac8e4a01da60317e864b9483b871a7cfc2630057236d955cba50e12"
+    },
+    "de_pipe.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "sha256": "f4a8e2f873705e75e8e27d719c214f6e56e408f1e027c41c0d0836488f5fa93f"
+    },
+    "eclair_en_bouteille.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        59,
+        12,
+        196,
+        244
+      ],
+      "sha256": "fd373177a5f6975b57202a5238693a0db37eb8b2082acfd0a0eb024f9fd1aecf"
+    },
+    "eclat_d_experience.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        14,
+        244,
+        242
+      ],
+      "sha256": "d6011428cd92431f9ee868c9d558ed5c1b0fc13a3a41a4dcae249c847082776e"
+    },
+    "epines.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        15,
+        244,
+        240
+      ],
+      "sha256": "32c1c28fb6f6223c522778b16cd4ba4561f1ebc9300b3e59a46517ee515798e6"
+    },
+    "etincelle.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        35,
+        12,
+        220,
+        244
+      ],
+      "sha256": "1d2d7fcc9cc63ad00cd86d69a2a278e533e76151257bcaa78131924c84d9ec76"
+    },
+    "faveur_du_marchand.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "989e0dd4bb4afcf1e493d3670922e5d4ae2f9e0afe2d0c28d64b365a3144baa6"
+    },
+    "fiole_verte.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        48,
+        12,
+        208,
+        244
+      ],
+      "sha256": "006a7f0c2f203ba91d689cdd9b5f33926a748c34475ecde40bd43e04ce856fac"
+    },
+    "flocon.png": {
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "25af1d8d41ddded0e0e7419c8108563f940b2d67442b10c3be5ead063ea2886a"
+    }
+  },
+  "protected": {
+    "aimant_d_ame.png.import": "fc2000fcbbd8dae564981be49c376b69ec22a4c63733d6cfc7a226059fb85b3d",
+    "aimant_de_poche.png.import": "4288f7a2f7c143d6d61a517635bdc4e3e863395501111de45c07ce57ef4f1c7a",
+    "amulette_de_cuir.png.import": "1eb9a1e13a106165eefb5a7ec47906c3879fc71b3ea97f8b1a4268c464101127",
+    "antidote.png.import": "ab2c3681ac59bbaeb172a7cd26e0e3f28e76ce837181eed296aef8ad3b6836a3",
+    "armure_du_colosse.png.import": "de7ca746ef9fc0465ca539de7e2daf25cdaac36ce4e493d3ad790cdf1c3ff728",
+    "bague_de_vigueur.png.import": "97256961dca8fff551041a4851e4ae5cff7d9aa3fc551cce05757ed8b82944f0",
+    "botte_rapiecee.png.import": "2fc1e831b0f37aaa2ce8d91dd99c20ba5b8f47643c00e3abbf0616372b292d5e",
+    "bouclier_reactif.png.import": "699d32e17dac06e22504265dc74074467ea7829f6f5191b2cd3481bb94e66c83",
+    "cape_de_brume.png.import": "c78e18163a0f1c982a267beaad8702b70d2d43becac02bccf7662dba7fec6a49",
+    "carquois_affute.png.import": "e08e9d7bdbb5ee58f566c4b39e41627845da2fa0147203fb34b78edcd6492ead",
+    "chronometre_brise.png.import": "007f61a43370fa5238c1ddd0c6c93bcab4cb2f54d7b14e0449184e06c44bf12d",
+    "coeur_de_glace.png.import": "710f561a9069035397b00993b33f19ace894aa96bbb8d4010e269489a8d8f5cd",
+    "coeur_de_mousse.png.import": "28b4a26776def672143861fb33ee75c7ce9df2be9d15f8b9c4754570a8c64469",
+    "coeur_du_chronomancien.png.import": "0f4c0975bcec332ca8135e5c95f95d6be5a07886df5334f4d2a8a0ead1028f65",
+    "couronne_d_echo.png.import": "6e3adea54012e9d42d9f1d3f58ed1f250012ca23804b57bc4392f84e891b734d",
+    "cristal_de_feu.png.import": "698f540e4c96840877945b32034e2566fbef03cc5f670e43581bc30413a5c347",
+    "danseur.png.import": "35975807601da9af5874d54d2e53bf8275c7561735cdd577716e47fc97508717",
+    "de_pipe.png.import": "7ff21dbc9e38e22f21e74f42ebafd5af59d71404eb434900c35ae431a9643ffc",
+    "eclair_en_bouteille.png.import": "3d3c9618f011fd0aef284383384a0cca48836429e9b45555b41a8e0a018b8d67",
+    "eclat_d_experience.png.import": "ffe222f0e00466fde495ec86d3e1766a9bdf12b682dde116fb2e428a017f923c",
+    "epines.png.import": "36724a886aeed9d1f8dcf6cc3140fe98d035625d933c8ef7ac40ba4b5be2e8c5",
+    "etincelle.png.import": "48739151a27612b62a03020da90e4403879fd99d3a0813b9a46f9caeb801d96d",
+    "faveur_du_marchand.png.import": "276d8dd8fe6aec50b13847119119a41317e2ae32ed78afeefd5f97e5a6c4b16e",
+    "fiole_verte.png.import": "f6b2bd23a29ee09e8679e8059e65f1bb80c7b74ed2fbe7447c0aeccf5e244a9d",
+    "flocon.png.import": "592267d3cd06ca04b6db98d09332a509799ac3982313b10a1305ba88d5fdec54"
+  }
+}

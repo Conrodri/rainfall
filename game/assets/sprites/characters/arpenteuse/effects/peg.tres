@@ -1,0 +1,64 @@
+[gd_resource type="SpriteFrames" load_steps=13 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/peg.png" id="1"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/peg_e.png" id="3"]
+
+[sub_resource type="AtlasTexture" id="F_0_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_1_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_2_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_3_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_4_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_5_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_6_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_7_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 1344, 192, 192)
+
+[resource]
+
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("F_0_0")}], "loop": true, "name": &"peg_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_1_0")}], "loop": true, "name": &"peg_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_2_0")}], "loop": true, "name": &"peg_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_3_0")}], "loop": true, "name": &"peg_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_4_0")}], "loop": true, "name": &"peg_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_5_0")}], "loop": true, "name": &"peg_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_6_0")}], "loop": true, "name": &"peg_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("F_7_0")}], "loop": true, "name": &"peg_ne", "speed": 12.0}]

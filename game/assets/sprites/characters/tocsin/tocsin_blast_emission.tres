@@ -1,0 +1,71 @@
+[gd_resource type="SpriteFrames" format=3]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/head_blast_e.png" id="head_blast"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/head_blast_top_e.png" id="head_blast_top"]
+
+[sub_resource type="AtlasTexture" id="head_blast_0_0"]
+atlas = ExtResource("head_blast")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_1"]
+atlas = ExtResource("head_blast")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_2"]
+atlas = ExtResource("head_blast")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_3"]
+atlas = ExtResource("head_blast")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_4"]
+atlas = ExtResource("head_blast")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_5"]
+atlas = ExtResource("head_blast")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_6"]
+atlas = ExtResource("head_blast")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_0_7"]
+atlas = ExtResource("head_blast")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_0"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(0, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_1"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(1032, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_2"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(2064, 0, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_3"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(0, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_4"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(1032, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_5"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(2064, 1032, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_6"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(0, 2064, 1032, 1032)
+
+[sub_resource type="AtlasTexture" id="head_blast_top_0_7"]
+atlas = ExtResource("head_blast_top")
+region = Rect2(1032, 2064, 1032, 1032)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("head_blast_0_0")}, {"duration": 1.0, "texture": SubResource("head_blast_0_1")}, {"duration": 1.0, "texture": SubResource("head_blast_0_2")}, {"duration": 1.0, "texture": SubResource("head_blast_0_3")}, {"duration": 1.0, "texture": SubResource("head_blast_0_4")}, {"duration": 1.0, "texture": SubResource("head_blast_0_5")}, {"duration": 1.0, "texture": SubResource("head_blast_0_6")}, {"duration": 1.0, "texture": SubResource("head_blast_0_7")}], "loop": false, "name": &"head_blast", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("head_blast_top_0_0")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_1")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_2")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_3")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_4")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_5")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_6")}, {"duration": 1.0, "texture": SubResource("head_blast_top_0_7")}], "loop": false, "name": &"head_blast_top", "speed": 12.0}]

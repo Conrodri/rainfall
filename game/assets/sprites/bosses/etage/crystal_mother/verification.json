@@ -1,0 +1,163 @@
+{
+  "idle_p1": {
+    "size": [
+      1536,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 24
+  },
+  "idle_p2": {
+    "size": [
+      1536,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 24
+  },
+  "idle_p3": {
+    "size": [
+      1536,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 24
+  },
+  "walk_p1": {
+    "size": [
+      2048,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 32
+  },
+  "walk_p2": {
+    "size": [
+      2048,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 32
+  },
+  "walk_p3": {
+    "size": [
+      2048,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 32
+  },
+  "auto": {
+    "size": [
+      1536,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 24
+  },
+  "spell_a": {
+    "size": [
+      2048,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 32
+  },
+  "spell_b": {
+    "size": [
+      2048,
+      1024
+    ],
+    "emission": true,
+    "unique_cells": 32
+  },
+  "trans_p2": {
+    "size": [
+      2048,
+      256
+    ],
+    "emission": true,
+    "unique_cells": 8
+  },
+  "trans_p3": {
+    "size": [
+      2048,
+      256
+    ],
+    "emission": true,
+    "unique_cells": 8
+  },
+  "death": {
+    "size": [
+      2560,
+      256
+    ],
+    "emission": true,
+    "unique_cells": 10
+  },
+  "crystal_block": {
+    "size": [
+      768,
+      192
+    ],
+    "emission": true,
+    "unique_cells": 6
+  },
+  "stalactite": {
+    "size": [
+      768,
+      384
+    ],
+    "emission": false,
+    "unique_cells": 6
+  },
+  "shard": {
+    "size": [
+      256,
+      32
+    ],
+    "emission": true,
+    "unique_cells": 4
+  },
+  "prism_beam": {
+    "size": [
+      4096,
+      96
+    ],
+    "emission": true,
+    "unique_cells": 4
+  },
+  "prism_beam_2": {
+    "size": [
+      2048,
+      96
+    ],
+    "emission": true,
+    "unique_cells": 2
+  },
+  "orbit_shard": {
+    "size": [
+      512,
+      96
+    ],
+    "emission": true,
+    "unique_cells": 8
+  },
+  "lamp_glow": {
+    "size": [
+      2048,
+      256
+    ],
+    "emission": true,
+    "unique_cells": 8
+  },
+  "reflect_burst": {
+    "size": [
+      1152,
+      384
+    ],
+    "emission": true,
+    "unique_cells": 6
+  },
+  "body_mean_srgb": 157.31
+}

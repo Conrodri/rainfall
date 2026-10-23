@@ -1,0 +1,788 @@
+{
+  "rig": "MAP",
+  "elevation": 30,
+  "yaw": 45,
+  "px_per_u": 64,
+  "note": "64 px/u, overriding C0 R=90.50966799. SE front +X (model +90 deg), SW front -Y (model 0 deg); independent Blender renders, never mirrored.",
+  "assets": [
+    {
+      "path": "game/assets/sprites/chests/chest_large/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "663c668c020e8bff755ffa8909ac8afdc0dcd7e25bf581f7f8806978462d6c31"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_large/closed_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "8e5171de3b765cc27cbc57bbedf6f31971c19f0899e5dd1bec5fd5703c1c7056"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_large/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "7228c9fbd9afe3822b3d51884b88ec2a55e02fdd1e2e45602f1d4af10147c03c"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_large/open_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "fbeecfe3b6b3de08aff9b406f27791a23fa3f45a25a42d216f860c27f19d7d44"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "cd8067d2c960bb0ab396ca1901e459b977f6f83437a0b4a38d199b5b88812dca"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/closed_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "fbce3dae8f1869897bcd6e4383362daf197588c355c00426b0fa63a54a247d47"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/closed_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        41,
+        115,
+        108
+      ],
+      "sha256": "4848b19e9a1962ee36e5e7af7da86ffabb55c6bc53f1abf35132af34d1d5f066"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "ebd061339895c8a704e4379d3cde78b6b8ce5d9552d983fa867a6c7cbd8e1179"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/open_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "8e21baa943d5a8290050db5dcd536222134e64c5c078dac6cb9f256bd54bd71a"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_legendary/open_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        13,
+        7,
+        115,
+        108
+      ],
+      "sha256": "8f2dab1aab34e1e66ae924fa9a51218f2832d032664ae426a720ccd4bef203aa"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_small/closed.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        41,
+        116,
+        107
+      ],
+      "sha256": "0b3281f12419836ad8e25ff6de747c417a2002a4707e3692279517e320afa2f8"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_small/closed_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        41,
+        116,
+        107
+      ],
+      "sha256": "9bf682e38a3c26c3e8f2cb3d94a145391bbacdcc75036cadc66b046a60bb90fa"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_small/open.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        7,
+        116,
+        107
+      ],
+      "sha256": "f1f6cccab7a504ad080fad13b410ae5032405e6eeaa4c2010cd351a0b80f1e23"
+    },
+    {
+      "path": "game/assets/sprites/chests/chest_small/open_n.png",
+      "size": [
+        128,
+        128
+      ],
+      "columns": 1,
+      "frame": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        7,
+        116,
+        107
+      ],
+      "sha256": "e16879c23ed925fe2bdb2f9f5c60318dcc62fcfb5cd96b089dd6801481ff4413"
+    }
+  ],
+  "protected": {
+    "game\\assets\\sprites\\chests\\chest_large\\chest_large.tres": "13b34c18565690e533450ab063b949576c7bee40dc5903174429ad8768d72db7",
+    "game\\assets\\sprites\\chests\\chest_large\\closed.png.import": "058260c910b2fa9d5e33eeb87938e90c49cea17fe23756b60114dd7aaf9d7c05",
+    "game\\assets\\sprites\\chests\\chest_large\\closed_n.png.import": "42fcc36f7ec85a1331d85fd10470dba1d07b6f4899a03e318010ae1aba17b42c",
+    "game\\assets\\sprites\\chests\\chest_large\\closed_n_sw.png.import": "370665d209555de2358fecaeed90f9fb0180d25747578407c0ac9514baafaa6d",
+    "game\\assets\\sprites\\chests\\chest_large\\closed_shadow.png.import": "cff663073b6b41917693c897effdac06522992ddf9343e427e3f3abf9a555142",
+    "game\\assets\\sprites\\chests\\chest_large\\closed_shadow_sw.png.import": "c0554ecda56977fff7d235730733868cf29a5e059642757e19ac463ab440af41",
+    "game\\assets\\sprites\\chests\\chest_large\\closed_sw.png.import": "e32247f18e3dc3659208b6f27c3a9d0b5ea34f2a0953dcc1c6e090c8ef0bbba6",
+    "game\\assets\\sprites\\chests\\chest_large\\open.png.import": "6ce4e882dacd2b17bc2e9a7835bec2e78f68d30aa141c16342a07c68a91779e5",
+    "game\\assets\\sprites\\chests\\chest_large\\open_n.png.import": "dff39be830215487c625b6ab603b6f4bd549cb67301d7514b9c66c48caa5ae15",
+    "game\\assets\\sprites\\chests\\chest_large\\open_n_sw.png.import": "c2d73c92b4e53edb1dde751817c129ad4d20bb6ae007358619db3ff81c9a1381",
+    "game\\assets\\sprites\\chests\\chest_large\\open_shadow.png.import": "19a75b62a6fa604137a371e201f2752c29ad98dc8d449986717011c74ee7a300",
+    "game\\assets\\sprites\\chests\\chest_large\\open_shadow_sw.png.import": "d17e9b7e217da8f2a09f6959273166d12ec6ff11ad098f1f053853b2b2170f94",
+    "game\\assets\\sprites\\chests\\chest_large\\open_sw.png.import": "f80e9006f9767627544dbe643d33a246fe3e4770e75998583f743d1ee26b26e5",
+    "game\\assets\\sprites\\chests\\chest_legendary\\chest_legendary.tres": "88e82e316bf57627c35e995b0b8b0a55c1e11cd5f2423b42baf27a63c20a4b12",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed.png.import": "6db3fe526e71ea8e0f1e8f0f24025368ab7a183ffa7e15863f18770aed7a3c88",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_e.png.import": "f5bdc7a2563a8ca621fb3aa6208e390ed3bc041c6426176c4c6ff69fbe3d2e87",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_e_sw.png.import": "93db77bf7397511daf3ddd7855e41f8df3e1a7aeb18a4ec6196b19f2cbaebf3f",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_n.png.import": "a0377aec6f66119124d6ee1c0864db6dadd93f748bd9297838f3ddb18395a2d0",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_n_sw.png.import": "1b56cb6f11c18594f73ee7ee3727dd16f39a2d4cd62a2dd58bfad38e2afe2699",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_shadow.png.import": "5041e2b075a67c70fdf4a469e919a8acfb21e70431ea52b614e6951d14b7ebb4",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_shadow_sw.png.import": "b257f81b224a337cc21315be258c3b98277c1e98f5eadf334b0d6fd88b2fc7d1",
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_sw.png.import": "5259df90b8775b75e66d2563d2720118170502f8a7c63139988f1833b4b42025",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open.png.import": "7aeda5859c514b85f74e18f2b49f2760c74c6e675881a55ccdf60719a2295bd4",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_e.png.import": "47fc6a4177e1112e261fd09dadcea05c728ea6589aa18872bf1334724df073e0",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_e_sw.png.import": "4b8d3e891aa7aa057d1ed27f1810da8f97ef0e4a0e52e14517465f01bff29864",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_n.png.import": "974d0f89ea83a23867d0b55e6819c074d17d6984bb963f579e6170f2b28d51f7",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_n_sw.png.import": "dea971ddf2854f8a4f752b81d0697fd5a78494057268f03236767c8c8ff163d1",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_shadow.png.import": "655adffbbc639167d5eaa7db30a78605430529f853327b4da2f1507b740735cd",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_shadow_sw.png.import": "654fcb2bbb1b2777c90caf0b4a57249aed8d9d535d74f8b5dec68f96a1b80d43",
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_sw.png.import": "976abec7af2bbdb7ad4b4adce61b57eab3cbe5bb665b0bb0088cd848d3b4ea68",
+    "game\\assets\\sprites\\chests\\chest_small\\chest_small.tres": "63adde551e6e7fe913b2ea052899cac4d44ed85e4f663f467dc28743d92f51c6",
+    "game\\assets\\sprites\\chests\\chest_small\\closed.png.import": "72c03a685053a19bf1aeb35ff8666fb99c1618537d9c75eaadeba1e56e62235d",
+    "game\\assets\\sprites\\chests\\chest_small\\closed_n.png.import": "c09d30e86c01c387a9da07fe495e83f04b829c5f4fbf5a3ce306de4278daf8f0",
+    "game\\assets\\sprites\\chests\\chest_small\\closed_n_sw.png.import": "3d6ef06aeacab8ee3bf56369f70fb860d4c0cb07a053fdea96e46cdb68b42a0f",
+    "game\\assets\\sprites\\chests\\chest_small\\closed_shadow.png.import": "499957312565ff3adc526a67fc4d70d9bd3c18ba9154c89e041b43d85923d0da",
+    "game\\assets\\sprites\\chests\\chest_small\\closed_shadow_sw.png.import": "594a1117b5370c9929c4ca11fc6410dde8bd84636a94dea8f91f14bdec5f8006",
+    "game\\assets\\sprites\\chests\\chest_small\\closed_sw.png.import": "a2f0ee9ff448c2d3c411a181e686fcf32e723fb22cc262cae860ae1331842e1b",
+    "game\\assets\\sprites\\chests\\chest_small\\open.png.import": "b5e4d7dc9cc6a98e79244f45a8fab89fd105e9ce0a1c6b1eba5df9a190aafd70",
+    "game\\assets\\sprites\\chests\\chest_small\\open_n.png.import": "c8002a409207edebd77ab3bb56b6d96fa60aabab4f2ad79d7362081d7cf6d9c2",
+    "game\\assets\\sprites\\chests\\chest_small\\open_n_sw.png.import": "4e95202d097671fe7fc88a75a58be05a7e1b16f6c14352e1ef4e4e607edc3851",
+    "game\\assets\\sprites\\chests\\chest_small\\open_shadow.png.import": "8236e302cdcc0bf4e688fff9396734e4f9f938b59a58f88136a45f1202509925",
+    "game\\assets\\sprites\\chests\\chest_small\\open_shadow_sw.png.import": "feabb710f0b079c6b09346b9fbe838b04bd128cbec419d7a2d6d8e2da45ef563",
+    "game\\assets\\sprites\\chests\\chest_small\\open_sw.png.import": "9be0e77cdd547ed6daa799badf1c277597da02edab1743e2560d3b63292dbcc1"
+  },
+  "verification": "PASS",
+  "pivots": {
+    "game/assets/sprites/chests/chest_large/closed.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_large/closed_n.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_large/open.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_large/open_n.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/closed.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/closed_e.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/closed_n.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/open.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/open_e.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_legendary/open_n.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_small/closed.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_small/closed_n.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_small/open.png": [
+      64,
+      89.6
+    ],
+    "game/assets/sprites/chests/chest_small/open_n.png": [
+      64,
+      89.6
+    ]
+  },
+  "contact": "3x3 C1 ground_a with C4 Ardent; all resized by the same physical px/u ratio",
+  "errors": [],
+  "contact_panels": [
+    {
+      "asset": "game/assets/sprites/chests/chest_large/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_large/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_legendary/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/closed.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/closed.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/open.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/chests/chest_small/open.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/props/gold_capsule/closed.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/gold_capsule/open.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_active.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_done.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_large_off.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_active.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_done.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/pillar_small_off.png",
+      "orientation": "symmetric"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_active.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_active.png",
+      "orientation": "sw"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_idle.png",
+      "orientation": "se"
+    },
+    {
+      "asset": "game/assets/sprites/props/teleporter_idle.png",
+      "orientation": "sw"
+    }
+  ],
+  "sources": [
+    "art/blender/props/c8_chest_large_closed_se.blend",
+    "art/blender/props/c8_chest_large_closed_sw.blend",
+    "art/blender/props/c8_chest_large_open_se.blend",
+    "art/blender/props/c8_chest_large_open_sw.blend",
+    "art/blender/props/c8_chest_legendary_closed_se.blend",
+    "art/blender/props/c8_chest_legendary_closed_sw.blend",
+    "art/blender/props/c8_chest_legendary_open_se.blend",
+    "art/blender/props/c8_chest_legendary_open_sw.blend",
+    "art/blender/props/c8_chest_small_closed_se.blend",
+    "art/blender/props/c8_chest_small_closed_sw.blend",
+    "art/blender/props/c8_chest_small_open_se.blend",
+    "art/blender/props/c8_chest_small_open_sw.blend",
+    "art/blender/props/c8_gold_capsule_closed_se.blend",
+    "art/blender/props/c8_gold_capsule_open_se.blend",
+    "art/blender/props/c8_pillar_large_active_pillar_large_active_se.blend",
+    "art/blender/props/c8_pillar_large_done_pillar_large_done_se.blend",
+    "art/blender/props/c8_pillar_large_off_pillar_large_off_se.blend",
+    "art/blender/props/c8_pillar_small_active_pillar_small_active_se.blend",
+    "art/blender/props/c8_pillar_small_done_pillar_small_done_se.blend",
+    "art/blender/props/c8_pillar_small_off_pillar_small_off_se.blend",
+    "art/blender/props/c8_teleporter_active_teleporter_active_se.blend",
+    "art/blender/props/c8_teleporter_active_teleporter_active_sw.blend",
+    "art/blender/props/c8_teleporter_idle_teleporter_idle_se.blend",
+    "art/blender/props/c8_teleporter_idle_teleporter_idle_sw.blend"
+  ],
+  "shadows": "Contact AO composited into diffuse; matching ground cast-shadow atlases rendered by C0 projection",
+  "original_files": {
+    "game\\assets\\sprites\\chests\\chest_large\\closed.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "294a964b3dbf10daf50d4b68a81060d8c81c07e2565dc6b6add1eb0d36f6e9c7"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\closed_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "63a6fb4c8cc662e29b5b044f5541e001ad7c9337e552a27b499b32640c46b7d9"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\closed_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "ff029cd0854d84c6248a3bb05b5707f35c18beb65a8a7798ec1bc2dcc0fb3a38"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\closed_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "02f0c341e8825eb50701432b562f2790258a97b1902e5a28f212d18ceae12f2f"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\closed_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "d75e1ebbf7ccd0c787ed5450c35ab2a54a5363234528d2a6e3aac9384e0eb01b"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\closed_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "1cc61fa33e3c8995159b267d5431bee2f1194f42d497c1d9996117ad4a05f6ac"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e5974a45c7824ded59a69ffbeb983518c0dc6f3a780c367d8bf439e5e09884f6"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "964d237e8e51c8057ff8e100fa4e4a997d0a80030a48d7e08759236b88e535a0"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "2d30bea25ff148d4ea65868f63bf6ca9e1b73f823d17d91b6c41576836899980"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e17025c14ba7f7406588f51883ff31583419221b355e22084b522b0eee7d9bc7"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "bbc218bbca47ee7a6318b7605605ac83d54994757fceb05d8f35909d223d501b"
+    },
+    "game\\assets\\sprites\\chests\\chest_large\\open_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "f723e76fe8ede42ea2f6a7acddf614276cd28b433bee16061dd5adc4cf213976"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "0bcb9ddf116905c8d7c6f8c3771176cdf8f6f8eeef28f4af7c34964940f3a83f"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_e.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e424da98399e2b3915dc7325d10fbe869575a8deb2d8b1a1052dbd8f5ed37c65"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_e_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "0f9d5b35a3a5de37bebde91b76f6056ccf5084fd3d216e38e1feeba0f428fb26"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "7540c1ffa4c75332b8f8d3ff795777ba74db6db328e61b1669abcc074d18ea4f"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "37d3c53ef801c9975a52fe46a4dea1a1568513bc5c0e6515f87f7daafaa81e11"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "3be4a76a81224b1aaf42792cfa667b907aa5e4f3aff02c1eef6a7f0065413216"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e04aaaa5648f7410ec487a9ec1cbe523c2c2583224f1adc1a9cc968a71de7256"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\closed_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "575e28c0f4b4b103298d42d56baf44c75c26bd225029666a3cb9ef857085e516"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "eb58848045c773711514a82a9ab99f30be848ca706594378dfac5b08752b9f3e"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_e.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "5e1e0731737d8ff7edf6cbf40e14a199e412dde7c5e4723a78e50baeb3d8e4d9"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_e_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "77d57cd6704007910cee7344ef17140c91f5a25a4d5ed9a7798d1395e2d56f27"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "0b92eee04fe8612bc5ef3be6591ddd3b5c0828d7b046f53d47d36d9fb7cd4e96"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "86fd062e37d3e24833302c2f1041cdfbef9a902db958cadb7afcf87e045d3d5a"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "a649da65c6d7a0f07f3f36ef7aa2e7b998e5e2e4c6eeb9dc7fc137336aa713f3"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "b9e41745ce66a36c7a2deede958bbdb5ceccc0287ed06c50dbf9b6015aa558ed"
+    },
+    "game\\assets\\sprites\\chests\\chest_legendary\\open_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e5a4da86092969eea3413777f7ac1caffa579fc1c300f80044589f882940c3d4"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "2187639410d9174d21138e177f6930e8a00f9ee825230ed98babb086ef3bb303"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "e7eb4295e9adf46237b63b5e1486c1b784956daee625e5277f218ce6f0078e1f"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "28e655dad5812e8624eaf81bb6fba4453e4acccc04bff4b3d14d97f1295c41bf"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "b142ce5e481eaad7f1ca436e3a44e54f9801539d27aa42291206c78c3372c5ab"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "f707a6f6a668882ee30fade8dbca5510f9efe550c426142f91bc7d41f50f0ce5"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\closed_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "2b7efb3efdd3e09a53b29ab95bba30cdeceb18e830cbe809e7f33f78ccf355ce"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "639cc4e3d5ef780797e12879055e84187825d30a27761279437eaceda1201014"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open_n.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "0f33bcd75096a53cd9699ff594a3fb1b4a3dfd59236b5c3834ce4538dcf0492f"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open_n_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "b497a95cc02bb48b1e60de29a8618c79bfa20ab914f5153caeb451bf4a16c1b5"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open_shadow.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "3f18a5370bfea573fad220c3d588be7255bad557732ad6a08a33163fdf3248c9"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open_shadow_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "65c4529be6d6c090f502766ff993afd835f3af20afc1911ac0c6fd0dbc39248f"
+    },
+    "game\\assets\\sprites\\chests\\chest_small\\open_sw.png": {
+      "size": [
+        128,
+        128
+      ],
+      "sha256": "9698434ee2d3191488db8dcb502c52c6018e121a1987c94e48d02cddafc074fa"
+    }
+  }
+}

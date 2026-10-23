@@ -1,0 +1,121 @@
+{
+  "frames": 496,
+  "sheets": 30,
+  "clipped": [],
+  "static": [],
+  "bounds": {
+    "idle": [
+      16,
+      18,
+      176,
+      174
+    ],
+    "run": [
+      7,
+      16,
+      185,
+      177
+    ],
+    "swing": [
+      11,
+      18,
+      181,
+      170
+    ],
+    "throw": [
+      16,
+      16,
+      176,
+      174
+    ],
+    "slam": [
+      12,
+      11,
+      180,
+      168
+    ],
+    "ult": [
+      9,
+      19,
+      183,
+      174
+    ],
+    "attack": [
+      11,
+      18,
+      181,
+      170
+    ],
+    "cast": [
+      16,
+      16,
+      176,
+      174
+    ],
+    "cast_ult": [
+      9,
+      19,
+      183,
+      174
+    ],
+    "death": [
+      17,
+      19,
+      175,
+      174
+    ]
+  },
+  "body_emissive_pixels": 20685,
+  "import": {
+    "returncode": 0,
+    "errors": [
+      "ERROR: 26 resources still in use at exit (run with --verbose for details).",
+      "ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketSmallE"
+    ]
+  },
+  "load": {
+    "returncode": 0,
+    "errors": []
+  },
+  "sprites_test": {
+    "returncode": 0,
+    "errors": []
+  },
+  "character": "avare",
+  "cell": 192,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "pivot_px": [
+    96,
+    136.32
+  ],
+  "pixels_per_unit": 90.50966799187809,
+  "animations": {
+    "idle": 8,
+    "run": 8,
+    "swing": 4,
+    "throw": 4,
+    "slam": 6,
+    "ult": 8,
+    "attack": 4,
+    "cast": 4,
+    "cast_ult": 8,
+    "death": 8
+  },
+  "attack_impact_frame_zero_based": 2,
+  "icons": 4,
+  "emission_resource": "loaded and synchronized",
+  "visual_review": "single contact sheet checked",
+  "effects_next_lot": [
+    "coin_burst",
+    "ransom_ring"
+  ]
+}

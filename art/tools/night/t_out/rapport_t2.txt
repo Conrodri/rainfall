@@ -1,0 +1,10 @@
+T2 termin? : rig rigide ?ditable ? sept racines, 13 animations / 664 poses directionnelles, cellule 192, CREA 30?, R=90,5097, pivot (96 ; 136,32).
+Livraison : idle 8, walk 8, hop_l/r 6, handwalk 8, crawl_l/r 6, roll 8, fall 3 ; attack/cast/cast_ult/death 6. Attack : impact index 3 (N/2).
+DA : g?om?trie T1 conserv?e, fer noir piqu?, bronze vert-de-gris, rivets et c?bles ; braise orange unique. Chaudi?re pesante, appuis des pinces au sol, roulis autour du centre du torse, mort par dislocation.
+Calques : torse, t?te, vapeur de cou, bras G/D, jambes G/D ; membres inactifs exclus selon la locomotion. Vapeur ? afficher seulement sans t?te. Ordre arri?re-vers-avant calcul? sur les racines par direction.
+Sources : art/blender/characters/tocsin_t2.blend ; art/tools/night/t2_build.py. Bruts/checkpoints et manifeste d?taill? : art/tools/night/t_out/t2/.
+Assemblage : 238 PNG, diffuse/normal/?mission, 16 SpriteFrames CanvasTexture ; ?missions noires des calques omises et document?es. Dossier game Tocsin absent ? la reprise : cr?ation n?cessaire, aucune ressource existante modifi?e hors p?rim?tre.
+V?rifications : bornes et fichiers PASS ; roulade auparavant tronqu?e corrig?e et ses 64 poses recalcul?es ; chaque animation non statique ; 16 .tres charg?s dans Godot sans erreur ; sprites_test -> RESULT: OK. Planche unique inspect?e : art/tools/night/_t2_contact.png.
+M?moire : 44,83 Mio de fichiers avant .import ; atlas fixes RGBA = 1685.25 Mio, estimation calques rogn?s avec marge et trois passes = 140,53 Mio (46,84 Mio par passe). Budget initial 35?45 Mio toutes passes non atteint ; rognage/atlas compacts T5 indispensable avant int?gration, les cellules brutes 192 restent contractuelles.
+Suite : T3 lancers sp?cialis?s/VFX, T4 projectiles/ic?nes, T5 rognage partag? diffuse/normal/?mission avec conservation du pivot. Les variantes g?n?riques attack/cast/cast_ult et death sont d?j? fournies.
+Aucun .gd/.tscn cr?? ou modifi?. Audit Godot embarqu? dans t_out/t2/verify_resources.tres. L?import ?diteur ?met des avertissements de nettoyage ? la fermeture ; chargement runtime Tocsin et sprites_test sont propres.

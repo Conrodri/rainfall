@@ -1,0 +1,76 @@
+{
+  "game\\assets\\sprites\\characters\\ardent": {
+    "png": {
+      "idle.png": [
+        1536,
+        1536
+      ],
+      "idle_e.png": [
+        1536,
+        1536
+      ],
+      "idle_n.png": [
+        1536,
+        1536
+      ],
+      "run.png": [
+        1536,
+        1536
+      ],
+      "run_e.png": [
+        1536,
+        1536
+      ],
+      "run_n.png": [
+        1536,
+        1536
+      ]
+    },
+    "tres": {}
+  },
+  "game\\assets\\sprites\\vfx\\ardent_nova": {
+    "png": {
+      "default.png": [
+        7168,
+        512
+      ],
+      "default_e.png": [
+        7168,
+        512
+      ]
+    },
+    "tres": {
+      "ardent_nova.tres": "[gd_resource type=\"SpriteFrames\" load_steps=16 format=3]\n\n[ext_resource type=\"Texture2D\" path=\"res://assets/sprites/vfx/ardent_nova/default.png\" id=\"1\"]\n\n[sub_resource type=\"AtlasTexture\" id=\"a1\"]\natlas = ExtResource(\"1\")\nregion = Rect2(0, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a2\"]\natlas = ExtResource(\"1\")\nregion = Rect2(512, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a3\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1024, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a4\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1536, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a5\"]\natlas = ExtResource(\"1\")\nregion = Rect2(2048, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a6\"]\natlas = ExtResource(\"1\")\nregion = Rect2(2560, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a7\"]\natlas = ExtResource(\"1\")\nregion = Rect2(3072, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a8\"]\natlas = ExtResource(\"1\")\nregion = Rect2(3584, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a9\"]\natlas = ExtResource(\"1\")\nregion = Rect2(4096, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a10\"]\natlas = ExtResource(\"1\")\nregion = Rect2(4608, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a11\"]\natlas = ExtResource(\"1\")\nregion = Rect2(5120, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a12\"]\natlas = ExtResource(\"1\")\nregion = Rect2(5632, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a13\"]\natlas = ExtResource(\"1\")\nregion = Rect2(6144, 0, 512, 512)\n\n[sub_resource type=\"AtlasTexture\" id=\"a14\"]\natlas = ExtResource(\"1\")\nregion = Rect2(6656, 0, 512, 512)\n\n[resource]\nanimations = [{\n\"frames\": [{\"duration\": 1.0, \"texture\": SubResource(\"a1\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a2\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a3\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a4\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a5\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a6\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a7\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a8\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a9\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a10\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a11\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a12\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a13\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a14\")}],\n\"loop\": false,\n\"name\": &\"default\",\n\"speed\": 20.0\n}]\n"
+    }
+  },
+  "game\\assets\\sprites\\vfx\\ardent_ashes": {
+    "png": {
+      "default.png": [
+        3072,
+        384
+      ],
+      "default_e.png": [
+        3072,
+        384
+      ]
+    },
+    "tres": {
+      "ardent_ashes.tres": "[gd_resource type=\"SpriteFrames\" load_steps=10 format=3]\n\n[ext_resource type=\"Texture2D\" path=\"res://assets/sprites/vfx/ardent_ashes/default.png\" id=\"1\"]\n\n[sub_resource type=\"AtlasTexture\" id=\"a1\"]\natlas = ExtResource(\"1\")\nregion = Rect2(0, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a2\"]\natlas = ExtResource(\"1\")\nregion = Rect2(384, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a3\"]\natlas = ExtResource(\"1\")\nregion = Rect2(768, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a4\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1152, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a5\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1536, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a6\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1920, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a7\"]\natlas = ExtResource(\"1\")\nregion = Rect2(2304, 0, 384, 384)\n\n[sub_resource type=\"AtlasTexture\" id=\"a8\"]\natlas = ExtResource(\"1\")\nregion = Rect2(2688, 0, 384, 384)\n\n[resource]\nanimations = [{\n\"frames\": [{\"duration\": 1.0, \"texture\": SubResource(\"a1\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a2\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a3\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a4\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a5\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a6\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a7\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a8\")}],\n\"loop\": true,\n\"name\": &\"default\",\n\"speed\": 10.0\n}]\n"
+    }
+  },
+  "game\\assets\\sprites\\vfx\\ardent_brasier": {
+    "png": {
+      "default.png": [
+        11520,
+        640
+      ],
+      "default_e.png": [
+        11520,
+        640
+      ]
+    },
+    "tres": {
+      "ardent_brasier.tres": "[gd_resource type=\"SpriteFrames\" load_steps=20 format=3]\n\n[ext_resource type=\"Texture2D\" path=\"res://assets/sprites/vfx/ardent_brasier/default.png\" id=\"1\"]\n\n[sub_resource type=\"AtlasTexture\" id=\"a1\"]\natlas = ExtResource(\"1\")\nregion = Rect2(0, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a2\"]\natlas = ExtResource(\"1\")\nregion = Rect2(640, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a3\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1280, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a4\"]\natlas = ExtResource(\"1\")\nregion = Rect2(1920, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a5\"]\natlas = ExtResource(\"1\")\nregion = Rect2(2560, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a6\"]\natlas = ExtResource(\"1\")\nregion = Rect2(3200, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a7\"]\natlas = ExtResource(\"1\")\nregion = Rect2(3840, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a8\"]\natlas = ExtResource(\"1\")\nregion = Rect2(4480, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a9\"]\natlas = ExtResource(\"1\")\nregion = Rect2(5120, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a10\"]\natlas = ExtResource(\"1\")\nregion = Rect2(5760, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a11\"]\natlas = ExtResource(\"1\")\nregion = Rect2(6400, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a12\"]\natlas = ExtResource(\"1\")\nregion = Rect2(7040, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a13\"]\natlas = ExtResource(\"1\")\nregion = Rect2(7680, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a14\"]\natlas = ExtResource(\"1\")\nregion = Rect2(8320, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a15\"]\natlas = ExtResource(\"1\")\nregion = Rect2(8960, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a16\"]\natlas = ExtResource(\"1\")\nregion = Rect2(9600, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a17\"]\natlas = ExtResource(\"1\")\nregion = Rect2(10240, 0, 640, 640)\n\n[sub_resource type=\"AtlasTexture\" id=\"a18\"]\natlas = ExtResource(\"1\")\nregion = Rect2(10880, 0, 640, 640)\n\n[resource]\nanimations = [{\n\"frames\": [{\"duration\": 1.0, \"texture\": SubResource(\"a1\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a2\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a3\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a4\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a5\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a6\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a7\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a8\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a9\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a10\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a11\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a12\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a13\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a14\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a15\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a16\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a17\")}, {\"duration\": 1.0, \"texture\": SubResource(\"a18\")}],\n\"loop\": false,\n\"name\": &\"default\",\n\"speed\": 16.0\n}]\n"
+    }
+  }
+}

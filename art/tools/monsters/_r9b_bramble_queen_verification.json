@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "checks": [
+    "attack_dirs: grid, e/w/n, alpha, animated poses PASS",
+    "cast_a_dirs: grid, e/w/n, alpha, animated poses PASS",
+    "cast_b_dirs: grid, e/w/n, alpha, animated poses PASS"
+  ],
+  "minimum_margin": 4,
+  "new_animations": 9,
+  "attack_impact_index": 3,
+  "existing_animations_preserved": 10,
+  "camera_and_pivot": "R8 unchanged"
+}

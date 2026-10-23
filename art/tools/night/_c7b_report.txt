@@ -1,0 +1,9 @@
+LOT C7B ? TERMIN?
+Cerf neuf de 3,2 u : anatomie en bois noir fendu, masque osseux ?troit, c?tes saillantes, mousse, sabots fendus et cages de fer patin? suspendues ? la ramure ; accent unique feu follet #9CF0C8.
+P2 : branches nouvelles, lanternes agrandies, brume #B8C8C0 autour des pattes. P3 : c?tes ouvertes, ramure p?le, lanternes mourantes et bords fantomatiques translucides. Follets en spirales d?chir?es.
+M?thode C7a r?utilis?e : shaders worn d?ash_lord, rig CREA 30?, Eevee 16 ?chantillons, rendu 2?, passes Blender Normal/Emission, assemblage Pillow uniquement. ?chelle 50,196 px/u et pivot historique (128 ; 179,2) conserv?s.
+57 PNG existants remplac?s ; 9 PNG directionnels ajout?s ; 276 frames contr?l?es, marge minimale 4 px, alpha identique dans chaque triplet. Antlers = ?mission seule, cal?e sur idle_p1. Fins vides pr?vues contr?l?es.
+28 blocs d?animation originaux strictement conserv?s ; 9 animations auto/spell_a/spell_b e,w,n ajout?es, lignes e,w,n. Auto : armement frame 2, impact frame 3/6, retour ; FPS et boucles inchang?s.
+Godot 4.7.2 : sprites_test.tscn ? RESULT: OK ; cerf.tres charg? explicitement avec tous ses atlas, sans erreur. Logs : _c7b_godot.log, _c7b_resource_load.log, _c7b_verify.log.
+Planche unique contr?l?e : art/tools/night/_c7b_contact.png ; r?f?rences et comparaison Ardent/ash_lord ? la m?me ?chelle incluses.
+Sources : art/blender/monsters/cerf_iso.blend ; art/tools/night/c7b_build.py. Aucun .gd/.tscn cr?? ni modifi? ; fen?tre Blender interactive ignor?e.

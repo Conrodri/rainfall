@@ -1,0 +1,97 @@
+{
+  "density": 0.0,
+  "props": [],
+  "fixed": [
+    {
+      "name": "chapel",
+      "pos_u": [
+        4,
+        4
+      ],
+      "foot": [
+        384,
+        566
+      ],
+      "px_per_u": 90.51,
+      "fade": true
+    },
+    {
+      "name": "chapel",
+      "pos_u": [
+        46,
+        4
+      ],
+      "foot": [
+        384,
+        566
+      ],
+      "px_per_u": 90.51,
+      "fade": true
+    },
+    {
+      "name": "chapel",
+      "pos_u": [
+        4,
+        46
+      ],
+      "foot": [
+        384,
+        566
+      ],
+      "px_per_u": 90.51,
+      "fade": true
+    },
+    {
+      "name": "chapel",
+      "pos_u": [
+        46,
+        46
+      ],
+      "foot": [
+        384,
+        566
+      ],
+      "px_per_u": 90.51,
+      "fade": true
+    },
+    {
+      "name": "crystal_giant",
+      "pos_u": [
+        25,
+        3
+      ],
+      "foot": [
+        192,
+        435
+      ],
+      "px_per_u": 90.51,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "crystal_giant",
+      "pos_u": [
+        3,
+        25
+      ],
+      "foot": [
+        192,
+        435
+      ],
+      "px_per_u": 90.51,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "crystal_giant",
+      "pos_u": [
+        47,
+        25
+      ],
+      "foot": [
+        192,
+        435
+      ],
+      "px_per_u": 90.51,
+      "shadow_rig": "top"
+    }
+  ]
+}

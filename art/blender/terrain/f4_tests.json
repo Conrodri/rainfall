@@ -1,0 +1,14 @@
+{
+  "import": "PASS",
+  "cryptes_iso": "RESULT: OK",
+  "sprites": "RESULT: OK",
+  "texture_budget": "RESULT: FAIL (1): global mobile textures 237 MiB exceed 180 MiB",
+  "policy": "PASS: 0 imports changed",
+  "contract": "PASS: identical 41 filenames and sizes to rust_city; pivots/alpha; 18 Blender sources",
+  "style": "tile; no silhouette ink; quantized normals; cyan crystal only",
+  "fixes": [
+    "Explicit normal pass inventory excludes diffuse rampart_corner_n.png",
+    "Mirrored west burial wall exposes niches and 380 crystal emission pixels"
+  ],
+  "contact": "art/tools/night/_f4_contact.png"
+}

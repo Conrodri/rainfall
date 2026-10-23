@@ -1,0 +1,31 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+func _initialize() -> void:
+    var expected := {'idle':8, 'crouch':2, 'jump':4, 'land':3, 'leap':6, 'spit':4, 'breathe':4, 'belch':6, 'attack':6, 'cast':4, 'cast_ult':6, 'death':8, 'run':4, 'dodge':4}
+    var failed := 0
+    var checked := 0
+    for filename in ['rainette.tres', 'rainette_emission.tres']:
+        var sf = load('res://assets/sprites/characters/rainette/' + filename)
+        if not sf is SpriteFrames:
+            failed += 1
+            continue
+        for anim in expected:
+            for direction in ['e','se','s','sw','w','nw','n','ne']:
+                var key: String = anim + '_' + direction
+                if not sf.has_animation(key) or sf.get_frame_count(key) != expected[anim]:
+                    printerr('FAIL animation: ', key)
+                    failed += 1
+                    continue
+                for i in expected[anim]:
+                    var texture = sf.get_frame_texture(key, i)
+                    if not texture is AtlasTexture or texture.region.size != Vector2(192,192):
+                        failed += 1
+                    elif filename == 'rainette.tres':
+                        if not texture.atlas is CanvasTexture or texture.atlas.diffuse_texture == null or texture.atlas.normal_texture == null:
+                            failed += 1
+                    checked += 1
+    print('RA1 RESOURCES: ', checked, ' frames loaded; errors=', failed)
+    quit(0 if failed == 0 else 1)
+"

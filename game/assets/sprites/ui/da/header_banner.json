@@ -1,0 +1,25 @@
+{
+  "name": "header_banner",
+  "size": [
+    640,
+    96
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse"
+  ],
+  "normal": "none: face-on UI",
+  "emission": false,
+  "nine_slice": {
+    "left": 28,
+    "top": 20,
+    "right": 28,
+    "bottom": 20
+  },
+  "content_insets": {
+    "left": 28,
+    "top": 20,
+    "right": 28,
+    "bottom": 20
+  }
+}

@@ -1,0 +1,727 @@
+{
+  "frame": 170,
+  "files": {
+    "frost_bear\\attack.png": {
+      "bytes": 40097,
+      "sha256": "a0afd64b61efc42bd0aebbdd214020e0cfe6c4cde3274a0895cc0e03bd905ec6",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\attack.png.import": {
+      "bytes": 960,
+      "sha256": "2e4ab72d30e96fe0c84e24067b5b04f7588b81341f28377e61ad2f5cbcf4c2f0"
+    },
+    "frost_bear\\attack_e.png": {
+      "bytes": 9493,
+      "sha256": "2d4cb9c8a6a9259a3131e4d1d53c887ff48f7eef3ea958e3f31ac70fe01b9ef6",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\attack_e.png.import": {
+      "bytes": 966,
+      "sha256": "298b8c834a8c58b94c7eccd0e09fd846f04d5ecf0e91c18d35eab2b99442be2f"
+    },
+    "frost_bear\\attack_n.png": {
+      "bytes": 37414,
+      "sha256": "404ca5e2da7648505ed4782ce8992ff76825ad71e097dce726c98bdbe231f033",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\attack_n.png.import": {
+      "bytes": 966,
+      "sha256": "6b665e34de6a57eeaf1683e978ea8585d3d922032104ce3e915a511c76944cf2"
+    },
+    "frost_bear\\cast_a.png": {
+      "bytes": 45398,
+      "sha256": "b14c534a49ad8da3111cea29bf0a8fb0c790f23e3fe3bf3fc01076fb91c52c80",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_a.png.import": {
+      "bytes": 960,
+      "sha256": "f0040132e7928805fbf2997edf09f23f4e3dc7ed4540fccd2233d39dcf2e8cf7"
+    },
+    "frost_bear\\cast_a_e.png": {
+      "bytes": 10970,
+      "sha256": "930a0ad9dea3d3214f399abf9a00dee9b21cb0020e7adf40302d0aca4eb7acb2",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_a_e.png.import": {
+      "bytes": 966,
+      "sha256": "6ccb0f576f2fa770504c8bc775971a9a571709244434cf598a57238581dcb635"
+    },
+    "frost_bear\\cast_a_n.png": {
+      "bytes": 45526,
+      "sha256": "fbbd599a3268c81752fb79f5c59fc872577ec6bff0caa58108693bd010922e02",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_a_n.png.import": {
+      "bytes": 966,
+      "sha256": "a79c832b5602b3aa425276c054ccc71ac3403e027e7a648e5034cef15fef0b14"
+    },
+    "frost_bear\\cast_b.png": {
+      "bytes": 61235,
+      "sha256": "3a3c6cd6683f5bc17279423445e5a416a19a38f9a6b0018577b47f0c2d809c0b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_b.png.import": {
+      "bytes": 960,
+      "sha256": "633b06da898267e077d0f3e817a2b868d04ac2415a6a5c4b4d51845320bbf283"
+    },
+    "frost_bear\\cast_b_e.png": {
+      "bytes": 14172,
+      "sha256": "eb320f2a5f26c9c727a3ead8e9ade3580c0f260b5a3c60938eb8370f0611ce1e",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_b_e.png.import": {
+      "bytes": 966,
+      "sha256": "00b8e8257ae08ac407179afa86397d72df3009bdf163cf8e62105145609e1923"
+    },
+    "frost_bear\\cast_b_n.png": {
+      "bytes": 55948,
+      "sha256": "935983b27f0be1d965eb791d801546d9f96be00e6aaa5680b50ef975fc2702a3",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\cast_b_n.png.import": {
+      "bytes": 965,
+      "sha256": "31988e2ecba229206adbef0300432aefba877af1c89330547f4cf9b2acd50500"
+    },
+    "frost_bear\\death.png": {
+      "bytes": 142135,
+      "sha256": "5822835d5627bf4d527201a7edc3cbd32aae67b17eeb2d9189841ebbac2716fd",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "frost_bear\\death.png.import": {
+      "bytes": 957,
+      "sha256": "9204fd1b9edf33924c7e1188e60b63bccc251004657ea81ea9a4d135c2e72b4e"
+    },
+    "frost_bear\\death_e.png": {
+      "bytes": 38264,
+      "sha256": "928f3f28a6772953de080dc06de30146caa392554dbed3b5bb0c2d1c15842a42",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "frost_bear\\death_e.png.import": {
+      "bytes": 963,
+      "sha256": "0b462e1b4fdbd0d436bca83608d3761cfc309b89eb88b36f9463ca9e4da01b89"
+    },
+    "frost_bear\\death_n.png": {
+      "bytes": 167257,
+      "sha256": "82d5d63e7ea02b0e09934d59d0050d76fbd14f677ac88230bb197487130b9fe7",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "frost_bear\\death_n.png.import": {
+      "bytes": 963,
+      "sha256": "361bfd86212ce01b4a9d95767415eee2b42db201ccba20912e8ce12334097cd5"
+    },
+    "frost_bear\\frost_bear.tres": {
+      "bytes": 13393,
+      "sha256": "b485305ce1fc1d9a18440f2431b54f9b96d3c68cafd5552a2c56d96bd71a65f9"
+    },
+    "frost_bear\\idle.png": {
+      "bytes": 54903,
+      "sha256": "6fc5c001747b36086c5f054caabd1ddec62a17c995019ff8622986c5a7a61747",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\idle.png.import": {
+      "bytes": 954,
+      "sha256": "33be450218d3aaf77604b319a241336a82533a712fb071320cecec39e71a82ff"
+    },
+    "frost_bear\\idle_e.png": {
+      "bytes": 15791,
+      "sha256": "3596f036e55b8c2b4f711fb7819f533a0098e010cb056b23d9eed63d14b8f7b8",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\idle_e.png.import": {
+      "bytes": 959,
+      "sha256": "2fd2ed8ec38f3773871d516d874bf9037276e8c6d6e3917ddf8909ce98f9acf1"
+    },
+    "frost_bear\\idle_n.png": {
+      "bytes": 64141,
+      "sha256": "1292347af6bbefb037c94af57df28f97ef7d167c2039174b37253f39fe453ffa",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "frost_bear\\idle_n.png.import": {
+      "bytes": 960,
+      "sha256": "15da7e494278314910cb3d76e2236ab15a5f02b775a68a0f56bb7a51a6586448"
+    },
+    "frost_bear\\phase2.png": {
+      "bytes": 130348,
+      "sha256": "1dc8d5e5bc6b3e2ed137f2c36e24aec0f2e6eb20bb0e0a75b05ace84d3184c3b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\phase2.png.import": {
+      "bytes": 960,
+      "sha256": "359f8cb4b0cf00ee2c4fab2e550aeff3e6f6688d11e94e4028b629ae788f1fb5"
+    },
+    "frost_bear\\phase2_e.png": {
+      "bytes": 29079,
+      "sha256": "30c527d4f2a69f4a23734a1bfe1d9790f6f295cc501f2c525057234d422c497b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\phase2_e.png.import": {
+      "bytes": 966,
+      "sha256": "aac61d621e72a6b8c302cdcc58d857f6ebdec5a30fc43e514036dd93f99cd3fe"
+    },
+    "frost_bear\\phase2_n.png": {
+      "bytes": 144892,
+      "sha256": "b687dcaa3e3c195f4e4cfffbe9daaa729f1c50506f171e48f0a6af4a28fb7b82",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "frost_bear\\phase2_n.png.import": {
+      "bytes": 966,
+      "sha256": "1e9bd4742f6c97a6d95b67f8999c741f6d8984ae5d0a44744c20072d96dec6ea"
+    },
+    "frost_bear\\run.png": {
+      "bytes": 539303,
+      "sha256": "bea9642f58864e1c436ef77f9c52bd9adb2c53544d6cc8cab9f061ea5f331c95",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "frost_bear\\run.png.import": {
+      "bytes": 951,
+      "sha256": "ff970ec04c7d0d5167d736c2f1a2a5d40fef53f9bb6c889f48219bf3ee02748b"
+    },
+    "frost_bear\\run_e.png": {
+      "bytes": 135702,
+      "sha256": "08d05a014c83b2e9f31b50bdd3468c91be6ee9e54edda1dc159c781c6279d270",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "frost_bear\\run_e.png.import": {
+      "bytes": 957,
+      "sha256": "dc018d5e0d9920fde2b988a74dc0c4a394e82d6adb742ac6403af2648b5fe7d2"
+    },
+    "frost_bear\\run_n.png": {
+      "bytes": 624546,
+      "sha256": "58178cd16a1ea683ce920ebf5eed59ea1c10cae32ba626cd90d92ec663bcc802",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "frost_bear\\run_n.png.import": {
+      "bytes": 957,
+      "sha256": "f7433b30f313b179e791cd86c363e9e926cdd0fe61b8dbce0cf11a9d3476981c"
+    },
+    "stone_colossus\\attack.png": {
+      "bytes": 84629,
+      "sha256": "ba8a0522fda02cfbe170e4fc5d30c31e35586e78f9baeca048396ef511f7beab",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\attack.png.import": {
+      "bytes": 963,
+      "sha256": "c546395a1e44548bc8459833eae37a3dc2a206086c68ab5745e8fb88eb525980"
+    },
+    "stone_colossus\\attack_e.png": {
+      "bytes": 13135,
+      "sha256": "2b2f183b2bb344f0c32f50b1cfaad3cbc177b95ef145e5b46d0707af98ae5422",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\attack_e.png.import": {
+      "bytes": 970,
+      "sha256": "ca8d6003064c46781201cbb1478436d0ca1d7b27111ef3534150f323916b9057"
+    },
+    "stone_colossus\\attack_n.png": {
+      "bytes": 51150,
+      "sha256": "360864e9ce6f112edc555efcf86feb896c80cb4f45d184222df96bcd8fa4f174",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\attack_n.png.import": {
+      "bytes": 970,
+      "sha256": "7b72bd84a30ff4a19078312c3c6b35cc8a6c1176325686880650e21cab5a944d"
+    },
+    "stone_colossus\\cast_a.png": {
+      "bytes": 83962,
+      "sha256": "fb0d8bfb5de35041583ee9dbab5a4641414f92c6c2262cf59ce00c2017c0095b",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_a.png.import": {
+      "bytes": 964,
+      "sha256": "c5305adfd41a9ad0b96605a59b61c2a81261dcec87ff526803443ea5a4142456"
+    },
+    "stone_colossus\\cast_a_e.png": {
+      "bytes": 21512,
+      "sha256": "abf711e69591f92ecbd37ebf9b9eaa9c98aed3f3789be9bbfadf508f987b6b0c",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_a_e.png.import": {
+      "bytes": 969,
+      "sha256": "810fde2416a0a135153d47618e164afa6d9412302d4482c3a601d6e14f0efcdd"
+    },
+    "stone_colossus\\cast_a_n.png": {
+      "bytes": 77695,
+      "sha256": "dbe0f839694a88b243a6ba221d0708d34634d6facba3b964f9bb5348c10f7bc7",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_a_n.png.import": {
+      "bytes": 970,
+      "sha256": "224604d64042d5185ce6553fc814f7b6a85794a2b511497a8e59b958f853e594"
+    },
+    "stone_colossus\\cast_b.png": {
+      "bytes": 139477,
+      "sha256": "4b668ac748506fb01c110269a46292832417caa456eecf208a43edf832ae03f5",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_b.png.import": {
+      "bytes": 963,
+      "sha256": "526e7e01089ee17412db124a9d9a79ade5c88d88eb65677033b282de64b97f5c"
+    },
+    "stone_colossus\\cast_b_e.png": {
+      "bytes": 26302,
+      "sha256": "c7cb4b83990a4d9727c251b5db31b9915c54d8aa47fada632725b2577df398ac",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_b_e.png.import": {
+      "bytes": 970,
+      "sha256": "6136a305e1e37750b79f7fccfa954c03f159aab43ffcde329e0f68df2d4951cb"
+    },
+    "stone_colossus\\cast_b_n.png": {
+      "bytes": 107375,
+      "sha256": "afc21aa458c29b729236caaa70f49d7ee698b42d8478bc303c41f4647e672392",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\cast_b_n.png.import": {
+      "bytes": 969,
+      "sha256": "fe3966e531200ef4c255f8f46518c2a72d88ba3cb2e721eaa4d8e267d44b26fc"
+    },
+    "stone_colossus\\death.png": {
+      "bytes": 154944,
+      "sha256": "29cd8fcdde2cd8b122538c5158e375073be77728122edb47e63e4b349ab99730",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "stone_colossus\\death.png.import": {
+      "bytes": 961,
+      "sha256": "fefa3069d41f6a09a879bba82a694d8070c3aee212b07bf83d08d48db05a834f"
+    },
+    "stone_colossus\\death_e.png": {
+      "bytes": 45819,
+      "sha256": "e6c691dc798813f2851636a61949eaf8a599a1ecd2f5e982c8e68ac253dbd33f",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "stone_colossus\\death_e.png.import": {
+      "bytes": 967,
+      "sha256": "21399dea5e81b99b4695c2c44080d8d1ad49bff7d24b5024a89394933850f8c2"
+    },
+    "stone_colossus\\death_n.png": {
+      "bytes": 168582,
+      "sha256": "91533e09c883a82e9b8092ae0d50edac7ccd0be62051066d619689fb8794655d",
+      "size": [
+        1700,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "stone_colossus\\death_n.png.import": {
+      "bytes": 967,
+      "sha256": "9d4ec2c4c2d0edd347f28c9398d46ae4a9931a14df8c1541af2c9e68f5de6e9a"
+    },
+    "stone_colossus\\idle.png": {
+      "bytes": 60930,
+      "sha256": "c8c2cf0eb3d10174cfe0cc4472dc5a8a72c1c007662e3e2423fe968b1309c886",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\idle.png.import": {
+      "bytes": 957,
+      "sha256": "0acf20f3ae7b6ee34d6a730b03586fec4587d4de2ff1cd8b7c54ed3d433d8623"
+    },
+    "stone_colossus\\idle_e.png": {
+      "bytes": 18522,
+      "sha256": "d5b11e2d4bb6a56fe4434c82406cd458995c9e52f7eece9d4ca98d1cd9db9b10",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\idle_e.png.import": {
+      "bytes": 964,
+      "sha256": "33b809ae0db844d2ba1e7b4464bb9adf676cbdf8b90245ee76e0ef02e3b42108"
+    },
+    "stone_colossus\\idle_n.png": {
+      "bytes": 65837,
+      "sha256": "b0a331aae29d22deed5634ec58c98c25ec60189f5f84e159a940c4a7a99100b6",
+      "size": [
+        1020,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "stone_colossus\\idle_n.png.import": {
+      "bytes": 964,
+      "sha256": "5460eb9a9ea608f8a7308e8bec7b51fa8ca3d42b4832a26b0c0213faf33b2242"
+    },
+    "stone_colossus\\phase2.png": {
+      "bytes": 161423,
+      "sha256": "a1ad02b64ff6b11440cbdbb123e1d861a57b13e48ce2334386d2074fb3daa1b0",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\phase2.png.import": {
+      "bytes": 964,
+      "sha256": "16ac7a57769e156e64c27228ca2ba0fcfd0bd6514f0bc991e767edcdf1a183da"
+    },
+    "stone_colossus\\phase2_e.png": {
+      "bytes": 33370,
+      "sha256": "3656a16a289b165233feb8681ed20e05bc039abfbccece45010299517c58c849",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\phase2_e.png.import": {
+      "bytes": 970,
+      "sha256": "e53911eb5be77fe2863e153e73416f4c4b6dc941fa5e9535461cde3c14952038"
+    },
+    "stone_colossus\\phase2_n.png": {
+      "bytes": 140063,
+      "sha256": "0d918f4c70e480f0863af5942161085116acd1cf8f649ed33771d6d965fdb4f5",
+      "size": [
+        1360,
+        170
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "stone_colossus\\phase2_n.png.import": {
+      "bytes": 970,
+      "sha256": "575430457877e3aa6c4c6b97ba2b5cfb752340d543faa48de1611ef6eca1182e"
+    },
+    "stone_colossus\\run.png": {
+      "bytes": 441902,
+      "sha256": "b55f2b4ddb99f358963b89e3911be63d1a439a125c5e9d0a44b2cecf508fe436",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "stone_colossus\\run.png.import": {
+      "bytes": 954,
+      "sha256": "b74dac5d1d3af5ae16eb707b6c440ef47dc20fa1c7407a5f9fb2f23ed7bb2e65"
+    },
+    "stone_colossus\\run_e.png": {
+      "bytes": 105874,
+      "sha256": "53dc22553196045df2fc59ed5b87becd741bf42f06b34d35ce03aaf23c568899",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "stone_colossus\\run_e.png.import": {
+      "bytes": 961,
+      "sha256": "a242cb6699c232be3704e925212f7221de7204edad5a79b2d06d98eb47dea5b7"
+    },
+    "stone_colossus\\run_n.png": {
+      "bytes": 486566,
+      "sha256": "78e8b99cc405b3adc4bc2b2dfadebb73c8749b238baac7b1bcc527ba734ce23c",
+      "size": [
+        1360,
+        680
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "stone_colossus\\run_n.png.import": {
+      "bytes": 961,
+      "sha256": "a1f5779bb97b2d9aefa683e311aef993e9e64eaf0888e57ddc9bcf61f324b130"
+    },
+    "stone_colossus\\stone_colossus.tres": {
+      "bytes": 13421,
+      "sha256": "d05320e91b560686cc212c1cea1b518b7ff6abdc212ba8c745fa821eb8eeb678"
+    }
+  }
+}

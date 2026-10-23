@@ -1,0 +1,95 @@
+{
+  "contract": "PASS",
+  "files": 43,
+  "rendered_frames": 78,
+  "passes": 3,
+  "minimum_margin_px": 6,
+  "tres_sha256": "9f42e492bb2ecfed678cf6170e11875c8c417243e26d9061cdd0079c3a6bb37f",
+  "old_png_bytes": 2200191,
+  "new_png_bytes": 1802571,
+  "unique_frames": [
+    {
+      "animation": "idle",
+      "direction": "s",
+      "unique_frames": 6,
+      "frames": 6
+    },
+    {
+      "animation": "run",
+      "direction": "e",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "run",
+      "direction": "s",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "run",
+      "direction": "w",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "run",
+      "direction": "n",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "attack",
+      "direction": "s",
+      "unique_frames": 6,
+      "frames": 6
+    },
+    {
+      "animation": "cast_a",
+      "direction": "s",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "cast_b",
+      "direction": "s",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "phase2",
+      "direction": "s",
+      "unique_frames": 8,
+      "frames": 8
+    },
+    {
+      "animation": "death",
+      "direction": "s",
+      "unique_frames": 10,
+      "frames": 10
+    }
+  ],
+  "camera_elevation_degrees": 30,
+  "rig": "C0 CREA",
+  "contact_world_pixels_per_unit": 60,
+  "contact_rows": [
+    [
+      "cerf/idle_p1",
+      "sonneur/idle_p1",
+      "eclusier/idle_p1",
+      "ash_lord/idle"
+    ],
+    [
+      "ash_lord/attack",
+      "ash_lord/cast_a",
+      "ash_lord/cast_b",
+      "ash_lord/phase2"
+    ],
+    [
+      "ash_lord/run",
+      "ash_lord/run",
+      "ash_lord/death",
+      "ash_lord/idle_e"
+    ]
+  ]
+}

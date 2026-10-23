@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/choice_l6l7_test.gd" id="1"]
+
+[node name="ChoiceL6L7Test" type="Node"]
+script = ExtResource("1")

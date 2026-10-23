@@ -1,0 +1,51 @@
+{
+  "result": "PASS",
+  "cell": 170,
+  "pivot": [
+    85,
+    119
+  ],
+  "ortho_scale": 4.051028251647949,
+  "impact_indices": {
+    "attack": 3,
+    "cast_a": 4,
+    "cast_b": 4
+  },
+  "assets": [
+    {
+      "id": "mist_wolf",
+      "frames": 144,
+      "animations": 19,
+      "minimum_margin": 8,
+      "max_atlas": [
+        1360,
+        680
+      ]
+    },
+    {
+      "id": "mist_wolf_cub",
+      "frames": 72,
+      "animations": 10,
+      "minimum_margin": 26,
+      "max_atlas": [
+        1360,
+        680
+      ]
+    },
+    {
+      "id": "lantern_owl",
+      "frames": 144,
+      "animations": 19,
+      "minimum_margin": 21,
+      "max_atlas": [
+        1360,
+        680
+      ]
+    }
+  ],
+  "godot_resources": "PASS 3/3",
+  "sprites_test": "RESULT: OK",
+  "import_policy": "PASS 75/75",
+  "normal_emission_grid": "PASS",
+  "global_budget": "FAIL outside N2A: Averse wave_cone oversized; global APK/mobile budgets exceeded"
+}

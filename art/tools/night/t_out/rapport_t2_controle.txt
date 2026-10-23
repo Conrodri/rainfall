@@ -1,0 +1,6 @@
+﻿T2 vérifié : rig tocsin_t2.blend, 13 animations, 664 frames directionnelles, 3 880 cellules de calques.
+Locomotions complètes + attack (impact 3/6), cast, cast_ult, death ; cellule 192, CREA 30°, pivot Ardent.
+DA : modèle T1 conservé, fer piqué et bronze noyé, foyer orange unique ; roulement recentré sur la chaudière.
+PASS : marges alpha des 3 880 cellules ; Godot RESULT: OK ; 16 SpriteFrames chargés sans erreur ; contact _t2_contact.png.
+Budget T5 à optimiser : calques fixes 1 405,12 Mio RGBA (26,11 Mio PNG) ; estimation rognée triplets 140,53 Mio, au-delà des 35–45 Mio visés.
+Contrat conservé, aucun .gd/.tscn créé ou modifié ; détails : t2/independent_audit.json et t2/memory_audit.json.

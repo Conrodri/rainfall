@@ -1,0 +1,207 @@
+[gd_resource type="SpriteFrames" format=3]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/effects/wave_cone/wave_cone.png" id="d0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/effects/wave_cone/wave_cone_atlas1.png" id="d1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/effects/wave_cone/wave_cone_atlas2.png" id="d2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/effects/wave_cone/wave_cone_atlas3.png" id="d3"]
+
+[sub_resource type="AtlasTexture" id="a0_0"]
+atlas = ExtResource("d0")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a0_1"]
+atlas = ExtResource("d0")
+region = Rect2(1024, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a0_2"]
+atlas = ExtResource("d0")
+region = Rect2(2048, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a0_3"]
+atlas = ExtResource("d0")
+region = Rect2(3072, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a0_4"]
+atlas = ExtResource("d0")
+region = Rect2(0, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a0_5"]
+atlas = ExtResource("d0")
+region = Rect2(1024, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_0"]
+atlas = ExtResource("d0")
+region = Rect2(2048, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_1"]
+atlas = ExtResource("d0")
+region = Rect2(3072, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_2"]
+atlas = ExtResource("d0")
+region = Rect2(0, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_3"]
+atlas = ExtResource("d0")
+region = Rect2(1024, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_4"]
+atlas = ExtResource("d0")
+region = Rect2(2048, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a1_5"]
+atlas = ExtResource("d0")
+region = Rect2(3072, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_0"]
+atlas = ExtResource("d1")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_1"]
+atlas = ExtResource("d1")
+region = Rect2(1024, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_2"]
+atlas = ExtResource("d1")
+region = Rect2(2048, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_3"]
+atlas = ExtResource("d1")
+region = Rect2(3072, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_4"]
+atlas = ExtResource("d1")
+region = Rect2(0, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a2_5"]
+atlas = ExtResource("d1")
+region = Rect2(1024, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_0"]
+atlas = ExtResource("d1")
+region = Rect2(2048, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_1"]
+atlas = ExtResource("d1")
+region = Rect2(3072, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_2"]
+atlas = ExtResource("d1")
+region = Rect2(0, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_3"]
+atlas = ExtResource("d1")
+region = Rect2(1024, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_4"]
+atlas = ExtResource("d1")
+region = Rect2(2048, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a3_5"]
+atlas = ExtResource("d1")
+region = Rect2(3072, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_0"]
+atlas = ExtResource("d2")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_1"]
+atlas = ExtResource("d2")
+region = Rect2(1024, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_2"]
+atlas = ExtResource("d2")
+region = Rect2(2048, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_3"]
+atlas = ExtResource("d2")
+region = Rect2(3072, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_4"]
+atlas = ExtResource("d2")
+region = Rect2(0, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a4_5"]
+atlas = ExtResource("d2")
+region = Rect2(1024, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_0"]
+atlas = ExtResource("d2")
+region = Rect2(2048, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_1"]
+atlas = ExtResource("d2")
+region = Rect2(3072, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_2"]
+atlas = ExtResource("d2")
+region = Rect2(0, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_3"]
+atlas = ExtResource("d2")
+region = Rect2(1024, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_4"]
+atlas = ExtResource("d2")
+region = Rect2(2048, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a5_5"]
+atlas = ExtResource("d2")
+region = Rect2(3072, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_0"]
+atlas = ExtResource("d3")
+region = Rect2(0, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_1"]
+atlas = ExtResource("d3")
+region = Rect2(1024, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_2"]
+atlas = ExtResource("d3")
+region = Rect2(2048, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_3"]
+atlas = ExtResource("d3")
+region = Rect2(3072, 0, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_4"]
+atlas = ExtResource("d3")
+region = Rect2(0, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a6_5"]
+atlas = ExtResource("d3")
+region = Rect2(1024, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_0"]
+atlas = ExtResource("d3")
+region = Rect2(2048, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_1"]
+atlas = ExtResource("d3")
+region = Rect2(3072, 1024, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_2"]
+atlas = ExtResource("d3")
+region = Rect2(0, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_3"]
+atlas = ExtResource("d3")
+region = Rect2(1024, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_4"]
+atlas = ExtResource("d3")
+region = Rect2(2048, 2048, 1024, 1024)
+
+[sub_resource type="AtlasTexture" id="a7_5"]
+atlas = ExtResource("d3")
+region = Rect2(3072, 2048, 1024, 1024)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a0_0")}, {"duration": 1.0, "texture": SubResource("a0_1")}, {"duration": 1.0, "texture": SubResource("a0_2")}, {"duration": 1.0, "texture": SubResource("a0_3")}, {"duration": 1.0, "texture": SubResource("a0_4")}, {"duration": 1.0, "texture": SubResource("a0_5")}], "loop": false, "name": &"wave_cone_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a1_0")}, {"duration": 1.0, "texture": SubResource("a1_1")}, {"duration": 1.0, "texture": SubResource("a1_2")}, {"duration": 1.0, "texture": SubResource("a1_3")}, {"duration": 1.0, "texture": SubResource("a1_4")}, {"duration": 1.0, "texture": SubResource("a1_5")}], "loop": false, "name": &"wave_cone_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a2_0")}, {"duration": 1.0, "texture": SubResource("a2_1")}, {"duration": 1.0, "texture": SubResource("a2_2")}, {"duration": 1.0, "texture": SubResource("a2_3")}, {"duration": 1.0, "texture": SubResource("a2_4")}, {"duration": 1.0, "texture": SubResource("a2_5")}], "loop": false, "name": &"wave_cone_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a3_0")}, {"duration": 1.0, "texture": SubResource("a3_1")}, {"duration": 1.0, "texture": SubResource("a3_2")}, {"duration": 1.0, "texture": SubResource("a3_3")}, {"duration": 1.0, "texture": SubResource("a3_4")}, {"duration": 1.0, "texture": SubResource("a3_5")}], "loop": false, "name": &"wave_cone_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a4_0")}, {"duration": 1.0, "texture": SubResource("a4_1")}, {"duration": 1.0, "texture": SubResource("a4_2")}, {"duration": 1.0, "texture": SubResource("a4_3")}, {"duration": 1.0, "texture": SubResource("a4_4")}, {"duration": 1.0, "texture": SubResource("a4_5")}], "loop": false, "name": &"wave_cone_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a5_0")}, {"duration": 1.0, "texture": SubResource("a5_1")}, {"duration": 1.0, "texture": SubResource("a5_2")}, {"duration": 1.0, "texture": SubResource("a5_3")}, {"duration": 1.0, "texture": SubResource("a5_4")}, {"duration": 1.0, "texture": SubResource("a5_5")}], "loop": false, "name": &"wave_cone_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a6_0")}, {"duration": 1.0, "texture": SubResource("a6_1")}, {"duration": 1.0, "texture": SubResource("a6_2")}, {"duration": 1.0, "texture": SubResource("a6_3")}, {"duration": 1.0, "texture": SubResource("a6_4")}, {"duration": 1.0, "texture": SubResource("a6_5")}], "loop": false, "name": &"wave_cone_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a7_0")}, {"duration": 1.0, "texture": SubResource("a7_1")}, {"duration": 1.0, "texture": SubResource("a7_2")}, {"duration": 1.0, "texture": SubResource("a7_3")}, {"duration": 1.0, "texture": SubResource("a7_4")}, {"duration": 1.0, "texture": SubResource("a7_5")}], "loop": false, "name": &"wave_cone_ne", "speed": 12.0}]

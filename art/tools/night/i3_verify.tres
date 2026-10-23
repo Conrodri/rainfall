@@ -1,0 +1,26 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+var checked := 0
+var failed := 0
+func scan(path: String) -> void:
+    var dir := DirAccess.open(path)
+    if dir == null:
+        failed += 1
+        return
+    for name in dir.get_files():
+        if name.ends_with('.tres'):
+            var resource := ResourceLoader.load(path.path_join(name), '', ResourceLoader.CACHE_MODE_IGNORE)
+            if resource == null:
+                printerr('FAIL resource: ', path.path_join(name))
+                failed += 1
+            checked += 1
+    for name in dir.get_directories():
+        if not name.begins_with('.'):
+            scan(path.path_join(name))
+func _initialize() -> void:
+    scan('res://')
+    print('I3_RESOURCES: ', checked, ' loaded; errors=', failed)
+    quit(0 if failed == 0 else 1)
+"

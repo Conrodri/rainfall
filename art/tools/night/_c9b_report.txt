@@ -1,0 +1,6 @@
+﻿C9B livré : 300 frames, 42 animations, 16 atlas diffus + 16 masques _e à demi-résolution ; aucun _n ni CanvasTexture.
+Choix : creuset évasé riveté, briques, deux louches entrechoquées, cheminée asymétrique, orange sodium et surchauffe presque blanche, rim froid ; corps moyen >=112/255.
+Source art/blender/bosses/smelter_iso.blend ; script art/tools/night/c9b_build.py ; smelter.tres complété car provisoire incomplet ; aucun .gd/.tscn modifié.
+Planche _c9b_contact.png sur sol de cité, Sonneur et Grue à échelle commune ; pieds idle y=215 ; contrôle 16/16 PASS ; molten_arc livré, absent de fauna.json extras.
+Import Godot sans erreur ; sprites_test et smelter_boss_test : RESULT: OK ; ce dernier signale 30 objets/11 ressources restant à sa fermeture.
+Textures >4096 : 0 (maximum du lot 3840) ; budget global dépassé : bosses 58,8/45 Mo, APK estimé 266/200 Mo.

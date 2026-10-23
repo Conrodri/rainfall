@@ -1,0 +1,202 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_xmh61"]
+
+[resource]
+script = ExtResource("1_xmh61")
+map_id = &"terrasses_noyees"
+display_name = "Terrasses noyées"
+mood = "Fin d'après-midi (17 h 40), soleil sous les nuages après l'averse ; bruine rétro-éclairée. Quand D monte, les nuages reviennent et le soleil se noie (§2.1, §3.3)."
+ambient_color = Color(0.4941176, 0.4784314, 0.4392157, 1.0)
+ambient_low = Color(0.4941176, 0.4784314, 0.4392157, 1.0)
+sun_color = Color(1.0, 0.8235294, 0.627451, 1.0)
+sun_energy = 0.5
+sun_rotation_deg = 310.0
+sun_height = 0.15
+sun_shadow_color = Color(0.1019608, 0.1490196, 0.1411765, 0.72)
+sun_shadow_length_u = 3.2
+lift_color = Color(0.0823529, 0.1254902, 0.1215686, 1.0)
+lift_amount = 0.28
+gain_color = Color(1.0, 0.8901961, 0.7098039, 1.0)
+gain_amount = 0.2
+saturation = 1.0
+contrast = 1.18
+vignette_strength = 0.3
+vignette_radius = 0.74
+vignette_softness = 0.45
+vignette_color = Color(0.054902, 0.0862745, 0.0941176, 1.0)
+fill_color = Color(0.7058824, 0.7529412, 0.7843137, 1.0)
+fill_energy = 0.4
+fill_energy_low = 0.5
+sun_shadow_smooth = 0.8
+contrast_pivot = 0.4
+lights_energy = 1.15
+rain_intensity = 0.25
+rain_tint = Color(1, 0.9098039, 0.78431374, 1)
+drops_amount = 120.0
+fog_low_color = Color(0.78431374, 0.83137256, 0.8, 1)
+fog_low_speed = Vector2(0.17677669, 0.17677669)
+fog2_color = Color(0.8392157, 0.8627451, 0.8235294, 1)
+fog2_speed = Vector2(0.08485281, 0.08485281)
+fog_high_color = Color(0.8862745, 0.89411765, 0.85490197, 1)
+fog_high_speed = Vector2(0.28284273, 0.28284273)
+cloud_opacity = 0.12
+cloud_speed_u = Vector2(0.061283555, 0.051423006)
+rays_count = 4.0
+rays_opacity = 0.13
+rays_color = Color(1, 0.8901961, 0.70980394, 1)
+sky_texture = &"sky_sunset_256x64"
+sky_reflect = 0.35
+puddle_reflect = 0.6
+water_reflect = 0.6
+particle_defs = Array[Dictionary]([{
+"additive": false,
+"alpha": 0.8,
+"behavior": &"fall",
+"color": Color(1, 1, 1, 1),
+"drift_u": 0.6,
+"name": "aiguilles de pin",
+"size_u": Vector2(0.2, 0.35),
+"speed_u": 1.5,
+"spin_dps": 90.0,
+"texture": &"leaf_pine_32"
+}, {
+"additive": false,
+"alpha": 0.4,
+"behavior": &"drift",
+"color": Color(0.9098039, 0.89411765, 0.8156863, 1),
+"name": "moucherons",
+"size_u": Vector2(0.05, 0.08),
+"speed_u": 0.3,
+"texture": &"mote_16"
+}])
+p1_amount = 12.0
+p2_amount = 30.0
+light_rules = Array[Dictionary]([{
+"char": "~",
+"edge": false,
+"max": 8,
+"max_tier": &"Tendu",
+"preset": &"sun_glint",
+"spacing_u": 10.0
+}, {
+"char": "#",
+"edge": true,
+"max": 10,
+"min_tier": &"Hostile",
+"preset": &"lantern_stone",
+"spacing_u": 14.0
+}])
+tier_overrides = {
+&"Cataclysme": {
+&"lights_energy": 1.3,
+&"fill_energy_low": 0.68,
+&"fill_energy": 0.58,
+&"fill_color": Color(0.6588235, 0.7058824, 0.7607843, 1.0),
+&"ambient_color": Color(0.3843137, 0.4, 0.3843137, 1.0),
+&"ambient_low": Color(0.3843137, 0.4, 0.3843137, 1.0),
+&"cloud_cover": 1.0,
+&"cloud_opacity": 0.25,
+&"cloud_speed_u": Vector2(0.38302222, 0.3213938),
+&"contrast": 1.3,
+&"fog_low_opacity": 0.14,
+&"lightning_double_chance": 0.3,
+&"lightning_flash": 1.0,
+&"lightning_interval_max": 14.0,
+&"lightning_interval_min": 6.0,
+&"player_light_scale": 1.15,
+&"rain_angle_deg": 20.0,
+&"rain_intensity": 0.8,
+&"rain_layers": 2.0,
+&"rain_opacity": 0.12,
+&"rain_tint": Color(0.7529412, 0.78431374, 0.8, 1),
+&"saturation": 0.95,
+&"splash_rate": 180.0,
+&"sun_color": Color(0.6431373, 0.6901961, 0.7058824, 1.0),
+&"sun_energy": 0.26,
+&"sun_shadow_length_u": 1.2,
+&"vignette_strength": 0.4,
+&"wind_mult": 3.2
+},
+&"Furieux": {
+&"lights_energy": 1.25,
+&"fill_energy_low": 0.62,
+&"fill_energy": 0.52,
+&"fill_color": Color(0.6745098, 0.7215686, 0.7686275, 1.0),
+&"ambient_color": Color(0.4078431, 0.4235294, 0.4039216, 1.0),
+&"ambient_low": Color(0.4078431, 0.4235294, 0.4039216, 1.0),
+&"cloud_cover": 0.9,
+&"cloud_opacity": 0.22,
+&"cloud_speed_u": Vector2(0.26811555, 0.22497565),
+&"contrast": 1.26,
+&"lightning_flash": 0.7,
+&"lightning_interval_max": 25.0,
+&"lightning_interval_min": 12.0,
+&"map_lights_energy": 1.29,
+&"player_light_scale": 1.1,
+&"rain_angle_deg": 17.0,
+&"rain_intensity": 0.65,
+&"rain_opacity": 0.11,
+&"rain_tint": Color(0.78431374, 0.8156863, 0.8156863, 1),
+&"saturation": 0.97,
+&"splash_rate": 144.0,
+&"sun_color": Color(0.7058824, 0.745098, 0.7215686, 1.0),
+&"sun_energy": 0.3,
+&"sun_shadow_length_u": 1.6,
+&"vignette_strength": 0.37,
+&"wind_mult": 2.5
+},
+&"Hostile": {
+&"lights_energy": 1.2,
+&"fill_energy_low": 0.56,
+&"fill_energy": 0.46,
+&"fill_color": Color(0.6901961, 0.7372549, 0.7764706, 1.0),
+&"ambient_color": Color(0.4235294, 0.4313725, 0.4156863, 1.0),
+&"ambient_low": Color(0.4235294, 0.4313725, 0.4156863, 1.0),
+&"cloud_cover": 0.7,
+&"cloud_opacity": 0.19,
+&"cloud_speed_u": Vector2(0.1532089, 0.12855752),
+&"contrast": 1.22,
+&"fog_low_opacity": 0.12,
+&"p2_amount": 0.0,
+&"player_light_scale": 1.05,
+&"rain_angle_deg": 14.0,
+&"rain_intensity": 0.5,
+&"rain_length_u": 0.35,
+&"rain_opacity": 0.09,
+&"rain_tint": Color(0.84705883, 0.8627451, 0.83137256, 1),
+&"rays_count": 0.0,
+&"rays_opacity": 0.0,
+&"saturation": 1.0,
+&"splash_rate": 114.0,
+&"sun_color": Color(0.8313725, 0.7921569, 0.7058824, 1.0),
+&"sun_energy": 0.38,
+&"sun_shadow_length_u": 2.2,
+&"vignette_strength": 0.34,
+&"wind_mult": 1.8
+},
+&"Tendu": {
+&"fill_energy_low": 0.52,
+&"fill_energy": 0.42,
+&"fill_color": Color(0.7058824, 0.7529412, 0.7843137, 1.0),
+&"ambient_color": Color(0.4627451, 0.454902, 0.4392157, 1.0),
+&"ambient_low": Color(0.4627451, 0.454902, 0.4392157, 1.0),
+&"cloud_cover": 0.5,
+&"cloud_opacity": 0.15,
+&"cloud_speed_u": Vector2(0.09192533, 0.077134505),
+&"contrast": 1.2,
+&"rain_angle_deg": 12.0,
+&"rain_intensity": 0.35,
+&"rain_opacity": 0.07,
+&"rain_tint": Color(0.9411765, 0.8862745, 0.8, 1),
+&"rays_count": 2.5,
+&"rays_opacity": 0.08,
+&"saturation": 1.03,
+&"splash_rate": 84.0,
+&"sun_color": Color(0.9411765, 0.7843137, 0.5960784, 1.0),
+&"sun_energy": 0.46,
+&"sun_shadow_length_u": 2.8,
+&"vignette_strength": 0.32,
+&"wind_mult": 1.3
+}
+}

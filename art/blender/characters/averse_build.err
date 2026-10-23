@@ -1,0 +1,2 @@
+C:\Users\const\Documents\Rainfall\art\tools\night\av1_build.py:231: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  water=bpy.data.materials.new('Icon restrained cyan water');water.use_nodes=True

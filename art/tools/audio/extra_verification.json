@@ -1,0 +1,33 @@
+{
+  "files": 126,
+  "total_duration_s": 69.001703,
+  "duration_range_s": [
+    0.094717,
+    4.63127
+  ],
+  "maximum_true_peak_dbfs": -2.433119297027588,
+  "rms_ranges_dbfs": {
+    "impacts": [
+      -19.98110580444336,
+      -17.965343475341797
+    ],
+    "footsteps": [
+      -26.0811710357666,
+      -25.91250228881836
+    ]
+  },
+  "loops": 0,
+  "failures": [
+    "death_t4_02.ogg: boundary click risk",
+    "step_player_water_01.ogg: boundary click risk",
+    "step_player_water_04.ogg: boundary click risk",
+    "step_monster_t1_stone_02.ogg: boundary click risk",
+    "step_monster_t1_stone_03.ogg: boundary click risk",
+    "step_monster_t1_stone_04.ogg: boundary click risk",
+    "step_monster_t1_stone_05.ogg: boundary click risk",
+    "step_monster_t1_grass_02.ogg: boundary click risk",
+    "step_monster_t1_grass_03.ogg: boundary click risk",
+    "step_monster_t1_grass_05.ogg: boundary click risk",
+    "step_monster_t2_water_05.ogg: boundary click risk"
+  ]
+}

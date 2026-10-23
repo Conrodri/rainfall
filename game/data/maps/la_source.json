@@ -1,0 +1,167 @@
+{
+ "id": "la_source",
+ "name": "La Source",
+ "biome": "source",
+ "scene": "res://scenes/stage/maps/la_source.tscn",
+ "floor": 5,
+ "variant": "",
+ "size_u": [
+  50,
+  50
+ ],
+ "size_px": [
+  3200,
+  3200
+ ],
+ "unit_px": 64,
+ "projection": "iso45",
+ "origin": "scène centrée sur (0,0) ; position_px = (coord_u - size_u/2) * 64 en repère carte ; repère logique = Rot(+45°) · carte",
+ "floor_boss": "rain_sower",
+ "floor_boss_name": "Le Semeur de pluie",
+ "grid_cell_u": 2,
+ "grid": [
+  "#########################",
+  "#C...#####.....#####...C#",
+  "#...C##...........##C...#",
+  "#.......................#",
+  "#####...............#####",
+  "####.....#..C..#.....####",
+  "###.....E.......E.....###",
+  "##.....................##",
+  "##.....................##",
+  "##...#....,,,,,....#...##",
+  "#........,,,,,,,........#",
+  "#........,,...,,........#",
+  "#....C...,,.G.,,...C....#",
+  "#........,,...,,........#",
+  "#........,,,,,,,........#",
+  "##...#....,,,,,....#...##",
+  "##.....................##",
+  "##.....................##",
+  "###...................###",
+  "####.....#..C..#.....####",
+  "#####...............#####",
+  "#.......................#",
+  "#...C##...........##C...#",
+  "#C...#####..S..#####...C#",
+  "#########################"
+ ],
+ "player_start_u": [
+  25,
+  47
+ ],
+ "candidates": {
+  "chests": [
+   [
+    3,
+    3
+   ],
+   [
+    47,
+    3
+   ],
+   [
+    9,
+    5
+   ],
+   [
+    41,
+    5
+   ],
+   [
+    25,
+    11
+   ],
+   [
+    11,
+    25
+   ],
+   [
+    39,
+    25
+   ],
+   [
+    25,
+    39
+   ],
+   [
+    9,
+    45
+   ],
+   [
+    41,
+    45
+   ],
+   [
+    3,
+    47
+   ],
+   [
+    47,
+    47
+   ]
+  ],
+  "small_pillars": [],
+  "big_pillars": [
+   [
+    25,
+    25
+   ]
+  ],
+  "events": [
+   [
+    17,
+    13
+   ],
+   [
+    33,
+    13
+   ]
+  ]
+ },
+ "draw_rules": {
+  "small_chests": 6,
+  "large_chests": 2,
+  "legendary_chance": 1.0,
+  "small_pillars": 0,
+  "big_pillars": 1,
+  "min_pillar_distance_u": 18,
+  "big_pillar_min_spawn_distance_u": 20,
+  "pillar_walkable_ratio_min": 0.7,
+  "pillar_zone_radius_u": {
+   "small": 7,
+   "big": 9
+  },
+  "legendary_chest_min_spawn_distance_u": 24,
+  "trapped_chest_min_spawn_distance_u": 12
+ },
+ "events": {
+  "chance": 0.6,
+  "max_per_floor": 1,
+  "types": {
+   "autel_fortune": "autel de la Source",
+   "sanctuaire_risque": "vasque de pluie",
+   "marchand_ombre": "pèlerin sous la colonne",
+   "coffre_piege": "offrande noyée"
+  }
+ },
+ "ambient_event": {
+  "threshold_difficulty": 4.0,
+  "name": "Colonne de pluie",
+  "effect": "visuel : la colonne de pluie centrale s'épaissit avec la difficulté"
+ },
+ "monster_spawn": {
+  "margin_u": [
+   2,
+   4
+  ],
+  "allowed_cells": [
+   ".",
+   ","
+  ],
+  "forbidden_cells": [
+   "#",
+   "~"
+  ]
+ }
+}

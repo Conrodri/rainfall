@@ -1,0 +1,174 @@
+{
+  "contract": "PASS",
+  "files": 86,
+  "creatures": {
+    "frost_bear": {
+      "frames": 78,
+      "passes": 3,
+      "minimum_margin": 6,
+      "unique_frames": [
+        {
+          "animation": "idle",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "run",
+          "direction": "e",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "w",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "n",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "attack",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "cast_a",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "cast_b",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "phase2",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "death",
+          "direction": "s",
+          "frames": 10,
+          "unique": 10
+        }
+      ],
+      "idle_occupancy": {
+        "bounds": [
+          52,
+          24,
+          119,
+          140
+        ],
+        "alpha_pixels": 4792
+      }
+    },
+    "stone_colossus": {
+      "frames": 78,
+      "passes": 3,
+      "minimum_margin": 6,
+      "unique_frames": [
+        {
+          "animation": "idle",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "run",
+          "direction": "e",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "w",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "run",
+          "direction": "n",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "attack",
+          "direction": "s",
+          "frames": 6,
+          "unique": 6
+        },
+        {
+          "animation": "cast_a",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "cast_b",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "phase2",
+          "direction": "s",
+          "frames": 8,
+          "unique": 8
+        },
+        {
+          "animation": "death",
+          "direction": "s",
+          "frames": 10,
+          "unique": 10
+        }
+      ],
+      "idle_occupancy": {
+        "bounds": [
+          29,
+          23,
+          141,
+          132
+        ],
+        "alpha_pixels": 7960
+      }
+    }
+  },
+  "camera_elevation": 30,
+  "contact_pixels_per_world_unit": 70,
+  "contact_cells": [
+    "ash_lord/idle",
+    "eclusier/idle_p1",
+    "frost_bear/idle",
+    "stone_colossus/idle",
+    "frost_bear/cast_a",
+    "frost_bear/cast_b",
+    "stone_colossus/cast_a",
+    "stone_colossus/cast_b"
+  ],
+  "tres_unchanged": {
+    "frost_bear": "b485305ce1fc1d9a18440f2431b54f9b96d3c68cafd5552a2c56d96bd71a65f9",
+    "stone_colossus": "d05320e91b560686cc212c1cea1b518b7ff6abdc212ba8c745fa821eb8eeb678"
+  }
+}

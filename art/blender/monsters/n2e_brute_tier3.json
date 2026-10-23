@@ -1,0 +1,34 @@
+{
+  "source_sha256": "c1a39b44e845009e487ecb05be686d39c753c7d625eb5f085e27e1d407a89044",
+  "original_tres_sha256": "4bb81368d4a441ffaa272e4a9331a2e0a67e9b78e8fe51952750ccb072d49084",
+  "size": 160,
+  "grid": [
+    8,
+    8
+  ],
+  "anims": [
+    "run",
+    "attack",
+    "cast"
+  ],
+  "dirs": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "geometry_objects": 26,
+  "geometry_preserved": true,
+  "ortho_scale": 2.5,
+  "shift_y": 0.20000000298023224,
+  "render_px_per_u": 64,
+  "pivot": [
+    80.0,
+    112.0
+  ],
+  "design": "Black waterlogged wood, patchy moss, pale lichen, cold grazing mist, green will-o-wisp"
+}

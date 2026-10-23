@@ -1,0 +1,32 @@
+{
+  "cell": 192,
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "pivot_px": [
+    96,
+    136.32
+  ],
+  "pixels_per_unit": 90.50966799187809,
+  "animations": {
+    "idle": 8,
+    "run": 8,
+    "plant": 4,
+    "loop": 4,
+    "whip": 6,
+    "attack": 6,
+    "cast": 4,
+    "cast_ult": 6,
+    "death": 8
+  },
+  "body_emission": "none, black _e supplied to preserve requested triplets",
+  "attack_impact_frame": 3,
+  "effects": "chain_tile, peg, loop_blaze deferred to AR2"
+}

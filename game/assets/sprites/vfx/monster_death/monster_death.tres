@@ -1,0 +1,125 @@
+[gd_resource type="SpriteFrames" load_steps=29 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/monster_death/tier1.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/monster_death/tier2.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/monster_death/tier3.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/monster_death/tier4.png" id="4"]
+
+[sub_resource type="AtlasTexture" id="a1"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a2"]
+atlas = ExtResource("1")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a3"]
+atlas = ExtResource("1")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a4"]
+atlas = ExtResource("1")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a5"]
+atlas = ExtResource("1")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a6"]
+atlas = ExtResource("1")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a7"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a8"]
+atlas = ExtResource("2")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a9"]
+atlas = ExtResource("2")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a10"]
+atlas = ExtResource("2")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a11"]
+atlas = ExtResource("2")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a12"]
+atlas = ExtResource("2")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a13"]
+atlas = ExtResource("3")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a14"]
+atlas = ExtResource("3")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a15"]
+atlas = ExtResource("3")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a16"]
+atlas = ExtResource("3")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a17"]
+atlas = ExtResource("3")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a18"]
+atlas = ExtResource("3")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a19"]
+atlas = ExtResource("4")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a20"]
+atlas = ExtResource("4")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a21"]
+atlas = ExtResource("4")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a22"]
+atlas = ExtResource("4")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a23"]
+atlas = ExtResource("4")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a24"]
+atlas = ExtResource("4")
+region = Rect2(800, 0, 160, 160)
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}],
+"loop": false,
+"name": &"tier1",
+"speed": 14.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}],
+"loop": false,
+"name": &"tier2",
+"speed": 14.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("a13")}, {"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}, {"duration": 1.0, "texture": SubResource("a17")}, {"duration": 1.0, "texture": SubResource("a18")}],
+"loop": false,
+"name": &"tier3",
+"speed": 14.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("a19")}, {"duration": 1.0, "texture": SubResource("a20")}, {"duration": 1.0, "texture": SubResource("a21")}, {"duration": 1.0, "texture": SubResource("a22")}, {"duration": 1.0, "texture": SubResource("a23")}, {"duration": 1.0, "texture": SubResource("a24")}],
+"loop": false,
+"name": &"tier4",
+"speed": 14.0
+}]

@@ -1,0 +1,156 @@
+{
+  "idle_p1": {
+    "size": [
+      1536,
+      1024
+    ],
+    "opaque_normal_colors": 15,
+    "nonempty_unique_cells": 24
+  },
+  "idle_p2": {
+    "size": [
+      1536,
+      1024
+    ],
+    "opaque_normal_colors": 16,
+    "nonempty_unique_cells": 24
+  },
+  "idle_p3": {
+    "size": [
+      1536,
+      1024
+    ],
+    "opaque_normal_colors": 17,
+    "nonempty_unique_cells": 24
+  },
+  "walk_p1": {
+    "size": [
+      2048,
+      1024
+    ],
+    "opaque_normal_colors": 18,
+    "nonempty_unique_cells": 32
+  },
+  "walk_p2": {
+    "size": [
+      2048,
+      1024
+    ],
+    "opaque_normal_colors": 18,
+    "nonempty_unique_cells": 32
+  },
+  "walk_p3": {
+    "size": [
+      2048,
+      1024
+    ],
+    "opaque_normal_colors": 17,
+    "nonempty_unique_cells": 32
+  },
+  "auto": {
+    "size": [
+      1536,
+      1024
+    ],
+    "opaque_normal_colors": 17,
+    "nonempty_unique_cells": 24
+  },
+  "spell_a": {
+    "size": [
+      2048,
+      1024
+    ],
+    "opaque_normal_colors": 19,
+    "nonempty_unique_cells": 32
+  },
+  "spell_b": {
+    "size": [
+      2048,
+      1024
+    ],
+    "opaque_normal_colors": 19,
+    "nonempty_unique_cells": 32
+  },
+  "trans_p2": {
+    "size": [
+      2048,
+      256
+    ],
+    "opaque_normal_colors": 15,
+    "nonempty_unique_cells": 8
+  },
+  "trans_p3": {
+    "size": [
+      2048,
+      256
+    ],
+    "opaque_normal_colors": 17,
+    "nonempty_unique_cells": 8
+  },
+  "death": {
+    "size": [
+      2560,
+      256
+    ],
+    "opaque_normal_colors": 17,
+    "nonempty_unique_cells": 10
+  },
+  "bell_wave": {
+    "size": [
+      2048,
+      256
+    ],
+    "opaque_normal_colors": 15,
+    "nonempty_unique_cells": 8
+  },
+  "prayer_glyph": {
+    "size": [
+      1024,
+      128
+    ],
+    "opaque_normal_colors": 16,
+    "nonempty_unique_cells": 8
+  },
+  "prayer_burst": {
+    "size": [
+      1152,
+      384
+    ],
+    "opaque_normal_colors": 16,
+    "nonempty_unique_cells": 6
+  },
+  "ray": {
+    "size": [
+      3584,
+      64
+    ],
+    "opaque_normal_colors": 8,
+    "nonempty_unique_cells": 4
+  },
+  "ray_2": {
+    "size": [
+      3584,
+      64
+    ],
+    "opaque_normal_colors": 8,
+    "nonempty_unique_cells": 4
+  },
+  "silence_mark": {
+    "size": [
+      576,
+      96
+    ],
+    "opaque_normal_colors": 13,
+    "nonempty_unique_cells": 6
+  },
+  "body_mean_srgb": 136.02,
+  "mobile_mib": 7.188,
+  "clipped_body_frames": [],
+  "godot_tests": {
+    "recluse_boss_test": "RESULT: OK",
+    "sprites_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (1)"
+  },
+  "original_dimensions_preserved": true,
+  "import_errors": false
+}

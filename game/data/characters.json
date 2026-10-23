@@ -1,0 +1,598 @@
+[
+  {
+    "id": "ardent",
+    "name": "Ardent",
+    "title": "Mage de feu",
+    "style": "Zone, débutant",
+    "config": "4 sorts",
+    "difficulty": 1,
+    "unlocked": true,
+    "unlock_text": "Disponible",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/ardent/ardent.tres",
+    "spells": [
+      {
+        "id": "eclat_de_braise",
+        "name": "Éclat de braise",
+        "slot": "auto",
+        "desc": "Projectile tiré tout seul vers l'ennemi le plus proche ; il traverse un ennemi.",
+        "variants": [
+          {
+            "id": "roaming_embers",
+            "name": "Braises errantes",
+            "desc": "Trois braises tournent autour d'Ardent et brûlent tout ce qu'elles frôlent.",
+            "unlock_text": "Gagner une run avec Ardent.",
+            "unlock_key": "spell:roaming_embers",
+            "unlock_rule": {"type": "win_with", "character": "ardent"}
+          }
+        ]
+      },
+      {
+        "id": "nova_ardente",
+        "name": "Nova ardente",
+        "slot": "cd",
+        "desc": "Explosion de flammes autour d'Ardent qui frappe tous les monstres proches.",
+        "variants": [
+          {
+            "id": "flame_pillar",
+            "name": "Pilier de flamme",
+            "desc": "Une colonne de feu jaillit au point visé et brûle 2,5 s tout ce qui passe dedans.",
+            "unlock_text": "Toucher 15 monstres d'un seul lancer de Nova ardente.",
+            "unlock_key": "spell:flame_pillar",
+            "unlock_rule": {"type": "counter", "key": "ardent.nova_big_casts", "value": 1}
+          }
+        ]
+      },
+      {
+        "id": "cendres",
+        "name": "Cendres",
+        "slot": "cd",
+        "desc": "Couvre le sol de cendres brûlantes qui blessent les monstres en continu.",
+        "variants": [
+          {
+            "id": "meteor_rain",
+            "name": "Pluie de météores",
+            "desc": "Cinq météores s'abattent en 2 s sur la zone visée ; chaque impact est annoncé au sol.",
+            "unlock_text": "Tuer 300 monstres avec Cendres.",
+            "unlock_key": "spell:meteor_rain",
+            "unlock_rule": {"type": "counter", "key": "ardent.cendres_kills", "value": 300}
+          }
+        ]
+      },
+      {
+        "id": "brasier",
+        "name": "Brasier",
+        "slot": "ultime",
+        "desc": "L'ultime : un immense embrasement autour d'Ardent ; le monde entier rougeoie.",
+        "variants": [
+          {
+            "id": "phoenix",
+            "name": "Phénix",
+            "desc": "Un phénix de flammes combat 12 s aux côtés d'Ardent, puis explose en se consumant.",
+            "unlock_text": "Vaincre le boss de l'étage 2 avec Ardent.",
+            "unlock_key": "spell:phoenix",
+            "unlock_rule": {"type": "counter", "key": "ardent.floor2_boss_kills", "value": 1}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rictus",
+    "name": "Rictus",
+    "title": "Pantin de la barge noyée",
+    "style": "Mêlée rapide, leurres, burst",
+    "config": "4 sorts",
+    "difficulty": 2,
+    "unlocked": true,
+    "unlock_text": "Tuer 200 monstres à moins de 2 u de soi.",
+    "unlock_hint": "Quelqu'un tire les ficelles.",
+    "unlock_key": "character:rictus",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/rictus/rictus.tres",
+    "spells": [
+      {
+        "id": "dagues_demi_lune",
+        "name": "Dagues en demi-lune",
+        "slot": "auto",
+        "desc": "Balayage automatique en demi-cercle vers l'ennemi le plus proche ; frappe tout le demi-cercle.",
+        "variants": [
+          {
+            "id": "rictus_main_du_montreur",
+            "name": "Main du Montreur",
+            "desc": "La main du fantôme claque au sol sur le paquet le plus dense à 4 u. Près de toi, elle te protège encore.",
+            "unlock_text": "Gagner une run avec Rictus.",
+            "unlock_key": "spell:rictus_main_du_montreur",
+            "unlock_rule": {"type": "win_with", "character": "rictus"}
+          }
+        ]
+      },
+      {
+        "id": "eventail",
+        "name": "Éventail",
+        "slot": "cd",
+        "desc": "Cinq couteaux en éventail ; un couteau planté au sol rend 1 s de recharge quand on le ramasse.",
+        "variants": [
+          {
+            "id": "rictus_lame_pendule",
+            "name": "Lame-pendule",
+            "desc": "Un couteau lourd au bout d'un fil : il part à 7 u et revient en tranchant tout sur la ligne.",
+            "unlock_text": "Ramasser 150 couteaux plantés.",
+            "unlock_key": "spell:rictus_lame_pendule",
+            "unlock_rule": {"type": "counter", "key": "rictus.knives_picked", "value": 150}
+          }
+        ]
+      },
+      {
+        "id": "toupie",
+        "name": "Toupie",
+        "slot": "cd",
+        "desc": "Rictus tourne 2,5 s en glissant et frappe tout autour de lui ; pas de roulade pendant, vertige à la fin.",
+        "variants": [
+          {
+            "id": "rictus_pirouette",
+            "name": "Pirouette",
+            "desc": "Un tour sur toi-même, bref et invulnérable : tout autour est frappé et repoussé. Pas de vertige.",
+            "unlock_text": "Expédier 30 doublures avec la Toupie.",
+            "unlock_key": "spell:rictus_pirouette",
+            "unlock_rule": {"type": "counter", "key": "rictus.doubles_launched", "value": 30}
+          }
+        ]
+      },
+      {
+        "id": "doublures",
+        "name": "Les Doublures",
+        "slot": "ultime",
+        "desc": "Six doublures en hexagone attirent les monstres puis explosent ; la Toupie les expédie en étoile.",
+        "variants": [
+          {
+            "id": "rictus_rideau",
+            "name": "Rideau",
+            "desc": "Six doublures en ligne devant toi forment un rideau 6 s : il attire, encaisse, puis explose.",
+            "unlock_text": "Atteindre l'étage 3 avec Rictus.",
+            "unlock_key": "spell:rictus_rideau",
+            "unlock_rule": {"type": "floor_reached", "character": "rictus", "floor": 3}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tocsin",
+    "name": "Tocsin",
+    "title": "Automate de crue",
+    "style": "Tank, cloche, contrôle",
+    "config": "4 sorts",
+    "difficulty": 3,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/tocsin/tocsin.tres",
+    "spells": [
+      {
+        "id": "tocsin_rivets_rougis",
+        "name": "Rivets rougis",
+        "slot": "auto",
+        "desc": "Le foyer crache des rivets chauffés au rouge sur l'ennemi le plus proche. Surchauffe : +12 % de cadence par membre lancé ; sans tête, il tire à l'oreille (portée réduite).",
+        "variants": [
+          {
+            "id": "tocsin_vapeur",
+            "name": "Vapeur",
+            "desc": "Le foyer crache un cône de vapeur brûlante à 3 u. Sans tête, la vapeur fuit par le cou tout autour.",
+            "unlock_text": "Gagner une run avec Tocsin.",
+            "unlock_key": "spell:tocsin_vapeur",
+            "unlock_rule": {"type": "win_with", "character": "tocsin"}
+          }
+        ]
+      },
+      {
+        "id": "tocsin_bras_grappins",
+        "name": "Bras-grappins",
+        "slot": "cd",
+        "desc": "2 charges. Le bras balaie un couloir, accroche jusqu'à 6 points de monstres, les ramène en paquet devant Tocsin et les emprisonne 2,5 s. Ramasse-le au sol pour récupérer la charge.",
+        "variants": [
+          {
+            "id": "tocsin_bras_harpon",
+            "name": "Bras-harpon",
+            "desc": "Le bras harponne le premier monstre touché, même un boss, et tire Tocsin jusqu'à lui.",
+            "unlock_text": "Emprisonner 400 monstres avec les Bras-grappins.",
+            "unlock_key": "spell:tocsin_bras_harpon",
+            "unlock_rule": {"type": "counter", "key": "tocsin.imprisoned", "value": 400}
+          }
+        ]
+      },
+      {
+        "id": "tocsin_coups_de_botte",
+        "name": "Coups de botte",
+        "slot": "cd",
+        "desc": "2 charges, il faut au moins un bras. La jambe part comme un bélier : 300 % et poussée massive ; un paquet emprisonné part en boule de quilles. Sans jambes, Tocsin marche sur les mains, rampe ou roule.",
+        "variants": [
+          {
+            "id": "tocsin_jambes_ressorts",
+            "name": "Jambes-ressorts",
+            "desc": "La jambe te propulse : saute jusqu'à 5 u et écrase l'atterrissage. La jambe reste au point de départ.",
+            "unlock_text": "Pousser 300 monstres avec les Coups de botte.",
+            "unlock_key": "spell:tocsin_jambes_ressorts",
+            "unlock_rule": {"type": "counter", "key": "tocsin.pushed", "value": 300}
+          }
+        ]
+      },
+      {
+        "id": "tocsin_tete_cloche",
+        "name": "Tête-cloche",
+        "slot": "ultime",
+        "desc": "La pression fait sauter la tête : lob, tintement, explosion de 4 u à 1 000 % (+50 % sur les emprisonnés). Sans tête, la portée de ciblage baisse.",
+        "variants": [
+          {
+            "id": "tocsin_tete_fumigene",
+            "name": "Tête-fumigène",
+            "desc": "La tête tinte 5 s là où elle tombe : tout autour est étourdi puis ralenti et brûlé par la fumée.",
+            "unlock_text": "Vaincre un boss d'étage avec Tocsin pendant qu'il est sans tête.",
+            "unlock_key": "spell:tocsin_tete_fumigene",
+            "unlock_rule": {"type": "counter", "key": "tocsin.headless_boss_kills", "value": 1}
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "averse",
+    "name": "Averse",
+    "title": "Porteuse de pluie",
+    "style": "Distance / zone, eau (aucune recharge)",
+    "config": "4 sorts",
+    "difficulty": 2,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/averse/averse.tres",
+    "spells": [
+      {
+        "id": "goutte_lame",
+        "name": "Goutte-lame",
+        "slot": "auto",
+        "desc": "Lame d'eau automatique vers l'ennemi le plus proche ; traverse un monstre, frappe plus fort amphore pleine, et chaque goutte qui touche rend de l'eau (bien plus sur une élite ou un boss).",
+        "variants": [
+          {"id": "averse_bruine", "name": "Bruine", "desc": "Trois gouttes en éventail à 7 u : moins précises, plus de monstres touchés et plus d'eau rendue en foule.", "unlock_text": "Gagner une run avec Averse.", "unlock_key": "spell:averse_bruine", "unlock_rule": {"type": "win_with", "character": "averse"}}
+        ]
+      },
+      {
+        "id": "vague",
+        "name": "Vague",
+        "slot": "cd",
+        "desc": "Aucune recharge : 20 d'eau par lancer. Cône de 5 u qui frappe fort, repousse et trempe les monstres (ralentis 4 s). Vider l'amphore jusqu'à la dernière goutte la laisse à sec 2 s (plus aucun gain).",
+        "variants": [
+          {"id": "averse_geyser", "name": "Geyser", "desc": "20 d'eau : un geyser jaillit sous le point visé, projette les monstres en l'air 0,8 s et les trempe.", "unlock_text": "Tremper 1 000 monstres.", "unlock_key": "spell:averse_geyser", "unlock_rule": {"type": "counter", "key": "averse.soaked", "value": 1000}}
+        ],
+        "role": "20 d'eau"
+      },
+      {
+        "id": "flaque_miroir",
+        "name": "Flaque-miroir",
+        "slot": "cd",
+        "desc": "18 d'eau, recharge 5 s : miroir d'eau de 6 s qui ronge et trempe les monstres ; Averse y remplit son amphore (+4/s). Deux flaques au plus.",
+        "variants": [
+          {"id": "averse_gouttiere", "name": "Gouttière", "desc": "18 d'eau : un ruisseau de 6 u coule devant toi 6 s ; il ronge les monstres et te porte plus vite.", "unlock_text": "Récupérer 1 500 d'eau dans tes Flaques-miroir.", "unlock_key": "spell:averse_gouttiere", "unlock_rule": {"type": "counter", "key": "averse.puddle_water", "value": 1500}}
+        ],
+        "role": "18 d'eau · 5 s"
+      },
+      {
+        "id": "crue",
+        "name": "Crue",
+        "slot": "ultime",
+        "desc": "Aucune recharge : vide toute l'amphore (40 minimum) en une déferlante dont la taille et la force suivent l'eau versée (la Crue pleine rend le plus par goutte) ; laisse une flaque, et Averse redevient rapide.",
+        "variants": [
+          {"id": "averse_mousson", "name": "Mousson", "desc": "Vide l'amphore : 6 s de déluge qui te suit, trempe et ronge ; l'amphore se remplit sous l'averse.", "unlock_text": "Lancer 5 Crues à 100 d'eau.", "unlock_key": "spell:averse_mousson", "unlock_rule": {"type": "counter", "key": "averse.full_crues", "value": 5}}
+        ],
+        "role": "Ultime · toute l'eau"
+      }
+    ]
+  },
+  {
+    "id": "arpenteuse",
+    "name": "Arpenteuse",
+    "title": "Géomètre de la Cité",
+    "style": "Zone / pièges, chaîne au sol",
+    "config": "4 sorts",
+    "difficulty": 3,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/arpenteuse/arpenteuse.tres",
+    "spells": [
+      {
+        "id": "arpenteuse_chaine",
+        "name": "Chaîne",
+        "slot": "auto",
+        "desc": "Elle déroule derrière elle 14 u de chaîne de cuivre chauffé : tout monstre qui la touche brûle et ralentit. Immobile, le touret la rembobine.",
+        "variants": []
+      },
+      {
+        "id": "arpenteuse_boucle",
+        "name": "Boucle",
+        "slot": "cd",
+        "desc": "Ferme la chaîne d'un trait droit : tout ce qui est dedans s'embrase et est attiré vers le centre. La chaîne est consommée.",
+        "variants": []
+      },
+      {
+        "id": "arpenteuse_piquet",
+        "name": "Piquet",
+        "slot": "cd",
+        "desc": "Plante un piquet au point visé : la chaîne tendue jusqu'à elle balaie les monstres pendant 5 s.",
+        "variants": []
+      },
+      {
+        "id": "arpenteuse_tendeur",
+        "name": "Tendeur",
+        "slot": "ultime",
+        "desc": "La chaîne claque sur toute sa longueur puis se rembobine en traînant les monstres jusqu'à elle, étourdis.",
+        "variants": []
+      }
+    ]
+  },
+  {
+    "id": "rainette",
+    "name": "Rainette",
+    "title": "Chevalière des roseaux",
+    "style": "Mobilité / burst, souffle",
+    "config": "4 sorts",
+    "difficulty": 3,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/rainette/rainette.tres",
+    "spells": [
+      {
+        "id": "rainette_langue",
+        "name": "Langue",
+        "slot": "auto",
+        "desc": "Coup de langue automatique de 4,5 u vers le plus proche ; frappe toute la ligne et tire les monstres ; un petit monstre tué est avalé (+1 % PV).",
+        "variants": []
+      },
+      {
+        "id": "rainette_grand_saut",
+        "name": "Grand saut",
+        "slot": "cd",
+        "desc": "Bond de 6 u vers le point visé ; l'atterrissage écrase tout dans 2,5 u et étourdit 0,5 s. Ne coûte pas de souffle.",
+        "variants": []
+      },
+      {
+        "id": "rainette_gluant",
+        "name": "Gluant",
+        "slot": "cd",
+        "desc": "Crachat de vase au point visé : la flaque ralentit de 40 % et colle les monstres en paquet ; tes bonds qui en partent vont 50 % plus loin.",
+        "variants": []
+      },
+      {
+        "id": "rainette_chant_de_crue",
+        "name": "Chant de crue",
+        "slot": "ultime",
+        "desc": "4 s, sac vocal gonflé : souffle illimité, bonds doublés, et chaque atterrissage écrase tout dans 3 u.",
+        "variants": []
+      }
+    ]
+  },
+  {
+    "id": "avare",
+    "name": "Avare",
+    "title": "Usurier des Terrasses",
+    "style": "Mêlée / tank, or",
+    "config": "4 sorts",
+    "difficulty": 2,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/avare/avare.tres",
+    "spells": [
+      {
+        "id": "avare_coup_de_coffre",
+        "name": "Coup de coffre",
+        "slot": "auto",
+        "desc": "Balance le coffre-fort au bout de sa chaîne : arc large vers l'ennemi le plus proche. Ta BOURSE (l'or en poche) donne +15 % de dégâts à tous tes sorts par prix d'un petit coffre, jusqu'à +30 %.",
+        "variants": [
+          {"id": "avare_coffre_belier", "name": "Coffre-bélier", "desc": "Le coffre part droit devant en bélier : ligne de 3,5 u, plus forte, qui repousse. Le bouclier dure plus.", "unlock_text": "Gagner une run avec Avare.", "unlock_key": "spell:avare_coffre_belier", "unlock_rule": {"type": "win_with", "character": "avare"}}
+        ]
+      },
+      {
+        "id": "avare_poignee_de_pieces",
+        "name": "Poignée de pièces",
+        "slot": "cd",
+        "desc": "Jette 5 pièces en éventail, payées par la bourse (2 % de l'or). Chaque pièce retombe où elle s'arrête et reste au sol : marche dessus pour remettre 80 % du prix dans la bourse.",
+        "variants": [
+          {"id": "avare_piece_truquee", "name": "Pièce truquée", "desc": "Une seule pièce, payée par la bourse, qui rebondit 4 fois de monstre en monstre avant de tomber au sol.", "unlock_text": "Ramasser 500 de tes propres pièces.", "unlock_key": "spell:avare_piece_truquee", "unlock_rule": {"type": "counter", "key": "avare.coins_picked", "value": 500}}
+        ]
+      },
+      {
+        "id": "avare_rancon",
+        "name": "Rançon",
+        "slot": "cd",
+        "desc": "Frappe au sol autour de toi : étourdit 0,5 s et marque 4 s ; un monstre marqué qui meurt lâche +50 % d'or (ramassé tout seul, il remplit la bourse).",
+        "variants": [
+          {"id": "avare_saisie", "name": "Saisie", "desc": "La chaîne du coffre harponne un paquet à 5 u et le ramène à tes pieds, marqué : il paiera +50 % d'or.", "unlock_text": "Encaisser 2 000 d'or de primes de Rançon.", "unlock_key": "spell:avare_saisie", "unlock_rule": {"type": "counter", "key": "avare.ransom_gold", "value": 2000}}
+        ]
+      },
+      {
+        "id": "avare_faillite",
+        "name": "Faillite",
+        "slot": "ultime",
+        "desc": "Vide la moitié de la bourse dans une explosion de pièces de 5 u (plus forte avec l'or jeté), recul de 2 u ; la moitié de l'or jeté retombe en pièces qui restent au sol jusqu'à ce que tu les ramasses.",
+        "variants": [
+          {"id": "avare_tresor_enterre", "name": "Trésor enterré", "desc": "Enterre la moitié de ta bourse : le trésor explose à 3 s ou dès que 6 monstres l'écrasent. Tout l'or retombe.", "unlock_text": "Vaincre le boss de l'étage 2 avec Avare.", "unlock_key": "spell:avare_tresor_enterre", "unlock_rule": {"type": "counter", "key": "avare.floor2_boss_kills", "value": 1}}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bourbe",
+    "name": "Bourbe",
+    "title": "Mère-vase de la Mangrove",
+    "style": "Invocatrice / mêlée, masse",
+    "config": "4 sorts",
+    "difficulty": 2,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/bourbe/bourbe.tres",
+    "spells": [
+      {
+        "id": "gifle_de_vase",
+        "name": "Gifle de vase",
+        "slot": "auto",
+        "desc": "Gifle automatique en large arc de 2 u vers l'ennemi le plus proche ; frappe tout l'arc.",
+        "variants": [
+          {"id": "bourbe_crachat_de_vase", "name": "Crachat de vase", "desc": "Une motte crachée à 6 u éclate sur 1,2 u et englue ce qu'elle touche. Tes mottes tiennent la ligne.", "unlock_text": "Gagner une run avec Bourbe.", "unlock_key": "spell:bourbe_crachat_de_vase", "unlock_rule": {"type": "win_with", "character": "bourbe"}}
+        ]
+      },
+      {
+        "id": "detacher",
+        "name": "Détacher",
+        "slot": "cd",
+        "desc": "4 charges : arrache une motte de vase pour 15 % de tes PV max, pris sur tes PV actuels (tes PV max ne baissent pas : soigne-toi pour en relancer). Jamais mortel : impossible sous 50 % de PV. La motte se bat 10 s puis rampe vers toi ; recollée, elle te rend ses PV restants.",
+        "variants": [
+          {"id": "bourbe_bouture", "name": "Bouture", "desc": "2 grosses mottes au lieu de 4 : chacune pèse 30 % de tes PV, frappe deux fois plus fort et tient 15 s.", "unlock_text": "Recoller 200 mottes.", "unlock_key": "spell:bourbe_bouture", "unlock_rule": {"type": "counter", "key": "bourbe_mottes_recalled", "value": 200}}
+        ]
+      },
+      {
+        "id": "rappel",
+        "name": "Rappel",
+        "slot": "cd",
+        "desc": "Toutes les mottes foncent vers toi en écrasant ce qu'elles traversent, puis se recollent.",
+        "variants": [
+          {"id": "bourbe_eclatement", "name": "Éclatement", "desc": "Toutes tes mottes éclatent sur place et leur vase te revient d'un coup : tu récupères leurs PV.", "unlock_text": "Écraser 800 monstres avec le Rappel.", "unlock_key": "spell:bourbe_eclatement", "unlock_rule": {"type": "counter", "key": "bourbe_rappel_hits", "value": 800}}
+        ]
+      },
+      {
+        "id": "bourbier",
+        "name": "Bourbier",
+        "slot": "ultime",
+        "desc": "Tu t'enfonces 4 s, intouchable : la vase ralentit et ronge tout autour (5 u), tes mottes se recollent. À la sortie, 4 mottes gratuites jaillissent autour de toi.",
+        "variants": [
+          {"id": "bourbe_maree_de_vase", "name": "Marée de vase", "desc": "Tu gonfles 6 s : bouclier de vase (50 % PV), gifles élargies, mottes absorbées ; puis 4 mottes jaillissent.", "unlock_text": "Vaincre 3 mini-boss avec 4 mottes dehors.", "unlock_key": "spell:bourbe_maree_de_vase", "unlock_rule": {"type": "counter", "key": "bourbe_miniboss_4mottes", "value": 3}}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vigie",
+    "name": "Vigie",
+    "title": "Guetteuse de la digue",
+    "style": "Distance, archère, tir chargé",
+    "config": "4 sorts",
+    "difficulty": 2,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "unlock_hint": "Le signal ne s'éteint pas sous la pluie.",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/vigie/vigie.tres",
+    "spells": [
+      {
+        "id": "vigie_trait",
+        "name": "Trait",
+        "slot": "auto",
+        "desc": "Flèche automatique vers l'ennemi le plus proche. Tension pleine : le tir suivant est un Trait d'allonge qui perce toute la ligne.",
+        "variants": [
+          {"id": "vigie_tir_double", "name": "Tir double", "desc": "Deux flèches légères sur les deux monstres les plus proches. Tension pleine : volée de trois traits perçants.", "unlock_text": "Gagner une run avec Vigie.", "unlock_key": "spell:vigie_tir_double", "unlock_rule": {"type": "win_with", "character": "vigie"}}
+        ]
+      },
+      {
+        "id": "vigie_fusee",
+        "name": "Fusée de détresse",
+        "slot": "cd",
+        "desc": "Flèche-fusée au point visé : la fusée de magnésium reste plantée 5 s ; les monstres dans sa lumière subissent +20 % de dégâts.",
+        "variants": [
+          {"id": "vigie_fanal", "name": "Fanal", "desc": "La fusée brûle sur ton arc : 5 s de lumière autour de toi qui expose et bande ta corde même en marchant.", "unlock_text": "Exposer 1 000 monstres avec la Fusée de détresse.", "unlock_key": "spell:vigie_fanal", "unlock_rule": {"type": "counter", "key": "vigie_exposed", "value": 1000}}
+        ]
+      },
+      {
+        "id": "vigie_filet",
+        "name": "Filet lesté",
+        "slot": "cd",
+        "desc": "Le filet s'ouvre sur le premier monstre touché : tout ce qu'il couvre est immobilisé 1,5 s et ta Tension est aussitôt pleine.",
+        "variants": [
+          {"id": "vigie_chausse_trapes", "name": "Chausse-trapes", "desc": "La flèche sème des pointes sur 3 u pendant 6 s : ce qui entre est ralenti, blessé, et bande ta corde.", "unlock_text": "Immobiliser 500 monstres avec le Filet lesté.", "unlock_key": "spell:vigie_chausse_trapes", "unlock_rule": {"type": "counter", "key": "vigie_netted", "value": 500}}
+        ]
+      },
+      {
+        "id": "vigie_grele",
+        "name": "Grêle",
+        "slot": "ultime",
+        "desc": "Une volée tirée au ciel retombe 2,5 s sur la zone visée : chaque monstre dessous est ralenti, exposé et criblé.",
+        "variants": [
+          {"id": "vigie_tir_de_signal", "name": "Tir de signal", "desc": "Une flèche énorme tirée au ciel retombe 1,2 s plus tard : fracas, étourdissement et 8 s de lumière.", "unlock_text": "Tuer 300 monstres avec la Grêle.", "unlock_key": "spell:vigie_tir_de_signal", "unlock_rule": {"type": "counter", "key": "vigie_grele_kills", "value": 300}}
+        ]
+      }
+    ]
+  },
+  {
+    "id": "morfil",
+    "name": "Taliant",
+    "title": "Rōnin d'écorce",
+    "style": "Mêlée lourde, gestion du tranchant",
+    "config": "4 sorts",
+    "difficulty": 3,
+    "unlocked": true,
+    "unlock_text": "Ouvert pendant les tests",
+    "unlock_hint": "Une lame de bois ne s'émousse que pour qui ne la repasse pas.",
+    "unlock_key": "character:morfil",
+    "hidden": false,
+    "playable": true,
+    "scene": "res://scenes/player/player.tscn",
+    "sprite_frames": "res://assets/sprites/characters/morfil/morfil.tres",
+    "spells": [
+      {
+        "id": "taille_estoc",
+        "name": "Taille et estoc",
+        "slot": "auto",
+        "desc": "Alterne un coup circulaire autour de lui et un estoc long vers l'ennemi le plus proche. Chaque coup use l'aiguisage (3 %).",
+        "variants": [
+          {"id": "morfil_taille_lente", "name": "Taille lente", "desc": "Un seul grand coup en cône toutes les secondes : plus lourd, moins d'usure par coup, garde un peu plus courte.", "unlock_text": "Gagner une run avec Taliant.", "unlock_key": "spell:morfil_taille_lente", "unlock_rule": {"type": "win_with", "character": "morfil"}}
+        ]
+      },
+      {
+        "id": "fauche_lune",
+        "name": "Fauche-lune",
+        "slot": "cd",
+        "desc": "Grand coup en demi-cercle devant lui (3,5 u). Coûte 15 % d'aiguisage.",
+        "variants": [
+          {"id": "morfil_fendoir", "name": "Fendoir", "desc": "Un coup vertical qui fend une ligne de 5 u devant toi, et un pas en avant. Même usure que la Fauche-lune.", "unlock_text": "Toucher 12 monstres d'une seule Fauche-lune.", "unlock_key": "spell:morfil_fendoir", "unlock_rule": {"type": "counter", "key": "morfil.crescent_big_casts", "value": 1}}
+        ]
+      },
+      {
+        "id": "aiguisage",
+        "name": "Aiguisage",
+        "slot": "cd",
+        "desc": "Repasse la lame sur la pierre : l'aiguisage remonte à 100 %. Les dégâts suivent l'aiguisage (1 % de dégâts par %).",
+        "variants": [
+          {"id": "morfil_affutage_en_marche", "name": "Affûtage en marche", "desc": "Tu repasses la lame en marchant 3 s (+25 %/s), lent et sans frapper ; interrompable. Revient plus vite.", "unlock_text": "Aiguiser 120 fois.", "unlock_key": "spell:morfil_affutage_en_marche", "unlock_rule": {"type": "counter", "key": "morfil.sharpen_casts", "value": 120}}
+        ]
+      },
+      {
+        "id": "lames_jumelles",
+        "name": "Lames jumelles",
+        "slot": "ultime",
+        "desc": "Exige 90 % d'aiguisage. Un second katana pousse dans l'autre main : chaque coup frappe deux fois pendant la moitié de la recharge.",
+        "variants": [
+          {"id": "morfil_trempe", "name": "Trempe", "desc": "Exige 90 %. 15 s de lame trempée : plus d'usure et dégâts ×1,5 ; une seule lame, garde non permanente.", "unlock_text": "Vaincre le boss de l'étage 2 avec Taliant.", "unlock_key": "spell:morfil_trempe", "unlock_rule": {"type": "counter", "key": "morfil.floor2_boss_kills", "value": 1}}
+        ]
+      }
+    ]
+  }
+]

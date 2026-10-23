@@ -1,0 +1,1669 @@
+{
+  "passed": true,
+  "count": 83,
+  "total_duration_s": 58.26122448979592,
+  "loops_checked": 0,
+  "errors": [],
+  "files": [
+    {
+      "path": "impacts/hit_normal_light_01.ogg",
+      "duration_s": 0.16448979591836735,
+      "true_peak_dbfs": -3.680542378786355,
+      "useful_rms_dbfs": -17.604999729012167,
+      "edge_peak": 8.574687626605737e-08,
+      "loop": false,
+      "seam_jump": 8.574687626605737e-08,
+      "seam_derivative": 5.085585925712621e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_normal_light_02.ogg",
+      "duration_s": 0.16365079365079366,
+      "true_peak_dbfs": -4.074148258869959,
+      "useful_rms_dbfs": -17.60701159563615,
+      "edge_peak": 7.201954588254011e-08,
+      "loop": false,
+      "seam_jump": 7.201954588254011e-08,
+      "seam_derivative": 6.295093015751263e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_normal_light_03.ogg",
+      "duration_s": 0.16582766439909297,
+      "true_peak_dbfs": -3.9310893056941487,
+      "useful_rms_dbfs": -16.87988249061044,
+      "edge_peak": 1.1148831902119127e-07,
+      "loop": false,
+      "seam_jump": 1.1148831902119127e-07,
+      "seam_derivative": 7.475228898101705e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_normal_light_04.ogg",
+      "duration_s": 0.1579591836734694,
+      "true_peak_dbfs": -4.93440118080057,
+      "useful_rms_dbfs": -17.76343192529412,
+      "edge_peak": 1.5799186314779945e-07,
+      "loop": false,
+      "seam_jump": 1.5799186314779945e-07,
+      "seam_derivative": 9.25480989621974e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_crit_heavy_01.ogg",
+      "duration_s": 0.38160997732426305,
+      "true_peak_dbfs": -6.354628656161379,
+      "useful_rms_dbfs": -18.040070730980347,
+      "edge_peak": 1.3339956694835564e-07,
+      "loop": false,
+      "seam_jump": 1.3339956694835564e-07,
+      "seam_derivative": 3.8098566790267796e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_crit_heavy_02.ogg",
+      "duration_s": 0.37605442176870746,
+      "true_peak_dbfs": -6.964425049904259,
+      "useful_rms_dbfs": -18.106117244329372,
+      "edge_peak": 1.247738339316129e-07,
+      "loop": false,
+      "seam_jump": 1.247738339316129e-07,
+      "seam_derivative": 1.7901446014434441e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_crit_heavy_03.ogg",
+      "duration_s": 0.37464852607709753,
+      "true_peak_dbfs": -7.529078469275583,
+      "useful_rms_dbfs": -18.117907155893295,
+      "edge_peak": 6.762393667258948e-08,
+      "loop": false,
+      "seam_jump": 6.762393667258948e-08,
+      "seam_derivative": 4.0339835649660927e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/hit_crit_heavy_04.ogg",
+      "duration_s": 0.40086167800453515,
+      "true_peak_dbfs": -7.307472164152231,
+      "useful_rms_dbfs": -18.03637241775376,
+      "edge_peak": 9.106166487526934e-08,
+      "loop": false,
+      "seam_jump": 9.106166487526934e-08,
+      "seam_derivative": 4.2892852647469226e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_burn_light_01.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -3.6964286547813607,
+      "useful_rms_dbfs": -18.222169025918898,
+      "edge_peak": 4.273451281733287e-08,
+      "loop": false,
+      "seam_jump": 4.273451281733287e-08,
+      "seam_derivative": 3.238713759401435e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_burn_light_02.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -3.638360480303087,
+      "useful_rms_dbfs": -18.160844240093343,
+      "edge_peak": 2.482444116935767e-08,
+      "loop": false,
+      "seam_jump": 2.482444116935767e-08,
+      "seam_derivative": 1.888463749821767e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_burn_light_03.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -4.099614580934279,
+      "useful_rms_dbfs": -18.17690806653781,
+      "edge_peak": 2.157169376459933e-08,
+      "loop": false,
+      "seam_jump": 2.157169376459933e-08,
+      "seam_derivative": 3.085904856092725e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_burn_light_04.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -2.9426277360120494,
+      "useful_rms_dbfs": -18.178228225038517,
+      "edge_peak": 6.231319815697134e-08,
+      "loop": false,
+      "seam_jump": 6.231319815697134e-08,
+      "seam_derivative": 6.896108075693519e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_poison_light_01.ogg",
+      "duration_s": 0.37657596371882085,
+      "true_peak_dbfs": -7.952584129502384,
+      "useful_rms_dbfs": -17.300839125735237,
+      "edge_peak": 4.108670026425898e-08,
+      "loop": false,
+      "seam_jump": 4.108670026425898e-08,
+      "seam_derivative": 3.602076290576406e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_poison_light_02.ogg",
+      "duration_s": 0.39285714285714285,
+      "true_peak_dbfs": -7.662052232730896,
+      "useful_rms_dbfs": -17.36609449084409,
+      "edge_peak": 8.364544612504687e-08,
+      "loop": false,
+      "seam_jump": 8.364544612504687e-08,
+      "seam_derivative": 6.796985161372504e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_poison_light_03.ogg",
+      "duration_s": 0.3787755102040816,
+      "true_peak_dbfs": -7.987716141856906,
+      "useful_rms_dbfs": -17.53000862284948,
+      "edge_peak": 7.858629302859299e-09,
+      "loop": false,
+      "seam_jump": 7.858629302859299e-09,
+      "seam_derivative": 8.374597948446194e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_poison_light_04.ogg",
+      "duration_s": 0.3731972789115646,
+      "true_peak_dbfs": -8.295674687023025,
+      "useful_rms_dbfs": -17.621583816604808,
+      "edge_peak": 1.2721144138083673e-08,
+      "loop": false,
+      "seam_jump": 1.2721144138083673e-08,
+      "seam_derivative": 6.066813273974958e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_frost_light_01.ogg",
+      "duration_s": 0.426281179138322,
+      "true_peak_dbfs": -4.078665918841669,
+      "useful_rms_dbfs": -16.89891696867515,
+      "edge_peak": 3.015386198512715e-07,
+      "loop": false,
+      "seam_jump": 3.015386198512715e-07,
+      "seam_derivative": 2.7646015325899498e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_frost_light_02.ogg",
+      "duration_s": 0.434421768707483,
+      "true_peak_dbfs": -2.797339691428925,
+      "useful_rms_dbfs": -16.859477372599617,
+      "edge_peak": 3.2884375400499266e-07,
+      "loop": false,
+      "seam_jump": 3.2884375400499266e-07,
+      "seam_derivative": 2.6983821328485647e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_frost_light_03.ogg",
+      "duration_s": 0.4348526077097506,
+      "true_peak_dbfs": -3.7988148432219275,
+      "useful_rms_dbfs": -17.836677646435565,
+      "edge_peak": 1.3617503213936288e-07,
+      "loop": false,
+      "seam_jump": 1.3617503213936288e-07,
+      "seam_derivative": 3.028727377341056e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/status_frost_light_04.ogg",
+      "duration_s": 0.4419954648526077,
+      "true_peak_dbfs": -2.6839237541683696,
+      "useful_rms_dbfs": -16.781195466906198,
+      "edge_peak": 6.147673411760479e-05,
+      "loop": false,
+      "seam_jump": 6.117091254509432e-05,
+      "seam_derivative": 5.3944419022400325e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_medium_01.ogg",
+      "duration_s": 0.5795238095238096,
+      "true_peak_dbfs": -2.7310758144713985,
+      "useful_rms_dbfs": -17.58856470911115,
+      "edge_peak": 2.3769135282236675e-07,
+      "loop": false,
+      "seam_jump": 2.3769135282236675e-07,
+      "seam_derivative": 1.0334807427625492e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_medium_02.ogg",
+      "duration_s": 0.5780952380952381,
+      "true_peak_dbfs": -3.1158710498396314,
+      "useful_rms_dbfs": -17.59329496549939,
+      "edge_peak": 1.0332878730423545e-07,
+      "loop": false,
+      "seam_jump": 1.0332878730423545e-07,
+      "seam_derivative": 1.9372389523653055e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_medium_03.ogg",
+      "duration_s": 0.5773242630385488,
+      "true_peak_dbfs": -2.806178086243034,
+      "useful_rms_dbfs": -17.6056635219945,
+      "edge_peak": 1.5919141560516437e-07,
+      "loop": false,
+      "seam_jump": 1.5919141560516437e-07,
+      "seam_derivative": 1.5864802094256447e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_medium_04.ogg",
+      "duration_s": 0.5486167800453515,
+      "true_peak_dbfs": -3.585200277711973,
+      "useful_rms_dbfs": -17.818444537709233,
+      "edge_peak": 3.187543882177124e-07,
+      "loop": false,
+      "seam_jump": 3.187543882177124e-07,
+      "seam_derivative": 2.7339857240349374e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier1_light_01.ogg",
+      "duration_s": 0.23587301587301587,
+      "true_peak_dbfs": -4.420413848862505,
+      "useful_rms_dbfs": -17.15802343173296,
+      "edge_peak": 2.0887394214241795e-07,
+      "loop": false,
+      "seam_jump": 2.0887394214241795e-07,
+      "seam_derivative": 1.159449759313702e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier1_light_02.ogg",
+      "duration_s": 0.2384580498866213,
+      "true_peak_dbfs": -4.854942866930195,
+      "useful_rms_dbfs": -17.59148590982928,
+      "edge_peak": 6.670101271311069e-08,
+      "loop": false,
+      "seam_jump": 6.670101271311069e-08,
+      "seam_derivative": 3.483531472170398e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier1_light_03.ogg",
+      "duration_s": 0.23077097505668934,
+      "true_peak_dbfs": -4.445347410139777,
+      "useful_rms_dbfs": -17.27172366875244,
+      "edge_peak": 0.00036458310205489397,
+      "loop": false,
+      "seam_jump": 0.00036449599789989406,
+      "seam_derivative": 0.00020348603752040617,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier1_light_04.ogg",
+      "duration_s": 0.22517006802721087,
+      "true_peak_dbfs": -5.273751800282587,
+      "useful_rms_dbfs": -17.41908059750842,
+      "edge_peak": 3.5083466798369045e-08,
+      "loop": false,
+      "seam_jump": 3.5083466798369045e-08,
+      "seam_derivative": 8.522058649873543e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier2_medium_01.ogg",
+      "duration_s": 0.38657596371882086,
+      "true_peak_dbfs": -4.657374638685882,
+      "useful_rms_dbfs": -17.541672854725647,
+      "edge_peak": 0.0002545976603869349,
+      "loop": false,
+      "seam_jump": 0.0002547500168930128,
+      "seam_derivative": 6.67938405669588e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier2_medium_02.ogg",
+      "duration_s": 0.38328798185941043,
+      "true_peak_dbfs": -3.4158644846437944,
+      "useful_rms_dbfs": -16.68886952338228,
+      "edge_peak": 4.8720238510213676e-08,
+      "loop": false,
+      "seam_jump": 4.8720238510213676e-08,
+      "seam_derivative": 3.7674962527489697e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier2_medium_03.ogg",
+      "duration_s": 0.39024943310657595,
+      "true_peak_dbfs": -3.4850545637729304,
+      "useful_rms_dbfs": -17.22467229289252,
+      "edge_peak": 1.6514155376512463e-08,
+      "loop": false,
+      "seam_jump": 1.6514155376512463e-08,
+      "seam_derivative": 5.804778631102181e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier2_medium_04.ogg",
+      "duration_s": 0.3760770975056689,
+      "true_peak_dbfs": -4.702117148132003,
+      "useful_rms_dbfs": -17.385571005478518,
+      "edge_peak": 7.817863689751903e-08,
+      "loop": false,
+      "seam_jump": 7.817863689751903e-08,
+      "seam_derivative": 6.706327937422429e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier3_heavy_01.ogg",
+      "duration_s": 0.6221541950113378,
+      "true_peak_dbfs": -5.1200808469022165,
+      "useful_rms_dbfs": -17.41876996678316,
+      "edge_peak": 2.0027355773777344e-08,
+      "loop": false,
+      "seam_jump": 2.0027355773777344e-08,
+      "seam_derivative": 3.0176253673630526e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier3_heavy_02.ogg",
+      "duration_s": 0.6182539682539683,
+      "true_peak_dbfs": -4.910886048822839,
+      "useful_rms_dbfs": -17.265489946178217,
+      "edge_peak": 4.568232725432608e-08,
+      "loop": false,
+      "seam_jump": 4.568232725432608e-08,
+      "seam_derivative": 5.631771289316134e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier3_heavy_03.ogg",
+      "duration_s": 0.6150566893424037,
+      "true_peak_dbfs": -3.6544981312968607,
+      "useful_rms_dbfs": -17.115186060027323,
+      "edge_peak": 1.0852683374196204e-07,
+      "loop": false,
+      "seam_jump": 1.0852683374196204e-07,
+      "seam_derivative": 8.878564443648429e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_tier3_heavy_04.ogg",
+      "duration_s": 0.6302721088435375,
+      "true_peak_dbfs": -4.366998297449724,
+      "useful_rms_dbfs": -17.37751806252996,
+      "edge_peak": 5.923651258399332e-08,
+      "loop": false,
+      "seam_jump": 5.923651258399332e-08,
+      "seam_derivative": 8.12276866213324e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_elite_heavy_01.ogg",
+      "duration_s": 0.9398185941043083,
+      "true_peak_dbfs": -5.272959656267242,
+      "useful_rms_dbfs": -17.425175142550344,
+      "edge_peak": 7.911714305919304e-08,
+      "loop": false,
+      "seam_jump": 7.911714305919304e-08,
+      "seam_derivative": 9.134271579114284e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_elite_heavy_02.ogg",
+      "duration_s": 0.9595238095238096,
+      "true_peak_dbfs": -4.109655174765243,
+      "useful_rms_dbfs": -17.228405368373647,
+      "edge_peak": 4.184929025541351e-08,
+      "loop": false,
+      "seam_jump": 4.184929025541351e-08,
+      "seam_derivative": 8.638546127315294e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_elite_heavy_03.ogg",
+      "duration_s": 0.9313378684807256,
+      "true_peak_dbfs": -3.546005847927391,
+      "useful_rms_dbfs": -17.242167051755416,
+      "edge_peak": 8.192283473817952e-08,
+      "loop": false,
+      "seam_jump": 8.192283473817952e-08,
+      "seam_derivative": 1.0735796784899776e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_elite_heavy_04.ogg",
+      "duration_s": 0.9269387755102041,
+      "true_peak_dbfs": -4.484904603421181,
+      "useful_rms_dbfs": -17.611156506378496,
+      "edge_peak": 3.921997304701108e-08,
+      "loop": false,
+      "seam_jump": 3.921997304701108e-08,
+      "seam_derivative": 3.474261376368304e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_boss_heavy_01.ogg",
+      "duration_s": 2.6612925170068027,
+      "true_peak_dbfs": -4.294538183420107,
+      "useful_rms_dbfs": -17.21784149681147,
+      "edge_peak": 5.477589729707688e-05,
+      "loop": false,
+      "seam_jump": 5.484394473143084e-05,
+      "seam_derivative": 1.6478041615641814e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_boss_heavy_02.ogg",
+      "duration_s": 2.5812471655328797,
+      "true_peak_dbfs": -4.892263972613321,
+      "useful_rms_dbfs": -17.250316577753065,
+      "edge_peak": 7.296152762137353e-05,
+      "loop": false,
+      "seam_jump": 7.299069999433527e-05,
+      "seam_derivative": 5.783377662993416e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/death_boss_heavy_03.ogg",
+      "duration_s": 2.7489342403628116,
+      "true_peak_dbfs": -4.30506070209299,
+      "useful_rms_dbfs": -17.064262081884763,
+      "edge_peak": 6.361158739309758e-05,
+      "loop": false,
+      "seam_jump": 6.358464652933549e-05,
+      "seam_derivative": 9.783085300085759e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_contact_light_01.ogg",
+      "duration_s": 0.18011337868480726,
+      "true_peak_dbfs": -3.587530466317748,
+      "useful_rms_dbfs": -17.23971633534045,
+      "edge_peak": 1.0541824480014839e-07,
+      "loop": false,
+      "seam_jump": 1.0541824480014839e-07,
+      "seam_derivative": 1.1412964013857163e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_contact_light_02.ogg",
+      "duration_s": 0.17891156462585034,
+      "true_peak_dbfs": -3.2233550533159487,
+      "useful_rms_dbfs": -17.260828693652257,
+      "edge_peak": 9.951869373026057e-08,
+      "loop": false,
+      "seam_jump": 9.951869373026057e-08,
+      "seam_derivative": 4.026345337138082e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_contact_light_03.ogg",
+      "duration_s": 0.1865532879818594,
+      "true_peak_dbfs": -4.294523890807808,
+      "useful_rms_dbfs": -17.083127488238993,
+      "edge_peak": 2.809109901136253e-05,
+      "loop": false,
+      "seam_jump": 2.8133799336416132e-05,
+      "seam_derivative": 2.724105656071174e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_contact_light_04.ogg",
+      "duration_s": 0.17489795918367346,
+      "true_peak_dbfs": -4.371104140762508,
+      "useful_rms_dbfs": -17.38715767117015,
+      "edge_peak": 8.157489617133251e-08,
+      "loop": false,
+      "seam_jump": 8.157489617133251e-08,
+      "seam_derivative": 5.781692333783894e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shot_medium_01.ogg",
+      "duration_s": 0.25117913832199545,
+      "true_peak_dbfs": -5.826295453513596,
+      "useful_rms_dbfs": -17.323922613791506,
+      "edge_peak": 1.3933071585370271e-08,
+      "loop": false,
+      "seam_jump": 1.3933071585370271e-08,
+      "seam_derivative": 1.7223218584661026e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shot_medium_02.ogg",
+      "duration_s": 0.2531065759637188,
+      "true_peak_dbfs": -4.523822436584488,
+      "useful_rms_dbfs": -17.331967445325244,
+      "edge_peak": 4.5053877073542026e-08,
+      "loop": false,
+      "seam_jump": 4.5053877073542026e-08,
+      "seam_derivative": 2.1579983311426076e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shot_medium_03.ogg",
+      "duration_s": 0.2534920634920635,
+      "true_peak_dbfs": -4.727293995963445,
+      "useful_rms_dbfs": -17.71355443363047,
+      "edge_peak": 7.99577719590161e-08,
+      "loop": false,
+      "seam_jump": 7.99577719590161e-08,
+      "seam_derivative": 5.824011850563693e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shot_medium_04.ogg",
+      "duration_s": 0.2634013605442177,
+      "true_peak_dbfs": -4.183387629965047,
+      "useful_rms_dbfs": -17.138764901701613,
+      "edge_peak": 7.072844709909987e-08,
+      "loop": false,
+      "seam_jump": 7.072844709909987e-08,
+      "seam_derivative": 5.800638405162317e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_brute_cone_heavy_01.ogg",
+      "duration_s": 0.6,
+      "true_peak_dbfs": -4.72873969240175,
+      "useful_rms_dbfs": -18.26138197448256,
+      "edge_peak": 2.643976371174972e-09,
+      "loop": false,
+      "seam_jump": 2.643976371174972e-09,
+      "seam_derivative": 1.3308983026760757e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_brute_cone_heavy_02.ogg",
+      "duration_s": 0.6,
+      "true_peak_dbfs": -5.424682585118827,
+      "useful_rms_dbfs": -18.240039251075007,
+      "edge_peak": 1.008687178227774e-08,
+      "loop": false,
+      "seam_jump": 1.008687178227774e-08,
+      "seam_derivative": 7.681432379058606e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_brute_cone_heavy_03.ogg",
+      "duration_s": 0.6,
+      "true_peak_dbfs": -5.892968693956096,
+      "useful_rms_dbfs": -18.237698188270986,
+      "edge_peak": 5.7283926935269847e-08,
+      "loop": false,
+      "seam_jump": 5.7283926935269847e-08,
+      "seam_derivative": 3.9661367168264405e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_brute_cone_heavy_04.ogg",
+      "duration_s": 0.6,
+      "true_peak_dbfs": -5.010099463484092,
+      "useful_rms_dbfs": -18.23077150587339,
+      "edge_peak": 7.2462014166774225e-09,
+      "loop": false,
+      "seam_jump": 7.2462014166774225e-09,
+      "seam_derivative": 6.235384697461654e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shockwave_heavy_01.ogg",
+      "duration_s": 0.9825396825396825,
+      "true_peak_dbfs": -3.1012584362942084,
+      "useful_rms_dbfs": -18.215079643856885,
+      "edge_peak": 2.6688393717222425e-08,
+      "loop": false,
+      "seam_jump": 2.6688393717222425e-08,
+      "seam_derivative": 2.4019017885734684e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shockwave_heavy_02.ogg",
+      "duration_s": 1.0161678004535148,
+      "true_peak_dbfs": -3.708547128502024,
+      "useful_rms_dbfs": -17.977865151283538,
+      "edge_peak": 0.0004377842997200787,
+      "loop": false,
+      "seam_jump": 0.00043773493613485925,
+      "seam_derivative": 0.00018508837010955403,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shockwave_heavy_03.ogg",
+      "duration_s": 1.0235600907029478,
+      "true_peak_dbfs": -5.227100045510719,
+      "useful_rms_dbfs": -18.037567357852122,
+      "edge_peak": 0.0001256358518730849,
+      "loop": false,
+      "seam_jump": 0.00012565695235622343,
+      "seam_derivative": 3.626998645955837e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/enemy_shockwave_heavy_04.ogg",
+      "duration_s": 1.0494784580498866,
+      "true_peak_dbfs": -3.9605952410920016,
+      "useful_rms_dbfs": -17.566521756202032,
+      "edge_peak": 0.00024025706807151437,
+      "loop": false,
+      "seam_jump": 0.00024027540163551464,
+      "seam_derivative": 8.596659048087929e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_light_light_01.ogg",
+      "duration_s": 0.7846258503401361,
+      "true_peak_dbfs": -5.831005649035505,
+      "useful_rms_dbfs": -17.813603279654558,
+      "edge_peak": 6.229800231238869e-09,
+      "loop": false,
+      "seam_jump": 6.229800231238869e-09,
+      "seam_derivative": 6.398425655973483e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_light_light_02.ogg",
+      "duration_s": 0.759501133786848,
+      "true_peak_dbfs": -4.9714196825004295,
+      "useful_rms_dbfs": -17.818544482055415,
+      "edge_peak": 2.4058228742518395e-09,
+      "loop": false,
+      "seam_jump": 2.4058228742518395e-09,
+      "seam_derivative": 3.366298151341596e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_light_light_03.ogg",
+      "duration_s": 0.7957823129251701,
+      "true_peak_dbfs": -6.221179821205087,
+      "useful_rms_dbfs": -17.736741572714443,
+      "edge_peak": 7.117626044106373e-09,
+      "loop": false,
+      "seam_jump": 7.117626044106373e-09,
+      "seam_derivative": 6.045872558146925e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_light_light_04.ogg",
+      "duration_s": 0.8031065759637188,
+      "true_peak_dbfs": -3.175472041879268,
+      "useful_rms_dbfs": -17.839549164388558,
+      "edge_peak": 0.001314428634941578,
+      "loop": false,
+      "seam_jump": 0.0013144250736436547,
+      "seam_derivative": 0.00011962580900704012,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_heavy_heavy_01.ogg",
+      "duration_s": 1.0684807256235829,
+      "true_peak_dbfs": -5.305977419150337,
+      "useful_rms_dbfs": -17.5805501857251,
+      "edge_peak": 0.0020317912567406893,
+      "loop": false,
+      "seam_jump": 0.0020317829458633696,
+      "seam_derivative": 0.0006406954797668618,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_heavy_heavy_02.ogg",
+      "duration_s": 1.0985714285714285,
+      "true_peak_dbfs": -5.7462281751084054,
+      "useful_rms_dbfs": -17.649296173927848,
+      "edge_peak": 0.0016642524860799313,
+      "loop": false,
+      "seam_jump": 0.0016642489551941253,
+      "seam_derivative": 0.00010041086069678684,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_heavy_heavy_03.ogg",
+      "duration_s": 1.0881859410430839,
+      "true_peak_dbfs": -5.495730392820727,
+      "useful_rms_dbfs": -17.49908236946128,
+      "edge_peak": 0.001589228049851954,
+      "loop": false,
+      "seam_jump": 0.0015892292333031799,
+      "seam_derivative": 0.0008121303051712436,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_warn_heavy_heavy_04.ogg",
+      "duration_s": 1.1082993197278912,
+      "true_peak_dbfs": -5.321217055838858,
+      "useful_rms_dbfs": -17.617048896675712,
+      "edge_peak": 0.0014818483032286167,
+      "loop": false,
+      "seam_jump": 0.0014818414285158177,
+      "seam_derivative": 0.0002633335716925034,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_boss_heavy_01.ogg",
+      "duration_s": 1.7175510204081632,
+      "true_peak_dbfs": -3.2132353292652605,
+      "useful_rms_dbfs": -17.695433220221425,
+      "edge_peak": 0.0036722077056765556,
+      "loop": false,
+      "seam_jump": 0.0036722094131260707,
+      "seam_derivative": 0.0002016125679509262,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_boss_heavy_02.ogg",
+      "duration_s": 1.7463492063492063,
+      "true_peak_dbfs": -3.9574551777150346,
+      "useful_rms_dbfs": -17.683710300160666,
+      "edge_peak": 0.001424513291567564,
+      "loop": false,
+      "seam_jump": 0.0014245112077837518,
+      "seam_derivative": 0.00046086245593435216,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_boss_heavy_03.ogg",
+      "duration_s": 1.755532879818594,
+      "true_peak_dbfs": -3.9136222627246338,
+      "useful_rms_dbfs": -17.711211087232712,
+      "edge_peak": 0.00012212795263621956,
+      "loop": false,
+      "seam_jump": 0.00012212797232868597,
+      "seam_derivative": 0.00024596239047758317,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/telegraph_boss_heavy_04.ogg",
+      "duration_s": 1.721156462585034,
+      "true_peak_dbfs": -3.859405339780075,
+      "useful_rms_dbfs": -17.641305047537614,
+      "edge_peak": 0.0017141478601843119,
+      "loop": false,
+      "seam_jump": 0.001714147349452133,
+      "seam_derivative": 0.00024623179519622784,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_hurt_medium_01.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -5.560345036739665,
+      "useful_rms_dbfs": -18.01982855183117,
+      "edge_peak": 7.020819481340368e-09,
+      "loop": false,
+      "seam_jump": 7.020819481340368e-09,
+      "seam_derivative": 1.878644617647751e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_hurt_medium_02.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -6.06609388122679,
+      "useful_rms_dbfs": -17.66828404848002,
+      "edge_peak": 7.058604722942619e-08,
+      "loop": false,
+      "seam_jump": 7.058604722942619e-08,
+      "seam_derivative": 6.476850629155706e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_hurt_medium_03.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -5.341860362243244,
+      "useful_rms_dbfs": -17.98949751939207,
+      "edge_peak": 1.1866479354694093e-07,
+      "loop": false,
+      "seam_jump": 1.1866479354694093e-07,
+      "seam_derivative": 9.217952126050477e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_hurt_medium_04.ogg",
+      "duration_s": 0.3,
+      "true_peak_dbfs": -6.005270395559206,
+      "useful_rms_dbfs": -18.00424132454293,
+      "edge_peak": 3.5992517410932123e-08,
+      "loop": false,
+      "seam_jump": 3.5992517410932123e-08,
+      "seam_derivative": 3.8431755555734526e-07,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_death_heavy_01.ogg",
+      "duration_s": 1.5,
+      "true_peak_dbfs": -2.9755718383601906,
+      "useful_rms_dbfs": -16.45538434820072,
+      "edge_peak": 4.317532875575125e-05,
+      "loop": false,
+      "seam_jump": 4.326216559746854e-05,
+      "seam_derivative": 1.1061036779835831e-06,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_death_heavy_02.ogg",
+      "duration_s": 1.5,
+      "true_peak_dbfs": -6.233563434833387,
+      "useful_rms_dbfs": -17.48443463344017,
+      "edge_peak": 0.00014126213500276208,
+      "loop": false,
+      "seam_jump": 0.00014121986077952897,
+      "seam_derivative": 4.359221719596462e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_death_heavy_03.ogg",
+      "duration_s": 1.5,
+      "true_peak_dbfs": -6.346954177575245,
+      "useful_rms_dbfs": -17.186592061521853,
+      "edge_peak": 0.00011494384671095759,
+      "loop": false,
+      "seam_jump": 0.0001149574711121204,
+      "seam_derivative": 3.310314890114796e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_death_heavy_04.ogg",
+      "duration_s": 1.5,
+      "true_peak_dbfs": -6.046876728052874,
+      "useful_rms_dbfs": -16.87443918743926,
+      "edge_peak": 7.898604962974787e-05,
+      "loop": false,
+      "seam_jump": 7.896435619869635e-05,
+      "seam_derivative": 2.0887935960445247e-05,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_heal_none_01.ogg",
+      "duration_s": 0.7095011337868481,
+      "true_peak_dbfs": -5.574892208220694,
+      "useful_rms_dbfs": -17.230258023958992,
+      "edge_peak": 1.0230555069767888e-08,
+      "loop": false,
+      "seam_jump": 1.0230555069767888e-08,
+      "seam_derivative": 6.143147412984717e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_heal_none_02.ogg",
+      "duration_s": 0.6774603174603174,
+      "true_peak_dbfs": -4.936612250387365,
+      "useful_rms_dbfs": -17.57341146527772,
+      "edge_peak": 1.1016342504888144e-08,
+      "loop": false,
+      "seam_jump": 1.1016342504888144e-08,
+      "seam_derivative": 9.095496711353235e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_heal_none_03.ogg",
+      "duration_s": 0.6832426303854875,
+      "true_peak_dbfs": -5.785701931147997,
+      "useful_rms_dbfs": -17.536163224751476,
+      "edge_peak": 8.687631058990064e-09,
+      "loop": false,
+      "seam_jump": 8.687631058990064e-09,
+      "seam_derivative": 7.468604668048329e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    },
+    {
+      "path": "impacts/player_heal_none_04.ogg",
+      "duration_s": 0.7015646258503402,
+      "true_peak_dbfs": -5.418678090666972,
+      "useful_rms_dbfs": -17.4238269220847,
+      "edge_peak": 1.120247627994786e-08,
+      "loop": false,
+      "seam_jump": 1.120247627994786e-08,
+      "seam_derivative": 8.253242800293492e-08,
+      "checks": {
+        "rate": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "faded_edges": true,
+        "manifest": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "file": "bosses/mini/frost_bear/ice_block.png",
+      "e_half": true
+    },
+    {
+      "file": "bosses/mini/stone_colossus/rock.png",
+      "e_half": true
+    },
+    {
+      "file": "fx/minis/zone_water.png",
+      "e_half": true
+    },
+    {
+      "file": "fx/minis/zone_water_shock.png",
+      "e_half": true
+    },
+    {
+      "file": "fx/minis/zone_bubbles.png",
+      "e_half": true
+    },
+    {
+      "file": "fx/minis/chain_link.png",
+      "e_half": true
+    },
+    {
+      "file": "fx/minis/chain_break.png",
+      "e_half": true
+    },
+    {
+      "mini": "frost_bear",
+      "previous_animations_sha256": "47b6750940a484c9e2e61d496542ea1a3ba3e7b1f2c39414aaea069652095385",
+      "old_animations_identical": true
+    },
+    {
+      "mini": "stone_colossus",
+      "previous_animations_sha256": "e3f9586d8badcae0a4c8092eb8aa79e2302e95f8034cfaf1260cd25244ae07a0",
+      "old_animations_identical": true
+    }
+  ],
+  "choices": {
+    "ice": "Asymmetric fractured glacial blocks, dirty blue-grey, chipped frosted edges, narrow cyan fissures; original Dirty glacial ice material.",
+    "rock": "Collapsed dressed basalt, chipped ledges, restrained orange fissures; original Wet fractured basalt and Fresh chipped wet stone materials.",
+    "ground": "Orthographic top view at 64 px/u, transparent feathered shoreline. Eight distinct frames; suggested playback 8 fps loop. Water reference radius 2 u, heron game radius 3 u => scale 1.5; bubbles radius 1.5 u => scale .75 (spit pool 4 u => scale 2).",
+    "chain": "Local X along arc tangent; local Y across band. One frame each, centre pivot (32,16), 64 px = 1 u. Broken end opens toward +X. Rust orange contact is the sole emissive accent.",
+    "obstacles": "Four static variants each, 128px cell, bottom-centre pivot (64,128), MAP rig 90.51px/u; game Iso.UNSQUASH * Iso.SPRITE_K. Radius .5 u. Height approx 1.2 u ice, 1 u rock.",
+    "contact": "Terraces above, rust city below; bear and four ice variants left, colossus and four rocks right. Mini fitted-camera metadata normalizes both sources to the same 64 px/u. Water/shock radius 3 u, bubbles 1.5 u. CS1 right-half reference in footer.",
+    "normals": false,
+    "emission": "Half-resolution, original diffuse atlas cell layout retained."
+  },
+  "validation": {
+    "import": {
+      "exit": 0,
+      "errors": 0
+    },
+    "sprites_test": "RESULT: OK",
+    "texture_budget_test": {
+      "result": "FAIL (1)",
+      "cause": "CRLF in ossuary_bearer .import files (outside M6FX; folder explicitly excluded)"
+    },
+    "budget": {
+      "m6fx_mobile_mib": 0.24,
+      "total_mobile_mib": 161,
+      "mobile_budget_mib": 180,
+      "boss_mobile_mib": 63.5,
+      "boss_budget_mib": 45,
+      "apk_estimate_mib": 272,
+      "apk_budget_mib": 200
+    },
+    "miniboss_mechanics_test": {
+      "result": "RESULT: OK",
+      "external_resource_errors": "blind_swarm textures reported missing during test; outside scope"
+    },
+    "obstacles_margins": "PASS: all eight frames have transparent margins (minimum top 5px, bottom 4px)",
+    "source": "7 m6fx blend files; full background build completed with exit 0",
+    "minibosses_test": {
+      "result": "RESULT: FAIL (1)",
+      "failures": [
+        "FAIL grinder : art livr\u00e9 (sans repli)"
+      ],
+      "scope": "All 20 mini-bosses / 95 forced patterns ran. Sole failed assertion: grinder art unavailable; folder explicitly excluded, assigned M3A. Frost bear and stone colossus checks passed."
+    }
+  }
+}

@@ -1,0 +1,11 @@
+ÉCONOMIE DE TOKENS (obligatoire) :
+- Ne lis jamais un fichier entier s'il est long : cherche (rg/Select-String) et lis seulement les lignes utiles. Ne relis pas CLAUDE.md : l'essentiel est dans cette consigne.
+- Limite toute sortie de commande (| Select-Object -First 20, head, -q, scripts silencieux qui n'impriment qu'un résumé PASS/FAIL).
+- Réutilise et modifie les scripts existants plutôt que tout réécrire ; écris de petits scripts ciblés.
+- Ne lis pas les PNG en image sauf une planche contact unique à la fin pour vérifier ; ne liste pas les dossiers en entier.
+- Pas d'explications intermédiaires ni de plan détaillé ; rapport final de 6 lignes maximum.
+BLENDER : la fenêtre Blender interactive ouverte est au joueur : ignore-la. Une seule instance `"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python <script>.py` lancée par toi à la fois. Eevee, échantillons modestes. Pas de dessin PIL (Pillow : rogner/assembler/vérifier seulement).
+CONTRAT : tu REMPLACES des assets provisoires de Claude à l'identique (mêmes noms, dossiers, tailles, frames, _e, .tres inchangés sauf nécessité). Aucun .gd/.tscn.
+PLUS DE NORMAL MAPS (décision du joueur, 22/10/2026, budget mobile) : ne produis ni ne livres AUCUN <f>_n.png (pas de passe Normal en espace écran, cel.install(<profil>, normals=False), pas de cel.quantize_normal_files) ; .tres sans CanvasTexture ni normal_texture ; masques _e conservés. Toute mention de _n dans la consigne qui suit est caduque.
+_e : `_e` livré à demi-résolution ((w+1)//2 × (h+1)//2 du diffus) ou pleine taille (réduit ensuite par art/tools/halve_emission.py) ; jamais d'autre taille ; aucun _e noir ou vide (ne pas le livrer).
+STYLE ULTRACAVE : rapport final et messages en fragments, chaque fait une fois, aucun récapitulatif ; chemins, commandes, erreurs et nombres verbatim.

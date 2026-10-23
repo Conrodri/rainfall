@@ -1,0 +1,163 @@
+{
+  "status": "PASS",
+  "effects": {
+    "bog_zone": {
+      "cell": 720,
+      "frames": 8,
+      "atlases": 2,
+      "bounds": [
+        [
+          30,
+          28,
+          689,
+          681
+        ],
+        [
+          30,
+          28,
+          689,
+          681
+        ],
+        [
+          30,
+          28,
+          689,
+          681
+        ],
+        [
+          30,
+          28,
+          689,
+          681
+        ],
+        [
+          30,
+          28,
+          689,
+          681
+        ],
+        [
+          30,
+          28,
+          689,
+          680
+        ],
+        [
+          30,
+          28,
+          689,
+          680
+        ],
+        [
+          30,
+          28,
+          689,
+          680
+        ]
+      ],
+      "loop": true,
+      "fps": 8,
+      "radius_u": 5.0
+    },
+    "ally_ring": {
+      "cell": 64,
+      "frames": 1,
+      "atlases": 1,
+      "bounds": [
+        [
+          2,
+          2,
+          62,
+          62
+        ]
+      ],
+      "loop": true,
+      "fps": 1,
+      "radius_u": 0.42
+    },
+    "mud_slap": {
+      "cell": 288,
+      "frames": 4,
+      "atlases": 1,
+      "bounds": [
+        [
+          90,
+          46,
+          243,
+          243
+        ],
+        [
+          104,
+          35,
+          254,
+          253
+        ],
+        [
+          100,
+          25,
+          264,
+          263
+        ],
+        [
+          73,
+          14,
+          274,
+          272
+        ]
+      ],
+      "loop": false,
+      "fps": 12,
+      "radius_u": 2.0
+    },
+    "mud_splash": {
+      "cell": 288,
+      "frames": 6,
+      "atlases": 1,
+      "bounds": [
+        [
+          73,
+          71,
+          217,
+          217
+        ],
+        [
+          49,
+          47,
+          241,
+          240
+        ],
+        [
+          29,
+          27,
+          260,
+          259
+        ],
+        [
+          21,
+          20,
+          267,
+          265
+        ],
+        [
+          38,
+          37,
+          250,
+          249
+        ],
+        [
+          64,
+          64,
+          223,
+          223
+        ]
+      ],
+      "loop": false,
+      "fps": 14,
+      "radius_u": 2.0
+    }
+  },
+  "portrait": 256,
+  "accent": "#8DDBA8",
+  "px_per_u": 64,
+  "notes": "BO1 actor and BO2 familiar retained. Mire broken shore, drowned roots, bronze splinters; narrow cold green fissures. Common studio seals. CD3 portrait."
+}

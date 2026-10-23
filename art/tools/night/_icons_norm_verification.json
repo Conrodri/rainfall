@@ -1,0 +1,1302 @@
+{
+  "before_bytes": 605374,
+  "before_hashes": {
+    "arpenteuse_boucle.png": "a79be2c73aa1b6b75965c9459004a89a3fb5f2ef91a09dbf47e752cdc2f6d4e8",
+    "arpenteuse_chaine.png": "761e2aeefbbbe8c614301f8dc8b6acd0f417bcdaf28ac9f9c4f629e2404f43a9",
+    "arpenteuse_piquet.png": "fb76cdf9589b46cb71374cb2dd4102544debc85970e3133301d88262ac5b9436",
+    "arpenteuse_tendeur.png": "4271db6ffc19a47875f84d53c1b37253015ba6422fc072c9bcea074214278496",
+    "avare_coup_de_coffre.png": "fa14c48a7798bbb780be7cb4ef63f3d02136ab3d6a98b359fa4b32573ecaccae",
+    "avare_faillite.png": "6ef47c73cc1742d3e3d62330ee37481f782cc14441dace84fc451f965dc3e526",
+    "avare_poignee_de_pieces.png": "d7a5393dde83fe4d82d7a7ce846833481830282d4763009680762535e584a279",
+    "avare_rancon.png": "6521c1478049362999fa846ebb984c889bd2de0dcf53838cc7b4fba80caa4f16",
+    "averse_crue.png": "be072de9a5a0ebfa6362b2ff88770aca14651fdd3fe27c631168865f5a001d37",
+    "averse_flaque_miroir.png": "2301adada88582cd508b8f3ada926ed27996e22df2b74a34284fa0576e816b68",
+    "averse_goutte_lame.png": "eed83857aad2cd20709f260b5a68d904da3b82c053775b0478181a7a9433e075",
+    "averse_vague.png": "fd497f0730a0cfddafb800f663af94ecfb633348b37fe683ab04d4af63714d2a",
+    "bourbe_bourbier.png": "d0aa945e04b681470135018f993aeb30d888043c99d70e887ef54a4ac36a1a58",
+    "bourbe_detacher.png": "5e98395b9a0221fc67c62d1004ea6558e827cfd58e1d429e38faf0950eb0fc1c",
+    "bourbe_gifle_de_vase.png": "288792dd6eec36b602747b33cc786c08d06a81ce138e86721ab0924818e29612",
+    "bourbe_rappel.png": "4f85170a580ff927e9d93e73716503ff611804bc17424ae7fd3a6f9660dedc5a",
+    "braises_errantes.png": "edbc7a786d02d63f440f376ad7bff3fcad0c901143e21e3c17f1082f72633673",
+    "brasier.png": "183bc04a7eb7e0e651c44b415871fb3cf2704be70d393b9cfbd56bb8ab925f14",
+    "cendres.png": "16073259c2e1926ec159040442f3f47331e4f3be3380c844ae59e55c46f6e378",
+    "dagues_demi_lune.png": "24335d88bc545c00d1113b6d13eed8e353cf4b4df24bd414e439131a5167da73",
+    "doublures.png": "454e080c80b0ea58b39c0a080543f66b89423de731b17901d5a97a0ddd22e0b7",
+    "eclat_de_braise.png": "3d2ae953dde072979bbf4abe255a0808919923668be4bd7c0fa3f6b734cda46b",
+    "eventail.png": "bb901de7ac1a6fbaae3f2cb59dca8b4c28a65059d9ef342345ad134004538c16",
+    "nova_ardente.png": "20a1da0b1fe59c37b7f291d328cb0db5ef89bdfee1f5440a7bc31a7610cedbee",
+    "phenix.png": "cd637acc567d262ff75a5fdbd001f9857a01a6408e123585ed24e236cc75d239",
+    "pilier_de_flamme.png": "dcb0560c0fa2f39ab24a3f3667bfe2b31fd64c1072ce8b6d08675cfdd7d38ca4",
+    "pluie_de_meteores.png": "8d5243f45a7bafc5ade84f0339d8fc586a607b666941f1684e5cad9b92cdf9f9",
+    "rainette_chant_de_crue.png": "918f798fb55611a0971d05d4160681d59385aa1978f87ab3f548b8c3993eb15b",
+    "rainette_gluant.png": "e5cac89e29ff1f69bb663b14bc2da25ecf9c4eff091ade4171ca80f7d13f0083",
+    "rainette_grand_saut.png": "38cdba7a3a0c91e38458775dd1fc912c7b0ef48701edfbf222ee12f6914a0cfd",
+    "rainette_langue.png": "3c6005502ac636ad974842f508c495c74d280c84c80cc37765e0f557370c22b8",
+    "tocsin_bras_grappins.png": "925d25d11e066466ace8b73ad67435e306bb8b72c830e65ac6c30294638f62e3",
+    "tocsin_coups_de_botte.png": "c57413545778cea4620108388576ed0c464040c9ecb3a382b96dc7017a35c4d5",
+    "tocsin_rivets_rougis.png": "cdb15981f86a279b2e6e68bf79f19ce56c446bf4e52c327e49b03ab348804d93",
+    "tocsin_tete_cloche.png": "7089b2b15079da0b4c7df6d3d9aad8f14f72ac39c98d3e840e9296b5670af97f",
+    "toupie.png": "f10c91fe5e70f00addf9cb1b003fd167553717afa21b3700a581a44c3b2f13e5"
+  },
+  "protected": {
+    "game\\assets\\sprites\\icons\\spells\\arpenteuse_boucle.png.import": "d1be9feaeaedea8ba9fbf3be2e95c78dd5076cc20c5cde1dbfe2a29d76b21d3a",
+    "game\\assets\\sprites\\icons\\spells\\arpenteuse_chaine.png.import": "ebfc8a0f01242b1776f67322545b75a0880b0fc7c066354d863780ad72b0a2e1",
+    "game\\assets\\sprites\\icons\\spells\\arpenteuse_piquet.png.import": "a41fb636497a7f4c1db1754d8d16f89128b7bd25ffd6be7dfa010c8ea98758b3",
+    "game\\assets\\sprites\\icons\\spells\\arpenteuse_tendeur.png.import": "6547d733df9ed8733a859cdcbd2ed616cf4fb85c224a9d25d6e1aa68046c2903",
+    "game\\assets\\sprites\\icons\\spells\\avare_coup_de_coffre.png.import": "4d00cb5f6755765621ae202b45335afe29a02fdca221ea8f275ae82d0a01ed9e",
+    "game\\assets\\sprites\\icons\\spells\\avare_faillite.png.import": "03289eb06beb54fb41bfc343fcaaca61f822c587511baf35d7052c45fe61db49",
+    "game\\assets\\sprites\\icons\\spells\\avare_poignee_de_pieces.png.import": "dc4de0362ee1000eb769269817bf9f2ef3b0a834ef29cc9a6593ce1d445c7be2",
+    "game\\assets\\sprites\\icons\\spells\\avare_rancon.png.import": "3df07b1cfdb3cdb42cefd6435212af85710fd250ccdc6a04dab1a8c4ce1a960f",
+    "game\\assets\\sprites\\icons\\spells\\averse_crue.png.import": "8456f79c7874318e52b29c66d25d3fa7031b38d790c1906a0f394b59f034c1c4",
+    "game\\assets\\sprites\\icons\\spells\\averse_flaque_miroir.png.import": "91a513d45fe3f151fd74240dc1f2e3d8d863e6bc4d50c37c4af21e85eed4a762",
+    "game\\assets\\sprites\\icons\\spells\\averse_goutte_lame.png.import": "230e07fa879ed5605fbe8ebf44c069325af70c6ffebd831c100fda6e3f94a540",
+    "game\\assets\\sprites\\icons\\spells\\averse_vague.png.import": "c498409cf03ef79e1a5b4121ce82fa82b9e76dd1cad21c1ca61c77b0689890c2",
+    "game\\assets\\sprites\\icons\\spells\\bourbe_bourbier.png.import": "084e4f6658607b80b7aa97bdeaee49899fbfbff44d057bcaee09279d40b0b126",
+    "game\\assets\\sprites\\icons\\spells\\bourbe_detacher.png.import": "ab234f1d4d3abdaa49e81d585b2ccc063c0b6a84c689ab16621b7c9824b071b6",
+    "game\\assets\\sprites\\icons\\spells\\bourbe_gifle_de_vase.png.import": "c3568cf5eb209dfd350f6cd3b14d0f5deb14fa3a47a5deef38d645eed833016c",
+    "game\\assets\\sprites\\icons\\spells\\bourbe_rappel.png.import": "ad3e5c4259818fabfb3f07f56b8c09a2421258b4712cf4c36f52213a4ecdd349",
+    "game\\assets\\sprites\\icons\\spells\\braises_errantes.png.import": "78b57124ff40a6229d4461527fc6ecb343128aa45fdc243ba62e23effba89cf0",
+    "game\\assets\\sprites\\icons\\spells\\brasier.png.import": "643a73dcd04d54bd964bd58479b3da316eebbbb13b3b74a2bf46b845be87b050",
+    "game\\assets\\sprites\\icons\\spells\\cendres.png.import": "8747018189ba7bb2b42f61ba78745cf65b29312a73e1c55cb7374f51ae8ad34c",
+    "game\\assets\\sprites\\icons\\spells\\dagues_demi_lune.png.import": "137350728ff3a4d5f6bf961feadb8a96a82d2f02d07a606a88f2f3236cfba5df",
+    "game\\assets\\sprites\\icons\\spells\\doublures.png.import": "4784920e2bbe38e4af5c30c4bf0e3c30f1ada71b9ab811b5fca69b4ff38642a4",
+    "game\\assets\\sprites\\icons\\spells\\eclat_de_braise.png.import": "6fdb23f61f5cd67fa79afaf6f336f21ccc11ca1bc23f5ec66b1e85cb564f7bdb",
+    "game\\assets\\sprites\\icons\\spells\\eventail.png.import": "922e6863602d6d4918c3061b86b2cdb59b6d48d958e65975772d28b56ca264e3",
+    "game\\assets\\sprites\\icons\\spells\\nova_ardente.png.import": "1bd5bb6579376c90cba4eb344161d7eaa7c8587d89681564131a2958c342ac03",
+    "game\\assets\\sprites\\icons\\spells\\phenix.png.import": "af55f572a0962b804da919839c5ad321a96dcd8687efc398f2ed60ed2550409d",
+    "game\\assets\\sprites\\icons\\spells\\pilier_de_flamme.png.import": "955f0628dae8036252ae845cde61acc188338ccef7810e72ade8b75201c55dc7",
+    "game\\assets\\sprites\\icons\\spells\\pluie_de_meteores.png.import": "2fab54c8fa56b08b57a4fa31d948bafffb4e73e34ecb8a07a2432266549bbffa",
+    "game\\assets\\sprites\\icons\\spells\\rainette_chant_de_crue.png.import": "b9c776cb813b6b0c3d45d9a8d676950e7db6ae710b1db52dda8cbda32c4a7508",
+    "game\\assets\\sprites\\icons\\spells\\rainette_gluant.png.import": "d3dc6a6f0ffac1c5856376850295ee50b1f6d64d4cec7b8726b9c19d70e6354a",
+    "game\\assets\\sprites\\icons\\spells\\rainette_grand_saut.png.import": "f16c37590a3a370b96cfcc62f16c20b7cb2e234678c7ccd37eb51ab1acfd6903",
+    "game\\assets\\sprites\\icons\\spells\\rainette_langue.png.import": "f61dade8d7b378cbdc44fd6f984a5e43798b962c96ca1e37cc7ad05c361bf0e1",
+    "game\\assets\\sprites\\icons\\spells\\tocsin_bras_grappins.png.import": "ea0268b5eadcc258dbc1d17e0067eb62d746a6c0314ca661f422a21d0dbc5139",
+    "game\\assets\\sprites\\icons\\spells\\tocsin_coups_de_botte.png.import": "f1e756eed8094e196efb944b4f09d3e1096bdf1c295e1315b31349ec0e89f7f3",
+    "game\\assets\\sprites\\icons\\spells\\tocsin_rivets_rougis.png.import": "c2cc17fe38a28ae558f67f1f60e6e6600e3b22574c124a0636d9b77c97ea9d68",
+    "game\\assets\\sprites\\icons\\spells\\tocsin_tete_cloche.png.import": "bc7d40c61d14739dfe9e514b51ac7c14e6efc564f66bac07645dc736c4250fae",
+    "game\\assets\\sprites\\icons\\spells\\toupie.png.import": "c8393bebfbe5b39d946729c79f1e246326e1595164aeea8e995b85b9fd355fbf",
+    "art\\blender\\ui\\i3_ardent.blend": "5bcebb58c9c5c0e5ca87d29c254bed0fd2aad2e8fc1e278be99e0497ebb3135a",
+    "game\\assets\\sprites\\icons\\spells\\nova_ardente.png": "20a1da0b1fe59c37b7f291d328cb0db5ef89bdfee1f5440a7bc31a7610cedbee"
+  },
+  "icons": {
+    "arpenteuse_boucle.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.249840828062105,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.08672830623753747,
+      "emblem_face_contrast": 4.653578789945808,
+      "emblem_pixels": 2245,
+      "accent_pixels": 1917,
+      "sha256": "2abcfcb8c95d5493f8816e4a844732592d8caf21ca50528d10e9479e51a26f30",
+      "archive_sha256": "a79be2c73aa1b6b75965c9459004a89a3fb5f2ef91a09dbf47e752cdc2f6d4e8",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "arpenteuse_chaine.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.33196245694604,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.08319889819574533,
+      "emblem_face_contrast": 4.600128115484041,
+      "emblem_pixels": 1460,
+      "accent_pixels": 728,
+      "sha256": "55055af392e625d2022d3f4824128d629b8afc1d9a1ed8788a5622bcf06d1734",
+      "archive_sha256": "761e2aeefbbbe8c614301f8dc8b6acd0f417bcdaf28ac9f9c4f629e2404f43a9",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "arpenteuse_piquet.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.975412358276643,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.0555448284079163,
+      "emblem_face_contrast": 4.6805377095187675,
+      "emblem_pixels": 1432,
+      "accent_pixels": 769,
+      "sha256": "8aea371a457b6412ed9c6aad1f8362f2f78e1aaf0b545b08485285bb01048ede",
+      "archive_sha256": "fb76cdf9589b46cb71374cb2dd4102544debc85970e3133301d88262ac5b9436",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "arpenteuse_tendeur.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.107118455423052,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04988438834189468,
+      "emblem_face_contrast": 4.684236709581544,
+      "emblem_pixels": 1224,
+      "accent_pixels": 1036,
+      "sha256": "fd1cb3302bd3a7bb4bab8b1ccf74c1e51d298544ac33a3fc477ad0298ddb88f4",
+      "archive_sha256": "4271db6ffc19a47875f84d53c1b37253015ba6422fc072c9bcea074214278496",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "avare_coup_de_coffre.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.008612323346522,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.054117966504452886,
+      "emblem_face_contrast": 6.767706995038549,
+      "emblem_pixels": 2181,
+      "accent_pixels": 1297,
+      "sha256": "1ce9ee6b81784b1f52adbabae7b85fb334e180c7dfdee39fb894183b53b74052",
+      "archive_sha256": "fa14c48a7798bbb780be7cb4ef63f3d02136ab3d6a98b359fa4b32573ecaccae",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "avare_faillite.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 20.948135041782734,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.09969496122016797,
+      "emblem_face_contrast": 7.8347926514460235,
+      "emblem_pixels": 2570,
+      "accent_pixels": 1292,
+      "sha256": "cc63ca31a6f28193c90195b6a89d26b74343dc0a484b271eb479bb501d60e2d5",
+      "archive_sha256": "6ef47c73cc1742d3e3d62330ee37481f782cc14441dace84fc451f965dc3e526",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "avare_poignee_de_pieces.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.807775720620846,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.06274948453909901,
+      "emblem_face_contrast": 8.739072118601099,
+      "emblem_pixels": 2420,
+      "accent_pixels": 2163,
+      "sha256": "347fa3fad5267a4739d7fe5161fb9d9e9d86e139235886d622e1f7c80f73ad3c",
+      "archive_sha256": "d7a5393dde83fe4d82d7a7ce846833481830282d4763009680762535e584a279",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "avare_rancon.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.05495076023392,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.052126441810932844,
+      "emblem_face_contrast": 7.764967414143185,
+      "emblem_pixels": 2799,
+      "accent_pixels": 2558,
+      "sha256": "35a1cad4b57dafdea329b6e3daf1c0cbda483a9258d825a62367c5a8cfea2f25",
+      "archive_sha256": "6521c1478049362999fa846ebb984c889bd2de0dcf53838cc7b4fba80caa4f16",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "averse_crue.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.607476355247982,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07135791328704766,
+      "emblem_face_contrast": 9.312243770117986,
+      "emblem_pixels": 2748,
+      "accent_pixels": 2545,
+      "sha256": "8688945dd7c94049a225a21be6abfb0f025f52c28fa964a18bf688c32175cda3",
+      "archive_sha256": "be072de9a5a0ebfa6362b2ff88770aca14651fdd3fe27c631168865f5a001d37",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "averse_flaque_miroir.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.039164394829612,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.09578271867153498,
+      "emblem_face_contrast": 11.126721312358924,
+      "emblem_pixels": 3130,
+      "accent_pixels": 3024,
+      "sha256": "c4cc45807a0bc8fe693e0426f2dc03d22a46d457d2779b5b8f8ca7671a5bcfc2",
+      "archive_sha256": "2301adada88582cd508b8f3ada926ed27996e22df2b74a34284fa0576e816b68",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "averse_goutte_lame.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.736774902398217,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.06580094445549856,
+      "emblem_face_contrast": 12.322246186853414,
+      "emblem_pixels": 2077,
+      "accent_pixels": 1968,
+      "sha256": "7b2c1743e8e145c80b76cc73a14a3464956113fc9f7bc09721698fe72adb29e6",
+      "archive_sha256": "eed83857aad2cd20709f260b5a68d904da3b82c053775b0478181a7a9433e075",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "averse_vague.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.21807796803653,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04511559111449415,
+      "emblem_face_contrast": 8.274751650765038,
+      "emblem_pixels": 1463,
+      "accent_pixels": 1371,
+      "sha256": "fb33c805a8f93345bf1c83c9cb757b9c1771fbe83899435933566c66440a2a2d",
+      "archive_sha256": "fd497f0730a0cfddafb800f663af94ecfb633348b37fe683ab04d4af63714d2a",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "bourbe_bourbier.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.30661300904977,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.08428836203707446,
+      "emblem_face_contrast": 8.146153437143212,
+      "emblem_pixels": 2664,
+      "accent_pixels": 2424,
+      "sha256": "ec81f0e3c5c7b14bb1633f697e54f6a5bb7b6c83c6e378622d123a3c42ffdd33",
+      "archive_sha256": "d0aa945e04b681470135018f993aeb30d888043c99d70e887ef54a4ac36a1a58",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "bourbe_detacher.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.887665234159783,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05931600793407832,
+      "emblem_face_contrast": 12.530768468218636,
+      "emblem_pixels": 2226,
+      "accent_pixels": 1702,
+      "sha256": "64dc1fc2bd4c8df653388084b20f9fc7e2df178a2f31cadc49f8fad58ca0d990",
+      "archive_sha256": "5e98395b9a0221fc67c62d1004ea6558e827cfd58e1d429e38faf0950eb0fc1c",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "bourbe_gifle_de_vase.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.757392733564014,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.06491483515506413,
+      "emblem_face_contrast": 12.662978410699626,
+      "emblem_pixels": 2833,
+      "accent_pixels": 2640,
+      "sha256": "6676698a173450345e862e6a3562ccf1fb8afb5caa68b886e1d61e9926c052fb",
+      "archive_sha256": "288792dd6eec36b602747b33cc786c08d06a81ce138e86721ab0924818e29612",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "bourbe_rappel.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.051363975155276,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.052280593990727375,
+      "emblem_face_contrast": 8.176284382498443,
+      "emblem_pixels": 1299,
+      "accent_pixels": 1194,
+      "sha256": "c2eb37a9b43ba8cea0942468761c7c41213b7fa0b34586025013d7f4ab4e1550",
+      "archive_sha256": "4f85170a580ff927e9d93e73716503ff611804bc17424ae7fd3a6f9660dedc5a",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "braises_errantes.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.619505005820724,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07084094818734965,
+      "emblem_face_contrast": 3.9145996766288502,
+      "emblem_pixels": 1476,
+      "accent_pixels": 499,
+      "sha256": "4d0600bdcb10494bdb999086caa0030d157bc7b1d28b6e30814405cd0559c1ab",
+      "archive_sha256": "edbc7a786d02d63f440f376ad7bff3fcad0c901143e21e3c17f1082f72633673",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "brasier.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.082830017867774,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.050928252278779285,
+      "emblem_face_contrast": 4.955432972852971,
+      "emblem_pixels": 2332,
+      "accent_pixels": 1940,
+      "sha256": "bcc77903c36d43f3f8de8d6e991143992da7c6b64dd3c958e877749c3f80f41e",
+      "archive_sha256": "183bc04a7eb7e0e651c44b415871fb3cf2704be70d393b9cfbd56bb8ab925f14",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "cendres.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.195437065637062,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04608864759289211,
+      "emblem_face_contrast": 3.602848821241972,
+      "emblem_pixels": 1412,
+      "accent_pixels": 541,
+      "sha256": "29e506ea977b9fac893bf931b64ef2ce25f15f544df968ac282100c3c9948235",
+      "archive_sha256": "16073259c2e1926ec159040442f3f47331e4f3be3380c844ae59e55c46f6e378",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "dagues_demi_lune.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 20.505198086124402,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.11873142304579587,
+      "emblem_face_contrast": 11.637347095934798,
+      "emblem_pixels": 3327,
+      "accent_pixels": 3155,
+      "sha256": "78830e3ea5f39f87514acac45dbe67ee22409dee5b9c5be8fcaad1a93180cf66",
+      "archive_sha256": "24335d88bc545c00d1113b6d13eed8e353cf4b4df24bd414e439131a5167da73",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "dodge.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 20.317041009852215,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.12681800275859856,
+      "emblem_face_contrast": 5.2931366560892155,
+      "emblem_pixels": 2770,
+      "accent_pixels": 2534,
+      "sha256": "54940f00ea7a359a36d67a19d3806d3168391ddc8abd14c9cfce2e6558757377",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "doublures.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.567245711123412,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07308693840295721,
+      "emblem_face_contrast": 8.265991526079333,
+      "emblem_pixels": 1705,
+      "accent_pixels": 1564,
+      "sha256": "025ca8b942ae9d2d23cffc884c82d49fc520df5bb8bde22b6ba5d94ab4fbd7fa",
+      "archive_sha256": "454e080c80b0ea58b39c0a080543f66b89423de731b17901d5a97a0ddd22e0b7",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "eclat_de_braise.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.901950229357798,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.058702070076122714,
+      "emblem_face_contrast": 4.890080729248308,
+      "emblem_pixels": 1222,
+      "accent_pixels": 403,
+      "sha256": "3fb74cd06c42e71854864c34f0b3e72e39e45655150e2590cf752f8472f2994a",
+      "archive_sha256": "3d2ae953dde072979bbf4abe255a0808919923668be4bd7c0fa3f6b734cda46b",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "eventail.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.228703140495867,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04465894443525664,
+      "emblem_face_contrast": 10.14177141351299,
+      "emblem_pixels": 1824,
+      "accent_pixels": 1305,
+      "sha256": "f681e2c94b21897148570c9c423d032a3ed13da50aab97ee44e7cf9e2fc6f950",
+      "archive_sha256": "bb901de7ac1a6fbaae3f2cb59dca8b4c28a65059d9ef342345ad134004538c16",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "morfil_aiguisage.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.09974953168044,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.050201088571419916,
+      "emblem_face_contrast": 9.555354186540008,
+      "emblem_pixels": 1270,
+      "accent_pixels": 226,
+      "sha256": "1831fa7ef5e74dacba95cb793c78fa1b02ecf73ebc3d66fed1172c8c8f5b9410",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "morfil_fauche_lune.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.603883715596332,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.0715123170835884,
+      "emblem_face_contrast": 13.184693108444284,
+      "emblem_pixels": 2906,
+      "accent_pixels": 2706,
+      "sha256": "c9c6b18b9f3b0639a461e42be4721762f04c8b29e7244ac8aa28e29191b8b0f5",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "morfil_lames_jumelles.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.999577067254684,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05450628205473573,
+      "emblem_face_contrast": 9.17616950641786,
+      "emblem_pixels": 1202,
+      "accent_pixels": 320,
+      "sha256": "e3ceb0cafdf9afb7b8548ad95e831ee3642353ee8549b50660cf825219a1407d",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "morfil_taille_estoc.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.86236081903708,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.060403536365268407,
+      "emblem_face_contrast": 12.915987867434357,
+      "emblem_pixels": 3159,
+      "accent_pixels": 2544,
+      "sha256": "963c745ee7df550156ad1817338080abba2770272a21624084a2e19f1347755c",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "nova_ardente.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.994985374007522,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.842279339783722,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.018288781039211277,
+      "emblem_face_contrast": 5.68032098507116,
+      "emblem_pixels": 2297,
+      "accent_pixels": 1687,
+      "sha256": "20a1da0b1fe59c37b7f291d328cb0db5ef89bdfee1f5440a7bc31a7610cedbee",
+      "archive_sha256": "20a1da0b1fe59c37b7f291d328cb0db5ef89bdfee1f5440a7bc31a7610cedbee",
+      "hash_changed": false,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "phenix.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.208681243063264,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04551944180691059,
+      "emblem_face_contrast": 4.034519097644503,
+      "emblem_pixels": 1333,
+      "accent_pixels": 347,
+      "sha256": "133f734114afd176aa4b9afe5bc0c612e62aea670def3e06b1af442bd2369a22",
+      "archive_sha256": "cd637acc567d262ff75a5fdbd001f9857a01a6408e123585ed24e236cc75d239",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "pilier_de_flamme.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.13055151856018,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04887728652713552,
+      "emblem_face_contrast": 5.075953047883405,
+      "emblem_pixels": 1090,
+      "accent_pixels": 764,
+      "sha256": "f820182add0eb3e189c9aa78a166b4f54519fe6a86159f7fdba0e28afdcaaa33",
+      "archive_sha256": "dcb0560c0fa2f39ab24a3f3667bfe2b31fd64c1072ce8b6d08675cfdd7d38ca4",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "pluie_de_meteores.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.0854337576093,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.050816349238041236,
+      "emblem_face_contrast": 4.653726267905704,
+      "emblem_pixels": 1013,
+      "accent_pixels": 207,
+      "sha256": "266a55963eaa7726c5d9ca4d7741b0df7ed55c08d02869d898cfa78a14f0b2a1",
+      "archive_sha256": "8d5243f45a7bafc5ade84f0339d8fc586a607b666941f1684e5cad9b92cdf9f9",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "rainette_chant_de_crue.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.547865434380775,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07391986032032805,
+      "emblem_face_contrast": 6.139089800997301,
+      "emblem_pixels": 3264,
+      "accent_pixels": 1761,
+      "sha256": "fd01b009773355c6b641ff23e9cf2fca10f45fcea237fb487b86be772c993263",
+      "archive_sha256": "918f798fb55611a0971d05d4160681d59385aa1978f87ab3f548b8c3993eb15b",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "rainette_gluant.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.504442959690778,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07578606333466409,
+      "emblem_face_contrast": 11.547087360365548,
+      "emblem_pixels": 2572,
+      "accent_pixels": 2452,
+      "sha256": "ece8c70506402f9ed138c9c4dcb657d5c6299d73531b066d802525915638bf25",
+      "archive_sha256": "e5cac89e29ff1f69bb663b14bc2da25ecf9c4eff091ade4171ca80f7d13f0083",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "rainette_grand_saut.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.22374118322803,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04487219850878321,
+      "emblem_face_contrast": 6.002021712535511,
+      "emblem_pixels": 1305,
+      "accent_pixels": 1190,
+      "sha256": "40a6374ba9eeb3688893a630540d82d5a9cbb4ea5fd27b97ed0d27a978d378d3",
+      "archive_sha256": "38cdba7a3a0c91e38458775dd1fc912c7b0ef48701edfbf222ee12f6914a0cfd",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "rainette_langue.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.003562325321408,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05433500437721683,
+      "emblem_face_contrast": 6.214876315829279,
+      "emblem_pixels": 1217,
+      "accent_pixels": 1153,
+      "sha256": "a41a0242995d6549ccf643f39beefdd96b1802fad0268d763fc90ea575c17dec",
+      "archive_sha256": "3c6005502ac636ad974842f508c495c74d280c84c80cc37765e0f557370c22b8",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "tocsin_bras_grappins.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.593678295912497,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07195092370636857,
+      "emblem_face_contrast": 4.674303383196661,
+      "emblem_pixels": 1448,
+      "accent_pixels": 751,
+      "sha256": "47d85fef55c2d148c0abe8155d636438ccf11cdbb11ab6a3f7f6558f3fd66b5e",
+      "archive_sha256": "925d25d11e066466ace8b73ad67435e306bb8b72c830e65ac6c30294638f62e3",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "tocsin_coups_de_botte.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.597873902439026,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.07177060571199645,
+      "emblem_face_contrast": 4.638268905402081,
+      "emblem_pixels": 2932,
+      "accent_pixels": 694,
+      "sha256": "835602ab5d848aea335384ebfe5ab34947190fa03e0eee27b00265882e2eb652",
+      "archive_sha256": "c57413545778cea4620108388576ed0c464040c9ecb3a382b96dc7017a35c4d5",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "tocsin_rivets_rougis.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.982744757609925,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05522969791763965,
+      "emblem_face_contrast": 6.468780078547482,
+      "emblem_pixels": 798,
+      "accent_pixels": 677,
+      "sha256": "de70c580a153528fc90371203f2b9ed21c6e504e0f7d025a2b3dfc702cb9c1eb",
+      "archive_sha256": "cdb15981f86a279b2e6e68bf79f19ce56c446bf4e52c327e49b03ab348804d93",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "tocsin_tete_cloche.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.00393619834711,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05431893613208516,
+      "emblem_face_contrast": 4.597149614439656,
+      "emblem_pixels": 2232,
+      "accent_pixels": 801,
+      "sha256": "dbca4c7bdbbbe34cd10ff5ebb119a478bbebfa9be963852c726dd4783be6efa2",
+      "archive_sha256": "7089b2b15079da0b4c7df6d3d9aad8f14f72ac39c98d3e840e9296b5670af97f",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "toupie.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.872753148911123,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.05995689675121196,
+      "emblem_face_contrast": 8.661723097547029,
+      "emblem_pixels": 2426,
+      "accent_pixels": 2118,
+      "sha256": "a10c267502b5c792e44851ed6e115a0aab9482e852607bdde6be2d8f71ff62e0",
+      "archive_sha256": "f10c91fe5e70f00addf9cb1b003fd167553717afa21b3700a581a44c3b2f13e5",
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "vigie_filet.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.776886330935252,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.0640770429648636,
+      "emblem_face_contrast": 3.533783437202926,
+      "emblem_pixels": 1855,
+      "accent_pixels": 1382,
+      "sha256": "be93b205a0cc3ed16b83ea15d1dd67b2dcbb2ddd761bfb569d4a6d72cb71d403",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "vigie_fusee.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.227557882882884,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.04470816510323561,
+      "emblem_face_contrast": 3.7068870767860176,
+      "emblem_pixels": 744,
+      "accent_pixels": 632,
+      "sha256": "d52e90e8e700a7911d398a0eadcac46c5b6342200ff9d45f6f6c1eb7efb6fdba",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "vigie_grele.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 22.14086985008329,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.048433827200396795,
+      "emblem_face_contrast": 3.857384453476999,
+      "emblem_pixels": 1144,
+      "accent_pixels": 966,
+      "sha256": "de4810ee0f3d4bdfad379298a16a242694bf1459af1c95125534aaa460e0aab4",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    },
+    "vigie_trait.png": {
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "bbox": [
+        10,
+        8,
+        121,
+        120
+      ],
+      "disk_fill": 0.998223986627664,
+      "outside_disk_fraction": 0.0,
+      "medallion_luminance_srgb_255": 21.91415820224719,
+      "reference_luminance_srgb_255": 23.267819393939394,
+      "luminance_relative_error": 0.058177398095362265,
+      "emblem_face_contrast": 3.7015873518022655,
+      "emblem_pixels": 1073,
+      "accent_pixels": 705,
+      "sha256": "83d3262dfc39424f436f4956ac0ae53667032fe0d5707664237abdf27e78baeb",
+      "archive_sha256": null,
+      "hash_changed": true,
+      "no_normal_or_emission": true,
+      "pass": true
+    }
+  },
+  "delivered": 44,
+  "after_bytes": 837883,
+  "protected_changed": [],
+  "status": "PASS",
+  "measurement": "WCAG linear sRGB contrast of accent versus fixed outer-face sample; silhouette at alpha>=128; inscribed disk excludes the two-pixel antialias feather.",
+  "nova_cel_comparison": {
+    "rgb_mean_absolute_difference_255": 19.504934901301976,
+    "alpha_iou": 0.9967556253270539,
+    "decision": "Nova originale conserv?e; la version cel change visiblement la couleur du feu et ajoute de l?encre."
+  },
+  "tests": {
+    "sprites_test": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "spell_tooltip_test": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "spell_button_caption_test": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "hud_metrics_test": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "ui_theme_test": {
+      "result": "RESULT: OK",
+      "errors": []
+    },
+    "texture_budget_test": {
+      "result": "RESULT: FAIL (1)",
+      "errors": [
+        "  FAIL textures embarquées sur mobile (ASTC deflaté) : 182 Mo <= 180 Mo\r",
+        "RESULT: FAIL (1)\r"
+      ]
+    }
+  },
+  "godot_import": {
+    "exit_code": 0,
+    "errors": []
+  },
+  "texture_policy": "0 fichier(s) .import mis ? la politique",
+  "visual_review": "Planche unique examin?e; gabarit rond coh?rent, silhouettes distinctes. Nova cel: feu plus vif et encre plus marqu?e; originale conserv?e.",
+  "validation_status": "FAIL_GLOBAL_MOBILE_BUDGET",
+  "limits": [
+    "Budget mobile global: 182 Mo > 180 Mo; aucune ressource hors icons/spells modifi?e pour le r?duire."
+  ]
+}

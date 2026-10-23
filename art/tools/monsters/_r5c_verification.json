@@ -1,0 +1,179 @@
+{
+  "frost_bear": {
+    "frames": 78,
+    "min_margin": 7,
+    "emissive_frames": 78,
+    "animations": {
+      "idle": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "size": 170
+      },
+      "attack": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_a": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_b": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "phase2": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "death": {
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      }
+    }
+  },
+  "rust_archon": {
+    "frames": 78,
+    "min_margin": 7,
+    "emissive_frames": 78,
+    "animations": {
+      "idle": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "size": 170
+      },
+      "attack": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_a": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_b": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "phase2": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "death": {
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      }
+    }
+  },
+  "stone_colossus": {
+    "frames": 78,
+    "min_margin": 7,
+    "emissive_frames": 70,
+    "animations": {
+      "idle": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "run": {
+        "frames": 8,
+        "directions": [
+          "e",
+          "s",
+          "w",
+          "n"
+        ],
+        "size": 170
+      },
+      "attack": {
+        "frames": 6,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_a": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "cast_b": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "phase2": {
+        "frames": 8,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      },
+      "death": {
+        "frames": 10,
+        "directions": [
+          "s"
+        ],
+        "size": 170
+      }
+    }
+  }
+}

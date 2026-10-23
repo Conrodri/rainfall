@@ -1,0 +1,50 @@
+{
+  "effects": {
+    "coin_burst": {
+      "cell": 512,
+      "frames": 6,
+      "directions": 1,
+      "rig": "CREA",
+      "loop": false
+    },
+    "ransom_ring": {
+      "cell": 256,
+      "frames": 4,
+      "directions": 1,
+      "rig": "TOP",
+      "loop": false
+    },
+    "coin_projectile": {
+      "cell": 48,
+      "frames": 4,
+      "directions": 1,
+      "rig": "CREA",
+      "loop": true
+    },
+    "coin_pickup": {
+      "cell": 48,
+      "frames": 8,
+      "directions": 1,
+      "rig": "CREA",
+      "loop": true
+    },
+    "gold_bleed": {
+      "cell": 192,
+      "frames": 6,
+      "directions": 1,
+      "rig": "CREA",
+      "loop": false
+    },
+    "coffre_arc": {
+      "cell": 192,
+      "frames": 4,
+      "directions": 8,
+      "rig": "CREA",
+      "loop": false
+    }
+  },
+  "frames": 60,
+  "clipped": [],
+  "icons": "AA1 approved bevelled PBR geometry retained",
+  "portrait": 256
+}

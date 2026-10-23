@@ -1,0 +1,9 @@
+# N2B — moss_mantis — 22/10/2026
+
+- Livré : `game/assets/sprites/bosses/mini/moss_mantis/moss_mantis.tres`, 30 PNG, 19 animations, 144 frames de 170 px. Grille/noms/fps R9 conservés ; attaques et sorts non bouclés, impacts aux indices 3/4/4.
+- DA : mante anatomique à six membres, thorax étroit blindé, élytres imbriqués et asymétriques, scies de bois mort, ligaments secs, lichens gris olive déchiquetés. Chitine sombre mouillée, grain/rugosité PBR, unique accent soufre dans les fentes oculaires. Aucun dessin Pillow.
+- Gestes : recul puis fauchage ; ciseaux bilatéraux ; accroupissement puis bond nettement élevé ; déploiement dorsal en phase 2 ; affaissement et repli à la mort. L'invisibilité et le déplacement de l'embuscade restent pilotés par le jeu.
+- Caméra/lumières héritées directement du frost_bear R9 : échelle 4.051028251647949, shift Y 0.2, pivot sol (85,119), Eevee 12 samples, rendu 340 puis réduction 170. Marges finales ≥4 px, alpha diffus/_n/_e identique sur chaque rendu.
+- Sources : `art/blender/monsters/n2b_moss_mantis.blend`, `n2b_frames/` ; recette `art/tools/night/n2b_build.py` ; reprise complète Blender background, puis Python `--pack` et `--verify`.
+- Contrôles : `--verify` PASS ; chargement Godot réel du SpriteFrames et de ses atlas PASS sans erreur ; `sprites_test.tscn` : **RESULT: OK** après actualisation de l'import. Aucun fichier .gd/.tscn modifié. Planche finale `_n2b_contact.png` : 19 lignes d'animations (départ/impact/fin, diffus puis normales), puis références validées.
+- Budget local : 30 atlas ≤1700 px de côté, découpes diffus/_n/_e identiques. Contrôle global `texture_budget.py --top 0` exécuté : trois atlas Averse/wave_cone 6144×8192 hors périmètre restent >4096 (exception AV3 signalée par l'outil) ; APK estimé 302 Mo/200 et textures mobiles 197 Mo/180. Journal `_n2b_texture_budget.log`. Aucune correction hors lot.

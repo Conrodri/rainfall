@@ -1,0 +1,1 @@
+C8b CEL boss: 3 tones, 2px inner ink, folds, quantized screen normals, CEL_Accent. Eevee 8 samples; Standard; 2x Lanczos. CREA 30deg, ortho 5.65, ground pivot (128,225), height 4.5u. Bronze and verdigris robe; cold upper-left rim; single white-crystal accent. Ground extras 64px/u; billboard 90.5px/u. Cross beam split into two atlases. Impact auto=3, spells=4.

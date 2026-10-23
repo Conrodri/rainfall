@@ -1,0 +1,44 @@
+# Cache et import Godot (regénérés par --import)
+game/.godot/
+*.import.tmp
+game/export/
+*.apk
+*.aab
+*.pck
+*.exe
+
+# Rendus bruts et archives (régénérables depuis art/blender + scripts)
+art/renders/
+art/archive_3d/
+art/archive_normals/
+
+# Intermédiaires des lots Codex/Blender (frames, planches contact, journaux)
+art/tools/**/*.png
+art/tools/**/*.done
+art/tools/**/*.log
+art/tools/**/_log*.txt
+art/tools/**/_log*.txt.last.txt
+
+# Sauvegardes Blender et Python
+*.blend1
+*.blend2
+__pycache__/
+*.pyc
+
+# Secrets éventuels (exports signés)
+*.keystore
+*.jks
+.env
+export_credentials.cfg
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Dépendances Python embarquées par les lots
+art/blender/**/deps/
+art/blender/**/*.png
+art/blender/**/*.import
+art/blender/**/*.done
+art/blender/**/*.log

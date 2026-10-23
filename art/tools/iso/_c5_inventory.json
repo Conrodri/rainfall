@@ -1,0 +1,194 @@
+{
+  "swarm_tier1": {
+    "render_px_per_u": 90.50966799187809,
+    "size": 96,
+    "frames": 8,
+    "directions": [
+      "e",
+      "se",
+      "s",
+      "sw",
+      "w",
+      "nw",
+      "n",
+      "ne"
+    ],
+    "pivot": [
+      48.0,
+      67.19999999999999
+    ],
+    "bounds": [
+      4.3529698848724365,
+      27.555158615112305,
+      91.64702796936035,
+      90.01881837844849
+    ],
+    "anims": [
+      "run"
+    ],
+    "tres_sha256": {
+      "swarm_tier1.tres": "f055128101cf82fae0eb037eb248264733e6dee6cfb43a3535fc4d1f61526a8b"
+    },
+    "verified": true,
+    "bounds_at_90_51": [
+      4.3529698848724365,
+      27.555158615112305,
+      91.64702796936035,
+      90.01881837844849
+    ],
+    "fits_at_90_51": true,
+    "camera_elevation_degrees": 30,
+    "normal_space": "screen: right, up, toward camera",
+    "contact_samples": [
+      "run s frame 0",
+      "run s frame 4 (no attack in original contract)"
+    ],
+    "minimum_alpha_margin": 4,
+    "verification": "PASS dimensions, names, directions, unique frames, alpha, emission, original tres/import hashes"
+  },
+  "shooter_tier2": {
+    "render_px_per_u": 64,
+    "size": 112,
+    "frames": 8,
+    "directions": [
+      "e",
+      "se",
+      "s",
+      "sw",
+      "w",
+      "nw",
+      "n",
+      "ne"
+    ],
+    "pivot": [
+      56.0,
+      78.39999999999999
+    ],
+    "bounds": [
+      16.487067937850952,
+      5.627632141113281,
+      95.5129337310791,
+      84.67427110671997
+    ],
+    "anims": [
+      "run",
+      "attack"
+    ],
+    "tres_sha256": {
+      "shooter_tier2.tres": "205d0da6a960ef821194018de434e3d3c28d67947628f4137a6d0434d2b0f4c5"
+    },
+    "verified": true,
+    "bounds_at_90_51": [
+      0.12027558858210341,
+      -24.51566959204152,
+      111.8797267716414,
+      87.27315929312904
+    ],
+    "fits_at_90_51": false,
+    "camera_elevation_degrees": 30,
+    "normal_space": "screen: right, up, toward camera",
+    "contact_samples": [
+      "run s frame 0",
+      "attack s frame 5"
+    ],
+    "minimum_alpha_margin": 6,
+    "verification": "PASS dimensions, names, directions, unique frames, alpha, emission, original tres/import hashes"
+  },
+  "leaper_tier2": {
+    "render_px_per_u": 64,
+    "size": 112,
+    "frames": 8,
+    "directions": [
+      "e",
+      "se",
+      "s",
+      "sw",
+      "w",
+      "nw",
+      "n",
+      "ne"
+    ],
+    "pivot": [
+      56.0,
+      78.39999999999999
+    ],
+    "bounds": [
+      6.260063171386719,
+      28.46848201751709,
+      105.73993682861328,
+      105.64938527345657
+    ],
+    "anims": [
+      "run",
+      "charge"
+    ],
+    "tres_sha256": {
+      "leaper_tier2.tres": "6f39db94f9d2f9ee7d0f638a791b1ee2fe7bf550e84fafd4f637a0fb64307531"
+    },
+    "verified": true,
+    "bounds_at_90_51": [
+      -14.342893254605897,
+      7.786170079296582,
+      126.3428932546059,
+      116.93645022005198
+    ],
+    "fits_at_90_51": false,
+    "camera_elevation_degrees": 30,
+    "normal_space": "screen: right, up, toward camera",
+    "contact_samples": [
+      "run s frame 0",
+      "charge s frame 5"
+    ],
+    "minimum_alpha_margin": 7,
+    "verification": "PASS dimensions, names, directions, unique frames, alpha, emission, original tres/import hashes"
+  },
+  "brute_tier3": {
+    "render_px_per_u": 64,
+    "size": 160,
+    "frames": 8,
+    "directions": [
+      "e",
+      "se",
+      "s",
+      "sw",
+      "w",
+      "nw",
+      "n",
+      "ne"
+    ],
+    "pivot": [
+      80.0,
+      112.0
+    ],
+    "bounds": [
+      16.207153797149658,
+      10.08540153503418,
+      143.79284858703613,
+      134.98517513275146
+    ],
+    "anims": [
+      "run",
+      "attack",
+      "cast"
+    ],
+    "tres_sha256": {
+      "brute_tier3.tres": "4bb81368d4a441ffaa272e4a9331a2e0a67e9b78e8fe51952750ccb072d49084"
+    },
+    "verified": true,
+    "bounds_at_90_51": [
+      -10.216708282451961,
+      -32.12900735296287,
+      170.21671165419986,
+      144.50594640625792
+    ],
+    "fits_at_90_51": false,
+    "camera_elevation_degrees": 30,
+    "normal_space": "screen: right, up, toward camera",
+    "contact_samples": [
+      "run s frame 0",
+      "attack s frame 5"
+    ],
+    "minimum_alpha_margin": 10,
+    "verification": "PASS dimensions, names, directions, unique frames, alpha, emission, original tres/import hashes"
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "crue_ring": {
+    "radius_px": 374.6283,
+    "floor_aspect": 0.999888,
+    "cell_px": 800,
+    "frames": 8,
+    "pivot_relative": [
+      0.5,
+      0.5
+    ],
+    "px_per_u": 64,
+    "measured_frame": 7,
+    "measurement": "projected z=0 ground-body mesh bounds",
+    "per_frame": [
+      {
+        "radius_px": 48.0296,
+        "floor_aspect": 0.994203
+      },
+      {
+        "radius_px": 95.1711,
+        "floor_aspect": 0.998223
+      },
+      {
+        "radius_px": 140.9311,
+        "floor_aspect": 1.004804
+      },
+      {
+        "radius_px": 188.6261,
+        "floor_aspect": 0.999498
+      },
+      {
+        "radius_px": 235.6678,
+        "floor_aspect": 0.999018
+      },
+      {
+        "radius_px": 281.4462,
+        "floor_aspect": 0.999348
+      },
+      {
+        "radius_px": 326.8695,
+        "floor_aspect": 1.001166
+      },
+      {
+        "radius_px": 374.6283,
+        "floor_aspect": 0.999888
+      }
+    ]
+  },
+  "puddle_mirror": {
+    "radius_px": 150.3751,
+    "floor_aspect": 0.970373,
+    "cell_px": 416,
+    "frames": 6,
+    "pivot_relative": [
+      0.5,
+      0.5
+    ],
+    "px_per_u": 64,
+    "measured_frame": 0,
+    "measurement": "projected z=0 ground-body mesh bounds",
+    "per_frame": [
+      {
+        "radius_px": 150.3751,
+        "floor_aspect": 0.970373
+      },
+      {
+        "radius_px": 149.9528,
+        "floor_aspect": 0.979404
+      },
+      {
+        "radius_px": 148.8834,
+        "floor_aspect": 0.992839
+      },
+      {
+        "radius_px": 148.0803,
+        "floor_aspect": 1.001053
+      },
+      {
+        "radius_px": 148.8834,
+        "floor_aspect": 0.992839
+      },
+      {
+        "radius_px": 149.9528,
+        "floor_aspect": 0.979404
+      }
+    ]
+  },
+  "ardent_brasier": {
+    "radius_px": 384.0,
+    "floor_aspect": 0.489527,
+    "cell_px": 1088,
+    "frames": 12,
+    "pivot_relative": [
+      0.5,
+      0.5
+    ],
+    "px_per_u": 64,
+    "measured_frame": 6,
+    "measurement": "projected z=0 ground-body mesh bounds",
+    "per_frame": [
+      {
+        "radius_px": 283.7893,
+        "floor_aspect": 0.502906
+      },
+      {
+        "radius_px": 312.8974,
+        "floor_aspect": 0.503701
+      },
+      {
+        "radius_px": 334.6041,
+        "floor_aspect": 0.509483
+      },
+      {
+        "radius_px": 360.7208,
+        "floor_aspect": 0.489444
+      },
+      {
+        "radius_px": 374.59,
+        "floor_aspect": 0.493224
+      },
+      {
+        "radius_px": 382.0593,
+        "floor_aspect": 0.497645
+      },
+      {
+        "radius_px": 384.0,
+        "floor_aspect": 0.489527
+      },
+      {
+        "radius_px": 369.51,
+        "floor_aspect": 0.495443
+      },
+      {
+        "radius_px": 361.6298,
+        "floor_aspect": 0.49594
+      },
+      {
+        "radius_px": 336.9463,
+        "floor_aspect": 0.503685
+      },
+      {
+        "radius_px": 312.136,
+        "floor_aspect": 0.503845
+      },
+      {
+        "radius_px": 285.2063,
+        "floor_aspect": 0.495555
+      }
+    ]
+  },
+  "ardent_nova": {
+    "radius_px": 224.0,
+    "floor_aspect": 0.489534,
+    "cell_px": 616,
+    "frames": 10,
+    "pivot_relative": [
+      0.5,
+      0.5
+    ],
+    "px_per_u": 64,
+    "measured_frame": 6,
+    "measurement": "projected z=0 ground-body mesh bounds",
+    "per_frame": [
+      {
+        "radius_px": 40.2515,
+        "floor_aspect": 0.501013
+      },
+      {
+        "radius_px": 81.4706,
+        "floor_aspect": 0.504058
+      },
+      {
+        "radius_px": 121.0668,
+        "floor_aspect": 0.507808
+      },
+      {
+        "radius_px": 163.0467,
+        "floor_aspect": 0.490942
+      },
+      {
+        "radius_px": 203.3061,
+        "floor_aspect": 0.493095
+      },
+      {
+        "radius_px": 223.0036,
+        "floor_aspect": 0.497807
+      },
+      {
+        "radius_px": 224.0,
+        "floor_aspect": 0.489534
+      },
+      {
+        "radius_px": 219.63,
+        "floor_aspect": 0.495377
+      },
+      {
+        "radius_px": 223.1434,
+        "floor_aspect": 0.495622
+      },
+      {
+        "radius_px": 220.2782,
+        "floor_aspect": 0.50333
+      }
+    ]
+  }
+}

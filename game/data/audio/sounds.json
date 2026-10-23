@@ -1,0 +1,1471 @@
+{
+  "version": 1,
+  "_doc": "Table identifiant logique -> fichiers. Les fichiers se trouvent dans res://assets/audio/. Si 'files' est absent ou vide, le systeme cherche automatiquement les fichiers dont le nom est l'id avec '.' remplace par '_' (hit.light -> hit_light.ogg, hit_light_01.ogg ...). Un son sans fichier est simplement muet. A mettre a jour depuis assets/audio/MANIFEST.md. Variantes de puissance : spell.<id>.cast_light|medium|heavy (choisie par Audio.play_cast selon la puissance), spell.<id>.hit_<niveau>. Variantes B d'Ardent (ArdentKit.VARIANT_B_IDS) : roaming_embers, flame_pillar, meteor_rain, phoenix, dont les fichiers n'ont pas le mot 'cast' (table 'files' ci-dessous).",
+  "config": {
+    "voices_pc": 40,
+    "voices_mobile": 24,
+    "hits_per_frame": 4,
+    "hits_per_frame_mobile": 3,
+    "kills_per_frame": 3,
+    "hit_power": {
+      "light_max": 1.4,
+      "medium_max": 3.2,
+      "full_ratio": 6.0,
+      "vol_min_db": -6.0,
+      "vol_range_db": 8.0,
+      "pitch_max": 1.12,
+      "pitch_range": 0.22
+    },
+    "steps": {
+      "min_speed": 30.0,
+      "player_stride": 105.0,
+      "monster_radius": 650.0,
+      "monster_steps_per_tick": 3,
+      "monster_stride": {
+        "1": 70.0,
+        "2": 95.0,
+        "3": 130.0,
+        "4": 170.0
+      }
+    }
+  },
+  "prefixes": [
+    [
+      "lightning.",
+      "impacts"
+    ],
+    [
+      "telegraph.",
+      "impacts"
+    ],
+    [
+      "enemy.",
+      "impacts"
+    ],
+    [
+      "status.",
+      "impacts"
+    ],
+    [
+      "spell.",
+      "spells"
+    ],
+    [
+      "hit.",
+      "impacts"
+    ],
+    [
+      "death.",
+      "impacts"
+    ],
+    [
+      "step.",
+      "footsteps_monster"
+    ],
+    [
+      "amb.",
+      "ambience_oneshot"
+    ],
+    [
+      "boss.",
+      "voice"
+    ],
+    [
+      "player.",
+      "voice"
+    ],
+    [
+      "ui.",
+      "ui"
+    ],
+    [
+      "pickup.",
+      "ui"
+    ],
+    [
+      "chest.",
+      "ui"
+    ],
+    [
+      "stage.",
+      "ui"
+    ]
+  ],
+  "families": {
+    "spells": {
+      "bus": "Spells",
+      "cap": 8,
+      "priority": 50,
+      "max_instances": 3,
+      "min_interval_ms": 40,
+      "pitch_var": 0.05,
+      "vol_var_db": 1.0,
+      "max_distance": 1500,
+      "attenuation": 1.6
+    },
+    "impacts": {
+      "bus": "Impacts",
+      "cap": 10,
+      "priority": 30,
+      "max_instances": 3,
+      "min_interval_ms": 35,
+      "pitch_var": 0.06,
+      "vol_var_db": 1.5,
+      "max_distance": 1300,
+      "attenuation": 1.8
+    },
+    "footsteps_player": {
+      "bus": "Footsteps",
+      "cap": 2,
+      "priority": 15,
+      "max_instances": 2,
+      "min_interval_ms": 90,
+      "pitch_var": 0.06,
+      "vol_var_db": 1.5,
+      "max_distance": 900,
+      "attenuation": 1.5,
+      "vol_db": -4.0
+    },
+    "footsteps_monster": {
+      "bus": "Footsteps",
+      "cap": 4,
+      "priority": 8,
+      "max_instances": 2,
+      "min_interval_ms": 70,
+      "pitch_var": 0.1,
+      "vol_var_db": 2.0,
+      "max_distance": 650,
+      "attenuation": 2.0,
+      "vol_db": -9.0
+    },
+    "ambience_oneshot": {
+      "bus": "Ambience",
+      "cap": 3,
+      "priority": 40,
+      "max_instances": 2,
+      "min_interval_ms": 300,
+      "pitch_var": 0.04,
+      "vol_var_db": 1.0,
+      "max_distance": 99999,
+      "attenuation": 1.0
+    },
+    "voice": {
+      "bus": "SFX",
+      "cap": 4,
+      "priority": 90,
+      "max_instances": 2,
+      "min_interval_ms": 150,
+      "pitch_var": 0.02,
+      "vol_var_db": 0.5,
+      "max_distance": 99999,
+      "attenuation": 1.0
+    },
+    "ui": {
+      "bus": "UI",
+      "cap": 8,
+      "priority": 100,
+      "max_instances": 4,
+      "min_interval_ms": 0,
+      "pitch_var": 0.0,
+      "vol_var_db": 0.0
+    },
+    "misc": {
+      "bus": "SFX",
+      "cap": 4,
+      "priority": 20,
+      "max_instances": 3,
+      "min_interval_ms": 30,
+      "pitch_var": 0.05,
+      "vol_var_db": 1.0,
+      "max_distance": 1300,
+      "attenuation": 1.6
+    }
+  },
+  "ducks": {
+    "ultimate": {
+      "db": 8.0,
+      "hold": 0.8,
+      "attack": 0.08,
+      "release": 1.0
+    },
+    "legendary_chest": {
+      "db": 20.0,
+      "hold": 1.6,
+      "attack": 0.2,
+      "release": 1.5
+    },
+    "boss": {
+      "db": 12.0,
+      "hold": 1.8,
+      "attack": 0.15,
+      "release": 1.5
+    }
+  },
+  "sounds": {
+    "hit.light": {
+      "vol_db": 0.0,
+      "priority": 28,
+      "max_instances": 3,
+      "min_interval_ms": 35
+    },
+    "hit.medium": {
+      "vol_db": 0.0,
+      "priority": 32,
+      "max_instances": 3,
+      "min_interval_ms": 45
+    },
+    "hit.heavy": {
+      "vol_db": 1.0,
+      "priority": 45,
+      "max_instances": 2,
+      "min_interval_ms": 60
+    },
+    "death.t1": {
+      "priority": 22,
+      "max_instances": 3,
+      "min_interval_ms": 50
+    },
+    "death.t2": {
+      "priority": 28,
+      "max_instances": 2,
+      "min_interval_ms": 70
+    },
+    "death.t3": {
+      "priority": 36,
+      "max_instances": 2,
+      "min_interval_ms": 100
+    },
+    "death.t4": {
+      "priority": 60,
+      "max_instances": 1
+    },
+    "death.elite": {
+      "priority": 55,
+      "max_instances": 1,
+      "min_interval_ms": 150
+    },
+    "spell.cast": {},
+    "spell.ultimate": {
+      "priority": 80,
+      "max_instances": 1,
+      "vol_db": 2.0
+    },
+    "step.generic": {},
+    "step.player": {},
+    "step.monster": {},
+    "step.boss": {
+      "priority": 40,
+      "vol_db": 0.0
+    },
+    "amb.thunder_close": {
+      "priority": 60
+    },
+    "amb.thunder_far": {
+      "priority": 50
+    },
+    "boss.spawn": {
+      "priority": 95
+    },
+    "boss.defeat": {
+      "priority": 95
+    },
+    "player.hurt": {
+      "priority": 85,
+      "min_interval_ms": 120
+    },
+    "player.death": {
+      "family": "ui",
+      "priority": 100
+    },
+    "ui.click": {
+      "min_interval_ms": 40,
+      "vol_db": -4.0
+    },
+    "ui.hover": {
+      "min_interval_ms": 60,
+      "vol_db": -12.0
+    },
+    "ui.level_up": {
+      "max_instances": 1
+    },
+    "ui.spell_ready": {
+      "min_interval_ms": 250,
+      "max_instances": 2
+    },
+    "ui.dice": {
+      "max_instances": 1
+    },
+    "ui.item_pick": {},
+    "pickup.coin": {
+      "max_instances": 4,
+      "min_interval_ms": 35,
+      "vol_db": -4.0
+    },
+    "pickup.xp": {
+      "max_instances": 2,
+      "min_interval_ms": 80
+    },
+    "pickup.ruby": {
+      "max_instances": 2,
+      "min_interval_ms": 100
+    },
+    "chest.lock": {
+      "max_instances": 1
+    },
+    "chest.open.petit": {
+      "max_instances": 1
+    },
+    "chest.open.large": {
+      "max_instances": 1
+    },
+    "chest.open.legendaire": {
+      "max_instances": 1
+    },
+    "chest.open.boss": {
+      "max_instances": 1
+    },
+    "chest.reveal": {
+      "max_instances": 1
+    },
+    "chest.legendary.rise": {
+      "max_instances": 1
+    },
+    "chest.legendary.impact": {
+      "max_instances": 1
+    },
+    "stage.cleared": {
+      "max_instances": 1
+    },
+    "spell.flame_pillar.cast_light": {
+      "files": [
+        "spells/spell_flame_pillar_light_01.ogg",
+        "spells/spell_flame_pillar_light_02.ogg",
+        "spells/spell_flame_pillar_light_03.ogg"
+      ]
+    },
+    "spell.meteor_rain.cast_light": {
+      "files": [
+        "spells/spell_meteor_rain_light_01.ogg",
+        "spells/spell_meteor_rain_light_02.ogg",
+        "spells/spell_meteor_rain_light_03.ogg"
+      ]
+    },
+    "spell.phoenix.cast_light": {
+      "priority": 80,
+      "max_instances": 1,
+      "files": [
+        "spells/spell_phoenix_light_01.ogg",
+        "spells/spell_phoenix_light_02.ogg",
+        "spells/spell_phoenix_light_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.cast_light": {
+      "files": [
+        "spells/spell_roaming_embers_start_light_01.ogg",
+        "spells/spell_roaming_embers_start_light_02.ogg",
+        "spells/spell_roaming_embers_start_light_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.loop_light": {
+      "max_instances": 1,
+      "files": [
+        "spells/spell_roaming_embers_loop_light_01.ogg",
+        "spells/spell_roaming_embers_loop_light_02.ogg"
+      ]
+    },
+    "spell.brasier.cast_light": {
+      "priority": 80,
+      "max_instances": 1
+    },
+    "spell.cendres.cast_light": {
+      "max_instances": 2,
+      "vol_db": -2.0
+    },
+    "spell.flame_pillar.cast_medium": {
+      "files": [
+        "spells/spell_flame_pillar_medium_01.ogg",
+        "spells/spell_flame_pillar_medium_02.ogg",
+        "spells/spell_flame_pillar_medium_03.ogg"
+      ]
+    },
+    "spell.meteor_rain.cast_medium": {
+      "files": [
+        "spells/spell_meteor_rain_medium_01.ogg",
+        "spells/spell_meteor_rain_medium_02.ogg",
+        "spells/spell_meteor_rain_medium_03.ogg"
+      ]
+    },
+    "spell.phoenix.cast_medium": {
+      "priority": 80,
+      "max_instances": 1,
+      "files": [
+        "spells/spell_phoenix_medium_01.ogg",
+        "spells/spell_phoenix_medium_02.ogg",
+        "spells/spell_phoenix_medium_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.cast_medium": {
+      "files": [
+        "spells/spell_roaming_embers_start_medium_01.ogg",
+        "spells/spell_roaming_embers_start_medium_02.ogg",
+        "spells/spell_roaming_embers_start_medium_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.loop_medium": {
+      "max_instances": 1,
+      "files": [
+        "spells/spell_roaming_embers_loop_medium_01.ogg",
+        "spells/spell_roaming_embers_loop_medium_02.ogg"
+      ]
+    },
+    "spell.brasier.cast_medium": {
+      "priority": 80,
+      "max_instances": 1
+    },
+    "spell.cendres.cast_medium": {
+      "max_instances": 2,
+      "vol_db": -2.0
+    },
+    "spell.flame_pillar.cast_heavy": {
+      "files": [
+        "spells/spell_flame_pillar_heavy_01.ogg",
+        "spells/spell_flame_pillar_heavy_02.ogg",
+        "spells/spell_flame_pillar_heavy_03.ogg"
+      ]
+    },
+    "spell.meteor_rain.cast_heavy": {
+      "files": [
+        "spells/spell_meteor_rain_heavy_01.ogg",
+        "spells/spell_meteor_rain_heavy_02.ogg",
+        "spells/spell_meteor_rain_heavy_03.ogg"
+      ]
+    },
+    "spell.phoenix.cast_heavy": {
+      "priority": 80,
+      "max_instances": 1,
+      "files": [
+        "spells/spell_phoenix_heavy_01.ogg",
+        "spells/spell_phoenix_heavy_02.ogg",
+        "spells/spell_phoenix_heavy_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.cast_heavy": {
+      "files": [
+        "spells/spell_roaming_embers_start_heavy_01.ogg",
+        "spells/spell_roaming_embers_start_heavy_02.ogg",
+        "spells/spell_roaming_embers_start_heavy_03.ogg"
+      ]
+    },
+    "spell.roaming_embers.loop_heavy": {
+      "max_instances": 1,
+      "files": [
+        "spells/spell_roaming_embers_loop_heavy_01.ogg",
+        "spells/spell_roaming_embers_loop_heavy_02.ogg"
+      ]
+    },
+    "spell.brasier.cast_heavy": {
+      "priority": 80,
+      "max_instances": 1
+    },
+    "spell.cendres.cast_heavy": {
+      "max_instances": 2,
+      "vol_db": -2.0
+    },
+    "hit.crit": {
+      "priority": 40,
+      "max_instances": 2,
+      "min_interval_ms": 60,
+      "vol_db": -2.0
+    },
+    "death.boss_heavy": {
+      "priority": 90,
+      "max_instances": 1
+    },
+    "status.burn.light": {
+      "priority": 20,
+      "max_instances": 2,
+      "min_interval_ms": 120,
+      "vol_db": -6.0
+    },
+    "status.frost.light": {
+      "priority": 20,
+      "max_instances": 2,
+      "min_interval_ms": 120,
+      "vol_db": -6.0
+    },
+    "status.poison.light": {
+      "priority": 20,
+      "max_instances": 2,
+      "min_interval_ms": 120,
+      "vol_db": -6.0
+    },
+    "enemy.contact.light": {
+      "priority": 18,
+      "max_instances": 2,
+      "min_interval_ms": 90,
+      "vol_db": -6.0
+    },
+    "enemy.shot.medium": {
+      "priority": 20,
+      "max_instances": 3,
+      "min_interval_ms": 70,
+      "vol_db": -5.0
+    },
+    "enemy.brute_cone.heavy": {
+      "priority": 35,
+      "max_instances": 2,
+      "min_interval_ms": 120
+    },
+    "enemy.shockwave.heavy": {
+      "priority": 45,
+      "max_instances": 2,
+      "min_interval_ms": 200
+    },
+    "telegraph.warn_light.light": {
+      "priority": 30,
+      "max_instances": 2,
+      "min_interval_ms": 150,
+      "vol_db": -4.0
+    },
+    "telegraph.warn_heavy.heavy": {
+      "priority": 55,
+      "max_instances": 1,
+      "min_interval_ms": 300
+    },
+    "telegraph.boss.heavy": {
+      "priority": 70,
+      "max_instances": 1,
+      "min_interval_ms": 300
+    },
+    "lightning.chain.medium": {
+      "priority": 30,
+      "max_instances": 2,
+      "min_interval_ms": 80,
+      "vol_db": -3.0
+    },
+    "player.heal": {
+      "priority": 60,
+      "max_instances": 1,
+      "min_interval_ms": 400,
+      "vol_db": -4.0
+    },
+    "spell.tocsin_rivets_rougis.cast_light": {
+      "files": [
+        "spells/spell_tocsin_rivets_rougis_cast_light_01.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_light_02.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_light_03.ogg"
+      ]
+    },
+    "spell.tocsin_rivets_rougis.cast_medium": {
+      "files": [
+        "spells/spell_tocsin_rivets_rougis_cast_medium_01.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_medium_02.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_medium_03.ogg"
+      ]
+    },
+    "spell.tocsin_rivets_rougis.cast_heavy": {
+      "files": [
+        "spells/spell_tocsin_rivets_rougis_cast_heavy_01.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_heavy_02.ogg",
+        "spells/spell_tocsin_rivets_rougis_cast_heavy_03.ogg"
+      ]
+    },
+    "spell.tocsin_bras_grappins.cast_light": {
+      "files": [
+        "spells/spell_tocsin_bras_grappins_cast_light_01.ogg",
+        "spells/spell_tocsin_bras_grappins_cast_light_02.ogg"
+      ]
+    },
+    "spell.tocsin_bras_grappins.cast_medium": {
+      "files": [
+        "spells/spell_tocsin_bras_grappins_cast_medium_01.ogg",
+        "spells/spell_tocsin_bras_grappins_cast_medium_02.ogg"
+      ]
+    },
+    "spell.tocsin_bras_grappins.cast_heavy": {
+      "files": [
+        "spells/spell_tocsin_bras_grappins_cast_heavy_01.ogg",
+        "spells/spell_tocsin_bras_grappins_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.tocsin_coups_de_botte.cast_light": {
+      "files": [
+        "spells/spell_tocsin_coups_de_botte_cast_light_01.ogg",
+        "spells/spell_tocsin_coups_de_botte_cast_light_02.ogg"
+      ]
+    },
+    "spell.tocsin_coups_de_botte.cast_medium": {
+      "files": [
+        "spells/spell_tocsin_coups_de_botte_cast_medium_01.ogg",
+        "spells/spell_tocsin_coups_de_botte_cast_medium_02.ogg"
+      ]
+    },
+    "spell.tocsin_coups_de_botte.cast_heavy": {
+      "files": [
+        "spells/spell_tocsin_coups_de_botte_cast_heavy_01.ogg",
+        "spells/spell_tocsin_coups_de_botte_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.tocsin_tete_cloche.cast_light": {
+      "files": [
+        "spells/spell_tocsin_tete_cloche_cast_light_01.ogg",
+        "spells/spell_tocsin_tete_cloche_cast_light_02.ogg"
+      ]
+    },
+    "spell.tocsin_tete_cloche.cast_medium": {
+      "files": [
+        "spells/spell_tocsin_tete_cloche_cast_medium_01.ogg",
+        "spells/spell_tocsin_tete_cloche_cast_medium_02.ogg"
+      ]
+    },
+    "spell.tocsin_tete_cloche.cast_heavy": {
+      "files": [
+        "spells/spell_tocsin_tete_cloche_cast_heavy_01.ogg",
+        "spells/spell_tocsin_tete_cloche_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.goutte_lame.cast_light": {
+      "files": [
+        "spells/spell_goutte_lame_cast_light_01.ogg",
+        "spells/spell_goutte_lame_cast_light_02.ogg",
+        "spells/spell_goutte_lame_cast_light_03.ogg"
+      ]
+    },
+    "spell.goutte_lame.cast_medium": {
+      "files": [
+        "spells/spell_goutte_lame_cast_medium_01.ogg",
+        "spells/spell_goutte_lame_cast_medium_02.ogg",
+        "spells/spell_goutte_lame_cast_medium_03.ogg"
+      ]
+    },
+    "spell.goutte_lame.cast_heavy": {
+      "files": [
+        "spells/spell_goutte_lame_cast_heavy_01.ogg",
+        "spells/spell_goutte_lame_cast_heavy_02.ogg",
+        "spells/spell_goutte_lame_cast_heavy_03.ogg"
+      ]
+    },
+    "spell.vague.cast_light": {
+      "files": [
+        "spells/spell_vague_cast_light_01.ogg",
+        "spells/spell_vague_cast_light_02.ogg"
+      ]
+    },
+    "spell.vague.cast_medium": {
+      "files": [
+        "spells/spell_vague_cast_medium_01.ogg",
+        "spells/spell_vague_cast_medium_02.ogg"
+      ]
+    },
+    "spell.vague.cast_heavy": {
+      "files": [
+        "spells/spell_vague_cast_heavy_01.ogg",
+        "spells/spell_vague_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.flaque_miroir.cast_light": {
+      "files": [
+        "spells/spell_flaque_miroir_cast_light_01.ogg",
+        "spells/spell_flaque_miroir_cast_light_02.ogg"
+      ]
+    },
+    "spell.flaque_miroir.cast_medium": {
+      "files": [
+        "spells/spell_flaque_miroir_cast_medium_01.ogg",
+        "spells/spell_flaque_miroir_cast_medium_02.ogg"
+      ]
+    },
+    "spell.flaque_miroir.cast_heavy": {
+      "files": [
+        "spells/spell_flaque_miroir_cast_heavy_01.ogg",
+        "spells/spell_flaque_miroir_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.crue.cast_light": {
+      "files": [
+        "spells/spell_crue_cast_light_01.ogg",
+        "spells/spell_crue_cast_light_02.ogg"
+      ]
+    },
+    "spell.crue.cast_medium": {
+      "files": [
+        "spells/spell_crue_cast_medium_01.ogg",
+        "spells/spell_crue_cast_medium_02.ogg"
+      ]
+    },
+    "spell.crue.cast_heavy": {
+      "files": [
+        "spells/spell_crue_cast_heavy_01.ogg",
+        "spells/spell_crue_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_boucle.cast_light": {
+      "files": [
+        "spells/spell_arpenteuse_boucle_cast_light_01.ogg",
+        "spells/spell_arpenteuse_boucle_cast_light_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_boucle.cast_medium": {
+      "files": [
+        "spells/spell_arpenteuse_boucle_cast_medium_01.ogg",
+        "spells/spell_arpenteuse_boucle_cast_medium_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_boucle.cast_heavy": {
+      "files": [
+        "spells/spell_arpenteuse_boucle_cast_heavy_01.ogg",
+        "spells/spell_arpenteuse_boucle_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_piquet.cast_light": {
+      "files": [
+        "spells/spell_arpenteuse_piquet_cast_light_01.ogg",
+        "spells/spell_arpenteuse_piquet_cast_light_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_piquet.cast_medium": {
+      "files": [
+        "spells/spell_arpenteuse_piquet_cast_medium_01.ogg",
+        "spells/spell_arpenteuse_piquet_cast_medium_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_piquet.cast_heavy": {
+      "files": [
+        "spells/spell_arpenteuse_piquet_cast_heavy_01.ogg",
+        "spells/spell_arpenteuse_piquet_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_tendeur.cast_light": {
+      "files": [
+        "spells/spell_arpenteuse_tendeur_cast_light_01.ogg",
+        "spells/spell_arpenteuse_tendeur_cast_light_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_tendeur.cast_medium": {
+      "files": [
+        "spells/spell_arpenteuse_tendeur_cast_medium_01.ogg",
+        "spells/spell_arpenteuse_tendeur_cast_medium_02.ogg"
+      ]
+    },
+    "spell.arpenteuse_tendeur.cast_heavy": {
+      "files": [
+        "spells/spell_arpenteuse_tendeur_cast_heavy_01.ogg",
+        "spells/spell_arpenteuse_tendeur_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.rainette_langue.cast_light": {
+      "files": [
+        "spells/spell_rainette_langue_cast_light_01.ogg",
+        "spells/spell_rainette_langue_cast_light_02.ogg",
+        "spells/spell_rainette_langue_cast_light_03.ogg"
+      ]
+    },
+    "spell.rainette_langue.cast_medium": {
+      "files": [
+        "spells/spell_rainette_langue_cast_medium_01.ogg",
+        "spells/spell_rainette_langue_cast_medium_02.ogg",
+        "spells/spell_rainette_langue_cast_medium_03.ogg"
+      ]
+    },
+    "spell.rainette_langue.cast_heavy": {
+      "files": [
+        "spells/spell_rainette_langue_cast_heavy_01.ogg",
+        "spells/spell_rainette_langue_cast_heavy_02.ogg",
+        "spells/spell_rainette_langue_cast_heavy_03.ogg"
+      ]
+    },
+    "spell.rainette_grand_saut.cast_light": {
+      "files": [
+        "spells/spell_rainette_grand_saut_cast_light_01.ogg",
+        "spells/spell_rainette_grand_saut_cast_light_02.ogg"
+      ]
+    },
+    "spell.rainette_grand_saut.cast_medium": {
+      "files": [
+        "spells/spell_rainette_grand_saut_cast_medium_01.ogg",
+        "spells/spell_rainette_grand_saut_cast_medium_02.ogg"
+      ]
+    },
+    "spell.rainette_grand_saut.cast_heavy": {
+      "files": [
+        "spells/spell_rainette_grand_saut_cast_heavy_01.ogg",
+        "spells/spell_rainette_grand_saut_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.rainette_gluant.cast_light": {
+      "files": [
+        "spells/spell_rainette_gluant_cast_light_01.ogg",
+        "spells/spell_rainette_gluant_cast_light_02.ogg"
+      ]
+    },
+    "spell.rainette_gluant.cast_medium": {
+      "files": [
+        "spells/spell_rainette_gluant_cast_medium_01.ogg",
+        "spells/spell_rainette_gluant_cast_medium_02.ogg"
+      ]
+    },
+    "spell.rainette_gluant.cast_heavy": {
+      "files": [
+        "spells/spell_rainette_gluant_cast_heavy_01.ogg",
+        "spells/spell_rainette_gluant_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.rainette_chant_de_crue.cast_light": {
+      "files": [
+        "spells/spell_rainette_chant_de_crue_cast_light_01.ogg",
+        "spells/spell_rainette_chant_de_crue_cast_light_02.ogg"
+      ]
+    },
+    "spell.rainette_chant_de_crue.cast_medium": {
+      "files": [
+        "spells/spell_rainette_chant_de_crue_cast_medium_01.ogg",
+        "spells/spell_rainette_chant_de_crue_cast_medium_02.ogg"
+      ]
+    },
+    "spell.rainette_chant_de_crue.cast_heavy": {
+      "files": [
+        "spells/spell_rainette_chant_de_crue_cast_heavy_01.ogg",
+        "spells/spell_rainette_chant_de_crue_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.avare_coup_de_coffre.cast_light": {
+      "files": [
+        "spells/spell_avare_coup_de_coffre_cast_light_01.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_light_02.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_light_03.ogg"
+      ]
+    },
+    "spell.avare_coup_de_coffre.cast_medium": {
+      "files": [
+        "spells/spell_avare_coup_de_coffre_cast_medium_01.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_medium_02.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_medium_03.ogg"
+      ]
+    },
+    "spell.avare_coup_de_coffre.cast_heavy": {
+      "files": [
+        "spells/spell_avare_coup_de_coffre_cast_heavy_01.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_heavy_02.ogg",
+        "spells/spell_avare_coup_de_coffre_cast_heavy_03.ogg"
+      ]
+    },
+    "spell.avare_poignee_de_pieces.cast_light": {
+      "files": [
+        "spells/spell_avare_poignee_de_pieces_cast_light_01.ogg",
+        "spells/spell_avare_poignee_de_pieces_cast_light_02.ogg"
+      ]
+    },
+    "spell.avare_poignee_de_pieces.cast_medium": {
+      "files": [
+        "spells/spell_avare_poignee_de_pieces_cast_medium_01.ogg",
+        "spells/spell_avare_poignee_de_pieces_cast_medium_02.ogg"
+      ]
+    },
+    "spell.avare_poignee_de_pieces.cast_heavy": {
+      "files": [
+        "spells/spell_avare_poignee_de_pieces_cast_heavy_01.ogg",
+        "spells/spell_avare_poignee_de_pieces_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.avare_rancon.cast_light": {
+      "files": [
+        "spells/spell_avare_rancon_cast_light_01.ogg",
+        "spells/spell_avare_rancon_cast_light_02.ogg"
+      ]
+    },
+    "spell.avare_rancon.cast_medium": {
+      "files": [
+        "spells/spell_avare_rancon_cast_medium_01.ogg",
+        "spells/spell_avare_rancon_cast_medium_02.ogg"
+      ]
+    },
+    "spell.avare_rancon.cast_heavy": {
+      "files": [
+        "spells/spell_avare_rancon_cast_heavy_01.ogg",
+        "spells/spell_avare_rancon_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.avare_faillite.cast_light": {
+      "files": [
+        "spells/spell_avare_faillite_cast_light_01.ogg",
+        "spells/spell_avare_faillite_cast_light_02.ogg"
+      ]
+    },
+    "spell.avare_faillite.cast_medium": {
+      "files": [
+        "spells/spell_avare_faillite_cast_medium_01.ogg",
+        "spells/spell_avare_faillite_cast_medium_02.ogg"
+      ]
+    },
+    "spell.avare_faillite.cast_heavy": {
+      "files": [
+        "spells/spell_avare_faillite_cast_heavy_01.ogg",
+        "spells/spell_avare_faillite_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.gifle_de_vase.cast_light": {
+      "files": [
+        "spells/spell_gifle_de_vase_cast_light_01.ogg",
+        "spells/spell_gifle_de_vase_cast_light_02.ogg",
+        "spells/spell_gifle_de_vase_cast_light_03.ogg"
+      ]
+    },
+    "spell.gifle_de_vase.cast_medium": {
+      "files": [
+        "spells/spell_gifle_de_vase_cast_medium_01.ogg",
+        "spells/spell_gifle_de_vase_cast_medium_02.ogg",
+        "spells/spell_gifle_de_vase_cast_medium_03.ogg"
+      ]
+    },
+    "spell.gifle_de_vase.cast_heavy": {
+      "files": [
+        "spells/spell_gifle_de_vase_cast_heavy_01.ogg",
+        "spells/spell_gifle_de_vase_cast_heavy_02.ogg",
+        "spells/spell_gifle_de_vase_cast_heavy_03.ogg"
+      ]
+    },
+    "spell.detacher.cast_light": {
+      "files": [
+        "spells/spell_detacher_cast_light_01.ogg",
+        "spells/spell_detacher_cast_light_02.ogg"
+      ]
+    },
+    "spell.detacher.cast_medium": {
+      "files": [
+        "spells/spell_detacher_cast_medium_01.ogg",
+        "spells/spell_detacher_cast_medium_02.ogg"
+      ]
+    },
+    "spell.detacher.cast_heavy": {
+      "files": [
+        "spells/spell_detacher_cast_heavy_01.ogg",
+        "spells/spell_detacher_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.rappel.cast_light": {
+      "files": [
+        "spells/spell_rappel_cast_light_01.ogg",
+        "spells/spell_rappel_cast_light_02.ogg"
+      ]
+    },
+    "spell.rappel.cast_medium": {
+      "files": [
+        "spells/spell_rappel_cast_medium_01.ogg",
+        "spells/spell_rappel_cast_medium_02.ogg"
+      ]
+    },
+    "spell.rappel.cast_heavy": {
+      "files": [
+        "spells/spell_rappel_cast_heavy_01.ogg",
+        "spells/spell_rappel_cast_heavy_02.ogg"
+      ]
+    },
+    "spell.bourbier.cast_light": {
+      "files": [
+        "spells/spell_bourbier_cast_light_01.ogg",
+        "spells/spell_bourbier_cast_light_02.ogg"
+      ]
+    },
+    "spell.bourbier.cast_medium": {
+      "files": [
+        "spells/spell_bourbier_cast_medium_01.ogg",
+        "spells/spell_bourbier_cast_medium_02.ogg"
+      ]
+    },
+    "spell.bourbier.cast_heavy": {
+      "files": [
+        "spells/spell_bourbier_cast_heavy_01.ogg",
+        "spells/spell_bourbier_cast_heavy_02.ogg"
+      ]
+    }
+  },
+  "maps": {
+    "default": {
+      "music": [
+        {
+          "id": "music.default.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.default.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.default.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.default.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.default",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -14,
+            -15,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -17,
+            -10,
+            -10,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -18,
+            -8,
+            -5
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind",
+          "db": [
+            -24,
+            -20,
+            -16,
+            -12,
+            -9
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "stone",
+        "~": "water",
+        "#": "stone"
+      }
+    },
+    "menu": {
+      "music": [
+        {
+          "id": "music.menu",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "boss": [],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -12,
+            -12,
+            -12,
+            -12
+          ],
+          "rain": true
+        }
+      ],
+      "surfaces": {}
+    },
+    "terrasses_noyees": {
+      "music": [
+        {
+          "id": "music.terrasses_noyees.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.terrasses_noyees",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -18,
+            -17,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -19,
+            -11,
+            -10,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -19,
+            -8,
+            -5
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.terrasses_noyees",
+          "db": [
+            -22,
+            -19,
+            -15,
+            -12,
+            -9
+          ]
+        },
+        {
+          "id": "amb.terrasses_noyees.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -10
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "wet",
+        "~": "water",
+        "#": "stone"
+      }
+    },
+    "foret_brume": {
+      "music": [
+        {
+          "id": "music.foret_brume.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.foret_brume.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.foret_brume.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.foret_brume.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.foret_brume",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -16,
+            -16,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -18,
+            -10,
+            -10,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -18,
+            -8,
+            -5
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.foret_brume.decor",
+          "db": [
+            -12,
+            -12,
+            -13,
+            -16,
+            -20
+          ]
+        },
+        {
+          "id": "amb.wind.foret_brume",
+          "db": [
+            -24,
+            -21,
+            -18,
+            -16,
+            -14
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "dirt",
+        ",": "grass",
+        "~": "water",
+        "#": "dirt"
+      }
+    },
+    "cite_rouille": {
+      "music": [
+        {
+          "id": "music.cite_rouille.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.cite_rouille.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.cite_rouille.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.cite_rouille.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.cite_rouille",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -13,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -15,
+            -8,
+            -8,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -16,
+            -6,
+            -3
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.cite_rouille",
+          "db": [
+            -20,
+            -17,
+            -14,
+            -11,
+            -8
+          ]
+        },
+        {
+          "id": "amb.cite_rouille.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -8
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "metal",
+        ",": "metal",
+        "~": "water",
+        "#": "metal"
+      }
+    }
+  }
+}

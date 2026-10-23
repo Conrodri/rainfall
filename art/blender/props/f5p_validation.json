@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "normal_colors": {
+    "mother_rod_off": 17,
+    "mother_rod_done": 17,
+    "mother_rod_active": 17,
+    "column": 13,
+    "chapel": 17,
+    "crystal_giant": 12
+  },
+  "bounds": {
+    "mother_rod_off": [
+      168,
+      16,
+      347,
+      465
+    ],
+    "mother_rod_done": [
+      168,
+      16,
+      347,
+      465
+    ],
+    "mother_rod_active": [
+      168,
+      16,
+      3931,
+      465
+    ],
+    "column": [
+      37,
+      139,
+      219,
+      375
+    ],
+    "chapel": [
+      21,
+      148,
+      747,
+      596
+    ],
+    "crystal_giant": [
+      116,
+      194,
+      270,
+      474
+    ]
+  },
+  "feet": {
+    "rod": [
+      256,
+      419.84
+    ],
+    "column": [
+      128,
+      330
+    ],
+    "chapel": [
+      384,
+      566
+    ],
+    "crystal_giant": [
+      192,
+      435
+    ]
+  },
+  "choices": [
+    "Inverted reliquary crown, downward thorns, linked iron chains, crystal tear",
+    "Broken ribbed sanctuary, salt altar, anatomical bone ex-votos",
+    "Faceted crystal with pale translucent laminae; no baked halo"
+  ],
+  "column_reference": "Exact F5 block_a geometry loaded from its delivered Blender source",
+  "godot": {
+    "source_arena_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (2)",
+    "sprites_test": "RESULT: OK"
+  },
+  "mobile_texture_mib": 0.991,
+  "global_budget_blockers": [
+    "251 MiB total / 180 MiB cap",
+    "New rain_sower walk_p1 imports outside F5P appear during validation"
+  ],
+  "column_orientation_deg": 45
+}

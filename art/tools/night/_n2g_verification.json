@@ -1,0 +1,118 @@
+{
+  "sheets": [
+    {
+      "file": "bosses/etage/hermit_cedar/idle_p1.png",
+      "silhouette_iou": 0.9961336028528386,
+      "e_half": true,
+      "mean_rgb": 97.63,
+      "night_luma_delta": 18.5
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/idle_p2.png",
+      "silhouette_iou": 0.9953462536029357,
+      "e_half": true,
+      "mean_rgb": 99.22,
+      "night_luma_delta": 19.52
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/idle_p3.png",
+      "silhouette_iou": 0.9960423286427599,
+      "e_half": true,
+      "mean_rgb": 98.06,
+      "night_luma_delta": 18.85
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/walk_p1.png",
+      "silhouette_iou": 0.9961307562127015,
+      "e_half": true,
+      "mean_rgb": 97.63
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/walk_p2.png",
+      "silhouette_iou": 0.9953873207091585,
+      "e_half": true,
+      "mean_rgb": 99.22
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/walk_p3.png",
+      "silhouette_iou": 0.9959155647421921,
+      "e_half": true,
+      "mean_rgb": 97.97
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/auto.png",
+      "silhouette_iou": 0.9956090319556216,
+      "e_half": true,
+      "mean_rgb": 99.57
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/spell_a.png",
+      "silhouette_iou": 0.9954349328947055,
+      "e_half": true,
+      "mean_rgb": 97.54
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/spell_b.png",
+      "silhouette_iou": 0.996046430336415,
+      "e_half": true,
+      "mean_rgb": 102.32
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/trans_p2.png",
+      "silhouette_iou": 0.9948669767868191,
+      "e_half": true,
+      "mean_rgb": 99.04
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/trans_p3.png",
+      "silhouette_iou": 0.9947483154974237,
+      "e_half": true,
+      "mean_rgb": 101.9
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/death.png",
+      "silhouette_iou": 0.9948497482580031,
+      "e_half": true,
+      "mean_rgb": 92.96
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/auto_dirs.png",
+      "silhouette_iou": 0.9956439227657375,
+      "e_half": true,
+      "mean_rgb": 96.69
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/spell_a_dirs.png",
+      "silhouette_iou": 0.9959340799811207,
+      "e_half": true,
+      "mean_rgb": 96.36
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/spell_b_dirs.png",
+      "silhouette_iou": 0.9961079927391048,
+      "e_half": true,
+      "mean_rgb": 95.23
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/root_spike.png",
+      "silhouette_iou": 0.9801326999924602,
+      "e_half": true,
+      "mean_rgb": 91.22
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/spore_cloud.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "mean_rgb": 37.38
+    },
+    {
+      "file": "bosses/etage/hermit_cedar/stump.png",
+      "silhouette_iou": 0.9967402873869079,
+      "e_half": true,
+      "mean_rgb": 154.14
+    }
+  ],
+  "tres_unchanged": true,
+  "inherited": "N2D complete model, poses, extras, grids and pivots",
+  "render": "N2G boss cel, 8 samples, 2x LANCZOS"
+}

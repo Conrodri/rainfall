@@ -1,0 +1,149 @@
+{
+  "assets": {
+    "ground_a": {
+      "normal_colors": 8,
+      "rgb_mean": [
+        45.84,
+        48.2,
+        52.05
+      ]
+    },
+    "ground_b": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        45.95,
+        48.29,
+        52.12
+      ]
+    },
+    "ground_c": {
+      "normal_colors": 10,
+      "rgb_mean": [
+        46.02,
+        48.35,
+        52.14
+      ]
+    },
+    "ground_d": {
+      "normal_colors": 10,
+      "rgb_mean": [
+        46.07,
+        48.41,
+        52.18
+      ]
+    },
+    "water_shallow": {
+      "normal_colors": 6,
+      "rgb_mean": [
+        30.77,
+        40.99,
+        45.85
+      ]
+    },
+    "water_deep": {
+      "normal_colors": 4,
+      "rgb_mean": [
+        15.27,
+        16.18,
+        21.05
+      ]
+    },
+    "block_a": {
+      "normal_colors": 14,
+      "rgb_mean": [
+        53.57,
+        53.38,
+        51.22
+      ]
+    },
+    "block_b": {
+      "normal_colors": 12,
+      "rgb_mean": [
+        79.07,
+        87.49,
+        88.63
+      ]
+    },
+    "block_c": {
+      "normal_colors": 14,
+      "rgb_mean": [
+        59.74,
+        58.35,
+        53.46
+      ]
+    },
+    "rampart_ne": {
+      "normal_colors": 15,
+      "rgb_mean": [
+        43.99,
+        45.98,
+        48.79
+      ]
+    },
+    "rampart_nw": {
+      "normal_colors": 15,
+      "rgb_mean": [
+        43.95,
+        45.92,
+        48.69
+      ]
+    },
+    "rampart_corner_n": {
+      "normal_colors": 15,
+      "rgb_mean": [
+        47.81,
+        51.1,
+        54.55
+      ]
+    },
+    "cliff_sw": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        42.78,
+        45.76,
+        51.4
+      ]
+    },
+    "cliff_se": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        42.8,
+        45.79,
+        51.43
+      ]
+    },
+    "cliff_corner_s": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        42.36,
+        45.28,
+        50.72
+      ]
+    },
+    "cliff_corner_w": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        42.63,
+        45.64,
+        51.28
+      ]
+    },
+    "cliff_corner_e": {
+      "normal_colors": 9,
+      "rgb_mean": [
+        42.65,
+        45.67,
+        51.32
+      ]
+    },
+    "void_1024": {
+      "normal_colors": 1,
+      "rgb_mean": [
+        15.0,
+        16.04,
+        21.06
+      ]
+    }
+  },
+  "void_seam_max": 2.0
+}

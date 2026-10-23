@@ -1,0 +1,6 @@
+T3 termine : cinq lancers, death, attack (impact 3/6), cast, cast_ult, vapeur et regen_rivets.
+DA : modele T1 conserve ; recul lourd, cloche ejectee par pression, dislocation au sol, rivets forges et suie ; foyer orange unique.
+Livraison : calques et atlas 192, 8 directions, normales/emissions utiles ; vapeur 6 frames x 8 directions, regeneration 6 frames/1 direction centree sur le socket.
+PASS : 2 624 cellules, 112 absences intentionnelles, 2 624 alphas de normales ; Godot RESULT: OK ; 18 SpriteFrames charges sans erreur.
+Sources : art/tools/night/t3_build.py, art/blender/characters/tocsin_t3.blend et tocsin_t3_regen.blend ; controle art/tools/night/_t3_contact.png.
+Aucun .gd/.tscn cree ou modifie ; .tres etendus pour les nouveaux clips ; T5 : optimiser les atlas par rognage en conservant cellule logique et pivots.

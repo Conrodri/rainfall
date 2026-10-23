@@ -1,0 +1,259 @@
+{
+  "status": "FAIL",
+  "sheets": [
+    {
+      "file": "terrain/terraces/iso/block_a.png",
+      "silhouette_iou": 0.9976102853319314,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/block_b.png",
+      "silhouette_iou": 0.9976102853319314,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/terraces/iso/block_c.png",
+      "silhouette_iou": 0.9976102853319314,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/cliff_corner_e.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/cliff_corner_s.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/cliff_corner_w.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/cliff_se.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/cliff_sw.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/ground_a.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/ground_b.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/ground_c.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/ground_d.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/rampart_corner_n.png",
+      "silhouette_iou": 0.9999642831630831,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/terraces/iso/rampart_ne.png",
+      "silhouette_iou": 0.9999361185639453,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/rampart_nw.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/void_1024.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        1024
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/water_deep.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true
+    },
+    {
+      "file": "terrain/terraces/iso/water_shallow.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true
+    }
+  ],
+  "floor_edges": [
+    {
+      "tile": "a",
+      "archive_rgb_delta": 10.660919540229886,
+      "cel_rgb_delta": 0.0
+    },
+    {
+      "tile": "b",
+      "archive_rgb_delta": 9.739942528735632,
+      "cel_rgb_delta": 0.12643678160919541
+    },
+    {
+      "tile": "c",
+      "archive_rgb_delta": 10.660919540229886,
+      "cel_rgb_delta": 0.0
+    },
+    {
+      "tile": "d",
+      "archive_rgb_delta": 9.739942528735632,
+      "cel_rgb_delta": 0.12643678160919541
+    }
+  ],
+  "coverage_4x4": "identical",
+  "bytes_before": 2563930,
+  "bytes_after": 1733420,
+  "choices": [
+    "Original scenes, geometry, camera and material hues retained; shading only.",
+    "tile; water/void 2 tones without ink; original periodic noise posterized through shared CEL ramp; night shadow floor from shared module.",
+    "Original shadows unchanged; exact archived diamond alpha reused.",
+    "18 diffuse (not 19); authored ground a/c and b/d duplicates retained."
+  ],
+  "checks": [
+    {
+      "check": "policy",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_policy.log"
+    },
+    {
+      "check": "budget",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_budget.log"
+    },
+    {
+      "check": "import",
+      "returncode": 0,
+      "pass_check": false,
+      "log": "art\\tools\\night\\_cel_terrain_f1_import.log"
+    },
+    {
+      "check": "sprites_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_sprites_test.log"
+    },
+    {
+      "check": "maps_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_maps_test.log"
+    },
+    {
+      "check": "stage_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_stage_test.log"
+    },
+    {
+      "check": "minimap_iso_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_minimap_iso_test.log"
+    },
+    {
+      "check": "texture_budget_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f1_texture_budget_test.log"
+    }
+  ],
+  "protected_files_unchanged": true,
+  "budget_report_violations": [
+    "cat\u00e9gorie bosses : 74.2 Mo mobile > budget 45 Mo",
+    "2 .import hors import_policy (corriger : texture_budget.py --apply-policy) : ['assets/sprites/characters/rictus/knife/default_e.png', 'assets/sprites/characters/rictus/knife_planted/default_e.png']",
+    "APK estim\u00e9 283 Mo > 200 Mo"
+  ],
+  "maximum_texture_dimension": 4096
+}

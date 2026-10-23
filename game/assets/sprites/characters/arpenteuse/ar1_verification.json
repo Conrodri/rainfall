@@ -1,0 +1,23 @@
+{
+  "frames": 432,
+  "sheets": 27,
+  "clipped": [],
+  "static": [],
+  "bounds": {},
+  "body_emissive_pixels": 0,
+  "import": {
+    "returncode": 0,
+    "errors": [
+      "ERROR: 26 resources still in use at exit (run with --verbose for details).",
+      "ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketSmallE"
+    ]
+  },
+  "load": {
+    "returncode": 0,
+    "errors": []
+  },
+  "sprites_test": {
+    "returncode": 0,
+    "errors": []
+  }
+}

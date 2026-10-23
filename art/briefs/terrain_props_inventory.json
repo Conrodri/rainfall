@@ -1,0 +1,1188 @@
+[
+  {
+    "file": "game/assets/sprites/props/boat.png",
+    "bytes": 19401,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/boat_n.png",
+    "bytes": 24467,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/jar.png",
+    "bytes": 9205,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/jar_n.png",
+    "bytes": 11535,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_active.png",
+    "bytes": 88338,
+    "width": 2048,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_active_e.png",
+    "bytes": 49952,
+    "width": 2048,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_active_n.png",
+    "bytes": 78078,
+    "width": 2048,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_done.png",
+    "bytes": 24937,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_done_e.png",
+    "bytes": 9340,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_done_n.png",
+    "bytes": 29136,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_off.png",
+    "bytes": 24006,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_large_off_n.png",
+    "bytes": 27548,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_active.png",
+    "bytes": 35722,
+    "width": 1024,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_active_e.png",
+    "bytes": 22980,
+    "width": 1024,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_active_n.png",
+    "bytes": 32816,
+    "width": 1024,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_done.png",
+    "bytes": 10495,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_done_e.png",
+    "bytes": 4728,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_done_n.png",
+    "bytes": 11968,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_off.png",
+    "bytes": 10130,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/pillar_small_off_n.png",
+    "bytes": 11656,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_a.png",
+    "bytes": 6788,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_a_n.png",
+    "bytes": 8250,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_b.png",
+    "bytes": 8797,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_b_n.png",
+    "bytes": 10802,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_c.png",
+    "bytes": 8631,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/grass_c_n.png",
+    "bytes": 10482,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_a.png",
+    "bytes": 10022,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_a_n.png",
+    "bytes": 11063,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_b.png",
+    "bytes": 9789,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_b_n.png",
+    "bytes": 11022,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_c.png",
+    "bytes": 9688,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/puddle_c_n.png",
+    "bytes": 10921,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/rain/splash.png",
+    "bytes": 32293,
+    "width": 512,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/splash8.png",
+    "bytes": 64253,
+    "width": 1024,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/splash8_n.png",
+    "bytes": 71507,
+    "width": 1024,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rain/splash_n.png",
+    "bytes": 36154,
+    "width": 512,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rock.png",
+    "bytes": 7247,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/rock_n.png",
+    "bytes": 10055,
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "game/assets/sprites/props/stele.png",
+    "bytes": 8344,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/stele_n.png",
+    "bytes": 8882,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/stone_lantern.png",
+    "bytes": 11778,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/stone_lantern_e.png",
+    "bytes": 3093,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/stone_lantern_n.png",
+    "bytes": 13315,
+    "width": 192,
+    "height": 192
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_corner.png",
+    "bytes": 23059,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_corner_n.png",
+    "bytes": 24446,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_gap_stairs.png",
+    "bytes": 16244,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_gap_stairs_n.png",
+    "bytes": 16951,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_straight.png",
+    "bytes": 14088,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/stone_wall_straight_n.png",
+    "bytes": 15112,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_active.png",
+    "bytes": 43634,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_active_e.png",
+    "bytes": 23184,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_active_n.png",
+    "bytes": 47747,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_idle.png",
+    "bytes": 35026,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_idle_e.png",
+    "bytes": 17093,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/teleporter_idle_n.png",
+    "bytes": 38672,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/twisted_pine.png",
+    "bytes": 21825,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "game/assets/sprites/props/twisted_pine_n.png",
+    "bytes": 27868,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/blender/terrain/props_boat.blend",
+    "bytes": 100377
+  },
+  {
+    "file": "art/blender/terrain/props_grass_a.blend",
+    "bytes": 96600
+  },
+  {
+    "file": "art/blender/terrain/props_grass_b.blend",
+    "bytes": 97219
+  },
+  {
+    "file": "art/blender/terrain/props_grass_c.blend",
+    "bytes": 97690
+  },
+  {
+    "file": "art/blender/terrain/props_jar.blend",
+    "bytes": 121711
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_large_active.blend",
+    "bytes": 139010
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_large_done.blend",
+    "bytes": 136042
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_large_off.blend",
+    "bytes": 120818
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_small_active.blend",
+    "bytes": 138529
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_small_done.blend",
+    "bytes": 136670
+  },
+  {
+    "file": "art/blender/terrain/props_pillar_small_off.blend",
+    "bytes": 119576
+  },
+  {
+    "file": "art/blender/terrain/props_puddle_a.blend",
+    "bytes": 99136
+  },
+  {
+    "file": "art/blender/terrain/props_puddle_b.blend",
+    "bytes": 99180
+  },
+  {
+    "file": "art/blender/terrain/props_puddle_c.blend",
+    "bytes": 99118
+  },
+  {
+    "file": "art/blender/terrain/props_rock.blend",
+    "bytes": 110652
+  },
+  {
+    "file": "art/blender/terrain/props_splash.blend",
+    "bytes": 134172
+  },
+  {
+    "file": "art/blender/terrain/props_splash8.blend",
+    "bytes": 133479
+  },
+  {
+    "file": "art/blender/terrain/props_stele.blend",
+    "bytes": 100878
+  },
+  {
+    "file": "art/blender/terrain/props_stone_lantern.blend",
+    "bytes": 104874
+  },
+  {
+    "file": "art/blender/terrain/props_stone_wall_corner.blend",
+    "bytes": 120924
+  },
+  {
+    "file": "art/blender/terrain/props_stone_wall_gap_stairs.blend",
+    "bytes": 113729
+  },
+  {
+    "file": "art/blender/terrain/props_stone_wall_straight.blend",
+    "bytes": 115076
+  },
+  {
+    "file": "art/blender/terrain/props_teleporter_active.blend",
+    "bytes": 127449
+  },
+  {
+    "file": "art/blender/terrain/props_teleporter_idle.blend",
+    "bytes": 125907
+  },
+  {
+    "file": "art/blender/terrain/props_twisted_pine.blend",
+    "bytes": 134494
+  },
+  {
+    "file": "art/renders/terrain/props/boat/00.png",
+    "bytes": 120008,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/boat/00_n.png",
+    "bytes": 133019,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/contact.png",
+    "bytes": 277743,
+    "width": 960,
+    "height": 960
+  },
+  {
+    "file": "art/renders/terrain/props/contact_e.png",
+    "bytes": 61503,
+    "width": 960,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/contact_n.png",
+    "bytes": 293402,
+    "width": 960,
+    "height": 960
+  },
+  {
+    "file": "art/renders/terrain/props/grass_a/00.png",
+    "bytes": 36471,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/grass_a/00_n.png",
+    "bytes": 41943,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/grass_b/00.png",
+    "bytes": 41851,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/grass_b/00_n.png",
+    "bytes": 49221,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/grass_c/00.png",
+    "bytes": 41472,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/grass_c/00_n.png",
+    "bytes": 48352,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/jar/00.png",
+    "bytes": 44735,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/jar/00_n.png",
+    "bytes": 51846,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/00.png",
+    "bytes": 141979,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/00_e.png",
+    "bytes": 93376,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/00_n.png",
+    "bytes": 166492,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/01.png",
+    "bytes": 141768,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/01_e.png",
+    "bytes": 92949,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/01_n.png",
+    "bytes": 167188,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/02.png",
+    "bytes": 141909,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/02_e.png",
+    "bytes": 93280,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/02_n.png",
+    "bytes": 167679,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/03.png",
+    "bytes": 142025,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/03_e.png",
+    "bytes": 93074,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/03_n.png",
+    "bytes": 166813,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/04.png",
+    "bytes": 142278,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/04_e.png",
+    "bytes": 93460,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/04_n.png",
+    "bytes": 166760,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/05.png",
+    "bytes": 142376,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/05_e.png",
+    "bytes": 93498,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/05_n.png",
+    "bytes": 166198,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/06.png",
+    "bytes": 142399,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/06_e.png",
+    "bytes": 93142,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/06_n.png",
+    "bytes": 166112,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/07.png",
+    "bytes": 142129,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/07_e.png",
+    "bytes": 93352,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_active/07_n.png",
+    "bytes": 166199,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_done/00.png",
+    "bytes": 136263,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_done/00_e.png",
+    "bytes": 83975,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_done/00_n.png",
+    "bytes": 159147,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_off/00.png",
+    "bytes": 138511,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_large_off/00_n.png",
+    "bytes": 153638,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/00.png",
+    "bytes": 48675,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/00_e.png",
+    "bytes": 31169,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/00_n.png",
+    "bytes": 57058,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/01.png",
+    "bytes": 48629,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/01_e.png",
+    "bytes": 30988,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/01_n.png",
+    "bytes": 57308,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/02.png",
+    "bytes": 48669,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/02_e.png",
+    "bytes": 31148,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/02_n.png",
+    "bytes": 57573,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/03.png",
+    "bytes": 48552,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/03_e.png",
+    "bytes": 31010,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/03_n.png",
+    "bytes": 57249,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/04.png",
+    "bytes": 48758,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/04_e.png",
+    "bytes": 31078,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/04_n.png",
+    "bytes": 57118,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/05.png",
+    "bytes": 48754,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/05_e.png",
+    "bytes": 31104,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/05_n.png",
+    "bytes": 56950,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/06.png",
+    "bytes": 48808,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/06_e.png",
+    "bytes": 31015,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/06_n.png",
+    "bytes": 56943,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/07.png",
+    "bytes": 48856,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/07_e.png",
+    "bytes": 31102,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_active/07_n.png",
+    "bytes": 56993,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_done/00.png",
+    "bytes": 46279,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_done/00_e.png",
+    "bytes": 26798,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_done/00_n.png",
+    "bytes": 54372,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_off/00.png",
+    "bytes": 46930,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/pillar_small_off/00_n.png",
+    "bytes": 52762,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_a/00.png",
+    "bytes": 66669,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_a/00_n.png",
+    "bytes": 66470,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_b/00.png",
+    "bytes": 66075,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_b/00_n.png",
+    "bytes": 66261,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_c/00.png",
+    "bytes": 66483,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/puddle_c/00_n.png",
+    "bytes": 66302,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/rock/00.png",
+    "bytes": 37561,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/rock/00_n.png",
+    "bytes": 45756,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/00.png",
+    "bytes": 28389,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/00_n.png",
+    "bytes": 31097,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/01.png",
+    "bytes": 37539,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/01_n.png",
+    "bytes": 42306,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/02.png",
+    "bytes": 42060,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/02_n.png",
+    "bytes": 47239,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/03.png",
+    "bytes": 44861,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash/03_n.png",
+    "bytes": 50599,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/00.png",
+    "bytes": 25686,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/00_n.png",
+    "bytes": 28450,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/01.png",
+    "bytes": 31247,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/01_n.png",
+    "bytes": 35091,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/02.png",
+    "bytes": 35818,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/02_n.png",
+    "bytes": 40542,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/03.png",
+    "bytes": 38959,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/03_n.png",
+    "bytes": 44003,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/04.png",
+    "bytes": 40990,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/04_n.png",
+    "bytes": 46300,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/05.png",
+    "bytes": 42626,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/05_n.png",
+    "bytes": 47921,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/06.png",
+    "bytes": 43829,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/06_n.png",
+    "bytes": 49415,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/07.png",
+    "bytes": 46194,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/splash8/07_n.png",
+    "bytes": 52014,
+    "width": 256,
+    "height": 256
+  },
+  {
+    "file": "art/renders/terrain/props/stele/00.png",
+    "bytes": 67235,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/stele/00_n.png",
+    "bytes": 70334,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/stone_lantern/00.png",
+    "bytes": 73935,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/stone_lantern/00_e.png",
+    "bytes": 43496,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/stone_lantern/00_n.png",
+    "bytes": 81421,
+    "width": 384,
+    "height": 384
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_corner/00.png",
+    "bytes": 237563,
+    "width": 768,
+    "height": 768
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_corner/00_n.png",
+    "bytes": 241614,
+    "width": 768,
+    "height": 768
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_gap_stairs/00.png",
+    "bytes": 120528,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_gap_stairs/00_n.png",
+    "bytes": 124902,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_straight/00.png",
+    "bytes": 107409,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/stone_wall_straight/00_n.png",
+    "bytes": 112654,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_active/00.png",
+    "bytes": 182908,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_active/00_e.png",
+    "bytes": 114012,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_active/00_n.png",
+    "bytes": 216173,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_idle/00.png",
+    "bytes": 160489,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_idle/00_e.png",
+    "bytes": 99334,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/teleporter_idle/00_n.png",
+    "bytes": 185207,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/twisted_pine/00.png",
+    "bytes": 127634,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/renders/terrain/props/twisted_pine/00_n.png",
+    "bytes": 150251,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "file": "art/tools/terrain/assemble_props.py",
+    "bytes": 2669
+  },
+  {
+    "file": "art/tools/terrain/check_props.py",
+    "bytes": 2673
+  },
+  {
+    "file": "art/tools/terrain/props.py",
+    "bytes": 14677
+  }
+]

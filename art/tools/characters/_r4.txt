@@ -1,0 +1,5 @@
+LOT R4 : personnage jouable « Ardent » (provisoire de Claude : art/tools/characters/ardent_lowcam.py, pack.py ; re-rendu caméra 35°, tête ~25 % plus grosse).
+Spec : art/briefs/STYLE.md (caméra/lumières) et le docstring de ardent_lowcam.py ; .blend d'origine dans art/blender/ (rg -l ardent).
+Sortie à remplacer à l'identique : game/assets/sprites/characters/ardent/ (idle.png, run.png + _n/_e, ardent.tres inchangé : même grille, mêmes directions, mêmes frames). Inventaire compact d'abord (art/tools/characters/_r4_inventory.json), vérification contre lui à la fin.
+Qualité : silhouette lisible à 64 px de haut en jeu, caméra 35°, cycle de course fluide, torche/flamme émissive dans _e. Améliore plutôt que réécrire si c'est plus économe.
+Périmètre : art/blender/characters/, art/renders/characters/ardent*, art/tools/characters/, game/assets/sprites/characters/ardent/.

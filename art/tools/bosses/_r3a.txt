@@ -1,0 +1,5 @@
+LOT R3a : boss d'étage « cerf » (provisoire de Claude, scripts art/tools/bosses/cerf.py, boss_common.py, pack_cerf.py, check_cerf.py).
+Spec : art/briefs/bosses_etage.md (lis seulement l'en-tête « Frames/Phases/Animations communes », la ligne « cerf » et les sections _n/_e) + docs/Design_Boss_Cartes.md section du cerf (rg -n "Cerf" puis lis ce passage seulement).
+Sortie à remplacer à l'identique : game/assets/sprites/bosses/etage/cerf/ (mêmes PNG, tailles de sheet, lignes/colonnes, _n/_e, cerf.tres inchangé sauf si une région change). Commence par un inventaire compact (nom, taille, frames) dans art/tools/bosses/_r3a_inventory.json, puis vérifie chaque sortie contre lui.
+Qualité attendue : silhouette monumentale lisible, phases p1/p2/p3 visiblement différentes (modèle, pas seulement couleur), animations auto/spell lisibles. Améliore le modèle de Claude plutôt que de tout réécrire si c'est plus économe.
+Périmètre : art/blender/bosses/cerf*, art/renders/bosses/cerf/, art/tools/bosses/, game/assets/sprites/bosses/etage/cerf/. Si le quota manque, arrête-toi après un groupe d'anims complet (et cohérent dans le .tres) et dis où.

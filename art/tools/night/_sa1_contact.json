@@ -1,0 +1,192 @@
+[
+ {
+  "x": 0,
+  "y": 0,
+  "label": "idle_e"
+ },
+ {
+  "x": 192,
+  "y": 0,
+  "label": "idle_se"
+ },
+ {
+  "x": 384,
+  "y": 0,
+  "label": "idle_s"
+ },
+ {
+  "x": 576,
+  "y": 0,
+  "label": "idle_sw"
+ },
+ {
+  "x": 768,
+  "y": 0,
+  "label": "idle_w"
+ },
+ {
+  "x": 960,
+  "y": 0,
+  "label": "idle_nw"
+ },
+ {
+  "x": 1152,
+  "y": 0,
+  "label": "idle_n"
+ },
+ {
+  "x": 1344,
+  "y": 0,
+  "label": "idle_ne"
+ },
+ {
+  "x": 0,
+  "y": 192,
+  "label": "idle frame 4"
+ },
+ {
+  "x": 192,
+  "y": 192,
+  "label": "run frame 4"
+ },
+ {
+  "x": 384,
+  "y": 192,
+  "label": "cut_circle frame 2"
+ },
+ {
+  "x": 576,
+  "y": 192,
+  "label": "thrust frame 2"
+ },
+ {
+  "x": 768,
+  "y": 192,
+  "label": "crescent frame 4"
+ },
+ {
+  "x": 960,
+  "y": 192,
+  "label": "sharpen frame 5"
+ },
+ {
+  "x": 1152,
+  "y": 192,
+  "label": "twin_draw frame 4"
+ },
+ {
+  "x": 1344,
+  "y": 192,
+  "label": "dodge frame 2"
+ },
+ {
+  "x": 0,
+  "y": 384,
+  "label": "hurt frame 1"
+ },
+ {
+  "x": 192,
+  "y": 384,
+  "label": "death frame 4"
+ },
+ {
+  "x": 384,
+  "y": 384,
+  "label": "idle_dual frame 4"
+ },
+ {
+  "x": 576,
+  "y": 384,
+  "label": "run_dual frame 4"
+ },
+ {
+  "x": 768,
+  "y": 384,
+  "label": "cut_circle_dual frame 2"
+ },
+ {
+  "x": 960,
+  "y": 384,
+  "label": "thrust_dual frame 2"
+ },
+ {
+  "x": 1152,
+  "y": 384,
+  "label": "crescent_dual frame 4"
+ },
+ {
+  "x": 0,
+  "y": 576,
+  "label": "characters/ardent/idle.png"
+ },
+ {
+  "x": 192,
+  "y": 576,
+  "label": "characters/rictus/idle.png"
+ },
+ {
+  "x": 432,
+  "y": 644,
+  "label": "monsters/swarm_tier1/run.png"
+ },
+ {
+  "x": 640,
+  "y": 560,
+  "label": "Taliant portrait 256"
+ },
+ {
+  "x": 928,
+  "y": 560,
+  "label": "Rictus portrait 256"
+ },
+ {
+  "x": 4,
+  "y": 824,
+  "label": "cut_circle"
+ },
+ {
+  "x": 260,
+  "y": 824,
+  "label": "cut_thrust"
+ },
+ {
+  "x": 516,
+  "y": 824,
+  "label": "cut_crescent"
+ },
+ {
+  "x": 772,
+  "y": 824,
+  "label": "twin_draw"
+ },
+ {
+  "x": 1028,
+  "y": 824,
+  "label": "iai_trail"
+ },
+ {
+  "x": 1312,
+  "y": 852,
+  "label": "sharpen_sparks"
+ },
+ {
+  "x": 7,
+  "y": 1096,
+  "label": "art/tools/iso/_c4_contact.png"
+ },
+ {
+  "x": 508,
+  "y": 1096,
+  "label": "art/tools/characters/_m2_contact.png"
+ },
+ {
+  "x": 814,
+  "y": 1096,
+  "label": "art/tools/iso/_c1_contact.png"
+ },
+ {
+  "x": 1248,
+  "y": 1096,
+  "label": "art/tools/night/_cs1_contact.png"
+ }
+]

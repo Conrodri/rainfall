@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "scenes": [
+    {
+      "scene": "i3_braises_errantes",
+      "objects": 39,
+      "bevels": 4,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_brasier",
+      "objects": 38,
+      "bevels": 5,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_cendres",
+      "objects": 63,
+      "bevels": 37,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_eclat_de_braise",
+      "objects": 36,
+      "bevels": 2,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_nova_ardente",
+      "objects": 58,
+      "bevels": 1,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_phenix",
+      "objects": 63,
+      "bevels": 2,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_pilier_de_flamme",
+      "objects": 32,
+      "bevels": 2,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    },
+    {
+      "scene": "i3_pluie_de_meteores",
+      "objects": 37,
+      "bevels": 4,
+      "true_metals": 2,
+      "samples": 24,
+      "engine": "BLENDER_EEVEE",
+      "view": "AgX"
+    }
+  ]
+}

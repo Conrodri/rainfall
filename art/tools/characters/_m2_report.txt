@@ -1,0 +1,14 @@
+﻿M2 / Rictus + Montreur
+Sources M1b preserved as design reference; playable source renamed rictus.blend.
+Run Blender --background --python art/tools/characters/m2_build.py (full rebuild); --reuse reuses rendered cells and updates source actions/resources; --finalize only rebuilds strings.json.
+Then Blender --background --python art/tools/characters/m2_contact.py; python art/tools/characters/m2_verify.py.
+33 RGBA atlases, 424 cells. CREA R=90.50966799 px/u, 192 cell, pivot (96,136.32), rows e,se,s,sw,w,nw,n,ne. Spin has one row e.
+Ardent has no separate emission .tres; same convention retained. All _e atlases provided; occluded reflection cells may be black.
+strings.json: pixel offsets from each actor own pivot; game applies Montreur height 1.4u and screen offset -19.2px,-19.2px separately. Arm strings attach to elbows, never wrists. Companion pull used for spin/lift/summon/throw, otherwise hover; frame modulo 4 or 6.
+Strings: width 1px, #9FC8C0 alpha .35; Montreur final alpha .8. All geometry and materials otherwise retain M1b; oval face, readable enlarged ruff, soaked cap, continuous wooden ankle joints; elbows suspended at shoulder level; head permanently inclined toward left shoulder, slightly forward.
+Zero-based impacts slash 2/4, throw 2/4, summon 3/6. Death non-looping. Lift movement is applied by game, not baked twice into sprite.
+Blender spin uses paired rig action rictus_spin and root action rictus_spin_model; other actions are self-contained rig actions. Final contact wires are rendered by Blender from exported JSON; Pillow only crops and assembles assets.
+Validation finale: 424 frames distinctes, 33 planches RGBA, aucun rognage; inclinaison de tete mesuree 22.68 degres, coudes hauts et avant-bras pendants verifies dans la source Blender.
+M2 LOAD RESULT: OK / 424 frames / CanvasTexture diffuse+normal / death non-looping.
+sprites_test RESULT: OK. Aucun .gd/.tscn du projet modifie; script de chargement Godot cree uniquement dans un repertoire temporaire hors projet puis supprime.
+Import editeur: sortie code 0, avec deux diagnostics de liberation a la fermeture (26 resources still in use; Pages in use PagedAllocator). Ils sont conserves dans _m2_import.log et _m2_verification.json; les executions de chargement et sprites_test sont sans erreur.

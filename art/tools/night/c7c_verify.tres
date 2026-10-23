@@ -1,0 +1,23 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+func _initialize() -> void:
+    var path := 'res://assets/sprites/bosses/etage/sonneur/sonneur.tres'
+    var resource = ResourceLoader.load(path, '', ResourceLoader.CACHE_MODE_IGNORE)
+    if resource == null or not resource is SpriteFrames:
+        printerr('FAIL Sonneur SpriteFrames load')
+        quit(1)
+        return
+    var count := 0
+    for anim in resource.get_animation_names():
+        for i in range(resource.get_frame_count(anim)):
+            var tex = resource.get_frame_texture(anim, i)
+            if tex == null or tex.get_width() <= 0:
+                printerr('FAIL texture ', anim, '/', i)
+                quit(1)
+                return
+            count += 1
+    print('PASS Sonneur .tres: ', resource.get_animation_names().size(), ' animations, ', count, ' textures loaded')
+    quit(0)
+"

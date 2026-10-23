@@ -1,0 +1,311 @@
+{
+  "idle_p1": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "idle_p2": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "idle_p3": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "walk_p1": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ],
+    "size": [
+      2048,
+      1024
+    ]
+  },
+  "walk_p2": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ],
+    "size": [
+      2048,
+      1024
+    ]
+  },
+  "walk_p3": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "s",
+      "w",
+      "n"
+    ],
+    "size": [
+      2048,
+      1024
+    ]
+  },
+  "auto": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "spell_a": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2048,
+      256
+    ]
+  },
+  "spell_b": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2048,
+      256
+    ]
+  },
+  "trans_p2": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2048,
+      256
+    ]
+  },
+  "trans_p3": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2048,
+      256
+    ]
+  },
+  "death": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 10,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2560,
+      256
+    ]
+  },
+  "bell_ring": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "boiler_open": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      1536,
+      256
+    ]
+  },
+  "auto_dirs": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 6,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ],
+    "size": [
+      1536,
+      768
+    ]
+  },
+  "spell_a_dirs": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ],
+    "size": [
+      2048,
+      768
+    ]
+  },
+  "spell_b_dirs": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "e",
+      "w",
+      "n"
+    ],
+    "size": [
+      2048,
+      768
+    ]
+  },
+  "glas_wave": {
+    "cell": [
+      256,
+      256
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      2048,
+      256
+    ]
+  },
+  "lightning": {
+    "cell": [
+      128,
+      768
+    ],
+    "frames": 4,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      512,
+      768
+    ]
+  },
+  "steam_jet": {
+    "cell": [
+      384,
+      64
+    ],
+    "frames": 8,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      3072,
+      64
+    ]
+  },
+  "bolt": {
+    "cell": [
+      64,
+      64
+    ],
+    "frames": 6,
+    "directions": [
+      "s"
+    ],
+    "size": [
+      384,
+      64
+    ]
+  }
+}
