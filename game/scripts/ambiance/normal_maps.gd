@@ -254,7 +254,16 @@ static func _sync_animated(anim: AnimatedSprite2D, em: AnimatedSprite2D) -> void
 	if not is_instance_valid(em):
 		return
 	if em.animation != anim.animation:
+		# frames d'émission périmées (diffus changé sans EmissiveOverlay.apply) : jamais d'anim absente
+		if em.sprite_frames == null or not em.sprite_frames.has_animation(anim.animation):
+			if em.visible:
+				em.visible = false
+				em.set_meta(&"stale_hidden", true)
+			return
 		em.animation = anim.animation
+		if em.has_meta(&"stale_hidden"):
+			em.remove_meta(&"stale_hidden")
+			em.visible = true
 	em.frame = anim.frame
 	em.flip_h = anim.flip_h
 	em.flip_v = anim.flip_v

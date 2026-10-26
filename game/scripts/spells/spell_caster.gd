@@ -13,6 +13,9 @@ var auto_cast_enabled := false
 
 ## Lancement réussi d'un sort (tous slots, kits compris). Écouté par le simulateur d'équilibrage (tests/balance_sim).
 signal spell_cast(spell: SpellData)
+## Coup de sort porté (chemin commun deal_damage, kits compris ; pas la foudre en chaîne des items) : `amount` = dégât
+## infligé, critique compris. Pour des compteurs exacts (déblocage des variantes). Sans abonné, l'émission ne coûte presque rien.
+signal spell_hit(spell: SpellData, enemy: Node, amount: float)
 
 ## Visée manuelle des sorts 2-4 (souris / stick droit). Le sort 1 reste toujours automatique.
 var manual_aim_enabled := true
@@ -27,8 +30,8 @@ var _totals := {} ## slot -> durée totale du dernier cooldown
 var _pool: Array = []
 var _container: Node2D
 ## Effets (tir, zone, son, lumière) en attente de la frame d'impact de l'anim d'action du joueur
-## (Player.action_impact). Seulement sans kit (Ardent : attack 2, cast 3, cast_ult 4 -> 0,17 / 0,25 / 0,36 s) ;
-## les kits (Rictus) gèrent leur propre synchro.
+## (Player.action_impact). Sans kit (Ardent : attack 2, cast 3, cast_ult 4 -> 0,17 / 0,25 / 0,36 s) ou si le kit
+## le demande (`kit.defers_effects() -> bool`, ArdentVariantKit) ; les autres kits (Rictus) gèrent leur propre synchro.
 var _pending: Array[Callable] = []
 var _last_tick_frame := -10
 
@@ -200,8 +203,8 @@ func cast(slot: int) -> bool:
 	var ok := false
 	var fx_pos := player.global_position
 	var aim_dir := Vector2.ZERO ## sens de l'anim d'action du joueur (nul : orientation actuelle)
-	## Sans kit (Ardent), tir / zone partent à la frame d'impact de l'anim : `effect` est différé.
-	var defer := _kit() == null
+	## Sans kit (Ardent) ou kit qui le demande (variantes d'Ardent), tir / zone partent à la frame d'impact de l'anim.
+	var defer := defers_effects()
 	var effect := Callable()
 	match s.behavior:
 		SpellData.Behavior.PROJECTILE:
@@ -291,6 +294,12 @@ func cast(slot: int) -> bool:
 	else:
 		fire.call()
 	return true
+
+
+## Vrai si tir / zone des comportements génériques attendent la frame d'impact : sans kit, ou `kit.defers_effects()`.
+func defers_effects() -> bool:
+	var k := _kit()
+	return k == null or (k.has_method(&"defers_effects") and bool(k.defers_effects()))
 
 
 ## Frame d'impact de l'anim d'action : les effets différés partent.
@@ -514,6 +523,7 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	var k := _kit() # coup porté (Averse : une élite ou un boss touché rend de l'eau)
 	if k != null and k.has_method(&"on_spell_hit"):
 		k.on_spell_hit(s, enemy, amount)
+	spell_hit.emit(s, enemy, amount)
 	return amount
 
 

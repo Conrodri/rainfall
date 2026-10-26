@@ -71,6 +71,11 @@ func on_cast(_spell: SpellData) -> void:
 	pass
 
 
+## Sorts de base d'Ardent gardés à côté d'une variante : tir / zone à la frame d'impact, comme sans kit (SpellCaster).
+func defers_effects() -> bool:
+	return true
+
+
 ## Anim d'action : mêmes bases que le joueur sans kit (Player.action_base_for) ; les braises ne jouent rien.
 func action_for(spell: SpellData) -> StringName:
 	if spell.id == &"roaming_embers":
