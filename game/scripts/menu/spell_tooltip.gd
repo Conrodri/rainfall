@@ -34,8 +34,8 @@ static func other_user_bubble_open(source: StringName) -> bool:
 
 
 var anchor_control: Control
-## Zone où poser l'infobulle (centrée dedans, largeur bornée) au lieu de l'ancrer au-dessus du contrôle ; Rect2() = ancrage normal.
-var area: Control
+## Zone à ne jamais recouvrir (ex. aperçu animé des sorts) : la bulle se pose près du contrôle, décalée hors de cette zone.
+var avoid: Control
 var _width := WIDTH
 var _title: Label
 var _tag: Label
@@ -64,10 +64,13 @@ func _init() -> void:
 
 
 ## Affiche l'infobulle au-dessus (ou au-dessous) de `ctrl`, bornée à l'écran.
-func show_for(ctrl: Control, title: String, tag: String, body: String, in_area: Control = null) -> void:
+func show_for(ctrl: Control, title: String, tag: String, body: String, avoid_ctrl: Control = null) -> void:
 	anchor_control = ctrl
-	area = in_area
-	var w := clampf(in_area.size.x - 16.0, 360.0, _width) if in_area != null else _width
+	avoid = avoid_ctrl
+	var w := _width
+	if avoid != null and is_instance_valid(avoid) and avoid.is_inside_tree():
+		var room := get_viewport().get_visible_rect().end.x - avoid.get_global_rect().end.x - 28.0
+		w = clampf(room, minf(320.0, _width), _width)
 	custom_minimum_size = Vector2(w, 0)
 	_body.custom_minimum_size = Vector2(w - 32.0, 0)
 	_title.text = title
@@ -84,7 +87,7 @@ func hide_tip(for_ctrl: Control = null) -> void:
 		return
 	visible = false
 	anchor_control = null
-	area = null
+	avoid = null
 
 
 ## Tailles de texte et largeur (HUD tactile : plus grand). Défaut : 32 / 26 / 26, WIDTH.
@@ -110,10 +113,18 @@ func _place() -> void:
 	var sz := get_combined_minimum_size()
 	size = sz
 	var pos := Vector2(r.get_center().x - sz.x * 0.5, r.position.y - sz.y - 12)
-	if area != null and is_instance_valid(area):
-		pos = area.get_global_rect().get_center() - sz * 0.5
-	elif pos.y < vis.position.y + 16:
+	if pos.y < vis.position.y + 16:
 		pos.y = r.end.y + 12
 	pos.x = clampf(pos.x, vis.position.x + 16, vis.end.x - sz.x - 16)
 	pos.y = clampf(pos.y, vis.position.y + 16, vis.end.y - sz.y - 16)
+	if avoid != null and is_instance_valid(avoid) and avoid.is_inside_tree():
+		var ar := avoid.get_global_rect()
+		if Rect2(pos, sz).intersects(ar):
+			if ar.get_center().x <= vis.get_center().x:
+				pos.x = ar.end.x + 12.0 # zone à gauche : la bulle passe à sa droite
+			else:
+				pos.x = ar.position.x - sz.x - 12.0
+			pos.x = clampf(pos.x, vis.position.x + 16, vis.end.x - sz.x - 16)
+			if Rect2(pos, sz).intersects(ar): # ultime recours : sous ou au-dessus de la zone
+				pos.y = ar.end.y + 12.0 if ar.end.y + 12.0 + sz.y <= vis.end.y - 16 else ar.position.y - sz.y - 12.0
 	global_position = pos

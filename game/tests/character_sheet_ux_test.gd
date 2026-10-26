@@ -151,6 +151,28 @@ func _test_sheet_fits() -> void:
 					var pr := Rect2(sh.passive_button.global_position, sh.passive_button.size)
 					_check(whole.encloses(pr), "%s %s : passif dans l'écran" % [tag, cid])
 				_check(sh._detail_desc.text != "", "%s %s : description complète du sort affichée" % [tag, cid])
+				# infobulles de variante / passif : jamais sur l'aperçu animé (tiers gauche), dans l'écran
+				if sh.tooltip != null and sh.preview_stage != null:
+					var stage_r := Rect2(sh.preview_stage.global_position, sh.preview_stage.size)
+					var tip_btns: Array = []
+					for row in sh.focus_rows():
+						for b in row:
+							tip_btns.append(b)
+					if sh.passive_button != null:
+						tip_btns.append(sh.passive_button)
+					for b in tip_btns:
+						if bool(b.get_meta("is_base", false)):
+							continue
+						if b == sh.passive_button:
+							sh._show_passive_tip(b)
+						else:
+							sh._show_tip(b)
+						await _frames(3)
+						var tr := Rect2(sh.tooltip.global_position, sh.tooltip.size)
+						_check(sh.tooltip.visible, "%s %s : infobulle visible" % [tag, cid])
+						_check(not tr.intersects(stage_r), "%s %s : infobulle %s hors de l'aperçu %s" % [tag, cid, tr, stage_r])
+						_check(whole.grow(0.5).encloses(tr), "%s %s : infobulle dans l'écran %s" % [tag, cid, tr])
+					sh.tooltip.hide_tip()
 				s.close_sheet()
 				await _frames(2)
 			s.queue_free()

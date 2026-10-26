@@ -933,8 +933,8 @@ func _show_passive_tip(b: Button) -> void:
 	tooltip.show_for(b, "Passif · " + String(info.get("name", "")), "", String(info.get("desc", "")), _tip_area())
 
 
-## Zone où poser les infobulles : le tiers gauche (modèle), pour ne jamais masquer la grille des sorts
-## (le contrôle, pas son rectangle : la taille n'est pas encore fixée à l'ouverture de la fiche).
+## Zone à ne jamais recouvrir par les infobulles : le tiers gauche (aperçu animé des sorts). La bulle se pose près
+## du bouton, hors de cette zone (le contrôle, pas son rectangle : la taille n'est pas fixée à l'ouverture de la fiche).
 func _tip_area() -> Control:
 	return preview_stage if preview_stage != null and is_instance_valid(preview_stage) else null
 
