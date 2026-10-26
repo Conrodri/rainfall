@@ -540,6 +540,7 @@ func _build() -> void:
 			icon_box.add_child(tr)
 		_card_boxes.append(icon_box)
 		_card_icons.append(icon)
+		icon_frame.visible = false # la carte a déjà sa fenêtre d illustration et sa pastille de rareté : pas de cadre carré par-dessus l icône (retour joueur 26/10)
 		_card_rarity.append(icon_frame)
 		# toute la carte est le bouton de choix (clic, toucher, Entrée / A quand elle a le focus)
 		card.mouse_filter = Control.MOUSE_FILTER_STOP
