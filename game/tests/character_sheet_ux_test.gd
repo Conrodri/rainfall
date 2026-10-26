@@ -89,7 +89,7 @@ func _test_passives() -> void:
 		var desc := String(info.get("desc", ""))
 		_check(not desc.contains("%%") and not desc.contains("%s") and not desc.contains("%d"), "%s : aucun format brut dans le texte" % id)
 		_check(info.has("icon") and info.has("hud"), "%s : clés icon / hud présentes" % id)
-	_check(not bool(PB.info_for(&"ardent").get("hud", true)), "Ardent : pas d'icône de passif au HUD")
+	_check(not PB.info_for(&"ardent").is_empty(), "Ardent : passif affiché au HUD (décision du joueur, 26/10)")
 	_check(bool(PB.info_for(&"vigie").get("hud", false)) and bool(PB.info_for(&"morfil").get("hud", false)), "Vigie et Taliant : icône au HUD")
 	var vig: String = PB.info_for(&"vigie").desc
 	_check(vig.contains(KitResource.fmt(VigieKit.TENSION_MOVING_S)) and vig.contains(KitResource.fmt(VigieKit.ALLONGE_RANGE_U)), "Vigie : chiffres lus dans le kit")

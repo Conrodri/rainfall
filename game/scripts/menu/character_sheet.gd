@@ -66,6 +66,8 @@ var text_scale := 1.0
 var _root: HBoxContainer ## colonne gauche (scène + détail) puis colonne droite
 var _right: VBoxContainer
 var _grid: GridContainer
+var arena: SpellPreview ## aperçu de jeu (mini-arène) ; null = repli sur l'ancienne animation + VFX
+var _arena_token := 0
 var _fx: Node2D ## couche d'effets de l'aperçu (frames de VFX, projectile), vidée à chaque sort
 var _rows: Array = [] ## par slot : {buttons, name, role, desc, stats, dmg, cell, spell}
 var _detail_name: Label
@@ -125,6 +127,7 @@ func open(c: Dictionary, is_locked: bool, animate := true) -> void:
 	_slim = false
 	text_scale = 1.0
 	_spell_data = _load_spell_data(String(c.get("id", "")))
+	_drop_arena()
 	for ch in _root.get_children():
 		_root.remove_child(ch)
 		ch.queue_free()
@@ -138,6 +141,8 @@ func open(c: Dictionary, is_locked: bool, animate := true) -> void:
 	var was_visible := visible
 	visible = true
 	_fit_text.call_deferred()
+	_arena_token += 1
+	_start_arena.call_deferred(_arena_token)
 	if animate and is_inside_tree():
 		if _tween != null:
 			_tween.kill()
@@ -150,6 +155,35 @@ func open(c: Dictionary, is_locked: bool, animate := true) -> void:
 			_tween.tween_property(self, "position:y", y, 0.18).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	else:
 		modulate.a = 1.0
+
+
+## Libère l'aperçu de jeu (changement de perso, fiche masquée ou détruite).
+func _drop_arena() -> void:
+	_arena_token += 1
+	if arena != null and is_instance_valid(arena):
+		arena.shutdown()
+	arena = null
+
+
+## Démarre l'aperçu de jeu une fois la fiche en place ; en cas d'échec, l'ancienne animation reste affichée.
+func _start_arena(token: int) -> void:
+	if token != _arena_token or arena == null or not is_instance_valid(arena) or not visible:
+		return
+	arena.start(character, chosen)
+	if not arena.ready_to_cast:
+		return
+	for n in [_glow, _floor, preview]:
+		if n != null and is_instance_valid(n):
+			n.visible = false
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and not visible:
+		_drop_arena()
+
+
+func _exit_tree() -> void:
+	_drop_arena()
 
 
 ## Boutons d'options par slot (base puis variantes), pour le câblage du focus.
@@ -214,6 +248,11 @@ func _build_identity() -> void:
 	stage.add_child(_floor)
 	left.add_child(stage)
 	preview_stage = stage
+	if SpellPreview.supported(character, locked):
+		arena = SpellPreview.new()
+		arena.name = "SpellPreview"
+		stage.add_child(arena)
+		stage.move_child(arena, 1) # juste au-dessus du fond
 	preview = null
 	var sf_path := String(character.get("sprite_frames", ""))
 	var sf: SpriteFrames = load(sf_path) if sf_path != "" and ResourceLoader.exists(sf_path) else null
@@ -930,6 +969,9 @@ func preview_spell(slot: int, o: Dictionary) -> void:
 	var tok := _play_token
 	_clear_fx()
 	var sd: SpellData = _spell_data.get(StringName(o.get("id", "")))
+	if arena != null and is_instance_valid(arena) and arena.ready_to_cast and arena.play(slot, chosen):
+		spell_previewed.emit(slot, StringName(o.get("id", "")))
+		return
 	var t := _play_action(slot)
 	var tv := _play_vfx(sd)
 	if is_inside_tree():
