@@ -29,6 +29,7 @@ var costed := true ## false : motte gratuite (sortie du Bourbier)
 var big := false ## grosse motte (variante Bouture) : sprite x1,5, plus lente, plus durable
 var weight := 1 ## places occupées sur les MAX_MOTTES (grosse motte : 2)
 var fight_s := BourbeKit.MOTTE_FIGHT_S
+var contact_interval_s := BourbeKit.MOTTE_CONTACT_INTERVAL_S
 var speed_u := BourbeKit.MOTTE_SPEED_U
 var radius_u := BourbeKit.MOTTE_RADIUS_U
 var ring_u := BourbeKit.ALLY_RING_U
@@ -40,6 +41,7 @@ var hits := 0 ## coups de contact portés (tests)
 var _fly_from := Vector2.ZERO
 var _fly_to := Vector2.ZERO
 var _fly_t := 0.0
+var _landed := false
 var _attack_cd := 0.0
 var _retarget := 0.0
 var _recall_hits: Array = []
@@ -73,7 +75,9 @@ func launch(from: Vector2, to: Vector2) -> void:
 	_fly_from = from
 	_fly_to = to
 	_fly_t = 0.0
+	_landed = false
 	state = State.FLY
+	airborne = true
 	global_position = from
 	var d := to - from
 	if d.length_squared() > 1.0:
@@ -92,6 +96,7 @@ func pop_at(pos: Vector2, dir: Vector2) -> void:
 func recall() -> void:
 	if state == State.GONE:
 		return
+	_land_now() # rappelée en plein vol : le plouf part quand même
 	state = State.RECALL
 	_recall_hits.clear()
 	if _sprite != null:
@@ -181,7 +186,7 @@ func _play_dir(base: StringName) -> void:
 # --- Contrat « cible » des monstres --------------------------------------------------------------
 
 func take_damage(amount: float, _source: Node = null) -> void:
-	if state == State.GONE or exploded or amount <= 0.0:
+	if state == State.GONE or state == State.FLY or exploded or amount <= 0.0: # en l'air : intouchable
 		return
 	hp -= amount
 	if _sprite != null:
@@ -195,6 +200,7 @@ func take_damage(amount: float, _source: Node = null) -> void:
 func die() -> void:
 	if state == State.GONE:
 		return
+	_land_now() # détruite en plein vol : le plouf part à l'endroit où elle se trouve
 	leave()
 	HitFx.impact(global_position, facing, &"physical", 0.5)
 	Audio.play(&"enemy.contact.light", global_position, -6.0, 0.6)
@@ -228,6 +234,7 @@ static func _anim_len(sf: SpriteFrames, anim: StringName) -> float:
 func merge() -> void:
 	if state == State.GONE:
 		return
+	_land_now() # recollée en plein vol (Bourbier) : le plouf part quand même
 	leave()
 	if kit != null and is_instance_valid(kit):
 		kit.on_motte_merged(self)
@@ -289,15 +296,25 @@ func _step_fly(delta: float) -> void:
 		if _fallback_look:
 			queue_redraw()
 	if _fly_t >= 1.0:
-		if _sprite != null:
-			_sprite.position.y = 0.0
-		queue_redraw()
+		_land_now()
 		state = State.FIGHT
 		fight_left = fight_s
-		if caster != null and is_instance_valid(caster) and land_spell != null:
-			caster.spawn_zone(land_spell, global_position)
+		queue_redraw()
 		HitFx.impact(global_position, facing, &"physical", 0.45)
 		Audio.play_cast(&"detacher", global_position, 0.6)
+
+
+## Atterrissage : « plouf » (land_spell) à la position courante, une seule fois. Appelé à la fin du vol et par
+## tout ce qui interrompt une motte en l'air (mort, rappel, recollage) : une motte lancée applique toujours son AOE.
+func _land_now() -> void:
+	if state != State.FLY or _landed:
+		return
+	_landed = true
+	airborne = false
+	if _sprite != null:
+		_sprite.position.y = 0.0
+	if caster != null and is_instance_valid(caster) and land_spell != null:
+		caster.spawn_zone(land_spell, global_position)
 
 
 func _step_fight(delta: float) -> void:
@@ -319,7 +336,7 @@ func _step_fight(delta: float) -> void:
 		if to.length() > reach:
 			_move(to.normalized() * minf(_speed_px() * delta, to.length() - reach))
 		elif _attack_cd <= 0.0 and caster != null and is_instance_valid(caster):
-			_attack_cd = BourbeKit.MOTTE_CONTACT_INTERVAL_S
+			_attack_cd = contact_interval_s
 			if to.length_squared() > 1.0:
 				facing = to.normalized()
 			hits += 1

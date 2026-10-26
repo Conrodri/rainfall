@@ -11,7 +11,7 @@ extends Node2D
 ## Dégâts toujours via SpellCaster (deal_damage / spawn_zone) : les items et procs du joueur s'appliquent.
 ## Visuel : même SpriteFrames que le joueur (anim idle_<dir>), désaturé −40 % et assombri, sans Montreur ni fils.
 
-const PROVOKE_RANGE_U := 4.0
+const PROVOKE_RANGE_U := 4.0 ## rayon par défaut ; chaque leurre peut avoir le sien (provoke_range_u)
 const RADIUS_U := 0.45
 const FLIGHT_SPEED_U := 10.0
 const FLIGHT_DIST_U := 4.0
@@ -26,6 +26,13 @@ static var live: Array[Decoy] = []
 
 ## Provoque aussi les boss (mottes de Bourbe, équilibrage 22/10/2026) ; les doublures de Rictus non.
 var lures_bosses := false
+
+## En l'air (motte lancée) : ni provoquée par les monstres ni touchée par leurs tirs.
+var airborne := false
+
+## Rayon de provocation propre à ce leurre (u). Un leurre dépasse le `max_px` passé par l'appelant (4 u) s'il
+## a un rayon plus grand : les appelants existants n'ont rien à changer.
+var provoke_range_u := PROVOKE_RANGE_U
 
 var caster: SpellCaster = null
 var hp := 1.0
@@ -54,29 +61,25 @@ func _ready() -> void:
 	GroundMarker.attach(self, RADIUS_U, false, &"exploded") # invocation : halo fixe, caché à l'explosion / la mort
 
 
-## Doublure la plus proche de `pos` à moins de max_px (provocation), ou null.
+## Doublure la plus proche de `pos` qui la provoque (distance <= max(max_px, provoke_range_u du leurre)), ou null.
 static func nearest_to(pos: Vector2, max_px: float) -> Decoy:
-	var best: Decoy = null
-	var best_d := max_px * max_px
-	for d in live:
-		if d.exploded or not is_instance_valid(d):
-			continue
-		var dd := d.global_position.distance_squared_to(pos)
-		if dd <= best_d:
-			best_d = dd
-			best = d
-	return best
+	return _nearest(pos, max_px, false)
 
 
-## Leurre qui provoque les boss (lures_bosses) le plus proche de `pos` à moins de max_px, ou null.
+## Leurre qui provoque les boss (lures_bosses) le plus proche de `pos` (même règle de rayon), ou null.
 static func nearest_boss_lure(pos: Vector2, max_px: float) -> Decoy:
+	return _nearest(pos, max_px, true)
+
+
+static func _nearest(pos: Vector2, max_px: float, bosses_only: bool) -> Decoy:
 	var best: Decoy = null
-	var best_d := max_px * max_px
+	var best_d := INF
 	for d in live:
-		if not is_instance_valid(d) or d.exploded or not d.lures_bosses:
+		if not is_instance_valid(d) or d.exploded or d.airborne or (bosses_only and not d.lures_bosses):
 			continue
 		var dd := d.global_position.distance_squared_to(pos)
-		if dd <= best_d:
+		var lim := maxf(max_px, d.provoke_range_u * Balance.UNIT_PX)
+		if dd <= lim * lim and dd <= best_d:
 			best_d = dd
 			best = d
 	return best
@@ -86,7 +89,7 @@ static func nearest_boss_lure(pos: Vector2, max_px: float) -> Decoy:
 static func hit_by(pos: Vector2, r_px: float) -> Decoy:
 	var r := r_px + RADIUS_U * Balance.UNIT_PX
 	for d in live:
-		if not d.exploded and is_instance_valid(d) and d.global_position.distance_squared_to(pos) <= r * r:
+		if not d.exploded and not d.airborne and is_instance_valid(d) and d.global_position.distance_squared_to(pos) <= r * r:
 			return d
 	return null
 

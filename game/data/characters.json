@@ -454,7 +454,7 @@
         "slot": "auto",
         "desc": "Gifle automatique en large arc de 2,6 u vers l'ennemi le plus proche ; frappe tout l'arc.",
         "variants": [
-          {"id": "bourbe_crachat_de_vase", "name": "Crachat de vase", "desc": "Une motte crachée à 6 u éclate sur 1,2 u et englue ce qu'elle touche. Tes mottes tiennent la ligne.", "unlock_text": "Gagner une run avec Bourbe.", "unlock_key": "spell:bourbe_crachat_de_vase", "unlock_rule": {"type": "win_with", "character": "bourbe"}}
+          {"id": "bourbe_crachat_de_vase", "name": "Crachat de vase", "desc": "Une motte crachée à 6 u éclate sur 0,8 u et englue ce qu'elle touche. Tes mottes tiennent la ligne.", "unlock_text": "Gagner une run avec Bourbe.", "unlock_key": "spell:bourbe_crachat_de_vase", "unlock_rule": {"type": "win_with", "character": "bourbe"}}
         ]
       },
       {
@@ -463,7 +463,7 @@
         "slot": "cd",
         "desc": "4 charges (3 s chacune) : arrache une motte de vase. Tant qu'elle est dehors, sa masse (15 % de tes PV max) est retirée de tes PV max ; vaincue, sa part reste perdue 8 s. La motte provoque les monstres à 4 u et se bat 10 s, puis rampe vers toi ; recollée, elle te rend ses PV restants.",
         "variants": [
-          {"id": "bourbe_bouture", "name": "Bouture", "desc": "2 grosses mottes au lieu de 4 : chacune pèse 30 % de tes PV, frappe deux fois plus fort et tient 15 s.", "unlock_text": "Recoller 200 mottes.", "unlock_key": "spell:bourbe_bouture", "unlock_rule": {"type": "counter", "key": "bourbe_mottes_recalled", "value": 200}}
+          {"id": "bourbe_bouture", "name": "Bouture", "desc": "2 grosses mottes au lieu de 4 : chacune pèse 30 % de tes PV, frappe deux fois plus vite, plouf et Rappel plus forts, et tient 15 s.", "unlock_text": "Recoller 200 mottes.", "unlock_key": "spell:bourbe_bouture", "unlock_rule": {"type": "counter", "key": "bourbe_mottes_recalled", "value": 200}}
         ]
       },
       {
