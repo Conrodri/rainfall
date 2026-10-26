@@ -1,9 +1,9 @@
 extends Node
 ## Test headless de Rainette (docs/Design_Personnages.md §2.3, kit complété) : stats, rendu, bonds (S11 :
-## distance, arc, par-dessus les monstres, immunité au contact en l'air), souffle (coût, régén, essoufflement),
-## Langue (ligne, traction, avalé +1 %), Grand saut (6 u, coef 3,0, étourdissement, file en l'air),
+## distance, arc, virage en l'air, par-dessus les monstres, immunité au contact en l'air), bonds sans limite (plus de souffle),
+## Langue (ligne, cible principale, traction, avalé +1 %), Grand saut (6 u, coef 3,0, étourdissement, file en l'air),
 ## Gluant (éclaboussure, ralentissement, attraction, bond +50 %), Chant de crue (bonds ×2, atterrissages
-## coef 3,0, souffle illimité), bond arrière, anims d'action et frames d'impact, lumière, partie réelle.
+## coef 2,8), bond arrière, anims d'action et frames d'impact, lumière, partie réelle.
 ## godot --headless --path game res://tests/rainette_test.tscn
 
 class FakeEnemy extends Node2D:
@@ -15,6 +15,8 @@ class FakeEnemy extends Node2D:
 	var tier := 2
 	var hp := 1000.0
 	var active := true
+	var is_boss := false
+	var is_elite := false
 
 	func take_damage(amount: float, _is_crit: bool = false, _element: StringName = &"") -> void:
 		taken.append(amount)
@@ -134,7 +136,6 @@ func _reset() -> void:
 	_kit.state = RainetteKit.State.GROUND
 	_kit.state_left = 0.0
 	_kit.hop_is_leap = false
-	_kit.breath = float(RainetteKit.BREATH_MAX)
 	_kit.ult_left = 0.0
 	_player.global_position = Vector2.ZERO
 	_player.velocity = Vector2.ZERO
@@ -179,19 +180,26 @@ func _run() -> void:
 		jade = jade and sp.light_preset == RainetteKit.LIGHT
 	_check("lumière des sorts jade (jamais la braise)", jade and LightRig.has_preset(RainetteKit.LIGHT) and LightRig.has_preset(RainetteKit.LIGHT_SAC))
 	_check("icônes des 4 sorts livrées", RainetteKit.character().spells.all(func(sp): return ArdentKit.spell_icon(sp.id) != null))
-	_check("ombre de contact et souffle au sol", _player.get_node_or_null("RainetteShadow") != null and _player.get_node_or_null("RainetteBreath") != null)
+	_check("ombre de contact ; plus de pastilles de souffle", _player.get_node_or_null("RainetteShadow") != null and _player.get_node_or_null("RainetteBreath") == null)
+	_check("aucune ressource exposée au HUD", not _kit.has_method(&"resource_state") and KitResource.of(_player).is_empty())
+	_check("passif sans icône au HUD", not bool(RainetteKit.passive_info().get("hud", true)))
 
 	print("Bonds (S11)")
 	_reset()
 	_kit.locomote(Vector2.RIGHT, DT)
-	_check("joystick poussé = bond lancé", _kit.is_airborne() and _near(_kit.breath, 5.0))
-	_advance(RainetteKit.HOP_AIR_S * 0.5, Vector2.UP)
-	_check("bond engagé (direction non corrigée)", absf(_player.global_position.y) < 0.5, str(_player.global_position))
+	_check("joystick poussé = bond lancé", _kit.is_airborne())
+	_advance(RainetteKit.HOP_AIR_S * 0.5, Vector2.RIGHT)
+	_check("bond droit sans correction", absf(_player.global_position.y) < 0.5, str(_player.global_position))
 	_check("sprite soulevé à mi-bond", vis.position.y < Iso.lift_logical(0.4), str(vis.position.y))
 	_check("anim jump en l'air", String(vis.animation).begins_with("jump_") or _kit.visual_anim(&"idle_e") == &"jump_e")
 	_until_ground()
 	_check("bond de 2,5 u", _near(_player.global_position.x, 2.5 * U, 3.0), str(_player.global_position))
 	_check("au sol : sprite reposé", _near(vis.position.y, 0.0, 0.5))
+	_reset()
+	_kit.locomote(Vector2.RIGHT, DT)
+	_advance(0.2, Vector2.UP)
+	_check("virage en l'air : le bond se corrige vers le joystick (jamais d'un coup)", _kit.hop_dir.y < -0.3 and _kit.hop_dir.x > 0.2, str(_kit.hop_dir))
+	_until_ground()
 	_reset()
 	var wall_of_mobs: Array = []
 	for i in 3:
@@ -223,27 +231,19 @@ func _run() -> void:
 	_player.take_damage(10.0, biter)
 	_check("au sol : contact touche", _player.hp < hp0)
 
-	print("Souffle")
+	print("Bonds sans limite")
 	_reset()
-	for i in RainetteKit.BREATH_MAX:
+	var ok_chain := true
+	var h0 := _kit.hop_count
+	for i in 14:
 		_kit.locomote(Vector2.RIGHT, DT)
-		while _kit.state != RainetteKit.State.GROUND and not _kit.is_breathless():
+		var cap := 0
+		while _kit.state != RainetteKit.State.GROUND and cap < 120:
 			_advance(DT)
-		if _kit.is_breathless():
-			break
-		_advance(0.05) # relâché très peu : pas de régén
-	_check("6 bonds : essoufflée", _kit.is_breathless() and _kit.breath < 1.0, "state %d breath %.2f" % [_kit.state, _kit.breath])
-	_check("essoufflée : Langue et crachat suspendus", _kit.blocks_slot(1) and _kit.blocks_slot(3) and not _kit.blocks_slot(2))
-	_check("anim breathe", _kit.visual_anim(&"idle_e").begins_with("breathe_"))
-	var px: float = _player.global_position.x
-	_advance(0.5, Vector2.RIGHT)
-	_check("sur place pendant 1 s", _near(_player.global_position.x, px) and _kit.is_breathless())
-	_advance(0.55)
-	_check("souffle repris : plein", _kit.state == RainetteKit.State.GROUND and _near(_kit.breath, 6.0))
-	_kit.breath = 3.0
-	_advance(0.85)
-	_check("+1 souffle / 0,4 s au sol", _near(_kit.breath, 5.0), str(_kit.breath))
-	_check("ressource KitResource : 6 pastilles", _kit.resource_state()["pips"] == 6 and _kit.resource_state()["filled"] == 5)
+			cap += 1
+		ok_chain = ok_chain and _kit.state == RainetteKit.State.GROUND
+	_check("14 bonds d'affilée : jamais bloquée, aucune pause", ok_chain and _kit.hop_count - h0 == 14, str(_kit.hop_count - h0))
+	_check("aucun sort suspendu", not _kit.blocks_slot(1) and not _kit.blocks_slot(2) and not _kit.blocks_slot(3) and not _kit.blocks_slot(4))
 	_check("lumière du joueur jade pâle (CharacterData.light_color)", _player.character.light_color.is_equal_approx(RainetteKit.PLAYER_LIGHT_TINT) and _player._light.color_override.is_equal_approx(RainetteKit.PLAYER_LIGHT_TINT))
 
 	print("Sort 1 : Langue")
@@ -257,10 +257,31 @@ func _run() -> void:
 	_check("anim attack orientée", String(_player.action_anim()).begins_with("attack_e"), str(_player.action_anim()))
 	var t_imp := _to_impact()
 	_check("impact à la frame 3 de attack (0,25 s)", _near(t_imp, 0.25, 0.04), str(t_imp))
-	_check("coef 1,0 sur la cible", _near(tgt.total(), RainetteKit.TONGUE_COEF * BASE), str(tgt.taken))
-	_check("fouet de 4,5 u : toute la ligne", _near(on_line.total(), RainetteKit.TONGUE_COEF * BASE))
+	_check("cible principale (la plus proche) : gros coup 1,15", _near(tgt.total(), RainetteKit.TONGUE_COEF * BASE), str(tgt.taken))
+	_check("fouet de 4,5 u : le reste de la ligne prend le coup réduit 0,9", _near(on_line.total(), RainetteKit.TONGUE_LINE_COEF * BASE), str(on_line.taken))
 	_check("rien hors de la ligne / au-delà de 4,5 u", off_line.taken.is_empty() and beyond.taken.is_empty())
 	_check("VFX langue (RA1)", is_instance_valid(_kit.last_tongue) and _kit.last_tongue.get_child_count() > 0)
+	_reset()
+	var near_a := _fake(Vector2(90, 0))
+	var elite_b := _fake(Vector2(180, 10))
+	elite_b.is_elite = true
+	var boss_c := _fake(Vector2(250, -10))
+	boss_c.is_boss = true
+	_player.spells.cast(1)
+	_to_impact()
+	_check("boss sur la ligne = cible principale (même derrière les autres)", _near(boss_c.total(), RainetteKit.TONGUE_COEF * BASE) and _near(near_a.total(), RainetteKit.TONGUE_LINE_COEF * BASE) and _near(elite_b.total(), RainetteKit.TONGUE_LINE_COEF * BASE), "%s %s %s" % [boss_c.taken, near_a.taken, elite_b.taken])
+	_reset()
+	var elite_only := _fake(Vector2(120, 0))
+	var closer := _fake(Vector2(60, 5))
+	elite_only.is_elite = true
+	_player.spells.cast(1)
+	_to_impact()
+	_check("sans boss : l'élite prime sur le plus proche", _near(elite_only.total(), RainetteKit.TONGUE_COEF * BASE) and _near(closer.total(), RainetteKit.TONGUE_LINE_COEF * BASE))
+	_reset()
+	var lone := _fake(Vector2(100, 0))
+	_player.spells.cast(1)
+	_to_impact()
+	_check("monocible : une cible seule prend le coup principal 1,15 (la ligne entière prenait 1,1 avant la refonte)", _near(lone.total(), 1.15 * BASE))
 	_reset()
 	var snack := _fake(Vector2(150, 0))
 	snack.tier = 1
@@ -282,7 +303,6 @@ func _run() -> void:
 	_check("atterrissage coef 3,8", _near(victim.total(), RainetteKit.LEAP_COEF * BASE), str(victim.taken))
 	_check("étourdi 0,5 s", _near(victim.stunned, 0.5))
 	_check("hors zone épargné", bystander.taken.is_empty())
-	_check("sans coût de souffle", _near(_kit.breath, 6.0, 0.01))
 	_reset()
 	_player.spells.aim_override = Vector2(900, 0)
 	_player.spells.cast(2)
@@ -326,7 +346,7 @@ func _run() -> void:
 	_check("4 s de chant", _kit.is_singing() and _near(_kit.ult_left, 4.0, 0.3))
 	var crowd := _fake(Vector2(5.0 * U + 60, 0))
 	_kit.locomote(Vector2.RIGHT, DT)
-	_check("bonds ×2, souffle illimité", _near(_kit.hop_speed_px * _kit.hop_air_total, 5.0 * U, 1.0) and _near(_kit.breath, 6.0))
+	_check("bonds ×2", _near(_kit.hop_speed_px * _kit.hop_air_total, 5.0 * U, 1.0))
 	_until_ground()
 	_check("atterrissage : coef 3,6 dans 3 u", _near(crowd.total(), RainetteKit.ULT_LAND_COEF * BASE), str(crowd.taken))
 	_advance(4.0)

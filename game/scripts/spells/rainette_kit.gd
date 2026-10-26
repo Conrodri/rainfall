@@ -1,22 +1,22 @@
 class_name RainetteKit
 extends Node
 ## Kit de Rainette, chevalière des roseaux (docs/Design_Personnages.md §2.3 ; kit complété le 22/10/2026,
-## voir le rapport d'intégration) : mobilité / burst, ressource « Souffle ». Données : character(). Logique :
+## voir le rapport d'intégration) : mobilité / burst. Refonte du 26/10/2026 : plus de ressource « Souffle ». Données : character(). Logique :
 ## ce nœud, enfant « Kit » du joueur, interrogé par hooks (locomote, ignores_hit, blocks_slot, cast_spell,
 ## visual_anim, can_dodge, on_dodge_start…), comme RictusKit.
-## - Locomotion S11 : elle ne marche pas, elle BONDIT. Joystick poussé = bond engagé de 2,5 u en 0,35 s
-##   (+0,1 s d'atterrissage) par-dessus les monstres (pas les murs). En l'air : intouchable au contact
-##   (pas par les projectiles ni par les boss). Distance × vitesse d'items / ralentissements.
-## - Souffle 6 : un bond coûte 1, +1 par 0,4 s au sol ; à 0, elle reprend son souffle 1 s sur place
-##   (sorts 1 et 3 suspendus, vulnérable) puis repart pleine.
-## - Sort 1 Langue (auto) : fouet de 4,5 u vers le plus proche, frappe tout ce qui est sur la ligne, tire les
-##   cibles de 0,25 u vers elle ; un T1 tué par la Langue est avalé : +1 % PV max.
-## - Sort 2 Grand saut (7 s) : accroupie 0,12 s puis bond de 6 u vers le point visé, atterrissage coef 3,0
-##   dans 2,5 u + étourdissement 0,5 s. Sans souffle ; sort de l'essoufflement ; pressé en l'air = mis en file.
+## - Locomotion S11 : elle ne marche pas, elle BONDIT, sans limite ni jauge. Joystick poussé = bonds enchaînés de
+##   2,5 u en 0,35 s (+0,1 s d'atterrissage) par-dessus les monstres (pas les murs), orientables en l'air
+##   (virage doux vers le joystick). En l'air : intouchable au contact (pas par les projectiles ni par les boss).
+##   Distance × vitesse d'items / ralentissements.
+## - Sort 1 Langue (auto) : fouet de 4,5 u vers le plus proche ; la CIBLE PRINCIPALE (boss, sinon élite, sinon le plus
+##   proche de la ligne) prend le gros coup (monocible), le reste de la ligne un coup réduit ; tire les cibles de
+##   0,25 u vers elle ; un T1 tué par la Langue est avalé : +1 % PV max.
+## - Sort 2 Grand saut (7 s) : accroupie 0,12 s puis bond de 6 u vers le point visé, atterrissage coef 3,8
+##   dans 3 u + étourdissement 0,5 s. Pressé en l'air = mis en file.
 ## - Sort 3 Gluant (8 s) : crachat au point visé (6 u) : éclaboussure coef 1,0 puis flaque 2,5 u / 5 s,
 ##   ralentit 40 % et colle le paquet (attraction vers le centre) ; bonds depuis la flaque +50 %.
-## - Sort 4 Chant de crue (20 s) : 4 s, sac vocal gonflé : souffle illimité, bonds ×2 (plus hauts), chaque
-##   atterrissage inflige coef 3,0 dans 3 u.
+## - Sort 4 Chant de crue (20 s) : 4 s, sac vocal gonflé : bonds ×2 (plus hauts), chaque atterrissage
+##   inflige coef 2,8 dans 3 u.
 ## - Roulade = bond arrière (3 u, invulnérable, même recharge) : elle saute à reculons en gardant la menace
 ##   en face (sans direction : recule depuis le curseur / l'avant).
 ## Rendu : rainette.tres (RA1) ; VFX tongue (RA1) ; goo, land_ring, ombre de contact (RA2) : absents = repli.
@@ -70,15 +70,14 @@ const HOP_DIST_U := 2.5
 const HOP_AIR_S := 0.35
 const HOP_LAND_S := 0.1
 const HOP_HEIGHT_U := 0.55
-const BREATH_MAX := 6
-const BREATH_REGEN_S := 0.4 ## +1 souffle par 0,4 s au sol
-const BREATHLESS_S := 1.0
+const AIR_TURN_RAD_S := 4.5 ## virage en l'air vers le joystick (rad/s) : les bonds se corrigent, rien d'engagé
 const CONTACT_MARGIN_U := 0.35 ## en l'air : un coup de monstre à portée de contact (+ marge) est ignoré
 const DODGE_HEIGHT_U := 0.6
 const BACK_HOP_U := 3.5 ## bond arrière (roulade) : 3 u de Balance -> 3,5 u (équilibrage 22/10, sa défense = la distance) ## bond arrière : arc visuel
 
 # --- Sorts ----------------------------------------------------------------------------------------
-const TONGUE_COEF := 1.1 ## équilibrage 22/10 : 0,8 -> 1,0 ; audit 23/10 (P5) : 1,0 -> 1,1
+const TONGUE_COEF := 1.15 ## cible principale (refonte 26/10 : monocible). Avant : 1,1 pour toute la ligne
+const TONGUE_LINE_COEF := 0.9 ## autres monstres de la ligne (zone un peu réduite en compensation)
 const TONGUE_RANGE_U := 4.5
 const TONGUE_WIDTH_U := 0.5 ## équilibrage 22/10 : 0,35 -> 0,5 (essaim −27 %) ; demi-largeur de la ligne frappée (+ rayon du monstre)
 const TONGUE_PULL_U := 0.25
@@ -115,18 +114,54 @@ const ACTION_IMPACT_FRAMES := {&"attack": 3, &"spit": 2, &"belch": 3, &"cast": 2
 ## Prise en main (retour joueur 23/10/2026 : « stacks de déplacement » illisibles, sauts ratés) : un appui un peu
 ## trop tôt n'est plus perdu (tampon), un refus se voit et s'entend.
 const INPUT_BUFFER_S := 0.15 ## appui de bond pendant un bond / un atterrissage, ou de sort juste avant la fin de recharge
-const WARN_S := 0.45 ## clignotement de la jauge de souffle quand un bond est refusé (essoufflée)
 const WARN_GAP_S := 0.5 ## espacement mini entre deux retours de refus
+# Variantes de sorts (docs/Variantes_Sorts.md §2.6) : aucune n'ajoute de contrainte de déplacement.
+const V_CROAK := &"rainette_croassement" ## slot 1, remplace la Langue
+const V_RICOCHET := &"rainette_ricochet" ## slot 2, remplace le Grand saut
+const V_BULLE := &"rainette_bulle" ## slot 3, remplace le Gluant
+const V_CHOEUR := &"rainette_choeur" ## slot 4, remplace le Chant de crue
+const CROAK_COEF := 1.2
+const CROAK_RADIUS_U := 2.5
+const CROAK_KNOCK_U := 0.4
+const CROAK_CD_GAIN_S := 0.25 ## par T1 tué : recharge du Grand saut raccourcie
+const CROAK_CD_GAIN_MAX_S := 1.0 ## par croassement
+const RIC_COEF := 1.9
+const RIC_CD := 7.0
+const RIC_RANGE_U := 3.5
+const RIC_RADIUS_U := 2.0
+const RIC_AIR_S := 0.35
+const RIC_HEIGHT_U := 0.9
+const RIC_CROUCH_S := 0.06 ## accroupie brève : le second bond part tout de suite
+const RIC_STUN_S := 0.3
+const RIC_GRACE_S := 0.2
+const BULLE_COEF := 1.4
+const BULLE_CD := 8.0
+const BULLE_CATCH_U := 2.5 ## rayon de capture au point visé
+const BULLE_BURST_U := 2.0 ## rayon de l'éclatement
+const BULLE_HOLD_S := 1.5
+const BULLE_PULL_U := 1.0 ## attraction vers le centre sur la durée
+const BULLE_BOSS_SLOW := 0.4
+const CHOEUR_COEF := 1.8
+const CHOEUR_RADIUS_U := 2.5
+const CHOEUR_DURATION_S := 8.0
+const CHOEUR_GOO_U := 1.5
+const CHOEUR_GOO_S := 2.0
+const CHOEUR_GOO_MAX := 10 ## mini-flaques vivantes en même temps (plafond de perf)
+const COUNTER_LEAP_STUNS := "rainette.leap_stuns" ## monstres (hors boss) étourdis par le Grand saut
+const COUNTER_GLUED := "rainette.glued" ## monstres pris dans le Gluant (1 fois par flaque)
+const COUNTER_SWALLOWED := "rainette.swallowed" ## T1 avalés par la Langue
 const WALL_MASK := 1
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 
-enum State { GROUND, CROUCH, AIR, LAND, BREATHLESS }
+enum State { GROUND, CROUCH, AIR, LAND }
 
 var player: CharacterBody2D = null
 var state := State.GROUND
 var state_left := 0.0
-var breath := float(BREATH_MAX)
 var ult_left := 0.0
+var choir := false ## le Chœur des roseaux est en cours (bonds normaux, flaques aux atterrissages)
+var croak_cd_gain := 0.0 ## secondes de recharge du Grand saut rendues par le Croassement (tests)
+var ric_chains := 0 ## seconds bonds du Ricochet lancés (tests)
 var hop_dir := Vector2.DOWN
 var hop_is_leap := false ## bond en cours = Grand saut
 var hop_air_total := HOP_AIR_S
@@ -136,11 +171,8 @@ var hop_count := 0 ## bonds lancés (tests)
 var landings := 0 ## atterrissages (tests)
 var swallowed := 0 ## T1 avalés (tests)
 var last_tongue: Node2D = null ## dernier VFX de langue (tests)
-var _breath_t := 0.0
-var warns := 0 ## refus signalés au joueur (tests)
 var buffered_hops := 0 ## bonds lancés depuis le tampon d'entrée (tests)
 var buffered_casts := 0 ## sorts lancés depuis le tampon de recharge (tests)
-var _warn_left := 0.0
 var _warn_gap := 0.0
 var _dir_active := false
 var _hop_buf := 0.0
@@ -149,10 +181,13 @@ var _spell_buf := {} ## slot -> temps restant du tampon
 var _leap_target := Vector2.ZERO
 var _queued_leap: Variant = null ## Grand saut pressé en l'air : {spell, aim}
 var _leap_spell: SpellData = null
+var _ric_second := false ## le bond en cours est le second du Ricochet
+var _mini_goo_sd: SpellData = null
 var _pending := {} ## base d'action -> {spell, aim, target}
 var _visual: AnimatedSprite2D = null
 var _shadow: Node2D = null
-var _pips: Node2D = null
+var _line_sd: SpellData = null ## Langue de la ligne (coef réduit), copie paresseuse du sort du slot 1
+var _line_src: SpellData = null
 var _sac_light: LightRig.Handle = null
 var _tongue_frames: SpriteFrames = null
 
@@ -243,6 +278,59 @@ static func character() -> CharacterData:
 	return c
 
 
+## Variantes (contrat CONTRACTS.md) : SpellData de la variante `variant_id` pour `slot`, ou null (non codée).
+## Coefficients ajustés par balance_sim (±15 % du sort de base en DPS cible et zone) ; le style ne change pas.
+static func variant(slot: int, variant_id: StringName) -> SpellData:
+	match [slot, variant_id]:
+		[1, V_CROAK]:
+			var s1 := _spell(V_CROAK, "Croassement", 1, CROAK_COEF, 0.6)
+			s1.is_auto = true
+			s1.radius_u = CROAK_RADIUS_U
+			s1.trigger_range_u = CROAK_RADIUS_U
+			s1.range_u = CROAK_RADIUS_U
+			s1.proc_coef = 0.7
+			s1.hit_force = _force_for(CROAK_KNOCK_U)
+			s1.vfx_frames = LAND_RING_FRAMES
+			s1.vfx_radius_px = LAND_RING_RADIUS_PX
+			s1.vfx_floor_aspect = 1.0
+			return s1
+		[2, V_RICOCHET]:
+			var s2 := _spell(V_RICOCHET, "Ricochet", 2, RIC_COEF, RIC_CD)
+			s2.range_u = RIC_RANGE_U
+			s2.radius_u = RIC_RADIUS_U
+			s2.proc_coef = 1.0
+			s2.hit_force = 1.0
+			s2.target_mode = &"densest"
+			s2.trigger_range_u = RIC_RANGE_U
+			s2.vfx_frames = LAND_RING_FRAMES
+			s2.vfx_radius_px = LAND_RING_RADIUS_PX
+			s2.vfx_floor_aspect = 1.0
+			return s2
+		[3, V_BULLE]:
+			var s3 := _spell(V_BULLE, "Bulle", 3, BULLE_COEF, BULLE_CD)
+			s3.range_u = GOO_RANGE_U
+			s3.radius_u = BULLE_BURST_U
+			s3.duration = BULLE_HOLD_S
+			s3.proc_coef = 1.0
+			s3.hit_force = _force_for(0.3)
+			s3.target_mode = &"densest"
+			s3.trigger_range_u = GOO_RANGE_U
+			s3.element = &"poison"
+			return s3
+		[4, V_CHOEUR]:
+			var s4 := _spell(V_CHOEUR, "Chœur des roseaux", 4, CHOEUR_COEF, ULT_CD)
+			s4.radius_u = CHOEUR_RADIUS_U
+			s4.duration = CHOEUR_DURATION_S
+			s4.proc_coef = 0.8
+			s4.hit_force = 0.6
+			s4.trigger_range_u = 3.0
+			s4.vfx_frames = LAND_RING_FRAMES
+			s4.vfx_radius_px = LAND_RING_RADIUS_PX
+			s4.vfx_floor_aspect = 1.0
+			return s4
+	return null
+
+
 # --- Mise en place ------------------------------------------------------------------------------
 
 func setup(p: CharacterBody2D) -> void:
@@ -254,11 +342,6 @@ func setup(p: CharacterBody2D) -> void:
 	_shadow.name = "RainetteShadow"
 	p.add_child(_shadow)
 	p.move_child(_shadow, 0) # sous le sprite
-	_pips = RainetteBreathPips.new()
-	_pips.name = "RainetteBreath"
-	_pips.kit = self
-	p.add_child(_pips)
-	p.move_child(_pips, 0)
 	Events.floor_started.connect(_on_floor_started)
 	Events.player_died.connect(_on_player_died)
 	if p.has_signal(&"action_impact"):
@@ -294,44 +377,12 @@ func is_airborne() -> bool:
 	return state == State.AIR
 
 
-func is_breathless() -> bool:
-	return state == State.BREATHLESS
-
-
 func is_singing() -> bool:
 	return ult_left > 0.0
 
 
-## Ressource (contrat KitResource) : 6 pastilles de souffle ; illimité pendant le Chant, éteint essoufflée.
-func resource_state() -> Dictionary:
-	return KitResource.make(&"breath", "Souffle", _regen_progress(), ACCENT,
-		{"pips": BREATH_MAX, "filled": floori(breath + 0.001), "boost": ult_left > 0.0, "blocked": state == State.BREATHLESS,
-		"warn": _warn_left > 0.0})
-
-
-## Progression de la prochaine pastille (0-1) : régénération au sol, ou reprise de souffle quand essoufflée.
-func _regen_progress() -> float:
-	if state == State.BREATHLESS:
-		return clampf(1.0 - state_left / BREATHLESS_S, 0.0, 1.0)
-	if breath >= float(BREATH_MAX) or state == State.AIR:
-		return 0.0
-	return clampf(_breath_t / BREATH_REGEN_S, 0.0, 1.0)
-
-
-## Refus lisible : la jauge clignote et un tic sourd part (espacé, jamais en rafale).
-func _warn() -> void:
-	if _warn_gap > 0.0 or player == null:
-		return
-	_warn_left = WARN_S
-	_warn_gap = WARN_GAP_S
-	warns += 1
-	Audio.play(&"telegraph.warn_light", player.global_position, -10.0, 0.8)
-
-
-## Essoufflée : ni Langue ni crachat (elle halète). Grand saut et Chant de crue restent permis (sorties).
-func blocks_slot(slot: int) -> bool:
-	if state == State.BREATHLESS:
-		return slot == 1 or slot == 3
+## Plus de ressource : aucun sort n'est bloqué par l'état de Rainette.
+func blocks_slot(_slot: int) -> bool:
 	return false
 
 
@@ -388,6 +439,8 @@ func _no_move_input() -> bool:
 func cast_spell(s: SpellData, aim: Variant) -> bool:
 	match s.slot:
 		1:
+			if s.id == V_CROAK:
+				return _cast_croak(s)
 			return _cast_tongue(s)
 		2:
 			return _cast_leap(s, aim)
@@ -436,11 +489,17 @@ func _on_action_impact(base: StringName) -> void:
 	var s: SpellData = pend["spell"]
 	match s.slot:
 		1:
-			_lash(s, pend["target"], pend["dir"])
+			if pend.has("croak"):
+				_croak(s)
+			else:
+				_lash(s, pend["target"], pend["dir"])
 		3:
-			_spawn_goo(s, pend["aim"])
+			if s.id == V_BULLE:
+				_spawn_bubble(s, pend["aim"])
+			else:
+				_spawn_goo(s, pend["aim"])
 		4:
-			_start_song()
+			_start_song(s)
 
 
 # --- Locomotion S11 (Player._physics_process, hors roulade) --------------------------------------
@@ -455,8 +514,6 @@ func locomote(dir: Vector2, delta: float) -> void:
 	if active and not _dir_active and state != State.GROUND: # appui franc pendant un bond : tampon d'entrée
 		_hop_buf = INPUT_BUFFER_S
 		_hop_buf_dir = dir.normalized()
-		if state == State.BREATHLESS:
-			_warn() # il halète : l'appui est refusé, on le voit
 	_dir_active = active
 	match state:
 		State.GROUND:
@@ -471,6 +528,10 @@ func locomote(dir: Vector2, delta: float) -> void:
 			if state_left <= 0.0:
 				_takeoff()
 		State.AIR:
+			if active and not hop_is_leap: # virage doux vers le joystick : un bond se corrige en l'air
+				var turn := clampf(hop_dir.angle_to(dir.normalized()), -AIR_TURN_RAD_S * delta, AIR_TURN_RAD_S * delta)
+				hop_dir = hop_dir.rotated(turn)
+				player.facing = hop_dir
 			_air_step(delta)
 		State.LAND:
 			state_left -= delta
@@ -482,16 +543,6 @@ func locomote(dir: Vector2, delta: float) -> void:
 					var want := _hop_request(dir)
 					if want != Vector2.ZERO:
 						_try_hop(want, not active)
-		State.BREATHLESS:
-			if _queued_leap != null: # le Grand saut est la sortie de l'essoufflement : il part tout de suite
-				state = State.GROUND
-				state_left = 0.0
-				_begin_queued_leap()
-			else:
-				state_left -= delta
-				if state_left <= 0.0:
-					state = State.GROUND
-					breath = float(BREATH_MAX)
 	player.is_moving = state == State.AIR
 
 
@@ -517,22 +568,16 @@ func _try_hop(dir: Vector2, from_buffer := false) -> bool:
 	if state != State.GROUND:
 		return false
 	var singing := ult_left > 0.0
-	if not singing:
-		if breath < 1.0:
-			_warn()
-			return false
-		breath -= 1.0
 	if from_buffer:
 		buffered_hops += 1
 	_hop_buf = 0.0
-	_breath_t = 0.0
 	var dist := _u(HOP_DIST_U) * _hop_mult()
 	if in_goo():
 		dist *= 1.0 + GOO_HOP_BONUS
 	hop_is_leap = false
 	hop_air_total = HOP_AIR_S
 	hop_height_u = HOP_HEIGHT_U
-	if singing:
+	if singing and not choir: # le Chœur garde des bonds normaux
 		dist *= ULT_HOP_MULT
 		hop_air_total *= ULT_AIR_MULT
 		hop_height_u *= ULT_HEIGHT_MULT
@@ -542,7 +587,7 @@ func _try_hop(dir: Vector2, from_buffer := false) -> bool:
 	state = State.AIR
 	state_left = hop_air_total
 	hop_count += 1
-	Audio.play(&"step.player", player.global_position, -2.0, 1.25 if not singing else 0.9)
+	Audio.play(&"step.player", player.global_position, -2.0, 1.25 if not (singing and not choir) else 0.9)
 	return true
 
 
@@ -570,13 +615,13 @@ func _land() -> void:
 	player.velocity = Vector2.ZERO
 	if leap:
 		_leap_impact(pos)
+		_ricochet_chain()
+		if choir:
+			_spawn_mini_goo(pos)
 	if ult_left > 0.0 and not leap: # audit 23/10 (P5) : Grand saut pendant le Chant = un seul impact (le plus fort : celui du saut)
 		_ult_landing(pos)
 	if not leap and ult_left <= 0.0:
 		Audio.play(&"step.player", pos, -4.0, 0.8)
-	if breath < 1.0 and ult_left <= 0.0 and _queued_leap == null: # un saut en file prend la place de l'essoufflement
-		state = State.BREATHLESS
-		state_left = BREATHLESS_S
 
 
 func _abort_hop() -> void:
@@ -627,6 +672,7 @@ func _lash(s: SpellData, target: Variant, dir0: Vector2) -> void:
 				dir = d2.normalized()
 	_spawn_tongue_vfx(dir, length)
 	var half := _u(TONGUE_WIDTH_U)
+	var hit: Array = []
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
@@ -637,10 +683,42 @@ func _lash(s: SpellData, target: Variant, dir0: Vector2) -> void:
 			continue
 		if absf(v.cross(dir)) > half + er:
 			continue
+		hit.append(e)
+	var primary := _tongue_primary(hit, origin)
+	var line_sd := _tongue_line_spell(s)
+	for e in hit:
 		# source au-delà de la cible : le recul la TIRE vers Rainette
-		_caster().deal_damage(e, s, {"source_pos": (e as Node2D).global_position + dir * Balance.UNIT_PX})
+		_caster().deal_damage(e, s if e == primary else line_sd, {"source_pos": (e as Node2D).global_position + dir * Balance.UNIT_PX})
 		_check_swallow(e)
 	LightRig.flash(origin + dir * length * 0.5, LIGHT, 0.12)
+
+
+## Cible principale de la ligne : le boss, sinon l'élite, sinon le monstre le plus proche de Rainette.
+func _tongue_primary(hit: Array, origin: Vector2) -> Node:
+	var best: Node = null
+	var best_score := -1
+	var best_d := INF
+	for e in hit:
+		var score := 0
+		if e.is_in_group(&"bosses") or e.get(&"is_boss") == true:
+			score = 2
+		elif e.get(&"is_elite") == true:
+			score = 1
+		var d: float = (e as Node2D).global_position.distance_squared_to(origin)
+		if score > best_score or (score == best_score and d < best_d):
+			best = e
+			best_score = score
+			best_d = d
+	return best
+
+
+## Copie de la Langue au coef de ligne (mise en cache : le sort ne change pas en cours de run).
+func _tongue_line_spell(s: SpellData) -> SpellData:
+	if _line_sd == null or _line_src != s:
+		_line_src = s
+		_line_sd = s.duplicate() as SpellData
+		_line_sd.coef = TONGUE_LINE_COEF
+	return _line_sd
 
 
 ## Un T1 tué par la Langue est avalé : +1 % PV max (sac vocal qui palpite).
@@ -653,10 +731,9 @@ func _check_swallow(e: Node) -> void:
 	if not dead_now:
 		return
 	swallowed += 1
+	RunState.add_counter(COUNTER_SWALLOWED) # déblocage du Chœur des roseaux
 	player.heal(SWALLOW_HEAL_PCT * player.max_hp)
 	Audio.play(&"pickup.xp", player.global_position, -6.0, 0.55)
-	if _pips != null:
-		(_pips as RainetteBreathPips).gulp()
 
 
 func _spawn_tongue_vfx(dir: Vector2, length_px: float) -> void:
@@ -683,6 +760,72 @@ func _spawn_tongue_vfx(dir: Vector2, length_px: float) -> void:
 	last_tongue = bb
 
 
+# --- Variante Croassement (sort 1) -----------------------------------------------------------------
+
+func _croak_radius_px(s: SpellData) -> float:
+	return _u(s.radius_u) * (1.0 + player.stat(&"zone_size_add"))
+
+
+func _cast_croak(s: SpellData) -> bool:
+	if _caster() == null:
+		return false
+	var near := _caster().nearest_enemies(player.global_position, _croak_radius_px(s), 1)
+	if near.is_empty():
+		return false # aucun croassement, aucune recharge
+	var d: Vector2 = (near[0] as Node2D).global_position - player.global_position
+	if d.length_squared() > 1.0 and state != State.AIR:
+		player.facing = d.normalized()
+	_pending[&"attack"] = {"spell": s, "croak": true}
+	return true
+
+
+## Anneau autour de Rainette (frame d'impact de `attack`) ; chaque T1 tué raccourcit la recharge du Grand saut.
+func _croak(s: SpellData) -> void:
+	var pos := player.global_position
+	var r := _croak_radius_px(s)
+	var smalls: Array = []
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(pos) <= r and _is_small(e):
+			smalls.append(e)
+	var z := s.duplicate() as SpellData
+	z.behavior = SpellData.Behavior.NOVA
+	z.duration = 0.0
+	_caster().spawn_zone(z, pos)
+	var killed := 0
+	for e in smalls:
+		if _is_dead(e):
+			killed += 1
+	if killed > 0:
+		croak_cd_gain += _caster().reduce_cooldown(2, minf(CROAK_CD_GAIN_S * float(killed), CROAK_CD_GAIN_MAX_S))
+		Audio.play(&"pickup.xp", pos, -8.0, 0.55)
+	LightRig.flash(pos, LIGHT, 0.12)
+	Audio.play(&"pickup.xp", pos, -8.0, 0.7)
+
+
+func _is_small(e: Node) -> bool:
+	return &"tier" in e and int(e.get(&"tier")) == 1 and not (&"is_boss" in e and bool(e.get(&"is_boss")))
+
+
+func _is_dead(e: Node) -> bool:
+	if not is_instance_valid(e):
+		return true
+	return (&"active" in e and not bool(e.get(&"active"))) or (&"hp" in e and float(e.get(&"hp")) <= 0.0)
+
+
+# --- Variante Ricochet (sort 2) ---------------------------------------------------------------------
+
+## Atterrissage du premier bond du Ricochet : le second part tout de suite (file de bonds, visée rafraîchie).
+## Le joueur n'a qu'à viser ; aucun second appui à réussir, aucun déplacement imposé.
+func _ricochet_chain() -> void:
+	var s := _leap_spell
+	if s == null or s.id != V_RICOCHET:
+		return
+	if _ric_second:
+		_ric_second = false
+		return
+	_queued_leap = {"spell": s, "aim": null, "chain": true}
+
+
 # --- Sort 2 : Grand saut --------------------------------------------------------------------------
 
 func _cast_leap(s: SpellData, aim: Variant) -> bool:
@@ -701,13 +844,16 @@ func _begin_queued_leap() -> void:
 	var q: Dictionary = _queued_leap
 	_queued_leap = null
 	var sp: SpellData = q["spell"]
+	_ric_second = bool(q.get("chain", false))
+	if _ric_second:
+		ric_chains += 1
 	_start_leap(sp, _fresh_aim(sp, q["aim"]))
 
 
 ## Visée au moment du départ (le curseur ou le paquet ont bougé pendant l'attente) ; repli : la visée de l'appui.
 func _fresh_aim(s: SpellData, stale: Variant) -> Variant:
 	var c := _caster()
-	if c == null or stale == null:
+	if c == null:
 		return stale
 	var px: float = _u(s.range_u) * (1.0 + float(player.stat(&"range_add")))
 	var a: Variant = c.get_manual_aim_point(px)
@@ -722,19 +868,21 @@ func _start_leap(s: SpellData, aim: Variant) -> void:
 	if aim != null and ((aim as Vector2) - origin).length_squared() > 1.0:
 		to = (aim as Vector2) - origin
 	else:
-		to = player.facing * _u(LEAP_RANGE_U)
+		to = player.facing * _u(s.range_u)
+	var ric := s.id == V_RICOCHET
+	var air := RIC_AIR_S if ric else LEAP_AIR_S
 	var max_px: float = _u(s.range_u) * (1.0 + player.stat(&"range_add"))
 	var dist := clampf(to.length(), _u(LEAP_MIN_U), max_px)
 	hop_dir = to.normalized() if to.length_squared() > 1.0 else player.facing
 	_leap_target = origin + hop_dir * dist
 	_leap_spell = s
 	hop_is_leap = true
-	hop_air_total = LEAP_AIR_S
-	hop_height_u = LEAP_HEIGHT_U
-	hop_speed_px = dist / LEAP_AIR_S
+	hop_air_total = air
+	hop_height_u = RIC_HEIGHT_U if ric else LEAP_HEIGHT_U
+	hop_speed_px = dist / air
 	player.facing = hop_dir
 	state = State.CROUCH # sort aussi de l'essoufflement
-	state_left = LEAP_CROUCH_S
+	state_left = RIC_CROUCH_S if ric else LEAP_CROUCH_S
 
 
 func _takeoff() -> void:
@@ -751,10 +899,13 @@ func _leap_impact(pos: Vector2) -> void:
 	z.duration = 0.0
 	_caster().spawn_zone(z, pos)
 	var r: float = _u(s.radius_u) * (1.0 + player.stat(&"zone_size_add"))
+	var ric := s.id == V_RICOCHET
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e) and e.has_method(&"stun") and (e as Node2D).global_position.distance_to(pos) <= r:
-			e.stun(LEAP_STUN_S)
-	player.grant_invulnerability(LEAP_GRACE_S)
+			e.stun(RIC_STUN_S if ric else LEAP_STUN_S)
+			if not ric and e.get(&"is_boss") != true:
+				RunState.add_counter(COUNTER_LEAP_STUNS) # déblocage du Ricochet
+	player.grant_invulnerability(RIC_GRACE_S if ric else LEAP_GRACE_S)
 	LightRig.flash(pos, LIGHT, 0.4, {"radius": 1.6})
 	Audio.play(&"enemy.shockwave.heavy", pos, -3.0, 1.25)
 	_shake(LEAP_SHAKE_PX)
@@ -832,20 +983,59 @@ func _spawn_goo_glob(at: Vector2) -> void:
 	tw.tween_callback(bb.queue_free)
 
 
+# --- Variante Bulle (sort 3) -----------------------------------------------------------------------
+
+func _spawn_bubble(s: SpellData, at: Vector2) -> void:
+	var zone := 1.0 + float(player.stat(&"zone_size_add"))
+	var b := RainetteBubble.new()
+	b.setup(_caster(), s, _u(BULLE_CATCH_U) * zone, _u(s.radius_u) * zone, s.duration,
+			_u(BULLE_PULL_U) / maxf(s.duration, 0.1), BULLE_BOSS_SLOW)
+	player.get_parent().add_child(b)
+	b.global_position = at
+	b.capture()
+	Audio.play(&"status.poison.light", at, 0.0, 0.9)
+
+
+# --- Variante Chœur des roseaux (sort 4) ------------------------------------------------------------
+
+func _mini_goo_spell() -> SpellData:
+	if _mini_goo_sd == null:
+		_mini_goo_sd = _spell(&"rainette_choeur_flaque", "Flaque", 3, 0.0, 0.0)
+		_mini_goo_sd.vfx_frames = GOO_FRAMES
+		_mini_goo_sd.vfx_radius_px = GOO_RADIUS_PX
+		_mini_goo_sd.vfx_floor_aspect = 1.0
+		_mini_goo_sd.light_preset = &"" # une lumière par mini-flaque coûterait trop cher
+	return _mini_goo_sd
+
+
+## Petite flaque (1,5 u, 2 s, -40 %, sans attraction) laissée par un atterrissage du Chœur ; plafond de flaques vivantes.
+func _spawn_mini_goo(pos: Vector2) -> void:
+	var minis: Array = []
+	for old in RainetteGoo.live:
+		if is_instance_valid(old) and old.mini and not old.is_queued_for_deletion():
+			minis.append(old)
+	while minis.size() >= CHOEUR_GOO_MAX:
+		(minis.pop_front() as Node).queue_free()
+	var g := RainetteGoo.new()
+	g.mini = true
+	g.count_glued = false
+	g.setup(pos, _u(CHOEUR_GOO_U) * (1.0 + float(player.stat(&"zone_size_add"))), CHOEUR_GOO_S, GOO_SLOW_PCT, 0.0, _mini_goo_spell())
+	player.get_parent().add_child(g)
+	g.global_position = pos
+
+
 # --- Sort 4 : Chant de crue -----------------------------------------------------------------------
 
-func _start_song() -> void:
-	ult_left = ULT_DURATION_S
-	breath = float(BREATH_MAX)
-	if state == State.BREATHLESS:
-		state = State.GROUND
-		state_left = 0.0
+func _start_song(s: SpellData = null) -> void:
+	choir = s != null and s.id == V_CHOEUR
+	ult_left = s.duration if s != null and s.duration > 0.0 else ULT_DURATION_S
 	if _sac_light == null:
 		_sac_light = LightRig.attach(player, LIGHT_SAC)
 
 
 func _end_song() -> void:
 	ult_left = 0.0
+	choir = false
 	if _sac_light != null:
 		_sac_light.release()
 		_sac_light = null
@@ -859,6 +1049,8 @@ func _ult_landing(pos: Vector2) -> void:
 	z.behavior = SpellData.Behavior.NOVA
 	z.duration = 0.0
 	_caster().spawn_zone(z, pos)
+	if choir:
+		_spawn_mini_goo(pos)
 	LightRig.flash(pos, LIGHT, 0.3, {"radius": 1.8})
 	Audio.play(&"enemy.shockwave.heavy", pos, -6.0, 1.5)
 	_shake(LEAP_SHAKE_PX * 0.5)
@@ -869,18 +1061,12 @@ func _ult_landing(pos: Vector2) -> void:
 func tick(delta: float) -> void:
 	if player == null:
 		return
-	_warn_left = maxf(_warn_left - delta, 0.0)
 	_warn_gap = maxf(_warn_gap - delta, 0.0)
 	_tick_spell_buffer(delta)
 	if ult_left > 0.0:
 		ult_left -= delta
 		if ult_left <= 0.0:
 			_end_song()
-	if state != State.AIR and state != State.BREATHLESS and breath < float(BREATH_MAX):
-		_breath_t += delta
-		while _breath_t >= BREATH_REGEN_S and breath < float(BREATH_MAX):
-			_breath_t -= BREATH_REGEN_S
-			breath = minf(breath + 1.0, float(BREATH_MAX))
 	_update_rig()
 
 
@@ -918,7 +1104,9 @@ func clear_transients() -> void:
 	_spell_buf.clear()
 	_hop_buf = 0.0
 	_queued_leap = null
+	_ric_second = false
 	RainetteGoo.clear_all()
+	RainetteBubble.clear_all()
 	if ult_left > 0.0 or _sac_light != null:
 		_end_song()
 
@@ -969,8 +1157,6 @@ func visual_anim(fallback: StringName) -> StringName:
 				base = &"leap" if hop_is_leap else &"jump"
 			State.LAND:
 				base = &"land"
-			State.BREATHLESS:
-				base = &"breathe"
 	if base != &"":
 		var a := _resolve(base, _dir_name())
 		if a != &"":
@@ -1009,9 +1195,7 @@ func _update_rig() -> void:
 
 static func passive_info() -> Dictionary:
 	var f := KitResource.fmt
-	return KitResource.passive("Souffle", &"souffle",
-		"Rainette ne marche pas, elle bondit : chaque bond coûte du souffle. En l'air, elle est intouchable au contact.",
-		"+1 par %s s au sol (maximum %d). Le Chant de crue le rend illimité." % [f.call(BREATH_REGEN_S), BREATH_MAX],
-		"chaque bond : 1. Le Grand saut ne coûte rien.",
-		"à 0, elle est essoufflée %s s sur place (sorts 1 et 3 suspendus, vulnérable). Passif : un petit monstre tué par la Langue est avalé, +%s des PV max." % [
-			f.call(BREATHLESS_S), KitResource.pct(SWALLOW_HEAL_PCT)])
+	return KitResource.passive("Avalement", &"avalement",
+		"Rainette ne marche pas, elle bondit : sans jauge ni limite, et intouchable au contact en l'air. Sa Langue vise une cible principale (le boss, sinon l'élite, sinon le plus proche) et la frappe %s fois plus fort que le reste de la ligne." % f.call(TONGUE_COEF / TONGUE_LINE_COEF),
+		"", "",
+		"un petit monstre tué par la Langue est avalé : +%s des PV max." % KitResource.pct(SWALLOW_HEAL_PCT), false)

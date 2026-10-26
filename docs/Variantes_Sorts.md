@@ -173,32 +173,38 @@ Adaptations du 26/10/2026 (le doc d'origine supposait la Boucle consommatrice et
   - Déblocage : **Atteindre l'étage 3 avec Arpenteuse** (`floor_reached` 3).
 
 ### 2.6 Rainette, chevalière des roseaux — second style : « la grenouille qui reste au sol »
-Base : Langue 1,0 / 0,6 s, ligne 4,5 u (demi-largeur 0,5 u), traction 0,25 u, T1 tué avalé +1 % PV · Grand saut 7 s, 1,5-6 u, 3,8 dans 3 u, étourdit 0,5 s, invulnérable 0,35 s · Gluant 8 s, 6 u, 1,4 à l'impact, flaque 5 s −40 % + attraction, bonds +50 % · Chant de crue 20 s, 4 s : souffle illimité, bonds ×2, atterrissages 3,6 dans 3 u ; souffle 6 (1 par bond, +1 / 0,4 s au sol).
+> **Refonte du 26/10/2026 (retours du joueur).** Le système de **souffle** est supprimé : les bonds sont gratuits et enchaînés sans limite, orientables en l'air (virage doux vers le joystick, 4,5 rad/s). Plus de jauge, plus d'essoufflement, plus de pastilles au HUD (le passif « Avalement » n'a pas d'icône en jeu). Le kit gagne un vrai **monocible** : la Langue frappe sa *cible principale* (le boss de la ligne, sinon l'élite, sinon le monstre le plus proche) à **coef 1,15**, et le reste de la ligne à **coef 0,9** (avant : 1,1 pour toute la ligne). Difficulté de la fiche : 3 → 2. Les variantes ci-dessous sont écrites pour ce nouveau kit.
+
+Base : Langue 1,15 sur la cible principale, 0,9 sur le reste de la ligne / 0,6 s, ligne 4,5 u (demi-largeur 0,5 u), traction 0,25 u, T1 tué avalé +1 % PV · Grand saut 7 s, 1,5-6 u, 3,8 dans 3 u, étourdit 0,5 s, invulnérable 0,35 s · Gluant 8 s, 6 u, 1,4 à l'impact, flaque 5 s −40 % + attraction, bonds +50 % · Chant de crue 20 s, 4 s : bonds ×2, atterrissages 2,8 dans 3 u. Bonds : 2,5 u en 0,35 s, gratuits.
+
+Écart simulateur (balance_sim, 3 graines, rapport à Ardent) : nouveau kit DPS cible (élite + mini-boss) ×1,14-1,24, mini-boss ×1,11-1,22 (temps pour tuer ×0,82-0,90), essaim ×0,91-1,12, dégâts subis ×0,54 de l'ancien kit (34 % PV/min contre 62 % ; Ardent 44 %), 0 mort. Chaque variante est mesurée contre ce kit de base.
 
 - **Croassement** (remplace *Langue*, auto)
-  - *Un croassement repousse tout à 2,5 u autour de toi ; chaque petit monstre qu'il tue te rend 1 de souffle.*
-  - Mécanique : toutes les 0,6 s si un ennemi est à 2,5 u : anneau **2,5 u** (+ `zone_size_add`), **coef 0,8**, proc 0,7, **recul 0,4 u × masse** ; **T1 tué : +1 de souffle** (plafond 6 ; remplace l'avalement : plus de +1 % PV). Suspendu essoufflée (comme la Langue).
-  - Budget : 1,0 / 0,6 s en ligne 4,5 u (3-4 cibles alignées, traction) → 0,8 / 0,6 s à 360° sur 2,5 u (plus de cibles au contact, aucune portée, recul au lieu de traction). Le souffle rendu par les kills permet d'enchaîner les bonds en essaim ; sans kills (boss), elle respire comme avant.
-  - Lisibilité : `croak_ring` (TOP 4, onde jade #8DBBA8 translucide), sac vocal `_e` qui gonfle 0,15 s. Son : croassement grave, hauteur selon le nombre de cibles.
+  - *Un croassement repousse tout à 2,5 u autour de toi ; chaque petit monstre qu'il tue raccourcit la recharge de ton Grand saut.*
+  - Mécanique : toutes les 0,6 s si un ennemi est à 2,5 u : anneau **2,5 u** (+ `zone_size_add`), **coef 1,2**, proc 0,7, **recul 0,4 u × masse** ; **T1 tué : Grand saut −0,25 s de recharge** (1 s au plus par croassement ; remplace l'avalement : plus de +1 % PV). Pas de cible principale : tout le monde prend le même coup.
+  - Budget (simulateur) : essaim ×1,08, mixte ×1,0, élite ×0,86, mini-boss ×0,82 (global ×0,95) : l'anneau perd le monocible de la Langue et la portée, gagne le 360° et le recul ; le prix est la mêlée (2,5 u au lieu de 4,5 u). Les kills d'essaim relancent le Grand saut.
+  - Lisibilité : `croak_ring` (TOP 4, onde jade #8DBBA8 translucide), sac vocal `_e` qui gonfle 0,15 s. Son : croassement grave, hauteur selon le nombre de cibles. Repli en jeu : `land_ring` existant.
   - Déblocage : **Gagner une run avec Rainette.**
-- **Ricochet** (remplace *Grand saut*, sort 1)
-  - *Deux bonds moyens au lieu d'un grand : chaque atterrissage écrase 2 u ; le second part tout de suite.*
-  - Mécanique : recharge **7 s** ; bond de **1,5-3,5 u** vers le point visé (vol 0,35 s, invulnérable 0,2 s à l'atterrissage) : **coef 1,9 dans 2 u**, étourdit 0,3 s ; dans les **1,5 s** suivantes, une 2ᵉ pression (ou le joystick poussé, mobile : vers le paquet le plus dense) relance un **second bond identique** gratuit ; sans 2ᵉ pression, la charge est perdue. Ne coûte pas de souffle. Pressé en plein bond : mis en file (règle existante).
-  - Budget : 3,8 dans 3 u, 6 u, 0,5 s d'étourdissement → 2 × 1,9 dans 2 u, 2 × 3,5 u = 7 u de déplacement, 2 × 0,3 s. Même total ; moins de burst sur un paquet, plus de repositionnement et deux fenêtres d'invulnérabilité.
+- **Ricochet** (remplace *Grand saut*, sort 2)
+  - *Deux bonds moyens au lieu d'un grand : chaque atterrissage écrase 2 u, et le second bond part tout seul.*
+  - Mécanique : recharge **7 s** ; bond de **1,5-3,5 u** vers le point visé (vol 0,35 s, accroupie 0,06 s, invulnérable 0,2 s à l'atterrissage) : **coef 1,9 dans 2 u**, étourdit 0,3 s ; à l'atterrissage, un **second bond identique part automatiquement** (visée rafraîchie au départ : curseur, ou paquet le plus dense sur mobile, sinon dans la direction du premier). **Aucun second appui à réussir**, aucun déplacement imposé au joueur (révision 26/10 : le second appui chronométré de la première version rendait le sort difficile). Pressé en plein bond : mis en file (règle existante).
+  - Budget (simulateur) : essaim ×1,0, mixte ×1,0, élite ×1,02, mini-boss ×0,87 (global ×0,97). 3,8 dans 3 u, 6 u → 2 × 1,9 dans 2 u, 2 × 3,5 u : même total ; moins de burst sur un paquet, plus de repositionnement et deux fenêtres d'invulnérabilité.
   - Lisibilité : `land_ring` existant à l'échelle 2 u, traînée jade entre les deux bonds. Son : deux impacts, le second plus aigu.
-  - Déblocage : **Étourdir 300 monstres avec le Grand saut** (`hits_by_spell:rainette_grand_saut` ≥ 300, non-boss).
-- **Bulle** (remplace *Gluant*, sort 2)
+  - Déblocage : **Étourdir 300 monstres avec le Grand saut** (`rainette.leap_stuns` ≥ 300, hors boss ; le Ricochet ne compte pas).
+- **Bulle** (remplace *Gluant*, sort 3)
   - *Une bulle de vase gobe les monstres du point visé 1,5 s dans les airs, puis éclate et les lâche.*
-  - Mécanique : recharge **8 s**, crachat ≤ **6 u** (mobile : paquet le plus dense), impact frame 2 (`spit`) : les non-boss dans **2,5 u** (+ `zone_size_add`) sont **soulevés 1,5 s** (`imprisoned` + `lift_px` 0,8, ils flottent ensemble vers le centre : attraction 1 u sur la durée) ; boss : ralentissement 40 % 1,5 s. À l'éclatement : **coef 1,4 dans 2 u**, proc 1,0, recul 0,3 u. **Aucune flaque**, aucun bonus de bond.
-  - Budget : 1,4 + flaque 5 s (−40 %, tassement, bonds +50 %) → 1,4 + 1,5 s de contrôle total sur un paquet tassé. Le Gluant **prépare** (zone qui dure, tremplin) ; la Bulle **fige** (fenêtre pour un Ricochet/Grand saut ou le Chant), puis plus rien.
-  - Lisibilité : `goo_bubble` (CREA 6 : bulle translucide jade qui gonfle puis éclate, 1 dir) ; les monstres montent avec leur ombre de contact (même lecture que le Geyser d'Averse : tout ce qui flotte est contrôlé). Son : « glop » puis éclatement humide.
-  - Déblocage : **Coller 600 monstres dans le Gluant** (`rainette_glued` ≥ 600 ; un monstre compte une fois par flaque).
+  - Mécanique : recharge **8 s**, crachat ≤ **6 u** (mobile : paquet le plus dense), impact frame 2 (`spit`) : les non-boss dans **2,5 u** (+ `zone_size_add`) sont **soulevés 1,5 s** (statut `imprisoned`, sprite à 0,8 u, ils flottent ensemble vers le centre : attraction 1 u sur la durée) ; boss : ralentissement 40 % 1,5 s. À l'éclatement : **coef 1,4 dans 2 u** (boss compris), proc 1,0, recul 0,3 u. **Aucune flaque**, aucun bonus de bond.
+  - Budget (simulateur) : essaim ×1,03, mixte ×0,98, élite ×1,06, mini-boss ×0,95 (global ×1,01), dégâts subis ×0,76. Le Gluant **prépare** (zone qui dure, tremplin) ; la Bulle **fige** (fenêtre pour un Ricochet/Grand saut ou le Chant), puis plus rien.
+  - Lisibilité : `goo_bubble` (CREA 6 : bulle translucide jade qui gonfle puis éclate, 1 dir) ; repli en jeu : disque jade dessiné. Les monstres montent avec leur ombre (même lecture que le Geyser d'Averse). Son : « glop » puis éclatement humide.
+  - Déblocage : **Coller 600 monstres dans le Gluant** (`rainette.glued` ≥ 600 ; un monstre compte une fois par flaque ; les mini-flaques du Chœur ne comptent pas).
 - **Chœur des roseaux** (remplace *Chant de crue*, ultime)
-  - *8 s de souffle illimité : chaque atterrissage écrase 2,5 u et laisse une petite flaque gluante 2 s.*
-  - Mécanique : recharge **20 s** ; **8 s** : souffle illimité et plein, **bonds normaux** (2,5 u, pas ×2), chaque atterrissage : **coef 1,8 dans 2,5 u** (+ `zone_size_add`), proc 0,8, et pose une **mini-flaque 1,5 u, 2 s, −40 %** (sans attraction, bonds +50 % depuis elle). Cumulable avec Ricochet/Grand saut.
-  - Budget : 4 s × ≈ 5 atterrissages × 3,6 = ≈ 18 → 8 s × ≈ 8 atterrissages × 1,8 = ≈ 14,4 + 8 zones de ralentissement de 2 s. Moins de dégâts bruts, plus long, plus de contrôle : un essaim entier englué en semant des flaques ; le Chant reste le choix « burst et traversée ».
+  - *8 s : chaque atterrissage écrase 2,5 u et laisse une petite flaque gluante 2 s.*
+  - Mécanique : recharge **20 s** ; **8 s** de **bonds normaux** (2,5 u, pas ×2), chaque atterrissage (bond ou saut) : **coef 1,8 dans 2,5 u** (+ `zone_size_add`), proc 0,8 (l'atterrissage d'un Grand saut garde son seul impact, plus fort), et pose une **mini-flaque 1,5 u, 2 s, −40 %** (sans attraction, bonds +50 % depuis elle ; 10 flaques vivantes au plus, la plus ancienne disparaît).
+  - Budget (simulateur) : essaim ×1,08, mixte ×1,0, élite ×1,0, mini-boss ×1,01 (global ×1,03). 4 s × ≈ 5 atterrissages × 2,8 → 8 s × ≈ 8 atterrissages × 1,8 : moins de dégâts bruts par atterrissage, plus long, plus de contrôle ; le Chant reste le choix « burst et traversée ».
   - Lisibilité : sac vocal `_e` gonflé 8 s, `goo` existant à l'échelle 1,5 u par atterrissage, `land_ring` 2,5 u. Son : chœur de croassements en couche (2 voix), impacts sourds.
-  - Déblocage : **Avaler 200 monstres avec la Langue** (`rainette_swallowed` ≥ 200).
+  - Déblocage : **Avaler 200 monstres avec la Langue** (`rainette.swallowed` ≥ 200).
+
+Icônes attendues (Codex) : `icons/spells/rainette_croassement.png`, `rainette_ricochet.png`, `rainette_bulle.png`, `rainette_choeur.png`. Icône de passif facultative : `icons/passives/avalement.png` (le passif n'a pas d'icône au HUD).
 
 ### 2.7 Avare, usurier des Terrasses — second style : « l'usurier qui va chercher son dû »
 Base : Coup de coffre 1,0 / 0,8 s, arc 150° 2 u, coffre-bouclier −45 % 0,6 s · Poignée de pièces 5 s, 5 × 1,2 en cône 50° 6 u, coûte max(2 % or, 0,1 P), pièces au sol 80 % · Rançon 9 s, 3 u, 3,0, étourdit 0,5 s, marque 4 s +50 % d'or · Faillite 25 s, dépense 50 % de l'or, 5 u, 6 + 4 × min(1, dépensé / 4 P), 50 % retombe en pièces ; bourse +15 %/P (plancher +10 %, plafond +70 %).
@@ -345,7 +351,7 @@ Base : Taille et estoc 0,7 s, alternance cercle 2,3 u (1,5) / estoc cône 40° 3
 | **5 Averse** | Bruine, Geyser (lift), Gouttière (ligne), Mousson (zone attachée). | Teste `imprisoned` + `lift_px` (partagé avec la Bulle de Rainette) et une zone qui suit le joueur. |
 | **6 Tocsin** | Vapeur, Bras-harpon (traction du joueur), Jambes-ressorts (`LOB` du joueur), Tête-fumigène. | Le plus complexe (locomotion, membres au sol) : à faire quand la substitution est stable. |
 | **7 Arpenteuse** | Chaîne lestée (paramètres), Nœud, Jalons (ligne fixe A-B), Cerceau (anneau tournant). | Variantes de la polyligne ; le Cerceau demande un test de perf (anneau × 250 monstres par tick). |
-| **8 Rainette** | Croassement, Ricochet (bond chaîné), Bulle, Chœur. | Bonds et souffle : logique d'état dense, à aborder après Averse (lift). |
+| **8 Rainette** | Croassement, Ricochet (bond chaîné), Bulle, Chœur. | Bonds (sans souffle depuis le 26/10) : logique d'état dense, à aborder après Averse (lift). |
 | **9 Avare** | Coffre-bélier, Pièce truquée (chaîne de rebonds), Saisie (`hooked`), Trésor enterré. | Couplage économie : `economy_test` à relancer (remboursement 100 %, primes de Saisie). |
 | **10 Bourbe** | Crachat, Bouture (grosse motte), Éclatement, Marée (bouclier). | Familiers : la grosse motte et le bouclier touchent `Decoy`/`BourbeMotte` et les PV du joueur. |
 
@@ -378,8 +384,8 @@ Mécanisme : `RunState.counters: Dictionary` (clé texte → float), `RunState.c
 | `averse_soaked` | Averse | application du statut trempé (+1 par monstre et par sort, pas par rafraîchissement). |
 | `averse_puddle_water` | Averse | eau gagnée dans une Flaque-miroir (+4/s × dt, en points d'eau). |
 | `averse_full_crues` | Averse | Crue lancée avec ≥ 99 d'eau (+1). |
-| `rainette_glued` | Rainette | monstre entré dans une flaque de Gluant (+1 par monstre et par flaque). |
-| `rainette_swallowed` | Rainette | T1 avalé par la Langue (+1). |
+| `rainette.glued` | Rainette | monstre entré dans une flaque de Gluant (+1 par monstre et par flaque). |
+| `rainette.swallowed` | Rainette | T1 avalé par la Langue (+1). |
 | `avare_coins_picked` | Avare | pièce d'Avare ramassée (`PLAYER_RESOURCE`, +1 par pièce). |
 | `avare_ransom_gold` | Avare | or neuf de la prime de Rançon (+valeur, scalée par D). |
 | `bourbe_mottes_recalled` | Bourbe | motte recollée (retour, Rappel, Bourbier, étage ; +1). |
