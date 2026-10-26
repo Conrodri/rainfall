@@ -2,7 +2,7 @@ extends Node
 ## godot --headless --path game res://tests/passive_hud_test.tscn  -> RESULT: OK
 ## Retours du joueur 23/10/2026, en jeu (Vigie) :
 ##  - icône de passif près des sorts : infobulle au survol (souris), à l'appui long (tactile) ; la jauge de
-##    ressource ouvre la même infobulle ; masquée pour Ardent (aucun passif) ;
+##    ressource ouvre la même infobulle ; visible pour les 10 personnages ;
 ##  - infobulle de sort : dégâts affichés = SpellCaster.compute_damage (même formule), origine du scaling.
 
 var _fails := 0
@@ -136,13 +136,74 @@ func _ready() -> void:
 	await _frames(5)
 	_check(not hint.tip.visible, "tactile : relâcher -> infobulle fermée")
 
-	# --- Ardent : aucun passif au HUD ---
-	var PB := load("res://scripts/ui/passive_badge.gd")
-	badge.set_character(&"ardent", Color.WHITE)
-	_check(not badge.visible, "Ardent : icône masquée (aucun passif)")
-	badge.set_character(&"vigie", Color.WHITE)
-	_check(badge.visible, "Vigie : icône réaffichée")
-	_check(not String(PB.info_for(&"ardent").get("desc", "")).is_empty(), "Ardent : texte de passif tout de même fourni")
+	# --- tactile : appui long sur la jauge de ressource (Vigie en a une) = même infobulle ---
+	Platform.set_input_mode(Platform.InputMode.TOUCH)
+	await _frames(4)
+	if hud.touch_gauge.visible:
+		_check(hud.touch_gauge.mouse_filter == Control.MOUSE_FILTER_STOP, "tactile : la jauge reçoit l'appui")
+		var tg := InputEventScreenTouch.new()
+		tg.index = 6
+		tg.pressed = true
+		tg.position = ft * hud.touch_gauge.get_global_rect().get_center()
+		vp.push_input(tg)
+		await get_tree().create_timer(0.8).timeout
+		await _frames(3)
+		_check(hint.tip.visible and hint.passive_anchor == badge, "tactile : appui long sur la jauge -> infobulle de passif")
+		var tgr := tg.duplicate()
+		tgr.pressed = false
+		vp.push_input(tgr)
+		await _frames(5)
+		_check(not hint.tip.visible, "tactile : relâcher la jauge -> infobulle fermée")
+	else:
+		_check(false, "Vigie : jauge tactile attendue")
+
+	# --- les 10 personnages : icône visible, dans l'écran, sans chevauchement, infobulle non vide ---
+	var ids: Array[StringName] = [&"ardent", &"rictus", &"tocsin", &"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil"]
+	_main.queue_free()
+	await _frames(3)
+	for cid in ids:
+		await _check_character(cid)
 
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)
+
+
+func _check_character(cid: StringName) -> void:
+	RunState.character = cid
+	RunState.level = 1
+	var m: Node = load("res://scenes/main.tscn").instantiate()
+	m.process_mode = Node.PROCESS_MODE_PAUSABLE
+	m.set(&"run_seed", 78)
+	add_child(m)
+	for i in 600:
+		await get_tree().process_frame
+		if bool(m.get(&"is_ready")):
+			break
+	var hud: Hud = m.hud
+	m.player.grant_invulnerability(1.0e6)
+	if hud.pause_menu.is_open:
+		hud.pause_menu._close()
+	get_tree().paused = false
+	var badge: Control = hud.passive_badge
+	var vis := get_viewport().get_visible_rect()
+	for mode in [Platform.InputMode.KBM, Platform.InputMode.TOUCH]:
+		Platform.set_input_mode(mode)
+		await _frames(5)
+		var tag := "%s/%s" % [cid, "tactile" if mode == Platform.InputMode.TOUCH else "PC"]
+		_check(badge.visible and badge.char_id == cid, "%s : icône de passif visible" % tag)
+		var r := badge.get_global_rect()
+		_check(vis.encloses(r), "%s : icône dans l'écran %s" % [tag, str(r)])
+		var others: Array = hud.reserved_rects()
+		var overlap := false
+		for o in others:
+			if (o as Rect2).is_equal_approx(r):
+				continue
+			if r.intersects(o) and not (o as Rect2).encloses(r):
+				overlap = true
+		_check(not overlap, "%s : icône sans chevauchement des zones réservées" % tag)
+		var info: Dictionary = badge.info
+		_check(not String(info.get("name", "")).is_empty() and not String(info.get("desc", "")).is_empty(), "%s : texte de passif non vide" % tag)
+		_check(not hud.spell_hint.describe_passive().body.is_empty(), "%s : infobulle de passif non vide" % tag)
+	Platform.set_input_mode(Platform.InputMode.KBM)
+	m.queue_free()
+	await _frames(3)

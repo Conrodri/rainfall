@@ -506,6 +506,7 @@ func _build() -> void:
 	root.add_child(bar_gauge)
 	passive_badge = PASSIVE_BADGE.new()
 	passive_badge.name = "PassiveBadge"
+	touch_gauge.gui_input.connect(passive_badge.forward_touch) # appui long sur la jauge tactile = infobulle du passif
 	root.add_child(passive_badge)
 	for i in 4:
 		var col := VBoxContainer.new()
@@ -637,6 +638,7 @@ func _apply_layout() -> void:
 	touch_gauge.apply_scale(s)
 	passive_badge.apply_scale(s)
 	passive_badge.sync_input_mode()
+	touch_gauge.mouse_filter = Control.MOUSE_FILTER_STOP if Platform.input_mode == Platform.InputMode.TOUCH else Control.MOUSE_FILTER_IGNORE
 	bar_dodge_key.set_height(56.0 * s)
 	bar_dodge_key.custom_minimum_size.x = bar_size + 24.0 * s
 	_spell_bar.add_theme_constant_override("separation", int(22 * s))
@@ -741,6 +743,7 @@ func _on_mode_changed(_mode: int) -> void:
 func _apply_mode() -> void:
 	var touch: bool = Platform.input_mode == Platform.InputMode.TOUCH
 	touch_layer.visible = touch
+	touch_gauge.mouse_filter = Control.MOUSE_FILTER_STOP if touch else Control.MOUSE_FILTER_IGNORE
 	_spell_bar.visible = not touch
 	for i in bar_keys.size():
 		bar_keys[i].set_action(StringName("spell_%d" % (i + 1)), "Auto" if i == 0 else "")
@@ -879,7 +882,9 @@ func _update_passive_badge() -> void:
 	var gap := 14.0 * ui_scale
 	if Platform.input_mode == Platform.InputMode.TOUCH:
 		var gh := touch_gauge.size.y
-		passive_badge.global_position = touch_gauge.global_position + Vector2(-passive_badge.size.x - gap, gh - passive_badge.size.y)
+		# sans jauge : le badge prend la place de la jauge (même bord droit, même bas), près de la grappe de sorts
+		var bx := touch_gauge.global_position.x - passive_badge.size.x - gap if touch_gauge.visible else touch_gauge.global_position.x + touch_gauge.size.x - passive_badge.size.x
+		passive_badge.global_position = Vector2(bx, touch_gauge.global_position.y + gh - passive_badge.size.y)
 	else:
 		var br := _spell_bar.get_rect()
 		var icons_bottom := br.end.y - (56.0 + 4.0) * ui_scale

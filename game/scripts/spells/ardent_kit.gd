@@ -204,6 +204,15 @@ static func variant_a() -> CharacterData:
 # --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
 
 static func passive_info() -> Dictionary:
+	# Ardent n'a ni jauge ni palier : son « passif » est son rythme de braises (chiffres lus dans variant_a).
+	var kit := variant_a().spells
+	var s1: SpellData = kit[0]
+	var cds: Array[String] = []
+	for i in [1, 2, 3]:
+		cds.append("%s %s s" % [(kit[i] as SpellData).display_name, KitResource.fmt((kit[i] as SpellData).base_cooldown)])
 	return KitResource.passive("Braise", &"braise",
-		"Ardent n'a ni jauge ni passif : ses sorts ne dépendent que de leurs recharges. Le sort 1 tire tout seul.",
-		"", "", "", false)
+		"Ardent n'a pas de jauge à gérer : aucune ressource, aucun palier. Il vit de ses braises. Le sort 1 (%s) tire tout seul toutes les %s s et traverse %d monstres sur %s u ; la Nova, les Cendres et le Brasier se lancent sur recharge." % [
+			s1.display_name, KitResource.fmt(s1.base_cooldown), s1.pierce + 1, KitResource.fmt(s1.range_u)],
+		"", "",
+		"recharges %s, ultime Brasier %s s." % [
+			", ".join(cds), KitResource.fmt((kit[3] as SpellData).base_cooldown)])

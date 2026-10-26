@@ -59,13 +59,14 @@ func _init() -> void:
 	visible = false
 
 
-## Personnage joué : charge son passif ; `hud` faux (Ardent) = badge masqué.
+## Personnage joué : charge son passif. Visible pour tout personnage dont le kit en décrit un (la clé `hud` du
+## contrat est ignorée : icône affichée pour les 10 personnages, avec ou sans jauge de ressource).
 func set_character(cid: StringName, col: Color) -> void:
 	char_id = cid
 	accent = col
 	info = info_for(cid)
 	_icon = _tex(String(info.get("icon", ""))) if not info.is_empty() else null
-	visible = bool(info.get("hud", false))
+	visible = not info.is_empty()
 	queue_redraw()
 
 
@@ -91,6 +92,11 @@ func _process(delta: float) -> void:
 		_press_t += delta
 		if _press_t >= LONG_PRESS_S:
 			_long = true
+
+
+## Appui long sur la jauge de ressource tactile : le HUD relaie ses touches ici (même infobulle de passif).
+func forward_touch(event: InputEvent) -> void:
+	_gui_input(event)
 
 
 func _gui_input(event: InputEvent) -> void:
