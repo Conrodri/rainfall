@@ -309,6 +309,17 @@ func _run() -> void:
 	_kit.set_tension(0.8)
 	_check("auto-cast : filet gardé Tension haute", not _kit.auto_cast_ok(3))
 
+	print("Filet : cercle de zone lisible pendant l'emprisonnement")
+	_reset()
+	_kit.open_net(Vector2(5 * U, 0))
+	var nz: ZoneOutline = null
+	for o in get_tree().get_nodes_in_group(&"zone_outlines"):
+		if o is ZoneOutline and is_instance_valid(o.host) and o.host.name == "NetZone":
+			nz = o
+	_check("filet : ZoneOutline posé (rayon 3 u, durée = emprisonnement)", nz != null and _near(nz.radius, VigieKit.NET_RADIUS_U * U, 1.0) and _near(nz.life, VigieKit.NET_HOLD_S, 0.001))
+	if nz != null:
+		nz.step(0.5)
+		_check("filet : contour épais, opaque, voile net, liseré sombre", nz.width >= 4.0 and nz.edge_alpha >= 0.9 and nz.fill_alpha >= 0.12 and nz.halo and nz.alpha_now() >= 0.8, str(nz.alpha_now()))
 	print("Sort 4 : Grêle")
 	_reset()
 	_player.spells.aim_override = Vector2(6 * U, 0)
@@ -320,6 +331,9 @@ func _run() -> void:
 	_check("volée au ciel : rien tout de suite", _kit.hails.is_empty() and h1.taken.is_empty())
 	_advance(0.5)
 	_check("pluie tombée après 0,45 s au point visé", _kit.hails.size() == 1 and (_kit.hails[0] as Node2D).global_position.distance_to(Vector2(6 * U, 0)) < 2.0)
+	var hz: ZoneOutline = ZoneOutline.of(_kit.hails[0])
+	_check("grêle : contour ZoneOutline ambre appuyé (rayon 4,5 u, trait >= 4, alpha >= 0,9)", hz != null and hz.color.is_equal_approx(Color(VigieKit.ZONE_COLOR.r, VigieKit.ZONE_COLOR.g, VigieKit.ZONE_COLOR.b, 1.0)) and hz.halo and hz.width >= 4.0 and hz.edge_alpha >= 0.9 and _near(hz.radius, VigieKit.HAIL_RADIUS_U * U, 1.0))
+	_check("grêle : couleur de contour de Vigie, pas le rouge de l'accent", ZoneOutline.color_for(VigieKit.character().spells[3]) == VigieKit.ZONE_COLOR and VigieKit.ZONE_COLOR != VigieKit.ACCENT)
 	_advance(2.6)
 	_check("≈ 11 volées à 0,7 sur la cible dedans", h1.taken.size() >= 10 and h1.taken.size() <= 12 and _near(h1.taken[0], VigieKit.GRELE_COEF * BASE, 0.05), "%d %s" % [h1.taken.size(), h1.taken.slice(0, 1)])
 	_check("dedans : ralenti et exposé", h1.has_status(&"slow") and h1.exposed())

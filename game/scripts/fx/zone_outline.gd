@@ -25,7 +25,17 @@ const CAP_STEPS := 10 ## segments par demi-cercle de la capsule
 
 enum Shape { DISC, CAPSULE, BAND } ## disque ; capsule autour d'un segment (lignes) ; anneau (bande)
 
+const STRONG_WIDTH := 4.0 ## contour appuyé (emphasize) : zones de contrôle à lire d'un coup d'oeil
+const STRONG_FILL := 0.16
+const STRONG_EDGE := 1.0
+const HALO_COLOR := Color(0.04, 0.03, 0.05, 0.6) ## liseré sombre sous le contour : lisible sur sol clair comme sombre
+const HALO_EXTRA := 3.0
+
 var shape := Shape.DISC
+var width := WIDTH
+var fill_alpha := FILL_ALPHA
+var edge_alpha := EDGE_ALPHA
+var halo := false
 var radius := 64.0 ## DISC : rayon ; BAND : rayon extérieur ; CAPSULE : demi-largeur de la bande
 var inner := 0.0 ## BAND : rayon intérieur
 var color := Color.WHITE
@@ -67,7 +77,8 @@ static func attach(p_host: Node2D, p_radius_px: float, p_color: Color, p_life :=
 		f._follow = true
 		p_host.tree_exiting.connect(f.release, CONNECT_ONE_SHOT)
 	else:
-		p_host.add_child(f) # repli (tests, scène sans ambiance) : local à l'hôte, libéré avec lui
+		p_host.add_child(f) # repli (tests, scène sans ambiance, aperçu de la fiche) : local à l'hôte, libéré avec lui
+		f.z_as_relative = false # sinon le z de l'hôte (-1) s'ajoute : le contour passait sous le sol et le VFX
 	return f
 
 
@@ -89,6 +100,16 @@ static func attach_band(p_host: Node2D, r_out: float, r_in: float, p_color: Colo
 		f.inner = r_in
 		f.queue_redraw()
 	return f
+
+
+## Contour appuyé (Filet lesté, Grêle) : trait épais, voile plus net, liseré sombre. Renvoie `self`.
+func emphasize() -> ZoneOutline:
+	width = STRONG_WIDTH
+	fill_alpha = STRONG_FILL
+	edge_alpha = STRONG_EDGE
+	halo = true
+	queue_redraw()
+	return self
 
 
 ## Contour d'un hôte (null sans contour).
@@ -221,18 +242,26 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var edge := Color(color.r, color.g, color.b, 1.0).lightened(EDGE_LIGHTEN)
-	edge.a = EDGE_ALPHA
-	var fill := Color(color.r, color.g, color.b, FILL_ALPHA)
+	edge.a = edge_alpha
+	var fill := Color(color.r, color.g, color.b, fill_alpha)
 	match shape:
 		Shape.CAPSULE:
 			if _poly.size() > 3:
 				draw_colored_polygon(_poly, fill)
-				draw_polyline(_poly, edge, WIDTH, true)
+				if halo:
+					draw_polyline(_poly, HALO_COLOR, width + HALO_EXTRA, true)
+				draw_polyline(_poly, edge, width, true)
 		Shape.BAND:
 			var mid := (radius + inner) * 0.5
 			draw_arc(Vector2.ZERO, mid, 0.0, TAU, 72, fill, maxf(radius - inner, 1.0))
-			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, edge, WIDTH, true)
+			if halo:
+				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
+			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, edge, width, true)
 			if inner > 1.0:
-				draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, edge, WIDTH, true)
+				if halo:
+					draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
+				draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, edge, width, true)
 		_:
-			RecluseFx.draw_disc(self, radius, fill, edge, WIDTH)
+			if halo:
+				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
+			RecluseFx.draw_disc(self, radius, fill, edge, width)

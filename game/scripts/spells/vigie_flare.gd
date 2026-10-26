@@ -47,7 +47,7 @@ func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, ac
 				_sprite.offset = Vector2(0.0, -tex.get_height() * 0.5)
 			_sprite.play(&"default")
 	_light = LightRig.attach(self, &"vigie_flare", {"radius": radius / maxf(float(LightRig.get_preset(&"vigie_flare").get("radius_u", 3.0)) * Balance.UNIT_PX, 1.0)})
-	_outline = ZoneOutline.attach(self, radius, accent, life_s) # zone d'exposition au sol (ZoneOutline)
+	_outline = ZoneOutline.attach(self, radius, VigieKit.ZONE_COLOR, life_s) # zone d'exposition au sol (ZoneOutline)
 
 
 ## Agrandit le visuel (Tir de signal : fusée x1,5) ; la lumière et le rayon de jeu restent ceux de setup.

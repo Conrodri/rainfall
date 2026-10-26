@@ -32,6 +32,7 @@ const PLACEHOLDER_TINT := Color(0.62, 0.66, 0.6) ## Ardent teinté roseau / ardo
 
 # --- Identité ---------------------------------------------------------------------------------------
 const ACCENT := Color("#FF3A4F") ## rouge de fusée de détresse (accent émissif unique)
+const ZONE_COLOR := Color("#FFC21A") ## ambre : contours de toutes les zones de Vigie (fusée, chausse-trapes, filet, grêle), lisible sur sol sombre comme clair
 const BODY_COLOR := Color("#5A5540") ## pèlerine de roseaux
 const PLAYER_LIGHT_COLOR := Color("#E3CFC9") ## lumière du joueur : blanc de pluie à peine rosé
 const PLAYER_CORE_COLOR := Color("#FF5A66") ## cœur : la mèche de fusée allumée à sa hanche
@@ -199,6 +200,7 @@ static func _spell(sid: StringName, name: String, slot: int, coef: float, cd: fl
 	s.base_cooldown = cd
 	s.element = &"physical"
 	s.color = ACCENT
+	s.zone_outline_color = ZONE_COLOR
 	s.light_preset = &"vigie_arrow"
 	return s
 
@@ -686,9 +688,23 @@ func open_net(at: Vector2) -> void:
 			e.apply_status(&"imprisoned", {"duration": NET_HOLD_S})
 			RunState.add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
 	_caster().spawn_zone(_net_burst, at)
+	_net_outline(at, r)
 	LightRig.flash(at, &"vigie_net", 0.3)
 	set_tension(1.0)
 	_set_ready_fx(true)
+
+
+## Cercle du filet pendant l'emprisonnement (le burst est instantané : pas de ZoneOutline propre). Hôte jetable.
+func _net_outline(at: Vector2, r: float) -> ZoneOutline:
+	var host := Node2D.new()
+	host.name = "NetZone"
+	_caster().effects_parent().add_child(host)
+	host.global_position = at
+	var o := ZoneOutline.attach(host, r, ZONE_COLOR, NET_HOLD_S)
+	if o != null:
+		o.emphasize()
+	player.get_tree().create_timer(NET_HOLD_S + 0.2).timeout.connect(host.queue_free)
+	return o
 
 
 ## Tir double : deux flèches sur les deux monstres les plus proches ; Tension pleine : volée de trois traits.
@@ -820,11 +836,17 @@ func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) ->
 
 ## Grêle : la volée part au ciel à la frame d'impact, la pluie tombe HAIL_DELAY_S plus tard.
 func _launch_hail(s: SpellData, at: Vector2) -> void:
+	var tg := VigieTelegraph.new() # télégraphe de la zone pendant le vol de la volée
+	_caster().effects_parent().add_child(tg)
+	tg.setup(at, s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add")), HAIL_DELAY_S, ZONE_COLOR)
 	_timers.append({"t": HAIL_DELAY_S, "fn": func() -> void: spawn_hail(s, at)})
 
 
 func spawn_hail(s: SpellData, at: Vector2) -> Node2D:
 	var z := _caster().spawn_zone(s, at)
+	var ho := ZoneOutline.of(z)
+	if ho != null:
+		ho.emphasize()
 	hails.append(z)
 	LightRig.flash(at, &"vigie_hail", 0.4)
 	_expose_t = 0.0

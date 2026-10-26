@@ -219,7 +219,7 @@ func _kit_zones() -> void:
 	var vk: VigieKit = pv.kit
 	var fl := vk.plant_flare(Vector2(200, 0)) as VigieFlare
 	var of := ZoneOutline.of(fl)
-	_check("Vigie / fusée : contour accent, rayon d'exposition", of != null and _same_rgb(of.color, VigieKit.ACCENT) and _near(of.radius, fl.radius, 0.6))
+	_check("Vigie / fusée : contour ambre (ZONE_COLOR), rayon d'exposition", of != null and _same_rgb(of.color, VigieKit.ZONE_COLOR) and _near(of.radius, fl.radius, 0.6))
 	var ct := vk.plant_caltrops(vk.character().spells[2], Vector2(-200, 0)) as VigieCaltrops
 	var oct := ZoneOutline.of(ct)
 	_check("Vigie / chausse-trapes : contour au rayon réel", oct != null and _near(oct.radius, ct.radius, 0.6))

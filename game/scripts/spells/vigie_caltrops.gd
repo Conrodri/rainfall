@@ -43,7 +43,7 @@ func setup(new_kit: Object, spike_spell: SpellData, at: Vector2, radius_px: floa
 	for i in 14: # pointes du repli, fixes pour la durée de vie
 		var a := rng.randf() * TAU
 		_spikes.append(Vector2.from_angle(a) * radius * sqrt(rng.randf()) * 0.92)
-	ZoneOutline.attach(self, radius, VigieKit.ACCENT, life) # contour de la zone (ZoneOutline)
+	ZoneOutline.attach(self, radius, VigieKit.ZONE_COLOR, life) # contour de la zone (ZoneOutline)
 	_scan() # les monstres déjà dans le champ à la pose comptent comme une entrée
 
 
