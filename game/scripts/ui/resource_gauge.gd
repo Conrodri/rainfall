@@ -20,6 +20,9 @@ const EDGE_LIGHT := Color("#E8E2D6")
 const ART_DIR := "res://assets/sprites/ui/resource_gauge/"
 const FRAME_M := Vector2(12, 8) ## marges 9-patch du cadre U1 (px source)
 const FRAME_H := 48.0 ## hauteur source du cadre
+const TEXT_GAP := 14.0 ## écart mini (à ui_scale 1) entre nom, taux et valeur sur la ligne de texte
+const TRACK_GAP := 6.0 ## écart sous la ligne de texte avant la jauge
+const MIN_TRACK := 16.0 ## hauteur mini de la jauge (cadre compris)
 const E_ALPHA := 0.35 ## masque d'émission : surimpression (HUD non éclairé), plus forte en état exalté
 
 static var _art := {}
@@ -91,9 +94,68 @@ static func pulse_alpha(t: float) -> float:
 
 func apply_scale(s: float) -> void:
 	ui_scale = s
-	custom_minimum_size = (MOBILE_SIZE if Platform.is_mobile() else BASE_SIZE) * s
-	size = custom_minimum_size
+	_fit_size()
 	queue_redraw()
+
+
+## Polices de la ligne de texte (px) : nom + valeur, puis taux de régénération.
+func _font_px() -> int:
+	return maxi(int(19 * ui_scale), min_font())
+
+
+func _regen_font_px() -> int:
+	return maxi(int(15 * ui_scale), min_font())
+
+
+## Taille nécessaire (px écran) : la base de la plateforme, agrandie si la ligne « NOM +x/s   valeur » ou sa hauteur de
+## ligne ne tiennent pas (planchers 18 / 26 px) : le texte ne déborde jamais du cadre et reste séparé.
+func required_size() -> Vector2:
+	var k := ui_scale
+	var base := (MOBILE_SIZE if Platform.is_mobile() else BASE_SIZE) * k
+	var font := ThemeDB.fallback_font
+	var fs := _font_px()
+	var pad := Vector2(16, 10) * k
+	var label := String(state.get("label", "")).to_upper()
+	var text := String(state.get("text", ""))
+	var w := pad.x * 2.0 + font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	if state.has("regen"):
+		w += TEXT_GAP * k + font.get_string_size(Hud.fmt_rate(float(state["regen"])), HORIZONTAL_ALIGNMENT_LEFT, -1, _regen_font_px()).x
+	var vw := maxf(font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x, font.get_string_size("888", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
+	w += TEXT_GAP * k + vw
+	var h := pad.y + font.get_height(fs) + TRACK_GAP * k + MIN_TRACK * k + pad.y
+	return Vector2(maxf(base.x, ceilf(w)), maxf(base.y, ceilf(h)))
+
+
+func _fit_size() -> void:
+	custom_minimum_size = required_size()
+	size = custom_minimum_size
+
+
+## Textes dessinés (rects globaux) pour text_overflow_test : {text, size, rect, within}.
+func text_rects() -> Array:
+	var out: Array = []
+	if state.is_empty():
+		return out
+	var k := ui_scale
+	var g := get_global_rect().position
+	var font := ThemeDB.fallback_font
+	var fs := _font_px()
+	var pad := Vector2(16, 10) * k
+	var h := font.get_height(fs)
+	var label := String(state.get("label", "")).to_upper()
+	var lw := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	var own := get_global_rect()
+	out.append({"text": label, "size": fs, "rect": Rect2(g + Vector2(pad.x, pad.y), Vector2(lw, h)), "within": own})
+	if state.has("regen"):
+		var rt := Hud.fmt_rate(float(state["regen"]))
+		var rfs := _regen_font_px()
+		var rw := font.get_string_size(rt, HORIZONTAL_ALIGNMENT_LEFT, -1, rfs).x
+		out.append({"text": rt, "size": rfs, "rect": Rect2(g + Vector2(pad.x + lw + TEXT_GAP * k, pad.y), Vector2(rw, font.get_height(rfs))), "within": own})
+	var text := String(state.get("text", ""))
+	if text != "":
+		var tw := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+		out.append({"text": text, "size": fs, "rect": Rect2(g + Vector2(size.x - pad.x - tw, pad.y), Vector2(tw, h)), "within": own})
+	return out
 
 
 ## Nouvelle ressource ({} = aucune : masquée). Ne redessine que si elle a changé.
@@ -101,6 +163,7 @@ func set_state(d: Dictionary) -> void:
 	visible = not d.is_empty()
 	if d != state:
 		state = d
+		_fit_size()
 		queue_redraw()
 
 
@@ -130,15 +193,15 @@ func _draw() -> void:
 		col = lift(col) # remplissage >= 3:1 sur le fond (H12)
 	var pad := Vector2(16, 10) * k
 	var font := ThemeDB.fallback_font
-	var fs := maxi(int(19 * k), min_font())
+	var fs := _font_px()
 	var label := String(state.get("label", "")).to_upper()
 	var text := String(state.get("text", ""))
-	var y_txt := pad.y + fs * 0.95
+	var y_txt := pad.y + font.get_ascent(fs)
 	draw_string_outline(font, Vector2(pad.x, y_txt), label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, int(5 * k), Color(0, 0, 0, 0.9))
 	draw_string(font, Vector2(pad.x, y_txt), label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(0.86, 0.84, 0.8))
 	if state.has("regen"): # taux du hook kit.resource_regen_per_s() (KitResource.of) : « +X/s » après le nom
-		var rfs := maxi(int(15 * k), min_font())
-		var rx := pad.x + font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x + 10.0 * k
+		var rfs := _regen_font_px()
+		var rx := pad.x + font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x + TEXT_GAP * k
 		var rt := Hud.fmt_rate(float(state["regen"]))
 		draw_string_outline(font, Vector2(rx, y_txt), rt, HORIZONTAL_ALIGNMENT_LEFT, -1, rfs, int(4 * k), Color(0, 0, 0, 0.9))
 		draw_string(font, Vector2(rx, y_txt), rt, HORIZONTAL_ALIGNMENT_LEFT, -1, rfs, col.lerp(Color(0.86, 0.84, 0.8), 0.5))
@@ -146,7 +209,8 @@ func _draw() -> void:
 		var w := size.x - pad.x * 2.0
 		draw_string_outline(font, Vector2(pad.x, y_txt), text, HORIZONTAL_ALIGNMENT_RIGHT, w, fs, int(5 * k), Color(0, 0, 0, 0.9))
 		draw_string(font, Vector2(pad.x, y_txt), text, HORIZONTAL_ALIGNMENT_RIGHT, w, fs, col.lerp(Color.WHITE, 0.35))
-	var track := Rect2(Vector2(pad.x, y_txt + 9.0 * k), Vector2(size.x - pad.x * 2.0, size.y - y_txt - 9.0 * k - pad.y))
+	var track_top := pad.y + font.get_height(fs) + TRACK_GAP * k
+	var track := Rect2(Vector2(pad.x, track_top), Vector2(size.x - pad.x * 2.0, size.y - track_top - pad.y))
 	var pips := int(state.get("pips", 0))
 	if pips > 0:
 		_draw_pips(track, pips, int(state.get("filled", 0)), float(state.get("ratio", 0.0)), col, k)

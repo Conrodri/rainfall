@@ -3,11 +3,16 @@ extends Node
 ## en 1920x1080, 2400x1080 et 1440x1080, souris puis tactile. Pour chaque Label / Button / RichTextLabel visible :
 ## texte rendu (largeur, hauteur, autowrap compris) dans son rect, rect dans le parent cadre/écran, pas de
 ## chevauchement entre frères texte. Liste chaque échec : écran / chemin / texte / dépassement px.
+## Contrôles ajoutés (26/10) : hauteur de ligne contre hauteur de la barre (ProgressBar = cadre), textes dessinés en
+## `_draw` (méthode `text_rects()` des contrôles : rect global, taille de police, zones à éviter), textes du monde
+## (Labels hors CanvasLayer : entièrement dans la vue, hors zones réservées du HUD), montée de niveau, panneau
+## d'objectifs, infobulle de sort, chevauchement des zones du HUD entre elles, plancher de police.
 ## godot --path game res://tests/text_overflow_test.tscn [-- --only=title|newrun|settings|endrun|hud --quick]
 ## RESULT: OK si 0 échec.
 
 const SIZES: Array[Vector2i] = [Vector2i(1920, 1080), Vector2i(2400, 1080), Vector2i(1440, 1080)]
 const TOL := 2.0
+const MIN_GAP := 6.0 ## écart mini entre deux textes dessinés sur la même ligne (px)
 
 class FakeProfile extends RefCounted:
 	var rubies := 4820
@@ -133,8 +138,16 @@ func _hud_runs() -> void:
 	d.spawn_boss(&"etage", pp + Vector2(560, -280))
 	d.spawn_boss(&"mini", pp + Vector2(-480, 220))
 	RunState.difficulty_changed.emit(4.4, &"Furieux")
+	var chest_scene := load("res://scenes/chests/chest.tscn") as PackedScene
+	for off in [Vector2(900, 100), Vector2(-900, -120), Vector2(250, -520), Vector2(-250, 520), Vector2(1100, 600),
+			Vector2(-1000, 500), Vector2(1000, -450), Vector2(0, -700), Vector2(1250, 120), Vector2(-1300, 100)]:
+		var ch := chest_scene.instantiate() as Node2D
+		ch.call(&"setup", &"large", 1)
+		p.get_parent().add_child(ch)
+		ch.global_position = pp + off
 	for touch in [false, true]:
 		_set_touch(touch)
+		Platform.mobile_preview = touch # tactile = vrai mobile pour le HUD (planchers 26 px, tables mobiles)
 		for sz in SIZES:
 			if _quick and sz == SIZES[2]:
 				continue
@@ -142,6 +155,10 @@ func _hud_runs() -> void:
 			await _frames(40)
 			var tag := "%dx%d/%s" % [sz.x, sz.y, "tactile" if touch else "souris"]
 			_scan(hud, "%s HUD" % tag)
+			_scan_draw(hud, "%s HUD/_draw" % tag)
+			_scan_world(_main, "%s monde" % tag, hud)
+			_scan_hud_zones(hud, "%s HUD/zones" % tag)
+			await _hud_extras(hud, tag)
 			hud.pause_menu.open()
 			await _frames(20)
 			_scan(hud.pause_menu, "%s pause" % tag)
@@ -160,7 +177,129 @@ func _hud_runs() -> void:
 			get_tree().paused = false
 			ui.queue_free()
 			await _frames(3)
+	Platform.mobile_preview = false
 	_main.queue_free()
+
+
+## Montée de niveau, panneau d'objectifs, infobulle de sort : affichés puis scannés (hud = HUD de la run).
+func _hud_extras(hud: Hud, tag: String) -> void:
+	hud.call(&"_on_level", RunState.level + 1)
+	var mgr := get_tree().get_first_node_in_group("stage_manager")
+	if mgr != null:
+		mgr.set("floor_cleared", true)
+	var sb: SpellButton = hud.bar_buttons[1] if hud.bar_buttons[1].is_visible_in_tree() else hud.spell_buttons[0]
+	var info := hud.spell_hint.describe(sb)
+	hud.spell_hint.tip.show_for(sb, info.title, info.tag, info.body)
+	await _frames(12)
+	_scan(hud, "%s HUD/niveau+objectifs+infobulle" % tag)
+	_scan_draw(hud, "%s HUD/niveau+objectifs+infobulle/_draw" % tag)
+	_scan_hud_zones(hud, "%s HUD/zones+objectifs" % tag)
+	if mgr != null:
+		mgr.set("floor_cleared", false)
+	hud.spell_hint.tip.hide_tip()
+	await _frames(4)
+
+
+## Textes dessinés en `_draw` : tout contrôle exposant `text_rects()` -> Array[Dictionary]
+## {text, rect (global), size (px police), within? (Rect2), avoid? (Array[Rect2]), decor? (bool : pas de plancher)}.
+func _scan_draw(root: Node, screen: String) -> void:
+	var vp := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
+	var floor_px := HudMetrics.floor_px()
+	var owners: Array[Control] = []
+	_collect_draw(root, owners)
+	for o in owners:
+		var items: Array = o.call(&"text_rects")
+		for i in items.size():
+			var it: Dictionary = items[i]
+			var r: Rect2 = it["rect"]
+			var txt := String(it.get("text", ""))
+			_checked += 1
+			var tag := "%s | %s | « %s » | " % [screen, o.get_path(), txt.left(40)]
+			if not bool(it.get("decor", false)) and int(it.get("size", floor_px)) < floor_px:
+				failures.append(tag + "police %d px < plancher %d" % [int(it["size"]), floor_px])
+			if it.has("within"):
+				var w: Rect2 = it["within"]
+				var ov := maxf(maxf(w.position.x - r.position.x, r.end.x - w.end.x), maxf(w.position.y - r.position.y, r.end.y - w.end.y))
+				if ov > TOL:
+					failures.append(tag + "sort de sa zone de %.0f px" % ov)
+			for av: Rect2 in it.get("avoid", []):
+				var inter := av.intersection(r)
+				if inter.size.x > TOL and inter.size.y > TOL:
+					failures.append(tag + "chevauche un élément voisin de %.0f px" % minf(inter.size.x, inter.size.y))
+			var sv := maxf(maxf(vp.position.x - r.position.x, r.end.x - vp.end.x), maxf(vp.position.y - r.position.y, r.end.y - vp.end.y))
+			if sv > TOL:
+				failures.append(tag + "sort de l'écran de %.0f px" % sv)
+			for j in range(i + 1, items.size()):
+				var r2: Rect2 = items[j]["rect"]
+				var inter2 := r.intersection(r2)
+				if inter2.size.x > TOL and inter2.size.y > TOL:
+					failures.append(tag + "chevauche « %s » de %.0f px" % [String(items[j].get("text", "")), minf(inter2.size.x, inter2.size.y)])
+				elif absf(r.get_center().y - r2.get_center().y) < minf(r.size.y, r2.size.y) * 0.5:
+					var gap := maxf(r2.position.x - r.end.x, r.position.x - r2.end.x)
+					if gap < MIN_GAP:
+						failures.append(tag + "collé à « %s » (écart %.0f px < %.0f)" % [String(items[j].get("text", "")), gap, MIN_GAP])
+			for sib in o.get_parent().get_children():
+				if sib != o and sib is Control and (sib as Control).visible and sib.has_method(&"text_rects"):
+					var inter3 := (sib as Control).get_global_rect().intersection(r)
+					if inter3.size.x > TOL and inter3.size.y > TOL:
+						failures.append(tag + "chevauche le contrôle voisin %s de %.0f px" % [sib.name, minf(inter3.size.x, inter3.size.y)])
+
+
+func _collect_draw(n: Node, out: Array[Control]) -> void:
+	for ch in n.get_children():
+		if ch is CanvasItem and not (ch as CanvasItem).visible:
+			continue
+		if ch is Control and ch.has_method(&"text_rects") and (ch as Control).is_visible_in_tree():
+			out.append(ch as Control)
+		_collect_draw(ch, out)
+
+
+## Textes du monde (Label hors CanvasLayer) : ceux qui touchent la vue doivent y tenir ENTIÈREMENT et ne recouvrir
+## aucune zone réservée du HUD.
+func _scan_world(root: Node, screen: String, hud: Hud) -> void:
+	var view := get_viewport().get_visible_rect()
+	var reserved := hud.reserved_rects()
+	var labels: Array[Label] = []
+	_collect_world(root, labels)
+	for l in labels:
+		if l.text.strip_edges() == "" or not l.is_visible_in_tree() or l.get_global_transform_with_canvas().get_scale().abs().x < 0.01:
+			continue
+		var xf := l.get_global_transform_with_canvas()
+		var ms := l.get_minimum_size()
+		var w := maxf(l.size.x, ms.x)
+		var h := maxf(l.size.y, ms.y)
+		var loc := Rect2(Vector2((l.size.x - w) * 0.5, 0.0), Vector2(w, h))
+		var r := xf * loc
+		if not r.intersects(view):
+			continue
+		_checked += 1
+		var cut := maxf(maxf(view.position.x - r.position.x, r.end.x - view.end.x), maxf(view.position.y - r.position.y, r.end.y - view.end.y))
+		if cut > TOL:
+			failures.append("%s | %s | « %s » | texte du monde coupé par le bord de l'écran de %.0f px" % [screen, l.get_path(), l.text.left(40), cut])
+		for rr in reserved:
+			var inter := rr.intersection(r)
+			if inter.size.x > TOL and inter.size.y > TOL:
+				failures.append("%s | %s | « %s » | texte du monde %s sur une zone du HUD %s de %.0f px" % [screen, l.get_path(), l.text.left(40), r, rr, minf(inter.size.x, inter.size.y)])
+				break
+
+
+func _collect_world(n: Node, out: Array[Label]) -> void:
+	for ch in n.get_children():
+		if ch is CanvasLayer:
+			continue
+		if ch is Label:
+			out.append(ch as Label)
+		_collect_world(ch, out)
+
+
+## Zones du HUD (reserved_rects) : aucune ne doit en recouvrir une autre.
+func _scan_hud_zones(hud: Hud, screen: String) -> void:
+	var rects := hud.reserved_rects()
+	for i in rects.size():
+		for j in range(i + 1, rects.size()):
+			var inter := rects[i].intersection(rects[j])
+			if inter.size.x > TOL and inter.size.y > TOL:
+				failures.append("%s | zone %d %s chevauche zone %d %s de %.0f px" % [screen, i, rects[i], j, rects[j], minf(inter.size.x, inter.size.y)])
 
 
 func _frames(n: int) -> void:
@@ -227,7 +366,7 @@ func _in_scroll(n: Node, root: Node) -> bool:
 func _frame_parent(c: Control) -> Control:
 	var p := c.get_parent()
 	while p != null:
-		if p is Control and (p is PanelContainer or p is Panel or p is Button or p is ScrollContainer):
+		if p is Control and (p is PanelContainer or p is Panel or p is Button or p is ScrollContainer or p is ProgressBar):
 			return p as Control
 		p = p.get_parent()
 	return null
@@ -259,6 +398,8 @@ func _scan(root: Node, screen: String) -> void:
 		if scroll:
 			continue
 		var fp := _frame_parent(c)
+		if fp != null and fp is ProgressBar and ts.y > fp.size.y + TOL:
+			_fail(screen, c, "ligne de texte plus haute que la barre %s de" % fp.name, ts.y - fp.size.y)
 		if fp != null:
 			var pr := fp.get_global_rect()
 			var ov := maxf(maxf(pr.position.x - r.position.x, r.end.x - pr.end.x), maxf(pr.position.y - r.position.y, r.end.y - pr.end.y))

@@ -88,7 +88,7 @@ func _exit_tree() -> void:
 
 func set_ui_scale(s: float) -> void:
 	ui_scale = s
-	custom_minimum_size.y = (BAR_H + 2.0 * _frame_out().y + ROW_GAP + ICON + 6.0) * s
+	custom_minimum_size.y = (BAR_H + 2.0 * _frame_out().y + ROW_GAP) * s + _row_h() + 6.0 * s
 
 
 # --- Lecture (tests) ----------------------------------------------------------------------------
@@ -514,11 +514,75 @@ func _draw_lock(c: Vector2, r: float) -> void:
 	draw_rect(Rect2(c + Vector2(-r * 0.12, 0.0), Vector2(r * 0.24, r * 0.45)), Color(0.08, 0.07, 0.06))
 
 
-## Rangée d'icônes de statut sous le cadre (max 5) + « INVULNÉRABLE » à droite.
+## Police des textes de la rangée d'état : jamais sous le plancher (18 px PC / 26 px mobile).
+func _row_font_px(base: float) -> int:
+	return maxi(int(base * ui_scale), HudMetrics.floor_px())
+
+
+func _row_font() -> Font:
+	return _font if _font != null else get_theme_default_font()
+
+
+## Hauteur de la rangée sous le cadre : icônes ou ligne de texte (la plus haute).
+func _row_h() -> float:
+	var f := _row_font()
+	var th := f.get_height(_row_font_px(16.0)) if f != null else 0.0
+	return maxf(ICON * ui_scale, th)
+
+
+## Texte tronqué avec « … » pour tenir dans `max_w` px (jamais sous 1 caractère).
+func _fit_text(txt: String, fs: int, max_w: float) -> String:
+	var f := _row_font()
+	if f == null or f.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x <= max_w:
+		return txt
+	var t := txt
+	while t.length() > 1 and f.get_string_size(t + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > max_w:
+		t = t.left(t.length() - 1)
+	return t.strip_edges() + "…"
+
+
+## Texte d'état de la rangée (INVULNÉRABLE / TRANSITION / état de combat) : {text, fs, color, pulse, outline, pos, rect}
+## ou {} ; `frame` = cadre de la barre (coordonnées locales). Aligné à droite, après les icônes de statut.
+func _row_text(frame: Rect2) -> Dictionary:
+	var f := _row_font()
+	if f == null:
+		return {}
+	var s := ui_scale
+	var rowh := _row_h()
+	var cy := frame.end.y + ROW_GAP * s + rowh * 0.5
+	var txt := ""
+	var fs := 0
+	var col := Color.WHITE
+	var outline := 3
+	var pulse := 0.0
+	if _invuln or _transition:
+		txt = "INVULNÉRABLE" if _invuln else "TRANSITION"
+		fs = _row_font_px(13.0)
+		col = Color(0.85, 0.84, 0.8)
+		pulse = 0.75 + 0.25 * sin(_clock * 6.0)
+	elif not _tag.is_empty():
+		txt = str(_tag.get("text", ""))
+		fs = _row_font_px(16.0) # état de combat : un cran plus gros que les statuts (lisible d'un coup d'œil)
+		col = _tag.get("color", Color.WHITE)
+		outline = 4
+		pulse = 0.85 + 0.15 * sin(_clock * 4.0)
+	else:
+		return {}
+	var icons_end := frame.position.x + 6.0 * s + _statuses.size() * (ICON * s + 6.0 * s)
+	var max_w := maxf(frame.end.x - 4.0 * s - icons_end, 40.0 * s)
+	txt = _fit_text(txt, fs, max_w)
+	var tw := f.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+	var th := f.get_height(fs)
+	var left := frame.end.x - tw - 4.0 * s
+	return {"text": txt, "fs": fs, "color": col, "pulse": pulse, "outline": outline,
+		"pos": Vector2(left, cy - th * 0.5 + f.get_ascent(fs)), "rect": Rect2(left, cy - th * 0.5, tw, th)}
+
+
+## Rangée d'icônes de statut sous le cadre (max 5) + texte d'état à droite.
 func _draw_status_row(frame: Rect2) -> void:
 	var s := ui_scale
 	var sz := ICON * s
-	var cy := frame.end.y + ROW_GAP * s + sz * 0.5
+	var cy := frame.end.y + ROW_GAP * s + _row_h() * 0.5
 	var cx := frame.position.x + 6.0 * s + sz * 0.5
 	var fs := int(13.0 * s)
 	for st: Dictionary in _statuses:
@@ -526,20 +590,32 @@ func _draw_status_row(frame: Rect2) -> void:
 		var total: float = _st_total.get(id, 1.0)
 		HpBarStyle.draw_status_icon(self, id, Vector2(cx, cy), sz, clampf(float(st["left"]) / total, 0.0, 1.0), int(st["stacks"]), _font, fs)
 		cx += sz + 6.0 * s
-	if (_invuln or _transition) and _font != null:
-		var txt := "INVULNÉRABLE" if _invuln else "TRANSITION"
-		var tw := _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
-		var pos := Vector2(frame.end.x - tw - 4.0 * s, cy + fs * 0.35)
-		draw_string_outline(_font, pos, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 3, Color(0, 0, 0, 0.9))
-		draw_string(_font, pos, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(0.85, 0.84, 0.8, 0.75 + 0.25 * sin(_clock * 6.0)))
-	elif not _tag.is_empty() and _font != null:
-		var tt := str(_tag.get("text", ""))
-		var tc: Color = _tag.get("color", Color.WHITE)
-		var fs2 := int(16.0 * s) # état de combat : un cran plus gros que les statuts (lisible d'un coup d'œil)
-		var tw2 := _font.get_string_size(tt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs2).x
-		var pos2 := Vector2(frame.end.x - tw2 - 4.0 * s, cy + fs2 * 0.35)
-		draw_string_outline(_font, pos2, tt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs2, 4, Color(0, 0, 0, 0.9))
-		draw_string(_font, pos2, tt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs2, Color(tc, 0.85 + 0.15 * sin(_clock * 4.0)))
+	var rt := _row_text(frame)
+	if not rt.is_empty():
+		var c: Color = rt["color"]
+		draw_string_outline(_font, rt["pos"], rt["text"], HORIZONTAL_ALIGNMENT_LEFT, -1, rt["fs"], rt["outline"], Color(0, 0, 0, 0.9))
+		draw_string(_font, rt["pos"], rt["text"], HORIZONTAL_ALIGNMENT_LEFT, -1, rt["fs"], Color(c, float(rt["pulse"])))
+
+
+## Texte d'état dessiné (rect global) pour text_overflow_test.
+func text_rects() -> Array:
+	var out: Array = []
+	if not is_instance_valid(boss):
+		return out
+	var inner := _inner_rect()
+	var fo := _frame_out() * ui_scale
+	var frame := inner.grow_individual(fo.x, fo.y, fo.x, fo.y)
+	var rt := _row_text(frame)
+	if rt.is_empty():
+		return out
+	var g := get_global_rect().position
+	var s := ui_scale
+	var icons: Array = []
+	for i in _statuses.size():
+		icons.append(Rect2(g + Vector2(frame.position.x + 6.0 * s + i * (ICON * s + 6.0 * s), frame.end.y + ROW_GAP * s), Vector2(ICON * s, ICON * s)))
+	var r: Rect2 = rt["rect"]
+	out.append({"text": rt["text"], "size": rt["fs"], "rect": Rect2(g + r.position, r.size), "within": get_global_rect(), "avoid": icons})
+	return out
 
 
 static func _mask_of(statuses: Array) -> int:

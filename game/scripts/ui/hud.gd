@@ -97,12 +97,16 @@ var _regen_tick := 0.0
 var _player_plate: Control ## plaque de la fiche joueur (médaillon, nom, PV, XP)
 var _map_plate: Panel ## plaque commune minimap + difficulté (H17)
 var _hp_low := false
+var _tg_right := 0.0 ## jauge tactile : bord droit (px, relatif au coin bas-droit)
+var _tg_bottom := 0.0 ## idem, bord bas
+var _tg_size := Vector2.ZERO
 const OFFSCREEN_CUES := preload("res://scripts/ui/offscreen_cues.gd")
 var offscreen_cues: Control ## A11y-L9 (scripts/ui/offscreen_cues.gd)
 
 
 func _ready() -> void:
 	layer = 10
+	add_to_group(&"hud") # étiquettes du monde (coffres...) : zones réservées (reserved_rects)
 	_build()
 	offscreen_cues = OFFSCREEN_CUES.new() # A11y-L9 : flèches de menace hors écran, sous les contrôles du HUD
 	offscreen_cues.call(&"bind", self)
@@ -204,6 +208,8 @@ func _process(delta: float) -> void:
 	var res := KitResource.of(player)
 	bar_gauge.set_state(res)
 	touch_gauge.set_state(res)
+	if touch_gauge.size != _tg_size:
+		_place_touch_gauge()
 	if bar_gauge.visible:
 		_place_bar_gauge()
 	_update_passive_badge()
@@ -591,7 +597,15 @@ func _apply_layout() -> void:
 	var hp_px: Vector2 = HudMetrics.pick(HudMetrics.HP_BAR, mobile)
 	var xp_px: Vector2 = HudMetrics.pick(HudMetrics.XP_BAR, mobile)
 	var bar_w := clampf(vp.x * 0.2 * tk, 180.0, hp_px.x * s) # fiche compacte (retour joueur : elle cachait l'or au sol)
-	_hp_bar.custom_minimum_size = Vector2(bar_w, hp_px.y * s) # PV : l'élément le plus haut de la fiche
+	# PV : la barre suit la POLICE (plancher 26 px mobile : la ligne de « 90 / 90 » dépasse la table 36 px x s) et la
+	# largeur suit « 8888 / 8888 » + « +88/s » : texte et taux ne se touchent ni ne sortent de la barre.
+	var hp_font := HudMetrics.font(HudMetrics.T1_HP, s, mobile)
+	var rg_font := HudMetrics.font(HudMetrics.T4_SMALL, s, mobile)
+	var th: Font = _hp_label.get_theme_font(&"font")
+	var hp_h := maxf(hp_px.y * s, ceilf(th.get_height(hp_font)) + 4.0)
+	var hp_w := th.get_string_size("8888 / 8888", HORIZONTAL_ALIGNMENT_LEFT, -1, hp_font).x 		+ th.get_string_size("+88/s", HORIZONTAL_ALIGNMENT_LEFT, -1, rg_font).x + 40.0 * s
+	bar_w = maxf(bar_w, ceilf(hp_w))
+	_hp_bar.custom_minimum_size = Vector2(bar_w, hp_h) # PV : l'élément le plus haut de la fiche
 	_xp_bar.custom_minimum_size = Vector2(bar_w, xp_px.y * s)
 	_name_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T4_SMALL, s, mobile))
 	_badge_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.BADGE_LEVEL, s, mobile))
@@ -660,7 +674,8 @@ func _apply_layout() -> void:
 		dodge_button.setup(0, 120.0 * s)
 		dodge_button.position = Vector2(-200, -190) * s
 		auto_indicator.visible = false
-		touch_gauge.position = Vector2(-430.0 - _gauge_px().x - 20.0, -300.0) * s # à gauche du sort 2
+		_tg_right = -450.0 * s # à gauche du sort 2
+		_tg_bottom = -300.0 * s + touch_gauge.size.y
 	else:
 		const DODGE_PX := HudMetrics.TOUCH_DODGE_PX
 		const SPELL_PX := HudMetrics.TOUCH_SPELL_PX
@@ -687,8 +702,10 @@ func _apply_layout() -> void:
 		auto_indicator.position = (ac - Vector2.ONE * auto_px * 0.5) * s
 		# ressource du kit : au-dessus de l'icône de l'auto, bord droit avant l'ultime (diagonale)
 		var g_right := dc.x - diag_r * cos(PI * 0.25) - SPELL_PX * 0.5 - 16.0
-		touch_gauge.position = Vector2(g_right - _gauge_px().x, dc.y - DODGE_PX * 0.5 - _gauge_px().y) * s # au-dessus du sort 2
+		_tg_right = g_right * s # au-dessus du sort 2, bord droit avant l'ultime (la jauge grandit vers la gauche)
+		_tg_bottom = (dc.y - DODGE_PX * 0.5) * s
 		pos_i = Vector2(-890, -180) # à gauche de la grappe, sur la rangée de la roulade (hors minimap et objectifs)
+	_place_touch_gauge()
 	interact_button.apply_scale(s)
 	interact_button.position = pos_i * s
 
@@ -707,7 +724,7 @@ func _apply_layout() -> void:
 	_place_gold()
 	# tactile : plus petite (boutons de sorts et Interagir à droite), 300 px au lieu de 274 (audit § 4.2)
 	var mm: float = (float(HudMetrics.MINIMAP_PX[1]) if touch_mode else Minimap.compact_px()) * s
-	var mm_top := pt + pause_button.size.y + 6.0 * s
+	var mm_top := pt + pause_button.size.y + 6.0 * s + HudMetrics.PLATE_PAD * s # la plaque (marge PLATE_PAD) ne touche pas la pause
 	minimap.set_compact_rect(Rect2(Vector2(vp.x - pm - mm, mm_top), Vector2(mm, mm)))
 	_place_difficulty()
 	boss_bars.set_ui_scale(s * (1.25 if mobile else 1.0)) # nom 26 -> 32 px, barre plus haute sur mobile
@@ -870,9 +887,11 @@ func _update_passive_badge() -> void:
 		passive_badge.position = Vector2(left - passive_badge.size.x - gap, icons_bottom - passive_badge.size.y)
 
 
-## Taille de base de la jauge de kit pour la plateforme (ResourceGauge.apply_scale applique le facteur mobile lui-même).
-func _gauge_px() -> Vector2:
-	return ResourceGauge.MOBILE_SIZE if HudMetrics.is_mobile() else ResourceGauge.BASE_SIZE
+## Jauge tactile : bord droit et bas fixés par la mise en page (_tg_right / _tg_bottom, px écran par rapport au coin
+## bas-droit) ; sa taille suit son texte (ResourceGauge.required_size), elle grandit donc vers la gauche et le haut.
+func _place_touch_gauge() -> void:
+	_tg_size = touch_gauge.size
+	touch_gauge.position = Vector2(_tg_right - _tg_size.x, _tg_bottom - _tg_size.y)
 
 
 ## Zones occupées par le HUD, en coordonnées écran (contrat : le monde y évite étiquettes et chiffres).
@@ -950,10 +969,19 @@ func _place_difficulty() -> void:
 	var mr := minimap.map_rect() if not minimap.expanded else Rect2()
 	if mr.size.y > 0.0: # juste sous le losange dessiné (la carte iso n'occupe pas tout son carré)
 		bottom = minf(bottom, minimap.global_position.y + mr.end.y)
-	_diff_box.add_theme_constant_override("separation", int(10 * s))
+	var sep := maxf(12.0 * s, 8.0)
+	_diff_box.add_theme_constant_override("separation", int(sep))
 	var k := HudMetrics.MOBILE_K if HudMetrics.is_mobile() else 1.0
 	_diff_bar.custom_minimum_size = Vector2(70.0 * s * k, 12.0 * s * k)
-	_diff_box.custom_minimum_size.x = mm.size.x * 0.9
+	# libellé de palier : largeur du plus long (« Cataclysme ») fixée d'avance, collé à droite contre la jauge ;
+	# la rangée (donc la plaque) ne change pas de largeur d'un palier à l'autre et la jauge reste dans le cadre.
+	var dfont: Font = _diff_label.get_theme_font(&"font")
+	var dfs := HudMetrics.font(HudMetrics.T4_SMALL, s, HudMetrics.is_mobile())
+	var widest := 0.0
+	for tn in TIER_NAMES:
+		widest = maxf(widest, dfont.get_string_size(String(tn), HORIZONTAL_ALIGNMENT_LEFT, -1, dfs).x)
+	_diff_label.custom_minimum_size.x = ceilf(widest) + 6.0
+	_diff_box.custom_minimum_size.x = maxf(mm.size.x * 0.9, _diff_label.custom_minimum_size.x + sep + _diff_bar.custom_minimum_size.x)
 	_diff_box.reset_size()
 	_diff_caption.reset_size()
 	_diff_caption.size.x = _diff_box.size.x

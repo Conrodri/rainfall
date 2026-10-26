@@ -133,7 +133,7 @@ func set_ui_scale(s: float) -> void:
 func _apply_sizes() -> void:
 	add_theme_constant_override("separation", int(10 * ui_scale))
 	for e in _entries:
-		(e["label"] as Label).add_theme_font_size_override("font_size", int(26 * ui_scale))
+		(e["label"] as Label).add_theme_font_size_override("font_size", maxi(int(26 * ui_scale), HudMetrics.floor_px())) # plancher 18 / 26 px
 		(e["bar"] as BossHealthBar).set_ui_scale(ui_scale)
 		var sb := e["plate"] as StyleBoxFlat
 		sb.content_margin_left = 10.0 * ui_scale

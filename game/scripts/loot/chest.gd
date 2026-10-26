@@ -7,6 +7,7 @@ signal opened(chest: Chest)
 signal refused(chest: Chest) ## or insuffisant (hook pour le son)
 
 const UI_SCENE := preload("res://scenes/ui/chest/chest_ui.tscn")
+const LABEL_FIT := preload("res://scripts/ui/world_label_fit.gd")
 const COLORS := {
 	&"petit": Color(0.69, 0.54, 0.35),
 	&"large": Color(0.29, 0.56, 0.89),
@@ -32,6 +33,8 @@ var _player_inside := false
 var _opening := false
 var _refresh := 0.0
 var _light: LightRig.Handle = null
+var _label_shake := 0.0 ## décalage horizontal de l'animation de refus (tween)
+var _label_home := Vector2.ZERO ## position d'origine de l'étiquette de prix (scène)
 
 @onready var _visual: EmissiveOverlay = $Visual
 @onready var _label: Label = $PriceLabel
@@ -47,6 +50,7 @@ func setup(p_kind: StringName, p_stage: int) -> void:
 
 
 func _ready() -> void:
+	_label_home = _label.position
 	add_to_group("chests")
 	add_to_group("interactable")
 	body_entered.connect(_on_body_entered)
@@ -79,6 +83,8 @@ func current_price() -> float:
 func _process(delta: float) -> void:
 	if _opening:
 		return
+	# prix toujours lisible : entier dans la vue, hors des zones du HUD, sinon masqué (texte du monde)
+	_label.visible = LABEL_FIT.fit(_label, _label_home + Vector2(_label_shake, 0.0))
 	_refresh -= delta
 	if _refresh <= 0.0:
 		_refresh = 0.2
@@ -161,9 +167,9 @@ func try_open() -> bool:
 
 func _shake_label() -> void:
 	var tw := create_tween()
-	tw.tween_property(_label, "position:x", _label.position.x + 10.0, 0.04)
-	tw.tween_property(_label, "position:x", _label.position.x - 10.0, 0.08)
-	tw.tween_property(_label, "position:x", _label.position.x, 0.04)
+	tw.tween_property(self, "_label_shake", 10.0, 0.04)
+	tw.tween_property(self, "_label_shake", -10.0, 0.08)
+	tw.tween_property(self, "_label_shake", 0.0, 0.04)
 
 
 func _on_ui_finished() -> void:
