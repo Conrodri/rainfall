@@ -158,3 +158,9 @@
 50 art/tools/night/_skin_bourbe.txt art/tools/night/_logskin_bourbe.txt low
 51 art/tools/night/_skin_morfil.txt art/tools/night/_logskin_morfil.txt medium
 51 art/tools/night/_skin_tocsin.txt art/tools/night/_logskin_tocsin.txt medium
+# boss façon raid (26/10/2026, docs/Design_Boss_Raid.md §4.d-e) : VFX génériques de la boîte à outils, puis les 3 nouveaux boss d'étage (code en placeholders par les agents Claude ; les boss ne sont tirés en run qu'une fois le .tres livré), puis les sons
+52 art/tools/night/_raid_kit.txt art/tools/night/_lograid_kit.txt low
+53 art/tools/night/_raid_drowned_idol.txt art/tools/night/_lograid_drowned_idol.txt medium
+54 art/tools/night/_raid_flood_gunner.txt art/tools/night/_lograid_flood_gunner.txt medium
+55 art/tools/night/_raid_salt_king.txt art/tools/night/_lograid_salt_king.txt medium
+55 art/tools/audio/_raid_sfx.txt art/tools/audio/_lograid_sfx.txt low

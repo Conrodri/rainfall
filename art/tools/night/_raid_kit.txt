@@ -1,0 +1,22 @@
+LOT RAID_KIT : VFX génériques de la boîte à outils des boss façon raid (docs/Design_Boss_Raid.md §1, qui fait foi pour les noms et les usages). Sortie game/assets/sprites/vfx/raid/raid.tres (SpriteFrames texte, AtlasTexture) + planches PNG dans le même dossier ; source art/blender/vfx/raid_kit.blend, script art/tools/night/raid_kit_build.py. Périmètre : ces fichiers seulement. Rendu cel obligatoire : art/briefs/STYLE_cel.md + art/tools/cel/cel_style.py, profil 'vfx' (silhouette 0, 2 tons), cel.install('vfx', normals=False) avant le rendu ; Eevee échantillons modestes, rendu x2 puis LANCZOS, film transparent. Aucun _n.png ; _e à demi-résolution seulement quand une zone émet.
+Extras « sol » : vus de dessus, 1 u = 64 px (le jeu les écrase en iso). Extras « billboard » : caméra iso du jeu (art/tools/iso/iso_rig.py), pied au bas de la cellule, centrés en x. Planches <= 4096 px, cellules à la taille d'affichage réelle. Couleurs : cyan neutre #BFF4FF pour tout ce qui est utile au joueur (le code teinte à l'accent du biome), rouge #E0463C pour le danger, blanc pour le neutre ; jamais de pastel.
+Animations (nom : type, cellule, frames) :
+- raid_orb : billboard 96 x 96, orbe générique au sol (sphère de verre craquelée, lueur interne cyan), 8 fr boucle (pulsation lente), _e.
+- raid_orb_pickup : billboard 128 x 192, trait de lumière qui monte vers le boss, 6 fr.
+- shield_bubble : billboard 320 x 352, bulle de bouclier hexagonale translucide qui enveloppe un boss de 3,8 u, 8 fr boucle (facettes qui glissent), _e léger.
+- shield_crack : billboard 320 x 352, 3 états x 4 fr (fissures 1/3, 2/3, prêt à céder) : plaqués par-dessus shield_bubble.
+- shield_burst : billboard 384 x 384, éclatement, 6 fr.
+- soak_zone : sol 320 x 320, cercle cyan de rayon 160 px (2,5 u) avec jauge circulaire intérieure vide, 6 fr boucle (bord qui respire).
+- soak_fill : sol 320 x 320, jauge qui se remplit de 0 à 100 % en 8 fr (le code choisit la frame selon la progression).
+- soak_burst : sol 640 x 640, anneau rouge d'éclatement 1 -> 5 u, 6 fr.
+- safe_sector : sol 1152 x 1152, secteur cyan de 90° depuis le centre vers +x (bord lumineux, intérieur translucide à 35 %), 8 fr boucle ; le code le tourne et rétrécit l'angle par masque.
+- danger_sheet : sol 1152 x 1152, disque rouge translucide (25 %) de rayon 576 px avec bord net, 6 fr boucle (grain qui dérive).
+- sector_arrow : sol 128 x 128, flèche courbe blanche indiquant le sens de rotation, 4 fr boucle.
+- fixate_mark : sol 160 x 160, marqueur « X » cerclé, 2 états x 6 fr (blanc qui tourne : verrouillage ; rouge fixe : verrouillé).
+- fixate_link : sol 512 x 32, ligne pointillée vers +x (le code l'étire), 4 fr boucle (pointillés qui défilent).
+- weak_point : billboard 96 x 96, cristal/valve en anneau cyan de 0,8 u, 2 états x 6 fr boucle (plein : exposé ; pointillés gris : gardé), _e sur l'état plein.
+- weak_point_break : billboard 160 x 160, 6 fr.
+- shelter_shadow : sol 128 x 384, bande cyan translucide 1 x 6 u vers +x (ombre protégée derrière un abri), 6 fr boucle.
+- raid_progress_pip : UI 48 x 48 (profil 'icon'), pastille de compteur vide / pleine, 2 fr.
+- enrage_aura : billboard 352 x 352, liseré rouge pulsant pour un boss enragé, 8 fr boucle.
+Vérification : "C:\Users\const\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path game --import sans erreur puis res://tests/sprites_test.tscn et res://tests/texture_budget_test.tscn -> RESULT: OK ; python art/tools/texture_budget.py sans ligne > 4096 ; planche art/tools/night/_raid_kit_contact.png (chaque anim, première et dernière frame, sur fond #2E3238). Aucun .gd/.tscn. Rapport court en français.
