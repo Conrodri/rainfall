@@ -12,6 +12,7 @@ class FakeEnemy extends Node2D:
 	var poisoned := false
 	var slowed := false
 	var is_elite := false
+	var is_boss := false
 
 	func take_damage(amount: float, _is_crit: bool = false, _element: StringName = &"") -> void:
 		taken.append(amount)
@@ -189,6 +190,7 @@ func _run() -> void:
 		await _test_phenix(ch)
 		await _test_rafale(ch)
 		await _test_pointe(ch)
+		await _test_boss(ch)
 		await _test_conditionnels(ch)
 	await _test_procs()
 	await _test_save_load()
@@ -474,6 +476,7 @@ func _test_faveur(ch: StringName) -> void:
 	_check("[%s] faveur : autre coffre du même étage = payant" % ch, s2.gold_reroll_price() > 0.0)
 	var s3 := ChestSession.new(&"petit", 2, 100.0)
 	_check("[%s] faveur : nouvel étage = gratuite à nouveau" % ch, s3.gold_reroll_price() == 0.0)
+	_check("[%s] faveur : libellé « Gratuite » à prix nul, prix sinon" % ch, ChestUI.gold_button_text(0.0).ends_with("Gratuite") and ChestUI.gold_button_text(s2.gold_reroll_price()).ends_with(" or") and not ChestUI.gold_button_text(12.2).contains("Gratuite"))
 	_give({"faveur_du_marchand": 2})
 	_check("[%s] faveur x2 : prix x0,7225" % ch, _near(ItemEffects.chest_price_mult(), 0.7225, 0.0001))
 	_give({})
@@ -508,6 +511,24 @@ func _test_phenix(ch: StringName) -> void:
 
 
 # --- Rafale d'acier ------------------------------------------------------------------------------
+
+## Lancers du sort 1 réellement émis (spell_cast) pour `casts` tirs principaux, rejeux d'écho/rafale compris.
+func _auto_casts(casts: int) -> int:
+	_clear_fakes()
+	_fake(Vector2(2.0 * U, 0.0))
+	var sp: SpellCaster = _player.spells
+	var box := [0]
+	var cb := func(_s: SpellData) -> void: box[0] += 1
+	sp.spell_cast.connect(cb)
+	for i in casts:
+		sp.set_cooldown(_spell1().slot, 0.0, 1.0)
+		sp.cast(_spell1().slot)
+		sp.flush_pending()
+		_player.item_fx.tick(0.02)
+		_player.item_fx.tick(0.6)
+	sp.spell_cast.disconnect(cb)
+	return box[0]
+
 
 func _auto_shots(casts: int) -> int:
 	_clear_fakes()
@@ -546,8 +567,77 @@ func _test_rafale(ch: StringName) -> void:
 		var shots8 := _auto_shots(8)
 		_check("[%s] rafale : 8 tirs = 2 rafales (%d vs %d)" % [ch, shots8, 8 + 4], shots8 == 12)
 	else:
-		_check("[%s] rafale : sort 1 non projectile (%s) = tirs inchangés (%d vs %d)" % [ch, _spell1().behavior, shots, plain], shots == plain)
+		# Kit : pas d'éventail ; 2 rejeux du sort tous les 4 tirs (même mécanisme que la Couronne d'écho).
+		await _spawn(ch)
+		_give({})
+		var c_plain := _auto_casts(4)
+		await _spawn(ch)
+		_give({"rafale_d_acier": 1})
+		var c4 := _auto_casts(4)
+		await _spawn(ch)
+		_give({"rafale_d_acier": 1})
+		var c3 := _auto_casts(3)
+		await _spawn(ch)
+		_give({"rafale_d_acier": 1})
+		var c8 := _auto_casts(8)
+		_check("[%s] rafale (kit) : 4 tirs = %d lancers + 2 rejeux (%d)" % [ch, c_plain, c4], c_plain == 4 and c4 == 6)
+		_check("[%s] rafale (kit) : 3 tirs = pas de rafale (%d)" % [ch, c3], c3 == 3)
+		_check("[%s] rafale (kit) : 8 tirs = 2 rafales (%d)" % [ch, c8], c8 == 12)
 	print("   (%s : sort 1 comportement %s, %d/%d projectiles)" % [ch, _spell1().behavior, shots, shots3])
+	_clear_fakes()
+
+
+# --- Mort d'un boss (boss_killed, jamais enemy_killed) ---------------------------------------------
+
+func _kill_boss(e: Node2D, floor_boss := false) -> void:
+	e.remove_from_group("enemies")
+	Events.boss_killed.emit(e, floor_boss)
+
+
+func _test_boss(ch: StringName) -> void:
+	_cur = "boss_killed"
+	await _spawn(ch)
+	var boss := _fake(Vector2.ZERO)
+	boss.is_boss = true
+	boss.add_to_group("bosses")
+	_give({"morsure_vorace": 1})
+	_player.hp = _player.max_hp * 0.5
+	var h0: float = _player.hp
+	_kill_boss(boss)
+	_check("[%s] boss : morsure vorace soigne (%.2f)" % [ch, _player.hp - h0], _near(_player.hp - h0, 0.002 * _player.max_hp, 0.01))
+	_give({"chronometre_brise": 1})
+	_arm_cds()
+	_kill_boss(_fake(Vector2.ZERO), true)
+	_check("[%s] boss : chronomètre rend 0,5 s (comme une élite)" % ch, _cd_slots().all(func(s): return _near(_player.spells.cooldown_remaining(s.slot), 19.5, 0.001)))
+	# Braises et peste : explosion plafonnée (BOSS_BLAST_HITS coups de dégât de base) autour d'un boss à PV énormes.
+	for item in ["tempete_de_braises", "peste_vivante"]:
+		_clear_fakes()
+		_give({item: 1})
+		var b := _fake(Vector2.ZERO)
+		b.is_boss = true
+		b.add_to_group("bosses")
+		b.max_hp = 1.0e9
+		if item == "tempete_de_braises":
+			b.burning = true
+		else:
+			b.poisoned = true
+		var near := _fake(Vector2(U, 0.0))
+		_kill_boss(b)
+		_player.item_fx.tick(0.016)
+		var cap := ItemEffects.BOSS_BLAST_HITS * Balance.player_base_damage(RunState.level)
+		var pct := 0.3 if item == "tempete_de_braises" else 0.25
+		_check("[%s] boss : %s explose, dégâts plafonnés (%.1f)" % [ch, item, near.total()], near.taken.size() == 1 and _near(near.total(), cap * pct, 0.01))
+	_clear_fakes()
+	_give({"moisson": 1})
+	var m0: float = RunState.counters.get(ItemEffects.COUNTER_MOISSON, 0)
+	_kill_boss(_fake(Vector2.ZERO))
+	_check("[%s] boss : moisson compte la mort" % ch, float(RunState.counters.get(ItemEffects.COUNTER_MOISSON, 0)) == m0 + 1.0)
+	_give({"coeur_du_chronomancien": 1})
+	_arm_cds()
+	for i in 9:
+		Events.enemy_killed.emit(null, Vector2.ZERO, 0, false)
+	_kill_boss(_fake(Vector2.ZERO))
+	_check("[%s] boss : 10e mort = boss, cœur du chronomancien remet un sort à zéro" % ch, _cd_slots().any(func(s): return _player.spells.cooldown_remaining(s.slot) < 0.001))
 	_clear_fakes()
 
 

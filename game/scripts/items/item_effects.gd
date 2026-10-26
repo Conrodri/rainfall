@@ -30,6 +30,7 @@ const ID_PHENIX := &"phenix"
 const ID_RAFALE := &"rafale_acier"
 const COUNTER_PHENIX := "phenix_used"
 const COUNTER_FAVEUR := "faveur_free_stage"
+const BOSS_BLAST_HITS := 40.0 ## plafond des PV servant de base à l'explosion d'un boss, en coups de dégât de base du joueur
 const MAX_BLASTS_PER_TICK := 6 ## explosions de monstres traitées par image (réactions en chaîne étalées)
 const NOVA_VFX := "res://assets/sprites/vfx/ardent_nova/ardent_nova.tres"
 const NOVA_VFX_RADIUS_PX := 189.02
@@ -62,6 +63,7 @@ func setup(p: Node2D) -> void:
 	player = p
 	name = "ItemEffects"
 	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.boss_killed.connect(_on_boss_killed)
 	Events.player_damaged.connect(_on_player_damaged)
 	Events.pickup_collected.connect(_on_pickup_collected)
 
@@ -69,6 +71,8 @@ func setup(p: Node2D) -> void:
 func _exit_tree() -> void:
 	if Events.enemy_killed.is_connected(_on_enemy_killed):
 		Events.enemy_killed.disconnect(_on_enemy_killed)
+	if Events.boss_killed.is_connected(_on_boss_killed):
+		Events.boss_killed.disconnect(_on_boss_killed)
 	if Events.player_damaged.is_connected(_on_player_damaged):
 		Events.player_damaged.disconnect(_on_player_damaged)
 	if Events.pickup_collected.is_connected(_on_pickup_collected):
@@ -158,6 +162,13 @@ func _on_enemy_killed(e: Node2D, pos: Vector2, _tier: int, elite: bool) -> void:
 		if _kill_times.size() >= int(d.get("kills", 10)) and _chrono_cd <= 0.0 and _reset_random_spell():
 			_chrono_cd = float(d.get("internal_cd_s", 2.0))
 			_kill_times.clear()
+
+
+## Les boss (mini et d'étage) n'émettent pas enemy_killed mais boss_killed : leur mort compte comme celle d'une élite.
+func _on_boss_killed(boss: Node2D, _is_floor_boss: bool) -> void:
+	if boss == null or not is_instance_valid(boss):
+		return
+	_on_enemy_killed(boss, boss.global_position if boss.is_inside_tree() else Vector2.ZERO, 0, true)
 
 
 ## Remet à zéro la recharge d'un sort (non automatique) en cours de recharge, tiré au hasard. false si aucun.
@@ -416,6 +427,8 @@ func _queue_blast(e: Node2D, pos: Vector2, id: StringName) -> void:
 	var hp := float(e.get("max_hp")) if e.get("max_hp") != null else 0.0
 	if hp <= 0.0:
 		return
+	if e.is_in_group(&"bosses") or bool(e.get("is_boss")):
+		hp = minf(hp, BOSS_BLAST_HITS * Balance.player_base_damage(RunState.level)) # un boss ne détruit pas le paquet voisin
 	_blasts.append({"pos": e.global_position if e.is_inside_tree() else pos, "hp": hp, "id": id})
 
 
@@ -447,12 +460,19 @@ func _tick_blasts() -> void:
 
 # --- Rafale d'acier ----------------------------------------------------------------
 
-## Tous les `every` tirs du sort 1 (projectile), `extra` projectiles supplémentaires en éventail autour de la cible.
+## Tous les `every` tirs du sort 1 : `extra` projectiles en éventail autour de la cible (sort projectile) ou `extra` rejeux du sort (autres).
 func _rafale_on_cast(s: SpellData) -> void:
-	if stacks(ID_RAFALE) <= 0 or s.behavior != SpellData.Behavior.PROJECTILE:
+	if stacks(ID_RAFALE) <= 0:
 		return
 	_rafale_count += 1
-	if _rafale_count % maxi(int(data_of(ID_RAFALE).get("every", 4)), 1) == 0:
+	if _rafale_count % maxi(int(data_of(ID_RAFALE).get("every", 4)), 1) != 0:
+		return
+	if s.behavior != SpellData.Behavior.PROJECTILE:
+		# Sort 1 de kit (zone, mêlée, rayon...) : `extra` rejeux du sort comme la Couronne d'écho (même file, même garde).
+		var step := float(data_of(ID_ECHO).get("repeat_delay_s", 0.15))
+		for i in maxi(int(data_of(ID_RAFALE).get("extra", 2)), 1):
+			_echo_queue.append({"slot": s.slot, "t": step * (i + 1)})
+	else:
 		_rafale_queue.append({"spell": s, "t": 0.0, "wait": 0.5}) # attend le tir principal (frame d'impact), 0,5 s au plus
 
 

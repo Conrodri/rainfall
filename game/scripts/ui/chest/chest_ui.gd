@@ -1208,6 +1208,13 @@ func _fill_card(i: int) -> void:
 
 
 # ---------------------------------------------------------------- boutons
+## Libellé du bouton de relance à l'or : « Gratuite » quand le prix est nul (Faveur du marchand), sinon le prix.
+static func gold_button_text(price: float) -> String:
+	if price <= 0.0:
+		return "Relancer (or)\nGratuite"
+	return "Relancer (or)\n%d or" % int(ceil(price))
+
+
 func _update_buttons() -> void:
 	if session == null:
 		_ad_btn.disabled = true
@@ -1222,7 +1229,7 @@ func _update_buttons() -> void:
 	else:
 		_ad_btn.text = "Relancer (pub)\n%d/%d" % [left, ChestSession.MAX_AD_REROLLS_PER_RUN]
 	_ad_btn.disabled = _busy or not session.can_ad_reroll()
-	_gold_btn.text = "Relancer (or)\n%d or" % int(ceil(session.gold_reroll_price()))
+	_gold_btn.text = gold_button_text(session.gold_reroll_price())
 	_gold_btn.disabled = _busy or not session.can_gold_reroll()
 	_refresh_items_button()
 	if not _busy:
