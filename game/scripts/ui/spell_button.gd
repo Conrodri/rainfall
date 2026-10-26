@@ -21,6 +21,11 @@ const ICON_FRACTION := 0.72 ## côté de l'icône / côté du cadre (ouverture c
 ## Sous-couche claire derrière l'icône (audit HUD H10 : icônes sombres, contraste icône/fond >= 3:1) ; le liseré
 ## clair rendu dans les icônes par Codex (art/tools/night/_uxhud_icons.txt) la complète, elle reste en filet de sécurité.
 const ICON_UNDERLAY := Color(0.91, 0.886, 0.839, 0.18)
+## Normalisation de la lisibilité des icônes : luminance moyenne visée (0-1, pixels opaques, Rec.709) ; une icône plus
+## sombre est éclaircie par un gain (plafonné) au dessin. Les icônes de Vigie (rouge sombre sur fond noir) étaient
+## quasi invisibles à côté de celles d'Ardent ; valable pour tous les personnages.
+const ICON_TARGET_LUMA := 0.18
+const ICON_MAX_GAIN := 1.9
 const FONT_MIN_PC := 18 ## aucun texte de jeu sous 18 px PC / 26 px mobile (contrat 23:30)
 const FONT_MIN_MOBILE := 26
 ## Zone de frappe tactile invisible autour du bouton (audit E-06, lot A11y-L4) : disque de rayon côté / 2 + HIT_PAD
@@ -28,6 +33,7 @@ const FONT_MIN_MOBILE := 26
 const HIT_PAD := 16.0
 
 static var _tex_cache := {}
+static var _gain_cache := {}
 
 var slot := 2
 var action := &"spell_2"
@@ -80,6 +86,41 @@ static func _tex(path: String) -> Texture2D:
 	if not _tex_cache.has(path):
 		_tex_cache[path] = load(path) as Texture2D if ResourceLoader.exists(path) else null
 	return _tex_cache[path]
+
+
+## Luminance moyenne (0-1) des pixels opaques d'une icône (échantillonnée en 32 x 32).
+static func icon_luma(tex: Texture2D) -> float:
+	if tex == null:
+		return ICON_TARGET_LUMA
+	var img := tex.get_image()
+	if img == null:
+		return ICON_TARGET_LUMA
+	if img.is_compressed():
+		img.decompress()
+	img.convert(Image.FORMAT_RGBA8)
+	img.resize(32, 32, Image.INTERPOLATE_BILINEAR)
+	var sum := 0.0
+	var n := 0
+	for y in 32:
+		for x in 32:
+			var px := img.get_pixel(x, y)
+			if px.a > 0.2:
+				sum += 0.2126 * px.r + 0.7152 * px.g + 0.0722 * px.b
+				n += 1
+	return sum / n if n > 0 else ICON_TARGET_LUMA
+
+
+## Gain de luminosité appliqué à l'icône au dessin (1 = inchangée) : ICON_TARGET_LUMA / luminance, plafonné.
+static func icon_gain(tex: Texture2D) -> float:
+	if tex == null:
+		return 1.0
+	var key := tex.resource_path
+	if key == "" or not _gain_cache.has(key):
+		var g := clampf(ICON_TARGET_LUMA / maxf(icon_luma(tex), 0.01), 1.0, ICON_MAX_GAIN)
+		if key == "":
+			return g
+		_gain_cache[key] = g
+	return _gain_cache[key]
 
 
 func setup(spell_slot: int, size_px: float = 150.0) -> void:
@@ -256,7 +297,8 @@ func _draw() -> void:
 	# icône (carrée, dans l'ouverture du cadre) ou repli : initiale du sort (jamais le nom complet)
 	if icon != null:
 		var side := size.x * ICON_FRACTION if frame != null else r * 1.62
-		var mod := Color(1, 1, 1, 1) if not (cooling or broke) else Color(0.55, 0.55, 0.6, 1)
+		var g := icon_gain(icon)
+		var mod := Color(g, g, g, 1) if not (cooling or broke) else Color(0.55, 0.55, 0.6, 1)
 		draw_texture_rect(icon, Rect2(c - Vector2(side, side) * 0.5, Vector2(side, side)), false, mod)
 	elif not (broke and lack_text != ""): # le message de manque remplace l'initiale
 		# en recharge l'initiale s'efface (alpha 0,22) : le chiffre des secondes prime
@@ -300,13 +342,47 @@ func _draw() -> void:
 			draw_arc(c, r + 6.0 * k, 0.0, TAU, 48, Color(1, 0.9, 0.6, _flash / 0.35), 8.0 * maxf(k, 0.5))
 	_draw_charges(c, r, k)
 	if is_auto:
-		var fa := maxi(int(24 * k), _font_floor())
-		# au plancher (26 px mobile), « AUTO » est plus large que le petit rond de 72 px : la boîte de texte s'élargit
-		# au besoin (centrée) au lieu de couper en « AUT ».
-		var aw := maxf(r * 2.0, font.get_string_size("AUTO", HORIZONTAL_ALIGNMENT_LEFT, -1, fa).x + 2.0 * maxf(6.0 * k, 2.0))
-		var ap := c + Vector2(-aw * 0.5, r - 4.0 * k)
-		draw_string_outline(font, ap, "AUTO", HORIZONTAL_ALIGNMENT_CENTER, aw, fa, int(6 * k), Color(0, 0, 0, 0.9))
-		draw_string(font, ap, "AUTO", HORIZONTAL_ALIGNMENT_CENTER, aw, fa, READY_COLOR)
+		var ar := _auto_rect()
+		var fa := _auto_font_px()
+		var ap := Vector2(ar.position.x, ar.position.y + font.get_ascent(fa))
+		draw_string_outline(font, ap, "AUTO", HORIZONTAL_ALIGNMENT_CENTER, ar.size.x, fa, int(6 * k), Color(0, 0, 0, 0.9))
+		draw_string(font, ap, "AUTO", HORIZONTAL_ALIGNMENT_CENTER, ar.size.x, fa, READY_COLOR)
+
+
+func _auto_font_px() -> int:
+	return maxi(int(24 * size.x / 150.0), _font_floor())
+
+
+## Boîte du libellé « AUTO » (locale) : SOUS le cadre du bouton, jamais dessus (au plancher, 26 px mobile, il est plus
+## large que le petit rond de 72 px : la boîte s'élargit au besoin, centrée, au lieu de couper en « AUT »).
+func _auto_rect() -> Rect2:
+	var k := size.x / 150.0
+	var font := ThemeDB.fallback_font
+	var fa := _auto_font_px()
+	var aw := maxf(size.x, font.get_string_size("AUTO", HORIZONTAL_ALIGNMENT_LEFT, -1, fa).x + 2.0 * maxf(6.0 * k, 2.0))
+	return Rect2(Vector2((size.x - aw) * 0.5, size.y + 2.0 * maxf(k, 0.5)), Vector2(aw, font.get_height(fa)))
+
+
+## Textes dessinés en `_draw` (rects globaux), pour text_overflow_test : {text, rect, size, within?, avoid?}.
+func text_rects() -> Array:
+	var out: Array = []
+	var g := get_global_rect().position
+	var font := ThemeDB.fallback_font
+	var k := size.x / 150.0
+	var cooling := not is_auto and remaining > 0.0 and total > 0.0
+	if cooling:
+		var txt := "%.1f" % remaining if remaining < 10.0 else str(int(ceil(remaining)))
+		var fs := int(46 * k)
+		var w := font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+		var h := font.get_height(fs)
+		out.append({"text": txt, "size": fs, "rect": Rect2(g + (size - Vector2(w, h)) * 0.5, Vector2(w, h)), "within": get_global_rect()})
+	if is_auto:
+		var ar := _auto_rect()
+		var fa := _auto_font_px()
+		var aw := font.get_string_size("AUTO", HORIZONTAL_ALIGNMENT_LEFT, -1, fa).x
+		out.append({"text": "AUTO", "size": fa, "rect": Rect2(g + ar.position + Vector2((ar.size.x - aw) * 0.5, 0.0), Vector2(aw, ar.size.y)),
+			"avoid": [get_global_rect()]})
+	return out
 
 
 ## Voile de recharge en camembert (fraction f du disque, depuis midi, sens horaire). Une part plus fine

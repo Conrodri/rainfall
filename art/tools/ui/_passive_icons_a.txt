@@ -1,0 +1,12 @@
+LOT PASSIFS : 5 icones de passif de personnage (HUD + fiche personnage).
+Style : gabarit des icones de sorts (art/tools/night/_icons_norm.txt, reference game/assets/sprites/icons/spells/nova_ardente.png : medaillon disque de fer noirci, couronne de chevrons bronze, un seul emblème central, accent emissif), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map.
+Format : PNG RGBA 128x128, fond transparent, symbole centre lisible a 48 px, aucun texte.
+Sortie : game/assets/sprites/ui/icons/passives/<id>.png (le jeu charge ce chemin s'il existe, sinon pastille a l'initiale).
+Ids et symboles :
+- tension (Vigie) : corde d'arc bandee, arc tendu, accent dore.
+- aiguisage (Taliant) : lame de katana sur pierre a aiguiser, etincelles, accent acier clair.
+- eau (Averse) : goutte et flaque concentrique, accent bleu pale.
+- membres (Tocsin) : bras mecanique articule, accent orange.
+- chaine (Arpenteuse) : chaine tendue trainant derriere un compas, accent cuivre.
+Noms et textes exacts : `static func passive_info()` de game/scripts/spells/<perso>_kit.gd, cle "icon".
+Reutilise i3_build.py/i3_finish.py (art/tools/night/), bbox alpha de Nova (10, 8, 121, 120), cel.install('icon', normals=False), script art/tools/ui/passives_a_build.py, planche art/tools/ui/passives_a_contact.png (72 px aussi). Lot de 5 icones maximum ; si le quota manque, arrete-toi apres une icone complete. python art/tools/texture_budget.py --apply-policy puis res://tests/sprites_test.tscn et texture_budget_test.tscn -> RESULT: OK. Rapport final court en francais.

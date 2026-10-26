@@ -1,0 +1,16 @@
+LOT TOCP3 (extrait de art/tools/tocsin/_tocsin_pilier.txt, numéros d'origine conservés) : Bras-pilier de Tocsin (23/10/2026). Remplace le Bras-grappin. Rendu cel-shadé (art/briefs/STYLE_cel.md), DA des boss (matières PBR usées, bronze vert-de-gris, un seul accent émissif orange foyer #FF7A1F). Les arcs électriques sont la SEULE exception de couleur : bleu-blanc froid #8FD9FF, émissifs. Caméra iso 2:1 du jeu, éclairage haut-gauche, aucune normal map (_n), masques d'émission `_e` à demi-résolution si utile.
+Dossier : game/assets/sprites/characters/tocsin/. Mêmes conventions que les anims de membres existantes (tocsin_arm_*.tres, 8 directions `<anim>_<dir>`, cellule 192, pivot 96/136,32, billboard CREA). Les placeholders actuels sont en code (tocsin_limb.gd, `_draw`) : tout est à remplacer, aucun .gd/.tscn à écrire.
+
+
+LIVRABLES
+8. Anim de lancer `throw_arm_l` / `throw_arm_r` du torse (8 dir) : lancer par-dessus l'épaule, bras armé en arrière, relâché à la frame d'impact 2 (inchangée : ACTION_IMPACT_FRAMES), le bras part en cloche. Jambes immobiles : plus aucune anim de jambe lancée.
+9. Icône de sort `tocsin_bras_pilier.png` (remplace la copie provisoire de tocsin_bras_grappins.png) : bras planté et arcs bleu-blanc. Icône `tocsin_coup_de_tocsin.png` (remplace la copie provisoire de tocsin_coups_de_botte.png) : cloche frappée, onde concentrique orange. Même format et fond que les icônes de sorts voisines.
+10. Anim `cast` du torse (existante, frame d'impact 3) réutilisée pour le Coup de tocsin : vérifier qu'elle lit bien « frappe de cloche » (poing sur le foyer), sinon la reprendre.
+
+CONTRAINTES
+- Les jambes ne sont plus jamais lancées : les anims hop/crawl/handwalk/roll/fall et throw_leg_* ne servent plus (ne pas les refaire ; ne pas les supprimer sans accord).
+- Timing exact (code) : vol 0,6 s, décharge 5 s (10 ticks de 0,5 s, le premier à la pose), rayon 2,2 u, ensuite le bras reste au sol jusqu'au contact (rattachement immédiat) ou jusqu'à la fin de sa recharge de 8 s (alors il part en braises).
+- Optimisation : atlas modestes, PNG optimisés, ombres cuites dans le sprite, aucune normal map.
+- Noms, dossiers et formats comme l'existant pour que le jeu n'ait rien à changer ; si un nouveau nom est nécessaire (pillar_zone, pillar_arc, pillar_impact, pillar_end), un .tres par anim et le signaler dans le rapport pour câblage par Claude.
+
+TAILLE D AFFICHAGE (OBLIGATOIRE) : 64 px/u en jeu (mesure l'échelle appliquée par le .tres/le kit ; si une planche est réduite en jeu, re-rends à l'échelle 1,0 et corrige la donnée), rogne chaque cellule à la boîte englobante du contenu de toute l'anim + 4 px, même taille de cellule pour toutes les frames d'une anim, pieds/pivots recalés dans la donnée, aucune planche > 4096. Vérifie avec python art/tools/texture_budget.py (avant/après dans le rapport) et res://tests/sprites_test.tscn. Lot petit : 5 livrables maximum ; si le quota manque, arrête-toi après un livrable complet et écris où reprendre. Rapport final court en français.

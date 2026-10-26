@@ -1,0 +1,17 @@
+LOT TOCP2 (extrait de art/tools/tocsin/_tocsin_pilier.txt, numéros d'origine conservés) : Bras-pilier de Tocsin (23/10/2026). Remplace le Bras-grappin. Rendu cel-shadé (art/briefs/STYLE_cel.md), DA des boss (matières PBR usées, bronze vert-de-gris, un seul accent émissif orange foyer #FF7A1F). Les arcs électriques sont la SEULE exception de couleur : bleu-blanc froid #8FD9FF, émissifs. Caméra iso 2:1 du jeu, éclairage haut-gauche, aucune normal map (_n), masques d'émission `_e` à demi-résolution si utile.
+Dossier : game/assets/sprites/characters/tocsin/. Mêmes conventions que les anims de membres existantes (tocsin_arm_*.tres, 8 directions `<anim>_<dir>`, cellule 192, pivot 96/136,32, billboard CREA). Les placeholders actuels sont en code (tocsin_limb.gd, `_draw`) : tout est à remplacer, aucun .gd/.tscn à écrire.
+
+
+LIVRABLES
+4. `tocsin_pillar_impact` (TOP, 8 frames, sans direction) : onde d'impact au sol à la plantation, rayon final = 2,2 u (cellule 1032, anneau final à 280 px du centre si 128 px/u).
+5. `tocsin_pillar_zone` (TOP, boucle 12 frames, sans direction) : zone de décharge au sol, disque de 2,2 u de rayon, bord net lisible (anneau bleu-blanc, fissures de foudre au sol, léger voile), pulse à 2 Hz. C'est le télégraphe : visible dès la phase de vol (le code l'affiche à 35 % d'alpha puis 100 %).
+6. `tocsin_pillar_arc` (TOP + CREA, 6 frames, 4 variantes aléatoires choisies par le code à chaque tick) : éclair ramifié du pilier vers un point du disque (longueur 1,2-2,2 u), cel-shadé, fin en quelques frames. Tick toutes les 0,5 s pendant 5 s.
+7. `tocsin_pillar_end` (TOP, 6 frames) : extinction (fumée, étincelles) quand la décharge finit et que le bras retombe au sol.
+
+CONTRAINTES
+- Les jambes ne sont plus jamais lancées : les anims hop/crawl/handwalk/roll/fall et throw_leg_* ne servent plus (ne pas les refaire ; ne pas les supprimer sans accord).
+- Timing exact (code) : vol 0,6 s, décharge 5 s (10 ticks de 0,5 s, le premier à la pose), rayon 2,2 u, ensuite le bras reste au sol jusqu'au contact (rattachement immédiat) ou jusqu'à la fin de sa recharge de 8 s (alors il part en braises).
+- Optimisation : atlas modestes, PNG optimisés, ombres cuites dans le sprite, aucune normal map.
+- Noms, dossiers et formats comme l'existant pour que le jeu n'ait rien à changer ; si un nouveau nom est nécessaire (pillar_zone, pillar_arc, pillar_impact, pillar_end), un .tres par anim et le signaler dans le rapport pour câblage par Claude.
+
+TAILLE D AFFICHAGE (OBLIGATOIRE) : 64 px/u en jeu (mesure l'échelle appliquée par le .tres/le kit ; si une planche est réduite en jeu, re-rends à l'échelle 1,0 et corrige la donnée), rogne chaque cellule à la boîte englobante du contenu de toute l'anim + 4 px, même taille de cellule pour toutes les frames d'une anim, pieds/pivots recalés dans la donnée, aucune planche > 4096. Vérifie avec python art/tools/texture_budget.py (avant/après dans le rapport) et res://tests/sprites_test.tscn. Lot petit : 5 livrables maximum ; si le quota manque, arrête-toi après un livrable complet et écris où reprendre. Rapport final court en français.

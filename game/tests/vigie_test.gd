@@ -374,5 +374,5 @@ func _json_entry_ok() -> bool:
 		return false
 	for c in d:
 		if c is Dictionary and c.get("id") == "vigie":
-			return (c.get("spells", []) as Array).size() == 4 and int(c.get("difficulty", 0)) == 2 and bool(c.get("unlocked", false))
+			return (c.get("spells", []) as Array).size() == 4 and int(c.get("difficulty", 0)) == 1 and bool(c.get("unlocked", false))
 	return false

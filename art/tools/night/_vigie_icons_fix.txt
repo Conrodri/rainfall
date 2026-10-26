@@ -1,0 +1,6 @@
+LOT Vigie-icônes : éclaircir les 4 icônes de sorts de Vigie (art/briefs/STYLE_cel.md, rendu cel-shadé, Blender --background, sortie PNG optimisé).
+Fichiers (mêmes noms, mêmes dossiers, 128x128) : game/assets/sprites/icons/spells/vigie_trait.png, vigie_fusee.png, vigie_filet.png, vigie_grele.png.
+Problème : glyphe rouge sombre fin sur disque noir ; lus en jeu à ~48-72 px ils sont quasi invisibles à côté d'Ardent.
+Cible mesurée (luminance Rec.709 moyenne des pixels opaques, redimensionné 32x32, échelle 0-1) : Ardent nova_ardente 0,163, brasier 0,161 ; Vigie actuel 0,105-0,118. Viser >= 0,17 sur chaque icône Vigie (sans dépasser ~0,30).
+Moyens : glyphe plus gros (occupe ~70 % du disque), liseré clair (blanc cassé / ocre) de 3-4 px autour du glyphe, accent émissif rouge plus vif (#ff3a4f), fond du disque gris-bleu sombre (pas noir pur, ~0,08-0,10 de luminance) pour que le glyphe ressorte. Disque et rayon inchangés.
+Vérif : python (Pillow) mesure la luminance moyenne ; game/tests/spell_icon_contrast_test.tscn doit rester RESULT: OK. Ne toucher à aucun autre fichier.

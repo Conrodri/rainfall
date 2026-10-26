@@ -1,5 +1,5 @@
 LOT PASSIFS : 10 icones de passif de personnage (HUD + fiche personnage).
-Style : identique aux icones de sorts existantes (game/assets/sprites/ui/icons/spells/), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map.
+Style : gabarit des icones de sorts (art/tools/night/_icons_norm.txt, reference game/assets/sprites/icons/spells/nova_ardente.png : medaillon disque de fer noirci, couronne de chevrons bronze, un seul emblème central, accent emissif), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map.
 Format : PNG RGBA 128x128, fond transparent, symbole centre lisible a 48 px, aucun texte.
 Sortie : game/assets/sprites/ui/icons/passives/<id>.png (le jeu charge ce chemin s'il existe, sinon pastille a l'initiale).
 Ids et symboles :
