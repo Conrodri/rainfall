@@ -232,7 +232,7 @@ func _run() -> void:
 	_check("ligne tendue : coef 1,0", mid.taken.size() == 1 and _near(mid.taken[0], 1.0 * BASE), str(mid.taken))
 	_wait(0.3)
 	_check("immunité 0,5 s par monstre", mid.taken.size() == 1, str(mid.taken))
-	_wait(0.25)
+	_wait(ArpenteuseKit.PEG_IMMUNITY_S - 0.3 + 0.05)
 	_check("puis nouveau coup", mid.taken.size() == 2, str(mid.taken))
 	_wait(4.6)
 	_check("piquet fini après 5 s", not _kit.peg_active())

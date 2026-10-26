@@ -67,7 +67,7 @@ const PIQUET_CD := 8.0
 const PIQUET_RANGE_U := 6.0
 const PIQUET_DEFAULT_U := 3.0 ## sans visée ni cible : devant elle
 const PEG_LIFE_S := 5.0
-const PEG_IMMUNITY_S := 0.5 ## fiche 0,3 -> 0,5 : un boss collé à la ligne ne dépasse pas 2 coefs/s
+const PEG_IMMUNITY_S := 0.65 ## 26/10/2026 : 0,5 -> 0,65 (cible élite 1,30 de l'Arpenteuse, docs/Equilibrage_Personnages.md §2.4) ; ≈ 1,5 coef/s par cible
 const PEG_PROC := 0.5
 const PEG_KNOCK_U := 0.3
 const PEG_SNAP_U := 10.0 ## plus loin, le piquet est arraché
@@ -86,7 +86,7 @@ const PENDING_TIMEOUT_S := 1.0
 const WALL_MASK := 1
 ## Équilibrage 22/10/2026 : boucler une cible mobile est rare (cible unique −44 % vs Ardent au simulateur).
 ## La géomètre « mesure les grands » : +BIG_TARGET_ADD (additif) sur élites et boss pour Boucle, Piquet, Tendeur.
-const BIG_TARGET_ADD := 0.4 ## équilibrage 23/10 : 0,6 -> 0,4
+const BIG_TARGET_ADD := 0.25 ## équilibrage 26/10 : 0,4 -> 0,25 (cible élite 1,30)
 # --- Variantes (docs/Variantes_Sorts.md §2.5) -----------------------------------------------------
 const V_LESTEE := &"arpenteuse_chaine_lestee"
 const V_NOEUD := &"arpenteuse_noeud"

@@ -275,7 +275,7 @@ func _run() -> void:
 	var n0 := mid.taken.size()
 	_wait(0.3)
 	_check("immunité 0,5 s", mid.taken.size() == n0)
-	_wait(0.25)
+	_wait(ArpenteuseKit.PEG_IMMUNITY_S - 0.3 + 0.05)
 	_check("puis nouveau coup", mid.taken.size() == n0 + 1)
 	_walk(Vector2(-10 * U, 0), 6.0)
 	_player.tick(DT)

@@ -161,6 +161,8 @@ Les colonnes « mono » et « zone 5 » sont des **DPS théoriques en B/s**, tou
 
 **Mesure :** zone 0,55, mono 1,03, et le plus de dégâts subis en mixte (93 contre 45 pour Ardent).
 
+**Cible élite 1,30 (décision du joueur, 26/10/2026) :** Arpenteuse est difficile à jouer, elle a donc le droit d'être au-dessus de la cible habituelle (compensation de difficulté). Mesurée à 1,5-1,7 × Ardent en élite (8 graines), elle est ramenée vers 1,30 par `BIG_TARGET_ADD` 0,4 → 0,25 et `PEG_IMMUNITY_S` 0,5 → 0,65 (le Piquet frappe une même cible moins souvent). Résultat au simulateur (8 graines, élite) : L1 1,34, L6 1,29, L12 1,23 ; mini-boss 1,19 / 1,11 / 1,06 ; essaim et mixte inchangés (0,75-0,93). Variantes : Chaîne lestée, Nœud et Cerceau à ±15 % du sort remplacé en moyenne ; les Jalons restent à −25 / −30 % en élite (ligne A-B, bonne en essaim), écart antérieur non traité.
+
 **Le bot ne trace pas la chaîne à travers les paquets**, alors que le calcul théorique fait de la chaîne le meilleur sort de zone du jeu. **Les deux ne sont pas réconciliés : NON ÉVALUÉ en jeu réel.**
 
 **Aberrations :**
@@ -439,7 +441,8 @@ Les colonnes sont : fichier:constante, valeur actuelle → proposée, plage sûr
 
 | Fichier:constante | Actuel → proposé | Plage sûre | Raison |
 |---|---|---|---|
-| `arpenteuse_kit.gd:BIG_TARGET_ADD` | 0,6 → **0,4** | 0,3-0,5 | Piquet sur boss au-dessus du plafond annoncé |
+| `arpenteuse_kit.gd:BIG_TARGET_ADD` | 0,6 → 0,4 → **0,25** (26/10, cible élite 1,30) | 0,2-0,3 | Piquet sur boss au-dessus du plafond annoncé |
+| `arpenteuse_kit.gd:PEG_IMMUNITY_S` | 0,5 → **0,65** (26/10) | 0,6-0,7 | Corrige surtout le niveau 1 en élite |
 | `arpenteuse_kit.gd:CHAIN_COEF` | 1,0 → **inchangé tant que non mesuré** | — | Théorie ×5 Ardent en zone, mesure ×0,55 |
 | Animations manquantes (directions de `plant`, `whip`, `loop`, `death_se`) | — | — | Erreurs dans le simulateur, à livrer côté assets |
 
