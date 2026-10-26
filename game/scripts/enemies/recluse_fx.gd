@@ -81,8 +81,7 @@ func _draw() -> void:
 			if r_fill > inner + 0.5 and r_fill < radius - 1.0:
 				EnemyTelegraph.edge_arc(self, Vector2.ZERO, r_fill, 0.0, TAU, 64) # anneau de progression
 		Kind.DISC:
-			draw_circle(Vector2.ZERO, radius, color)
-			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, color2, width, true)
+			draw_disc(self, radius, color, color2, width)
 		Kind.BAND:
 			_band(inner, radius, color)
 			draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, color2, width, true)
@@ -114,6 +113,13 @@ func _draw() -> void:
 			_crystal()
 		Kind.WAKE:
 			_wake()
+
+
+## Flaque au sol (DISC) : remplissage `fill` + liseré `edge`. Partagé avec ZoneOutline (contour des zones persistantes
+## des joueurs) : une seule définition du rendu des flaques, ennemies comme alliées.
+static func draw_disc(ci: CanvasItem, r: float, fill: Color, edge: Color, line_w: float) -> void:
+	ci.draw_circle(Vector2.ZERO, r, fill)
+	ci.draw_arc(Vector2.ZERO, r, 0.0, TAU, 72, edge, line_w, true)
 
 
 func _band(r0: float, r1: float, c: Color) -> void:

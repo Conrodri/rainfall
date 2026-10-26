@@ -9,6 +9,7 @@ extends RefCounted
 ##   butin / ressource         losange à 8 tirets                  or chaud        pulsation lente
 ##   invocation alliée         hexagone plein                      vert menthe     fixe
 ##   zone de sort alliée       cercle de points fins               accent du kit   fondu
+##                             (zones persistantes : contour plein fin ZoneOutline, couleur du sort, voile léger, sans rouge)
 ##   aura d'élite (affixe)     brûlure = anneau plein, poison = anneau en pointillé court, gel = double anneau
 ##   télégraphe ennemi         bord plein épais + remplissage progressif (enemy_telegraph.gd), seule forme « pleine » épaisse
 ##

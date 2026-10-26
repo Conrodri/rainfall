@@ -72,6 +72,7 @@ const SETTINGS := {
 		&"puddles": 0, ## 0 ciel statique + ondulation, 1 + lumières (bit 2), 2 + miroir des entités
 		&"lightning_sun": false,
 		&"lightning_extras": false, ## ombres longues, rayons, bolt
+		&"zone_pulse": false, ## contour des zones au sol des joueurs (ZoneOutline) : pulsation coupée en Bas
 	},
 	Tier.MEDIUM: {
 		&"target_frame_ms": 16.7,
@@ -113,6 +114,7 @@ const SETTINGS := {
 		&"puddles": 1,
 		&"lightning_sun": true,
 		&"lightning_extras": false,
+		&"zone_pulse": true,
 	},
 	Tier.HIGH: {
 		&"target_frame_ms": 16.7,
@@ -151,6 +153,7 @@ const SETTINGS := {
 		&"puddles": 2,
 		&"lightning_sun": true,
 		&"lightning_extras": true,
+		&"zone_pulse": true,
 	},
 }
 

@@ -167,6 +167,7 @@ var knot_left := 0.0 ## Nœud : resserrement en cours (s restantes)
 var _knot_pos := Vector2.ZERO
 var _knot_spell: SpellData = null
 var ring_left := 0.0 ## Cerceau en cours (s restantes)
+var _ring_outline: ZoneOutline = null ## contour de la bande du Cerceau
 var _ring_angle := 0.0
 var _ring_tick_t := 0.0
 var ring_hits := 0 ## coups du Cerceau (tests)
@@ -875,6 +876,7 @@ func _spawn_peg_visual() -> void:
 	fx_root.add_child(_peg_node)
 	_peg_node.z_index = 1 # debout : remonte au niveau des personnages (fx_root est au sol)
 	_peg_node.global_position = peg_pos
+	ZoneOutline.attach_capsule(_peg_node, CHAIN_HALF_WIDTH_U * Balance.UNIT_PX, ZoneOutline.color_for(_spell_of(3), _caster()), peg_left, player)
 	if not ResourceLoader.exists(PEG_FRAMES):
 		return
 	var holder := Node2D.new()
@@ -1149,6 +1151,7 @@ func _do_jalon(s: SpellData, aim: Variant, which: int) -> void:
 	jal_line = true
 	jal_stage = 0
 	jal_left = s.duration if s.duration > 0.0 else JALONS_LIFE_S
+	ZoneOutline.attach_capsule(_jal_a_node, _half_w_u() * Balance.UNIT_PX, ZoneOutline.color_for(s, _caster()), jal_left, null, jal_b)
 	_jal_hits.clear()
 	peg_line.visible = true
 	LightRig.flash(jal_b, &"arpenteuse_snap", 0.25, {"energy": 0.6})
@@ -1254,6 +1257,8 @@ func ring_points() -> PackedVector2Array:
 
 func _do_cerceau(s: SpellData) -> void:
 	ring_left = s.duration if s.duration > 0.0 else CERCEAU_LIFE_S
+	var ring_half: float = CERCEAU_BAND_HALF_U * Balance.UNIT_PX * (1.0 + float(player.stat(&"zone_size_add")))
+	_ring_outline = ZoneOutline.attach_band(player, _ring_radius() + ring_half, _ring_radius() - ring_half, ZoneOutline.color_for(s, _caster()), ring_left)
 	_ring_angle = 0.0
 	_ring_tick_t = CERCEAU_TICK_S # premier coup tout de suite
 	LightRig.flash(player.global_position, s.light_preset, 0.4, {"radius": 1.2})
@@ -1296,6 +1301,8 @@ func _ring_hit(s: SpellData) -> int:
 
 ## Fin du Cerceau : la chaîne retombe pleine (prolongée droit derrière la queue si elle était plus courte).
 func _end_ring() -> void:
+	if is_instance_valid(_ring_outline):
+		_ring_outline.release()
 	ring_left = 0.0
 	_idle_t = 0.0 # le touret ne rembobine pas tout de suite la chaîne rendue
 	_refill_chain()

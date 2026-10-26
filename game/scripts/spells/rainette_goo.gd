@@ -22,6 +22,7 @@ var mini := false ## mini-flaque du Chœur des roseaux (plafonnée par le kit)
 var count_glued := true ## compte les monstres pris (déblocage de la Bulle), une fois par flaque
 var glued: Dictionary = {} ## instance_id -> true
 var vfx: AnimatedSprite2D = null
+var outline: ZoneOutline = null
 var _t := 0.0
 var _ending := false
 var _light: LightRig.Handle = null
@@ -39,6 +40,7 @@ func _ready() -> void:
 	z_index = VFX_Z
 	live.append(self)
 	_setup_vfx()
+	outline = ZoneOutline.attach(self, radius, ZoneOutline.color_for(spell), duration) # contour de la flaque (ZoneOutline)
 	if spell != null and spell.light_preset != &"" and LightRig.has_preset(spell.light_preset):
 		var base_r := float(LightRig.get_preset(spell.light_preset).get("radius_u", 2.0)) * Balance.UNIT_PX
 		_light = LightRig.attach(self, spell.light_preset, {"radius": radius / maxf(base_r, 1.0), "energy": 0.5})
@@ -134,6 +136,7 @@ func _draw() -> void:
 		return
 	var a := clampf(_t / FADE_IN_S, 0.0, 1.0) * clampf((duration - _t) / FADE_OUT_S, 0.0, 1.0)
 	draw_circle(Vector2.ZERO, radius, Color(FILL.r, FILL.g, FILL.b, FILL.a * a))
-	var c := spell.color
-	draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(c.r, c.g, c.b, 0.55 * a), 2.0)
-	draw_arc(Vector2.ZERO, radius * 0.62, 0.0, TAU, 48, Color(c.r, c.g, c.b, 0.18 * a), 1.0)
+	if outline == null: # sans couche de contour (ZoneOutline) : contour jade fin d'avant
+		var c := spell.color
+		draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(c.r, c.g, c.b, 0.55 * a), 2.0)
+		draw_arc(Vector2.ZERO, radius * 0.62, 0.0, TAU, 48, Color(c.r, c.g, c.b, 0.18 * a), 1.0)

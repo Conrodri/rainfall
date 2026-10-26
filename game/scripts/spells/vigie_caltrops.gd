@@ -43,6 +43,7 @@ func setup(new_kit: Object, spike_spell: SpellData, at: Vector2, radius_px: floa
 	for i in 14: # pointes du repli, fixes pour la durée de vie
 		var a := rng.randf() * TAU
 		_spikes.append(Vector2.from_angle(a) * radius * sqrt(rng.randf()) * 0.92)
+	ZoneOutline.attach(self, radius, VigieKit.ACCENT, life) # contour de la zone (ZoneOutline)
 	_scan() # les monstres déjà dans le champ à la pose comptent comme une entrée
 
 
@@ -108,7 +109,6 @@ func _draw() -> void:
 	var a := clampf(1.0 - maxf(_t - life, 0.0) / FADE_S, 0.0, 1.0)
 	var c := VigieKit.ACCENT
 	draw_circle(Vector2.ZERO, radius, Color(0.12, 0.12, 0.13, 0.22 * a))
-	GroundShapes.draw_dotted_circle(self, radius, Color(c.r, c.g, c.b, 0.5 * a), clampi(int(radius / 9.0), 16, 64), 2.4)
 	for p in _spikes: # pointes de fer sombre, reflet rouge
 		draw_line(p + Vector2(0, 5), p + Vector2(0, -5), Color(0.18, 0.18, 0.2, 0.95 * a), 2.0)
 		draw_circle(p + Vector2(0, -5), 1.6, Color(c.r, c.g, c.b, 0.8 * a))

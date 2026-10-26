@@ -20,6 +20,7 @@ var _t := 0.0
 var _ending := false
 var _sprite: AnimatedSprite2D = null
 var _light: LightRig.Handle = null
+var _outline: ZoneOutline = null
 
 
 func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, accent: Color) -> void:
@@ -46,6 +47,7 @@ func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, ac
 				_sprite.offset = Vector2(0.0, -tex.get_height() * 0.5)
 			_sprite.play(&"default")
 	_light = LightRig.attach(self, &"vigie_flare", {"radius": radius / maxf(float(LightRig.get_preset(&"vigie_flare").get("radius_u", 3.0)) * Balance.UNIT_PX, 1.0)})
+	_outline = ZoneOutline.attach(self, radius, accent, life_s) # zone d'exposition au sol (ZoneOutline)
 
 
 ## Agrandit le visuel (Tir de signal : fusée x1,5) ; la lumière et le rayon de jeu restent ceux de setup.
@@ -96,6 +98,8 @@ func _draw() -> void:
 	var core := CORE_U * Balance.UNIT_PX
 	draw_circle(Vector2.ZERO, core * 2.2, Color(color.r, color.g, color.b, 0.18 * flick))
 	draw_circle(Vector2.ZERO, core, Color(color.r * 2.0, color.g * 1.6, color.b * 1.6, 0.95))
+	if _outline != null:
+		return # l'anneau de portée est porté par ZoneOutline
 	var a := 0.24 + 0.1 * sin(_t * 4.0)
 	draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, Color(color.r, color.g, color.b, a), FALLBACK_RING_W)
 	draw_circle(Vector2.ZERO, radius, Color(color.r, color.g, color.b, 0.03))

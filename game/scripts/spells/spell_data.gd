@@ -23,6 +23,8 @@ enum Behavior { PROJECTILE, NOVA, GROUND_ZONE, ARC, FAN, SPIN, DECOYS, KIT }
 @export var proc_coef := 1.0 ## proc coefficient RoR2 : multiplie les chances de proc des items (zones à ticks rapides < 1)
 @export var trigger_range_u := 6.0 ## auto-cast : lance si un ennemi est à cette distance
 @export var color := Color(1.0, 0.45, 0.1)
+## Couleur du contour des zones persistantes au sol (ZoneOutline) ; alpha 0 = couleur du sort (`color`), puis accent du personnage.
+@export var zone_outline_color := Color(0, 0, 0, 0)
 @export var element: StringName = &"fire"
 ## Preset LightRig du sort (éclat, zone, projectile en vol) ; vide = aucune lumière de sort (projectile : « ember »).
 @export var light_preset: StringName = &""

@@ -28,6 +28,7 @@ var arc_dir := Vector2.RIGHT
 var arc_half := PI
 ## Effet rendu (null = repli dessiné).
 var vfx: AnimatedSprite2D = null
+var outline: ZoneOutline = null ## contour de la zone persistante (null : instantanée, secteur, ou sans couche)
 var _vfx_len := 0.0 ## durée de l'anim `default` (s)
 var _ending := false ## zone persistante finie : anim `end` en cours, plus de dégâts
 
@@ -42,9 +43,17 @@ func setup(new_caster: Object, new_spell: SpellData, pos: Vector2, radius_px: fl
 	if arc_half < PI:
 		_anim = ARC_ANIM_S
 	_setup_vfx()
+	_setup_outline()
 	_apply()
 	if duration <= 0.0:
 		duration = 0.0
+
+
+## Zone persistante (durée > 0, disque complet) : contour ZoneOutline de la couleur du sort, au rayon réel.
+func _setup_outline() -> void:
+	if duration <= 0.0 or arc_half < PI or spell == null:
+		return
+	outline = ZoneOutline.attach(self, radius, ZoneOutline.color_for(spell, caster), duration)
 
 
 ## Instancie le SpriteFrames du sort s'il existe ; sinon le _draw de repli reste seul.
@@ -157,6 +166,8 @@ func _draw() -> void:
 		return
 	var c := spell.color
 	if duration > 0.0:
+		if outline != null:
+			return # le contour (ZoneOutline) remplace l'ancien voile + cercle de points
 		var a := clampf(1.0 - _t / duration, 0.0, 1.0)
 		draw_circle(Vector2.ZERO, radius, Color(c.r, c.g, c.b, 0.08 * a + 0.04))
 		# grammaire des formes au sol (GroundShapes) : zone alliée persistante = cercle de points fins, remplissage <= 0,12

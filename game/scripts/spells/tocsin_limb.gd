@@ -193,6 +193,7 @@ func _start_pillar() -> void:
 		_light.set_energy(1.6)
 	Audio.play(&"hit.heavy", global_position, -3.0, 0.7) # il se plante
 	kit.on_pillar_planted(self, global_position)
+	_outline(TocsinKit.PILLAR_S)
 	_ticks = 1 # premier tick à la pose (la zone est visible avant qu'il ne frappe)
 	_pillar_tick()
 	queue_redraw()
@@ -201,6 +202,11 @@ func _start_pillar() -> void:
 ## Nombre de ticks dus à l'instant t : un à la pose, puis un toutes les PILLAR_TICK_S, PILLAR_TICKS au total.
 static func pillar_ticks_due(elapsed: float) -> int:
 	return mini(int(elapsed / TocsinKit.PILLAR_TICK_S + 0.0001) + 1, TocsinKit.PILLAR_TICKS)
+
+
+## Contour de la zone au sol (ZoneOutline, couleur du sort) pendant la décharge / la fumée.
+func _outline(life_s: float) -> void:
+	ZoneOutline.attach(self, radius_px, ZoneOutline.color_for(spell, caster), life_s)
 
 
 func _step_pillar() -> void:
@@ -284,6 +290,7 @@ func _start_smoke() -> void:
 		ring.queue_free()
 		ring = null
 	kit.on_smoke_start(self, c)
+	_outline(TocsinKit.FUMI_S)
 	queue_redraw()
 
 
@@ -398,10 +405,7 @@ func _draw() -> void:
 		draw_arc(tl, radius_px, 0.0, TAU, 72, Color(arc_c.r, arc_c.g, arc_c.b, 0.25 + 0.45 * k), 2.0)
 		draw_circle(tl, radius_px, Color(arc_c.r, arc_c.g, arc_c.b, 0.05 + 0.07 * k))
 	elif phase == Phase.PILLAR:
-		var k2 := clampf(t / TocsinKit.PILLAR_S, 0.0, 1.0)
 		var pulse := 0.5 + 0.5 * sin(t * 18.0)
-		draw_circle(Vector2.ZERO, radius_px, Color(arc_c.r, arc_c.g, arc_c.b, 0.10 + 0.06 * pulse))
-		draw_arc(Vector2.ZERO, radius_px, 0.0, TAU, 72, Color(arc_c.r, arc_c.g, arc_c.b, 0.55 + 0.3 * (1.0 - k2)), 2.5)
 		# pilier : tige verticale + tête incandescente
 		draw_line(Vector2.ZERO, Vector2(0, -34), Color(0.37, 0.56, 0.5), 7.0)
 		draw_circle(Vector2(0, -36), 6.0 + 2.0 * pulse, c)
@@ -423,9 +427,6 @@ func _draw() -> void:
 			draw_polyline(pts, Color(arc_c.r, arc_c.g, arc_c.b, al), 2.0)
 			draw_polyline(pts, Color(1, 1, 1, al * 0.7), 0.8)
 	elif phase == Phase.SMOKE:
-		var k3 := clampf(t / TocsinKit.FUMI_S, 0.0, 1.0)
-		draw_circle(Vector2.ZERO, radius_px, Color(0.85, 0.5, 0.2, 0.10 * (1.0 - 0.5 * k3)))
-		draw_arc(Vector2.ZERO, radius_px, 0.0, TAU, 72, Color(c.r, c.g, c.b, 0.35), 2.0)
 		draw_circle(Vector2.ZERO, 6.0, c)
 	elif phase == Phase.RING and ring == null:
 		var k4 := clampf(t / TocsinKit.HEAD_RING_S, 0.0, 1.0)
