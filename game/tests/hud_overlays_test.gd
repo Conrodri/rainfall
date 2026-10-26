@@ -119,7 +119,7 @@ func _ready() -> void:
 	_check(ib.visible and ib.slot_count() == 2, "deux cases après item_added")
 	var s0 := ib.get_slot(StringName(ids[0])) as ItemBar.ItemSlot
 	_check(s0 != null and s0.badge.visible and s0.badge.text == "×3", "badge ×3")
-	_check(s0.icon.texture != null and s0.frame.texture != null, "icône et cadre de qualité")
+	_check(s0.icon.texture != null and s0.get("frame") is Panel and not (s0.get("frame") is TextureRect), "icône et fond de qualité (Panel, pas de cadre par-dessus l'icône)")
 	for k in 20:
 		RunState.add_item(StringName(ids[2 + k]))
 	await _frames(3)

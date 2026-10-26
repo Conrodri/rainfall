@@ -556,8 +556,7 @@ func _build_passive() -> void:
 	b.add_theme_stylebox_override("focus", CharacterCard.focus_box())
 	var pbox := _cell_box(false)
 	if pbox is StyleBoxTexture:
-		pbox.content_margin_top = 14.0
-		pbox.content_margin_bottom = 14.0
+		UiTheme.pad_box(pbox, 44)
 	box.add_theme_stylebox_override("panel", pbox)
 	var sb := CharacterCard.panel_box(Color("#1a1620"), Color(0.35, 0.38, 0.45), 1, 0.8, false) # = icône de sort non choisie
 	sb.content_margin_left = 4
@@ -656,8 +655,7 @@ func _build_detail() -> void:
 func _cell_box(selected: bool) -> StyleBox:
 	var sb := CharacterCard.panel_box(CharacterCard.COL_PANEL, CharacterCard.COL_FOCUS if selected else Color(0.35, 0.38, 0.45), 3 if selected else 1, 0.7)
 	if sb is StyleBoxTexture:
-		sb.content_margin_top = 4.0
-		sb.content_margin_bottom = 4.0
+		UiTheme.pad_box(sb, 44) # le texte ne touche pas le trait du cadre
 		if selected:
 			(sb as StyleBoxTexture).modulate_color = Color(1.0, 0.85, 0.55)
 	return sb

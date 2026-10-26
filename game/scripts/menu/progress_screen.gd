@@ -577,10 +577,13 @@ func _layout() -> void:
 		for k in m:
 			m[k] = clampf(float(d.get(k, m[k])), m[k], 160.0) # borné (aperçu mobile multi-écran)
 	_banner.position = Vector2(m.left, 24)
-	_banner.size = Vector2(520, 92)
+	_banner.size = Vector2(520, maxf(92.0, _banner.get_combined_minimum_size().y)) # bandeau Cinzel : sa hauteur réelle
 	_ruby_box.reset_size()
 	var nx: float = m.left + 48
-	next_label.position = Vector2(nx, 124)
+	next_label.position = Vector2(nx, _banner.position.y + _banner.size.y + 8.0)
+	var tabs_y := next_label.position.y + maxf(next_label.get_combined_minimum_size().y, 32.0) + 10.0 # onglets sous la ligne de déblocage
+	var tabs_h := maxf(maxf(tab_chars.get_combined_minimum_size().y, tab_chars.size.y), 64.0)
+	var grid_y := tabs_y + tabs_h + 8.0 # grille sous les onglets : ils ne la recouvrent plus
 	next_label.custom_minimum_size.x = vs.x - m.right - nx - 24.0
 	next_label.size.x = next_label.custom_minimum_size.x
 	_ruby_box.position = Vector2(vs.x - m.right - _ruby_box.get_combined_minimum_size().x, 24)
@@ -589,8 +592,8 @@ func _layout() -> void:
 	var modes_w := clampf(vs.x - m.right - mx - 48 - (3 * 340.0 + 2 * GAP), 480.0, 600.0)
 	var gx: float = mx + modes_w + 48
 	var grid_w: float = vs.x - m.right - gx
-	_chars_header.position = Vector2(gx, 170)
-	_chars_scroll.position = Vector2(gx, 230)
+	_chars_header.position = Vector2(gx, tabs_y + 4.0)
+	_chars_scroll.position = Vector2(gx, grid_y)
 	items_scroll.position = _chars_scroll.position
 	back_button.position = Vector2(m.left, vs.y - m.bottom - back_button.size.y)
 	stats_label.position = Vector2(m.left + 48, back_button.position.y - stats_label.get_combined_minimum_size().y - 16.0)
@@ -619,14 +622,14 @@ func _layout() -> void:
 	_chars_scroll.position.x = gx
 	_chars_header.position.x = gx
 	# Onglets au-dessus de la zone ; grille d'objets sur la même zone que celle des personnages.
-	tab_chars.position = Vector2(mx + modes_w + 48, 166)
-	tab_items.position = Vector2(mx + modes_w + 48 + tab_chars.size.x + 16.0, 166)
-	tab_skins.position = Vector2(tab_items.position.x + tab_items.size.x + 16.0, 166)
-	skins_count_label.position = Vector2(tab_skins.position.x + tab_skins.size.x + 24.0, 172)
+	tab_chars.position = Vector2(mx + modes_w + 48, tabs_y)
+	tab_items.position = Vector2(mx + modes_w + 48 + tab_chars.size.x + 16.0, tabs_y)
+	tab_skins.position = Vector2(tab_items.position.x + tab_items.size.x + 16.0, tabs_y)
+	skins_count_label.position = Vector2(tab_skins.position.x + tab_skins.size.x + 24.0, tabs_y + 6.0)
 	skins_count_label.custom_minimum_size.x = maxf(vs.x - m.right - skins_count_label.position.x, 120.0)
 	skins_count_label.size.x = skins_count_label.custom_minimum_size.x
 	skins_count_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	items_count_label.position = Vector2(tab_skins.position.x + tab_skins.size.x + 24.0, 172)
+	items_count_label.position = Vector2(tab_skins.position.x + tab_skins.size.x + 24.0, tabs_y + 6.0)
 	items_count_label.custom_minimum_size.x = maxf(vs.x - m.right - items_count_label.position.x, 120.0)
 	items_count_label.size.x = items_count_label.custom_minimum_size.x
 	items_count_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -653,7 +656,7 @@ func _layout() -> void:
 		c.custom_minimum_size = Vector2(cell_w, ITEM_CELL_H)
 	_items_grid.custom_minimum_size.x = items_w - 16.0
 	items_scroll.position.x = items_x
-	_modes_box.position = Vector2(mx, 170)
+	_modes_box.position = Vector2(mx, tabs_y + 4.0)
 	_modes_box.custom_minimum_size = Vector2(modes_w, 0)
 	_modes_box.size = Vector2(modes_w, 0)
 	# ligne de stats juste au-dessus du bouton Retour ; la grille des personnages s'arrête au-dessus d'elle
