@@ -214,7 +214,7 @@ func _run() -> void:
 	_player.hp = 50.0
 	_check("toupie lancée", _player.spells.cast(3))
 	_check("en toupie", _kit.is_spinning())
-	_check("premier tick 0,7", _near(close.total(), RictusKit.TOUPIE_COEF * BASE), str(close.taken))
+	_check("premier tick 0,5 + pointe 0,15 sur le plus proche", _near(close.total(), (RictusKit.TOUPIE_COEF + RictusKit.TOUPIE_FOCUS_COEF) * BASE), str(close.taken))
 	_check("levée permise en toupie", _kit.can_dodge())
 	_check("bouton de roulade actif", not bool(_player.get_dodge_cooldown().get("blocked", false)))
 	_check("invulnérable en toupie", _player.is_invulnerable())
@@ -297,7 +297,8 @@ func _run() -> void:
 	for d in Decoy.live.duplicate():
 		d.step(0.11)
 	_check("toutes explosent à 3 s", Decoy.live.is_empty())
-	_check("3 explosions à 2 u : 3 × 3,0", _near(on_east.total(), 3.0 * RictusKit.DECOY_COEF * BASE, 0.05), "%s %s" % [on_east.total(), on_east.taken])
+	# rayon d'explosion 2,4 u : les 5 doublures à moins de 2,4 u de la cible touchent (2,0 u : 3 seulement avant le 26/10)
+	_check("5 explosions à 2,4 u : 5 × coef", on_east.taken.size() == 5 and _near(on_east.total(), 5.0 * RictusKit.DECOY_COEF * BASE, 0.05), "%s %s" % [on_east.total(), on_east.taken])
 	_check("+2 % PV une seule fois", _near(_player.hp, 50.0 + 0.02 * 95.0, 0.01), str(_player.hp))
 	# Doublure tuée : explosion immédiate à 60 %
 	_player.spells._remaining[4] = 0.0
@@ -332,7 +333,7 @@ func _run() -> void:
 	_check("vol limité à 4 u", far_ok)
 	await _frames(25) # 4 u à 10 u/s = 0,4 s
 	_check("toutes explosent (impact ou bout de course)", Decoy.live.is_empty(), str(Decoy.live.size()))
-	_check("monstre traversé : 1,0 puis explosion 2,5", in_path.taken.size() >= 2 and _near(in_path.taken[0], 1.0 * BASE)
+	_check("monstre traversé : vol puis explosion", in_path.taken.size() >= 2 and _near(in_path.taken[0], RictusKit.FLIGHT_COEF * BASE)
 			and in_path.taken.has(RictusKit.DECOY_COEF * BASE), str(in_path.taken))
 
 	print("Levée (roulade du Montreur)")

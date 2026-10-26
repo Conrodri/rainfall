@@ -28,6 +28,8 @@ func _ready() -> void:
 		var lp := kv.split(":")
 		if lp.size() == 2:
 			sim.loadout[int(lp[0])] = StringName(lp[1])
+	for sl in str(args.get("noslot", "")).split(",", false): # --noslot=4 : ablation d'un sort
+		sim.disabled_slots.append(int(sl))
 	add_child(sim)
 	var res: Array = []
 	for cid in chars:

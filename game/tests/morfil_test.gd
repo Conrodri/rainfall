@@ -133,7 +133,7 @@ func _run() -> void:
 		if c["id"] == "morfil":
 			entry = c
 	_check("characters.json : entrée ouverte, difficulté, 4 sorts", not entry.is_empty() and entry.get("unlocked") == true
-		and int(entry.get("difficulty", 0)) == 3 and (entry.get("spells", []) as Array).size() == 4)
+		and int(entry.get("difficulty", 0)) == 1 and (entry.get("spells", []) as Array).size() == 4) # difficulté 1 depuis le tri par difficulté (commit 9ab6b179)
 	_check("lumière de sort morfil_edge (accent, pas la braise)", not LightRig.get_preset(&"morfil_edge").is_empty())
 	_check("repli visuel : Ardent teinté écorce", (_player.get_node("Visual") as CanvasItem).self_modulate.is_equal_approx(MorfilKit.PLACEHOLDER_TINT)
 		or ResourceLoader.exists(MorfilKit.SPRITE_FRAMES))

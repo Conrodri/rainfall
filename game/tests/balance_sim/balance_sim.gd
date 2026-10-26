@@ -15,6 +15,7 @@ const U := 64.0
 var speed_k := 12
 var seed_base := 1234
 var loadout := {} ## variantes de sorts à tester : {slot: id} (--loadout=1:id,2:id du lanceur)
+var disabled_slots: Array = [] ## ablation : slots retirés du kit (--noslot=4), pour mesurer la part de DPS d'un sort
 
 ## Scénarios standard. waves : [{t, packs:[{tier, n, elite, variant, affixes}]}] ; boss : &"mini".
 const SCENARIOS := {
@@ -128,6 +129,12 @@ func load_character(cid: String) -> Dictionary:
 		c = v as CharacterData
 	if c != null and not loadout.is_empty():
 		CharacterData.apply_loadout(c, StringName(cid), loadout)
+	if c != null and not disabled_slots.is_empty():
+		var kept: Array[SpellData] = []
+		for s in c.spells:
+			if not disabled_slots.has(s.slot):
+				kept.append(s)
+		c.spells = kept
 	var errs := errlog.take()
 	if c == null:
 		return {"ok": false, "skip": false, "note": "character() n'a pas rendu de CharacterData", "errors": errs}

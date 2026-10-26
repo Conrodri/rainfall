@@ -65,16 +65,21 @@ const DECOY_COUNT := 6
 const DECOY_RING_U := 1.2
 const DECOY_HP_FRAC := 0.2
 const DECOY_LIFE_S := 3.0
+const DECOY_BURST_U := 2.4 ## rayon d'explosion de chaque doublure (2,0 -> 2,4 u, retour joueur 26/10)
 const DECOY_DEATH_FRAC := 0.6
 const DECOY_BLOCK_PUSH_U := 0.5
-const FLIGHT_COEF := 1.0
+const FLIGHT_COEF := 1.2 ## retour joueur 26/10 : ultime plus impactant (1,0 -> 1,4 par doublure expédiée par la Toupie)
 ## Équilibrage (simulateur du 22/10/2026) : cible unique −36 % et dégâts subis ×1,8-2,4 vs Ardent à l'origine.
 const ARC_COEF := 0.8 ## demi-lune 0,6 -> 0,8
 const FAN_COEF := 1.35 ## Éventail 1,2 -> 1,6 -> 1,8 -> 1,35 par couteau (équilibrage 23/10 : 1,8 -> 1,35 ; sous la plage P3 1,7-1,9 : les 5 couteaux touchent tous un boss)
-const DECOY_COEF := 1.8 ## Doublures 2,5 -> 3,0 -> 2,0 -> 1,8 (équilibrage 23/10 : 2,0 -> 1,8, bas de la plage P3 : sans effet mesurable sur le DPS boss, la toupie domine)
+const DECOY_COEF := 2.4 ## retour joueur 26/10 : ultime plus fort (1,8 -> 2,6) ; avant : ## Doublures 2,5 -> 3,0 -> 2,0 -> 1,8 (équilibrage 23/10 : 2,0 -> 1,8, bas de la plage P3 : sans effet mesurable sur le DPS boss, la toupie domine)
 ## Garde du Montreur : après chaque demi-lune, les fils tirent le pantin hors des coups (−30 % de dégâts subis
 ## pendant GUARD_S). La mêlée garde son risque hors attaque (déplacement, vertige).
-const TOUPIE_COEF := 0.5 ## Toupie, par tick (équilibrage 23/10 : 0,7 -> 0,5 ; levier principal sur les boss, la toupie touche tous les ticks)
+## Pointe de la toupie (retour joueur 26/10 : manque de monocible) : à chaque tick, un coup supplémentaire frappe l'ennemi
+## le plus proche (la cible clouée au centre). Aucune dépendance à l'ultime : la Toupie devient la source monocible.
+const TOUPIE_FOCUS_COEF := 0.15
+const TOUPIE_FOCUS_RADIUS_U := 0.9
+const TOUPIE_COEF := 0.42 ## Toupie, par tick (équilibrage 23/10 : 0,7 -> 0,5 ; levier principal sur les boss, la toupie touche tous les ticks)
 const GUARD_TAKEN_MULT := 0.7
 const GUARD_S := 0.3 ## équilibrage 23/10 : 0,5 -> 0,35 -> 0,3
 const FLIGHT_PROC := 0.5
@@ -110,7 +115,7 @@ const PENDULE_CD := 6.0
 const PIROUETTE_S := 0.6
 const PIROUETTE_IMPACT_S := 0.3
 const PIROUETTE_RADIUS_U := 2.2
-const PIROUETTE_COEF := 4.0
+const PIROUETTE_COEF := 3.7
 const PIROUETTE_KNOCK_U := 1.0
 const PIROUETTE_CD := 8.0
 ## Rideau : 6 doublures en ligne perpendiculaire à la visée.
@@ -118,7 +123,7 @@ const RIDEAU_AHEAD_U := 2.0
 const RIDEAU_SPACING_U := 1.0
 const RIDEAU_LIFE_S := 6.0
 const RIDEAU_HP_FRAC := 0.3
-const RIDEAU_COEF := 1.35 ## doc 2,5 (calé sur la base à 3,0) ; base ramenée à 1,8 -> même rapport 15/18
+const RIDEAU_COEF := 1.7 ## doc 2,5 (calé sur la base à 3,0) ; base ramenée à 1,8 -> même rapport 15/18 ; 26/10 : 1,35 -> 1,95 (base 1,8 -> 2,6)
 const RIDEAU_AIM_U := 8.0 ## sans visée manuelle : ennemi le plus proche à cette distance
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 
@@ -133,6 +138,7 @@ var _spin_elapsed := 0.0
 var _spin_ticks := 0
 var _spin_total := 2.5
 var _spin_tick_spell: SpellData = null
+var _spin_focus_spell: SpellData = null
 var _pending_decoys := {} ## Doublures lancées, posées à la frame d'impact de `summon` : {spell, aim}
 var _visual: AnimatedSprite2D = null
 var guard_left := 0.0 ## garde du Montreur après une demi-lune
@@ -185,8 +191,8 @@ static func character() -> CharacterData:
 
 	var s1 := _spell(&"dagues_demi_lune", "Dagues en demi-lune", 1, SpellData.Behavior.ARC, ARC_COEF, 0.6)
 	s1.is_auto = true
-	s1.range_u = 2.5 # retour joueur : portée de l'auto 1,8 -> 2,5 u
-	s1.radius_u = 2.5
+	s1.range_u = 3.0 # retour joueur 23/10 : portée de l'auto 2,5 -> 3,0 u (le VFX se met à l'échelle : k = rayon / DAGGER_ARC_RADIUS_PX)
+	s1.radius_u = 3.0
 	s1.spread_deg = 180.0
 	s1.proc_coef = 0.8
 	s1.hit_force = _force_for(ARC_KNOCK_U)
@@ -217,7 +223,7 @@ static func character() -> CharacterData:
 	s3.hit_force = _force_for(SPIN_KNOCK_U)
 
 	var s4 := _spell(&"doublures", "Les Doublures", 4, SpellData.Behavior.DECOYS, DECOY_COEF, 20.0)
-	s4.radius_u = 2.0
+	s4.radius_u = DECOY_BURST_U
 	s4.duration = DECOY_LIFE_S
 	s4.proc_coef = 1.0
 	s4.trigger_range_u = 3.0
@@ -267,7 +273,7 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			return s3
 		[4, V_RIDEAU]:
 			var s4 := _spell(V_RIDEAU, "Rideau", 4, SpellData.Behavior.DECOYS, RIDEAU_COEF, 20.0)
-			s4.radius_u = 2.0
+			s4.radius_u = DECOY_BURST_U
 			s4.duration = RIDEAU_LIFE_S
 			s4.proc_coef = 1.0
 			s4.trigger_range_u = 3.0
@@ -486,6 +492,12 @@ func _start_spin(s: SpellData) -> bool:
 	_spin_tick_spell = s.duplicate() as SpellData
 	_spin_tick_spell.behavior = SpellData.Behavior.NOVA
 	_spin_tick_spell.duration = 0.0 # chaque tick = coup direct (recul), pas un DoT
+	_spin_focus_spell = _spin_tick_spell.duplicate() as SpellData
+	_spin_focus_spell.coef = TOUPIE_FOCUS_COEF
+	_spin_focus_spell.radius_u = TOUPIE_FOCUS_RADIUS_U
+	_spin_focus_spell.vfx_frames = "" # coup direct sans gerbe
+	_spin_focus_spell.is_zone = false
+	_spin_focus_spell.hit_force = -1.0
 	_spin_total = s.duration
 	spin_left = s.duration
 	_spin_elapsed = 0.0
@@ -513,6 +525,10 @@ func _spin_tick() -> void:
 	_spin_ticks += 1
 	if _caster() != null and _spin_tick_spell != null:
 		_caster().spawn_zone(_spin_tick_spell, player.global_position)
+		if _spin_focus_spell != null: # Pointe de la toupie : coup monocible sur l'ennemi le plus proche
+			var tgt := _caster().nearest_enemy(spin_radius_px())
+			if tgt != null:
+				_caster().spawn_zone(_spin_focus_spell, tgt.global_position)
 
 
 func spin_radius_px() -> float:
@@ -810,5 +826,5 @@ static func passive_info() -> Dictionary:
 		"Pas de jauge : deux effets passifs. Les fils tirent le pantin hors des coups, et se tendent pour le réparer.",
 		"",
 		"",
-		"Garde : -%s de dégâts subis pendant %s s après chaque demi-lune. Fils tendus : +%s des PV max rendus en fin de Toupie et à la première explosion de chaque Doublures." % [
-			KitResource.pct(1.0 - GUARD_TAKEN_MULT), KitResource.fmt(GUARD_S), KitResource.pct(HEAL_PCT)])
+		"Garde : -%s de dégâts subis pendant %s s après chaque demi-lune. Fils tendus : +%s des PV max rendus en fin de Toupie et à la première explosion de chaque Doublures. Pointe : chaque tick de Toupie frappe en plus l'ennemi le plus proche (coef %s)." % [
+			KitResource.pct(1.0 - GUARD_TAKEN_MULT), KitResource.fmt(GUARD_S), KitResource.pct(HEAL_PCT), KitResource.fmt(TOUPIE_FOCUS_COEF)])
