@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "file": "props/menu/campfire/burn.png",
+      "silhouette_iou": 0.318910488707071,
+      "e_half": true
+    },
+    {
+      "file": "ui/menu/difficulty_pip_empty.png"
+    },
+    {
+      "file": "ui/menu/difficulty_pip_full.png",
+      "e_half": true
+    },
+    {
+      "file": "ui/menu/difficulty_pip_empty_16.png"
+    },
+    {
+      "file": "ui/menu/difficulty_pip_full_16.png",
+      "e_half": true
+    }
+  ]
+}

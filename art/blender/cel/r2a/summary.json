@@ -1,0 +1,61 @@
+{
+  "scope_before_bytes": {
+    "vram": 136895968,
+    "mobile": 28598073,
+    "raw": 547583872
+  },
+  "scope_after_bytes": {
+    "vram": 122411120,
+    "mobile": 41280292,
+    "raw": 489644480
+  },
+  "tests": {
+    "policy": {
+      "ok": true,
+      "code": 0
+    },
+    "import": {
+      "ok": true,
+      "code": 0
+    },
+    "sprites_test": {
+      "ok": true,
+      "code": 0
+    },
+    "texture_budget_test": {
+      "ok": false,
+      "log": "art\\blender\\cel\\r2a\\texture_budget_final_test.log"
+    },
+    "weaver_boss_test": {
+      "ok": true,
+      "code": 0
+    },
+    "rain_sower_boss_test": {
+      "ok": true,
+      "code": 0
+    },
+    "crystal_mother_boss_test": {
+      "ok": true,
+      "code": 0
+    },
+    "crane_boss_test": {
+      "ok": true,
+      "code": 0
+    },
+    "recluse_boss_test": {
+      "ok": true,
+      "code": 0
+    }
+  },
+  "diffuse_sheets": 100,
+  "global_budget_violations": [
+    "cat\u00e9gorie bosses : 103.8 Mo mobile > budget 45 Mo",
+    "APK estim\u00e9 7960 Mo > 200 Mo",
+    "textures mobiles 218 Mo > 180 Mo"
+  ],
+  "alpha_iou_min": 0.9753049239572353,
+  "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped.",
+  "source_blends_unchanged": true,
+  "contact": "art/blender/cel/r2a/contact.png",
+  "details": "art/blender/cel/r2a/report.json"
+}

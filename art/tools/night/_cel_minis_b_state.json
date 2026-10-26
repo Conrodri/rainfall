@@ -1,0 +1,36 @@
+{
+  "png_bytes": 6666363,
+  "raw_bytes": 114444000,
+  "source_hashes": {
+    "art\\blender\\monsters\\n2a_mist_wolf.blend": "d89c4e1fb37679a6c14623a6a21a83ce143e33181ca581a44bf41e8eeef2c9ff",
+    "art\\blender\\monsters\\n2a_mist_wolf_cub.blend": "b6d8c1b69bdf1df6f28f15da2c057e14e20634c49a05262306e46b8cd8b9e703",
+    "art\\blender\\monsters\\n2a_lantern_owl.blend": "55cfd1c354e14ae60e06358f625e8d8ae5055490a189e265fe6b067ecb76875b",
+    "art\\blender\\monsters\\n2b_moss_mantis.blend": "84ca791fa37a0cd79c9265059b752538cc20823e449508638b4bd6ee21040de1",
+    "art\\blender\\monsters\\ash_lord.blend": "30a575955b685520aff53d025659e33695f2279fcc6da3180da8412da0901090",
+    "art\\blender\\monsters\\rust_archon.blend": "25ba30c474a3f50e41a53d88c118fece8085c65ca33e64bcdf54e127d1043a70"
+  },
+  "data_hashes": {
+    "game/data/fauna.json": "aa947369ab1a2adb28433d802986d7d44b1b0e0ae2b818fa1e4b45a4332fbce4",
+    "game/data/minibosses.json": "b45d4af69fa2b9f92009685529ac45514dda856ef924ccaf25abfda2edcc9cc2"
+  },
+  "choices": [
+    "creature; 8 Eevee samples; original palettes, animation and cameras",
+    "Original luminous accents retained; Ash Lord ember is authoritative",
+    "No downsampling: mini scalar 2.4*(1.1*64)/dim = 1.35168..1.6896; cub 2*64/90.50967 = 1.41421358",
+    "Actual mini scale is computed by code, Ash Lord/Rust Archon configs are code constants; no .gd edits authorized",
+    "Lossless per-animation cell crop +4px; AtlasTexture margin retains 170px logical cell and feet"
+  ],
+  "measured_display": {
+    "mini_radius_px": 70.4,
+    "mini_fill": 2.4,
+    "scalar": {
+      "mist_wolf": 1.4080000000000001,
+      "lantern_owl": 1.536,
+      "moss_mantis": 1.35168,
+      "ash_lord": 1.6896,
+      "rust_archon": 1.6896
+    },
+    "mist_wolf_cub_scalar": 1.4142135309961907,
+    "projection": "Iso.UNSQUASH applied by _billboard_scale; no sprite in scope is reduced in game"
+  }
+}

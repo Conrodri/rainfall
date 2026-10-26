@@ -1,0 +1,532 @@
+{
+  "sheets": [
+    {
+      "file": "bosses/etage/eclusier/idle_p1.png",
+      "silhouette_iou": 0.9994439810953573,
+      "e_half": true,
+      "size": [
+        696,
+        162
+      ],
+      "cell": [
+        116,
+        162
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 6,
+      "normal_absent": true,
+      "emission_size": [
+        348,
+        81
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/idle_p2.png",
+      "silhouette_iou": 0.9995382204997114,
+      "e_half": true,
+      "size": [
+        696,
+        158
+      ],
+      "cell": [
+        116,
+        158
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 6,
+      "normal_absent": true,
+      "emission_size": [
+        348,
+        79
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/idle_p3.png",
+      "silhouette_iou": 0.9995455922447744,
+      "e_half": true,
+      "size": [
+        696,
+        152
+      ],
+      "cell": [
+        116,
+        152
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 6,
+      "normal_absent": true,
+      "emission_size": [
+        348,
+        76
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p1.png",
+      "silhouette_iou": 0.9994786494538233,
+      "e_half": true,
+      "size": [
+        960,
+        688
+      ],
+      "cell": [
+        120,
+        172
+      ],
+      "directions": [
+        "e",
+        "s",
+        "w",
+        "n"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        480,
+        344
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p2.png",
+      "silhouette_iou": 0.9995087171738439,
+      "e_half": true,
+      "size": [
+        960,
+        680
+      ],
+      "cell": [
+        120,
+        170
+      ],
+      "directions": [
+        "e",
+        "s",
+        "w",
+        "n"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        480,
+        340
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p3.png",
+      "silhouette_iou": 0.9994823281872302,
+      "e_half": true,
+      "size": [
+        960,
+        672
+      ],
+      "cell": [
+        120,
+        168
+      ],
+      "directions": [
+        "e",
+        "s",
+        "w",
+        "n"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        480,
+        336
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/auto.png",
+      "silhouette_iou": 0.9993606557377049,
+      "e_half": true,
+      "size": [
+        816,
+        162
+      ],
+      "cell": [
+        136,
+        162
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 6,
+      "normal_absent": true,
+      "emission_size": [
+        408,
+        81
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_a.png",
+      "silhouette_iou": 0.999514091350826,
+      "e_half": true,
+      "size": [
+        928,
+        162
+      ],
+      "cell": [
+        116,
+        162
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        464,
+        81
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_b.png",
+      "silhouette_iou": 0.9993600551337115,
+      "e_half": true,
+      "size": [
+        928,
+        176
+      ],
+      "cell": [
+        116,
+        176
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        464,
+        88
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/trans_p2.png",
+      "silhouette_iou": 0.9994211751376249,
+      "e_half": true,
+      "size": [
+        928,
+        160
+      ],
+      "cell": [
+        116,
+        160
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        464,
+        80
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/trans_p3.png",
+      "silhouette_iou": 0.9995122927244079,
+      "e_half": true,
+      "size": [
+        928,
+        156
+      ],
+      "cell": [
+        116,
+        156
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        464,
+        78
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/death.png",
+      "silhouette_iou": 0.9993108100181829,
+      "e_half": true,
+      "size": [
+        1180,
+        180
+      ],
+      "cell": [
+        118,
+        180
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 10,
+      "normal_absent": true,
+      "emission_size": [
+        590,
+        90
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/anchored.png",
+      "silhouette_iou": 0.9995969773299748,
+      "e_half": true,
+      "size": [
+        116,
+        152
+      ],
+      "cell": [
+        116,
+        152
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 1,
+      "normal_absent": true,
+      "emission_size": [
+        58,
+        76
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/auto_dirs.png",
+      "silhouette_iou": 0.9996190869196036,
+      "e_half": true,
+      "size": [
+        840,
+        480
+      ],
+      "cell": [
+        140,
+        160
+      ],
+      "directions": [
+        "e",
+        "w",
+        "n"
+      ],
+      "frames": 6,
+      "normal_absent": true,
+      "emission_size": [
+        420,
+        240
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_a_dirs.png",
+      "silhouette_iou": 0.9995855830254807,
+      "e_half": true,
+      "size": [
+        1024,
+        468
+      ],
+      "cell": [
+        128,
+        156
+      ],
+      "directions": [
+        "e",
+        "w",
+        "n"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        512,
+        234
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_b_dirs.png",
+      "silhouette_iou": 0.9995985499136274,
+      "e_half": true,
+      "size": [
+        928,
+        516
+      ],
+      "cell": [
+        116,
+        172
+      ],
+      "directions": [
+        "e",
+        "w",
+        "n"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        464,
+        258
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/wheel.png",
+      "silhouette_iou": 0.9968703224928561,
+      "size": [
+        672,
+        76
+      ],
+      "cell": [
+        84,
+        76
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true
+    },
+    {
+      "file": "bosses/etage/eclusier/wave.png",
+      "silhouette_iou": 0.9999553374890736,
+      "e_half": true,
+      "size": [
+        736,
+        292
+      ],
+      "cell": [
+        92,
+        292
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        368,
+        146
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/geyser.png",
+      "silhouette_iou": 0.9986257590284436,
+      "e_half": true,
+      "size": [
+        960,
+        84
+      ],
+      "cell": [
+        80,
+        84
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 12,
+      "normal_absent": true,
+      "emission_size": [
+        480,
+        42
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_geyser.png",
+      "silhouette_iou": 0.9983569430258893,
+      "e_half": true,
+      "size": [
+        960,
+        70
+      ],
+      "cell": [
+        80,
+        70
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 12,
+      "normal_absent": true,
+      "emission_size": [
+        480,
+        35
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_water.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        128
+      ],
+      "cell": [
+        128,
+        128
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 4,
+      "normal_absent": true,
+      "emission_size": [
+        256,
+        64
+      ],
+      "accent_iou": 1.0
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_wave.png",
+      "silhouette_iou": 0.9999361805325097,
+      "e_half": true,
+      "size": [
+        736,
+        278
+      ],
+      "cell": [
+        92,
+        278
+      ],
+      "directions": [
+        "s"
+      ],
+      "frames": 8,
+      "normal_absent": true,
+      "emission_size": [
+        368,
+        139
+      ],
+      "accent_iou": 1.0
+    }
+  ],
+  "archive_immutable": true,
+  "metadata_unchanged": true,
+  "no_canvastexture": true,
+  "before": {
+    "png_bytes": 5516695,
+    "rgba_bytes": 83755008,
+    "mean_luma_srgb": 0.21312807837651424
+  },
+  "after": {
+    "png_bytes": 4429566,
+    "rgba_bytes": 26455408,
+    "mean_luma_srgb": 0.24078169303976021
+  }
+}

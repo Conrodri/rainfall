@@ -1,0 +1,1356 @@
+{
+  "iron_heron": {
+    "scale_before": 1.35168,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          61,
+          41,
+          169,
+          195
+        ],
+        "cell": [
+          108,
+          154
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          33,
+          11,
+          197,
+          199
+        ],
+        "cell": [
+          164,
+          188
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          18,
+          5,
+          212,
+          195
+        ],
+        "cell": [
+          194,
+          190
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          12,
+          7,
+          218,
+          195
+        ],
+        "cell": [
+          206,
+          188
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          22,
+          12,
+          207,
+          199
+        ],
+        "cell": [
+          185,
+          187
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          48,
+          33,
+          181,
+          195
+        ],
+        "cell": [
+          133,
+          162
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          58,
+          42,
+          187,
+          195
+        ],
+        "cell": [
+          129,
+          153
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 2064129,
+    "raw_bytes": 23436940
+  },
+  "vat_toad": {
+    "scale_before": 1.4692173913043478,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          43,
+          29,
+          207,
+          212
+        ],
+        "cell": [
+          164,
+          183
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          29,
+          26,
+          221,
+          226
+        ],
+        "cell": [
+          192,
+          200
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          32,
+          30,
+          218,
+          215
+        ],
+        "cell": [
+          186,
+          185
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          16,
+          18,
+          234,
+          219
+        ],
+        "cell": [
+          218,
+          201
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          22,
+          11,
+          228,
+          217
+        ],
+        "cell": [
+          206,
+          206
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          43,
+          28,
+          207,
+          212
+        ],
+        "cell": [
+          164,
+          184
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          32,
+          27,
+          221,
+          238
+        ],
+        "cell": [
+          189,
+          211
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 5011418,
+    "raw_bytes": 28178064
+  },
+  "scarecrow_reaper": {
+    "scale_before": 1.4692173913043478,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          65,
+          41,
+          186,
+          213
+        ],
+        "cell": [
+          121,
+          172
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          65,
+          30,
+          186,
+          217
+        ],
+        "cell": [
+          121,
+          187
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          61,
+          33,
+          189,
+          214
+        ],
+        "cell": [
+          128,
+          181
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          43,
+          32,
+          207,
+          221
+        ],
+        "cell": [
+          164,
+          189
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          62,
+          15,
+          188,
+          213
+        ],
+        "cell": [
+          126,
+          198
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          61,
+          41,
+          186,
+          213
+        ],
+        "cell": [
+          125,
+          172
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          43,
+          42,
+          225,
+          223
+        ],
+        "cell": [
+          182,
+          181
+        ],
+        "logical": 250,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 2932072,
+    "raw_bytes": 18484800
+  },
+  "steam_hound": {
+    "scale_before": 1.4080000000000001,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          66,
+          23,
+          174,
+          204
+        ],
+        "cell": [
+          108,
+          181
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          24,
+          22,
+          216,
+          209
+        ],
+        "cell": [
+          192,
+          187
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          21,
+          19,
+          219,
+          212
+        ],
+        "cell": [
+          198,
+          193
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          7,
+          21,
+          233,
+          220
+        ],
+        "cell": [
+          226,
+          199
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          20,
+          23,
+          220,
+          204
+        ],
+        "cell": [
+          200,
+          181
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          66,
+          23,
+          174,
+          204
+        ],
+        "cell": [
+          108,
+          181
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          45,
+          24,
+          214,
+          209
+        ],
+        "cell": [
+          169,
+          185
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 3259298,
+    "raw_bytes": 26252972
+  },
+  "grinder": {
+    "scale_before": 1.536,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          63,
+          37,
+          199,
+          219
+        ],
+        "cell": [
+          136,
+          182
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          59,
+          36,
+          203,
+          225
+        ],
+        "cell": [
+          144,
+          189
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          20,
+          23,
+          242,
+          222
+        ],
+        "cell": [
+          222,
+          199
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          47,
+          37,
+          215,
+          220
+        ],
+        "cell": [
+          168,
+          183
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          9,
+          29,
+          253,
+          229
+        ],
+        "cell": [
+          244,
+          200
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          42,
+          37,
+          199,
+          220
+        ],
+        "cell": [
+          157,
+          183
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          42,
+          34,
+          222,
+          239
+        ],
+        "cell": [
+          180,
+          205
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      },
+      "disc": {
+        "crop": [
+          8,
+          2,
+          86,
+          94
+        ],
+        "cell": [
+          78,
+          92
+        ],
+        "logical": 96,
+        "old_cell": 96,
+        "frames": 8,
+        "rows": 1,
+        "exception": "fixed runtime scale; lossless crop only"
+      }
+    },
+    "png_bytes": 4597486,
+    "raw_bytes": 26409856
+  },
+  "blind_pump": {
+    "scale_before": 1.35168,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          48,
+          14,
+          182,
+          196
+        ],
+        "cell": [
+          134,
+          182
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          36,
+          12,
+          194,
+          201
+        ],
+        "cell": [
+          158,
+          189
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          18,
+          14,
+          212,
+          196
+        ],
+        "cell": [
+          194,
+          182
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          48,
+          9,
+          182,
+          196
+        ],
+        "cell": [
+          134,
+          187
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          47,
+          14,
+          183,
+          198
+        ],
+        "cell": [
+          136,
+          184
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          47,
+          14,
+          183,
+          196
+        ],
+        "cell": [
+          136,
+          182
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          34,
+          8,
+          215,
+          205
+        ],
+        "cell": [
+          181,
+          197
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 4068885,
+    "raw_bytes": 20534380
+  },
+  "ossuary_bearer": {
+    "scale_before": 1.4080000000000001,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          54,
+          21,
+          187,
+          205
+        ],
+        "cell": [
+          133,
+          184
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          53,
+          20,
+          187,
+          212
+        ],
+        "cell": [
+          134,
+          192
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          34,
+          16,
+          206,
+          209
+        ],
+        "cell": [
+          172,
+          193
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          53,
+          21,
+          187,
+          223
+        ],
+        "cell": [
+          134,
+          202
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          46,
+          2,
+          194,
+          207
+        ],
+        "cell": [
+          148,
+          205
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          44,
+          21,
+          198,
+          210
+        ],
+        "cell": [
+          154,
+          189
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          57,
+          22,
+          197,
+          221
+        ],
+        "cell": [
+          140,
+          199
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      },
+      "bone_pile": {
+        "crop": [
+          18,
+          42,
+          118,
+          128
+        ],
+        "cell": [
+          100,
+          86
+        ],
+        "logical": 128,
+        "old_cell": 128,
+        "frames": 4,
+        "rows": 1,
+        "exception": "fixed runtime scale; lossless crop only"
+      }
+    },
+    "png_bytes": 4080070,
+    "raw_bytes": 20751312
+  },
+  "blind_swarm": {
+    "scale_before": 1.536,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          41,
+          47,
+          221,
+          194
+        ],
+        "cell": [
+          180,
+          147
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          41,
+          37,
+          221,
+          202
+        ],
+        "cell": [
+          180,
+          165
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          42,
+          33,
+          220,
+          202
+        ],
+        "cell": [
+          178,
+          169
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          44,
+          33,
+          218,
+          202
+        ],
+        "cell": [
+          174,
+          169
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          20,
+          18,
+          242,
+          202
+        ],
+        "cell": [
+          222,
+          184
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          44,
+          46,
+          218,
+          194
+        ],
+        "cell": [
+          174,
+          148
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          44,
+          52,
+          235,
+          230
+        ],
+        "cell": [
+          191,
+          178
+        ],
+        "logical": 262,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 3329558,
+    "raw_bytes": 23127340
+  },
+  "salt_golem": {
+    "scale_before": 1.35168,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          40,
+          17,
+          192,
+          199
+        ],
+        "cell": [
+          152,
+          182
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          38,
+          -3,
+          192,
+          206
+        ],
+        "cell": [
+          154,
+          209
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          17,
+          -1,
+          213,
+          203
+        ],
+        "cell": [
+          196,
+          204
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          32,
+          -2,
+          198,
+          216
+        ],
+        "cell": [
+          166,
+          218
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          24,
+          -2,
+          206,
+          201
+        ],
+        "cell": [
+          182,
+          203
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          34,
+          19,
+          198,
+          199
+        ],
+        "cell": [
+          164,
+          180
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          43,
+          19,
+          210,
+          222
+        ],
+        "cell": [
+          167,
+          203
+        ],
+        "logical": 230,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 4506949,
+    "raw_bytes": 25356720
+  },
+  "blind_lamplighter": {
+    "scale_before": 1.4080000000000001,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          82,
+          47,
+          160,
+          205
+        ],
+        "cell": [
+          78,
+          158
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          59,
+          27,
+          181,
+          211
+        ],
+        "cell": [
+          122,
+          184
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          29,
+          26,
+          211,
+          207
+        ],
+        "cell": [
+          182,
+          181
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          58,
+          25,
+          182,
+          206
+        ],
+        "cell": [
+          124,
+          181
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          25,
+          24,
+          215,
+          213
+        ],
+        "cell": [
+          190,
+          189
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          75,
+          49,
+          164,
+          204
+        ],
+        "cell": [
+          89,
+          155
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          82,
+          39,
+          160,
+          204
+        ],
+        "cell": [
+          78,
+          165
+        ],
+        "logical": 240,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 1961516,
+    "raw_bytes": 18447872
+  },
+  "sarcophagus_crab": {
+    "scale_before": 1.2996923076923077,
+    "scale_after": 1.0,
+    "layouts": {
+      "idle": {
+        "crop": [
+          34,
+          85,
+          187,
+          198
+        ],
+        "cell": [
+          153,
+          113
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 1
+      },
+      "run": {
+        "crop": [
+          22,
+          64,
+          199,
+          198
+        ],
+        "cell": [
+          177,
+          134
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "attack": {
+        "crop": [
+          19,
+          66,
+          202,
+          198
+        ],
+        "cell": [
+          183,
+          132
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 6,
+        "rows": 4
+      },
+      "cast_a": {
+        "crop": [
+          6,
+          66,
+          216,
+          205
+        ],
+        "cell": [
+          210,
+          139
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "cast_b": {
+        "crop": [
+          23,
+          66,
+          199,
+          218
+        ],
+        "cell": [
+          176,
+          152
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 4
+      },
+      "phase2": {
+        "crop": [
+          34,
+          46,
+          187,
+          196
+        ],
+        "cell": [
+          153,
+          150
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 8,
+        "rows": 1
+      },
+      "death": {
+        "crop": [
+          31,
+          86,
+          197,
+          215
+        ],
+        "cell": [
+          166,
+          129
+        ],
+        "logical": 221,
+        "old_cell": 170,
+        "frames": 10,
+        "rows": 1
+      }
+    },
+    "png_bytes": 2339875,
+    "raw_bytes": 18154268
+  }
+}

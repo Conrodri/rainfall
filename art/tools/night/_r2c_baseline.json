@@ -1,0 +1,178 @@
+{
+  "iron_heron": {
+    "group": "m1a",
+    "cfg": {
+      "dir": "mini/iron_heron",
+      "floor": false,
+      "dim": 125.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.35168,
+    "source": "art\\blender\\monsters\\m1a_iron_heron.blend",
+    "sha256": "f222401f181af0f1acf1e349719d5eb2b89ecfc589d0ad0abbf7baf609cb8f9b",
+    "png_bytes": 1353922,
+    "raw_bytes": 20808000
+  },
+  "vat_toad": {
+    "group": "m1a",
+    "cfg": {
+      "dir": "mini/vat_toad",
+      "floor": false,
+      "dim": 115.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.4692173913043478,
+    "source": "art\\blender\\monsters\\m1a_vat_toad.blend",
+    "sha256": "dcdc6968e05807fd305ab57f50a05f1fb8712933c9c62b6ea41de8818c5ff27a",
+    "png_bytes": 2827130,
+    "raw_bytes": 20808000
+  },
+  "scarecrow_reaper": {
+    "group": "m1a",
+    "cfg": {
+      "dir": "mini/scarecrow_reaper",
+      "floor": false,
+      "dim": 115.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.4692173913043478,
+    "source": "art\\blender\\monsters\\m1a_scarecrow_reaper.blend",
+    "sha256": "08efa7d9672a65b5fb8566503b30c00599a47c442e6d084f3a0c3695bb3e4691",
+    "png_bytes": 1702408,
+    "raw_bytes": 20808000
+  },
+  "steam_hound": {
+    "group": "m3a",
+    "cfg": {
+      "dir": "mini/steam_hound",
+      "floor": false,
+      "dim": 120.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.4080000000000001,
+    "source": "art\\blender\\monsters\\m3a_steam_hound.blend",
+    "sha256": "a29a75d4aac968dfa95404d91ce08fa823bba09128d69e9e044bfb4a837cd1ce",
+    "png_bytes": 2062867,
+    "raw_bytes": 20808000
+  },
+  "grinder": {
+    "group": "m3a",
+    "cfg": {
+      "dir": "mini/grinder",
+      "floor": false,
+      "dim": 110.0,
+      "bottom": 138.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.536,
+    "source": "art\\blender\\monsters\\m3a_grinder.blend",
+    "sha256": "ca83021d06407ea215d4ea8343737d9a800363f475fb32ddf816262f06abfef9",
+    "png_bytes": 2430816,
+    "raw_bytes": 21176640
+  },
+  "blind_pump": {
+    "group": "m3a",
+    "cfg": {
+      "dir": "mini/blind_pump",
+      "floor": false,
+      "dim": 125.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.35168,
+    "source": "art\\blender\\monsters\\m3a_blind_pump.blend",
+    "sha256": "cd0fb3c55b4e3fe3476a1744d2f1f3bc7d5d14933f72fceccdb5901e51b651f7",
+    "png_bytes": 2674985,
+    "raw_bytes": 20808000
+  },
+  "ossuary_bearer": {
+    "group": "m4a",
+    "cfg": {
+      "dir": "mini/ossuary_bearer",
+      "floor": false,
+      "dim": 120.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.4080000000000001,
+    "source": "art\\blender\\monsters\\m4a_ossuary_bearer.blend",
+    "sha256": "28624195adfc4e4dbe8aa694af98b0dbeca0fd930605a9d67767ab5a77eecd30",
+    "png_bytes": 2534696,
+    "raw_bytes": 21135680
+  },
+  "blind_swarm": {
+    "group": "m4a",
+    "cfg": {
+      "dir": "mini/blind_swarm",
+      "floor": false,
+      "dim": 110.0,
+      "bottom": 135.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.536,
+    "source": "art\\blender\\monsters\\m4a_blind_swarm.blend",
+    "sha256": "37f78baa6967eb0e4fa9b0c558b0d0690ed721e6362d3ab28478307c2178d54f",
+    "png_bytes": 1701133,
+    "raw_bytes": 20808000
+  },
+  "salt_golem": {
+    "group": "m4a",
+    "cfg": {
+      "dir": "mini/salt_golem",
+      "floor": false,
+      "dim": 125.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.35168,
+    "source": "art\\blender\\monsters\\m4a_salt_golem.blend",
+    "sha256": "871c605efb504436466f4f375fc8dc1c6303325a3872f2bfe11310efe6526f7c",
+    "png_bytes": 2945966,
+    "raw_bytes": 20808000
+  },
+  "blind_lamplighter": {
+    "group": "m4b",
+    "cfg": {
+      "dir": "mini/blind_lamplighter",
+      "floor": false,
+      "dim": 120.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.4080000000000001,
+    "source": "art\\blender\\monsters\\m4b_blind_lamplighter.blend",
+    "sha256": "e8bd89d3cb34bb813f16eda0c6198a3f55a4b9d24ac1a14c940366e6de4847be",
+    "png_bytes": 1226637,
+    "raw_bytes": 20808000
+  },
+  "sarcophagus_crab": {
+    "group": "m4b",
+    "cfg": {
+      "dir": "mini/sarcophagus_crab",
+      "floor": false,
+      "dim": 130.0,
+      "bottom": 140.0,
+      "fh": 170.0,
+      "energy": 2.0
+    },
+    "scale": 1.2996923076923077,
+    "source": "art\\blender\\monsters\\m4b_sarcophagus_crab.blend",
+    "sha256": "aa54ca3b79a3f2443aaf3a518304aac030d545c9ab8fc53eeb9f67d3e3863620",
+    "png_bytes": 1632243,
+    "raw_bytes": 20808000
+  }
+}

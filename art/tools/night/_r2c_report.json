@@ -1,0 +1,54 @@
+{
+  "subjects": [
+    "iron_heron",
+    "vat_toad",
+    "scarecrow_reaper",
+    "steam_hound",
+    "grinder",
+    "blind_pump",
+    "ossuary_bearer",
+    "blind_swarm",
+    "salt_golem",
+    "blind_lamplighter",
+    "sarcophagus_crab"
+  ],
+  "diffuse_sheets": 79,
+  "rendered_frames": 1584,
+  "profile": "creature",
+  "normals": false,
+  "emission_ratio": 0.5,
+  "budgets_MiB": {
+    "before": {
+      "raw": 218.949,
+      "png": 22.023,
+      "mobile": 11.173,
+      "vram": 54.737,
+      "global_violations": [
+        "cat\u00e9gorie bosses : 72.6 Mo mobile > budget 45 Mo",
+        "APK estim\u00e9 7928 Mo > 200 Mo",
+        "textures mobiles 187 Mo > 180 Mo"
+      ]
+    },
+    "after": {
+      "raw": 237.593,
+      "png": 36.384,
+      "mobile": 18.618,
+      "vram": 59.398,
+      "global_violations": [
+        "cat\u00e9gorie bosses : 84.7 Mo mobile > budget 45 Mo",
+        "APK estim\u00e9 7940 Mo > 200 Mo",
+        "textures mobiles 199 Mo > 180 Mo"
+      ]
+    }
+  },
+  "tests": {
+    "sprites_test": "OK",
+    "texture_budget_test": "FAIL (1)",
+    "minibosses_test": "OK"
+  },
+  "exceptions": [
+    "Requested art/blender/bosses/<id>_iso.blend absent; reused actual saved m1a/m3a/m4a/m4b cel rigs in art/blender/monsters.",
+    "disc and bone_pile: lossless crop only; their scale is fixed in miniboss_hazards.gd, which is outside authorized edits.",
+    "Body scales originally exceed 1; native display rendering increases mobile size. Global texture cap failed before this lot as well."
+  ]
+}

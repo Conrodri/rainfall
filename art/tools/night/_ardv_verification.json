@@ -1,0 +1,86 @@
+{
+  "pixels_per_unit": 90.50966799187809,
+  "camera_elevation": 30,
+  "camera_yaw": 45,
+  "flame_pillar": {
+    "ground_radius_u": 1.2,
+    "ground_radius_px": 108.6116,
+    "bed_outer_radius_px": 108.6116,
+    "ground_pivot_cell_px": [
+      128,
+      384
+    ],
+    "height_u": 4,
+    "cell": [
+      256,
+      768
+    ]
+  },
+  "sheets": {
+    "ember_orbs_iso": {
+      "size": [
+        768,
+        128
+      ],
+      "frames": 6,
+      "unique": 6
+    },
+    "flame_pillar": {
+      "size": [
+        3072,
+        768
+      ],
+      "frames": 12,
+      "unique": 12
+    },
+    "meteor_fall": {
+      "size": [
+        768,
+        384
+      ],
+      "frames": 6,
+      "unique": 6
+    },
+    "meteor_impact": {
+      "size": [
+        2560,
+        256
+      ],
+      "frames": 10,
+      "unique": 10
+    },
+    "phoenix": {
+      "size": [
+        2560,
+        2048
+      ],
+      "frames": 80,
+      "unique": 80
+    },
+    "telegraph_ring": {
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "unique": 1
+    }
+  },
+  "quality": {
+    "no_clipped_cells": true,
+    "all_regions_valid": true,
+    "all_emission_half": true,
+    "bed_horizontal_px": [
+      19,
+      236
+    ]
+  },
+  "validation": {
+    "import": "PASS",
+    "sprites_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (1): 187 Mo <= 180 Mo",
+    "batch_mobile_bytes": 981153,
+    "scoped_import_policy": "PASS",
+    "runtime_note": "ember_orbs_iso, meteor_fall, telegraph_ring are not loaded by the current supplied spell scripts; code deliberately unchanged"
+  }
+}

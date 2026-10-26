@@ -1,0 +1,142 @@
+# Rapport de la file de nuit Codex
+- 26/10 19:42 == groupe 1
+- 26/10 19:42 groupe 1 déjà fini, sauté
+- 26/10 19:42 == groupe 2
+- 26/10 19:42 groupe 2 déjà fini, sauté
+- 26/10 19:42 == groupe 3
+- 26/10 19:42 groupe 3 déjà fini, sauté
+- 26/10 19:42 == groupe 4
+- 26/10 19:42 groupe 4 déjà fini, sauté
+- 26/10 19:42 == groupe 5
+- 26/10 19:42 groupe 5 déjà fini, sauté
+- 26/10 19:42 == groupe 6
+- 26/10 19:42 groupe 6 déjà fini, sauté
+- 26/10 19:42 == groupe 7
+- 26/10 19:42 groupe 7 déjà fini, sauté
+- 26/10 19:42 == groupe 8
+- 26/10 19:42 groupe 8 déjà fini, sauté
+- 26/10 19:42 == groupe 9
+- 26/10 19:42 groupe 9 déjà fini, sauté
+- 26/10 19:42 == groupe 10
+- 26/10 19:42 groupe 10 déjà fini, sauté
+- 26/10 19:42 == groupe 11
+- 26/10 19:42 groupe 11 déjà fini, sauté
+- 26/10 19:42 == groupe 10
+- 26/10 19:42 groupe 10 déjà fini, sauté
+- 26/10 19:42 == groupe 11
+- 26/10 19:42 groupe 11 déjà fini, sauté
+- 26/10 19:42 == groupe 12
+- 26/10 19:42 groupe 12 déjà fini, sauté
+- 26/10 19:42 == groupe 13
+- 26/10 19:42 groupe 13 déjà fini, sauté
+- 26/10 19:42 == groupe 11
+- 26/10 19:42 groupe 11 déjà fini, sauté
+- 26/10 19:42 == groupe 12
+- 26/10 19:42 groupe 12 déjà fini, sauté
+- 26/10 19:42 == groupe 13
+- 26/10 19:42 groupe 13 déjà fini, sauté
+- 26/10 19:42 == groupe 12
+- 26/10 19:42 groupe 12 déjà fini, sauté
+- 26/10 19:42 == groupe 13
+- 26/10 19:42 groupe 13 déjà fini, sauté
+- 26/10 19:42 == groupe 12
+- 26/10 19:42 groupe 12 déjà fini, sauté
+- 26/10 19:42 == groupe 14
+- 26/10 19:42 groupe 14 déjà fini, sauté
+- 26/10 19:42 == groupe 15
+- 26/10 19:42 groupe 15 déjà fini, sauté
+- 26/10 19:42 == groupe 16
+- 26/10 19:42 groupe 16 déjà fini, sauté
+- 26/10 19:42 == groupe 17
+- 26/10 19:42 groupe 17 déjà fini, sauté
+- 26/10 19:42 == groupe 18
+- 26/10 19:42 groupe 18 déjà fini, sauté
+- 26/10 19:42 == groupe 19
+- 26/10 19:42 groupe 19 déjà fini, sauté
+- 26/10 19:42 == groupe 20
+- 26/10 19:42 groupe 20 déjà fini, sauté
+- 26/10 19:42 == groupe 21
+- 26/10 19:42 groupe 21 déjà fini, sauté
+- 26/10 19:42 == groupe 16
+- 26/10 19:42 groupe 16 déjà fini, sauté
+- 26/10 19:42 == groupe 17
+- 26/10 19:42 groupe 17 déjà fini, sauté
+- 26/10 19:42 == groupe 22
+- 26/10 19:42 lancement art/tools/night/_mn1.txt
+- 26/10 19:45 fin art/tools/night/_mn1.txt : che : `art/tools/night/_mn1_contact.png`. Import sans erreur ; tests sprites et textures : `RESULT: OK` ; `_e` demi-résolution ; aucun `_n`, aucun `.gd/.tscn` modifié ; `.tres` conservé. Budget global hors MN1 : `catégorie bosses : 72.6 Mo mobile > budget 45 Mo` ; `APK estimé 7918 Mo > 200 Mo`.
+- 26/10 19:46 sprites_test après groupe 22 : RESULT: OK
+- 26/10 19:46 == groupe 16
+- 26/10 19:46 groupe 16 déjà fini, sauté
+- 26/10 19:46 == groupe 23
+- 26/10 19:46 lancement art/tools/night/_hx1.txt
+- 26/10 19:48 fin art/tools/night/_hx1.txt : elles ; blanc neutre ; aucun `_n` ni `_e`. - `art/tools/night/hx1_build.py` : Eevee 8 échantillons, profil `vfx`, `normals=False`. - `art/tools/night/_hx1_contact.png` : contrôle visuel validé, 60×30 px, orientations 0°/135°/270°. - PNG optimisés : 31350 bytes ; aucun `.gd`/`.tscn` modifié.
+- 26/10 19:48 sprites_test après groupe 23 : RESULT: OK
+- 26/10 19:48 == groupe 24
+- 26/10 19:48 lancement art/tools/night/_wt1.txt
+- 26/10 19:51 fin art/tools/night/_wt1.txt : ; arête y = 8 ; bas transparent. - `art/tools/night/wt1_build.py` : Eevee, cel `tile`, 2 tons ; aucun `_n` / `_e`. - `art/tools/night/_wt1_contact.png` : planche vérifiée. - Import sans erreur ; maps_test et stage_test → `RESULT: OK`. - stage_test : avertissement de coffre hors zone accessible.
+- 26/10 19:51 sprites_test après groupe 24 : RESULT: OK
+- 26/10 19:51 == groupe 25
+- 26/10 19:51 lancement art/tools/night/_mb1.txt
+- 26/10 19:55 fin art/tools/night/_mb1.txt : mal map ; run/charge préservés. Script : `art/tools/night/mb1_build.py` ; planche : `art/tools/night/_mb1_contact.png`. Godot import sans erreur ; deux tests → `RESULT: OK`. Faune : `ERROR: 13 resources still in use at exit`. Budget : aucun dépassement nouveau ; `HORS BUDGET (2)` préexistants.
+- 26/10 19:55 sprites_test après groupe 25 : RESULT: OK
+- 26/10 19:55 == groupe 26
+- 26/10 19:55 lancement art/tools/night/_uxmb.txt
+- 26/10 19:57 fin art/tools/night/_uxmb.txt : .png` 64×64 ; RGBA optimisés. - Cel `ui`, 2 tons ; contours sombres ; marges validées. - Lisibilité vérifiée à 40 px sur les 3 fonds. - Script : `art/tools/night/uxmb_build.py`. - Planche : `art/tools/night/_uxmb_contact.png`. - Aucun `_n`, `_e`, `.gd`, `.tscn` ou `.tres` produit ou modifié.
+- 26/10 19:58 sprites_test après groupe 26 : RESULT: OK
+- 26/10 19:58 == groupe 27
+- 26/10 19:58 lancement art/tools/night/_uxhudb.txt
+- 26/10 19:59 fin art/tools/night/_uxhudb.txt : �s ; teintes demandées vérifiées. - Contraste minimal de palette : 3.75:1 sur #0B0907. - Script : `art/tools/night/uxhudb_build.py` ; profil `ui`, `normals=False`. - Planche vérifiée : `art/tools/night/_uxhudb_contact.png` — 100 %, 60 %, 20 %. - Aucun `_n`, `.gd`, `.tscn` ou `.tres` modifié.
+- 26/10 19:59 sprites_test après groupe 27 : RESULT: OK
+- 26/10 19:59 == groupe 28
+- 26/10 19:59 lancement art/tools/night/_uxhud_icons.txt
+- 26/10 20:05 fin art/tools/night/_uxhud_icons.txt : x. [Planche contact](art/tools/night/_uxhud_icons_contact.png) · [Mesures](art/tools/night/_uxhud_icons_verification.json). Aucun `_n`/`_e` livré ; sorts et code non touchés. PNG optimisés ; textures > 4096 px : 0. Budget global hors seuil : bosses 72.6 Mo > 45 Mo ; APK estimé 7919 Mo > 200 Mo.
+- 26/10 20:05 sprites_test après groupe 28 : RESULT: OK
+- 26/10 20:05 == groupe 29
+- 26/10 20:05 lancement art/tools/night/_uxa11y.txt
+- 26/10 20:09 fin art/tools/night/_uxa11y.txt : gendaires. PASS : dimensions, RGBA, marges, 8 tirets ; aucun `_n`. Aucun `.gd`, `.tscn` ou `.tres` modifié. Script : `art/tools/night/uxa11y_build.py` Planche contrôlée : `art/tools/night/_uxa11y_contact.png` Budget global : `HORS BUDGET (2)` — bosses `72.6 Mo > 45 Mo` ; APK `7919 Mo > 200 Mo`.
+- 26/10 20:09 sprites_test après groupe 29 : RESULT: OK
+- 26/10 20:09 == groupe 30
+- 26/10 20:09 lancement art/tools/night/_uxreglages.txt
+- 26/10 20:11 fin art/tools/night/_uxreglages.txt : RGBA 160x88, optimisés. - Cel `ui`, Eevee 8 échantillons ; aucun `_n` ni `_e`. - `art/tools/night/uxreglages_build.py` : script reproductible. - `art/tools/night/_uxreglages_contact.png` : contrôle visuel PASS, deux fonds, deux tailles, niveaux de gris. - Aucun `.gd`, `.tscn` ou `.tres` modifié.
+- 26/10 20:11 sprites_test après groupe 30 : RESULT: OK
+- 26/10 20:11 == groupe 31
+- 26/10 20:11 lancement art/tools/night/_uxl8.txt
+- 26/10 20:15 fin art/tools/night/_uxl8.txt : � : 11 PNG RGBA ; 2 masques _e à demi-résolution. PASS : dimensions, couleurs à ±1, contraste ≥ 3:1 ; aucun _n. Anciens boutons conservés ; aucun .gd/.tscn/.tres modifié. Script : `art/tools/night/uxl8_build.py` Planche : [art/tools/night/_uxl8_contact.png](art/tools/night/_uxl8_contact.png)
+- 26/10 20:15 sprites_test après groupe 31 : RESULT: OK
+- 26/10 20:15 == groupe 32
+- 26/10 20:15 lancement art/tools/night/_uxl9.txt
+- 26/10 20:16 fin art/tools/night/_uxl9.txt :  orientation +X ; marge 4 px. - Eevee ; cel `ui` ; contours géométriques ; contraste >= 3:1. - Aucun `_n`, `_e`, `.gd`, `.tscn` ou `.tres` modifié. - Script : `art/tools/night/uxl9_build.py` ; vérifications PASS. - Planche : `art/tools/night/_uxl9_contact.png` ; silhouettes vérifiées à 32 px.
+- 26/10 20:16 sprites_test après groupe 32 : RESULT: OK
+- 26/10 20:16 == groupe 33
+- 26/10 20:16 lancement art/tools/night/_c8e_wake.txt
+- 26/10 20:21 fin art/tools/night/_c8e_wake.txt : sses/etage/deep_eel/black_pool_e.png.import`. Godot : import sans erreur ; deux tests `RESULT: OK` ; avertissement `5 ObjectDB instances were leaked at exit`. Textures > 4096 : 0 ; dépassements globaux : bosses 72.6 Mo > 45, APK 7919 Mo > 200. [Planche vérifiée](art/tools/night/_c8e_contact.png).
+- 26/10 20:21 sprites_test après groupe 33 : RESULT: OK
+- 26/10 20:21 == groupe 34
+- 26/10 20:21 lancement art/tools/night/_ricv.txt
+- 26/10 20:24 fin art/tools/night/_ricv.txt : _e` demi-résolution ; aucun `_n`, `.gd` ou `.tscn` modifié. Script : `art/tools/night/ricv_build.py` ; planche : `art/tools/night/_ricv_contact.png`. Import terminé ; 3 tests → `RESULT: OK` ; budget mobile : 178 Mo <= 180 Mo. Godot : `ERROR: 4 resources still in use at exit` ; code de sortie 0.
+- 26/10 20:25 sprites_test après groupe 34 : RESULT: OK
+- 26/10 20:25 == groupe 35
+- 26/10 20:25 lancement art/tools/night/_avsv.txt
+- 26/10 20:31 fin art/tools/night/_avsv.txt : cn`. Script : `art/tools/night/avsv_build.py`. Planche : `art/tools/night/_avsv_contact.png`. `sprites_test`, `averse_variants_test` → `RESULT: OK`. `texture_budget_test` → `RESULT: FAIL (1)` : `187 Mo <= 180 Mo`. Import : erreur hors périmètre `legendary_effects.gd:168`, variable `radius_px`.
+- 26/10 20:31 sprites_test après groupe 35 : RESULT: OK
+- 26/10 20:31 == groupe 36
+- 26/10 20:31 lancement art/tools/night/_bouv.txt
+- 26/10 20:34 fin art/tools/night/_bouv.txt :  : `art/tools/night/_bouv_contact.png`. `sprites_test`, `bourbe_variants_test` → `RESULT: OK`. Compilation : `game/scripts/items/legendary_effects.gd:168`, `radius_px` ; aucun `.gd/.tscn` modifié. `texture_budget_test` → `RESULT: FAIL (1)` : `187 Mo <= 180 Mo` ; politique d’import appliquée.
+- 26/10 20:35 sprites_test après groupe 36 : RESULT: OK
+- 26/10 20:35 == groupe 37
+- 26/10 20:35 lancement art/tools/night/_ardv.txt
+- 26/10 20:43 fin art/tools/night/_ardv.txt : s_iso`, `meteor_fall`, `telegraph_ring` : chargement absent des scripts actuels ; aucun `.gd/.tscn` modifié.   [Planche de contrôle](/C:/Users/const/Documents/rainfall/art/tools/night/_ardv_contact.png) · [Vérifications](/C:/Users/const/Documents/rainfall/art/tools/night/_ardv_verification.json)
+- 26/10 20:44 sprites_test après groupe 37 : RESULT: OK
+- 26/10 20:44 == groupe 38
+- 26/10 20:44 lancement art/tools/night/_talv.txt
+- 26/10 20:47 fin art/tools/night/_talv.txt : 16 frames cel ; `_e` demi-résolution ; aucun `_n` ; aucun `.gd/.tscn` modifié. PASS : dimensions, atlas, ressources, import_policy ; planche contact vérifiée. Sources : `art/tools/night/talv_build.py` et 3 `.blend`. `texture_budget_test` : `RESULT: FAIL (1)` — budget global `187 Mo <= 180 Mo`.
+- 26/10 20:47 sprites_test après groupe 38 : RESULT: OK
+- 26/10 20:47 == groupe 39
+- 26/10 20:47 lancement art/tools/night/_r2a.txt
+- 26/10 20:47 lancement art/tools/night/_r2b.txt
+- 26/10 20:47 lancement art/tools/night/_r2c.txt
+- 26/10 21:02 fin art/tools/night/_r2c.txt :  : `11.173 → 18.618 MiB` — agrandissement requis. `sprites_test`, `minibosses_test` : `RESULT: OK`. `texture_budget_test` : `RESULT: FAIL (1)` — `200 Mo > 180 Mo`. Exceptions : `disc`, `bone_pile`, échelle codée ; [rapport](C:/Users/const/Documents/rainfall/art/tools/night/_r2c_report.json).
+- 26/10 21:09 fin art/tools/night/_r2a.txt : : OK`. `texture_budget_test` : `RESULT: FAIL (1)` — `219 Mo <= 180 Mo`. VFX : échelles dynamiques conservées ; aucun `.gd/.tscn` modifié. [Rapport](C:/Users/const/Documents/Rainfall/art/blender/cel/r2a/summary.json) · [Contact](C:/Users/const/Documents/Rainfall/art/blender/cel/r2a/contact.png)
+- 26/10 21:12 fin art/tools/night/_r2b.txt : ets.   `sprites_test` et cinq boss : `RESULT: OK` ; `texture_budget_test` : `RESULT: FAIL (1)`, global `219 Mo / 180 Mo`.   Extras : échelles codées dans les `.gd` conservées ; objectif Android non atteint.   [Planche](art/tools/night/_r2b_contact.png) · [Rapport](art/tools/night/_r2b_report.md)
+- 26/10 21:12 sprites_test après groupe 39 : RESULT: OK
+- 26/10 21:12 FILE TERMINÉE

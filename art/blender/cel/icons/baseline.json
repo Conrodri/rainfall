@@ -1,0 +1,1599 @@
+{
+  "files": {
+    "game/assets/sprites/icons/frame_commun.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "8bdb9bc0063d2b7065e6fa9ad685cb15e6e1329f1f6f82f8d903f857928b8f82",
+      "bytes": 26852
+    },
+    "game/assets/sprites/icons/frame_legendaire.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        9,
+        4,
+        247,
+        252
+      ],
+      "sha256": "47912c34af734b449de9d46333c0e6fe4abf7df0e5df8f54a52e22ed86a5fb83",
+      "bytes": 31052
+    },
+    "game/assets/sprites/icons/frame_peu_commun.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "b5a38406778467ce05349d2143dbbc37d53dffc9419e5a15bb76c60ce8045bf6",
+      "bytes": 28239
+    },
+    "game/assets/sprites/icons/frame_rare.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "sha256": "76d124ade20c0a0688222ca08ec4f39c2486ca450f3c78d9f145992c6d7f05ae",
+      "bytes": 28295
+    },
+    "game/assets/sprites/icons/items/aimant_d_ame.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "sha256": "7d8b68efea656d2f0d032e779b8fd89f8542285d039819674c7efffef5b890ce",
+      "bytes": 54480
+    },
+    "game/assets/sprites/icons/items/aimant_de_poche.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "sha256": "ea8e671f71dfbf1ff58421cd63acb0cf83ccc90cd2b4f6bb73c46fc4a99bd25f",
+      "bytes": 47390
+    },
+    "game/assets/sprites/icons/items/amulette_de_cuir.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        49,
+        12,
+        207,
+        244
+      ],
+      "sha256": "0bc1af3678c89e81fd39c73548df11e475b52da4b86dd37cb709172c3d9b290a",
+      "bytes": 56655
+    },
+    "game/assets/sprites/icons/items/antidote.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        37,
+        12,
+        219,
+        244
+      ],
+      "sha256": "57c57f00e346d28d8c92bc7a62bf4412bfe6f1ac7cf82c74d14b7ba3b293d3b3",
+      "bytes": 69716
+    },
+    "game/assets/sprites/icons/items/armure_du_colosse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        53,
+        244,
+        203
+      ],
+      "sha256": "dd7c136fac7926332183ea021acc35a48346685e78ac2eeb72334c7b86b54058",
+      "bytes": 51168
+    },
+    "game/assets/sprites/icons/items/bague_de_vigueur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "sha256": "6978862b76b188ff65005c8c1a9ea2ebd6df1803e27fd74122157fe45a28fe5b",
+      "bytes": 50143
+    },
+    "game/assets/sprites/icons/items/botte_rapiecee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        35,
+        12,
+        221,
+        244
+      ],
+      "sha256": "f7f3ecad1c12117a755a2a90ba7a8be4172a1bec14add9834a4d67d4aabd11a6",
+      "bytes": 48447
+    },
+    "game/assets/sprites/icons/items/bouclier_reactif.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        19,
+        12,
+        237,
+        244
+      ],
+      "sha256": "37b1366d0994486b935386208f5ccfd9b5255142ca93b87e5181976589490748",
+      "bytes": 66747
+    },
+    "game/assets/sprites/icons/items/cape_de_brume.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "ca6fb10cc30af2da7c62ec513a1b17852e26e42c748ea8e58895e4e2dcb7781a",
+      "bytes": 60948
+    },
+    "game/assets/sprites/icons/items/carquois_affute.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        54,
+        12,
+        201,
+        244
+      ],
+      "sha256": "0595e106eb42a504073a9ced8467d2be389e76486c71c8879f4fb878e840ef91",
+      "bytes": 51447
+    },
+    "game/assets/sprites/icons/items/chronometre_brise.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        20,
+        12,
+        235,
+        244
+      ],
+      "sha256": "b982b3cb8077bf7e3cca45f9af5a407db6bda924dbb39894005dfb06ca19006a",
+      "bytes": 73538
+    },
+    "game/assets/sprites/icons/items/coeur_de_glace.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        29,
+        12,
+        227,
+        244
+      ],
+      "sha256": "07cfb331fbe238f310c670c9138e6b7932ed13b804ddabdfd82568416085a06c",
+      "bytes": 64083
+    },
+    "game/assets/sprites/icons/items/coeur_de_mousse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        24,
+        244,
+        233
+      ],
+      "sha256": "b246fde591210ed41a5a5382974d81979b7950629b3f098fdd43db5b3dfaebb4",
+      "bytes": 52727
+    },
+    "game/assets/sprites/icons/items/coeur_du_chronomancien.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "sha256": "442f14cffa9bd04ac5aa8dfea0f668cdad74917af4f413882cd3b96ee100f5b6",
+      "bytes": 63420
+    },
+    "game/assets/sprites/icons/items/couronne_d_echo.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        26,
+        12,
+        230,
+        244
+      ],
+      "sha256": "e741faebe2102b894bcc90fd38e0b84c90659583ea9400c2f255e325427066ea",
+      "bytes": 72823
+    },
+    "game/assets/sprites/icons/items/cristal_de_feu.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        16,
+        12,
+        240,
+        244
+      ],
+      "sha256": "862eea1aa4af6c8d188f91aca85ce1d098568669e0ff9b0e5cad3cf7535d95a7",
+      "bytes": 78122
+    },
+    "game/assets/sprites/icons/items/danseur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        15,
+        12,
+        241,
+        244
+      ],
+      "sha256": "3a11fa9da1876e340144bea381901752d18a8bfcfe00f1105549891bcd17cd40",
+      "bytes": 48685
+    },
+    "game/assets/sprites/icons/items/de_pipe.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "sha256": "0e8e6507f7a91b4aef3f64ef314dd1e30dbd5061522943b96bd70e574d0ceecd",
+      "bytes": 61767
+    },
+    "game/assets/sprites/icons/items/eclair_en_bouteille.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        59,
+        12,
+        196,
+        244
+      ],
+      "sha256": "6f356a76ed08bce79daab2f8c9596803402ef959b87a489db617f03ffae3e3f9",
+      "bytes": 56061
+    },
+    "game/assets/sprites/icons/items/eclat_d_experience.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        14,
+        244,
+        242
+      ],
+      "sha256": "f1ee370a50e216ab36f8306e13bec5aa2095d695b495669e921c4f0830db3ce3",
+      "bytes": 81072
+    },
+    "game/assets/sprites/icons/items/epines.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        15,
+        244,
+        240
+      ],
+      "sha256": "2bd9aa099861320b54c14396f176fd098435a7f2baa2960097307517f617f1ff",
+      "bytes": 26905
+    },
+    "game/assets/sprites/icons/items/etincelle.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        35,
+        12,
+        220,
+        244
+      ],
+      "sha256": "e8aa854dc4b7e449c3a86e3746939e871ae6865eb33b446ab1889284856ed368",
+      "bytes": 50183
+    },
+    "game/assets/sprites/icons/items/faveur_du_marchand.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "dd5ca68f9e803e422efc2b67725ff572229e171fb1a20ddccc58239a07901e05",
+      "bytes": 74232
+    },
+    "game/assets/sprites/icons/items/fiole_verte.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        48,
+        12,
+        208,
+        244
+      ],
+      "sha256": "ed5ccd5f141e47f8392e9cec1c252aeb8cc5d2adf630584295850af1b8da5cf5",
+      "bytes": 63900
+    },
+    "game/assets/sprites/icons/items/flocon.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "43443155a847ccbd60ed8d2e0aac8d9673d57d348fff90d245ebaba12c6912e6",
+      "bytes": 48797
+    },
+    "game/assets/sprites/icons/items/givre.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "sha256": "27875969f76005c9ec774f5260356813d4e2138b1403e504c3ea550699810d35",
+      "bytes": 61446
+    },
+    "game/assets/sprites/icons/items/horloge_arcanique.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "sha256": "c234070d74b4d10f312f2f5d93db7602102a75b2f2554e4527a55625d42fb50c",
+      "bytes": 86640
+    },
+    "game/assets/sprites/icons/items/lame_jumelle.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        19,
+        12,
+        238,
+        244
+      ],
+      "sha256": "4836431832754219c0d1b7ae15793f17dbe9c3d369dfd15e2d6419776b4fd4e0",
+      "bytes": 66485
+    },
+    "game/assets/sprites/icons/items/lentille_aiguisee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "c3a91420846b9c3531a11adbb8407358ee313231452d6da596dc500674c59624",
+      "bytes": 66127
+    },
+    "game/assets/sprites/icons/items/marque_du_chasseur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "653c068fcad36a207c134a1f12853a5c8f9a7b5b5c8cbd144c9b3599e82e48dd",
+      "bytes": 86921
+    },
+    "game/assets/sprites/icons/items/moisson.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        34,
+        244,
+        222
+      ],
+      "sha256": "ce6c33e694687c06a9e4df89804babc3db899bb1f81dd6e9e5376eb127d8aea9",
+      "bytes": 53515
+    },
+    "game/assets/sprites/icons/items/morsure_vorace.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        27,
+        244,
+        229
+      ],
+      "sha256": "429cf2ca6912dcc4bb2247448bc3ff6b32a41e6cb9ebc1da83b6c1fb420f6ea8",
+      "bytes": 48555
+    },
+    "game/assets/sprites/icons/items/nova_infinie.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "sha256": "181d03663b79c95845e0221814598d2ba199d3fac895c80e9027628f38281cb9",
+      "bytes": 69878
+    },
+    "game/assets/sprites/icons/items/oeil_du_predateur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        24,
+        244,
+        232
+      ],
+      "sha256": "03d80a581ebebc111131c63d87250b989c5ce9f11557cf58172ae42caa47a8ba",
+      "bytes": 72814
+    },
+    "game/assets/sprites/icons/items/orbe_de_veille.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        30,
+        12,
+        226,
+        244
+      ],
+      "sha256": "991d33c5fd2135de1ad17094bbe82c2ddb7ef8b70f641b53e9fdcfb8f0a687a2",
+      "bytes": 73862
+    },
+    "game/assets/sprites/icons/items/pavois_fele.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "sha256": "00995022623a3d181f18484ba35be132a3f135b53fbbf837833fbaafdce6e7df",
+      "bytes": 79658
+    },
+    "game/assets/sprites/icons/items/peste_vivante.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        21,
+        244,
+        235
+      ],
+      "sha256": "a8d9940bf73bd24eadaedd2f854c663fd4b16a9a1a768578a25b9190ee634e68",
+      "bytes": 68788
+    },
+    "game/assets/sprites/icons/items/phenix_de_poche.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "82d41ef6ae65d13003040a9b162a7379234661bc59ac730f76225ec8d99830a2",
+      "bytes": 104988
+    },
+    "game/assets/sprites/icons/items/piece_porte_bonheur.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        18,
+        244,
+        238
+      ],
+      "sha256": "3b4fe98e830f0bade443e77977b2e89d82fc1294c52a157c59cb5e0fc77e39c5",
+      "bytes": 100255
+    },
+    "game/assets/sprites/icons/items/pierre_a_aiguiser.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        42,
+        244,
+        213
+      ],
+      "sha256": "713882e6b7fe2eac0b657bd0aaae6e5dc3632746caa2d0c78ac22ceee864d8a1",
+      "bytes": 49879
+    },
+    "game/assets/sprites/icons/items/plume_d_empenne.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "sha256": "273b5b1bad769e192fcc674ae2e0119391457a938bf5bd1480b4f057d6445f3e",
+      "bytes": 51801
+    },
+    "game/assets/sprites/icons/items/pointe_perforante.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        74,
+        12,
+        182,
+        244
+      ],
+      "sha256": "4695c5d9e50b882719fd33dc4eb52346574e462de79ea051b32b50b9df86a533",
+      "bytes": 28044
+    },
+    "game/assets/sprites/icons/items/rafale_d_acier.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        28,
+        244,
+        228
+      ],
+      "sha256": "362df655bda325c0914c5874c26e64edf4367f245dc522abdb3d55c4bca16dd0",
+      "bytes": 64006
+    },
+    "game/assets/sprites/icons/items/rune_de_portee.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "sha256": "76c00f2eda09776364945100f8e408b5ea92fdbcd123586d12dffdd5981bff92",
+      "bytes": 81623
+    },
+    "game/assets/sprites/icons/items/sablier_fele.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "sha256": "fe8fc3a2f4a6d8a3c014cc7a021e8d56abe9ebafeb9d8634849150a3467dc3ca",
+      "bytes": 53568
+    },
+    "game/assets/sprites/icons/items/sang_chaud.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        39,
+        12,
+        217,
+        244
+      ],
+      "sha256": "1b84eb5bdfdf01bfb35336bccd4173db6b57cd0d8fca3435ea9bc1624c9098df",
+      "bytes": 49211
+    },
+    "game/assets/sprites/icons/items/sifflet_de_chasse.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        12,
+        78,
+        244,
+        179
+      ],
+      "sha256": "b70041632bf273897796467a8bf75387d45d3dce3c73320a6f6656bb4492e7ab",
+      "bytes": 27276
+    },
+    "game/assets/sprites/icons/items/tempete_de_braises.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        34,
+        12,
+        222,
+        244
+      ],
+      "sha256": "bf1d4dfd0e2bf3c3c433fb1e565182d0b22936be0c3749bb61bb8e161f685e46",
+      "bytes": 54734
+    },
+    "game/assets/sprites/icons/items/tonique_vital.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        41,
+        12,
+        215,
+        244
+      ],
+      "sha256": "4be0f792cfc7171010a46bbd6b2eb4914d5832f9b01bddc302fbc599c7a6aadb",
+      "bytes": 58097
+    },
+    "game/assets/sprites/icons/items/venin_concentre.png": {
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "sha256": "d95f85dfae66e0c57b532e20f664ad1cfe6d9f0fec3684d03f0859e1eedfd48c",
+      "bytes": 60167
+    },
+    "game/assets/sprites/ui/crit_icon.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        8,
+        122,
+        120
+      ],
+      "sha256": "0c1732c1442c3f565c14112ba213cdf193cfb815816579262b24f556215e85f2",
+      "bytes": 12888
+    },
+    "game/assets/sprites/ui/dice/d100_face_commun.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "e993acd8ac244c91cd5082b8dbf535480a4aaadf0713776da58fb59203fe3ec0",
+      "bytes": 21295
+    },
+    "game/assets/sprites/ui/dice/d100_face_legendaire.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "367ec888c800df9180d58d35ccf5c58dc769ec31cae3b3920ac70a2b1c8aa2a0",
+      "bytes": 21603
+    },
+    "game/assets/sprites/ui/dice/d100_face_peu_commun.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "4ac9bbe3e0f643a0b2d03029593b09591073b1ffd76eb88294d5b745c36e1867",
+      "bytes": 21339
+    },
+    "game/assets/sprites/ui/dice/d100_face_rare.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "2fce17c17a05baaf549fcb3b6a24987003b09ebfa5511d35f3a5c3447ea994af",
+      "bytes": 21434
+    },
+    "game/assets/sprites/ui/dice/d100_rot_00.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        9,
+        7,
+        120,
+        121
+      ],
+      "sha256": "020a6940a7fc485341fa62252c9d1ce611524ffdd686d17105c98ef2c5630941",
+      "bytes": 19655
+    },
+    "game/assets/sprites/ui/dice/d100_rot_01.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "26e412f6f00fbe9c1430b48e703d13e843cdef91cb21b49595e0b68dfa366a40",
+      "bytes": 23441
+    },
+    "game/assets/sprites/ui/dice/d100_rot_02.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "705adb29805baa86c6ca6ac86a41af26164188a91a918bd6ca7b0e3e3603669f",
+      "bytes": 22053
+    },
+    "game/assets/sprites/ui/dice/d100_rot_03.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "ff2e801e61fdc75c19990181413a0afd6c555597b1088a8e0c3c5b587282fa0d",
+      "bytes": 18904
+    },
+    "game/assets/sprites/ui/dice/d100_rot_04.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        9,
+        122,
+        119
+      ],
+      "sha256": "b1f10385c187817e8a59efd67afd900c5892d8dac0f4636564f737924b570994",
+      "bytes": 17858
+    },
+    "game/assets/sprites/ui/dice/d100_rot_05.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "6f8c72e812de66d402f2182eda1271312aeb0ba7a8828d850d28e6ca07bb68b6",
+      "bytes": 18412
+    },
+    "game/assets/sprites/ui/dice/d100_rot_06.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "5d8934bf8e1fe1f38711303a84826c1b7a935cc8a93f9c508047af7b8850e13f",
+      "bytes": 19011
+    },
+    "game/assets/sprites/ui/dice/d100_rot_07.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "0633f04f71a110a47d61a4c7e6921d5a8d63a9982620cc5d277de7d0531c1f50",
+      "bytes": 22408
+    },
+    "game/assets/sprites/ui/dice/d100_rot_08.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "sha256": "5f8d712133958045883227c9c3ca8ed4d9c2c337d10caa5265f726ddac9efb9d",
+      "bytes": 23246
+    },
+    "game/assets/sprites/ui/dice/d100_rot_09.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "sha256": "d59ce9d91ddce926e982f0b5222e27269ff1ec821a33139f5689ff0ec68806a5",
+      "bytes": 21463
+    },
+    "game/assets/sprites/ui/dice/d100_rot_10.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "01a65b9fae46964472eaac717a819f94bd8d9aff3e509125a05ae65e6cc187fa",
+      "bytes": 20657
+    },
+    "game/assets/sprites/ui/dice/d100_rot_11.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "sha256": "8861e102cf85ead3864aad4dd8c537094f68f394e0dc8ede28f4c7e04de8e400",
+      "bytes": 21994
+    },
+    "game/assets/sprites/ui/dice/d100_rot_12.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        7,
+        120,
+        121
+      ],
+      "sha256": "fec43d7ae2fb700e8182f19bd55000c24e2064f6a3126e33bce53971065e7350",
+      "bytes": 21216
+    },
+    "game/assets/sprites/ui/dice/d100_rot_13.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "27948827fea183af5f9d02f22841a18a6c47043c54be22c7e32d9459123c085a",
+      "bytes": 21094
+    },
+    "game/assets/sprites/ui/dice/d100_rot_14.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "27178728ab7e73965eda7c4f5757387e133fa81d22d0a358892f0a10210da067",
+      "bytes": 21595
+    },
+    "game/assets/sprites/ui/dice/d100_rot_15.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "140bedc7523ba6d687702cd478cb6d871111fac337fa6ee8ec0c2e659adc27be",
+      "bytes": 24188
+    },
+    "game/assets/sprites/ui/dice/d100_rot_16.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        9,
+        6,
+        119,
+        122
+      ],
+      "sha256": "ae618433e7525234f9a300d98dba904186fb5b0cb3f017df24bee30aacdd846e",
+      "bytes": 20897
+    },
+    "game/assets/sprites/ui/dice/d100_rot_17.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "sha256": "0699bcd7b66a3cef9ed26dad8fb4c12d4d433cac674f93768f410d2a1e48d35f",
+      "bytes": 19065
+    },
+    "game/assets/sprites/ui/dice/d100_rot_18.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        6,
+        120,
+        122
+      ],
+      "sha256": "ce76d0ad5e935367acf6c45331ec2c7417a12b1df67793ff637e025c097bef39",
+      "bytes": 18037
+    },
+    "game/assets/sprites/ui/dice/d100_rot_19.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "sha256": "c234ad7e0c1c0522ec323278a93b1997e61fe5f1dbf13d9877154631f0a45062",
+      "bytes": 17595
+    },
+    "game/assets/sprites/ui/hud/icon_gold.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "1d9f65a72c8312ae55e0c1ace79b3b1d367188d836e5c5c63453e7750a9b1711",
+      "bytes": 21756
+    },
+    "game/assets/sprites/ui/hud/icon_interact_hand.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "sha256": "465bbe2c97d87fe9c22ce1b816c06b500ea0b154bdef3b8d61b102d22c3ec2e0",
+      "bytes": 24791
+    },
+    "game/assets/sprites/ui/hud/icon_pause.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "8e128e84d854db7418077a7ab75cd8212e325eb1578e19c5a2a8bd8e12af1772",
+      "bytes": 18393
+    },
+    "game/assets/sprites/ui/hud/icon_ruby.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "sha256": "16cf37c0ec3116b01309d7ce0cc8ec588590783d0e3b9948f1e2a53492c695ee",
+      "bytes": 12438
+    },
+    "game/assets/sprites/ui/hud/icon_settings.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "sha256": "a9e57540dce2aa80517ff148c76772c8ea5731d4fc67ef4c19b98575c97eb69f",
+      "bytes": 17736
+    },
+    "game/assets/sprites/ui/hud/icon_xp.png": {
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        6,
+        10,
+        122,
+        118
+      ],
+      "sha256": "e048b93b7b7210ac16a8b8d94586142620ab98c328bdceea95f215581ff89889",
+      "bytes": 15146
+    },
+    "game/assets/sprites/ui/interact/interact_disabled.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "1effee3115304ea43dea5e8690aa7d0cce4e49820438ef6d6a14a159dbe06245",
+      "bytes": 69999
+    },
+    "game/assets/sprites/ui/interact/interact_normal.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "f5cdbc305a953d993617c287b21ea527395c5f4d4ecb872b93396a854800fd23",
+      "bytes": 69970
+    },
+    "game/assets/sprites/ui/interact/interact_pressed.png": {
+      "size": [
+        200,
+        200
+      ],
+      "bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "sha256": "f81c98ca34fbc9571e03504661458d6520c07176cb9b2f02d883f83e60b4058d",
+      "bytes": 70066
+    }
+  },
+  "protected": {
+    "game/assets/sprites/icons/frame_commun.png.import": "407b57dcd993b4b1f6297508a29f36b83754665faf82224b0bd1d43b3c5a6cde",
+    "game/assets/sprites/icons/frame_legendaire.png.import": "0f96492b50e742ac8596d90320f41bc07509c64905f422618d47832d81c3f780",
+    "game/assets/sprites/icons/frame_peu_commun.png.import": "d59e5181b02d480f1fd0b71e1676eded61367d0c3a191e7c9ccd9b218a6e2265",
+    "game/assets/sprites/icons/frame_rare.png.import": "a19074cab8cfe33723677527948053126e551f5f74eac10199135a9246216a81",
+    "game/assets/sprites/icons/items/aimant_de_poche.png.import": "4288f7a2f7c143d6d61a517635bdc4e3e863395501111de45c07ce57ef4f1c7a",
+    "game/assets/sprites/icons/items/aimant_d_ame.png.import": "fc2000fcbbd8dae564981be49c376b69ec22a4c63733d6cfc7a226059fb85b3d",
+    "game/assets/sprites/icons/items/amulette_de_cuir.png.import": "1eb9a1e13a106165eefb5a7ec47906c3879fc71b3ea97f8b1a4268c464101127",
+    "game/assets/sprites/icons/items/antidote.png.import": "ab2c3681ac59bbaeb172a7cd26e0e3f28e76ce837181eed296aef8ad3b6836a3",
+    "game/assets/sprites/icons/items/armure_du_colosse.png.import": "de7ca746ef9fc0465ca539de7e2daf25cdaac36ce4e493d3ad790cdf1c3ff728",
+    "game/assets/sprites/icons/items/bague_de_vigueur.png.import": "97256961dca8fff551041a4851e4ae5cff7d9aa3fc551cce05757ed8b82944f0",
+    "game/assets/sprites/icons/items/botte_rapiecee.png.import": "2fc1e831b0f37aaa2ce8d91dd99c20ba5b8f47643c00e3abbf0616372b292d5e",
+    "game/assets/sprites/icons/items/bouclier_reactif.png.import": "699d32e17dac06e22504265dc74074467ea7829f6f5191b2cd3481bb94e66c83",
+    "game/assets/sprites/icons/items/cape_de_brume.png.import": "c78e18163a0f1c982a267beaad8702b70d2d43becac02bccf7662dba7fec6a49",
+    "game/assets/sprites/icons/items/carquois_affute.png.import": "e08e9d7bdbb5ee58f566c4b39e41627845da2fa0147203fb34b78edcd6492ead",
+    "game/assets/sprites/icons/items/chronometre_brise.png.import": "007f61a43370fa5238c1ddd0c6c93bcab4cb2f54d7b14e0449184e06c44bf12d",
+    "game/assets/sprites/icons/items/coeur_de_glace.png.import": "710f561a9069035397b00993b33f19ace894aa96bbb8d4010e269489a8d8f5cd",
+    "game/assets/sprites/icons/items/coeur_de_mousse.png.import": "28b4a26776def672143861fb33ee75c7ce9df2be9d15f8b9c4754570a8c64469",
+    "game/assets/sprites/icons/items/coeur_du_chronomancien.png.import": "0f4c0975bcec332ca8135e5c95f95d6be5a07886df5334f4d2a8a0ead1028f65",
+    "game/assets/sprites/icons/items/couronne_d_echo.png.import": "6e3adea54012e9d42d9f1d3f58ed1f250012ca23804b57bc4392f84e891b734d",
+    "game/assets/sprites/icons/items/cristal_de_feu.png.import": "698f540e4c96840877945b32034e2566fbef03cc5f670e43581bc30413a5c347",
+    "game/assets/sprites/icons/items/danseur.png.import": "35975807601da9af5874d54d2e53bf8275c7561735cdd577716e47fc97508717",
+    "game/assets/sprites/icons/items/de_pipe.png.import": "7ff21dbc9e38e22f21e74f42ebafd5af59d71404eb434900c35ae431a9643ffc",
+    "game/assets/sprites/icons/items/eclair_en_bouteille.png.import": "3d3c9618f011fd0aef284383384a0cca48836429e9b45555b41a8e0a018b8d67",
+    "game/assets/sprites/icons/items/eclat_d_experience.png.import": "ffe222f0e00466fde495ec86d3e1766a9bdf12b682dde116fb2e428a017f923c",
+    "game/assets/sprites/icons/items/epines.png.import": "36724a886aeed9d1f8dcf6cc3140fe98d035625d933c8ef7ac40ba4b5be2e8c5",
+    "game/assets/sprites/icons/items/etincelle.png.import": "48739151a27612b62a03020da90e4403879fd99d3a0813b9a46f9caeb801d96d",
+    "game/assets/sprites/icons/items/faveur_du_marchand.png.import": "276d8dd8fe6aec50b13847119119a41317e2ae32ed78afeefd5f97e5a6c4b16e",
+    "game/assets/sprites/icons/items/fiole_verte.png.import": "f6b2bd23a29ee09e8679e8059e65f1bb80c7b74ed2fbe7447c0aeccf5e244a9d",
+    "game/assets/sprites/icons/items/flocon.png.import": "592267d3cd06ca04b6db98d09332a509799ac3982313b10a1305ba88d5fdec54",
+    "game/assets/sprites/icons/items/givre.png.import": "bc8725874e4a95df7b102618bc465318885795421720998531dd7d2d49dd21a9",
+    "game/assets/sprites/icons/items/horloge_arcanique.png.import": "f264980be839a061d9b0184d627ba00e58455dd493eca051e6fff89f6b16deec",
+    "game/assets/sprites/icons/items/lame_jumelle.png.import": "d9a4138e72384db2d7df56526b72e94f2b4cad0930ad7d49a09f9ce934ed5411",
+    "game/assets/sprites/icons/items/lentille_aiguisee.png.import": "bc84bda25d09484bccfce8e9d6ed86dee5a5816fbb882a4907287d148d4f3bc5",
+    "game/assets/sprites/icons/items/marque_du_chasseur.png.import": "5aeeb149b4fe4072ed1519d23d0f9a98e42c8bab851a62ab878602fb3f19e0ac",
+    "game/assets/sprites/icons/items/moisson.png.import": "db3f724a9582d4458aba4f7d5c4d11db1e02fd59a19110b855a83532a30df3b6",
+    "game/assets/sprites/icons/items/morsure_vorace.png.import": "bf7a15d78f8a5613e4b95b46e1f0249adc9dd9bfc5f406b21757dcb5af28ff37",
+    "game/assets/sprites/icons/items/nova_infinie.png.import": "e64a3b56320dd7ba7604b2218d42f36160c1e3938927794f46c00bb9d0eecf0f",
+    "game/assets/sprites/icons/items/oeil_du_predateur.png.import": "5f39599a40f8840c6227cca140fd4d5a86d7c4deae96435f0cdc91b223a3d78a",
+    "game/assets/sprites/icons/items/orbe_de_veille.png.import": "512b484258bc8c90d4ade86aca3e03cc37dd31de5133583a51b07ed5a5fd88d1",
+    "game/assets/sprites/icons/items/pavois_fele.png.import": "90a77c4c8173cc5a9d69a5c016a703c2fb74e7d64fd3736fd38d9beb62ca6779",
+    "game/assets/sprites/icons/items/peste_vivante.png.import": "b89d1b8dc0d715b6d8b28c29a9d9cefc0015de86fbac59d15282f9437ed197e4",
+    "game/assets/sprites/icons/items/phenix_de_poche.png.import": "ed757b06dfe36fd8fa8843e55f2df312e2adba80b951f50e250497ae260bcd53",
+    "game/assets/sprites/icons/items/piece_porte_bonheur.png.import": "a06f191e9e72d6d8ec0619f5100962cdadd8c1d702b7bd4d453cb02f716b21bd",
+    "game/assets/sprites/icons/items/pierre_a_aiguiser.png.import": "489ba7c0a8ddbdcb056dc46311d4a01d0db0c5ae737ea9cda071b1d54751a6b1",
+    "game/assets/sprites/icons/items/plume_d_empenne.png.import": "97c242895d0985d97d973f2b894e99abf6603e76f3484a0fd3c12b0c87a85661",
+    "game/assets/sprites/icons/items/pointe_perforante.png.import": "e72c493ec9792e59212939c6cb5135bb13a528e7238863a572d738b4cd78b4c1",
+    "game/assets/sprites/icons/items/rafale_d_acier.png.import": "30d5263d2d81e840ff9e3e2cd4d2e6233333b69413b8b9f7c3b292f3a2b96fac",
+    "game/assets/sprites/icons/items/rune_de_portee.png.import": "754fa38d58d3ff4004c7502209886be9b04ba0d088449bcc93adf0f7f8303e97",
+    "game/assets/sprites/icons/items/sablier_fele.png.import": "42dbd047194a3f4185045da66047509545681eed2edfbf174480cac6983f5c72",
+    "game/assets/sprites/icons/items/sang_chaud.png.import": "8937b3ac3af0c4291b6a4586ada949c409e425bcec18173016e4a11ab461c14f",
+    "game/assets/sprites/icons/items/sifflet_de_chasse.png.import": "27766b7dbf659d82a0bf7d6ff718825b6f1bb976ec16d0ca3deab38ff9411e00",
+    "game/assets/sprites/icons/items/tempete_de_braises.png.import": "01504ceb6add4b09c47885e1706930c9908bef32ada3037b2b56fac03a2ceae4",
+    "game/assets/sprites/icons/items/tonique_vital.png.import": "7e5839f7b8e543ae3f86ec7c095644f886cf8a42249d3ed80081df57c3456551",
+    "game/assets/sprites/icons/items/venin_concentre.png.import": "673a65272c0f9d79f07e41d2f96f8cf16b8d8553702b2e0c98131bffc5bfd14a",
+    "game/assets/sprites/icons/spells/arpenteuse_boucle.png": "2abcfcb8c95d5493f8816e4a844732592d8caf21ca50528d10e9479e51a26f30",
+    "game/assets/sprites/icons/spells/arpenteuse_boucle.png.import": "d1be9feaeaedea8ba9fbf3be2e95c78dd5076cc20c5cde1dbfe2a29d76b21d3a",
+    "game/assets/sprites/icons/spells/arpenteuse_chaine.png": "55055af392e625d2022d3f4824128d629b8afc1d9a1ed8788a5622bcf06d1734",
+    "game/assets/sprites/icons/spells/arpenteuse_chaine.png.import": "ebfc8a0f01242b1776f67322545b75a0880b0fc7c066354d863780ad72b0a2e1",
+    "game/assets/sprites/icons/spells/arpenteuse_piquet.png": "8aea371a457b6412ed9c6aad1f8362f2f78e1aaf0b545b08485285bb01048ede",
+    "game/assets/sprites/icons/spells/arpenteuse_piquet.png.import": "a41fb636497a7f4c1db1754d8d16f89128b7bd25ffd6be7dfa010c8ea98758b3",
+    "game/assets/sprites/icons/spells/arpenteuse_tendeur.png": "fd1cb3302bd3a7bb4bab8b1ccf74c1e51d298544ac33a3fc477ad0298ddb88f4",
+    "game/assets/sprites/icons/spells/arpenteuse_tendeur.png.import": "6547d733df9ed8733a859cdcbd2ed616cf4fb85c224a9d25d6e1aa68046c2903",
+    "game/assets/sprites/icons/spells/avare_coup_de_coffre.png": "1ce9ee6b81784b1f52adbabae7b85fb334e180c7dfdee39fb894183b53b74052",
+    "game/assets/sprites/icons/spells/avare_coup_de_coffre.png.import": "4d00cb5f6755765621ae202b45335afe29a02fdca221ea8f275ae82d0a01ed9e",
+    "game/assets/sprites/icons/spells/avare_faillite.png": "cc63ca31a6f28193c90195b6a89d26b74343dc0a484b271eb479bb501d60e2d5",
+    "game/assets/sprites/icons/spells/avare_faillite.png.import": "03289eb06beb54fb41bfc343fcaaca61f822c587511baf35d7052c45fe61db49",
+    "game/assets/sprites/icons/spells/avare_poignee_de_pieces.png": "347fa3fad5267a4739d7fe5161fb9d9e9d86e139235886d622e1f7c80f73ad3c",
+    "game/assets/sprites/icons/spells/avare_poignee_de_pieces.png.import": "dc4de0362ee1000eb769269817bf9f2ef3b0a834ef29cc9a6593ce1d445c7be2",
+    "game/assets/sprites/icons/spells/avare_rancon.png": "35a1cad4b57dafdea329b6e3daf1c0cbda483a9258d825a62367c5a8cfea2f25",
+    "game/assets/sprites/icons/spells/avare_rancon.png.import": "3df07b1cfdb3cdb42cefd6435212af85710fd250ccdc6a04dab1a8c4ce1a960f",
+    "game/assets/sprites/icons/spells/averse_crue.png": "8688945dd7c94049a225a21be6abfb0f025f52c28fa964a18bf688c32175cda3",
+    "game/assets/sprites/icons/spells/averse_crue.png.import": "8456f79c7874318e52b29c66d25d3fa7031b38d790c1906a0f394b59f034c1c4",
+    "game/assets/sprites/icons/spells/averse_flaque_miroir.png": "c4cc45807a0bc8fe693e0426f2dc03d22a46d457d2779b5b8f8ca7671a5bcfc2",
+    "game/assets/sprites/icons/spells/averse_flaque_miroir.png.import": "91a513d45fe3f151fd74240dc1f2e3d8d863e6bc4d50c37c4af21e85eed4a762",
+    "game/assets/sprites/icons/spells/averse_goutte_lame.png": "7b2c1743e8e145c80b76cc73a14a3464956113fc9f7bc09721698fe72adb29e6",
+    "game/assets/sprites/icons/spells/averse_goutte_lame.png.import": "230e07fa879ed5605fbe8ebf44c069325af70c6ffebd831c100fda6e3f94a540",
+    "game/assets/sprites/icons/spells/averse_vague.png": "fb33c805a8f93345bf1c83c9cb757b9c1771fbe83899435933566c66440a2a2d",
+    "game/assets/sprites/icons/spells/averse_vague.png.import": "c498409cf03ef79e1a5b4121ce82fa82b9e76dd1cad21c1ca61c77b0689890c2",
+    "game/assets/sprites/icons/spells/bourbe_bourbier.png": "ec81f0e3c5c7b14bb1633f697e54f6a5bb7b6c83c6e378622d123a3c42ffdd33",
+    "game/assets/sprites/icons/spells/bourbe_bourbier.png.import": "084e4f6658607b80b7aa97bdeaee49899fbfbff44d057bcaee09279d40b0b126",
+    "game/assets/sprites/icons/spells/bourbe_detacher.png": "64dc1fc2bd4c8df653388084b20f9fc7e2df178a2f31cadc49f8fad58ca0d990",
+    "game/assets/sprites/icons/spells/bourbe_detacher.png.import": "ab234f1d4d3abdaa49e81d585b2ccc063c0b6a84c689ab16621b7c9824b071b6",
+    "game/assets/sprites/icons/spells/bourbe_gifle_de_vase.png": "6676698a173450345e862e6a3562ccf1fb8afb5caa68b886e1d61e9926c052fb",
+    "game/assets/sprites/icons/spells/bourbe_gifle_de_vase.png.import": "c3568cf5eb209dfd350f6cd3b14d0f5deb14fa3a47a5deef38d645eed833016c",
+    "game/assets/sprites/icons/spells/bourbe_rappel.png": "c2eb37a9b43ba8cea0942468761c7c41213b7fa0b34586025013d7f4ab4e1550",
+    "game/assets/sprites/icons/spells/bourbe_rappel.png.import": "ad3e5c4259818fabfb3f07f56b8c09a2421258b4712cf4c36f52213a4ecdd349",
+    "game/assets/sprites/icons/spells/braises_errantes.png": "4d0600bdcb10494bdb999086caa0030d157bc7b1d28b6e30814405cd0559c1ab",
+    "game/assets/sprites/icons/spells/braises_errantes.png.import": "78b57124ff40a6229d4461527fc6ecb343128aa45fdc243ba62e23effba89cf0",
+    "game/assets/sprites/icons/spells/brasier.png": "bcc77903c36d43f3f8de8d6e991143992da7c6b64dd3c958e877749c3f80f41e",
+    "game/assets/sprites/icons/spells/brasier.png.import": "643a73dcd04d54bd964bd58479b3da316eebbbb13b3b74a2bf46b845be87b050",
+    "game/assets/sprites/icons/spells/cendres.png": "29e506ea977b9fac893bf931b64ef2ce25f15f544df968ac282100c3c9948235",
+    "game/assets/sprites/icons/spells/cendres.png.import": "8747018189ba7bb2b42f61ba78745cf65b29312a73e1c55cb7374f51ae8ad34c",
+    "game/assets/sprites/icons/spells/dagues_demi_lune.png": "78830e3ea5f39f87514acac45dbe67ee22409dee5b9c5be8fcaad1a93180cf66",
+    "game/assets/sprites/icons/spells/dagues_demi_lune.png.import": "137350728ff3a4d5f6bf961feadb8a96a82d2f02d07a606a88f2f3236cfba5df",
+    "game/assets/sprites/icons/spells/dodge.png": "54940f00ea7a359a36d67a19d3806d3168391ddc8abd14c9cfce2e6558757377",
+    "game/assets/sprites/icons/spells/dodge.png.import": "901c1357302bd0527fb54c5ae4a8d826356d67675f418cf3714e1a5b48a82ca4",
+    "game/assets/sprites/icons/spells/doublures.png": "025ca8b942ae9d2d23cffc884c82d49fc520df5bb8bde22b6ba5d94ab4fbd7fa",
+    "game/assets/sprites/icons/spells/doublures.png.import": "4784920e2bbe38e4af5c30c4bf0e3c30f1ada71b9ab811b5fca69b4ff38642a4",
+    "game/assets/sprites/icons/spells/eclat_de_braise.png": "3fb74cd06c42e71854864c34f0b3e72e39e45655150e2590cf752f8472f2994a",
+    "game/assets/sprites/icons/spells/eclat_de_braise.png.import": "6fdb23f61f5cd67fa79afaf6f336f21ccc11ca1bc23f5ec66b1e85cb564f7bdb",
+    "game/assets/sprites/icons/spells/eventail.png": "f681e2c94b21897148570c9c423d032a3ed13da50aab97ee44e7cf9e2fc6f950",
+    "game/assets/sprites/icons/spells/eventail.png.import": "922e6863602d6d4918c3061b86b2cdb59b6d48d958e65975772d28b56ca264e3",
+    "game/assets/sprites/icons/spells/morfil_aiguisage.png": "1831fa7ef5e74dacba95cb793c78fa1b02ecf73ebc3d66fed1172c8c8f5b9410",
+    "game/assets/sprites/icons/spells/morfil_aiguisage.png.import": "710ac97b88589982ad834529b7b1a08d96b513ac1fddfb089d5c70ae537e0db5",
+    "game/assets/sprites/icons/spells/morfil_fauche_lune.png": "c9c6b18b9f3b0639a461e42be4721762f04c8b29e7244ac8aa28e29191b8b0f5",
+    "game/assets/sprites/icons/spells/morfil_fauche_lune.png.import": "19e01fd2c40e169361c5f05299c3a6286064cb9551a962ae57830007c46a2e7f",
+    "game/assets/sprites/icons/spells/morfil_lames_jumelles.png": "e3ceb0cafdf9afb7b8548ad95e831ee3642353ee8549b50660cf825219a1407d",
+    "game/assets/sprites/icons/spells/morfil_lames_jumelles.png.import": "4c8ad764a1623ce8ff370f33dee03b5c2612dc40065d74fcb77367abaa9fd2c5",
+    "game/assets/sprites/icons/spells/morfil_taille_estoc.png": "963c745ee7df550156ad1817338080abba2770272a21624084a2e19f1347755c",
+    "game/assets/sprites/icons/spells/morfil_taille_estoc.png.import": "0b04e9255fddf2dd88a5334c2e1f1bc6c169450f47e18f0ef6b319761598caed",
+    "game/assets/sprites/icons/spells/nova_ardente.png": "20a1da0b1fe59c37b7f291d328cb0db5ef89bdfee1f5440a7bc31a7610cedbee",
+    "game/assets/sprites/icons/spells/nova_ardente.png.import": "1bd5bb6579376c90cba4eb344161d7eaa7c8587d89681564131a2958c342ac03",
+    "game/assets/sprites/icons/spells/phenix.png": "133f734114afd176aa4b9afe5bc0c612e62aea670def3e06b1af442bd2369a22",
+    "game/assets/sprites/icons/spells/phenix.png.import": "af55f572a0962b804da919839c5ad321a96dcd8687efc398f2ed60ed2550409d",
+    "game/assets/sprites/icons/spells/pilier_de_flamme.png": "f820182add0eb3e189c9aa78a166b4f54519fe6a86159f7fdba0e28afdcaaa33",
+    "game/assets/sprites/icons/spells/pilier_de_flamme.png.import": "955f0628dae8036252ae845cde61acc188338ccef7810e72ade8b75201c55dc7",
+    "game/assets/sprites/icons/spells/pluie_de_meteores.png": "266a55963eaa7726c5d9ca4d7741b0df7ed55c08d02869d898cfa78a14f0b2a1",
+    "game/assets/sprites/icons/spells/pluie_de_meteores.png.import": "2fab54c8fa56b08b57a4fa31d948bafffb4e73e34ecb8a07a2432266549bbffa",
+    "game/assets/sprites/icons/spells/rainette_chant_de_crue.png": "fd01b009773355c6b641ff23e9cf2fca10f45fcea237fb487b86be772c993263",
+    "game/assets/sprites/icons/spells/rainette_chant_de_crue.png.import": "b9c776cb813b6b0c3d45d9a8d676950e7db6ae710b1db52dda8cbda32c4a7508",
+    "game/assets/sprites/icons/spells/rainette_gluant.png": "ece8c70506402f9ed138c9c4dcb657d5c6299d73531b066d802525915638bf25",
+    "game/assets/sprites/icons/spells/rainette_gluant.png.import": "d3dc6a6f0ffac1c5856376850295ee50b1f6d64d4cec7b8726b9c19d70e6354a",
+    "game/assets/sprites/icons/spells/rainette_grand_saut.png": "40a6374ba9eeb3688893a630540d82d5a9cbb4ea5fd27b97ed0d27a978d378d3",
+    "game/assets/sprites/icons/spells/rainette_grand_saut.png.import": "f16c37590a3a370b96cfcc62f16c20b7cb2e234678c7ccd37eb51ab1acfd6903",
+    "game/assets/sprites/icons/spells/rainette_langue.png": "a41a0242995d6549ccf643f39beefdd96b1802fad0268d763fc90ea575c17dec",
+    "game/assets/sprites/icons/spells/rainette_langue.png.import": "f61dade8d7b378cbdc44fd6f984a5e43798b962c96ca1e37cc7ad05c361bf0e1",
+    "game/assets/sprites/icons/spells/tocsin_bras_grappins.png": "47d85fef55c2d148c0abe8155d636438ccf11cdbb11ab6a3f7f6558f3fd66b5e",
+    "game/assets/sprites/icons/spells/tocsin_bras_grappins.png.import": "ea0268b5eadcc258dbc1d17e0067eb62d746a6c0314ca661f422a21d0dbc5139",
+    "game/assets/sprites/icons/spells/tocsin_bras_pilier.png": "47d85fef55c2d148c0abe8155d636438ccf11cdbb11ab6a3f7f6558f3fd66b5e",
+    "game/assets/sprites/icons/spells/tocsin_bras_pilier.png.import": "c13ac2ee8ba0ef7f5cae84bac9e7f96bb2e8f14b320392caa8801d7e49f31631",
+    "game/assets/sprites/icons/spells/tocsin_coups_de_botte.png": "835602ab5d848aea335384ebfe5ab34947190fa03e0eee27b00265882e2eb652",
+    "game/assets/sprites/icons/spells/tocsin_coups_de_botte.png.import": "f1e756eed8094e196efb944b4f09d3e1096bdf1c295e1315b31349ec0e89f7f3",
+    "game/assets/sprites/icons/spells/tocsin_coup_de_tocsin.png": "835602ab5d848aea335384ebfe5ab34947190fa03e0eee27b00265882e2eb652",
+    "game/assets/sprites/icons/spells/tocsin_coup_de_tocsin.png.import": "eb967273a172c4a1c90dbc6a68adc2da7249bcbe48e43242d5c8d54db4841fb2",
+    "game/assets/sprites/icons/spells/tocsin_rivets_rougis.png": "de70c580a153528fc90371203f2b9ed21c6e504e0f7d025a2b3dfc702cb9c1eb",
+    "game/assets/sprites/icons/spells/tocsin_rivets_rougis.png.import": "c2cc17fe38a28ae558f67f1f60e6e6600e3b22574c124a0636d9b77c97ea9d68",
+    "game/assets/sprites/icons/spells/tocsin_tete_cloche.png": "dbca4c7bdbbbe34cd10ff5ebb119a478bbebfa9be963852c726dd4783be6efa2",
+    "game/assets/sprites/icons/spells/tocsin_tete_cloche.png.import": "bc7d40c61d14739dfe9e514b51ac7c14e6efc564f66bac07645dc736c4250fae",
+    "game/assets/sprites/icons/spells/toupie.png": "a10c267502b5c792e44851ed6e115a0aab9482e852607bdde6be2d8f71ff62e0",
+    "game/assets/sprites/icons/spells/toupie.png.import": "c8393bebfbe5b39d946729c79f1e246326e1595164aeea8e995b85b9fd355fbf",
+    "game/assets/sprites/icons/spells/vigie_filet.png": "be93b205a0cc3ed16b83ea15d1dd67b2dcbb2ddd761bfb569d4a6d72cb71d403",
+    "game/assets/sprites/icons/spells/vigie_filet.png.import": "324028cbb4fb8e3149c699d497a0982b357f4d61f27d1a63ab1cfb68bf86c6eb",
+    "game/assets/sprites/icons/spells/vigie_fusee.png": "d52e90e8e700a7911d398a0eadcac46c5b6342200ff9d45f6f6c1eb7efb6fdba",
+    "game/assets/sprites/icons/spells/vigie_fusee.png.import": "9f458012675405f7a9554bdfdf6f1a8f8c46266f978af63516f1a3fb49228567",
+    "game/assets/sprites/icons/spells/vigie_grele.png": "de4810ee0f3d4bdfad379298a16a242694bf1459af1c95125534aaa460e0aab4",
+    "game/assets/sprites/icons/spells/vigie_grele.png.import": "b29e512ce12dd7a3679ab11344be34edbb41e1e81d26e5e46dbbf33f9ef83085",
+    "game/assets/sprites/icons/spells/vigie_trait.png": "83d3262dfc39424f436f4956ac0ae53667032fe0d5707664237abdf27e78baeb",
+    "game/assets/sprites/icons/spells/vigie_trait.png.import": "76d1823ff8a3a1fc0621a11e3d6dd6abc0494a1505c259af0907a20d7f0cfed2",
+    "game/assets/sprites/ui/crit_icon.png.import": "8cb17b0d3e4a439adbb746984c17ff045dd469a62956962b78081a87724b1f34",
+    "game/assets/sprites/ui/crosshair.png.import": "f30eadc74c9973896eaa29102a5487aa91384aa88ee58027be649a75149e6e49",
+    "game/assets/sprites/ui/spell_cooldown_ring.png.import": "8ea9b97920a067cf068cb9144cdaad543e3f4d475d2aa96ab467775416a1882e",
+    "game/assets/sprites/ui/spell_frame.png.import": "cbbb8c1d0b67d72dd36f348011009ff7ef3ee169f6a0d02bfd7c17ea098f367b",
+    "game/assets/sprites/ui/spell_frame_cooldown.png.import": "ec59188180d40f7f6f6598ae5c0c0f57674c5cb11052c848412f45181d130ac9",
+    "game/assets/sprites/ui/spell_frame_pressed.png.import": "de3ee009f6257b4e658c2ab7763d5e9278fd5d38ea5fee293b7f7dcf996ac71b",
+    "game/assets/sprites/ui/cards/card_back.png.import": "354f317cb0349ba37c8c2dbea55658aa73e48e9c0d94d6e4d69001c28873530d",
+    "game/assets/sprites/ui/cards/card_front.png.import": "133681af6048c2c64eb88438e461321e1807a0662044309d1b29c83400dc7722",
+    "game/assets/sprites/ui/da/bar_fill_boss.png.import": "126db3f40d438570c19b7fc63ede2a40863e95826b20deac2d4319c72d3b6f19",
+    "game/assets/sprites/ui/da/bar_fill_boss_e.png.import": "19deeb5e4ada858aee5e719c2b036647ac85ec2f1cbafc1b47640cd63c6ce92a",
+    "game/assets/sprites/ui/da/bar_fill_hp.png.import": "2e90c70a7d4189f938ab450ba7fd32a046b0d41dbd4724328a2eb959c36818ba",
+    "game/assets/sprites/ui/da/bar_fill_hp_e.png.import": "bddfc63eef8bee40fb3575e684529b7d7d4a6b8096089115c9812ccee2134857",
+    "game/assets/sprites/ui/da/bar_fill_hp_lost.png.import": "3701c496868a5883715e174c3e282f4563f9f90da5992491993df5c6b906512e",
+    "game/assets/sprites/ui/da/bar_fill_xp.png.import": "5844a2a16ca4d1feddb4c2eb4f93f0e09a9dcfa18a3fa76b9258b277cd4f0fb7",
+    "game/assets/sprites/ui/da/bar_fill_xp_e.png.import": "982765e303a5e74041fbb205d5da06ca07db7198ed2d4afb777100b99708af00",
+    "game/assets/sprites/ui/da/bar_frame_boss.json": "86593c0bc6300740f2e3a115514009359ed25f142828ea3c0e9515b9cab5cfcf",
+    "game/assets/sprites/ui/da/bar_frame_boss.png.import": "29e032c08f013664474ed0221e565139eacb9503388a3aad99d428a9517bc876",
+    "game/assets/sprites/ui/da/bar_frame_hp.json": "a77216b10fe03f362f4d7086e9beba5903d2a5714e6d15cdc5c8d636a83e9a54",
+    "game/assets/sprites/ui/da/bar_frame_hp.png.import": "b952d3d71787f3e9573c7932191a456cabbb4682599f13c6655f33564d8be5c7",
+    "game/assets/sprites/ui/da/bar_frame_xp.json": "d4b655c56a95c2a163efa07741ba7c775b3ab106e71711d480850f4718d95e6f",
+    "game/assets/sprites/ui/da/bar_frame_xp.png.import": "3104268244a18f49a16a8539cfe2536fe8134ad58027faec88b8d8840f336141",
+    "game/assets/sprites/ui/da/button_danger.json": "3730c6905a09d75244422a46588a8594a6a8c102dca2e3d7bdcc1cc7aaeeeb7f",
+    "game/assets/sprites/ui/da/button_danger.png.import": "1356acb22b2b00f83768cc4a1a1d6468bb176daccfd30727a6ce0e156ff8372d",
+    "game/assets/sprites/ui/da/button_danger_e.png.import": "5a5b4b50684319ab0593e098027e6207c87e627535ac0bb879532774dc20b794",
+    "game/assets/sprites/ui/da/button_disabled.json": "33c144372a5328505bbec060efe5662bc1c63c5b6a41df0e34da3e1ad7e67566",
+    "game/assets/sprites/ui/da/button_disabled.png.import": "035e6c85d54adb365a3920b4ccd8d76997e513979839ab29a5221d19bf3e0b6a",
+    "game/assets/sprites/ui/da/button_hover.json": "d6cec725c3efdc9167eea18c4cb7d327e177fccfa63f8a9f588289465d3560d8",
+    "game/assets/sprites/ui/da/button_hover.png.import": "d61ebaae931457af8b758552bbca3fd16d8a4b4cdf34b9bae7085dd34a969bd5",
+    "game/assets/sprites/ui/da/button_hover_e.png.import": "e7279c6010efef97e0727ed2e8ab0993750c7d2001e31385c0f0b5af68b4b305",
+    "game/assets/sprites/ui/da/button_normal.json": "d15567a32a44d5c30a148cd9c6c37be1ad4460ffbe7ad13ad4ef96c67e272967",
+    "game/assets/sprites/ui/da/button_normal.png.import": "780e08cd353a7a7d6d0f305b52cc1fba48c670714d80fc1443dcefd97692ce7c",
+    "game/assets/sprites/ui/da/button_pressed.json": "3c3867b5fc5de346841a625eeb270e7db5bb618f7c4788bf5ac3d71d04790e00",
+    "game/assets/sprites/ui/da/button_pressed.png.import": "d8c664f816ca7f83d8c6cbc74091b21e0b742fe91d50c37fa150bbf7ed3a4c87",
+    "game/assets/sprites/ui/da/button_primary.json": "ad313cc65a62040519a248cc5a53c32900a775ca0bc6ab3a9c89b5a7b5ecde88",
+    "game/assets/sprites/ui/da/button_primary.png.import": "0955a7578ae06029e99ae6fe9750c0a7ec9d6e234f70048ccb3f634503e798c4",
+    "game/assets/sprites/ui/da/button_primary_e.png.import": "8f3fdbab84e02dafa6ee597e3342c5559efad7e2a2f30799f77db3eb16a502e0",
+    "game/assets/sprites/ui/da/button_primary_hover.json": "52d406e38a7e427c7d659173dc7ab4c1fe6e7a0f0be35fe82d1d3ef85800f307",
+    "game/assets/sprites/ui/da/button_primary_hover.png.import": "bacf6590375e0b200f69305b4d0470ab70cb03c1b38a6e94bd4f04745802744a",
+    "game/assets/sprites/ui/da/button_primary_hover_e.png.import": "22d163447204b78f6cdffe9c6684f10242244cde6d62621d34ac7f91b493a224",
+    "game/assets/sprites/ui/da/button_primary_pressed.json": "44e29edb77eb6fe4e51a976b2a2fc70a5b08cc092619ccc55f5e94f346963b69",
+    "game/assets/sprites/ui/da/button_primary_pressed.png.import": "c06b996007fc87d9cafedddbad168c7870929688fb8a41e1a36e5c5e2dcc139f",
+    "game/assets/sprites/ui/da/button_primary_pressed_e.png.import": "1ef11475e041327c94d972394e9bd428f0097d28dafc8fb2f61f1680f39149c9",
+    "game/assets/sprites/ui/da/divider.png.import": "70a65466b9cbfc7b3ea57448eaec123989ed47c30e002c9a842c4ae88c2f6d29",
+    "game/assets/sprites/ui/da/header_banner.json": "198bab7087c4056a781f7e8600db8d075436ace457adedade2b372dda03c7c89",
+    "game/assets/sprites/ui/da/header_banner.png.import": "a0a680fff8accfce56f2d4f6f3b2089bfa5d15f1f54ba1e8b2491dda776832a1",
+    "game/assets/sprites/ui/da/icon_gold.png.import": "cb56174224585b51bcf70eddd2a4e67fc2b13d1d14230b051334efd6fe5f2ab9",
+    "game/assets/sprites/ui/da/icon_interact.png.import": "ddef0faea4fd70494e27c94aa379a0eaed10048424740127f866cd531f474eca",
+    "game/assets/sprites/ui/da/icon_pause.png.import": "07f764af8131938bb2473b0bc3e975b6be04cd8d36e6c15971e901309bea5b8b",
+    "game/assets/sprites/ui/da/icon_ruby.png.import": "998c684070da2177aae6c9478a2c36696d138dd579ed0d2f2bf53e73283df0ba",
+    "game/assets/sprites/ui/da/icon_ruby_e.png.import": "50b438dfceab846fa530af0bc11f120ee1282304553dd1ac43e33642a29c2d21",
+    "game/assets/sprites/ui/da/icon_settings.png.import": "25b49aaf8648dd2b1de46525e81a12f72aac9cdb09113e07899eb886cb821a74",
+    "game/assets/sprites/ui/da/icon_xp.png.import": "2616edb79d2ac2452d156e1390a23458a91412d304f947ca85a819726014a0ac",
+    "game/assets/sprites/ui/da/icon_xp_e.png.import": "7d2703f62a9c5b641301c7c93b6cbb3875a4b9571aef347af0c2b156a4b5facf",
+    "game/assets/sprites/ui/da/keycap_9slice.json": "5d38921c90f1bcb661b3a0bab803a7289ce76286018c860cf16fe23cca22b5ae",
+    "game/assets/sprites/ui/da/keycap_9slice.png.import": "5473f75de7845c95d44c885727813fb52f31f243a995d21042b39ef43823cc9c",
+    "game/assets/sprites/ui/da/level_badge.png.import": "fc12c2660ab6f858a630e300e65fc5dbedbca1a4a607baebe38acd529c592b21",
+    "game/assets/sprites/ui/da/minimap_boss.png.import": "3b1cfed8225cb7a9a719770f288a2532e258f42336afbf8debc2ff3989559852",
+    "game/assets/sprites/ui/da/minimap_boss_e.png.import": "ee49bce8ab6fa368ce6707b34a7bbe8600bc665aa31f97d9ce41bd7491e7d56d",
+    "game/assets/sprites/ui/da/minimap_capsule.png.import": "6e7c0b216e99abc78a96c7e41de6cfbbcdaf2f0e00a8ec61541557f5b0b5729e",
+    "game/assets/sprites/ui/da/minimap_capsule_e.png.import": "4859aaa1fdcc10c7a6759c7ac37bf3f3a72c7f16411223e9106ed17ee1ab41b8",
+    "game/assets/sprites/ui/da/minimap_chest.png.import": "8a3d0c5864f8c7a695a04802a274173d6f4ad9adad75ba614a963ccb7b6519a0",
+    "game/assets/sprites/ui/da/minimap_chest_large.png.import": "8b19f1b939bf0e7426dd3b9eb2145961a63affd095ea98834b7f66343903253c",
+    "game/assets/sprites/ui/da/minimap_chest_legendary.png.import": "6b648c66f9b1513b7697d8da4170705d069edb360fedaa3f4131b3b1e040378a",
+    "game/assets/sprites/ui/da/minimap_chest_legendary_e.png.import": "ee9c92d939a6b888b2d3b3f4f01846b4526c069f601837a7bde8d9f806fca6d6",
+    "game/assets/sprites/ui/da/minimap_frame.png.import": "8358814313f6f2e15f2b36061ca15d7803c9893785f6d29f00e26db722e046b9",
+    "game/assets/sprites/ui/da/minimap_pillar.png.import": "de8a377bdb37b9f8bf4ac040bca1a241c672b0dece4a87d47468acc4b39557c7",
+    "game/assets/sprites/ui/da/minimap_pillar_e.png.import": "578382957a95c3eca14695c0eea2bdc818981d225375362598066ce9277d9f29",
+    "game/assets/sprites/ui/da/minimap_player.png.import": "84a5df0c3fae02661ac56dc99db21147324638817b19ec2a101fec0ee36cfe6c",
+    "game/assets/sprites/ui/da/minimap_player_e.png.import": "7e43e609634ef1066ede4a38d6079d5c817251ef4eead71d9f2c798a01a8f15e",
+    "game/assets/sprites/ui/da/minimap_teleporter.png.import": "3f152c78a71304449d35c78d9c97ef022e4d24db18cd2d2ad4a3dc3c67cb53cc",
+    "game/assets/sprites/ui/da/minimap_teleporter_e.png.import": "897b69f197c7bd082882c0f384f2f8e86733b2a406b903ca1d6b3b4c44b0ad9e",
+    "game/assets/sprites/ui/da/panel_9slice.json": "255ac8aff7f6656dcd369d3f1a216e83766144f5a40d09a8024b30f28cb6bf3d",
+    "game/assets/sprites/ui/da/panel_9slice.png.import": "8510001e76be3919794886899c1ce2581047733bd9e0d02e07b05aa245d2f4cf",
+    "game/assets/sprites/ui/da/panel_small_9slice.json": "6da7dd92ac705548d0bdd9510517978306150111c128fbe596c0e8fc506cf8f4",
+    "game/assets/sprites/ui/da/panel_small_9slice.png.import": "3045d9ef34350bd46886a17209bc2646e9df0df3ad34c8aafd8ba6003ec52a9e",
+    "game/assets/sprites/ui/da/timer_plate.json": "395caa50e305b005acfe379c1fc500698fe25f75400c87f240d802eb500f1bda",
+    "game/assets/sprites/ui/da/timer_plate.png.import": "8aa02b92967ebc1659cd732d7ebf52ec6c79ee35ace96c01345c89841af29cbe",
+    "game/assets/sprites/ui/da/vignette_hit.png.import": "89559e8752c4d1125902822886cb179e481d56d923739f8fd54e0c2096e68888",
+    "game/assets/sprites/ui/damage_font/damage_font.fnt.import": "309778484a3d3c98c2e398d3edd58a5e179f90ace445ebabc008d73f3860458a",
+    "game/assets/sprites/ui/damage_font/damage_font.png.import": "f34252c94b298fa4ac74be016984c106ed356af5e11b39da02bc204cf0907ed0",
+    "game/assets/sprites/ui/dice/d100_face_commun.png.import": "5f9a698e5dc32f86eab98e0a2eceebbb91f86cfecdef942e387b7fa972f4fe63",
+    "game/assets/sprites/ui/dice/d100_face_legendaire.png.import": "652d96e1a4c54c2584e54820faa9ebaf449671f173acba2d998b1795be319001",
+    "game/assets/sprites/ui/dice/d100_face_peu_commun.png.import": "d7bebb923779f5bc6aea58426173cca2f36e1fbe4905d9a5cfb62215fe9e86b7",
+    "game/assets/sprites/ui/dice/d100_face_rare.png.import": "4dee5d5f4712c6563ef330964c0fb139d7902e2b9e25e8b5f75185104c4d6978",
+    "game/assets/sprites/ui/dice/d100_rot_00.png.import": "a4935207e2bf8e83f7f9250afaea98d5ea9ee0962bb085bf9846e449953cc9ed",
+    "game/assets/sprites/ui/dice/d100_rot_01.png.import": "63ae275b33b675fad5fc2a19afb064d4e416cc1341249d9ec2b51c1437a39040",
+    "game/assets/sprites/ui/dice/d100_rot_02.png.import": "cb0413f798e8ab198c1a3d6bd5be0eb3d9d1c9447c2536c2779c7dee3cb76438",
+    "game/assets/sprites/ui/dice/d100_rot_03.png.import": "4f94cca62994c6c7aa6311c703bdc4e7632670b8c9be3d30787dafebca9b14e7",
+    "game/assets/sprites/ui/dice/d100_rot_04.png.import": "223686b492ae06569dd407d73d8dc296378e09d5c354756325d9a2227c2665a9",
+    "game/assets/sprites/ui/dice/d100_rot_05.png.import": "d427612ded3997378439ca5159a47c8fc84720f9eb5fcb8b3972c35734965ce7",
+    "game/assets/sprites/ui/dice/d100_rot_06.png.import": "6fb28992d94c6aa9c8ca7af6c9dd434febccfcf5a1f201cdfd299e7b793f469a",
+    "game/assets/sprites/ui/dice/d100_rot_07.png.import": "5dce44b1d0f43be52d8111a8b6f9bbb8499c7de912a5fc16b649da2ac0f5ea75",
+    "game/assets/sprites/ui/dice/d100_rot_08.png.import": "0485019b81c370bf334aea68ccfbadbcd1e684c8a4258e47db337531beab5211",
+    "game/assets/sprites/ui/dice/d100_rot_09.png.import": "31a721e428f595e01a0112a2b7b9366aeae41e233fbf7bd0852fb3fdbf3bc874",
+    "game/assets/sprites/ui/dice/d100_rot_10.png.import": "7c41c67840befb2572029b58ad3c19e4f407d2adcc661e5a91390f1135046477",
+    "game/assets/sprites/ui/dice/d100_rot_11.png.import": "6797823113bac834554fd0f356b85c8e3532700b3cb72d00e9fe9de3609b33d1",
+    "game/assets/sprites/ui/dice/d100_rot_12.png.import": "5795c5ead2748e506f1313c77e91cadd2b82dc517c3208988804a8b3941c7cfc",
+    "game/assets/sprites/ui/dice/d100_rot_13.png.import": "d6030e6b82650d841608787e4d576cb2d058ac2913637bc0540ac25fb142c6f2",
+    "game/assets/sprites/ui/dice/d100_rot_14.png.import": "e9cf3a68474d40877b12ee471aef7d5bb1dcc6f9409db0dd2ad6794ccdb86ec4",
+    "game/assets/sprites/ui/dice/d100_rot_15.png.import": "910032e10f40ddf5ae782cff924d4d95e4cb84269e0b97cb2d30f413251ad046",
+    "game/assets/sprites/ui/dice/d100_rot_16.png.import": "e33b2b4b3b9d71deba011ccdc59cf866fe547de4d203e1adda263603131a3873",
+    "game/assets/sprites/ui/dice/d100_rot_17.png.import": "9e459edbbae159fc6e6831cf362913af840399a56ed934f789caac3065088cff",
+    "game/assets/sprites/ui/dice/d100_rot_18.png.import": "42639b9942583bbd3facbb4f8673fafd4990c42d97ede7d6ddf31acb1deceb2e",
+    "game/assets/sprites/ui/dice/d100_rot_19.png.import": "be3040ca8fa8a407e0209582b2cecfaf5806182df720b25ae1762725d8295d71",
+    "game/assets/sprites/ui/difficulty/diff_1_calme.png.import": "a4e3799d907b2e9515f12604458628a16b7114dce956d807c9ef0d2b6809ffdb",
+    "game/assets/sprites/ui/difficulty/diff_2_tension.png.import": "d9cd83856394f4baa1be3114683e5486348df1084f2bb11ec40ffda5d9701e4e",
+    "game/assets/sprites/ui/difficulty/diff_3_alerte.png.import": "5f76af9d90f3006913742db2376dae1a37c7e477de2d8724ccad7f26507f26e4",
+    "game/assets/sprites/ui/difficulty/diff_4_fournaise.png.import": "2f92660aa98fe306921060f525856f413c78f8962b1ecb41a849796dced941e4",
+    "game/assets/sprites/ui/difficulty/diff_5_cataclysme.png.import": "6feed670f7c809f767665b88e4bdf541b1ae36209a83f9e482f05332e4e0755a",
+    "game/assets/sprites/ui/hp_bars/boss_fill.png.import": "89b14a3bc0f01b03725b9eeaabb384a15d8469af2d0b4062dedc18b5b0fe3d3f",
+    "game/assets/sprites/ui/hp_bars/boss_fill_e.png.import": "e55f1eb5896691f6af760ba80e6180948ecd1462a316fa00d44544a668be1cc9",
+    "game/assets/sprites/ui/hp_bars/boss_frame.png.import": "89e90a7da2f93ab7a6952ace37942ad341c1ea37274286d95f3ed1f7af5fb66e",
+    "game/assets/sprites/ui/hp_bars/boss_frame_e.png.import": "b9174ace2d24b7660b7b61ef3e831b4380a2b5ce4d81dc9a19fc377002fed206",
+    "game/assets/sprites/ui/hp_bars/elite_frame.png.import": "9e453754608134931e680782516ca9c0118d2372a25e9df779978a81b33b141a",
+    "game/assets/sprites/ui/hp_bars/fx_burn.png.import": "70884c11d9fbc5dde6be9321b15353ec8428f05818aadcd8a923e4f985bd4046",
+    "game/assets/sprites/ui/hp_bars/fx_frost.png.import": "9e7dd90d3b9dbe20fb2f39caa04785dc83654bce1f1d1c52a9b1f7e572b01ce8",
+    "game/assets/sprites/ui/hp_bars/fx_poison.png.import": "ef0c030614c1b62cac4b6ca0cec84ede2f5aba922b0f20bc812c9816e8fefd36",
+    "game/assets/sprites/ui/hp_bars/mini_frame.png.import": "b13080737750228a7101107395a5ca364b91dd5dd8776217fbce4a960dd2d1d4",
+    "game/assets/sprites/ui/hp_bars/notch.png.import": "2d52e6654516f58d4534ba0c96c121bebcf87196104f6b59828a3f45359f2789",
+    "game/assets/sprites/ui/hp_bars/notch_broken.png.import": "193f24e2cb4d03b61a713f6d9b931ca88584f26e571fe4f323a2501914ad4807",
+    "game/assets/sprites/ui/hp_bars/shard.png.import": "7012e87bf38f84cc2769fec41bb424d87bbd7fe4c4e02ccffff16852c04a0d5b",
+    "game/assets/sprites/ui/hp_bars/status_burn.png.import": "0dc376ab383af57f3d4bc6a2b325c6b228d6963c9fa51f1614574866dd41889b",
+    "game/assets/sprites/ui/hp_bars/status_burn_e.png.import": "5d1c4e296f30c6bcf7fdd45a423980d50842563f9c7caecb3f9cc16f53e6b015",
+    "game/assets/sprites/ui/hp_bars/status_frost.png.import": "aa47325eb34e8dd639032d1e11642fa1ebbbd9a02e66d262ab131fc5016d1fcb",
+    "game/assets/sprites/ui/hp_bars/status_imprisoned.png.import": "96b612f5895165ff0d4e2608d1ff844b2896a5135e205c9bd642953a47729f14",
+    "game/assets/sprites/ui/hp_bars/status_poison.png.import": "09ddd35d443245090b51e2d685d37e9bf98280717065a29c3915c127023f3fa3",
+    "game/assets/sprites/ui/hp_bars/status_stun.png.import": "1576e8f9a3891ca3e4660c92cd1b5746bac508d23c28fd70ed35d86e24088be6",
+    "game/assets/sprites/ui/hud/icon_gold.png.import": "6c4801db0b7f2b3feae220719c05bf89c645222ceac9a87303d1c6388c1d5279",
+    "game/assets/sprites/ui/hud/icon_interact_hand.png.import": "7ad26bff19dcc0d5136fcb82eae8627224daa85d2f4a898300a66e24d8f0cfe6",
+    "game/assets/sprites/ui/hud/icon_pause.png.import": "54d420c9304d1e7f15306a3e1734c8c6e32edac1a5c0ce33109eb80f5c5c982a",
+    "game/assets/sprites/ui/hud/icon_ruby.png.import": "98508a5b11d11f61cf6d729ae3923a6eda36322433c554cc63d9ad8c62de39e5",
+    "game/assets/sprites/ui/hud/icon_settings.png.import": "41976f1509f883389ccb45aea5792ed939fc31942b0c7ab4eb9c6cf5c3f023d9",
+    "game/assets/sprites/ui/hud/icon_xp.png.import": "21e2a3ff2fbc8b46db3826ea636b357fe36c1612b44ec2e72cb91250645d731e",
+    "game/assets/sprites/ui/interact/interact_disabled.png.import": "c87e9f4c482c2e90f6f7cb21ade470e9ed4ffc3fda6bd9c151fc47a62ccff139",
+    "game/assets/sprites/ui/interact/interact_normal.png.import": "a8fec2fb5a22233a0c19684021007752eb40e72c15065e020ba439f1dc772f0a",
+    "game/assets/sprites/ui/interact/interact_pressed.png.import": "47b7d3ce054c87574dcde7a958e0f9e175ad806d4ae975aa0f9e552a51762324",
+    "game/assets/sprites/ui/joystick/joystick_base.png.import": "b2a907b70c5ebf45cf08c49097a4c2bc0e42a0d2bb5cf8b3f0926341507488e8",
+    "game/assets/sprites/ui/joystick/joystick_knob.png.import": "561f0868897aa507da81e81cda80a48e1b51b144558d69d8d0af469583d0f4f4",
+    "game/assets/sprites/ui/menu/button_9slice.json": "8297d0b7bbdcf1f7e7d79cc9cac780637fdf97bb7af77548e4dd02a74b15e404",
+    "game/assets/sprites/ui/menu/button_normal.png.import": "588f63b4f5e6e7d37519c363b69090f23718ce7c053cfc1b39740660fa1b7020",
+    "game/assets/sprites/ui/menu/button_pressed.png.import": "ad9e690c5be867920b197afc02ff3af05322e9ebde1e3783f51980682fe755a8",
+    "game/assets/sprites/ui/menu/button_primary.png.import": "5d8c6cd3dea8d9656ae4d2d60c3ddddfb078178f54cd2d7a00aee6254aba1313",
+    "game/assets/sprites/ui/portraits/morfil.png.import": "b98af0da73995e60cdd79aae7d613f9ecd417081910825ef225d34a5707f59c5",
+    "game/assets/sprites/ui/portraits/rictus.png.import": "f127ac5dd44edac589713b74bc1aa9b622809f84724891836e7eafb49d1b7e7d",
+    "game/assets/sprites/ui/prompts/key_1x1.png.import": "2d249324574d7326760d83626d9b3bd89916b992efccb92298ed743c8868e7d7",
+    "game/assets/sprites/ui/prompts/key_2x1.png.import": "2c4935f81e983e7328635137645176555924f17b0fd5217fcadea7077c21cfd2",
+    "game/assets/sprites/ui/prompts/mouse_left.png.import": "3903fd9eff6eed58c8316966cde8cd2eb9ca2669291f0321fa987876af0dcd21",
+    "game/assets/sprites/ui/prompts/mouse_right.png.import": "7d87b39bd1d1134005c90831caea358099fb1b7b25b74adac137d7100702a136",
+    "game/assets/sprites/ui/prompts/mouse_wheel.png.import": "2a3eb442fd2ea9fe902cf8d3dbd7f1895acadb65b72f60fa0778c15975653570",
+    "game/assets/sprites/ui/prompts/pad_a.png.import": "344ba185cc7a36864bb1ab0b97be8d2061c99bb8be12b5a181245b6a9ab46210",
+    "game/assets/sprites/ui/prompts/pad_b.png.import": "b2f9d154b0af8f180f141796d88a557d5ecc6b20ad31eaeaa82b5512f806ca42",
+    "game/assets/sprites/ui/prompts/pad_btn_bottom.png.import": "d775c7557ab57ed418d0fcc5f3ee4c05bfda8c91fa93cba6a35ce4c66a14e90d",
+    "game/assets/sprites/ui/prompts/pad_btn_left.png.import": "4baebefc1f04e8232fca39c9115c9d80cf1746f0b4c54cb999f809d5a4da901d",
+    "game/assets/sprites/ui/prompts/pad_btn_right.png.import": "0a83046db2912fcb2488889e1d201b0cecc043038a93b25488eaa94c5f6ae009",
+    "game/assets/sprites/ui/prompts/pad_btn_top.png.import": "37772064a8a547be9c575d7465a9d7f96cc362d07ff89596f807fe9b020b0f6b",
+    "game/assets/sprites/ui/prompts/pad_lb.png.import": "d52e70b99cd0d253e2cb41343e171efa4e14721dcfef15c1e750a76d1e19a9c9",
+    "game/assets/sprites/ui/prompts/pad_lt.png.import": "10cd8553a218c41aa00212846b086128326a24f77867d8e607492a71c0bba596",
+    "game/assets/sprites/ui/prompts/pad_rb.png.import": "ee1b62512e7a7ffc2f541444cf468028f987384c24544a650fca37246654815b",
+    "game/assets/sprites/ui/prompts/pad_rt.png.import": "4d50f770e98d4323035b80c4f6120010bcdb9eca60b88e8dff4884229450fa48",
+    "game/assets/sprites/ui/prompts/pad_stick_left.png.import": "95bd10a3b85aba176e95cb9ec8be1221cbad71b9724e990ee53857d491eaf81e",
+    "game/assets/sprites/ui/prompts/pad_stick_right.png.import": "196d20ab124e2d832429c8e953e3151219356cbfecab1f0620bee061b1ac6a4b",
+    "game/assets/sprites/ui/prompts/pad_x.png.import": "f1c4fecd5e9b1538fc6c62dca295e0b324ff88c9d94e6c38a3b9bc5d4581dde3",
+    "game/assets/sprites/ui/prompts/pad_y.png.import": "dd8a784354ff84403a1e37d1006feae031a960beced99feebc8610809e530efa",
+    "game/assets/sprites/ui/resource_gauge/fill.png.import": "7e16ddfe9139c4d90fdf09d75c1e510be829b73c1186b62d99c5af46b23c58af",
+    "game/assets/sprites/ui/resource_gauge/fill_e.png.import": "784c4384c2f225a6d3f5bd173dd8f6666c975c97c807d4f1abd6fea186b104ec",
+    "game/assets/sprites/ui/resource_gauge/frame.png.import": "8395b391ded283792c10e5b5e640c08c735b81c0210cfa6f0a853f449d9356fa",
+    "game/assets/sprites/ui/resource_gauge/frame_bg.png.import": "f1bd9997171c898268d2c57d65eb80ecad2faea9f7a00d8be8844a62a8ca7d97",
+    "game/assets/sprites/ui/resource_gauge/notch.png.import": "682c9a5be88ebf14c06ffe0cd7b9979ed8d1e1571e0d3e7d9ab2b5330bf71fe9",
+    "game/assets/sprites/ui/resource_gauge/pip_empty.png.import": "b0959063b181d382dc5291b664ac11f4757340bd1cb23e8831e29b8be25e7b0a",
+    "game/assets/sprites/ui/resource_gauge/pip_full.png.import": "dfb6971ab45192789b621af496350f4967a3ab2bad30ecaf3905580bed2c2fef",
+    "game/assets/sprites/ui/resource_gauge/pip_full_e.png.import": "03e5b4f6dcc7acda660ce5d05d5f021758372902d4d575e89799e508cfc254e7",
+    "art/blender/ui/crit_icon.blend": "809e8b53956b74de98ff57fd11073fd6015d8a20588c1384a823edde591d4033",
+    "art/blender/ui/i1_batch_1.blend": "3a80e96616e77796d6fe9317e464ac0d7dbd9c931255d7de8b28d5405e6a64c3",
+    "art/blender/ui/i1_batch_2.blend": "db51e3c4bff6920c1612aaebc0c26fccc6943a667558ed1cf90a94d2055773a8",
+    "art/blender/ui/i1_batch_3.blend": "4a89378eba36b0c5b6e3104f70b95f41d889bd680db12f013d7babd21b5b1312",
+    "art/blender/ui/i1_batch_4.blend": "07799b5566f3054aa70908252b3d222ca3dc316ff749f8bad9fb492efd2a4ccf",
+    "art/blender/ui/i1_batch_5.blend": "5a91a44c54648b61f6161e2d069440f7acdde55151877f36ea62956aec9ab7df",
+    "art/blender/ui/i2_source_00_37.blend": "4d5678a2fef45e82bec90a75f46513d53623f001187e300fef1248330652cd7c",
+    "art/blender/ui/i3_ardent.blend": "5bcebb58c9c5c0e5ca87d29c254bed0fd2aad2e8fc1e278be99e0497ebb3135a",
+    "art/blender/ui/icons_norm_template.blend": "f2ee2a2c3676b756c3453c230e127135f03464534906af067ba26d39067f84bb",
+    "art/blender/ui/items_a.blend": "8e6ed0a61f5fc90705bab74b60f7f6b366ae005c8a5a6c3e12de7bb42d7b5553",
+    "art/blender/ui/items_b.blend": "bdd9ed251a8597de944ebc0cb249f7cf404763418a7b644b4c8d9a4366a76826",
+    "art/blender/ui/items_c.blend": "e274226a3e2b2d567121befb1eee9f4e58d31771e356b3a4c567be9b9199f5e7",
+    "art/blender/ui/items_c_part.blend": "11812534d1c85301e50df82fff99b503319b6f436a0e5f88494e3baef8905c13",
+    "art/blender/ui/prompts.blend": "799361807e24b51f3da0986ca05fb27e982bdce18649d6ff5f6f33bf9911802a",
+    "art/blender/ui/r7a_packet_1.blend": "9803d9255afc3b50a8ea41b323e22dacca1903cd74bfadca59118e18cd6aaff2",
+    "art/blender/ui/r7a_packet_2.blend": "04902512308d27aeec347acf1b8d910e1cc0073b0501252d66afee657e2ab5b9",
+    "art/blender/ui/r7a_packet_3.blend": "59cd33327d4c68bcff51931930613578c8969d1ea15bc6b43cb28ecdae99060e",
+    "art/blender/ui/r7a_packet_4.blend": "312450f78de22f20170300c5ba4dbe49424b7bcc0f345c6847e6a4bea76dcc24",
+    "art/blender/ui/r7b_spells_frames.blend": "cc94e742111c676493bdb7466a1f10d7570ea96a71fd1d247ad0932820639569",
+    "art/blender/ui/r7c_ui_elements.blend": "5cfc09834f2a1daa7501fea1ea390ca4476c8b2fdd7c33ffd4d04d67068fc0f9",
+    "art/blender/ui/spells_frames.blend": "e85d39d7979f4fd2a6226d1f5e0d9d15a9ff7c23bd36d78f8ce676c2d7367a3b",
+    "art/blender/ui/u1_library.blend": "76b6aa1b0ab477ef9d3a0bc407fd9648ba00c966f785b4e855c14a2fc33f21c9",
+    "art/blender/ui/u2_source.blend": "5120ad025d0a82f215539dc785130921c99bcb09fddb97229d7a5792eb78bbb4",
+    "art/blender/ui/u3_batch_1.blend": "125c598c597dfca22d8209f66c97357de2b6221d5d75bc4568d1792be60a694b",
+    "art/blender/ui/u3_batch_2.blend": "ac969000fc4575f4cccf8c4307701a9a1b8707a8f8df3e7fa890efd5605bf550",
+    "art/blender/ui/u3_batch_3.blend": "772b0b21b2e863866d2d99ff5f8a6f9fbdaa4f4bb94e5a9f7cdb185dad0497cc",
+    "art/blender/ui/u3_batch_4.blend": "d3bd461fc9c8de6083366ded72af0a71cfbabb8b215c406d509e69b4c005201d",
+    "art/blender/ui/u4_source.blend": "3e9529c78989dd64b1fd1a1bce07a02fe822c80e3eab0ff9808a3d87f9bd834f",
+    "art/blender/ui/u4_source_00_08.blend": "e9c0911310f9e21308c52655726d3df43159409691c654e8ac490cf2f3d10205",
+    "art/blender/ui/u4_source_08_16.blend": "75dafd1b6355a1f0780e2e7ffb3db5d88063d0716cf5db7ff27f468f64d9e1fe",
+    "art/blender/ui/u4_source_16_24.blend": "acffa7753c264f0839cb6eb447c4e82056bfa8ae293ff6c184ef88e60de6312e",
+    "art/blender/ui/u4_source_24_32.blend": "4406ed40aaee0faa7b229e86a78dd65a8c064bd3175d4a24cf8458ffa0594bb8",
+    "art/blender/ui/u4_source_32_37.blend": "e89557a2bda34480601956f585c5a7ebac5c7c7f35cf10bd26602862476a6564",
+    "art/blender/ui/ui_elements.blend": "7ad12995ab22625323be643ae801e16c7cee8a579e8bb09c40de5a147694d856",
+    "art/blender/ui/ui_elements2_part.blend": "f5e94d3f7329ad58ba4d85c300d18940485713fa3fba70a565de1c8dbc9ea626",
+    "art/blender/ui/ui_elements_part.blend": "713b49eb9771a5413589266b4a48d1a4e81839642f6aa299ecafd8f7634e76c2"
+  },
+  "choices": [
+    "icon: items, HUD, interact, crit; ui: rarity frames, dice",
+    "Original builders/cameras/geometry/material hues; shared night shadow floor.",
+    "No existing emission companions: no new _e delivered; no normal files.",
+    "Filtered loose-file archives exclude spells."
+  ]
+}

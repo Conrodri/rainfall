@@ -1,0 +1,1085 @@
+{
+  "profile": "boss",
+  "normals": false,
+  "before": {
+    "png_bytes": 5516695,
+    "rgba_bytes": 83755008,
+    "mean_luma_srgb": 0.21312807837651424
+  },
+  "after": {
+    "png_bytes": 4429566,
+    "rgba_bytes": 26455408,
+    "mean_luma_srgb": 0.24078169303976021
+  },
+  "sheets": [
+    {
+      "file": "bosses/etage/eclusier/idle_p1.png",
+      "silhouette_iou": 0.9994439810953573,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/idle_p1.png",
+        "silhouette_iou": 0.9994439810953573,
+        "e_half": true,
+        "size": [
+          696,
+          162
+        ],
+        "cell": [
+          116,
+          162
+        ],
+        "frames": 6,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/idle_p2.png",
+      "silhouette_iou": 0.9995382204997114,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/idle_p2.png",
+        "silhouette_iou": 0.9995382204997114,
+        "e_half": true,
+        "size": [
+          696,
+          158
+        ],
+        "cell": [
+          116,
+          158
+        ],
+        "frames": 6,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/idle_p3.png",
+      "silhouette_iou": 0.9995455922447744,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/idle_p3.png",
+        "silhouette_iou": 0.9995455922447744,
+        "e_half": true,
+        "size": [
+          696,
+          152
+        ],
+        "cell": [
+          116,
+          152
+        ],
+        "frames": 6,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p1.png",
+      "silhouette_iou": 0.9994786494538233,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/walk_p1.png",
+        "silhouette_iou": 0.9994786494538233,
+        "e_half": true,
+        "size": [
+          960,
+          688
+        ],
+        "cell": [
+          120,
+          172
+        ],
+        "frames": 8,
+        "rows": 4,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p2.png",
+      "silhouette_iou": 0.9995087171738439,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/walk_p2.png",
+        "silhouette_iou": 0.9995087171738439,
+        "e_half": true,
+        "size": [
+          960,
+          680
+        ],
+        "cell": [
+          120,
+          170
+        ],
+        "frames": 8,
+        "rows": 4,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/walk_p3.png",
+      "silhouette_iou": 0.9994823281872302,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/walk_p3.png",
+        "silhouette_iou": 0.9994823281872302,
+        "e_half": true,
+        "size": [
+          960,
+          672
+        ],
+        "cell": [
+          120,
+          168
+        ],
+        "frames": 8,
+        "rows": 4,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/auto.png",
+      "silhouette_iou": 0.9993606557377049,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/auto.png",
+        "silhouette_iou": 0.9993606557377049,
+        "e_half": true,
+        "size": [
+          816,
+          162
+        ],
+        "cell": [
+          136,
+          162
+        ],
+        "frames": 6,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_a.png",
+      "silhouette_iou": 0.999514091350826,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/spell_a.png",
+        "silhouette_iou": 0.999514091350826,
+        "e_half": true,
+        "size": [
+          928,
+          162
+        ],
+        "cell": [
+          116,
+          162
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_b.png",
+      "silhouette_iou": 0.9993600551337115,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/spell_b.png",
+        "silhouette_iou": 0.9993600551337115,
+        "e_half": true,
+        "size": [
+          928,
+          176
+        ],
+        "cell": [
+          116,
+          176
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/trans_p2.png",
+      "silhouette_iou": 0.9994211751376249,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/trans_p2.png",
+        "silhouette_iou": 0.9994211751376249,
+        "e_half": true,
+        "size": [
+          928,
+          160
+        ],
+        "cell": [
+          116,
+          160
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/trans_p3.png",
+      "silhouette_iou": 0.9995122927244079,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/trans_p3.png",
+        "silhouette_iou": 0.9995122927244079,
+        "e_half": true,
+        "size": [
+          928,
+          156
+        ],
+        "cell": [
+          116,
+          156
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/death.png",
+      "silhouette_iou": 0.9993108100181829,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/death.png",
+        "silhouette_iou": 0.9993108100181829,
+        "e_half": true,
+        "size": [
+          1180,
+          180
+        ],
+        "cell": [
+          118,
+          180
+        ],
+        "frames": 10,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/anchored.png",
+      "silhouette_iou": 0.9995969773299748,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/anchored.png",
+        "silhouette_iou": 0.9995969773299748,
+        "e_half": true,
+        "size": [
+          116,
+          152
+        ],
+        "cell": [
+          116,
+          152
+        ],
+        "frames": 1,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/auto_dirs.png",
+      "silhouette_iou": 0.9996190869196036,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/auto_dirs.png",
+        "silhouette_iou": 0.9996190869196036,
+        "e_half": true,
+        "size": [
+          840,
+          480
+        ],
+        "cell": [
+          140,
+          160
+        ],
+        "frames": 6,
+        "rows": 3,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_a_dirs.png",
+      "silhouette_iou": 0.9995855830254807,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/spell_a_dirs.png",
+        "silhouette_iou": 0.9995855830254807,
+        "e_half": true,
+        "size": [
+          1024,
+          468
+        ],
+        "cell": [
+          128,
+          156
+        ],
+        "frames": 8,
+        "rows": 3,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/spell_b_dirs.png",
+      "silhouette_iou": 0.9995985499136274,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/spell_b_dirs.png",
+        "silhouette_iou": 0.9995985499136274,
+        "e_half": true,
+        "size": [
+          928,
+          516
+        ],
+        "cell": [
+          116,
+          172
+        ],
+        "frames": 8,
+        "rows": 3,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/wheel.png",
+      "silhouette_iou": 0.9968703224928561,
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/wheel.png",
+        "silhouette_iou": 0.9968703224928561,
+        "size": [
+          672,
+          76
+        ],
+        "cell": [
+          84,
+          76
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/wave.png",
+      "silhouette_iou": 0.9999553374890736,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/wave.png",
+        "silhouette_iou": 0.9999553374890736,
+        "e_half": true,
+        "size": [
+          736,
+          292
+        ],
+        "cell": [
+          92,
+          292
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/geyser.png",
+      "silhouette_iou": 0.9986257590284436,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/geyser.png",
+        "silhouette_iou": 0.9986257590284436,
+        "e_half": true,
+        "size": [
+          960,
+          84
+        ],
+        "cell": [
+          80,
+          84
+        ],
+        "frames": 12,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_geyser.png",
+      "silhouette_iou": 0.9983569430258893,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/ground_geyser.png",
+        "silhouette_iou": 0.9983569430258893,
+        "e_half": true,
+        "size": [
+          960,
+          70
+        ],
+        "cell": [
+          80,
+          70
+        ],
+        "frames": 12,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_water.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/ground_water.png",
+        "silhouette_iou": 1.0,
+        "e_half": true,
+        "size": [
+          512,
+          128
+        ],
+        "cell": [
+          128,
+          128
+        ],
+        "frames": 4,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    },
+    {
+      "file": "bosses/etage/eclusier/ground_wave.png",
+      "silhouette_iou": 0.9999361805325097,
+      "accent_iou": 1.0,
+      "accent_source": "immutable archive, same half-resolution pixels",
+      "cropped_check": {
+        "file": "bosses/etage/eclusier/ground_wave.png",
+        "silhouette_iou": 0.9999361805325097,
+        "e_half": true,
+        "size": [
+          736,
+          278
+        ],
+        "cell": [
+          92,
+          278
+        ],
+        "frames": 8,
+        "rows": 1,
+        "no_normal": true,
+        "nonempty": true,
+        "unique_frames": true
+      }
+    }
+  ],
+  "crops": {
+    "idle_p1": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        14,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        162
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "idle_p2": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        18,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        158
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "idle_p3": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        24,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        152
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "walk_p1": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        68,
+        14,
+        188,
+        186
+      ],
+      "cell": [
+        120,
+        172
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "walk_p2": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        68,
+        18,
+        188,
+        188
+      ],
+      "cell": [
+        120,
+        170
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "walk_p3": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        68,
+        22,
+        188,
+        190
+      ],
+      "cell": [
+        120,
+        168
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "auto": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        66,
+        14,
+        202,
+        176
+      ],
+      "cell": [
+        136,
+        162
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "spell_a": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        14,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        162
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "spell_b": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        0,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        176
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "trans_p2": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        16,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        160
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "trans_p3": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        20,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        156
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "death": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        24,
+        188,
+        204
+      ],
+      "cell": [
+        118,
+        180
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "anchored": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        24,
+        186,
+        176
+      ],
+      "cell": [
+        116,
+        152
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "auto_dirs": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        54,
+        20,
+        194,
+        180
+      ],
+      "cell": [
+        140,
+        160
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "spell_a_dirs": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        64,
+        24,
+        192,
+        180
+      ],
+      "cell": [
+        128,
+        156
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "spell_b_dirs": {
+      "original_cell": [
+        256,
+        256
+      ],
+      "box": [
+        70,
+        8,
+        186,
+        180
+      ],
+      "cell": [
+        116,
+        172
+      ],
+      "virtual_feet": [
+        128,
+        185
+      ]
+    },
+    "wheel": {
+      "original_cell": [
+        128,
+        128
+      ],
+      "box": [
+        22,
+        44,
+        106,
+        120
+      ],
+      "cell": [
+        84,
+        76
+      ],
+      "virtual_feet": null
+    },
+    "wave": {
+      "original_cell": [
+        128,
+        576
+      ],
+      "box": [
+        18,
+        130,
+        110,
+        422
+      ],
+      "cell": [
+        92,
+        292
+      ],
+      "virtual_feet": null
+    },
+    "geyser": {
+      "original_cell": [
+        128,
+        128
+      ],
+      "box": [
+        24,
+        2,
+        104,
+        86
+      ],
+      "cell": [
+        80,
+        84
+      ],
+      "virtual_feet": null
+    },
+    "ground_geyser": {
+      "original_cell": [
+        128,
+        128
+      ],
+      "box": [
+        24,
+        16,
+        104,
+        86
+      ],
+      "cell": [
+        80,
+        70
+      ],
+      "virtual_feet": null
+    },
+    "ground_water": {
+      "original_cell": [
+        128,
+        128
+      ],
+      "box": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "cell": [
+        128,
+        128
+      ],
+      "virtual_feet": null
+    },
+    "ground_wave": {
+      "original_cell": [
+        128,
+        576
+      ],
+      "box": [
+        18,
+        144,
+        110,
+        422
+      ],
+      "cell": [
+        92,
+        278
+      ],
+      "virtual_feet": null
+    }
+  },
+  "choices": [
+    "Original C7a build/poses/camera; three tones and shadow floor from cel_style.",
+    "Crop alpha union + 4 px; AtlasTexture margin retains virtual feet and frame.",
+    "Original half-resolution emission preserved: AOV threshold masks differed; only diffuse shading changes.",
+    "Runtime scale and BODY_GAIN hardcoded in forbidden .gd: unchanged; scale 1.0 cannot be applied within scope.",
+    "Ground water: original geometric ripples, lights x0.6 so ripples cross shared cel thresholds; four unique frames."
+  ],
+  "validation": {
+    "texture_policy": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_texture_policy.log",
+      "errors": []
+    },
+    "texture_budget": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_texture_budget.log",
+      "errors": [],
+      "global_budget_warnings": [
+        "- cat\u00e9gorie bosses : 73.0 Mo mobile > budget 45 Mo",
+        "- APK estim\u00e9 6917 Mo > 200 Mo"
+      ]
+    },
+    "import": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_import.log",
+      "errors": []
+    },
+    "sprites_test": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_sprites_test.log",
+      "errors": [],
+      "result_ok": true
+    },
+    "eclusier_boss_test": {
+      "ok": false,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_eclusier_boss_test.log",
+      "errors": [
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ],
+      "result_ok": true
+    },
+    "floor1_boss_test": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_floor1_boss_test.log",
+      "errors": [],
+      "result_ok": true
+    },
+    "texture_budget_test": {
+      "ok": true,
+      "returncode": 0,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_texture_budget_test.log",
+      "errors": [],
+      "result_ok": true
+    }
+  },
+  "protected_unchanged": true,
+  "display_constraint": {
+    "source": "game/scripts/enemies/enemy_visual.gd:48,528; enemy.gd:19",
+    "original_px_per_u": 40,
+    "unit_px": 64,
+    "boss_radius_u": 1.4,
+    "fill": 2.8,
+    "dimension": 165,
+    "runtime_scale": 1.5204848484848483,
+    "blocked": "Scale/feet live in .gd, no data override; editing .gd is forbidden."
+  },
+  "final_tests": {
+    "sprites_test": {
+      "result_ok": true,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_sprites_test.log",
+      "cleanup_messages": []
+    },
+    "eclusier_boss_test": {
+      "result_ok": true,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_eclusier_boss_test.log",
+      "cleanup_messages": [
+        "WARNING: 29 ObjectDB instances were leaked at exit (run with `--verbose` for details).",
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "floor1_boss_test": {
+      "result_ok": true,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_floor1_boss_test.log",
+      "cleanup_messages": [
+        "WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details)."
+      ]
+    },
+    "texture_budget_test": {
+      "result_ok": true,
+      "log": "art\\tools\\night\\_cel_bosses_f1_validation_texture_budget_test.log",
+      "cleanup_messages": []
+    }
+  },
+  "final_import_no_errors": true,
+  "global_budget_messages": [
+    "APK estim\u00e9 (arm64) : 6917 Mo = textures 178 + audio 71 + autres 6636 + moteur 32  (budget 200 Mo, textures 180 Mo, cible 95 Mo)",
+    "HORS BUDGET (2) :",
+    "  - cat\u00e9gorie bosses : 73.0 Mo mobile > budget 45 Mo",
+    "  - APK estim\u00e9 6917 Mo > 200 Mo"
+  ],
+  "archive_intact": true,
+  "independent_audit": "art/tools/night/_cel_bosses_f1_audit.json",
+  "strict_budget": {
+    "ok": false,
+    "violations": [
+      "cat\u00e9gorie bosses : 73.0 Mo mobile > budget 45 Mo",
+      "APK estim\u00e9 6916 Mo > 200 Mo"
+    ],
+    "log": "art/tools/night/_cel_bosses_f1_budget_after.log"
+  },
+  "contact_visual_check": {
+    "ok": true,
+    "reference": "art/tools/night/_cs1_contact.png, right half appended below comparison"
+  }
+}

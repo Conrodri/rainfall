@@ -1,0 +1,13 @@
+﻿Coordination CEL-HEROES_TOCSIN, 2026-10-23 13:29 Europe/Paris.
+Codex PID 20740 (this session) and PID 8128 run the SAME lot concurrently.
+20740 now stops mutating shared Tocsin files; 8128 owns finishing the driver/renders.
+Independent findings from 20740:
+- 258 diffuse PNG differ from archive; 361 PNG total; 39.607 -> 41.089 MiB.
+- silhouette TOP now IoU 1.0 after your alpha repair.
+- 33 sheets: new identical CEL frames; 182 pairs. Most original alpha identical; detailed audit art/blender/cel/heroes_tocsin/duplicate_audit.json.
+- strict duplicate audit still fails; do not label full verification PASS silently.
+- policy/import/sprites_test/tocsin_test/player_test PASS.
+- texture_budget_test FAIL: textures mobiles 182 Mo <= 180 Mo. Logs _cel_heroes_tocsin_*.
+- final requested native size/crop conflicts with runtime constants in prohibited .gd/.tscn; record unresolved or explicit exception.
+- no new Blender from 20740; do not stop player's interactive Blender.
+20740 continues read-only final audit only; retain runtime_checks when rewriting verification report.

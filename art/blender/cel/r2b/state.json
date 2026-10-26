@@ -1,0 +1,974 @@
+{
+  "before": {
+    "n": 169,
+    "raw": 512416768,
+    "vram": 128104192,
+    "png": 39726734,
+    "mobile": 18419738
+  },
+  "subjects": {
+    "ox_herder": {
+      "cfg": {
+        "dir": "etage/ox_herder",
+        "floor": true,
+        "dim": 180.0,
+        "bottom": 210.0,
+        "fh": 256.0,
+        "energy": 2.0,
+        "brain": "scripts/enemies/ox_herder_brain.gd",
+        "brief": "art/tools/night/requests_bosses1.md#bouvier",
+        "anims": [
+          "idle_p1_e/s/w/n",
+          "idle_p2_*",
+          "idle_p3_*",
+          "walk_p1_*",
+          "walk_p2_*",
+          "walk_p3_*",
+          "auto_*",
+          "spell_a_*",
+          "spell_b_*",
+          "trans_p2_s",
+          "trans_p3_s",
+          "bogged_s",
+          "death_s"
+        ],
+        "extras": [
+          "furrow",
+          "stomp_ring",
+          "mud_wave",
+          "dust_burst"
+        ]
+      },
+      "sheets": {
+        "idle_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p1"
+        },
+        "idle_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p2"
+        },
+        "idle_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p3"
+        },
+        "walk_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p1"
+        },
+        "walk_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p2"
+        },
+        "walk_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p3"
+        },
+        "auto": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "auto"
+        },
+        "spell_a": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_a"
+        },
+        "spell_b": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_b"
+        },
+        "trans_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p2"
+        },
+        "trans_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p3"
+        },
+        "bogged": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "bogged"
+        },
+        "death": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 10,
+          "rows": 1,
+          "ext": "death"
+        },
+        "furrow": {
+          "oldcell": [
+            512,
+            64
+          ],
+          "cols": 4,
+          "rows": 1,
+          "ext": "furrow"
+        },
+        "stomp_ring": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "stomp_ring"
+        },
+        "mud_wave_0": {
+          "oldcell": [
+            704,
+            96
+          ],
+          "cols": 5,
+          "rows": 1,
+          "ext": "mud_wave_0"
+        },
+        "mud_wave_1": {
+          "oldcell": [
+            704,
+            96
+          ],
+          "cols": 3,
+          "rows": 1,
+          "ext": "mud_wave_1"
+        },
+        "dust_burst": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "dust_burst"
+        }
+      },
+      "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\bosses\\ox_herder_iso.blend",
+      "source_sha256": "a1ac7143c26278a1dfa4c828327ae02c4e69591e18985c4aac66620c0952ac4c"
+    },
+    "smelter": {
+      "cfg": {
+        "dir": "etage/smelter",
+        "floor": true,
+        "dim": 185.0,
+        "bottom": 215.0,
+        "fh": 256.0,
+        "energy": 2.0,
+        "brain": "scripts/enemies/smelter_brain.gd",
+        "brief": "art/tools/night/requests_bosses3.md#fondeur",
+        "anims": [
+          "idle_p1_e/s/w/n",
+          "idle_p2_*",
+          "idle_p3_*",
+          "walk_p1_*",
+          "walk_p2_*",
+          "walk_p3_*",
+          "auto_*",
+          "spell_a_*",
+          "spell_b_*",
+          "trans_p2_s",
+          "trans_p3_s",
+          "death_s"
+        ],
+        "extras": [
+          "molten_pool",
+          "splash"
+        ]
+      },
+      "sheets": {
+        "idle_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p1"
+        },
+        "idle_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p2"
+        },
+        "idle_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p3"
+        },
+        "walk_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p1"
+        },
+        "walk_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p2"
+        },
+        "walk_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p3"
+        },
+        "auto": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "auto"
+        },
+        "spell_a": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_a"
+        },
+        "spell_b": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_b"
+        },
+        "trans_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p2"
+        },
+        "trans_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p3"
+        },
+        "death": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 10,
+          "rows": 1,
+          "ext": "death"
+        },
+        "molten_pool_1": {
+          "oldcell": [
+            768,
+            128
+          ],
+          "cols": 5,
+          "rows": 1,
+          "ext": "molten_pool_1"
+        },
+        "molten_pool_2": {
+          "oldcell": [
+            768,
+            128
+          ],
+          "cols": 1,
+          "rows": 1,
+          "ext": "molten_pool_2"
+        },
+        "splash": {
+          "oldcell": [
+            192,
+            256
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "splash"
+        },
+        "molten_arc": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "molten_arc"
+        }
+      },
+      "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\bosses\\smelter_iso.blend",
+      "source_sha256": "1d594af7a49af6157aff334cb5d174ce11abb4f29c7bc601d2f3b3539eb8f08f"
+    },
+    "jar_bearer": {
+      "cfg": {
+        "dir": "etage/jar_bearer",
+        "floor": true,
+        "dim": 170.0,
+        "bottom": 215.0,
+        "fh": 256.0,
+        "energy": 2.0,
+        "brain": "scripts/enemies/jar_bearer_brain.gd",
+        "brief": "art/tools/night/requests_bosses1.md#porteuse",
+        "anims": [
+          "idle_p1_e/s/w/n",
+          "idle_p2_*",
+          "idle_p3_*",
+          "walk_p1_*",
+          "walk_p2_*",
+          "walk_p3_*",
+          "auto_*",
+          "spell_a_*",
+          "spell_b_*",
+          "trans_p2_s",
+          "trans_p3_s",
+          "death_s"
+        ],
+        "extras": [
+          "jar",
+          "jar_shatter",
+          "mother_jar",
+          "puddle"
+        ]
+      },
+      "sheets": {
+        "idle_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p1"
+        },
+        "walk_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p1"
+        },
+        "idle_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p2"
+        },
+        "walk_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p2"
+        },
+        "idle_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p3"
+        },
+        "walk_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p3"
+        },
+        "auto": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "auto"
+        },
+        "spell_a": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_a"
+        },
+        "spell_b": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_b"
+        },
+        "trans_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p2"
+        },
+        "trans_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p3"
+        },
+        "death": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 10,
+          "rows": 1,
+          "ext": "death"
+        },
+        "jar": {
+          "oldcell": [
+            64,
+            64
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "jar"
+        },
+        "jar_shatter": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "jar_shatter"
+        },
+        "mother_jar": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "mother_jar"
+        },
+        "puddle": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 4,
+          "rows": 1,
+          "ext": "puddle"
+        }
+      },
+      "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\bosses\\jar_bearer_iso.blend",
+      "source_sha256": "92189bcf2b0583a2eda353aa289db312614ce33c5457ca3b221216eb884b7552"
+    },
+    "hermit_cedar": {
+      "cfg": {
+        "dir": "etage/hermit_cedar",
+        "floor": true,
+        "dim": 206.0,
+        "bottom": 220.0,
+        "fh": 256.0,
+        "energy": 2.0,
+        "brain": "scripts/enemies/hermit_cedar_brain.gd",
+        "brief": "art/tools/night/requests_bosses2.md#cedre",
+        "anims": [
+          "idle_p1_e/s/w/n",
+          "idle_p2_*",
+          "idle_p3_*",
+          "walk_p1_*",
+          "walk_p2_*",
+          "walk_p3_*",
+          "auto_*",
+          "spell_a_*",
+          "spell_b_*",
+          "trans_p2_s",
+          "trans_p3_s",
+          "death_s"
+        ],
+        "extras": [
+          "root_spike",
+          "spore_cloud",
+          "stump"
+        ]
+      },
+      "sheets": {
+        "idle_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p1"
+        },
+        "idle_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p2"
+        },
+        "idle_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p3"
+        },
+        "walk_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p1"
+        },
+        "walk_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p2"
+        },
+        "walk_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p3"
+        },
+        "auto": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "auto"
+        },
+        "spell_a": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "spell_a"
+        },
+        "spell_b": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "spell_b"
+        },
+        "trans_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p2"
+        },
+        "trans_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p3"
+        },
+        "death": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 10,
+          "rows": 1,
+          "ext": "death"
+        },
+        "auto_dirs": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 3,
+          "ext": "auto_dirs"
+        },
+        "spell_a_dirs": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 3,
+          "ext": "spell_a_dirs"
+        },
+        "spell_b_dirs": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 3,
+          "ext": "spell_b_dirs"
+        },
+        "root_spike": {
+          "oldcell": [
+            512,
+            64
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "root_spike"
+        },
+        "spore_cloud": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "spore_cloud"
+        },
+        "stump": {
+          "oldcell": [
+            96,
+            128
+          ],
+          "cols": 4,
+          "rows": 1,
+          "ext": "stump"
+        }
+      },
+      "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\monsters\\hermit_cedar_iso.blend",
+      "source_sha256": "243903af73ded0bde812d3bf0f3c50f4ec91f40a42c78fda94b87f92d1d24b4d"
+    },
+    "deep_eel": {
+      "cfg": {
+        "dir": "etage/deep_eel",
+        "floor": true,
+        "dim": 195.0,
+        "bottom": 210.0,
+        "fh": 256.0,
+        "energy": 2.0,
+        "brain": "scripts/enemies/deep_eel_brain.gd",
+        "brief": "art/tools/night/requests_bosses4.md#anguille",
+        "anims": [
+          "idle_p1_e/s/w/n",
+          "idle_p2_*",
+          "idle_p3_*",
+          "walk_p1_*",
+          "walk_p2_*",
+          "walk_p3_*",
+          "auto_*",
+          "spell_a_*",
+          "spell_b_*",
+          "trans_p2_s",
+          "trans_p3_s",
+          "death_s"
+        ],
+        "extras": [
+          "black_pool",
+          "puddle",
+          "wake",
+          "emerge_splash",
+          "discharge_ring",
+          "whip"
+        ]
+      },
+      "sheets": {
+        "idle_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p1"
+        },
+        "idle_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p2"
+        },
+        "idle_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "idle_p3"
+        },
+        "walk_p1": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p1"
+        },
+        "walk_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p2"
+        },
+        "walk_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "walk_p3"
+        },
+        "auto": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 4,
+          "ext": "auto"
+        },
+        "spell_a": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_a"
+        },
+        "spell_b": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 4,
+          "ext": "spell_b"
+        },
+        "trans_p2": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p2"
+        },
+        "trans_p3": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "trans_p3"
+        },
+        "death": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 10,
+          "rows": 1,
+          "ext": "death"
+        },
+        "black_pool": {
+          "oldcell": [
+            896,
+            896
+          ],
+          "cols": 4,
+          "rows": 1,
+          "ext": "black_pool"
+        },
+        "black_pool_2": {
+          "oldcell": [
+            896,
+            896
+          ],
+          "cols": 4,
+          "rows": 1,
+          "ext": "black_pool_2"
+        },
+        "puddle": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "puddle"
+        },
+        "wake": {
+          "oldcell": [
+            128,
+            128
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "wake"
+        },
+        "emerge_splash": {
+          "oldcell": [
+            192,
+            384
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "emerge_splash"
+        },
+        "discharge_ring": {
+          "oldcell": [
+            256,
+            256
+          ],
+          "cols": 6,
+          "rows": 1,
+          "ext": "discharge_ring"
+        },
+        "whip": {
+          "oldcell": [
+            448,
+            77
+          ],
+          "cols": 8,
+          "rows": 1,
+          "ext": "whip"
+        }
+      },
+      "source": "C:\\Users\\const\\Documents\\Rainfall\\art\\blender\\bosses\\deep_eel_iso.blend",
+      "source_sha256": "6aae8686da6fd489fdb044666ad9638851ad3c4e1d220883fddc22f8a410f2f4"
+    }
+  }
+}

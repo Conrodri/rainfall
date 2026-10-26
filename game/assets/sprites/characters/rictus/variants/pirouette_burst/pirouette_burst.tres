@@ -1,0 +1,30 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/variants/pirouette_burst/default.png" id="default"]
+
+[sub_resource type="AtlasTexture" id="default_0"]
+atlas = ExtResource("default")
+region = Rect2(0, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="default_1"]
+atlas = ExtResource("default")
+region = Rect2(608, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="default_2"]
+atlas = ExtResource("default")
+region = Rect2(1216, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="default_3"]
+atlas = ExtResource("default")
+region = Rect2(1824, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="default_4"]
+atlas = ExtResource("default")
+region = Rect2(2432, 0, 608, 608)
+
+[sub_resource type="AtlasTexture" id="default_5"]
+atlas = ExtResource("default")
+region = Rect2(3040, 0, 608, 608)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("default_0")}, {"duration": 1.0, "texture": SubResource("default_1")}, {"duration": 1.0, "texture": SubResource("default_2")}, {"duration": 1.0, "texture": SubResource("default_3")}, {"duration": 1.0, "texture": SubResource("default_4")}, {"duration": 1.0, "texture": SubResource("default_5")}], "loop": false, "name": &"default", "speed": 24}]

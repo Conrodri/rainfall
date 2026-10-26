@@ -1,0 +1,2359 @@
+{
+  "png_bytes": 8056211,
+  "raw_bytes": 83887360,
+  "source_hashes": {
+    "art\\blender\\monsters\\frost_bear.blend": "f64d859791d78538d04c3904fe8418439d2dc5dd7433624b64a5201204001046",
+    "art\\blender\\monsters\\stone_colossus.blend": "161abba80aadf902bf3439531e3f4f723a9bfc59961e16b8c3ca2f0d1490b3a8",
+    "art\\blender\\monsters\\bramble_queen.blend": "64a83d79ca9c1e7ef058df2168cb659eda5b150d35d3765e02706c1bc76ec1b4",
+    "art\\blender\\monsters\\brood_mother.blend": "5a1f7e56a0b0862d7cbd77bc6c9a907a167756fa3a03b3725b482a0d52574fca"
+  },
+  "data_hashes": {
+    "game/data/fauna.json": "aa947369ab1a2adb28433d802986d7d44b1b0e0ae2b818fa1e4b45a4332fbce4",
+    "game/data/minibosses.json": "b45d4af69fa2b9f92009685529ac45514dda856ef924ccaf25abfda2edcc9cc2"
+  },
+  "choices": [
+    "creature; 8 Eevee samples; original palettes, animation and cameras",
+    "Original luminous accent masks retained; ice_block and rock untouched",
+    "Measured mini scalar 2.4*(1.1*64)/dim: frost 1.25155556; stone 1.408; queen 1.35168; brood 1.43186441; none reduced in game",
+    "Geometry and scale are code constants in enemy_visual.gd; no .gd edits authorized; preserve logical cells and pivots with AtlasTexture margins",
+    "Lossless per-animation cell crop +4px; AtlasTexture margin retains 170px logical cell and feet"
+  ],
+  "result": "PASS_WITH_DEVIATIONS_AND_GODOT_CLEANUP_ERROR",
+  "profile": "creature",
+  "normals": false,
+  "checks": [
+    {
+      "file": "bosses/mini/frost_bear/attack.png",
+      "silhouette_iou": 0.9990551776266062,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        492,
+        140
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        44,
+        8,
+        126,
+        148
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/attack.png",
+        "silhouette_iou": 0.9990551776266062,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/attack_dirs.png",
+      "silhouette_iou": 0.9992675852774875,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [
+        {
+          "row": 2,
+          "pairs": [
+            [
+              5,
+              0
+            ]
+          ]
+        }
+      ],
+      "quantized_source_noise": [],
+      "cells_unique": false,
+      "size": [
+        972,
+        390
+      ],
+      "logical_size": [
+        1020,
+        510
+      ],
+      "crop": [
+        4,
+        22,
+        166,
+        152
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/attack_dirs.png",
+        "silhouette_iou": 0.9992675852774875,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [
+          {
+            "row": 2,
+            "pairs": [
+              [
+                5,
+                0
+              ]
+            ]
+          }
+        ],
+        "quantized_source_noise": [],
+        "cells_unique": false
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/cast_a.png",
+      "silhouette_iou": 0.9987483049963493,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        592,
+        148
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        48,
+        20,
+        122,
+        168
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/cast_a.png",
+        "silhouette_iou": 0.9987483049963493,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/cast_a_dirs.png",
+      "silhouette_iou": 0.9992503640059395,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [
+        {
+          "row": 2,
+          "pairs": [
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        }
+      ],
+      "quantized_source_noise": [],
+      "cells_unique": false,
+      "size": [
+        1296,
+        342
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        4,
+        26,
+        166,
+        140
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/cast_a_dirs.png",
+        "silhouette_iou": 0.9992503640059395,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [
+          {
+            "row": 2,
+            "pairs": [
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                0
+              ]
+            ]
+          }
+        ],
+        "quantized_source_noise": [],
+        "cells_unique": false
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/cast_b.png",
+      "silhouette_iou": 0.998679316478896,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        768,
+        126
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        38,
+        20,
+        134,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/cast_b.png",
+        "silhouette_iou": 0.998679316478896,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/cast_b_dirs.png",
+      "silhouette_iou": 0.9991662346033658,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1200,
+        360
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        10,
+        26,
+        160,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/cast_b_dirs.png",
+        "silhouette_iou": 0.9991662346033658,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/death.png",
+      "silhouette_iou": 0.9989597390913181,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        820,
+        126
+      ],
+      "logical_size": [
+        1700,
+        170
+      ],
+      "crop": [
+        48,
+        20,
+        130,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/death.png",
+        "silhouette_iou": 0.9989597390913181,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/idle.png",
+      "silhouette_iou": 0.9988359826852424,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        468,
+        124
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        46,
+        20,
+        124,
+        144
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/idle.png",
+        "silhouette_iou": 0.9988359826852424,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/phase2.png",
+      "silhouette_iou": 0.9992868217054264,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        592,
+        140
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        48,
+        4,
+        122,
+        144
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/phase2.png",
+        "silhouette_iou": 0.9992868217054264,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/frost_bear/run.png",
+      "silhouette_iou": 0.9992062342478055,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1200,
+        512
+      ],
+      "logical_size": [
+        1360,
+        680
+      ],
+      "crop": [
+        10,
+        18,
+        160,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/frost_bear/run.png",
+        "silhouette_iou": 0.9992062342478055,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/attack.png",
+      "silhouette_iou": 0.99935601350151,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        792,
+        142
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        18,
+        6,
+        150,
+        148
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/attack.png",
+        "silhouette_iou": 0.99935601350151,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/attack_dirs.png",
+      "silhouette_iou": 0.9994908909408535,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [
+        {
+          "row": 2,
+          "pairs": [
+            [
+              5,
+              0
+            ]
+          ]
+        }
+      ],
+      "quantized_source_noise": [],
+      "cells_unique": false,
+      "size": [
+        900,
+        426
+      ],
+      "logical_size": [
+        1020,
+        510
+      ],
+      "crop": [
+        10,
+        4,
+        160,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/attack_dirs.png",
+        "silhouette_iou": 0.9994908909408535,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [
+          {
+            "row": 2,
+            "pairs": [
+              [
+                5,
+                0
+              ]
+            ]
+          }
+        ],
+        "quantized_source_noise": [],
+        "cells_unique": false
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/cast_a.png",
+      "silhouette_iou": 0.9995241058681407,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        976,
+        130
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        24,
+        18,
+        146,
+        148
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/cast_a.png",
+        "silhouette_iou": 0.9995241058681407,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/cast_a_dirs.png",
+      "silhouette_iou": 0.9994879897012786,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [
+        {
+          "row": 2,
+          "pairs": [
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              0
+            ]
+          ]
+        }
+      ],
+      "quantized_source_noise": [],
+      "cells_unique": false,
+      "size": [
+        1104,
+        426
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        16,
+        0,
+        154,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/cast_a_dirs.png",
+        "silhouette_iou": 0.9994879897012786,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [
+          {
+            "row": 2,
+            "pairs": [
+              [
+                4,
+                3
+              ],
+              [
+                5,
+                2
+              ],
+              [
+                6,
+                1
+              ],
+              [
+                7,
+                0
+              ]
+            ]
+          }
+        ],
+        "quantized_source_noise": [],
+        "cells_unique": false
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/cast_b.png",
+      "silhouette_iou": 0.9994909732591285,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        976,
+        138
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        24,
+        4,
+        146,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/cast_b.png",
+        "silhouette_iou": 0.9994909732591285,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/cast_b_dirs.png",
+      "silhouette_iou": 0.9995237545459793,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        976,
+        432
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        24,
+        4,
+        146,
+        148
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/cast_b_dirs.png",
+        "silhouette_iou": 0.9995237545459793,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/death.png",
+      "silhouette_iou": 0.9994114743516725,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1260,
+        120
+      ],
+      "logical_size": [
+        1700,
+        170
+      ],
+      "crop": [
+        22,
+        18,
+        148,
+        138
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/death.png",
+        "silhouette_iou": 0.9994114743516725,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/idle.png",
+      "silhouette_iou": 0.999527034290014,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        732,
+        118
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        24,
+        18,
+        146,
+        136
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/idle.png",
+        "silhouette_iou": 0.999527034290014,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/phase2.png",
+      "silhouette_iou": 0.9995737627279185,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1120,
+        118
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        14,
+        18,
+        154,
+        136
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/phase2.png",
+        "silhouette_iou": 0.9995737627279185,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/stone_colossus/run.png",
+      "silhouette_iou": 0.9994093912025422,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        976,
+        560
+      ],
+      "logical_size": [
+        1360,
+        680
+      ],
+      "crop": [
+        24,
+        2,
+        146,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/stone_colossus/run.png",
+        "silhouette_iou": 0.9994093912025422,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/attack.png",
+      "silhouette_iou": 0.9970581142994936,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        552,
+        144
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        36,
+        2,
+        128,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/attack.png",
+        "silhouette_iou": 0.9970581142994936,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/attack_dirs.png",
+      "silhouette_iou": 0.9979895522634016,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [
+        {
+          "row": 2,
+          "pairs": [
+            [
+              5,
+              0
+            ]
+          ]
+        }
+      ],
+      "quantized_source_noise": [],
+      "cells_unique": false,
+      "size": [
+        756,
+        480
+      ],
+      "logical_size": [
+        1020,
+        510
+      ],
+      "crop": [
+        22,
+        2,
+        148,
+        162
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/attack_dirs.png",
+        "silhouette_iou": 0.9979895522634016,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [
+          {
+            "row": 2,
+            "pairs": [
+              [
+                5,
+                0
+              ]
+            ]
+          }
+        ],
+        "quantized_source_noise": [],
+        "cells_unique": false
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/cast_a.png",
+      "silhouette_iou": 0.9977574165438585,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        784,
+        134
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        36,
+        8,
+        134,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/cast_a.png",
+        "silhouette_iou": 0.9977574165438585,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/cast_a_dirs.png",
+      "silhouette_iou": 0.997791535425944,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        912,
+        420
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        28,
+        12,
+        142,
+        152
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/cast_a_dirs.png",
+        "silhouette_iou": 0.997791535425944,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/cast_b.png",
+      "silhouette_iou": 0.9976539390024141,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1008,
+        130
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        22,
+        10,
+        148,
+        140
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/cast_b.png",
+        "silhouette_iou": 0.9976539390024141,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/cast_b_dirs.png",
+      "silhouette_iou": 0.9974174618378457,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1008,
+        444
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        22,
+        0,
+        148,
+        148
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/cast_b_dirs.png",
+        "silhouette_iou": 0.9974174618378457,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/death.png",
+      "silhouette_iou": 0.9979497829965119,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        860,
+        142
+      ],
+      "logical_size": [
+        1700,
+        170
+      ],
+      "crop": [
+        38,
+        2,
+        124,
+        144
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/death.png",
+        "silhouette_iou": 0.9979497829965119,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/idle.png",
+      "silhouette_iou": 0.9974755738394652,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        516,
+        130
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        40,
+        8,
+        126,
+        138
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/idle.png",
+        "silhouette_iou": 0.9974755738394652,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/phase2.png",
+      "silhouette_iou": 0.9979282706154056,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1040,
+        124
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        20,
+        12,
+        150,
+        136
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/phase2.png",
+        "silhouette_iou": 0.9979282706154056,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/bramble_queen/run.png",
+      "silhouette_iou": 0.9978927935403866,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        912,
+        560
+      ],
+      "logical_size": [
+        1360,
+        680
+      ],
+      "crop": [
+        28,
+        6,
+        142,
+        146
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/bramble_queen/run.png",
+        "silhouette_iou": 0.9978927935403866,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/attack.png",
+      "silhouette_iou": 0.9988081371725763,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        840,
+        144
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        18,
+        12,
+        158,
+        156
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/attack.png",
+        "silhouette_iou": 0.9988081371725763,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/attack_dirs.png",
+      "silhouette_iou": 0.9987434660233213,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        996,
+        444
+      ],
+      "logical_size": [
+        1020,
+        510
+      ],
+      "crop": [
+        2,
+        12,
+        168,
+        160
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/attack_dirs.png",
+        "silhouette_iou": 0.9987434660233213,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/cast_a.png",
+      "silhouette_iou": 0.9984998866193375,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1040,
+        140
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        20,
+        2,
+        150,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/cast_a.png",
+        "silhouette_iou": 0.9984998866193375,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/cast_a_dirs.png",
+      "silhouette_iou": 0.9988847417805469,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1264,
+        438
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        6,
+        6,
+        164,
+        152
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/cast_a_dirs.png",
+        "silhouette_iou": 0.9988847417805469,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/cast_b.png",
+      "silhouette_iou": 0.9984746272504619,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        976,
+        138
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        24,
+        4,
+        146,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/cast_b.png",
+        "silhouette_iou": 0.9984746272504619,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/cast_b_dirs.png",
+      "silhouette_iou": 0.998803804035344,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1264,
+        426
+      ],
+      "logical_size": [
+        1360,
+        510
+      ],
+      "crop": [
+        6,
+        12,
+        164,
+        154
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/cast_b_dirs.png",
+        "silhouette_iou": 0.998803804035344,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/death.png",
+      "silhouette_iou": 0.9987098855023383,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1420,
+        130
+      ],
+      "logical_size": [
+        1700,
+        170
+      ],
+      "crop": [
+        8,
+        20,
+        150,
+        150
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/death.png",
+        "silhouette_iou": 0.9987098855023383,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/idle.png",
+      "silhouette_iou": 0.998691798376762,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        756,
+        130
+      ],
+      "logical_size": [
+        1020,
+        170
+      ],
+      "crop": [
+        22,
+        14,
+        148,
+        144
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/idle.png",
+        "silhouette_iou": 0.998691798376762,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/phase2.png",
+      "silhouette_iou": 0.9985346290297702,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1008,
+        134
+      ],
+      "logical_size": [
+        1360,
+        170
+      ],
+      "crop": [
+        22,
+        8,
+        148,
+        142
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/phase2.png",
+        "silhouette_iou": 0.9985346290297702,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    },
+    {
+      "file": "bosses/mini/brood_mother/run.png",
+      "silhouette_iou": 0.9987956947437207,
+      "e_half": true,
+      "cells_nonempty": true,
+      "no_new_duplicate_cells": true,
+      "no_new_distinct_pose_duplicates": true,
+      "inherited_duplicate_poses": [],
+      "quantized_source_noise": [],
+      "cells_unique": true,
+      "size": [
+        1200,
+        592
+      ],
+      "logical_size": [
+        1360,
+        680
+      ],
+      "crop": [
+        10,
+        10,
+        160,
+        158
+      ],
+      "normals_absent": true,
+      "accent_source": "immutable original emissive pass",
+      "accent_iou": 1.0,
+      "emission_alpha_matches_reference_crop": true,
+      "delivered_check": {
+        "file": "bosses/mini/brood_mother/run.png",
+        "silhouette_iou": 0.9987956947437207,
+        "e_half": true,
+        "cells_nonempty": true,
+        "no_new_duplicate_cells": true,
+        "no_new_distinct_pose_duplicates": true,
+        "inherited_duplicate_poses": [],
+        "quantized_source_noise": [],
+        "cells_unique": true
+      }
+    }
+  ],
+  "crops": {
+    "bosses/mini/frost_bear/attack.png": {
+      "cell": 170,
+      "box": [
+        44,
+        8,
+        126,
+        148
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/attack_dirs.png": {
+      "cell": 170,
+      "box": [
+        4,
+        22,
+        166,
+        152
+      ],
+      "grid": [
+        6,
+        3
+      ]
+    },
+    "bosses/mini/frost_bear/cast_a.png": {
+      "cell": 170,
+      "box": [
+        48,
+        20,
+        122,
+        168
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/cast_a_dirs.png": {
+      "cell": 170,
+      "box": [
+        4,
+        26,
+        166,
+        140
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/frost_bear/cast_b.png": {
+      "cell": 170,
+      "box": [
+        38,
+        20,
+        134,
+        146
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/cast_b_dirs.png": {
+      "cell": 170,
+      "box": [
+        10,
+        26,
+        160,
+        146
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/frost_bear/death.png": {
+      "cell": 170,
+      "box": [
+        48,
+        20,
+        130,
+        146
+      ],
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/idle.png": {
+      "cell": 170,
+      "box": [
+        46,
+        20,
+        124,
+        144
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/phase2.png": {
+      "cell": 170,
+      "box": [
+        48,
+        4,
+        122,
+        144
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/frost_bear/run.png": {
+      "cell": 170,
+      "box": [
+        10,
+        18,
+        160,
+        146
+      ],
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bosses/mini/stone_colossus/attack.png": {
+      "cell": 170,
+      "box": [
+        18,
+        6,
+        150,
+        148
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/attack_dirs.png": {
+      "cell": 170,
+      "box": [
+        10,
+        4,
+        160,
+        146
+      ],
+      "grid": [
+        6,
+        3
+      ]
+    },
+    "bosses/mini/stone_colossus/cast_a.png": {
+      "cell": 170,
+      "box": [
+        24,
+        18,
+        146,
+        148
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/cast_a_dirs.png": {
+      "cell": 170,
+      "box": [
+        16,
+        0,
+        154,
+        142
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/stone_colossus/cast_b.png": {
+      "cell": 170,
+      "box": [
+        24,
+        4,
+        146,
+        142
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/cast_b_dirs.png": {
+      "cell": 170,
+      "box": [
+        24,
+        4,
+        146,
+        148
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/stone_colossus/death.png": {
+      "cell": 170,
+      "box": [
+        22,
+        18,
+        148,
+        138
+      ],
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/idle.png": {
+      "cell": 170,
+      "box": [
+        24,
+        18,
+        146,
+        136
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/phase2.png": {
+      "cell": 170,
+      "box": [
+        14,
+        18,
+        154,
+        136
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/stone_colossus/run.png": {
+      "cell": 170,
+      "box": [
+        24,
+        2,
+        146,
+        142
+      ],
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bosses/mini/bramble_queen/attack.png": {
+      "cell": 170,
+      "box": [
+        36,
+        2,
+        128,
+        146
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/attack_dirs.png": {
+      "cell": 170,
+      "box": [
+        22,
+        2,
+        148,
+        162
+      ],
+      "grid": [
+        6,
+        3
+      ]
+    },
+    "bosses/mini/bramble_queen/cast_a.png": {
+      "cell": 170,
+      "box": [
+        36,
+        8,
+        134,
+        142
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/cast_a_dirs.png": {
+      "cell": 170,
+      "box": [
+        28,
+        12,
+        142,
+        152
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/bramble_queen/cast_b.png": {
+      "cell": 170,
+      "box": [
+        22,
+        10,
+        148,
+        140
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/cast_b_dirs.png": {
+      "cell": 170,
+      "box": [
+        22,
+        0,
+        148,
+        148
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/bramble_queen/death.png": {
+      "cell": 170,
+      "box": [
+        38,
+        2,
+        124,
+        144
+      ],
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/idle.png": {
+      "cell": 170,
+      "box": [
+        40,
+        8,
+        126,
+        138
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/phase2.png": {
+      "cell": 170,
+      "box": [
+        20,
+        12,
+        150,
+        136
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/bramble_queen/run.png": {
+      "cell": 170,
+      "box": [
+        28,
+        6,
+        142,
+        146
+      ],
+      "grid": [
+        8,
+        4
+      ]
+    },
+    "bosses/mini/brood_mother/attack.png": {
+      "cell": 170,
+      "box": [
+        18,
+        12,
+        158,
+        156
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/attack_dirs.png": {
+      "cell": 170,
+      "box": [
+        2,
+        12,
+        168,
+        160
+      ],
+      "grid": [
+        6,
+        3
+      ]
+    },
+    "bosses/mini/brood_mother/cast_a.png": {
+      "cell": 170,
+      "box": [
+        20,
+        2,
+        150,
+        142
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/cast_a_dirs.png": {
+      "cell": 170,
+      "box": [
+        6,
+        6,
+        164,
+        152
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/brood_mother/cast_b.png": {
+      "cell": 170,
+      "box": [
+        24,
+        4,
+        146,
+        142
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/cast_b_dirs.png": {
+      "cell": 170,
+      "box": [
+        6,
+        12,
+        164,
+        154
+      ],
+      "grid": [
+        8,
+        3
+      ]
+    },
+    "bosses/mini/brood_mother/death.png": {
+      "cell": 170,
+      "box": [
+        8,
+        20,
+        150,
+        150
+      ],
+      "grid": [
+        10,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/idle.png": {
+      "cell": 170,
+      "box": [
+        22,
+        14,
+        148,
+        144
+      ],
+      "grid": [
+        6,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/phase2.png": {
+      "cell": 170,
+      "box": [
+        22,
+        8,
+        148,
+        142
+      ],
+      "grid": [
+        8,
+        1
+      ]
+    },
+    "bosses/mini/brood_mother/run.png": {
+      "cell": 170,
+      "box": [
+        10,
+        10,
+        160,
+        158
+      ],
+      "grid": [
+        8,
+        4
+      ]
+    }
+  },
+  "deviations": [
+    "Original repeated poses preserved to keep frame counts and animation timing",
+    "Original directional recovery pose repetitions retained",
+    "Runtime scales exceed 1; no reduced in-game sheets. Crop margins preserve logical feet without code changes"
+  ],
+  "png_bytes_after": 7863685,
+  "raw_bytes_after": 52324000,
+  "tests": {
+    "sprites": "RESULT: OK",
+    "minibosses": "RESULT: OK",
+    "miniboss_mechanics": "RESULT: OK",
+    "texture_budget": "RESULT: OK"
+  },
+  "texture_budget_scope_before": {
+    "png": 8056211,
+    "raw": 83887360,
+    "vram": 20971840,
+    "mobile": 5053347
+  },
+  "texture_budget_scope_after": {
+    "png": 7863685,
+    "raw": 52324000,
+    "vram": 13081000,
+    "mobile": 4651881
+  },
+  "texture_budget_global_violations": [
+    "cat\u00e9gorie bosses : 73.0 Mo mobile > budget 45 Mo",
+    "APK estim\u00e9 6916 Mo > 200 Mo"
+  ],
+  "import": "PASS",
+  "contact_visual_check": "PASS",
+  "texture_budget_scope_bytes": {
+    "before": {
+      "png": 8056211,
+      "raw": 83887360,
+      "vram": 20971840,
+      "mobile": 5053347,
+      "max_side": 1700
+    },
+    "after": {
+      "png": 7863685,
+      "raw": 52324000,
+      "vram": 13081000,
+      "mobile": 4651881,
+      "max_side": 1420
+    }
+  },
+  "immutable_archive_files_checked": 88,
+  "protected_hashes_checked": 92,
+  "global_budget_diagnosis": "Android build intermediates under game/android/build/build are included in other_files_mb; outside this asset scope. Category bosses also exceeds its global budget.",
+  "test_cleanup_errors": {
+    "minibosses": [
+      "ERROR: 15 resources still in use at exit (run with --verbose for details)."
+    ]
+  },
+  "test_logs": {
+    "minibosses": "art/tools/night/_cel_minis_a_minibosses_retry.log"
+  },
+  "test_diagnostics": {
+    "minibosses": "RESULT: OK; shutdown WARNING: 40 ObjectDB instances were leaked; ERROR: 15 resources still in use at exit; no .gd/.tscn changes",
+    "miniboss_mechanics": "RESULT: OK; shutdown WARNING: 5 ObjectDB instances were leaked"
+  },
+  "tests_timeout_seconds": 900
+}

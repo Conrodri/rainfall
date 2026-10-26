@@ -1,0 +1,250 @@
+{
+  "checks": [
+    {
+      "file": "vfx/meteor/default.png",
+      "silhouette_iou": 0.9964442013129103,
+      "e_half": true,
+      "cell": [
+        128,
+        128
+      ],
+      "frames": 6,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [],
+      "size": [
+        768,
+        128
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    },
+    {
+      "file": "vfx/meteor_impact/default.png",
+      "silhouette_iou": 0.9994395142456796,
+      "e_half": true,
+      "cell": [
+        256,
+        256
+      ],
+      "frames": 10,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [
+        9
+      ],
+      "size": [
+        2560,
+        256
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    },
+    {
+      "file": "vfx/monster_death/tier1.png",
+      "silhouette_iou": 0.9987405541561712,
+      "e_half": true,
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 6,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [
+        4,
+        5
+      ],
+      "size": [
+        960,
+        160
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    },
+    {
+      "file": "vfx/monster_death/tier2.png",
+      "silhouette_iou": 0.9969583528310716,
+      "e_half": true,
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 6,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [
+        4,
+        5
+      ],
+      "size": [
+        960,
+        160
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    },
+    {
+      "file": "vfx/monster_death/tier3.png",
+      "silhouette_iou": 0.9988559443226237,
+      "e_half": true,
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 6,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [
+        5
+      ],
+      "size": [
+        960,
+        160
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    },
+    {
+      "file": "vfx/monster_death/tier4.png",
+      "silhouette_iou": 0.9984846784150858,
+      "e_half": true,
+      "cell": [
+        160,
+        160
+      ],
+      "frames": 6,
+      "rows": 1,
+      "nonempty_unique": true,
+      "original_translucent_cells": [
+        5
+      ],
+      "size": [
+        960,
+        160
+      ],
+      "accent_iou": 1.0,
+      "emission_unchanged": true,
+      "normals_absent": true
+    }
+  ],
+  "dossiers": {
+    "ardent_ashes": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "ardent_brasier": {
+      "action": "laissé",
+      "raison": "lot R1"
+    },
+    "ardent_nova": {
+      "action": "laissé",
+      "raison": "lot R1"
+    },
+    "charge_ring": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "chest_open": {
+      "action": "laissé",
+      "raison": "halo/rayons/étoiles uniquement; aucun coffre dans make_chest"
+    },
+    "ember_orbs": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "ember_shard_impact": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "flame_pillar": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "level_up": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "lightning_arc": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "meteor": {
+      "action": "re-rendu",
+      "raison": "disque opaque et fumée; prop"
+    },
+    "meteor_impact": {
+      "action": "re-rendu",
+      "raison": "fumée; vfx"
+    },
+    "monster_death": {
+      "action": "re-rendu",
+      "raison": "fumée; vfx"
+    },
+    "particles": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "phoenix": {
+      "action": "laissé",
+      "raison": "plumes en flame émissives; aucune plume solide"
+    },
+    "pillar_zone_ring": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "source": {
+      "action": "laissé",
+      "raison": "pluie lumineuse; ambiance protégée"
+    },
+    "status_burn": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "status_frost": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "status_poison": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "telegraph_circle": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    },
+    "telegraph_cone": {
+      "action": "laissé",
+      "raison": "lumière/particules; exclusion explicite"
+    }
+  },
+  "profiles": {
+    "meteor": "prop",
+    "meteor_impact": "vfx",
+    "monster_death": "vfx"
+  },
+  "bytes_before": 16966230,
+  "bytes_after": 16978444,
+  "resources_and_untargeted_unchanged": true,
+  "choices": "Billboards originaux; alpha procédural conservé; rampes du module partagé. Masques _e originaux conservés exactement. Aucun coffre ni plume solide inventé.",
+  "validation": {
+    "import": {
+      "exit": 0,
+      "errors": 0
+    },
+    "sprites_test": "RESULT: OK",
+    "action_vfx_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: OK",
+    "texture_budget_policy_changed": 0,
+    "vfx_normals": 0,
+    "vfx_over_4096": 0,
+    "mobile_Mo": 177,
+    "mobile_budget_Mo": 180,
+    "action_vfx_exit_warning": "ERROR: 16 resources still in use at exit (run with --verbose for details)."
+  }
+}

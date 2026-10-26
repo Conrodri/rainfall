@@ -24,7 +24,8 @@
       "cell": 64,
       "frames": 1,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/attack.png",
@@ -44,7 +45,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/bog_zone/bog_zone.png",
@@ -64,7 +66,8 @@
       "cell": 720,
       "frames": 5,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/bog_zone/bog_zone_01.png",
@@ -84,7 +87,8 @@
       "cell": 720,
       "frames": 3,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/cast.png",
@@ -104,7 +108,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/cast_ult.png",
@@ -124,7 +129,8 @@
       "cell": 192,
       "frames": 6,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/death.png",
@@ -144,7 +150,8 @@
       "cell": 192,
       "frames": 8,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/idle.png",
@@ -164,7 +171,8 @@
       "cell": 192,
       "frames": 8,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/motte/die.png",
@@ -184,7 +192,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/motte/idle.png",
@@ -204,7 +213,8 @@
       "cell": 192,
       "frames": 6,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/motte/run.png",
@@ -224,7 +234,8 @@
       "cell": 192,
       "frames": 6,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/mud_slap/mud_slap.png",
@@ -244,7 +255,8 @@
       "cell": 288,
       "frames": 4,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/mud_splash/mud_splash.png",
@@ -264,7 +276,8 @@
       "cell": 288,
       "frames": 6,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/portrait.png",
@@ -284,7 +297,8 @@
       "cell": 256,
       "frames": 1,
       "rows": 1,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/recall.png",
@@ -304,7 +318,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/rise.png",
@@ -324,7 +339,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/run.png",
@@ -344,7 +360,8 @@
       "cell": 192,
       "frames": 8,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/sink.png",
@@ -364,7 +381,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/slap.png",
@@ -384,7 +402,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/bourbe/throw.png",
@@ -404,7 +423,8 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/montreur/hover.png",
@@ -424,7 +444,8 @@
       "cell": 192,
       "frames": 6,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
     },
     {
       "file": "characters/montreur/pull.png",
@@ -444,60 +465,117 @@
       "cell": 192,
       "frames": 4,
       "rows": 8,
-      "normals_absent": true
+      "normals_absent": true,
+      "rewritten": true
+    },
+    {
+      "file": "characters/bourbe/bog_zone/bog_zone_0.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        1296,
+        324
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        2592,
+        648
+      ],
+      "cell": 648,
+      "frames": 4,
+      "rows": 1,
+      "normals_absent": true,
+      "rewritten": false
+    },
+    {
+      "file": "characters/bourbe/bog_zone/bog_zone_1.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "emission_size": [
+        1296,
+        324
+      ],
+      "emission_alpha_matches_archive": true,
+      "emission_nonblack": true,
+      "accent_iou_half": 1.0,
+      "size": [
+        2592,
+        648
+      ],
+      "cell": 648,
+      "frames": 4,
+      "rows": 1,
+      "normals_absent": true,
+      "rewritten": false
     }
   ],
   "errors": [],
+  "contract": {
+    "characters/bourbe": {
+      "png_inventory_unchanged": true,
+      "png_count": 44,
+      "archive_protected_files_unchanged": 14,
+      "normal_maps": 0,
+      "canvas_normal_references": 0
+    },
+    "characters/montreur": {
+      "png_inventory_unchanged": true,
+      "png_count": 5,
+      "archive_protected_files_unchanged": 2,
+      "normal_maps": 0,
+      "canvas_normal_references": 0
+    }
+  },
   "bytes_before": 18036428,
   "bytes_after": 14298372,
+  "protected_after_engine_checks": true,
+  "visual_review": "PASS: unique contact sheet, archive left/cel right, CS1 right-hand reference strip; original hues, silhouette and ground effects retained.",
   "checks": [
     {
       "name": "policy",
-      "exit_code": 0,
       "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_policy.log"
     },
     {
       "name": "budget",
-      "exit_code": 1,
       "passed": false,
       "log": "art\\tools\\night\\_cel_heroes_e_budget.log"
     },
     {
       "name": "import",
-      "exit_code": 0,
-      "passed": false,
+      "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_import.log"
     },
     {
       "name": "sprites",
-      "exit_code": 0,
       "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_sprites.log"
     },
     {
       "name": "bourbe",
-      "exit_code": -1,
-      "passed": false,
+      "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_bourbe.log"
     },
     {
       "name": "rictus",
-      "exit_code": 0,
       "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_rictus.log"
     },
     {
       "name": "player",
-      "exit_code": 0,
       "passed": true,
       "log": "art\\tools\\night\\_cel_heroes_e_player.log"
     },
     {
       "name": "texture_budget",
-      "exit_code": 1,
       "passed": false,
       "log": "art\\tools\\night\\_cel_heroes_e_texture_budget.log"
     }
-  ]
+  ],
+  "blocked_by": [
+    "Global texture/APK/category budgets outside allowed character folders"
+  ],
+  "contact_visually_checked": true
 }

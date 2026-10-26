@@ -1,0 +1,20 @@
+{
+  "rig": "MAP / 90.51 px/u / elevation 30 / azimuth 45",
+  "frame": [
+    384,
+    320
+  ],
+  "frames": 10,
+  "fps": 10,
+  "ground_pivot": [
+    160.0,
+    242.63
+  ],
+  "choices": [
+    "Lean-to patched with sailcloth; open hearth unobstructed",
+    "Unstrung bow, smoked amphora, salvaged cracked bell",
+    "Dry crate seat; warm point light baked onto slate and canvas",
+    "24px base pips; 16px variants use _16 suffix; full is neutral grayscale"
+  ],
+  "emission": "half size, flame and coals only"
+}

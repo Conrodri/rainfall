@@ -1,0 +1,1878 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "file": "icons/frame_commun.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 1.0,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/frame_legendaire.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        4,
+        247,
+        252
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9729677419354839,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/frame_peu_commun.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 1.0,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/frame_rare.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        9,
+        247,
+        247
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 1.0,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/aimant_d_ame.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9930612404007328,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/aimant_de_poche.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9929983706900348,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/amulette_de_cuir.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        49,
+        12,
+        207,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9970401065561639,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/antidote.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        37,
+        12,
+        219,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990320707233659,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/armure_du_colosse.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        53,
+        244,
+        203
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9991503422232711,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/bague_de_vigueur.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9982325403649566,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/botte_rapiecee.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        35,
+        12,
+        221,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9994029341521665,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/bouclier_reactif.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        19,
+        12,
+        237,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993339808519495,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/cape_de_brume.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990333494441759,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/carquois_affute.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        54,
+        12,
+        201,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9984988400127371,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/chronometre_brise.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        20,
+        12,
+        235,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993339186775259,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/coeur_de_glace.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        29,
+        12,
+        227,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9911793304625642,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/coeur_de_mousse.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        24,
+        244,
+        233
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9913079602467005,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/coeur_du_chronomancien.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9994631953297993,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/couronne_d_echo.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        26,
+        12,
+        230,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.99913442118424,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/cristal_de_feu.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        16,
+        12,
+        240,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993150880397249,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/danseur.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        15,
+        12,
+        241,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9985299696509864,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/de_pipe.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        31,
+        244,
+        224
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9997738579828132,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/eclair_en_bouteille.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        59,
+        12,
+        196,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990137221269296,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/eclat_d_experience.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        14,
+        244,
+        242
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992148945715568,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/epines.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        15,
+        244,
+        240
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9726756564939674,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/etincelle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        35,
+        12,
+        220,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.999195093905711,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/faveur_du_marchand.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9976906952783601,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/fiole_verte.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        48,
+        12,
+        208,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9985323255301974,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/flocon.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9961216394887615,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/givre.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9959398137090996,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/horloge_arcanique.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        17,
+        12,
+        239,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9996579052397514,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/lame_jumelle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        19,
+        12,
+        238,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990127907974934,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/lentille_aiguisee.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993141812085651,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/marque_du_chasseur.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9998567481837716,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/moisson.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        34,
+        244,
+        222
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9986496439970538,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/morsure_vorace.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        27,
+        244,
+        229
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9991036467424635,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/nova_infinie.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        25,
+        244,
+        231
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9971672993031556,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/oeil_du_predateur.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        24,
+        244,
+        232
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9996692301331349,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/orbe_de_veille.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        30,
+        12,
+        226,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9940543601359003,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/pavois_fele.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        19,
+        244,
+        237
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9997955010224949,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/peste_vivante.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        21,
+        244,
+        235
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993542706193131,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/phenix_de_poche.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9959883210292686,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/piece_porte_bonheur.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        18,
+        244,
+        238
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9964766419102178,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/pierre_a_aiguiser.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        42,
+        244,
+        213
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992716957988347,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/plume_d_empenne.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9957061514048352,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/pointe_perforante.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        74,
+        12,
+        182,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9988145274275245,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/rafale_d_acier.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        28,
+        244,
+        228
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990710841774672,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/rune_de_portee.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        12,
+        244,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9996643844811384,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/sablier_fele.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        57,
+        12,
+        199,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9995053993899926,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/sang_chaud.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        39,
+        12,
+        217,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9908440629470673,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/sifflet_de_chasse.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        12,
+        78,
+        244,
+        179
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9844698462751281,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/tempete_de_braises.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        34,
+        12,
+        222,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9969543147208122,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/tonique_vital.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        41,
+        12,
+        215,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9995253222331764,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "icons/items/venin_concentre.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        36,
+        12,
+        219,
+        244
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9996874674445255,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/crit_icon.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        8,
+        122,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9961013645224172,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_face_commun.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9988760256266157,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_face_legendaire.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9988760256266157,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_face_peu_commun.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9988760256266157,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_face_rare.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9988760256266157,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_00.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        7,
+        120,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993624075490947,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_01.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9926938039662208,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_02.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9995812395309883,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_03.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.999306230054114,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_04.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        9,
+        122,
+        119
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9995539696699376,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_05.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.999156355455568,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_06.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9997349589186324,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_07.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992758121249742,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_08.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        8,
+        121,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9997095274980635,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_09.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        6,
+        121,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9910415542363734,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_10.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9994314305208096,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_11.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992698445812037,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_12.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        8,
+        7,
+        120,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9991181657848325,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_13.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9996736292428199,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_14.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9979955691528642,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_15.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992897096688271,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_16.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        9,
+        6,
+        119,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9989912575655683,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_17.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        7,
+        7,
+        121,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9979458210296572,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_18.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        8,
+        6,
+        120,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9993009925905214,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/dice/d100_rot_19.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        8,
+        8,
+        120,
+        120
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9989669421487604,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_gold.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9915797914995991,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_interact_hand.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9990256972354159,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_pause.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9977947072975141,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_ruby.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        6,
+        122,
+        122
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9896193771626297,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_settings.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        7,
+        122,
+        121
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9986199974909046,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/hud/icon_xp.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        6,
+        10,
+        122,
+        118
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9942520265291084,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/interact/interact_disabled.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        200,
+        200
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992759619362847,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/interact/interact_normal.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        200,
+        200
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992759619362847,
+      "emission": false,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/interact/interact_pressed.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        200,
+        200
+      ],
+      "no_normal": true,
+      "frames": 1,
+      "alpha_bbox": [
+        2,
+        2,
+        198,
+        198
+      ],
+      "alpha_coverage_preserved": true,
+      "rendered_silhouette_iou": 0.9992759619362847,
+      "emission": false,
+      "accent_iou": null
+    }
+  ],
+  "errors": [],
+  "choices": [
+    "Original geometry, cameras, fitting and material hues; shared cel ramps/ink only.",
+    "icon: items, HUD, interact, crit; ui: dice and rarity frames.",
+    "Night shadow floor from cel_style; no extra saturation; no normals.",
+    "Original I1/I2/U2 and R7c HUD recipes imported, never source-blend saves.",
+    "Archived alpha coverage assembled unchanged; original i2_finish.fit; cel RGB untouched."
+  ],
+  "before_bytes": 4037875,
+  "after_bytes": 2865618,
+  "validation": {
+    "budget": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": []
+    },
+    "budget_report": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": []
+    },
+    "godot_import": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": []
+    },
+    "sprites_test": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": []
+    },
+    "loot_ui_test": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": [
+        "ERROR: 6 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "chest_reveal_test": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": [
+        "ERROR: 14 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "ui_theme_test": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": [
+        "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "texture_budget_test": {
+      "status": "PASS",
+      "errors": [],
+      "cleanup_diagnostics": []
+    }
+  },
+  "independent_validation": {
+    "protected_files": 355,
+    "protected_changes": [],
+    "godot": {
+      "import": {
+        "ok": true,
+        "returncode": 0,
+        "errors": [],
+        "result_ok": false
+      },
+      "sprites": {
+        "ok": true,
+        "returncode": 0,
+        "errors": [],
+        "result_ok": true
+      },
+      "loot_ui": {
+        "ok": true,
+        "returncode": 0,
+        "errors": [],
+        "result_ok": true
+      },
+      "chest_reveal": {
+        "ok": false,
+        "returncode": 0,
+        "errors": [
+          "ERROR: 14 resources still in use at exit (run with --verbose for details)."
+        ],
+        "result_ok": true
+      },
+      "ui_theme": {
+        "ok": false,
+        "returncode": 0,
+        "errors": [
+          "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+        ],
+        "result_ok": true
+      },
+      "texture_budget": {
+        "ok": true,
+        "returncode": 0,
+        "errors": [],
+        "result_ok": true
+      }
+    },
+    "contact_review": "Cel volumes and ink visible on actual terrain; alpha retained; no normal maps."
+  },
+  "protected_changes_after_import": [],
+  "contact_reference": "First row: CS1 reference; following rows: all 88 subjects, archive left / cel right.",
+  "protected_originals_changed": [],
+  "distinct_diffuse_files": 88,
+  "distinct_diffuse_sheets": 88,
+  "emission_contract": "No original _e or _shadow companions; none added.",
+  "visual_review": "Single final contact inspected; original hue/geometry, flat cel ramps and inward ink, night ground and CS1 reference.",
+  "global_budget_warnings": []
+}

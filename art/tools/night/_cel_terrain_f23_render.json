@@ -1,0 +1,984 @@
+{
+  "f2/ground_a": {
+    "sha256": "1637f2b30caa3e13b0807ab9960b29eae5baa9aaf0c1c03ae4140da2e923e840",
+    "outputs": {
+      "ground_a.png": "1637f2b30caa3e13b0807ab9960b29eae5baa9aaf0c1c03ae4140da2e923e840"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/ground_b": {
+    "sha256": "026019349da8864224444069dda662b6fdb995cafc80852e2360e8428f7de066",
+    "outputs": {
+      "ground_b.png": "026019349da8864224444069dda662b6fdb995cafc80852e2360e8428f7de066"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/ground_c": {
+    "sha256": "f814cb590de365d5177eb595b750f7c8aeb523b28a45d91e49aba95221cc0638",
+    "outputs": {
+      "ground_c.png": "f814cb590de365d5177eb595b750f7c8aeb523b28a45d91e49aba95221cc0638"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/ground_d": {
+    "sha256": "ea04a38e9671c89e292c24ca927bf29851bc74f818d2941aae29d4748c0e7c76",
+    "outputs": {
+      "ground_d.png": "ea04a38e9671c89e292c24ca927bf29851bc74f818d2941aae29d4748c0e7c76"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/water_shallow": {
+    "sha256": "959aeef1b221c52b026e82fbc3331a413b808865ad793646c9a71fc485c87516",
+    "outputs": {
+      "water_shallow.png": "959aeef1b221c52b026e82fbc3331a413b808865ad793646c9a71fc485c87516"
+    },
+    "size": [
+      256,
+      128
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f2/water_deep": {
+    "sha256": "3646f762575d4eb49164485c46cb859997497baf8a62f3238d610a67d25eb776",
+    "outputs": {
+      "water_deep.png": "3646f762575d4eb49164485c46cb859997497baf8a62f3238d610a67d25eb776"
+    },
+    "size": [
+      256,
+      128
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f2/block_a": {
+    "sha256": "3c402cb7697f9a5e8f4fbc7f809828f3eddbba1f9325730d90ca73428738cd30",
+    "outputs": {
+      "block_a.png": "3c402cb7697f9a5e8f4fbc7f809828f3eddbba1f9325730d90ca73428738cd30"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/block_c": {
+    "sha256": "85c5c4494ba20a8f477beb01d05ccb3a2ae82e61bc8f990925bc6ce43b6dc589",
+    "outputs": {
+      "block_c.png": "85c5c4494ba20a8f477beb01d05ccb3a2ae82e61bc8f990925bc6ce43b6dc589"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/rampart_ne": {
+    "sha256": "bca313b6a4b6a47fb3da436eda915e0abe717484bd38487059a1dbc9410ef1ba",
+    "outputs": {
+      "rampart_ne.png": "bca313b6a4b6a47fb3da436eda915e0abe717484bd38487059a1dbc9410ef1ba"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/rampart_nw": {
+    "sha256": "17011e68e6b6bee503d49908b8c2cbefedd74c7a04dade88e0a0d8ab4fddc2be",
+    "outputs": {
+      "rampart_nw.png": "17011e68e6b6bee503d49908b8c2cbefedd74c7a04dade88e0a0d8ab4fddc2be"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/cliff_sw": {
+    "sha256": "fe33a874c42f55305a7a618523ad8bfc0e9ce19624e7730064c3bdd1b2801900",
+    "outputs": {
+      "cliff_sw.png": "fe33a874c42f55305a7a618523ad8bfc0e9ce19624e7730064c3bdd1b2801900"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/cliff_se": {
+    "sha256": "6d19052baec308147099afb87e403fed54607c312171278409f363d3f1021eb9",
+    "outputs": {
+      "cliff_se.png": "6d19052baec308147099afb87e403fed54607c312171278409f363d3f1021eb9"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/cliff_corner_s": {
+    "sha256": "564db54e6ac0cbe06b5d6376ba87d17fe5a2ea812c1fd6054dcd7f7b5d065178",
+    "outputs": {
+      "cliff_corner_s.png": "564db54e6ac0cbe06b5d6376ba87d17fe5a2ea812c1fd6054dcd7f7b5d065178"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/cliff_corner_w": {
+    "sha256": "085bdf4a1e3fd0eaf4863748ad5f1755b8ee84df7222b0898b814ef4f423830c",
+    "outputs": {
+      "cliff_corner_w.png": "085bdf4a1e3fd0eaf4863748ad5f1755b8ee84df7222b0898b814ef4f423830c"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/cliff_corner_e": {
+    "sha256": "acfa8929fba40e98d5848e9e659996b73408c99a9bf3026fe2162d9c797d820e",
+    "outputs": {
+      "cliff_corner_e.png": "acfa8929fba40e98d5848e9e659996b73408c99a9bf3026fe2162d9c797d820e"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/void_1024": {
+    "sha256": "a4dde43426213777e670e68ee6352cc8b6e536640cf76b7e8b952ea88a281a4a",
+    "outputs": {
+      "void_1024.png": "a4dde43426213777e670e68ee6352cc8b6e536640cf76b7e8b952ea88a281a4a"
+    },
+    "size": [
+      1024,
+      1024
+    ],
+    "pivot": [
+      512,
+      512
+    ],
+    "camera": {
+      "location": [
+        0.0,
+        0.0,
+        12.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f3/ground_a": {
+    "sha256": "1a4735c821a2a5bfb5d973b0199199f55eb94eb5c81aa2dd377399a6148fef26",
+    "outputs": {
+      "ground_a.png": "1a4735c821a2a5bfb5d973b0199199f55eb94eb5c81aa2dd377399a6148fef26"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/ground_b": {
+    "sha256": "993ce2fa4118c2611f87c99c30629e5f1de5321dee4c18a041169dac7d3bf6cb",
+    "outputs": {
+      "ground_b.png": "993ce2fa4118c2611f87c99c30629e5f1de5321dee4c18a041169dac7d3bf6cb"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/ground_c": {
+    "sha256": "d6a04d417ebd78ec5ee9fbc105f0b9b2c6031b5b9236d941d3f9413fc1445ed4",
+    "outputs": {
+      "ground_c.png": "d6a04d417ebd78ec5ee9fbc105f0b9b2c6031b5b9236d941d3f9413fc1445ed4"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/ground_d": {
+    "sha256": "7b2f283fc5ba696a8b4490cdc38d74ecae8c4d090485d0e9854c9097bdac8e12",
+    "outputs": {
+      "ground_d.png": "7b2f283fc5ba696a8b4490cdc38d74ecae8c4d090485d0e9854c9097bdac8e12"
+    },
+    "size": [
+      512,
+      256
+    ],
+    "pivot": [
+      256,
+      128
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/water_shallow": {
+    "sha256": "b53174cb5262da5e133afb8f427ccf014a3edae62f46f30cce4906dc9c9401c2",
+    "outputs": {
+      "water_shallow.png": "b53174cb5262da5e133afb8f427ccf014a3edae62f46f30cce4906dc9c9401c2"
+    },
+    "size": [
+      256,
+      128
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f3/water_deep": {
+    "sha256": "8279c13e06ad146aa7a4fad5047300a9a66f4f87a4c27515134acfc02e85d410",
+    "outputs": {
+      "water_deep.png": "8279c13e06ad146aa7a4fad5047300a9a66f4f87a4c27515134acfc02e85d410"
+    },
+    "size": [
+      256,
+      128
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.3484697341918945,
+        -7.3484697341918945,
+        5.999999523162842
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f3/block_a": {
+    "sha256": "d31ab2d4d7c556894d3e2f65f34af09d501da9f59618e3b5eb1e2dee9e510c8e",
+    "outputs": {
+      "block_a.png": "d31ab2d4d7c556894d3e2f65f34af09d501da9f59618e3b5eb1e2dee9e510c8e"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/block_c": {
+    "sha256": "04475af1f4da138ddba5b0072aabf31c65120edb8ac1e482c50b18d23065cbe3",
+    "outputs": {
+      "block_c.png": "04475af1f4da138ddba5b0072aabf31c65120edb8ac1e482c50b18d23065cbe3"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/rampart_ne": {
+    "sha256": "9dbb86a20a7ae4d207f3009318b880d261c3b14983ddea01fe60f77ac4bd15f0",
+    "outputs": {
+      "rampart_ne.png": "9dbb86a20a7ae4d207f3009318b880d261c3b14983ddea01fe60f77ac4bd15f0"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/rampart_nw": {
+    "sha256": "88ec79c773c9c0bce9dcee81b97bb237624c01828820d57dccb8ba5323ec0ea5",
+    "outputs": {
+      "rampart_nw.png": "88ec79c773c9c0bce9dcee81b97bb237624c01828820d57dccb8ba5323ec0ea5"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/cliff_sw": {
+    "sha256": "59014fa12c5139781f435369315a4d0ec2330ae4320be3f240297383527ce2f8",
+    "outputs": {
+      "cliff_sw.png": "59014fa12c5139781f435369315a4d0ec2330ae4320be3f240297383527ce2f8"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/cliff_se": {
+    "sha256": "3427665cb27f6425b1efa17cdaf3c7e906ec5ce542b5cfdd05f0384551906250",
+    "outputs": {
+      "cliff_se.png": "3427665cb27f6425b1efa17cdaf3c7e906ec5ce542b5cfdd05f0384551906250"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/cliff_corner_s": {
+    "sha256": "7f5cfeac02c068ee74e471a4ccf8908d691b29ccb5047044b0bfe5449a8393a3",
+    "outputs": {
+      "cliff_corner_s.png": "7f5cfeac02c068ee74e471a4ccf8908d691b29ccb5047044b0bfe5449a8393a3"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/cliff_corner_w": {
+    "sha256": "1d0ceababcb7a21a6a1bb3d973507bdfec627381827dcc543d833adc987a2d6b",
+    "outputs": {
+      "cliff_corner_w.png": "1d0ceababcb7a21a6a1bb3d973507bdfec627381827dcc543d833adc987a2d6b"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/cliff_corner_e": {
+    "sha256": "7d0b6c4f97230bf96f0f3319240137b350c00ffb4d39a5348d7b8a4fa27e9d1a",
+    "outputs": {
+      "cliff_corner_e.png": "7d0b6c4f97230bf96f0f3319240137b350c00ffb4d39a5348d7b8a4fa27e9d1a"
+    },
+    "size": [
+      256,
+      384
+    ],
+    "pivot": [
+      128,
+      64
+    ],
+    "camera": {
+      "location": [
+        7.8484697341918945,
+        -7.8484697341918945,
+        4.775254726409912
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/void_1024": {
+    "sha256": "4a906c20d5bb667f4b3d6b12f127c1ec9da663ff614df2964e475c09e1a33cdd",
+    "outputs": {
+      "void_1024.png": "4a906c20d5bb667f4b3d6b12f127c1ec9da663ff614df2964e475c09e1a33cdd"
+    },
+    "size": [
+      1024,
+      1024
+    ],
+    "pivot": [
+      512,
+      512
+    ],
+    "camera": {
+      "location": [
+        0.0,
+        0.0,
+        12.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "profile": "tile:2,no-ink",
+    "pattern_revision": 1
+  },
+  "f2/block_b": {
+    "sha256": "4c0b173ae1e7b2375fe47a9e25edf5240c4da9fe70e47dca698874dce8ce27e4",
+    "outputs": {
+      "block_b.png": "4c0b173ae1e7b2375fe47a9e25edf5240c4da9fe70e47dca698874dce8ce27e4",
+      "block_b_e.png": "8c072316285d096faa899aa9ce0d2cd1183c072d835e019e3bce5f3bd90754d0"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f2/rampart_corner_n": {
+    "sha256": "0882f50e9939eee99b7fca7da7f17f419f64ff8dd4283404a9929f7f527dc872",
+    "outputs": {
+      "rampart_corner_n.png": "0882f50e9939eee99b7fca7da7f17f419f64ff8dd4283404a9929f7f527dc872",
+      "rampart_corner_n_e.png": "06d49e4bee923394e2f6dfa40deb2e37b2b7f961621ad59ee60253c52ea92a9e"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/block_b": {
+    "sha256": "436674a2403ffd7dc717f4e6e39cd594b2fe8e91fd33ab7152ae0209b838d378",
+    "outputs": {
+      "block_b.png": "436674a2403ffd7dc717f4e6e39cd594b2fe8e91fd33ab7152ae0209b838d378",
+      "block_b_e.png": "4fea35d650461f3991e89b04d8401d433db5a9e7049757c2d9e89337813025d2"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  },
+  "f3/rampart_corner_n": {
+    "sha256": "6422d3d48921caa0f8bfa4193385eedab77c1c5f639f77d03e1cd286edb2355d",
+    "outputs": {
+      "rampart_corner_n.png": "6422d3d48921caa0f8bfa4193385eedab77c1c5f639f77d03e1cd286edb2355d",
+      "rampart_corner_n_e.png": "531dce8bc2a481305d998d786d0074a537d95563be113d75ddd33a59b3415669"
+    },
+    "size": [
+      256,
+      256
+    ],
+    "pivot": [
+      128,
+      192
+    ],
+    "camera": {
+      "location": [
+        7.0984697341918945,
+        -7.0984697341918945,
+        6.612371921539307
+      ],
+      "rotation_euler": [
+        1.0471975803375244,
+        0.0,
+        0.7853981852531433
+      ]
+    },
+    "profile": "tile"
+  }
+}

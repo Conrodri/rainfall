@@ -1,0 +1,21 @@
+{
+  "png_bytes": 8056211,
+  "raw_bytes": 83887360,
+  "source_hashes": {
+    "art\\blender\\monsters\\frost_bear.blend": "f64d859791d78538d04c3904fe8418439d2dc5dd7433624b64a5201204001046",
+    "art\\blender\\monsters\\stone_colossus.blend": "161abba80aadf902bf3439531e3f4f723a9bfc59961e16b8c3ca2f0d1490b3a8",
+    "art\\blender\\monsters\\bramble_queen.blend": "64a83d79ca9c1e7ef058df2168cb659eda5b150d35d3765e02706c1bc76ec1b4",
+    "art\\blender\\monsters\\brood_mother.blend": "5a1f7e56a0b0862d7cbd77bc6c9a907a167756fa3a03b3725b482a0d52574fca"
+  },
+  "data_hashes": {
+    "game/data/fauna.json": "aa947369ab1a2adb28433d802986d7d44b1b0e0ae2b818fa1e4b45a4332fbce4",
+    "game/data/minibosses.json": "b45d4af69fa2b9f92009685529ac45514dda856ef924ccaf25abfda2edcc9cc2"
+  },
+  "choices": [
+    "creature; 8 Eevee samples; original palettes, animation and cameras",
+    "Original luminous accent masks retained; ice_block and rock untouched",
+    "Measured mini scalar 2.4*(1.1*64)/dim: frost 1.25155556; stone 1.408; queen 1.35168; brood 1.43186441; none reduced in game",
+    "Geometry and scale are code constants in enemy_visual.gd; no .gd edits authorized; preserve logical cells and pivots with AtlasTexture margins",
+    "Lossless per-animation cell crop +4px; AtlasTexture margin retains 170px logical cell and feet"
+  ]
+}

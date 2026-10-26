@@ -46,3 +46,15 @@ art/blender/**/*.log
 # Builds
 build/
 game/android/build/
+
+# export Web local (build de test, non versionné)
+game/Rainfall.html
+game/Rainfall.js
+game/Rainfall.wasm
+game/Rainfall.*.js
+game/Rainfall.png
+game/Rainfall.png.import
+game/Rainfall.icon.png
+game/Rainfall.icon.png.import
+game/Rainfall.apple-touch-icon.png
+game/Rainfall.apple-touch-icon.png.import

@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse_cel/variants/rivulet_tile/rivulet_tile_e.png" id="0"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("0")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f1"]
+atlas = ExtResource("0")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f2"]
+atlas = ExtResource("0")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f3"]
+atlas = ExtResource("0")
+region = Rect2(384, 0, 128, 128)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}, {"duration": 1.0, "texture": SubResource("f1")}, {"duration": 1.0, "texture": SubResource("f2")}, {"duration": 1.0, "texture": SubResource("f3")}], "loop": true, "name": &"default", "speed": 10}]

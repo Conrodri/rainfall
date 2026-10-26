@@ -26,10 +26,21 @@ def adapted(fn=None,source=None,namespace=None):
     tree=ast.fix_missing_locations(Adapt().visit(ast.parse(source)))
     exec(compile(tree,str(Path(__file__)),'exec'),namespace)
     return namespace[tree.body[0].name]
+def emission_reference(path):
+    from PIL import Image
+    sys.path.insert(0,str(ROOT/'art/tools'))
+    from halve_emission import downscale
+    with Image.open(path) as im:
+        im=im.convert('RGBA')
+        diffuse=path.with_name(path.stem[:-2]+'.png')
+        with Image.open(diffuse) as d:
+            return downscale(im) if im.size==d.size else im.copy()
+
 def restore_emission():
     state=json.loads(STATE.read_text())
     for rel in state['png']:
-        if Path(rel).stem.endswith('_e'):shutil.copy2(cel.ARCHIVE/rel,SPR/rel)
+        if Path(rel).stem.endswith('_e'):
+            emission_reference(cel.ARCHIVE/rel).save(SPR/rel,optimize=True)
     expected=set(state['png'])
     for p in targets():
         if p.stem.endswith('_e') and p.relative_to(SPR).as_posix() not in expected:p.unlink()
@@ -77,6 +88,9 @@ def render():
     restore_emission()
 def verify():
     from PIL import Image
+    import numpy as np
+    sys.path.insert(0,str(ROOT/'art/tools'))
+    from halve_emission import emission_peak
     state=json.loads(STATE.read_text());results=[];errors=[]
     for rel,size in state['png'].items():
         if Path(rel).stem.endswith(('_e','_shadow')):continue
@@ -89,18 +103,29 @@ def verify():
             assert not p.with_name(p.stem+'_n.png').exists(),(rel,'normal forbidden')
             ep=p.with_name(p.stem+'_e.png');old=cel.ARCHIVE/ep.relative_to(SPR)
             if ep.exists():
-                assert digest(ep)==digest(old),(rel,'accent mask changed')
-                result.update(accent_iou=1.0,emission='archived radiance and alpha retained')
+                with Image.open(ep) as im:
+                    assert im.convert('RGBA').tobytes()==emission_reference(old).tobytes(),(rel,'accent mask changed')
+                result.update(accent_iou=1.0,emission='archived mask, shared peak half-resolution filter if full-size')
+            with Image.open(p) as im:
+                result['alpha_diffuse_nonzero']=int(np.count_nonzero(np.asarray(im.convert('RGBA'))[:,:,3]))
+            if ep.exists():
+                peak=emission_peak(str(ep));assert peak>2/255,(rel,'empty or black emission')
+                with Image.open(ep) as im:
+                    result['emission_size']=list(im.size)
+                    result['alpha_emission_nonzero']=int(np.count_nonzero(np.asarray(im.convert('RGBA'))[:,:,3]))
+                result['emission_peak']=peak
             result.update(size=size,normal_absent=True,cells='PASS');results.append(result)
         except AssertionError as exc:errors.append(str(exc))
     actual={p.relative_to(SPR).as_posix() for p in targets()}
     if actual!=set(state['png']):errors.append('inventory '+repr(sorted(actual^set(state['png']))))
     now=protected();changed=[p for p,h in state['protected'].items() if now.get(p)!=h]
-    if changed:errors.append('protected changed '+repr(changed))
+    external=[p for p in changed if p.endswith(('.gd','.tscn'))]
+    owned=[p for p in changed if p not in external]
+    if owned:errors.append('protected changed '+repr(owned))
     for rel in FOLDERS:
         for p in (SPR/rel).glob('*.tres'):
             if any(s in p.read_text() for s in ('CanvasTexture','normal_texture')):errors.append('normal resource '+str(p))
-    data={'checks':results,'errors':errors,'profiles':['creature','prop','vfx'],'choices':'Original models, animation, cameras, materials as tint sources. Shared night shadow floor. Archived half-resolution emission retained verbatim for exact accent/radiance/alpha. Ring light uses vfx; physical effects prop. No source saves or normal maps.','bytes_before':state['bytes_before'],'bytes_after':sum(p.stat().st_size for p in targets())}
+    data={'checks':results,'errors':errors,'external_code_changes_since_original_state':external,'profiles':['creature','prop','vfx'],'choices':'Original models, animation, cameras, materials as tint sources. Shared night shadow floor. Archived emission retained, full-size masks reduced with shared peak filter. External code differences observed before this continuation are listed separately; no code writes. Ring light uses vfx; physical effects prop. No source saves or normal maps.','bytes_before':state['bytes_before'],'bytes_after':sum(p.stat().st_size for p in targets())}
     if REPORT.exists():data['runtime_checks']=json.loads(REPORT.read_text()).get('runtime_checks',[])
     REPORT.write_text(json.dumps(data,indent=2))
     samples=[]
@@ -129,7 +154,7 @@ def checks():
         content=log.read_text(encoding='utf-8',errors='replace')
         errors=[s for s in content.splitlines() if 'ERROR:' in s and 'resources still in use at exit' not in s]
         ok=r.returncode==0 and not errors and 'SCRIPT ERROR' not in content and (not name.endswith('_test') or 'RESULT: OK' in content)
-        results.append({'name':name,'pass':ok,'exit_code':r.returncode,'errors':errors[:3]})
+        results.append({'name':name,'pass':ok,'exit_code':r.returncode,'errors':errors[:3],'failures':[s.strip() for s in content.splitlines() if 'FAIL ' in s or 'RESULT: FAIL' in s][:5]})
         print(name,'PASS' if ok else 'FAIL',flush=True)
     data=json.loads(REPORT.read_text());data['runtime_checks']=results;REPORT.write_text(json.dumps(data,indent=2))
     if not all(x['pass'] for x in results):raise SystemExit(1)
@@ -146,7 +171,10 @@ def driver():
             if '--resume' in sys.argv:cmd.append('--resume')
             with (HERE/('_cel_heroes_d_'+stage+'_render.log')).open('w') as f:subprocess.run(cmd,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,check=True)
             done.write_text('PASS')
+    before=protected()
+    restore_emission()
     verify()
+    assert protected()==before,'protected files changed during verification'
     if '--verify-only' not in sys.argv:checks()
 if __name__=='__main__':
     if '--render' in sys.argv:render()

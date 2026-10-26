@@ -1,0 +1,2351 @@
+{
+  "active": true,
+  "sheets": {
+    "arm_clamp.png": {
+      "cell": 192,
+      "box": [
+        70,
+        76,
+        122,
+        160
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "arm_fly.png": {
+      "cell": 192,
+      "box": [
+        50,
+        80,
+        140,
+        146
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "arm_ground.png": {
+      "cell": 192,
+      "box": [
+        50,
+        96,
+        140,
+        158
+      ],
+      "grid": [
+        1,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "attack.png": {
+      "cell": 192,
+      "box": [
+        32,
+        14,
+        160,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "cast.png": {
+      "cell": 192,
+      "box": [
+        24,
+        14,
+        168,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "cast_ult.png": {
+      "cell": 192,
+      "box": [
+        28,
+        14,
+        164,
+        158
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "crawl_l.png": {
+      "cell": 192,
+      "box": [
+        16,
+        36,
+        178,
+        186
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "crawl_r.png": {
+      "cell": 192,
+      "box": [
+        16,
+        36,
+        174,
+        186
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "death.png": {
+      "cell": 192,
+      "box": [
+        32,
+        16,
+        160,
+        170
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "fall.png": {
+      "cell": 192,
+      "box": [
+        20,
+        16,
+        172,
+        184
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "handwalk.png": {
+      "cell": 192,
+      "box": [
+        30,
+        36,
+        162,
+        178
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "head_blast.png": {
+      "cell": 192,
+      "box": [
+        26,
+        54,
+        176,
+        152
+      ],
+      "grid": [
+        8,
+        1
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "head_fly.png": {
+      "cell": 192,
+      "box": [
+        68,
+        68,
+        124,
+        132
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "hop_l.png": {
+      "cell": 192,
+      "box": [
+        32,
+        0,
+        162,
+        154
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "hop_r.png": {
+      "cell": 192,
+      "box": [
+        28,
+        2,
+        164,
+        154
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "idle.png": {
+      "cell": 192,
+      "box": [
+        32,
+        14,
+        160,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "leg_fly.png": {
+      "cell": 192,
+      "box": [
+        64,
+        76,
+        128,
+        140
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "leg_ground.png": {
+      "cell": 192,
+      "box": [
+        64,
+        90,
+        128,
+        154
+      ],
+      "grid": [
+        1,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "neck_steam.png": {
+      "cell": 192,
+      "box": [
+        82,
+        26,
+        110,
+        64
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "regen_rivets.png": {
+      "cell": 192,
+      "box": [
+        46,
+        60,
+        150,
+        130
+      ],
+      "grid": [
+        6,
+        1
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "roll.png": {
+      "cell": 192,
+      "box": [
+        0,
+        26,
+        192,
+        162
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        28,
+        16,
+        164,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        24,
+        16,
+        168,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "throw_head.png": {
+      "cell": 192,
+      "box": [
+        32,
+        14,
+        160,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        28,
+        14,
+        164,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        30,
+        10,
+        162,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "walk.png": {
+      "cell": 192,
+      "box": [
+        32,
+        12,
+        160,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "rivet/rivet.png": {
+      "cell": 56,
+      "box": [
+        4,
+        14,
+        52,
+        42
+      ],
+      "grid": [
+        4,
+        1
+      ],
+      "passes": {
+        "": 1,
+        "_e": 1
+      }
+    },
+    "layers/arm_l/attack.png": {
+      "cell": 192,
+      "box": [
+        36,
+        30,
+        156,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/cast.png": {
+      "cell": 192,
+      "box": [
+        24,
+        30,
+        168,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        32,
+        30,
+        160,
+        140
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/crawl_l.png": {
+      "cell": 192,
+      "box": [
+        40,
+        68,
+        152,
+        174
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/death.png": {
+      "cell": 192,
+      "box": [
+        36,
+        30,
+        156,
+        170
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/fall.png": {
+      "cell": 192,
+      "box": [
+        28,
+        32,
+        164,
+        184
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/handwalk.png": {
+      "cell": 192,
+      "box": [
+        30,
+        56,
+        162,
+        178
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/hop_l.png": {
+      "cell": 192,
+      "box": [
+        32,
+        24,
+        162,
+        134
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/hop_r.png": {
+      "cell": 192,
+      "box": [
+        34,
+        22,
+        158,
+        144
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/idle.png": {
+      "cell": 192,
+      "box": [
+        36,
+        32,
+        156,
+        142
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        28,
+        32,
+        164,
+        140
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        36,
+        32,
+        156,
+        142
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/throw_head.png": {
+      "cell": 192,
+      "box": [
+        36,
+        32,
+        156,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        28,
+        32,
+        164,
+        144
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        36,
+        32,
+        156,
+        142
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_l/walk.png": {
+      "cell": 192,
+      "box": [
+        34,
+        30,
+        158,
+        140
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/attack.png": {
+      "cell": 192,
+      "box": [
+        32,
+        30,
+        160,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/cast.png": {
+      "cell": 192,
+      "box": [
+        32,
+        30,
+        160,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        28,
+        30,
+        164,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/crawl_r.png": {
+      "cell": 192,
+      "box": [
+        42,
+        68,
+        150,
+        174
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/death.png": {
+      "cell": 192,
+      "box": [
+        32,
+        28,
+        160,
+        170
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/fall.png": {
+      "cell": 192,
+      "box": [
+        28,
+        32,
+        164,
+        180
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/handwalk.png": {
+      "cell": 192,
+      "box": [
+        32,
+        56,
+        160,
+        178
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/hop_l.png": {
+      "cell": 192,
+      "box": [
+        34,
+        22,
+        158,
+        144
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/hop_r.png": {
+      "cell": 192,
+      "box": [
+        28,
+        24,
+        164,
+        134
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/idle.png": {
+      "cell": 192,
+      "box": [
+        32,
+        32,
+        160,
+        142
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        32,
+        32,
+        160,
+        142
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        24,
+        32,
+        168,
+        142
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/throw_head.png": {
+      "cell": 192,
+      "box": [
+        32,
+        32,
+        160,
+        142
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        32,
+        32,
+        160,
+        142
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        30,
+        32,
+        162,
+        144
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/arm_r/walk.png": {
+      "cell": 192,
+      "box": [
+        32,
+        30,
+        160,
+        142
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/head/attack.png": {
+      "cell": 192,
+      "box": [
+        70,
+        14,
+        122,
+        70
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/cast.png": {
+      "cell": 192,
+      "box": [
+        70,
+        14,
+        122,
+        70
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        70,
+        14,
+        122,
+        70
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/crawl_l.png": {
+      "cell": 192,
+      "box": [
+        18,
+        36,
+        176,
+        152
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/crawl_r.png": {
+      "cell": 192,
+      "box": [
+        16,
+        36,
+        174,
+        152
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/death.png": {
+      "cell": 192,
+      "box": [
+        56,
+        16,
+        136,
+        150
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/fall.png": {
+      "cell": 192,
+      "box": [
+        20,
+        16,
+        172,
+        146
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/handwalk.png": {
+      "cell": 192,
+      "box": [
+        44,
+        36,
+        148,
+        120
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/hop_l.png": {
+      "cell": 192,
+      "box": [
+        62,
+        0,
+        132,
+        76
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/hop_r.png": {
+      "cell": 192,
+      "box": [
+        60,
+        2,
+        130,
+        76
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/idle.png": {
+      "cell": 192,
+      "box": [
+        70,
+        14,
+        122,
+        70
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/roll.png": {
+      "cell": 192,
+      "box": [
+        28,
+        34,
+        166,
+        162
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        70,
+        16,
+        122,
+        72
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        70,
+        16,
+        122,
+        72
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/throw_head.png": {
+      "cell": 192,
+      "box": [
+        70,
+        14,
+        122,
+        74
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        60,
+        14,
+        130,
+        76
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        62,
+        10,
+        132,
+        76
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/head/walk.png": {
+      "cell": 192,
+      "box": [
+        70,
+        12,
+        122,
+        70
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/leg_l/attack.png": {
+      "cell": 192,
+      "box": [
+        62,
+        78,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/cast.png": {
+      "cell": 192,
+      "box": [
+        62,
+        78,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        158
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/death.png": {
+      "cell": 192,
+      "box": [
+        54,
+        64,
+        138,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/fall.png": {
+      "cell": 192,
+      "box": [
+        56,
+        80,
+        136,
+        168
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/hop_l.png": {
+      "cell": 192,
+      "box": [
+        56,
+        72,
+        136,
+        154
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/idle.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/throw_head.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        58,
+        80,
+        134,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_l/walk.png": {
+      "cell": 192,
+      "box": [
+        52,
+        72,
+        140,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/attack.png": {
+      "cell": 192,
+      "box": [
+        62,
+        78,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/cast.png": {
+      "cell": 192,
+      "box": [
+        62,
+        78,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        158
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/death.png": {
+      "cell": 192,
+      "box": [
+        52,
+        64,
+        140,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/fall.png": {
+      "cell": 192,
+      "box": [
+        56,
+        80,
+        136,
+        168
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/hop_r.png": {
+      "cell": 192,
+      "box": [
+        56,
+        72,
+        136,
+        154
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/idle.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/throw_head.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        62,
+        80,
+        130,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        58,
+        80,
+        134,
+        156
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/leg_r/walk.png": {
+      "cell": 192,
+      "box": [
+        52,
+        72,
+        140,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/attack.png": {
+      "cell": 192,
+      "box": [
+        82,
+        26,
+        110,
+        64
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/cast.png": {
+      "cell": 192,
+      "box": [
+        82,
+        26,
+        110,
+        64
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        82,
+        24,
+        110,
+        66
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/crawl_l.png": {
+      "cell": 192,
+      "box": [
+        26,
+        46,
+        168,
+        138
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/crawl_r.png": {
+      "cell": 192,
+      "box": [
+        26,
+        48,
+        166,
+        140
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/death.png": {
+      "cell": 192,
+      "box": [
+        84,
+        26,
+        108,
+        94
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/fall.png": {
+      "cell": 192,
+      "box": [
+        28,
+        26,
+        164,
+        130
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/handwalk.png": {
+      "cell": 192,
+      "box": [
+        58,
+        46,
+        136,
+        108
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/hop_l.png": {
+      "cell": 192,
+      "box": [
+        72,
+        10,
+        120,
+        68
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/hop_r.png": {
+      "cell": 192,
+      "box": [
+        72,
+        12,
+        120,
+        68
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/idle.png": {
+      "cell": 192,
+      "box": [
+        84,
+        26,
+        108,
+        64
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/neck_steam.png": {
+      "cell": 192,
+      "box": [
+        82,
+        26,
+        110,
+        64
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/roll.png": {
+      "cell": 192,
+      "box": [
+        40,
+        48,
+        150,
+        150
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        84,
+        26,
+        108,
+        66
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        84,
+        26,
+        108,
+        66
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/throw_head.png": {
+      "cell": 192,
+      "box": [
+        82,
+        26,
+        110,
+        64
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        74,
+        26,
+        118,
+        68
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        74,
+        24,
+        118,
+        68
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/neck_steam/walk.png": {
+      "cell": 192,
+      "box": [
+        84,
+        24,
+        108,
+        64
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1
+      }
+    },
+    "layers/torso/attack.png": {
+      "cell": 192,
+      "box": [
+        40,
+        32,
+        152,
+        122
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/cast.png": {
+      "cell": 192,
+      "box": [
+        54,
+        32,
+        138,
+        122
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/cast_ult.png": {
+      "cell": 192,
+      "box": [
+        54,
+        34,
+        138,
+        122
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/crawl_l.png": {
+      "cell": 192,
+      "box": [
+        16,
+        64,
+        178,
+        186
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/crawl_r.png": {
+      "cell": 192,
+      "box": [
+        18,
+        64,
+        174,
+        186
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/death.png": {
+      "cell": 192,
+      "box": [
+        52,
+        34,
+        142,
+        148
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/fall.png": {
+      "cell": 192,
+      "box": [
+        24,
+        34,
+        168,
+        176
+      ],
+      "grid": [
+        3,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/handwalk.png": {
+      "cell": 192,
+      "box": [
+        38,
+        60,
+        154,
+        160
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/hop_l.png": {
+      "cell": 192,
+      "box": [
+        48,
+        24,
+        146,
+        126
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/hop_r.png": {
+      "cell": 192,
+      "box": [
+        46,
+        24,
+        144,
+        126
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/idle.png": {
+      "cell": 192,
+      "box": [
+        54,
+        34,
+        138,
+        122
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/roll.png": {
+      "cell": 192,
+      "box": [
+        0,
+        26,
+        192,
+        156
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/throw_arm_l.png": {
+      "cell": 192,
+      "box": [
+        52,
+        34,
+        140,
+        122
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/throw_arm_r.png": {
+      "cell": 192,
+      "box": [
+        52,
+        34,
+        140,
+        122
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/throw_head.png": {
+      "cell": 192,
+      "box": [
+        52,
+        34,
+        140,
+        122
+      ],
+      "grid": [
+        6,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/throw_leg_l.png": {
+      "cell": 192,
+      "box": [
+        46,
+        32,
+        144,
+        124
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/throw_leg_r.png": {
+      "cell": 192,
+      "box": [
+        48,
+        34,
+        146,
+        124
+      ],
+      "grid": [
+        4,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    },
+    "layers/torso/walk.png": {
+      "cell": 192,
+      "box": [
+        52,
+        32,
+        140,
+        120
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "passes": {
+        "": 1,
+        "_e": 2
+      }
+    }
+  },
+  "resources": [
+    "regen_rivets.tres",
+    "regen_rivets_emission.tres",
+    "tocsin.tres",
+    "tocsin_arm_clamp.tres",
+    "tocsin_arm_clamp_emission.tres",
+    "tocsin_arm_fly.tres",
+    "tocsin_arm_fly_emission.tres",
+    "tocsin_arm_ground.tres",
+    "tocsin_arm_ground_emission.tres",
+    "tocsin_blast.tres",
+    "tocsin_blast_emission.tres",
+    "tocsin_emission.tres",
+    "tocsin_head_blast.tres",
+    "tocsin_head_blast_emission.tres",
+    "tocsin_head_fly.tres",
+    "tocsin_head_fly_emission.tres",
+    "tocsin_leg_fly.tres",
+    "tocsin_leg_fly_emission.tres",
+    "tocsin_leg_ground.tres",
+    "tocsin_leg_ground_emission.tres",
+    "tocsin_parts.tres",
+    "tocsin_parts_emission.tres",
+    "rivet/rivet.tres"
+  ],
+  "scale": "CREA (sqrt(.5),sqrt(2)) has determinant 1; projection converts R=64*sqrt(2) to 64px/u. No scalar downsampling in the kit.",
+  "pivot": "Logical frames retained by AtlasTexture.margin; feet, offset and sockets unchanged."
+}

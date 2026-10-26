@@ -1,0 +1,43 @@
+{
+  "diffuse_checks": 258,
+  "emission_files": 103,
+  "emission_errors": [],
+  "normal_files": 0,
+  "min_silhouette_iou": 0.9839762611275964,
+  "static_duplicate_exception_sheets": 33,
+  "native_size_and_uniform_animation_crop": "NOT COMPLETED; fixed 192 grids and original T5 layouts retained. Runtime scale constants are in prohibited .gd/.tscn; no data scale field for Tocsin.",
+  "runtime_checks": [
+    {
+      "name": "policy",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "import",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "sprites_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "tocsin_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "player_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "texture_budget_test",
+      "ok": false,
+      "exit": 1
+    }
+  ],
+  "bytes_before": 41531153,
+  "bytes_after": 41372928
+}

@@ -1,0 +1,370 @@
+{
+  "status": "PASS",
+  "concurrent_protected_changes": [
+    "game\\tests\\hud_overlays_test.gd"
+  ],
+  "method": "WCAG sRGB capture, flat cel interiors, alpha >=250; prescribed dark ink and anti-aliasing excluded",
+  "layout": "rows da gold / hud gold / da pause / hud pause; columns plate 40/64/128, button 40/64/128",
+  "results": [
+    {
+      "file": "da/icon_gold.png",
+      "size": 40,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.343,
+      "fill_fraction": 0.179,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 160.5,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "da/icon_gold.png",
+      "size": 64,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.446,
+      "fill_fraction": 0.305,
+      "readable_opaque_fraction": 0.969,
+      "opaque_mean": 160.52,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "da/icon_gold.png",
+      "size": 128,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.209,
+      "fill_fraction": 0.283,
+      "readable_opaque_fraction": 0.981,
+      "opaque_mean": 159.26,
+      "fill_mean": 170.97
+    },
+    {
+      "file": "da/icon_gold.png",
+      "size": 40,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.844,
+      "fill_fraction": 0.179,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 160.5,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "da/icon_gold.png",
+      "size": 64,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.942,
+      "fill_fraction": 0.305,
+      "readable_opaque_fraction": 0.964,
+      "opaque_mean": 160.52,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "da/icon_gold.png",
+      "size": 128,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.717,
+      "fill_fraction": 0.283,
+      "readable_opaque_fraction": 0.973,
+      "opaque_mean": 159.26,
+      "fill_mean": 170.97
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 40,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.446,
+      "fill_fraction": 0.198,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 160.51,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 64,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.343,
+      "fill_fraction": 0.299,
+      "readable_opaque_fraction": 0.969,
+      "opaque_mean": 160.52,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 128,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 10.238,
+      "fill_fraction": 0.399,
+      "readable_opaque_fraction": 0.921,
+      "opaque_mean": 158.69,
+      "fill_mean": 171.43
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 40,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.942,
+      "fill_fraction": 0.198,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 160.51,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 64,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.844,
+      "fill_fraction": 0.299,
+      "readable_opaque_fraction": 0.963,
+      "opaque_mean": 160.52,
+      "fill_mean": 171.0
+    },
+    {
+      "file": "hud/icon_gold.png",
+      "size": 128,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 9.744,
+      "fill_fraction": 0.399,
+      "readable_opaque_fraction": 0.911,
+      "opaque_mean": 158.69,
+      "fill_mean": 171.43
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 40,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.591,
+      "fill_fraction": 0.131,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 220.15,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 64,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.464,
+      "fill_fraction": 0.346,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 217.06,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 128,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.473,
+      "fill_fraction": 0.464,
+      "readable_opaque_fraction": 0.988,
+      "opaque_mean": 212.77,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 40,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.935,
+      "fill_fraction": 0.131,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 220.15,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 64,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.814,
+      "fill_fraction": 0.346,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 217.06,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "da/icon_pause.png",
+      "size": 128,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.823,
+      "fill_fraction": 0.464,
+      "readable_opaque_fraction": 0.983,
+      "opaque_mean": 212.77,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 40,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.591,
+      "fill_fraction": 0.131,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 220.29,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 64,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.464,
+      "fill_fraction": 0.316,
+      "readable_opaque_fraction": 0.959,
+      "opaque_mean": 208.22,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 128,
+      "background": "plate",
+      "srgb_background": [
+        26,
+        25,
+        26
+      ],
+      "contrast_min": 13.591,
+      "fill_fraction": 0.626,
+      "readable_opaque_fraction": 0.937,
+      "opaque_mean": 204.97,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 40,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.935,
+      "fill_fraction": 0.131,
+      "readable_opaque_fraction": 1.0,
+      "opaque_mean": 220.29,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 64,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.814,
+      "fill_fraction": 0.316,
+      "readable_opaque_fraction": 0.959,
+      "opaque_mean": 208.22,
+      "fill_mean": 224.0
+    },
+    {
+      "file": "hud/icon_pause.png",
+      "size": 128,
+      "background": "button",
+      "srgb_background": [
+        29,
+        29,
+        40
+      ],
+      "contrast_min": 12.935,
+      "fill_fraction": 0.626,
+      "readable_opaque_fraction": 0.937,
+      "opaque_mean": 204.97,
+      "fill_mean": 224.0
+    }
+  ]
+}

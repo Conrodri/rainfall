@@ -24,7 +24,8 @@ def adapt(fn, stop=None):
 
 def render():
     import bpy, iso_rig as iso
-    import t1_build as t1, t2_build as t2, t3_build as t3, t4_build as t4, t6_build as t6
+    import t6_build as t6
+    import t1_build as t1, t2_build as t2, t3_build as t3, t4_build as t4
     WORK.mkdir(parents=True,exist_ok=True)
     # Retain disconnected source sockets: original pose functions animate them.
     source=textwrap.dedent(inspect.getsource(cel.toon_materials)).replace('if n.name not in keep:', "if n.name not in keep and n.type != 'BSDF_PRINCIPLED':")
@@ -60,13 +61,20 @@ def render():
                 mix.inputs[0].default_value=alpha
         return original(path,passes=passes)
     iso.render_frame=frame
+    if '--top-only' in sys.argv:
+        t6.OUT=WORK/'t6'; t6.SUFFIXES=('','_e')
+        t6.update_blast_regions=lambda *a,**k:None
+        active[0]='prop'; t6.blast()
+        return
     def t6_pass():
         t6.OUT=WORK/'t6'; t6.SUFFIXES=('','_e')
         t6.new_resource=lambda *a,**k:None
         t6.update_blast_regions=lambda *a,**k:None
         t4.SUFFIXES=('','_e'); t4.resource=lambda *a,**k:None
         t4.random.seed(404)
-        active[0]='prop'; t6.rivet(); t6.ring(); t6.blast()
+        active[0]='prop'; t6.rivet(); t6.ring()
+        # T6's final TOP atlas was produced by a fresh --blast-only process.
+        t4.random.seed(404); t6.blast()
     if '--t6-only' in sys.argv:
         t6_pass(); return
     # T1 native model, followed by the original T2 and T3 pose/render functions.
@@ -154,7 +162,22 @@ def finish():
                         out['duplicates']+=len(hashes)-len(set(hashes))
                 r['cells']=counts; r['archive_cells']=refcounts
                 assert counts['empty']==refcounts['empty'],(rel,'new empty cells')
-                assert counts['duplicates']<=refcounts['duplicates'],(rel,'new duplicate cells')
+                if counts['duplicates']>refcounts['duplicates']:
+                    # Cel removes PBR grain; identical static poses can become byte-identical.
+                    static=[]
+                    for y in range(0,size[1],cell):
+                        seen={}
+                        for x in range(0,size[0],cell):
+                            tile=b[y:y+cell,x:x+cell]; key=tile.tobytes()
+                            if key in seen and tile[...,3].any():
+                                previous=seen[key]
+                                aa=a[y:y+cell,previous:previous+cell,3]>128
+                                bb=a[y:y+cell,x:x+cell,3]>128
+                                iou=float((aa&bb).sum()/max(1,(aa|bb).sum()))
+                                assert iou>.998,(rel,'moving pose duplicated',iou)
+                                static.append(iou)
+                            seen[key]=x
+                    r['static_pose_duplicates']={'count':len(static),'min_archive_iou':min(static,default=1.)}
             ep=p.with_name(p.stem+'_e.png')
             if ep.exists():
                 assert sha(ep)==sha(cel.ARCHIVE/ep.relative_to(cel.GAME_SPRITES)),rel
@@ -175,7 +198,9 @@ def finish():
 
 def driver():
     from PIL import Image
+    import cel_heroes_tocsin_crop as crop
     cel.archive_folder('characters/tocsin')
+    crop.restore()
     # The root archive includes every layer, packed atlas and T6 child folder.
     if not STATE.exists():
         protected=list(GAME.rglob('*.tres'))+list(GAME.rglob('*.json'))+list(GAME.rglob('*.import'))+list((ROOT/'art/blender/characters').glob('tocsin*.blend'))+list((ROOT/'game').rglob('*.gd'))+list((ROOT/'game').rglob('*.tscn'))
@@ -184,10 +209,13 @@ def driver():
         args=[BLENDER,'--background','--python',str(Path(__file__).resolve()),'--','--render']
         if '--resume' in sys.argv: args.append('--resume')
         if '--t6-only' in sys.argv: args.append('--t6-only')
+        if '--top-only' in sys.argv: args.append('--top-only')
         with (HERE/'_cel_heroes_tocsin_blender.log').open('w') as log:
             result=subprocess.run(args,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
         if result.returncode: raise RuntimeError('Blender failed; see _cel_heroes_tocsin_blender.log')
     finish()
+    crop.compact()
+    crop.contact()
     checks=[]
     commands=[('policy',[sys.executable,str(ROOT/'art/tools/texture_budget.py'),'--apply-policy']),('import',[GODOT,'--headless','--path',str(ROOT/'game'),'--import'])]
     commands += [(name,[GODOT,'--headless','--path',str(ROOT/'game'),'res://tests/'+name+'.tscn']) for name in ['sprites_test','tocsin_test','player_test','texture_budget_test']]
@@ -200,7 +228,7 @@ def driver():
         checks.append({'name':name,'ok':ok,'exit':result.returncode})
         report=json.loads(REPORT.read_text());report['runtime_checks']=checks;REPORT.write_text(json.dumps(report,indent=2))
         print(name, 'PASS' if ok else 'FAIL',flush=True)
-        assert ok,logpath
+    assert all(c['ok'] for c in checks),checks
 
 if __name__=='__main__':
     if '--render' in sys.argv: render()

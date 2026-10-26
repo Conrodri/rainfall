@@ -1,0 +1,490 @@
+{
+  "profile": "prop",
+  "normals": false,
+  "sheets": [
+    {
+      "file": "props/fog_forest/cedar_giant.png",
+      "silhouette_iou": 0.9984205182204505,
+      "size": [
+        384,
+        384
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/lantern_shrine.png",
+      "silhouette_iou": 0.9996916752312436,
+      "e_half": true,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/lantern_shrine_se.png",
+      "silhouette_iou": 0.9996916752312436,
+      "e_half": true,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/lantern_shrine_sw.png",
+      "silhouette_iou": 0.9993767528825179,
+      "e_half": true,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/mushrooms.png",
+      "silhouette_iou": 0.9992019154030327,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/root_arch_a.png",
+      "silhouette_iou": 0.9988504278962831,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/root_arch_b.png",
+      "silhouette_iou": 0.9987725040916531,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/root_arch_c.png",
+      "silhouette_iou": 0.9983099951714147,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/root_arch_corner.png",
+      "silhouette_iou": 0.9991448118586089,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/standing_stone.png",
+      "silhouette_iou": 0.9996535396697078,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/fog_forest/stump.png",
+      "silhouette_iou": 0.999496644295302,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/barrels.png",
+      "silhouette_iou": 0.9991679543563533,
+      "size": [
+        160,
+        160
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/bell.png",
+      "silhouette_iou": 0.9996758508914101,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/cables.png",
+      "silhouette_iou": 0.9980250164581962,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/catwalk.png",
+      "silhouette_iou": 0.9933014354066986,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/crate.png",
+      "silhouette_iou": 0.999886505504483,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/crate_se.png",
+      "silhouette_iou": 0.999886505504483,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/crate_sw.png",
+      "silhouette_iou": 0.9995461250425508,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/debris.png",
+      "silhouette_iou": 0.9979975971165399,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/pipe_stub.png",
+      "silhouette_iou": 0.9995568358076667,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp.png",
+      "silhouette_iou": 0.9980372914622179,
+      "e_half": true,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp_se.png",
+      "silhouette_iou": 0.998708427510494,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp_sw.png",
+      "silhouette_iou": 0.9986366734832992,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/tank_large.png",
+      "silhouette_iou": 0.9995220342223496,
+      "size": [
+        320,
+        320
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/tank_small.png",
+      "silhouette_iou": 0.9992965531102401,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/ticket_booth.png",
+      "silhouette_iou": 0.9996428316308308,
+      "size": [
+        192,
+        192
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    },
+    {
+      "file": "props/rust_city/valve.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        128
+      ],
+      "frames": 1,
+      "rows": 1,
+      "unique_cells": 1,
+      "no_normal": true
+    }
+  ],
+  "emissions": [
+    {
+      "file": "props/fog_forest/lantern_shrine_e.png",
+      "size": [
+        96,
+        96
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    },
+    {
+      "file": "props/fog_forest/lantern_shrine_se_e.png",
+      "size": [
+        96,
+        96
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    },
+    {
+      "file": "props/fog_forest/lantern_shrine_sw_e.png",
+      "size": [
+        96,
+        96
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp_se_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    },
+    {
+      "file": "props/rust_city/steam_lamp_sw_e.png",
+      "size": [
+        128,
+        128
+      ],
+      "accent_iou": 1.0,
+      "alpha_matches_archive": true,
+      "peak": 255.0,
+      "unchanged": true
+    }
+  ],
+  "errors": [],
+  "protected_changed": [],
+  "blends_changed": [],
+  "before_bytes": 665748,
+  "after_bytes": 553677,
+  "choices": [
+    "Original F2p/F3p saved geometry, camera, tint and feet unchanged",
+    "Shared prop profile: three tones, inward ink and night shadow floor",
+    "Original continuous accent masks retained byte for byte",
+    "Original grayscale ground shadow decals retained byte for byte",
+    "27 single-frame stills: directional names and metadata unchanged"
+  ],
+  "checks": {
+    "texture_budget": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [],
+      "result_ok": false
+    },
+    "import": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [],
+      "result_ok": false
+    },
+    "sprites_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [],
+      "result_ok": true
+    },
+    "foret_iso_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [
+        "ERROR: 10 resources still in use at exit (run with --verbose for details)."
+      ],
+      "result_ok": true
+    },
+    "cite_iso_test": {
+      "ok": true,
+      "returncode": 0,
+      "result_ok": true,
+      "errors": [],
+      "initial_attempt": {
+        "ok": true,
+        "returncode": 0,
+        "errors": [],
+        "exit_resource_warnings": [],
+        "result_ok": true,
+        "previous_attempt": {
+          "ok": false,
+          "returncode": 0,
+          "errors": [
+            "ERROR: Parameter \"t\" is null."
+          ],
+          "exit_resource_warnings": [
+            "ERROR: 7 resources still in use at exit (run with --verbose for details)."
+          ],
+          "result_ok": true
+        }
+      },
+      "retry_log": "_cel_props_biomes_cite_iso_retry.log",
+      "exit_resource_warnings": [
+        "ERROR: 7 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "stage_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [],
+      "result_ok": true
+    },
+    "texture_budget_test": {
+      "ok": true,
+      "returncode": 0,
+      "errors": [],
+      "exit_resource_warnings": [],
+      "result_ok": true
+    }
+  }
+}

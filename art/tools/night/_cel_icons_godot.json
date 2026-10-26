@@ -1,0 +1,42 @@
+{
+  "import": {
+    "ok": true,
+    "returncode": 0,
+    "errors": [],
+    "result_ok": false
+  },
+  "sprites": {
+    "ok": true,
+    "returncode": 0,
+    "errors": [],
+    "result_ok": true
+  },
+  "loot_ui": {
+    "ok": true,
+    "returncode": 0,
+    "errors": [],
+    "result_ok": true
+  },
+  "chest_reveal": {
+    "ok": false,
+    "returncode": 0,
+    "errors": [
+      "ERROR: 14 resources still in use at exit (run with --verbose for details)."
+    ],
+    "result_ok": true
+  },
+  "ui_theme": {
+    "ok": false,
+    "returncode": 0,
+    "errors": [
+      "ERROR: 2 resources still in use at exit (run with --verbose for details)."
+    ],
+    "result_ok": true
+  },
+  "texture_budget": {
+    "ok": true,
+    "returncode": 0,
+    "errors": [],
+    "result_ok": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "lot": "N2C",
+  "animations": 37,
+  "frames": 278,
+  "png": 72,
+  "unique_animation_frames": true,
+  "minimum_margin_px": 4,
+  "maximum_atlas_side_px": 3880,
+  "matching_normal_emission_alpha": true,
+  "weaver_mobile_MiB": 14.04,
+  "sprites_test": "RESULT: OK",
+  "weaver_boss_test": "RESULT: OK; resource loaded, four attack directions; 13 resources retained at shutdown",
+  "texture_budget": "0 oversized textures; global budgets exceeded: bosses 57.9/45 MiB, monsters 16.1/12 MiB, total textures 236/180 MiB, APK 344/200 MiB; 8 unrelated import-policy entries",
+  "scope": "No .gd or .tscn authored or modified",
+  "texture_budget_test": "RESULT: FAIL (2): unrelated import policies and total mobile textures; 169 .tres / 20899 atlas regions within bounds, paired maps same dimensions; no oversized texture"
+}

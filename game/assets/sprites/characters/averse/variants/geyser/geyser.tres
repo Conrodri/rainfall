@@ -1,0 +1,38 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/geyser/geyser.png" id="0"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("0")
+region = Rect2(0, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f1"]
+atlas = ExtResource("0")
+region = Rect2(640, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f2"]
+atlas = ExtResource("0")
+region = Rect2(1280, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f3"]
+atlas = ExtResource("0")
+region = Rect2(1920, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f4"]
+atlas = ExtResource("0")
+region = Rect2(2560, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f5"]
+atlas = ExtResource("0")
+region = Rect2(3200, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f6"]
+atlas = ExtResource("0")
+region = Rect2(0, 640, 640, 640)
+
+[sub_resource type="AtlasTexture" id="f7"]
+atlas = ExtResource("0")
+region = Rect2(640, 640, 640, 640)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}, {"duration": 1.0, "texture": SubResource("f1")}, {"duration": 1.0, "texture": SubResource("f2")}, {"duration": 1.0, "texture": SubResource("f3")}, {"duration": 1.0, "texture": SubResource("f4")}, {"duration": 1.0, "texture": SubResource("f5")}, {"duration": 1.0, "texture": SubResource("f6")}, {"duration": 1.0, "texture": SubResource("f7")}], "loop": false, "name": &"default", "speed": 16}]

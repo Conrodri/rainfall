@@ -1,0 +1,38 @@
+{
+  "policy": {
+    "ok": true,
+    "code": 0
+  },
+  "import": {
+    "ok": true,
+    "code": 0
+  },
+  "sprites_test": {
+    "ok": true,
+    "code": 0
+  },
+  "texture_budget_test": {
+    "ok": false,
+    "code": 1
+  },
+  "weaver_boss_test": {
+    "ok": true,
+    "code": 0
+  },
+  "rain_sower_boss_test": {
+    "ok": true,
+    "code": 0
+  },
+  "crystal_mother_boss_test": {
+    "ok": true,
+    "code": 0
+  },
+  "crane_boss_test": {
+    "ok": true,
+    "code": 0
+  },
+  "recluse_boss_test": {
+    "ok": true,
+    "code": 0
+  }
+}

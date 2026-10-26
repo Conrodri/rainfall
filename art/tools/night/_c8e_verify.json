@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "diffuse": [
+    768,
+    128
+  ],
+  "emission": [
+    384,
+    64
+  ],
+  "coverage": [
+    0.105,
+    0.104,
+    0.101,
+    0.1,
+    0.101,
+    0.104
+  ],
+  "emission_energy": [
+    50612.0,
+    47414.0,
+    38374.8,
+    32545.5,
+    38496.1,
+    47236.6
+  ],
+  "changed": [
+    "black_pool_e.png.import",
+    "wake.png",
+    "wake_e.png"
+  ]
+}

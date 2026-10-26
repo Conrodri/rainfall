@@ -1,0 +1,1992 @@
+{
+  "weaver": {
+    "crops": {
+      "ascend": {
+        "cell": [
+          250,
+          252
+        ],
+        "box": [
+          24,
+          0,
+          274,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [
+          [
+            0,
+            7
+          ]
+        ],
+        "source_alpha_iou_min": 0.9902138962673004
+      },
+      "auto": {
+        "cell": [
+          222,
+          206
+        ],
+        "box": [
+          38,
+          46,
+          260,
+          252
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9928943027534577
+      },
+      "auto_dirs": {
+        "cell": [
+          290,
+          204
+        ],
+        "box": [
+          4,
+          48,
+          294,
+          252
+        ],
+        "frames": 6,
+        "rows": 3,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9824241040858251
+      },
+      "cocoon": {
+        "cell": [
+          84,
+          140
+        ],
+        "box": [
+          6,
+          20,
+          90,
+          160
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          96,
+          160
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "death": {
+        "cell": [
+          248,
+          226
+        ],
+        "box": [
+          38,
+          44,
+          286,
+          270
+        ],
+        "frames": 10,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9907064364207221
+      },
+      "drop": {
+        "cell": [
+          246,
+          252
+        ],
+        "box": [
+          26,
+          0,
+          272,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9900744416873449
+      },
+      "drop_dust": {
+        "cell": [
+          158,
+          158
+        ],
+        "box": [
+          18,
+          18,
+          176,
+          176
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          192,
+          192
+        ],
+        "empty_frames": [
+          [
+            0,
+            5
+          ]
+        ],
+        "source_alpha_iou_min": 1.0
+      },
+      "ground_silk": {
+        "cell": [
+          136,
+          28
+        ],
+        "box": [
+          0,
+          54,
+          136,
+          82
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          136,
+          136
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "idle_p1": {
+        "cell": [
+          222,
+          206
+        ],
+        "box": [
+          38,
+          46,
+          260,
+          252
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9809286898839138
+      },
+      "idle_p2": {
+        "cell": [
+          222,
+          206
+        ],
+        "box": [
+          38,
+          46,
+          260,
+          252
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9759098276116104
+      },
+      "idle_p3": {
+        "cell": [
+          274,
+          242
+        ],
+        "box": [
+          12,
+          40,
+          286,
+          282
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9778810932657086
+      },
+      "lay": {
+        "cell": [
+          248,
+          206
+        ],
+        "box": [
+          38,
+          46,
+          286,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9895937562537522
+      },
+      "spell_a": {
+        "cell": [
+          222,
+          206
+        ],
+        "box": [
+          38,
+          46,
+          260,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9908153964804038
+      },
+      "spell_a_dirs": {
+        "cell": [
+          222,
+          182
+        ],
+        "box": [
+          38,
+          70,
+          260,
+          252
+        ],
+        "frames": 8,
+        "rows": 3,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9819905213270143
+      },
+      "spell_b": {
+        "cell": [
+          250,
+          252
+        ],
+        "box": [
+          24,
+          0,
+          274,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9922602945596634
+      },
+      "spell_b_dirs": {
+        "cell": [
+          250,
+          252
+        ],
+        "box": [
+          24,
+          0,
+          274,
+          252
+        ],
+        "frames": 8,
+        "rows": 3,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9800386349001932
+      },
+      "thread": {
+        "cell": [
+          768,
+          28
+        ],
+        "box": [
+          0,
+          18,
+          768,
+          46
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          768,
+          64
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "trans_p2": {
+        "cell": [
+          222,
+          212
+        ],
+        "box": [
+          38,
+          40,
+          260,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9884367496524706
+      },
+      "trans_p3": {
+        "cell": [
+          248,
+          214
+        ],
+        "box": [
+          38,
+          38,
+          286,
+          252
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9906495136491998
+      },
+      "walk_p1": {
+        "cell": [
+          238,
+          212
+        ],
+        "box": [
+          30,
+          46,
+          268,
+          258
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.980432940451429
+      },
+      "walk_p2": {
+        "cell": [
+          238,
+          212
+        ],
+        "box": [
+          30,
+          46,
+          268,
+          258
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9753049239572353
+      },
+      "walk_p3": {
+        "cell": [
+          282,
+          240
+        ],
+        "box": [
+          8,
+          40,
+          290,
+          280
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          298,
+          298
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.978502277904328
+      },
+      "web": {
+        "cell": [
+          744,
+          768
+        ],
+        "box": [
+          12,
+          0,
+          756,
+          768
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          768,
+          768
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      }
+    },
+    "body_runtime_scale": 1.0,
+    "feet": 244.453125,
+    "source_unchanged": true,
+    "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped."
+  },
+  "rain_sower": {
+    "crops": {
+      "auto": {
+        "cell": [
+          258,
+          304
+        ],
+        "box": [
+          32,
+          18,
+          290,
+          322
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.99167085918721
+      },
+      "cross_beam": {
+        "cell": [
+          832,
+          44
+        ],
+        "box": [
+          0,
+          10,
+          832,
+          54
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          832,
+          64
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "death": {
+        "cell": [
+          218,
+          290
+        ],
+        "box": [
+          52,
+          18,
+          270,
+          308
+        ],
+        "frames": 10,
+        "rows": 1,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9912418775477257
+      },
+      "flood_water": {
+        "cell": [
+          896,
+          896
+        ],
+        "box": [
+          0,
+          0,
+          896,
+          896
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          896,
+          896
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "ground_scorch": {
+        "cell": [
+          98,
+          108
+        ],
+        "box": [
+          14,
+          10,
+          112,
+          118
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          128,
+          128
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "idle_p1": {
+        "cell": [
+          146,
+          274
+        ],
+        "box": [
+          88,
+          18,
+          234,
+          292
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9937292511988196
+      },
+      "idle_p2": {
+        "cell": [
+          192,
+          276
+        ],
+        "box": [
+          66,
+          18,
+          258,
+          294
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9941736966680828
+      },
+      "idle_p3": {
+        "cell": [
+          218,
+          300
+        ],
+        "box": [
+          52,
+          18,
+          270,
+          318
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9928203012172477
+      },
+      "intro": {
+        "cell": [
+          146,
+          278
+        ],
+        "box": [
+          88,
+          2,
+          234,
+          280
+        ],
+        "frames": 12,
+        "rows": 1,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9925448028673836
+      },
+      "lightning": {
+        "cell": [
+          100,
+          762
+        ],
+        "box": [
+          14,
+          4,
+          114,
+          766
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          128,
+          768
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "mist_band": {
+        "cell": [
+          240,
+          206
+        ],
+        "box": [
+          6,
+          26,
+          246,
+          232
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          256,
+          256
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "raindrop": {
+        "cell": [
+          40,
+          254
+        ],
+        "box": [
+          4,
+          2,
+          44,
+          256
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          48,
+          256
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "rain_column": {
+        "cell": [
+          234,
+          1024
+        ],
+        "box": [
+          12,
+          0,
+          246,
+          1024
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          256,
+          1024
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "spell_a": {
+        "cell": [
+          158,
+          284
+        ],
+        "box": [
+          82,
+          6,
+          240,
+          290
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9937156323644933
+      },
+      "spell_b": {
+        "cell": [
+          210,
+          276
+        ],
+        "box": [
+          56,
+          18,
+          266,
+          294
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9901542500820479
+      },
+      "splash": {
+        "cell": [
+          112,
+          112
+        ],
+        "box": [
+          8,
+          8,
+          120,
+          120
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          128,
+          128
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "trans_p2": {
+        "cell": [
+          182,
+          266
+        ],
+        "box": [
+          74,
+          18,
+          256,
+          284
+        ],
+        "frames": 12,
+        "rows": 1,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9934792317999107
+      },
+      "trans_p3": {
+        "cell": [
+          218,
+          278
+        ],
+        "box": [
+          52,
+          18,
+          270,
+          296
+        ],
+        "frames": 12,
+        "rows": 1,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9931170954142648
+      },
+      "walk_p1": {
+        "cell": [
+          146,
+          276
+        ],
+        "box": [
+          88,
+          16,
+          234,
+          292
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9938286996633836
+      },
+      "walk_p2": {
+        "cell": [
+          190,
+          278
+        ],
+        "box": [
+          66,
+          16,
+          256,
+          294
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.993626669935041
+      },
+      "walk_p3": {
+        "cell": [
+          218,
+          300
+        ],
+        "box": [
+          52,
+          18,
+          270,
+          318
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          322,
+          322
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9920509708737864
+      },
+      "wave_front": {
+        "cell": [
+          120,
+          128
+        ],
+        "box": [
+          0,
+          0,
+          120,
+          128
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          128,
+          128
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      }
+    },
+    "body_runtime_scale": 1.0,
+    "feet": 283.0078125,
+    "source_unchanged": true,
+    "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped."
+  },
+  "crystal_mother": {
+    "crops": {
+      "auto": {
+        "cell": [
+          228,
+          272
+        ],
+        "box": [
+          64,
+          34,
+          292,
+          306
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.996808680389341
+      },
+      "crystal_block": {
+        "cell": [
+          98,
+          116
+        ],
+        "box": [
+          14,
+          76,
+          112,
+          192
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          128,
+          192
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "death": {
+        "cell": [
+          316,
+          272
+        ],
+        "box": [
+          20,
+          34,
+          336,
+          306
+        ],
+        "frames": 10,
+        "rows": 1,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9968129443491052
+      },
+      "idle_p1": {
+        "cell": [
+          224,
+          272
+        ],
+        "box": [
+          66,
+          34,
+          290,
+          306
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9967315093046549
+      },
+      "idle_p2": {
+        "cell": [
+          224,
+          272
+        ],
+        "box": [
+          66,
+          34,
+          290,
+          306
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9967304751357907
+      },
+      "idle_p3": {
+        "cell": [
+          224,
+          282
+        ],
+        "box": [
+          66,
+          24,
+          290,
+          306
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9974564161188911
+      },
+      "lamp_glow": {
+        "cell": [
+          256,
+          256
+        ],
+        "box": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          256,
+          256
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "orbit_shard": {
+        "cell": [
+          52,
+          88
+        ],
+        "box": [
+          6,
+          8,
+          58,
+          96
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          64,
+          96
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "prism_beam": {
+        "cell": [
+          1024,
+          72
+        ],
+        "box": [
+          0,
+          12,
+          1024,
+          84
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          1024,
+          96
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "reflect_burst": {
+        "cell": [
+          186,
+          320
+        ],
+        "box": [
+          6,
+          64,
+          192,
+          384
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          192,
+          384
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "shard": {
+        "cell": [
+          64,
+          32
+        ],
+        "box": [
+          0,
+          0,
+          64,
+          32
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          64,
+          32
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "spell_a": {
+        "cell": [
+          264,
+          306
+        ],
+        "box": [
+          46,
+          0,
+          310,
+          306
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9961496549219033
+      },
+      "spell_b": {
+        "cell": [
+          288,
+          284
+        ],
+        "box": [
+          34,
+          22,
+          322,
+          306
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9960396800984312
+      },
+      "stalactite": {
+        "cell": [
+          114,
+          384
+        ],
+        "box": [
+          6,
+          0,
+          120,
+          384
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          128,
+          384
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "trans_p2": {
+        "cell": [
+          222,
+          270
+        ],
+        "box": [
+          68,
+          36,
+          290,
+          306
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9967841350663272
+      },
+      "trans_p3": {
+        "cell": [
+          222,
+          270
+        ],
+        "box": [
+          68,
+          36,
+          290,
+          306
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9968851525605386
+      },
+      "walk_p1": {
+        "cell": [
+          224,
+          272
+        ],
+        "box": [
+          66,
+          34,
+          290,
+          306
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9965494137353433
+      },
+      "walk_p2": {
+        "cell": [
+          224,
+          272
+        ],
+        "box": [
+          66,
+          34,
+          290,
+          306
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9966504773069838
+      },
+      "walk_p3": {
+        "cell": [
+          224,
+          282
+        ],
+        "box": [
+          66,
+          24,
+          290,
+          306
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          356,
+          356
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9973997481005973
+      }
+    },
+    "body_runtime_scale": 1.0,
+    "feet": 298.984375,
+    "source_unchanged": true,
+    "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped."
+  },
+  "crane": {
+    "crops": {
+      "arc": {
+        "cell": [
+          448,
+          58
+        ],
+        "box": [
+          0,
+          0,
+          448,
+          58
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          448,
+          64
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "auto": {
+        "cell": [
+          322,
+          234
+        ],
+        "box": [
+          4,
+          56,
+          326,
+          290
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9902885212579753
+      },
+      "boom_shadow": {
+        "cell": [
+          896,
+          64
+        ],
+        "box": [
+          0,
+          16,
+          896,
+          80
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          896,
+          96
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "container": {
+        "cell": [
+          256,
+          226
+        ],
+        "box": [
+          0,
+          6,
+          256,
+          232
+        ],
+        "frames": 4,
+        "rows": 1,
+        "virtual": [
+          256,
+          256
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "death": {
+        "cell": [
+          236,
+          226
+        ],
+        "box": [
+          70,
+          72,
+          306,
+          298
+        ],
+        "frames": 10,
+        "rows": 1,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9918167756099995
+      },
+      "dust": {
+        "cell": [
+          156,
+          160
+        ],
+        "box": [
+          22,
+          10,
+          178,
+          170
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          192,
+          192
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "idle_p1": {
+        "cell": [
+          286,
+          262
+        ],
+        "box": [
+          22,
+          22,
+          308,
+          284
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9917320230558443
+      },
+      "idle_p2": {
+        "cell": [
+          286,
+          262
+        ],
+        "box": [
+          22,
+          22,
+          308,
+          284
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9916068264478224
+      },
+      "idle_p3": {
+        "cell": [
+          210,
+          246
+        ],
+        "box": [
+          60,
+          38,
+          270,
+          284
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9922471080482402
+      },
+      "spell_a": {
+        "cell": [
+          274,
+          292
+        ],
+        "box": [
+          28,
+          12,
+          302,
+          304
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9927577173968873
+      },
+      "spell_b": {
+        "cell": [
+          322,
+          242
+        ],
+        "box": [
+          4,
+          66,
+          326,
+          308
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9919242389030909
+      },
+      "trans_p2": {
+        "cell": [
+          232,
+          212
+        ],
+        "box": [
+          76,
+          72,
+          308,
+          284
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9921553801805207
+      },
+      "trans_p3": {
+        "cell": [
+          244,
+          226
+        ],
+        "box": [
+          60,
+          58,
+          304,
+          284
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9912505235723926
+      },
+      "walk_p1": {
+        "cell": [
+          286,
+          262
+        ],
+        "box": [
+          22,
+          22,
+          308,
+          284
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9917545621965511
+      },
+      "walk_p2": {
+        "cell": [
+          286,
+          262
+        ],
+        "box": [
+          22,
+          22,
+          308,
+          284
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9916314490146031
+      },
+      "walk_p3": {
+        "cell": [
+          210,
+          246
+        ],
+        "box": [
+          60,
+          38,
+          270,
+          284
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          330,
+          330
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9917881338534182
+      }
+    },
+    "body_runtime_scale": 1.0,
+    "feet": 277.1484375,
+    "source_unchanged": true,
+    "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped."
+  },
+  "recluse": {
+    "crops": {
+      "auto": {
+        "cell": [
+          272,
+          264
+        ],
+        "box": [
+          38,
+          38,
+          310,
+          302
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9962060947252478
+      },
+      "bell_wave": {
+        "cell": [
+          256,
+          256
+        ],
+        "box": [
+          0,
+          0,
+          256,
+          256
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          256,
+          256
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "death": {
+        "cell": [
+          208,
+          320
+        ],
+        "box": [
+          70,
+          10,
+          278,
+          330
+        ],
+        "frames": 10,
+        "rows": 1,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.990939349112426
+      },
+      "idle_p1": {
+        "cell": [
+          140,
+          264
+        ],
+        "box": [
+          104,
+          38,
+          244,
+          302
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9964090778511921
+      },
+      "idle_p2": {
+        "cell": [
+          140,
+          264
+        ],
+        "box": [
+          104,
+          38,
+          244,
+          302
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9940777119745775
+      },
+      "idle_p3": {
+        "cell": [
+          164,
+          266
+        ],
+        "box": [
+          92,
+          8,
+          256,
+          274
+        ],
+        "frames": 6,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9936192174157831
+      },
+      "prayer_burst": {
+        "cell": [
+          148,
+          312
+        ],
+        "box": [
+          22,
+          72,
+          170,
+          384
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          192,
+          384
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "prayer_glyph": {
+        "cell": [
+          128,
+          128
+        ],
+        "box": [
+          0,
+          0,
+          128,
+          128
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          128,
+          128
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "ray": {
+        "cell": [
+          896,
+          52
+        ],
+        "box": [
+          0,
+          6,
+          896,
+          58
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          896,
+          64
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "silence_mark": {
+        "cell": [
+          96,
+          96
+        ],
+        "box": [
+          0,
+          0,
+          96,
+          96
+        ],
+        "frames": 6,
+        "rows": 1,
+        "virtual": [
+          96,
+          96
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 1.0
+      },
+      "spell_a": {
+        "cell": [
+          252,
+          264
+        ],
+        "box": [
+          48,
+          38,
+          300,
+          302
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9964175295676498
+      },
+      "spell_b": {
+        "cell": [
+          248,
+          264
+        ],
+        "box": [
+          50,
+          38,
+          298,
+          302
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9959827317424151
+      },
+      "trans_p2": {
+        "cell": [
+          138,
+          260
+        ],
+        "box": [
+          106,
+          38,
+          244,
+          298
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9958299381680487
+      },
+      "trans_p3": {
+        "cell": [
+          158,
+          286
+        ],
+        "box": [
+          98,
+          10,
+          256,
+          296
+        ],
+        "frames": 8,
+        "rows": 1,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9935099274073362
+      },
+      "walk_p1": {
+        "cell": [
+          140,
+          268
+        ],
+        "box": [
+          104,
+          34,
+          244,
+          302
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.993705941591138
+      },
+      "walk_p2": {
+        "cell": [
+          140,
+          268
+        ],
+        "box": [
+          104,
+          34,
+          244,
+          302
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9927414852037968
+      },
+      "walk_p3": {
+        "cell": [
+          164,
+          270
+        ],
+        "box": [
+          92,
+          4,
+          256,
+          274
+        ],
+        "frames": 8,
+        "rows": 4,
+        "virtual": [
+          348,
+          348
+        ],
+        "empty_frames": [],
+        "source_alpha_iou_min": 0.9942795517419234
+      }
+    },
+    "body_runtime_scale": 1.0,
+    "feet": 292.265625,
+    "source_unchanged": true,
+    "vfx_limitation": "Dynamic VFX scales/offsets are hardcoded in forbidden .gd files; original logical cells and scales preserved, physical cells union-cropped."
+  }
+}

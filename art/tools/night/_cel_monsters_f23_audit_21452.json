@@ -1,0 +1,34 @@
+{
+  "import": {
+    "exit_code": 0,
+    "log": "art\\tools\\night\\_cel_monsters_f23_audit_21452_import.log",
+    "result": "completed",
+    "errors": []
+  },
+  "sprites_test": {
+    "exit_code": 0,
+    "log": "art\\tools\\night\\_cel_monsters_f23_audit_21452_sprites_test.log",
+    "result": "RESULT: OK",
+    "errors": []
+  },
+  "biome_fauna_test": {
+    "exit_code": 0,
+    "log": "art\\tools\\night\\_cel_monsters_f23_audit_21452_biome_fauna_test.log",
+    "result": "RESULT: OK",
+    "errors": [
+      "ERROR: 11 resources still in use at exit (run with --verbose for details)."
+    ]
+  },
+  "enemies_map_test": {
+    "exit_code": 0,
+    "log": "art\\tools\\night\\_cel_monsters_f23_audit_21452_enemies_map_test.log",
+    "result": "RESULT: OK (0 echec(s))",
+    "errors": []
+  },
+  "texture_budget_test": {
+    "exit_code": 0,
+    "log": "art\\tools\\night\\_cel_monsters_f23_audit_21452_texture_budget_test.log",
+    "result": "RESULT: OK",
+    "errors": []
+  }
+}

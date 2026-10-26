@@ -1,60 +1,136 @@
 # Rapport de la file de nuit Codex
-- 23/10 10:07 == groupe 1
-- 23/10 10:07 groupe 1 déjà fini, sauté
-- 23/10 10:07 == groupe 2
-- 23/10 10:07 groupe 2 déjà fini, sauté
-- 23/10 10:07 == groupe 3
-- 23/10 10:07 groupe 3 déjà fini, sauté
-- 23/10 10:07 == groupe 4
-- 23/10 10:07 groupe 4 déjà fini, sauté
-- 23/10 10:07 == groupe 5
-- 23/10 10:07 groupe 5 déjà fini, sauté
-- 23/10 10:07 == groupe 6
-- 23/10 10:07 groupe 6 déjà fini, sauté
-- 23/10 10:07 == groupe 7
-- 23/10 10:07 groupe 7 déjà fini, sauté
-- 23/10 10:07 == groupe 8
-- 23/10 10:07 groupe 8 déjà fini, sauté
-- 23/10 10:07 == groupe 9
-- 23/10 10:07 groupe 9 déjà fini, sauté
-- 23/10 10:07 == groupe 10
-- 23/10 10:07 groupe 10 déjà fini, sauté
-- 23/10 10:07 == groupe 11
-- 23/10 10:07 groupe 11 déjà fini, sauté
-- 23/10 10:07 == groupe 10
-- 23/10 10:07 groupe 10 déjà fini, sauté
-- 23/10 10:07 == groupe 11
-- 23/10 10:07 groupe 11 déjà fini, sauté
-- 23/10 10:07 == groupe 12
-- 23/10 10:07 groupe 12 déjà fini, sauté
-- 23/10 10:07 == groupe 13
-- 23/10 10:07 groupe 13 déjà fini, sauté
-- 23/10 10:07 == groupe 11
-- 23/10 10:07 groupe 11 déjà fini, sauté
-- 23/10 10:07 == groupe 12
-- 23/10 10:07 groupe 12 déjà fini, sauté
-- 23/10 10:07 == groupe 13
-- 23/10 10:07 groupe 13 déjà fini, sauté
-- 23/10 10:07 == groupe 12
-- 23/10 10:07 groupe 12 déjà fini, sauté
-- 23/10 10:07 == groupe 13
-- 23/10 10:07 groupe 13 déjà fini, sauté
-- 23/10 10:07 == groupe 12
-- 23/10 10:07 groupe 12 déjà fini, sauté
-- 23/10 10:07 == groupe 14
-- 23/10 10:07 groupe 14 déjà fini, sauté
-- 23/10 10:07 == groupe 15
-- 23/10 10:07 groupe 15 déjà fini, sauté
-- 23/10 10:07 == groupe 16
-- 23/10 10:07 groupe 16 déjà fini, sauté
-- 23/10 10:07 == groupe 17
-- 23/10 10:07 lancement art/tools/night/_cel_heroes_tocsin.txt
-- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_tocsin.txt), reprise vers 13:19
-- 23/10 10:07 lancement art/tools/night/_cel_heroes_c.txt
-- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_c.txt), reprise vers 13:19
-- 23/10 10:07 lancement art/tools/night/_cel_heroes_d.txt
-- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_d.txt), reprise vers 13:19
-- 23/10 10:08 lancement art/tools/night/_cel_heroes_e.txt
-- 23/10 10:08 quota Codex épuisé (art/tools/night/_logcel_heroes_e.txt), reprise vers 13:19
-- 23/10 10:08 lancement art/tools/night/_vg2.txt
-- 23/10 10:08 quota Codex épuisé (art/tools/night/_logvg2.txt), reprise vers 13:19
+- 26/10 21:13 == groupe 1
+- 26/10 21:13 groupe 1 déjà fini, sauté
+- 26/10 21:13 == groupe 2
+- 26/10 21:13 groupe 2 déjà fini, sauté
+- 26/10 21:13 == groupe 3
+- 26/10 21:13 groupe 3 déjà fini, sauté
+- 26/10 21:13 == groupe 4
+- 26/10 21:13 groupe 4 déjà fini, sauté
+- 26/10 21:13 == groupe 5
+- 26/10 21:13 groupe 5 déjà fini, sauté
+- 26/10 21:13 == groupe 6
+- 26/10 21:13 groupe 6 déjà fini, sauté
+- 26/10 21:13 == groupe 7
+- 26/10 21:13 groupe 7 déjà fini, sauté
+- 26/10 21:13 == groupe 8
+- 26/10 21:13 groupe 8 déjà fini, sauté
+- 26/10 21:13 == groupe 9
+- 26/10 21:13 groupe 9 déjà fini, sauté
+- 26/10 21:13 == groupe 10
+- 26/10 21:13 groupe 10 déjà fini, sauté
+- 26/10 21:13 == groupe 11
+- 26/10 21:13 groupe 11 déjà fini, sauté
+- 26/10 21:13 == groupe 10
+- 26/10 21:13 groupe 10 déjà fini, sauté
+- 26/10 21:13 == groupe 11
+- 26/10 21:13 groupe 11 déjà fini, sauté
+- 26/10 21:13 == groupe 12
+- 26/10 21:13 groupe 12 déjà fini, sauté
+- 26/10 21:13 == groupe 13
+- 26/10 21:13 groupe 13 déjà fini, sauté
+- 26/10 21:13 == groupe 11
+- 26/10 21:13 groupe 11 déjà fini, sauté
+- 26/10 21:13 == groupe 12
+- 26/10 21:13 groupe 12 déjà fini, sauté
+- 26/10 21:13 == groupe 13
+- 26/10 21:13 groupe 13 déjà fini, sauté
+- 26/10 21:13 == groupe 12
+- 26/10 21:13 groupe 12 déjà fini, sauté
+- 26/10 21:13 == groupe 13
+- 26/10 21:13 groupe 13 déjà fini, sauté
+- 26/10 21:13 == groupe 12
+- 26/10 21:13 groupe 12 déjà fini, sauté
+- 26/10 21:13 == groupe 14
+- 26/10 21:13 groupe 14 déjà fini, sauté
+- 26/10 21:13 == groupe 15
+- 26/10 21:13 groupe 15 déjà fini, sauté
+- 26/10 21:13 == groupe 16
+- 26/10 21:13 groupe 16 déjà fini, sauté
+- 26/10 21:13 == groupe 17
+- 26/10 21:13 groupe 17 déjà fini, sauté
+- 26/10 21:13 == groupe 18
+- 26/10 21:13 groupe 18 déjà fini, sauté
+- 26/10 21:13 == groupe 19
+- 26/10 21:13 groupe 19 déjà fini, sauté
+- 26/10 21:13 == groupe 20
+- 26/10 21:13 groupe 20 déjà fini, sauté
+- 26/10 21:13 == groupe 21
+- 26/10 21:13 groupe 21 déjà fini, sauté
+- 26/10 21:13 == groupe 16
+- 26/10 21:13 groupe 16 déjà fini, sauté
+- 26/10 21:13 == groupe 17
+- 26/10 21:13 groupe 17 déjà fini, sauté
+- 26/10 21:13 == groupe 22
+- 26/10 21:13 groupe 22 déjà fini, sauté
+- 26/10 21:13 == groupe 16
+- 26/10 21:13 groupe 16 déjà fini, sauté
+- 26/10 21:13 == groupe 23
+- 26/10 21:13 groupe 23 déjà fini, sauté
+- 26/10 21:13 == groupe 24
+- 26/10 21:13 groupe 24 déjà fini, sauté
+- 26/10 21:13 == groupe 25
+- 26/10 21:13 groupe 25 déjà fini, sauté
+- 26/10 21:13 == groupe 26
+- 26/10 21:13 groupe 26 déjà fini, sauté
+- 26/10 21:13 == groupe 27
+- 26/10 21:13 groupe 27 déjà fini, sauté
+- 26/10 21:13 == groupe 28
+- 26/10 21:13 groupe 28 déjà fini, sauté
+- 26/10 21:13 == groupe 29
+- 26/10 21:13 groupe 29 déjà fini, sauté
+- 26/10 21:13 == groupe 30
+- 26/10 21:13 groupe 30 déjà fini, sauté
+- 26/10 21:13 == groupe 31
+- 26/10 21:13 groupe 31 déjà fini, sauté
+- 26/10 21:13 == groupe 32
+- 26/10 21:13 groupe 32 déjà fini, sauté
+- 26/10 21:13 == groupe 33
+- 26/10 21:13 groupe 33 déjà fini, sauté
+- 26/10 21:13 == groupe 34
+- 26/10 21:13 groupe 34 déjà fini, sauté
+- 26/10 21:13 == groupe 35
+- 26/10 21:13 groupe 35 déjà fini, sauté
+- 26/10 21:13 == groupe 36
+- 26/10 21:13 groupe 36 déjà fini, sauté
+- 26/10 21:13 == groupe 37
+- 26/10 21:13 groupe 37 déjà fini, sauté
+- 26/10 21:13 == groupe 38
+- 26/10 21:13 groupe 38 déjà fini, sauté
+- 26/10 21:13 == groupe 39
+- 26/10 21:13 groupe 39 déjà fini, sauté
+- 26/10 21:13 == groupe 40
+- 26/10 21:13 lancement art/tools/night/_ricvi.txt
+- 26/10 21:14 lancement art/tools/night/_avsvi.txt
+- 26/10 21:14 lancement art/tools/night/_bouvi.txt
+- 26/10 21:16 fin art/tools/night/_ricvi.txt : ni _e. Script relançable : `art/tools/night/ricvi_build.py`. Planche vérifiée : `art/tools/night/ricvi_contact.png`. Politique appliquée ; import Godot terminé ; `sprites_test.tscn` → `RESULT: OK`. `texture_budget_test.tscn` → `RESULT: FAIL (1)` : budget global `219 Mo <= 180 Mo` dépassé.
+- 26/10 21:16 fin art/tools/night/_avsvi.txt :  Script relançable : `art/tools/night/avsvi_build.py`. Planche : `art/tools/night/avsvi_contact.png`. Import Godot sans erreur ; `sprites_test` → `RESULT: OK`. `texture_budget.py --apply-policy` exécuté ; `texture_budget_test` → `RESULT: FAIL (1)` : budget global `219 Mo <= 180 Mo` dépassé.
+- 26/10 21:17 fin art/tools/night/_bouvi.txt : 120)` ; aucun `_n`/`_e`. Script relançable : `art/tools/night/bouvi_build.py`. Planche : [bouvi_contact.png](art/tools/night/bouvi_contact.png). Import Godot terminé ; `sprites_test` → `RESULT: OK`. `texture_budget_test` → `RESULT: FAIL (1)` : budget mobile global `219 Mo <= 180 Mo` dépassé.
+- 26/10 21:17 sprites_test après groupe 40 : RESULT: OK
+- 26/10 21:17 == groupe 41
+- 26/10 21:17 lancement art/tools/night/_talvi.txt
+- 26/10 21:18 lancement art/tools/night/_avavi.txt
+- 26/10 21:18 lancement art/tools/night/_vigvi.txt
+- 26/10 21:19 fin art/tools/night/_talvi.txt :  Script relançable : `art/tools/night/talvi_build.py`. Planche vérifiée : `art/tools/night/talvi_contact.png`. Import Godot terminé ; `sprites_test` → `RESULT: OK`. `texture_budget_test` → `RESULT: FAIL (1)` : `219 Mo <= 180 Mo`. `--apply-policy` : `4 fichier(s) .import mis à la politique`.
+- 26/10 21:20 fin art/tools/night/_vigvi.txt : ight/vigvi_build.py`, `vigvi_finish.py`. [Planche vérifiée](art/tools/night/vigvi_contact.png). Import Godot sans erreur ; sprites_test : `RESULT: OK`. Politique appliquée : 8 .import ajustés. texture_budget_test : `RESULT: FAIL (1)` — budget global : 219 Mo > 180 Mo ; hors périmètre du lot.
+- 26/10 21:20 fin art/tools/night/_avavi.txt : a respecté, aucun _n/_e. Scripts : art/tools/night/avavi_build.py et avavi_finish.py. Planche : art/tools/night/avavi_contact.png. Import Godot : EXIT 0 ; sprites_test : RESULT: OK. texture_budget.py --apply-policy : 0 modification. texture_budget_test : RESULT: FAIL (1) — 219 Mo, plafond 180 Mo.
+- 26/10 21:20 sprites_test après groupe 41 : RESULT: OK
+- 26/10 21:20 == groupe 42
+- 26/10 21:20 lancement art/tools/night/_arpvi.txt
+- 26/10 21:21 lancement art/tools/ui/_passive_icons_a.txt
+- 26/10 21:21 lancement art/tools/ui/_passive_icons_b.txt
+- 26/10 21:23 fin art/tools/night/_arpvi.txt :  livrées : 128×128 RGBA, bbox Nova exact, aucun `_n`/`_e`. Script relançable : `art/tools/night/arpvi_build.py`. Planche : `art/tools/night/arpvi_contact.png`. Import Godot terminé ; `sprites_test` → `RESULT: OK`. `texture_budget_test` → `RESULT: FAIL (1)` : budget global `219 Mo <= 180 Mo`.
+- 26/10 21:23 quota Codex épuisé (art/tools/ui/_logpassive_icons_b.txt), reprise vers 21:53
+- 26/10 21:23 quota Codex épuisé (art/tools/ui/_logpassive_icons_a.txt), reprise vers 21:53
+- 26/10 21:53 lancement art/tools/ui/_passive_icons_b.txt
+- 26/10 21:53 lancement art/tools/ui/_passive_icons_a.txt
+- 26/10 21:53 quota Codex épuisé (art/tools/ui/_logpassive_icons_a.txt), reprise vers 22:23
+- 26/10 21:53 quota Codex épuisé (art/tools/ui/_logpassive_icons_b.txt), reprise vers 22:23
+- 26/10 22:23 lancement art/tools/ui/_passive_icons_a.txt
+- 26/10 22:23 lancement art/tools/ui/_passive_icons_b.txt
+- 26/10 22:23 quota Codex épuisé (art/tools/ui/_logpassive_icons_b.txt), reprise vers 22:53
+- 26/10 22:23 quota Codex épuisé (art/tools/ui/_logpassive_icons_a.txt), reprise vers 22:53
+- 26/10 22:53 lancement art/tools/ui/_passive_icons_b.txt
+- 26/10 22:53 lancement art/tools/ui/_passive_icons_a.txt
+- 26/10 22:53 quota Codex épuisé (art/tools/ui/_logpassive_icons_b.txt), reprise vers 23:23
+- 26/10 22:53 quota Codex épuisé (art/tools/ui/_logpassive_icons_a.txt), reprise vers 23:23

@@ -1,0 +1,510 @@
+{
+  "subjects": {
+    "cerf": {
+      "before_bytes": 6990098,
+      "original_pngs": [
+        "antlers.png",
+        "antlers_dirs.png",
+        "antlers_e.png",
+        "auto.png",
+        "auto_dirs.png",
+        "auto_dirs_e.png",
+        "auto_e.png",
+        "charge_dirs.png",
+        "charge_dirs_e.png",
+        "death.png",
+        "death_e.png",
+        "ground_mist.png",
+        "ground_mist_e.png",
+        "ground_wisp_trail.png",
+        "ground_wisp_trail_e.png",
+        "idle_p1.png",
+        "idle_p1_e.png",
+        "idle_p2.png",
+        "idle_p2_e.png",
+        "idle_p3.png",
+        "reappear.png",
+        "reappear_e.png",
+        "spell_a.png",
+        "spell_a_dirs.png",
+        "spell_a_dirs_e.png",
+        "spell_a_e.png",
+        "spell_b.png",
+        "spell_b_dirs.png",
+        "spell_b_dirs_e.png",
+        "spell_b_e.png",
+        "trans_p2.png",
+        "trans_p2_e.png",
+        "trans_p3.png",
+        "trans_p3_e.png",
+        "vanish.png",
+        "vanish_e.png",
+        "walk_p1.png",
+        "walk_p1_e.png",
+        "walk_p2.png",
+        "walk_p2_e.png",
+        "walk_p3.png",
+        "walk_p3_e.png",
+        "wisp.png",
+        "wisp_bolt.png",
+        "wisp_bolt_e.png",
+        "wisp_e.png",
+        "wisp_explode.png",
+        "wisp_explode_e.png"
+      ],
+      "sheets": {
+        "antlers": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "antlers_dirs": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "auto": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "auto_dirs": {
+          "size": [
+            1536,
+            768
+          ]
+        },
+        "charge_dirs": {
+          "size": [
+            1536,
+            1024
+          ]
+        },
+        "death": {
+          "size": [
+            2560,
+            256
+          ]
+        },
+        "ground_mist": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "ground_wisp_trail": {
+          "size": [
+            384,
+            64
+          ]
+        },
+        "idle_p1": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "idle_p2": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "idle_p3": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "reappear": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "spell_a": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "spell_a_dirs": {
+          "size": [
+            2048,
+            768
+          ]
+        },
+        "spell_b": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "spell_b_dirs": {
+          "size": [
+            2048,
+            768
+          ]
+        },
+        "trans_p2": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "trans_p3": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "vanish": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "walk_p1": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "walk_p2": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "walk_p3": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "wisp": {
+          "size": [
+            384,
+            64
+          ]
+        },
+        "wisp_bolt": {
+          "size": [
+            256,
+            32
+          ]
+        },
+        "wisp_explode": {
+          "size": [
+            512,
+            64
+          ]
+        }
+      }
+    },
+    "sonneur": {
+      "before_bytes": 7190809,
+      "original_pngs": [
+        "auto.png",
+        "auto_dirs.png",
+        "auto_dirs_e.png",
+        "auto_e.png",
+        "bell_ring.png",
+        "bell_ring_e.png",
+        "boiler_open.png",
+        "boiler_open_e.png",
+        "bolt.png",
+        "death.png",
+        "death_e.png",
+        "glas_wave.png",
+        "glas_wave_e.png",
+        "ground_lightning.png",
+        "ground_lightning_e.png",
+        "ground_scorch.png",
+        "ground_scorch_e.png",
+        "ground_steam.png",
+        "idle_p1.png",
+        "idle_p1_e.png",
+        "idle_p2.png",
+        "idle_p2_e.png",
+        "idle_p3.png",
+        "idle_p3_e.png",
+        "lightning.png",
+        "lightning_e.png",
+        "spell_a.png",
+        "spell_a_dirs.png",
+        "spell_a_dirs_e.png",
+        "spell_a_e.png",
+        "spell_b.png",
+        "spell_b_dirs.png",
+        "spell_b_dirs_e.png",
+        "spell_b_e.png",
+        "steam_jet.png",
+        "steam_vent.png",
+        "trans_p2.png",
+        "trans_p2_e.png",
+        "trans_p3.png",
+        "trans_p3_e.png",
+        "walk_p1.png",
+        "walk_p1_e.png",
+        "walk_p2.png",
+        "walk_p2_e.png",
+        "walk_p3.png",
+        "walk_p3_e.png"
+      ],
+      "sheets": {
+        "auto": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "auto_dirs": {
+          "size": [
+            1536,
+            768
+          ]
+        },
+        "bell_ring": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "boiler_open": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "bolt": {
+          "size": [
+            384,
+            64
+          ]
+        },
+        "death": {
+          "size": [
+            2560,
+            256
+          ]
+        },
+        "glas_wave": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "ground_lightning": {
+          "size": [
+            768,
+            128
+          ]
+        },
+        "ground_scorch": {
+          "size": [
+            512,
+            128
+          ]
+        },
+        "ground_steam": {
+          "size": [
+            512,
+            384
+          ]
+        },
+        "idle_p1": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "idle_p2": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "idle_p3": {
+          "size": [
+            1536,
+            256
+          ]
+        },
+        "lightning": {
+          "size": [
+            512,
+            768
+          ]
+        },
+        "spell_a": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "spell_a_dirs": {
+          "size": [
+            2048,
+            768
+          ]
+        },
+        "spell_b": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "spell_b_dirs": {
+          "size": [
+            2048,
+            768
+          ]
+        },
+        "steam_jet": {
+          "size": [
+            3072,
+            64
+          ]
+        },
+        "steam_vent": {
+          "size": [
+            512,
+            384
+          ]
+        },
+        "trans_p2": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "trans_p3": {
+          "size": [
+            2048,
+            256
+          ]
+        },
+        "walk_p1": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "walk_p2": {
+          "size": [
+            2048,
+            1024
+          ]
+        },
+        "walk_p3": {
+          "size": [
+            2048,
+            1024
+          ]
+        }
+      }
+    }
+  },
+  "protected": {
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\antlers.png.import": "613a85ec7b2b94f2eb895b19db8898bbf69701b63df36fbf354b76c40f2bbbe6",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\antlers_dirs.png.import": "1565ab0d202ab83fbb0a63e7ae763240a56281255c7d53d9297b05cd4044ed72",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\antlers_e.png.import": "7921e97f122f37855949971fc76ea8c2064b884c1e5704a91aa69eccdfd8a214",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\auto.png.import": "647ec51f1af8b1fff1bcb6ed6c4349f6bf713c8cab01c6da13b235c11892e478",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\auto_dirs.png.import": "0f5a3b0bdbc4812d019e81d6ed9e496a865a60f9d0add5f883576f49c828aa99",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\auto_dirs_e.png.import": "bcc6900727f64daf817dc1021ebcf421d61a095472a89b16724ee80a0e8bd448",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\auto_e.png.import": "e77d77e8825541b6541d3f250cbad2ee955cfc37afb5532bbce5ca2de0d62eb7",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\charge_dirs.png.import": "acb1b8c41f9ee9f9ff2b750bceb6646de1b0533f05f0959e60881bf63a177af7",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\charge_dirs_e.png.import": "7ba4675a7c069806a7dd18632448ad57034e1eff0ef5736d950512ee68d0b727",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\death.png.import": "7834d6bd397c8ce78a347bd719ca348a35f46546361c07de31b89f5bb858197c",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\death_e.png.import": "4ce9213459274d387ce4bf5f536fa79b3b3fdcff7e8cd62a3509a59b53515a18",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\ground_mist.png.import": "c8ef86bb55baef04623da3347a0df8c6f17a4e420158dcd9d62ff328ed4507e5",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\ground_mist_e.png.import": "b6f677276b9197ec61fa97c9eed739082033be0c5ce9e77afd807e5d1b822e23",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\ground_wisp_trail.png.import": "006e199f303709a20d563576db37ca4937f06863ffaec696a9941e8697a30dec",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\ground_wisp_trail_e.png.import": "2459f9248b4216b67d05b017ed5b63b99327081334059efcd987c20bd493eaea",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\idle_p1.png.import": "9b5682f6c6c9f89c7a2ddcc306f740c4c67def7ce4bcbaaef0aaa7f7204cde41",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\idle_p1_e.png.import": "901964470a026bda2a6f98e71a36fd49baf72f67e22cb3cae8ca5656a4346abd",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\idle_p2.png.import": "6bc65a26981c73ee6fc33895cfe0cfa2b85c5d618ea2f5561cce9bddf859841c",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\idle_p2_e.png.import": "94618ee2140265a97b80f030728687088100737e14b3d4bd5057056470eb12a6",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\idle_p3.png.import": "cbc73e594646d1e411031b78010a3cd143e9d045bf8a4f34a7d376b74b0f7f89",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\reappear.png.import": "27d4543f6dd239752df6a4422e80dfefcc52723c74612190b3d7770723f845be",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\reappear_e.png.import": "85586fff4efe5b600923e1f6a5534016d6067fa92e80175e12eea7e1cd96d560",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_a.png.import": "b3363fc0580f5caf3335f5913b77b61200b33c8f2d4e86ad5568d375e990d347",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_a_dirs.png.import": "b7518a766a49aa9212e7059a86234c623e280543d954649a21d73f5663454bec",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_a_dirs_e.png.import": "a70fe92acf52b03bb7a263f3921f1ac66aaddf255ebbe6fa892508d9e166ee76",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_a_e.png.import": "7f14f7b8b4aa69bb47b663d70e032b5ab727b1b8ab1f69380465f188667b380f",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_b.png.import": "29b858c186d46b24788abeafc2c268f46cff647a5a0fe8a79069b41b55cf4539",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_b_dirs.png.import": "ca60dace2d98a614b4e9119e416d9d3d67f2ed377d9e20668eebc01fe06e6bae",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_b_dirs_e.png.import": "e5fb0255ea774357e180430e48f14ebf144e04ecda59268d84970c17d62e5a19",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\spell_b_e.png.import": "15d9e048d4bde3fc7db5376258904d9374d79a31609e9549e11af2ba20e451c3",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\trans_p2.png.import": "fe1c4f04f2cc5d968de09157edeee874d63c46fa73d611d67e5dbe3f14d04abd",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\trans_p2_e.png.import": "666208d4e47296234cd9cc386eda66fa3cc9589b1639199c4e390c7ae9f5e72b",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\trans_p3.png.import": "df6aded6abe17bffb19bda3eba3f9c643768ff0e0f28dae646afdc735caeafa6",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\trans_p3_e.png.import": "b5e8374497ffd644f9e3e8d7f7d4d8b68550db11f1a922420a5adabda2b7b056",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\vanish.png.import": "aab1e807c96e7ca46f12b6b540980a2878f60b36c68b52bd99f92c489183b0e6",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\vanish_e.png.import": "dd245a598a377d2d2c4be15b32097a3fc50cefc3fda31d9e0dd50aa5a1857b56",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p1.png.import": "254957f703d3572cfb911d51a31f7ab4f7f7824d15e82165c9985c972a97478a",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p1_e.png.import": "343e0daf659bc5653ae19b4653bc4177425f583a97e21c3f65edc7e76b57248e",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p2.png.import": "9acfccdb0515059572b9459c49a090e6299520f0f02107f93efa42ad3f842a33",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p2_e.png.import": "91faa8d1458ebab6cc1844ac05375f9ac35a278e19d10d9e6ae3bf4d95f63544",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p3.png.import": "231ba58f76dcd7b3c4db1a4313e7eabdf7b14aeb92be9667f2166fb29aa91b47",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\walk_p3_e.png.import": "019f3b690a4b88d2f92868017a14c0311b804bc6fb2a94750a33cf3d5ebd72ce",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp.png.import": "64243fe86bfab848dc62d885cd1cf75535ca7af69098cb4f84580508f2d297d1",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp_bolt.png.import": "d301098350e441366703aa287bb0e4790d1008050325a59e391c6847005af38a",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp_bolt_e.png.import": "d1ea7c812be4d871237a6892d3a9eff2de40e07ce02bc6f05c081826e2fa8f7b",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp_e.png.import": "5c28082eaca2b194010407af243aea8c922c1b137e6bea3e53fec937839ed5b8",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp_explode.png.import": "00c7a9e13e6f4adcb9fdcd64e851da119e33f2f257aa67f9e27bbeb2b5a93b51",
+    "game\\assets\\sprites\\bosses\\etage\\cerf\\wisp_explode_e.png.import": "eb8d70f0e94ae8541788fea2d9eaa6311c1f19e4e8eab9dd19bfcb55e2304ace",
+    "art\\blender\\monsters\\cerf_iso.blend": "a4bfe0ec7743b73ea2930b79daee5095e55700f9722de03cb1191d5b21469d12",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\auto.png.import": "a55cf2a5b9b428942acdf01ce16cbaf4b8d52502c5d261a74a55818033178d71",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\auto_dirs.png.import": "3985ffd406fc1df795485167874953233a2fd286dde449f2adb65d01709aab8d",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\auto_dirs_e.png.import": "f9f6c66f42020e86e17f4cc4010d9c60c3ae5c4d467a1a090123cd0234ca912c",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\auto_e.png.import": "754ef327f8827ff9c5d81adda7fa26453db77cfd1c4ce58e8ba828d3a1ba7c04",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\bell_ring.png.import": "ebeba8500988d1291de28ff9024b3b6511ba736f6832cba5b89e842fd233db5a",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\bell_ring_e.png.import": "4b53e7d169552daf0e181310f1d30b229254a8a3d2a7a8f0b8ec8308a97f85e0",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\boiler_open.png.import": "775041b03582c790d93b94309f77bbdde16ebe424d085c96d078d709549852a3",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\boiler_open_e.png.import": "c2fd7fdc5a3557b4c5398fe1fc9f7de790824ce99359e164f8c56787cf037d7a",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\bolt.png.import": "e766c5836165d35b6c7ce1a442d8795c1211d96df659fc39d44403374196dee2",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\death.png.import": "0236f385ee25bd9be08be10556af6f3836d02718d5510eb2841a343ffcf61138",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\death_e.png.import": "a5bcc5b072e3cc77c6ac730c5597ccdd3cd9b331f640a4c11540836703d8b982",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\glas_wave.png.import": "15ce41fb044e4d55eaf385c91c04ec6c458a30eb85ffd824cdf99132efe10e32",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\glas_wave_e.png.import": "9893ad8da971a838251a0bd16833b1cc5bc3c2f960075376abb9be92fea96deb",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\ground_lightning.png.import": "be6273adad8fd4ae73b1d2370191d5d846cbec903e2973da7cb17a07831338bb",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\ground_lightning_e.png.import": "18895b678048bf79f4bb8705fb59b337c4e6f8a11c90b7037eb9a9dfb8483997",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\ground_scorch.png.import": "b2046a907439d9ca565aca30c48609b10ccbbc083ab2350947c4dbb8d3f4bb9f",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\ground_scorch_e.png.import": "f18ec402a106fc4438a2e162c0364ed026095526eaab64e9f8e1c759e7f12495",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\ground_steam.png.import": "42c3614c83d274ca43614fec1f2be1a007505232dcf4b2527f717fdaeffe4cc7",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p1.png.import": "5f849dc23a77ea4f6e31cbb5ab6b0966ce2373ff484960a7154be48d030da87c",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p1_e.png.import": "f6b8f7adb742b76a00091760be3cafcb27f78289dfd1c215d91ac1262c7ac670",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p2.png.import": "31916ee6b33132093e14815b0909eb182ada89d967a632a98d1e7b6fc0c6ff03",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p2_e.png.import": "a4b84b5198b3f4224841a85ad18823e4edd87c129b1909391f70845e37022c07",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p3.png.import": "1d17cb780ccfd74acb39694303df0cac78c04292cec9fb2431652336b0918c98",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\idle_p3_e.png.import": "bced32d619e1ea36a8b19bddb30f2ac78582eee0f1579499c0c5648b9d2cfa0b",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\lightning.png.import": "7f1d8725913b120c891200c63c915a076426d29fe71c937eb5b2b8d6429d491d",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\lightning_e.png.import": "22101070f700413b346ac9b2e0d015d3dd15cb2169855dd5ea1a41dd4bc95ec2",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_a.png.import": "c7e7323e8a5bc3ef6bd5dd6b598ff43dad84e31e6eb8eb59934b8a452cf3d3c1",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_a_dirs.png.import": "00e22fd33cadebae4b4ff7fbec43de44cc7fcd2736a77bacc1183b68ad713ae5",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_a_dirs_e.png.import": "19691160e9489410e7f1dc1ca435c87bef45db6c8dec98829e895a6004d987f5",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_a_e.png.import": "48f54fdafd5fb10f77d2da47a9d7fb63a823f58553a1066fb6d7f2cbfd322363",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_b.png.import": "5a793e030f69d51f23010da136347098bdb7b7069b3ffb39bedf8fcbef24c178",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_b_dirs.png.import": "e432a183e18089fc3d5675d1d184e60ec7118cbe2cd248b967c8f0f2b1f7cf62",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_b_dirs_e.png.import": "4dfc0a192c7f7e411aee5141c3faea7fa44a85e3d00546cbec9bd09574bada40",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\spell_b_e.png.import": "2a06745ac50bbc55b6b751e2cfc6ea29006e0c044f430ab0d33a5634e1f483db",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\steam_jet.png.import": "7cb57878bb24a8a1869f2f2335bbcb71b1b09fabee99ba807b55e71f14f9607b",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\steam_vent.png.import": "f8ec1c7231c93b87f2ce8e173db27dd7ae6b3aed3f46bdb05fc1206d4dd6f756",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\trans_p2.png.import": "af2decc3c626edf0c22c64d268fe6bb66f8f311ca8c94ac35e6fff14d55a8076",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\trans_p2_e.png.import": "27f580e936c384301c4215e513845a278592b4cf710b92e79fbfd32ab35672fd",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\trans_p3.png.import": "995e45d20b554fec5c0c930ee7a2d19ce715bd7ea69c5c975d0802e0098272e6",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\trans_p3_e.png.import": "86c4697687c41442921bb54676ca62180793a63f3a58fe2b9303ae9e8d3c0ab9",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p1.png.import": "878689d2ffe7e52510774df9e9d7f20bb18ff1fcf2ab23412889419219ba13c1",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p1_e.png.import": "fd10868440b59b1ce977d42ffd394a98afcb4ca7a86b5bb6ce2032ff2f1944d7",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p2.png.import": "bf9960eb1ecfe26a8d75752697d73cf658986a06253dd51050249a22366f2f68",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p2_e.png.import": "ed28f0e52d38a1f3a3d2fdd014607cb015cb1cfb2c760be6bd2ab7256f214ab4",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p3.png.import": "1b20aab6aeb77bff8c3e78978b2c00f643dbb6b30ddbad1ff9d11a1b4b5e33a5",
+    "game\\assets\\sprites\\bosses\\etage\\sonneur\\walk_p3_e.png.import": "c10b4321edb4ce9dd7aad68dcc31939b6d8b2819c00090fac00591d44cafe914",
+    "art\\blender\\monsters\\sonneur_iso.blend": "8bce467e8f7ffc51efb814ffbb3581d98879b578cc02565a02fddd4e41a79a1b"
+  }
+}

@@ -1,0 +1,284 @@
+# Rapport de la file de nuit Codex
+- 23/10 10:07 == groupe 1
+- 23/10 10:07 groupe 1 déjà fini, sauté
+- 23/10 10:07 == groupe 2
+- 23/10 10:07 groupe 2 déjà fini, sauté
+- 23/10 10:07 == groupe 3
+- 23/10 10:07 groupe 3 déjà fini, sauté
+- 23/10 10:07 == groupe 4
+- 23/10 10:07 groupe 4 déjà fini, sauté
+- 23/10 10:07 == groupe 5
+- 23/10 10:07 groupe 5 déjà fini, sauté
+- 23/10 10:07 == groupe 6
+- 23/10 10:07 groupe 6 déjà fini, sauté
+- 23/10 10:07 == groupe 7
+- 23/10 10:07 groupe 7 déjà fini, sauté
+- 23/10 10:07 == groupe 8
+- 23/10 10:07 groupe 8 déjà fini, sauté
+- 23/10 10:07 == groupe 9
+- 23/10 10:07 groupe 9 déjà fini, sauté
+- 23/10 10:07 == groupe 10
+- 23/10 10:07 groupe 10 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 10
+- 23/10 10:07 groupe 10 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 11
+- 23/10 10:07 groupe 11 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 13
+- 23/10 10:07 groupe 13 déjà fini, sauté
+- 23/10 10:07 == groupe 12
+- 23/10 10:07 groupe 12 déjà fini, sauté
+- 23/10 10:07 == groupe 14
+- 23/10 10:07 groupe 14 déjà fini, sauté
+- 23/10 10:07 == groupe 15
+- 23/10 10:07 groupe 15 déjà fini, sauté
+- 23/10 10:07 == groupe 16
+- 23/10 10:07 groupe 16 déjà fini, sauté
+- 23/10 10:07 == groupe 17
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_tocsin.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_tocsin.txt), reprise vers 13:19
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_c.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_c.txt), reprise vers 13:19
+- 23/10 10:07 lancement art/tools/night/_cel_heroes_d.txt
+- 23/10 10:07 quota Codex épuisé (art/tools/night/_logcel_heroes_d.txt), reprise vers 13:19
+- 23/10 10:08 lancement art/tools/night/_cel_heroes_e.txt
+- 23/10 10:08 quota Codex épuisé (art/tools/night/_logcel_heroes_e.txt), reprise vers 13:19
+- 23/10 10:08 lancement art/tools/night/_vg2.txt
+- 23/10 10:08 quota Codex épuisé (art/tools/night/_logvg2.txt), reprise vers 13:19
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_e.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_c.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_tocsin.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_tocsin.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_c.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_e.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_e.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_d.txt
+- 23/10 13:19 lancement art/tools/night/_vg2.txt
+- 23/10 13:19 lancement art/tools/night/_vg2.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_c.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_tocsin.txt
+- 23/10 13:19 lancement art/tools/night/_vg2.txt
+- 23/10 13:19 lancement art/tools/night/_cel_heroes_d.txt
+- 23/10 13:21 fin art/tools/night/_vg2.txt : �nérée : [contact](art/tools/night/_vg2_contact.png). Godot import : `EXIT: 0` ; `sprites_test` : `RESULT: OK`. `vigie_test` : `RESULT: FAIL (1)` ; `characters.json` contient `difficulty=1`, test attendu `2` ; hors périmètre. Choix visuels et reprise : [rapport](art/tools/night/_vg2_report.txt).
+- 23/10 13:21 fin art/tools/night/_cel_heroes_e.txt : vés ; 24 planches contrôlées, IoU minimum `0.9932506670852299`. PNG : 17.20 → 13.64 Mo. Import sans erreur ; `sprites`, `bourbe`, `rictus`, `player` : `RESULT: OK`. Budget global bloquant : `182 Mo <= 180 Mo`, `RESULT: FAIL (1)` ; détails dans `art/tools/night/_cel_heroes_e_verification.json`.
+- 23/10 13:21 fin art/tools/night/_cel_heroes_d.txt : es. Profils `creature`, `prop`, `vfx` ; aucune normal map. Deux `_e` réduits ; contrats conservés ; IoU > 0,97. Poids PNG : 16,17 → 12,71 Mo. Import et tests sprites/avare/rainette/player : OK. Échec restant `texture_budget_test` : budget global `182 Mo <= 180 Mo` ; correction hors périmètre.
+- 23/10 13:21 fin art/tools/night/_vg2.txt : : 0` ; `sprites_test` → `RESULT: OK`. `vigie_test` → `RESULT: FAIL (1)` : difficulté `1`, test exige `2` ; hors périmètre. [Planche](/C:/Users/const/Documents/Rainfall/art/tools/night/_vg2_contact.png) · [Rapport et reprise](/C:/Users/const/Documents/Rainfall/art/tools/night/_vg2_report.txt)
+- 23/10 13:21 fin art/tools/night/_vg2.txt : nes intactes. Import réussi ; `sprites_test` → `RESULT: OK`. `vigie_test` → `RESULT: FAIL (1)` : difficulté JSON `1`, test exige `2` ; hors périmètre. Budget global : `181 Mo > 180 Mo`. [Planche](art/tools/night/_vg2_contact.png) · [Rapport et reprise](art/tools/night/_logvg2.txt.last.txt).
+- 23/10 13:22 fin art/tools/night/_cel_heroes_e.txt :  Import + sprites/bourbe/rictus/player : OK ; texture_budget : FAIL, 182 Mo > 180 Mo global. Écart : `bog_zone_0.png`, `bog_zone_1.png` conservés ; géométrie source indisponible. [Contrôles](art/tools/night/_cel_heroes_e_verification.json) · [Planche](art/tools/night/_cel_heroes_e_contact.png)
+- 23/10 13:22 fin art/tools/night/_cel_heroes_e.txt : rt sans erreur ; sprites, bourbe, rictus, player → `RESULT: OK`. Budget global bloquant : `182 Mo <= 180 Mo` → `RESULT: FAIL` ; aucune planche > 4096. PNG : 18.04 → 14.3 Mo ; [vérification](art/tools/night/_cel_heroes_e_verification.json), [contact](art/tools/night/_cel_heroes_e_contact.png).
+- 23/10 13:22 fin art/tools/night/_cel_heroes_d.txt : avare/rainette/player : `PASS` ; budget global : `FAIL`, `182 Mo > 180 Mo`. PNG : `16,17 → 12,71 Mo`. [Rapport](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_heroes_d_verification.json) · [Planche comparative](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_heroes_d_contact.png)
+- 23/10 13:24 fin art/tools/night/_cel_heroes_c.txt :  Averse : OK ; Arpenteuse/joueur : erreurs Godot ; budget : `182 Mo > 180 Mo`.   64 px/u non appliqué : échelles dans les `.gd`/`.tscn` interdits ; validation complète bloquée.   [Contrôles](art/tools/night/_cel_heroes_c_verification.json) · [Planche](art/tools/night/_cel_heroes_c_contact.png)
+- 23/10 13:24 fin art/tools/night/_cel_heroes_tocsin.txt : Lot non validé : écriture concurrente sur `cel_heroes_tocsin_build.py`. État observé : `characters/tocsin`, profils `creature` / `prop`, aucun `_n.png`. Vérification : 225 PASS, 33 FAIL ; tests Godot non confirmés. Taille d’affichage et rognage : non finalisés. PNG : 39.607 → 41.089 MiB.
+- 23/10 13:27 fin art/tools/night/_cel_heroes_c.txt : chelles conservées, portraits/chaînes non rognés ; adaptations nécessaires dans les `.gd`/`.tscn` interdits. [Contrôles](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_heroes_c_verification.json) · [Planche](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_heroes_c_contact.png)
+- 23/10 13:27 sprites_test après groupe 17 : RESULT: OK
+- 23/10 13:27 == groupe 18
+- 23/10 13:27 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:28 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:28 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:28 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:28 fin art/tools/night/_cel_heroes_c.txt : lité.   Échelle `1.0` non appliquée : constantes dans les `.gd/.tscn` interdits.   PNG : `14.068230 → 12.250196 Mo`.   Import/sprites PASS ; erreurs moteur Averse/Arpenteuse/player ; budget global FAIL : `181 Mo > 180 Mo`.   [Rapport détaillé](art/tools/night/_cel_heroes_c_verification.json).
+- 23/10 13:29 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 13:31 fin art/tools/night/_cel_heroes_tocsin.txt : rmes. Import, sprites_test, tocsin_test, player_test : OK. texture_budget_test : FAIL — 181 Mo > 180 Mo. Écarts : 33 planches avec doublons statiques ; taille d’affichage et rognage non finalisés. PNG : 39.607 → 39.456 MiB ; [audit](art/tools/night/_cel_heroes_tocsin_independent_audit.json).
+- 23/10 13:31 sprites_test après groupe 17 : RESULT: OK
+- 23/10 13:31 == groupe 18
+- 23/10 13:31 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:31 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:31 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:32 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:32 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 13:33 fin art/tools/night/_cel_heroes_tocsin.txt : ortraits non rognés. PNG : 41,53 → 41,37 Mo ; mémoire brute : 1157,40 → 439,47 Mo. Import, sprites, Tocsin, player : OK ; texture_budget : FAIL global, 181 > 180 Mo. [Rapport](art/tools/night/_cel_heroes_tocsin_verification.json) · [Comparaison](art/tools/night/_cel_heroes_tocsin_contact.png)
+- 23/10 13:33 sprites_test après groupe 17 : RESULT: OK
+- 23/10 13:33 == groupe 18
+- 23/10 13:33 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:34 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:34 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:34 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_terrain_f23.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_terrain_f23.txt), reprise vers 01:03
+- 23/10 13:35 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_terrain_f23.txt), reprise vers 18:22
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 01:03
+- 23/10 13:35 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 01:03
+- 23/10 13:36 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:36 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:36 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 13:36 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 13:36 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_terrain_f23.txt), reprise vers 18:22
+- 23/10 13:36 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:36 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_terrain_f23.txt), reprise vers 18:22
+- 23/10 13:36 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 18:22
+- 23/10 13:36 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:36 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:36 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_monsters_f23.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 18:22
+- 23/10 13:36 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:36 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_a.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 18:22
+- 23/10 13:36 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_bosses_f1.txt), reprise vers 18:22
+- 23/10 13:36 quota Codex épuisé (art/tools/night/_logcel_minis_b.txt), reprise vers 18:22
+- 23/10 18:21 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 18:21 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 18:21 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 18:21 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 18:21 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 18:21 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_minis_b.txt
+- 23/10 18:21 lancement art/tools/night/_cel_monsters_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_bosses_f1.txt
+- 23/10 18:21 lancement art/tools/night/_cel_terrain_f23.txt
+- 23/10 18:21 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 18:21 lancement art/tools/night/_cel_minis_a.txt
+- 23/10 18:24 fin art/tools/night/_cel_monsters_f23.txt : oss`/`_rust`, 16 planches, profil `creature`, aucun `_n`. Poids alors mesuré : 8.561005 → 8.806426 Mo. Import sans erreur ; `sprites_test` et `biome_fauna_test` : `RESULT: OK`. `enemies_map_test` : 2.816 ms > 2.5 ms ; `texture_budget_test` : atlas `frost_bear.tres` hors limites, hors périmètre.
+- 23/10 18:26 fin art/tools/night/_cel_terrain_f23.txt : s encre ; aucun `_n`. Écart d’inventaire : 18 diffus par dossier ; contrats, `_e`, `_shadow` conservés. Vérification `PASS` ; import sans erreur ; 5 tests `RESULT: OK`. Poids : 2.951290 → 0.828671 Mo ; budget mobile : 179 Mo <= 180 Mo. Planche : `art/tools/night/_cel_terrain_f23_contact.png`.
+- 23/10 18:26 fin art/tools/night/_cel_terrain_f23.txt :  Écart d’inventaire : 18 diffus par dossier, contre 19 annoncés. Aucune normal map ; `_e`, `_shadow`, métadonnées et `.blend` préservés. Import sans erreur ; 5 tests `RESULT: OK` — [vérification](art/tools/night/_cel_terrain_f23_verification.json). Poids PNG : 2.951290 Mo → 1.227313 Mo.
+- 23/10 18:27 fin art/tools/night/_cel_terrain_f23.txt : tacts ; import sans erreur ; 5 tests `RESULT: OK`. Écarts : 18 diffus/biome ; budgets globaux bosses/APK dépassés, hors périmètre. Poids PNG : 2.951290 → 1.227313 Mo. [Planche](art/tools/night/_cel_terrain_f23_contact.png) · [Vérification](art/tools/night/_cel_terrain_f23_verification.json)
+- 23/10 18:29 fin art/tools/night/_cel_bosses_f1.txt : ill in use at exit`. Écarts : `.tres` adapté au rognage ; échelle 1.5204848484848483 et BODY_GAIN conservés, codés dans les `.gd` interdits. Budget global : APK 6917 Mo > 200 Mo ; détails dans [vérification](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_bosses_f1_verification.json).
+- 23/10 18:29 fin art/tools/night/_cel_bosses_f1.txt : 3224928561. Import sans erreur ; 4 tests `RESULT: OK` ; avertissements de libération. Écarts : `.tres` ajusté ; échelle et BODY_GAIN conservés, `.gd` interdits. Budget global dépassé : bosses 73.0/45 Mo ; APK estimé 6916/200 Mo. [Contrôles](art/tools/night/_cel_bosses_f1_verification.json).
+- 23/10 18:29 fin art/tools/night/_cel_bosses_f1.txt : LT: OK` ; erreur de nettoyage : `10 resources still in use`. Écarts : échelle `1.5204848484848483` et `BODY_GAIN` conservés, imposés dans les `.gd` interdits. Budget global dépassé ; détails dans le [rapport](C:/Users/const/Documents/Rainfall/art/tools/night/_cel_bosses_f1_verification.json).
+- 23/10 18:30 fin art/tools/night/_cel_monsters_f23.txt : he](art/tools/night/_cel_monsters_f23_contact.png) · [Vérification](art/tools/night/_cel_monsters_f23_verification.json) ; import sans erreur.   3 tests `RESULT: OK` ; `enemies_map_test` échoué : `2.849 ms > 2.5 ms`.   Écarts globaux hors lot : bosses `73.2 Mo > 45 Mo` ; APK `6917 Mo > 200 Mo`.
+- 23/10 18:31 fin art/tools/night/_cel_monsters_f23.txt : 4/64`. Import sans erreur ; 4 tests `RESULT: OK` ; avertissement de ressources à la sortie de `biome_fauna_test`. Poids PNG : `8.561005 Mo` → `8.806426 Mo`. [Planche comparative](art/tools/night/_cel_monsters_f23_contact.png) · [Vérification](art/tools/night/_cel_monsters_f23_verification.json)
+- 23/10 18:35 fin art/tools/night/_cel_minis_a.txt : Import validé ; 4 tests `RESULT: OK` ; erreur de sortie : `15 resources still in use`. Écarts : répétitions R9, échelles >1 conservées ; budget global dépassé hors périmètre. [Contrôles](art/tools/night/_cel_minis_a_verification.json) · [Contact](art/tools/night/_cel_minis_a_contact.png)
+- 23/10 18:35 fin art/tools/night/_cel_minis_a.txt : 3 → 4.652 Mo` ; PNG : `8.056 → 7.864 Mo`. Import `PASS` ; quatre tests `RESULT: OK`. Écarts : fermeture Godot, `15 resources still in use` ; budget global hors périmètre dépassé. [Rapport](art/tools/night/_cel_minis_a_verification.json) · [Contact](art/tools/night/_cel_minis_a_contact.png)
+- 23/10 18:35 fin art/tools/night/_cel_minis_a.txt : : 7.683002 → 7.499394 Mo ; mobile : 4.819247 → 4.436379 Mo. Écarts : budget global dépassé ; fermeture `minibosses` : `15 resources still in use at exit`. [Contrôles et écarts](art/tools/night/_cel_minis_a_verification.json) · [Planche comparative](art/tools/night/_cel_minis_a_contact.png)
+- 23/10 18:36 fin art/tools/night/_cel_minis_b.txt : ur ; quatre tests `RESULT: OK`.   Poids PNG : 6.358 → 6.277 Mo ; mobile : 3.857 → 3.676 Mo.   Écarts : `.tres` recadrés ; trois paires identiques ; échelles >1 conservées, constantes `.gd` interdites.   Budget global hors limites : `bosses : 73.2 Mo > 45 Mo` ; `APK estimé 6890 Mo > 200 Mo`.
+- 23/10 18:36 sprites_test après groupe 18 : RESULT: OK
+- 23/10 18:36 == groupe 19
+- 23/10 18:36 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:36 fin art/tools/night/_cel_minis_b.txt : ns hérités sur 11 planches, 3 paires fusionnées par quantification. Import sans erreur ; 4 tests `RESULT: OK` ; côté maximal 1360 px. PNG : 6,666363 → 6,581917 Mo ; brut : 114,444 → 53,34644 Mo. Budget global encore hors limites : `bosses : 73.2 Mo > 45 Mo` ; `APK estimé 6890 Mo > 200 Mo`.
+- 23/10 18:37 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 18:37 sprites_test après groupe 18 : RESULT: OK
+- 23/10 18:37 == groupe 19
+- 23/10 18:37 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:37 fin art/tools/night/_cel_minis_b.txt : el_minis_b_contact.png).   Écart : `3` paires devenues identiques après suppression du grain ; animations conservées.   Poids : PNG `6.666363 → 6.581917 Mo` ; mobile `4.044677 → 3.854240 Mo`.   Dépassements globaux hors périmètre : `bosses 73.2 Mo > 45 Mo` ; `APK estimé 6890 Mo > 200 Mo`.
+- 23/10 18:37 lancement art/tools/night/_cel_icons.txt
+- 23/10 18:37 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 18:37 sprites_test après groupe 18 : RESULT: OK
+- 23/10 18:37 == groupe 19
+- 23/10 18:37 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_props_biomes.txt), reprise vers 01:03
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_icons.txt), reprise vers 23:25
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 01:03
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_props_biomes.txt), reprise vers 01:03
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 01:03
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 01:03
+- 23/10 18:37 lancement art/tools/night/_cel_icons.txt
+- 23/10 18:37 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_icons.txt), reprise vers 23:25
+- 23/10 18:37 quota Codex épuisé (art/tools/night/_logcel_props_biomes.txt), reprise vers 23:25
+- 23/10 18:38 lancement art/tools/night/_cel_icons.txt
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_icons.txt), reprise vers 23:25
+- 23/10 18:38 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 18:38 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:38 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 18:38 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_props_biomes.txt), reprise vers 23:25
+- 23/10 18:38 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_props_biomes.txt), reprise vers 23:25
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 23:25
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 19:08
+- 23/10 18:38 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 23:25
+- 23/10 19:08 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 19:08 quota Codex épuisé (art/tools/night/_logcel_bosses_f23.txt), reprise vers 23:25
+- 23/10 23:25 lancement art/tools/night/_cel_icons.txt
+- 23/10 23:25 lancement art/tools/night/_cel_icons.txt
+- 23/10 23:25 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 23:25 lancement art/tools/night/_cel_icons.txt
+- 23/10 23:25 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 23:25 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 23:25 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 23:25 lancement art/tools/night/_cel_props_biomes.txt
+- 23/10 23:25 lancement art/tools/night/_cel_bosses_f23.txt
+- 23/10 23:29 fin art/tools/night/_cel_bosses_f23.txt : /night/cel_bosses_f23_build.py` réécrit extérieurement pendant l’exécution. Archives créées ; `idle_p1.png` du Cerf et du Sonneur modifiés par mes essais. Arrêt des lancements Blender pour préserver l’instance unique. Lot incomplet ; contrôles finaux et poids avant/après non validés.
+- 23/10 23:29 fin art/tools/night/_cel_props_biomes.txt : réécrits. Profil `prop` ; contrats, `_e`, `_shadow`, `.blend` conservés ; aucun `_n`. 27 planches conformes ; silhouette IoU ≥ 0,9933. Import sans erreur ; 5 tests → `RESULT: OK`. PNG : 0,665748 → 0,553677 Mo. Écarts globaux hors lot : bosses 73.2 Mo > 45 Mo ; APK estimé 6890 Mo > 200 Mo.
+- 23/10 23:29 fin art/tools/night/_cel_props_biomes.txt : PNG : 0.665748 → 0.553677 Mo. Import sans erreur ; budget conforme ; 5 tests `RESULT: OK`. Écart : `Parameter "t" is null.` initial dans `cite_iso_test` ; relance PASS. [Planche](art/tools/night/_cel_props_biomes_contact.png) · [Vérification](art/tools/night/_cel_props_biomes_verification.json)
+- 23/10 23:30 fin art/tools/night/_cel_props_biomes.txt : s : `1.0`. Import sans erreur ; 5 tests `RESULT: OK` ; avertissements de ressources à la fermeture consignés. PNG : `0.665748 Mo` → `0.553677 Mo`. [Contrôles et écarts](art/tools/night/_cel_props_biomes_verification.json) · [Planche comparative](art/tools/night/_cel_props_biomes_contact.png).
+- 23/10 23:33 fin art/tools/night/_cel_icons.txt : trôles `88/88` ; import sans erreur ; cinq tests `RESULT: OK`. Écarts : ressources retenues à la sortie — `chest_reveal`: `14`, `ui_theme`: `2`. Poids : `4.037875 → 2.867820 Mo`. [Vérification](art/tools/night/_cel_icons_verification.json) · [Planche](art/tools/night/_cel_icons_contact.png)
+- 23/10 23:34 sprites_test après groupe 19 : RESULT: OK
+- 23/10 23:34 == groupe 20
+- 23/10 23:34 lancement art/tools/night/_cel_ui.txt
+- 23/10 23:34 fin art/tools/night/_cel_icons.txt : s : IoU rendu minimum `0.9726756564939674` ; alpha original conservé. Import sans erreur ; cinq `RESULT: OK` ; 3 diagnostics de nettoyage Godot. Poids : `4.037875 Mo → 2.865618 Mo`. [Planche](art/tools/night/_cel_icons_contact.png) · [Vérification](art/tools/night/_cel_icons_verification.json).
+- 23/10 23:34 lancement art/tools/night/_cel_vfx.txt
+- 23/10 23:35 fin art/tools/night/_cel_icons.txt : SS ; import sans erreur ; 5 tests `RESULT: OK`.   Écarts consignés : diagnostics Godot à la fermeture, dépassements budgétaires globaux hors lot.   Poids : **4.04 → 2.87 Mo**.   [Planche](art/tools/night/_cel_icons_contact.png) · [Vérifications](art/tools/night/_cel_icons_verification.json)
+- 23/10 23:39 fin art/tools/night/_cel_vfx.txt : lites` et ambiance (exclus). IoU ≥ `0.9964442013129103` ; aucun `_n` ; import sans erreur ; trois tests `RESULT: OK` ; avertissement : `16 resources still in use at exit`. PNG VFX : `16.966 → 16.978 Mo` ; [rapport détaillé](C:/Users/const/Documents/Rainfall/art/tools/night/_cel_vfx_report.md).
+- 23/10 23:42 fin art/tools/night/_cel_ui.txt : overlays`, `texture_budget` : `RESULT: OK`. Écarts : `touch_layout` → `FAIL (20)` ; `menu_flow` → `RESULT: OK`, erreur de ressources à la sortie ; dépassements budgétaires globaux hors lot. [Rapport](art/tools/night/_cel_ui_verification.json) · [Planche](art/tools/night/_cel_ui_contact.png)
+- 23/10 23:42 sprites_test après groupe 20 : RESULT: OK
+- 23/10 23:42 == groupe 21
+- 23/10 23:42 lancement art/tools/night/_av4.txt
+- 23/10 23:47 fin art/tools/night/_av4.txt : lot : bosses `72.6 Mo > 45 Mo` ; APK estimé `6889 Mo > 200 Mo`. Orchestrateur : `PUDDLE_VFX_TINT` à blanc ; retirer `vfx_additive` de la Crue. [Planche](/C:/Users/const/Documents/Rainfall/art/tools/night/_av4_contact.png) · [Script](/C:/Users/const/Documents/Rainfall/art/tools/night/av4_build.py)
+- 23/10 23:47 sprites_test après groupe 21 : RESULT: OK
+- 23/10 23:47 == groupe 16
+- 23/10 23:47 groupe 16 déjà fini, sauté
+- 23/10 23:47 == groupe 17
+- 23/10 23:47 groupe 17 déjà fini, sauté
+- 23/10 23:47 == groupe 22
+- 23/10 23:47 lancement art/tools/night/_mn1.txt
+- 23/10 23:48 fin art/tools/night/_cel_bosses_f23.txt :  répétées conservées ; échelles/BODY_GAIN inchangés ; budget global toujours dépassé. - [Planche comparative](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_bosses_f23_contact.png) · [Contrôles](/C:/Users/const/Documents/Rainfall/art/tools/night/_cel_bosses_f23_verification.json).
+- 23/10 23:48 sprites_test après groupe 19 : RESULT: OK
+- 23/10 23:48 == groupe 20
+- 23/10 23:48 groupe 20 déjà fini, sauté
+- 23/10 23:48 == groupe 21
+- 23/10 23:48 groupe 21 déjà fini, sauté
+- 23/10 23:48 == groupe 16
+- 23/10 23:48 groupe 16 déjà fini, sauté
+- 23/10 23:48 == groupe 17
+- 23/10 23:48 groupe 17 déjà fini, sauté
+- 23/10 23:48 == groupe 22
+- 23/10 23:48 lancement art/tools/night/_mn1.txt
+- 23/10 23:49 fin art/tools/night/_cel_bosses_f23.txt :  50 paires symétriques ; 4 `_e` noirs retirés. - Import sans erreur ; six `RESULT: OK` ; fuites de ressources à la sortie de trois tests. - Budget global encore dépassé. [Vérification](art/tools/night/_cel_bosses_f23_verification.json) · [Contact](art/tools/night/_cel_bosses_f23_contact.png).
+- 23/10 23:49 sprites_test après groupe 19 : RESULT: OK
+- 23/10 23:49 == groupe 20
+- 23/10 23:50 sprites_test après groupe 20 : RESULT: OK
+- 23/10 23:50 == groupe 21
+- 23/10 23:50 sprites_test après groupe 21 : RESULT: OK
+- 23/10 23:50 == groupe 16
+- 23/10 23:51 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 00:21
+- 23/10 23:51 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 00:21
+- 23/10 23:53 sprites_test après groupe 16 : RESULT: OK
+- 23/10 23:53 == groupe 17
+- 23/10 23:55 sprites_test après groupe 17 : RESULT: OK
+- 23/10 23:55 == groupe 22
+- 23/10 23:55 lancement art/tools/night/_mn1.txt
+- 23/10 23:55 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 00:25
+- 24/10 00:21 lancement art/tools/night/_mn1.txt
+- 24/10 00:21 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 04:28
+- 24/10 00:21 lancement art/tools/night/_mn1.txt
+- 24/10 00:21 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 04:28
+- 24/10 00:25 lancement art/tools/night/_mn1.txt
+- 24/10 00:25 quota Codex épuisé (art/tools/night/_logmn1.txt), reprise vers 04:28

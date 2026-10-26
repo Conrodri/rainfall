@@ -1,0 +1,6 @@
+VG2 repris : livrables existants contrôlés, 44 frames VFX + portrait 256×256 ; vigie/ et vigie_cel/ identiques par sous-dossier ; aucune icône modifiée.
+Choix conservés : magnésium blanc-rose, rouge #FF3A4F, fumée grise en volutes anguleuses, cuivre patiné, filet goudronné et plombs ; CEL encré.
+Sources : art/blender/characters/vigie_fx*.blend (8) ; script art/tools/night/vg2_build.py ; planche art/tools/night/_vg2_contact.png régénérée et inspectée.
+Vérification Python PASS : 9 planches, côté maximal 2560 px, frames uniques, marges, _e demi-résolution non noirs, aucun _n ni CanvasTexture.
+Godot : import EXIT: 0 ; sprites_test RESULT: OK ; vigie_test RESULT: FAIL (1), characters.json difficulté 1 tandis que le test exige 2 ; hors périmètre, fichier inchangé.
+Reprise validation : aligner game/data/characters.json et game/tests/vigie_test.gd selon décision gameplay, puis relancer vigie_test ; journaux art/tools/night/_vg2_*_check.log.

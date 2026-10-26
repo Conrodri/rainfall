@@ -2,58 +2,63 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/vfx/flame_pillar/default.png" id="1"]
 
+[sub_resource type="AtlasTexture" id="a0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 256, 768)
+
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1")
-region = Rect2(0, 0, 256, 256)
+region = Rect2(256, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1")
-region = Rect2(256, 0, 256, 256)
+region = Rect2(512, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a3"]
 atlas = ExtResource("1")
-region = Rect2(512, 0, 256, 256)
+region = Rect2(768, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a4"]
 atlas = ExtResource("1")
-region = Rect2(768, 0, 256, 256)
+region = Rect2(1024, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a5"]
 atlas = ExtResource("1")
-region = Rect2(1024, 0, 256, 256)
+region = Rect2(1280, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a6"]
 atlas = ExtResource("1")
-region = Rect2(1280, 0, 256, 256)
+region = Rect2(1536, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a7"]
 atlas = ExtResource("1")
-region = Rect2(1536, 0, 256, 256)
+region = Rect2(1792, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a8"]
 atlas = ExtResource("1")
-region = Rect2(1792, 0, 256, 256)
+region = Rect2(2048, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a9"]
 atlas = ExtResource("1")
-region = Rect2(2048, 0, 256, 256)
+region = Rect2(2304, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a10"]
 atlas = ExtResource("1")
-region = Rect2(2304, 0, 256, 256)
+region = Rect2(2560, 0, 256, 768)
 
 [sub_resource type="AtlasTexture" id="a11"]
 atlas = ExtResource("1")
-region = Rect2(2560, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="a12"]
-atlas = ExtResource("1")
-region = Rect2(2816, 0, 256, 256)
+region = Rect2(2816, 0, 256, 768)
 
 [resource]
 animations = [{
-"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}],
-"loop": false,
+"frames": [{"duration": 1.0, "texture": SubResource("a0")}, {"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}],
+"loop": true,
 "name": &"default",
-"speed": 14.0
+"speed": 12.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}],
+"loop": false,
+"name": &"end",
+"speed": 12.0
 }]

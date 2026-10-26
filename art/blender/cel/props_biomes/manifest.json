@@ -1,0 +1,775 @@
+{
+  "files": {
+    "props/fog_forest/cedar_giant.png": {
+      "sha256": "4c6eb114ce0563f739cb9d61db60d34f211ad2c080188c1465a08be1c7b6a3e2",
+      "bytes": 71492,
+      "size": [
+        384,
+        384
+      ]
+    },
+    "props/fog_forest/cedar_giant.png.import": {
+      "sha256": "be7a6304ccadd348b69a83d6f9ea7f3c553697f999ac4354e2efa308eb7aa2a7",
+      "bytes": 1206
+    },
+    "props/fog_forest/cedar_giant_shadow.png": {
+      "sha256": "6bd982a39f7aae31a3aa38eb8e87cd419b051a5b30ceb8ed9404c08361b5acdc",
+      "bytes": 13564,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/cedar_giant_shadow.png.import": {
+      "sha256": "015fab96b7f8cc48fa0b5e3a43fc3b8b2b72b9f0f53faf2f249868f85a998a2e",
+      "bytes": 1242
+    },
+    "props/fog_forest/lantern_shrine.png": {
+      "sha256": "7a2589c577d58cacdd6881bc70827b7c71da0dee13f77c5a30e03c22a2f7ea85",
+      "bytes": 25537,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/fog_forest/lantern_shrine.png.import": {
+      "sha256": "7a448ef364a54070e736c36564ca378ab98e72c744e65bfc74ad0f51b87299b8",
+      "bytes": 1222
+    },
+    "props/fog_forest/lantern_shrine_e.png": {
+      "sha256": "4cab87f791e45373440a463cc25601978feac4160d09ceab46dacc54b424a1bc",
+      "bytes": 2209,
+      "size": [
+        96,
+        96
+      ]
+    },
+    "props/fog_forest/lantern_shrine_e.png.import": {
+      "sha256": "80dc39cf4904009e314c6ae73a79b5b440a1b69bc2badffc22fab66e69d281bc",
+      "bytes": 1230
+    },
+    "props/fog_forest/lantern_shrine_se.png": {
+      "sha256": "7a2589c577d58cacdd6881bc70827b7c71da0dee13f77c5a30e03c22a2f7ea85",
+      "bytes": 25537,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/fog_forest/lantern_shrine_se.png.import": {
+      "sha256": "717aba2df1c9eab76fe609f6a1ddbf5dd38e090860a2b39cddf24d35da8ea6a4",
+      "bytes": 1236
+    },
+    "props/fog_forest/lantern_shrine_se_e.png": {
+      "sha256": "4cab87f791e45373440a463cc25601978feac4160d09ceab46dacc54b424a1bc",
+      "bytes": 2209,
+      "size": [
+        96,
+        96
+      ]
+    },
+    "props/fog_forest/lantern_shrine_se_e.png.import": {
+      "sha256": "2cc9556c19ad092f767f290ae2dd94befbc357dc6bc402308fada534136dc3b7",
+      "bytes": 1247
+    },
+    "props/fog_forest/lantern_shrine_se_shadow.png": {
+      "sha256": "a7b9d2a3e2566f2c38a371ca96cff0ac5f42a5b4afc6a88675c5abc32dde304b",
+      "bytes": 3283,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/lantern_shrine_se_shadow.png.import": {
+      "sha256": "b97f6e401afd4c51b131170196565dcaa819a4940e1f0055f3fcad2ea89cefe1",
+      "bytes": 1270
+    },
+    "props/fog_forest/lantern_shrine_shadow.png": {
+      "sha256": "a7b9d2a3e2566f2c38a371ca96cff0ac5f42a5b4afc6a88675c5abc32dde304b",
+      "bytes": 3283,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/lantern_shrine_shadow.png.import": {
+      "sha256": "fa83314c9a7b2d4ccae76e973b6914e24151f92adc5da7c621069e7c599e3219",
+      "bytes": 1257
+    },
+    "props/fog_forest/lantern_shrine_sw.png": {
+      "sha256": "92a29cc543796a31438541f2cb9aae30c9ed5671721d1f28dc8089721d17c863",
+      "bytes": 25519,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/fog_forest/lantern_shrine_sw.png.import": {
+      "sha256": "6fa94f350e478f3048c5055ead06dd7cd4f5f537e6392d4c8d68c495527781df",
+      "bytes": 1237
+    },
+    "props/fog_forest/lantern_shrine_sw_e.png": {
+      "sha256": "2c52c0f804b5ea920ded4bf2a5dcf86bc88cbac907a5033cf907a5aa89c30929",
+      "bytes": 2232,
+      "size": [
+        96,
+        96
+      ]
+    },
+    "props/fog_forest/lantern_shrine_sw_e.png.import": {
+      "sha256": "ac73415296f107b4acee9e78cfb54bac527886cfc83b4fcc7873728f7a6ca943",
+      "bytes": 1247
+    },
+    "props/fog_forest/lantern_shrine_sw_shadow.png": {
+      "sha256": "7644f8bf3625769710b0a1b332c27a4b53caa1931eacd9a30a8f088a8d3efe18",
+      "bytes": 3287,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/lantern_shrine_sw_shadow.png.import": {
+      "sha256": "173af36960b87c70d97842f9cf7518ae62ad0dedc86362b1e22e51ca8de58afa",
+      "bytes": 1272
+    },
+    "props/fog_forest/mushrooms.png": {
+      "sha256": "80d002636279e77f3473b79ebfae468cb34521073a61ec1a007f3029b25e3c78",
+      "bytes": 14666,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/fog_forest/mushrooms.png.import": {
+      "sha256": "df4ed5157a61dd8edf1a202fc506026f74ddaf6956a79d59f22cdb10542ad974",
+      "bytes": 1196
+    },
+    "props/fog_forest/mushrooms_shadow.png": {
+      "sha256": "c36348cd3d60643d4e2af1b7ae97b68ee49d59e4e40939e7f479bd33f2a5e303",
+      "bytes": 5577,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/mushrooms_shadow.png.import": {
+      "sha256": "6957393650b4bbe7c60597285bcbdd41a06609e12fe9db75926a255fd2326328",
+      "bytes": 1231
+    },
+    "props/fog_forest/props.json": {
+      "sha256": "93b1196f0f4affc0a08fce49aa6c517360906b81e5e746f0229e23d94ff156f7",
+      "bytes": 1202
+    },
+    "props/fog_forest/root_arch_a.png": {
+      "sha256": "bd7c93983e72df37343acde848d87f995983729d877c6585d78c4a01e53e4c0c",
+      "bytes": 23137,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/fog_forest/root_arch_a.png.import": {
+      "sha256": "5b094563d50e2d5f2f5639043e8f881e6fa0edcd28fff03716c6530d07ef85f9",
+      "bytes": 1206
+    },
+    "props/fog_forest/root_arch_a_shadow.png": {
+      "sha256": "5c25f75f5c57b50d8960910c1a6cf42ac67ad8efbeae3878739694b0ed6b8be4",
+      "bytes": 9820,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/root_arch_a_shadow.png.import": {
+      "sha256": "7173e18164d3faa0e9445ca64db31a5e17f2eafc7ffbe69620ca8719cb09c22a",
+      "bytes": 1240
+    },
+    "props/fog_forest/root_arch_b.png": {
+      "sha256": "8be5dc71bb8ede38ec37a55a9026c39067d1d143ba01a8ab3a00b18bda542f7b",
+      "bytes": 17863,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/fog_forest/root_arch_b.png.import": {
+      "sha256": "b3115d9956835c35de7055d7472167a4d6823262f483474141d767e3b5cd5dd3",
+      "bytes": 1206
+    },
+    "props/fog_forest/root_arch_b_shadow.png": {
+      "sha256": "e77e6c6212506e39a13a86a13345434f82f9956048ff233e7e1ecb86e3cd7e23",
+      "bytes": 8867,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/root_arch_b_shadow.png.import": {
+      "sha256": "d7d31743ebb1c7e134d45cf3a6bd3a4b6c9b435205f51c6aa4630207dcb668ea",
+      "bytes": 1242
+    },
+    "props/fog_forest/root_arch_c.png": {
+      "sha256": "55001e9cd1e883c760f25d4531e0864d7e87809c0907480886b13368cf4fa088",
+      "bytes": 16038,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/fog_forest/root_arch_c.png.import": {
+      "sha256": "0407727c6ed16bfc2ba8baaa8ccc4fc60189f5682ce09fdf6935ad0ee767306c",
+      "bytes": 1207
+    },
+    "props/fog_forest/root_arch_c_shadow.png": {
+      "sha256": "2eae2c6a14a0de87181c1b3cc895924d4caf05c396a160fdd925f5c676681a21",
+      "bytes": 7437,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/root_arch_c_shadow.png.import": {
+      "sha256": "a4617bdfe25251ac42e9de8820ab7fcb64c53f489fad19a0725839ef17c445b6",
+      "bytes": 1241
+    },
+    "props/fog_forest/root_arch_corner.png": {
+      "sha256": "611642ae21dd0b3b788deda3653a1fedcc089eae285e2e0bfb3b236736831b9c",
+      "bytes": 22402,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/fog_forest/root_arch_corner.png.import": {
+      "sha256": "634752928bc4ae3d2530ef5a3e225877cd6d5ed9e3e23f899967c6239c31bea1",
+      "bytes": 1232
+    },
+    "props/fog_forest/root_arch_corner_shadow.png": {
+      "sha256": "f86c74089d0c84b679fcac9af99ef4e6890b22352a042d044f269529fd44ec03",
+      "bytes": 10445,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/root_arch_corner_shadow.png.import": {
+      "sha256": "fea89b45268e1b8db520b3c222efcc2c7a99a9bdd1d133bd7e0531dfa16a84b0",
+      "bytes": 1267
+    },
+    "props/fog_forest/standing_stone.png": {
+      "sha256": "4237f2d1fe4a379d415157b8f582b534b3ce003b6af0bbbda676589ed472f83e",
+      "bytes": 17641,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/fog_forest/standing_stone.png.import": {
+      "sha256": "96096d628f24d49eaec7ddd392e46b3415adea3c6d21374c440627c6c67d6ea2",
+      "bytes": 1222
+    },
+    "props/fog_forest/standing_stone_shadow.png": {
+      "sha256": "acbbb01add6c21e574f99b6a8880d1f34ca2efbf3a6238405dccb4b2fe244d40",
+      "bytes": 5282,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/standing_stone_shadow.png.import": {
+      "sha256": "bc8840544e7bcd6753169d354c8d865ebee8efa90b6ca2ec71e2dc8d648ab06f",
+      "bytes": 1256
+    },
+    "props/fog_forest/stump.png": {
+      "sha256": "6e757f63a50775e77d22240bad29f0bfdb4a838ba32b54128cc2a4742708982e",
+      "bytes": 15551,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/fog_forest/stump.png.import": {
+      "sha256": "bbdaaf6727ebf76e75fbb36b71dc2c0f47261072abc68aad99d7797c90e884a7",
+      "bytes": 1177
+    },
+    "props/fog_forest/stump_shadow.png": {
+      "sha256": "c8c5c2bac69edac6fa6e7f7c482fa41bdaa2bdebf9b2f08522b8605d9c4bb4fc",
+      "bytes": 7337,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/fog_forest/stump_shadow.png.import": {
+      "sha256": "7bb1459bc0f7645ae2426fd673e9ad8ab6155b5af95b80e0afc888ff2907de61",
+      "bytes": 1212
+    },
+    "props/rust_city/barrels.png": {
+      "sha256": "d4ebf7b9490599be55c832c5aeac6a9313f71eed114ee16a5a8915765292b580",
+      "bytes": 17559,
+      "size": [
+        160,
+        160
+      ]
+    },
+    "props/rust_city/barrels.png.import": {
+      "sha256": "faf60a8f3afb1342c7325b0db7ae627716042494355ba50eee594b81e85e834a",
+      "bytes": 1186
+    },
+    "props/rust_city/barrels_shadow.png": {
+      "sha256": "0e218cfac6855141c43f8f322f217d03bf6a7995a4e3c782df764a84fbd1c9b7",
+      "bytes": 3586,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/barrels_shadow.png.import": {
+      "sha256": "7e9f1af19a007719de5353a562ec2d0e04a22800494cdd926a97023bd74d3e08",
+      "bytes": 1221
+    },
+    "props/rust_city/bell.png": {
+      "sha256": "ea1d61120d1e871a63841c6e93f1798a647bf3fc540732ee4e92a313483b5759",
+      "bytes": 14250,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/rust_city/bell.png.import": {
+      "sha256": "af21e4b269da7d86904b11d99ebe94416a287ca794380a071df5a352913a7f5f",
+      "bytes": 1171
+    },
+    "props/rust_city/cables.png": {
+      "sha256": "fce70740fe6e2ffc32ef849bc8e3e00a0c0e08a5a4619a087cb92b882a34e004",
+      "bytes": 6230,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/cables.png.import": {
+      "sha256": "c002434cf555d3eebacdfa18a09c6b2e1bb3cafc304dcc9cfc0113a67939d166",
+      "bytes": 1181
+    },
+    "props/rust_city/catwalk.png": {
+      "sha256": "ce43a4574b4f0f9932cc89470ed28e1bad714f11cb87f2ff9f340632c9dec637",
+      "bytes": 41353,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/rust_city/catwalk.png.import": {
+      "sha256": "0ce29245182c096f5c4e2c16eca320e713f15c79d497080f94361688b66371d7",
+      "bytes": 1185
+    },
+    "props/rust_city/crate.png": {
+      "sha256": "49e2e7cca4ddcfc0b814d72c6d7440723645edeb2cd8817b3caf989dfd0ea786",
+      "bytes": 16257,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/crate.png.import": {
+      "sha256": "43850a4e359aecb147dd428a926c903e127ab022992be97ac372d0950cf34c55",
+      "bytes": 1176
+    },
+    "props/rust_city/crate_se.png": {
+      "sha256": "49e2e7cca4ddcfc0b814d72c6d7440723645edeb2cd8817b3caf989dfd0ea786",
+      "bytes": 16257,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/crate_se.png.import": {
+      "sha256": "bb6f57eb32c816c84e60ab32aaeca26670d63abbe5b98d775674b5244b3519f5",
+      "bytes": 1191
+    },
+    "props/rust_city/crate_se_shadow.png": {
+      "sha256": "7e57bce9a464c0cd4897fb92574f2def9c085862f147fac08ef5544a02b6f455",
+      "bytes": 3607,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/crate_se_shadow.png.import": {
+      "sha256": "825fdd2abc40468a5278e1ed1461560114907fd19fd0eeb99f31d5ba443d98e6",
+      "bytes": 1225
+    },
+    "props/rust_city/crate_shadow.png": {
+      "sha256": "7e57bce9a464c0cd4897fb92574f2def9c085862f147fac08ef5544a02b6f455",
+      "bytes": 3607,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/crate_shadow.png.import": {
+      "sha256": "6c20cd3928a332b8d3542ee35ccaea74ae3a9d6be0fa0741958a1c9e4cbf346b",
+      "bytes": 1210
+    },
+    "props/rust_city/crate_sw.png": {
+      "sha256": "1cf5235255c74e6d2a6582f123c96ac7f4e4fb21ca98f2931d5b9d49f21a36fa",
+      "bytes": 16130,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/crate_sw.png.import": {
+      "sha256": "f8481e416d1ad07d27218f82f761e57683e5c904e2aa5d53ed0dc2711fafc3c4",
+      "bytes": 1191
+    },
+    "props/rust_city/crate_sw_shadow.png": {
+      "sha256": "e26623daf04c7c20912c74056084c7849c9a9a4fed98d6c6d2226018b9bee814",
+      "bytes": 3282,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/crate_sw_shadow.png.import": {
+      "sha256": "d643de6192f986ce972fff80be18d7df74e7b877719d51e03a45b950ba42d3df",
+      "bytes": 1226
+    },
+    "props/rust_city/debris.png": {
+      "sha256": "f88c48c3fbfebcc1c4d78e1f8ff3d0a450e6201c5a4f02239ce06d02e04f752f",
+      "bytes": 7331,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/rust_city/debris.png.import": {
+      "sha256": "27f11a0188af7c4dad5aea26abe9efd62af3c08ae82b4f2ec79a3ad2d96e8729",
+      "bytes": 1180
+    },
+    "props/rust_city/pipe_stub.png": {
+      "sha256": "45c934c2469e6a3f362e51b8dcaad68b095ed5739a33a0ce79c872874b917c6b",
+      "bytes": 10932,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/rust_city/pipe_stub.png.import": {
+      "sha256": "8b45480b1a979b2a654cdc6b1bf3de994b1ec4a06c679d54965bd9ce0e518eec",
+      "bytes": 1195
+    },
+    "props/rust_city/pipe_stub_shadow.png": {
+      "sha256": "e57a201b205dcc6db598e57f4b6f35f721b55e2761115a468df8cad8216d9538",
+      "bytes": 2715,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/pipe_stub_shadow.png.import": {
+      "sha256": "ad6020a805c2b3e9d4756d13b8888f75468dfda2fd593a744b9bc4d0aaef40b1",
+      "bytes": 1230
+    },
+    "props/rust_city/props.json": {
+      "sha256": "2f9ab4a36872e5dd11ee5aa45dedc15857b10c922be58c0ce399ba5c2490a06b",
+      "bytes": 1123
+    },
+    "props/rust_city/steam_lamp.png": {
+      "sha256": "a19163a8d4c6c518b06211a636b6d11e4f93df41af29eb1881d2687ed9d5e8fc",
+      "bytes": 4666,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/steam_lamp.png.import": {
+      "sha256": "2b2dbb4cc0038528f000999eaf042d5de37e82c3bef99571aa5c758704381606",
+      "bytes": 1201
+    },
+    "props/rust_city/steam_lamp_e.png": {
+      "sha256": "996ad7d5a6283dfec0e2c11919116a30eef84a49353bda8ba557f4b9645fd6a3",
+      "bytes": 1113,
+      "size": [
+        64,
+        64
+      ]
+    },
+    "props/rust_city/steam_lamp_e.png.import": {
+      "sha256": "3ae7155907ceefc17afde0656f60003b306efd9e01ccb445c92fc7756236eeba",
+      "bytes": 1210
+    },
+    "props/rust_city/steam_lamp_se.png": {
+      "sha256": "533aef8a7e5fb889f1a6e2511898758b820be9e5556d79ec561cedaa2e13a3de",
+      "bytes": 10840,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/rust_city/steam_lamp_se.png.import": {
+      "sha256": "d3a85bbb5b49bccbf9ed0f4acb9cd3f6745f55ef8cb73d8243a679fcdc43a86e",
+      "bytes": 1216
+    },
+    "props/rust_city/steam_lamp_se_e.png": {
+      "sha256": "761f71c07a5c9b71a3df0c72aba83c9b3832d59afa67a381c06f4d02475e1ff2",
+      "bytes": 2085,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/steam_lamp_se_e.png.import": {
+      "sha256": "f16909d50bd8c6f05191d170e5a19f1f09cda5ae7cfdafaebfab6453dbb7aad9",
+      "bytes": 1226
+    },
+    "props/rust_city/steam_lamp_se_shadow.png": {
+      "sha256": "4fc48cd03b0bc5bf0e83affc4563cad1b8435f54f23706063d0c7be4870acd1a",
+      "bytes": 4143,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/steam_lamp_se_shadow.png.import": {
+      "sha256": "737f5ade04011357ed0bddba5b5beb32601c50ffa8e847971f9b62f8900c8dee",
+      "bytes": 1251
+    },
+    "props/rust_city/steam_lamp_sw.png": {
+      "sha256": "4bc4442ecb9bdda4bd4b0d2eab2885332a7d9f58d453be80e9c190a2f8f9d1f5",
+      "bytes": 10261,
+      "size": [
+        256,
+        256
+      ]
+    },
+    "props/rust_city/steam_lamp_sw.png.import": {
+      "sha256": "d09f671f4dd60acdc987ab0a1e0e4759cee41f68421cd1136b99b98f869ccdec",
+      "bytes": 1216
+    },
+    "props/rust_city/steam_lamp_sw_e.png": {
+      "sha256": "f9dc19ca0379341160a618a5a10aed323dd71d0b4084a7aaa82c4c457cc20bf1",
+      "bytes": 1964,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/steam_lamp_sw_e.png.import": {
+      "sha256": "cd385265bc9ae8a9ff6f2b33e3b9e406e6af373fef00b4fc71d64b49b6d5187a",
+      "bytes": 1226
+    },
+    "props/rust_city/steam_lamp_sw_shadow.png": {
+      "sha256": "dcb168e0cd0b7d7db4402bb99426937675b5b8f2674d80ef3ab13c354d00b5b0",
+      "bytes": 4559,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/steam_lamp_sw_shadow.png.import": {
+      "sha256": "71c89178cd4dd941a5f7e5763ba5fd6249b53ea475ab709c2465871dc6cfa7a8",
+      "bytes": 1251
+    },
+    "props/rust_city/tank_large.png": {
+      "sha256": "0930dca1c80bd377539cf5b8d8ba3aab56ad5a39554133d3f8bfbb46d7ab0143",
+      "bytes": 41592,
+      "size": [
+        320,
+        320
+      ]
+    },
+    "props/rust_city/tank_large.png.import": {
+      "sha256": "59edf27074da2cd81a0cfc266054902ccc4ffe22540d4cf014ac361c59310644",
+      "bytes": 1201
+    },
+    "props/rust_city/tank_large_shadow.png": {
+      "sha256": "0e482b115e2b629f218ab129050daa9d28e8ab9b6b5a18de1ee4fe69adb96d3c",
+      "bytes": 6761,
+      "size": [
+        512,
+        512
+      ]
+    },
+    "props/rust_city/tank_large_shadow.png.import": {
+      "sha256": "6a3f37d20af8bfe3ca7f95c58efcf84d94ea3eefb79c93d138753c8ca5a90ba0",
+      "bytes": 1236
+    },
+    "props/rust_city/tank_small.png": {
+      "sha256": "a3d0e8c84042d160df5fdbf044897d25766992ecdbffd7df2d4d0cd5f8b11313",
+      "bytes": 22622,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/rust_city/tank_small.png.import": {
+      "sha256": "728ce500ce31866a832a424b5914006a356244f66e084b254d1819cbf6bcb78b",
+      "bytes": 1201
+    },
+    "props/rust_city/ticket_booth.png": {
+      "sha256": "0a7ab733066e8d18759eb3157a6141344959d2c6ded9f4b91a9518eb79dbfbbd",
+      "bytes": 23541,
+      "size": [
+        192,
+        192
+      ]
+    },
+    "props/rust_city/ticket_booth.png.import": {
+      "sha256": "2f437afaeedf4b8bbd18f6fe31a609b29d3e5419844644138a9c2c3deb4cde0a",
+      "bytes": 1211
+    },
+    "props/rust_city/valve.png": {
+      "sha256": "d32a50f62cd9fc61a624ea05abb983968792850419e68dbd7ed594f6c8588624",
+      "bytes": 8290,
+      "size": [
+        128,
+        128
+      ]
+    },
+    "props/rust_city/valve.png.import": {
+      "sha256": "c9e77357747fd841db7786efea3f43bd8eddd63600a0bc0dcefe464050a300eb",
+      "bytes": 1175
+    }
+  },
+  "sheets": [
+    "props/fog_forest/cedar_giant.png",
+    "props/fog_forest/lantern_shrine.png",
+    "props/fog_forest/lantern_shrine_se.png",
+    "props/fog_forest/lantern_shrine_sw.png",
+    "props/fog_forest/mushrooms.png",
+    "props/fog_forest/root_arch_a.png",
+    "props/fog_forest/root_arch_b.png",
+    "props/fog_forest/root_arch_c.png",
+    "props/fog_forest/root_arch_corner.png",
+    "props/fog_forest/standing_stone.png",
+    "props/fog_forest/stump.png",
+    "props/rust_city/barrels.png",
+    "props/rust_city/bell.png",
+    "props/rust_city/cables.png",
+    "props/rust_city/catwalk.png",
+    "props/rust_city/crate.png",
+    "props/rust_city/crate_se.png",
+    "props/rust_city/crate_sw.png",
+    "props/rust_city/debris.png",
+    "props/rust_city/pipe_stub.png",
+    "props/rust_city/steam_lamp.png",
+    "props/rust_city/steam_lamp_se.png",
+    "props/rust_city/steam_lamp_sw.png",
+    "props/rust_city/tank_large.png",
+    "props/rust_city/tank_small.png",
+    "props/rust_city/ticket_booth.png",
+    "props/rust_city/valve.png"
+  ],
+  "protected": {
+    "props/fog_forest/cedar_giant.png.import": "be7a6304ccadd348b69a83d6f9ea7f3c553697f999ac4354e2efa308eb7aa2a7",
+    "props/fog_forest/cedar_giant_shadow.png": "6bd982a39f7aae31a3aa38eb8e87cd419b051a5b30ceb8ed9404c08361b5acdc",
+    "props/fog_forest/cedar_giant_shadow.png.import": "015fab96b7f8cc48fa0b5e3a43fc3b8b2b72b9f0f53faf2f249868f85a998a2e",
+    "props/fog_forest/lantern_shrine.png.import": "7a448ef364a54070e736c36564ca378ab98e72c744e65bfc74ad0f51b87299b8",
+    "props/fog_forest/lantern_shrine_e.png": "4cab87f791e45373440a463cc25601978feac4160d09ceab46dacc54b424a1bc",
+    "props/fog_forest/lantern_shrine_e.png.import": "80dc39cf4904009e314c6ae73a79b5b440a1b69bc2badffc22fab66e69d281bc",
+    "props/fog_forest/lantern_shrine_se.png.import": "717aba2df1c9eab76fe609f6a1ddbf5dd38e090860a2b39cddf24d35da8ea6a4",
+    "props/fog_forest/lantern_shrine_se_e.png": "4cab87f791e45373440a463cc25601978feac4160d09ceab46dacc54b424a1bc",
+    "props/fog_forest/lantern_shrine_se_e.png.import": "2cc9556c19ad092f767f290ae2dd94befbc357dc6bc402308fada534136dc3b7",
+    "props/fog_forest/lantern_shrine_se_shadow.png": "a7b9d2a3e2566f2c38a371ca96cff0ac5f42a5b4afc6a88675c5abc32dde304b",
+    "props/fog_forest/lantern_shrine_se_shadow.png.import": "b97f6e401afd4c51b131170196565dcaa819a4940e1f0055f3fcad2ea89cefe1",
+    "props/fog_forest/lantern_shrine_shadow.png": "a7b9d2a3e2566f2c38a371ca96cff0ac5f42a5b4afc6a88675c5abc32dde304b",
+    "props/fog_forest/lantern_shrine_shadow.png.import": "fa83314c9a7b2d4ccae76e973b6914e24151f92adc5da7c621069e7c599e3219",
+    "props/fog_forest/lantern_shrine_sw.png.import": "6fa94f350e478f3048c5055ead06dd7cd4f5f537e6392d4c8d68c495527781df",
+    "props/fog_forest/lantern_shrine_sw_e.png": "2c52c0f804b5ea920ded4bf2a5dcf86bc88cbac907a5033cf907a5aa89c30929",
+    "props/fog_forest/lantern_shrine_sw_e.png.import": "ac73415296f107b4acee9e78cfb54bac527886cfc83b4fcc7873728f7a6ca943",
+    "props/fog_forest/lantern_shrine_sw_shadow.png": "7644f8bf3625769710b0a1b332c27a4b53caa1931eacd9a30a8f088a8d3efe18",
+    "props/fog_forest/lantern_shrine_sw_shadow.png.import": "173af36960b87c70d97842f9cf7518ae62ad0dedc86362b1e22e51ca8de58afa",
+    "props/fog_forest/mushrooms.png.import": "df4ed5157a61dd8edf1a202fc506026f74ddaf6956a79d59f22cdb10542ad974",
+    "props/fog_forest/mushrooms_shadow.png": "c36348cd3d60643d4e2af1b7ae97b68ee49d59e4e40939e7f479bd33f2a5e303",
+    "props/fog_forest/mushrooms_shadow.png.import": "6957393650b4bbe7c60597285bcbdd41a06609e12fe9db75926a255fd2326328",
+    "props/fog_forest/props.json": "93b1196f0f4affc0a08fce49aa6c517360906b81e5e746f0229e23d94ff156f7",
+    "props/fog_forest/root_arch_a.png.import": "5b094563d50e2d5f2f5639043e8f881e6fa0edcd28fff03716c6530d07ef85f9",
+    "props/fog_forest/root_arch_a_shadow.png": "5c25f75f5c57b50d8960910c1a6cf42ac67ad8efbeae3878739694b0ed6b8be4",
+    "props/fog_forest/root_arch_a_shadow.png.import": "7173e18164d3faa0e9445ca64db31a5e17f2eafc7ffbe69620ca8719cb09c22a",
+    "props/fog_forest/root_arch_b.png.import": "b3115d9956835c35de7055d7472167a4d6823262f483474141d767e3b5cd5dd3",
+    "props/fog_forest/root_arch_b_shadow.png": "e77e6c6212506e39a13a86a13345434f82f9956048ff233e7e1ecb86e3cd7e23",
+    "props/fog_forest/root_arch_b_shadow.png.import": "d7d31743ebb1c7e134d45cf3a6bd3a4b6c9b435205f51c6aa4630207dcb668ea",
+    "props/fog_forest/root_arch_c.png.import": "0407727c6ed16bfc2ba8baaa8ccc4fc60189f5682ce09fdf6935ad0ee767306c",
+    "props/fog_forest/root_arch_c_shadow.png": "2eae2c6a14a0de87181c1b3cc895924d4caf05c396a160fdd925f5c676681a21",
+    "props/fog_forest/root_arch_c_shadow.png.import": "a4617bdfe25251ac42e9de8820ab7fcb64c53f489fad19a0725839ef17c445b6",
+    "props/fog_forest/root_arch_corner.png.import": "634752928bc4ae3d2530ef5a3e225877cd6d5ed9e3e23f899967c6239c31bea1",
+    "props/fog_forest/root_arch_corner_shadow.png": "f86c74089d0c84b679fcac9af99ef4e6890b22352a042d044f269529fd44ec03",
+    "props/fog_forest/root_arch_corner_shadow.png.import": "fea89b45268e1b8db520b3c222efcc2c7a99a9bdd1d133bd7e0531dfa16a84b0",
+    "props/fog_forest/standing_stone.png.import": "96096d628f24d49eaec7ddd392e46b3415adea3c6d21374c440627c6c67d6ea2",
+    "props/fog_forest/standing_stone_shadow.png": "acbbb01add6c21e574f99b6a8880d1f34ca2efbf3a6238405dccb4b2fe244d40",
+    "props/fog_forest/standing_stone_shadow.png.import": "bc8840544e7bcd6753169d354c8d865ebee8efa90b6ca2ec71e2dc8d648ab06f",
+    "props/fog_forest/stump.png.import": "bbdaaf6727ebf76e75fbb36b71dc2c0f47261072abc68aad99d7797c90e884a7",
+    "props/fog_forest/stump_shadow.png": "c8c5c2bac69edac6fa6e7f7c482fa41bdaa2bdebf9b2f08522b8605d9c4bb4fc",
+    "props/fog_forest/stump_shadow.png.import": "7bb1459bc0f7645ae2426fd673e9ad8ab6155b5af95b80e0afc888ff2907de61",
+    "props/rust_city/barrels.png.import": "faf60a8f3afb1342c7325b0db7ae627716042494355ba50eee594b81e85e834a",
+    "props/rust_city/barrels_shadow.png": "0e218cfac6855141c43f8f322f217d03bf6a7995a4e3c782df764a84fbd1c9b7",
+    "props/rust_city/barrels_shadow.png.import": "7e9f1af19a007719de5353a562ec2d0e04a22800494cdd926a97023bd74d3e08",
+    "props/rust_city/bell.png.import": "af21e4b269da7d86904b11d99ebe94416a287ca794380a071df5a352913a7f5f",
+    "props/rust_city/cables.png.import": "c002434cf555d3eebacdfa18a09c6b2e1bb3cafc304dcc9cfc0113a67939d166",
+    "props/rust_city/catwalk.png.import": "0ce29245182c096f5c4e2c16eca320e713f15c79d497080f94361688b66371d7",
+    "props/rust_city/crate.png.import": "43850a4e359aecb147dd428a926c903e127ab022992be97ac372d0950cf34c55",
+    "props/rust_city/crate_se.png.import": "bb6f57eb32c816c84e60ab32aaeca26670d63abbe5b98d775674b5244b3519f5",
+    "props/rust_city/crate_se_shadow.png": "7e57bce9a464c0cd4897fb92574f2def9c085862f147fac08ef5544a02b6f455",
+    "props/rust_city/crate_se_shadow.png.import": "825fdd2abc40468a5278e1ed1461560114907fd19fd0eeb99f31d5ba443d98e6",
+    "props/rust_city/crate_shadow.png": "7e57bce9a464c0cd4897fb92574f2def9c085862f147fac08ef5544a02b6f455",
+    "props/rust_city/crate_shadow.png.import": "6c20cd3928a332b8d3542ee35ccaea74ae3a9d6be0fa0741958a1c9e4cbf346b",
+    "props/rust_city/crate_sw.png.import": "f8481e416d1ad07d27218f82f761e57683e5c904e2aa5d53ed0dc2711fafc3c4",
+    "props/rust_city/crate_sw_shadow.png": "e26623daf04c7c20912c74056084c7849c9a9a4fed98d6c6d2226018b9bee814",
+    "props/rust_city/crate_sw_shadow.png.import": "d643de6192f986ce972fff80be18d7df74e7b877719d51e03a45b950ba42d3df",
+    "props/rust_city/debris.png.import": "27f11a0188af7c4dad5aea26abe9efd62af3c08ae82b4f2ec79a3ad2d96e8729",
+    "props/rust_city/pipe_stub.png.import": "8b45480b1a979b2a654cdc6b1bf3de994b1ec4a06c679d54965bd9ce0e518eec",
+    "props/rust_city/pipe_stub_shadow.png": "e57a201b205dcc6db598e57f4b6f35f721b55e2761115a468df8cad8216d9538",
+    "props/rust_city/pipe_stub_shadow.png.import": "ad6020a805c2b3e9d4756d13b8888f75468dfda2fd593a744b9bc4d0aaef40b1",
+    "props/rust_city/props.json": "2f9ab4a36872e5dd11ee5aa45dedc15857b10c922be58c0ce399ba5c2490a06b",
+    "props/rust_city/steam_lamp.png.import": "2b2dbb4cc0038528f000999eaf042d5de37e82c3bef99571aa5c758704381606",
+    "props/rust_city/steam_lamp_e.png": "996ad7d5a6283dfec0e2c11919116a30eef84a49353bda8ba557f4b9645fd6a3",
+    "props/rust_city/steam_lamp_e.png.import": "3ae7155907ceefc17afde0656f60003b306efd9e01ccb445c92fc7756236eeba",
+    "props/rust_city/steam_lamp_se.png.import": "d3a85bbb5b49bccbf9ed0f4acb9cd3f6745f55ef8cb73d8243a679fcdc43a86e",
+    "props/rust_city/steam_lamp_se_e.png": "761f71c07a5c9b71a3df0c72aba83c9b3832d59afa67a381c06f4d02475e1ff2",
+    "props/rust_city/steam_lamp_se_e.png.import": "f16909d50bd8c6f05191d170e5a19f1f09cda5ae7cfdafaebfab6453dbb7aad9",
+    "props/rust_city/steam_lamp_se_shadow.png": "4fc48cd03b0bc5bf0e83affc4563cad1b8435f54f23706063d0c7be4870acd1a",
+    "props/rust_city/steam_lamp_se_shadow.png.import": "737f5ade04011357ed0bddba5b5beb32601c50ffa8e847971f9b62f8900c8dee",
+    "props/rust_city/steam_lamp_sw.png.import": "d09f671f4dd60acdc987ab0a1e0e4759cee41f68421cd1136b99b98f869ccdec",
+    "props/rust_city/steam_lamp_sw_e.png": "f9dc19ca0379341160a618a5a10aed323dd71d0b4084a7aaa82c4c457cc20bf1",
+    "props/rust_city/steam_lamp_sw_e.png.import": "cd385265bc9ae8a9ff6f2b33e3b9e406e6af373fef00b4fc71d64b49b6d5187a",
+    "props/rust_city/steam_lamp_sw_shadow.png": "dcb168e0cd0b7d7db4402bb99426937675b5b8f2674d80ef3ab13c354d00b5b0",
+    "props/rust_city/steam_lamp_sw_shadow.png.import": "71c89178cd4dd941a5f7e5763ba5fd6249b53ea475ab709c2465871dc6cfa7a8",
+    "props/rust_city/tank_large.png.import": "59edf27074da2cd81a0cfc266054902ccc4ffe22540d4cf014ac361c59310644",
+    "props/rust_city/tank_large_shadow.png": "0e482b115e2b629f218ab129050daa9d28e8ab9b6b5a18de1ee4fe69adb96d3c",
+    "props/rust_city/tank_large_shadow.png.import": "6a3f37d20af8bfe3ca7f95c58efcf84d94ea3eefb79c93d138753c8ca5a90ba0",
+    "props/rust_city/tank_small.png.import": "728ce500ce31866a832a424b5914006a356244f66e084b254d1819cbf6bcb78b",
+    "props/rust_city/ticket_booth.png.import": "2f437afaeedf4b8bbd18f6fe31a609b29d3e5419844644138a9c2c3deb4cde0a",
+    "props/rust_city/valve.png.import": "c9e77357747fd841db7786efea3f43bd8eddd63600a0bc0dcefe464050a300eb"
+  },
+  "blends": {
+    "art/blender/props/f2p_cedar_giant.blend": "9f75e562091d3ac402266ca8484a6b33e9415b8e3c081d78b67419f6fb8bd1cb",
+    "art/blender/props/f2p_lantern_shrine.blend": "54e8f7840fde27e88c1cdce74f3a248af099b36332c0818f1e63ada6716ee244",
+    "art/blender/props/f2p_lantern_shrine_se.blend": "c0ec0388fb41cd708b5d7481a43c1871ca9e0696d76fa93a1a7b57ee92c7fe79",
+    "art/blender/props/f2p_lantern_shrine_sw.blend": "23e7c115753e9f1d2af058bd9d9bf416f7541af4780000bc53844db2327e0df7",
+    "art/blender/props/f2p_mushrooms.blend": "e288d5c38991a9c3acb924bdb77ffc981e1bdc7f87a85c521fb48956e28d84c7",
+    "art/blender/props/f2p_root_arch_a.blend": "b24693f4399cb7ae070c4250d08e42b7bac6a9ca7f3fe44cd62ec38d537e89e4",
+    "art/blender/props/f2p_root_arch_b.blend": "085f340f20724f1ce7830c0058e975ced147145d15ca4f2d0442f85ebc0b2e55",
+    "art/blender/props/f2p_root_arch_c.blend": "a8ec87146e45987188d52afdac84ea464a33381236649511953ca759eea2c816",
+    "art/blender/props/f2p_root_arch_corner.blend": "8699cf88bb384d7b09ce8c21af35e9f78c35132f141eadf17acd0a06b6e7c453",
+    "art/blender/props/f2p_standing_stone.blend": "d0e57a4548f22daed5c94fdae56ffac47345335b16e6f994593855ed3e8a0aac",
+    "art/blender/props/f2p_stump.blend": "0a4c291b9f5ca7c08d4d311291009e9dcb4306811a15be7ceade8df06399bdc4",
+    "art/blender/props/f3p_barrels.blend": "7611b8ba994b10f00184367669b9ba773eebed2bfd90557b0cd332df06544db3",
+    "art/blender/props/f3p_bell.blend": "b1620b82da8ef97fe3d8759b8dbab74b4b709cf3b0134012007a94c7e45c511b",
+    "art/blender/props/f3p_cables.blend": "b6854a75d3eb3cfd31a1e6e80f7f3cf1ddfddfd2976862dca3d06662da178dbb",
+    "art/blender/props/f3p_catwalk.blend": "6d29ed75d5a60c6d0eec67a0cc1407d67f3d736b1f204bed0d4f83659c0cb0ff",
+    "art/blender/props/f3p_crate.blend": "3574c17ee412a3760ce25579173c61c7ffbce3a10d965a8c3d4de06951b40bdf",
+    "art/blender/props/f3p_crate_se.blend": "02d00f2c7d65d03004f7634ce39fa2e31d4ab706d65a9f9cf001e45b607a2d0b",
+    "art/blender/props/f3p_crate_sw.blend": "ca41df825a9f9fdbc5782b7873b21cad4bed26bbc21f150f96b5ab11d93cec46",
+    "art/blender/props/f3p_debris.blend": "a548a406bc262877915b983be93b8c543c0a301ad3152f5c9affbd6650509c33",
+    "art/blender/props/f3p_pipe_stub.blend": "942ab3359bd63bb77a50d965d04d6c76c13c2f38abcf6b15e09ff0ba3209b675",
+    "art/blender/props/f3p_steam_lamp.blend": "02751a25275de80f64900864a5104cbda4f190bdb3452b48dc882ac441c8d09e",
+    "art/blender/props/f3p_steam_lamp_se.blend": "1d5dfd7244e776ade81ffb449f8cc714669c35973a3db66f03757eb8b038e4aa",
+    "art/blender/props/f3p_steam_lamp_sw.blend": "e623b52ba6ef6e80e49a9d5b399516819d61a972e1021e9cdd9f5342cb75e290",
+    "art/blender/props/f3p_tank_large.blend": "40590df5ebab4edbe92ee8fabae5e648bb18eaa9446704a107c8cec3bb5587e6",
+    "art/blender/props/f3p_tank_small.blend": "2e6b13e12742f011707ae15de6b15173c820e7c3f1a9c29467593aeedd2661f2",
+    "art/blender/props/f3p_ticket_booth.blend": "dae3a953be0b9f0e43b012bfa504934e9587722508f59a0ba60214417274249a",
+    "art/blender/props/f3p_valve.blend": "7f2826224365bd7843cd8c20e56244d8e10b67bb098a1edc1f9fb05177251a0c"
+  }
+}

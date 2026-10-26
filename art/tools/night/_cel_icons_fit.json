@@ -1,0 +1,92 @@
+{
+  "icons/frame_commun.png": {
+    "iou": 1.0,
+    "crop": [
+      25,
+      25,
+      487,
+      487
+    ]
+  },
+  "icons/frame_peu_commun.png": {
+    "iou": 1.0,
+    "crop": [
+      25,
+      25,
+      487,
+      487
+    ]
+  },
+  "icons/frame_rare.png": {
+    "iou": 1.0,
+    "crop": [
+      25,
+      25,
+      487,
+      487
+    ]
+  },
+  "icons/items/epines.png": {
+    "iou": 0.9726756564939674,
+    "crop": [
+      58,
+      51,
+      325,
+      334
+    ]
+  },
+  "icons/items/nova_infinie.png": {
+    "iou": 0.9971672993031556,
+    "crop": [
+      87,
+      86,
+      425,
+      437
+    ]
+  },
+  "icons/items/tempete_de_braises.png": {
+    "iou": 0.9969543147208122,
+    "crop": [
+      56,
+      53,
+      449,
+      450
+    ]
+  },
+  "ui/hud/icon_gold.png": {
+    "iou": 0.9915797914995991,
+    "crop": [
+      48,
+      53,
+      464,
+      458
+    ]
+  },
+  "ui/hud/icon_pause.png": {
+    "iou": 0.9977947072975141,
+    "crop": [
+      48,
+      51,
+      464,
+      459
+    ]
+  },
+  "ui/hud/icon_ruby.png": {
+    "iou": 0.9896193771626297,
+    "crop": [
+      84,
+      51,
+      428,
+      463
+    ]
+  },
+  "ui/hud/icon_settings.png": {
+    "iou": 0.9986199974909046,
+    "crop": [
+      48,
+      52,
+      464,
+      460
+    ]
+  }
+}

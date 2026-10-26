@@ -127,7 +127,9 @@ def publish_verify():
     for rel,meta in data['files'].items():
         p=SPR/rel
         if p.suffix!='.png':
-            assert sha(p)==meta['sha'],rel
+            compact=WORK/'compact.json'
+            changed=json.loads(compact.read_text()).get('resources',{}) if compact.exists() else {}
+            assert sha(p) in (meta['sha'],changed.get(rel)),rel
             continue
         candidate=WORK/Path(rel).relative_to('characters')
         if p.stem.endswith('_shadow'):continue
@@ -178,6 +180,140 @@ def publish_verify():
     if errors:print('\n'.join(errors[:8]),flush=True)
     return not errors
 
+def compact_sheets():
+    """Trim storage; AtlasTexture margins keep the game's fixed pivots and scale intact."""
+    import re, math
+    from PIL import Image
+    data=baseline(); specs={}; resources={}
+    reference=WORK/'cropped_reference'; delivered=WORK/'cropped_delivery'
+    def geometry(rel):
+        name=Path(rel).stem
+        return (256,256) if name=='portrait' else (128,128) if 'goutte_lame' in rel else (1024,1024) if 'wave_cone' in rel else (128,64) if name.startswith('chain_') else (256,256) if name=='loop_blaze' else (192,192)
+    def pack(source,cell,box):
+        cw,ch=cell;left,top,right,bottom=box
+        cols,rows=source.width//cw,source.height//ch
+        out=Image.new('RGBA',((right-left)*cols,(bottom-top)*rows))
+        for y in range(rows):
+            for x in range(cols):
+                part=source.crop((x*cw,y*ch,(x+1)*cw,(y+1)*ch)).crop(box)
+                out.paste(part,(x*(right-left),y*(bottom-top)))
+        return out
+    groups={}
+    for rel in data['files']:
+        if not rel.endswith('.png') or Path(rel).stem.endswith(('_e','_n','_shadow')):continue
+        # Direct portrait consumers and the chain shader cannot apply AtlasTexture margins.
+        if Path(rel).stem=='portrait' or Path(rel).stem.startswith('chain_'):
+            source=WORK/Path(rel).relative_to('characters')
+            shutil.copy2(source,SPR/rel)
+            erel=str(Path(rel).with_name(Path(rel).stem+'_e.png')).replace('\\','/')
+            if erel in data['files']:
+                shutil.copy2(cel.ARCHIVE/erel,SPR/erel)
+            continue
+        key=str(Path(rel).parent) if 'wave_cone' in rel else rel
+        groups.setdefault(key,[]).append(rel)
+    for members in groups.values():
+        cw,ch=geometry(members[0]); boxes=[]
+        for rel in members:
+            with Image.open(SPR/rel) as im:
+                im=im.convert('RGBA')
+                for y in range(im.height//ch):
+                    for x in range(im.width//cw):
+                        b=im.crop((x*cw,y*ch,(x+1)*cw,(y+1)*ch)).getchannel('A').getbbox()
+                        if b:boxes.append(b)
+        box=(2*math.floor((min(b[0] for b in boxes)-4)/2),2*math.floor((min(b[1] for b in boxes)-4)/2),2*math.ceil((max(b[2] for b in boxes)+4)/2),2*math.ceil((max(b[3] for b in boxes)+4)/2))
+        for rel in members:
+            specs[rel]={'cell':[cw,ch],'box':list(box),'new_cell':[box[2]-box[0],box[3]-box[1]]}
+            for base in (SPR,cel.ARCHIVE):
+                target=delivered if base==SPR else reference
+                dst=target/rel;dst.parent.mkdir(parents=True,exist_ok=True)
+                with Image.open(base/rel) as im:pack(im.convert('RGBA'),(cw,ch),box).save(dst,optimize=True)
+                erel=str(Path(rel).with_name(Path(rel).stem+'_e.png')).replace('\\','/')
+                if erel in data['files']:
+                    with Image.open(base/erel) as em,Image.open(base/rel) as diffuse:
+                        ratio=diffuse.width//em.width
+                        assert ratio in (1,2) and diffuse.height//em.height==ratio
+                        ebox=tuple(v//ratio for v in box)
+                        pack(em.convert('RGBA'),(cw//ratio,ch//ratio),ebox).save(target/erel,optimize=True)
+    old_game,old_archive=cel.GAME_SPRITES,cel.ARCHIVE
+    checks=[]
+    try:
+        cel.GAME_SPRITES,cel.ARCHIVE=delivered,reference
+        for rel,spec in specs.items():
+            with Image.open(delivered/rel) as im:w,h=im.size
+            nw,nh=spec['new_cell']
+            result=cel.check_sheet(rel,cell=(nw,nh),frames=w//nw,rows=h//nh,normals=False)
+            assert not (SPR/rel).with_name(Path(rel).stem+'_n.png').exists(),rel
+            result.update(size=[w,h],cell=[nw,nh],frames=w//nw,rows=h//nh,no_normal=True,crop=spec['box'])
+            checks.append(result)
+    finally:cel.GAME_SPRITES,cel.ARCHIVE=old_game,old_archive
+    # Resource backups are immutable and the transform always starts from the originals.
+    for rel,meta in data['files'].items():
+        if not rel.endswith('.tres'):continue
+        p=SPR/rel;backup=WORK/'contracts'/rel;backup.parent.mkdir(parents=True,exist_ok=True)
+        if not backup.exists():shutil.copy2(p,backup)
+        text=backup.read_text(); ext=dict((i,r) for r,i in re.findall(r'path="res://assets/sprites/([^"]+)" id="([^"]+)"',text))
+        def atlas(match):
+            block=match.group(0); aid=re.search(r'atlas = ExtResource\("([^"]+)"\)',block)
+            if not aid:return block
+            image=ext.get(aid[1],''); image=re.sub(r'_e\.png$','.png',image)
+            if image not in specs:return block
+            spec=specs[image];cw,ch=spec['cell'];left,top,right,bottom=spec['box'];nw,nh=spec['new_cell']
+            def region(m):
+                x,y,w,h=map(float,m[1].split(','));assert (w,h)==(cw,ch),(rel,w,h)
+                return f'region = Rect2({int(x/cw)*nw}, {int(y/ch)*nh}, {nw}, {nh})\nmargin = Rect2({left}, {top}, {cw-nw}, {ch-nh})'
+            return re.sub(r'region = Rect2\(([^)]+)\)',region,block)
+        text=re.sub(r'\[sub_resource type="AtlasTexture"[^\n]*\][\s\S]*?(?=\n\[|\Z)',atlas,text)
+        p.write_text(text,encoding='utf8');resources[rel]=sha(p)
+    for rel in specs:
+        path=delivered/rel;shutil.copy2(path,SPR/rel)
+        emission=path.with_name(path.stem+'_e.png')
+        if emission.exists():shutil.copy2(emission,(SPR/rel).with_name(emission.name))
+    state={'sheets':specs,'resources':resources,'display_constraint':'CREA R=64*sqrt(2), Iso.SPRITE_K=1/sqrt(2): 64 px/u horizontally; shared isometric projection retained. Runtime radius scales and projection are hardcoded in forbidden .gd/.tscn. Portraits loaded directly and chain shader fixed 2:1 UV contract retain original cells; cropping them requires runtime changes. AtlasTexture margins preserve displayed size and feet.'}
+    (WORK/'compact.json').write_text(json.dumps(state,indent=1))
+    report=json.loads(REPORT.read_text());report['source_sheets']=report['sheets'];report['sheets']=checks;report['compact']=state
+    source_by_file={s['file']:s for s in report['source_sheets']}
+    for check in checks:
+        source=source_by_file[check['file']]
+        if 'accent_iou' in source:check['accent_iou']=source['accent_iou']
+    report['bytes_after']=sum((SPR/r).stat().st_size for r in data['files'] if r.endswith('.png'))
+    REPORT.write_text(json.dumps(report,indent=1))
+    print('PASS compact',len(checks),'sheets',flush=True)
+
+
+def audit_compact():
+    """Check the delivered atlases directly against identically cropped 3D references."""
+    from PIL import Image
+    report=json.loads(REPORT.read_text());state=json.loads((WORK/'compact.json').read_text())
+    original=report.get('source_sheets',report['sheets']);lookup={r['file']:r for r in original}
+    saved_archive=cel.ARCHIVE;checks=[]
+    try:
+        cel.ARCHIVE=WORK/'cropped_reference'
+        for rel in lookup:
+            spec=state['sheets'].get(rel)
+            p=SPR/rel
+            nw,nh=spec['new_cell'] if spec else ((256,256) if p.stem=='portrait' else (128,64))
+            cel.ARCHIVE=WORK/'cropped_reference' if spec else saved_archive
+            with Image.open(p) as im:w,h=im.size
+            if spec:assert sha(p)==sha(WORK/'cropped_delivery'/rel),rel
+            result=cel.check_sheet(rel,cell=(nw,nh),frames=w//nw,rows=h//nh,normals=False)
+            assert not p.with_name(p.stem+'_n.png').exists()
+            result.update(size=[w,h],cell=[nw,nh],frames=w//nw,rows=h//nh,no_normal=True,crop=spec['box'] if spec else None)
+            if 'accent_iou' in lookup[rel]:result['accent_iou']=lookup[rel]['accent_iou']
+            checks.append(result)
+    finally:cel.ARCHIVE=saved_archive
+    report['source_sheets']=original;report['sheets']=checks
+    protected=baseline()
+    for rel,expected in protected['sources'].items():assert sha(ROOT/rel)==expected,rel
+    report['bytes_after']=sum((SPR/r).stat().st_size for r in protected['files'] if r.endswith('.png'))
+    report['raw_bytes_before']=sum(m['size'][0]*m['size'][1]*4 for r,m in protected['files'].items() if r.endswith('.png'))
+    report['raw_bytes_after']=sum(Image.open(SPR/r).width*Image.open(SPR/r).height*4 for r in protected['files'] if r.endswith('.png'))
+    report['protected_unchanged']=all(sha(SPR/r)==state['resources'].get(r,m['sha']) for r,m in protected['files'].items() if not r.endswith('.png'))
+    report['budget_logs']={'before':'art/tools/night/_cel_heroes_c_budget_before.log','after':'art/tools/night/_cel_heroes_c_budget_after.log'}
+    report['limitations']=[state['display_constraint'],'Averse, Arpenteuse and player: resource leaks at exit; Arpenteuse: Animation plant_nw absent in emission overlay; texture_budget: global mobile budget exceeded. Forbidden .gd/.tscn and assets outside scope unchanged.']
+    REPORT.write_text(json.dumps(report,indent=1))
+    print('PASS delivered sheets',len(checks),'game checks',len(report.get('checks',[])),flush=True)
+
+
 def game_checks():
     import re,time
     logs=[]
@@ -206,20 +342,29 @@ def game_checks():
             run(name,[godot,'--headless','--path',str(ROOT/'game'),f'res://tests/{name}_test.tscn'],'RESULT: OK')
     report=json.loads(REPORT.read_text());report['checks']=logs
     protected=baseline()
-    report['protected_unchanged']=all(sha(SPR/r)==m['sha'] for r,m in protected['files'].items() if not r.endswith('.png'))
+    compact=WORK/'compact.json'
+    allowed=json.loads(compact.read_text())['resources'] if compact.exists() else {}
+    report['protected_unchanged']=all(sha(SPR/r)==allowed.get(r,m['sha']) for r,m in protected['files'].items() if not r.endswith('.png'))
     REPORT.write_text(json.dumps(report,indent=1))
     assert all(r['ok'] for r in logs) and len(logs)==7 and report['protected_unchanged'],'Game verification failed'
 
 def driver():
     baseline()
+    # Resume from the immutable pre-crop contracts, never from transformed regions.
+    for contract in (WORK/'contracts').rglob('*.tres'):
+        shutil.copy2(contract,SPR/contract.relative_to(WORK/'contracts'))
     if '--verify' not in sys.argv:
         with (HERE/'_cel_heroes_c_blender.log').open('w') as log:
             args=[cel.BLENDER,'--background','--python',str(Path(__file__).resolve()),'--','--render']
             if '--resume' in sys.argv:args.append('--resume')
             result=subprocess.run(args,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
         assert result.returncode==0 and 'PASS CEL-HEROES_C render' in (HERE/'_cel_heroes_c_blender.log').read_text(errors='replace'),'Blender failed; see _cel_heroes_c_blender.log'
+    # Publish validation uses the original atlas contract; compaction is reapplied below.
+    for backup in (WORK/'contracts').rglob('*.tres'):
+        shutil.copy2(backup,SPR/backup.relative_to(WORK/'contracts'))
     assert publish_verify(),'Verification failed; see _cel_heroes_c_verification.json'
+    compact_sheets()
     game_checks()
 
 if __name__=='__main__':
-    render() if '--render' in sys.argv else game_checks() if '--checks-only' in sys.argv else driver()
+    render() if '--render' in sys.argv else audit_compact() if '--audit' in sys.argv else game_checks() if '--checks-only' in sys.argv else driver()

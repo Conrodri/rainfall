@@ -1,0 +1,1875 @@
+{
+  "before": {
+    "n": 169,
+    "raw": 512416768,
+    "vram": 128104192,
+    "png": 39726734,
+    "mobile": 18419738
+  },
+  "subjects": {
+    "ox_herder": {
+      "idle_p1": {
+        "cell": [
+          264,
+          208
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          46,
+          94,
+          310,
+          302
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9948474526809206
+      },
+      "idle_p2": {
+        "cell": [
+          328,
+          240
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          14,
+          94,
+          342,
+          334
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.993744934954148
+      },
+      "idle_p3": {
+        "cell": [
+          328,
+          240
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          14,
+          94,
+          342,
+          334
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.994969623637871
+      },
+      "walk_p1": {
+        "cell": [
+          272,
+          216
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          42,
+          88,
+          314,
+          304
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9948416419562224
+      },
+      "walk_p2": {
+        "cell": [
+          328,
+          246
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          14,
+          88,
+          342,
+          334
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9937775583917527
+      },
+      "walk_p3": {
+        "cell": [
+          328,
+          246
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          14,
+          88,
+          342,
+          334
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9950704471089709
+      },
+      "auto": {
+        "cell": [
+          282,
+          218
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          38,
+          90,
+          320,
+          308
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9950526188183467
+      },
+      "spell_a": {
+        "cell": [
+          306,
+          230
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          26,
+          76,
+          332,
+          306
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9948084117737499
+      },
+      "spell_b": {
+        "cell": [
+          272,
+          252
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          42,
+          74,
+          314,
+          326
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9949823952594036
+      },
+      "trans_p2": {
+        "cell": [
+          206,
+          200
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          76,
+          110,
+          282,
+          310
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9952555626331627
+      },
+      "trans_p3": {
+        "cell": [
+          218,
+          212
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          70,
+          118,
+          288,
+          330
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9953086282261882
+      },
+      "bogged": {
+        "cell": [
+          224,
+          202
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          66,
+          146,
+          290,
+          348
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9948771446135504
+      },
+      "death": {
+        "cell": [
+          216,
+          230
+        ],
+        "virtual": [
+          357,
+          357
+        ],
+        "box": [
+          76,
+          116,
+          292,
+          346
+        ],
+        "cols": 10,
+        "rows": 1,
+        "ratio": 1.3937777777777776,
+        "body": true,
+        "silhouette_iou": 0.9963134682799955
+      },
+      "furrow": {
+        "cell": [
+          520,
+          72
+        ],
+        "virtual": [
+          512,
+          64
+        ],
+        "box": [
+          -4,
+          -4,
+          516,
+          68
+        ],
+        "cols": 4,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "stomp_ring": {
+        "cell": [
+          260,
+          264
+        ],
+        "virtual": [
+          256,
+          256
+        ],
+        "box": [
+          -2,
+          -4,
+          258,
+          260
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "mud_wave_0": {
+        "cell": [
+          712,
+          100
+        ],
+        "virtual": [
+          704,
+          96
+        ],
+        "box": [
+          -4,
+          -2,
+          708,
+          98
+        ],
+        "cols": 5,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "mud_wave_1": {
+        "cell": [
+          712,
+          100
+        ],
+        "virtual": [
+          704,
+          96
+        ],
+        "box": [
+          -4,
+          -2,
+          708,
+          98
+        ],
+        "cols": 3,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "dust_burst": {
+        "cell": [
+          136,
+          88
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          -4,
+          12,
+          132,
+          100
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      }
+    },
+    "smelter": {
+      "idle_p1": {
+        "cell": [
+          240,
+          278
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          54,
+          18,
+          294,
+          296
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.998206513225865
+      },
+      "idle_p2": {
+        "cell": [
+          240,
+          278
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          54,
+          18,
+          294,
+          296
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9982781904710192
+      },
+      "idle_p3": {
+        "cell": [
+          240,
+          282
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          54,
+          14,
+          294,
+          296
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9978756005713544
+      },
+      "walk_p1": {
+        "cell": [
+          242,
+          282
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          52,
+          16,
+          294,
+          298
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9978901836625564
+      },
+      "walk_p2": {
+        "cell": [
+          242,
+          282
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          52,
+          16,
+          294,
+          298
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9979529872028768
+      },
+      "walk_p3": {
+        "cell": [
+          242,
+          288
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          52,
+          10,
+          294,
+          298
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9975505229067129
+      },
+      "auto": {
+        "cell": [
+          272,
+          280
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          38,
+          16,
+          310,
+          296
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9982759812112073
+      },
+      "spell_a": {
+        "cell": [
+          264,
+          314
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          42,
+          12,
+          306,
+          326
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9982319061533901
+      },
+      "spell_b": {
+        "cell": [
+          238,
+          300
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          54,
+          -4,
+          292,
+          296
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9979375163636169
+      },
+      "trans_p2": {
+        "cell": [
+          242,
+          276
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          52,
+          18,
+          294,
+          294
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9977085069312931
+      },
+      "trans_p3": {
+        "cell": [
+          242,
+          278
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          52,
+          16,
+          294,
+          294
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9969808342624839
+      },
+      "death": {
+        "cell": [
+          250,
+          274
+        ],
+        "virtual": [
+          347,
+          347
+        ],
+        "box": [
+          54,
+          20,
+          304,
+          294
+        ],
+        "cols": 10,
+        "rows": 1,
+        "ratio": 1.356108108108108,
+        "body": true,
+        "silhouette_iou": 0.9976607830662029
+      },
+      "molten_pool_1": {
+        "cell": [
+          776,
+          128
+        ],
+        "virtual": [
+          768,
+          128
+        ],
+        "box": [
+          -4,
+          0,
+          772,
+          128
+        ],
+        "cols": 5,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "molten_pool_2": {
+        "cell": [
+          776,
+          128
+        ],
+        "virtual": [
+          768,
+          128
+        ],
+        "box": [
+          -4,
+          0,
+          772,
+          128
+        ],
+        "cols": 1,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "splash": {
+        "cell": [
+          160,
+          152
+        ],
+        "virtual": [
+          192,
+          256
+        ],
+        "box": [
+          10,
+          90,
+          170,
+          242
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "molten_arc": {
+        "cell": [
+          128,
+          96
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          0,
+          18,
+          128,
+          114
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      }
+    },
+    "jar_bearer": {
+      "idle_p1": {
+        "cell": [
+          218,
+          274
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          48,
+          298,
+          322
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9976216604427866
+      },
+      "walk_p1": {
+        "cell": [
+          218,
+          278
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          48,
+          298,
+          326
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9975004023497224
+      },
+      "idle_p2": {
+        "cell": [
+          218,
+          274
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          48,
+          298,
+          322
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9976351292505704
+      },
+      "walk_p2": {
+        "cell": [
+          218,
+          278
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          48,
+          298,
+          326
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9975115345503411
+      },
+      "idle_p3": {
+        "cell": [
+          286,
+          274
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          46,
+          12,
+          332,
+          286
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.996256763572698
+      },
+      "walk_p3": {
+        "cell": [
+          286,
+          274
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          46,
+          12,
+          332,
+          286
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9963543410181699
+      },
+      "auto": {
+        "cell": [
+          218,
+          274
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          48,
+          298,
+          322
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9976959296542288
+      },
+      "spell_a": {
+        "cell": [
+          218,
+          320
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          2,
+          298,
+          322
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.99733124922376
+      },
+      "spell_b": {
+        "cell": [
+          270,
+          314
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          54,
+          48,
+          324,
+          362
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.997261966888119
+      },
+      "trans_p2": {
+        "cell": [
+          216,
+          258
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          80,
+          64,
+          296,
+          322
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9973113010418246
+      },
+      "trans_p3": {
+        "cell": [
+          374,
+          262
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          -2,
+          24,
+          372,
+          286
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9956703694135882
+      },
+      "death": {
+        "cell": [
+          340,
+          292
+        ],
+        "virtual": [
+          378,
+          378
+        ],
+        "box": [
+          2,
+          66,
+          342,
+          358
+        ],
+        "cols": 10,
+        "rows": 1,
+        "ratio": 1.4757647058823526,
+        "body": true,
+        "silhouette_iou": 0.9972564091491414
+      },
+      "jar": {
+        "cell": [
+          68,
+          70
+        ],
+        "virtual": [
+          64,
+          64
+        ],
+        "box": [
+          -2,
+          -2,
+          66,
+          68
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "jar_shatter": {
+        "cell": [
+          102,
+          84
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          12,
+          18,
+          114,
+          102
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "mother_jar": {
+        "cell": [
+          80,
+          78
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          24,
+          38,
+          104,
+          116
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "puddle": {
+        "cell": [
+          120,
+          88
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          4,
+          22,
+          124,
+          110
+        ],
+        "cols": 4,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      }
+    },
+    "hermit_cedar": {
+      "idle_p1": {
+        "cell": [
+          160,
+          266
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          10,
+          236,
+          276
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9947462954647508
+      },
+      "idle_p2": {
+        "cell": [
+          160,
+          262
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          18,
+          236,
+          280
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9940875571021381
+      },
+      "idle_p3": {
+        "cell": [
+          184,
+          266
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          64,
+          10,
+          248,
+          276
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9941072724725898
+      },
+      "walk_p1": {
+        "cell": [
+          160,
+          272
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          4,
+          236,
+          276
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9946752935537982
+      },
+      "walk_p2": {
+        "cell": [
+          160,
+          262
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          18,
+          236,
+          280
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9941253162909414
+      },
+      "walk_p3": {
+        "cell": [
+          184,
+          270
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          64,
+          6,
+          248,
+          276
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9941090961084765
+      },
+      "auto": {
+        "cell": [
+          226,
+          254
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          72,
+          16,
+          298,
+          270
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9936250118347553
+      },
+      "spell_a": {
+        "cell": [
+          160,
+          260
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          16,
+          236,
+          276
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9936421653518055
+      },
+      "spell_b": {
+        "cell": [
+          160,
+          262
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          8,
+          236,
+          270
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9941942493878014
+      },
+      "trans_p2": {
+        "cell": [
+          160,
+          260
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          16,
+          236,
+          276
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9930533043115825
+      },
+      "trans_p3": {
+        "cell": [
+          160,
+          272
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          4,
+          236,
+          276
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9926843202576069
+      },
+      "death": {
+        "cell": [
+          160,
+          264
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          76,
+          16,
+          236,
+          280
+        ],
+        "cols": 10,
+        "rows": 1,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9923903442786842
+      },
+      "auto_dirs": {
+        "cell": [
+          226,
+          268
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          14,
+          8,
+          240,
+          276
+        ],
+        "cols": 6,
+        "rows": 3,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.994612323514982
+      },
+      "spell_a_dirs": {
+        "cell": [
+          182,
+          270
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          64,
+          10,
+          246,
+          280
+        ],
+        "cols": 8,
+        "rows": 3,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9946781592847763
+      },
+      "spell_b_dirs": {
+        "cell": [
+          176,
+          268
+        ],
+        "virtual": [
+          312,
+          312
+        ],
+        "box": [
+          68,
+          8,
+          244,
+          276
+        ],
+        "cols": 8,
+        "rows": 3,
+        "ratio": 1.2178640776699028,
+        "body": true,
+        "silhouette_iou": 0.9947944877846325
+      },
+      "root_spike": {
+        "cell": [
+          504,
+          58
+        ],
+        "virtual": [
+          512,
+          64
+        ],
+        "box": [
+          4,
+          6,
+          508,
+          64
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "spore_cloud": {
+        "cell": [
+          234,
+          234
+        ],
+        "virtual": [
+          256,
+          256
+        ],
+        "box": [
+          10,
+          12,
+          244,
+          246
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "stump": {
+        "cell": [
+          96,
+          90
+        ],
+        "virtual": [
+          96,
+          128
+        ],
+        "box": [
+          0,
+          38,
+          96,
+          128
+        ],
+        "cols": 4,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      }
+    },
+    "deep_eel": {
+      "idle_p1": {
+        "cell": [
+          272,
+          172
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          106,
+          300,
+          278
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9794313180810886
+      },
+      "idle_p2": {
+        "cell": [
+          272,
+          172
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          106,
+          300,
+          278
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9792563018437465
+      },
+      "idle_p3": {
+        "cell": [
+          272,
+          170
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          110,
+          300,
+          280
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9793269143483077
+      },
+      "walk_p1": {
+        "cell": [
+          272,
+          170
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          108,
+          300,
+          278
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.979118837265394
+      },
+      "walk_p2": {
+        "cell": [
+          272,
+          170
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          108,
+          300,
+          278
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9788001064207166
+      },
+      "walk_p3": {
+        "cell": [
+          272,
+          170
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          28,
+          110,
+          300,
+          280
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9803215404877605
+      },
+      "auto": {
+        "cell": [
+          298,
+          182
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          16,
+          98,
+          314,
+          280
+        ],
+        "cols": 6,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9798009119827763
+      },
+      "spell_a": {
+        "cell": [
+          278,
+          186
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          26,
+          92,
+          304,
+          278
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9774195436190853
+      },
+      "spell_b": {
+        "cell": [
+          270,
+          172
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          30,
+          108,
+          300,
+          280
+        ],
+        "cols": 8,
+        "rows": 4,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9703792890496226
+      },
+      "trans_p2": {
+        "cell": [
+          184,
+          182
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          72,
+          96,
+          256,
+          278
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9800579915971359
+      },
+      "trans_p3": {
+        "cell": [
+          104,
+          168
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          108,
+          110,
+          212,
+          278
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9873806792354813
+      },
+      "death": {
+        "cell": [
+          116,
+          158
+        ],
+        "virtual": [
+          329,
+          329
+        ],
+        "box": [
+          102,
+          120,
+          218,
+          278
+        ],
+        "cols": 10,
+        "rows": 1,
+        "ratio": 1.2865641025641024,
+        "body": true,
+        "silhouette_iou": 0.9841651928997184
+      },
+      "black_pool": {
+        "cell": [
+          904,
+          904
+        ],
+        "virtual": [
+          896,
+          896
+        ],
+        "box": [
+          -4,
+          -4,
+          900,
+          900
+        ],
+        "cols": 4,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "black_pool_2": {
+        "cell": [
+          904,
+          904
+        ],
+        "virtual": [
+          896,
+          896
+        ],
+        "box": [
+          -4,
+          -4,
+          900,
+          900
+        ],
+        "cols": 4,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "puddle": {
+        "cell": [
+          136,
+          136
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          -4,
+          -4,
+          132,
+          132
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "wake": {
+        "cell": [
+          120,
+          112
+        ],
+        "virtual": [
+          128,
+          128
+        ],
+        "box": [
+          2,
+          8,
+          122,
+          120
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "emerge_splash": {
+        "cell": [
+          168,
+          368
+        ],
+        "virtual": [
+          192,
+          384
+        ],
+        "box": [
+          12,
+          20,
+          180,
+          388
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "discharge_ring": {
+        "cell": [
+          260,
+          260
+        ],
+        "virtual": [
+          256,
+          256
+        ],
+        "box": [
+          -2,
+          -2,
+          258,
+          258
+        ],
+        "cols": 6,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      },
+      "whip": {
+        "cell": [
+          454,
+          74
+        ],
+        "virtual": [
+          448,
+          77
+        ],
+        "box": [
+          -4,
+          -2,
+          450,
+          72
+        ],
+        "cols": 8,
+        "rows": 1,
+        "ratio": 1,
+        "body": false,
+        "silhouette_iou": 1.0
+      }
+    }
+  },
+  "after": {
+    "n": 169,
+    "raw": 472034016,
+    "vram": 118008504,
+    "png": 62138117,
+    "mobile": 30623417
+  },
+  "verification": {
+    "sheets": 87,
+    "frames": 1542,
+    "min_iou": 0.9703792890496226,
+    "margin_px": 4,
+    "result": "PASS"
+  },
+  "tests": {
+    "sprites_test": "OK",
+    "texture_budget_test": "FAIL",
+    "ox_herder_boss_test": "OK",
+    "smelter_boss_test": "OK",
+    "jar_bearer_boss_test": "OK",
+    "hermit_cedar_boss_test": "OK",
+    "deep_eel_boss_test": "OK"
+  },
+  "limitations": [
+    "Extras with scales embedded in forbidden .gd retain their virtual dimensions and scale.",
+    "Native body resolution increases compressed mobile payload; global Android budget remains exceeded."
+  ]
+}

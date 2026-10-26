@@ -5,7 +5,14 @@
       "silhouette_iou": 0.9994990862236971,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 280677,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 75670,
+      "emission_peak": 0.4446909725666046,
       "size": [
         768,
         1536
@@ -18,7 +25,14 @@
       "silhouette_iou": 0.9995806557637166,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 289930,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 78186,
+      "emission_peak": 0.4046729505062103,
       "size": [
         768,
         1536
@@ -31,7 +45,14 @@
       "silhouette_iou": 0.9995895645798217,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 550146,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 148334,
+      "emission_peak": 0.4326588213443756,
       "size": [
         1536,
         1536
@@ -44,7 +65,14 @@
       "silhouette_iou": 0.9995630182330643,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 500865,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 135074,
+      "emission_peak": 0.43993568420410156,
       "size": [
         1536,
         1536
@@ -57,7 +85,14 @@
       "silhouette_iou": 0.9761055634807418,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 19116,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 6716,
+      "emission_peak": 0.922457218170166,
       "size": [
         768,
         1536
@@ -70,10 +105,57 @@
       "silhouette_iou": 0.9858067729083665,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 26968,
+      "emission_size": [
+        1536,
+        256
+      ],
+      "alpha_emission_nonzero": 11477,
+      "emission_peak": 0.8694242835044861,
       "size": [
         3072,
         512
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/coin_pickup/coin_pickup.png",
+      "silhouette_iou": 0.9948939512961509,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 3439,
+      "emission_size": [
+        192,
+        24
+      ],
+      "alpha_emission_nonzero": 1320,
+      "emission_peak": 0.8517466187477112,
+      "size": [
+        384,
+        48
+      ],
+      "normal_absent": true,
+      "cells": "PASS"
+    },
+    {
+      "file": "characters/avare/effects/coin_projectile/coin_projectile.png",
+      "silhouette_iou": 0.9886956521739131,
+      "e_half": true,
+      "accent_iou": 1.0,
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 1643,
+      "emission_size": [
+        96,
+        24
+      ],
+      "alpha_emission_nonzero": 660,
+      "emission_peak": 0.896906852722168,
+      "size": [
+        192,
+        48
       ],
       "normal_absent": true,
       "cells": "PASS"
@@ -83,7 +165,14 @@
       "silhouette_iou": 0.9907329401853412,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 5483,
+      "emission_size": [
+        576,
+        96
+      ],
+      "alpha_emission_nonzero": 2252,
+      "emission_peak": 0.854557991027832,
       "size": [
         1152,
         192
@@ -96,7 +185,14 @@
       "silhouette_iou": 0.9900036256280106,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 29478,
+      "emission_size": [
+        512,
+        128
+      ],
+      "alpha_emission_nonzero": 11532,
+      "emission_peak": 0.9600776433944702,
       "size": [
         1024,
         256
@@ -109,7 +205,14 @@
       "silhouette_iou": 0.9995933677133965,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 574857,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 154764,
+      "emission_peak": 0.4046729505062103,
       "size": [
         1536,
         1536
@@ -120,6 +223,7 @@
     {
       "file": "characters/avare/portrait.png",
       "silhouette_iou": 0.9998376676081946,
+      "alpha_diffuse_nonzero": 31736,
       "size": [
         256,
         256
@@ -132,7 +236,14 @@
       "silhouette_iou": 0.9995895280702547,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 583305,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 157420,
+      "emission_peak": 0.41306668519973755,
       "size": [
         1536,
         1536
@@ -145,7 +256,14 @@
       "silhouette_iou": 0.9996378154140187,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 392431,
+      "emission_size": [
+        576,
+        768
+      ],
+      "alpha_emission_nonzero": 105788,
+      "emission_peak": 0.44357410073280334,
       "size": [
         1152,
         1536
@@ -158,7 +276,14 @@
       "silhouette_iou": 0.9994990862236971,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 280677,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 75670,
+      "emission_peak": 0.4446909725666046,
       "size": [
         768,
         1536
@@ -171,7 +296,14 @@
       "silhouette_iou": 0.9995806557637166,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 289930,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 78186,
+      "emission_peak": 0.4046729505062103,
       "size": [
         768,
         1536
@@ -184,7 +316,14 @@
       "silhouette_iou": 0.9995895645798217,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 550146,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 148334,
+      "emission_peak": 0.4326588213443756,
       "size": [
         1536,
         1536
@@ -197,7 +336,14 @@
       "silhouette_iou": 0.9973916171973376,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 154347,
+      "emission_size": [
+        576,
+        768
+      ],
+      "alpha_emission_nonzero": 46866,
+      "emission_peak": 0.7075427174568176,
       "size": [
         1152,
         1536
@@ -210,7 +356,14 @@
       "silhouette_iou": 0.9973490663715234,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 151844,
+      "emission_size": [
+        576,
+        768
+      ],
+      "alpha_emission_nonzero": 45560,
+      "emission_peak": 0.6669067144393921,
       "size": [
         1152,
         1536
@@ -223,7 +376,14 @@
       "silhouette_iou": 0.9970898708287005,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 100646,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 30725,
+      "emission_peak": 0.6559757590293884,
       "size": [
         768,
         1536
@@ -236,7 +396,14 @@
       "silhouette_iou": 0.997208135520069,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 102947,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 31240,
+      "emission_peak": 0.6789544820785522,
       "size": [
         768,
         1536
@@ -249,7 +416,14 @@
       "silhouette_iou": 0.9973490663715234,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 151844,
+      "emission_size": [
+        576,
+        768
+      ],
+      "alpha_emission_nonzero": 45560,
+      "emission_peak": 0.6669067144393921,
       "size": [
         1152,
         1536
@@ -262,7 +436,14 @@
       "silhouette_iou": 0.997542789357736,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 47608,
+      "emission_size": [
+        192,
+        768
+      ],
+      "alpha_emission_nonzero": 14197,
+      "emission_peak": 0.6669067144393921,
       "size": [
         384,
         1536
@@ -275,7 +456,14 @@
       "silhouette_iou": 0.9972648352955167,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 186814,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 56442,
+      "emission_peak": 0.6856808066368103,
       "size": [
         1536,
         1536
@@ -288,7 +476,14 @@
       "silhouette_iou": 0.9976006546190865,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 98614,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 29706,
+      "emission_peak": 0.6789544820785522,
       "size": [
         768,
         1536
@@ -301,7 +496,14 @@
       "silhouette_iou": 0.9997886465922371,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 490362,
+      "emission_size": [
+        1056,
+        176
+      ],
+      "alpha_emission_nonzero": 126102,
+      "emission_peak": 0.48141494393348694,
       "size": [
         2112,
         352
@@ -314,7 +516,14 @@
       "silhouette_iou": 0.9928918817807707,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 3431,
+      "emission_size": [
+        256,
+        64
+      ],
+      "alpha_emission_nonzero": 1221,
+      "emission_peak": 0.5562282800674438,
       "size": [
         512,
         128
@@ -327,7 +536,14 @@
       "silhouette_iou": 0.9968717413972888,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 51047,
+      "emission_size": [
+        768,
+        192
+      ],
+      "alpha_emission_nonzero": 16241,
+      "emission_peak": 0.49317964911460876,
       "size": [
         1536,
         384
@@ -340,7 +556,14 @@
       "silhouette_iou": 0.9926826856521309,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 12864,
+      "emission_size": [
+        1024,
+        256
+      ],
+      "alpha_emission_nonzero": 4470,
+      "emission_peak": 0.4147278666496277,
       "size": [
         2048,
         512
@@ -353,7 +576,14 @@
       "silhouette_iou": 0.9974417069801936,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 204096,
+      "emission_size": [
+        768,
+        768
+      ],
+      "alpha_emission_nonzero": 61974,
+      "emission_peak": 0.6853976249694824,
       "size": [
         1536,
         1536
@@ -366,7 +596,14 @@
       "silhouette_iou": 0.9975816034109177,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 98279,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 29766,
+      "emission_peak": 0.6817591786384583,
       "size": [
         768,
         1536
@@ -379,7 +616,14 @@
       "silhouette_iou": 0.9976913547805849,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 71911,
+      "emission_size": [
+        288,
+        768
+      ],
+      "alpha_emission_nonzero": 21537,
+      "emission_peak": 0.6711114048957825,
       "size": [
         576,
         1536
@@ -392,7 +636,14 @@
       "silhouette_iou": 0.9975178434274368,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 146370,
+      "emission_size": [
+        576,
+        768
+      ],
+      "alpha_emission_nonzero": 44369,
+      "emission_peak": 0.6817591786384583,
       "size": [
         1152,
         1536
@@ -405,7 +656,14 @@
       "silhouette_iou": 0.9995494593512214,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 22063,
+      "emission_size": [
+        128,
+        128
+      ],
+      "alpha_emission_nonzero": 5944,
+      "emission_peak": 0.6414062976837158,
       "size": [
         256,
         256
@@ -418,7 +676,14 @@
       "silhouette_iou": 0.9975534398635518,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 98110,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 29711,
+      "emission_peak": 0.6747498512268066,
       "size": [
         768,
         1536
@@ -431,7 +696,14 @@
       "silhouette_iou": 0.997208135520069,
       "e_half": true,
       "accent_iou": 1.0,
-      "emission": "archived radiance and alpha retained",
+      "emission": "archived mask, shared peak half-resolution filter if full-size",
+      "alpha_diffuse_nonzero": 102947,
+      "emission_size": [
+        384,
+        768
+      ],
+      "alpha_emission_nonzero": 31240,
+      "emission_peak": 0.6789544820785522,
       "size": [
         768,
         1536
@@ -440,61 +712,106 @@
       "cells": "PASS"
     }
   ],
-  "errors": [
-    "('characters/avare/effects/coin_pickup/coin_pickup.png', 'alpha _e')",
-    "('characters/avare/effects/coin_projectile/coin_projectile.png', 'alpha _e')",
-    "protected changed ['game\\\\tests\\\\ardent_variants_bench.gd', 'game\\\\scripts\\\\spells\\\\arpenteuse_kit.gd', 'game\\\\scripts\\\\spells\\\\avare_bounce_coin.gd', 'game\\\\scripts\\\\spells\\\\avare_kit.gd', 'game\\\\scripts\\\\spells\\\\averse_kit.gd', 'game\\\\scripts\\\\spells\\\\morfil_kit.gd', 'game\\\\scripts\\\\spells\\\\rictus_kit.gd', 'game\\\\scripts\\\\spells\\\\spell_caster.gd', 'game\\\\scripts\\\\spells\\\\tocsin_kit.gd', 'game\\\\scripts\\\\spells\\\\vigie_flare.gd', 'game\\\\scripts\\\\spells\\\\vigie_kit.gd']"
+  "errors": [],
+  "external_code_changes_since_original_state": [
+    "game\\tests\\ardent_variants_bench.gd",
+    "game\\tests\\arpenteuse_test.gd",
+    "game\\tests\\hud_overlays_test.gd",
+    "game\\tests\\menu_wave3_test.gd",
+    "game\\tests\\morfil_test.gd",
+    "game\\tests\\new_run_layout_test.gd",
+    "game\\tests\\new_run_test.gd",
+    "game\\tests\\variants_test.gd",
+    "game\\scripts\\fx\\rainette_breath_pips.gd",
+    "game\\scripts\\menu\\character_card.gd",
+    "game\\scripts\\menu\\character_sheet.gd",
+    "game\\scripts\\menu\\new_run_screen.gd",
+    "game\\scripts\\menu\\progress_screen.gd",
+    "game\\scripts\\spells\\ardent_kit.gd",
+    "game\\scripts\\spells\\arpenteuse_kit.gd",
+    "game\\scripts\\spells\\avare_bounce_coin.gd",
+    "game\\scripts\\spells\\avare_kit.gd",
+    "game\\scripts\\spells\\averse_geyser_fx.gd",
+    "game\\scripts\\spells\\averse_kit.gd",
+    "game\\scripts\\spells\\averse_rivulet.gd",
+    "game\\scripts\\spells\\bourbe_kit.gd",
+    "game\\scripts\\spells\\bourbe_motte.gd",
+    "game\\scripts\\spells\\character_data.gd",
+    "game\\scripts\\spells\\kit_resource.gd",
+    "game\\scripts\\spells\\morfil_kit.gd",
+    "game\\scripts\\spells\\rainette_kit.gd",
+    "game\\scripts\\spells\\rictus_kit.gd",
+    "game\\scripts\\spells\\spell_caster.gd",
+    "game\\scripts\\spells\\tocsin_kit.gd",
+    "game\\scripts\\spells\\tocsin_limb.gd",
+    "game\\scripts\\spells\\vigie_flare.gd",
+    "game\\scripts\\spells\\vigie_kit.gd",
+    "game\\scripts\\ui\\end_run_screen.gd",
+    "game\\scripts\\ui\\hud.gd",
+    "game\\scripts\\ui\\item_bar.gd",
+    "game\\scripts\\ui\\spell_hint.gd"
   ],
   "profiles": [
     "creature",
     "prop",
     "vfx"
   ],
-  "choices": "Original models, animation, cameras, materials as tint sources. Shared night shadow floor. Archived half-resolution emission retained verbatim for exact accent/radiance/alpha. Ring light uses vfx; physical effects prop. No source saves or normal maps.",
+  "choices": "Original models, animation, cameras, materials as tint sources. Shared night shadow floor. Archived emission retained, full-size masks reduced with shared peak filter. External code differences observed before this continuation are listed separately; no code writes. Ring light uses vfx; physical effects prop. No source saves or normal maps.",
   "bytes_before": 16169201,
-  "bytes_after": 12713328,
+  "bytes_after": 12709230,
   "runtime_checks": [
     {
       "name": "texture_budget",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "import",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "sprites_test",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "avare_test",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "rainette_test",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "player_test",
       "pass": true,
       "exit_code": 0,
-      "errors": []
+      "errors": [],
+      "failures": []
     },
     {
       "name": "texture_budget_test",
       "pass": false,
       "exit_code": 1,
-      "errors": []
+      "errors": [],
+      "failures": [
+        "FAIL textures embarqu\u00e9es sur mobile (ASTC deflat\u00e9) : 182 Mo <= 180 Mo",
+        "RESULT: FAIL (1)"
+      ]
     }
-  ]
+  ],
+  "contact_visual_review": "PASS: single final board reviewed, original left/cel right, real ground, shared CS1 reference."
 }

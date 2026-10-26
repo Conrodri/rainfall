@@ -1,0 +1,7085 @@
+{
+  "checks": [
+    {
+      "file": "characters/tocsin/arm_clamp.png",
+      "silhouette_iou": 0.9970113983875452,
+      "e_half": true,
+      "size": [
+        156,
+        672
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/arm_fly.png",
+      "silhouette_iou": 0.9973587189787047,
+      "e_half": true,
+      "size": [
+        360,
+        528
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/arm_ground.png",
+      "silhouette_iou": 0.9969445656918376,
+      "e_half": true,
+      "size": [
+        90,
+        496
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        192,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 3
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        864,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 4
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        816,
+        1152
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        972,
+        1200
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/crawl_r.png",
+      "silhouette_iou": 0.9999940157027959,
+      "e_half": true,
+      "size": [
+        948,
+        1200
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        1232
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/fall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        456,
+        1344
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/handwalk.png",
+      "silhouette_iou": 0.9999920952678321,
+      "e_half": true,
+      "size": [
+        1056,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/head_blast.png",
+      "silhouette_iou": 0.9839762611275964,
+      "e_half": true,
+      "size": [
+        1200,
+        98
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        192
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/head_blast_top.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        3096,
+        3096
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 1,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 1,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/head_fly.png",
+      "silhouette_iou": 0.9989225796521471,
+      "e_half": true,
+      "size": [
+        336,
+        512
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/hop_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        780,
+        1232
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/hop_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        816,
+        1216
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/leg_fly.png",
+      "silhouette_iou": 0.998507223969718,
+      "e_half": true,
+      "size": [
+        256,
+        512
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/leg_ground.png",
+      "silhouette_iou": 0.9987376393856512,
+      "e_half": true,
+      "size": [
+        64,
+        512
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        192,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/neck_steam.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/portrait.png",
+      "silhouette_iou": 0.9997829861111112,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/portrait_headless.png",
+      "silhouette_iou": 0.9996899011129105,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/regen_rivets.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        624,
+        70
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        192
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/roll.png",
+      "silhouette_iou": 0.9999951997158232,
+      "e_half": true,
+      "size": [
+        1536,
+        1088
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        544,
+        1120
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        576,
+        1120
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/throw_head.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        544,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        528,
+        1168
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/walk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        1152
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/head_ring/head_ring.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        3096,
+        2064
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/rivet/rivet.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "size": [
+        192,
+        28
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        224,
+        56
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        720,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 6
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        864,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 6
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        672,
+        848
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 21
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 9
+      },
+      "static_pose_duplicates": {
+        "count": 21,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        720,
+        1120
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        1216
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/handwalk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1056,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 19
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 10
+      },
+      "static_pose_duplicates": {
+        "count": 19,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        780,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        744,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        960,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 22
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        544,
+        864
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        480,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        720,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        544,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        480,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        992,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 15
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 12
+      },
+      "static_pose_duplicates": {
+        "count": 15,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        816,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/crawl_r.png",
+      "silhouette_iou": 0.9999647539827999,
+      "size": [
+        648,
+        848
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 17
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 5
+      },
+      "static_pose_duplicates": {
+        "count": 17,
+        "min_archive_iou": 0.9982817869415808
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        1184
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/handwalk.png",
+      "silhouette_iou": 0.9999222132911556,
+      "size": [
+        1024,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 19
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 9
+      },
+      "static_pose_duplicates": {
+        "count": 19,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        744,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        816,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 18
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        576,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        880
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        528,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        896
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 19
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 12
+      },
+      "static_pose_duplicates": {
+        "count": 19,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        312,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 4
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        312,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 6
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        312,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 24,
+        "duplicates": 16
+      },
+      "archive_cells": {
+        "empty": 24,
+        "duplicates": 16
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        948,
+        928
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 20
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 20,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        948,
+        928
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 17
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 9
+      },
+      "static_pose_duplicates": {
+        "count": 17,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        480,
+        1072
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/fall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        456,
+        1040
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/handwalk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        832,
+        672
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 27
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 13
+      },
+      "static_pose_duplicates": {
+        "count": 27,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/hop_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        420,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/hop_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        420,
+        592
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        416,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/roll.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1104,
+        1024
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        208,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        208,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/throw_head.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        312,
+        480
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 24,
+        "duplicates": 16
+      },
+      "archive_cells": {
+        "empty": 24,
+        "duplicates": 16
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        280,
+        496
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        280,
+        528
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/walk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        416,
+        464
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 31
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 15
+      },
+      "static_pose_duplicates": {
+        "count": 31,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        504,
+        736
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        240,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        480,
+        656
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        544,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 23
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        304,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        704,
+        672
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 20
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 14
+      },
+      "static_pose_duplicates": {
+        "count": 20,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        624
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        528,
+        736
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        240,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        480,
+        656
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        544,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 21
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        272,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        304,
+        608
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 16,
+        "duplicates": 8
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        704,
+        672
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 22
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 14
+      },
+      "static_pose_duplicates": {
+        "count": 22,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        336
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        852,
+        736
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 23
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 23
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        840,
+        736
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 19
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        144,
+        544
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        408,
+        832
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/handwalk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        624,
+        496
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 40
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 40
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        288,
+        464
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        288,
+        448
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/neck_steam.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/roll.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        880,
+        816
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        96,
+        320
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        96,
+        320
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        168,
+        304
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        176,
+        336
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        176,
+        352
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        320
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 40
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 40
+      },
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        672,
+        720
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        504,
+        720
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        504,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/crawl_l.png",
+      "silhouette_iou": 0.9999927784277193,
+      "e_half": true,
+      "size": [
+        972,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        936,
+        976
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        540,
+        912
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/fall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        432,
+        1136
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        576,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/handwalk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        928,
+        800
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/hop_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        588,
+        816
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/hop_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        588,
+        816
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        672,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 24
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 21
+      },
+      "static_pose_duplicates": {
+        "count": 24,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/roll.png",
+      "silhouette_iou": 0.9999839030750493,
+      "e_half": true,
+      "size": [
+        1536,
+        1040
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        352,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        352,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/throw_head.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        528,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 8
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 7
+      },
+      "static_pose_duplicates": {
+        "count": 8,
+        "min_archive_iou": 1.0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1152,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        392,
+        736
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        392,
+        720
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        768,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/walk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        704,
+        704
+      ],
+      "normal_absent": true,
+      "cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "archive_cells": {
+        "empty": 0,
+        "duplicates": 0
+      },
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution",
+      "logical_size": [
+        1536,
+        1536
+      ],
+      "lossless_storage_crop": true
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        239
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        237
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        239
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/crawl_l.png",
+      "silhouette_iou": 0.9999927784277193,
+      "e_half": true,
+      "size": [
+        768,
+        396
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        256,
+        1228
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        256,
+        1223
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        256,
+        625
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/handwalk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        393
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        396
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        768,
+        391
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        384,
+        701
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/roll.png",
+      "silhouette_iou": 0.9999839030750493,
+      "e_half": true,
+      "size": [
+        1024,
+        432
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        392
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        393
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1536,
+        160
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        392
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        394
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/torso/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        781
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        134
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        134
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        134
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        126
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        229
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        116
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        167
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/handwalk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        104
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        37
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        36
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        171
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/neck_steam.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        133
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/roll.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        281
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        195
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        195
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        134
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        194
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        193
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/neck_steam/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        37
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        540
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        121
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        183
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        533
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        384,
+        168
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        954
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        837
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        302
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        302
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        183
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        301
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        302
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_r/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        240
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        121
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        121
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        121
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        511
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        529
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        954
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        539
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        301
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        301
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        183
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        302
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        301
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/leg_l/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        122
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        1024,
+        97
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        192
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        286
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        183
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/crawl_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        512,
+        187
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/death.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        551
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        282
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/handwalk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        608
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        568
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        572
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        758
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/roll.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        746
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        379
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        379
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        286
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        378
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        378
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/head/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        192,
+        614
+      ],
+      "normal_absent": true,
+      "accent_iou": 1.0,
+      "emission": "archive exact, half resolution"
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        625
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        689
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        493
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/crawl_r.png",
+      "silhouette_iou": 0.9999618568104665,
+      "size": [
+        512,
+        276
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        591
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        288
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/handwalk.png",
+      "silhouette_iou": 0.9999395898148428,
+      "size": [
+        192,
+        842
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        713
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        330
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        384,
+        354
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        551
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        276
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        489
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        550
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        411
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_r/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        896
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/attack.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        691
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/cast.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        384,
+        346
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/cast_ult.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        692
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/crawl_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        384,
+        342
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/death.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        384,
+        402
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/fall.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        286
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/handwalk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        630
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/hop_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        644
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/hop_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        710
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/idle.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        694
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/throw_arm_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        276
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/throw_arm_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        553
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/throw_head.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        128,
+        1041
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/throw_leg_l.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        541
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/throw_leg_r.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        192,
+        550
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "characters/tocsin/layers/arm_l/packed/walk.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        768,
+        217
+      ],
+      "normal_absent": true
+    }
+  ],
+  "errors": [],
+  "external_changes": [
+    "game/tests/ardent_variants_bench.gd",
+    "game/tests/arpenteuse_test.gd",
+    "game/tests/ground_marker_test.gd",
+    "game/tests/hud_overlays_test.gd",
+    "game/tests/menu_wave3_test.gd",
+    "game/tests/morfil_test.gd",
+    "game/tests/new_run_layout_test.gd",
+    "game/tests/new_run_test.gd",
+    "game/tests/tocsin_test.gd",
+    "game/tests/variants_test.gd",
+    "game/scripts/fx/rainette_breath_pips.gd",
+    "game/scripts/menu/character_card.gd",
+    "game/scripts/menu/character_sheet.gd",
+    "game/scripts/menu/new_run_screen.gd",
+    "game/scripts/menu/progress_screen.gd",
+    "game/scripts/menu/spell_tooltip.gd",
+    "game/scripts/spells/ardent_kit.gd",
+    "game/scripts/spells/arpenteuse_kit.gd",
+    "game/scripts/spells/avare_bounce_coin.gd",
+    "game/scripts/spells/avare_kit.gd",
+    "game/scripts/spells/averse_geyser_fx.gd",
+    "game/scripts/spells/averse_kit.gd",
+    "game/scripts/spells/averse_rivulet.gd",
+    "game/scripts/spells/bourbe_kit.gd",
+    "game/scripts/spells/bourbe_motte.gd",
+    "game/scripts/spells/character_data.gd",
+    "game/scripts/spells/kit_resource.gd",
+    "game/scripts/spells/morfil_kit.gd",
+    "game/scripts/spells/rainette_kit.gd",
+    "game/scripts/spells/rictus_kit.gd",
+    "game/scripts/spells/spell_caster.gd",
+    "game/scripts/spells/tocsin_kit.gd",
+    "game/scripts/spells/tocsin_limb.gd",
+    "game/scripts/spells/vigie_flare.gd",
+    "game/scripts/spells/vigie_kit.gd",
+    "game/scripts/ui/end_run_screen.gd",
+    "game/scripts/ui/hud.gd",
+    "game/scripts/ui/item_bar.gd",
+    "game/scripts/ui/spell_hint.gd"
+  ],
+  "profiles": [
+    "creature",
+    "prop"
+  ],
+  "choices": "Shared night shadow floor; native scale, camera, rig and poses unchanged. Original approved emission masks retained exactly. Original T5 layout retained. Intentional missing limbs / static frames compared with archive.",
+  "bytes_before": 41531153,
+  "bytes_after": 41372928,
+  "storage_crops": {
+    "active": true,
+    "sheets": {
+      "arm_clamp.png": {
+        "cell": 192,
+        "box": [
+          70,
+          76,
+          122,
+          160
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "arm_fly.png": {
+        "cell": 192,
+        "box": [
+          50,
+          80,
+          140,
+          146
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "arm_ground.png": {
+        "cell": 192,
+        "box": [
+          50,
+          96,
+          140,
+          158
+        ],
+        "grid": [
+          1,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "attack.png": {
+        "cell": 192,
+        "box": [
+          32,
+          14,
+          160,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "cast.png": {
+        "cell": 192,
+        "box": [
+          24,
+          14,
+          168,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "cast_ult.png": {
+        "cell": 192,
+        "box": [
+          28,
+          14,
+          164,
+          158
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "crawl_l.png": {
+        "cell": 192,
+        "box": [
+          16,
+          36,
+          178,
+          186
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "crawl_r.png": {
+        "cell": 192,
+        "box": [
+          16,
+          36,
+          174,
+          186
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "death.png": {
+        "cell": 192,
+        "box": [
+          32,
+          16,
+          160,
+          170
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "fall.png": {
+        "cell": 192,
+        "box": [
+          20,
+          16,
+          172,
+          184
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "handwalk.png": {
+        "cell": 192,
+        "box": [
+          30,
+          36,
+          162,
+          178
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "head_blast.png": {
+        "cell": 192,
+        "box": [
+          26,
+          54,
+          176,
+          152
+        ],
+        "grid": [
+          8,
+          1
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "head_fly.png": {
+        "cell": 192,
+        "box": [
+          68,
+          68,
+          124,
+          132
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "hop_l.png": {
+        "cell": 192,
+        "box": [
+          32,
+          0,
+          162,
+          154
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "hop_r.png": {
+        "cell": 192,
+        "box": [
+          28,
+          2,
+          164,
+          154
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "idle.png": {
+        "cell": 192,
+        "box": [
+          32,
+          14,
+          160,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "leg_fly.png": {
+        "cell": 192,
+        "box": [
+          64,
+          76,
+          128,
+          140
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "leg_ground.png": {
+        "cell": 192,
+        "box": [
+          64,
+          90,
+          128,
+          154
+        ],
+        "grid": [
+          1,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "neck_steam.png": {
+        "cell": 192,
+        "box": [
+          82,
+          26,
+          110,
+          64
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "regen_rivets.png": {
+        "cell": 192,
+        "box": [
+          46,
+          60,
+          150,
+          130
+        ],
+        "grid": [
+          6,
+          1
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "roll.png": {
+        "cell": 192,
+        "box": [
+          0,
+          26,
+          192,
+          162
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          28,
+          16,
+          164,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          24,
+          16,
+          168,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "throw_head.png": {
+        "cell": 192,
+        "box": [
+          32,
+          14,
+          160,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          28,
+          14,
+          164,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          30,
+          10,
+          162,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "walk.png": {
+        "cell": 192,
+        "box": [
+          32,
+          12,
+          160,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "rivet/rivet.png": {
+        "cell": 56,
+        "box": [
+          4,
+          14,
+          52,
+          42
+        ],
+        "grid": [
+          4,
+          1
+        ],
+        "passes": {
+          "": 1,
+          "_e": 1
+        }
+      },
+      "layers/arm_l/attack.png": {
+        "cell": 192,
+        "box": [
+          36,
+          30,
+          156,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/cast.png": {
+        "cell": 192,
+        "box": [
+          24,
+          30,
+          168,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          32,
+          30,
+          160,
+          140
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/crawl_l.png": {
+        "cell": 192,
+        "box": [
+          40,
+          68,
+          152,
+          174
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/death.png": {
+        "cell": 192,
+        "box": [
+          36,
+          30,
+          156,
+          170
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/fall.png": {
+        "cell": 192,
+        "box": [
+          28,
+          32,
+          164,
+          184
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/handwalk.png": {
+        "cell": 192,
+        "box": [
+          30,
+          56,
+          162,
+          178
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/hop_l.png": {
+        "cell": 192,
+        "box": [
+          32,
+          24,
+          162,
+          134
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/hop_r.png": {
+        "cell": 192,
+        "box": [
+          34,
+          22,
+          158,
+          144
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/idle.png": {
+        "cell": 192,
+        "box": [
+          36,
+          32,
+          156,
+          142
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          28,
+          32,
+          164,
+          140
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          36,
+          32,
+          156,
+          142
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/throw_head.png": {
+        "cell": 192,
+        "box": [
+          36,
+          32,
+          156,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          28,
+          32,
+          164,
+          144
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          36,
+          32,
+          156,
+          142
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_l/walk.png": {
+        "cell": 192,
+        "box": [
+          34,
+          30,
+          158,
+          140
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/attack.png": {
+        "cell": 192,
+        "box": [
+          32,
+          30,
+          160,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/cast.png": {
+        "cell": 192,
+        "box": [
+          32,
+          30,
+          160,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          28,
+          30,
+          164,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/crawl_r.png": {
+        "cell": 192,
+        "box": [
+          42,
+          68,
+          150,
+          174
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/death.png": {
+        "cell": 192,
+        "box": [
+          32,
+          28,
+          160,
+          170
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/fall.png": {
+        "cell": 192,
+        "box": [
+          28,
+          32,
+          164,
+          180
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/handwalk.png": {
+        "cell": 192,
+        "box": [
+          32,
+          56,
+          160,
+          178
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/hop_l.png": {
+        "cell": 192,
+        "box": [
+          34,
+          22,
+          158,
+          144
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/hop_r.png": {
+        "cell": 192,
+        "box": [
+          28,
+          24,
+          164,
+          134
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/idle.png": {
+        "cell": 192,
+        "box": [
+          32,
+          32,
+          160,
+          142
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          32,
+          32,
+          160,
+          142
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          24,
+          32,
+          168,
+          142
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/throw_head.png": {
+        "cell": 192,
+        "box": [
+          32,
+          32,
+          160,
+          142
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          32,
+          32,
+          160,
+          142
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          30,
+          32,
+          162,
+          144
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/arm_r/walk.png": {
+        "cell": 192,
+        "box": [
+          32,
+          30,
+          160,
+          142
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/head/attack.png": {
+        "cell": 192,
+        "box": [
+          70,
+          14,
+          122,
+          70
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/cast.png": {
+        "cell": 192,
+        "box": [
+          70,
+          14,
+          122,
+          70
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          70,
+          14,
+          122,
+          70
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/crawl_l.png": {
+        "cell": 192,
+        "box": [
+          18,
+          36,
+          176,
+          152
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/crawl_r.png": {
+        "cell": 192,
+        "box": [
+          16,
+          36,
+          174,
+          152
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/death.png": {
+        "cell": 192,
+        "box": [
+          56,
+          16,
+          136,
+          150
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/fall.png": {
+        "cell": 192,
+        "box": [
+          20,
+          16,
+          172,
+          146
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/handwalk.png": {
+        "cell": 192,
+        "box": [
+          44,
+          36,
+          148,
+          120
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/hop_l.png": {
+        "cell": 192,
+        "box": [
+          62,
+          0,
+          132,
+          76
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/hop_r.png": {
+        "cell": 192,
+        "box": [
+          60,
+          2,
+          130,
+          76
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/idle.png": {
+        "cell": 192,
+        "box": [
+          70,
+          14,
+          122,
+          70
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/roll.png": {
+        "cell": 192,
+        "box": [
+          28,
+          34,
+          166,
+          162
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          70,
+          16,
+          122,
+          72
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          70,
+          16,
+          122,
+          72
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/throw_head.png": {
+        "cell": 192,
+        "box": [
+          70,
+          14,
+          122,
+          74
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          60,
+          14,
+          130,
+          76
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          62,
+          10,
+          132,
+          76
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/head/walk.png": {
+        "cell": 192,
+        "box": [
+          70,
+          12,
+          122,
+          70
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/leg_l/attack.png": {
+        "cell": 192,
+        "box": [
+          62,
+          78,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/cast.png": {
+        "cell": 192,
+        "box": [
+          62,
+          78,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          158
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/death.png": {
+        "cell": 192,
+        "box": [
+          54,
+          64,
+          138,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/fall.png": {
+        "cell": 192,
+        "box": [
+          56,
+          80,
+          136,
+          168
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/hop_l.png": {
+        "cell": 192,
+        "box": [
+          56,
+          72,
+          136,
+          154
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/idle.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/throw_head.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          58,
+          80,
+          134,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_l/walk.png": {
+        "cell": 192,
+        "box": [
+          52,
+          72,
+          140,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/attack.png": {
+        "cell": 192,
+        "box": [
+          62,
+          78,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/cast.png": {
+        "cell": 192,
+        "box": [
+          62,
+          78,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          158
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/death.png": {
+        "cell": 192,
+        "box": [
+          52,
+          64,
+          140,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/fall.png": {
+        "cell": 192,
+        "box": [
+          56,
+          80,
+          136,
+          168
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/hop_r.png": {
+        "cell": 192,
+        "box": [
+          56,
+          72,
+          136,
+          154
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/idle.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/throw_head.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          62,
+          80,
+          130,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          58,
+          80,
+          134,
+          156
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/leg_r/walk.png": {
+        "cell": 192,
+        "box": [
+          52,
+          72,
+          140,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/attack.png": {
+        "cell": 192,
+        "box": [
+          82,
+          26,
+          110,
+          64
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/cast.png": {
+        "cell": 192,
+        "box": [
+          82,
+          26,
+          110,
+          64
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          82,
+          24,
+          110,
+          66
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/crawl_l.png": {
+        "cell": 192,
+        "box": [
+          26,
+          46,
+          168,
+          138
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/crawl_r.png": {
+        "cell": 192,
+        "box": [
+          26,
+          48,
+          166,
+          140
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/death.png": {
+        "cell": 192,
+        "box": [
+          84,
+          26,
+          108,
+          94
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/fall.png": {
+        "cell": 192,
+        "box": [
+          28,
+          26,
+          164,
+          130
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/handwalk.png": {
+        "cell": 192,
+        "box": [
+          58,
+          46,
+          136,
+          108
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/hop_l.png": {
+        "cell": 192,
+        "box": [
+          72,
+          10,
+          120,
+          68
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/hop_r.png": {
+        "cell": 192,
+        "box": [
+          72,
+          12,
+          120,
+          68
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/idle.png": {
+        "cell": 192,
+        "box": [
+          84,
+          26,
+          108,
+          64
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/neck_steam.png": {
+        "cell": 192,
+        "box": [
+          82,
+          26,
+          110,
+          64
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/roll.png": {
+        "cell": 192,
+        "box": [
+          40,
+          48,
+          150,
+          150
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          84,
+          26,
+          108,
+          66
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          84,
+          26,
+          108,
+          66
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/throw_head.png": {
+        "cell": 192,
+        "box": [
+          82,
+          26,
+          110,
+          64
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          74,
+          26,
+          118,
+          68
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          74,
+          24,
+          118,
+          68
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/neck_steam/walk.png": {
+        "cell": 192,
+        "box": [
+          84,
+          24,
+          108,
+          64
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1
+        }
+      },
+      "layers/torso/attack.png": {
+        "cell": 192,
+        "box": [
+          40,
+          32,
+          152,
+          122
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/cast.png": {
+        "cell": 192,
+        "box": [
+          54,
+          32,
+          138,
+          122
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/cast_ult.png": {
+        "cell": 192,
+        "box": [
+          54,
+          34,
+          138,
+          122
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/crawl_l.png": {
+        "cell": 192,
+        "box": [
+          16,
+          64,
+          178,
+          186
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/crawl_r.png": {
+        "cell": 192,
+        "box": [
+          18,
+          64,
+          174,
+          186
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/death.png": {
+        "cell": 192,
+        "box": [
+          52,
+          34,
+          142,
+          148
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/fall.png": {
+        "cell": 192,
+        "box": [
+          24,
+          34,
+          168,
+          176
+        ],
+        "grid": [
+          3,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/handwalk.png": {
+        "cell": 192,
+        "box": [
+          38,
+          60,
+          154,
+          160
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/hop_l.png": {
+        "cell": 192,
+        "box": [
+          48,
+          24,
+          146,
+          126
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/hop_r.png": {
+        "cell": 192,
+        "box": [
+          46,
+          24,
+          144,
+          126
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/idle.png": {
+        "cell": 192,
+        "box": [
+          54,
+          34,
+          138,
+          122
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/roll.png": {
+        "cell": 192,
+        "box": [
+          0,
+          26,
+          192,
+          156
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/throw_arm_l.png": {
+        "cell": 192,
+        "box": [
+          52,
+          34,
+          140,
+          122
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/throw_arm_r.png": {
+        "cell": 192,
+        "box": [
+          52,
+          34,
+          140,
+          122
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/throw_head.png": {
+        "cell": 192,
+        "box": [
+          52,
+          34,
+          140,
+          122
+        ],
+        "grid": [
+          6,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/throw_leg_l.png": {
+        "cell": 192,
+        "box": [
+          46,
+          32,
+          144,
+          124
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/throw_leg_r.png": {
+        "cell": 192,
+        "box": [
+          48,
+          34,
+          146,
+          124
+        ],
+        "grid": [
+          4,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      },
+      "layers/torso/walk.png": {
+        "cell": 192,
+        "box": [
+          52,
+          32,
+          140,
+          120
+        ],
+        "grid": [
+          8,
+          8
+        ],
+        "passes": {
+          "": 1,
+          "_e": 2
+        }
+      }
+    },
+    "resources": [
+      "regen_rivets.tres",
+      "regen_rivets_emission.tres",
+      "tocsin.tres",
+      "tocsin_arm_clamp.tres",
+      "tocsin_arm_clamp_emission.tres",
+      "tocsin_arm_fly.tres",
+      "tocsin_arm_fly_emission.tres",
+      "tocsin_arm_ground.tres",
+      "tocsin_arm_ground_emission.tres",
+      "tocsin_blast.tres",
+      "tocsin_blast_emission.tres",
+      "tocsin_emission.tres",
+      "tocsin_head_blast.tres",
+      "tocsin_head_blast_emission.tres",
+      "tocsin_head_fly.tres",
+      "tocsin_head_fly_emission.tres",
+      "tocsin_leg_fly.tres",
+      "tocsin_leg_fly_emission.tres",
+      "tocsin_leg_ground.tres",
+      "tocsin_leg_ground_emission.tres",
+      "tocsin_parts.tres",
+      "tocsin_parts_emission.tres",
+      "rivet/rivet.tres"
+    ],
+    "scale": "CREA (sqrt(.5),sqrt(2)) has determinant 1; projection converts R=64*sqrt(2) to 64px/u. No scalar downsampling in the kit.",
+    "pivot": "Logical frames retained by AtlasTexture.margin; feet, offset and sockets unchanged."
+  },
+  "raw_bytes_before": 1157404608,
+  "raw_bytes_after": 439468832,
+  "runtime_checks": [
+    {
+      "name": "policy",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "import",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "sprites_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "tocsin_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "player_test",
+      "ok": true,
+      "exit": 0
+    },
+    {
+      "name": "texture_budget_test",
+      "ok": false,
+      "exit": 1
+    }
+  ],
+  "budget_scope_after": {
+    "raw": 439468832,
+    "png": 41372928,
+    "disk": 219965256,
+    "mobile": 23796413
+  },
+  "budget_global": "FAIL: bosses category and total APK outside Tocsin scope; see _cel_heroes_tocsin_budget.log",
+  "deviations": [
+    "33 sheets have additional byte-identical static frames after PBR grain removal; every duplicate pair has archive silhouette IoU > 0.998, no moving pose discarded.",
+    "Portraits retain their direct UI texture framing (no AtlasTexture margin consumer).",
+    "23 .tres changed only region and margin to reconstruct original logical cells after storage crops; packed regions, JSON, import settings, feet and sockets preserved.",
+    "Global texture_budget_test: RESULT: FAIL (1), textures mobiles 181 Mo > 180 Mo; Tocsin remains below its 50 Mo category budget."
+  ],
+  "budget_scope_before": {
+    "source": "immutable 3D archive / initial state",
+    "png": 41531153,
+    "raw": 1157404608
+  },
+  "contact": "_cel_heroes_tocsin_contact.png; normalized keyframes archive left / cel right, CS1 right-half reference below",
+  "protected_scope": "PASS: original blends, JSON and .import match initial hashes; only declared crop .tres differ"
+}

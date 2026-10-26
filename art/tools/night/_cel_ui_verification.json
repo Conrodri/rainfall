@@ -1,0 +1,1040 @@
+{
+  "profile": "ui",
+  "normals": false,
+  "choices": [
+    "2 tones; original cameras, geometry and material hues; night shadow floor from shared ui profile",
+    "Original modeled outline geometry retained for prompts/menu/difficulty",
+    "Coverage channel assembled from archive; RGB rendered exclusively in Blender",
+    "Original dedicated emission shading retained; gauge emission delivered at half size",
+    "Preexisting ui root archive contained only crit_icon.png; four missing spell originals recovered from HEAD with baseline SHA256 equality; existing archive files unchanged",
+    "Translucent vignette retains authored falloff; nonempty alpha checked without opaque-cell assumption"
+  ],
+  "files": [
+    {
+      "file": "ui/cards/card_back.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        384,
+        560
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/cards/card_front.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        384,
+        560
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_fill_boss.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        1024,
+        40
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_fill_hp.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_fill_hp_lost.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_fill_xp.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        16
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_frame_boss.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        1024,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_frame_hp.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        48
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/bar_frame_xp.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        28
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_danger.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_disabled.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_hover.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_normal.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_pressed.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_primary.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_primary_hover.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/button_primary_pressed.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/divider.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        512,
+        24
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/header_banner.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        640,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_gold.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_interact.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        96,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_pause.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        96,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_ruby.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_settings.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        96,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/icon_xp.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/keycap_9slice.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/level_badge.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        96,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_boss.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_capsule.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_chest.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_chest_large.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_chest_legendary.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_frame.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        320,
+        320
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_pillar.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_player.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/minimap_teleporter.png",
+      "silhouette_iou": 1.0,
+      "accent_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/panel_9slice.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        384,
+        384
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/panel_small_9slice.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        192,
+        192
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/timer_plate.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        80
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/da/vignette_hit.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        1024,
+        1024
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/difficulty/diff_1_calme.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/difficulty/diff_2_tension.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/difficulty/diff_3_alerte.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/difficulty/diff_4_fournaise.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/difficulty/diff_5_cataclysme.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/joystick/joystick_base.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        256
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/joystick/joystick_knob.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        128,
+        128
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/menu/button_normal.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        192,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/menu/button_pressed.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        192,
+        96
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/menu/button_primary.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        112
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/key_1x1.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/key_2x1.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        128,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/mouse_left.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/mouse_right.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/mouse_wheel.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_a.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_b.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_btn_bottom.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_btn_left.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_btn_right.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_btn_top.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_lb.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_lt.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_rb.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_rt.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_stick_left.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_stick_right.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_x.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/prompts/pad_y.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        64,
+        64
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/fill.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "alpha_exact": true,
+      "size": [
+        256,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/frame.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        48
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/frame_bg.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        256,
+        48
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/notch.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        16,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/pip_empty.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/resource_gauge/pip_full.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "alpha_exact": true,
+      "size": [
+        32,
+        32
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/spell_cooldown_ring.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        160,
+        160
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/spell_frame.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        160,
+        160
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/spell_frame_cooldown.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        160,
+        160
+      ],
+      "normal_absent": true
+    },
+    {
+      "file": "ui/spell_frame_pressed.png",
+      "silhouette_iou": 1.0,
+      "alpha_exact": true,
+      "size": [
+        160,
+        160
+      ],
+      "normal_absent": true
+    }
+  ],
+  "companions": [
+    {
+      "file": "ui/da/bar_fill_boss_e.png",
+      "size": [
+        1024,
+        40
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/bar_fill_hp_e.png",
+      "size": [
+        512,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/bar_fill_xp_e.png",
+      "size": [
+        512,
+        16
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/button_danger_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/button_hover_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/button_primary_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/button_primary_hover_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/button_primary_pressed_e.png",
+      "size": [
+        320,
+        96
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/icon_ruby_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/icon_xp_e.png",
+      "size": [
+        64,
+        64
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_boss_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_capsule_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_chest_legendary_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_pillar_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_player_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/da/minimap_teleporter_e.png",
+      "size": [
+        32,
+        32
+      ],
+      "nonblack": true,
+      "accent_iou": null
+    },
+    {
+      "file": "ui/resource_gauge/fill_e.png",
+      "size": [
+        128,
+        16
+      ],
+      "nonblack": true,
+      "accent_iou": 1.0
+    },
+    {
+      "file": "ui/resource_gauge/pip_full_e.png",
+      "size": [
+        16,
+        16
+      ],
+      "nonblack": true,
+      "accent_iou": 1.0
+    }
+  ],
+  "errors": [],
+  "before_bytes": 2072619,
+  "after_bytes": 1819751,
+  "checks": [
+    {
+      "name": "import",
+      "result_ok": true,
+      "error_count": 0,
+      "fail_count": 0
+    },
+    {
+      "name": "sprites",
+      "result_ok": true,
+      "error_count": 0,
+      "fail_count": 0
+    },
+    {
+      "name": "ui_theme",
+      "result_ok": true,
+      "error_count": 0,
+      "fail_count": 0
+    },
+    {
+      "name": "hud_overlays",
+      "result_ok": true,
+      "error_count": 0,
+      "fail_count": 0
+    },
+    {
+      "name": "touch_layout",
+      "result_ok": false,
+      "error_count": 0,
+      "fail_count": 20
+    },
+    {
+      "name": "menu_flow",
+      "result_ok": true,
+      "error_count": 1,
+      "fail_count": 0
+    },
+    {
+      "name": "texture_budget",
+      "result_ok": true,
+      "error_count": 0,
+      "fail_count": 0
+    }
+  ],
+  "protected_changed": [],
+  "scope_png_count": 97,
+  "budget_notes": [
+    "0 fichier(s) .import mis ? la politique",
+    "No texture >4096; global category bosses 73.0 Mo >45 Mo; estimated APK 6888 Mo >200 Mo (outside CEL-UI scope)"
+  ],
+  "status": "ASSETS_PASS; touch_layout FAIL (20); menu_flow RESULT: OK with exit resource error"
+}

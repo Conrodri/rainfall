@@ -111,7 +111,10 @@ def verify(files):
     from PIL import Image
     import numpy as np
     report={'choices':['Original models, rigs, poses, cameras and material hues. Night shadow floor from shared cel module.','creature: Bourbe, portrait, Montreur; prop: motte; vfx without ink: four ground effects.','Exact archived emission masks retained: luminous materials unchanged; original half-resolution coverage preserved.','Two legacy bog_zone_0/1 atlases are absent from all SpriteFrames references; preserved byte-identically because their historical geometry differs from the available source. Rendered all referenced bog_zone atlases.'], 'sheets':[], 'errors':[]}
-    for rel in files:
+    # Include retained legacy sheets in contract checks, while distinguishing
+    # them from the sheets actually rerendered by this lot.
+    legacy=[f'characters/bourbe/bog_zone/bog_zone_{i}.png' for i in (0,1)]
+    for rel in dict.fromkeys([*files,*legacy]):
         name=Path(rel);im=Image.open(SPR/rel);w,h=im.size
         cell=192 if name.parent.name in ('bourbe','motte','montreur') and name.stem!='portrait' else (256 if name.stem=='portrait' else 648 if name.stem in ('bog_zone_0','bog_zone_1') else 720 if name.parent.name=='bog_zone' else 64 if name.parent.name=='ally_ring' else 288)
         try:
@@ -128,9 +131,18 @@ def verify(files):
                 if a.any() or b.any():
                     res['accent_iou_half']=float((a&b).sum()/max(1,(a|b).sum()))
                     assert res['accent_iou_half']>.97,(rel,'accent',res['accent_iou_half'])
-            res.update(size=[w,h],cell=cell,frames=w//cell,rows=h//cell,normals_absent=True)
+            res.update(size=[w,h],cell=cell,frames=w//cell,rows=h//cell,normals_absent=True,rewritten=rel not in legacy)
             report['sheets'].append(res)
         except Exception as exc:report['errors'].append(str(exc))
+    assert all((SPR/rel).read_bytes()==(cel.ARCHIVE/rel).read_bytes() for rel in legacy)
+    roots=('characters/bourbe','characters/montreur')
+    archived={str(p.relative_to(cel.ARCHIVE)) for rel in roots for p in (cel.ARCHIVE/rel).rglob('*.png') if not p.stem.endswith('_n')}
+    delivered={str(p.relative_to(SPR)) for rel in roots for p in (SPR/rel).rglob('*.png')}
+    assert archived==delivered,('PNG inventory changed',sorted(archived^delivered))
+    assert not any(p.stem.endswith('_n') for rel in roots for p in (SPR/rel).rglob('*.png'))
+    assert not any('CanvasTexture' in p.read_text() or 'normal_texture' in p.read_text() for rel in roots for p in (SPR/rel).rglob('*.tres'))
+    assert protected()==json.loads((WORK/'protected.json').read_text())
+    report['contract']={'png_inventory_matches_archive':True,'protected_files_unchanged':True,'normal_maps':0,'normal_texture_references':0,'max_dimension':max(max(s['size']) for s in report['sheets'])}
     report['bytes_before']=sum(p.stat().st_size for rel in ('characters/bourbe','characters/montreur') for p in (cel.ARCHIVE/rel).rglob('*.png') if not p.stem.endswith('_n'))
     report['bytes_after']=sum(p.stat().st_size for rel in ('characters/bourbe','characters/montreur') for p in (SPR/rel).rglob('*.png'))
     (HERE/'_cel_heroes_e_verification.json').write_text(json.dumps(report,indent=2))

@@ -1,0 +1,1546 @@
+{
+  "weaver": {
+    "cfg": {
+      "dir": "etage/weaver",
+      "floor": true,
+      "dim": 216.0,
+      "bottom": 230.0,
+      "fh": 256.0,
+      "energy": 2.0,
+      "brain": "scripts/enemies/weaver_brain.gd",
+      "brief": "art/tools/night/requests_bosses2.md#tisseuse",
+      "anims": [
+        "idle_p1_e/s/w/n",
+        "idle_p2_*",
+        "idle_p3_*",
+        "walk_p1_*",
+        "walk_p2_*",
+        "walk_p3_*",
+        "auto_*",
+        "spell_a_*",
+        "spell_b_*",
+        "ascend_s",
+        "drop_s",
+        "trans_p2_s",
+        "trans_p3_s",
+        "death_s"
+      ],
+      "extras": [
+        "thread",
+        "web",
+        "cocoon",
+        "drop_dust",
+        "ground_silk"
+      ]
+    },
+    "images": {
+      "ascend.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 329813
+      },
+      "ascend_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 34600
+      },
+      "auto.png": {
+        "size": [
+          1536,
+          256
+        ],
+        "bytes": 274124
+      },
+      "auto_dirs.png": {
+        "size": [
+          1536,
+          768
+        ],
+        "bytes": 723647
+      },
+      "auto_dirs_e.png": {
+        "size": [
+          768,
+          384
+        ],
+        "bytes": 88350
+      },
+      "auto_e.png": {
+        "size": [
+          768,
+          128
+        ],
+        "bytes": 29190
+      },
+      "cocoon.png": {
+        "size": [
+          576,
+          160
+        ],
+        "bytes": 137832
+      },
+      "cocoon_e.png": {
+        "size": [
+          288,
+          80
+        ],
+        "bytes": 24093
+      },
+      "death.png": {
+        "size": [
+          2560,
+          256
+        ],
+        "bytes": 483409
+      },
+      "death_e.png": {
+        "size": [
+          1280,
+          128
+        ],
+        "bytes": 59467
+      },
+      "drop.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 348783
+      },
+      "drop_dust.png": {
+        "size": [
+          1152,
+          192
+        ],
+        "bytes": 62291
+      },
+      "drop_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 36791
+      },
+      "ground_silk.png": {
+        "size": [
+          816,
+          136
+        ],
+        "bytes": 29178
+      },
+      "ground_silk_e.png": {
+        "size": [
+          408,
+          68
+        ],
+        "bytes": 6272
+      },
+      "idle_p1.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 767713
+      },
+      "idle_p1_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 92847
+      },
+      "idle_p2.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 816072
+      },
+      "idle_p2_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 101333
+      },
+      "idle_p3.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 831776
+      },
+      "idle_p3_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 122217
+      },
+      "lay.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 369424
+      },
+      "lay_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 43807
+      },
+      "spell_a.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 360423
+      },
+      "spell_a_dirs.png": {
+        "size": [
+          2048,
+          768
+        ],
+        "bytes": 959412
+      },
+      "spell_a_dirs_e.png": {
+        "size": [
+          1024,
+          384
+        ],
+        "bytes": 117152
+      },
+      "spell_a_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 40325
+      },
+      "spell_b.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 389391
+      },
+      "spell_b_dirs.png": {
+        "size": [
+          2048,
+          768
+        ],
+        "bytes": 983281
+      },
+      "spell_b_dirs_e.png": {
+        "size": [
+          1024,
+          384
+        ],
+        "bytes": 121685
+      },
+      "spell_b_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 40659
+      },
+      "thread.png": {
+        "size": [
+          3072,
+          64
+        ],
+        "bytes": 76122
+      },
+      "thread_e.png": {
+        "size": [
+          1536,
+          32
+        ],
+        "bytes": 14411
+      },
+      "trans_p2.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 387102
+      },
+      "trans_p2_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 41603
+      },
+      "trans_p3.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 388205
+      },
+      "trans_p3_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 48322
+      },
+      "walk_p1.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1251571
+      },
+      "walk_p1_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 146748
+      },
+      "walk_p2.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1339884
+      },
+      "walk_p2_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 161524
+      },
+      "walk_p3.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1335267
+      },
+      "walk_p3_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 193117
+      },
+      "web.png": {
+        "size": [
+          3072,
+          768
+        ],
+        "bytes": 828148
+      },
+      "web_e.png": {
+        "size": [
+          1536,
+          384
+        ],
+        "bytes": 155141
+      }
+    },
+    "source_sha": "7e83a7d0cb37e908c615754a22a5beac77b1b807103d7b97058c16493a974042",
+    "cell": 298
+  },
+  "rain_sower": {
+    "cfg": {
+      "dir": "etage/rain_sower",
+      "floor": true,
+      "dim": 200.0,
+      "bottom": 225.0,
+      "fh": 256.0,
+      "energy": 2.0,
+      "brain": "scripts/enemies/rain_sower_brain.gd",
+      "brief": "art/tools/night/requests_bosses45.md#semeur",
+      "anims": [
+        "idle_p1_e/s/w/n",
+        "idle_p2_*",
+        "idle_p3_*",
+        "walk_p1_*",
+        "walk_p2_*",
+        "walk_p3_*",
+        "auto_*",
+        "spell_a_*",
+        "spell_b_*",
+        "intro_s",
+        "trans_p2_s",
+        "trans_p3_s",
+        "death_s"
+      ],
+      "extras": [
+        "rain_column",
+        "raindrop",
+        "splash",
+        "wave_front",
+        "flood_water",
+        "mist_band",
+        "lightning",
+        "ground_scorch",
+        "cross_beam"
+      ]
+    },
+    "images": {
+      "auto.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 819843
+      },
+      "auto_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 71263
+      },
+      "cross_beam.png": {
+        "size": [
+          3328,
+          64
+        ],
+        "bytes": 175702
+      },
+      "cross_beam_2.png": {
+        "size": [
+          3328,
+          64
+        ],
+        "bytes": 172271
+      },
+      "cross_beam_2_e.png": {
+        "size": [
+          1664,
+          32
+        ],
+        "bytes": 48989
+      },
+      "cross_beam_e.png": {
+        "size": [
+          1664,
+          32
+        ],
+        "bytes": 50377
+      },
+      "death.png": {
+        "size": [
+          2560,
+          256
+        ],
+        "bytes": 485368
+      },
+      "death_e.png": {
+        "size": [
+          1280,
+          128
+        ],
+        "bytes": 46944
+      },
+      "flood_water.png": {
+        "size": [
+          3584,
+          896
+        ],
+        "bytes": 539127
+      },
+      "flood_water_e.png": {
+        "size": [
+          1792,
+          448
+        ],
+        "bytes": 35118
+      },
+      "ground_scorch.png": {
+        "size": [
+          512,
+          128
+        ],
+        "bytes": 21737
+      },
+      "idle_p1.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 716945
+      },
+      "idle_p1_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 57351
+      },
+      "idle_p2.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 764714
+      },
+      "idle_p2_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 59705
+      },
+      "idle_p3.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 902277
+      },
+      "idle_p3_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 83278
+      },
+      "intro.png": {
+        "size": [
+          3072,
+          256
+        ],
+        "bytes": 441792
+      },
+      "intro_e.png": {
+        "size": [
+          1536,
+          128
+        ],
+        "bytes": 38994
+      },
+      "lightning.png": {
+        "size": [
+          512,
+          768
+        ],
+        "bytes": 239162
+      },
+      "lightning_e.png": {
+        "size": [
+          256,
+          384
+        ],
+        "bytes": 51277
+      },
+      "mist_band.png": {
+        "size": [
+          1536,
+          256
+        ],
+        "bytes": 308982
+      },
+      "raindrop.png": {
+        "size": [
+          192,
+          256
+        ],
+        "bytes": 19335
+      },
+      "raindrop_e.png": {
+        "size": [
+          96,
+          128
+        ],
+        "bytes": 5087
+      },
+      "rain_column.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1088911
+      },
+      "rain_column_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 168455
+      },
+      "spell_a.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 935784
+      },
+      "spell_a_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 75205
+      },
+      "spell_b.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1009308
+      },
+      "spell_b_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 84597
+      },
+      "splash.png": {
+        "size": [
+          768,
+          128
+        ],
+        "bytes": 84159
+      },
+      "trans_p2.png": {
+        "size": [
+          3072,
+          256
+        ],
+        "bytes": 459419
+      },
+      "trans_p2_e.png": {
+        "size": [
+          1536,
+          128
+        ],
+        "bytes": 37595
+      },
+      "trans_p3.png": {
+        "size": [
+          3072,
+          256
+        ],
+        "bytes": 519011
+      },
+      "trans_p3_e.png": {
+        "size": [
+          1536,
+          128
+        ],
+        "bytes": 47498
+      },
+      "walk_p1.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 952868
+      },
+      "walk_p1_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 78603
+      },
+      "walk_p2.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1017713
+      },
+      "walk_p2_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 82452
+      },
+      "walk_p3.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1206855
+      },
+      "walk_p3_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 111491
+      },
+      "wave_front.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 197394
+      }
+    },
+    "source_sha": "aa9f9b5cd90e79a76732fac987a8963addb7a5d435033157b62a4a5e3cb71a21",
+    "cell": 322
+  },
+  "crystal_mother": {
+    "cfg": {
+      "dir": "etage/crystal_mother",
+      "floor": true,
+      "dim": 180.0,
+      "bottom": 215.0,
+      "fh": 256.0,
+      "energy": 2.0,
+      "brain": "scripts/enemies/crystal_mother_brain.gd",
+      "brief": "art/tools/night/requests_bosses4.md#mere",
+      "anims": [
+        "idle_p1_e/s/w/n",
+        "idle_p2_*",
+        "idle_p3_*",
+        "walk_p1_*",
+        "walk_p2_*",
+        "walk_p3_*",
+        "auto_*",
+        "spell_a_*",
+        "spell_b_*",
+        "trans_p2_s",
+        "trans_p3_s",
+        "death_s"
+      ],
+      "extras": [
+        "crystal_block",
+        "stalactite",
+        "shard",
+        "prism_beam",
+        "orbit_shard",
+        "lamp_glow",
+        "reflect_burst"
+      ]
+    },
+    "images": {
+      "auto.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 822108
+      },
+      "auto_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 64977
+      },
+      "crystal_block.png": {
+        "size": [
+          768,
+          192
+        ],
+        "bytes": 48218
+      },
+      "crystal_block_e.png": {
+        "size": [
+          384,
+          96
+        ],
+        "bytes": 6202
+      },
+      "death.png": {
+        "size": [
+          2560,
+          256
+        ],
+        "bytes": 469243
+      },
+      "death_e.png": {
+        "size": [
+          1280,
+          128
+        ],
+        "bytes": 47641
+      },
+      "idle_p1.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 588841
+      },
+      "idle_p1_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 45065
+      },
+      "idle_p2.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 587153
+      },
+      "idle_p2_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 54467
+      },
+      "idle_p3.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 657936
+      },
+      "idle_p3_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 63850
+      },
+      "lamp_glow.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 890329
+      },
+      "lamp_glow_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 258959
+      },
+      "orbit_shard.png": {
+        "size": [
+          512,
+          96
+        ],
+        "bytes": 32259
+      },
+      "orbit_shard_e.png": {
+        "size": [
+          256,
+          48
+        ],
+        "bytes": 5340
+      },
+      "prism_beam.png": {
+        "size": [
+          4096,
+          96
+        ],
+        "bytes": 435046
+      },
+      "prism_beam_2.png": {
+        "size": [
+          2048,
+          96
+        ],
+        "bytes": 224838
+      },
+      "prism_beam_2_e.png": {
+        "size": [
+          1024,
+          48
+        ],
+        "bytes": 46592
+      },
+      "prism_beam_e.png": {
+        "size": [
+          2048,
+          48
+        ],
+        "bytes": 89198
+      },
+      "reflect_burst.png": {
+        "size": [
+          1152,
+          384
+        ],
+        "bytes": 222628
+      },
+      "reflect_burst_e.png": {
+        "size": [
+          576,
+          192
+        ],
+        "bytes": 28637
+      },
+      "shard.png": {
+        "size": [
+          256,
+          32
+        ],
+        "bytes": 7398
+      },
+      "shard_e.png": {
+        "size": [
+          128,
+          16
+        ],
+        "bytes": 1574
+      },
+      "spell_a.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1095492
+      },
+      "spell_a_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 103947
+      },
+      "spell_b.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1142837
+      },
+      "spell_b_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 112859
+      },
+      "stalactite.png": {
+        "size": [
+          768,
+          384
+        ],
+        "bytes": 59428
+      },
+      "trans_p2.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 283372
+      },
+      "trans_p2_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 25276
+      },
+      "trans_p3.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 339112
+      },
+      "trans_p3_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 33691
+      },
+      "walk_p1.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 968243
+      },
+      "walk_p1_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 71665
+      },
+      "walk_p2.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 966512
+      },
+      "walk_p2_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 90531
+      },
+      "walk_p3.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1140356
+      },
+      "walk_p3_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 115967
+      }
+    },
+    "source_sha": "f8596f7ed404a99680f7ca6acf3856ff3797d5f9f1c33b8f0f03fa71eb308ae6",
+    "cell": 356
+  },
+  "crane": {
+    "cfg": {
+      "dir": "etage/crane",
+      "floor": true,
+      "dim": 195.0,
+      "bottom": 215.0,
+      "fh": 256.0,
+      "energy": 2.0,
+      "brain": "scripts/enemies/crane_brain.gd",
+      "brief": "art/tools/night/requests_bosses3.md#grue",
+      "anims": [
+        "idle_p1_e/s/w/n",
+        "idle_p2_*",
+        "idle_p3_*",
+        "walk_p1_*",
+        "walk_p2_*",
+        "walk_p3_*",
+        "auto_*",
+        "spell_a_*",
+        "spell_b_*",
+        "trans_p2_s",
+        "trans_p3_s",
+        "death_s"
+      ],
+      "extras": [
+        "container",
+        "boom_shadow",
+        "arc",
+        "dust"
+      ]
+    },
+    "images": {
+      "arc.png": {
+        "size": [
+          2688,
+          64
+        ],
+        "bytes": 72975
+      },
+      "arc_e.png": {
+        "size": [
+          1344,
+          32
+        ],
+        "bytes": 25922
+      },
+      "auto.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 631447
+      },
+      "auto_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 59988
+      },
+      "boom_shadow.png": {
+        "size": [
+          3584,
+          96
+        ],
+        "bytes": 40218
+      },
+      "boom_shadow_e.png": {
+        "size": [
+          1792,
+          48
+        ],
+        "bytes": 8650
+      },
+      "container.png": {
+        "size": [
+          1024,
+          256
+        ],
+        "bytes": 144149
+      },
+      "container_e.png": {
+        "size": [
+          512,
+          128
+        ],
+        "bytes": 4092
+      },
+      "death.png": {
+        "size": [
+          2560,
+          256
+        ],
+        "bytes": 303733
+      },
+      "death_e.png": {
+        "size": [
+          1280,
+          128
+        ],
+        "bytes": 33374
+      },
+      "dust.png": {
+        "size": [
+          1152,
+          192
+        ],
+        "bytes": 36486
+      },
+      "idle_p1.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 774835
+      },
+      "idle_p1_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 70343
+      },
+      "idle_p2.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 788301
+      },
+      "idle_p2_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 70877
+      },
+      "idle_p3.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 666522
+      },
+      "idle_p3_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 67557
+      },
+      "spell_a.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 963447
+      },
+      "spell_a_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 86787
+      },
+      "spell_b.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 827528
+      },
+      "spell_b_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 79274
+      },
+      "trans_p2.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 228346
+      },
+      "trans_p2_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 26850
+      },
+      "trans_p3.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 221728
+      },
+      "trans_p3_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 27505
+      },
+      "walk_p1.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1041713
+      },
+      "walk_p1_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 94309
+      },
+      "walk_p2.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 1060371
+      },
+      "walk_p2_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 95202
+      },
+      "walk_p3.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 917207
+      },
+      "walk_p3_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 89829
+      }
+    },
+    "source_sha": "b6166b4885eb3850a39e18664e1ad802e72eb7cdb9584e25b1e885188eb3c678",
+    "cell": 330
+  },
+  "recluse": {
+    "cfg": {
+      "dir": "etage/recluse",
+      "floor": true,
+      "dim": 185.0,
+      "bottom": 215.0,
+      "fh": 256.0,
+      "energy": 2.0,
+      "brain": "scripts/enemies/recluse_brain.gd",
+      "brief": "art/tools/night/requests_bosses45.md#reclus",
+      "anims": [
+        "idle_p1_e/s/w/n",
+        "idle_p2_*",
+        "idle_p3_*",
+        "walk_p1_*",
+        "walk_p2_*",
+        "walk_p3_*",
+        "auto_*",
+        "spell_a_*",
+        "spell_b_*",
+        "trans_p2_s",
+        "trans_p3_s",
+        "death_s"
+      ],
+      "extras": [
+        "bell_wave",
+        "prayer_glyph",
+        "prayer_burst",
+        "ray",
+        "silence_mark"
+      ]
+    },
+    "images": {
+      "auto.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 623849
+      },
+      "auto_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 49327
+      },
+      "bell_wave.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 201439
+      },
+      "bell_wave_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 45317
+      },
+      "death.png": {
+        "size": [
+          2560,
+          256
+        ],
+        "bytes": 344189
+      },
+      "death_e.png": {
+        "size": [
+          1280,
+          128
+        ],
+        "bytes": 40291
+      },
+      "idle_p1.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 574460
+      },
+      "idle_p1_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 42814
+      },
+      "idle_p2.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 593143
+      },
+      "idle_p2_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 58805
+      },
+      "idle_p3.png": {
+        "size": [
+          1536,
+          1024
+        ],
+        "bytes": 648396
+      },
+      "idle_p3_e.png": {
+        "size": [
+          768,
+          512
+        ],
+        "bytes": 65999
+      },
+      "prayer_burst.png": {
+        "size": [
+          1152,
+          384
+        ],
+        "bytes": 172628
+      },
+      "prayer_burst_e.png": {
+        "size": [
+          576,
+          192
+        ],
+        "bytes": 31963
+      },
+      "prayer_glyph.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 122360
+      },
+      "prayer_glyph_e.png": {
+        "size": [
+          512,
+          64
+        ],
+        "bytes": 24759
+      },
+      "ray.png": {
+        "size": [
+          3584,
+          64
+        ],
+        "bytes": 253643
+      },
+      "ray_2.png": {
+        "size": [
+          3584,
+          64
+        ],
+        "bytes": 256945
+      },
+      "ray_2_e.png": {
+        "size": [
+          1792,
+          32
+        ],
+        "bytes": 42762
+      },
+      "ray_e.png": {
+        "size": [
+          1792,
+          32
+        ],
+        "bytes": 42361
+      },
+      "silence_mark.png": {
+        "size": [
+          576,
+          96
+        ],
+        "bytes": 64678
+      },
+      "silence_mark_e.png": {
+        "size": [
+          288,
+          48
+        ],
+        "bytes": 12241
+      },
+      "spell_a.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 782410
+      },
+      "spell_a_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 58554
+      },
+      "spell_b.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 810783
+      },
+      "spell_b_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 63082
+      },
+      "trans_p2.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 236937
+      },
+      "trans_p2_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 20451
+      },
+      "trans_p3.png": {
+        "size": [
+          2048,
+          256
+        ],
+        "bytes": 256588
+      },
+      "trans_p3_e.png": {
+        "size": [
+          1024,
+          128
+        ],
+        "bytes": 30700
+      },
+      "walk_p1.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 797993
+      },
+      "walk_p1_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 62785
+      },
+      "walk_p2.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 819533
+      },
+      "walk_p2_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 83218
+      },
+      "walk_p3.png": {
+        "size": [
+          2048,
+          1024
+        ],
+        "bytes": 880638
+      },
+      "walk_p3_e.png": {
+        "size": [
+          1024,
+          512
+        ],
+        "bytes": 89953
+      }
+    },
+    "source_sha": "8470006b9f7f11dde563907a90797f587cda4dfb0374bebdcff99deb90423a7a",
+    "cell": 348
+  }
+}

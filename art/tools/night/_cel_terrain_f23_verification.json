@@ -1,0 +1,512 @@
+{
+  "status": "PASS",
+  "sheets": [
+    {
+      "file": "terrain/fog_forest/iso/block_a.png",
+      "silhouette_iou": 0.9997881714963566,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/block_b.png",
+      "silhouette_iou": 0.9998771699967245,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/fog_forest/iso/block_c.png",
+      "silhouette_iou": 0.9999225226621213,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/cliff_corner_e.png",
+      "silhouette_iou": 0.9999768379117061,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/cliff_corner_s.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/cliff_corner_w.png",
+      "silhouette_iou": 0.9999768497083064,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/cliff_se.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/cliff_sw.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/ground_a.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/ground_b.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/ground_c.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/ground_d.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/rampart_corner_n.png",
+      "silhouette_iou": 0.9996784307420211,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/fog_forest/iso/rampart_ne.png",
+      "silhouette_iou": 0.9997862181999573,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/rampart_nw.png",
+      "silhouette_iou": 0.999488453668518,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/fog_forest/iso/void_1024.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        1024
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        509401,
+        491184
+      ]
+    },
+    {
+      "file": "terrain/fog_forest/iso/water_deep.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        420,
+        356
+      ]
+    },
+    {
+      "file": "terrain/fog_forest/iso/water_shallow.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        409,
+        344
+      ]
+    },
+    {
+      "file": "terrain/rust_city/iso/block_a.png",
+      "silhouette_iou": 0.9998732679959446,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/block_b.png",
+      "silhouette_iou": 1.0,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/rust_city/iso/block_c.png",
+      "silhouette_iou": 0.9995796729855828,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/cliff_corner_e.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/cliff_corner_s.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/cliff_corner_w.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/cliff_se.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/cliff_sw.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        384
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/ground_a.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/ground_b.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/ground_c.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/ground_d.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        512,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/rampart_corner_n.png",
+      "silhouette_iou": 0.9999623479799691,
+      "e_half": true,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "accent_iou_half": 1.0
+    },
+    {
+      "file": "terrain/rust_city/iso/rampart_ne.png",
+      "silhouette_iou": 0.99993395416419,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/rampart_nw.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        256
+      ],
+      "no_normal": true,
+      "cells": 1
+    },
+    {
+      "file": "terrain/rust_city/iso/void_1024.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        1024,
+        1024
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        508084,
+        492028
+      ]
+    },
+    {
+      "file": "terrain/rust_city/iso/water_deep.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        384,
+        342
+      ]
+    },
+    {
+      "file": "terrain/rust_city/iso/water_shallow.png",
+      "silhouette_iou": 1.0,
+      "size": [
+        256,
+        128
+      ],
+      "no_normal": true,
+      "cells": 1,
+      "pattern_tone_pixels": [
+        363,
+        320
+      ]
+    }
+  ],
+  "floor_edges": [
+    {
+      "lot": "f2",
+      "tile": "a",
+      "archive_rgb_delta": 5.545977011494253,
+      "cel_rgb_delta": 0.35919540229885055
+    },
+    {
+      "lot": "f2",
+      "tile": "b",
+      "archive_rgb_delta": 5.545977011494253,
+      "cel_rgb_delta": 0.3333333333333333
+    },
+    {
+      "lot": "f2",
+      "tile": "c",
+      "archive_rgb_delta": 5.550287356321839,
+      "cel_rgb_delta": 0.5014367816091954
+    },
+    {
+      "lot": "f2",
+      "tile": "d",
+      "archive_rgb_delta": 5.530172413793103,
+      "cel_rgb_delta": 0.4382183908045977
+    },
+    {
+      "lot": "f3",
+      "tile": "a",
+      "archive_rgb_delta": 6.936781609195402,
+      "cel_rgb_delta": 11.755747126436782
+    },
+    {
+      "lot": "f3",
+      "tile": "b",
+      "archive_rgb_delta": 6.936781609195402,
+      "cel_rgb_delta": 11.755747126436782
+    },
+    {
+      "lot": "f3",
+      "tile": "c",
+      "archive_rgb_delta": 6.936781609195402,
+      "cel_rgb_delta": 11.755747126436782
+    },
+    {
+      "lot": "f3",
+      "tile": "d",
+      "archive_rgb_delta": 6.936781609195402,
+      "cel_rgb_delta": 11.755747126436782
+    }
+  ],
+  "bytes_before": 2951290,
+  "bytes_after": 1227313,
+  "choices": [
+    "Original F2/F3 saved geometry, cameras, pivots and material hues; original render_frame imported.",
+    "tile: three tones, no silhouette ink; water/void two periodic tones without ink, shared night shadow floor.",
+    "Original shadow decals and authored half-resolution emission masks byte-identical; exact archived diamond alpha assembled as in F1.",
+    "18 diffuse per folder (not 19): actual original inventory; each diffuse is one cell/frame.",
+    "Periodic water/void ramps connected after explicit shared toon_materials conversion; both tones verified numerically. Global bosses/APK budget warnings outside F23 scope retained in checks."
+  ],
+  "checks": [
+    {
+      "check": "policy",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_policy.log"
+    },
+    {
+      "check": "budget",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_budget.log",
+      "global_budget_warnings": [
+        "cat\u00e9gorie bosses : 73.0 Mo mobile > budget 45 Mo",
+        "APK estim\u00e9 6917 Mo > 200 Mo"
+      ]
+    },
+    {
+      "check": "import",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_import.log"
+    },
+    {
+      "check": "sprites_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_sprites_test.log"
+    },
+    {
+      "check": "foret_iso_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_foret_iso_test.log"
+    },
+    {
+      "check": "cite_iso_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_cite_iso_test.log"
+    },
+    {
+      "check": "maps_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_maps_test.log"
+    },
+    {
+      "check": "texture_budget_test",
+      "returncode": 0,
+      "pass_check": true,
+      "log": "art\\tools\\night\\_cel_terrain_f23_texture_budget_test.log"
+    }
+  ],
+  "protected_files_unchanged": true,
+  "archives_unchanged": true
+}
