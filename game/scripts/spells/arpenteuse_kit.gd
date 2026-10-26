@@ -117,7 +117,7 @@ const JALONS_SPAN_U := 6.0
 const JALONS_LIFE_S := 6.0
 const JALONS_PROC := 0.5
 const JALONS_KNOCK_U := 0.3
-const CERCEAU_COEF := 1.25
+const CERCEAU_COEF := 1.15 ## équilibrage 26/10 : 1,25 -> 1,15 (simulateur : ×1,09 de la Tendeur, ×1,2 à bas niveau)
 const CERCEAU_CD := 20.0
 const CERCEAU_MIN_U := 2.0
 const CERCEAU_RADIUS_U := 3.0 ## milieu de la bande (2,5 - 3,5 u)
@@ -151,14 +151,21 @@ var _peg_hits := {} ## instance_id -> temps du dernier coup
 var _time := 0.0
 # Variantes
 var _lestee := false ## sort 1 = Chaîne lestée
-var jal_stage := 0 ## Jalons : 0 rien, 1 piquet A planté (fenêtre de 3 s pour B)
+var jal_stage := 0 ## Jalons : 0 rien, 1 piquet A lancé (fenêtre de 3 s pour B), 2 piquet B lancé
 var jal_a := Vector2.ZERO
 var jal_b := Vector2.ZERO
 var jal_line := false ## la ligne A-B est tendue
 var _jal_t := 0.0
 var _jal_dir := Vector2.DOWN
-var _peg2_node: Node2D = null
-var _peg2_sprite: AnimatedSprite2D = null
+var jal_left := 0.0 ## Jalons : ligne A-B tendue (s restantes)
+var _jal_hits := {}
+var _jal_a_node: Node2D = null
+var _jal_b_node: Node2D = null
+var _jal_a_sprite: AnimatedSprite2D = null
+var _jal_b_sprite: AnimatedSprite2D = null
+var knot_left := 0.0 ## Nœud : resserrement en cours (s restantes)
+var _knot_pos := Vector2.ZERO
+var _knot_spell: SpellData = null
 var ring_left := 0.0 ## Cerceau en cours (s restantes)
 var _ring_angle := 0.0
 var _ring_tick_t := 0.0
@@ -417,17 +424,24 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 		return false
 	match s.slot:
 		2:
-			if is_busy() or chain_length() < BOUCLE_MIN_U * Balance.UNIT_PX:
+			var have := chain_length() if s.id == V_NOEUD else lines_length() # le Nœud noue la traîne ; le Halage frappe toute chaîne posée
+			var min_u := NOEUD_MIN_U if s.id == V_NOEUD else BOUCLE_MIN_U
+			if is_busy() or ring_left > 0.0 or knot_left > 0.0 or have < min_u * Balance.UNIT_PX:
 				return false
 			_pending[&"loop"] = {"spell": s, "aim": aim, "t": 0.0}
 			return true
 		3:
 			if _pending.has(&"plant"):
 				return false
+			if s.id == V_JALONS:
+				return _cast_jalon(s, aim)
 			_pending[&"plant"] = {"spell": s, "aim": aim, "t": 0.0}
 			return true
 		4:
-			if is_busy() or (chain_length() < TENDEUR_MIN_U * Balance.UNIT_PX and peg_left <= 0.0):
+			if is_busy() or ring_left > 0.0:
+				return false
+			var min_u4 := CERCEAU_MIN_U if s.id == V_CERCEAU else TENDEUR_MIN_U
+			if chain_length() < min_u4 * Balance.UNIT_PX and peg_left <= 0.0 and not jal_line:
 				return false
 			_pending[&"whip"] = {"spell": s, "aim": aim, "t": 0.0}
 			return true
@@ -457,11 +471,20 @@ func _on_action_impact(base: StringName) -> void:
 func _fire(base: StringName, pend: Dictionary) -> void:
 	match base:
 		&"loop":
-			_do_boucle(pend["spell"])
+			if (pend["spell"] as SpellData).id == V_NOEUD:
+				_do_noeud(pend["spell"])
+			else:
+				_do_boucle(pend["spell"])
 		&"plant":
-			_do_piquet(pend["spell"], pend["aim"])
+			if (pend["spell"] as SpellData).id == V_JALONS:
+				_do_jalon(pend["spell"], pend["aim"], int(pend.get("which", 1)))
+			else:
+				_do_piquet(pend["spell"], pend["aim"])
 		&"whip":
-			_do_tendeur(pend["spell"])
+			if (pend["spell"] as SpellData).id == V_CERCEAU:
+				_do_cerceau(pend["spell"])
+			else:
+				_do_tendeur(pend["spell"])
 
 
 ## Sorts lancés dont la frame d'impact n'est pas encore passée (tests).
@@ -553,7 +576,7 @@ func _lay(delta: float) -> void:
 	var over := chain_length() - _max_u() * Balance.UNIT_PX
 	if over > 0.0:
 		_trim_tail(over)
-	if _idle_t > CHAIN_IDLE_S and chain_length() > 0.5:
+	if _idle_t > CHAIN_IDLE_S and chain_length() > 0.5 and ring_left <= 0.0:
 		_m = fposmod(_m + _trim_tail(_reel_u_s() * Balance.UNIT_PX * delta), _tile_px()) # le touret rembobine : les maillons glissent vers elle
 
 
@@ -620,10 +643,16 @@ func tick(delta: float) -> void:
 		var interval := Balance.attack_interval(s1.base_cooldown if s1 != null else CHAIN_TICK_S, player.stat(&"attack_speed"))
 		if _tick_t >= interval:
 			_tick_t = 0.0
-			_chain_tick(s1)
+			if ring_left <= 0.0: # Cerceau : la chaîne a quitté le sol, l'anneau tient lieu de sort 1
+				_chain_tick(s1)
 	_heat_t = maxf(_heat_t - delta, 0.0)
 	if peg_left > 0.0:
 		_peg_step(delta)
+	_jalons_step(delta)
+	if knot_left > 0.0:
+		_knot_step(delta)
+	if ring_left > 0.0:
+		_ring_step(delta)
 	_update_visuals(delta)
 
 
@@ -669,25 +698,71 @@ static func polygon_area(poly: PackedVector2Array) -> float:
 	return absf(a) * 0.5
 
 
+## Lignes de chaîne posées au sol : la traîne, la ligne du piquet (poteau -> elle) et la ligne A-B des Jalons.
+## Le Halage les frappe toutes (correctif 24/10 : avec le poteau planté, la chaîne attachée au poteau compte
+## comme chaîne posée ; avant, seule la traîne comptait et le Halage restait refusé une fois la traîne rembobinée).
+func _lines() -> Array:
+	var out: Array = []
+	for pts in [chain_points(), peg_segment(), jal_segment()]:
+		if pts.size() >= 2:
+			out.append(pts)
+	return out
+
+
+func lines_length() -> float:
+	var l := 0.0
+	for pts in _lines():
+		for i in range(1, pts.size()):
+			l += pts[i - 1].distance_to(pts[i])
+	return l
+
+
+## Monstres touchant l'une des lignes posées (sans doublon).
+func _enemies_on_lines(lines: Array, reach: float) -> Array:
+	var out: Array = []
+	for pts in lines:
+		for e in _enemies_on(pts, reach):
+			if not out.has(e):
+				out.append(e)
+	return out
+
+
+static func _closest_on_lines(lines: Array, p: Vector2) -> Vector2:
+	var best := p
+	var bd := INF
+	for pts in lines:
+		var c := _closest_on(pts, p)
+		var d := p.distance_squared_to(c)
+		if d < bd:
+			bd = d
+			best = c
+	return best
+
+
 func _do_boucle(s: SpellData) -> void:
-	var pts := chain_points()
-	if pts.size() < 2:
+	var lines := _lines()
+	if lines.is_empty():
 		return
 	var reach := BOUCLE_BAND_U * Balance.UNIT_PX
 	var hits := 0
-	for e in _enemies_on(pts, reach):
+	for e in _enemies_on_lines(lines, reach):
 		var pos: Vector2 = e.global_position
-		var c := _closest_on(pts, pos)
+		var c := _closest_on_lines(lines, pos)
 		_caster().deal_damage(e, s, {})
 		hits += 1
 		if is_instance_valid(e) and e.has_method(&"push") and not e.is_in_group(&"bosses"):
 			e.push((c - pos).limit_length(BOUCLE_PULL_U * Balance.UNIT_PX))
-	last_loop = {"hits": hits, "length_px": chain_length()}
-	_spawn_flare(smooth_polyline(pts))
-	var l := chain_length()
-	for k in 3:
-		LightRig.flash(_point_at(pts, l * (float(k) + 0.5) / 3.0), s.light_preset, 0.5, {"radius": 0.9})
-	# la chaîne reste posée (24/10) : rien n'est consommé
+	last_loop = {"hits": hits, "length_px": lines_length()}
+	RunState.add_counter("arpenteuse.boucle_hits", float(hits)) # déblocage du Nœud
+	for pts in lines:
+		var smooth: PackedVector2Array = smooth_polyline(pts) if pts == chain_points() else pts
+		_spawn_flare(smooth)
+		var l := 0.0
+		for i in range(1, pts.size()):
+			l += pts[i - 1].distance_to(pts[i])
+		for k in 3:
+			LightRig.flash(_point_at(pts, l * (float(k) + 0.5) / 3.0), s.light_preset, 0.5, {"radius": 0.9})
+	# les chaînes restent posées (24/10) : rien n'est consommé
 
 
 ## Point de la polyligne le plus proche de `p`.
@@ -790,6 +865,7 @@ func _peg_step(delta: float) -> void:
 		_peg_hits[id] = _time
 		var c := Geometry2D.get_closest_point_to_segment(e.global_position, peg_pos, player.global_position)
 		_caster().deal_damage(e, s, {"source_pos": c}) # balayé : écarté de la ligne
+		RunState.add_counter("arpenteuse.piquet_hits") # déblocage des Jalons
 		_heat_t = HEAT_FLASH_S
 
 
@@ -845,6 +921,10 @@ func _do_tendeur(s: SpellData) -> void:
 	for e in _enemies_on(peg, reach):
 		if not targets.has(e):
 			targets.append(e)
+	var jseg := jal_segment()
+	for e in _enemies_on(jseg, reach): # le Tendeur claque aussi sur la ligne A-B des Jalons
+		if not targets.has(e):
+			targets.append(e)
 	_dragged.clear()
 	for e in targets:
 		_caster().deal_damage(e, s, {})
@@ -854,12 +934,13 @@ func _do_tendeur(s: SpellData) -> void:
 	# éclats de lumière le long de la chaîne qui claque
 	var all := pts.duplicate()
 	all.append_array(peg)
+	all.append_array(jseg)
 	for k in 3:
 		if all.size() >= 2:
 			LightRig.flash(all[int(float(all.size() - 1) * (k + 0.5) / 3.0)], s.light_preset, 0.35, {"energy": 0.8})
 	snap_left = SNAP_S
 	line.set_sheet(&"snap")
-	if peg_left > 0.0: # la ligne du piquet claque avec la chaîne
+	if peg_left > 0.0 or jal_line: # la ligne du piquet (ou des Jalons) claque avec la chaîne
 		peg_line.set_sheet(&"snap")
 
 
@@ -883,6 +964,367 @@ func is_rewinding() -> bool:
 	return snap_left > 0.0
 
 
+# --- Variantes : Nœud (sort 2) ------------------------------------------------------------------------
+
+## Points (tous les 0,25 u) des `len_px` premiers pixels de la polyligne, depuis la queue.
+static func _tail_section(pts: PackedVector2Array, len_px: float) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	if pts.size() < 2:
+		return out
+	var step := CHAIN_STEP_U * Balance.UNIT_PX
+	var s := 0.0
+	while s <= len_px:
+		out.append(_point_at(pts, s))
+		s += step
+	return out
+
+
+static func _mean(pts: PackedVector2Array) -> Vector2:
+	var c := Vector2.ZERO
+	for p in pts:
+		c += p
+	return c / maxf(pts.size(), 1)
+
+
+func _knot_reach() -> float:
+	return NOEUD_RADIUS_U * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+
+
+## Frame d'impact : les NOEUD_TAIL_U de queue sont consommés et se resserrent sur leur centroïde (NOEUD_SQUEEZE_S).
+func _do_noeud(s: SpellData) -> void:
+	var tail := _tail_section(chain_points(), NOEUD_TAIL_U * Balance.UNIT_PX)
+	if tail.is_empty():
+		return
+	_knot_pos = _mean(tail)
+	_knot_spell = s
+	knot_left = NOEUD_SQUEEZE_S
+	_trim_tail(NOEUD_TAIL_U * Balance.UNIT_PX)
+	_spawn_knot_flare(tail, _knot_pos)
+
+
+func _knot_step(delta: float) -> void:
+	knot_left = maxf(knot_left - delta, 0.0)
+	if knot_left > 0.0:
+		return
+	var s := _knot_spell
+	_knot_spell = null
+	if s == null or _caster() == null:
+		return
+	var reach := _knot_reach()
+	var hits := 0
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
+			continue
+		if (e as Node2D).global_position.distance_to(_knot_pos) > reach + _radius_of(e):
+			continue
+		_caster().deal_damage(e, s, {"source_pos": _knot_pos})
+		hits += 1
+		if not is_instance_valid(e):
+			continue
+		if e.is_in_group(&"bosses"):
+			if e.has_method(&"apply_status"):
+				e.apply_status(&"slow", {"pct": NOEUD_BOSS_SLOW, "duration": NOEUD_PRISON_S})
+		elif e.has_method(&"apply_status"):
+			e.apply_status(&"imprisoned", {"duration": NOEUD_PRISON_S})
+	last_noeud = {"hits": hits, "center": _knot_pos, "radius_px": reach}
+	_heat_t = HEAT_FLASH_S
+	LightRig.flash(_knot_pos, s.light_preset, 0.5, {"radius": 0.9})
+	_spawn_blaze(_knot_pos, reach)
+
+
+func _spawn_knot_flare(tail: PackedVector2Array, center: Vector2) -> void:
+	var fl := ArpenteuseChainLine.new()
+	fl.name = "KnotFlare"
+	fx_root.add_child(fl)
+	fl.setup(CHAIN_VIS_WIDTH_U * Balance.UNIT_PX, ACCENT)
+	fl.set_sheet(&"snap")
+	fl.energy = HEAT_FLASH_ENERGY * 1.3
+	var tw := fl.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		if not is_instance_valid(fl):
+			return
+		var q := PackedVector2Array()
+		for p in tail:
+			q.append(p.lerp(center, t))
+		fl.set_line(q)
+		fl.advance(1.0 / 60.0), 0.0, 1.0, NOEUD_SQUEEZE_S)
+	tw.tween_callback(fl.queue_free)
+
+
+## Auto-cast du sort 2 (SpellCaster._auto_cast_ok ; jamais consulté en manuel) : attend au moins LOOP_AUTO_MIN_HITS
+## monstres pris (1 si élite ou boss), sinon la recharge partirait dans le vide.
+func auto_cast_ok(slot: int) -> bool:
+	if slot != 2 or player == null or not is_inside_tree():
+		return true
+	if _time - _probe_t < 0.15:
+		return _probe_n >= LOOP_AUTO_MIN_HITS or _probe_n < 0
+	_probe_t = _time
+	var found: Array = []
+	if _spell_id(2) == V_NOEUD:
+		var tail := _tail_section(chain_points(), NOEUD_TAIL_U * Balance.UNIT_PX)
+		if not tail.is_empty():
+			var c := _mean(tail)
+			var reach := _knot_reach()
+			for e in get_tree().get_nodes_in_group(&"enemies"):
+				if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(c) <= reach + _radius_of(e):
+					found.append(e)
+	else:
+		found = _enemies_on_lines(_lines(), BOUCLE_BAND_U * Balance.UNIT_PX)
+	var big := false
+	for e in found:
+		if e.get(&"is_elite") == true or e.is_in_group(&"bosses"):
+			big = true
+	_probe_n = -1 if big else found.size() # -1 : une cible de poids suffit
+	return _probe_n >= LOOP_AUTO_MIN_HITS or _probe_n < 0
+
+
+# --- Variantes : Jalons (sort 3) ----------------------------------------------------------------------
+
+func jal_segment() -> PackedVector2Array:
+	return PackedVector2Array([jal_a, jal_b]) if jal_line else PackedVector2Array()
+
+
+## 1re pression : piquet A ; 2e pression (après JALONS_MIN_GAP_S, dans la fenêtre) : piquet B. Un nouveau A remplace l'ancien.
+func _cast_jalon(s: SpellData, aim: Variant) -> bool:
+	if jal_stage == 1:
+		if _jal_t < JALONS_MIN_GAP_S:
+			return false
+		jal_stage = 2
+		_pending[&"plant"] = {"spell": s, "aim": aim, "t": 0.0, "which": 2}
+		return true
+	if jal_stage == 2:
+		return false
+	_end_jalons()
+	jal_stage = 1
+	_jal_t = 0.0
+	_pending[&"plant"] = {"spell": s, "aim": aim, "t": 0.0, "which": 1}
+	return true
+
+
+## Coupe le trajet origine -> cible au premier mur (jamais de piquet dans un mur).
+func _wall_clip(origin: Vector2, target: Vector2) -> Vector2:
+	if player.is_inside_tree():
+		var q := PhysicsRayQueryParameters2D.create(origin, target, WALL_MASK, [player.get_rid()])
+		var res := player.get_world_2d().direct_space_state.intersect_ray(q)
+		if not res.is_empty():
+			var hp: Vector2 = res["position"]
+			return hp - (hp - origin).normalized() * PEG_WALL_BACK_U * Balance.UNIT_PX
+	return target
+
+
+func _do_jalon(s: SpellData, aim: Variant, which: int) -> void:
+	var px := Balance.UNIT_PX
+	var rng_mult: float = 1.0 + float(player.stat(&"range_add"))
+	if which == 2 and _jal_a_node == null:
+		which = 1 # A perdu (nettoyage) : on repart de zéro
+		jal_stage = 1
+	if which == 1:
+		var origin := player.global_position
+		var target: Vector2
+		if aim != null and ((aim as Vector2) - origin).length_squared() > 1.0:
+			target = origin + ((aim as Vector2) - origin).limit_length(JALONS_A_RANGE_U * px * rng_mult)
+		else:
+			var f: Vector2 = player.facing if player.facing != Vector2.ZERO else Vector2.DOWN
+			target = origin + f.normalized() * PIQUET_DEFAULT_U * px
+		target = _wall_clip(origin, target)
+		jal_a = target
+		_jal_dir = (target - origin).normalized() if target.distance_squared_to(origin) > 1.0 else (player.facing if player.facing != Vector2.ZERO else Vector2.DOWN)
+		var made := _make_peg(jal_a)
+		_jal_a_node = made.get("node")
+		_jal_a_sprite = made.get("sprite")
+		LightRig.flash(jal_a, &"arpenteuse_snap", 0.25, {"energy": 0.6})
+		return
+	var target_b: Vector2
+	if aim != null and ((aim as Vector2) - jal_a).length_squared() > 1.0:
+		target_b = jal_a + ((aim as Vector2) - jal_a).limit_length(JALONS_B_RANGE_U * px * rng_mult)
+	else:
+		target_b = jal_a + _jal_dir * JALONS_B_DEFAULT_U * px
+	var d := target_b - jal_a
+	if d.length() < JALONS_MIN_SPAN_U * px: # trop court : le fil est allongé
+		target_b = jal_a + (d.normalized() if d.length_squared() > 1.0 else _jal_dir) * JALONS_SPAN_U * px
+	jal_b = _wall_clip(jal_a, target_b)
+	var made_b := _make_peg(jal_b)
+	_jal_b_node = made_b.get("node")
+	_jal_b_sprite = made_b.get("sprite")
+	jal_line = true
+	jal_stage = 0
+	jal_left = s.duration if s.duration > 0.0 else JALONS_LIFE_S
+	_jal_hits.clear()
+	peg_line.visible = true
+	LightRig.flash(jal_b, &"arpenteuse_snap", 0.25, {"energy": 0.6})
+
+
+func _jalons_step(delta: float) -> void:
+	var caster := _caster()
+	if jal_stage == 1 and caster != null:
+		_jal_t += delta
+		var s3 := _spell_of(3)
+		if s3 != null:
+			var cd := caster._cooldown_of(s3)
+			if _jal_t >= JALONS_WINDOW_S and not _pending.has(&"plant"):
+				jal_stage = 2 # pas de 2e pression : B part tout seul à JALONS_B_DEFAULT_U
+				_do_jalon(s3, null, 2)
+				caster.set_cooldown(3, cd, cd) # recharge après la pose de B
+			else:
+				caster.set_cooldown(3, 0.0, cd) # le sort reste prêt pour la 2e pression
+	if not jal_line:
+		return
+	jal_left = maxf(jal_left - delta, 0.0)
+	if jal_left <= 0.0:
+		_end_jalons()
+		return
+	var s := _spell_of(3)
+	if s == null or caster == null:
+		return
+	for e in _enemies_on(jal_segment(), _half_w_u() * Balance.UNIT_PX):
+		var id: int = e.get_instance_id()
+		if _time - float(_jal_hits.get(id, -INF)) < PEG_IMMUNITY_S:
+			continue
+		_jal_hits[id] = _time
+		var c := Geometry2D.get_closest_point_to_segment(e.global_position, jal_a, jal_b)
+		caster.deal_damage(e, s, {"source_pos": c})
+		_heat_t = HEAT_FLASH_S
+
+
+## Piquet debout (visuel CREA) en `pos` : {node, sprite} ; node nul sans les rendus.
+func _make_peg(pos: Vector2) -> Dictionary:
+	var node := Node2D.new()
+	node.name = "JalonPeg"
+	fx_root.add_child(node)
+	node.z_index = 1
+	node.global_position = pos
+	var sprite: AnimatedSprite2D = null
+	if ResourceLoader.exists(PEG_FRAMES):
+		var holder := Node2D.new()
+		holder.scale = Iso.UNSQUASH * Iso.SPRITE_K
+		node.add_child(holder)
+		sprite = AnimatedSprite2D.new()
+		sprite.offset = PEG_OFFSET
+		holder.add_child(sprite)
+		EmissiveOverlay.apply(sprite, load(PEG_FRAMES) as SpriteFrames, 2.0)
+	return {"node": node, "sprite": sprite}
+
+
+func _orient_to(sprite: AnimatedSprite2D, d: Vector2) -> void:
+	if sprite == null or sprite.sprite_frames == null:
+		return
+	var i := roundi(d.angle() / (TAU / 8.0)) % 8 if d.length_squared() > 1.0 else 2
+	var a := StringName("peg_" + DIR_NAMES[(i + 8) % 8])
+	if sprite.sprite_frames.has_animation(a) and sprite.animation != a:
+		sprite.play(a)
+
+
+func _orient_jalons() -> void:
+	_orient_to(_jal_a_sprite, jal_b - jal_a)
+	_orient_to(_jal_b_sprite, jal_a - jal_b)
+
+
+func _end_jalons() -> void:
+	jal_stage = 0
+	jal_line = false
+	jal_left = 0.0
+	_jal_hits.clear()
+	for n in [_jal_a_node, _jal_b_node]:
+		if n != null and is_instance_valid(n):
+			n.queue_free()
+	_jal_a_node = null
+	_jal_b_node = null
+	_jal_a_sprite = null
+	_jal_b_sprite = null
+	if peg_line != null and peg_left <= 0.0:
+		peg_line.visible = false
+		peg_line.set_line(PackedVector2Array())
+
+
+# --- Variantes : Cerceau (sort 4) ---------------------------------------------------------------------
+
+func _ring_radius() -> float:
+	return CERCEAU_RADIUS_U * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+
+
+## Anneau fermé de CERCEAU_POINTS points autour d'elle (rendu ; les dégâts testent la distance à elle).
+func ring_points() -> PackedVector2Array:
+	var out := PackedVector2Array()
+	var c := player.global_position
+	var r := _ring_radius()
+	for i in CERCEAU_POINTS + 1:
+		out.append(c + Vector2.RIGHT.rotated(TAU * float(i) / float(CERCEAU_POINTS)) * r)
+	return out
+
+
+func _do_cerceau(s: SpellData) -> void:
+	ring_left = s.duration if s.duration > 0.0 else CERCEAU_LIFE_S
+	_ring_angle = 0.0
+	_ring_tick_t = CERCEAU_TICK_S # premier coup tout de suite
+	LightRig.flash(player.global_position, s.light_preset, 0.4, {"radius": 1.2})
+
+
+func _ring_step(delta: float) -> void:
+	ring_left = maxf(ring_left - delta, 0.0)
+	_ring_angle = fposmod(_ring_angle + TAU * delta / CERCEAU_SPIN_S, TAU)
+	_ring_tick_t += delta
+	var s := _spell_of(4)
+	if s != null and _caster() != null:
+		var interval := Balance.attack_interval(CERCEAU_TICK_S, player.stat(&"attack_speed"))
+		if _ring_tick_t >= interval:
+			_ring_tick_t = 0.0
+			_ring_hit(s)
+	if ring_left <= 0.0:
+		_end_ring()
+
+
+## Un tick du Cerceau : tout monstre dans la bande (r ± CERCEAU_BAND_HALF_U) prend CERCEAU_COEF et est repoussé vers l'extérieur.
+func _ring_hit(s: SpellData) -> int:
+	var c := player.global_position
+	var r := _ring_radius()
+	var half: float = CERCEAU_BAND_HALF_U * Balance.UNIT_PX * (1.0 + float(player.stat(&"zone_size_add")))
+	var hits := 0
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
+			continue
+		var d := (e as Node2D).global_position.distance_to(c)
+		if absf(d - r) > half + _radius_of(e):
+			continue
+		_caster().deal_damage(e, s, {"source_pos": c})
+		hits += 1
+	if hits > 0:
+		ring_hits += hits
+		_heat_t = HEAT_FLASH_S
+	last_ring = {"hits": hits, "radius_px": r}
+	return hits
+
+
+## Fin du Cerceau : la chaîne retombe pleine (prolongée droit derrière la queue si elle était plus courte).
+func _end_ring() -> void:
+	ring_left = 0.0
+	_idle_t = 0.0 # le touret ne rembobine pas tout de suite la chaîne rendue
+	_refill_chain()
+	LightRig.flash(player.global_position, &"arpenteuse_snap", 0.3, {"energy": 0.8})
+
+
+func _refill_chain() -> void:
+	var need := _max_u() * Balance.UNIT_PX - chain_length()
+	if need < 1.0:
+		return
+	var dir := Vector2.ZERO
+	var base := player.global_position
+	if chain.size() >= 2:
+		dir = (chain[0] - chain[1]).normalized()
+		base = chain[0]
+	elif chain.size() == 1:
+		base = chain[0]
+	if dir == Vector2.ZERO:
+		dir = -(player.facing if player.facing != Vector2.ZERO else Vector2.DOWN).normalized()
+	var step := CHAIN_STEP_U * Balance.UNIT_PX
+	var far := _wall_clip(base, base + dir * need) # jamais à travers un mur
+	var n := int(base.distance_to(far) / step)
+	var fresh := PackedVector2Array()
+	for k in range(n, 0, -1):
+		fresh.append(base + dir * step * float(k))
+	fresh.append_array(chain)
+	chain = fresh
+
+
 # --- Nettoyage (étage, mort) ------------------------------------------------------------------------
 
 func clear_transients() -> void:
@@ -890,6 +1332,9 @@ func clear_transients() -> void:
 	_dragged.clear()
 	snap_left = 0.0
 	_end_peg(false)
+	_end_jalons()
+	knot_left = 0.0
+	ring_left = 0.0
 	if player != null:
 		_cut_chain()
 	if line != null:
@@ -931,8 +1376,20 @@ func _update_visuals(delta: float) -> void:
 	line.energy = lerpf(HEAT_ENERGY, HEAT_FLASH_ENERGY, _heat_t / HEAT_FLASH_S)
 	if snap_left > 0.0:
 		line.energy = HEAT_FLASH_ENERGY * 1.4
-	line.set_line(_lift_head(smooth_polyline(pts)))
+	if ring_left > 0.0:
+		line.u_offset = fposmod(_ring_angle / TAU * 2.0, 1.0)
+		line.energy = HEAT_FLASH_ENERGY
+		line.set_line(ring_points())
+	else:
+		line.set_line(_lift_head(smooth_polyline(pts)))
 	line.advance(delta)
+	if jal_line:
+		var jseg := jal_segment()
+		peg_line.u_offset = 0.0
+		peg_line.energy = HEAT_ENERGY * 1.4 if snap_left <= 0.0 else HEAT_FLASH_ENERGY * 1.4
+		peg_line.set_line(jseg)
+		peg_line.advance(delta)
+		_orient_jalons()
 	if peg_left > 0.0:
 		var seg := peg_segment()
 		peg_line.u_offset = 0.0

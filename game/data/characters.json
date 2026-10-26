@@ -99,7 +99,7 @@
         "id": "dagues_demi_lune",
         "name": "Dagues en demi-lune",
         "slot": "auto",
-        "desc": "Balayage automatique en demi-cercle vers l'ennemi le plus proche ; frappe tout le demi-cercle.",
+        "desc": "Balayage automatique en demi-cercle vers l'ennemi le plus proche ; frappe tout le demi-cercle. Portée 3 u.",
         "variants": [
           {
             "id": "rictus_main_du_montreur",
@@ -131,7 +131,7 @@
         "id": "toupie",
         "name": "Toupie",
         "slot": "cd",
-        "desc": "Rictus tourne 2,5 s en glissant et frappe tout autour de lui ; pas de roulade pendant, vertige à la fin.",
+        "desc": "Rictus tourne 2,5 s en glissant et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche. Pas de roulade pendant, vertige à la fin.",
         "variants": [
           {
             "id": "rictus_pirouette",
@@ -147,7 +147,7 @@
         "id": "doublures",
         "name": "Les Doublures",
         "slot": "ultime",
-        "desc": "Six doublures en hexagone attirent les monstres puis explosent ; la Toupie les expédie en étoile.",
+        "desc": "Six doublures en hexagone attirent les monstres puis explosent en grand (2,4 u) ; la Toupie les expédie en étoile, et chaque doublure lancée frappe plus fort.",
         "variants": [
           {
             "id": "rictus_rideau",
@@ -297,28 +297,36 @@
         "name": "Chaîne",
         "slot": "auto",
         "desc": "Elle déroule derrière elle 14 u de chaîne de cuivre chauffé : tout monstre qui la touche brûle et ralentit. Immobile, le touret la rembobine.",
-        "variants": []
+        "variants": [
+          {"id": "arpenteuse_chaine_lestee", "name": "Chaîne lestée", "desc": "7 u de chaîne seulement, mais deux fois plus lourde : elle brûle plus fort et englue ce qui la touche.", "unlock_text": "Gagner une run avec Arpenteuse.", "unlock_key": "spell:arpenteuse_chaine_lestee", "unlock_rule": {"type": "win_with", "character": "arpenteuse"}}
+        ]
       },
       {
         "id": "arpenteuse_boucle",
         "name": "Halage",
         "slot": "cd",
         "desc": "Zone sur toute la longueur de la chaîne posée : les monstres proches sont frappés et attirés contre elle. La chaîne reste au sol.",
-        "variants": []
+        "variants": [
+          {"id": "arpenteuse_noeud", "name": "Nœud", "desc": "Les 4 derniers u de chaîne se nouent sur place : tout ce qui est pris dans le nœud flambe et reste coincé 1 s.", "unlock_text": "Frapper 500 monstres avec le Halage.", "unlock_key": "spell:arpenteuse_noeud", "unlock_rule": {"type": "counter", "key": "arpenteuse.boucle_hits", "value": 500}}
+        ]
       },
       {
         "id": "arpenteuse_piquet",
         "name": "Piquet",
         "slot": "cd",
         "desc": "Plante un piquet au point visé : la chaîne tendue jusqu'à elle balaie les monstres pendant 5 s.",
-        "variants": []
+        "variants": [
+          {"id": "arpenteuse_jalons", "name": "Jalons", "desc": "Deux piquets plantés coup sur coup tendent un fil fixe pendant 6 s : la clôture balaie sans toi.", "unlock_text": "Balayer 800 monstres avec le Piquet.", "unlock_key": "spell:arpenteuse_jalons", "unlock_rule": {"type": "counter", "key": "arpenteuse.piquet_hits", "value": 800}}
+        ]
       },
       {
         "id": "arpenteuse_tendeur",
         "name": "Tendeur",
         "slot": "ultime",
         "desc": "La chaîne claque sur toute sa longueur et traîne les monstres touchés jusqu'à elle, étourdis. La chaîne et le piquet restent posés.",
-        "variants": []
+        "variants": [
+          {"id": "arpenteuse_cerceau", "name": "Cerceau", "desc": "La chaîne se soulève et tourne 4 s autour de toi à 3 u : elle fauche tout, puis repousse entière.", "unlock_text": "Atteindre l'étage 3 avec Arpenteuse.", "unlock_key": "spell:arpenteuse_cerceau", "unlock_rule": {"type": "floor_reached", "character": "arpenteuse", "floor": 3}}
+        ]
       }
     ]
   },
@@ -326,9 +334,9 @@
     "id": "rainette",
     "name": "Rainette",
     "title": "Chevalière des roseaux",
-    "style": "Mobilité / burst, souffle",
+    "style": "Mobilité / burst",
     "config": "4 sorts",
-    "difficulty": 3,
+    "difficulty": 2,
     "unlocked": true,
     "unlock_text": "Ouvert pendant les tests",
     "hidden": false,
@@ -340,29 +348,37 @@
         "id": "rainette_langue",
         "name": "Langue",
         "slot": "auto",
-        "desc": "Coup de langue automatique de 4,5 u vers le plus proche ; frappe toute la ligne et tire les monstres ; un petit monstre tué est avalé (+1 % PV).",
-        "variants": []
+        "desc": "Coup de langue automatique de 4,5 u : la cible principale (le boss, sinon l'élite, sinon le plus proche) prend un gros coup, le reste de la ligne un coup réduit ; tire les monstres ; un petit monstre tué est avalé (+1 % PV).",
+        "variants": [
+          {"id": "rainette_croassement", "name": "Croassement", "desc": "Un croassement repousse tout à 2,5 u autour de toi ; chaque petit monstre qu'il tue raccourcit de 0,25 s la recharge du Grand saut (1 s au plus par croassement).", "unlock_text": "Gagner une run avec Rainette.", "unlock_key": "spell:rainette_croassement", "unlock_rule": {"type": "win_with", "character": "rainette"}}
+        ]
       },
       {
         "id": "rainette_grand_saut",
         "name": "Grand saut",
         "slot": "cd",
-        "desc": "Bond de 6 u vers le point visé ; l'atterrissage écrase tout dans 2,5 u et étourdit 0,5 s. Ne coûte pas de souffle.",
-        "variants": []
+        "desc": "Bond de 6 u vers le point visé ; l'atterrissage écrase tout dans 3 u et étourdit 0,5 s.",
+        "variants": [
+          {"id": "rainette_ricochet", "name": "Ricochet", "desc": "Deux bonds moyens au lieu d'un grand : chaque atterrissage écrase 2 u, et le second bond part tout seul.", "unlock_text": "Étourdir 300 monstres avec le Grand saut.", "unlock_key": "spell:rainette_ricochet", "unlock_rule": {"type": "counter", "key": "rainette.leap_stuns", "value": 300}}
+        ]
       },
       {
         "id": "rainette_gluant",
         "name": "Gluant",
         "slot": "cd",
         "desc": "Crachat de vase au point visé : la flaque ralentit de 40 % et colle les monstres en paquet ; tes bonds qui en partent vont 50 % plus loin.",
-        "variants": []
+        "variants": [
+          {"id": "rainette_bulle", "name": "Bulle", "desc": "Une bulle de vase gobe les monstres du point visé 1,5 s dans les airs, puis éclate et les lâche.", "unlock_text": "Coller 600 monstres dans le Gluant.", "unlock_key": "spell:rainette_bulle", "unlock_rule": {"type": "counter", "key": "rainette.glued", "value": 600}}
+        ]
       },
       {
         "id": "rainette_chant_de_crue",
         "name": "Chant de crue",
         "slot": "ultime",
-        "desc": "4 s, sac vocal gonflé : souffle illimité, bonds doublés, et chaque atterrissage écrase tout dans 3 u.",
-        "variants": []
+        "desc": "4 s, sac vocal gonflé : bonds doublés, et chaque atterrissage écrase tout dans 3 u.",
+        "variants": [
+          {"id": "rainette_choeur", "name": "Chœur des roseaux", "desc": "8 s : chaque atterrissage écrase 2,5 u et laisse une petite flaque gluante 2 s.", "unlock_text": "Avaler 200 monstres avec la Langue.", "unlock_key": "spell:rainette_choeur", "unlock_rule": {"type": "counter", "key": "rainette.swallowed", "value": 200}}
+        ]
       }
     ]
   },
@@ -436,7 +452,7 @@
         "id": "gifle_de_vase",
         "name": "Gifle de vase",
         "slot": "auto",
-        "desc": "Gifle automatique en large arc de 2 u vers l'ennemi le plus proche ; frappe tout l'arc.",
+        "desc": "Gifle automatique en large arc de 2,6 u vers l'ennemi le plus proche ; frappe tout l'arc.",
         "variants": [
           {"id": "bourbe_crachat_de_vase", "name": "Crachat de vase", "desc": "Une motte crachée à 6 u éclate sur 1,2 u et englue ce qu'elle touche. Tes mottes tiennent la ligne.", "unlock_text": "Gagner une run avec Bourbe.", "unlock_key": "spell:bourbe_crachat_de_vase", "unlock_rule": {"type": "win_with", "character": "bourbe"}}
         ]
@@ -445,7 +461,7 @@
         "id": "detacher",
         "name": "Détacher",
         "slot": "cd",
-        "desc": "4 charges : arrache une motte de vase pour 15 % de tes PV max, pris sur tes PV actuels (tes PV max ne baissent pas : soigne-toi pour en relancer). Jamais mortel : impossible sous 50 % de PV. La motte se bat 10 s puis rampe vers toi ; recollée, elle te rend ses PV restants.",
+        "desc": "4 charges (3 s chacune) : arrache une motte de vase. Tant qu'elle est dehors, sa masse (15 % de tes PV max) est retirée de tes PV max ; vaincue, sa part reste perdue 8 s. La motte provoque les monstres à 4 u et se bat 10 s, puis rampe vers toi ; recollée, elle te rend ses PV restants.",
         "variants": [
           {"id": "bourbe_bouture", "name": "Bouture", "desc": "2 grosses mottes au lieu de 4 : chacune pèse 30 % de tes PV, frappe deux fois plus fort et tient 15 s.", "unlock_text": "Recoller 200 mottes.", "unlock_key": "spell:bourbe_bouture", "unlock_rule": {"type": "counter", "key": "bourbe_mottes_recalled", "value": 200}}
         ]

@@ -137,31 +137,39 @@ Base (refonte « l'eau est la seule limite ») : Goutte-lame 0,75 + 0,4 × eau/1
   - Déblocage : **Lancer 5 Crues à 100 d'eau** (`averse_full_crues` ≥ 5 ; lancée à ≥ 99 d'eau).
 
 ### 2.5 Arpenteuse, géomètre de la Cité — second style : « la chaîne qui reste »
-Base : Chaîne 14 u de traîne, 1,0 par 0,5 s, ralentissement 35 %, rembobinage 4 u/s immobile · Boucle 6 s, 3,5 dedans et sur le contour, attraction 1 u, consomme la chaîne (≥ 3 u) · Piquet 8 s, 6 u, ligne piquet→elle 5 s, 1,0 par passage (immunité 0,5 s) · Tendeur 20 s, 10 à 1 u de la chaîne et de la ligne, rembobine et étourdit 1,5 s ; +60 % des sorts 2-4 sur élites et boss.
+Base (24/10/2026, après le rework du Halage) : Chaîne 14 u de traîne, 1,0 par 0,5 s, ralentissement 35 %, rembobinage 4 u/s immobile · Halage (ex-Boucle) 6 s, 3,5 dans une bande de 1,2 u le long de TOUTE la chaîne posée (traîne, ligne du piquet, ligne A-B des Jalons), attraction 1,5 u, rien n'est consommé (≥ 3 u de chaîne posée) · Piquet 8 s, 6 u, ligne piquet→elle 5 s, 1,0 par passage (immunité 0,5 s) · Tendeur 20 s, 10 à 1 u de la chaîne et de la ligne, traîne les monstres jusqu'à elle et les emprisonne 1,5 s (plus de rembobinage : chaîne et piquet restent) ; +40 % des sorts 2-4 sur élites et boss.
+
+Adaptations du 26/10/2026 (le doc d'origine supposait la Boucle consommatrice et le Tendeur rembobinant) :
+- La *Boucle* s'appelle désormais *Halage* ; le déblocage du Nœud compte les monstres frappés par le Halage de base (compteur `arpenteuse.boucle_hits` ≥ 500), celui des Jalons les coups de ligne du Piquet de base (`arpenteuse.piquet_hits` ≥ 800).
+- Le Halage de base n'exige plus d'encercler ni ne consomme la chaîne ; le Nœud garde donc sa propre règle : il **consomme** 4 u de queue (c'est son coût), là où le Halage ne coûte rien. Son auto-cast attend 2 monstres dans le disque (1 si élite ou boss), comme le Halage sur sa bande.
+- Le Cerceau n'a plus de rembobinage à éviter : la chaîne « retombe pleine » = elle est prolongée droit derrière sa queue jusqu'à 14 u (7 u avec la Chaîne lestée) à la fin de l'anneau, et le touret attend 0,6 s avant de rembobiner.
+- Le Tendeur de base ne rembobine plus ; la comparaison « burst + chaîne rendue » du Cerceau se lit donc : 10 instantanés + emprisonnement 1,5 s → 8 × 1,15 = 9,2 étalés sur 4 s en barrière.
+- Le Piquet de base reste mobile (la ligne suit la joueuse) ; les Jalons deviennent une clôture fixe. Le Tendeur claque sur la ligne A-B comme sur celle du piquet.
+- Correctif prioritaire du 26/10 : avec la chaîne attachée au poteau (Piquet planté), le Halage frappe aussi la ligne poteau→joueuse et se lance même si la traîne a été rembobinée (`tests/arpenteuse_peg_test`).
 
 - **Chaîne lestée** (remplace *Chaîne*, auto)
   - *7 u de chaîne seulement, mais deux fois plus lourde : elle brûle plus fort et englue ce qui la touche.*
-  - Mécanique : traîne de **7 u** (14 points tous les 0,5 u), **coef 2,0 par 0,5 s**, proc 0,3, **ralentissement 50 %** 0,6 s, demi-largeur 0,3 u ; immobile > 0,6 s : rembobinage **8 u/s**. Ressource = longueur / 7 (les seuils de Boucle 3 u et Tendeur 2 u inchangés : la Boucle revient en 1,75 s de course au lieu de 3,5 s).
-  - Budget : 14 u × 1,0 = 14 « coef-u » → 7 u × 2,0 = 14. Même puissance totale, deux fois plus dense et deux fois plus courte : boucles petites mais rapides, moins de surface de piège, meilleure défense rapprochée (ce qui la suit s'englue à 50 %).
+  - Mécanique : traîne de **7 u** (points tous les 0,25 u), **coef 2,0 par 0,5 s**, proc 0,3, **ralentissement 50 %** 0,6 s, demi-largeur 0,3 u ; immobile > 0,6 s : rembobinage **8 u/s**. Ressource = longueur / 7 (seuils du Halage 3 u, du Nœud 4 u et du Tendeur 2 u inchangés : le Halage revient en 0,75 s de course au lieu de 3,5 s).
+  - Budget : 14 u × 1,0 = 14 « coef-u » → 7 u × 2,0 = 14. Même puissance totale, deux fois plus dense et deux fois plus courte : boucles petites mais rapides, moins de surface de piège, meilleure défense rapprochée (ce qui la suit s'englue à 50 %). Simulateur : ×1,03 de la Chaîne.
   - Lisibilité : même `Line2D` TILE, bande **1,1 u**, maillons plus gros (`arpenteuse_chain_heavy` : texture 1 tuile), émission 3,2. Son : traînement plus grave.
   - Déblocage : **Gagner une run avec Arpenteuse.**
-- **Nœud** (remplace *Boucle*, sort 1)
+- **Nœud** (remplace *Halage*, sort 2)
   - *Les 4 derniers u de chaîne se nouent sur place : tout ce qui est pris dans le nœud flambe et reste coincé 1 s.*
-  - Mécanique : recharge **6 s**, exige **≥ 4 u** de chaîne ; la **queue** (4 derniers u) se resserre en **0,25 s** autour de son centroïde : disque **2 u** (+ `zone_size_add`) : **coef 3,5**, proc 1,0, **`imprisoned` 1 s** (boss : ralentissement 40 %), pas d'attraction. **Seuls 4 u sont consommés** (la chaîne repousse de 4 u : 1 s de course). Aucune visée : le nœud est toujours là où elle était il y a 10-14 u.
-  - Budget : polygone de taille variable 3,5 + attraction, chaîne entière consommée (3,5 s sans traîne) → disque fixe 2 u 3,5 + 1 s d'étourdissement, 4 u consommés. La Boucle demande d'encercler ; le Nœud fait de la chaîne une **tourelle arrière** : courir droit et nouer ce qui suit.
-  - Lisibilité : `chain_knot` (TOP 6 : maillons qui se resserrent puis flambent, cuivre #FF7A1F), lumière `arpenteuse_blaze`. Son : cliquetis rapide puis claquement.
-  - Déblocage : **Embraser 500 monstres avec la Boucle** (`hits_by_spell:arpenteuse_boucle` ≥ 500).
-- **Jalons** (remplace *Piquet*, sort 2)
+  - Mécanique : recharge **6 s**, exige **≥ 4 u** de traîne ; la **queue** (les 4 u les plus anciens) se resserre en **0,25 s** autour de son centroïde : disque **2 u** (+ `zone_size_add`) : **coef 3,5**, proc 1,0, **`imprisoned` 1 s** (boss : ralentissement 40 %), pas d'attraction. **Seuls 4 u sont consommés** (la chaîne repousse de 4 u : 1 s de course). Aucune visée : le nœud est toujours là où elle était il y a 10-14 u (3-7 u avec la Chaîne lestée).
+  - Budget : bande de 1,2 u le long de toute la chaîne + attraction, rien de consommé → disque fixe 2 u à la queue, 3,5 + 1 s d'emprisonnement, 4 u consommés. Le Halage frappe ce qui est proche de la chaîne ; le Nœud fait de la chaîne une **tourelle arrière** : courir droit et nouer ce qui suit. Simulateur : ×0,95 du Halage (×0,89 en cible unique).
+  - Lisibilité : `chain_knot` (TOP 6 : maillons qui se resserrent puis flambent, cuivre #FF7A1F), lumière `arpenteuse_blaze`. Son : cliquetis rapide puis claquement. Placeholder : la `Line2D` de la queue qui se resserre + le `loop_blaze` existant.
+  - Déblocage : **Frapper 500 monstres avec le Halage** (`arpenteuse.boucle_hits` ≥ 500).
+- **Jalons** (remplace *Piquet*, sort 3)
   - *Deux piquets plantés coup sur coup tendent un fil fixe de 8 u pendant 6 s : la clôture balaie sans toi.*
-  - Mécanique : 1ʳᵉ pression : piquet A au point visé ≤ **6 u** (mobile : paquet le plus dense) ; 2ᵉ pression dans les **3 s** : piquet B ≤ **8 u de A** (sinon à 8 u dans la direction visée) ; la **ligne A-B** est tendue **6 s** : **coef 1,0 par passage**, immunité 0,5 s par monstre, proc 0,5, recul 0,3 u perpendiculaire ; **indépendante de sa position** (elle est libre). Sans 2ᵉ pression à 3 s : B se plante à 4 u de A dans la direction visée. Recharge **8 s** après la pose de B. Un nouveau jalon remplace l'ancien. Le Tendeur claque aussi sur la ligne A-B.
-  - Budget : ligne piquet→elle 5 s, mobile (elle la dirige) → ligne fixe 8 u 6 s. Même coef ; la ligne de base balaie en bougeant (active), les Jalons tiennent une porte ou un couloir pendant qu'elle fait autre chose (passive).
+  - Mécanique : 1ʳᵉ pression : piquet A au point visé ≤ **6 u** (mobile : paquet le plus dense) ; 2ᵉ pression dans les **3 s** (acceptée après 0,6 s) : piquet B ≤ **8 u de A** (sans visée : à 4 u de A dans la direction de A ; B à moins de 3 u de A : fil allongé à 6 u) ; la **ligne A-B** est tendue **6 s** : **coef 1,0 par passage**, immunité 0,5 s par monstre, proc 0,5, recul 0,3 u perpendiculaire ; **indépendante de sa position** (elle est libre). Sans 2ᵉ pression à 3 s : B se plante tout seul à 4 u de A. Le sort reste prêt entre les deux pressions, recharge **8 s** après la pose de B. Un nouveau jalon remplace l'ancien. Le Tendeur claque aussi sur la ligne A-B.
+  - Budget : ligne piquet→elle 5 s, mobile (elle la dirige) → ligne fixe 8 u 6 s. Même coef ; la ligne de base balaie en bougeant (active), les Jalons tiennent une porte ou un couloir pendant qu'elle fait autre chose (passive). Simulateur : ×0,96 du Piquet (×0,85 en cible unique : une clôture fixe n'attrape pas un élite qui la poursuit).
   - Lisibilité : 2 `peg` existants + `Line2D` chaîne tendue (texture existante, émission fixe 2,6) ; fil qui vibre au passage. Son : deux coups de maillet, bourdon du fil.
-  - Déblocage : **Balayer 800 monstres avec le Piquet** (`hits_by_spell:arpenteuse_piquet` ≥ 800).
+  - Déblocage : **Balayer 800 monstres avec le Piquet** (`arpenteuse.piquet_hits` ≥ 800).
 - **Cerceau** (remplace *Tendeur*, ultime)
   - *La chaîne se soulève et tourne 4 s autour de toi à 3 u : elle fauche tout, puis repousse entière.*
-  - Mécanique : recharge **20 s**, exige **≥ 2 u** de chaîne ou un piquet ; la traîne quitte le sol et forme un **anneau de 3 u** (bande 1 u : 2,5-3,5 u, + `zone_size_add`) qui tourne **1 tour / 1 s** pendant **4 s** : **coef 1,25 par 0,5 s** à tout monstre dans la bande (8 ticks = 10 à qui reste), proc 0,4, recul **0,6 u vers l'extérieur** par tick (barrière). Pendant 4 s, pas de traîne au sol (l'auto est le cerceau). À la fin, **la chaîne retombe pleine (14 u / 7 u)**. +60 % élites/boss conservé.
-  - Budget : 10 instantané + rembobinage + 1,5 s d'étourdissement → 10 étalés sur 4 s en barrière + chaîne rendue pleine (≈ 3,5 s de course économisées). Le Tendeur **ramène** (burst, pack pour le Nœud/la Boucle) ; le Cerceau **tient à distance** (survie, zones de charge).
-  - Lisibilité : `chain_hoop` (TOP 8 en boucle : anneau de maillons incandescents, flou de rotation) à `lift_px(0,5)` ; lumière `arpenteuse_snap` en boucle. Son : sifflement rotatif, impacts métalliques.
+  - Mécanique : recharge **20 s**, exige **≥ 2 u** de chaîne, un piquet ou une ligne de Jalons ; la traîne quitte le sol et forme un **anneau de 3 u** (bande 1 u : 2,5-3,5 u, + `zone_size_add`) qui tourne **1 tour / 1 s** pendant **4 s** : **coef 1,15 par 0,5 s** à tout monstre dans la bande (8 ticks = 9,2 à qui reste ; 1,25 au premier jet, abaissé au simulateur), proc 0,4, recul **0,6 u vers l'extérieur** par tick (barrière). Pendant 4 s, pas de traîne au sol (l'auto est le cerceau) ni de Halage/Nœud. À la fin, **la chaîne retombe pleine (14 u / 7 u)**. +40 % élites/boss conservé.
+  - Budget : 10 instantanés + emprisonnement 1,5 s → 9,2 étalés sur 4 s en barrière + chaîne rendue pleine. Le Tendeur **ramène** (burst, pack pour le Halage/Nœud) ; le Cerceau **tient à distance** (survie, zones de charge). Simulateur : ×1,0 du Tendeur (×1,09 avant l'abaissement du coef).
+  - Lisibilité : `chain_hoop` (TOP 8 en boucle : anneau de maillons incandescents, flou de rotation) à `lift_px(0,5)` ; lumière `arpenteuse_snap` en boucle. Son : sifflement rotatif, impacts métalliques. Placeholder : la `Line2D` de la chaîne redessinée en anneau.
   - Déblocage : **Atteindre l'étage 3 avec Arpenteuse** (`floor_reached` 3).
 
 ### 2.6 Rainette, chevalière des roseaux — second style : « la grenouille qui reste au sol »
@@ -316,7 +324,7 @@ Base : Taille et estoc 0,7 s, alternance cercle 2,3 u (1,5) / estoc cône 40° 3
 | **Rictus** | Main du Montreur — gagner une run | Lame-pendule — 150 couteaux ramassés | Pirouette — 30 doublures expédiées | Rideau — étage 3 atteint |
 | **Tocsin** | Vapeur — gagner une run | Bras-harpon — 400 emprisonnés | Jambes-ressorts — 300 poussés | Tête-fumigène — boss d'étage tué sans tête |
 | **Averse** | Bruine — gagner une run | Geyser — 1 000 trempés | Gouttière — 1 500 d'eau en Flaque | Mousson — 5 Crues à 100 |
-| **Arpenteuse** | Chaîne lestée — gagner une run | Nœud — 500 embrasés (Boucle) | Jalons — 800 balayés (Piquet) | Cerceau — étage 3 atteint |
+| **Arpenteuse** | Chaîne lestée — gagner une run | Nœud — 500 frappés (Halage) | Jalons — 800 balayés (Piquet) | Cerceau — étage 3 atteint |
 | **Rainette** | Croassement — gagner une run | Ricochet — 300 étourdis (Grand saut) | Bulle — 600 collés (Gluant) | Chœur des roseaux — 200 avalés |
 | **Avare** | Coffre-bélier — gagner une run | Pièce truquée — 500 pièces ramassées | Saisie — 2 000 d'or de Rançon | Trésor enterré — boss étage 2 |
 | **Bourbe** | Crachat de vase — gagner une run | Bouture — 200 mottes recollées | Éclatement — 800 écrasés (Rappel) | Marée de vase — 3 mini-boss à 4 mottes |
