@@ -104,7 +104,7 @@ func step(delta: float) -> void:
 			if is_instance_valid(h):
 				h.modulate.a = blink
 			if boss != null and is_instance_valid(boss) \
-					and e.position.distance_to(boss.position) <= e.radius_px + float(boss.get(&"radius_px")) + 8.0:
+					and e.global_position.distance_to(boss.global_position) <= e.radius_px + float(boss.get(&"radius_px")) + 8.0:
 				_reach(i)
 		i -= 1
 
