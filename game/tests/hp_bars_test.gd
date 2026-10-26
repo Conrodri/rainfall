@@ -131,6 +131,12 @@ func _ready() -> void:
 	director.process_mode = Node.PROCESS_MODE_INHERIT
 	await _frames(2)
 	_check(not bar2.is_invulnerable_shown(), "invulnérable retiré avec le vrai cerveau")
+	# Nom du boss d'étage : celui de son id (floors.json boss_names), pas celui de la carte.
+	var cerf_name := str((FloorPlan.data().get("boss_names", {}) as Dictionary).get(String(cerf.boss_id()), ""))
+	_check(not cerf_name.is_empty() and BossBars.boss_name(cerf, true, get_tree()) == cerf_name, "nom du boss d'étage par id : « %s »" % BossBars.boss_name(cerf, true, get_tree()))
+	for f: Dictionary in FloorPlan.floors():
+		for bid in f.get("floor_bosses", []):
+			_check((FloorPlan.data().get("boss_names", {}) as Dictionary).has(bid), "floors.json boss_names : nom pour %s" % bid)
 	cerf.take_damage(cerf.max_hp * 2.0)
 	await _frames(3)
 

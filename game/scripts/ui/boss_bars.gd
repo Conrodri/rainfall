@@ -1,7 +1,8 @@
 class_name BossBars
 extends VBoxContainer
 ## Barres de boss en haut de l'écran : nom + PV de chaque boss vivant (groupe `bosses`).
-## Boss d'étage : nom de la carte (data/maps/<id>.json, floor_boss_name) ; mini-boss : « Gardien du pilier ».
+## Boss d'étage : nom de son id (data/floors.json, boss_names), sinon celui de la carte (data/maps/<id>.json,
+## floor_boss_name) ; mini-boss : nom de data/minibosses.json, sinon « Gardien du pilier ».
 ## Suit Events.boss_spawned / boss_killed ; PV relus chaque image (au plus 3 boss).
 ## Élément fonctionnel provisoire (rectangles), à habiller par un asset d'UI Blender plus tard.
 
@@ -47,9 +48,14 @@ func names() -> Array:
 	return out
 
 
-static func boss_name(_boss: Node, is_floor: bool, tree: SceneTree) -> String:
+static func boss_name(boss: Node, is_floor: bool, tree: SceneTree) -> String:
 	if not is_floor:
-		return mini_name(_boss)
+		return mini_name(boss)
+	# Plusieurs boss par étage (tirés parmi 3) : le nom suit le boss, pas la carte.
+	var bid := str(boss.call(&"boss_id")) if boss != null and boss.has_method(&"boss_id") else ""
+	var by_id := str((FloorPlan.data().get("boss_names", {}) as Dictionary).get(bid, "")) if bid != "" else ""
+	if not by_id.is_empty():
+		return by_id
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if sm != null:
 		var d := Minimap.map_json(str(sm.get(&"map_id")))

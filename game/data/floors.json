@@ -1,5 +1,11 @@
 {
  "_doc": "Roster de la run (source de vérité, docs/Design_Etages.md §6.1), lu par FloorPlan (scripts/stage/floor_plan.gd). Étage -> biome (clé de data/fauna.json, qui garde les sprites de faune), nom affiché, cartes (variantes A/B : seules celles dont data/maps/<id>.json existe sont tirées), boss d'étage et mini-boss (ordre = préférence : le tirage ne garde que les sprites livrés, sinon le premier de la liste), `final` = étage du boss final (victoire / sans fin). Sans fin : étage n -> étage ((n - 1) % floors_per_loop) + 1, variante opposée à chaque boucle. draw_rules_override : fusionné par-dessus les draw_rules de la carte.",
+ "boss_names": {"_doc": "Nom affiché de chaque boss d'étage (id = Enemy.boss_id()), lu par BossBars ; absent = floor_boss_name de la carte.",
+  "eclusier": "L'Éclusier", "ox_herder": "Le Bouvier", "jar_bearer": "La Porteuse de jarres",
+  "cerf": "Le Cerf-Lanterne", "weaver": "La Tisseuse", "hermit_cedar": "Le Cèdre-Ermite",
+  "sonneur": "Le Sonneur", "crane": "La Grue", "smelter": "Le Fondeur",
+  "recluse": "Le Reclus", "crystal_mother": "La Mère-Cristal", "deep_eel": "L'Anguille des profondeurs",
+  "rain_sower": "Le Semeur de pluie"},
  "floors_per_loop": 5,
  "floors": [
   {"floor": 1, "biome": "terrasses", "name": "Terrasses noyées",

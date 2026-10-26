@@ -169,7 +169,7 @@ func _ready() -> void:
 	var boss := director.spawn_boss(&"etage", pp + Vector2(0, -400))
 	await _frames(3)
 	var bb := hud.boss_bars
-	var expected := str(Minimap.map_json(stage.map_id).get("floor_boss_name", ""))
+	var expected := str((FloorPlan.data().get("boss_names", {}) as Dictionary).get(String(boss.call(&"boss_id")), ""))
 	_check(bb.visible and bb.count() == 1 and bb.names()[0] == expected, "barre de boss : « %s »" % str(bb.names()))
 	_check(vp.encloses(bb.get_global_rect()) and not bb.get_global_rect().intersects(mr), "barre de boss à l'écran, hors minimap")
 	await _wait(0.2)
