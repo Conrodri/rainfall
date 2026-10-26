@@ -305,7 +305,7 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 				_body.modulate.a = vis.modulate.a
 			var bn := _reflect_block.get("crystal") as CanvasItem
 			if is_instance_valid(bn): # le bloc choisi palpite (blanchit) : lisible
-				bn.modulate = Color(1.0, 1.0, 1.0, 1.0).lerp(Color(1.8, 1.8, 1.8, 1.0), 0.5 + 0.5 * sin(_t * 22.0))
+				bn.modulate = Color(1.0, 1.0, 1.0, 1.0).lerp(Color(1.3, 1.3, 1.3, 1.0), 0.5 + 0.5 * sin(_t * 22.0))
 			if _t >= _dur:
 				_emerge(player, ppos)
 			return Vector2.ZERO
@@ -608,7 +608,7 @@ func _set_lamp(b: Dictionary, on: bool) -> void:
 	var root := b["node"] as Node2D
 	if not is_instance_valid(root):
 		return
-	b["light"] = LightRig.attach(root, &"crystal_vein", {"color": CRYSTAL, "energy": 2.4, "radius": 0.85, "offset": Vector2(0.0, Iso.lift_logical(0.8))})
+	b["light"] = LightRig.attach(root, &"crystal_vein", {"color": CRYSTAL, "energy": 1.4, "radius": 0.85, "offset": Vector2(0.0, Iso.lift_logical(0.8))})
 	var g: Node2D
 	if _frames != null and _frames.has_animation(&"lamp_glow"):
 		var s := _sprite(&"lamp_glow", Vector2.ONE * (LAMP_R_U * U / 128.0), Vector2.ZERO, -2, 1.6)

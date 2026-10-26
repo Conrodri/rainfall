@@ -109,6 +109,9 @@ static var _instance: LightRig = null
 ## Multiplicateurs globaux par catégorie, réglés par AmbianceManager (D et carte) :
 ## {&"player": Vector2(rayon, énergie), &"decor": …}
 static var category_scale: Dictionary = {}
+## Plafond d'énergie d'une PointLight2D de catégorie « boss » (retour joueur 26/10/2026 : boss trop brillants).
+## Mini-boss : JSON 1,7-2,3 + boosts de phase ; au-delà, la lumière écrase le cel-shading et sature le glow.
+const BOSS_LIGHT_MAX_ENERGY := 1.5
 ## Multiplie l'intervalle entre deux extinctions (lampes à Cataclysme : 0,35).
 static var outage_scale := 1.0
 
@@ -479,6 +482,8 @@ func _update_lights(delta: float) -> void:
 			target_e *= heartbeat(_time * hz + hh.seed)
 		elif float(p["pulse"]) > 0.0:
 			target_e *= 1.0 + float(p["pulse"]) * sin(_time * hz * TAU + hh.seed)
+		if p["category"] == &"boss":
+			target_e = minf(target_e, BOSS_LIGHT_MAX_ENERGY)
 		var omax := float(p["outage_max"])
 		if omax > 0.0:
 			hh._outage_t -= delta
