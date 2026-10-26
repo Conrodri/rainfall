@@ -134,6 +134,19 @@ func silence(seconds: float) -> int:
 	return n
 
 
+## Relance le sort du slot sans toucher à sa recharge (Couronne d'écho) ; passe par cast(), donc aussi pour les sorts de kit.
+func repeat_cast(slot: int) -> bool:
+	if not _remaining.has(slot):
+		return false
+	var rem: float = _remaining[slot]
+	var tot: float = _totals[slot]
+	_remaining[slot] = 0.0
+	var ok := cast(slot)
+	_remaining[slot] = rem
+	_totals[slot] = tot
+	return ok
+
+
 ## Vrai si le slot existe (sort du personnage, recharge suivie).
 func has_slot(slot: int) -> bool:
 	return _remaining.has(slot)

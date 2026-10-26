@@ -47,7 +47,20 @@ func start() -> void:
 	var res := LootRoller.roll_quality(kind, rng, roundi(stats.get("luck", 0.0)))
 	quality = res["quality"]
 	die = res["die"]
+	_apply_de_pipe()
 	_draw()
+
+
+## Dé pipé : le premier petit coffre de chaque étage est au moins Peu commun (étage retenu dans RunState.counters,
+## donc sauvegardé avec la run).
+func _apply_de_pipe() -> void:
+	if kind != &"petit" or RunState.stacks(&"de_pipe") <= 0 or int(RunState.counters.get("de_pipe_stage", 0)) == stage:
+		return
+	RunState.counters["de_pipe_stage"] = stage
+	var min_q := StringName(str(LegendaryEffects.data_of(&"de_pipe").get("min_quality", "peu_commun")))
+	if LootRoller.quality_rank(quality) < LootRoller.quality_rank(min_q):
+		quality = min_q
+		die = LootRoller.die_range(kind, min_q).x
 
 
 func _draw() -> void:

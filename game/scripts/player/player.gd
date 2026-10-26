@@ -44,6 +44,7 @@ var stats: Dictionary = {}
 var procs: Array = []
 var specials: Dictionary = {}
 var spells: SpellCaster
+var legendary: LegendaryEffects ## effets des légendaires à logique propre (scripts/items/legendary_effects.gd)
 var kit: Node = null ## logique propre au personnage (null : Ardent)
 ## Monstres tués à moins de CLOSE_KILL_U (déblocage caché de Rictus, Profile.add_run_result).
 var close_kills := 0
@@ -161,6 +162,10 @@ func _ready() -> void:
 		kit.setup(self)
 	RunState.level_up.connect(_on_level_up)
 	Events.enemy_killed.connect(_on_enemy_killed)
+	legendary = LegendaryEffects.new()
+	add_child(legendary)
+	legendary.setup(self)
+	legendary.refresh() # items déjà possédés (reprise de run, scène rechargée)
 	Haptics.connect_events()
 	_light = LightRig.attach(self, &"player")
 	var core := LightRig.attach(self, &"player_core")
@@ -223,6 +228,8 @@ func apply_stats(new_stats: Dictionary) -> void:
 	stats = new_stats.duplicate(true)
 	procs = (stats.get("procs", []) as Array).duplicate(true)
 	specials = (stats.get("specials", {}) as Dictionary).duplicate(true)
+	if legendary != null:
+		legendary.refresh()
 	_recompute(false)
 
 
@@ -402,6 +409,8 @@ func tick(delta: float) -> void:
 	_dodge_cd = maxf(_dodge_cd - delta, 0.0)
 	_riposte_cd = maxf(_riposte_cd - delta, 0.0)
 	_action_step(delta)
+	if legendary != null:
+		legendary.tick(delta)
 	if kit != null:
 		kit.tick(delta)
 	if _slow_left > 0.0:
