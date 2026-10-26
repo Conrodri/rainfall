@@ -1,7 +1,7 @@
 extends Node
 ## Test headless des variantes de sorts de Taliant (docs/Variantes_Sorts.md §2.10, CONTRACTS.md « Variantes de
 ## sorts ») : substitution par CharacterData.for_id, déclaration dans characters.json, règles de déblocage, lancer et
-## dégâts de Taille lente, Fendoir, Affûtage en marche et Trempe, compteurs de déblocage.
+## dégâts de Taille lente, Fendoir, Sur-aiguisage et Trempe, compteurs de déblocage.
 ## godot --headless --path game res://tests/morfil_variants_test.tscn  (scène : les autoloads doivent exister)
 
 class FakeEnemy extends Node2D:
@@ -92,7 +92,7 @@ func _reset() -> void:
 	_kit.sharpness = MorfilKit.SHARP_MAX
 	_kit.twin_left = 0.0
 	_kit.temper_left = 0.0
-	_kit.walk_left = 0.0
+	_kit._end_edge()
 	_kit.sharpen_left = 0.0
 	_kit.guard_left = 0.0
 	_kit.twin_strikes = 0
@@ -127,7 +127,7 @@ func _run() -> void:
 	_check("variante inconnue : sort de base", CharacterData.for_id(&"morfil", {1: &"morfil_fantome"}).spells[0].id == &"taille_estoc")
 	_check("variant() inconnue = null", MorfilKit.variant(1, &"nope") == null and MorfilKit.variant(2, &"morfil_trempe") == null)
 	_check("cooldowns des variantes", _near(var_cd.spells[0].base_cooldown, 1.0) and _near(var_cd.spells[1].base_cooldown, 6.0)
-			and _near(var_cd.spells[2].base_cooldown, 7.0) and _near(var_cd.spells[3].base_cooldown, 30.0))
+			and _near(var_cd.spells[2].base_cooldown, 12.0) and _near(var_cd.spells[3].base_cooldown, 30.0))
 
 	# --- characters.json ---------------------------------------------------------------------------
 	print("characters.json")
@@ -241,41 +241,42 @@ func _run() -> void:
 	_kit._crescent(Vector2.RIGHT)
 	_check("11 monstres : rien", float(RunState.counters.get("morfil.crescent_big_casts", 0.0)) == 0.0)
 
-	print("Sort 3 : Affûtage en marche")
+	print("Sort 3 : Sur-aiguisage")
 	_reset()
-	_check("refusé à 100 %", not _player.spells.cast(3))
-	_kit.sharpness = 40.0
-	_check("lancé sous 100 %", _player.spells.cast(3))
-	_check("posture 3 s, vitesse ×0,6, auto bloquée", _near(_kit.walk_left, 3.0, 0.01) and _near(_kit.speed_mult(), 0.6) and _kit.blocks_slot(1))
+	_check("lançable même à 100 % (préparer le coup)", _player.spells.cast(3))
+	_kit.flush_pending()
+	_check("sur-fil armé : 6 gestes, 8 s", _kit.edge_strikes == 6 and _near(_kit.edge_left, 8.0, 0.01))
 	_check("compteur d'aiguisages +1", _near(RunState.counters.get("morfil.sharpen_casts", 0.0), 1.0))
-	_advance(1.0)
-	_check("+25 %/s : 65 % après 1 s", _near(_kit.sharpness, 65.0, 7.0), str(_kit.sharpness))
-	_check("recharge 7 s", _near(_player.get_spell_cooldowns()[2].total, 7.0, 0.01), str(_player.get_spell_cooldowns()[2]))
-	var wcast := _fake(Vector2(2.0 * U, 0))
-	_player.spells.aim_override = Vector2(2.0 * U, 0)
-	_player.spells.cast(2)
-	_check("Fendoir interrompt la posture (acquis gardé)", _kit.walk_left == 0.0 and _near(_kit.speed_mult(), 1.0) and _kit.sharpness >= 58.0, str(_kit.sharpness))
-	wcast.queue_free()
-	_reset()
-	_kit.sharpness = 40.0
-	_player.spells.cast(3)
+	_check("recharge 12 s", _near(_player.get_spell_cooldowns()[2].total, 12.0, 0.01), str(_player.get_spell_cooldowns()[2]))
+	_check("vitesse normale", _near(_kit.speed_mult(), 1.0))
+	var et := _fake(Vector2(1.5 * U, 0))
 	_advance(0.5)
-	_kit.on_dodge_start(Vector2.RIGHT)
-	_check("l'Iaï (roulade) interrompt la posture", _kit.walk_left == 0.0)
+	_player.spells._remaining[1] = 0.0
+	_player.spells.cast(1)
+	_kit.flush_pending()
+	_check("coup sous sur-fil : ×1,5", _near(et.total(), MorfilKit.SLOW_COEF * BASE * 1.5) and _kit.edge_strikes == 5, str([et.taken, _kit.edge_strikes]))
+	et.queue_free()
 	_reset()
 	_kit.sharpness = 40.0
 	_player.spells.cast(3)
-	_advance(3.2)
-	_check("3 s complètes : +75 % (115 plafonné à 100)", _near(_kit.sharpness, 100.0, 0.5) and _kit.walk_left == 0.0, str(_kit.sharpness))
+	_kit.flush_pending()
+	_check("lame remise à 100 %", _near(_kit.sharpness, 100.0))
+	_kit.edge_strikes = 1
+	_kit._use_edge()
+	_check("dernier cran : sur-fil éteint", _kit.edge_strikes == 0 and _kit.edge_left == 0.0 and _near(_kit._strike_mult(), 1.0))
+	_reset()
+	_player.spells.cast(3)
+	_kit.flush_pending()
+	_advance(8.2)
+	_check("fenêtre de 8 s écoulée : sur-fil perdu", _kit.edge_strikes == 0 and _near(_kit._strike_mult(), 1.0))
 	_reset()
 	_kit.sharpness = 30.0
-	_check("auto-cast : sous 55 %, rien à 2 u", _kit.auto_cast_ok(3))
-	var close := _fake(Vector2(1.0 * U, 0))
-	_check("auto-cast : refusé si un monstre à 2 u", not _kit.auto_cast_ok(3))
-	close.global_position = Vector2(4.0 * U, 0)
-	_check("auto-cast : monstre à 4 u = ok", _kit.auto_cast_ok(3))
-	_kit.sharpness = 80.0
-	_check("auto-cast : refusé au-dessus de 55 %", not _kit.auto_cast_ok(3))
+	_check("auto-cast : sous 75 % et sur-fil épuisé", _kit.auto_cast_ok(3))
+	_kit.edge_strikes = 3
+	_check("auto-cast : refusé tant que le sur-fil dure", not _kit.auto_cast_ok(3))
+	_kit.edge_strikes = 0
+	_kit.sharpness = 90.0
+	_check("auto-cast : refusé au-dessus de 75 %", not _kit.auto_cast_ok(3))
 
 	print("Sort 4 : Trempe")
 	_reset()

@@ -570,7 +570,7 @@
         "slot": "cd",
         "desc": "Grand coup en demi-cercle devant lui (3,5 u). Coûte 15 % d'aiguisage.",
         "variants": [
-          {"id": "morfil_fendoir", "name": "Fendoir", "desc": "Un coup vertical qui fend une ligne de 5 u devant toi, et un pas en avant. Même usure que la Fauche-lune.", "unlock_text": "Toucher 12 monstres d'une seule Fauche-lune.", "unlock_key": "spell:morfil_fendoir", "unlock_rule": {"type": "counter", "key": "morfil.crescent_big_casts", "value": 1}}
+          {"id": "morfil_fendoir", "name": "Fendoir", "desc": "Un coup vertical qui fend une ligne de 5 u devant toi, et un pas en avant : zone plus étroite que la Fauche-lune, mais 15 % de dégâts en plus. Même usure.", "unlock_text": "Toucher 12 monstres d'une seule Fauche-lune.", "unlock_key": "spell:morfil_fendoir", "unlock_rule": {"type": "counter", "key": "morfil.crescent_big_casts", "value": 1}}
         ]
       },
       {
@@ -579,7 +579,7 @@
         "slot": "cd",
         "desc": "Repasse la lame sur la pierre : l'aiguisage remonte à 100 %. Les dégâts suivent l'aiguisage (1 % de dégâts par %).",
         "variants": [
-          {"id": "morfil_affutage_en_marche", "name": "Affûtage en marche", "desc": "Tu repasses la lame en marchant 3 s (+25 %/s), lent et sans frapper ; interrompable. Revient plus vite.", "unlock_text": "Aiguiser 120 fois.", "unlock_key": "spell:morfil_affutage_en_marche", "unlock_rule": {"type": "counter", "key": "morfil.sharpen_casts", "value": 120}}
+          {"id": "morfil_affutage_en_marche", "name": "Sur-aiguisage", "desc": "Lame remise à 100 % et sur-fil : tes 6 prochains gestes (8 s) frappent ×1,5. Lançable même lame au fil. Recharge 12 s.", "unlock_text": "Aiguiser 120 fois.", "unlock_key": "spell:morfil_affutage_en_marche", "unlock_rule": {"type": "counter", "key": "morfil.sharpen_casts", "value": 120}}
         ]
       },
       {

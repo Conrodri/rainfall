@@ -100,7 +100,7 @@ const SLOW_TRIGGER_U := 2.6
 const COST_SLOW := 5.0
 const SLOW_GUARD_TAKEN_MULT := 0.65 ## posture lourde : -35 % de dégâts subis (au lieu de -45 %)
 # Fendoir (slot 2) : ligne de 5 u x 1 u et un pas en avant
-const CLEAVE_COEF := 4.0
+const CLEAVE_COEF := 4.6 ## +15 % sur la Fauche-lune (4,0) : zone 4× plus petite (retour joueur 26/10)
 const CLEAVE_LEN_U := 5.0
 const CLEAVE_WIDTH_U := 1.0
 const CLEAVE_CD := 6.0
@@ -108,13 +108,13 @@ const CLEAVE_PROC := 1.0
 const CLEAVE_KNOCK_U := 0.6
 const CLEAVE_STEP_U := 1.0
 const CLEAVE_TRIGGER_U := 4.0
-# Affûtage en marche (slot 3) : 3 s de posture lente, +25 %/s
-const WALK_CD := 7.0
-const WALK_S := 3.0
-const WALK_RATE := 25.0 ## % d'aiguisage par seconde
-const WALK_TICK_S := 0.25
-const WALK_SPEED_MULT := 0.6
-const WALK_AUTO_CLEAR_U := 2.0 ## auto-cast : seulement si aucun monstre plus près
+# Sur-aiguisage (slot 3, id `morfil_affutage_en_marche` conservé pour les sauvegardes) : lame remise à 100 %
+# ET sur-fil pour EDGE_STRIKES gestes de lame (x EDGE_MULT), fenêtre EDGE_S ; lançable même à 100 % (préparer le coup).
+const EDGE_CD := 12.0
+const EDGE_STRIKES := 6
+const EDGE_MULT := 1.5
+const EDGE_S := 8.0
+const EDGE_AUTO_SHARPEN_BELOW := 75.0 ## auto-cast : relancer quand le sur-fil est épuisé et la lame sous ce seuil
 # Trempe (slot 4) : lame trempée, plus d'usure, dégâts x1,5, une seule lame
 const TEMPER_MULT := 1.5
 # Compteurs de déblocage (RunState.add_counter -> Profile.stats ; règles « counter » de characters.json)
@@ -167,11 +167,11 @@ var _iai_active := false
 var _iai_paid := false
 var _iai_from := Vector2.ZERO
 var _last_auto: StringName = &"circle"
-var walk_left := 0.0 ## posture d'Affûtage en marche (s restantes)
+var edge_left := 0.0 ## sur-fil du Sur-aiguisage (s restantes)
+var edge_strikes := 0 ## gestes de lame restants sous le sur-fil
 var temper_left := 0.0 ## Trempe active (s)
 var temper_total := 0.0
 var cleaves := 0 ## Fendoirs lancés (tests)
-var _walk_acc := 0.0
 var _guard_mult := GUARD_TAKEN_MULT
 var _iai_hit := {} ## instance_id -> true (une fois par roulade)
 var _iai_spell: SpellData = null
@@ -294,7 +294,7 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s2.proc_coef = CLEAVE_PROC
 			return s2
 		[3, V_WALK]:
-			var s3 := _spell(V_WALK, "Affûtage en marche", 3, 0.0, WALK_CD)
+			var s3 := _spell(V_WALK, "Sur-aiguisage", 3, 0.0, EDGE_CD)
 			s3.is_zone = false
 			s3.range_u = 99.0
 			s3.trigger_range_u = 99.0
@@ -410,7 +410,7 @@ func twin_duration_s() -> float:
 # --- Hooks du joueur et de SpellCaster ----------------------------------------------------------
 
 func blocks_slot(slot: int) -> bool:
-	return slot == 1 and (sharpen_left > 0.0 or walk_left > 0.0)
+	return slot == 1 and sharpen_left > 0.0
 
 
 func slot_affordable(slot: int) -> bool:
@@ -430,9 +430,8 @@ func slot_cost_info(slot: int) -> Dictionary:
 func auto_cast_ok(slot: int) -> bool:
 	match slot:
 		3:
-			if _slot_id(3) == V_WALK: # posture lente : seulement hors de portée de morsure
-				var c := _caster()
-				return sharpness < SHARP_AUTO_SHARPEN_BELOW and (c == null or c.nearest_enemy(WALK_AUTO_CLEAR_U * Balance.UNIT_PX) == null)
+			if _slot_id(3) == V_WALK: # sur-fil : quand il est épuisé et que la lame faiblit
+				return edge_strikes <= 0 and sharpness < EDGE_AUTO_SHARPEN_BELOW
 			return sharpness < SHARP_AUTO_SHARPEN_BELOW
 		4:
 			return can_ult()
@@ -452,7 +451,7 @@ func can_dodge() -> bool:
 
 
 func speed_mult() -> float:
-	return WALK_SPEED_MULT if walk_left > 0.0 else 1.0
+	return 1.0
 
 
 func inertia_s() -> float:
@@ -473,7 +472,6 @@ func dodge_ghosts() -> bool:
 
 ## Iaï : la roulade dégaine ; chaque monstre traversé est tranché une fois (tick).
 func on_dodge_start(_dir: Vector2) -> void:
-	_end_walk() # l'Iaï interrompt l'Affûtage en marche
 	_iai_active = true
 	_iai_paid = false
 	_iai_hit.clear()
@@ -488,13 +486,11 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 			return _cast_slow()
 		&"fauche_lune":
 			var dir := _aim_dir(aim, CRESCENT_RADIUS_U)
-			_end_walk()
 			_queue(&"crescent", _crescent.bind(dir))
 			player.facing = dir
 			return true
 		V_CLEAVE:
 			var cdir := _aim_dir(aim, CLEAVE_LEN_U)
-			_end_walk()
 			_queue(&"cleave", _cleave.bind(cdir))
 			player.facing = cdir
 			return true
@@ -506,12 +502,11 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 			_queue(&"sharpen", _do_sharpen)
 			return true
 		V_WALK:
-			if sharpness >= SHARP_MAX - 0.001 or is_tempered():
-				return false
-			walk_left = WALK_S
-			_walk_acc = 0.0
-			guard_left = 0.0 # pas de garde pendant la posture
+			if is_tempered():
+				return false # la trempe ne s'use pas : pas de sur-fil par-dessus
+			sharpen_left = SHARPEN_LOCK_S
 			RunState.add_counter(COUNTER_SHARPEN)
+			_queue(&"sharpen", _do_overedge)
 			return true
 		&"lames_jumelles":
 			if not can_ult():
@@ -659,6 +654,7 @@ func _swing(s: SpellData, cost: float, pos: Vector2, arc_dir := Vector2.ZERO, gu
 	if c == null:
 		return
 	var hit := _scaled(s, _strike_mult())
+	_use_edge()
 	swings += 1
 	guard_left = GUARD_S
 	_guard_mult = guard_mult
@@ -671,7 +667,18 @@ func _swing(s: SpellData, cost: float, pos: Vector2, arc_dir := Vector2.ZERO, gu
 
 ## Multiplicateur d'un coup : aiguisage x Trempe.
 func _strike_mult() -> float:
-	return damage_mult() * (TEMPER_MULT if is_tempered() else 1.0)
+	var m := damage_mult() * (TEMPER_MULT if is_tempered() else 1.0)
+	if edge_strikes > 0 and edge_left > 0.0:
+		m *= EDGE_MULT
+	return m
+
+
+## Un geste de lame use un cran de sur-fil.
+func _use_edge() -> void:
+	if edge_strikes > 0:
+		edge_strikes -= 1
+		if edge_strikes <= 0:
+			edge_left = 0.0
 
 
 ## Le second katana : même coup (même aiguisage), depuis la position courante, sans coût.
@@ -789,15 +796,23 @@ func _cleave_line(hit: SpellData, origin: Vector2, dir: Vector2) -> int:
 	return n
 
 
-func _end_walk() -> void:
-	walk_left = 0.0
-	_walk_acc = 0.0
+func _end_edge() -> void:
+	edge_left = 0.0
+	edge_strikes = 0
 
 
 func _do_sharpen() -> void:
 	sharpen()
 	LightRig.flash(player.global_position, LIGHT_SPELL, 0.5)
 	Audio.play(&"pickup.coin", player.global_position, -10.0, 2.2) # crissement de pierre (repli sonore)
+
+
+## Sur-aiguisage : lame au fil et sur-fil armé pour EDGE_STRIKES gestes (EDGE_S s).
+func _do_overedge() -> void:
+	_do_sharpen()
+	edge_strikes = EDGE_STRIKES
+	edge_left = EDGE_S
+	LightRig.flash(player.global_position, LIGHT_SPELL, 0.8)
 
 
 func _twin_draw() -> void:
@@ -846,6 +861,7 @@ func _iai_step() -> void:
 		if not _iai_paid: # un seul coût par roulade
 			_iai_paid = true
 			swings += 1
+			_use_edge()
 			consume(COST_IAI)
 		LightRig.flash(player.global_position, LIGHT_SPELL, 0.15)
 
@@ -877,14 +893,10 @@ func tick(delta: float) -> void:
 		twin_left = maxf(twin_left - delta, 0.0)
 	if temper_left > 0.0:
 		temper_left = maxf(temper_left - delta, 0.0)
-	if walk_left > 0.0:
-		walk_left = maxf(walk_left - delta, 0.0)
-		_walk_acc += delta
-		while _walk_acc >= WALK_TICK_S:
-			_walk_acc -= WALK_TICK_S
-			sharpness = minf(sharpness + WALK_RATE * WALK_TICK_S, SHARP_MAX)
-		if sharpness >= SHARP_MAX - 0.001:
-			_end_walk() # lame au fil : la posture se termine
+	if edge_left > 0.0:
+		edge_left = maxf(edge_left - delta, 0.0)
+		if edge_left <= 0.0:
+			edge_strikes = 0
 	if not _delayed.is_empty():
 		var due: Array = []
 		for d in _delayed:
@@ -906,7 +918,7 @@ func tick(delta: float) -> void:
 ## Ressource (contrat KitResource) : jauge continue d'aiguisage, repère au seuil de l'ultime.
 func resource_state() -> Dictionary:
 	return KitResource.make(&"sharpness", "Aiguisage", sharp_ratio(), ACCENT,
-		{"text": "%d %%" % roundi(sharpness), "mark": SHARP_ULT_MIN / SHARP_MAX, "boost": is_twin() or is_tempered()})
+		{"text": "%d %%" % roundi(sharpness), "mark": SHARP_ULT_MIN / SHARP_MAX, "boost": is_twin() or is_tempered() or edge_strikes > 0})
 
 
 func save_state() -> Dictionary:
@@ -929,7 +941,7 @@ func clear_transients() -> void:
 	_delayed.clear()
 	_iai_active = false
 	_iai_hit.clear()
-	_end_walk()
+	_end_edge()
 
 
 ## Entre deux étages, Taliant repasse la pierre : lame au fil.
