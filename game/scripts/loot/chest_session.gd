@@ -57,7 +57,7 @@ func _apply_de_pipe() -> void:
 	if kind != &"petit" or RunState.stacks(&"de_pipe") <= 0 or int(RunState.counters.get("de_pipe_stage", 0)) == stage:
 		return
 	RunState.counters["de_pipe_stage"] = stage
-	var min_q := StringName(str(LegendaryEffects.data_of(&"de_pipe").get("min_quality", "peu_commun")))
+	var min_q := StringName(str(ItemEffects.data_of(&"de_pipe").get("min_quality", "peu_commun")))
 	if LootRoller.quality_rank(quality) < LootRoller.quality_rank(min_q):
 		quality = min_q
 		die = LootRoller.die_range(kind, min_q).x
@@ -71,6 +71,8 @@ func _draw() -> void:
 
 
 func gold_reroll_price() -> float:
+	if ItemEffects.free_gold_reroll(stage, gold_rerolls): # Faveur du marchand : première relance de l'étage
+		return 0.0
 	return Balance.gold_reroll_price(price, gold_rerolls)
 
 
@@ -81,6 +83,8 @@ func can_gold_reroll() -> bool:
 func do_gold_reroll() -> bool:
 	if not RunState.spend_gold(gold_reroll_price()):
 		return false
+	if ItemEffects.free_gold_reroll(stage, gold_rerolls):
+		ItemEffects.consume_free_gold_reroll(stage)
 	gold_rerolls += 1
 	_draw()
 	return true

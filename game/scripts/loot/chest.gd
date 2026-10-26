@@ -77,7 +77,7 @@ func is_free() -> bool:
 func current_price() -> float:
 	if is_free():
 		return 0.0
-	return Balance.chest_price(kind, _price_d, stage)
+	return Balance.chest_price(kind, _price_d, stage) * ItemEffects.chest_price_mult() # Faveur du marchand
 
 
 func _process(delta: float) -> void:

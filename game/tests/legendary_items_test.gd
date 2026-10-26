@@ -132,14 +132,14 @@ func _run() -> void:
 		_check("%s présent, qualité légendaire, texte" % id, not it.is_empty() and it.quality == "legendaire" and str(it.effect_text) != "")
 		var sp := str(it.get("special", "")) if it.get("special") != null else ""
 		if sp != "" and sp != "null" and sp != "<null>":
-			_check("%s : special_data défini pour « %s »" % [id, sp], not LegendaryEffects.data_of(StringName(sp)).is_empty())
+			_check("%s : special_data défini pour « %s »" % [id, sp], not ItemEffects.data_of(StringName(sp)).is_empty())
 
 	await _test_loot()
 	for ch in [&"ardent", &"rictus", &"averse"]:
 		print("== Personnage : %s ==" % ch)
 		await _spawn(ch)
 		_cur = "données"
-		_check("[%s] nœud LegendaryEffects sur le joueur" % ch, _player.legendary != null)
+		_check("[%s] nœud ItemEffects sur le joueur" % ch, _player.item_fx != null)
 		await _test_colosse(ch)
 		await _test_moisson(ch)
 		await _test_chrono(ch)
@@ -285,15 +285,15 @@ func _test_chrono(ch: StringName) -> void:
 	_check("[%s] chrono : 10 kills en 3 s = un sort remis à zéro (%d/%d en recharge)" % [ch, _on_cd(), n_all], _on_cd() == n_all - 1)
 	_kills(10)
 	_check("[%s] chrono : délai interne 2 s respecté" % ch, _on_cd() == n_all - 1)
-	_player.legendary.tick(2.1)
+	_player.item_fx.tick(2.1)
 	_kills(10)
 	_check("[%s] chrono : redéclenché après le délai" % ch, _on_cd() == n_all - 2)
 	_give({"coeur_du_chronomancien": 1})
-	_player.legendary.tick(3.5) # les kills du scénario précédent sortent de la fenêtre
+	_player.item_fx.tick(3.5) # les kills du scénario précédent sortent de la fenêtre
 	_arm_cds()
 	for i in 10:
 		_kills(1)
-		_player.legendary.tick(0.5)
+		_player.item_fx.tick(0.5)
 	_check("[%s] chrono : 10 kills en 5 s = rien" % ch, _on_cd() == n_all)
 	_give({})
 
@@ -312,7 +312,7 @@ func _test_echo(ch: StringName) -> void:
 		var c := func(_s: SpellData) -> void: casts[0] += 1
 		_player.spells.spell_cast.connect(c)
 		var ok: bool = _player.spells.cast(1)
-		_player.legendary.tick(0.2 * (n + 1))
+		_player.item_fx.tick(0.2 * (n + 1))
 		_player.spells.spell_cast.disconnect(c)
 		_check("[%s] écho x%d : sort 1 lancé %d fois (attendu %d, premier lancer ok=%s)" % [ch, n, casts[0], 1 + n, ok], ok and casts[0] == 1 + n)
 		_check("[%s] écho x%d : recharge du sort 1 intacte" % [ch, n], _player.spells.cooldown_remaining(1) > 0.0)
@@ -333,23 +333,23 @@ func _test_nova(ch: StringName) -> void:
 	var ref := SpellData.new()
 	ref.coef = 4.0
 	var want: float = _player.spells.compute_damage(ref, null, false)
-	_player.legendary.tick(3.5)
+	_player.item_fx.tick(3.5)
 	_check("[%s] nova : rien avant 4 s" % ch, near.taken.is_empty())
-	_player.legendary.tick(0.6)
+	_player.item_fx.tick(0.6)
 	_check("[%s] nova : dégâts 400 %% (%.1f, attendu %.1f)" % [ch, near.total(), want], near.taken.size() == 1 and _near(near.total(), want, want * 0.01))
 	_check("[%s] nova : brûlure, ralentissement et poison appliqués" % ch, near.has_status(&"burn") and near.has_status(&"slow") and near.has_status(&"poison"))
 	_check("[%s] nova : ennemi hors zone épargné" % ch, far.taken.is_empty() and far.statuses.is_empty())
 	var fx := _player.spells.get("_container") as Node2D
 	_check("[%s] nova : zone/VFX créé" % ch, fx.get_child_count() > 0)
-	_player.legendary.tick(3.0)
+	_player.item_fx.tick(3.0)
 	_check("[%s] nova : une seule par période" % ch, near.taken.size() == 1)
-	_player.legendary.tick(1.1)
+	_player.item_fx.tick(1.1)
 	_check("[%s] nova : se redéclenche (4 s)" % ch, near.taken.size() == 2)
 	_clear_fakes()
 	_give({"nova_infinie": 2})
 	_no_crit()
 	var e2 := _fake(Vector2(2.0 * U, 0.0))
-	_player.legendary.tick(4.1)
+	_player.item_fx.tick(4.1)
 	_check("[%s] nova x2 : dégâts doublés (%.1f)" % [ch, e2.total()], _near(e2.total(), want * 2.0, want * 0.02))
 	_clear_fakes()
 	await get_tree().process_frame
@@ -419,7 +419,7 @@ func _test_save_load() -> void:
 	_cur = "nova_infinie"
 	_clear_fakes()
 	var e := _fake(Vector2(2.0 * U, 0.0))
-	_player.legendary.tick(4.1)
+	_player.item_fx.tick(4.1)
 	_check("[load] nova active après chargement", e.total() > 0.0)
 	_clear_fakes()
 	_cur = "coeur_du_chronomancien"
@@ -433,7 +433,7 @@ func _test_save_load() -> void:
 	_player.spells.spell_cast.connect(c)
 	_player.spells.set_cooldown(1, 0.0, 1.0)
 	var ok: bool = _player.spells.cast(1)
-	_player.legendary.tick(0.5)
+	_player.item_fx.tick(0.5)
 	_check("[load] écho actif après chargement (%d lancers)" % casts[0], ok and casts[0] == 2)
 	_clear_fakes()
 	_cur = "de_pipe"

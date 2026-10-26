@@ -21,9 +21,6 @@ const SLOW_FRACTION := 0.30
 const SLOW_TIME := 1.5
 const SLOW_IMMUNITY := 2.0
 const SLOW_FLOOR := 0.5 ## on ne descend jamais sous 50 % de la vitesse
-const RIPOSTE_COOLDOWN := 0.5
-const RIPOSTE_BASE_FRACTION := 1.6
-const RIPOSTE_RANGE_U := 6.0
 const ZoneEffectScript := preload("res://scripts/spells/zone_effect.gd")
 
 @export var character: CharacterData ## null -> CharacterData.for_id(RunState.character)
@@ -44,7 +41,7 @@ var stats: Dictionary = {}
 var procs: Array = []
 var specials: Dictionary = {}
 var spells: SpellCaster
-var legendary: LegendaryEffects ## effets des légendaires à logique propre (scripts/items/legendary_effects.gd)
+var item_fx: ItemEffects ## effets des items à logique propre (scripts/items/item_effects.gd)
 var kit: Node = null ## logique propre au personnage (null : Ardent)
 ## Monstres tués à moins de CLOSE_KILL_U (déblocage caché de Rictus, Profile.add_run_result).
 var close_kills := 0
@@ -63,7 +60,6 @@ var _slows := {} ## clé de source -> Vector2(multiplicateur, s restantes) : ral
 var _slow_param := 1.0 ## multiplicateur le plus fort des ralentissements paramétrés en cours (1 = aucun)
 var _push_vel := Vector2.ZERO ## poussée en cours (px/s), jouée par move_and_collide : jamais à travers un mur
 var _push_left := 0.0
-var _riposte_cd := 0.0
 var _light: LightRig.Handle = null
 var _low_hp := false
 
@@ -162,10 +158,10 @@ func _ready() -> void:
 		kit.setup(self)
 	RunState.level_up.connect(_on_level_up)
 	Events.enemy_killed.connect(_on_enemy_killed)
-	legendary = LegendaryEffects.new()
-	add_child(legendary)
-	legendary.setup(self)
-	legendary.refresh() # items déjà possédés (reprise de run, scène rechargée)
+	item_fx = ItemEffects.new()
+	add_child(item_fx)
+	item_fx.setup(self)
+	item_fx.refresh() # items déjà possédés (reprise de run, scène rechargée)
 	Haptics.connect_events()
 	_light = LightRig.attach(self, &"player")
 	var core := LightRig.attach(self, &"player_core")
@@ -228,8 +224,8 @@ func apply_stats(new_stats: Dictionary) -> void:
 	stats = new_stats.duplicate(true)
 	procs = (stats.get("procs", []) as Array).duplicate(true)
 	specials = (stats.get("specials", {}) as Dictionary).duplicate(true)
-	if legendary != null:
-		legendary.refresh()
+	if item_fx != null:
+		item_fx.refresh()
 	_recompute(false)
 
 
@@ -407,10 +403,9 @@ func tick(delta: float) -> void:
 		return
 	_invuln = maxf(_invuln - delta, 0.0)
 	_dodge_cd = maxf(_dodge_cd - delta, 0.0)
-	_riposte_cd = maxf(_riposte_cd - delta, 0.0)
 	_action_step(delta)
-	if legendary != null:
-		legendary.tick(delta)
+	if item_fx != null:
+		item_fx.tick(delta)
 	if kit != null:
 		kit.tick(delta)
 	if _slow_left > 0.0:
@@ -452,6 +447,8 @@ func take_damage(amount: float, source: Node = null) -> void:
 	amount = minf(amount, max_hp * frac)
 	if randf() < clampf(stat(&"dodge"), 0.0, DODGE_CAP):
 		return
+	if item_fx != null and item_fx.absorb_hit(): # Bouclier réactif : une charge annule le coup
+		return
 	var keep := (1.0 - Balance.armor_reduction(armor())) * (1.0 - clampf(stat(&"damage_taken_reduction"), 0.0, 1.0))
 	if kit != null and kit.has_method(&"damage_taken_mult"): # défense propre au kit (garde de mêlée…), plafonnée
 		keep *= clampf(float(kit.damage_taken_mult(source)), 0.0, 1.0)
@@ -468,23 +465,13 @@ func take_damage(amount: float, source: Node = null) -> void:
 	_hurt_feedback(amount)
 	if _hitbox_ring != null:
 		_hitbox_ring.on_hit(source)
-	if not dead and source != null and special_stacks(&"riposte") > 0 and _riposte_cd <= 0.0 \
-			and is_instance_valid(source) and source.has_method("take_damage"):
-		_riposte(special_stacks(&"riposte"))
-
-
-## Épines (Razorwire RoR2) : RIPOSTE_BASE_FRACTION du dégât de base à 5 ennemis proches (+2 par exemplaire).
-func _riposte(n: int) -> void:
-	_riposte_cd = RIPOSTE_COOLDOWN
-	var dmg := RIPOSTE_BASE_FRACTION * Balance.player_base_damage(RunState.level)
-	for e in spells.nearest_enemies(global_position, RIPOSTE_RANGE_U * Balance.UNIT_PX, 5 + 2 * (n - 1)):
-		e.take_damage(dmg, false, &"")
-
 
 func _damage_hp(amount: float) -> void:
 	hp = maxf(hp - amount, 0.0)
 	hp_changed.emit(hp, max_hp)
 	if hp <= 0.0 and not dead:
+		if item_fx != null and item_fx.try_revive(): # Phénix de poche
+			return
 		dead = true
 		velocity = Vector2.ZERO
 		Haptics.pulse(Haptics.Kind.DEATH)
@@ -851,9 +838,6 @@ func _keep_walkable() -> void:
 func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
 	if not dead and pos.distance_to(global_position) <= CLOSE_KILL_U * Balance.UNIT_PX:
 		close_kills += 1
-	var n := special_stacks(&"morsure_vorace")
-	if n > 0:
-		heal(0.002 * n * max_hp)
 
 
 ## Sort lancé (SpellCaster) : anim d'action tournée vers `dir` (plan de sol ; nul = orientation actuelle).

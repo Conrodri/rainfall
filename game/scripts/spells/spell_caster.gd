@@ -394,6 +394,11 @@ func fire_at(s: SpellData, target: Node2D, dir0: Vector2) -> bool:
 	return _fire_at(s, target, dir0)
 
 
+## Tire le projectile `s` dans le sens `dir` (sans cible ni recharge : tirs supplémentaires des items, Rafale d'acier).
+func fire_dir(s: SpellData, dir: Vector2) -> bool:
+	return _fire_projectile_dir(s, dir.normalized())
+
+
 ## Parent des projectiles et zones du caster (conteneur monde), ou null avant setup.
 func effects_parent() -> Node:
 	return _container
