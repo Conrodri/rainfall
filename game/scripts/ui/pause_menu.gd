@@ -275,8 +275,8 @@ func _make_item_cell(id: Variant, stacks: int, s: float) -> Button:
 	b.add_theme_stylebox_override(&"focus", UiTheme._flat(Color(1, 0.7, 0.28, 0.18), UiTheme.COL_FOCUS, 5, 10))
 	var icon_path: String = ItemBar.ITEM_ICON % String(id)
 	var icon_tex: Texture2D = load(icon_path) as Texture2D if ResourceLoader.exists(icon_path) else null
-	var frame_path: String = ItemBar.RARITY_FRAME % str(it.get("quality", "commun"))
-	for tex in [icon_tex, load(frame_path) as Texture2D if ResourceLoader.exists(frame_path) else null]:
+	b.add_child(ItemBar.quality_backing(it.get("quality", "commun")))
+	for tex in [icon_tex]:
 		var t := TextureRect.new()
 		t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

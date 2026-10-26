@@ -7,6 +7,9 @@ extends Node
 ## `_draw` (méthode `text_rects()` des contrôles : rect global, taille de police, zones à éviter), textes du monde
 ## (Labels hors CanvasLayer : entièrement dans la vue, hors zones réservées du HUD), montée de niveau, panneau
 ## d'objectifs, infobulle de sort, chevauchement des zones du HUD entre elles, plancher de police.
+## Règle de marge verticale (26/10) : entre la boîte de texte (ascent + descent réels de la police) et le bord intérieur
+## visible du cadre (UiTheme.frame_edge), au moins UiTheme.ink_pad(taille) = max(4 px, 15 % de la taille). Les textes
+## dessinés en `_draw` la passent via la clé `frame` (Rect2 : bord intérieur visible du cadre) de text_rects().
 ## godot --path game res://tests/text_overflow_test.tscn [-- --only=title|newrun|settings|endrun|hud --quick]
 ## RESULT: OK si 0 échec.
 
@@ -21,6 +24,15 @@ class FakeProfile extends RefCounted:
 	var last_mode := "moyen"
 	var last_character := "averse"
 	var stats := {"runs": 37, "victories": 5, "kills": 18423, "play_time_s": 43200.0, "best_time_s": {"facile": 812.0}}
+	var unlocked_skins: Array = ["ardent_skin1", "averse_skin1"]
+	var selected_skin := {"averse": "averse_skin1"}
+	## Meilleures runs (panneau) : records chargés (nombreux objets, deux variantes) en Facile et Difficile, aucun en Moyen.
+	var best_runs := {"averse": {
+		"facile": {"time_s": 812.0, "date": "2026-10-26T22:57:23", "level": 18, "kills": 18423, "stage": 5,
+			"items": {"moisson": 12, "lame_jumelle": 1, "orbe_de_veille": 3, "nova_infinie": 1, "armure_du_colosse": 2, "marque_du_chasseur": 1,
+				"bouclier_reactif": 1, "faveur_du_marchand": 4, "couronne_d_echo": 1, "de_pipe": 1, "coeur_du_chronomancien": 1, "venin_concentre": 2},
+			"variants": {"2": "averse_geyser", "3": "averse_gouttiere"}},
+		"difficile": {"time_s": 3725.0, "date": "2026-10-27T10:00:00", "level": 31, "kills": 123456, "stage": 5, "items": {}, "variants": {}}}}
 
 	func is_unlocked(_key: StringName) -> bool:
 		return false
@@ -109,6 +121,16 @@ func _menus(tag: String) -> void:
 		add_child(pr)
 		await _frames(20)
 		_scan(pr, "%s progression" % tag)
+		pr.tab_skins.pressed.emit()
+		await _frames(6)
+		_scan(pr, "%s progression/skins" % tag)
+		pr.tab_chars.pressed.emit()
+		await _frames(3)
+		for ch in pr.characters:
+			if str(ch.get("id", "")) == "averse":
+				pr.open_best_runs(ch)
+		await _frames(6)
+		_scan(pr, "%s progression/meilleures runs" % tag)
 		pr.queue_free()
 		await _frames(2)
 	if _wants("endrun"):
@@ -222,6 +244,13 @@ func _scan_draw(root: Node, screen: String) -> void:
 				var ov := maxf(maxf(w.position.x - r.position.x, r.end.x - w.end.x), maxf(w.position.y - r.position.y, r.end.y - w.end.y))
 				if ov > TOL:
 					failures.append(tag + "sort de sa zone de %.0f px" % ov)
+			if it.has("frame") and not bool(it.get("decor", false)):
+				var fr: Rect2 = it["frame"]
+				var padv := UiTheme.ink_pad(int(it.get("size", 18))) - 0.5
+				var gtop := r.position.y - fr.position.y
+				var gbot := fr.end.y - r.end.y
+				if minf(gtop, gbot) < padv:
+					failures.append(tag + "marge verticale %.1f px < %.1f (haut %.1f, bas %.1f)" % [minf(gtop, gbot), padv, gtop, gbot])
 			for av: Rect2 in it.get("avoid", []):
 				var inter := av.intersection(r)
 				if inter.size.x > TOL and inter.size.y > TOL:
@@ -372,6 +401,36 @@ func _frame_parent(c: Control) -> Control:
 	return null
 
 
+## Marge verticale texte / bord intérieur visible du cadre le plus proche (cadre = parent encadré, ou le bouton lui-même).
+func _check_v_pad(screen: String, c: Control, fp: Control, ts: Vector2) -> void:
+	var frame: Control = c if c is Button else fp
+	if frame == null or frame is ScrollContainer or frame is ProgressBar or c is RichTextLabel:
+		return
+	var sb: StyleBox = null
+	if frame is Button:
+		sb = frame.get_theme_stylebox(&"normal")
+	elif frame is PanelContainer or frame is Panel:
+		sb = frame.get_theme_stylebox(&"panel")
+	var edge := UiTheme.frame_edge(sb)
+	if edge <= 0.0:
+		return
+	var fs := c.get_theme_font_size(&"font_size")
+	var need := UiTheme.ink_pad(fs) - 0.5
+	var fr := frame.get_global_rect()
+	var tr := _text_rect(c)
+	var h := minf(ts.y, tr.size.y) if not (c is Label and (c as Label).autowrap_mode != TextServer.AUTOWRAP_OFF) else ts.y
+	var top := tr.position.y
+	var bottom := tr.position.y + h
+	if c is Label and (c as Label).vertical_alignment == VERTICAL_ALIGNMENT_BOTTOM:
+		bottom = c.get_global_rect().end.y
+		top = bottom - h
+	var gap_top := top - (fr.position.y + edge)
+	var gap_bot := (fr.end.y - edge) - bottom
+	var gap := minf(gap_top, gap_bot)
+	if gap < need:
+		_fail(screen, c, "marge verticale (haut %.1f, bas %.1f, requis %.1f) manque de" % [gap_top, gap_bot, need + 0.5], need - gap)
+
+
 func _fail(screen: String, c: Control, what: String, px: float) -> void:
 	var t := _text_of(c).replace("\n", " ")
 	failures.append("%s | %s | « %s » | %s %.0f px" % [screen, c.get_path(), t.left(60), what, px])
@@ -400,6 +459,7 @@ func _scan(root: Node, screen: String) -> void:
 		var fp := _frame_parent(c)
 		if fp != null and fp is ProgressBar and ts.y > fp.size.y + TOL:
 			_fail(screen, c, "ligne de texte plus haute que la barre %s de" % fp.name, ts.y - fp.size.y)
+		_check_v_pad(screen, c, fp, ts)
 		if fp != null:
 			var pr := fp.get_global_rect()
 			var ov := maxf(maxf(pr.position.x - r.position.x, r.end.x - pr.end.x), maxf(pr.position.y - r.position.y, r.end.y - pr.end.y))

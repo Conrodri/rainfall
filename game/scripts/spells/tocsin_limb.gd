@@ -101,7 +101,7 @@ func _play(base: StringName, d: Vector2) -> void:
 		return
 	var sf: SpriteFrames = _frames.get(base)
 	if sf == null and not _frames.has(base):
-		var p := String(TocsinKit.ASSET_DIR) + "tocsin_%s.tres" % base
+		var p := Skins.asset_dir(&"tocsin", String(TocsinKit.ASSET_DIR)) + "tocsin_%s.tres" % base
 		if ResourceLoader.exists(p):
 			sf = load(p) as SpriteFrames
 		_frames[base] = sf

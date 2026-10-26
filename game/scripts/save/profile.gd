@@ -4,7 +4,7 @@ extends Node
 ## stats. Chargé dans _ready ; jamais écrit en headless (sauf `write_enabled` forcé par un test
 ## avec un `path` de test). Écriture atomique (`.tmp` puis renommage), immédiate à chaque changement.
 ##
-## Clés de déblocage (`is_unlocked`) : "mode:<id>", "character:<id>", "spell:<id>", "item:<id>".
+## Clés de déblocage (`is_unlocked`) : "mode:<id>", "character:<id>", "spell:<id>", "item:<id>", "skin:<id>".
 ## Variantes de sorts (game/CONTRACTS.md « Variantes de sorts ») : `loadout` mémorise par personnage le sort choisi
 ## par emplacement ; `unlock_rule` des variantes (characters.json) évaluées en fin de run par VariantUnlocks ;
 ## compteurs génériques `stats[<clé>]` via `add_stat(key, n)`.
@@ -12,7 +12,8 @@ extends Node
 signal changed
 
 const PATH := "user://profile.json"
-const VERSION := 1
+## Version 2 (26/10) : + unlocked_skins, selected_skin, best_runs. Un fichier v1 se charge tel quel (champs absents = défauts).
+const VERSION := 2
 const DEFAULT_MODES: Array = [&"facile", &"moyen"]
 const DEFAULT_CHARACTERS: Array = [&"ardent"]
 ## Mode débloqué par une victoire dans un mode donné.
@@ -37,6 +38,7 @@ var unlocked_modes: Array = DEFAULT_MODES.duplicate() ## StringName
 var unlocked_characters: Array = DEFAULT_CHARACTERS.duplicate() ## StringName
 var unlocked_spells: Array = [] ## StringName (ids de variantes de sorts)
 var unlocked_items: Array = [] ## StringName (ids d'objets à débloquer, ItemUnlocks)
+var unlocked_skins: Array = [] ## StringName (ids de skins, Skins)
 var last_mode: StringName = &"moyen":
 	set(v):
 		last_mode = StringName(v)
@@ -55,6 +57,11 @@ var last_floor_boss := {}
 var seen_hints: Array = []
 ## Sorts choisis par personnage (fiche Nouvelle run) : id perso (texte) -> {"<slot>": "<id du sort>"} (base ou variante).
 var loadout := {}
+## Skin équipé par personnage : id perso (texte) -> id du skin ("" ou absent = apparence par défaut).
+var selected_skin := {}
+## Meilleure run (victoire la plus courte) par personnage et par mode :
+## id perso -> mode -> {time_s, date (ISO, locale), level, kills, items {id: stacks}, variants {slot: id}, stage}.
+var best_runs := {}
 ## TEMPORAIRE (test) : vrai = toutes les variantes passent pour débloquées (lu une fois au démarrage, injectable).
 var unlock_all_variants := _detect_unlock_all_variants()
 ## Roster lu par le moteur de déblocage des variantes (null = data/characters.json ; tests : liste injectée).
@@ -80,6 +87,9 @@ func reset() -> void:
 	unlocked_characters = DEFAULT_CHARACTERS.duplicate()
 	unlocked_spells = []
 	unlocked_items = []
+	unlocked_skins = []
+	selected_skin = {}
+	best_runs = {}
 	last_mode = &"moyen"
 	last_character = &"ardent"
 	stats = _default_stats()
@@ -105,6 +115,7 @@ func load_profile() -> void:
 	unlocked_characters = _names(d.get("unlocked_characters", []), DEFAULT_CHARACTERS)
 	unlocked_spells = _names(d.get("unlocked_spells", []), [])
 	unlocked_items = _names(d.get("unlocked_items", []), [])
+	unlocked_skins = _names(d.get("unlocked_skins", []), [])
 	last_mode = StringName(str(d.get("last_mode", "moyen")))
 	last_character = StringName(str(d.get("last_character", "ardent")))
 	var s: Variant = d.get("stats", {})
@@ -143,8 +154,44 @@ func load_profile() -> void:
 				for slot in lo[cid]:
 					m[str(int(str(slot)))] = str(lo[cid][slot])
 				loadout[str(cid)] = m
+	var sk: Variant = d.get("selected_skin", {})
+	selected_skin = {}
+	if sk is Dictionary:
+		for cid in sk:
+			selected_skin[str(cid)] = str(sk[cid])
+	best_runs = _clean_best_runs(d.get("best_runs", {}))
 	_loading = false
 	changed.emit()
+
+
+## Normalise `best_runs` lu du disque (types sûrs, entrées illisibles ignorées).
+static func _clean_best_runs(src: Variant) -> Dictionary:
+	var out := {}
+	if not (src is Dictionary):
+		return out
+	for cid in src:
+		if not (src[cid] is Dictionary):
+			continue
+		var per := {}
+		for mode in src[cid]:
+			var r: Variant = src[cid][mode]
+			if not (r is Dictionary) or not (r.get("time_s") is float or r.get("time_s") is int):
+				continue
+			var items := {}
+			if r.get("items") is Dictionary:
+				for iid in r["items"]:
+					items[str(iid)] = int(r["items"][iid])
+			var variants := {}
+			if r.get("variants") is Dictionary:
+				for slot in r["variants"]:
+					variants[str(int(str(slot)))] = str(r["variants"][slot])
+			per[str(mode)] = {
+				"time_s": float(r["time_s"]), "date": str(r.get("date", "")), "level": int(r.get("level", 0)),
+				"kills": int(r.get("kills", 0)), "items": items, "variants": variants, "stage": int(r.get("stage", 0)),
+			}
+		if not per.is_empty():
+			out[str(cid)] = per
+	return out
 
 
 func _names(src: Variant, defaults: Array) -> Array:
@@ -164,9 +211,10 @@ func to_dict() -> Dictionary:
 		"unlocked_characters": unlocked_characters.map(func(v): return String(v)),
 		"unlocked_spells": unlocked_spells.map(func(v): return String(v)),
 		"unlocked_items": unlocked_items.map(func(v): return String(v)),
+		"unlocked_skins": unlocked_skins.map(func(v): return String(v)),
 		"last_mode": String(last_mode), "last_character": String(last_character),
 		"stats": stats, "objectives": objectives, "last_floor_boss": last_floor_boss,
-		"seen_hints": seen_hints, "loadout": loadout,
+		"seen_hints": seen_hints, "loadout": loadout, "selected_skin": selected_skin, "best_runs": best_runs,
 	}
 
 
@@ -212,6 +260,8 @@ func is_unlocked(key: StringName) -> bool:
 			return unlock_all_variants or unlocked_spells.has(id)
 		"item":
 			return unlock_all_variants or unlocked_items.has(id)
+		"skin":
+			return unlock_all_variants or unlocked_skins.has(id)
 	return false
 
 
@@ -222,8 +272,9 @@ func unlock(key: StringName) -> bool:
 	var kind := s.substr(0, i) if i >= 0 else "character"
 	var id := StringName(s.substr(i + 1) if i >= 0 else s)
 	# Possession réelle (le mode test « toutes les variantes » n'empêche pas d'enregistrer un vrai déblocage).
-	var owned_real := (kind == "spell" and unlocked_spells.has(id)) or (kind == "item" and unlocked_items.has(id))
-	if owned_real or (kind != "spell" and kind != "item" and is_unlocked(key)):
+	var owned_real := (kind == "spell" and unlocked_spells.has(id)) or (kind == "item" and unlocked_items.has(id)) \
+		or (kind == "skin" and unlocked_skins.has(id))
+	if owned_real or (kind != "spell" and kind != "item" and kind != "skin" and is_unlocked(key)):
 		return false
 	match kind:
 		"mode":
@@ -234,6 +285,8 @@ func unlock(key: StringName) -> bool:
 			unlocked_spells.append(id)
 		"item":
 			unlocked_items.append(id)
+		"skin":
+			unlocked_skins.append(id)
 		_:
 			return false
 	_touch()
@@ -302,6 +355,7 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 		var k := String(mode)
 		if not best.has(k) or t < float(best[k]):
 			best[k] = t
+		_record_best_run(r, mode, t)
 		if UNLOCK_ON_VICTORY.has(mode):
 			var key := StringName("mode:" + String(UNLOCK_ON_VICTORY[mode]))
 			if not is_unlocked(key):
@@ -331,6 +385,12 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 		if not unlocked_spells.has(StringName(String(vkey).substr(6))):
 			unlocked_spells.append(StringName(String(vkey).substr(6)))
 			out.append(vkey)
+	# Skins : règle `unlock_rule` de characters.json (type victory), après les compteurs.
+	for skey: StringName in Skins.evaluate(self, _roster(), r):
+		var sid := StringName(String(skey).substr(5))
+		if not unlocked_skins.has(sid):
+			unlocked_skins.append(sid)
+			out.append(skey)
 	# Objets débloquables : règles `unlock` de items.json (ItemUnlocks), après les compteurs ci-dessus.
 	for ikey: StringName in ItemUnlocks.evaluate(self, r):
 		var iid := StringName(String(ikey).substr(5))
@@ -340,6 +400,82 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 	_loading = false
 	_touch()
 	return out
+
+
+## Meilleure run (victoire la plus courte) du personnage dans ce mode ; {} si aucune victoire.
+func best_run(cid: StringName, mode: StringName) -> Dictionary:
+	var per: Variant = best_runs.get(String(cid), {})
+	var r: Variant = (per as Dictionary).get(String(mode), {}) if per is Dictionary else {}
+	return r if r is Dictionary else {}
+
+
+## Enregistre la victoire `r` si elle bat le record du personnage dans ce mode (temps strictement plus court).
+## Le temps est celui de l'abattage du boss final (`boss_time_s`) s'il est connu, sinon le temps actif de la run.
+func _record_best_run(r: Dictionary, mode: StringName, run_time_s: float) -> void:
+	var cid := str(r.get("character", ""))
+	if cid == "":
+		return
+	var bt := float(r.get("boss_time_s", 0.0))
+	var t := bt if bt > 0.0 else run_time_s
+	var old := best_run(StringName(cid), mode)
+	if not old.is_empty() and t >= float(old.get("time_s", INF)):
+		return
+	var items := {}
+	var src: Variant = r.get("items", {})
+	if src is Dictionary:
+		for iid in src:
+			items[str(iid)] = int(src[iid])
+	var rec := {
+		"time_s": t, "date": Time.get_datetime_string_from_system(false, true), "level": int(r.get("level", 0)),
+		"kills": int(r.get("kills", 0)), "items": items, "variants": _variants_used(StringName(cid), r.get("loadout", {})),
+		"stage": int(r.get("stage", 0)),
+	}
+	if not best_runs.has(cid) or not (best_runs[cid] is Dictionary):
+		best_runs[cid] = {}
+	best_runs[cid][String(mode)] = rec
+
+
+## Variantes de sorts réellement utilisées : {slot: id} pour chaque emplacement du loadout dont le sort n'est pas le sort de base.
+func _variants_used(cid: StringName, lo: Variant) -> Dictionary:
+	var out := {}
+	if not (lo is Dictionary):
+		return out
+	var spells: Array = []
+	for c in _roster():
+		if c is Dictionary and str(c.get("id", "")) == String(cid):
+			spells = c.get("spells", []) if c.get("spells") is Array else []
+			break
+	for k in lo:
+		var slot := int(str(k))
+		var id := str(lo[k])
+		if id == "" or slot < 1:
+			continue
+		var base := str((spells[slot - 1] as Dictionary).get("id", "")) if slot <= spells.size() and spells[slot - 1] is Dictionary else ""
+		if id != base:
+			out[str(slot)] = id
+	return out
+
+
+func _skin_id_of(cid: StringName) -> String:
+	for c in _roster():
+		if c is Dictionary and str(c.get("id", "")) == String(cid):
+			return str(Skins.skin_of_dict(c).get("id", ""))
+	return ""
+
+
+## Équipe un skin (id valide et débloqué) ou "" pour l'apparence par défaut. true si appliqué.
+func set_selected_skin(cid: StringName, skin_id: String) -> bool:
+	if skin_id != "":
+		if _skin_id_of(cid) != skin_id or not is_unlocked(StringName("skin:" + skin_id)):
+			return false
+	if str(selected_skin.get(String(cid), "")) == skin_id:
+		return true
+	if skin_id == "":
+		selected_skin.erase(String(cid))
+	else:
+		selected_skin[String(cid)] = skin_id
+	_touch()
+	return true
 
 
 # --- Compteurs et variantes de sorts ------------------------------------------------------

@@ -354,10 +354,14 @@ func clear_slow() -> void:
 ## SpriteFrames du personnage si livrées ; sinon celles de la scène (Ardent) teintées : placeholder propre.
 func _apply_character_look() -> void:
 	var spr := _visual as AnimatedSprite2D
-	if spr == null or character == null or character.sprite_frames_path == "":
+	if spr == null or character == null:
 		return
-	if ResourceLoader.exists(character.sprite_frames_path):
-		var sf := load(character.sprite_frames_path) as SpriteFrames
+	# Skin équipé (Skins.resolve_frames) : SpriteFrames du skin s'il est livré, sinon ceux du kit (aucun skin rendu = inchangé).
+	var frames_path := Skins.resolve_frames(character.id, character.sprite_frames_path)
+	if frames_path == "":
+		return
+	if ResourceLoader.exists(frames_path):
+		var sf := load(frames_path) as SpriteFrames
 		if sf != null:
 			EmissiveOverlay.apply(spr, sf)
 			var first: StringName = &"idle_s" if sf.has_animation(&"idle_s") else StringName(sf.get_animation_names()[0])

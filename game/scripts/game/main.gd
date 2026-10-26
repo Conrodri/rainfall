@@ -69,6 +69,7 @@ var run_over := false
 var pillars_done := 0
 var last_rubies := 0
 var last_unlocks: Array[StringName] = []
+var _final_boss_time_s := 0.0 ## temps actif à l'abattage du boss final (étage final nettoyé) ; 0 = pas encore
 var end_screen: RunScreens = null ## EndRunScreen (hérite de RunScreens)
 var victory_screen: RunScreens = null
 var autosave_timer: Timer
@@ -149,6 +150,7 @@ func _build() -> void:
 	stage.stage_started.connect(_on_stage_started)
 	stage.victory_choice_requested.connect(_on_victory_choice)
 	stage.run_won.connect(func() -> void: end_run(true))
+	Events.floor_cleared.connect(_on_floor_cleared_record)
 	world.add_child(stage) # avant le joueur : la carte se dessine sous les entités
 
 	player = load(PLAYER).instantiate()
@@ -306,6 +308,12 @@ func _on_resumed() -> void:
 		player.grant_invulnerability(RESUME_PROTECTION_S)
 
 
+## Étage final nettoyé (boss final abattu) : note le temps pour le record « meilleure run » (Profile).
+func _on_floor_cleared_record(stage_n: int) -> void:
+	if _final_boss_time_s <= 0.0 and FloorPlan.is_final_stage(stage_n):
+		_final_boss_time_s = RunState.active_time_s
+
+
 func _on_victory_choice(_n: int) -> void:
 	if run_over or victory_screen != null:
 		return
@@ -363,6 +371,8 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 		"active_time_s": RunState.active_time_s, "kills": RunState.kills, "rubies": last_rubies,
 		"close_kills": int(player.get(&"close_kills")) if player != null and &"close_kills" in player else 0,
 		"stage": RunState.stage, "counters": RunState.counters.duplicate(), "bosses_killed": RunState.bosses_killed.duplicate(true),
+		"level": RunState.level, "items": RunState.items.duplicate(), "loadout": RunState.loadout.duplicate(),
+		"boss_time_s": _final_boss_time_s if victory else 0.0,
 	})
 	end_screen = EndRunScreen.create(end_info(victory, reason))
 	add_child(end_screen)

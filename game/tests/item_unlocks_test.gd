@@ -99,6 +99,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_check(scr.find_child("NewItems", true, false) != null and scr.find_child("NewItem_moisson", true, false) != null, "récap : bloc « Nouveaux objets débloqués »")
 	_check(EndRunScreen.unlock_text(&"item:moisson") == "Nouvel objet : Moisson !", "texte d'objet débloqué")
+	_check(_no_frame_over_icon(scr.find_child("NewItem_moisson", true, false)), "récap : fond de qualité derrière l'icône, aucun cadre par-dessus")
 	scr.queue_free()
 
 	# --- Écran Progression : onglet Objets ---
@@ -130,6 +131,8 @@ func _ready() -> void:
 	var prog: Node = locked_cell.find_child("Progress", true, false) if locked_cell != null else null
 	_check(prog != null and (prog as ProgressBar).value == 340.0 and (prog as ProgressBar).max_value == 1500.0, "barre d'avancement 340/1500")
 	var open_cell := ps.find_child("Item_moisson", true, false)
+	var icon_box: Node = open_cell.find_child("QualityBack", true, false).get_parent() if open_cell != null and open_cell.find_child("QualityBack", true, false) != null else null
+	_check(icon_box != null and _no_frame_over_icon(icon_box), "onglet Objets : fond de qualité derrière l'icône, aucun cadre par-dessus")
 	_check(open_cell != null and open_cell.find_child("Condition", true, false) == null, "objet débloqué : pas de condition")
 	var sr := Rect2(ps.items_scroll.global_position, ps.items_scroll.size)
 	var back := Rect2(ps.back_button.global_position, ps.back_button.size)
@@ -153,3 +156,13 @@ func _check_cell_text(c: Button) -> void:
 			_check(l.clip_text or l.text_overrun_behavior != TextServer.OVERRUN_NO_TRIMMING, "%s/%s : nom rogné si trop long" % [c.name, n])
 		else:
 			_check(l.autowrap_mode != TextServer.AUTOWRAP_OFF and l.max_lines_visible > 0, "%s/%s : retour à la ligne borné" % [c.name, n])
+
+
+## Le 1er enfant est le fond de qualité (Panel) et aucune texture « frame_<qualité> » n'est dessinée par-dessus l'icône.
+func _no_frame_over_icon(box: Node) -> bool:
+	if box == null or box.get_child_count() < 1 or box.get_child(0).name != "QualityBack" or not (box.get_child(0) is Panel):
+		return false
+	for n in box.get_children():
+		if n is TextureRect and n.texture != null and "/frame_" in n.texture.resource_path:
+			return false
+	return true

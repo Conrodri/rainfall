@@ -1,7 +1,7 @@
 class_name ItemBar
 extends ScrollContainer
-## Inventaire compact du HUD : une icône par item possédé (assets/sprites/icons/items/<id>.png dans
-## le cadre de sa qualité icons/frame_<qualité>.png), badge « ×N » au-delà d'un exemplaire.
+## Inventaire compact du HUD : une icône par item possédé (assets/sprites/icons/items/<id>.png sur
+## un fond de sa couleur de qualité), badge « ×N » au-delà d'un exemplaire.
 ## Mis à jour sur RunState.item_added (ordre d'obtention).
 ## Deux dispositions : `wrap` (PC : plusieurs lignes sous les PV, MAX_ROWS lignes puis défilement)
 ## ou rangée unique défilante (tactile). Infobulle (nom, effet, exemplaires) au survol de la souris,
@@ -16,6 +16,23 @@ const QUALITY_COLORS := {
 	&"rare": Color(0.33, 0.6, 1.0),
 	&"legendaire": Color(1.0, 0.65, 0.12),
 }
+## Fond de qualité DERRIÈRE l'icône (jamais de cadre par-dessus, retour joueur 26/10) : pastille sombre teintée
+## de la couleur de qualité, bordure fine de cette couleur, hors de l'icône.
+static func quality_backing(q: Variant, radius := 8) -> Panel:
+	var col: Color = QUALITY_COLORS.get(StringName(str(q)), Color.WHITE)
+	var p := Panel.new()
+	p.name = "QualityBack"
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(col.r * 0.22, col.g * 0.22, col.b * 0.22, 0.85)
+	sb.border_color = col
+	sb.set_border_width_all(3)
+	sb.set_corner_radius_all(radius)
+	p.add_theme_stylebox_override("panel", sb)
+	p.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	return p
+
+
 const LONG_PRESS_S := 0.45
 const DRAG_CANCEL_PX := 18.0
 const MAX_ROWS := 4 ## lignes max au clavier-souris / manette
@@ -49,7 +66,7 @@ class ItemSlot extends Control:
 	var item_id: StringName
 	var count := 1
 	var bar: ItemBar
-	var frame: TextureRect
+	var frame: Panel ## fond de qualité (derrière l'icône)
 	var icon: TextureRect
 	var badge: Label
 	var fallback: Label
@@ -60,12 +77,11 @@ class ItemSlot extends Control:
 		mouse_filter = Control.MOUSE_FILTER_PASS # le défilement tactile reste possible
 		var it := ItemDB.get_item(id)
 		var q := str(it.get("quality", "commun"))
-		frame = _tex(RARITY_FRAME % q)
+		frame = ItemBar.quality_backing(q)
 		icon = _tex(ITEM_ICON % String(id))
 		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		add_child(icon)
 		add_child(frame)
+		add_child(icon)
 		if icon.texture == null: # icône absente : initiales (provisoire)
 			fallback = Label.new()
 			fallback.text = str(it.get("name", id)).left(2)

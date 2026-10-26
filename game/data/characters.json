@@ -12,6 +12,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/ardent/ardent.tres",
+    "skins": [{"id": "ardent_skin1", "name": "Scorie", "desc": "Sa robe a brûlé mille fois : il n'en reste que du cuir vitrifié, des plaques d'obsidienne et une braise qui ne s'éteint plus.", "unlock_text": "Gagner une run en mode Difficile avec Ardent.", "unlock_key": "skin:ardent_skin1", "unlock_rule": {"type": "win_with", "character": "ardent", "mode": "difficile"}}],
     "spells": [
       {
         "id": "eclat_de_braise",
@@ -94,6 +95,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/rictus/rictus.tres",
+    "skins": [{"id": "rictus_skin1", "name": "Gala noir", "desc": "Pour la dernière représentation, le Montreur l'a relaqué de noir, rhabillé de velours et de dentelle d'argent, et a recollé sa porcelaine : le sourire, lui, est resté.", "unlock_text": "Gagner une run en mode Difficile avec Rictus.", "unlock_key": "skin:rictus_skin1", "unlock_rule": {"type": "win_with", "character": "rictus", "mode": "difficile"}}],
     "spells": [
       {
         "id": "dagues_demi_lune",
@@ -174,6 +176,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/tocsin/tocsin.tres",
+    "skins": [{"id": "tocsin_skin1", "name": "Carillon", "desc": "Refondu après la crue dans le bronze des cloches de la ville noyée : cuivre rouge, inscriptions gravées, plus une coulure de rouille, et le foyer rugit sous un plastron poli.", "unlock_text": "Gagner une run en mode Difficile avec Tocsin.", "unlock_key": "skin:tocsin_skin1", "unlock_rule": {"type": "win_with", "character": "tocsin", "mode": "difficile"}}],
     "spells": [
       {
         "id": "tocsin_rivets_rougis",
@@ -236,6 +239,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/averse/averse.tres",
+    "skins": [{"id": "averse_skin1", "name": "Céladon", "desc": "Ciré de cuir noir verni comme une coque de barque, amphore de céladon fêlé cerclée d'argent : l'eau se voit toujours par la même fenêtre.", "unlock_text": "Gagner une run en mode Difficile avec Averse.", "unlock_key": "skin:averse_skin1", "unlock_rule": {"type": "win_with", "character": "averse", "mode": "difficile"}}],
     "spells": [
       {
         "id": "goutte_lame",
@@ -291,6 +295,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/arpenteuse/arpenteuse.tres",
+    "skins": [{"id": "arpenteuse_skin1", "name": "Cadastre", "desc": "L'uniforme de chef-géomètre de la Cité : redingote de laine ardoise à boutons de laiton, trépied poli, touret rechaussé de cuir neuf ; la chaîne, elle, chauffe comme avant.", "unlock_text": "Gagner une run en mode Difficile avec Arpenteuse.", "unlock_key": "skin:arpenteuse_skin1", "unlock_rule": {"type": "win_with", "character": "arpenteuse", "mode": "difficile"}}],
     "spells": [
       {
         "id": "arpenteuse_chaine",
@@ -343,6 +348,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/rainette/rainette.tres",
+    "skins": [{"id": "rainette_skin1", "name": "Écailles noires", "desc": "Peau de nuit bleu-noir marbrée de gris, cuirasse d'écailles de bronze noirci et lance ferrée d'argent : la chevalière en tenue de tournoi, le sac vocal toujours aussi pâle.", "unlock_text": "Gagner une run en mode Difficile avec Rainette.", "unlock_key": "skin:rainette_skin1", "unlock_rule": {"type": "win_with", "character": "rainette", "mode": "difficile"}}],
     "spells": [
       {
         "id": "rainette_langue",
@@ -395,6 +401,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/avare/avare.tres",
+    "skins": [{"id": "avare_skin1", "name": "Créancier", "desc": "Le coffre est devenu un coffre-fort de fer bleui à ferrures d'argent, le manteau un velours bordeaux à col de fourrure trempée : l'or fuit toujours par les mêmes jointures.", "unlock_text": "Gagner une run en mode Difficile avec Avare.", "unlock_key": "skin:avare_skin1", "unlock_rule": {"type": "win_with", "character": "avare", "mode": "difficile"}}],
     "spells": [
       {
         "id": "avare_coup_de_coffre",
@@ -447,6 +454,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/bourbe/bourbe.tres",
+    "skins": [{"id": "bourbe_skin1", "name": "Grès noir", "desc": "Cuite au four de la Source : grès noir vernissé, craquelures claires, bandes de bronze doré ; plus de mousse, du lichen blanc, et le feu follet brille par les mêmes fentes.", "unlock_text": "Gagner une run en mode Difficile avec Bourbe.", "unlock_key": "skin:bourbe_skin1", "unlock_rule": {"type": "win_with", "character": "bourbe", "mode": "difficile"}}],
     "spells": [
       {
         "id": "gifle_de_vase",
@@ -500,6 +508,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/vigie/vigie.tres",
+    "skins": [{"id": "vigie_skin1", "name": "Cormoran", "desc": "Pèlerine de plumes de cormoran huilées, arc de frêne pâle cerclé d'argent, carquois d'argent noirci : l'uniforme des guetteuses qui ont vu passer la crue, les fusées rouges toujours à la hanche.", "unlock_text": "Gagner une run en mode Difficile avec Vigie.", "unlock_key": "skin:vigie_skin1", "unlock_rule": {"type": "win_with", "character": "vigie", "mode": "difficile"}}],
     "spells": [
       {
         "id": "vigie_trait",
@@ -554,6 +563,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/morfil/morfil.tres",
+    "skins": [{"id": "morfil_skin1", "name": "Bois flotté", "desc": "Écorce blanchie par les eaux de la Source, hakama noir, dō de laque noire aux lacets dorés, chapeau de jonc brûlé : la lame garde son fil de sève.", "unlock_text": "Gagner une run en mode Difficile avec Taliant.", "unlock_key": "skin:morfil_skin1", "unlock_rule": {"type": "win_with", "character": "morfil", "mode": "difficile"}}],
     "spells": [
       {
         "id": "taille_estoc",

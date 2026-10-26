@@ -182,8 +182,9 @@ static func character() -> CharacterData:
 	c.base_speed_u = BASE_SPEED_U
 	c.hitbox_u = HITBOX_U
 	c.kit_script = TocsinKit
-	if TocsinLayers.available(ASSET_DIR):
-		c.sprite_frames_path = TocsinLayers.frames_path(ASSET_DIR, &"torso") # le Visual = calque torse
+	var adir := Skins.asset_dir(&"tocsin", ASSET_DIR) # dossier du skin équipé s'il est livré (docs/Skins.md)
+	if TocsinLayers.available(adir):
+		c.sprite_frames_path = TocsinLayers.frames_path(adir, &"torso") # le Visual = calque torse
 	else:
 		c.sprite_frames_path = COMPOSITE_FRAMES
 	c.placeholder_tint = PLACEHOLDER_TINT
@@ -266,9 +267,10 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 func setup(p: CharacterBody2D) -> void:
 	player = p
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
-	if _visual != null and TocsinLayers.available(ASSET_DIR) and _visual.sprite_frames != null \
+	var adir := Skins.asset_dir(&"tocsin", ASSET_DIR)
+	if _visual != null and TocsinLayers.available(adir) and _visual.sprite_frames != null \
 			and _visual.sprite_frames.has_animation(&"walk_s"):
-		layers = TocsinLayers.attach(_visual, ASSET_DIR)
+		layers = TocsinLayers.attach(_visual, adir)
 	smoke_bonus_spell = _spell(V_FUMIGENE, "Tête-fumigène (étourdie)", 4, SpellData.Behavior.KIT,
 			FUMI_COEF * FUMI_PRISONER_BONUS, 0.0)
 	smoke_bonus_spell.proc_coef = 0.0

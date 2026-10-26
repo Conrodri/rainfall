@@ -336,7 +336,8 @@ func _add_new_items_block(keys: Array[StringName]) -> void:
 		cell.set_meta(&"base", Vector2(76, 76))
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		flow.add_child(cell)
-		for path in [ITEM_ICON % id, RARITY_FRAME % str(it.get("quality", "commun"))]:
+		cell.add_child(ItemBar.quality_backing(it.get("quality", "commun"), 6))
+		for path in [ITEM_ICON % id]:
 			if ResourceLoader.exists(path):
 				var tr := TextureRect.new()
 				tr.texture = load(path) as Texture2D
@@ -507,7 +508,8 @@ func _add_items_strip() -> void:
 		cell.set_meta(&"base", Vector2(76, 76))
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		flow.add_child(cell)
-		for path in [ITEM_ICON % String(id), RARITY_FRAME % str(it.get("quality", "commun"))]:
+		cell.add_child(ItemBar.quality_backing(it.get("quality", "commun"), 6))
+		for path in [ITEM_ICON % String(id)]:
 			if ResourceLoader.exists(path):
 				var tr := TextureRect.new()
 				tr.texture = load(path) as Texture2D
@@ -680,6 +682,12 @@ static func unlock_text(key: StringName) -> String:
 			return "Nouveau personnage : %s !" % (str(c.get("name", "")) if not c.is_empty() else _humanize(id))
 		"item":
 			return "Nouvel objet : %s !" % str(ItemDB.get_item(id).get("name", _humanize(id)))
+		"skin":
+			for c in CharacterCard.load_characters():
+				var sk := Skins.skin_of_dict(c)
+				if str(sk.get("id", "")) == id:
+					return "Nouveau skin pour %s : %s !" % [str(c.get("name", "")), str(sk.get("name", ""))]
+			return "Nouveau skin : %s !" % _humanize(id)
 		"spell":
 			for c in CharacterCard.load_characters():
 				for sp in c.get("spells", []):
@@ -702,6 +710,12 @@ static func unlock_icon_path(key: StringName) -> String:
 			var t: Texture2D = CharacterCard.portrait_info(c).tex
 			if t != null and t.resource_path != "":
 				return t.resource_path
+	elif kind == "skin":
+		for c in CharacterCard.load_characters():
+			if str(Skins.skin_of_dict(c).get("id", "")) == id:
+				var t3: Texture2D = CharacterCard.portrait_info(c, id).tex
+				if t3 != null and t3.resource_path != "":
+					return t3.resource_path
 	elif kind == "spell":
 		var t2 := ArdentKit.spell_icon(StringName(id))
 		if t2 != null:

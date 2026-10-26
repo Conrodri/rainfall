@@ -104,6 +104,14 @@ func make_display_only() -> void:
 	_refresh_style()
 
 
+## Carte d'affichage cliquable (écran Progression : ouvre les meilleures runs) : reste toujours éclairée mais
+## reprend focus (clavier / manette) et clic / toucher.
+func make_inspectable() -> void:
+	focus_mode = Control.FOCUS_ALL
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+
+
 ## Barre de progression de l'objectif de déblocage (personnage verrouillé à objectif visible).
 func set_objective_progress(v: float) -> void:
 	if _bar == null:
@@ -548,8 +556,14 @@ static func portrait_texture(c: Dictionary) -> Texture2D:
 
 ## {tex, emit, bust} : buste `ui/portraits/<id>.png` ou `characters/<id>/portrait.png` (+ `portrait_e.png`),
 ## sinon 1re frame `idle_s` (bust = false), sinon tex = null.
-static func portrait_info(c: Dictionary) -> Dictionary:
+## `skin_id` : "" = skin équipé du profil (s'il a un portrait livré), "-" = jamais de skin, sinon ce skin.
+static func portrait_info(c: Dictionary, skin_id := "") -> Dictionary:
 	var id := String(c.get("id", ""))
+	var sid := skin_id if skin_id != "" else Skins.equipped(id)
+	if sid != "" and sid != "-":
+		var sp := Skins.portrait_info(id, sid)
+		if bool(sp.exists):
+			return sp
 	var sf_path := String(c.get("sprite_frames", ""))
 	var candidates: Array = []
 	if id != "":

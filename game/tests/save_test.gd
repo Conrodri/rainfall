@@ -184,8 +184,10 @@ func _ready() -> void:
 	var u0 := Profile.add_run_result({"victory": false, "mode": &"moyen", "character": &"ardent", "active_time_s": 300.0, "kills": 50, "rubies": 10})
 	_check(u0.is_empty() and Profile.rubies == 10, "défaite : pas de déblocage, rubis crédités")
 	var u1 := Profile.add_run_result({"victory": true, "mode": &"moyen", "character": &"ardent", "active_time_s": 900.0, "kills": 400, "rubies": 40})
+	u1 = u1.filter(func(k): return not String(k).begins_with("item:")) # déblocages d'objets (item_unlocks_test) hors sujet ici
 	_check(u1 == [&"mode:difficile"] and Profile.is_mode_unlocked(&"difficile"), "victoire Moyen -> [mode:difficile]")
 	var u2 := Profile.add_run_result({"victory": true, "mode": &"moyen", "character": &"ardent", "active_time_s": 800.0, "kills": 1, "rubies": 0})
+	u2 = u2.filter(func(k): return not String(k).begins_with("item:"))
 	_check(u2.is_empty() and int(Profile.stats["victories"]) == 2 and float(Profile.stats["best_time_s"]["moyen"]) == 800.0, "stats : victoires et meilleur temps")
 	_check(not FileAccess.file_exists(PROFILE), "headless : profil jamais écrit")
 	Profile.write_enabled = true

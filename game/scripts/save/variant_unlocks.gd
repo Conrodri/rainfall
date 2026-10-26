@@ -2,7 +2,8 @@ extends RefCounted
 ## Moteur de déblocage des variantes de sorts (sans class_name : `preload("res://scripts/save/variant_unlocks.gd")`).
 ## Règles lues dans data/characters.json, clé `unlock_rule` d'une variante (game/CONTRACTS.md « Variantes de sorts ») :
 ##   {"type": "win_with"[, "character": id|"any"][, "mode": "facile"|"moyen"|"difficile"]}
-##       gagner une run avec le personnage (défaut : le propriétaire de la variante), mode minimal facultatif ;
+##       gagner une run avec le personnage (défaut : le propriétaire de la variante), mode minimal facultatif
+##       (victoire = boss final abattu, run terminée ; c'est aussi la règle des skins, voir Skins) ;
 ##   {"type": "counter", "key": "<clé>", "value": N}
 ##       compteur cumulé du profil `stats[<clé>]` >= N (Profile.add_stat, RunState.add_counter pendant la run) ;
 ##   {"type": "boss_kill", "boss": "<id>"|"any"[, "character": …][, "mode": …]}
