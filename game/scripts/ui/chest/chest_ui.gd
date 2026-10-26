@@ -980,7 +980,7 @@ func _start_reveal(with_rarity: bool) -> void:
 		_rar_dur = 0.0
 		_rar_landed = true
 		_item_t0 = 0.0
-	var pool: Array = ItemDB.ids_of_quality(session.quality)
+	var pool: Array = LootRoller.available_ids(session.quality)
 	for i in 2:
 		_item_step[i] = -1
 		_item_landed[i] = i >= session.offered.size()

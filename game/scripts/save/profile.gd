@@ -4,7 +4,7 @@ extends Node
 ## stats. Chargé dans _ready ; jamais écrit en headless (sauf `write_enabled` forcé par un test
 ## avec un `path` de test). Écriture atomique (`.tmp` puis renommage), immédiate à chaque changement.
 ##
-## Clés de déblocage (`is_unlocked`) : "mode:<id>", "character:<id>", "spell:<id>".
+## Clés de déblocage (`is_unlocked`) : "mode:<id>", "character:<id>", "spell:<id>", "item:<id>".
 ## Variantes de sorts (game/CONTRACTS.md « Variantes de sorts ») : `loadout` mémorise par personnage le sort choisi
 ## par emplacement ; `unlock_rule` des variantes (characters.json) évaluées en fin de run par VariantUnlocks ;
 ## compteurs génériques `stats[<clé>]` via `add_stat(key, n)`.
@@ -36,6 +36,7 @@ var rubies := 0:
 var unlocked_modes: Array = DEFAULT_MODES.duplicate() ## StringName
 var unlocked_characters: Array = DEFAULT_CHARACTERS.duplicate() ## StringName
 var unlocked_spells: Array = [] ## StringName (ids de variantes de sorts)
+var unlocked_items: Array = [] ## StringName (ids d'objets à débloquer, ItemUnlocks)
 var last_mode: StringName = &"moyen":
 	set(v):
 		last_mode = StringName(v)
@@ -78,6 +79,7 @@ func reset() -> void:
 	unlocked_modes = DEFAULT_MODES.duplicate()
 	unlocked_characters = DEFAULT_CHARACTERS.duplicate()
 	unlocked_spells = []
+	unlocked_items = []
 	last_mode = &"moyen"
 	last_character = &"ardent"
 	stats = _default_stats()
@@ -102,6 +104,7 @@ func load_profile() -> void:
 	unlocked_modes = _names(d.get("unlocked_modes", []), DEFAULT_MODES)
 	unlocked_characters = _names(d.get("unlocked_characters", []), DEFAULT_CHARACTERS)
 	unlocked_spells = _names(d.get("unlocked_spells", []), [])
+	unlocked_items = _names(d.get("unlocked_items", []), [])
 	last_mode = StringName(str(d.get("last_mode", "moyen")))
 	last_character = StringName(str(d.get("last_character", "ardent")))
 	var s: Variant = d.get("stats", {})
@@ -160,6 +163,7 @@ func to_dict() -> Dictionary:
 		"unlocked_modes": unlocked_modes.map(func(v): return String(v)),
 		"unlocked_characters": unlocked_characters.map(func(v): return String(v)),
 		"unlocked_spells": unlocked_spells.map(func(v): return String(v)),
+		"unlocked_items": unlocked_items.map(func(v): return String(v)),
 		"last_mode": String(last_mode), "last_character": String(last_character),
 		"stats": stats, "objectives": objectives, "last_floor_boss": last_floor_boss,
 		"seen_hints": seen_hints, "loadout": loadout,
@@ -206,6 +210,8 @@ func is_unlocked(key: StringName) -> bool:
 			return unlocked_characters.has(id)
 		"spell":
 			return unlock_all_variants or unlocked_spells.has(id)
+		"item":
+			return unlock_all_variants or unlocked_items.has(id)
 	return false
 
 
@@ -216,7 +222,8 @@ func unlock(key: StringName) -> bool:
 	var kind := s.substr(0, i) if i >= 0 else "character"
 	var id := StringName(s.substr(i + 1) if i >= 0 else s)
 	# Possession réelle (le mode test « toutes les variantes » n'empêche pas d'enregistrer un vrai déblocage).
-	if (kind == "spell" and unlocked_spells.has(id)) or (kind != "spell" and is_unlocked(key)):
+	var owned_real := (kind == "spell" and unlocked_spells.has(id)) or (kind == "item" and unlocked_items.has(id))
+	if owned_real or (kind != "spell" and kind != "item" and is_unlocked(key)):
 		return false
 	match kind:
 		"mode":
@@ -225,6 +232,8 @@ func unlock(key: StringName) -> bool:
 			unlocked_characters.append(id)
 		"spell":
 			unlocked_spells.append(id)
+		"item":
+			unlocked_items.append(id)
 		_:
 			return false
 	_touch()
@@ -322,6 +331,12 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 		if not unlocked_spells.has(StringName(String(vkey).substr(6))):
 			unlocked_spells.append(StringName(String(vkey).substr(6)))
 			out.append(vkey)
+	# Objets débloquables : règles `unlock` de items.json (ItemUnlocks), après les compteurs ci-dessus.
+	for ikey: StringName in ItemUnlocks.evaluate(self, r):
+		var iid := StringName(String(ikey).substr(5))
+		if not unlocked_items.has(iid):
+			unlocked_items.append(iid)
+			out.append(ikey)
 	_loading = false
 	_touch()
 	return out

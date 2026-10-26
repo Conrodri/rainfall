@@ -149,6 +149,11 @@ func _build() -> void:
 		if String(u0).begins_with("spell:"):
 			variant_keys.append(StringName(u0))
 	_add_variants_block(variant_keys) # en haut : visible sans défiler
+	var item_keys: Array[StringName] = []
+	for u1 in info.get("unlocks", []):
+		if String(u1).begins_with("item:"):
+			item_keys.append(StringName(u1))
+	_add_new_items_block(item_keys)
 
 
 	var tiles := HBoxContainer.new()
@@ -185,7 +190,7 @@ func _build() -> void:
 
 	for u in info.get("unlocks", []):
 		var key := StringName(u)
-		if String(key).begins_with("spell:"):
+		if String(key).begins_with("spell:") or String(key).begins_with("item:"):
 			continue # regroupées dans UN bloc compact (évite de pousser les boutons hors écran)
 		var urow := HBoxContainer.new()
 		urow.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -299,6 +304,54 @@ func _add_next_objective() -> void:
 		bar.add_theme_stylebox_override("background", bg)
 		bar.add_theme_stylebox_override("fill", fg)
 		box.add_child(bar)
+
+
+## Bloc « Nouveaux objets débloqués » : une icône cadrée par objet (qualité en couleur) et leurs noms dessous.
+func _add_new_items_block(keys: Array[StringName]) -> void:
+	if keys.is_empty():
+		return
+	var box := VBoxContainer.new()
+	box.name = "NewItems"
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.set_meta(&"sep", 10)
+	_content.add_child(box)
+	var head := _label("Nouveaux objets débloqués", 40, COL_UNLOCK)
+	head.name = "ItemsTitle"
+	box.add_child(head)
+	_labels.append(head)
+	var flow := HFlowContainer.new()
+	flow.name = "NewItemRow"
+	flow.alignment = FlowContainer.ALIGNMENT_CENTER
+	flow.custom_minimum_size.x = 900.0
+	flow.set_meta(&"sep", 10)
+	box.add_child(flow)
+	var names: Array[String] = []
+	for k in keys:
+		var id := String(k).substr(5)
+		var it := ItemDB.get_item(id)
+		names.append(str(it.get("name", id)))
+		var cell := Control.new()
+		cell.name = "NewItem_" + id
+		cell.custom_minimum_size = Vector2(76, 76)
+		cell.set_meta(&"base", Vector2(76, 76))
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		flow.add_child(cell)
+		for path in [ITEM_ICON % id, RARITY_FRAME % str(it.get("quality", "commun"))]:
+			if ResourceLoader.exists(path):
+				var tr := TextureRect.new()
+				tr.texture = load(path) as Texture2D
+				tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+				tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				cell.add_child(tr)
+	var nl := _label(", ".join(names), 30, COL_TEXT)
+	nl.name = "NewItemNames"
+	nl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	nl.set_meta(&"base", Vector2(1000, 0))
+	nl.custom_minimum_size = Vector2(1000, 0)
+	box.add_child(nl)
+	_labels.append(nl)
 
 
 ## Bloc unique « Nouvelles variantes débloquées » : une rangée d'icônes (variante, sinon sort de base désaturé),
@@ -625,6 +678,8 @@ static func unlock_text(key: StringName) -> String:
 		"character":
 			var c := _character(id)
 			return "Nouveau personnage : %s !" % (str(c.get("name", "")) if not c.is_empty() else _humanize(id))
+		"item":
+			return "Nouvel objet : %s !" % str(ItemDB.get_item(id).get("name", _humanize(id)))
 		"spell":
 			for c in CharacterCard.load_characters():
 				for sp in c.get("spells", []):

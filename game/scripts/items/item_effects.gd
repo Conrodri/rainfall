@@ -198,8 +198,11 @@ func _on_spell_cast(s: SpellData) -> void:
 	if n <= 0:
 		return
 	var step := float(data_of(ID_ECHO).get("repeat_delay_s", 0.15))
-	for i in n:
-		_echo_queue.append({"slot": s.slot, "t": step * (i + 1)})
+	var d := data_of(ID_ECHO)
+	var base := float(d.get("echo_damage", 0.45))
+	var decay := float(d.get("echo_decay", 0.7))
+	for i in n: # écho i : base × decay^i (rendements décroissants)
+		_echo_queue.append({"slot": s.slot, "t": step * (i + 1), "mult": base * pow(decay, i)})
 
 
 # --- Nova infinie ----------------------------------------------------------------
@@ -288,7 +291,7 @@ func _tick_echo(delta: float) -> void:
 			keep.append(q)
 		elif sp != null and not bool(player.get("dead")):
 			_echoing = true
-			sp.repeat_cast(int(q["slot"]))
+			sp.repeat_cast(int(q["slot"]), float(q.get("mult", 1.0)))
 			_echoing = false
 	_echo_queue = keep
 

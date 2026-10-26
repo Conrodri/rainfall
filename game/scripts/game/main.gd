@@ -172,6 +172,8 @@ func _build() -> void:
 	Events.player_died.connect(_on_player_died)
 	Events.pillar_state_changed.connect(_on_pillar_state)
 	Events.item_chosen.connect(_on_item_chosen)
+	Events.pickup_collected.connect(_on_pickup_counter)
+	Events.chest_opened.connect(_on_chest_counter)
 	Events.gold_converted.connect(_on_gold_converted) # après celui du HUD : le toast existe déjà
 
 	if resume_data.is_empty():
@@ -188,12 +190,27 @@ func _exit_tree() -> void:
 		Events.player_died.disconnect(_on_player_died)
 	if Events.pillar_state_changed.is_connected(_on_pillar_state):
 		Events.pillar_state_changed.disconnect(_on_pillar_state)
+	if Events.pickup_collected.is_connected(_on_pickup_counter):
+		Events.pickup_collected.disconnect(_on_pickup_counter)
+	if Events.chest_opened.is_connected(_on_chest_counter):
+		Events.chest_opened.disconnect(_on_chest_counter)
 	if Events.item_chosen.is_connected(_on_item_chosen):
 		Events.item_chosen.disconnect(_on_item_chosen)
 	if Events.gold_converted.is_connected(_on_gold_converted):
 		Events.gold_converted.disconnect(_on_gold_converted)
 	Audio.auto_start_map = true
 	Audio.thunder_driven = false
+
+
+# --- Compteurs de déblocage d'objets (ItemUnlocks) --------------------------
+
+func _on_pickup_counter(kind: StringName, amount: float) -> void:
+	if kind == &"gold":
+		RunState.add_counter(ItemUnlocks.COUNTER_GOLD, amount)
+
+
+func _on_chest_counter(_chest: Node, _quality: StringName, _offered: Array) -> void:
+	RunState.add_counter(ItemUnlocks.COUNTER_CHESTS)
 
 
 # --- Étages -----------------------------------------------------------------

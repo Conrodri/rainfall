@@ -84,10 +84,22 @@ static func _weighted_pick(pool: Array, owned: Dictionary, tags: Dictionary, rng
 	return pool[pool.size() - 1]
 
 
+## Objets de la qualité offerts au joueur : seulement les débloqués (ItemUnlocks ; ordre de items.json conservé, donc
+## graines inchangées tant que rien n'est verrouillé). Qualité sans objet débloqué : repli sur la qualité inférieure
+## la plus proche qui en a, sinon sur la table complète.
+static func available_ids(quality: StringName, profile: Object = null) -> Array:
+	var ids: Array = ItemUnlocks.filter_unlocked(ItemDB.ids_of_quality(quality), profile)
+	var r := quality_rank(quality) - 1
+	while ids.is_empty() and r >= 0:
+		ids = ItemUnlocks.filter_unlocked(ItemDB.ids_of_quality(ORDER[r]), profile)
+		r -= 1
+	return ids if not ids.is_empty() else ItemDB.ids_of_quality(quality)
+
+
 ## 2 items de la qualité. `exclude` = ids déjà montrés pour ce coffre. Distincts si possible ;
 ## si la table privée de `exclude` a moins de 2 items, on complète avec les exclus, puis doublons si table < 2.
 static func pick_pair(quality: StringName, owned: Dictionary, exclude: Array, rng: RandomNumberGenerator) -> Array:
-	var table: Array = ItemDB.ids_of_quality(quality)
+	var table: Array = available_ids(quality)
 	if table.is_empty():
 		return []
 	var tags := build_tags(owned)

@@ -18,6 +18,7 @@ func _near(label: String, got: float, want: float, tol: float) -> void:
 
 
 func _ready() -> void:
+	Profile.unlock_all_variants = true # tables complètes (les objets à débloquer sont testés dans item_unlocks_test)
 	ItemDB.reload()
 	_check("items.json chargé (48 items, aimants retirés)", ItemDB.all_ids().size() == 48, str(ItemDB.all_ids().size()))
 	_test_distribution()

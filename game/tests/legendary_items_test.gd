@@ -167,6 +167,8 @@ func _test_loot() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 99
 	var seen := {}
+	var _prev_unlock_all: bool = Profile.unlock_all_variants
+	Profile.unlock_all_variants = true # tous les légendaires sont dans le pool (certains sont à débloquer)
 	_cur = "loot"
 	for i in 400:
 		var q: StringName = LootRoller.roll_quality(&"legendaire", rng)["quality"]
@@ -175,6 +177,7 @@ func _test_loot() -> void:
 			break
 		for id in LootRoller.pick_pair(q, {}, [], rng):
 			seen[id] = true
+	Profile.unlock_all_variants = _prev_unlock_all
 	for id in LEGENDARY:
 		_cur = String(id)
 		_check("%s sort du coffre légendaire (pick_pair)" % id, seen.has(String(id)))
@@ -309,11 +312,21 @@ func _test_echo(ch: StringName) -> void:
 		_player.spells.aim_override = null
 		_player.spells.set_cooldown(1, 0.0, 1.0)
 		var casts := [0]
-		var c := func(_s: SpellData) -> void: casts[0] += 1
+		var coefs: Array = []
+		var c := func(_s: SpellData) -> void:
+			casts[0] += 1
+			coefs.append(_s.coef)
 		_player.spells.spell_cast.connect(c)
 		var ok: bool = _player.spells.cast(1)
 		_player.item_fx.tick(0.2 * (n + 1))
 		_player.spells.spell_cast.disconnect(c)
+		if coefs.size() == 1 + n and n > 0: # gain cible : 1 couronne = x1,45 ; 2 = x1,765 (rendements décroissants)
+			var total := 0.0
+			for k in coefs.size():
+				total += float(coefs[k])
+			var ratio: float = total / float(coefs[0])
+			var want_ratio := 1.45 if n == 1 else 1.765
+			_check("[%s] écho x%d : dégâts totaux x%.3f (attendu x%.3f)" % [ch, n, ratio, want_ratio], _near(ratio, want_ratio, 0.02))
 		_check("[%s] écho x%d : sort 1 lancé %d fois (attendu %d, premier lancer ok=%s)" % [ch, n, casts[0], 1 + n, ok], ok and casts[0] == 1 + n)
 		_check("[%s] écho x%d : recharge du sort 1 intacte" % [ch, n], _player.spells.cooldown_remaining(1) > 0.0)
 		_clear_fakes()

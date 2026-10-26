@@ -163,7 +163,27 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 - **Survie** : Bague de vigueur -> Tonique vital -> Morsure vorace -> Armure du colosse -> Phénix de poche ; Antidote contre les élites à brûlure et poison.
 - **Chance et or** : Pièce porte-bonheur -> Faveur du marchand -> Dé pipé (plus de Rares et plus de relances).
 
-## 8. Hypothèses à valider en playtest
+## 8. Objets à débloquer
+
+Onze objets sont verrouillés au départ (champ `"unlock"` de `data/items.json`, moteur `scripts/save/item_unlocks.gd` basé sur `variant_unlocks.gd`). Tant qu'ils ne sont pas débloqués, ils n'apparaissent ni dans les coffres ni dans le défilement de rareté ; si une qualité n'a plus aucun objet disponible, le tirage replie sur la qualité inférieure. Le déblocage est évalué en fin de run, affiché dans le récap (« Nouveaux objets débloqués ») et listé dans Progression > Objets (silhouette, condition, avancement). Le mode test `RAINFALL_UNLOCK_ALL_VARIANTS=1` / `-- --unlock-variants` débloque aussi les objets.
+
+| Objet | Qualité | Condition |
+|---|---|---|
+| Orbe de veille | Peu commun | Tuer 300 monstres au total |
+| Éclair en bouteille | Peu commun | Terminer 3 runs |
+| Marque du chasseur | Peu commun | Vaincre un boss d'étage |
+| Venin concentré | Peu commun | Ouvrir 10 coffres au total |
+| Tempête de braises | Rare | Tuer 1 500 monstres au total |
+| Peste vivante | Rare | Tuer 3 000 monstres au total |
+| Bouclier réactif | Rare | Atteindre l'étage 3 |
+| Faveur du marchand | Rare | Ramasser 5 000 pièces d'or au total |
+| Armure du colosse | Légendaire | Gagner une run |
+| Nova infinie | Légendaire | Atteindre l'étage 5 |
+| Moisson | Légendaire | Tuer 6 000 monstres au total |
+
+Restent libres dès le départ : tous les communs, les autres Peu communs et Rares, Couronne d'écho, Dé pipé et Cœur du chronomancien (pool légendaire de départ = 3 objets, pour que les relances restent variées). Compteurs de run : `gold_collected` et `chests_opened` (scripts/game/main.gd) ; `kills`, `runs` et `play_time_s` viennent des stats du profil.
+
+## 9. Hypothèses à valider en playtest
 
 - Dégâts subis par seconde (4,4 % des PV max/s), part des dégâts venant des brûlures et poisons (25 %), élites tués par seconde, kills par seconde.
 - Les items de synergie (Tempête de braises, Peste vivante, Cœur de glace) sont valorisés en supposant des sources de brûlure, de poison ou de ralentissement dans le build.

@@ -34,6 +34,7 @@ var _container: Node2D
 ## le demande (`kit.defers_effects() -> bool`, ArdentVariantKit) ; les autres kits (Rictus) gèrent leur propre synchro.
 var _pending: Array[Callable] = []
 var _last_tick_frame := -10
+var _repeat_mult := 1.0 ## facteur de dégâts du rejeu en cours (repeat_cast)
 
 
 func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
@@ -135,13 +136,16 @@ func silence(seconds: float) -> int:
 
 
 ## Relance le sort du slot sans toucher à sa recharge (Couronne d'écho) ; passe par cast(), donc aussi pour les sorts de kit.
-func repeat_cast(slot: int) -> bool:
+## `damage_mult` : facteur sur tous les dégâts du rejeu (projectiles, zones, kits : le SpellData lancé est une copie au coef réduit).
+func repeat_cast(slot: int, damage_mult := 1.0) -> bool:
 	if not _remaining.has(slot):
 		return false
+	_repeat_mult = damage_mult
 	var rem: float = _remaining[slot]
 	var tot: float = _totals[slot]
 	_remaining[slot] = 0.0
 	var ok := cast(slot)
+	_repeat_mult = 1.0
 	_remaining[slot] = rem
 	_totals[slot] = tot
 	return ok
@@ -209,6 +213,9 @@ func cast(slot: int) -> bool:
 	var s := _spell_for(slot)
 	if s == null or _remaining[slot] > 0.0 or is_slot_blocked(slot):
 		return false
+	if _repeat_mult != 1.0:
+		s = s.duplicate() as SpellData
+		s.coef *= _repeat_mult
 	var target := _nearest_enemy(_range_px(s))
 	var manual: Variant = null if s.is_auto else get_manual_aim_point(_range_px(s))
 	if manual == null and not s.is_auto and s.target_mode == &"densest":
