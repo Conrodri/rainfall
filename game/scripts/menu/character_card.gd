@@ -338,6 +338,11 @@ func _fit() -> void:
 	_name_label.clip_text = false
 	_name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_name_label.add_theme_font_size_override("font_size", nfs)
+	# La ligne de Cinzel (1,36 em) peut dépasser le bandeau : un Label plus petit que sa ligne grandit vers le bas et le
+	# nom descend sur le cadre. On le recentre sur le bandeau avec sa hauteur réelle.
+	var name_h := maxf(band.size.y, UiTheme.line_height(font, nfs))
+	_name_label.size = Vector2(band.size.x, name_h)
+	_name_label.position = Vector2(band.position.x, band.get_center().y - name_h * 0.5)
 	var tz := _zone(ZONE_TEXT)
 	var bar_h := maxf(10.0, 14.0 * k) if _bar != null else 0.0
 	if _bar != null:

@@ -397,7 +397,7 @@ func _build() -> void:
 	row.add_child(_center_col)
 	_time_plate = PanelContainer.new()
 	_time_plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var tb := UiTheme.da_box("timer_plate", 0.5)
+	var tb := UiTheme.da_box("timer_plate", 0.5, 40)
 	if tb != null:
 		_time_plate.add_theme_stylebox_override(&"panel", tb)
 	_center_col.add_child(_time_plate)
@@ -990,7 +990,7 @@ func _place_difficulty() -> void:
 	_diff_box.reset_size()
 	_diff_caption.reset_size()
 	_diff_caption.size.x = _diff_box.size.x
-	_diff_caption.position = Vector2(mm.get_center().x - _diff_caption.size.x * 0.5, bottom + 2.0 * s)
+	_diff_caption.position = Vector2(mm.get_center().x - _diff_caption.size.x * 0.5, bottom + maxf(2.0 * s, UiTheme.ink_pad(HudMetrics.font(HudMetrics.T4_SMALL, s, HudMetrics.is_mobile()))))
 	_diff_box.position = Vector2(mm.get_center().x - _diff_box.size.x * 0.5, _diff_caption.position.y + _diff_caption.size.y)
 	# plaque commune : minimap compacte + titre + difficulté (contraste du libellé garanti sur tout décor, H17)
 	var plate := mm.merge(Rect2(_diff_caption.position, _diff_caption.size)).merge(Rect2(_diff_box.position, _diff_box.size)).grow(HudMetrics.PLATE_PAD * s)

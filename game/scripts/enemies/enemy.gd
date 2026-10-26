@@ -113,6 +113,12 @@ var radius_px := 20.0
 var speed_px := 100.0
 var pack_bonus := false ## mis à jour par le Director (Meute)
 var fight_time := 0.0 ## boss : temps de combat (enrage)
+## Priorité de ciblage automatique (Design_Boss_Raid §1.9) : SpellCaster divise la distance par cette valeur
+## (adds prioritaires des boss façon raid : 2). Remise à 1 à chaque activation (pool).
+var aim_priority := 1.0
+## Cible de marche imposée (adds prioritaires des boss façon raid : ils marchent vers leur boss, PriorityAdds) ;
+## null = le joueur. Remise à null à chaque activation.
+var walk_target: Node2D = null
 var variant := VARIANT_SHOOTER ## tier 2 : tireur ou bondisseur
 
 var pool_index := -1 ## index dans la liste active du Director (gestion interne)
@@ -507,6 +513,8 @@ func _sfx(id: StringName, vol_db := 0.0, important := false) -> void:
 
 func _common_activate(pos: Vector2) -> void:
 	hp = max_hp
+	aim_priority = 1.0
+	walk_target = null
 	position = pos
 	active = true
 	pack_bonus = false
@@ -623,6 +631,13 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 			player = lure
 			player_pos = lure.global_position
 			path_dir = Vector2.ZERO
+	if walk_target != null: # add de raid : marche vers son boss (direct, sans champ de flux)
+		if is_instance_valid(walk_target):
+			player = walk_target
+			player_pos = walk_target.global_position
+			path_dir = Vector2.ZERO
+		else:
+			walk_target = null
 	var to_player := player_pos - position
 	var dist := to_player.length()
 	_near_player = player != null and dist < AUDIO_RADIUS_PX

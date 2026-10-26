@@ -62,6 +62,7 @@ func set_ui_scale(s: float) -> void:
 	_style.content_margin_right = 18.0 * s
 	_style.content_margin_top = (6.0 if _compact else 10.0) * s
 	_style.content_margin_bottom = (8.0 if _compact else 12.0) * s
+	UiTheme.pad_box(_style, maxi(int(26 * s), HudMetrics.floor_px())) # texte à distance du trait du cadre
 	_title.add_theme_font_size_override("font_size", int(22 * s))
 	for r in [_boss_row, _charge_row, _teleport_row]:
 		(r as ObjectiveRow).set_ui_scale(s)

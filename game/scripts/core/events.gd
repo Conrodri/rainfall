@@ -22,3 +22,13 @@ signal lightning_struck(intensity: float, pos: Vector2)
 signal difficulty_tier_changed(tier_name: StringName, D: float)
 ## Progression de charge d'un gros pilier (0..1), émise pendant que la charge avance.
 signal pillar_charge_progress(pillar: Node, ratio: float)
+## --- Boss façon raid (docs/Design_Boss_Raid.md §1.9, scripts/enemies/raid/) ---
+## Bouclier de phase armé (active = true, dès la transition) ou tombé (active = false, rupture ou garde-fou).
+## kind : condition principale (&"orbs", &"ultimate_hit", &"timer", &"kill_adds", &"weak_point", &"soak", &"interact").
+signal boss_shield_changed(boss: Node2D, active: bool, kind: StringName)
+## Progrès de la condition de rupture du bouclier (orbes ramassées, adds tués…).
+signal boss_shield_progress(boss: Node2D, done: int, total: int)
+## Mécanique de raid ratée (pénalité appliquée) : &"soak", &"sector", &"add_reached", &"shield_backstop"…
+signal raid_mechanic_failed(boss: Node2D, kind: StringName)
+## Barrage de projectiles (BarrageEmitter) : true au début du télégraphe, false à la fin de l'émission.
+signal raid_barrage(boss: Node2D, active: bool)

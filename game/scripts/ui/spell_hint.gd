@@ -35,6 +35,7 @@ func _init() -> void:
 		da.content_margin_right = 22
 		da.content_margin_top = 16
 		da.content_margin_bottom = 18
+		UiTheme.pad_box(da, 30) # titre et corps ne touchent pas le trait du cadre
 		tip.add_theme_stylebox_override("panel", da)
 	add_child(tip)
 

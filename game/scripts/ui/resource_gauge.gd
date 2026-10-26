@@ -114,7 +114,7 @@ func required_size() -> Vector2:
 	var base := (MOBILE_SIZE if Platform.is_mobile() else BASE_SIZE) * k
 	var font := ThemeDB.fallback_font
 	var fs := _font_px()
-	var pad := Vector2(16, 10) * k
+	var pad := _pad()
 	var label := String(state.get("label", "")).to_upper()
 	var text := String(state.get("text", ""))
 	var w := pad.x * 2.0 + font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
@@ -124,6 +124,18 @@ func required_size() -> Vector2:
 	w += TEXT_GAP * k + vw
 	var h := pad.y + font.get_height(fs) + TRACK_GAP * k + MIN_TRACK * k + pad.y
 	return Vector2(maxf(base.x, ceilf(w)), maxf(base.y, ceilf(h)))
+
+
+## Marges du texte dans la plaque : 16 px de côté, verticalement trait du cadre + marge d'encre (UiTheme.v_margin).
+func _pad() -> Vector2:
+	return Vector2(16.0 * ui_scale, UiTheme.v_margin(_plate, _font_px()) if _plate != null else 10.0 * ui_scale)
+
+
+## Bord intérieur visible de la plaque (pour la règle de marge verticale du test de débordement).
+func _inner_frame() -> Rect2:
+	var e := UiTheme.frame_edge(_plate)
+	var gr := get_global_rect()
+	return Rect2(gr.position + Vector2(0.0, e), gr.size - Vector2(0.0, 2.0 * e))
 
 
 func _fit_size() -> void:
@@ -140,21 +152,21 @@ func text_rects() -> Array:
 	var g := get_global_rect().position
 	var font := ThemeDB.fallback_font
 	var fs := _font_px()
-	var pad := Vector2(16, 10) * k
+	var pad := _pad()
 	var h := font.get_height(fs)
 	var label := String(state.get("label", "")).to_upper()
 	var lw := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
 	var own := get_global_rect()
-	out.append({"text": label, "size": fs, "rect": Rect2(g + Vector2(pad.x, pad.y), Vector2(lw, h)), "within": own})
+	out.append({"text": label, "size": fs, "rect": Rect2(g + Vector2(pad.x, pad.y), Vector2(lw, h)), "within": own, "frame": _inner_frame()})
 	if state.has("regen"):
 		var rt := Hud.fmt_rate(float(state["regen"]))
 		var rfs := _regen_font_px()
 		var rw := font.get_string_size(rt, HORIZONTAL_ALIGNMENT_LEFT, -1, rfs).x
-		out.append({"text": rt, "size": rfs, "rect": Rect2(g + Vector2(pad.x + lw + TEXT_GAP * k, pad.y), Vector2(rw, font.get_height(rfs))), "within": own})
+		out.append({"text": rt, "size": rfs, "rect": Rect2(g + Vector2(pad.x + lw + TEXT_GAP * k, pad.y), Vector2(rw, font.get_height(rfs))), "within": own, "frame": _inner_frame()})
 	var text := String(state.get("text", ""))
 	if text != "":
 		var tw := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
-		out.append({"text": text, "size": fs, "rect": Rect2(g + Vector2(size.x - pad.x - tw, pad.y), Vector2(tw, h)), "within": own})
+		out.append({"text": text, "size": fs, "rect": Rect2(g + Vector2(size.x - pad.x - tw, pad.y), Vector2(tw, h)), "within": own, "frame": _inner_frame()})
 	return out
 
 
@@ -191,7 +203,7 @@ func _draw() -> void:
 		col = Color(acc.r * DIM, acc.g * DIM, acc.b * DIM, 1.0)
 	else:
 		col = lift(col) # remplissage >= 3:1 sur le fond (H12)
-	var pad := Vector2(16, 10) * k
+	var pad := _pad()
 	var font := ThemeDB.fallback_font
 	var fs := _font_px()
 	var label := String(state.get("label", "")).to_upper()

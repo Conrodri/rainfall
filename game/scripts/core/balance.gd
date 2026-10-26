@@ -209,6 +209,64 @@ const BOSS_PACE_FREEZE_S := {&"auto": 0.04, &"mini_auto": 0.03, &"spell": 0.06, 
 const BOSS_PACE_SHAKE_PX := {&"spell": 2.5, &"heavy": 7.0, &"charge": 5.0}
 const BOSS_PACE_SHAKE_HZ := 20.0
 const BOSS_PACE_SHAKE_S := 0.22
+## --- Boss façon raid (docs/Design_Boss_Raid.md §1, boîte à outils scripts/enemies/raid/). Les réglages marqués
+## « question ouverte » attendent l'arbitrage du joueur (§5) : ils sont centralisés ici pour être changés sans code.
+## PV des boss à deux boucliers (§0 règle 5) : × ce facteur, lu par boss_hp_mult(boss_id) (à appliquer à
+## l'activation du boss, boss_hp() reste inchangé).
+const BOSS_HP_MULT := {&"drowned_idol": 0.9, &"flood_gunner": 0.9, &"salt_king": 0.9}
+## Nombre de boucliers de phase par boss (question ouverte 1 : 2 pour les nouveaux, 1 pour les existants).
+const BOSS_SHIELDS := {&"drowned_idol": 2, &"flood_gunner": 2, &"salt_king": 2}
+const BOSS_SHIELDS_DEFAULT := 1
+## Bouclier (§1.1) : transition figée, mise en place, garde-fou (question ouverte 2 : 25 s, 20 s pour l'ultime),
+## rupture, fenêtre de vulnérabilité bonus (× dégâts reçus), cadence du seul sort lent gardé sous bouclier.
+const BOSS_SHIELD_TRANSITION_S := 0.9
+const BOSS_SHIELD_SETUP_S := 1.2
+const BOSS_SHIELD_BACKSTOP_S := 25.0
+const BOSS_SHIELD_BACKSTOP_ULT_S := 20.0
+const BOSS_SHIELD_BREAK_S := 0.5
+const BOSS_SHIELD_EXPOSED_MULT := 1.3
+const BOSS_SHIELD_EXPOSED_S := 2.5
+const BOSS_SHIELD_SLOW_SPELL_S := 4.0
+## Enrage doux (§1.8) : avertissement avant l'enrage (BOSS_ENRAGE_AFTER_S), horloge gelée sous bouclier.
+const BOSS_ENRAGE_WARN_S := 75.0
+## Condition ULTIMATE_HIT (question ouverte 4) : ultime obligatoire ; option « N coups lourds » (0 = coupée, 2 =
+## alternative proposée) : un coup de sort >= RAID_HEAVY_HIT_FRAC du meilleur coup vu compte comme un coup d'ultime.
+const RAID_ULT_REQUIRED := true
+const RAID_ULT_ALT_HEAVY_HITS := 0
+const RAID_HEAVY_HIT_FRAC := 0.25
+## Barrage (§1.2, question ouverte 3) : coef par projectile (× dégâts du boss, enrage compris), immunité visée
+## (aujourd'hui couverte par l'invulnérabilité de 0,4 s du joueur après un coup), télégraphe, plafond vivant.
+const RAID_BARRAGE_COEF := 0.2
+const RAID_BARRAGE_IFRAME_S := 0.35
+const RAID_BARRAGE_TELEGRAPH_S := 1.5
+const RAID_BARRAGE_MAX_LIVE := 160
+const RAID_BARRAGE_MIN_PYLONS := 2
+## Pylônes-abris : PV (part des PV du boss), plafond vivant, coef de la chute (joueur dessous).
+const RAID_PYLON_HP_FRAC := 0.04
+const RAID_PYLON_MAX := 6
+const RAID_PYLON_FALL_COEF := 0.8
+const RAID_ORB_FALL_COEF := 0.8
+## Pénalités d'échec : zone à absorber ratée, soin du boss par add arrivé (plafond par bouclier), secteur.
+const RAID_SOAK_FAIL_COEF := 1.0
+const RAID_ADD_HEAL_FRAC := 0.10
+const RAID_ADD_HEAL_CAP_FRAC := 0.20
+const RAID_SECTOR_TICK_COEF := 0.4
+const RAID_SECTOR_SLOW_PCT := 0.30
+## Point faible : dégâts transférés au boss × ce facteur.
+const RAID_WEAK_TRANSFER := 2.0
+## Plafond d'une pénalité d'échec (part des PV max du joueur) ; non létale : jamais sous 1 PV (règle 2).
+const RAID_PENALTY_MAX_FRAC := 0.40
+const RAID_PENALTY_NONLETHAL := true
+
+
+## Multiplicateur de PV d'un boss façon raid (BOSS_HP_MULT), 1 sinon.
+func boss_hp_mult(boss_id: StringName) -> float:
+	return float(BOSS_HP_MULT.get(boss_id, 1.0))
+
+
+## Nombre de boucliers de phase d'un boss (BOSS_SHIELDS, défaut BOSS_SHIELDS_DEFAULT).
+func boss_shield_count(boss_id: StringName) -> int:
+	return int(BOSS_SHIELDS.get(boss_id, BOSS_SHIELDS_DEFAULT))
 
 # Joueur
 const PLAYER_SPEED_U := 4.0

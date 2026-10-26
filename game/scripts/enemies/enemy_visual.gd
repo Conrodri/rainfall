@@ -97,6 +97,7 @@ var _tier_frames: SpriteFrames = null
 var _key := 1
 var _mon_cfg: Dictionary = {} ## géométrie du sprite de monstre courant (SPRITES + surcharge du biome)
 var _action: StringName = &"run"
+var _skin_prefix := "" ## set_skin_frames : préfixe des anims (extras `stoker_` du .tres d'un boss), "" = aucun
 # --- état boss sprite
 var _boss_sprite := false
 var _boss_cfg: Dictionary = {}
@@ -419,6 +420,7 @@ func configure(tier: int, radius_px: float, is_boss: bool, variant: int = 0, bos
 	_flash = false
 	_charge_mod = Color.WHITE
 	_action = &"run"
+	_skin_prefix = ""
 	rotation = 0.0
 	position = Vector2.ZERO
 	_strike_t = -1.0
@@ -882,11 +884,11 @@ func _play_dir(d: int) -> void:
 	var progress := _sprite.frame_progress
 	_dir = d
 	facing_octant = d
-	var anim := StringName("%s_%s" % [_action, DIRS[d]])
+	var anim := StringName("%s%s_%s" % [_skin_prefix, _action, DIRS[d]])
 	if not _sprite.sprite_frames.has_animation(anim):
-		anim = StringName("run_" + DIRS[d])
+		anim = StringName(_skin_prefix + "run_" + DIRS[d])
 		if not _sprite.sprite_frames.has_animation(anim): # corps à 4 directions (invocation de mini-boss : use_frames)
-			anim = StringName("run_" + DIRS4_OF8[d])
+			anim = StringName(_skin_prefix + "run_" + DIRS4_OF8[d])
 	_sprite.play(anim)
 	if frame > 0 or progress > 0.0:
 		_sprite.set_frame_and_progress(frame, progress)
@@ -951,6 +953,24 @@ func set_frozen(on: bool) -> void:
 
 ## Animation d'action (run, charge, attack, cast…). Sans animation correspondante : run.
 ## restart : rejouée depuis la frame 0 (armement d'un coup ; sinon la frame de la course est reprise).
+## Habillage d'un add de boss (Design_Boss_Raid §1.4) : les anims `<prefix>run_<dir>` (8 ou 4 directions, ex.
+## `stoker_run_e`) des extras du .tres du boss remplacent le sprite de monstre jusqu'au prochain configure()
+## (retour au pool). Retourne false (rien changé, placeholder gardé) si `frames` n'a aucune anim de ce préfixe.
+func set_skin_frames(frames: SpriteFrames, prefix: StringName, cfg: Dictionary = {}) -> bool:
+	if frames == null or _boss_sprite:
+		return false
+	var pre := String(prefix)
+	if not (frames.has_animation(StringName(pre + "run_e")) or frames.has_animation(StringName(pre + "run_s"))):
+		return false
+	_skin_prefix = pre
+	use_frames(frames, cfg)
+	return true
+
+
+func skin_prefix() -> String:
+	return _skin_prefix
+
+
 func set_action(action: StringName, restart := false) -> void:
 	if _boss_sprite:
 		_boss_set_action(action)

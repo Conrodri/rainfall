@@ -9,6 +9,7 @@ extends Button
 		if is_node_ready():
 			refresh_subtitle()
 
+const SUB_GAP := 4.0 ## écart entre libellé et sous-titre (px)
 var _sub: Label = null
 
 
@@ -31,19 +32,30 @@ func refresh_subtitle() -> void:
 		_sub.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 		_sub.add_theme_font_size_override(&"font_size", UiTheme.FONT_CAPTION)
 		_sub.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		_sub.offset_bottom = -10
 		add_child(_sub)
 	_sub.text = subtitle
 	_sub.visible = subtitle != ""
 	_update_sub_alpha()
-	# Remonte le libellé pour faire de la place au sous-titre.
+	# Remonte le libellé pour faire de la place au sous-titre : tout est dérivé des métriques réelles de la police
+	# (trait du cadre + marge d'encre de chaque côté, deux lignes, petit écart entre elles).
+	var fnt := get_theme_font(&"font")
+	var sub_fs := UiTheme.FONT_CAPTION
+	var sub_h := UiTheme.line_height(fnt, sub_fs)
+	var sb0 := get_theme_stylebox(&"normal")
+	var edge_pad := UiTheme.v_margin(sb0, sub_fs)
+	_sub.offset_bottom = -edge_pad
+	_sub.offset_top = 0.0
 	for k in [&"normal", &"hover", &"pressed", &"disabled"]:
 		var sb := get_theme_stylebox(k)
 		if sb == null:
 			continue
 		var d := sb.duplicate() as StyleBox
-		d.content_margin_bottom = 40.0 if subtitle != "" else 12.0
+		d.content_margin_bottom = (edge_pad + sub_h + SUB_GAP) if subtitle != "" else maxf(d.content_margin_bottom, UiTheme.v_margin(d, get_theme_font_size(&"font_size")))
 		add_theme_stylebox_override(k, d)
+	if subtitle != "":
+		var main_h := UiTheme.line_height(fnt, get_theme_font_size(&"font_size"))
+		var top := UiTheme.v_margin(sb0, get_theme_font_size(&"font_size"))
+		custom_minimum_size.y = maxf(custom_minimum_size.y, ceilf(top + main_h + SUB_GAP + sub_h + edge_pad))
 
 
 func _update_sub_alpha() -> void:

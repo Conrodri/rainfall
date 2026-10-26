@@ -934,7 +934,10 @@ func _layout_reel() -> void:
 	var fs := clampi(int(t * 0.17), 12, 26)
 	if not _reel_tiles.is_empty():
 		var font := (_reel_tiles[0].get_child(2) as Label).get_theme_font(&"font")
-		while fs > 10 and font.get_string_size("Légendaire", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > t - 22.0:
+		var widest := ["Légendaire", "Peu commun"] # + tous les noms des cases : le plus large (« Peu commun ») fixe la police
+		for tl in _reel_tiles:
+			widest.append((tl.get_child(2) as Label).text)
+		while fs > 10 and widest.any(func(s: String) -> bool: return font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > t - 22.0):
 			fs -= 1
 	for k in _reel_tiles.size():
 		var tile := _reel_tiles[k]

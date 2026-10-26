@@ -144,8 +144,9 @@ func _apply_sizes() -> void:
 		var sb := e["plate"] as StyleBoxFlat
 		sb.content_margin_left = 10.0 * ui_scale
 		sb.content_margin_right = 10.0 * ui_scale
-		sb.content_margin_top = 2.0 * ui_scale
-		sb.content_margin_bottom = 2.0 * ui_scale
+		var nfs := maxi(int(26 * ui_scale), HudMetrics.floor_px())
+		sb.content_margin_top = maxf(2.0 * ui_scale, UiTheme.v_margin(sb, nfs))
+		sb.content_margin_bottom = sb.content_margin_top
 		(e["box"] as Control).custom_minimum_size.y = PLATE_H * ui_scale
 
 

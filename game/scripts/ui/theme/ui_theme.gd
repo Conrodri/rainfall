@@ -21,6 +21,10 @@ const FONT_BUTTON := 44
 const FONT_BODY := 32
 const FONT_CAPTION := 26
 
+const DA_EDGE := 16.0 ## épaisseur visible (px) du trait des cadres DA : le reste de la marge 9-slice est du décor d'angle
+const PAD_MIN := 4.0 ## marge verticale mini texte / cadre (px)
+const PAD_RATIO := 0.15 ## ... ou 15 % de la taille de police
+
 static var _theme: Theme = null
 ## Journal des sons joués par hook_sounds (ids), pour les tests. Borné à 64.
 static var sound_log: Array[StringName] = []
@@ -32,6 +36,52 @@ static func scale() -> float:
 		return 1.0
 	var win := Vector2(DisplayServer.window_get_size())
 	return clampf(minf(win.x, win.y) / 1080.0, 0.55, 1.0)
+
+
+# --- métriques de texte : point d'entrée unique (ne jamais dimensionner un cadre sur font_size seul) -------------
+
+## Marge verticale mini entre la boîte de texte (ascent + descent réels) et le bord intérieur visible du cadre.
+static func ink_pad(font_size: int) -> float:
+	return ceilf(maxf(PAD_MIN, PAD_RATIO * float(font_size)))
+
+
+## Hauteur réelle d'une ligne (ascent + descent de la police), arrondie au pixel supérieur.
+static func line_height(font: Font, font_size: int, lines := 1) -> float:
+	var f: Font = font if font != null else ThemeDB.fallback_font
+	return ceilf(f.get_height(font_size)) * float(lines)
+
+
+## Hauteur d'un cadre contenant `lines` lignes : lignes + marge d'encre de chaque côté + épaisseur du trait du cadre.
+## `pad` < 0 = ink_pad(font_size). Ex. : text_box_height(font, 18, 1, 6.0) pour un cadre dont le trait fait 6 px.
+static func text_box_height(font: Font, font_size: int, lines := 1, edge := 0.0, pad := -1.0) -> float:
+	var p := ink_pad(font_size) if pad < 0.0 else pad
+	return line_height(font, font_size, lines) + 2.0 * (edge + p)
+
+
+## Épaisseur visible du trait d'un StyleBox (texture 9-slice DA : plafonnée à DA_EDGE, plat : largeur de bordure).
+static func frame_edge(sb: StyleBox) -> float:
+	if sb is StyleBoxTexture:
+		var t := sb as StyleBoxTexture
+		return minf(minf(t.texture_margin_top, t.texture_margin_bottom), DA_EDGE)
+	if sb is StyleBoxFlat:
+		var f := sb as StyleBoxFlat
+		return float(mini(f.border_width_top, f.border_width_bottom))
+	return 0.0
+
+
+## Marge de contenu verticale minimale d'un StyleBox pour un texte de taille `font_size` (trait + marge d'encre).
+static func v_margin(sb: StyleBox, font_size: int) -> float:
+	return frame_edge(sb) + ink_pad(font_size)
+
+
+## Relève les marges de contenu verticales d'un StyleBox au minimum requis par `font_size`. Renvoie le StyleBox.
+static func pad_box(sb: StyleBox, font_size: int) -> StyleBox:
+	if sb == null:
+		return null
+	var m := v_margin(sb, font_size)
+	sb.content_margin_top = maxf(sb.content_margin_top, m)
+	sb.content_margin_bottom = maxf(sb.content_margin_bottom, m)
+	return sb
 
 
 static func theme() -> Theme:
@@ -179,8 +229,8 @@ static func _focus_box() -> StyleBox:
 
 
 ## StyleBoxTexture 9-slice du kit DA : marges d'étirement et marges de contenu lues dans <nom>.json
-## (nine_slice / content_insets). null si la texture manque. Les passes émissives (_e) ne sont pas utilisées.
-static func da_box(file: String, content_scale := 1.0) -> StyleBoxTexture:
+## (nine_slice / content_insets), marges verticales relevées à trait + ink_pad(font_size). null si la texture manque. Les passes émissives (_e) ne sont pas utilisées.
+static func da_box(file: String, content_scale := 1.0, font_size := -1) -> StyleBoxTexture:
 	var path := DA_DIR + file + ".png"
 	if not ResourceLoader.exists(path):
 		return null
@@ -202,6 +252,10 @@ static func da_box(file: String, content_scale := 1.0) -> StyleBoxTexture:
 	sb.content_margin_top = float(ci["top"]) * content_scale
 	sb.content_margin_right = float(ci["right"]) * content_scale
 	sb.content_margin_bottom = float(ci["bottom"]) * content_scale
+	if font_size < 0: # défaut : cadre de texte (26 px) ; les cadres de barres ne portent pas de texte
+		font_size = 0 if file.begins_with("bar_") else FONT_CAPTION
+	if font_size > 0:
+		pad_box(sb, font_size) # content_scale ne ramène jamais le texte sur le trait du cadre
 	return sb
 
 
@@ -236,6 +290,8 @@ static func _btn_styles(primary_style: Variant) -> Dictionary:
 			d[&"hover"] = _flat(Color("343E4E", 0.92), COL_BORDER.lightened(0.2), 2)
 			d[&"pressed"] = _flat(Color("1f2630", 0.95), COL_BORDER, 2)
 			d[&"disabled"] = _flat(Color(COL_PANEL, 0.6), COL_BORDER.darkened(0.3), 2)
+	for k in d:
+		pad_box(d[k] as StyleBox, FONT_BUTTON) # le texte du bouton ne touche jamais le trait du cadre
 	d[&"focus"] = _focus_box()
 	return d
 
@@ -320,11 +376,12 @@ static func _build() -> Theme:
 		p.content_margin_top = 28
 		p.content_margin_bottom = 28
 		panel = p
+	pad_box(panel, FONT_BODY)
 	t.set_stylebox(&"panel", &"PanelContainer", panel)
 	t.set_stylebox(&"panel", &"Panel", panel)
 	# variations : petit panneau, bandeau de titre, plaque de chrono
-	for v in [[&"SmallPanel", "panel_small_9slice"], [&"HeaderPanel", "header_banner"], [&"TimerPlate", "timer_plate"]]:
-		var vb := da_box(v[1])
+	for v in [[&"SmallPanel", "panel_small_9slice", FONT_BODY], [&"HeaderPanel", "header_banner", FONT_TITLE], [&"TimerPlate", "timer_plate", 40]]:
+		var vb := da_box(v[1], 1.0, int(v[2]))
 		if vb != null:
 			t.set_type_variation(v[0], &"PanelContainer")
 			t.set_stylebox(&"panel", v[0], vb)

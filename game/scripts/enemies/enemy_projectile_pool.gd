@@ -143,6 +143,58 @@ func cull_segments(segs: PackedVector2Array, half_w: float) -> int:
 	return n
 
 
+## Boss façon raid (Design_Boss_Raid §1.2) : détruit les projectiles ennemis dont le disque touche un des cercles
+## (centers[k], radii[k]) en px logiques, en une passe. `counts` (optionnel, même taille que centers) reçoit le
+## nombre de projectiles arrêtés par chaque cercle (pylônes-abris abîmés). Retourne le total arrêté.
+func cull_circles(centers: PackedVector2Array, radii: PackedFloat32Array, counts: PackedInt32Array = PackedInt32Array()) -> int:
+	var n := 0
+	var nc := mini(centers.size(), radii.size())
+	if nc == 0:
+		return 0
+	var track := counts.size() >= nc
+	var i := _active.size() - 1
+	while i >= 0:
+		var pos := _active[i].position
+		for k in nc:
+			var r := radii[k] + RADIUS_PX
+			if pos.distance_squared_to(centers[k]) <= r * r:
+				_release_at(i)
+				n += 1
+				if track:
+					counts[k] += 1
+				break
+		i -= 1
+	return n
+
+
+## Ombres des pylônes-abris (Design_Boss_Raid §1.2) : pour chaque pylône p, couloir protégé de demi-largeur
+## `half_w` et de longueur `length` derrière lui dans l'axe origin -> p (origine du barrage). Une passe, segments
+## réutilisés (aucune allocation si `pylons` ne change pas de taille). Retourne le nombre de projectiles arrêtés.
+var _shadow_segs := PackedVector2Array()
+func cull_shadows(origin: Vector2, pylons: PackedVector2Array, half_w: float, length: float = 384.0) -> int:
+	if pylons.is_empty():
+		return 0
+	if _shadow_segs.size() != pylons.size() * 2:
+		_shadow_segs.resize(pylons.size() * 2)
+	for k in pylons.size():
+		var p := pylons[k]
+		var d := p - origin
+		var l := d.length()
+		d = d / l if l > 0.001 else Vector2.RIGHT
+		_shadow_segs[k * 2] = p
+		_shadow_segs[k * 2 + 1] = p + d * length
+	return cull_segments(_shadow_segs, half_w)
+
+
+## Nombre de projectiles vivants tirés par `source` (plafond d'un barrage : RAID_BARRAGE_MAX_LIVE).
+func count_from(source: Node) -> int:
+	var n := 0
+	for p in _active:
+		if p.source == source:
+			n += 1
+	return n
+
+
 func _release_at(i: int) -> void:
 	var p := _active[i]
 	_active[i] = _active[_active.size() - 1]

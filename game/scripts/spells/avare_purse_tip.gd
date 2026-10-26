@@ -81,6 +81,7 @@ func _ready() -> void:
 	box.content_margin_right = 22.0 * k
 	box.content_margin_top = 14.0 * k
 	box.content_margin_bottom = 16.0 * k
+	UiTheme.pad_box(box, maxi(_body_px, HudMetrics.floor_px()))
 	_panel.add_theme_stylebox_override(&"panel", box)
 	add_child(_panel)
 	var v := VBoxContainer.new()

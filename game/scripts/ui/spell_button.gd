@@ -360,7 +360,7 @@ func _auto_rect() -> Rect2:
 	var font := ThemeDB.fallback_font
 	var fa := _auto_font_px()
 	var aw := maxf(size.x, font.get_string_size("AUTO", HORIZONTAL_ALIGNMENT_LEFT, -1, fa).x + 2.0 * maxf(6.0 * k, 2.0))
-	return Rect2(Vector2((size.x - aw) * 0.5, size.y + 2.0 * maxf(k, 0.5)), Vector2(aw, font.get_height(fa)))
+	return Rect2(Vector2((size.x - aw) * 0.5, size.y + UiTheme.ink_pad(fa) + 2.0 * maxf(k, 0.5)), Vector2(aw, font.get_height(fa)))
 
 
 ## Textes dessinés en `_draw` (rects globaux), pour text_overflow_test : {text, rect, size, within?, avoid?}.

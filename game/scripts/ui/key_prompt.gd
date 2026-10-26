@@ -14,6 +14,8 @@ const PAD_ICONS := {JOY_BUTTON_A: "pad_a", JOY_BUTTON_B: "pad_b", JOY_BUTTON_X: 
 var action: StringName = &""
 var fixed_text := "" ## texte imposé (ex. « Auto » pour le sort 1)
 var height := 44.0
+const KEY_FACE_TOP := 0.30 ## face claire de key_1x1 / key_2x1 (fractions de la hauteur : biseau au-dessus, tranche au-dessous)
+const KEY_FACE_BOTTOM := 0.86
 
 
 static func _tex(file_name: String) -> Texture2D:
@@ -94,10 +96,14 @@ func _add_icon(tex: Texture2D, caption: String, dark_text := true) -> void:
 		var l := Label.new()
 		l.text = caption
 		l.set_anchors_preset(Control.PRESET_FULL_RECT)
+		l.anchor_top = KEY_FACE_TOP # la légende tient sur la face claire de la touche, pas sur son biseau ni sa tranche
+		l.anchor_bottom = KEY_FACE_BOTTOM
+		l.offset_top = 0.0
+		l.offset_bottom = 0.0
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var fs := int(height * 0.5)
+		var fs := maxi(int(height * (KEY_FACE_BOTTOM - KEY_FACE_TOP) * 0.7), HudMetrics.floor_px()) # ligne <= 70 % de la face : marge d'encre >= 15 %
 		var inner := r.custom_minimum_size.x * 0.8 # zone utile du cadre (biseau exclu)
 		var font := r.get_theme_font(&"font", &"Label") # police du thème de l'invite (repli : police par défaut)
 		if font != null:
