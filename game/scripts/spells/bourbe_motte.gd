@@ -18,6 +18,17 @@ enum State { FLY, FIGHT, RETURN, RECALL, GONE }
 const DIR_NAMES_M := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 const RETARGET_S := 0.2
 const STUCK_STEP := 0.5 ## glissement le long d'un mur : on retente chaque axe
+## IA de ciblage (retour joueur 26/10 : mottes qui ne focus pas les boss, rentrent trop vite, sans ré-aggro).
+const SCAN_S := 0.25 ## période du scan de cibles (combat, suivi et retour)
+const DETECT_U := 9.0 ## détection d'un ennemi ordinaire, mesurée depuis la motte
+const BOSS_DETECT_U := 14.0 ## détection d'un boss ou mini-boss (groupe bosses), depuis la motte : prioritaire
+const LEASH_U := 16.0 ## une cible ordinaire est lâchée si elle s'éloigne de plus de 16 u du joueur
+const BOSS_LEASH_U := 22.0 ## idem pour un boss (on le suit plus loin)
+const PLAYER_MAX_U := 24.0 ## joueur plus loin que ça : plus de chasse, la motte rejoint Bourbe
+const CATCHUP_U := 8.0 ## sans cible, au-delà de 8 u de Bourbe : course de rattrapage
+const CATCHUP_MULT := 1.6 ## multiplicateur de vitesse du rattrapage
+const REAGGRO_S := 4.0 ## temps de combat rendu quand une cible est réacquise pendant le retour
+const REAGGRO_MAX := 2 ## nombre maximal de ré-aggros pendant le retour (la durée de vie reste bornée)
 
 var kit: Node = null ## BourbeKit
 var bourbe: Node2D = null
@@ -44,6 +55,7 @@ var _fly_t := 0.0
 var _landed := false
 var _attack_cd := 0.0
 var _retarget := 0.0
+var _reaggro := 0
 var _recall_hits: Array = []
 var _moving := false
 var _ring: AnimatedSprite2D = null
@@ -324,10 +336,7 @@ func _step_fight(delta: float) -> void:
 		state = State.RETURN
 		target = null
 		return
-	_retarget -= delta
-	if _retarget <= 0.0 or target == null or not _valid(target):
-		_retarget = RETARGET_S
-		target = _find_target()
+	_scan_tick(delta)
 	var u := _u()
 	if target != null:
 		var er: float = float(target.get(&"radius_px")) if &"radius_px" in target else 0.0
@@ -345,11 +354,23 @@ func _step_fight(delta: float) -> void:
 		var home := bourbe.global_position - global_position
 		var keep := BourbeKit.MOTTE_FOLLOW_U * u
 		if home.length() > keep:
-			_move(home.normalized() * minf(_speed_px() * delta, home.length() - keep))
+			var sp := _speed_px() * (CATCHUP_MULT if home.length() > CATCHUP_U * u else 1.0)
+			_move(home.normalized() * minf(sp * delta, home.length() - keep))
 
 
 func _step_home(delta: float, speed: float, ram: bool) -> void:
 	var u := _u()
+	if state == State.RETURN and _reaggro < REAGGRO_MAX: # le retour continue de scanner
+		_retarget -= delta
+		if _retarget <= 0.0:
+			_retarget = SCAN_S
+			var t := _find_target()
+			if t != null:
+				_reaggro += 1
+				target = t
+				state = State.FIGHT
+				fight_left = REAGGRO_S
+				return
 	var home := bourbe.global_position - global_position
 	var dist := home.length()
 	if dist <= BourbeKit.ATTACH_U * u:
@@ -378,20 +399,55 @@ func _valid(e: Node) -> bool:
 	return is_instance_valid(e) and e.is_inside_tree() and e.is_in_group(&"enemies") and e.get(&"active") != false
 
 
-## Ennemi le plus proche de la motte parmi ceux à CHASE_U de Bourbe (la laisse), ou null.
+## Scan périodique : garde la cible tant qu'elle est valide (pas de zapping), sauf si un boss entre en portée.
+func _scan_tick(delta: float) -> void:
+	_retarget -= delta
+	var invalid := target == null or not _valid(target) or not _in_leash(target)
+	if not invalid and _retarget > 0.0:
+		return
+	if _retarget <= 0.0:
+		_retarget = SCAN_S
+	if invalid or not _is_boss(target):
+		var t := _find_target()
+		if t != null and (invalid or _is_boss(t)):
+			target = t
+		elif invalid:
+			target = null
+
+
+func _is_boss(e: Node) -> bool:
+	return is_instance_valid(e) and (e.is_in_group(&"bosses") or e.get(&"is_boss") == true)
+
+
+## La cible reste tenable : pas trop loin du joueur (boss : plus loin), joueur pas trop loin de la motte.
+func _in_leash(e: Node2D) -> bool:
+	if bourbe == null or not is_instance_valid(bourbe):
+		return false
+	var u := _u()
+	if bourbe.global_position.distance_to(global_position) > PLAYER_MAX_U * u:
+		return false
+	var lim := (BOSS_LEASH_U if _is_boss(e) else LEASH_U) * u
+	return e.global_position.distance_to(bourbe.global_position) <= lim
+
+
+## Meilleure cible : boss/mini-boss (détection large), puis élite, puis le plus proche ; null si rien à portée.
 func _find_target() -> Node2D:
-	var leash := BourbeKit.MOTTE_CHASE_U * _u()
-	var bp := bourbe.global_position
+	var u := _u()
 	var best: Node2D = null
+	var best_rank := 99
 	var best_d := INF
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not _valid(e) or not e.has_method(&"take_damage"):
 			continue
-		if e.global_position.distance_to(bp) > leash:
+		var boss := _is_boss(e)
+		var d: float = e.global_position.distance_to(global_position)
+		if d > (BOSS_DETECT_U if boss else DETECT_U) * u or not _in_leash(e):
 			continue
-		var d: float = e.global_position.distance_squared_to(global_position)
-		if d < best_d:
-			best_d = d
+		var rank := 0 if boss else (1 if e.get(&"is_elite") == true else 2)
+		var d2 := d * d
+		if rank < best_rank or (rank == best_rank and d2 < best_d):
+			best_rank = rank
+			best_d = d2
 			best = e
 	return best
 

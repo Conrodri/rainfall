@@ -299,6 +299,34 @@ func _run() -> void:
 	_check("motte : ne provoque plus les boss (audit 23/10)", not lure.lures_bosses and Decoy.nearest_boss_lure(Vector2.ZERO, Decoy.PROVOKE_RANGE_U * 64.0) == null)
 	lure.queue_free()
 	await get_tree().process_frame
+
+	print("IA des mottes (26/10) : boss prioritaire, laisse large, ré-aggro")
+	_reset()
+	_player.spells.aim_override = Vector2(2 * U, 0)
+	_player.spells.cast(2)
+	_advance(0.6)
+	m = _kit.mottes[0]
+	var near_e := _fake(Vector2(3 * U, 0))
+	var boss_e := _fake(Vector2(8 * U, 0))
+	boss_e.add_to_group("bosses")
+	m.target = null
+	_advance(0.4)
+	_check("motte préfère le boss à un monstre plus proche", m.target == boss_e, str(m.target))
+	_advance(0.5)
+	_check("pas de zapping : garde le boss", m.target == boss_e)
+	_player.global_position = Vector2(-6 * U, 0)
+	_advance(1.0)
+	_check("joueur à 6 u : la motte reste au combat", m.state == BourbeMotte.State.FIGHT and m.target != null and m.global_position.x > -2 * U, str(m.global_position))
+	_reset()
+	_player.spells.aim_override = Vector2(2 * U, 0)
+	_player.spells.cast(2)
+	_advance(0.6)
+	m = _kit.mottes[0]
+	m.state = BourbeMotte.State.RETURN
+	m.target = null
+	var late := _fake(Vector2(4 * U, 0))
+	_advance(0.5)
+	_check("après retour : cible réacquise en < 0,5 s", m.state == BourbeMotte.State.FIGHT and m.target == late, str(m.state))
 	_reset()
 	print("RESULT: %s" % ("OK" if _fails == 0 else "FAIL (%d)" % _fails))
 	get_tree().quit(0 if _fails == 0 else 1)
