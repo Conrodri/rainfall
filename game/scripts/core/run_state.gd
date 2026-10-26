@@ -72,6 +72,7 @@ func add_counter(key: String, n: float = 1.0) -> void:
 func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 	if not running or boss == null:
 		return
+	kills += 1 # les boss comptent dans « Monstres tués » (décision du joueur, 26/10/2026)
 	var bid := String(boss.call(&"boss_id")) if boss.has_method(&"boss_id") else ""
 	if bid != "":
 		bosses_killed.append({"id": bid, "floor_boss": is_floor_boss})

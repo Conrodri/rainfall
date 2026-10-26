@@ -316,7 +316,7 @@
         "slot": "cd",
         "desc": "Plante un piquet au point visé : la chaîne tendue jusqu'à elle balaie les monstres pendant 5 s.",
         "variants": [
-          {"id": "arpenteuse_jalons", "name": "Jalons", "desc": "Deux piquets plantés coup sur coup tendent un fil fixe pendant 6 s : la clôture balaie sans toi.", "unlock_text": "Balayer 800 monstres avec le Piquet.", "unlock_key": "spell:arpenteuse_jalons", "unlock_rule": {"type": "counter", "key": "arpenteuse.piquet_hits", "value": 800}}
+          {"id": "arpenteuse_jalons", "name": "Jalons", "desc": "Deux piquets plantés coup sur coup tendent un fil fixe pendant 6 s : la clôture balaie sans toi. Variante de contrôle de zone : moins de dégâts sur une cible seule que le Piquet.", "unlock_text": "Balayer 800 monstres avec le Piquet.", "unlock_key": "spell:arpenteuse_jalons", "unlock_rule": {"type": "counter", "key": "arpenteuse.piquet_hits", "value": 800}}
         ]
       },
       {

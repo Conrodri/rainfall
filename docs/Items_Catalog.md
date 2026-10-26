@@ -2,6 +2,8 @@
 
 > Généré à partir du même modèle que `Items_Catalog.xlsx` (onglets Audit et Modèle). Les valeurs sont des points de départ à calibrer en playtest.
 
+> **Valeurs de référence (décision du joueur, 26/10/2026)** : en cas d'écart entre ce catalogue et `game/data/items.json`, **le JSON du jeu fait foi** (ex. Pièce porte-bonheur +10 % d'or, Rafale d'acier +30 %, Chronomètre brisé ×0,75, Dé pipé +1 Chance, Moisson +60 %). Ce catalogue reste une source d'idées et de calibrage initial.
+
 **Plafonds** : vitesse de déplacement des items +10 % au total (aucun item ne ralentit le joueur) ; vitesse d'attaque du sort 1 +200 % (×3) ; vitesse de projectile +100 % (×2) ; recharge minimale 25 % de la base.
 
 **Stacking** : L = linéaire (a × n), H = hyperbolique (1 - 1 / (1 + a × n)), E = exponentiel ((1 + a)^n - 1), F = effet fixe. La valeur de l'audit est celle d'un seul exemplaire.
