@@ -95,7 +95,7 @@ func _build_frame() -> void:
 	_frame.name = "Frame"
 	_frame.mouse_filter = Control.MOUSE_FILTER_STOP
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.07, 0.08, 0.11, 0.94)
+	sb.bg_color = Color(0.07, 0.08, 0.11, 1.0)
 	sb.border_color = UiTheme.COL_BORDER
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(14)
@@ -139,6 +139,7 @@ func _build_frame() -> void:
 		tb.custom_minimum_size = Vector2(0, BTN_H)
 		tb.add_theme_font_size_override(&"font_size", FS_TAB)
 		tb.clip_text = true
+		_style_active_tab(tb)
 		var tid: StringName = t[1]
 		tb.pressed.connect(func() -> void: _select_tab(tid))
 		tabs.add_child(tb)
@@ -238,6 +239,20 @@ func say(msg: String) -> void:
 
 
 # --- Onglets --------------------------------------------------------------------------
+
+## Onglet actif : fond plein et texte d'accent, indépendants du focus (le cadre de focus reste à part).
+func _style_active_tab(tb: Button) -> void:
+	for st in [&"pressed", &"hover_pressed"]:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.42, 0.24, 0.08, 1.0)
+		sb.border_color = UiTheme.COL_PRIMARY_TEXT
+		sb.set_border_width_all(3)
+		sb.border_width_bottom = 8
+		sb.set_corner_radius_all(10)
+		tb.add_theme_stylebox_override(st, sb)
+	for c in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		tb.add_theme_color_override(c, UiTheme.COL_PRIMARY_TEXT)
+
 
 func _select_tab(t: StringName) -> void:
 	tab = t
