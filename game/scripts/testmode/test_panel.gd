@@ -41,6 +41,8 @@ var _status: Label
 var _tab_buttons := {}
 var _quantity_idx := 3
 var _poutch_type: StringName = &"normal"
+var _tip: SpellTooltip ## infobulle des sorts et variantes (même composant que la fiche Nouvelle run)
+var _press_token := 0
 var _elite := false
 var _at_cursor := false
 var _loadouts := {} ## id de personnage (texte) -> {slot: id de variante}
@@ -62,6 +64,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	theme = UiTheme.theme()
 	_build_frame()
+	_tip = SpellTooltip.new()
+	_tip.name = "SpellTip"
+	add_child(_tip)
 	_catalog = TestTools.monster_catalog()
 	get_viewport().size_changed.connect(_layout)
 	Platform.safe_area_changed.connect(_layout)
@@ -80,6 +85,8 @@ func open() -> void:
 
 func close() -> void:
 	visible = false
+	if _tip != null:
+		_tip.hide_tip()
 	armed_entry = {}
 	var f := get_viewport().gui_get_focus_owner()
 	if f != null and is_ancestor_of(f):
@@ -332,6 +339,8 @@ func _style_active_tab(tb: Button) -> void:
 
 func _select_tab(t: StringName) -> void:
 	tab = t
+	if _tip != null:
+		_tip.hide_tip()
 	armed_entry = {}
 	for k in _tab_buttons:
 		(_tab_buttons[k] as Button).set_pressed_no_signal(k == t)
@@ -712,6 +721,7 @@ func _build_spell_variants(c: Dictionary) -> void:
 		return
 	_body.add_child(_heading("Sorts et variantes"))
 	var lo: Dictionary = _loadouts.get(String(cid), {})
+	var cdata := CharacterData.for_id(cid)
 	for i in spells.size():
 		var sp: Dictionary = spells[i]
 		var slot := i + 1
@@ -722,19 +732,22 @@ func _build_spell_variants(c: Dictionary) -> void:
 		var row := _grid(_cols(260.0))
 		_body.add_child(row)
 		var chosen := str(lo.get(slot, sp.get("id", "")))
-		var opts: Array = [{"id": String(base_id), "name": str(sp.get("name", "")) + " (base)", "coded": true, "icon": base_icon, "gray": false}]
+		var opts: Array = [{"id": String(base_id), "name": str(sp.get("name", "")) + " (base)", "coded": true, "icon": base_icon, "gray": false,
+			"desc": str(sp.get("desc", "")), "sd": cdata.spells[i] if cdata != null and i < cdata.spells.size() else null, "locked": false}]
 		for v in variants:
 			if v is Dictionary:
 				var vid := StringName(str(v.get("id", "")))
 				var vicon := ArdentKit.spell_icon(vid)
 				opts.append({"id": String(vid), "name": str(v.get("name", vid)),
 					"coded": CharacterData.variant_spell(cid, slot, vid, true) != null,
-					"icon": vicon if vicon != null else base_icon, "gray": vicon == null})
+					"icon": vicon if vicon != null else base_icon, "gray": vicon == null, "desc": str(v.get("desc", "")),
+					"sd": CharacterData.variant_spell(cid, slot, vid, true), "locked": not CharacterCard.is_variant_unlocked(Profile, v)})
 		for o in opts:
 			var oid := str(o.id)
 			var is_base: bool = oid == String(base_id)
 			var b := _card(o.icon, str(o.name), "" if bool(o.coded) else "non codée", 84.0, true, func() -> void: _choose_variant(cid, slot, oid, is_base), bool(o.gray))
 			b.name = "Variant_%d_%s" % [slot, oid]
+			_hook_spell_tip(b, slot, sp, o, is_base)
 			b.disabled = not bool(o.coded)
 			b.custom_minimum_size = Vector2(0, 108)
 			if chosen == oid:
@@ -742,6 +755,50 @@ func _build_spell_variants(c: Dictionary) -> void:
 				b.add_theme_stylebox_override(&"hover", _current_style())
 				b.add_theme_stylebox_override(&"disabled", _current_style())
 			row.add_child(b)
+
+
+## Infobulle d'une carte de sort : survol souris, focus clavier / manette (pas le focus pris au clic), appui long tactile.
+## Elle part à la sortie de la souris ou du focus, jamais au clic.
+func _hook_spell_tip(b: Button, slot: int, sp: Dictionary, o: Dictionary, is_base: bool) -> void:
+	b.mouse_entered.connect(func() -> void: _show_spell_tip(b, slot, sp, o, is_base))
+	b.mouse_exited.connect(func() -> void:
+		if not Platform.has_touch():
+			_tip.hide_tip(b))
+	b.focus_entered.connect(func() -> void:
+		if not b.is_hovered():
+			_show_spell_tip(b, slot, sp, o, is_base))
+	b.focus_exited.connect(func() -> void:
+		if not b.is_hovered() and not Platform.has_touch():
+			_tip.hide_tip(b))
+	b.gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventScreenTouch:
+			_press_token += 1
+			if ev.pressed:
+				var tok := _press_token
+				get_tree().create_timer(0.45, true).timeout.connect(func() -> void:
+					if tok == _press_token and is_instance_valid(b):
+						_show_spell_tip(b, slot, sp, o, is_base)))
+
+
+func _show_spell_tip(b: Button, slot: int, sp: Dictionary, o: Dictionary, is_base: bool) -> void:
+	if _tip == null or not is_instance_valid(b) or not b.is_inside_tree():
+		return
+	var role := String(sp.get("role", CharacterSheet.ROLE_TEXT.get(String(sp.get("slot", "")), "")))
+	var tag := "Sort %d · %s" % [slot, role] if role != "" else "Sort %d" % slot
+	if not is_base:
+		tag = "Variante · %s" % ("verrouillée au profil (appliquée quand même)" if bool(o.locked) else "débloquée")
+	var body := str(o.get("desc", ""))
+	var sd: SpellData = o.get("sd")
+	if sd != null:
+		var stats := CharacterSheet.spell_stats_text(sd)
+		var dmg := CharacterSheet.scaling_text(sd, false)
+		if stats != "":
+			body += "
+" + stats
+		if dmg != "":
+			body += "
+" + dmg
+	_tip.show_for(b, str(sp.get("name", "")) if is_base else str(o.get("name", "")), tag, body)
 
 
 func _choose_variant(cid: StringName, slot: int, variant_id: String, is_base: bool) -> void:

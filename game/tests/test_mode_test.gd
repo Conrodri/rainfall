@@ -282,6 +282,25 @@ func _run() -> void:
 			overlay.panel._select_tab(t[1])
 			await get_tree().process_frame
 			_check("onglet %s construit" % t[0], overlay.panel._body.get_child_count() > 0)
+		# infobulles des sorts (onglet Personnage) : survol = visible, sortie = cachée, clic = pas de bulle
+		overlay.panel._select_tab(&"character")
+		await get_tree().process_frame
+		var vb: Button = overlay.panel.find_child("Variant_1_roaming_embers", true, false)
+		var bb: Button = overlay.panel.find_child("Variant_1_eclat_de_braise", true, false)
+		_check("cartes de sorts : base et variante", vb != null and bb != null)
+		if vb != null and bb != null:
+			var tip: SpellTooltip = overlay.panel.get_node("SpellTip")
+			vb.mouse_entered.emit()
+			_check("infobulle variante : nom, tag, description", tip.visible and tip.text_content().contains("Braises errantes") and tip.text_content().contains("Variante"), tip.text_content())
+			vb.mouse_exited.emit()
+			_check("infobulle cachée à la sortie", not tip.visible)
+			bb.mouse_entered.emit()
+			_check("infobulle sort de base : « Sort 1 », dégâts", tip.visible and tip.text_content().contains("Sort 1") and tip.text_content().contains("Dégâts"), tip.text_content())
+			bb.mouse_exited.emit()
+			bb.pressed.emit()
+			await get_tree().process_frame
+			_check("un clic n'ouvre pas la bulle", not tip.visible)
+			TestTools.switch_character(get_tree(), &"ardent")
 		overlay.close()
 		_check("panneau fermé : pause levée", not get_tree().paused)
 		# TAB ouvre et ferme le panneau ; il ne déplace pas le focus des menus quand le panneau est ouvert

@@ -49,6 +49,16 @@ func _run() -> void:
 			await _f(4)
 			if _out != "":
 				CaptureUtil.save_viewport(get_viewport(), "%s/testmode_%s_%d.png" % [_out, t[1], sy])
+	o.panel._select_tab(&"character")
+	await _f(6)
+	o.panel._scroll.scroll_vertical = 1200
+	await _f(4)
+	var vb: Button = o.panel.find_child("Variant_2_flame_pillar", true, false)
+	if vb != null:
+		vb.mouse_entered.emit()
+		await _f(6)
+		if _out != "":
+			CaptureUtil.save_viewport(get_viewport(), "%s/testmode_tip.png" % _out)
 	get_tree().paused = false
 	get_tree().quit()
 
