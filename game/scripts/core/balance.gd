@@ -155,6 +155,9 @@ const BOSS_ATTACK_COEF := {
 	## Idole noyée (étage 1, Design_Boss_Raid §2.1) : paume 1,0 ; carillon 1,2 ; chapelet 1,3 ; chute de cloche 0,8
 	## (RAID_ORB_FALL_COEF) ; digue (dessous) 0,6 ; noria 0,5 par 0,5 s ; anneau continu P3 1,0.
 	&"flood_gunner": {&"breech": 1.0, &"pylon_drop": 0.8, &"shell": 1.6},
+	## Roi de sel (étage 4, Design_Boss_Raid §2.3) : sceptre 1,0 ; marée de la Procession 0,4 par 0,5 s
+	## (RAID_SECTOR_TICK_COEF, appliquée par SafeSector) ; stèle (dessous à la levée) 1,2 ; édit (anneau) 1,4.
+	&"salt_king": {&"scepter": 1.0, &"procession": 0.4, &"stele": 1.2, &"edict": 1.4},
 	&"drowned_idol": {&"palm": 1.0, &"carillon": 1.2, &"chaplet": 1.3, &"bell_drop": 0.8, &"dike": 0.6, &"noria": 0.5, &"ring_p3": 1.0},
 }
 ## Mère-Cristal P2+ : un monstre (et la Mère elle-même) dans la lumière d'une lampe de cristal subit +15 %.
@@ -175,7 +178,7 @@ const BOSS_PHASE_THRESHOLDS := {&"rain_sower": [0.70, 0.35],
 	&"crane": [0.70, 0.35], &"smelter": [0.70, 0.35], ## Design_Etages §5.3 : 70 / 35 %
 	&"weaver": [0.70, 0.35], &"hermit_cedar": [0.70, 0.35], ## Design_Etages §5.2 : 70 / 35 %
 	&"eclusier": [0.70, 0.35], &"ox_herder": [0.70, 0.35], &"jar_bearer": [0.70, 0.35],
-	&"drowned_idol": [0.70, 0.35], &"flood_gunner": [0.70, 0.35]} ## Boss_Cartes §3.1, Etages §5.1 ; Canonnier §2.2
+	&"drowned_idol": [0.70, 0.35], &"flood_gunner": [0.70, 0.35], &"salt_king": [0.70, 0.35]} ## Boss_Cartes §3.1, Etages §5.1 ; Canonnier §2.2
 ## Fenêtre d'ancrage (Bouvier P3 « embourbé ») : dégâts reçus × ce facteur tant qu'il est enlisé (burst).
 const BOSS_ANCHOR_DAMAGE_TAKEN := {&"ox_herder": 1.3}
 ## Mémoire de profil (Design_Etages §2.2) : le boss d'étage vu à cet étage lors de la run précédente pèse × 0,5
