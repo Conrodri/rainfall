@@ -30,6 +30,8 @@ const ROW_GAP := 7.0
 const SPARKS_HIT := 5
 const SHARDS_BREAK := 9
 const DOT_TICK_S := 0.25
+const MSG_S := 2.5 ## durée du message de rupture par garde-fou (« Le bouclier cède »)
+const COL_STEEL := Color(0.30, 0.45, 0.56)
 const BG_ALPHA := 0.92 ## fond plus opaque que les barres de monde (VFX clairs derrière le HUD)
 
 var boss: Enemy = null
@@ -56,6 +58,8 @@ var _sweep := -1.0 ## temps écoulé du balayage de teinte de phase (-1 = aucun)
 var _transition := false
 var _invuln := false
 var _tag: Dictionary = {} ## état du boss (brain.boss_state_tag())
+var _msg := "" ## message temporaire (rangée d'état), prime sur l'état courant
+var _msg_t := 0.0
 var _statuses: Array = []
 var _st_total := {} ## id -> durée de référence de l'anneau (plus grande durée vue depuis le dernier rafraîchissement)
 var _st_last := {}
@@ -79,9 +83,18 @@ func setup(p_boss: Enemy, p_is_floor: bool) -> void:
 func _ready() -> void:
 	_font = get_theme_default_font()
 	Events.enemy_damaged.connect(_on_damaged)
+	Events.raid_mechanic_failed.connect(_on_mechanic_failed)
+
+
+func _on_mechanic_failed(b: Node2D, kind: StringName) -> void:
+	if b == boss and kind == &"shield_backstop":
+		_msg = "Le bouclier cède"
+		_msg_t = MSG_S
 
 
 func _exit_tree() -> void:
+	if Events.raid_mechanic_failed.is_connected(_on_mechanic_failed):
+		Events.raid_mechanic_failed.disconnect(_on_mechanic_failed)
 	if Events.enemy_damaged.is_connected(_on_damaged):
 		Events.enemy_damaged.disconnect(_on_damaged)
 
@@ -127,9 +140,26 @@ func is_invulnerable_shown() -> bool:
 	return _invuln
 
 
-## Libellé d'état affiché sous la barre ("" = aucun).
+## Libellé d'état affiché sous la barre ("" = aucun). Le bouclier de phase (kind shield) prime sur INVULNÉRABLE.
 func state_tag_text() -> String:
-	return "" if _invuln or _transition or _tag.is_empty() else str(_tag.get("text", ""))
+	if _msg_t > 0.0:
+		return _msg
+	if _tag.is_empty() or ((_invuln or _transition) and not _tag_overrides_lock()):
+		return ""
+	return str(_tag.get("text", ""))
+
+
+## Jauge de progression du bouclier (0..1), -1 si aucun bouclier affiché.
+func shield_progress() -> float:
+	return float(_tag.get("progress", 0.0)) if _tag.get("kind", &"") == &"shield" else -1.0
+
+
+func tag_kind() -> StringName:
+	return _tag.get("kind", &"")
+
+
+func _tag_overrides_lock() -> bool:
+	return _tag.get("kind", &"") == &"shield" and str(_tag.get("text", "")) != ""
 
 
 func phase_index() -> int:
@@ -215,6 +245,7 @@ func _process(delta: float) -> void:
 	else:
 		_ghost = HpBarStyle.ghost_step(_ghost, _frac, delta)
 	_flash = maxf(_flash - delta, 0.0)
+	_msg_t = maxf(_msg_t - delta, 0.0)
 	_shake = maxf(_shake - delta, 0.0)
 	if _sweep >= 0.0:
 		_sweep += delta
@@ -321,7 +352,15 @@ func _draw() -> void:
 		col = col.lerp(HpBarStyle.COL_TRANSITION, 0.65)
 	var tag_kind: StringName = _tag.get("kind", &"")
 	if tag_kind == &"guarded" and not _transition: # dégâts réduits : teinte de phase éteinte vers le bleu acier
-		col = col.lerp(Color(0.30, 0.45, 0.56), 0.6)
+		col = col.lerp(COL_STEEL, 0.6)
+	elif tag_kind == &"shield": # bouclier de phase : remplissage acier (transition comprise)
+		col = col.lerp(COL_STEEL, 0.85)
+	elif tag_kind == &"reload": # recharge : fenêtre de dégâts, teinte chaude terne
+		col = col.lerp(Color(0.80, 0.55, 0.25), 0.5)
+	elif tag_kind == &"enrage_warn": # enrage imminent : teinte chaude qui pulse
+		col = col.lerp(Color(0.95, 0.55, 0.15), 0.35 + 0.25 * sin(_clock * 5.0))
+	elif tag_kind == &"enrage": # enragé : rouge vif
+		col = col.lerp(Color(0.9, 0.12, 0.1), 0.55 + 0.2 * sin(_clock * 9.0))
 	col = HpBarStyle.brighten(col, pulse)
 	var fill_r := Rect2(inner.position, Vector2(fx, inner.size.y))
 	_draw_fill(fill_r, col)
@@ -352,6 +391,22 @@ func _draw() -> void:
 		var k2 := 1.0 - float(sp["life"]) / float(sp["max"])
 		var sz: float = sp["size"]
 		draw_rect(Rect2((sp["p"] as Vector2) - Vector2(sz, sz) * 0.5, Vector2(sz, sz)), Color(sp["col"] as Color, k2))
+	if tag_kind == &"shield": # jauge de progression done/total : filet d'acier en bas du remplissage
+		var pg := clampf(float(_tag.get("progress", 0.0)), 0.0, 1.0)
+		var gh := maxf(inner.size.y * 0.28, 3.0 * s)
+		var gy := inner.end.y - gh
+		draw_rect(Rect2(inner.position.x, gy, inner.size.x, gh), Color(0, 0, 0, 0.55))
+		draw_rect(Rect2(inner.position.x, gy, inner.size.x * pg, gh), Color(0.78, 0.88, 0.95, 0.95))
+		draw_rect(Rect2(inner.position.x, gy, inner.size.x, gh), Color(0.05, 0.08, 0.10, 0.9), false, 1.0 * s)
+	elif tag_kind == &"reload": # jauge de recharge : même filet que le bouclier, teinte chaude
+		var rp := clampf(float(_tag.get("progress", 0.0)), 0.0, 1.0)
+		var rh := maxf(inner.size.y * 0.28, 3.0 * s)
+		draw_rect(Rect2(inner.position.x, inner.end.y - rh, inner.size.x, rh), Color(0, 0, 0, 0.55))
+		draw_rect(Rect2(inner.position.x, inner.end.y - rh, inner.size.x * rp, rh), Color(_tag.get("color", Color.WHITE) as Color, 0.95))
+		draw_rect(Rect2(inner.position.x, inner.end.y - rh, inner.size.x, rh), Color(0.1, 0.07, 0.04, 0.9), false, 1.0 * s)
+	elif tag_kind == &"enrage_warn" or tag_kind == &"enrage": # liseré d'alerte
+		var ac: Color = _tag.get("color", Color.WHITE)
+		draw_rect(inner.grow(1.0 * s), Color(ac, 0.5 + 0.4 * sin(_clock * (12.0 if tag_kind == &"enrage" else 6.0))), false, 2.0 * s)
 	if tag_kind == &"exposed" and not _transition and not _invuln: # fenêtre de dégâts : liseré chaud qui pulse
 		draw_rect(inner.grow(1.0 * s), Color(_tag.get("color", Color.WHITE) as Color, 0.45 + 0.35 * sin(_clock * 7.0)), false, 2.0 * s)
 	if _invuln:
@@ -555,7 +610,13 @@ func _row_text(frame: Rect2) -> Dictionary:
 	var col := Color.WHITE
 	var outline := 3
 	var pulse := 0.0
-	if _invuln or _transition:
+	if _msg_t > 0.0:
+		txt = _msg
+		fs = _row_font_px(16.0)
+		col = _tag.get("color", Color(0.78, 0.88, 0.95)) if not _tag.is_empty() else Color(0.78, 0.88, 0.95)
+		outline = 4
+		pulse = clampf(_msg_t / 0.5, 0.0, 1.0) * 0.15 + 0.85
+	elif (_invuln or _transition) and not _tag_overrides_lock():
 		txt = "INVULNÉRABLE" if _invuln else "TRANSITION"
 		fs = _row_font_px(13.0)
 		col = Color(0.85, 0.84, 0.8)

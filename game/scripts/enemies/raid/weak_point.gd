@@ -162,3 +162,27 @@ func status_mask() -> int:
 
 func status_list() -> Array:
 	return []
+
+
+func imprison(_seconds: float, _release_pct := 0.0, _release_s := 0.0) -> void:
+	pass
+
+
+func release_imprison(_release_pct := -1.0, _release_s := -1.0) -> void:
+	pass
+
+
+func hold_at(_p: Vector2) -> void:
+	pass
+
+
+func is_imprisoned() -> bool:
+	return false
+
+
+func add_damage_taken_mod(_id: Variant, _mult: float, _duration: float = -1.0) -> void:
+	pass
+
+
+func remove_damage_taken_mod(_id: Variant) -> void:
+	pass

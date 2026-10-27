@@ -150,6 +150,15 @@ static func pick_floor_boss(ids: Array, floor_n: int, rng: RandomNumberGenerator
 	return String(ids[ids.size() - 1])
 
 
+## Test (`godot ... -- --force-boss=drowned_idol`) : impose ce boss d'étage s'il fait partie de ceux de l'étage, sinon "".
+static func forced_boss(floor_bosses: Array) -> String:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--force-boss="):
+			var id := arg.trim_prefix("--force-boss=")
+			return id if id in floor_bosses else ""
+	return ""
+
+
 static func _draw(floor_n: int, stage: int, loop: int, base_idx: int, run_seed: int, memory: Dictionary = {}) -> Dictionary:
 	var e := floor_entry(floor_n)
 	var rng := RandomNumberGenerator.new()
@@ -172,6 +181,9 @@ static func _draw(floor_n: int, stage: int, loop: int, base_idx: int, run_seed: 
 		floor_boss = pick_floor_boss(bosses, floor_n, rng, memory)
 	elif not (e.get("floor_bosses", []) as Array).is_empty():
 		floor_boss = String(e["floor_bosses"][0])
+	var forced := forced_boss(e.get("floor_bosses", []))
+	if forced != "":
+		floor_boss = forced # test : `-- --force-boss=<id>` (ignore la livraison du sprite)
 	var minis_av: Array = []
 	for m in e.get("minis", []):
 		if EnemyVisual.boss_available(StringName(m)):

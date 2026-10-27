@@ -418,8 +418,13 @@ func _nearest_enemy(max_dist: float) -> Node2D:
 		if not (e is Node2D) or not is_instance_valid(e):
 			continue
 		var d: float = e.global_position.distance_to(player.global_position)
-		if d <= best_d:
-			best_d = d
+		if d > max_dist:
+			continue
+		## aim_priority (adds, points faibles de boss raid) : distance effective divisée (défaut 1).
+		var pr: Variant = e.get(&"aim_priority")
+		var score: float = d / maxf(float(pr), 0.01) if pr != null else d
+		if score <= best_d or best == null:
+			best_d = score
 			best = e
 	return best
 

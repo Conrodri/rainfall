@@ -432,6 +432,13 @@ func activate(p_tier: int, pos: Vector2, D: float, elite: bool, p_affixes: Array
 		_set_light(StringName("elite_%s" % affixes[0]))
 
 
+const RAID_BRAINS := {
+	&"drowned_idol": "res://scripts/enemies/drowned_idol_brain.gd",
+	&"flood_gunner": "res://scripts/enemies/flood_gunner_brain.gd",
+	&"salt_king": "res://scripts/enemies/salt_king_brain.gd",
+}
+
+
 func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 	tier = BOSS_TIER
 	is_boss = true
@@ -442,7 +449,7 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 		brain = null
 	_boss_sprite_id = EnemyVisual.resolve_boss_id(get_tree() if is_inside_tree() else null, kind, director)
 	is_elite = false
-	max_hp = Balance.boss_hp(kind, D, RunState.stage)
+	max_hp = Balance.boss_hp(kind, D, RunState.stage) * Balance.boss_hp_mult(_boss_sprite_id)
 	damage = Balance.boss_damage(kind, D)
 	speed_px = Balance.monster_speed(BOSS_SPEED_U, D) * U
 	radius_px = BOSS_RADIUS_U.get(kind, 1.1) * U
@@ -484,6 +491,11 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 		brain = OxHerderBrain.new(self)
 	elif _boss_sprite_id == &"jar_bearer":
 		brain = JarBearerBrain.new(self)
+	elif RAID_BRAINS.has(_boss_sprite_id):
+		# Boss façon raid : cerveau chargé à l'exécution (un script absent ou en cours d'écriture ne casse pas le parse).
+		var bs: Variant = load(RAID_BRAINS[_boss_sprite_id]) if ResourceLoader.exists(RAID_BRAINS[_boss_sprite_id]) else null
+		if bs is GDScript:
+			brain = (bs as GDScript).new(self)
 
 
 ## Lumière d'élite / de boss : une poignée gardée d'une activation à l'autre (pool), éteinte au repos.

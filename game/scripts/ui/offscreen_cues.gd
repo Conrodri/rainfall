@@ -109,6 +109,14 @@ static func collect_targets(tree: SceneTree, screen: Rect2) -> Array[Dictionary]
 		if screen.has_point(sp2):
 			continue
 		out.append({"pos": sp2, "kind": Kind.TELEGRAPH, "d": sp2.distance_squared_to(c)})
+	for n in tree.get_nodes_in_group(&"raid_cues"): # objets de boss façon raid (RaidFx.CUE_GROUP) : points faibles, cloches, pylônes…
+		var rc := n as Node2D
+		if rc == null or not rc.is_inside_tree() or not rc.visible:
+			continue
+		var sp3 := rc.get_global_transform_with_canvas().origin
+		if screen.has_point(sp3):
+			continue
+		out.append({"pos": sp3, "kind": Kind.TELEGRAPH, "d": sp3.distance_squared_to(c)})
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var pa := _priority(a["kind"])
 		var pb := _priority(b["kind"])

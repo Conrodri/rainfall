@@ -152,6 +152,10 @@ const BOSS_ATTACK_COEF := {
 	## Cèdre-Ermite (étage 2, §5.2) : branche 1,0 ; racines 1,3 ; spores 0,6 + poison (coup de référence
 	## spore_poison 1,0) ; vrille 1,0 (P2) ; charge 1,8 et racines des souches 1,0 (P3).
 	&"hermit_cedar": {&"branch": 1.0, &"roots": 1.3, &"spores": 0.6, &"spore_poison": 1.0, &"tendril": 1.0, &"charge": 1.8, &"echo": 1.0},
+	## Idole noyée (étage 1, Design_Boss_Raid §2.1) : paume 1,0 ; carillon 1,2 ; chapelet 1,3 ; chute de cloche 0,8
+	## (RAID_ORB_FALL_COEF) ; digue (dessous) 0,6 ; noria 0,5 par 0,5 s ; anneau continu P3 1,0.
+	&"flood_gunner": {&"breech": 1.0, &"pylon_drop": 0.8, &"shell": 1.6},
+	&"drowned_idol": {&"palm": 1.0, &"carillon": 1.2, &"chaplet": 1.3, &"bell_drop": 0.8, &"dike": 0.6, &"noria": 0.5, &"ring_p3": 1.0},
 }
 ## Mère-Cristal P2+ : un monstre (et la Mère elle-même) dans la lumière d'une lampe de cristal subit +15 %.
 const CRYSTAL_LAMP_DAMAGE_TAKEN := 1.15
@@ -161,7 +165,8 @@ const EEL_SUBMERGED_DAMAGE_TAKEN := 0.3
 const BOSS_PHASE_DAMAGE_TAKEN := {&"sonneur": [1.0, 1.0, 1.25], &"rain_sower": [1.0, 1.0, 1.2],
 	&"deep_eel": [1.0, 1.0, 1.25], ## Anguille P3 échouée sur l'anneau : +25 %
 	&"smelter": [1.0, 1.0, 1.25], ## Fondeur P3 « surchauffe » : +25 %
-	&"hermit_cedar": [1.0, 1.25, 1.0]} ## Cèdre-Ermite P2 enraciné, lanterne exposée : +25 % (burst)
+	&"hermit_cedar": [1.0, 1.25, 1.0], ## Cèdre-Ermite P2 enraciné, lanterne exposée : +25 % (burst)
+	&"drowned_idol": [1.0, 1.0, 1.2]} ## Idole noyée P3 ancrée sur son socle fendu : +20 %
 ## Seuils de phase des boss d'étage (fraction de PV restante : phase 2 à <= [0], phase 3 à <= [1]).
 ## Défaut 66 / 33 % (cerf, sonneur, reclus) ; Semeur de pluie 70 / 35 % (Design_Etages §4). Mini-boss : 50 %.
 const BOSS_PHASE_THRESHOLDS_DEFAULT := [0.66, 0.33]
@@ -169,7 +174,8 @@ const BOSS_PHASE_THRESHOLDS := {&"rain_sower": [0.70, 0.35],
 	&"crystal_mother": [0.70, 0.35], &"deep_eel": [0.70, 0.35], ## Design_Etages §5.4 : 70 / 35 %
 	&"crane": [0.70, 0.35], &"smelter": [0.70, 0.35], ## Design_Etages §5.3 : 70 / 35 %
 	&"weaver": [0.70, 0.35], &"hermit_cedar": [0.70, 0.35], ## Design_Etages §5.2 : 70 / 35 %
-	&"eclusier": [0.70, 0.35], &"ox_herder": [0.70, 0.35], &"jar_bearer": [0.70, 0.35]} ## Boss_Cartes §3.1, Etages §5.1
+	&"eclusier": [0.70, 0.35], &"ox_herder": [0.70, 0.35], &"jar_bearer": [0.70, 0.35],
+	&"drowned_idol": [0.70, 0.35], &"flood_gunner": [0.70, 0.35]} ## Boss_Cartes §3.1, Etages §5.1 ; Canonnier §2.2
 ## Fenêtre d'ancrage (Bouvier P3 « embourbé ») : dégâts reçus × ce facteur tant qu'il est enlisé (burst).
 const BOSS_ANCHOR_DAMAGE_TAKEN := {&"ox_herder": 1.3}
 ## Mémoire de profil (Design_Etages §2.2) : le boss d'étage vu à cet étage lors de la run précédente pèse × 0,5
