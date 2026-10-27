@@ -143,9 +143,9 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 
 | # | Item | Effet | Stack | Tags | Valeur 2:30 / 5:00 / 7:30 | Ratio |
 |---|---|---|---|---|---|---|
-| 1 | Cœur du chronomancien | 10 kills en 3 s : recharge remise à zéro d'un sort aléatoire (délai interne de 2 s) | F | Recharge | 104 / 104 / 104 | 0,87 |
+| 1 | Cœur du chronomancien | 10 monstres tués en 3 s : remet à zéro la recharge d'un de vos sorts à recharge, au hasard (au plus 1 fois par 2 s) | F | Recharge | 104 / 104 / 104 | 0,87 |
 | 2 | Couronne d'écho | Le sort 1 se répète 3 fois à 100 % des dégâts | E (+1 répétition par exemplaire supplémentaire) | Auto | 130 / 130 / 130 | 1,08 |
-| 3 | Nova infinie | Toutes les 4 s, nova de 400 % de dégâts qui applique brûlure, ralentissement et poison | L (dégâts) | Feu, Givre, Poison, Zone | 111 / 111 / 111 | 0,93 |
+| 3 | Nova infinie | Toutes les 4 s, nova de 400 % du dégât de base par exemplaire (portée 6 u) qui brûle, ralentit et empoisonne | L (dégâts) | Feu, Givre, Poison, Zone | 111 / 111 / 111 | 0,93 |
 | 4 | Armure du colosse | +60 % de PV max, -25 % de dégâts reçus, -10 % de dégâts infligés | E | Survie | 103 / 103 / 103 | 0,86 |
 | 5 | Moisson | Chaque kill donne +0,2 % de dégâts, cumulable jusqu'à +120 % (conservé dans la run) | L (plafond) | Dégâts | 120 / 120 / 120 | 1,00 |
 | 6 | Dé pipé | +3 de Chance (relance du d100, on garde le meilleur) et le premier petit coffre de chaque étage est au moins Peu commun | L | Chance | 126 / 126 / 126 | 1,05 |
