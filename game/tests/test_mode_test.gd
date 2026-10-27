@@ -138,6 +138,76 @@ func _run() -> void:
 	TestTools.clear_items(get_tree())
 	_check("tout retirer", RunState.items.is_empty() and is_equal_approx(_player.max_hp, hp0))
 
+	# --- coffres : un par type, vrai flux d'ouverture, rien écrit au profil
+	var ccat: Array = TestTools.chest_catalog()
+	var ckinds := ccat.map(func(e): return e.chest_kind)
+	_check("types de coffre : petit, large, légendaire, boss", ckinds.has(&"petit") and ckinds.has(&"large") and ckinds.has(&"legendaire") and ckinds.has(&"boss"), str(ckinds))
+	var before_profile := JSON.stringify(Profile.to_dict())
+	var chests: Array = []
+	for ce in ccat:
+		var ch = TestTools.spawn_chest(get_tree(), ce.chest_kind)
+		chests.append(ch)
+		_check("coffre %s posé, près du joueur, vignette" % ce.chest_kind, ch != null and ch.kind == ce.chest_kind and ch.is_in_group(&"chests") and ch.global_position.distance_to(_player.global_position) < 5.0 * 64.0 and TestThumbs.chest(ce) != null)
+		await get_tree().process_frame
+		_check("coffre %s : prix %s" % [ce.chest_kind, ch.current_price()], (ch.current_price() == 0.0) == (ce.chest_kind == &"boss"))
+	_check("%d coffres sur la carte" % ccat.size(), get_tree().get_nodes_in_group(&"chests").size() == ccat.size())
+	var big = chests[1]
+	RunState.gold = 0.0
+	_check("sans or : ouverture refusée", not big.try_open())
+	TestMode.set_flag(&"inf_gold", true)
+	var gold0: float = RunState.gold
+	var first = chests[0]
+	_check("or infini : ouverture acceptée, or non débité", first.try_open() and RunState.gold >= gold0)
+	await _frames(6)
+	var uis: Array = get_tree().root.find_children("*", "ChestUI", true, false)
+	_check("ouverture : ChestUI et tirage (session, qualité)", uis.size() == 1 and uis[0].session != null and str(uis[0].session.quality) != "", str(uis.size()))
+	for u in uis:
+		u.queue_free()
+	get_tree().paused = false
+	TestMode.set_flag(&"inf_gold", false)
+	await _frames(2)
+	_check("coffre ouvert : profil inchangé, aucun fichier", JSON.stringify(Profile.to_dict()) == before_profile and not FileAccess.file_exists(PROFILE_PATH))
+	_check("retirer les coffres : les fermés partent, l'ouvert reste", TestTools.clear_chests(get_tree()) == ccat.size() - 1)
+	first.queue_free()
+	await _frames(2)
+	_check("plus aucun coffre", get_tree().get_nodes_in_group(&"chests").is_empty())
+
+	# --- Poutch : mannequin invincible et immobile, compteur de DPS
+	var kills_seen := [0]
+	var on_kill := func(_e: Node2D, _p: Vector2, _t: int, _el: bool) -> void: kills_seen[0] += 1
+	Events.enemy_killed.connect(on_kill)
+	for pty in [&"normal", &"elite", &"boss"]:
+		var tr = TestTools.spawn_poutch(get_tree(), pty)
+		_check("Poutch %s posé" % pty, tr != null and tr.enemy.test_dummy and tr.enemy.active and tr.is_in_group(&"poutchs"))
+		if tr == null:
+			continue
+		var pe: Enemy = tr.enemy
+		await _frames(3)
+		var pp0: Vector2 = pe.global_position
+		pe.take_damage(pe.max_hp * 5.0, true, &"", {"source_pos": pp0 + Vector2(-50, 0)})
+		pe.take_damage(pe.max_hp * 5.0, false, &"burn", {})
+		pe.apply_status(&"slow", {"pct": 0.3, "duration": 1.5})
+		await _frames(30)
+		_check("Poutch %s : encaisse sans mourir (PV rendus, aucun kill)" % pty, pe.active and is_equal_approx(pe.hp, pe.max_hp) and kills_seen[0] == 0, "%s %s" % [pe.hp, kills_seen[0]])
+		_check("Poutch %s : reçoit les statuts" % pty, pe.is_slowed())
+		_check("Poutch %s : immobile (recul compris)" % pty, pe.global_position.distance_to(pp0) < 0.5)
+		_check("Poutch %s : DPS et total > 0, coups comptés" % pty, tr.dps() > 0.0 and tr.total > pe.max_hp * 9.0 and tr.hit_count >= 2, "%s %s" % [tr.dps(), tr.total])
+		TestMode.set_flag(&"inf_range", true)
+		_check("Poutch %s : ciblé automatiquement" % pty, _player.spells.nearest_enemy(TestMode.INF_RANGE_PX) == pe)
+		TestMode.set_flag(&"inf_range", false)
+		tr.reset()
+		_check("Poutch %s : compteur remis à zéro" % pty, tr.total == 0.0 and tr.dps() == 0.0)
+		_check("Poutch %s : n'attaque pas (dégâts 0)" % pty, pe.damage == 0.0)
+		_check("retirer les Poutchs" , TestTools.clear_poutchs(get_tree()) == 1)
+		await _frames(3)
+		_check("Poutch %s retiré : monstre rendu au pool, compteur libéré" % pty, not pe.active and not pe.test_dummy and not is_instance_valid(tr))
+	Events.enemy_killed.disconnect(on_kill)
+	var pt2 = TestTools.spawn_poutch(get_tree(), &"normal")
+	TestTools.clean(get_tree())
+	for i in 4:
+		await get_tree().process_frame
+	_check("« Nettoyer » retire aussi le Poutch", not is_instance_valid(pt2) and TestTools.poutchs(get_tree()).is_empty(), "%s %s %s" % [pt2, is_instance_valid(pt2) and pt2.enemy.active, TestTools.poutchs(get_tree()).size()])
+
 	# --- triches
 	_player._invuln = 0.0
 	var hp1: float = _player.hp

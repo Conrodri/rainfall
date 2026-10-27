@@ -135,6 +135,116 @@ static func final_hp_mult() -> float:
 	return 2.0
 
 
+# --- Poutch (mannequin d'entraînement) -----------------------------------------------
+
+const POUTCH_RING_U := Vector2(4.0, 6.0)
+
+
+## Poutch : brute (normal), brute élite ou premier mini-boss du catalogue (boss), rendu immobile, inoffensif et invincible
+## (Enemy.test_dummy). Retourne son compteur (TestPoutch), null si l'apparition échoue.
+static func spawn_poutch(tree: SceneTree, poutch_type: StringName, center: Variant = null) -> TestPoutch:
+	var director := tree.get_first_node_in_group(&"director")
+	var player := tree.get_first_node_in_group(&"player") as Node2D
+	if director == null or player == null:
+		return null
+	var c: Vector2 = center if center is Vector2 else player.global_position
+	var pos := c if center is Vector2 else c + Vector2.from_angle(_rng.randf() * TAU) * _rng.randf_range(POUTCH_RING_U.x, POUTCH_RING_U.y) * Balance.UNIT_PX
+	var e: Node2D = null
+	if poutch_type == &"boss":
+		for entry in monster_catalog():
+			if entry.kind == &"mini":
+				e = spawn_boss(tree, StringName(entry.boss_id), &"mini", pos)
+				break
+	else:
+		var v: Variant = director.call(&"spawn_enemy", 3, pos, poutch_type == &"elite", [] as Array[StringName], -1)
+		e = v as Node2D
+	if not (e is Enemy):
+		return null
+	var en := e as Enemy
+	en.test_dummy = true
+	en.speed_px = 0.0
+	en.damage = 0.0
+	var tracker := TestPoutch.new()
+	tracker.enemy = en
+	tracker.poutch_type = poutch_type
+	(en.get_parent() if en.get_parent() != null else tree.current_scene).add_child(tracker)
+	tracker.position = en.position
+	return tracker
+
+
+static func poutchs(tree: SceneTree) -> Array:
+	return tree.get_nodes_in_group(&"poutchs")
+
+
+## Retire les Poutchs (sans mort ni récompense). Retourne leur nombre.
+static func clear_poutchs(tree: SceneTree) -> int:
+	var n := 0
+	for t in poutchs(tree):
+		var tp := t as TestPoutch
+		if tp != null and is_instance_valid(tp.enemy) and tp.enemy.active:
+			tp.enemy.test_dummy = false
+			if tp.enemy.director != null:
+				tp.enemy.director.release_enemy(tp.enemy)
+			else:
+				tp.enemy.deactivate()
+			n += 1
+		t.queue_free()
+	return n
+
+
+static func reset_poutchs(tree: SceneTree) -> void:
+	for t in poutchs(tree):
+		(t as TestPoutch).reset()
+
+
+# --- Coffres ----------------------------------------------------------------------
+
+const CHEST_SCENE := "res://scenes/chests/chest.tscn"
+const CHEST_RING_U := Vector2(2.5, 4.0) ## distance d'apparition d'un coffre autour du joueur (u) : à portée d'interaction
+const CHEST_ORDER: Array[StringName] = [&"petit", &"large", &"legendaire", &"boss"]
+
+
+## Types de coffre existants (Chest.SPRITES), dans l'ordre d'affichage : {kind, label, frames}.
+static func chest_catalog() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var kinds: Array = CHEST_ORDER.duplicate()
+	for k in Chest.SPRITES:
+		if not kinds.has(k):
+			kinds.append(k)
+	for k in kinds:
+		if not Chest.SPRITES.has(k):
+			continue
+		out.append({"kind": &"chest", "chest_kind": k, "key": "chest:%s" % k, "frames": str((Chest.SPRITES[k] as Dictionary).get("path", "")),
+			"label": String(ChestUI.KIND_NAMES.get(k, String(k))), "free": k == &"boss"})
+	return out
+
+
+## Fait apparaître un coffre `chest_kind` près du joueur (ou de `center`) ; vrai flux (prix au D courant, ChestUI, tirage).
+static func spawn_chest(tree: SceneTree, chest_kind: StringName, center: Variant = null) -> Node2D:
+	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var sm := tree.get_first_node_in_group(&"stage_manager")
+	if player == null or sm == null or sm.get(&"map") == null or not ResourceLoader.exists(CHEST_SCENE):
+		return null
+	var c: Vector2 = center if center is Vector2 else player.global_position
+	var chest := (load(CHEST_SCENE) as PackedScene).instantiate() as Chest
+	(sm.get(&"map") as Node).add_child(chest)
+	var a := _rng.randf() * TAU
+	var r := _rng.randf_range(CHEST_RING_U.x, CHEST_RING_U.y) * Balance.UNIT_PX
+	chest.global_position = c if center is Vector2 else c + Vector2.from_angle(a) * r
+	chest.setup(chest_kind, RunState.stage)
+	return chest
+
+
+## Retire tous les coffres fermés de la carte. Retourne leur nombre.
+static func clear_chests(tree: SceneTree) -> int:
+	var n := 0
+	for c in tree.get_nodes_in_group(&"chests"):
+		if c is Chest and not (c as Chest).is_opened():
+			c.queue_free()
+			n += 1
+	return n
+
+
 ## Tue tous les monstres vivants (récompenses, événements de mort : comme au combat). Retourne leur nombre.
 static func kill_all(tree: SceneTree) -> int:
 	var n := 0

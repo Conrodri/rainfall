@@ -40,6 +40,7 @@ var _body: VBoxContainer
 var _status: Label
 var _tab_buttons := {}
 var _quantity_idx := 3
+var _poutch_type: StringName = &"normal"
 var _elite := false
 var _at_cursor := false
 var _loadouts := {} ## id de personnage (texte) -> {slot: id de variante}
@@ -402,6 +403,7 @@ func _build_monsters() -> void:
 	var clean := _btn("Nettoyer", func() -> void: say("%d monstre(s) retirés." % TestTools.clean(get_tree())))
 	clean.name = "Clean"
 	acts.add_child(_expand(clean))
+	_build_poutch()
 	var last_group := ""
 	var grid: GridContainer = null
 	var cols := _cols(190.0)
@@ -423,7 +425,49 @@ func _build_monsters() -> void:
 		_body.add_child(_note("Les monstres apparaissent à 5-8 u autour du joueur."))
 
 
+func _build_poutch() -> void:
+	_body.add_child(_heading("Poutch (mannequin d'entraînement)"))
+	var row := _grid(_cols(190.0))
+	_body.add_child(row)
+	var th := TestThumbs.monster({"key": "tier:3:-1", "kind": &"tier", "tier": 3, "variant": -1})
+	var card := _card(th.tex, "Poutch", "immobile, invincible", 120.0, false, func() -> void: _on_arm_pressed({"kind": &"poutch", "label": "Poutch"}))
+	card.name = "Poutch"
+	card.custom_minimum_size = Vector2(0, 196)
+	row.add_child(card)
+	var types := _grid(3)
+	_body.add_child(types)
+	var group := ButtonGroup.new()
+	for t in [[&"normal", "Normal"], [&"elite", "Élite"], [&"boss", "Boss"]]:
+		var tid: StringName = t[0]
+		var b := _btn(t[1], func() -> void: _poutch_type = tid)
+		b.toggle_mode = true
+		b.button_group = group
+		b.button_pressed = tid == _poutch_type
+		b.name = "PoutchType_%s" % tid
+		_style_active_tab(b)
+		types.add_child(_expand(b))
+	var acts := _grid(2)
+	_body.add_child(acts)
+	var rm := _btn("Retirer les Poutchs", func() -> void: say("%d Poutch(s) retirés." % TestTools.clear_poutchs(get_tree())))
+	rm.name = "ClearPoutchs"
+	acts.add_child(_expand(rm))
+	var rz := _btn("Compteur à zéro (Retour arr.)", func() -> void:
+		TestTools.reset_poutchs(get_tree())
+		say("Compteurs remis à zéro."))
+	rz.name = "ResetPoutchs"
+	acts.add_child(_expand(rz))
+	_body.add_child(_note("Le Poutch reçoit tout (dégâts, critiques, statuts, ciblage) mais ne meurt jamais ; son DPS (5 s) et son total s'affichent au-dessus de lui. Le type sert aux effets qui dépendent d'élite ou de boss."))
+
+
 func _on_monster_pressed(entry: Dictionary) -> void:
+	if _at_cursor and Platform.input_mode != Platform.InputMode.GAMEPAD:
+		armed_entry = entry
+		say("%s : cliquez dans l'arène (Échap pour annuler)." % entry.label)
+		return
+	spawn_entry(entry, null)
+
+
+func _on_arm_pressed(entry: Dictionary) -> void:
 	if _at_cursor and Platform.input_mode != Platform.InputMode.GAMEPAD:
 		armed_entry = entry
 		say("%s : cliquez dans l'arène (Échap pour annuler)." % entry.label)
@@ -433,6 +477,14 @@ func _on_monster_pressed(entry: Dictionary) -> void:
 
 ## Invoque `entry` (quantité et élite du panneau) près du joueur, ou autour de `center`.
 func spawn_entry(entry: Dictionary, center: Variant) -> Array[Node2D]:
+	if entry.get("kind", &"") == &"poutch":
+		var pt := TestTools.spawn_poutch(get_tree(), _poutch_type, center)
+		say("Poutch (%s) posé." % TestPoutch.TYPE_NAMES.get(_poutch_type, "") if pt != null else "Poutch impossible ici.")
+		return [pt.enemy] if pt != null else ([] as Array[Node2D])
+	if entry.get("kind", &"") == &"chest":
+		var ch := TestTools.spawn_chest(get_tree(), StringName(entry.chest_kind), center)
+		say("%s posé." % entry.label if ch != null else "Coffre impossible ici.")
+		return [ch] if ch != null else ([] as Array[Node2D])
 	var made := TestTools.spawn(get_tree(), entry, quantity(), _elite and entry.kind == &"tier", center)
 	say("%d × %s%s" % [made.size(), entry.label, " (élite)" if _elite and entry.kind == &"tier" else ""])
 	return made
@@ -449,7 +501,25 @@ func _set_spawns(on: bool) -> void:
 
 # --- Onglet Objets ------------------------------------------------------------------------
 
+func _build_chests() -> void:
+	_body.add_child(_heading("Coffres"))
+	var grid := _grid(_cols(190.0))
+	_body.add_child(grid)
+	for e in TestTools.chest_catalog():
+		var entry: Dictionary = e
+		var b := _card(TestThumbs.chest(entry), String(entry.label), "gratuit" if bool(entry.free) else "prix du D courant", 96.0, false, func() -> void: _on_arm_pressed(entry))
+		b.name = "Chest_%s" % entry.chest_kind
+		b.custom_minimum_size = Vector2(0, 170)
+		grid.add_child(b)
+	var rm := _btn("Retirer les coffres", func() -> void: say("%d coffre(s) retirés." % TestTools.clear_chests(get_tree())))
+	rm.name = "ClearChests"
+	_body.add_child(rm)
+	_body.add_child(_note("Le coffre apparaît près du joueur (ou au clic si « Clic dans l'arène » est coché, onglet Monstres). Ouverture : interagir, comme en jeu. Pour l'ouvrir sans payer : triche « Or infini »."))
+
+
 func _build_items() -> void:
+	_build_chests()
+	_body.add_child(_heading("Objets"))
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override(&"separation", 8)
 	_body.add_child(top)

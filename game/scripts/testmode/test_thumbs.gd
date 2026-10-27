@@ -6,7 +6,7 @@ extends RefCounted
 ## des assets du jeu. À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test.
 
 const MAX_PX := 160 ## grand côté d'une vignette recuite
-const IDLE_ANIMS: Array[StringName] = [&"idle_se", &"idle_s", &"idle_p1_se", &"idle_p1_s", &"run_se", &"run_s", &"walk_p1_se", &"walk_p1_s"]
+const IDLE_ANIMS: Array[StringName] = [&"idle_se", &"idle_s", &"idle_p1_se", &"idle_p1_s", &"run_se", &"run_s", &"walk_p1_se", &"walk_p1_s", &"closed"]
 const ITEM_ICON := "res://assets/sprites/icons/items/%s.png"
 
 static var _cache := {}
@@ -55,6 +55,17 @@ static func monster(entry: Dictionary) -> Dictionary:
 	out["tex"] = from_frames(frames)
 	_cache[key] = out
 	return out
+
+
+## {tex} d'une entrée du catalogue des coffres (frame « closed » du sprite réel).
+static func chest(entry: Dictionary) -> Texture2D:
+	var key := "k:%s" % str(entry.get("key", ""))
+	if _cache.has(key):
+		return _cache[key]
+	var p := str(entry.get("frames", ""))
+	var t: Texture2D = from_frames(load(p) as SpriteFrames) if p != "" and ResourceLoader.exists(p) else null
+	_cache[key] = t
+	return t
 
 
 ## Première frame d'idle (s / se) d'un SpriteFrames, rognée et recuite. null si rien de lisible.

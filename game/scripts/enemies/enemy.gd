@@ -109,6 +109,7 @@ var max_hp := 1.0
 var damage := 1.0
 var affixes: Array[StringName] = []
 var active := false
+var test_dummy := false ## mode test (Poutch) : encaisse tout sans mourir, immobile ; remis à faux à chaque activation
 var radius_px := 20.0
 var speed_px := 100.0
 var pack_bonus := false ## mis à jour par le Director (Meute)
@@ -199,7 +200,7 @@ func take_damage(amount: float, is_crit: bool = false, element: StringName = &""
 	if _dmg_mod != 1.0: # modificateurs externes (lampes de la Mère-Cristal…)
 		amount *= _dmg_mod
 	hp -= amount
-	if is_boss and hp > 0.0:
+	if is_boss and hp > 0.0 and not test_dummy:
 		visual.set_phase(boss_phase())
 	Events.enemy_damaged.emit(self, amount, is_crit, element)
 	var center := position + Vector2(0.0, -radius_px * 0.8 * Iso.UNSQUASH.y) # corps (pieds à l'origine ; hauteur en y logique = billboard × 2)
@@ -207,7 +208,9 @@ func take_damage(amount: float, is_crit: bool = false, element: StringName = &""
 		HitFx.dot(center, element)
 	else:
 		_direct_hit(amount, is_crit, element, hit, center)
-	if hp <= 0.0:
+	if test_dummy:
+		hp = max_hp # Poutch : tous les effets du coup ont eu lieu, les PV reviennent
+	elif hp <= 0.0:
 		_die()
 
 
@@ -524,6 +527,7 @@ func _sfx(id: StringName, vol_db := 0.0, important := false) -> void:
 
 
 func _common_activate(pos: Vector2) -> void:
+	test_dummy = false
 	hp = max_hp
 	aim_priority = 1.0
 	walk_target = null
@@ -612,7 +616,7 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 		_flash_left -= delta
 		if _flash_left <= 0.0:
 			visual.set_flash(false)
-	if TestMode.freeze_ai:
+	if TestMode.freeze_ai or test_dummy:
 		return # mode test : IA figée (ni déplacement, ni attaque, ni cerveau de boss)
 	if _stop_cd > 0.0:
 		_stop_cd -= delta

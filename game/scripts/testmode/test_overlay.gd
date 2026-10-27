@@ -161,6 +161,9 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventJoypadButton and event.pressed and (event as InputEventJoypadButton).button_index == PAD_BUTTON:
 		toggle()
 		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_BACKSPACE and not TestTools.poutchs(get_tree()).is_empty():
+		TestTools.reset_poutchs(get_tree()) # Retour arrière : compteurs des Poutchs à zéro
+		get_viewport().set_input_as_handled()
 	elif is_open() and (event.is_action_pressed(&"pause") or event.is_action_pressed(&"ui_cancel")):
 		close() # Échap / Start / B ferment le panneau avant le menu pause
 		get_viewport().set_input_as_handled()
