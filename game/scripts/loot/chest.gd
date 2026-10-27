@@ -7,7 +7,6 @@ signal opened(chest: Chest)
 signal refused(chest: Chest) ## or insuffisant (hook pour le son)
 
 const UI_SCENE := preload("res://scenes/ui/chest/chest_ui.tscn")
-const LABEL_FIT := preload("res://scripts/ui/world_label_fit.gd")
 const COLORS := {
 	&"petit": Color(0.69, 0.54, 0.35),
 	&"large": Color(0.29, 0.56, 0.89),
@@ -83,8 +82,8 @@ func current_price() -> float:
 func _process(delta: float) -> void:
 	if _opening:
 		return
-	# prix toujours lisible : entier dans la vue, hors des zones du HUD, sinon masqué (texte du monde)
-	_label.visible = LABEL_FIT.fit(_label, _label_home + Vector2(_label_shake, 0.0))
+	# prix accroché au-dessus du coffre (texte du monde : ne glisse jamais vers le bord de l'écran ni sur le HUD)
+	_label.position = _label_home + Vector2(_label_shake, 0.0)
 	_refresh -= delta
 	if _refresh <= 0.0:
 		_refresh = 0.2
