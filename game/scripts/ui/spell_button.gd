@@ -63,6 +63,8 @@ var max_charges := 0
 var charge_color := READY_COLOR
 var affordable := true ## faux : ressource du kit insuffisante (voile gris + lack_text)
 var lack_text := ""
+var call_pulse := false ## pulsation d'appel (ultime attendu par un bouclier de boss : ULTIMATE_HIT)
+var _pulse_t := 0.0
 var cost_text := "" ## coût du sort (« 20 d'eau »), affiché par SpellHint au lieu de la recharge
 
 
@@ -188,7 +190,19 @@ func set_cooldown(rem: float, tot: float) -> void:
 		queue_redraw()
 
 
+## Active / coupe la pulsation d'appel (HUD : bouclier ULTIMATE_HIT actif sur un boss).
+func set_call_pulse(on: bool) -> void:
+	if call_pulse == on:
+		return
+	call_pulse = on
+	_pulse_t = 0.0
+	queue_redraw()
+
+
 func _process(delta: float) -> void:
+	if call_pulse:
+		_pulse_t += delta
+		queue_redraw()
 	if _flash > 0.0:
 		_flash = maxf(_flash - delta, 0.0)
 		queue_redraw()
@@ -341,6 +355,9 @@ func _draw() -> void:
 		if _flash > 0.0:
 			draw_arc(c, r + 6.0 * k, 0.0, TAU, 48, Color(1, 0.9, 0.6, _flash / 0.35), 8.0 * maxf(k, 0.5))
 	_draw_charges(c, r, k)
+	if call_pulse:
+		var w := 0.5 + 0.5 * sin(_pulse_t * 6.0)
+		draw_arc(c, r + (4.0 + 6.0 * w) * k, 0.0, TAU, 48, Color(0.78, 0.92, 1.0, 0.45 + 0.5 * w), (4.0 + 3.0 * w) * maxf(k, 0.5))
 	if is_auto:
 		var ar := _auto_rect()
 		var fa := _auto_font_px()

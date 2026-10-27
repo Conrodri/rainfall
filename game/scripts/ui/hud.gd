@@ -74,6 +74,8 @@ var _center_col: VBoxContainer
 var _corner: Control
 var _prompt_panel: PanelContainer
 var _prompt_label: Label
+const ULT_SLOT := 4
+var _ult_shields := {} ## instance_id du boss -> true tant que son bouclier ULTIMATE_HIT est levé
 var _was_ready := {} ## slot -> sort prêt à la dernière image (son « sort prêt » à la transition)
 var _spell_bar: HBoxContainer
 var bar_keys: Array[KeyPrompt] = [] ## invite de touche sous chaque sort de la barre
@@ -131,6 +133,7 @@ func _ready() -> void:
 	RunState.level_up.connect(_on_level)
 	RunState.difficulty_changed.connect(_on_difficulty)
 	Events.gold_converted.connect(_on_gold_converted)
+	Events.boss_shield_changed.connect(_on_boss_shield_changed)
 	_on_gold(RunState.gold)
 	_on_xp(RunState.xp, Balance.xp_required(RunState.level))
 	_on_level(RunState.level)
@@ -1118,6 +1121,24 @@ func _touch_cluster_controls() -> Array[Control]:
 
 
 ## Changement d'étage : « +N XP (or converti) » qui monte depuis la ligne de l'or, avec pièce + XP.
+## Bouclier de boss qui attend l'ultime (slot 4) : l'icône du sort 4 pulse (mobile : bouton, PC : barre).
+func _on_boss_shield_changed(boss: Node2D, active: bool, kind: StringName) -> void:
+	if kind != &"ultimate_hit":
+		return
+	var key := boss.get_instance_id() if boss != null and is_instance_valid(boss) else 0
+	if active:
+		_ult_shields[key] = true
+	else:
+		_ult_shields.erase(key)
+	for k in _ult_shields.keys():
+		if not is_instance_id_valid(k):
+			_ult_shields.erase(k)
+	var on := not _ult_shields.is_empty()
+	for b in spell_buttons + bar_buttons:
+		if b.slot == ULT_SLOT:
+			b.set_call_pulse(on)
+
+
 func _on_gold_converted(gold: float, xp: float) -> void:
 	var l := _make_label(root)
 	l.text = "+%d XP (or converti)" % int(round(xp)) if xp >= 1.0 else "Or perdu : %d" % int(gold)

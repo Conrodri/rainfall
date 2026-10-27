@@ -357,6 +357,8 @@ func _draw() -> void:
 		col = col.lerp(COL_STEEL, 0.85)
 	elif tag_kind == &"reload": # recharge : fenêtre de dégâts, teinte chaude terne
 		col = col.lerp(Color(0.80, 0.55, 0.25), 0.5)
+	elif tag_kind == &"reflux": # reflux (Roi de sel) : fenêtre de répit, teinte de marée froide qui respire
+		col = col.lerp((_tag.get("color", Color(0.45, 0.8, 0.85)) as Color), 0.4 + 0.1 * sin(_clock * 3.0))
 	elif tag_kind == &"enrage_warn": # enrage imminent : teinte chaude qui pulse
 		col = col.lerp(Color(0.95, 0.55, 0.15), 0.35 + 0.25 * sin(_clock * 5.0))
 	elif tag_kind == &"enrage": # enragé : rouge vif
@@ -398,7 +400,7 @@ func _draw() -> void:
 		draw_rect(Rect2(inner.position.x, gy, inner.size.x, gh), Color(0, 0, 0, 0.55))
 		draw_rect(Rect2(inner.position.x, gy, inner.size.x * pg, gh), Color(0.78, 0.88, 0.95, 0.95))
 		draw_rect(Rect2(inner.position.x, gy, inner.size.x, gh), Color(0.05, 0.08, 0.10, 0.9), false, 1.0 * s)
-	elif tag_kind == &"reload": # jauge de recharge : même filet que le bouclier, teinte chaude
+	elif tag_kind == &"reload" or tag_kind == &"reflux": # jauge de recharge / de reflux : même filet que le bouclier, teinte du tag
 		var rp := clampf(float(_tag.get("progress", 0.0)), 0.0, 1.0)
 		var rh := maxf(inner.size.y * 0.28, 3.0 * s)
 		draw_rect(Rect2(inner.position.x, inner.end.y - rh, inner.size.x, rh), Color(0, 0, 0, 0.55))

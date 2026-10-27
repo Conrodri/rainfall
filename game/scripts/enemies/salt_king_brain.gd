@@ -85,8 +85,6 @@ const EDICT_SPEED_U := 6.0
 const EDICT_W_U := 1.0
 const EDICT_ANIM_S := 4.0 / 12.0 ## edict_s : impact à la frame 4 (12 fps)
 # Ambiance
-const TIDE_SND_EVERY := 3.0
-const COURT_SND_EVERY := 4.0
 
 var e: Enemy
 var vis: EnemyVisual
@@ -124,8 +122,8 @@ var _edict_anim := false
 var _edict_hit := false
 var _wave_r := -1.0 ## rayon (px) de l'anneau de l'Édit en cours, < 0 = aucun
 var _wave_fx: Node2D = null
-var _tide_snd := 0.0
-var _court_snd := 0.0
+var _tide_loop: Dictionary = {} ## boucles Audio.play_loop (marée, murmures de cour)
+var _court_loop: Dictionary = {}
 var _was_respite := false
 var _ppos := Vector2.ZERO
 var _player: Node2D = null
@@ -166,6 +164,8 @@ func _init(enemy: Enemy) -> void:
 
 ## Libère tout (mort, retour au pool). Mort : la marée se retire, les stèles restent (trace), la cour est dissoute.
 func clear() -> void:
+	_stop_loop(&"tide")
+	_stop_loop(&"court")
 	var killed := e != null and is_instance_valid(e) and e.hp <= 0.0
 	if pace != null:
 		pace.cancel()
@@ -449,7 +449,6 @@ func _on_shield_state(s: int) -> void:
 		BossShield.State.ACTIVE:
 			_haz_stele = SHIELD_STELE_FIRST
 			_haz_tears = TEARS_FIRST
-			_court_snd = 0.0
 		BossShield.State.BREAKING:
 			_hide_crust()
 			vis.play_special(&"crack")
@@ -576,7 +575,6 @@ func _spawn_sector(permanent: bool) -> void:
 		"radius_u": PROC_R_U, "sector_deg": PROC_DEG[pi], "turn_deg_s": float(PROC_TURN[pi]) * _turn_sign,
 		"duration_s": PROC_DUR[pi] if not permanent else PROC_DUR[2], "tele_s": PROC_WINDUP,
 		"angle": start}, steles)
-	_tide_snd = 0.0
 	_was_respite = false
 
 
@@ -886,19 +884,28 @@ func _update_fx(delta: float) -> void:
 
 func _update_sounds(delta: float) -> void:
 	if tide_live():
-		_tide_snd -= delta
-		if _tide_snd <= 0.0:
-			_tide_snd = TIDE_SND_EVERY
-			_snd(&"enemy.salt_king_tide.loop", -4.0)
+		if _tide_loop.is_empty():
+			_tide_loop = Audio.play_loop(&"enemy.salt_king_tide.loop", e, -4.0)
 		var rest := sector.in_respite()
 		if rest and not _was_respite:
 			_snd(&"enemy.salt_king_reflux.medium")
 		_was_respite = rest
+	else:
+		_stop_loop(&"tide")
 	if shield.state == BossShield.State.ACTIVE:
-		_court_snd -= delta
-		if _court_snd <= 0.0:
-			_court_snd = COURT_SND_EVERY
-			_snd(&"amb.salt_court", -6.0)
+		if _court_loop.is_empty():
+			_court_loop = Audio.play_loop(&"amb.salt_court", e, -6.0)
+	else:
+		_stop_loop(&"court")
+
+
+func _stop_loop(which: StringName) -> void:
+	if which == &"tide" and not _tide_loop.is_empty():
+		Audio.stop_loop(_tide_loop)
+		_tide_loop = {}
+	elif which == &"court" and not _court_loop.is_empty():
+		Audio.stop_loop(_court_loop)
+		_court_loop = {}
 
 
 # --- Outils ---------------------------------------------------------------------------------

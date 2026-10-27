@@ -143,6 +143,9 @@ func _physics_process(delta: float) -> void:
 
 
 func step(delta: float) -> void:
+	if boss != null and not is_instance_valid(boss): # boss libéré sans clear() : plus rien à abriter
+		queue_free()
+		return
 	var i := pylons.size() - 1
 	while i >= 0:
 		var c: Dictionary = pylons[i]

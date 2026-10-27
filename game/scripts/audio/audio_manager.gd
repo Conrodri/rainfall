@@ -53,6 +53,7 @@ var _listener_frame := -1
 
 var _hit_cells: Dictionary = {}
 var _hit_events := 0
+var _loops: Array = [] ## boucles actives (play_loop)
 var _kill_cells: Dictionary = {}
 var _last_hit_flush := {"events": 0, "played": 0}
 ## Audio mono (A11y-L9, audit A-12) : réglage accessibility/mono_audio (GameSettings, défaut false), appliqué sur le
@@ -275,6 +276,58 @@ func listener_pos() -> Vector2:
 ## Son de jeu (suspendu avec l'arbre). `pos` = NO_POS (défaut) : au niveau du listener.
 func play(id: StringName, pos: Vector2 = NO_POS, vol_db := 0.0, pitch := 1.0) -> bool:
 	return _play_on(game_pool, id, pos, vol_db, pitch)
+
+
+## Boucle liée à un nœud (bourdon, marée, ambiance de boss). Retourne une poignée (Dictionary) ou {} si le son est
+## absent / pas de voix libre (repli silencieux). Arrêtée par stop_loop ou quand `host` sort de l'arbre.
+## Suit la position de `host` s'il est un Node2D.
+func play_loop(id: StringName, host: Node, vol_db := 0.0, pitch := 1.0) -> Dictionary:
+	if game_pool == null or bank == null or host == null or not is_instance_valid(host):
+		return {}
+	var stream := bank.pick_stream(id)
+	if stream == null:
+		return {}
+	var def := bank.get_def(id)
+	var at := listener_pos()
+	if host is Node2D:
+		at = (host as Node2D).global_position
+	if not game_pool.request(def, id, SoundBank.looped(stream), at, float(def.get("vol_db", 0.0)) + vol_db, pitch):
+		return {}
+	var v := game_pool.last_started
+	if v == null:
+		return {}
+	var h := {"voice": v, "id": id, "start": v.start_ms, "host": host}
+	_loops.append(h)
+	return h
+
+
+func stop_loop(handle: Dictionary) -> void:
+	if handle.is_empty():
+		return
+	_loops.erase(handle)
+	var v: VoicePool.Voice = handle.get("voice")
+	if v != null and v.active and v.sound_id == handle.get("id") and v.start_ms == handle.get("start"):
+		game_pool._release(v)
+
+
+func active_loops() -> int:
+	return _loops.size()
+
+
+func _update_loops() -> void:
+	var i := _loops.size() - 1
+	while i >= 0:
+		var h: Dictionary = _loops[i]
+		var v: VoicePool.Voice = h["voice"]
+		var o: Variant = h["host"]
+		var alive: bool = v.active and v.sound_id == h["id"] and v.start_ms == h["start"] # sinon : voix volée
+		if not alive:
+			_loops.remove_at(i)
+		elif not is_instance_valid(o) or not (o as Node).is_inside_tree():
+			stop_loop(h)
+		elif o is Node2D:
+			v.player.set("global_position", (o as Node2D).global_position)
+		i -= 1
 
 
 ## Son d'interface (continue pendant la pause).
@@ -841,6 +894,7 @@ func _process(delta: float) -> void:
 	if bank == null:
 		return
 	flush_hits()
+	_update_loops()
 	# Pause : musique basse + passe-bas, SFX de jeu suspendus (pool pausable), UI continue.
 	_paused = get_tree().paused
 	var pm := move_toward(_pause_mix, 1.0 if _paused else 0.0, delta / 0.25)

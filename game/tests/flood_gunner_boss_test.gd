@@ -184,7 +184,7 @@ func _t_basics() -> void:
 	print("Bases")
 	var base := Balance.boss_hp(&"etage", RunState.difficulty(), RunState.stage)
 	var b := _new_boss(Vector2(500, 0))
-	_check("PV x BOSS_HP_MULT (0,9)", is_equal_approx(_boss.max_hp, base * 0.9), "%f / %f" % [_boss.max_hp, base])
+	_check("PV : le cerveau n applique pas BOSS_HP_MULT (fait par Enemy.activate_boss, cf. raid_wiring_test)", is_equal_approx(_boss.max_hp, base), "%f / %f" % [_boss.max_hp, base])
 	_check("phase 1, 70 / 35 %", b.phase == 1 and b._phase_for(0.71) == 1 and b._phase_for(0.70) == 2 and b._phase_for(0.35) == 3)
 	_check("mécaniques créées (2 boucliers au quota)", b.shield != null and b.pylons != null and b.barrage != null
 		and Balance.boss_shield_count(&"flood_gunner") == 2)

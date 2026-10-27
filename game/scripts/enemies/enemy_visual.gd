@@ -565,7 +565,7 @@ func _boss_anim_name() -> StringName:
 				n = _boss_loco_name() # pas d'anim de coup de ce côté : posture orientée
 		&"trans":
 			n = ("trans_p%d_s" % _boss_phase) if floor_boss else "phase2_s"
-		&"vanish", &"reappear", &"anchored", &"bogged", &"shield", &"crack", &"stun", &"edict": # poses tenues de play_special (Éclusier, Bouvier P3 ; Roi de sel : bouclier, croûte éclatée, sonné, édit)
+		&"vanish", &"reappear", &"anchored", &"bogged", &"shield", &"crack", &"stun", &"edict", &"throw": # poses tenues de play_special (Éclusier, Bouvier P3 ; raids : bouclier, croûte éclatée, sonné, édit, lancer) -> <nom>_s
 			n = String(act) + "_s"
 		_:
 			n = ("idle_p%d_%s" % [_look_phase(), dn]) if floor_boss else ("idle_" + dn)
@@ -632,6 +632,18 @@ func play_special(name: StringName) -> float:
 	_sprite.stop()
 	_boss_play(false)
 	return sf.get_frame_count(n) / maxf(sf.get_animation_speed(n), 1.0)
+
+
+## Relâche une pose tenue de play_special (bouclier, sonné, lancer...) : retour au repos / à la locomotion.
+## Sans effet pendant un coup armé (play_attack) ni sur &"vanish" (rendu par &"reappear").
+func clear_pose() -> void:
+	if not _boss_sprite or _boss_oneshot == &"" or _boss_oneshot == &"vanish":
+		return
+	if BOSS_ATTACK_BASES.has(_boss_oneshot) and _strike_t >= 0.0:
+		return
+	_boss_oneshot = &""
+	_sprite.stop()
+	_boss_play(false)
 
 
 ## Anim affichée et sa frame (tests, synchronisation des dégâts).

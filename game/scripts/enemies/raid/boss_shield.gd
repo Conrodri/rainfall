@@ -27,6 +27,16 @@ signal broken(rewarded: bool)
 enum State { IDLE, TRANSITION, SETUP, ACTIVE, BREAKING, EXPOSED }
 
 const ORB_FALL_S := 1.0
+const SFX_BREAK_GENERIC := &"enemy.raid_shield_break.heavy"
+const SFX_HUM := &"enemy.shield_hum.loop"
+## Sons d'armement / de rupture par boss (ids de la consigne audio art/tools/audio/_raid_sfx.txt). &"" = pas de son propre
+## (le cerveau joue déjà le sien : Canonnier = gunner_shield_up, Roi de sel = crust_*). Surcharge : opts sfx_up / sfx_break
+## (ids complets) ou sfx_prefix (-> enemy.<prefix>_shield_up.heavy / _shield_break.heavy) dans arm().
+const SFX_BY_BOSS := {
+	&"drowned_idol": {"up": &"enemy.idol_shield_up.heavy", "break": &"enemy.idol_shield_break.heavy"},
+	&"flood_gunner": {"up": &"", "break": SFX_BREAK_GENERIC},
+	&"salt_king": {"up": &"", "break": &""},
+}
 
 var boss: Node2D = null
 var state := State.IDLE
@@ -51,6 +61,9 @@ var objects: Array[Node] = [] ## orbes, points faibles, zones, props posés par 
 var _slow_t := 0.0
 var _caster: Object = null
 var _bubble: Node2D = null
+var _sfx_up: StringName = &""
+var _sfx_break: StringName = &""
+var _hum: Dictionary = {}
 
 
 static func create(p_boss: Node2D) -> BossShield:
@@ -89,11 +102,13 @@ func arm(conds: Array, opts: Dictionary = {}) -> bool:
 	heavy_hits = 0
 	cracks = 0
 	armed_count += 1
+	_resolve_sfx(opts)
 	_set_state(State.TRANSITION)
 	_show_bubble()
 	_bind_caster()
 	Events.boss_shield_changed.emit(boss, true, primary_kind())
-	RaidFx.sfx(StringName("enemy.%s_shield_up.heavy" % _boss_id()), _boss_pos())
+	if _sfx_up != &"":
+		RaidFx.sfx(_sfx_up, _boss_pos())
 	return true
 
 
@@ -242,6 +257,7 @@ func force_break(reward := true) -> void:
 
 ## Libère tout (mort du boss, fin de combat).
 func clear() -> void:
+	_stop_hum()
 	_cleanup()
 	_hide_bubble()
 	if is_invulnerable():
@@ -258,6 +274,9 @@ func _set_state(s: State) -> void:
 	t = 0.0
 	if s == State.ACTIVE:
 		_slow_t = 0.0
+		_start_hum()
+	elif s != State.SETUP:
+		_stop_hum()
 	state_changed.emit(s)
 
 
@@ -268,7 +287,8 @@ func _break(c: BreakCondition) -> void:
 	_hide_bubble()
 	_set_state(State.BREAKING)
 	Events.boss_shield_changed.emit(boss, false, primary_kind())
-	RaidFx.sfx(StringName("enemy.%s_shield_break.heavy" % _boss_id()), _boss_pos())
+	if _sfx_break != &"":
+		RaidFx.sfx(_sfx_break, _boss_pos())
 	broken.emit(rewarded)
 
 
@@ -307,10 +327,11 @@ func _spawn_objects() -> void:
 		var p := c.params
 		match c.kind:
 			BreakCondition.Kind.ORBS:
-				var r := float(p.get("throw_r_u", 6.0)) * RaidKit.U
+				var radii: Array = p.get("radii_u", []) ## rayon de jet propre à chaque orbe (ex. cloche fêlée plus loin)
 				var spread := deg_to_rad(float(p.get("spread_deg", 120.0)))
 				for i in c.total:
 					var a := toward + (0.0 if c.total == 1 else spread * (float(i) / float(c.total - 1) - 0.5))
+					var r := (float(radii[i]) if i < radii.size() else float(p.get("throw_r_u", 6.0))) * RaidKit.U
 					var to := RaidKit.place(boss, bpos + Vector2.from_angle(a) * r)
 					objects.append(RaidOrb.throw(world, boss, bpos, to, pl, _on_cond.bind(c),
 						backstop_s + setup_s, float(p.get("pickup_u", 0.8)), ORB_FALL_S))
@@ -398,6 +419,32 @@ func _hide_bubble() -> void:
 	if _bubble != null and is_instance_valid(_bubble):
 		_bubble.queue_free()
 	_bubble = null
+
+
+func _resolve_sfx(opts: Dictionary) -> void:
+	var d: Dictionary = SFX_BY_BOSS.get(_boss_id(), {"up": &"", "break": SFX_BREAK_GENERIC})
+	_sfx_up = StringName(d.get("up", &""))
+	_sfx_break = StringName(d.get("break", &""))
+	if opts.has("sfx_prefix"):
+		_sfx_up = StringName("enemy.%s_shield_up.heavy" % opts["sfx_prefix"])
+		_sfx_break = StringName("enemy.%s_shield_break.heavy" % opts["sfx_prefix"])
+	if opts.has("sfx_up"):
+		_sfx_up = StringName(opts["sfx_up"])
+	if opts.has("sfx_break"):
+		_sfx_break = StringName(opts["sfx_break"])
+
+
+## Bourdon du bouclier actif (boucle, coupé à la rupture / au clear / à la sortie du boss de l'arbre).
+func _start_hum() -> void:
+	_stop_hum()
+	if boss != null and is_instance_valid(boss) and boss.is_inside_tree():
+		_hum = Audio.play_loop(SFX_HUM, boss, -18.0)
+
+
+func _stop_hum() -> void:
+	if not _hum.is_empty():
+		Audio.stop_loop(_hum)
+	_hum = {}
 
 
 func _boss_id() -> StringName:

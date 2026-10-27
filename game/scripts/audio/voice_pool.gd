@@ -22,6 +22,7 @@ var _active_by_sound: Dictionary = {}
 var _last_play_ms: Dictionary = {}
 var _active_count := 0
 var _seq := 0
+var last_started: Voice = null ## dernière voix attribuée par request() (boucles : Audio.play_loop)
 
 
 func setup(total: int, is_spatial: bool, families: Dictionary, cap_scale := 1.0) -> void:
@@ -133,6 +134,7 @@ func _start(v: Voice, def: Dictionary, id: StringName, stream: AudioStream, pos:
 	_active_by_family[fam] = active_in_family(fam) + 1
 	_active_by_sound[id] = active_of_sound(id) + 1
 	_last_play_ms[id] = now
+	last_started = v
 	stats.played += 1
 	var p := v.player
 	p.set("stream", stream)

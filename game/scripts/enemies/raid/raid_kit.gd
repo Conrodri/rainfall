@@ -47,6 +47,41 @@ static func place(boss: Node2D, p: Vector2) -> Vector2:
 	return p
 
 
+static var _shallow_cache: Dictionary = {} ## id de carte -> grille d'eau {grid, cell_px, origin} ou {} (aucune eau « , »)
+
+
+## Vrai si le point global `gpos` est dans l'eau peu profonde (« , ») de la carte courante. Faux si la carte n'en a pas
+## (ou hors partie : pas de stage_manager). Même lecture que MinibossBrain._map_shallow.
+static func in_shallow(from: Node, gpos: Vector2) -> bool:
+	if from == null or not from.is_inside_tree():
+		return false
+	var sm := from.get_tree().get_first_node_in_group(&"stage_manager")
+	var m: Node2D = sm.get(&"map") as Node2D if sm != null else null
+	if m == null:
+		return false
+	var key := m.get_instance_id()
+	if not _shallow_cache.has(key):
+		_shallow_cache.clear()
+		var g := AmbianceWater.grid_of(m)
+		var has := false
+		for row: String in (g.get("grid", PackedStringArray()) as PackedStringArray):
+			if row.contains(","):
+				has = true
+				break
+		_shallow_cache[key] = g if has else {}
+	var wg: Dictionary = _shallow_cache[key]
+	if wg.is_empty():
+		return false
+	var l := StageMap.frame_of(m).affine_inverse() * m.to_local(gpos)
+	var c := (l - (wg["origin"] as Vector2)) / float(wg["cell_px"])
+	var grid: PackedStringArray = wg["grid"]
+	var y := int(floor(c.y))
+	var x := int(floor(c.x))
+	if y < 0 or y >= grid.size() or x < 0 or x >= grid[y].length():
+		return false
+	return grid[y][x] == ","
+
+
 static func player_of(n: Node) -> Node2D:
 	if n == null or not n.is_inside_tree():
 		return null

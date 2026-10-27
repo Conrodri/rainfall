@@ -63,6 +63,9 @@ const CHAPLET_STEP_S := 0.25
 const CHAPLET_MIN_FIRST_U := 1.5
 # Digues
 const DIKE_LIFE_S := 8.0
+const CRACKED_BELL_R_U := 8.0
+const PADDY_SLOW := 0.8 ## rizière inondée sous une cloche tombée : -20 % de vitesse
+const PADDY_R_U := 2.5 ## rayon autour de la cloche tombée où l'eau ralentit
 const DIKE_LONG_U := 4.0
 const DIKE_THICK_U := 1.0
 const DIKE_SHADOW_PAD_U := 0.5 ## l'ombre d'abri : la ligne boss -> joueur doit croiser le muret élargi de 0,5 u
@@ -249,6 +252,7 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 	_update_noria(player, ppos)
 	_update_cring(delta, player, ppos)
 	_update_fx(delta)
+	_update_paddy(player)
 	_attack_cd -= delta
 	_spell_cd -= delta
 	_t += delta
@@ -321,6 +325,7 @@ func _enter_phase(ph: int) -> void:
 	if BossShield.should_arm(prev, ph, shield.armed_count, ID):
 		var n := 3 if shield.armed_count == 0 else 4
 		shield.arm([{"kind": &"orbs", "count": n, "throw_r_u": 6.0 if n == 3 else 7.0,
+			"radii_u": [] if n == 3 else [7.0, 7.0, 7.0, CRACKED_BELL_R_U], # 4e cloche = la fêlée de la nuque, la plus loin
 			"spread_deg": 240.0 if n == 3 else 270.0, "label": "CLOCHES"}],
 			{"backstop_s": Balance.BOSS_SHIELD_BACKSTOP_S})
 		state = S.CHASE # le bouclier tient la transition (is_phase_transition)
@@ -366,6 +371,20 @@ func _on_shield_progress(done: int, total: int) -> void:
 	col.global_position = e.global_position
 	_fx.append({"node": col, "life": 0.6, "max": 0.6})
 	events.append({"kind": &"bell", "phase": phase, "done": done, "total": total})
+
+
+## Rizières : une cloche tombée dans l'eau peu profonde (« , ») ralentit de 20 % le joueur qui patauge à moins de
+## PADDY_R_U d'elle (lecture du terrain, docs/Design_Boss_Raid.md §2). Sans eau sur la carte : aucun effet.
+func _update_paddy(player: Node2D) -> void:
+	if player == null or not is_instance_valid(player) or not shield.is_invulnerable() or not player.has_method(&"apply_slow"):
+		return
+	var wet: bool = false
+	for o in shield.objects:
+		if is_instance_valid(o) and o is RaidOrb and (o as RaidOrb).landed 				and (o as RaidOrb).global_position.distance_to(player.global_position) <= PADDY_R_U * RaidKit.U 				and RaidKit.in_shallow(e, (o as RaidOrb).global_position):
+			wet = true
+			break
+	if wet and RaidKit.in_shallow(e, player.global_position):
+		player.apply_slow(PADDY_SLOW, 0.3, self)
 
 
 func _burst_fx() -> void:
