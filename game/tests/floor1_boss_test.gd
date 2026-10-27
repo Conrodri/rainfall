@@ -51,7 +51,7 @@ func _physics_process(delta: float) -> void:
 			d.spawning_enabled = false
 			if _t > 1.2:
 				var fe := FloorPlan.floor_entry(1)
-				_check("floors.json : étage 1 = Éclusier, Bouvier, Porteuse", fe.get("floor_bosses", []) == ["eclusier", "ox_herder", "jar_bearer"], str(fe.get("floor_bosses")))
+				_check("floors.json : étage 1 = Éclusier, Bouvier, Porteuse, Idole noyée (raid)", fe.get("floor_bosses", []) == ["eclusier", "ox_herder", "jar_bearer", "drowned_idol"], str(fe.get("floor_bosses")))
 				RunState.stage = 1
 				_next(1)
 		1: # un boss par seconde : apparition, cerveau, mémoire, mort
