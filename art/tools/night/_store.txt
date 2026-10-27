@@ -1,0 +1,11 @@
+LOT Icône d'application et visuels Play Store (28/10/2026 ; fiche : docs/Fiche_Play_Store.md §2).
+Style : DA officielle (art/briefs/STYLE.md en tête, STYLE_cel.md), palette sombre désaturée, pluie, un accent émissif. Blender --background, PNG optimisés, aucun `_n.png`. Rien téléchargé ; le texte « Rainfall » est rendu avec la police du jeu game/assets/fonts/ (Cinzel, OFL) en objet texte Blender.
+Sujet commun : silhouette d'Ardent (game/assets/sprites/characters/ardent, modèle .blend existant dans art/blender si présent) de trois quarts dos sous une pluie battante, braises orange (accent) dans la main, reflets dans l'eau au sol, ruine des Terrasses noyées en fond.
+Sorties dans game/assets/store/ (dossier nouveau) :
+- icon_512.png (512x512, opaque, sans texte : la goutte de pluie qui contient une braise, ou le buste d'Ardent ; lisible à 48 px)
+- icon_foreground_432.png (432x432, transparent, sujet centré dans le cercle sûr de 264 px) et icon_background_432.png (432x432, opaque, fond pluie sombre) : icône adaptative Android
+- icon_192.png (192x192, opaque, même image que icon_512 réduite)
+- icon_256.png (256x256, pour l'.ico Windows ; même image)
+- feature_1024x500.png (1024x500, opaque, scène complète, titre « Rainfall » à gauche, rien d'important dans les 15 % de bord)
+- logo_title.png (1600x480, transparent, titre « Rainfall » seul, gravé/usé, accent émissif discret, pour l'écran titre)
+Vérif : tailles exactes, alpha propre, planche art/tools/night/_store_contact.png avec les icônes réduites à 48 et 96 px. Ne toucher à aucun autre fichier (le branchement dans export_presets et l'écran titre est fait ensuite par Claude).
