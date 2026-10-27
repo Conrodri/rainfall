@@ -585,7 +585,7 @@ func _build_passive() -> void:
 	b.focus_entered.connect(_show_passive_tip.bind(b))
 	b.mouse_entered.connect(_show_passive_tip.bind(b))
 	b.focus_exited.connect(_hide_tip_for.bind(b))
-	b.mouse_exited.connect(_hide_tip_for.bind(b))
+	b.mouse_exited.connect(_on_mouse_left.bind(b))
 	b.gui_input.connect(_on_passive_input.bind(b))
 	b.set_meta("info", info)
 	h.add_child(b)
@@ -766,7 +766,7 @@ func _option_button(icon_size: int, icon: Texture2D, gray: bool, _variant: Varia
 	b.focus_entered.connect(_on_option_hover.bind(b))
 	b.mouse_entered.connect(_on_option_hover.bind(b))
 	b.focus_exited.connect(_on_option_unhover.bind(b))
-	b.mouse_exited.connect(_on_option_unhover.bind(b))
+	b.mouse_exited.connect(_on_mouse_left.bind(b))
 	b.gui_input.connect(_on_option_input.bind(b))
 	return b
 
@@ -865,7 +865,6 @@ func _on_option_pressed(b: Button) -> void:
 	var slot: int = b.get_meta("slot")
 	if bool(b.get_meta("locked", false)):
 		CharacterCard.play_ui(&"ui.click", -8.0, 0.7)
-		_show_tip(b)
 		return
 	chosen[slot] = StringName(o.get("id", ""))
 	for r in _rows:
@@ -873,7 +872,8 @@ func _on_option_pressed(b: Button) -> void:
 			_refresh_row(r)
 	option_chosen.emit(slot, chosen[slot])
 	preview_spell(slot, o)
-	if not bool(b.get_meta("is_base", false)):
+	# l'infobulle vient du survol / du focus / de l'appui long, jamais du clic : on rafraîchit seulement son état
+	if tooltip != null and tooltip.visible and tooltip.anchor_control == b:
 		_show_tip(b)
 
 
@@ -935,6 +935,12 @@ func _show_passive_tip(b: Button) -> void:
 ## du bouton, hors de cette zone (le contrôle, pas son rectangle : la taille n'est pas fixée à l'ouverture de la fiche).
 func _tip_area() -> Control:
 	return preview_stage if preview_stage != null and is_instance_valid(preview_stage) else null
+
+
+## La souris quitte un bouton : l'infobulle part avec elle, même si le clic lui a donné le focus.
+func _on_mouse_left(b: Button) -> void:
+	if tooltip != null and not _is_touch():
+		tooltip.hide_tip(b)
 
 
 func _hide_tip_for(b: Button) -> void:
