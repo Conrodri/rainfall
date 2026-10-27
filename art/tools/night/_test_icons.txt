@@ -1,0 +1,17 @@
+LOT Icônes du mode test (27/10/2026, demande du joueur ; code : game/scripts/testmode/test_panel.gd, ligne par ligne du panneau).
+Style : art/briefs/STYLE_cel.md + gabarit des icônes de sorts normalisées (disque sombre gris-bleu, glyphe clair occupant ~70 %, un accent émissif). Blender --background, PNG optimisés 128x128 RGBA, aucun `_n.png`.
+Sortie : game/assets/sprites/ui/test/ (dossier nouveau). Fichiers :
+- test_icon_god.png (cœur barré d'un symbole infini : PV illimités)
+- test_icon_heal.png (cœur avec croix : soigner)
+- test_icon_cdr.png (sablier dont le sable s'est vidé d'un coup, éclair : recharge nulle)
+- test_icon_range.png (flèche longue vers une cible lointaine : portée infinie)
+- test_icon_timer_stop.png (chronomètre avec un carré stop : minuterie arrêtée)
+- test_icon_quantity.png (trois silhouettes de monstres empilées : quantité)
+- test_icon_elite.png (crâne couronné : élite)
+- test_icon_click.png (curseur de souris sur un cercle au sol : invocation au clic)
+- test_icon_freeze.png (silhouette de monstre prise dans un cristal de glace : IA figée)
+- test_icon_director.png (portail d'où sortent des monstres : apparitions du director)
+- test_icon_kill.png (crâne sur deux lames croisées : tuer tout)
+- test_icon_clear.png (balai qui efface une trace : nettoyer)
+- test_icon_hits.png (éclat d'impact rouge avec un chiffre stylisé : dégâts reçus)
+Vérif : chaque fichier 128x128, alpha propre, lisible réduit à 48 px ; planche de contrôle art/tools/night/_test_icons_contact.png. Ne toucher à aucun autre fichier (le branchement dans le panneau est fait ensuite par un agent code).
