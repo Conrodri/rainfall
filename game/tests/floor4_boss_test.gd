@@ -103,7 +103,7 @@ func _roster() -> void:
 	for f in (data["floors"] as Array):
 		if int(f["floor"]) == 4:
 			fl = f
-	_check("floors.json : étage 4 = cryptes, 3 boss d'étage", fl.get("biome", "") == "cryptes" and (fl["floor_bosses"] as Array) == ["recluse", "crystal_mother", "deep_eel"], str(fl))
+	_check("floors.json : étage 4 = cryptes, 4 boss d'étage (Roi de sel : raid)", fl.get("biome", "") == "cryptes" and (fl["floor_bosses"] as Array) == ["recluse", "crystal_mother", "deep_eel", "salt_king"], str(fl))
 	for id in BOSSES:
 		var cfg := EnemyVisual.boss_cfg(id)
 		var brain := String(cfg.get("brain", ""))

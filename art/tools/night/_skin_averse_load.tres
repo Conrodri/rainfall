@@ -1,0 +1,5 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree\nfunc _initialize():\n    var a = load(\"res://assets/sprites/characters/averse/averse.tres\")\n    var b = load(\"res://assets/sprites/characters/averse/skins/averse_skin1/averse_skin1.tres\")\n    if not (b is SpriteFrames) or a.get_animation_names() != b.get_animation_names():\n        print(\"SKIN LOAD FAIL\")\n        quit(1)\n        return\n    for name in a.get_animation_names():\n        if a.get_frame_count(name) != b.get_frame_count(name) or a.get_animation_speed(name) != b.get_animation_speed(name) or a.get_animation_loop(name) != b.get_animation_loop(name):\n            print(\"SKIN CONTRACT FAIL\")\n            quit(1)\n            return\n    print(\"SKIN LOAD PASS \", b.get_animation_names().size(), \" animations\")\n    quit()\n"
+

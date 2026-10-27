@@ -1,0 +1,55 @@
+[gd_resource type="SpriteFrames" load_steps=10 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/arm_ground.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f0_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f1_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 108, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f2_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 216, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f3_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 324, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f4_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 432, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f5_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 540, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f6_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 648, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[sub_resource type="AtlasTexture" id="f7_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 756, 152, 108)
+margin = Rect2(20, 63, 40, 84)
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("f0_0")}], "loop": true, "name": &"arm_ground_e", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f1_0")}], "loop": true, "name": &"arm_ground_se", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f2_0")}], "loop": true, "name": &"arm_ground_s", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f3_0")}], "loop": true, "name": &"arm_ground_sw", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f4_0")}], "loop": true, "name": &"arm_ground_w", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f5_0")}], "loop": true, "name": &"arm_ground_nw", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f6_0")}], "loop": true, "name": &"arm_ground_n", "speed": 2.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f7_0")}], "loop": true, "name": &"arm_ground_ne", "speed": 2.0}
+]

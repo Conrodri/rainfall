@@ -1,0 +1,35 @@
+{
+  "import": {
+    "exit": 0,
+    "errors": [],
+    "result": []
+  },
+  "sprites": {
+    "exit": 0,
+    "errors": [],
+    "result": [
+      "RESULT: OK"
+    ]
+  },
+  "vigie": {
+    "exit": 0,
+    "errors": [],
+    "result": [
+      "RESULT: OK"
+    ]
+  },
+  "texture_budget": {
+    "exit": 1,
+    "errors": [],
+    "result": [
+      "RESULT: FAIL (1)"
+    ]
+  },
+  "load": {
+    "exit": 0,
+    "errors": [],
+    "result": [
+      "RESULT: OK"
+    ]
+  }
+}

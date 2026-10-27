@@ -1,0 +1,303 @@
+{
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "cell": 192,
+  "pivot_px": [
+    96,
+    136.32
+  ],
+  "order": "back_to_front",
+  "layers": [
+    "torso",
+    "head",
+    "neck_steam",
+    "arm_l",
+    "arm_r",
+    "leg_l",
+    "leg_r"
+  ],
+  "orders": {
+    "e": [
+      "leg_r",
+      "arm_r",
+      "torso",
+      "leg_l",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ],
+    "se": [
+      "leg_r",
+      "arm_r",
+      "leg_l",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ],
+    "s": [
+      "leg_l",
+      "leg_r",
+      "torso",
+      "arm_l",
+      "arm_r",
+      "neck_steam",
+      "head"
+    ],
+    "sw": [
+      "leg_l",
+      "arm_l",
+      "leg_r",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "w": [
+      "leg_l",
+      "arm_l",
+      "torso",
+      "leg_r",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "nw": [
+      "leg_l",
+      "arm_l",
+      "leg_r",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_r"
+    ],
+    "n": [
+      "leg_l",
+      "leg_r",
+      "torso",
+      "arm_l",
+      "arm_r",
+      "neck_steam",
+      "head"
+    ],
+    "ne": [
+      "leg_r",
+      "arm_r",
+      "leg_l",
+      "torso",
+      "neck_steam",
+      "head",
+      "arm_l"
+    ]
+  },
+  "neck_steam": "visible only without head",
+  "animations": {
+    "idle": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "walk": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "hop_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l"
+    ],
+    "hop_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_r"
+    ],
+    "handwalk": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r"
+    ],
+    "crawl_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l"
+    ],
+    "crawl_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_r"
+    ],
+    "roll": [
+      "torso",
+      "head",
+      "neck_steam"
+    ],
+    "fall": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "attack": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "cast": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "cast_ult": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "death": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "throw_arm_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "throw_arm_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "throw_leg_l": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "throw_leg_r": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "throw_head": [
+      "torso",
+      "head",
+      "neck_steam",
+      "arm_l",
+      "arm_r",
+      "leg_l",
+      "leg_r"
+    ],
+    "neck_steam": [
+      "neck_steam"
+    ]
+  },
+  "rendering": "complete isolated modules; camera-depth ordering from socket roots",
+  "format_version": 2,
+  "logical_cell": [
+    192,
+    192
+  ],
+  "atlas_format": "packed rectangles; AtlasTexture.region + margin reconstructs 192x192",
+  "atlas_manifest": "atlas_manifest.json",
+  "layer_resources": {
+    "torso": {
+      "diffuse_normal": "tocsin_torso.tres",
+      "emission": "tocsin_torso_emission.tres"
+    },
+    "head": {
+      "diffuse_normal": "tocsin_head.tres",
+      "emission": "tocsin_head_emission.tres"
+    },
+    "neck_steam": {
+      "diffuse_normal": "tocsin_neck_steam.tres"
+    },
+    "arm_l": {
+      "diffuse_normal": "tocsin_arm_l.tres"
+    },
+    "arm_r": {
+      "diffuse_normal": "tocsin_arm_r.tres"
+    },
+    "leg_l": {
+      "diffuse_normal": "tocsin_leg_l.tres"
+    },
+    "leg_r": {
+      "diffuse_normal": "tocsin_leg_r.tres"
+    }
+  },
+  "attack_impact": {
+    "frame": 3,
+    "indexing": "zero_based",
+    "frames": 6
+  },
+  "throw_release_frames": {
+    "throw_arm_l": 2,
+    "throw_arm_r": 2,
+    "throw_leg_l": 2,
+    "throw_leg_r": 2,
+    "throw_head": 3
+  },
+  "pixel_roundtrip": "PASS",
+  "raw_runtime_layer_MiB": 140.133,
+  "raw_legacy_layer_MiB": 1834.875
+}

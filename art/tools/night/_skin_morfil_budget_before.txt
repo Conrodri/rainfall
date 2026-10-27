@@ -1,0 +1,44 @@
+catégorie                        n    raw Mo   VRAM Mo   png Mo import Mo mobile Mo  budget
+bosses                         847    1365.5     341.4    205.0     684.1     103.8      45 !
+characters/tocsin              368     451.8     113.0     39.5     226.1      22.8      50
+characters/averse               66     346.4      86.6     21.0     173.3      12.4      30
+characters/bourbe               74     234.9      58.7     20.9     117.5      11.3      30
+ambiance                       117     129.2      32.3     22.8      40.6       9.8      15
+vfx                            118     223.2      55.8     16.4     111.6       8.6      15
+characters/morfil               48     190.4      47.6     17.5      95.2       8.4      30
+monsters                        62     162.4      40.6     16.1      81.2       8.2      12
+characters/avare                54     190.4      47.6     12.3      95.1       7.3      30
+characters/rainette             69     206.4      51.6     11.3     103.2       5.8      30
+characters/rictus               57     179.8      45.0     10.1      89.9       5.8      30
+characters/vigie                58     190.4      47.6     10.4      95.2       5.7      30
+characters/ardent               24      99.1      24.8      9.8      49.5       5.3      30
+characters/averse_cel           18     166.6      41.6      7.1      83.3       4.8      30
+characters/arpenteuse           30      59.1      14.8      8.2      29.5       4.6      30
+characters/vigie_cel            36     115.2      28.8      6.1      57.6       3.4      30
+terrain                        137      69.0      17.3      4.4      34.5       2.8      15
+icons                          137      17.6      17.6      3.4       2.8       2.8       5
+characters/ardent_cel           10      49.2      12.3      4.9      24.6       2.6      30
+ui                             205      17.5      17.5      2.8       2.2       2.2       5
+fx                              33      26.0       6.5      3.3      13.0       1.6        
+props                          118      65.4      16.4      2.3      32.7       1.2       5
+characters/montreur              5      14.1       3.5      0.8       7.0       0.4      30
+chests                          28       1.6       0.4      0.2       0.8       0.1        
+pickups                          9       0.2       0.0      0.0       0.1       0.0        
+Rainfall.png                     1       1.8       0.5      0.0       0.9       0.0        
+Rainfall.apple-touch-icon.png     1       0.1       0.0      0.0       0.1       0.0        
+projectiles                      2       0.0       0.0      0.0       0.0       0.0        
+Rainfall.icon.png                1       0.1       0.0      0.0       0.0       0.0        
+TOTAL                         2733    4573.7    1169.8    456.6    2251.9     242.0
+
+Textures > 4096 px de côté : 0
+Normal maps _n (interdites depuis le 22/10/2026) : 0
+Masques _e : 913 à demi-résolution, 0 de taille incohérente
+
+Plus grosses textures (VRAM) :
+
+APK estimé (arm64) : 4906 Mo = textures 242 + audio 71 + autres 4561 + moteur 32  (budget 200 Mo, textures 180 Mo, cible 95 Mo)
+
+HORS BUDGET (3) :
+  - catégorie bosses : 103.8 Mo mobile > budget 45 Mo
+  - APK estimé 4906 Mo > 200 Mo
+  - textures mobiles 242 Mo > 180 Mo

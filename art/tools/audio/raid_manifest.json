@@ -1,0 +1,1541 @@
+[
+  {
+    "id": "ui.raid_progress",
+    "path": "impacts/ui_raid_progress_01.ogg",
+    "usage": "raid_progress; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.586,
+    "peak_dbfs": -5.361
+  },
+  {
+    "id": "ui.raid_progress",
+    "path": "impacts/ui_raid_progress_02.ogg",
+    "usage": "raid_progress; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.51,
+    "peak_dbfs": -5.74
+  },
+  {
+    "id": "ui.raid_progress",
+    "path": "impacts/ui_raid_progress_03.ogg",
+    "usage": "raid_progress; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.423,
+    "peak_dbfs": -5.092
+  },
+  {
+    "id": "enemy.raid_shield_break.heavy",
+    "path": "impacts/enemy_raid_shield_break_heavy_01.ogg",
+    "usage": "raid_shield_break; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.212,
+    "peak_dbfs": -4.688
+  },
+  {
+    "id": "enemy.raid_shield_break.heavy",
+    "path": "impacts/enemy_raid_shield_break_heavy_02.ogg",
+    "usage": "raid_shield_break; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.397,
+    "peak_dbfs": -5.681
+  },
+  {
+    "id": "enemy.raid_shield_break.heavy",
+    "path": "impacts/enemy_raid_shield_break_heavy_03.ogg",
+    "usage": "raid_shield_break; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.618,
+    "peak_dbfs": -4.672
+  },
+  {
+    "id": "enemy.raid_shield_up.heavy",
+    "path": "impacts/enemy_raid_shield_up_heavy_01.ogg",
+    "usage": "raid_shield_up; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.148,
+    "peak_dbfs": -7.274
+  },
+  {
+    "id": "enemy.raid_shield_up.heavy",
+    "path": "impacts/enemy_raid_shield_up_heavy_02.ogg",
+    "usage": "raid_shield_up; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.023,
+    "peak_dbfs": -8.192
+  },
+  {
+    "id": "enemy.raid_shield_up.heavy",
+    "path": "impacts/enemy_raid_shield_up_heavy_03.ogg",
+    "usage": "raid_shield_up; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.146,
+    "peak_dbfs": -8.027
+  },
+  {
+    "id": "enemy.raid_barrage_warn.heavy",
+    "path": "impacts/enemy_raid_barrage_warn_heavy_01.ogg",
+    "usage": "raid_barrage_warn; variante 1",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.018,
+    "peak_dbfs": -6.871
+  },
+  {
+    "id": "enemy.raid_barrage_warn.heavy",
+    "path": "impacts/enemy_raid_barrage_warn_heavy_02.ogg",
+    "usage": "raid_barrage_warn; variante 2",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.078,
+    "peak_dbfs": -7.812
+  },
+  {
+    "id": "enemy.raid_barrage_warn.heavy",
+    "path": "impacts/enemy_raid_barrage_warn_heavy_03.ogg",
+    "usage": "raid_barrage_warn; variante 3",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.023,
+    "peak_dbfs": -7.387
+  },
+  {
+    "id": "enemy.raid_soak_fill.light",
+    "path": "impacts/enemy_raid_soak_fill_light_01.ogg",
+    "usage": "raid_soak_fill; variante 1",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.401,
+    "peak_dbfs": -4.632
+  },
+  {
+    "id": "enemy.raid_soak_fill.light",
+    "path": "impacts/enemy_raid_soak_fill_light_02.ogg",
+    "usage": "raid_soak_fill; variante 2",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.374,
+    "peak_dbfs": -5.93
+  },
+  {
+    "id": "enemy.raid_soak_fill.light",
+    "path": "impacts/enemy_raid_soak_fill_light_03.ogg",
+    "usage": "raid_soak_fill; variante 3",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.422,
+    "peak_dbfs": -3.918
+  },
+  {
+    "id": "enemy.raid_soak_burst.heavy",
+    "path": "impacts/enemy_raid_soak_burst_heavy_01.ogg",
+    "usage": "raid_soak_burst; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.216,
+    "peak_dbfs": -5.078
+  },
+  {
+    "id": "enemy.raid_soak_burst.heavy",
+    "path": "impacts/enemy_raid_soak_burst_heavy_02.ogg",
+    "usage": "raid_soak_burst; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.405,
+    "peak_dbfs": -5.377
+  },
+  {
+    "id": "enemy.raid_soak_burst.heavy",
+    "path": "impacts/enemy_raid_soak_burst_heavy_03.ogg",
+    "usage": "raid_soak_burst; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.298,
+    "peak_dbfs": -4.943
+  },
+  {
+    "id": "enemy.raid_sector_warn.heavy",
+    "path": "impacts/enemy_raid_sector_warn_heavy_01.ogg",
+    "usage": "raid_sector_warn; variante 1",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.033,
+    "peak_dbfs": -8.412
+  },
+  {
+    "id": "enemy.raid_sector_warn.heavy",
+    "path": "impacts/enemy_raid_sector_warn_heavy_02.ogg",
+    "usage": "raid_sector_warn; variante 2",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.032,
+    "peak_dbfs": -8.174
+  },
+  {
+    "id": "enemy.raid_sector_warn.heavy",
+    "path": "impacts/enemy_raid_sector_warn_heavy_03.ogg",
+    "usage": "raid_sector_warn; variante 3",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.109,
+    "peak_dbfs": -8.596
+  },
+  {
+    "id": "enemy.raid_fixate_lock.medium",
+    "path": "impacts/enemy_raid_fixate_lock_medium_01.ogg",
+    "usage": "raid_fixate_lock; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.714,
+    "peak_dbfs": -5.474
+  },
+  {
+    "id": "enemy.raid_fixate_lock.medium",
+    "path": "impacts/enemy_raid_fixate_lock_medium_02.ogg",
+    "usage": "raid_fixate_lock; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.885,
+    "peak_dbfs": -5.886
+  },
+  {
+    "id": "enemy.raid_fixate_lock.medium",
+    "path": "impacts/enemy_raid_fixate_lock_medium_03.ogg",
+    "usage": "raid_fixate_lock; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.453,
+    "peak_dbfs": -5.929
+  },
+  {
+    "id": "enemy.raid_weakpoint_hit.light",
+    "path": "impacts/enemy_raid_weakpoint_hit_light_01.ogg",
+    "usage": "raid_weakpoint_hit; variante 1",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.577,
+    "peak_dbfs": -5.943
+  },
+  {
+    "id": "enemy.raid_weakpoint_hit.light",
+    "path": "impacts/enemy_raid_weakpoint_hit_light_02.ogg",
+    "usage": "raid_weakpoint_hit; variante 2",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.521,
+    "peak_dbfs": -5.009
+  },
+  {
+    "id": "enemy.raid_weakpoint_hit.light",
+    "path": "impacts/enemy_raid_weakpoint_hit_light_03.ogg",
+    "usage": "raid_weakpoint_hit; variante 3",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -19.954,
+    "peak_dbfs": -4.28
+  },
+  {
+    "id": "enemy.raid_weakpoint_break.medium",
+    "path": "impacts/enemy_raid_weakpoint_break_medium_01.ogg",
+    "usage": "raid_weakpoint_break; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.446,
+    "peak_dbfs": -4.661
+  },
+  {
+    "id": "enemy.raid_weakpoint_break.medium",
+    "path": "impacts/enemy_raid_weakpoint_break_medium_02.ogg",
+    "usage": "raid_weakpoint_break; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.417,
+    "peak_dbfs": -4.512
+  },
+  {
+    "id": "enemy.raid_weakpoint_break.medium",
+    "path": "impacts/enemy_raid_weakpoint_break_medium_03.ogg",
+    "usage": "raid_weakpoint_break; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.945,
+    "peak_dbfs": -5.562
+  },
+  {
+    "id": "enemy.raid_add_feed.medium",
+    "path": "impacts/enemy_raid_add_feed_medium_01.ogg",
+    "usage": "raid_add_feed; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.015,
+    "peak_dbfs": -7.443
+  },
+  {
+    "id": "enemy.raid_add_feed.medium",
+    "path": "impacts/enemy_raid_add_feed_medium_02.ogg",
+    "usage": "raid_add_feed; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -19.948,
+    "peak_dbfs": -8.418
+  },
+  {
+    "id": "enemy.raid_add_feed.medium",
+    "path": "impacts/enemy_raid_add_feed_medium_03.ogg",
+    "usage": "raid_add_feed; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.013,
+    "peak_dbfs": -7.618
+  },
+  {
+    "id": "enemy.raid_enrage_warn.heavy",
+    "path": "impacts/enemy_raid_enrage_warn_heavy_01.ogg",
+    "usage": "raid_enrage_warn; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.15,
+    "peak_dbfs": -7.08
+  },
+  {
+    "id": "enemy.raid_enrage_warn.heavy",
+    "path": "impacts/enemy_raid_enrage_warn_heavy_02.ogg",
+    "usage": "raid_enrage_warn; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.087,
+    "peak_dbfs": -8.138
+  },
+  {
+    "id": "enemy.raid_enrage_warn.heavy",
+    "path": "impacts/enemy_raid_enrage_warn_heavy_03.ogg",
+    "usage": "raid_enrage_warn; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.087,
+    "peak_dbfs": -7.541
+  },
+  {
+    "id": "enemy.idol_palm.medium",
+    "path": "impacts/enemy_idol_palm_medium_01.ogg",
+    "usage": "idol_palm; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.527,
+    "peak_dbfs": -5.147
+  },
+  {
+    "id": "enemy.idol_palm.medium",
+    "path": "impacts/enemy_idol_palm_medium_02.ogg",
+    "usage": "idol_palm; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.258,
+    "peak_dbfs": -5.964
+  },
+  {
+    "id": "enemy.idol_palm.medium",
+    "path": "impacts/enemy_idol_palm_medium_03.ogg",
+    "usage": "idol_palm; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.504,
+    "peak_dbfs": -4.041
+  },
+  {
+    "id": "enemy.idol_carillon_warn.heavy",
+    "path": "impacts/enemy_idol_carillon_warn_heavy_01.ogg",
+    "usage": "idol_carillon_warn; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.202,
+    "peak_dbfs": -3.945
+  },
+  {
+    "id": "enemy.idol_carillon_warn.heavy",
+    "path": "impacts/enemy_idol_carillon_warn_heavy_02.ogg",
+    "usage": "idol_carillon_warn; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.207,
+    "peak_dbfs": -5.297
+  },
+  {
+    "id": "enemy.idol_carillon_warn.heavy",
+    "path": "impacts/enemy_idol_carillon_warn_heavy_03.ogg",
+    "usage": "idol_carillon_warn; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.142,
+    "peak_dbfs": -4.891
+  },
+  {
+    "id": "enemy.idol_carillon.heavy",
+    "path": "impacts/enemy_idol_carillon_heavy_01.ogg",
+    "usage": "idol_carillon; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.791,
+    "peak_dbfs": -4.935
+  },
+  {
+    "id": "enemy.idol_carillon.heavy",
+    "path": "impacts/enemy_idol_carillon_heavy_02.ogg",
+    "usage": "idol_carillon; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.499,
+    "peak_dbfs": -5.842
+  },
+  {
+    "id": "enemy.idol_carillon.heavy",
+    "path": "impacts/enemy_idol_carillon_heavy_03.ogg",
+    "usage": "idol_carillon; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.274,
+    "peak_dbfs": -5.605
+  },
+  {
+    "id": "enemy.idol_chaplet.light",
+    "path": "impacts/enemy_idol_chaplet_light_01.ogg",
+    "usage": "idol_chaplet; variante 1",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.562,
+    "peak_dbfs": -5.426
+  },
+  {
+    "id": "enemy.idol_chaplet.light",
+    "path": "impacts/enemy_idol_chaplet_light_02.ogg",
+    "usage": "idol_chaplet; variante 2",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.979,
+    "peak_dbfs": -6.361
+  },
+  {
+    "id": "enemy.idol_chaplet.light",
+    "path": "impacts/enemy_idol_chaplet_light_03.ogg",
+    "usage": "idol_chaplet; variante 3",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.203,
+    "peak_dbfs": -5.717
+  },
+  {
+    "id": "enemy.idol_chaplet.light",
+    "path": "impacts/enemy_idol_chaplet_light_04.ogg",
+    "usage": "idol_chaplet; variante 4",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.224,
+    "peak_dbfs": -5.581
+  },
+  {
+    "id": "enemy.idol_chaplet.light",
+    "path": "impacts/enemy_idol_chaplet_light_05.ogg",
+    "usage": "idol_chaplet; variante 5",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -19.978,
+    "peak_dbfs": -4.498
+  },
+  {
+    "id": "enemy.idol_bell_throw.medium",
+    "path": "impacts/enemy_idol_bell_throw_medium_01.ogg",
+    "usage": "idol_bell_throw; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.129,
+    "peak_dbfs": -8.251
+  },
+  {
+    "id": "enemy.idol_bell_throw.medium",
+    "path": "impacts/enemy_idol_bell_throw_medium_02.ogg",
+    "usage": "idol_bell_throw; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.008,
+    "peak_dbfs": -7.119
+  },
+  {
+    "id": "enemy.idol_bell_throw.medium",
+    "path": "impacts/enemy_idol_bell_throw_medium_03.ogg",
+    "usage": "idol_bell_throw; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.017,
+    "peak_dbfs": -7.975
+  },
+  {
+    "id": "enemy.idol_bell_ring.medium",
+    "path": "impacts/enemy_idol_bell_ring_medium_01.ogg",
+    "usage": "idol_bell_ring; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.052,
+    "peak_dbfs": -6.577
+  },
+  {
+    "id": "enemy.idol_bell_ring.medium",
+    "path": "impacts/enemy_idol_bell_ring_medium_02.ogg",
+    "usage": "idol_bell_ring; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.05,
+    "peak_dbfs": -5.773
+  },
+  {
+    "id": "enemy.idol_bell_ring.medium",
+    "path": "impacts/enemy_idol_bell_ring_medium_03.ogg",
+    "usage": "idol_bell_ring; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.543,
+    "peak_dbfs": -5.086
+  },
+  {
+    "id": "enemy.idol_shield_up.heavy",
+    "path": "impacts/enemy_idol_shield_up_heavy_01.ogg",
+    "usage": "idol_shield_up; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.086,
+    "peak_dbfs": -7.233
+  },
+  {
+    "id": "enemy.idol_shield_up.heavy",
+    "path": "impacts/enemy_idol_shield_up_heavy_02.ogg",
+    "usage": "idol_shield_up; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.147,
+    "peak_dbfs": -7.248
+  },
+  {
+    "id": "enemy.idol_shield_up.heavy",
+    "path": "impacts/enemy_idol_shield_up_heavy_03.ogg",
+    "usage": "idol_shield_up; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.15,
+    "peak_dbfs": -8.089
+  },
+  {
+    "id": "enemy.idol_shield_break.heavy",
+    "path": "impacts/enemy_idol_shield_break_heavy_01.ogg",
+    "usage": "idol_shield_break; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.616,
+    "peak_dbfs": -5.916
+  },
+  {
+    "id": "enemy.idol_shield_break.heavy",
+    "path": "impacts/enemy_idol_shield_break_heavy_02.ogg",
+    "usage": "idol_shield_break; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.702,
+    "peak_dbfs": -5.924
+  },
+  {
+    "id": "enemy.idol_shield_break.heavy",
+    "path": "impacts/enemy_idol_shield_break_heavy_03.ogg",
+    "usage": "idol_shield_break; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.795,
+    "peak_dbfs": -5.446
+  },
+  {
+    "id": "enemy.idol_dike.medium",
+    "path": "impacts/enemy_idol_dike_medium_01.ogg",
+    "usage": "idol_dike; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.361,
+    "peak_dbfs": -5.12
+  },
+  {
+    "id": "enemy.idol_dike.medium",
+    "path": "impacts/enemy_idol_dike_medium_02.ogg",
+    "usage": "idol_dike; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.541,
+    "peak_dbfs": -4.898
+  },
+  {
+    "id": "enemy.idol_dike.medium",
+    "path": "impacts/enemy_idol_dike_medium_03.ogg",
+    "usage": "idol_dike; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.051,
+    "peak_dbfs": -5.389
+  },
+  {
+    "id": "enemy.idol_anchor.heavy",
+    "path": "impacts/enemy_idol_anchor_heavy_01.ogg",
+    "usage": "idol_anchor; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.001,
+    "peak_dbfs": -5.708
+  },
+  {
+    "id": "enemy.idol_anchor.heavy",
+    "path": "impacts/enemy_idol_anchor_heavy_02.ogg",
+    "usage": "idol_anchor; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.203,
+    "peak_dbfs": -5.046
+  },
+  {
+    "id": "enemy.idol_anchor.heavy",
+    "path": "impacts/enemy_idol_anchor_heavy_03.ogg",
+    "usage": "idol_anchor; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.787,
+    "peak_dbfs": -5.322
+  },
+  {
+    "id": "enemy.idol_death.heavy",
+    "path": "impacts/enemy_idol_death_heavy_01.ogg",
+    "usage": "idol_death; variante 1",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.06,
+    "peak_dbfs": -5.087
+  },
+  {
+    "id": "enemy.idol_death.heavy",
+    "path": "impacts/enemy_idol_death_heavy_02.ogg",
+    "usage": "idol_death; variante 2",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.329,
+    "peak_dbfs": -5.16
+  },
+  {
+    "id": "enemy.idol_death.heavy",
+    "path": "impacts/enemy_idol_death_heavy_03.ogg",
+    "usage": "idol_death; variante 3",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.272,
+    "peak_dbfs": -5.318
+  },
+  {
+    "id": "enemy.gunner_breech.medium",
+    "path": "impacts/enemy_gunner_breech_medium_01.ogg",
+    "usage": "gunner_breech; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.571,
+    "peak_dbfs": -6.046
+  },
+  {
+    "id": "enemy.gunner_breech.medium",
+    "path": "impacts/enemy_gunner_breech_medium_02.ogg",
+    "usage": "gunner_breech; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.548,
+    "peak_dbfs": -5.502
+  },
+  {
+    "id": "enemy.gunner_breech.medium",
+    "path": "impacts/enemy_gunner_breech_medium_03.ogg",
+    "usage": "gunner_breech; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.541,
+    "peak_dbfs": -5.167
+  },
+  {
+    "id": "enemy.gunner_rivet_hit.light",
+    "path": "impacts/enemy_gunner_rivet_hit_light_01.ogg",
+    "usage": "gunner_rivet_hit; variante 1",
+    "duration_s": 0.104989,
+    "loop": false,
+    "rms_dbfs": -21.12,
+    "peak_dbfs": -7.971
+  },
+  {
+    "id": "enemy.gunner_rivet_hit.light",
+    "path": "impacts/enemy_gunner_rivet_hit_light_02.ogg",
+    "usage": "gunner_rivet_hit; variante 2",
+    "duration_s": 0.104989,
+    "loop": false,
+    "rms_dbfs": -20.194,
+    "peak_dbfs": -6.912
+  },
+  {
+    "id": "enemy.gunner_rivet_hit.light",
+    "path": "impacts/enemy_gunner_rivet_hit_light_03.ogg",
+    "usage": "gunner_rivet_hit; variante 3",
+    "duration_s": 0.104989,
+    "loop": false,
+    "rms_dbfs": -20.187,
+    "peak_dbfs": -6.514
+  },
+  {
+    "id": "enemy.gunner_pylon_plant.medium",
+    "path": "impacts/enemy_gunner_pylon_plant_medium_01.ogg",
+    "usage": "gunner_pylon_plant; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.554,
+    "peak_dbfs": -7.023
+  },
+  {
+    "id": "enemy.gunner_pylon_plant.medium",
+    "path": "impacts/enemy_gunner_pylon_plant_medium_02.ogg",
+    "usage": "gunner_pylon_plant; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.091,
+    "peak_dbfs": -5.957
+  },
+  {
+    "id": "enemy.gunner_pylon_plant.medium",
+    "path": "impacts/enemy_gunner_pylon_plant_medium_03.ogg",
+    "usage": "gunner_pylon_plant; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.093,
+    "peak_dbfs": -5.696
+  },
+  {
+    "id": "enemy.gunner_pylon_crack.medium",
+    "path": "impacts/enemy_gunner_pylon_crack_medium_01.ogg",
+    "usage": "gunner_pylon_crack; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.954,
+    "peak_dbfs": -6.002
+  },
+  {
+    "id": "enemy.gunner_pylon_crack.medium",
+    "path": "impacts/enemy_gunner_pylon_crack_medium_02.ogg",
+    "usage": "gunner_pylon_crack; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.785,
+    "peak_dbfs": -4.946
+  },
+  {
+    "id": "enemy.gunner_pylon_crack.medium",
+    "path": "impacts/enemy_gunner_pylon_crack_medium_03.ogg",
+    "usage": "gunner_pylon_crack; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.583,
+    "peak_dbfs": -5.592
+  },
+  {
+    "id": "enemy.gunner_pylon_break.heavy",
+    "path": "impacts/enemy_gunner_pylon_break_heavy_01.ogg",
+    "usage": "gunner_pylon_break; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.529,
+    "peak_dbfs": -5.278
+  },
+  {
+    "id": "enemy.gunner_pylon_break.heavy",
+    "path": "impacts/enemy_gunner_pylon_break_heavy_02.ogg",
+    "usage": "gunner_pylon_break; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.113,
+    "peak_dbfs": -5.524
+  },
+  {
+    "id": "enemy.gunner_pylon_break.heavy",
+    "path": "impacts/enemy_gunner_pylon_break_heavy_03.ogg",
+    "usage": "gunner_pylon_break; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.319,
+    "peak_dbfs": -5.622
+  },
+  {
+    "id": "enemy.gunner_volley_warn.heavy",
+    "path": "impacts/enemy_gunner_volley_warn_heavy_01.ogg",
+    "usage": "gunner_volley_warn; variante 1",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.147,
+    "peak_dbfs": -7.48
+  },
+  {
+    "id": "enemy.gunner_volley_warn.heavy",
+    "path": "impacts/enemy_gunner_volley_warn_heavy_02.ogg",
+    "usage": "gunner_volley_warn; variante 2",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.026,
+    "peak_dbfs": -8.226
+  },
+  {
+    "id": "enemy.gunner_volley_warn.heavy",
+    "path": "impacts/enemy_gunner_volley_warn_heavy_03.ogg",
+    "usage": "gunner_volley_warn; variante 3",
+    "duration_s": 1.5,
+    "loop": false,
+    "rms_dbfs": -20.144,
+    "peak_dbfs": -8.287
+  },
+  {
+    "id": "enemy.gunner_reload.medium",
+    "path": "impacts/enemy_gunner_reload_medium_01.ogg",
+    "usage": "gunner_reload; variante 1",
+    "duration_s": 2.0,
+    "loop": false,
+    "rms_dbfs": -21.095,
+    "peak_dbfs": -4.324
+  },
+  {
+    "id": "enemy.gunner_reload.medium",
+    "path": "impacts/enemy_gunner_reload_medium_02.ogg",
+    "usage": "gunner_reload; variante 2",
+    "duration_s": 2.0,
+    "loop": false,
+    "rms_dbfs": -21.079,
+    "peak_dbfs": -4.321
+  },
+  {
+    "id": "enemy.gunner_reload.medium",
+    "path": "impacts/enemy_gunner_reload_medium_03.ogg",
+    "usage": "gunner_reload; variante 3",
+    "duration_s": 2.0,
+    "loop": false,
+    "rms_dbfs": -20.979,
+    "peak_dbfs": -4.087
+  },
+  {
+    "id": "enemy.gunner_shell_whistle.medium",
+    "path": "impacts/enemy_gunner_shell_whistle_medium_01.ogg",
+    "usage": "gunner_shell_whistle; variante 1",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.259,
+    "peak_dbfs": -8.265
+  },
+  {
+    "id": "enemy.gunner_shell_whistle.medium",
+    "path": "impacts/enemy_gunner_shell_whistle_medium_02.ogg",
+    "usage": "gunner_shell_whistle; variante 2",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.107,
+    "peak_dbfs": -8.258
+  },
+  {
+    "id": "enemy.gunner_shell_whistle.medium",
+    "path": "impacts/enemy_gunner_shell_whistle_medium_03.ogg",
+    "usage": "gunner_shell_whistle; variante 3",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.109,
+    "peak_dbfs": -8.298
+  },
+  {
+    "id": "enemy.gunner_shell.heavy",
+    "path": "impacts/enemy_gunner_shell_heavy_01.ogg",
+    "usage": "gunner_shell; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.086,
+    "peak_dbfs": -6.543
+  },
+  {
+    "id": "enemy.gunner_shell.heavy",
+    "path": "impacts/enemy_gunner_shell_heavy_02.ogg",
+    "usage": "gunner_shell; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.199,
+    "peak_dbfs": -5.525
+  },
+  {
+    "id": "enemy.gunner_shell.heavy",
+    "path": "impacts/enemy_gunner_shell_heavy_03.ogg",
+    "usage": "gunner_shell; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.211,
+    "peak_dbfs": -5.252
+  },
+  {
+    "id": "enemy.gunner_shield_up.heavy",
+    "path": "impacts/enemy_gunner_shield_up_heavy_01.ogg",
+    "usage": "gunner_shield_up; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.158,
+    "peak_dbfs": -8.178
+  },
+  {
+    "id": "enemy.gunner_shield_up.heavy",
+    "path": "impacts/enemy_gunner_shield_up_heavy_02.ogg",
+    "usage": "gunner_shield_up; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.099,
+    "peak_dbfs": -7.005
+  },
+  {
+    "id": "enemy.gunner_shield_up.heavy",
+    "path": "impacts/enemy_gunner_shield_up_heavy_03.ogg",
+    "usage": "gunner_shield_up; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.162,
+    "peak_dbfs": -7.753
+  },
+  {
+    "id": "enemy.gunner_vent.heavy",
+    "path": "impacts/enemy_gunner_vent_heavy_01.ogg",
+    "usage": "gunner_vent; variante 1",
+    "duration_s": 3.0,
+    "loop": false,
+    "rms_dbfs": -20.395,
+    "peak_dbfs": -5.236
+  },
+  {
+    "id": "enemy.gunner_vent.heavy",
+    "path": "impacts/enemy_gunner_vent_heavy_02.ogg",
+    "usage": "gunner_vent; variante 2",
+    "duration_s": 3.0,
+    "loop": false,
+    "rms_dbfs": -20.405,
+    "peak_dbfs": -5.79
+  },
+  {
+    "id": "enemy.gunner_vent.heavy",
+    "path": "impacts/enemy_gunner_vent_heavy_03.ogg",
+    "usage": "gunner_vent; variante 3",
+    "duration_s": 3.0,
+    "loop": false,
+    "rms_dbfs": -20.403,
+    "peak_dbfs": -5.246
+  },
+  {
+    "id": "enemy.gunner_stoker_feed.medium",
+    "path": "impacts/enemy_gunner_stoker_feed_medium_01.ogg",
+    "usage": "gunner_stoker_feed; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.031,
+    "peak_dbfs": -8.61
+  },
+  {
+    "id": "enemy.gunner_stoker_feed.medium",
+    "path": "impacts/enemy_gunner_stoker_feed_medium_02.ogg",
+    "usage": "gunner_stoker_feed; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.018,
+    "peak_dbfs": -8.355
+  },
+  {
+    "id": "enemy.gunner_stoker_feed.medium",
+    "path": "impacts/enemy_gunner_stoker_feed_medium_03.ogg",
+    "usage": "gunner_stoker_feed; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.024,
+    "peak_dbfs": -7.795
+  },
+  {
+    "id": "enemy.gunner_stoker_death.medium",
+    "path": "impacts/enemy_gunner_stoker_death_medium_01.ogg",
+    "usage": "gunner_stoker_death; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.639,
+    "peak_dbfs": -4.755
+  },
+  {
+    "id": "enemy.gunner_stoker_death.medium",
+    "path": "impacts/enemy_gunner_stoker_death_medium_02.ogg",
+    "usage": "gunner_stoker_death; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.825,
+    "peak_dbfs": -4.915
+  },
+  {
+    "id": "enemy.gunner_stoker_death.medium",
+    "path": "impacts/enemy_gunner_stoker_death_medium_03.ogg",
+    "usage": "gunner_stoker_death; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.787,
+    "peak_dbfs": -4.992
+  },
+  {
+    "id": "enemy.gunner_anchor.heavy",
+    "path": "impacts/enemy_gunner_anchor_heavy_01.ogg",
+    "usage": "gunner_anchor; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.225,
+    "peak_dbfs": -5.254
+  },
+  {
+    "id": "enemy.gunner_anchor.heavy",
+    "path": "impacts/enemy_gunner_anchor_heavy_02.ogg",
+    "usage": "gunner_anchor; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.544,
+    "peak_dbfs": -5.419
+  },
+  {
+    "id": "enemy.gunner_anchor.heavy",
+    "path": "impacts/enemy_gunner_anchor_heavy_03.ogg",
+    "usage": "gunner_anchor; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.756,
+    "peak_dbfs": -5.628
+  },
+  {
+    "id": "enemy.gunner_death.heavy",
+    "path": "impacts/enemy_gunner_death_heavy_01.ogg",
+    "usage": "gunner_death; variante 1",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.142,
+    "peak_dbfs": -5.304
+  },
+  {
+    "id": "enemy.gunner_death.heavy",
+    "path": "impacts/enemy_gunner_death_heavy_02.ogg",
+    "usage": "gunner_death; variante 2",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.15,
+    "peak_dbfs": -5.161
+  },
+  {
+    "id": "enemy.gunner_death.heavy",
+    "path": "impacts/enemy_gunner_death_heavy_03.ogg",
+    "usage": "gunner_death; variante 3",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.448,
+    "peak_dbfs": -4.954
+  },
+  {
+    "id": "enemy.salt_king_scepter.medium",
+    "path": "impacts/enemy_salt_king_scepter_medium_01.ogg",
+    "usage": "salt_king_scepter; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.785,
+    "peak_dbfs": -4.445
+  },
+  {
+    "id": "enemy.salt_king_scepter.medium",
+    "path": "impacts/enemy_salt_king_scepter_medium_02.ogg",
+    "usage": "salt_king_scepter; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.529,
+    "peak_dbfs": -4.471
+  },
+  {
+    "id": "enemy.salt_king_scepter.medium",
+    "path": "impacts/enemy_salt_king_scepter_medium_03.ogg",
+    "usage": "salt_king_scepter; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.062,
+    "peak_dbfs": -5.002
+  },
+  {
+    "id": "enemy.salt_king_procession_warn.heavy",
+    "path": "impacts/enemy_salt_king_procession_warn_heavy_01.ogg",
+    "usage": "salt_king_procession_warn; variante 1",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.061,
+    "peak_dbfs": -6.568
+  },
+  {
+    "id": "enemy.salt_king_procession_warn.heavy",
+    "path": "impacts/enemy_salt_king_procession_warn_heavy_02.ogg",
+    "usage": "salt_king_procession_warn; variante 2",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.134,
+    "peak_dbfs": -6.394
+  },
+  {
+    "id": "enemy.salt_king_procession_warn.heavy",
+    "path": "impacts/enemy_salt_king_procession_warn_heavy_03.ogg",
+    "usage": "salt_king_procession_warn; variante 3",
+    "duration_s": 1.2,
+    "loop": false,
+    "rms_dbfs": -20.057,
+    "peak_dbfs": -6.52
+  },
+  {
+    "id": "enemy.salt_king_reflux.medium",
+    "path": "impacts/enemy_salt_king_reflux_medium_01.ogg",
+    "usage": "salt_king_reflux; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.027,
+    "peak_dbfs": -7.041
+  },
+  {
+    "id": "enemy.salt_king_reflux.medium",
+    "path": "impacts/enemy_salt_king_reflux_medium_02.ogg",
+    "usage": "salt_king_reflux; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.029,
+    "peak_dbfs": -7.587
+  },
+  {
+    "id": "enemy.salt_king_reflux.medium",
+    "path": "impacts/enemy_salt_king_reflux_medium_03.ogg",
+    "usage": "salt_king_reflux; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.019,
+    "peak_dbfs": -7.073
+  },
+  {
+    "id": "enemy.salt_king_stele.medium",
+    "path": "impacts/enemy_salt_king_stele_medium_01.ogg",
+    "usage": "salt_king_stele; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.067,
+    "peak_dbfs": -5.12
+  },
+  {
+    "id": "enemy.salt_king_stele.medium",
+    "path": "impacts/enemy_salt_king_stele_medium_02.ogg",
+    "usage": "salt_king_stele; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.368,
+    "peak_dbfs": -4.408
+  },
+  {
+    "id": "enemy.salt_king_stele.medium",
+    "path": "impacts/enemy_salt_king_stele_medium_03.ogg",
+    "usage": "salt_king_stele; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.717,
+    "peak_dbfs": -6.17
+  },
+  {
+    "id": "enemy.salt_king_stele.medium",
+    "path": "impacts/enemy_salt_king_stele_medium_04.ogg",
+    "usage": "salt_king_stele; variante 4",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.543,
+    "peak_dbfs": -4.193
+  },
+  {
+    "id": "enemy.salt_king_crust.heavy",
+    "path": "impacts/enemy_salt_king_crust_heavy_01.ogg",
+    "usage": "salt_king_crust; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.11,
+    "peak_dbfs": -6.078
+  },
+  {
+    "id": "enemy.salt_king_crust.heavy",
+    "path": "impacts/enemy_salt_king_crust_heavy_02.ogg",
+    "usage": "salt_king_crust; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.112,
+    "peak_dbfs": -6.516
+  },
+  {
+    "id": "enemy.salt_king_crust.heavy",
+    "path": "impacts/enemy_salt_king_crust_heavy_03.ogg",
+    "usage": "salt_king_crust; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.109,
+    "peak_dbfs": -6.21
+  },
+  {
+    "id": "enemy.salt_king_crust_crack.light",
+    "path": "impacts/enemy_salt_king_crust_crack_light_01.ogg",
+    "usage": "salt_king_crust_crack; variante 1",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.403,
+    "peak_dbfs": -4.504
+  },
+  {
+    "id": "enemy.salt_king_crust_crack.light",
+    "path": "impacts/enemy_salt_king_crust_crack_light_02.ogg",
+    "usage": "salt_king_crust_crack; variante 2",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.662,
+    "peak_dbfs": -4.107
+  },
+  {
+    "id": "enemy.salt_king_crust_crack.light",
+    "path": "impacts/enemy_salt_king_crust_crack_light_03.ogg",
+    "usage": "salt_king_crust_crack; variante 3",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.406,
+    "peak_dbfs": -2.984
+  },
+  {
+    "id": "enemy.salt_king_crust_burst.heavy",
+    "path": "impacts/enemy_salt_king_crust_burst_heavy_01.ogg",
+    "usage": "salt_king_crust_burst; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.418,
+    "peak_dbfs": -5.1
+  },
+  {
+    "id": "enemy.salt_king_crust_burst.heavy",
+    "path": "impacts/enemy_salt_king_crust_burst_heavy_02.ogg",
+    "usage": "salt_king_crust_burst; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.371,
+    "peak_dbfs": -4.494
+  },
+  {
+    "id": "enemy.salt_king_crust_burst.heavy",
+    "path": "impacts/enemy_salt_king_crust_burst_heavy_03.ogg",
+    "usage": "salt_king_crust_burst; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.426,
+    "peak_dbfs": -5.389
+  },
+  {
+    "id": "enemy.salt_king_crown_hit.light",
+    "path": "impacts/enemy_salt_king_crown_hit_light_01.ogg",
+    "usage": "salt_king_crown_hit; variante 1",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -20.534,
+    "peak_dbfs": -4.387
+  },
+  {
+    "id": "enemy.salt_king_crown_hit.light",
+    "path": "impacts/enemy_salt_king_crown_hit_light_02.ogg",
+    "usage": "salt_king_crown_hit; variante 2",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.194,
+    "peak_dbfs": -5.023
+  },
+  {
+    "id": "enemy.salt_king_crown_hit.light",
+    "path": "impacts/enemy_salt_king_crown_hit_light_03.ogg",
+    "usage": "salt_king_crown_hit; variante 3",
+    "duration_s": 0.32,
+    "loop": false,
+    "rms_dbfs": -21.57,
+    "peak_dbfs": -5.908
+  },
+  {
+    "id": "enemy.salt_king_crown_break.medium",
+    "path": "impacts/enemy_salt_king_crown_break_medium_01.ogg",
+    "usage": "salt_king_crown_break; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -22.163,
+    "peak_dbfs": -5.81
+  },
+  {
+    "id": "enemy.salt_king_crown_break.medium",
+    "path": "impacts/enemy_salt_king_crown_break_medium_02.ogg",
+    "usage": "salt_king_crown_break; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -20.222,
+    "peak_dbfs": -1.639
+  },
+  {
+    "id": "enemy.salt_king_crown_break.medium",
+    "path": "impacts/enemy_salt_king_crown_break_medium_03.ogg",
+    "usage": "salt_king_crown_break; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.639,
+    "peak_dbfs": -5.513
+  },
+  {
+    "id": "enemy.salt_king_edict.heavy",
+    "path": "impacts/enemy_salt_king_edict_heavy_01.ogg",
+    "usage": "salt_king_edict; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.681,
+    "peak_dbfs": -5.202
+  },
+  {
+    "id": "enemy.salt_king_edict.heavy",
+    "path": "impacts/enemy_salt_king_edict_heavy_02.ogg",
+    "usage": "salt_king_edict; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.879,
+    "peak_dbfs": -5.041
+  },
+  {
+    "id": "enemy.salt_king_edict.heavy",
+    "path": "impacts/enemy_salt_king_edict_heavy_03.ogg",
+    "usage": "salt_king_edict; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.88,
+    "peak_dbfs": -5.805
+  },
+  {
+    "id": "enemy.salt_king_throne.heavy",
+    "path": "impacts/enemy_salt_king_throne_heavy_01.ogg",
+    "usage": "salt_king_throne; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.08,
+    "peak_dbfs": -5.326
+  },
+  {
+    "id": "enemy.salt_king_throne.heavy",
+    "path": "impacts/enemy_salt_king_throne_heavy_02.ogg",
+    "usage": "salt_king_throne; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.178,
+    "peak_dbfs": -5.312
+  },
+  {
+    "id": "enemy.salt_king_throne.heavy",
+    "path": "impacts/enemy_salt_king_throne_heavy_03.ogg",
+    "usage": "salt_king_throne; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.591,
+    "peak_dbfs": -5.098
+  },
+  {
+    "id": "enemy.salt_king_tears.medium",
+    "path": "impacts/enemy_salt_king_tears_medium_01.ogg",
+    "usage": "salt_king_tears; variante 1",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.293,
+    "peak_dbfs": -3.831
+  },
+  {
+    "id": "enemy.salt_king_tears.medium",
+    "path": "impacts/enemy_salt_king_tears_medium_02.ogg",
+    "usage": "salt_king_tears; variante 2",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.449,
+    "peak_dbfs": -4.305
+  },
+  {
+    "id": "enemy.salt_king_tears.medium",
+    "path": "impacts/enemy_salt_king_tears_medium_03.ogg",
+    "usage": "salt_king_tears; variante 3",
+    "duration_s": 0.75,
+    "loop": false,
+    "rms_dbfs": -21.852,
+    "peak_dbfs": -4.805
+  },
+  {
+    "id": "enemy.salt_king_death.heavy",
+    "path": "impacts/enemy_salt_king_death_heavy_01.ogg",
+    "usage": "salt_king_death; variante 1",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.213,
+    "peak_dbfs": -4.4
+  },
+  {
+    "id": "enemy.salt_king_death.heavy",
+    "path": "impacts/enemy_salt_king_death_heavy_02.ogg",
+    "usage": "salt_king_death; variante 2",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.205,
+    "peak_dbfs": -4.788
+  },
+  {
+    "id": "enemy.salt_king_death.heavy",
+    "path": "impacts/enemy_salt_king_death_heavy_03.ogg",
+    "usage": "salt_king_death; variante 3",
+    "duration_s": 3.2,
+    "loop": false,
+    "rms_dbfs": -22.256,
+    "peak_dbfs": -5.008
+  },
+  {
+    "id": "enemy.salt_shield_up.heavy",
+    "path": "impacts/enemy_salt_shield_up_heavy_01.ogg",
+    "usage": "salt_shield_up; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.108,
+    "peak_dbfs": -6.869
+  },
+  {
+    "id": "enemy.salt_shield_up.heavy",
+    "path": "impacts/enemy_salt_shield_up_heavy_02.ogg",
+    "usage": "salt_shield_up; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.109,
+    "peak_dbfs": -5.8
+  },
+  {
+    "id": "enemy.salt_shield_up.heavy",
+    "path": "impacts/enemy_salt_shield_up_heavy_03.ogg",
+    "usage": "salt_shield_up; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -20.047,
+    "peak_dbfs": -6.593
+  },
+  {
+    "id": "enemy.salt_shield_break.heavy",
+    "path": "impacts/enemy_salt_shield_break_heavy_01.ogg",
+    "usage": "salt_shield_break; variante 1",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.551,
+    "peak_dbfs": -4.444
+  },
+  {
+    "id": "enemy.salt_shield_break.heavy",
+    "path": "impacts/enemy_salt_shield_break_heavy_02.ogg",
+    "usage": "salt_shield_break; variante 2",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -21.532,
+    "peak_dbfs": -4.981
+  },
+  {
+    "id": "enemy.salt_shield_break.heavy",
+    "path": "impacts/enemy_salt_shield_break_heavy_03.ogg",
+    "usage": "salt_shield_break; variante 3",
+    "duration_s": 1.4,
+    "loop": false,
+    "rms_dbfs": -22.013,
+    "peak_dbfs": -5.083
+  },
+  {
+    "id": "enemy.shield_hum.loop",
+    "path": "ambience/enemy_shield_hum_loop.ogg",
+    "usage": "shield_hum; boucle circulaire",
+    "duration_s": 2.5,
+    "loop": true,
+    "rms_dbfs": -17.966,
+    "peak_dbfs": -13.465
+  },
+  {
+    "id": "enemy.idol_stun.loop",
+    "path": "ambience/enemy_idol_stun_loop.ogg",
+    "usage": "idol_stun; boucle circulaire",
+    "duration_s": 3.0,
+    "loop": true,
+    "rms_dbfs": -24.08,
+    "peak_dbfs": -9.952
+  },
+  {
+    "id": "enemy.idol_noria.loop",
+    "path": "ambience/enemy_idol_noria_loop.ogg",
+    "usage": "idol_noria; boucle circulaire",
+    "duration_s": 4.0,
+    "loop": true,
+    "rms_dbfs": -24.084,
+    "peak_dbfs": -11.008
+  },
+  {
+    "id": "enemy.gunner_volley.loop",
+    "path": "ambience/enemy_gunner_volley_loop_light.ogg",
+    "usage": "gunner_volley; boucle circulaire",
+    "duration_s": 4.0,
+    "loop": true,
+    "rms_dbfs": -24.088,
+    "peak_dbfs": -3.838
+  },
+  {
+    "id": "enemy.gunner_volley.loop",
+    "path": "ambience/enemy_gunner_volley_loop_medium.ogg",
+    "usage": "gunner_volley; boucle circulaire",
+    "duration_s": 4.0,
+    "loop": true,
+    "rms_dbfs": -24.076,
+    "peak_dbfs": -3.833
+  },
+  {
+    "id": "enemy.gunner_volley.loop",
+    "path": "ambience/enemy_gunner_volley_loop_heavy.ogg",
+    "usage": "gunner_volley; boucle circulaire",
+    "duration_s": 4.0,
+    "loop": true,
+    "rms_dbfs": -24.044,
+    "peak_dbfs": -4.452
+  },
+  {
+    "id": "enemy.gunner_stoker_walk.loop",
+    "path": "ambience/enemy_gunner_stoker_walk_loop.ogg",
+    "usage": "gunner_stoker_walk; boucle circulaire",
+    "duration_s": 2.0,
+    "loop": true,
+    "rms_dbfs": -24.077,
+    "peak_dbfs": -4.709
+  },
+  {
+    "id": "enemy.salt_king_tide.loop",
+    "path": "ambience/enemy_salt_king_tide_loop.ogg",
+    "usage": "salt_king_tide; boucle circulaire",
+    "duration_s": 6.0,
+    "loop": true,
+    "rms_dbfs": -24.087,
+    "peak_dbfs": -10.76
+  },
+  {
+    "id": "amb.salt_court",
+    "path": "ambience/amb_salt_court.ogg",
+    "usage": "salt_court; boucle circulaire",
+    "duration_s": 16.0,
+    "loop": true,
+    "rms_dbfs": -24.032,
+    "peak_dbfs": -12.905
+  }
+]

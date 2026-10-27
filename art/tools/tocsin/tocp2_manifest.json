@@ -1,0 +1,168 @@
+{
+  "ppu": 64,
+  "normal_maps": false,
+  "source_cell": [
+    448,
+    320
+  ],
+  "assets": {
+    "pillar_impact": {
+      "cell": [
+        296,
+        156
+      ],
+      "atlas": [
+        2368,
+        156
+      ],
+      "emission": [
+        1184,
+        78
+      ],
+      "frames": 8,
+      "animations": [
+        "pillar_impact"
+      ],
+      "fps": 20,
+      "loop": false,
+      "pivot": [
+        148,
+        78
+      ],
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "top_scale": [
+        1,
+        1
+      ],
+      "crea_scale": null,
+      "emission_scale": [
+        2.0,
+        2.0
+      ]
+    },
+    "pillar_zone": {
+      "cell": [
+        298,
+        158
+      ],
+      "atlas": [
+        3576,
+        158
+      ],
+      "emission": [
+        1788,
+        79
+      ],
+      "frames": 12,
+      "animations": [
+        "pillar_zone"
+      ],
+      "fps": 24,
+      "loop": true,
+      "pivot": [
+        149,
+        79
+      ],
+      "offset": [
+        0.0,
+        0.0
+      ],
+      "top_scale": [
+        1,
+        1
+      ],
+      "crea_scale": null,
+      "emission_scale": [
+        2.0,
+        2.0
+      ]
+    },
+    "pillar_arc": {
+      "cell": [
+        300,
+        117
+      ],
+      "atlas": [
+        1800,
+        936
+      ],
+      "emission": [
+        900,
+        468
+      ],
+      "frames": 6,
+      "animations": [
+        "pillar_arc_top_0",
+        "pillar_arc_top_1",
+        "pillar_arc_top_2",
+        "pillar_arc_top_3",
+        "pillar_arc_crea_0",
+        "pillar_arc_crea_1",
+        "pillar_arc_crea_2",
+        "pillar_arc_crea_3"
+      ],
+      "fps": 24,
+      "loop": false,
+      "pivot": [
+        167,
+        48
+      ],
+      "offset": [
+        -17.0,
+        10.5
+      ],
+      "top_scale": [
+        1,
+        1
+      ],
+      "crea_scale": [
+        0.70710678,
+        1.4142136
+      ],
+      "emission_scale": [
+        2.0,
+        2.0
+      ]
+    },
+    "pillar_end": {
+      "cell": [
+        123,
+        94
+      ],
+      "atlas": [
+        738,
+        94
+      ],
+      "emission": [
+        369,
+        47
+      ],
+      "frames": 6,
+      "animations": [
+        "pillar_end"
+      ],
+      "fps": 15,
+      "loop": false,
+      "pivot": [
+        56,
+        82
+      ],
+      "offset": [
+        5.5,
+        -35.0
+      ],
+      "top_scale": [
+        1,
+        1
+      ],
+      "crea_scale": null,
+      "emission_scale": [
+        2.0,
+        2.0
+      ]
+    }
+  }
+}

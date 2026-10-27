@@ -1,0 +1,255 @@
+[gd_resource type="SpriteFrames" load_steps=51 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/head_fly_e.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f0_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f0_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f0_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f0_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f0_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f0_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 0, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f1_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 64, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f2_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 128, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f3_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 192, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f4_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 256, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f5_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 320, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f6_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 384, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_1"]
+atlas = ExtResource("1")
+region = Rect2(56, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_2"]
+atlas = ExtResource("1")
+region = Rect2(112, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_3"]
+atlas = ExtResource("1")
+region = Rect2(168, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_4"]
+atlas = ExtResource("1")
+region = Rect2(224, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[sub_resource type="AtlasTexture" id="f7_5"]
+atlas = ExtResource("1")
+region = Rect2(280, 448, 56, 64)
+margin = Rect2(68, 68, 136, 128)
+
+[resource]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("f0_0")}, {"duration": 1.0, "texture": SubResource("f0_1")}, {"duration": 1.0, "texture": SubResource("f0_2")}, {"duration": 1.0, "texture": SubResource("f0_3")}, {"duration": 1.0, "texture": SubResource("f0_4")}, {"duration": 1.0, "texture": SubResource("f0_5")}], "loop": true, "name": &"head_fly_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f1_0")}, {"duration": 1.0, "texture": SubResource("f1_1")}, {"duration": 1.0, "texture": SubResource("f1_2")}, {"duration": 1.0, "texture": SubResource("f1_3")}, {"duration": 1.0, "texture": SubResource("f1_4")}, {"duration": 1.0, "texture": SubResource("f1_5")}], "loop": true, "name": &"head_fly_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f2_0")}, {"duration": 1.0, "texture": SubResource("f2_1")}, {"duration": 1.0, "texture": SubResource("f2_2")}, {"duration": 1.0, "texture": SubResource("f2_3")}, {"duration": 1.0, "texture": SubResource("f2_4")}, {"duration": 1.0, "texture": SubResource("f2_5")}], "loop": true, "name": &"head_fly_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f3_0")}, {"duration": 1.0, "texture": SubResource("f3_1")}, {"duration": 1.0, "texture": SubResource("f3_2")}, {"duration": 1.0, "texture": SubResource("f3_3")}, {"duration": 1.0, "texture": SubResource("f3_4")}, {"duration": 1.0, "texture": SubResource("f3_5")}], "loop": true, "name": &"head_fly_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f4_0")}, {"duration": 1.0, "texture": SubResource("f4_1")}, {"duration": 1.0, "texture": SubResource("f4_2")}, {"duration": 1.0, "texture": SubResource("f4_3")}, {"duration": 1.0, "texture": SubResource("f4_4")}, {"duration": 1.0, "texture": SubResource("f4_5")}], "loop": true, "name": &"head_fly_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f5_0")}, {"duration": 1.0, "texture": SubResource("f5_1")}, {"duration": 1.0, "texture": SubResource("f5_2")}, {"duration": 1.0, "texture": SubResource("f5_3")}, {"duration": 1.0, "texture": SubResource("f5_4")}, {"duration": 1.0, "texture": SubResource("f5_5")}], "loop": true, "name": &"head_fly_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f6_0")}, {"duration": 1.0, "texture": SubResource("f6_1")}, {"duration": 1.0, "texture": SubResource("f6_2")}, {"duration": 1.0, "texture": SubResource("f6_3")}, {"duration": 1.0, "texture": SubResource("f6_4")}, {"duration": 1.0, "texture": SubResource("f6_5")}], "loop": true, "name": &"head_fly_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("f7_0")}, {"duration": 1.0, "texture": SubResource("f7_1")}, {"duration": 1.0, "texture": SubResource("f7_2")}, {"duration": 1.0, "texture": SubResource("f7_3")}, {"duration": 1.0, "texture": SubResource("f7_4")}, {"duration": 1.0, "texture": SubResource("f7_5")}], "loop": true, "name": &"head_fly_ne", "speed": 12.0}
+]

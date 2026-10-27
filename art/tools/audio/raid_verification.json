@@ -1,0 +1,3437 @@
+{
+  "passed": true,
+  "count": 171,
+  "loops": 9,
+  "errors": [],
+  "files": [
+    {
+      "path": "impacts/ui_raid_progress_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.586246490478516,
+      "useful_rms_dbfs": -19.59322166442871,
+      "true_peak_dbfs": -5.361116409301758,
+      "seam_jump": 0.0028166575357317924,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/ui_raid_progress_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.509765625,
+      "useful_rms_dbfs": -19.613296508789062,
+      "true_peak_dbfs": -5.740389347076416,
+      "seam_jump": 0.0054725236259400845,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/ui_raid_progress_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.423227310180664,
+      "useful_rms_dbfs": -19.80126190185547,
+      "true_peak_dbfs": -5.0916643142700195,
+      "seam_jump": 0.0013015934964641929,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_break_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.21200942993164,
+      "useful_rms_dbfs": -19.581859588623047,
+      "true_peak_dbfs": -4.687869548797607,
+      "seam_jump": 0.0005860967794433236,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_break_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.39661979675293,
+      "useful_rms_dbfs": -19.53750991821289,
+      "true_peak_dbfs": -5.68147087097168,
+      "seam_jump": 0.0035103256814181805,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_break_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.618024826049805,
+      "useful_rms_dbfs": -19.6271915435791,
+      "true_peak_dbfs": -4.672321796417236,
+      "seam_jump": 0.0023506267461925745,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_up_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.147512435913086,
+      "useful_rms_dbfs": -19.96027183532715,
+      "true_peak_dbfs": -7.274021625518799,
+      "seam_jump": 0.001003476558253169,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_up_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.022680282592773,
+      "useful_rms_dbfs": -19.960960388183594,
+      "true_peak_dbfs": -8.192118644714355,
+      "seam_jump": 0.0006241144146770239,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_shield_up_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.14583396911621,
+      "useful_rms_dbfs": -19.958959579467773,
+      "true_peak_dbfs": -8.02704906463623,
+      "seam_jump": 0.0007929946295917034,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_barrage_warn_heavy_01.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.018356323242188,
+      "useful_rms_dbfs": -19.903432846069336,
+      "true_peak_dbfs": -6.871380805969238,
+      "seam_jump": 0.0010217081289738417,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_barrage_warn_heavy_02.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.07843017578125,
+      "useful_rms_dbfs": -19.96274185180664,
+      "true_peak_dbfs": -7.812196731567383,
+      "seam_jump": 0.0008728157263249159,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_barrage_warn_heavy_03.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.022865295410156,
+      "useful_rms_dbfs": -19.9079532623291,
+      "true_peak_dbfs": -7.386627674102783,
+      "seam_jump": 0.00022968977282289416,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_fill_light_01.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.40099334716797,
+      "useful_rms_dbfs": -20.125621795654297,
+      "true_peak_dbfs": -4.632381439208984,
+      "seam_jump": 0.0052402690052986145,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_fill_light_02.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.3742733001709,
+      "useful_rms_dbfs": -20.14827537536621,
+      "true_peak_dbfs": -5.929880142211914,
+      "seam_jump": 0.008062675595283508,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_fill_light_03.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.42190170288086,
+      "useful_rms_dbfs": -19.85875701904297,
+      "true_peak_dbfs": -3.9175353050231934,
+      "seam_jump": 0.005514637101441622,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_burst_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.216331481933594,
+      "useful_rms_dbfs": -19.69942855834961,
+      "true_peak_dbfs": -5.07797908782959,
+      "seam_jump": 0.0024843025021255016,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_burst_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.404787063598633,
+      "useful_rms_dbfs": -19.542028427124023,
+      "true_peak_dbfs": -5.3766326904296875,
+      "seam_jump": 0.003062659176066518,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_soak_burst_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.298397064208984,
+      "useful_rms_dbfs": -19.552738189697266,
+      "true_peak_dbfs": -4.9434285163879395,
+      "seam_jump": 0.0008140912977978587,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_sector_warn_heavy_01.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.032642364501953,
+      "useful_rms_dbfs": -19.888757705688477,
+      "true_peak_dbfs": -8.411537170410156,
+      "seam_jump": 0.0010477249743416905,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_sector_warn_heavy_02.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.03173828125,
+      "useful_rms_dbfs": -19.95988655090332,
+      "true_peak_dbfs": -8.173877716064453,
+      "seam_jump": 0.0003727748990058899,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_sector_warn_heavy_03.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.10860252380371,
+      "useful_rms_dbfs": -19.963966369628906,
+      "true_peak_dbfs": -8.596237182617188,
+      "seam_jump": 0.0019302158616483212,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_fixate_lock_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.713895797729492,
+      "useful_rms_dbfs": -19.79473304748535,
+      "true_peak_dbfs": -5.474353790283203,
+      "seam_jump": 0.0031838840804994106,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_fixate_lock_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.884632110595703,
+      "useful_rms_dbfs": -19.595563888549805,
+      "true_peak_dbfs": -5.886045455932617,
+      "seam_jump": 0.0032081224489957094,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_fixate_lock_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.45328140258789,
+      "useful_rms_dbfs": -19.967086791992188,
+      "true_peak_dbfs": -5.928750038146973,
+      "seam_jump": 0.0018547765212133527,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_hit_light_01.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.57697868347168,
+      "useful_rms_dbfs": -19.567766189575195,
+      "true_peak_dbfs": -5.943359375,
+      "seam_jump": 0.002287756884470582,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_hit_light_02.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.52100372314453,
+      "useful_rms_dbfs": -19.954010009765625,
+      "true_peak_dbfs": -5.00922966003418,
+      "seam_jump": 0.003721170127391815,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_hit_light_03.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -19.954044342041016,
+      "useful_rms_dbfs": -19.954044342041016,
+      "true_peak_dbfs": -4.280379295349121,
+      "seam_jump": 0.005685833282768726,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_break_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.44550323486328,
+      "useful_rms_dbfs": -19.531896591186523,
+      "true_peak_dbfs": -4.66102933883667,
+      "seam_jump": 0.000581822358071804,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_break_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.417186737060547,
+      "useful_rms_dbfs": -19.513357162475586,
+      "true_peak_dbfs": -4.512124538421631,
+      "seam_jump": 0.0021938185673207045,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_weakpoint_break_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.94463539123535,
+      "useful_rms_dbfs": -19.668678283691406,
+      "true_peak_dbfs": -5.562445640563965,
+      "seam_jump": 0.002569511067122221,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_add_feed_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.014936447143555,
+      "useful_rms_dbfs": -19.957155227661133,
+      "true_peak_dbfs": -7.443027019500732,
+      "seam_jump": 0.0013116622576490045,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_add_feed_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -19.94840431213379,
+      "useful_rms_dbfs": -19.94840431213379,
+      "true_peak_dbfs": -8.418107032775879,
+      "seam_jump": 0.0015878950944170356,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_add_feed_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.013492584228516,
+      "useful_rms_dbfs": -19.955284118652344,
+      "true_peak_dbfs": -7.618300437927246,
+      "seam_jump": 0.0004905592068098485,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_enrage_warn_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.150442123413086,
+      "useful_rms_dbfs": -19.962804794311523,
+      "true_peak_dbfs": -7.079872131347656,
+      "seam_jump": 0.0012634983286261559,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_enrage_warn_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.086673736572266,
+      "useful_rms_dbfs": -19.90055274963379,
+      "true_peak_dbfs": -8.13837718963623,
+      "seam_jump": 0.0007451258134096861,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_raid_enrage_warn_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.087207794189453,
+      "useful_rms_dbfs": -19.963844299316406,
+      "true_peak_dbfs": -7.5405168533325195,
+      "seam_jump": 0.0009513922850601375,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_palm_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.527280807495117,
+      "useful_rms_dbfs": -19.955537796020508,
+      "true_peak_dbfs": -5.146508693695068,
+      "seam_jump": 0.0010663489811122417,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_palm_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.257909774780273,
+      "useful_rms_dbfs": -19.961881637573242,
+      "true_peak_dbfs": -5.9637041091918945,
+      "seam_jump": 0.000113209433038719,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_palm_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.503616333007812,
+      "useful_rms_dbfs": -19.82794952392578,
+      "true_peak_dbfs": -4.040711402893066,
+      "seam_jump": 0.001994448946788907,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_warn_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.20186424255371,
+      "useful_rms_dbfs": -20.01411247253418,
+      "true_peak_dbfs": -3.9447882175445557,
+      "seam_jump": 0.0012989381793886423,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_warn_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.207059860229492,
+      "useful_rms_dbfs": -20.019424438476562,
+      "true_peak_dbfs": -5.296794891357422,
+      "seam_jump": 0.001417831052094698,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_warn_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.142410278320312,
+      "useful_rms_dbfs": -19.95528793334961,
+      "true_peak_dbfs": -4.890838623046875,
+      "seam_jump": 0.00013718107948079705,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.790668487548828,
+      "useful_rms_dbfs": -19.694364547729492,
+      "true_peak_dbfs": -4.934718608856201,
+      "seam_jump": 0.002057047560811043,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.49913215637207,
+      "useful_rms_dbfs": -19.632692337036133,
+      "true_peak_dbfs": -5.842271327972412,
+      "seam_jump": 0.0005627104546874762,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_carillon_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.274105072021484,
+      "useful_rms_dbfs": -19.41461181640625,
+      "true_peak_dbfs": -5.604633808135986,
+      "seam_jump": 0.002557929139584303,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_chaplet_light_01.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.5620059967041,
+      "useful_rms_dbfs": -19.56134605407715,
+      "true_peak_dbfs": -5.426027774810791,
+      "seam_jump": 0.006915464531630278,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_chaplet_light_02.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.978546142578125,
+      "useful_rms_dbfs": -19.963109970092773,
+      "true_peak_dbfs": -6.360630989074707,
+      "seam_jump": 0.004399613942950964,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_chaplet_light_03.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.202831268310547,
+      "useful_rms_dbfs": -19.206401824951172,
+      "true_peak_dbfs": -5.717041492462158,
+      "seam_jump": 0.005781789310276508,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_chaplet_light_04.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.22443389892578,
+      "useful_rms_dbfs": -19.62621307373047,
+      "true_peak_dbfs": -5.581449508666992,
+      "seam_jump": 0.0013854997232556343,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_chaplet_light_05.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -19.978050231933594,
+      "useful_rms_dbfs": -19.978050231933594,
+      "true_peak_dbfs": -4.498313903808594,
+      "seam_jump": 0.004444613587111235,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_throw_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.128917694091797,
+      "useful_rms_dbfs": -19.955039978027344,
+      "true_peak_dbfs": -8.251157760620117,
+      "seam_jump": 0.0007658804534003139,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_throw_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.008228302001953,
+      "useful_rms_dbfs": -19.95018768310547,
+      "true_peak_dbfs": -7.119476318359375,
+      "seam_jump": 0.002113276394084096,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_throw_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.017433166503906,
+      "useful_rms_dbfs": -19.96009635925293,
+      "true_peak_dbfs": -7.974724769592285,
+      "seam_jump": 0.0009055887931026518,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_ring_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.05227279663086,
+      "useful_rms_dbfs": -19.76622200012207,
+      "true_peak_dbfs": -6.576747417449951,
+      "seam_jump": 0.004848397336900234,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_ring_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.05035400390625,
+      "useful_rms_dbfs": -19.56922721862793,
+      "true_peak_dbfs": -5.772846221923828,
+      "seam_jump": 0.0008714318973943591,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_bell_ring_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.543359756469727,
+      "useful_rms_dbfs": -19.628732681274414,
+      "true_peak_dbfs": -5.085651874542236,
+      "seam_jump": 0.0043394677340984344,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_up_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.08601951599121,
+      "useful_rms_dbfs": -19.962657928466797,
+      "true_peak_dbfs": -7.2325615882873535,
+      "seam_jump": 0.00147063541226089,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_up_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.147056579589844,
+      "useful_rms_dbfs": -19.96123504638672,
+      "true_peak_dbfs": -7.247767925262451,
+      "seam_jump": 0.0012744838604703546,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_up_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.150320053100586,
+      "useful_rms_dbfs": -19.962324142456055,
+      "true_peak_dbfs": -8.089370727539062,
+      "seam_jump": 0.0006100444006733596,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_break_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.616077423095703,
+      "useful_rms_dbfs": -19.378402709960938,
+      "true_peak_dbfs": -5.916270732879639,
+      "seam_jump": 0.0018628360703587532,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_break_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.70191764831543,
+      "useful_rms_dbfs": -19.507095336914062,
+      "true_peak_dbfs": -5.924428939819336,
+      "seam_jump": 0.0024721138179302216,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_shield_break_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.794776916503906,
+      "useful_rms_dbfs": -19.396717071533203,
+      "true_peak_dbfs": -5.44646692276001,
+      "seam_jump": 0.003347609657794237,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_dike_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.36092758178711,
+      "useful_rms_dbfs": -19.627973556518555,
+      "true_peak_dbfs": -5.120394229888916,
+      "seam_jump": 0.002303631044924259,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_dike_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.541406631469727,
+      "useful_rms_dbfs": -19.62347412109375,
+      "true_peak_dbfs": -4.89807653427124,
+      "seam_jump": 0.0005626221536658704,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_dike_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.05072593688965,
+      "useful_rms_dbfs": -19.758920669555664,
+      "true_peak_dbfs": -5.388867378234863,
+      "seam_jump": 0.00252175354398787,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_anchor_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.000804901123047,
+      "useful_rms_dbfs": -19.594545364379883,
+      "true_peak_dbfs": -5.708407878875732,
+      "seam_jump": 0.0011868569999933243,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_anchor_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.203367233276367,
+      "useful_rms_dbfs": -19.459779739379883,
+      "true_peak_dbfs": -5.045795440673828,
+      "seam_jump": 0.0004880292108282447,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_anchor_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.786819458007812,
+      "useful_rms_dbfs": -19.691383361816406,
+      "true_peak_dbfs": -5.322079181671143,
+      "seam_jump": 0.003020255593582988,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_death_heavy_01.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.059566497802734,
+      "useful_rms_dbfs": -19.63188934326172,
+      "true_peak_dbfs": -5.087460517883301,
+      "seam_jump": 0.001488718669861555,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_death_heavy_02.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.329330444335938,
+      "useful_rms_dbfs": -19.556074142456055,
+      "true_peak_dbfs": -5.160368919372559,
+      "seam_jump": 0.0027287795674055815,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_idol_death_heavy_03.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.27200698852539,
+      "useful_rms_dbfs": -19.54918670654297,
+      "true_peak_dbfs": -5.317552089691162,
+      "seam_jump": 0.0009220350184477866,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_breech_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.570819854736328,
+      "useful_rms_dbfs": -19.828006744384766,
+      "true_peak_dbfs": -6.045705795288086,
+      "seam_jump": 0.00047012281720526516,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_breech_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.548294067382812,
+      "useful_rms_dbfs": -19.632831573486328,
+      "true_peak_dbfs": -5.502374172210693,
+      "seam_jump": 0.0028924932703375816,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_breech_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.54099464416504,
+      "useful_rms_dbfs": -19.96590805053711,
+      "true_peak_dbfs": -5.16658878326416,
+      "seam_jump": 0.0008804669487290084,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_rivet_hit_light_01.ogg",
+      "duration_s": 0.104989,
+      "rms_dbfs": -21.119604110717773,
+      "useful_rms_dbfs": -19.961746215820312,
+      "true_peak_dbfs": -7.971271991729736,
+      "seam_jump": 0.001102412585169077,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_rivet_hit_light_02.ogg",
+      "duration_s": 0.104989,
+      "rms_dbfs": -20.1942081451416,
+      "useful_rms_dbfs": -19.98289680480957,
+      "true_peak_dbfs": -6.912036418914795,
+      "seam_jump": 0.003062634263187647,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_rivet_hit_light_03.ogg",
+      "duration_s": 0.104989,
+      "rms_dbfs": -20.187332153320312,
+      "useful_rms_dbfs": -19.976028442382812,
+      "true_peak_dbfs": -6.5142292976379395,
+      "seam_jump": 0.0031547548715025187,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_plant_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.55449104309082,
+      "useful_rms_dbfs": -19.6346435546875,
+      "true_peak_dbfs": -7.023330211639404,
+      "seam_jump": 0.0003461476881057024,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_plant_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.091182708740234,
+      "useful_rms_dbfs": -19.59514808654785,
+      "true_peak_dbfs": -5.957474708557129,
+      "seam_jump": 0.0033724906388670206,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_plant_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.093006134033203,
+      "useful_rms_dbfs": -19.800106048583984,
+      "true_peak_dbfs": -5.696382522583008,
+      "seam_jump": 0.0018756731878966093,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_crack_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.954059600830078,
+      "useful_rms_dbfs": -19.66225814819336,
+      "true_peak_dbfs": -6.002452850341797,
+      "seam_jump": 0.0015849844785407186,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_crack_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.785146713256836,
+      "useful_rms_dbfs": -19.685806274414062,
+      "true_peak_dbfs": -4.945525169372559,
+      "seam_jump": 0.0013738787965849042,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_crack_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.583160400390625,
+      "useful_rms_dbfs": -19.665283203125,
+      "true_peak_dbfs": -5.592257499694824,
+      "seam_jump": 0.0024958678986877203,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_break_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.529142379760742,
+      "useful_rms_dbfs": -19.419580459594727,
+      "true_peak_dbfs": -5.278409004211426,
+      "seam_jump": 0.0020972576458007097,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_break_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.112579345703125,
+      "useful_rms_dbfs": -19.595455169677734,
+      "true_peak_dbfs": -5.524387836456299,
+      "seam_jump": 0.0022327424958348274,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_pylon_break_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.31915283203125,
+      "useful_rms_dbfs": -19.57459259033203,
+      "true_peak_dbfs": -5.622432231903076,
+      "seam_jump": 0.002531901467591524,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_volley_warn_heavy_01.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.147422790527344,
+      "useful_rms_dbfs": -19.914447784423828,
+      "true_peak_dbfs": -7.4798383712768555,
+      "seam_jump": 0.00038510147714987397,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_volley_warn_heavy_02.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.02582359313965,
+      "useful_rms_dbfs": -19.968307495117188,
+      "true_peak_dbfs": -8.225522994995117,
+      "seam_jump": 0.0002941942657344043,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_volley_warn_heavy_03.ogg",
+      "duration_s": 1.5,
+      "rms_dbfs": -20.14388084411621,
+      "useful_rms_dbfs": -19.969379425048828,
+      "true_peak_dbfs": -8.287039756774902,
+      "seam_jump": 0.0006440879078581929,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_reload_medium_01.ogg",
+      "duration_s": 2.0,
+      "rms_dbfs": -21.095449447631836,
+      "useful_rms_dbfs": -19.918540954589844,
+      "true_peak_dbfs": -4.32388162612915,
+      "seam_jump": 0.0004145900020375848,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_reload_medium_02.ogg",
+      "duration_s": 2.0,
+      "rms_dbfs": -21.079269409179688,
+      "useful_rms_dbfs": -19.787994384765625,
+      "true_peak_dbfs": -4.321053504943848,
+      "seam_jump": 0.0008562807342968881,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_reload_medium_03.ogg",
+      "duration_s": 2.0,
+      "rms_dbfs": -20.97901153564453,
+      "useful_rms_dbfs": -20.01692008972168,
+      "true_peak_dbfs": -4.087110996246338,
+      "seam_jump": 0.0023844458628445864,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_whistle_medium_01.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.259017944335938,
+      "useful_rms_dbfs": -19.96405601501465,
+      "true_peak_dbfs": -8.264742851257324,
+      "seam_jump": 0.0019421577453613281,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_whistle_medium_02.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.1073055267334,
+      "useful_rms_dbfs": -19.9616756439209,
+      "true_peak_dbfs": -8.258024215698242,
+      "seam_jump": 0.0012264811666682363,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_whistle_medium_03.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.108793258666992,
+      "useful_rms_dbfs": -19.963132858276367,
+      "true_peak_dbfs": -8.298347473144531,
+      "seam_jump": 0.001209907466545701,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.085662841796875,
+      "useful_rms_dbfs": -19.676000595092773,
+      "true_peak_dbfs": -6.543313980102539,
+      "seam_jump": 0.004220977891236544,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.198877334594727,
+      "useful_rms_dbfs": -19.45673370361328,
+      "true_peak_dbfs": -5.524946212768555,
+      "seam_jump": 0.0031365021131932735,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shell_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.21112823486328,
+      "useful_rms_dbfs": -19.582622528076172,
+      "true_peak_dbfs": -5.251856327056885,
+      "seam_jump": 0.0026682266034185886,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shield_up_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.158464431762695,
+      "useful_rms_dbfs": -19.971126556396484,
+      "true_peak_dbfs": -8.178120613098145,
+      "seam_jump": 0.0004408968088682741,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shield_up_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.098583221435547,
+      "useful_rms_dbfs": -19.974224090576172,
+      "true_peak_dbfs": -7.00477409362793,
+      "seam_jump": 0.0011239738669246435,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_shield_up_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.162158966064453,
+      "useful_rms_dbfs": -19.973228454589844,
+      "true_peak_dbfs": -7.7530717849731445,
+      "seam_jump": 9.819091064855456e-05,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_vent_heavy_01.ogg",
+      "duration_s": 3.0,
+      "rms_dbfs": -20.395004272460938,
+      "useful_rms_dbfs": -20.249881744384766,
+      "true_peak_dbfs": -5.2355451583862305,
+      "seam_jump": 0.0012233518064022064,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_vent_heavy_02.ogg",
+      "duration_s": 3.0,
+      "rms_dbfs": -20.405275344848633,
+      "useful_rms_dbfs": -20.26003646850586,
+      "true_peak_dbfs": -5.789857864379883,
+      "seam_jump": 0.002292757388204336,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_vent_heavy_03.ogg",
+      "duration_s": 3.0,
+      "rms_dbfs": -20.402976989746094,
+      "useful_rms_dbfs": -20.257659912109375,
+      "true_peak_dbfs": -5.246396541595459,
+      "seam_jump": 0.0018099594162777066,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_feed_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.03112030029297,
+      "useful_rms_dbfs": -19.97322654724121,
+      "true_peak_dbfs": -8.609624862670898,
+      "seam_jump": 0.0012895602267235518,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_feed_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.017833709716797,
+      "useful_rms_dbfs": -19.95989990234375,
+      "true_peak_dbfs": -8.354565620422363,
+      "seam_jump": 0.0004597554507199675,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_feed_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.023635864257812,
+      "useful_rms_dbfs": -19.965667724609375,
+      "true_peak_dbfs": -7.79460334777832,
+      "seam_jump": 0.001075627631507814,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_death_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.639068603515625,
+      "useful_rms_dbfs": -19.541038513183594,
+      "true_peak_dbfs": -4.7554144859313965,
+      "seam_jump": 0.0014303490752354264,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_death_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.824769973754883,
+      "useful_rms_dbfs": -19.53786277770996,
+      "true_peak_dbfs": -4.9145636558532715,
+      "seam_jump": 0.0009139454341493547,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_stoker_death_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.787111282348633,
+      "useful_rms_dbfs": -19.871238708496094,
+      "true_peak_dbfs": -4.991556167602539,
+      "seam_jump": 0.0019845108035951853,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_anchor_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.224647521972656,
+      "useful_rms_dbfs": -19.595436096191406,
+      "true_peak_dbfs": -5.253678321838379,
+      "seam_jump": 0.0026187889743596315,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_anchor_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.544219970703125,
+      "useful_rms_dbfs": -19.43608856201172,
+      "true_peak_dbfs": -5.4187846183776855,
+      "seam_jump": 0.0017401868244633079,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_anchor_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.755752563476562,
+      "useful_rms_dbfs": -19.513427734375,
+      "true_peak_dbfs": -5.6284499168396,
+      "seam_jump": 0.000751554558519274,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_death_heavy_01.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.141578674316406,
+      "useful_rms_dbfs": -19.664854049682617,
+      "true_peak_dbfs": -5.3043036460876465,
+      "seam_jump": 0.0008713791612535715,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_death_heavy_02.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.150081634521484,
+      "useful_rms_dbfs": -19.626895904541016,
+      "true_peak_dbfs": -5.160567760467529,
+      "seam_jump": 0.0016627659788355231,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_gunner_death_heavy_03.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.448177337646484,
+      "useful_rms_dbfs": -19.52008819580078,
+      "true_peak_dbfs": -4.953836917877197,
+      "seam_jump": 0.0015973072731867433,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_scepter_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.784801483154297,
+      "useful_rms_dbfs": -19.83201789855957,
+      "true_peak_dbfs": -4.445470333099365,
+      "seam_jump": 0.0007632144261151552,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_scepter_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.52930450439453,
+      "useful_rms_dbfs": -19.44330596923828,
+      "true_peak_dbfs": -4.4713311195373535,
+      "seam_jump": 0.002214617095887661,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_scepter_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.062332153320312,
+      "useful_rms_dbfs": -19.335254669189453,
+      "true_peak_dbfs": -5.002106666564941,
+      "seam_jump": 0.0006068344810046256,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_procession_warn_heavy_01.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.061290740966797,
+      "useful_rms_dbfs": -19.989139556884766,
+      "true_peak_dbfs": -6.567632675170898,
+      "seam_jump": 0.0007438603206537664,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_procession_warn_heavy_02.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.134000778198242,
+      "useful_rms_dbfs": -19.989360809326172,
+      "true_peak_dbfs": -6.393980503082275,
+      "seam_jump": 0.0005071348859928548,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_procession_warn_heavy_03.ogg",
+      "duration_s": 1.2,
+      "rms_dbfs": -20.05739402770996,
+      "useful_rms_dbfs": -19.985382080078125,
+      "true_peak_dbfs": -6.5201616287231445,
+      "seam_jump": 0.0009935962734743953,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_reflux_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.026723861694336,
+      "useful_rms_dbfs": -19.969261169433594,
+      "true_peak_dbfs": -7.041409492492676,
+      "seam_jump": 0.00036406979779712856,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_reflux_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.028535842895508,
+      "useful_rms_dbfs": -19.97048568725586,
+      "true_peak_dbfs": -7.587043762207031,
+      "seam_jump": 0.0005773411830887198,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_reflux_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.019407272338867,
+      "useful_rms_dbfs": -19.96155548095703,
+      "true_peak_dbfs": -7.0725812911987305,
+      "seam_jump": 0.0012368231546133757,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_stele_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.066848754882812,
+      "useful_rms_dbfs": -19.817411422729492,
+      "true_peak_dbfs": -5.119774341583252,
+      "seam_jump": 0.0014546805759891868,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_stele_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.36814308166504,
+      "useful_rms_dbfs": -18.896020889282227,
+      "true_peak_dbfs": -4.407811641693115,
+      "seam_jump": 0.000995570793747902,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_stele_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.717430114746094,
+      "useful_rms_dbfs": -19.615711212158203,
+      "true_peak_dbfs": -6.169774532318115,
+      "seam_jump": 0.0005758326151408255,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_stele_medium_04.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.542621612548828,
+      "useful_rms_dbfs": -19.80472183227539,
+      "true_peak_dbfs": -4.193474769592285,
+      "seam_jump": 0.00022469984833151102,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.109739303588867,
+      "useful_rms_dbfs": -19.985082626342773,
+      "true_peak_dbfs": -6.078460693359375,
+      "seam_jump": 0.0013501578941941261,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.1119327545166,
+      "useful_rms_dbfs": -19.98748207092285,
+      "true_peak_dbfs": -6.516393661499023,
+      "seam_jump": 0.0006619933410547674,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.109479904174805,
+      "useful_rms_dbfs": -19.985010147094727,
+      "true_peak_dbfs": -6.210229873657227,
+      "seam_jump": 0.0009252845775336027,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_crack_light_01.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.403060913085938,
+      "useful_rms_dbfs": -20.181386947631836,
+      "true_peak_dbfs": -4.504476070404053,
+      "seam_jump": 0.0010246539022773504,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_crack_light_02.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.661623001098633,
+      "useful_rms_dbfs": -19.442026138305664,
+      "true_peak_dbfs": -4.10684061050415,
+      "seam_jump": 0.0011471498291939497,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_crack_light_03.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.40612030029297,
+      "useful_rms_dbfs": -20.134355545043945,
+      "true_peak_dbfs": -2.983729600906372,
+      "seam_jump": 0.001613234868273139,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_burst_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.417644500732422,
+      "useful_rms_dbfs": -19.43859100341797,
+      "true_peak_dbfs": -5.100475311279297,
+      "seam_jump": 0.002830980345606804,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_burst_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.37105941772461,
+      "useful_rms_dbfs": -19.75368309020996,
+      "true_peak_dbfs": -4.493903160095215,
+      "seam_jump": 0.001247827778570354,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crust_burst_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.426254272460938,
+      "useful_rms_dbfs": -19.443862915039062,
+      "true_peak_dbfs": -5.388565540313721,
+      "seam_jump": 0.0024742763489484787,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_hit_light_01.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -20.53371810913086,
+      "useful_rms_dbfs": -19.969667434692383,
+      "true_peak_dbfs": -4.386618137359619,
+      "seam_jump": 0.002056729281321168,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_hit_light_02.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.193754196166992,
+      "useful_rms_dbfs": -19.594629287719727,
+      "true_peak_dbfs": -5.02304744720459,
+      "seam_jump": 0.0005252982955425978,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_hit_light_03.ogg",
+      "duration_s": 0.32,
+      "rms_dbfs": -21.570280075073242,
+      "useful_rms_dbfs": -19.566070556640625,
+      "true_peak_dbfs": -5.908018112182617,
+      "seam_jump": 0.0009372702916152775,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_break_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -22.163145065307617,
+      "useful_rms_dbfs": -19.672321319580078,
+      "true_peak_dbfs": -5.809907913208008,
+      "seam_jump": 0.0017413810128346086,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_break_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -20.221769332885742,
+      "useful_rms_dbfs": -19.929962158203125,
+      "true_peak_dbfs": -1.6385152339935303,
+      "seam_jump": 0.0012714237673208117,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_crown_break_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.638996124267578,
+      "useful_rms_dbfs": -19.897796630859375,
+      "true_peak_dbfs": -5.513467311859131,
+      "seam_jump": 0.00041207249159924686,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_edict_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.680870056152344,
+      "useful_rms_dbfs": -19.48976707458496,
+      "true_peak_dbfs": -5.202181339263916,
+      "seam_jump": 0.00122734101023525,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_edict_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.879213333129883,
+      "useful_rms_dbfs": -19.780101776123047,
+      "true_peak_dbfs": -5.041022300720215,
+      "seam_jump": 0.0018999583553522825,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_edict_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.879606246948242,
+      "useful_rms_dbfs": -19.579280853271484,
+      "true_peak_dbfs": -5.804842948913574,
+      "seam_jump": 0.0010768494103103876,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_throne_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.080089569091797,
+      "useful_rms_dbfs": -19.560039520263672,
+      "true_peak_dbfs": -5.3264546394348145,
+      "seam_jump": 0.001916181412525475,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_throne_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.178098678588867,
+      "useful_rms_dbfs": -19.546245574951172,
+      "true_peak_dbfs": -5.311734199523926,
+      "seam_jump": 0.0008280623587779701,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_throne_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.590890884399414,
+      "useful_rms_dbfs": -19.692150115966797,
+      "true_peak_dbfs": -5.097954750061035,
+      "seam_jump": 0.0013057389296591282,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_tears_medium_01.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.292686462402344,
+      "useful_rms_dbfs": -19.882617950439453,
+      "true_peak_dbfs": -3.830698013305664,
+      "seam_jump": 0.005729102063924074,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_tears_medium_02.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.448545455932617,
+      "useful_rms_dbfs": -19.888324737548828,
+      "true_peak_dbfs": -4.304879188537598,
+      "seam_jump": 0.005695199593901634,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_tears_medium_03.ogg",
+      "duration_s": 0.75,
+      "rms_dbfs": -21.852333068847656,
+      "useful_rms_dbfs": -19.74994468688965,
+      "true_peak_dbfs": -4.804536819458008,
+      "seam_jump": 0.000927313172724098,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_death_heavy_01.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.21310806274414,
+      "useful_rms_dbfs": -19.5421142578125,
+      "true_peak_dbfs": -4.400310516357422,
+      "seam_jump": 0.0005465461872518063,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_death_heavy_02.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.204669952392578,
+      "useful_rms_dbfs": -19.583358764648438,
+      "true_peak_dbfs": -4.787710189819336,
+      "seam_jump": 0.0032828899566084146,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_king_death_heavy_03.ogg",
+      "duration_s": 3.2,
+      "rms_dbfs": -22.255626678466797,
+      "useful_rms_dbfs": -19.632570266723633,
+      "true_peak_dbfs": -5.008183479309082,
+      "seam_jump": 0.00429165456444025,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_up_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.108423233032227,
+      "useful_rms_dbfs": -19.983840942382812,
+      "true_peak_dbfs": -6.869261741638184,
+      "seam_jump": 0.0017572498181834817,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_up_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.108531951904297,
+      "useful_rms_dbfs": -19.985029220581055,
+      "true_peak_dbfs": -5.800328254699707,
+      "seam_jump": 0.0007666331366635859,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_up_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -20.047168731689453,
+      "useful_rms_dbfs": -19.985366821289062,
+      "true_peak_dbfs": -6.593024253845215,
+      "seam_jump": 0.0012723978143185377,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_break_heavy_01.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.550949096679688,
+      "useful_rms_dbfs": -19.654706954956055,
+      "true_peak_dbfs": -4.444447040557861,
+      "seam_jump": 0.0027032115031033754,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_break_heavy_02.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -21.531631469726562,
+      "useful_rms_dbfs": -19.342966079711914,
+      "true_peak_dbfs": -4.980809211730957,
+      "seam_jump": 0.0018620502669364214,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "impacts/enemy_salt_shield_break_heavy_03.ogg",
+      "duration_s": 1.4,
+      "rms_dbfs": -22.013330459594727,
+      "useful_rms_dbfs": -19.81492805480957,
+      "true_peak_dbfs": -5.083103656768799,
+      "seam_jump": 0.0029547151643782854,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "edges": true
+      }
+    },
+    {
+      "path": "ambience/enemy_shield_hum_loop.ogg",
+      "duration_s": 2.5,
+      "rms_dbfs": -17.965543746948242,
+      "useful_rms_dbfs": -17.965543746948242,
+      "true_peak_dbfs": -13.465250015258789,
+      "seam_jump": 0.00629187747836113,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_idol_stun_loop.ogg",
+      "duration_s": 3.0,
+      "rms_dbfs": -24.08049774169922,
+      "useful_rms_dbfs": -23.88638687133789,
+      "true_peak_dbfs": -9.951751708984375,
+      "seam_jump": 0.019211098551750183,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_idol_noria_loop.ogg",
+      "duration_s": 4.0,
+      "rms_dbfs": -24.083871841430664,
+      "useful_rms_dbfs": -23.874496459960938,
+      "true_peak_dbfs": -11.008216857910156,
+      "seam_jump": 0.011968180537223816,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_gunner_volley_loop_light.ogg",
+      "duration_s": 4.0,
+      "rms_dbfs": -24.087800979614258,
+      "useful_rms_dbfs": -22.38663101196289,
+      "true_peak_dbfs": -3.8379321098327637,
+      "seam_jump": 0.009222088381648064,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_gunner_volley_loop_medium.ogg",
+      "duration_s": 4.0,
+      "rms_dbfs": -24.075599670410156,
+      "useful_rms_dbfs": -21.29310417175293,
+      "true_peak_dbfs": -3.8330183029174805,
+      "seam_jump": 0.007277217693626881,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_gunner_volley_loop_heavy.ogg",
+      "duration_s": 4.0,
+      "rms_dbfs": -24.044340133666992,
+      "useful_rms_dbfs": -21.574539184570312,
+      "true_peak_dbfs": -4.451999664306641,
+      "seam_jump": 0.003281779121607542,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_gunner_stoker_walk_loop.ogg",
+      "duration_s": 2.0,
+      "rms_dbfs": -24.077112197875977,
+      "useful_rms_dbfs": -20.95254135131836,
+      "true_peak_dbfs": -4.7094573974609375,
+      "seam_jump": 0.0019224230200052261,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/enemy_salt_king_tide_loop.ogg",
+      "duration_s": 6.0,
+      "rms_dbfs": -24.086814880371094,
+      "useful_rms_dbfs": -23.907556533813477,
+      "true_peak_dbfs": -10.760039329528809,
+      "seam_jump": 0.009760081768035889,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    },
+    {
+      "path": "ambience/amb_salt_court.ogg",
+      "duration_s": 16.0,
+      "rms_dbfs": -24.031896591186523,
+      "useful_rms_dbfs": -24.031896591186523,
+      "true_peak_dbfs": -12.904836654663086,
+      "seam_jump": 0.00399322435259819,
+      "checks": {
+        "id": true,
+        "codec": true,
+        "stereo": true,
+        "rate": true,
+        "duration": true,
+        "finite": true,
+        "peak": true,
+        "rms": true,
+        "manifest": true,
+        "seam": true,
+        "seam_energy": true
+      }
+    }
+  ]
+}

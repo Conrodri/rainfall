@@ -1,0 +1,293 @@
+{
+  "throw_arm_l": {
+    "frames": 4,
+    "dirs": 8,
+    "impact": 2,
+    "feet_static": true
+  },
+  "throw_arm_r": {
+    "frames": 4,
+    "dirs": 8,
+    "impact": 2,
+    "feet_static": true
+  },
+  "cast": {
+    "frames": 6,
+    "dirs": 8,
+    "impact": 3,
+    "feet_static": true
+  },
+  "sheets": {
+    "layers/torso/throw_arm_l.png": [
+      55,
+      36,
+      82,
+      82
+    ],
+    "layers/torso/packed/throw_arm_l.png": [
+      55,
+      36,
+      82,
+      82
+    ],
+    "layers/head/throw_arm_l.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/head/packed/throw_arm_l.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/neck_steam/throw_arm_l.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/neck_steam/packed/throw_arm_l.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/arm_l/throw_arm_l.png": [
+      17,
+      7,
+      158,
+      129
+    ],
+    "layers/arm_l/packed/throw_arm_l.png": [
+      17,
+      7,
+      158,
+      129
+    ],
+    "layers/arm_r/throw_arm_l.png": [
+      33,
+      32,
+      126,
+      109
+    ],
+    "layers/arm_r/packed/throw_arm_l.png": [
+      33,
+      32,
+      126,
+      109
+    ],
+    "layers/leg_l/throw_arm_l.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_l/packed/throw_arm_l.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/throw_arm_l.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/packed/throw_arm_l.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "throw_arm_l.png": [
+      17,
+      7,
+      158,
+      148
+    ],
+    "layers/torso/throw_arm_r.png": [
+      55,
+      36,
+      82,
+      82
+    ],
+    "layers/torso/packed/throw_arm_r.png": [
+      55,
+      36,
+      82,
+      82
+    ],
+    "layers/head/throw_arm_r.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/head/packed/throw_arm_r.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/neck_steam/throw_arm_r.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/neck_steam/packed/throw_arm_r.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/arm_l/throw_arm_r.png": [
+      31,
+      32,
+      130,
+      108
+    ],
+    "layers/arm_l/packed/throw_arm_r.png": [
+      31,
+      32,
+      130,
+      108
+    ],
+    "layers/arm_r/throw_arm_r.png": [
+      16,
+      10,
+      160,
+      126
+    ],
+    "layers/arm_r/packed/throw_arm_r.png": [
+      16,
+      10,
+      160,
+      126
+    ],
+    "layers/leg_l/throw_arm_r.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_l/packed/throw_arm_r.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/throw_arm_r.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/packed/throw_arm_r.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "throw_arm_r.png": [
+      16,
+      10,
+      160,
+      145
+    ],
+    "layers/torso/cast.png": [
+      56,
+      37,
+      80,
+      81
+    ],
+    "layers/torso/packed/cast.png": [
+      56,
+      37,
+      80,
+      81
+    ],
+    "layers/head/cast.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/head/packed/cast.png": [
+      72,
+      18,
+      48,
+      49
+    ],
+    "layers/neck_steam/cast.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/neck_steam/packed/cast.png": [
+      84,
+      26,
+      24,
+      37
+    ],
+    "layers/arm_l/cast.png": [
+      37,
+      31,
+      118,
+      109
+    ],
+    "layers/arm_l/packed/cast.png": [
+      37,
+      31,
+      118,
+      109
+    ],
+    "layers/arm_r/cast.png": [
+      33,
+      32,
+      126,
+      109
+    ],
+    "layers/arm_r/packed/cast.png": [
+      33,
+      32,
+      126,
+      109
+    ],
+    "layers/leg_l/cast.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_l/packed/cast.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/cast.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "layers/leg_r/packed/cast.png": [
+      62,
+      81,
+      68,
+      74
+    ],
+    "cast.png": [
+      33,
+      18,
+      126,
+      137
+    ]
+  },
+  "scale": "R=64*sqrt(2); CREA x=0.70710678, y=1.4142136; 64px/u; scalar 1.0"
+}

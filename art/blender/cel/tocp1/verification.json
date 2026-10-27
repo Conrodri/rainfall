@@ -1,0 +1,74 @@
+{
+  "arm_fly": {
+    "frames": 6,
+    "directions": 8,
+    "crop": [
+      22,
+      35,
+      170,
+      152
+    ],
+    "cell": [
+      148,
+      117
+    ],
+    "atlas": [
+      888,
+      936
+    ],
+    "logical_cell": 192,
+    "pivot": [
+      96,
+      136.32
+    ],
+    "emission": true
+  },
+  "arm_clamp": {
+    "frames": 8,
+    "directions": 8,
+    "crop": [
+      59,
+      16,
+      133,
+      155
+    ],
+    "cell": [
+      74,
+      139
+    ],
+    "atlas": [
+      592,
+      1112
+    ],
+    "logical_cell": 192,
+    "pivot": [
+      96,
+      136.32
+    ],
+    "emission": true
+  },
+  "arm_ground": {
+    "frames": 1,
+    "directions": 8,
+    "crop": [
+      20,
+      63,
+      172,
+      171
+    ],
+    "cell": [
+      152,
+      108
+    ],
+    "atlas": [
+      152,
+      864
+    ],
+    "logical_cell": 192,
+    "pivot": [
+      96,
+      136.32
+    ],
+    "emission": false
+  }
+}

@@ -232,3 +232,112 @@ Synthese procedurale numpy/scipy, graine fixe 22102690 ; Ogg Vorbis q5, 44100 Hz
 - detacher : 6 fichiers (cast) ; 0.19 - 0.79 s ; crete -3.09 dBFS ; RMS -24.11 - -20.31 dBFS.
 - rappel : 6 fichiers (cast) ; 0.48 - 1.15 s ; crete -4.50 dBFS ; RMS -21.16 - -19.11 dBFS.
 - bourbier : 6 fichiers (cast) ; 1.30 - 2.80 s ; crete -5.29 dBFS ; RMS -21.06 - -19.04 dBFS.
+
+
+
+
+
+
+
+<!-- AUT1 -->
+## AUT1 - Tocsin
+Synthese procedurale ; graine 23102600 ; Vorbis q5, 44100 Hz stereo. Fer use, bronze inharmonique, vapeur ; arcs discrets sans laser. Relance : art/tools/audio/aut1_build.py.
+Impact et end : cles disponibles, cablage Audio.play requis.
+- `spells/spell_tocsin_bras_pilier_cast_light_01.ogg` : 0.506485 s.
+- `spells/spell_tocsin_bras_pilier_cast_light_02.ogg` : 0.472290 s.
+- `spells/spell_tocsin_bras_pilier_cast_medium_01.ogg` : 0.718186 s.
+- `spells/spell_tocsin_bras_pilier_cast_medium_02.ogg` : 0.712132 s.
+- `spells/spell_tocsin_bras_pilier_cast_heavy_01.ogg` : 0.972426 s.
+- `spells/spell_tocsin_bras_pilier_cast_heavy_02.ogg` : 0.984898 s.
+- `spells/spell_tocsin_bras_pilier_impact_01.ogg` : 0.696100 s.
+- `spells/spell_tocsin_bras_pilier_impact_02.ogg` : 0.699841 s.
+- `spells/spell_tocsin_bras_pilier_impact_03.ogg` : 0.700703 s.
+- `spells/spell_tocsin_bras_pilier_hit_light_01.ogg` : 0.141406 s.
+- `spells/spell_tocsin_bras_pilier_hit_light_02.ogg` : 0.129683 s.
+- `spells/spell_tocsin_bras_pilier_hit_light_03.ogg` : 0.137664 s.
+- `spells/spell_tocsin_bras_pilier_hit_medium_01.ogg` : 0.191678 s.
+- `spells/spell_tocsin_bras_pilier_hit_medium_02.ogg` : 0.194014 s.
+- `spells/spell_tocsin_bras_pilier_hit_medium_03.ogg` : 0.204898 s.
+- `spells/spell_tocsin_bras_pilier_hit_heavy_01.ogg` : 0.259683 s.
+- `spells/spell_tocsin_bras_pilier_hit_heavy_02.ogg` : 0.252222 s.
+- `spells/spell_tocsin_bras_pilier_hit_heavy_03.ogg` : 0.282993 s.
+- `spells/spell_tocsin_bras_pilier_end_01.ogg` : 0.643968 s.
+- `spells/spell_tocsin_bras_pilier_end_02.ogg` : 0.644036 s.
+- `spells/spell_tocsin_bras_pilier_end_03.ogg` : 0.663220 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_light_01.ogg` : 0.552630 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_light_02.ogg` : 0.564762 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_medium_01.ogg` : 0.843061 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_medium_02.ogg` : 0.834240 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_heavy_01.ogg` : 1.175351 s.
+- `spells/spell_tocsin_coup_de_tocsin_cast_heavy_02.ogg` : 1.178458 s.
+<!-- /AUT1 -->
+
+## raid
+
+Synthese procedurale uniquement ; Ogg Vorbis q5, 44100 Hz, stereo.
+Sources : art/tools/audio/gen_raid.py ; controle : art/tools/audio/verify_raid.py.
+Bourdon de bouclier : 2.5 s, -18 dBFS ; autres boucles : -24 dBFS ; one-shots : RMS utile -20 dBFS ; crete <= -1.5 dBFS.
+Variantes numerotees ; chaplet 01..05, stele 01..04, volley light/medium/heavy.
+
+| id | fichiers | usage |
+|---|---|---|
+| `ui.raid_progress` | `impacts/ui_raid_progress_01.ogg`, `impacts/ui_raid_progress_02.ogg`, `impacts/ui_raid_progress_03.ogg` | raid_progress |
+| `enemy.raid_shield_break.heavy` | `impacts/enemy_raid_shield_break_heavy_01.ogg`, `impacts/enemy_raid_shield_break_heavy_02.ogg`, `impacts/enemy_raid_shield_break_heavy_03.ogg` | raid_shield_break |
+| `enemy.raid_shield_up.heavy` | `impacts/enemy_raid_shield_up_heavy_01.ogg`, `impacts/enemy_raid_shield_up_heavy_02.ogg`, `impacts/enemy_raid_shield_up_heavy_03.ogg` | raid_shield_up |
+| `enemy.raid_barrage_warn.heavy` | `impacts/enemy_raid_barrage_warn_heavy_01.ogg`, `impacts/enemy_raid_barrage_warn_heavy_02.ogg`, `impacts/enemy_raid_barrage_warn_heavy_03.ogg` | raid_barrage_warn |
+| `enemy.raid_soak_fill.light` | `impacts/enemy_raid_soak_fill_light_01.ogg`, `impacts/enemy_raid_soak_fill_light_02.ogg`, `impacts/enemy_raid_soak_fill_light_03.ogg` | raid_soak_fill |
+| `enemy.raid_soak_burst.heavy` | `impacts/enemy_raid_soak_burst_heavy_01.ogg`, `impacts/enemy_raid_soak_burst_heavy_02.ogg`, `impacts/enemy_raid_soak_burst_heavy_03.ogg` | raid_soak_burst |
+| `enemy.raid_sector_warn.heavy` | `impacts/enemy_raid_sector_warn_heavy_01.ogg`, `impacts/enemy_raid_sector_warn_heavy_02.ogg`, `impacts/enemy_raid_sector_warn_heavy_03.ogg` | raid_sector_warn |
+| `enemy.raid_fixate_lock.medium` | `impacts/enemy_raid_fixate_lock_medium_01.ogg`, `impacts/enemy_raid_fixate_lock_medium_02.ogg`, `impacts/enemy_raid_fixate_lock_medium_03.ogg` | raid_fixate_lock |
+| `enemy.raid_weakpoint_hit.light` | `impacts/enemy_raid_weakpoint_hit_light_01.ogg`, `impacts/enemy_raid_weakpoint_hit_light_02.ogg`, `impacts/enemy_raid_weakpoint_hit_light_03.ogg` | raid_weakpoint_hit |
+| `enemy.raid_weakpoint_break.medium` | `impacts/enemy_raid_weakpoint_break_medium_01.ogg`, `impacts/enemy_raid_weakpoint_break_medium_02.ogg`, `impacts/enemy_raid_weakpoint_break_medium_03.ogg` | raid_weakpoint_break |
+| `enemy.raid_add_feed.medium` | `impacts/enemy_raid_add_feed_medium_01.ogg`, `impacts/enemy_raid_add_feed_medium_02.ogg`, `impacts/enemy_raid_add_feed_medium_03.ogg` | raid_add_feed |
+| `enemy.raid_enrage_warn.heavy` | `impacts/enemy_raid_enrage_warn_heavy_01.ogg`, `impacts/enemy_raid_enrage_warn_heavy_02.ogg`, `impacts/enemy_raid_enrage_warn_heavy_03.ogg` | raid_enrage_warn |
+| `enemy.idol_palm.medium` | `impacts/enemy_idol_palm_medium_01.ogg`, `impacts/enemy_idol_palm_medium_02.ogg`, `impacts/enemy_idol_palm_medium_03.ogg` | idol_palm |
+| `enemy.idol_carillon_warn.heavy` | `impacts/enemy_idol_carillon_warn_heavy_01.ogg`, `impacts/enemy_idol_carillon_warn_heavy_02.ogg`, `impacts/enemy_idol_carillon_warn_heavy_03.ogg` | idol_carillon_warn |
+| `enemy.idol_carillon.heavy` | `impacts/enemy_idol_carillon_heavy_01.ogg`, `impacts/enemy_idol_carillon_heavy_02.ogg`, `impacts/enemy_idol_carillon_heavy_03.ogg` | idol_carillon |
+| `enemy.idol_chaplet.light` | `impacts/enemy_idol_chaplet_light_01.ogg`, `impacts/enemy_idol_chaplet_light_02.ogg`, `impacts/enemy_idol_chaplet_light_03.ogg`, `impacts/enemy_idol_chaplet_light_04.ogg`, `impacts/enemy_idol_chaplet_light_05.ogg` | idol_chaplet |
+| `enemy.idol_bell_throw.medium` | `impacts/enemy_idol_bell_throw_medium_01.ogg`, `impacts/enemy_idol_bell_throw_medium_02.ogg`, `impacts/enemy_idol_bell_throw_medium_03.ogg` | idol_bell_throw |
+| `enemy.idol_bell_ring.medium` | `impacts/enemy_idol_bell_ring_medium_01.ogg`, `impacts/enemy_idol_bell_ring_medium_02.ogg`, `impacts/enemy_idol_bell_ring_medium_03.ogg` | idol_bell_ring |
+| `enemy.idol_shield_up.heavy` | `impacts/enemy_idol_shield_up_heavy_01.ogg`, `impacts/enemy_idol_shield_up_heavy_02.ogg`, `impacts/enemy_idol_shield_up_heavy_03.ogg` | idol_shield_up |
+| `enemy.idol_shield_break.heavy` | `impacts/enemy_idol_shield_break_heavy_01.ogg`, `impacts/enemy_idol_shield_break_heavy_02.ogg`, `impacts/enemy_idol_shield_break_heavy_03.ogg` | idol_shield_break |
+| `enemy.idol_dike.medium` | `impacts/enemy_idol_dike_medium_01.ogg`, `impacts/enemy_idol_dike_medium_02.ogg`, `impacts/enemy_idol_dike_medium_03.ogg` | idol_dike |
+| `enemy.idol_anchor.heavy` | `impacts/enemy_idol_anchor_heavy_01.ogg`, `impacts/enemy_idol_anchor_heavy_02.ogg`, `impacts/enemy_idol_anchor_heavy_03.ogg` | idol_anchor |
+| `enemy.idol_death.heavy` | `impacts/enemy_idol_death_heavy_01.ogg`, `impacts/enemy_idol_death_heavy_02.ogg`, `impacts/enemy_idol_death_heavy_03.ogg` | idol_death |
+| `enemy.gunner_breech.medium` | `impacts/enemy_gunner_breech_medium_01.ogg`, `impacts/enemy_gunner_breech_medium_02.ogg`, `impacts/enemy_gunner_breech_medium_03.ogg` | gunner_breech |
+| `enemy.gunner_rivet_hit.light` | `impacts/enemy_gunner_rivet_hit_light_01.ogg`, `impacts/enemy_gunner_rivet_hit_light_02.ogg`, `impacts/enemy_gunner_rivet_hit_light_03.ogg` | gunner_rivet_hit |
+| `enemy.gunner_pylon_plant.medium` | `impacts/enemy_gunner_pylon_plant_medium_01.ogg`, `impacts/enemy_gunner_pylon_plant_medium_02.ogg`, `impacts/enemy_gunner_pylon_plant_medium_03.ogg` | gunner_pylon_plant |
+| `enemy.gunner_pylon_crack.medium` | `impacts/enemy_gunner_pylon_crack_medium_01.ogg`, `impacts/enemy_gunner_pylon_crack_medium_02.ogg`, `impacts/enemy_gunner_pylon_crack_medium_03.ogg` | gunner_pylon_crack |
+| `enemy.gunner_pylon_break.heavy` | `impacts/enemy_gunner_pylon_break_heavy_01.ogg`, `impacts/enemy_gunner_pylon_break_heavy_02.ogg`, `impacts/enemy_gunner_pylon_break_heavy_03.ogg` | gunner_pylon_break |
+| `enemy.gunner_volley_warn.heavy` | `impacts/enemy_gunner_volley_warn_heavy_01.ogg`, `impacts/enemy_gunner_volley_warn_heavy_02.ogg`, `impacts/enemy_gunner_volley_warn_heavy_03.ogg` | gunner_volley_warn |
+| `enemy.gunner_reload.medium` | `impacts/enemy_gunner_reload_medium_01.ogg`, `impacts/enemy_gunner_reload_medium_02.ogg`, `impacts/enemy_gunner_reload_medium_03.ogg` | gunner_reload |
+| `enemy.gunner_shell_whistle.medium` | `impacts/enemy_gunner_shell_whistle_medium_01.ogg`, `impacts/enemy_gunner_shell_whistle_medium_02.ogg`, `impacts/enemy_gunner_shell_whistle_medium_03.ogg` | gunner_shell_whistle |
+| `enemy.gunner_shell.heavy` | `impacts/enemy_gunner_shell_heavy_01.ogg`, `impacts/enemy_gunner_shell_heavy_02.ogg`, `impacts/enemy_gunner_shell_heavy_03.ogg` | gunner_shell |
+| `enemy.gunner_shield_up.heavy` | `impacts/enemy_gunner_shield_up_heavy_01.ogg`, `impacts/enemy_gunner_shield_up_heavy_02.ogg`, `impacts/enemy_gunner_shield_up_heavy_03.ogg` | gunner_shield_up |
+| `enemy.gunner_vent.heavy` | `impacts/enemy_gunner_vent_heavy_01.ogg`, `impacts/enemy_gunner_vent_heavy_02.ogg`, `impacts/enemy_gunner_vent_heavy_03.ogg` | gunner_vent |
+| `enemy.gunner_stoker_feed.medium` | `impacts/enemy_gunner_stoker_feed_medium_01.ogg`, `impacts/enemy_gunner_stoker_feed_medium_02.ogg`, `impacts/enemy_gunner_stoker_feed_medium_03.ogg` | gunner_stoker_feed |
+| `enemy.gunner_stoker_death.medium` | `impacts/enemy_gunner_stoker_death_medium_01.ogg`, `impacts/enemy_gunner_stoker_death_medium_02.ogg`, `impacts/enemy_gunner_stoker_death_medium_03.ogg` | gunner_stoker_death |
+| `enemy.gunner_anchor.heavy` | `impacts/enemy_gunner_anchor_heavy_01.ogg`, `impacts/enemy_gunner_anchor_heavy_02.ogg`, `impacts/enemy_gunner_anchor_heavy_03.ogg` | gunner_anchor |
+| `enemy.gunner_death.heavy` | `impacts/enemy_gunner_death_heavy_01.ogg`, `impacts/enemy_gunner_death_heavy_02.ogg`, `impacts/enemy_gunner_death_heavy_03.ogg` | gunner_death |
+| `enemy.salt_king_scepter.medium` | `impacts/enemy_salt_king_scepter_medium_01.ogg`, `impacts/enemy_salt_king_scepter_medium_02.ogg`, `impacts/enemy_salt_king_scepter_medium_03.ogg` | salt_king_scepter |
+| `enemy.salt_king_procession_warn.heavy` | `impacts/enemy_salt_king_procession_warn_heavy_01.ogg`, `impacts/enemy_salt_king_procession_warn_heavy_02.ogg`, `impacts/enemy_salt_king_procession_warn_heavy_03.ogg` | salt_king_procession_warn |
+| `enemy.salt_king_reflux.medium` | `impacts/enemy_salt_king_reflux_medium_01.ogg`, `impacts/enemy_salt_king_reflux_medium_02.ogg`, `impacts/enemy_salt_king_reflux_medium_03.ogg` | salt_king_reflux |
+| `enemy.salt_king_stele.medium` | `impacts/enemy_salt_king_stele_medium_01.ogg`, `impacts/enemy_salt_king_stele_medium_02.ogg`, `impacts/enemy_salt_king_stele_medium_03.ogg`, `impacts/enemy_salt_king_stele_medium_04.ogg` | salt_king_stele |
+| `enemy.salt_king_crust.heavy` | `impacts/enemy_salt_king_crust_heavy_01.ogg`, `impacts/enemy_salt_king_crust_heavy_02.ogg`, `impacts/enemy_salt_king_crust_heavy_03.ogg` | salt_king_crust |
+| `enemy.salt_king_crust_crack.light` | `impacts/enemy_salt_king_crust_crack_light_01.ogg`, `impacts/enemy_salt_king_crust_crack_light_02.ogg`, `impacts/enemy_salt_king_crust_crack_light_03.ogg` | salt_king_crust_crack |
+| `enemy.salt_king_crust_burst.heavy` | `impacts/enemy_salt_king_crust_burst_heavy_01.ogg`, `impacts/enemy_salt_king_crust_burst_heavy_02.ogg`, `impacts/enemy_salt_king_crust_burst_heavy_03.ogg` | salt_king_crust_burst |
+| `enemy.salt_king_crown_hit.light` | `impacts/enemy_salt_king_crown_hit_light_01.ogg`, `impacts/enemy_salt_king_crown_hit_light_02.ogg`, `impacts/enemy_salt_king_crown_hit_light_03.ogg` | salt_king_crown_hit |
+| `enemy.salt_king_crown_break.medium` | `impacts/enemy_salt_king_crown_break_medium_01.ogg`, `impacts/enemy_salt_king_crown_break_medium_02.ogg`, `impacts/enemy_salt_king_crown_break_medium_03.ogg` | salt_king_crown_break |
+| `enemy.salt_king_edict.heavy` | `impacts/enemy_salt_king_edict_heavy_01.ogg`, `impacts/enemy_salt_king_edict_heavy_02.ogg`, `impacts/enemy_salt_king_edict_heavy_03.ogg` | salt_king_edict |
+| `enemy.salt_king_throne.heavy` | `impacts/enemy_salt_king_throne_heavy_01.ogg`, `impacts/enemy_salt_king_throne_heavy_02.ogg`, `impacts/enemy_salt_king_throne_heavy_03.ogg` | salt_king_throne |
+| `enemy.salt_king_tears.medium` | `impacts/enemy_salt_king_tears_medium_01.ogg`, `impacts/enemy_salt_king_tears_medium_02.ogg`, `impacts/enemy_salt_king_tears_medium_03.ogg` | salt_king_tears |
+| `enemy.salt_king_death.heavy` | `impacts/enemy_salt_king_death_heavy_01.ogg`, `impacts/enemy_salt_king_death_heavy_02.ogg`, `impacts/enemy_salt_king_death_heavy_03.ogg` | salt_king_death |
+| `enemy.salt_shield_up.heavy` | `impacts/enemy_salt_shield_up_heavy_01.ogg`, `impacts/enemy_salt_shield_up_heavy_02.ogg`, `impacts/enemy_salt_shield_up_heavy_03.ogg` | salt_shield_up |
+| `enemy.salt_shield_break.heavy` | `impacts/enemy_salt_shield_break_heavy_01.ogg`, `impacts/enemy_salt_shield_break_heavy_02.ogg`, `impacts/enemy_salt_shield_break_heavy_03.ogg` | salt_shield_break |
+| `enemy.shield_hum.loop` | `ambience/enemy_shield_hum_loop.ogg` | shield_hum |
+| `enemy.idol_stun.loop` | `ambience/enemy_idol_stun_loop.ogg` | idol_stun |
+| `enemy.idol_noria.loop` | `ambience/enemy_idol_noria_loop.ogg` | idol_noria |
+| `enemy.gunner_volley.loop` | `ambience/enemy_gunner_volley_loop_light.ogg`, `ambience/enemy_gunner_volley_loop_medium.ogg`, `ambience/enemy_gunner_volley_loop_heavy.ogg` | gunner_volley |
+| `enemy.gunner_stoker_walk.loop` | `ambience/enemy_gunner_stoker_walk_loop.ogg` | gunner_stoker_walk |
+| `enemy.salt_king_tide.loop` | `ambience/enemy_salt_king_tide_loop.ogg` | salt_king_tide |
+| `amb.salt_court` | `ambience/amb_salt_court.ogg` | salt_court |

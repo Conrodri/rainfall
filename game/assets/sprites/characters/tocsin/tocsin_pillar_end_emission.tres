@@ -1,0 +1,36 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/pillar_end_e.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("1")
+region = Rect2(0.0, 0.0, 61.5, 47.0)
+
+[sub_resource type="AtlasTexture" id="f1"]
+atlas = ExtResource("1")
+region = Rect2(61.5, 0.0, 61.5, 47.0)
+
+[sub_resource type="AtlasTexture" id="f2"]
+atlas = ExtResource("1")
+region = Rect2(123.0, 0.0, 61.5, 47.0)
+
+[sub_resource type="AtlasTexture" id="f3"]
+atlas = ExtResource("1")
+region = Rect2(184.5, 0.0, 61.5, 47.0)
+
+[sub_resource type="AtlasTexture" id="f4"]
+atlas = ExtResource("1")
+region = Rect2(246.0, 0.0, 61.5, 47.0)
+
+[sub_resource type="AtlasTexture" id="f5"]
+atlas = ExtResource("1")
+region = Rect2(307.5, 0.0, 61.5, 47.0)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}, {"duration": 1.0, "texture": SubResource("f1")}, {"duration": 1.0, "texture": SubResource("f2")}, {"duration": 1.0, "texture": SubResource("f3")}, {"duration": 1.0, "texture": SubResource("f4")}, {"duration": 1.0, "texture": SubResource("f5")}], "loop": false, "name": &"pillar_end", "speed": 15.0}]
+
+metadata/ppu = 64
+metadata/pivot = Vector2(28.0, 41.0)
+metadata/offset = Vector2(2.75, -17.5)
+
+metadata/overlay_scale = Vector2(2.0, 2.0)

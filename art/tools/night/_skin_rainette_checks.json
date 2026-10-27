@@ -1,0 +1,38 @@
+{
+  "import": {
+    "exit": 0,
+    "errors": [],
+    "result_ok": false
+  },
+  "sprites_test": {
+    "exit": 0,
+    "errors": [],
+    "result_ok": true
+  },
+  "rainette_test": {
+    "exit": 0,
+    "errors": [],
+    "result_ok": true
+  },
+  "texture_budget_test": {
+    "exit": 1,
+    "errors": [],
+    "result_ok": false
+  },
+  "skin_load": {
+    "exit": 0,
+    "errors": [],
+    "result_ok": true
+  },
+  "budget": {
+    "category": {
+      "png": 11.331151008605957,
+      "mobile": 5.832158088684082
+    },
+    "skin_added": {
+      "png": 5.331445693969727,
+      "mobile": 2.813018798828125
+    },
+    "total_mobile": 234.47331523895264
+  }
+}

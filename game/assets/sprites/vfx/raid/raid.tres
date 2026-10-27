@@ -1,0 +1,569 @@
+[gd_resource type="SpriteFrames" load_steps=147 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/raid_orb.png" id="t_raid_orb"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/raid_orb_pickup.png" id="t_raid_orb_pickup"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/shield_bubble.png" id="t_shield_bubble"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/shield_crack.png" id="t_shield_crack"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/shield_burst.png" id="t_shield_burst"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/soak_zone.png" id="t_soak_zone"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/soak_fill.png" id="t_soak_fill"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/soak_burst.png" id="t_soak_burst"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/safe_sector.png" id="t_safe_sector"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/danger_sheet.png" id="t_danger_sheet"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/sector_arrow.png" id="t_sector_arrow"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/fixate_mark.png" id="t_fixate_mark"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/fixate_link.png" id="t_fixate_link"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/weak_point.png" id="t_weak_point"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/weak_point_break.png" id="t_weak_point_break"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/shelter_shadow.png" id="t_shelter_shadow"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/raid_progress_pip.png" id="t_raid_progress_pip"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/raid/enrage_aura.png" id="t_enrage_aura"]
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_0"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_1"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_2"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_3"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_4"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_5"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_6"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_7"]
+atlas = ExtResource("t_raid_orb")
+region = Rect2(672, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_0"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(0, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_1"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(128, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_2"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(256, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_3"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(384, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_4"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(512, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_raid_orb_pickup_5"]
+atlas = ExtResource("t_raid_orb_pickup")
+region = Rect2(640, 0, 128, 192)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_0"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(0, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_1"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(320, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_2"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(640, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_3"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(960, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_4"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(1280, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_5"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(1600, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_6"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(1920, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_bubble_7"]
+atlas = ExtResource("t_shield_bubble")
+region = Rect2(2240, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_0"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(0, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_1"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(320, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_2"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(640, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_3"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(960, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_4"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(1280, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_5"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(1600, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_6"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(1920, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_7"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(2240, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_8"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(2560, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_9"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(2880, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_10"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(3200, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_crack_11"]
+atlas = ExtResource("t_shield_crack")
+region = Rect2(3520, 0, 320, 352)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_0"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(0, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_1"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(384, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_2"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(768, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_3"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(1152, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_4"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(1536, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_shield_burst_5"]
+atlas = ExtResource("t_shield_burst")
+region = Rect2(1920, 0, 384, 384)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_0"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_1"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_2"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_3"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_4"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_zone_5"]
+atlas = ExtResource("t_soak_zone")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_0"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_1"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_2"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_3"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_4"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_5"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_6"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(1920, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_fill_7"]
+atlas = ExtResource("t_soak_fill")
+region = Rect2(2240, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_0"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(0, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_1"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(640, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_2"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(1280, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_3"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(1920, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_4"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(2560, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_soak_burst_5"]
+atlas = ExtResource("t_soak_burst")
+region = Rect2(3200, 0, 640, 640)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_0"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(0, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_1"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(1152, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_2"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(2304, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_3"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(0, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_4"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(1152, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_5"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(2304, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_6"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(0, 2304, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_safe_sector_7"]
+atlas = ExtResource("t_safe_sector")
+region = Rect2(1152, 2304, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_0"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(0, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_1"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(1152, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_2"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(2304, 0, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_3"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(0, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_4"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(1152, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_danger_sheet_5"]
+atlas = ExtResource("t_danger_sheet")
+region = Rect2(2304, 1152, 1152, 1152)
+
+[sub_resource type="AtlasTexture" id="a_sector_arrow_0"]
+atlas = ExtResource("t_sector_arrow")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="a_sector_arrow_1"]
+atlas = ExtResource("t_sector_arrow")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="a_sector_arrow_2"]
+atlas = ExtResource("t_sector_arrow")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="a_sector_arrow_3"]
+atlas = ExtResource("t_sector_arrow")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_0"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_1"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_2"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_3"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_4"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_5"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_6"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_7"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_8"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_9"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_10"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_mark_11"]
+atlas = ExtResource("t_fixate_mark")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_fixate_link_0"]
+atlas = ExtResource("t_fixate_link")
+region = Rect2(0, 0, 512, 32)
+
+[sub_resource type="AtlasTexture" id="a_fixate_link_1"]
+atlas = ExtResource("t_fixate_link")
+region = Rect2(512, 0, 512, 32)
+
+[sub_resource type="AtlasTexture" id="a_fixate_link_2"]
+atlas = ExtResource("t_fixate_link")
+region = Rect2(1024, 0, 512, 32)
+
+[sub_resource type="AtlasTexture" id="a_fixate_link_3"]
+atlas = ExtResource("t_fixate_link")
+region = Rect2(1536, 0, 512, 32)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_0"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_1"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_2"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_3"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_4"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_5"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_6"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_7"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(672, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_8"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(768, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_9"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(864, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_10"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(960, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_11"]
+atlas = ExtResource("t_weak_point")
+region = Rect2(1056, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_0"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_1"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_2"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_3"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_4"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_weak_point_break_5"]
+atlas = ExtResource("t_weak_point_break")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_0"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(0, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_1"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(128, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_2"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(256, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_3"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(384, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_4"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(512, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_shelter_shadow_5"]
+atlas = ExtResource("t_shelter_shadow")
+region = Rect2(640, 0, 128, 384)
+
+[sub_resource type="AtlasTexture" id="a_raid_progress_pip_0"]
+atlas = ExtResource("t_raid_progress_pip")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="a_raid_progress_pip_1"]
+atlas = ExtResource("t_raid_progress_pip")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_0"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(0, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_1"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(352, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_2"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(704, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_3"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(1056, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_4"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(1408, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_5"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(1760, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_6"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(2112, 0, 352, 352)
+
+[sub_resource type="AtlasTexture" id="a_enrage_aura_7"]
+atlas = ExtResource("t_enrage_aura")
+region = Rect2(2464, 0, 352, 352)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a_raid_orb_0")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_1")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_2")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_3")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_4")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_5")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_6")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_7")}], "loop": true, "name": &"raid_orb", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_0")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_1")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_2")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_3")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_4")}, {"duration": 1.0, "texture": SubResource("a_raid_orb_pickup_5")}], "loop": false, "name": &"raid_orb_pickup", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_shield_bubble_0")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_1")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_2")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_3")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_4")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_5")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_6")}, {"duration": 1.0, "texture": SubResource("a_shield_bubble_7")}], "loop": true, "name": &"shield_bubble", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_shield_crack_0")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_1")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_2")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_3")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_4")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_5")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_6")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_7")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_8")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_9")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_10")}, {"duration": 1.0, "texture": SubResource("a_shield_crack_11")}], "loop": false, "name": &"shield_crack", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_shield_burst_0")}, {"duration": 1.0, "texture": SubResource("a_shield_burst_1")}, {"duration": 1.0, "texture": SubResource("a_shield_burst_2")}, {"duration": 1.0, "texture": SubResource("a_shield_burst_3")}, {"duration": 1.0, "texture": SubResource("a_shield_burst_4")}, {"duration": 1.0, "texture": SubResource("a_shield_burst_5")}], "loop": false, "name": &"shield_burst", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_soak_zone_0")}, {"duration": 1.0, "texture": SubResource("a_soak_zone_1")}, {"duration": 1.0, "texture": SubResource("a_soak_zone_2")}, {"duration": 1.0, "texture": SubResource("a_soak_zone_3")}, {"duration": 1.0, "texture": SubResource("a_soak_zone_4")}, {"duration": 1.0, "texture": SubResource("a_soak_zone_5")}], "loop": true, "name": &"soak_zone", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_soak_fill_0")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_1")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_2")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_3")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_4")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_5")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_6")}, {"duration": 1.0, "texture": SubResource("a_soak_fill_7")}], "loop": false, "name": &"soak_fill", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_soak_burst_0")}, {"duration": 1.0, "texture": SubResource("a_soak_burst_1")}, {"duration": 1.0, "texture": SubResource("a_soak_burst_2")}, {"duration": 1.0, "texture": SubResource("a_soak_burst_3")}, {"duration": 1.0, "texture": SubResource("a_soak_burst_4")}, {"duration": 1.0, "texture": SubResource("a_soak_burst_5")}], "loop": false, "name": &"soak_burst", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_safe_sector_0")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_1")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_2")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_3")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_4")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_5")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_6")}, {"duration": 1.0, "texture": SubResource("a_safe_sector_7")}], "loop": true, "name": &"safe_sector", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_danger_sheet_0")}, {"duration": 1.0, "texture": SubResource("a_danger_sheet_1")}, {"duration": 1.0, "texture": SubResource("a_danger_sheet_2")}, {"duration": 1.0, "texture": SubResource("a_danger_sheet_3")}, {"duration": 1.0, "texture": SubResource("a_danger_sheet_4")}, {"duration": 1.0, "texture": SubResource("a_danger_sheet_5")}], "loop": true, "name": &"danger_sheet", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_sector_arrow_0")}, {"duration": 1.0, "texture": SubResource("a_sector_arrow_1")}, {"duration": 1.0, "texture": SubResource("a_sector_arrow_2")}, {"duration": 1.0, "texture": SubResource("a_sector_arrow_3")}], "loop": true, "name": &"sector_arrow", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_fixate_mark_0")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_1")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_2")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_3")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_4")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_5")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_6")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_7")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_8")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_9")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_10")}, {"duration": 1.0, "texture": SubResource("a_fixate_mark_11")}], "loop": true, "name": &"fixate_mark", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_fixate_link_0")}, {"duration": 1.0, "texture": SubResource("a_fixate_link_1")}, {"duration": 1.0, "texture": SubResource("a_fixate_link_2")}, {"duration": 1.0, "texture": SubResource("a_fixate_link_3")}], "loop": true, "name": &"fixate_link", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_weak_point_0")}, {"duration": 1.0, "texture": SubResource("a_weak_point_1")}, {"duration": 1.0, "texture": SubResource("a_weak_point_2")}, {"duration": 1.0, "texture": SubResource("a_weak_point_3")}, {"duration": 1.0, "texture": SubResource("a_weak_point_4")}, {"duration": 1.0, "texture": SubResource("a_weak_point_5")}, {"duration": 1.0, "texture": SubResource("a_weak_point_6")}, {"duration": 1.0, "texture": SubResource("a_weak_point_7")}, {"duration": 1.0, "texture": SubResource("a_weak_point_8")}, {"duration": 1.0, "texture": SubResource("a_weak_point_9")}, {"duration": 1.0, "texture": SubResource("a_weak_point_10")}, {"duration": 1.0, "texture": SubResource("a_weak_point_11")}], "loop": true, "name": &"weak_point", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_weak_point_break_0")}, {"duration": 1.0, "texture": SubResource("a_weak_point_break_1")}, {"duration": 1.0, "texture": SubResource("a_weak_point_break_2")}, {"duration": 1.0, "texture": SubResource("a_weak_point_break_3")}, {"duration": 1.0, "texture": SubResource("a_weak_point_break_4")}, {"duration": 1.0, "texture": SubResource("a_weak_point_break_5")}], "loop": false, "name": &"weak_point_break", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_shelter_shadow_0")}, {"duration": 1.0, "texture": SubResource("a_shelter_shadow_1")}, {"duration": 1.0, "texture": SubResource("a_shelter_shadow_2")}, {"duration": 1.0, "texture": SubResource("a_shelter_shadow_3")}, {"duration": 1.0, "texture": SubResource("a_shelter_shadow_4")}, {"duration": 1.0, "texture": SubResource("a_shelter_shadow_5")}], "loop": true, "name": &"shelter_shadow", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_raid_progress_pip_0")}, {"duration": 1.0, "texture": SubResource("a_raid_progress_pip_1")}], "loop": false, "name": &"raid_progress_pip", "speed": 8.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a_enrage_aura_0")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_1")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_2")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_3")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_4")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_5")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_6")}, {"duration": 1.0, "texture": SubResource("a_enrage_aura_7")}], "loop": true, "name": &"enrage_aura", "speed": 8.0}]

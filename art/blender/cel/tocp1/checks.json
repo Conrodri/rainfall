@@ -1,0 +1,212 @@
+{
+  "checks": {
+    "arm_fly": {
+      "unique_tiles": 48,
+      "PASS": true
+    },
+    "arm_clamp": {
+      "unique_tiles": 64,
+      "PASS": true
+    },
+    "arm_ground": {
+      "unique_tiles": 8,
+      "PASS": true
+    }
+  },
+  "contact_rows": [
+    [
+      [
+        "arm_clamp",
+        "e",
+        0
+      ],
+      [
+        "arm_clamp",
+        "se",
+        0
+      ],
+      [
+        "arm_clamp",
+        "s",
+        0
+      ],
+      [
+        "arm_clamp",
+        "sw",
+        0
+      ],
+      [
+        "arm_clamp",
+        "w",
+        0
+      ],
+      [
+        "arm_clamp",
+        "nw",
+        0
+      ],
+      [
+        "arm_clamp",
+        "n",
+        0
+      ],
+      [
+        "arm_clamp",
+        "ne",
+        0
+      ]
+    ],
+    [
+      [
+        "arm_clamp",
+        "s",
+        0
+      ],
+      [
+        "arm_clamp",
+        "s",
+        1
+      ],
+      [
+        "arm_clamp",
+        "s",
+        2
+      ],
+      [
+        "arm_clamp",
+        "s",
+        3
+      ],
+      [
+        "arm_clamp",
+        "s",
+        4
+      ],
+      [
+        "arm_clamp",
+        "s",
+        5
+      ],
+      [
+        "arm_clamp",
+        "s",
+        6
+      ],
+      [
+        "arm_clamp",
+        "s",
+        7
+      ]
+    ],
+    [
+      [
+        "arm_fly",
+        "s",
+        0
+      ],
+      [
+        "arm_fly",
+        "s",
+        1
+      ],
+      [
+        "arm_fly",
+        "s",
+        2
+      ],
+      [
+        "arm_fly",
+        "s",
+        3
+      ],
+      [
+        "arm_fly",
+        "s",
+        4
+      ],
+      [
+        "arm_fly",
+        "s",
+        5
+      ],
+      [
+        "arm_ground",
+        "s",
+        0
+      ],
+      [
+        "arm_ground",
+        "e",
+        0
+      ]
+    ],
+    [
+      [
+        "arm_ground",
+        "e",
+        0
+      ],
+      [
+        "arm_ground",
+        "se",
+        0
+      ],
+      [
+        "arm_ground",
+        "s",
+        0
+      ],
+      [
+        "arm_ground",
+        "sw",
+        0
+      ],
+      [
+        "arm_ground",
+        "w",
+        0
+      ],
+      [
+        "arm_ground",
+        "nw",
+        0
+      ],
+      [
+        "arm_ground",
+        "n",
+        0
+      ],
+      [
+        "arm_ground",
+        "ne",
+        0
+      ]
+    ]
+  ],
+  "scale_px_per_u": 64,
+  "scalar_scale": 1,
+  "CREA": [
+    0.70710678,
+    1.4142136
+  ],
+  "budget": {
+    "before": {
+      "raw": 1697760,
+      "vram": 424440,
+      "mobile": 103095,
+      "png": 176543
+    },
+    "after": {
+      "raw": 7972672,
+      "vram": 1993168,
+      "mobile": 467633,
+      "png": 822477
+    }
+  },
+  "tests": {
+    "sprites_test": "RESULT: OK",
+    "texture_budget_test": "RESULT: FAIL (1), global mobile budget; 3 pre-existing texture_budget.py violations",
+    "import": "PASS, no ERROR"
+  },
+  "claude_integration": "tocsin_limb.gd _draw, phase PILLAR: remove procedural pillar and finger arcs; existing arm_clamp resource already selected; preserve gameplay radius/timing."
+}

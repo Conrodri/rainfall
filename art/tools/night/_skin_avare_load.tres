@@ -1,0 +1,18 @@
+[gd_resource type="GDScript" format=3]
+
+[resource]
+script/source = "extends SceneTree
+func _initialize():
+	var original = load(\"res://assets/sprites/characters/avare/avare.tres\")
+	var skin = load(\"res://assets/sprites/characters/avare/skins/avare_skin1/avare_skin1.tres\")
+	if not skin is SpriteFrames or skin.get_animation_names() != original.get_animation_names():
+		print(\"RESULT: FAIL\")
+		quit(1)
+		return
+	for animation in original.get_animation_names():
+		assert(skin.get_frame_count(animation) == original.get_frame_count(animation))
+		assert(skin.get_animation_speed(animation) == original.get_animation_speed(animation))
+		assert(skin.get_animation_loop(animation) == original.get_animation_loop(animation))
+	print(\"RESULT: OK\")
+	quit()
+"

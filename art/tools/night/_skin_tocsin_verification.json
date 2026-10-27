@@ -1,0 +1,1132 @@
+{
+  "sheets": {
+    "idle": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/idle.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/idle.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/idle.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/idle.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/idle.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/idle.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/idle.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/idle.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "walk": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/walk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/walk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/walk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/walk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/walk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/walk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/walk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/walk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "hop_l": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/hop_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/hop_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/hop_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/hop_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/hop_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/hop_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/hop_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "hop_r": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/hop_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/hop_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/hop_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/hop_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/hop_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/hop_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/hop_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "handwalk": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/handwalk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/handwalk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/handwalk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/handwalk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/handwalk.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/handwalk.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "crawl_l": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/crawl_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/crawl_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/crawl_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/crawl_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/crawl_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "crawl_r": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/crawl_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/crawl_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/crawl_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/crawl_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/crawl_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "roll": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/roll.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/roll.png",
+        "alpha_iou_min": 1.0,
+        "cells": 64
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/roll.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/roll.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "fall": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/fall.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 24,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/fall.png",
+        "alpha_iou_min": 1.0,
+        "cells": 24
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/fall.png",
+        "alpha_iou_min": 1.0,
+        "cells": 24
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/fall.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 24,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/fall.png",
+        "alpha_iou_min": 1.0,
+        "cells": 24
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/fall.png",
+        "alpha_iou_min": 1.0,
+        "cells": 24
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/fall.png",
+        "alpha_iou_min": 1.0,
+        "cells": 24
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/fall.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 24,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "throw_leg_l": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_leg_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/throw_leg_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/throw_leg_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/throw_leg_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/throw_leg_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_leg_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/throw_leg_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/throw_leg_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "throw_leg_r": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_leg_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/throw_leg_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/throw_leg_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/throw_leg_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/throw_leg_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_leg_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/throw_leg_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/throw_leg_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "throw_head": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_head.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/throw_head.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/throw_head.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/throw_head.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/throw_head.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_head.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/throw_head.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/throw_head.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "death": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/death.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/death.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/death.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/death.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/death.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/death.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/death.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/death.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "attack": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/attack.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/attack.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/attack.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/attack.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/attack.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/attack.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/attack.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/attack.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "cast_ult": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/cast_ult.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/cast_ult.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/cast_ult.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/cast_ult.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/cast_ult.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/cast_ult.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/cast_ult.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/cast_ult.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "neck_steam": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/neck_steam.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/neck_steam.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      }
+    ],
+    "throw_arm_l": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_arm_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/throw_arm_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/throw_arm_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/throw_arm_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/throw_arm_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_arm_l.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/throw_arm_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/throw_arm_l.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "throw_arm_r": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_arm_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/throw_arm_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/throw_arm_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/throw_arm_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/throw_arm_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_arm_r.png",
+        "alpha_iou_min": 1.0,
+        "cells": 32
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/throw_arm_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/throw_arm_r.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "cast": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/cast.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/cast.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/arm_r/packed/cast.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/head/packed/cast.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_l/packed/cast.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/leg_r/packed/cast.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/cast.png",
+        "alpha_iou_min": 1.0,
+        "cells": 48
+      },
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/layers/torso/packed/cast.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "leg_fly": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/leg_fly.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 32,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "leg_ground": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/leg_ground.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 8,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "head_fly": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/head_fly.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "arm_fly": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/arm_fly.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 48,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "arm_clamp": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/arm_clamp.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 64,
+        "accent_iou": 0.9860471806674338,
+        "accent_iou_min": 0.9387755102040817,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "arm_ground": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/arm_ground.png",
+        "alpha_iou_min": 1.0,
+        "cells": 8
+      }
+    ],
+    "portrait": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/portrait.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 1,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ],
+    "portrait_headless": [
+      {
+        "file": "characters/tocsin/skins/tocsin_skin1/portrait_headless.png",
+        "e_half": true,
+        "alpha_iou_min": 1.0,
+        "cells": 1,
+        "accent_iou": 1.0,
+        "accent_iou_min": 1.0,
+        "blue_accent_pixels": 0
+      }
+    ]
+  },
+  "status": "PASS",
+  "complete_sheets": [
+    "arm_clamp",
+    "arm_fly",
+    "arm_ground",
+    "attack",
+    "cast",
+    "cast_ult",
+    "crawl_l",
+    "crawl_r",
+    "death",
+    "fall",
+    "handwalk",
+    "head_fly",
+    "hop_l",
+    "hop_r",
+    "idle",
+    "leg_fly",
+    "leg_ground",
+    "neck_steam",
+    "portrait",
+    "portrait_headless",
+    "roll",
+    "throw_arm_l",
+    "throw_arm_r",
+    "throw_head",
+    "throw_leg_l",
+    "throw_leg_r",
+    "walk"
+  ],
+  "missing": [],
+  "tests": {
+    "policy": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_policy.log",
+      "result_lines": []
+    },
+    "import": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_import.log",
+      "result_lines": []
+    },
+    "sprites": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_sprites.log",
+      "result_lines": [
+        "RESULT: OK"
+      ]
+    },
+    "tocsin": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_tocsin.log",
+      "result_lines": [
+        "RESULT: OK"
+      ]
+    },
+    "texture_budget": {
+      "ok": false,
+      "exit": 1,
+      "log": "art\\tools\\night\\_skin_tocsin_texture_budget.log",
+      "result_lines": [
+        "  FAIL textures embarqu\u00e9es sur mobile (ASTC deflat\u00e9) : 264 Mo <= 180 Mo",
+        "RESULT: FAIL (1)"
+      ]
+    },
+    "load": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_load.log",
+      "result_lines": [
+        "RESULT: OK"
+      ]
+    },
+    "budget": {
+      "ok": true,
+      "exit": 0,
+      "log": "art\\tools\\night\\_skin_tocsin_budget.log",
+      "result_lines": [
+        "cat\u00e9gorie                        n    raw Mo   VRAM Mo   png Mo import Mo mobile Mo  budget",
+        "  - cat\u00e9gorie bosses : 103.8 Mo mobile > budget 45 Mo",
+        "  - textures mobiles 263 Mo > 180 Mo"
+      ]
+    }
+  },
+  "budget": {
+    "skin_added": {
+      "png": 23.94759750366211,
+      "mobile": 13.51197338104248
+    },
+    "characters/tocsin_after": {
+      "png": 63.4908561706543,
+      "mobile": 36.33366298675537
+    },
+    "global_mobile_after": 263.2048044204712,
+    "global_mobile_limit": 180,
+    "target_mobile": 95,
+    "before_log": "_skin_tocsin_budget_before.txt",
+    "characters/tocsin_before": {
+      "png": 39.54325866699219,
+      "mobile": 22.82168960571289
+    }
+  },
+  "default_files_unchanged": 415,
+  "source_blends_unchanged": {
+    "tocsin.blend": "793e3b7ee95397f09162a5307ce8d0b3652c90f69685229fdb61b9e4dcb425f5",
+    "tocsin_t2.blend": "a39f91067e873caba91304104cc799714a7e0573e53a11408b4e2ed1c0d2542a",
+    "tocsin_t3.blend": "ccce789b3a326b3ba084024f17f0e6c6a8bec34f0f52241327d22bfabbea2753",
+    "tocsin_t3_regen.blend": "839397605a121be761c401a8bcd1ce353f94a340d5fdd04e6a5b8441280ea5db",
+    "tocsin_t4.blend": "4cdf1a52e568c4eb91b4bc3c3b41741e52fa5c5128c1ed5e8963b5048def5938",
+    "tocsin_t4_portraits.blend": "0087c7dac66ecc7ac8e9374fc368cd5a7f1807ea5e9bf9f86d1871212e1e02d8"
+  },
+  "inventory": {
+    "png": 201,
+    "tres": 25,
+    "json": 2,
+    "unexpected": []
+  },
+  "deviations": [
+    "TOCP1 arm_clamp: existing blue arc recolored in Blender to furnace orange; unchanged accent zones.",
+    "Legacy tocsin_parts_emission.tres referenced absent arm_ground_e.png; skin aggregate uses empty AtlasTextures for these frames."
+  ],
+  "quality": {
+    "alpha_iou_min": 1.0,
+    "accent_iou_min": 0.9387755102040817,
+    "blue_accent_pixels": 0
+  }
+}

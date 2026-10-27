@@ -28,13 +28,14 @@ def emblem(kind):
         n.line([(0,-.59),(0,-.70)],.018,n.heart)
         chips([(-.26,.30,2),(.28,.23,0),(-.31,-.20,3),(.34,-.28,0)])
     elif kind==2:
-        n.plate([(-.42,-.14),(.30,-.14),(.43,.07),(-.30,.07)],n.metal)
-        n.line([(-.34,-.11),(.30,-.11)],.019,n.glow)
-        n.knife(.96,-.03,.27,.83,True)
-        n.line([(-.20,-.20),(-.25,-.38),(-.44,-.48)],.045,n.wood)
-        n.line([(.20,-.20),(.26,-.41),(.44,-.36)],.045,n.wood)
-        for a in (.1,.7,1.3):
-            n.line([(.22,.16),(.22+.20*math.cos(a),.16+.20*math.sin(a))],.018,n.heart)
+        # Upright bark blade, overflowing sap edge, waterstone below; no legs.
+        n.plate([(-.39,-.48),(.31,-.48),(.43,-.30),(-.29,-.30)],n.metal)
+        n.line([(-.29,-.32),(.36,-.32)],.018,n.pale)
+        n.knife(0,-.07,.06,.98,True)
+        n.line([(-.012,-.11),(-.015,.40),(-.104,.65)],.032,n.glow,y=-.38)
+        n.line([(.006,.02),(.012,.36),(-.096,.64)],.012,n.heart,y=-.42)
+        for x,z,dx,dz in [(.12,.18,.14,.07),(.10,.33,.13,.15),(.07,.48,.02,.13),(-.26,.16,-.10,.10)]:
+            n.line([(x,z),(x+dx,z+dz)],.014,n.heart,y=-.40)
     else:
         water=mat('#365550',.6,0,'#7FC8C0',.3)
         n.plate([(-.45,-.24),(-.32,-.48),(.32,-.48),(.45,-.24)],n.metal)
@@ -50,7 +51,10 @@ def run():
     n.WORK=WORK
     s=n.scene('medallion');s.eevee.taa_render_samples=8
     bpy.ops.render.render(write_still=True)
+    only = sys.argv[sys.argv.index("--only")+1].split(",") if "--only" in sys.argv else NAMES
+    if any(name not in NAMES for name in only): raise ValueError("Unknown icon")
     for i,name in enumerate(NAMES):
+        if name not in only: continue
         s=n.scene(name,lambda i=i:emblem(i),'#CDEB6E')
         s.eevee.taa_render_samples=8
         bpy.ops.render.render(write_still=True)
