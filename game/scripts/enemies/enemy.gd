@@ -612,6 +612,8 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 		_flash_left -= delta
 		if _flash_left <= 0.0:
 			visual.set_flash(false)
+	if TestMode.freeze_ai:
+		return # mode test : IA figée (ni déplacement, ni attaque, ni cerveau de boss)
 	if _stop_cd > 0.0:
 		_stop_cd -= delta
 		if _stop_left > 0.0: # hitstop : figé (animation, déplacement, attaques) le temps du gel

@@ -100,6 +100,8 @@ static func is_unlocked(profile: Object, skin_id: Variant) -> bool:
 
 ## Skin équipé et valide pour ce personnage ("" = défaut). `profile` null = autoload Profile.
 static func equipped(cid: Variant, profile: Object = null) -> String:
+	if TestMode.active and TestMode.skin_override.has(str(cid)):
+		return str(TestMode.skin_override[str(cid)]) # mode test : apparence forcée, sans condition de déblocage
 	var p: Object = profile if profile != null else _autoload()
 	if p == null or not ("selected_skin" in p):
 		return ""

@@ -68,6 +68,9 @@ var unlock_all_variants := _detect_unlock_all_variants()
 var characters_override: Variant = null
 
 var _loading := false
+## Mode test (TestMode) : bac à sable. Pas d'écriture sur disque ; l'état d'avant est rendu à la sortie.
+var sandbox := false
+var _sandbox_snapshot: Dictionary = {}
 
 
 func _ready() -> void:
@@ -109,6 +112,11 @@ func load_profile() -> void:
 	if not (d is Dictionary):
 		push_warning("Profil illisible (%s) : valeurs par défaut" % path)
 		return
+	_apply_dict(d)
+
+
+## Applique un profil lu (disque ou instantané du bac à sable) sur l'état courant (déjà remis à zéro).
+func _apply_dict(d: Dictionary) -> void:
 	_loading = true
 	rubies = int(d.get("rubies", 0))
 	unlocked_modes = _names(d.get("unlocked_modes", []), DEFAULT_MODES)
@@ -220,7 +228,7 @@ func to_dict() -> Dictionary:
 
 ## Écriture atomique immédiate. false si désactivée (headless) ou en échec.
 func save() -> bool:
-	if not write_enabled:
+	if not write_enabled or sandbox:
 		return false
 	var tmp := path + ".tmp"
 	var f := FileAccess.open(tmp, FileAccess.WRITE)
@@ -234,6 +242,25 @@ func save() -> bool:
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(abs_p)
 	return DirAccess.rename_absolute(ProjectSettings.globalize_path(tmp), abs_p) == OK
+
+
+## Mode test : fige l'écriture et garde un instantané. Tout ce qui change ensuite (stats, objectifs, mémoire des boss,
+## déblocages) reste en mémoire seulement et disparaît à end_sandbox().
+func begin_sandbox() -> void:
+	if sandbox:
+		return
+	_sandbox_snapshot = (JSON.parse_string(JSON.stringify(to_dict())) as Dictionary) # copie profonde, types JSON
+	sandbox = true
+
+
+## Rend le profil d'avant begin_sandbox() (rien n'a été écrit sur disque entre-temps).
+func end_sandbox() -> void:
+	if not sandbox:
+		return
+	sandbox = false
+	reset()
+	_apply_dict(_sandbox_snapshot)
+	_sandbox_snapshot = {}
 
 
 func _touch() -> void:

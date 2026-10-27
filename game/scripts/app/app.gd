@@ -39,6 +39,8 @@ func _ready() -> void:
 	fade.name = "FadeLayer"
 	add_child(fade)
 	await show(&"title")
+	if TestMode.requested_by_arg(): # `-- --test-mode` : démarre directement dans le mode test (À RETIRER AVANT LA SORTIE)
+		await start_test_mode()
 
 
 # --- API ---------------------------------------------------------------------
@@ -52,6 +54,12 @@ func show(screen: StringName, toast := "") -> void:
 func start_run(config: Dictionary) -> void:
 	last_config = config.duplicate(true)
 	await _transition(func() -> void: _build_main(config, {}))
+
+
+## Mode test (arène vide, panneau d'invocation, triches ; rien n'est écrit au profil). À RETIRER OU MASQUER AVANT LA SORTIE.
+func start_test_mode(character: StringName = &"ardent") -> void:
+	TestMode.begin()
+	await start_run({"character": character, "mode": &"moyen", "spells": {}})
 
 
 ## Reprend la sauvegarde. Illisible : conversion en rubis (RunSave.load) puis retour au titre + toast.
@@ -128,6 +136,7 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.progress_requested.connect(func() -> void: show(&"progress"))
 			t.settings_requested.connect(func() -> void: show(&"settings"))
 			t.credits_requested.connect(func() -> void: show(&"credits"))
+			t.test_mode_requested.connect(start_test_mode) # À RETIRER OU MASQUER AVANT LA SORTIE
 			t.quit_requested.connect(_on_quit)
 			add_child(t)
 			current = t

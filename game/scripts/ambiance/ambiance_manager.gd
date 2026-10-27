@@ -305,7 +305,8 @@ func bind_map(m: Node2D, instant: bool = true) -> bool:
 			if enforce_ground_z:
 				vis.z_index = Z_GROUND
 			_mask_ground(vis)
-	var id := StringName(m.get_meta(&"map_id", &"")) if m != null else &""
+	# méta `ambiance_id` : profil d'une autre carte (arène du mode test, qui emprunte celui des terrasses)
+	var id := StringName(m.get_meta(&"ambiance_id", m.get_meta(&"map_id", &""))) if m != null else &""
 	var ok := apply_profile(id, instant)
 	_rebuild_map_dependent()
 	if not _measured:

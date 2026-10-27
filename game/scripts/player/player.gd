@@ -61,7 +61,13 @@ var _slow_param := 1.0 ## multiplicateur le plus fort des ralentissements param�
 var _push_vel := Vector2.ZERO ## poussée en cours (px/s), jouée par move_and_collide : jamais à travers un mur
 var _push_left := 0.0
 var _light: LightRig.Handle = null
+var _light_core: LightRig.Handle = null
 var _low_hp := false
+## Apparence de la scène (Ardent) gardée au 1er habillage : un changement de personnage en mode test la rétablit.
+var _look_captured := false
+var _look_scene_frames: SpriteFrames = null
+var _look_scene_scale := Vector2.ONE
+var _look_scene_modulate := Color.WHITE
 
 ## Roulade (action `dodge`, Balance.DODGE_*) : court dash invulnérable, bloqué par les murs.
 ## Aucune collision avec les monstres (masque 1 = monde seulement) ; coups et statuts ignorés pendant.
@@ -164,11 +170,11 @@ func _ready() -> void:
 	item_fx.refresh() # items déjà possédés (reprise de run, scène rechargée)
 	Haptics.connect_events()
 	_light = LightRig.attach(self, &"player")
-	var core := LightRig.attach(self, &"player_core")
+	_light_core = LightRig.attach(self, &"player_core")
 	if character.light_color.a > 0.0: # lumière propre au personnage (Averse pluie froide, Rainette jade pâle)
 		_light.set_color(character.light_color)
 	if character.light_core_color.a > 0.0:
-		core.set_color(character.light_core_color)
+		_light_core.set_color(character.light_core_color)
 	hp_changed.connect(_on_hp_changed_light)
 	_recompute(true)
 
@@ -356,9 +362,20 @@ func _apply_character_look() -> void:
 	var spr := _visual as AnimatedSprite2D
 	if spr == null or character == null:
 		return
+	if not _look_captured:
+		_look_captured = true
+		_look_scene_frames = spr.sprite_frames
+		_look_scene_scale = spr.scale
+		_look_scene_modulate = spr.self_modulate
+	else: # ré-habillage (changement de personnage, mode test) : repart de la scène
+		spr.scale = _look_scene_scale
+		spr.self_modulate = _look_scene_modulate
 	# Skin équipé (Skins.resolve_frames) : SpriteFrames du skin s'il est livré, sinon ceux du kit (aucun skin rendu = inchangé).
 	var frames_path := Skins.resolve_frames(character.id, character.sprite_frames_path)
 	if frames_path == "":
+		if _look_scene_frames != null and spr.sprite_frames != _look_scene_frames:
+			EmissiveOverlay.apply(spr, _look_scene_frames)
+			spr.play(&"idle_s" if _look_scene_frames.has_animation(&"idle_s") else StringName(_look_scene_frames.get_animation_names()[0]))
 		return
 	if ResourceLoader.exists(frames_path):
 		var sf := load(frames_path) as SpriteFrames
@@ -369,6 +386,52 @@ func _apply_character_look() -> void:
 			return
 	spr.self_modulate = character.placeholder_tint
 	spr.scale *= character.placeholder_scale
+
+
+## Changement de personnage en place (mode test) : garde objets, niveau et position ; refait les sorts, le kit, l'apparence,
+## la hitbox et les lumières du nouveau personnage (CharacterData.for_id). `spell_loadout` : variantes de sorts {slot: id}.
+## Les statuts et la recharge de l'ancien kit sont perdus. Retourne faux si l'id est inconnu.
+func switch_character(cid: StringName, spell_loadout := {}) -> bool:
+	var new_char := CharacterData.for_id(cid, spell_loadout)
+	if new_char == null or spells == null:
+		return false
+	RunState.character = cid
+	RunState.loadout = spell_loadout.duplicate()
+	if kit != null:
+		remove_child(kit)
+		kit.queue_free()
+		kit = null
+	spells.teardown()
+	remove_child(spells)
+	spells.queue_free()
+	character = new_char
+	spells = SpellCaster.new()
+	spells.name = "Spells"
+	add_child(spells)
+	spells.setup(self, character)
+	spells.auto_cast_enabled = auto_cast_spells
+	_action = &""
+	_action_left = 0.0
+	_action_impact_pending = false
+	_fallback_on = false
+	_apply_character_look()
+	apply_render_style()
+	_capture_visual_base()
+	set_hitbox_u(character.hitbox_u if character.hitbox_u > 0.0 else 0.5) # 0,5 u = rayon de référence de la scène
+	if character.kit_script != null:
+		kit = Node.new()
+		kit.set_script(character.kit_script)
+		kit.name = "Kit"
+		add_child(kit)
+		kit.setup(self)
+	_light.set_color(character.light_color if character.light_color.a > 0.0 else Color(0, 0, 0, 0))
+	_light_core.set_color(character.light_core_color if character.light_core_color.a > 0.0 else Color(0, 0, 0, 0))
+	clear_statuses()
+	velocity = Vector2.ZERO
+	if item_fx != null:
+		item_fx.refresh()
+	_recompute(true)
+	return true
 
 
 # --- Boucle --------------------------------------------------------------
@@ -471,8 +534,14 @@ func take_damage(amount: float, source: Node = null) -> void:
 		_hitbox_ring.on_hit(source)
 
 func _damage_hp(amount: float) -> void:
+	if TestMode.god:
+		return # mode test : PV illimités (le coup a déjà été annoncé : chiffre, flash, son)
 	hp = maxf(hp - amount, 0.0)
 	hp_changed.emit(hp, max_hp)
+	if hp <= 0.0 and TestMode.active:
+		hp = max_hp # mode test : « KO » sans fin de run, PV rendus
+		hp_changed.emit(hp, max_hp)
+		return
 	if hp <= 0.0 and not dead:
 		if item_fx != null and item_fx.try_revive(): # Phénix de poche
 			return

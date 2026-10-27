@@ -52,6 +52,9 @@ const DEFAULT_RULES := {
 ## Optionnel : Callable() -> Node2D (doit exposer setup(kind, stage)). Sert aux tests.
 var chest_factory: Callable = Callable()
 
+## Mode test (TestMode) : carte « arène de test » seule (data/maps/test_arena.json), sans coffre, pilier, capsule ni
+## téléporteur. Posé par Main avant start_stage().
+var bare_arena := false
 var endless := false
 var floor_cleared := false
 var map: StageMap = null
@@ -106,6 +109,14 @@ func start_stage(layout: Dictionary = {}) -> void:
 	var director := get_tree().get_first_node_in_group(&"director")
 	if director and director.has_method(&"bind_map"):
 		director.bind_map(map)
+	if bare_arena:
+		_layout = {}
+		var tp := get_tree().get_first_node_in_group(&"player") as Node2D
+		if tp != null:
+			tp.global_position = map.to_global(map.get_player_start())
+		Events.floor_started.emit(RunState.stage)
+		stage_started.emit(RunState.stage)
+		return
 	var chest_markers := map.get_chest_markers()
 	var pillar_markers := map.get_pillar_markers()
 	if layout.is_empty():
@@ -182,6 +193,8 @@ func start_stage(layout: Dictionary = {}) -> void:
 
 # --- Cartes
 func _entry_for_stage(stage: int) -> Dictionary:
+	if bare_arena:
+		return {"id": "test_arena", "scene": load(TestMode.ARENA_SCENE), "floor_boss": "etage", "rules": {}, "minis": [], "final": false}
 	if map_scene != null:
 		return {"id": "test", "scene": map_scene, "floor_boss": "etage", "rules": {}}
 	if _catalog.is_empty():
@@ -234,6 +247,8 @@ func _load_catalog() -> Array:
 		if not f.ends_with(".json"):
 			continue
 		var data = JSON.parse_string(FileAccess.get_file_as_string("%s/%s" % [MAPS_DIR, f]))
+		if data is Dictionary and bool(data.get("test_only", false)):
+			continue # arène du mode test : jamais tirée dans une run
 		if not (data is Dictionary) or not data.has("scene"):
 			push_warning("Carte ignorée : %s" % f)
 			continue

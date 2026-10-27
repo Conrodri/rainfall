@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/stage_map.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="h"]
+size = Vector2(3072, 128)
+
+[sub_resource type="RectangleShape2D" id="v"]
+size = Vector2(128, 3072)
+
+[node name="StageMap" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1")
+metadata/map_id = "test_arena"
+metadata/ambiance_id = "terrasses_noyees"
+metadata/size_u = Vector2(48, 48)
+metadata/projection = "iso45"
+
+[node name="Visual" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="Ground" type="TileMapLayer" parent="Visual"]
+
+[node name="Decor" type="TileMapLayer" parent="Visual"]
+
+[node name="Obstacles" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="Walls" type="StaticBody2D" parent="Obstacles"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="BlockN" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, -1472)
+shape = SubResource("h")
+
+[node name="BlockS" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, 1472)
+shape = SubResource("h")
+
+[node name="BlockW" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1472, 0)
+shape = SubResource("v")
+
+[node name="BlockE" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1472, 0)
+shape = SubResource("v")
+
+[node name="Markers" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="PlayerStart" type="Marker2D" parent="Markers" groups=["player_start"]]
+position = Vector2(0, 0)

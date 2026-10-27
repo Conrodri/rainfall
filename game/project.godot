@@ -26,6 +26,7 @@ Platform="*res://scripts/core/platform.gd"
 Profile="*res://scripts/save/profile.gd"
 Audio="*res://scripts/audio/audio_manager.gd"
 Quality="*res://scripts/ambiance/quality.gd"
+TestMode="*res://scripts/core/test_mode.gd"
 
 [display]
 

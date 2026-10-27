@@ -54,7 +54,7 @@ func _run() -> void:
 			_check_stage(mgr, director, player, not seen.has(mgr.map_id))
 			seen[mgr.map_id] = true
 	for f in DirAccess.get_files_at("res://data/maps"):
-		if f.ends_with(".json"):
+		if f.ends_with(".json") and f.get_basename() != "test_arena": # arène du mode test : hors run
 			_check("carte %s parcourue" % f.get_basename(), seen.has(f.get_basename()))
 
 

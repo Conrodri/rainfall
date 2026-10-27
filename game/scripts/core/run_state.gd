@@ -6,6 +6,8 @@ signal gold_changed(gold: float)
 signal xp_changed(xp: float, required: float)
 signal level_up(level: int)
 signal item_added(item_id: StringName, stacks: int)
+## Retrait d'objets (mode test : RunState.remove_item / clear_items) : la barre d'objets se reconstruit.
+signal items_changed
 signal difficulty_changed(D: float, tier_name: StringName)
 
 var mode: StringName = &"moyen"
@@ -94,6 +96,8 @@ func _process(delta: float) -> void:
 	# get_tree().paused fige ce nœud : le temps actif ne compte pas pendant la pause.
 	if not running:
 		return
+	if TestMode.active and TestMode.freeze_time:
+		return # mode test : minuterie arrêtée, la difficulté vient du réglage D
 	active_time_s += delta
 	var D := difficulty()
 	var tier_name := Balance.difficulty_tier_name(D)
@@ -104,6 +108,8 @@ func _process(delta: float) -> void:
 
 
 func difficulty() -> float:
+	if TestMode.active:
+		return TestMode.d_value # mode test : D imposée depuis le panneau
 	return Balance.difficulty(active_time_s, stage, Balance.MODES[mode])
 
 
@@ -113,6 +119,8 @@ func add_gold(amount: float) -> void:
 
 
 func spend_gold(amount: float) -> bool:
+	if TestMode.inf_gold:
+		return true # mode test : or infini, rien n'est débité
 	if gold < amount:
 		return false
 	gold -= amount
@@ -145,6 +153,26 @@ func convert_gold_to_xp(extra_gold: float = 0.0) -> float:
 func add_item(item_id: StringName) -> void:
 	items[item_id] = items.get(item_id, 0) + 1
 	item_added.emit(item_id, items[item_id])
+
+
+## Retire un exemplaire de l'objet (mode test). Retourne faux s'il n'est pas possédé. Le dernier exemplaire retire
+## l'entrée. L'appelant recalcule les stats du joueur (Player.apply_stats(ItemStats.compute(items))).
+func remove_item(item_id: StringName) -> bool:
+	var n: int = items.get(item_id, 0)
+	if n <= 0:
+		return false
+	if n == 1:
+		items.erase(item_id)
+	else:
+		items[item_id] = n - 1
+	items_changed.emit()
+	return true
+
+
+## Retire tous les objets (mode test).
+func clear_items() -> void:
+	items.clear()
+	items_changed.emit()
 
 
 ## Items retirés du jeu -> remplaçant pour les anciennes sauvegardes (ramassage automatique, 22/10/2026 :

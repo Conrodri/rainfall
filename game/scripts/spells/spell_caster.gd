@@ -35,6 +35,10 @@ var _container: Node2D
 var _pending: Array[Callable] = []
 var _last_tick_frame := -10
 var _repeat_mult := 1.0 ## facteur de dégâts du rejeu en cours (repeat_cast)
+## Vrai pendant un lancer venu de l'auto-cast (option « Sorts automatiques ») : la visée manuelle (curseur, stick droit,
+## aim_override) est ignorée et le « paquet le plus dense » devient le monstre le plus proche. Point central lu par
+## cast(), get_manual_aim_point() et densest_point() : les kits qui les appellent pendant un lancer sont alignés d'office.
+var _auto_ctx := false
 
 
 func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
@@ -50,6 +54,16 @@ func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
 	for s in character.spells:
 		_remaining[s.slot] = 0.0
 		_totals[s.slot] = _cooldown_of(s)
+
+
+## Démontage (changement de personnage en mode test) : conteneur d'effets libéré, plus aucun écho de l'anim d'action.
+func teardown() -> void:
+	_pending.clear()
+	if player != null and player.has_signal(&"action_impact") and player.action_impact.is_connected(_on_action_impact):
+		player.action_impact.disconnect(_on_action_impact)
+	if is_instance_valid(_container):
+		_container.queue_free()
+	_pool.clear()
 
 
 func _spell_for(slot: int) -> SpellData:
@@ -188,8 +202,8 @@ func tick(delta: float) -> void:
 		elif Input.is_action_just_pressed("spell_%d" % s.slot):
 			if not ui_press:
 				cast(s.slot)
-		elif auto_cast_enabled and _auto_cast_ok(s.slot) and _nearest_enemy(s.trigger_range_u * Balance.UNIT_PX) != null:
-			cast(s.slot)
+		elif auto_cast_enabled and _auto_cast_ok(s.slot) and _nearest_enemy(_trigger_px(s)) != null:
+			cast(s.slot, true)
 
 
 ## Clavier-souris : le pointeur est sur un contrôle d'UI qui capte la souris (bouton, carte, bulle de sort).
@@ -208,8 +222,23 @@ func _auto_cast_ok(slot: int) -> bool:
 	return k == null or not k.has_method(&"auto_cast_ok") or bool(k.auto_cast_ok(slot))
 
 
+## Portée de déclenchement de l'auto-cast (px) ; sans limite en mode test « portée infinie ».
+func _trigger_px(s: SpellData) -> float:
+	var r: float = s.trigger_range_u * Balance.UNIT_PX
+	return maxf(r, TestMode.INF_RANGE_PX) if TestMode.inf_range else r
+
+
 ## Lance le sort du slot s'il est prêt. Retourne true si lancé.
-func cast(slot: int) -> bool:
+## `from_auto` : lancer de l'auto-cast -> visée sur le monstre le plus proche, jamais le curseur ni le stick droit.
+func cast(slot: int, from_auto := false) -> bool:
+	var prev := _auto_ctx
+	_auto_ctx = from_auto or prev # le rejeu d'un lancer auto (Couronne d'écho) reste auto
+	var ok := _cast(slot)
+	_auto_ctx = prev
+	return ok
+
+
+func _cast(slot: int) -> bool:
 	var s := _spell_for(slot)
 	if s == null or _remaining[slot] > 0.0 or is_slot_blocked(slot):
 		return false
@@ -293,7 +322,7 @@ func cast(slot: int) -> bool:
 	if not ok:
 		return false
 	_totals[slot] = _cooldown_of(s)
-	_remaining[slot] = _totals[slot]
+	_remaining[slot] = 0.0 if TestMode.cdr_full else _totals[slot] # mode test : recharge nulle
 	spell_cast.emit(s)
 	if not effect.is_valid():
 		player.on_cast(s, aim_dir)
@@ -381,7 +410,8 @@ func _cast_fx(s: SpellData, pos: Vector2) -> void:
 
 
 func _range_px(s: SpellData) -> float:
-	return s.range_u * Balance.UNIT_PX * (1.0 + player.stat(&"range_add"))
+	var r: float = s.range_u * Balance.UNIT_PX * (1.0 + player.stat(&"range_add"))
+	return maxf(r, TestMode.INF_RANGE_PX) if TestMode.inf_range else r # mode test : portée infinie
 
 
 # --- API publique pour les kits (ne pas lire les champs privés du SpellCaster) ---
@@ -433,6 +463,8 @@ func _nearest_enemy(max_dist: float) -> Node2D:
 ## Souris (kbm) : le curseur. Manette : direction du stick droit (au repos : null -> ennemi le plus proche).
 ## Tactile : toujours null. `aim_override` (Vector2) force un point (tests, replays).
 func get_manual_aim_point(range_px: float) -> Variant:
+	if _auto_ctx:
+		return null # lancer auto : ciblage automatique (monstre le plus proche), jamais la visée manuelle
 	if aim_override != null:
 		return aim_override
 	if not manual_aim_enabled or player == null:
@@ -513,6 +545,9 @@ func spawn_zone(s: SpellData, pos: Vector2, arc_dir := Vector2.ZERO) -> Node2D:
 ## ou null sans ennemi. O(n²) sur les seuls ennemis à portée, au lancement seulement.
 const DENSE_RADIUS_U := 1.5
 func densest_point(range_px: float) -> Variant:
+	if _auto_ctx: # lancer auto : le monstre le plus proche (pondération aim_priority comprise), pas le paquet
+		var near := _nearest_enemy(range_px)
+		return near.global_position if near != null else null
 	var cands: Array = []
 	for e in player.get_tree().get_nodes_in_group("enemies"):
 		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(player.global_position) <= range_px:

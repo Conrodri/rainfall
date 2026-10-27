@@ -130,6 +130,9 @@ func _build() -> void:
 	director = load(DIRECTOR).instantiate()
 	director.name = "Director"
 	world.add_child(director)
+	if TestMode.active: # mode test : pas d'apparitions tant que le panneau ne les active pas
+		director.set(&"spawning_enabled", TestMode.spawns)
+		director.set(&"waves_enabled", TestMode.spawns)
 
 	if ResourceLoader.exists(DAMAGE_NUMBERS):
 		damage_numbers = load(DAMAGE_NUMBERS).instantiate()
@@ -147,6 +150,7 @@ func _build() -> void:
 	stage = StageManager.new()
 	stage.name = "Stage"
 	stage.map_scene = map_scene
+	stage.bare_arena = TestMode.active # mode test : arène vide, sans coffre ni téléporteur
 	stage.stage_started.connect(_on_stage_started)
 	stage.victory_choice_requested.connect(_on_victory_choice)
 	stage.run_won.connect(func() -> void: end_run(true))
@@ -161,7 +165,10 @@ func _build() -> void:
 
 	hud = load(HUD).instantiate()
 	add_child(hud)
-	preload("res://scripts/ui/onboarding_hints.gd").attach(self, hud) # invites de 1re run (lot M-A), null si inactif
+	if TestMode.active:
+		TestOverlay.attach(self) # panneau du mode test + bouton tactile (À RETIRER AVANT LA SORTIE)
+	else:
+		preload("res://scripts/ui/onboarding_hints.gd").attach(self, hud) # invites de 1re run (lot M-A), null si inactif
 	hud.abandon_requested.connect(func() -> void: end_run(false, &"abandon"))
 	if hud.has_signal(&"save_quit_requested"):
 		hud.save_quit_requested.connect(_on_save_quit)
@@ -186,6 +193,8 @@ func _build() -> void:
 
 
 func _exit_tree() -> void:
+	if TestMode.active:
+		TestMode.end() # rend le profil d'avant (bac à sable) et coupe les triches
 	if ambiance != null and RunState.difficulty_changed.is_connected(ambiance.set_difficulty):
 		RunState.difficulty_changed.disconnect(ambiance.set_difficulty)
 	if Events.player_died.is_connected(_on_player_died):
@@ -357,6 +366,9 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 	if run_over:
 		return
 	run_over = true
+	if TestMode.active:
+		go_to_title() # mode test : ni récap, ni profil, ni rubis
+		return
 	if is_instance_valid(floor_card):
 		floor_card.queue_free()
 	RunState.running = false
@@ -420,6 +432,8 @@ func go_to_title() -> void:
 # --- Sauvegarde ----------------------------------------------------------------
 
 func _saves_enabled() -> bool:
+	if TestMode.active:
+		return false # mode test : jamais de sauvegarde de run
 	return saves_in_headless or DisplayServer.get_name() != "headless"
 
 

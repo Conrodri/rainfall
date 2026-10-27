@@ -13,6 +13,8 @@ signal new_run_requested
 signal progress_requested
 signal settings_requested
 signal credits_requested
+## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : arène d'invocation, triches ; rien n'est écrit au profil.
+signal test_mode_requested
 signal quit_requested
 signal quick_start_requested(config: Dictionary) ## {character, mode, spells} : relance du dernier personnage
 
@@ -292,6 +294,8 @@ func _rebuild_column() -> void:
 	settings_button.name = "Settings"
 	credits_button = _add_sub("Crédits", func(): credits_requested.emit())
 	credits_button.name = "Credits"
+	var test_button := _add_sub("Mode test", func(): test_mode_requested.emit()) # À RETIRER OU MASQUER AVANT LA SORTIE
+	test_button.name = "TestMode"
 	if Platform.can_quit() and not ios_override:
 		quit_button = _add_sub("Quitter", _on_quit_pressed)
 		quit_button.name = "Quit"

@@ -148,6 +148,7 @@ func _ready() -> void:
 	_build_tooltip()
 	_build_more()
 	RunState.item_added.connect(_on_item_added)
+	RunState.items_changed.connect(refresh) # retrait d'objets (mode test)
 	refresh()
 
 
@@ -155,6 +156,8 @@ func _exit_tree() -> void:
 	SpellTooltip.set_user_bubble(&"item_tip", false)
 	if RunState.item_added.is_connected(_on_item_added):
 		RunState.item_added.disconnect(_on_item_added)
+	if RunState.items_changed.is_connected(refresh):
+		RunState.items_changed.disconnect(refresh)
 
 
 func _build_tooltip() -> void:

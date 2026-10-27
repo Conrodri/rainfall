@@ -1,0 +1,234 @@
+extends Node
+## Mode test : arène, invocation de monstres et de tous les boss du catalogue, retrait / ajout d'objets, changement de
+## personnage et de skin sur place, triches (PV, recharge, portée, or), difficulté D, panneau, et surtout : RIEN écrit
+## au profil (écriture forcée active sur un fichier de test, aucune écriture ni changement à la sortie).
+## godot --headless --path game res://tests/test_mode_test.tscn  -> RESULT: OK
+
+const PROFILE_PATH := "user://test_mode_profile.json"
+
+var _fails := 0
+var _main: Node
+var _player: CharacterBody2D
+var _old_path := ""
+var _old_write := false
+var _snapshot := ""
+
+
+func _ready() -> void:
+	_run.call_deferred()
+
+
+func _check(label: String, cond: bool, detail: String = "") -> void:
+	if cond:
+		print("  ok   ", label)
+	else:
+		_fails += 1
+		print("  FAIL ", label, " ", detail)
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await get_tree().physics_frame
+
+
+func _alive() -> Array:
+	return get_tree().get_nodes_in_group(&"enemies").filter(func(e): return e is Enemy and e.active)
+
+
+func _run() -> void:
+	# profil de test : l'écriture est ACTIVE, pour prouver que le mode test ne passe jamais par save()
+	_old_path = Profile.path
+	_old_write = Profile.write_enabled
+	if FileAccess.file_exists(PROFILE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(PROFILE_PATH))
+	Profile.path = PROFILE_PATH
+	Profile.write_enabled = true
+	Profile.reset()
+	_snapshot = JSON.stringify(Profile.to_dict())
+
+	TestMode.begin()
+	_check("mode test actif, profil en bac à sable", TestMode.active and Profile.sandbox)
+	_main = load("res://scenes/main.tscn").instantiate()
+	_main.set(&"run_seed", 77)
+	add_child(_main)
+	await _main.game_ready
+	await _frames(5)
+	_player = _main.get(&"player")
+	var stage = _main.get(&"stage")
+	var director = _main.get(&"director")
+
+	# --- carte
+	_check("carte : arène de test", stage.map_id == "test_arena" and stage.map != null, str(stage.map_id))
+	_check("joueur posé au départ de l'arène", _player.global_position.distance_to(stage.map.to_global(stage.map.get_player_start())) < 2.0)
+	_check("director : aucune apparition par défaut", not TestMode.spawns)
+	await _frames(40)
+	_check("director : rien n'apparaît seul", _alive().is_empty())
+
+	# --- difficulté
+	_check("D de départ = 1", is_equal_approx(RunState.difficulty(), 1.0))
+	TestMode.set_difficulty(6.0)
+	_check("D réglée = 6", is_equal_approx(RunState.difficulty(), 6.0))
+	var t0: float = RunState.active_time_s
+	await _frames(20)
+	_check("minuterie figée", is_equal_approx(RunState.active_time_s, t0))
+	TestTools.clean(get_tree())
+	TestMode.set_difficulty(1.0)
+
+	# --- catalogue
+	var cat: Array = TestTools.monster_catalog()
+	var kinds := {}
+	for e in cat:
+		kinds[e.kind] = int(kinds.get(e.kind, 0)) + 1
+	print("  catalogue : ", kinds)
+	var ids := cat.map(func(e): return str(e.get("boss_id", "")))
+	_check("catalogue : raids présents", ids.has("drowned_idol") and ids.has("flood_gunner") and ids.has("salt_king"))
+	var first_tier: Dictionary = cat.filter(func(e): return e.kind == &"tier")[0]
+	var made: Array = TestTools.spawn(get_tree(), first_tier, 7, false)
+	_check("7 monstres invoqués", made.size() == 7 and _alive().size() == 7, str(made.size()))
+	TestMode.set_flag(&"freeze_ai", true)
+	var p0: Array = made.map(func(m): return m.global_position)
+	await _frames(40)
+	var still := true
+	for i in made.size():
+		still = still and (made[i] as Node2D).global_position.distance_to(p0[i]) < 0.5
+	_check("IA figée : aucun déplacement", still)
+	TestMode.set_flag(&"freeze_ai", false)
+	await _frames(40)
+	var moved := false
+	for i in made.size():
+		moved = moved or (made[i] as Node2D).global_position.distance_to(p0[i]) > 8.0
+	_check("IA rendue : ils bougent", moved)
+	TestTools.kill_all(get_tree())
+	await _frames(2)
+	_check("tuer tout", _alive().is_empty())
+
+	# --- boss : tous ceux du catalogue
+	var spawned := 0
+	for e in cat:
+		if e.kind == &"tier":
+			continue
+		var res: Array = TestTools.spawn(get_tree(), e, 1, false)
+		if res.size() == 1:
+			spawned += 1
+		else:
+			_check("boss %s invoqué" % e.get("boss_id", ""), false)
+		await _frames(6)
+		TestTools.clean(get_tree())
+		await _frames(2)
+	_check("tous les boss et mini-boss invoqués puis retirés", spawned == cat.size() - kinds.get(&"tier", 0), "%d" % spawned)
+
+	# --- objets
+	var hp0: float = _player.max_hp
+	TestTools.add_item(get_tree(), &"bague_de_vigueur")
+	_check("objet ajouté", RunState.stacks(&"bague_de_vigueur") == 1 and _player.max_hp > hp0, str(_player.max_hp))
+	TestTools.add_item(get_tree(), &"bague_de_vigueur")
+	_check("2 exemplaires", RunState.stacks(&"bague_de_vigueur") == 2)
+	_check("objet retiré : -1", TestTools.remove_item(get_tree(), &"bague_de_vigueur") and RunState.stacks(&"bague_de_vigueur") == 1)
+	TestTools.remove_item(get_tree(), &"bague_de_vigueur")
+	_check("dernier retiré : entrée supprimée", not RunState.items.has(&"bague_de_vigueur") and is_equal_approx(_player.max_hp, hp0))
+	TestTools.add_item(get_tree(), &"bague_de_vigueur")
+	TestTools.clear_items(get_tree())
+	_check("tout retirer", RunState.items.is_empty() and is_equal_approx(_player.max_hp, hp0))
+
+	# --- triches
+	_player._invuln = 0.0
+	var hp1: float = _player.hp
+	var dmg_seen := [0.0]
+	var on_hit := func(a: float, _s: Node) -> void: dmg_seen[0] += a
+	Events.player_damaged.connect(on_hit)
+	TestMode.set_flag(&"god", true)
+	_player.take_damage(10.0, null)
+	_check("PV illimités : coup signalé, aucun PV perdu", dmg_seen[0] > 0.0 and is_equal_approx(_player.hp, hp1), "%s %s" % [dmg_seen[0], _player.hp])
+	TestMode.set_flag(&"god", false)
+	_player._invuln = 0.0
+	_player.take_damage(10.0, null)
+	_check("sans triche : les PV baissent", _player.hp < hp1)
+	Events.player_damaged.disconnect(on_hit)
+	_player._invuln = 0.0
+	_player.hp = 1.0
+	_player.take_damage(50.0, null)
+	_check("KO en mode test : PV rendus, pas de mort", not _player.dead and is_equal_approx(_player.hp, _player.max_hp))
+	var sp = _player.spells
+	var sd = sp.character.spells[2]
+	var r0: float = sp.range_px(sd)
+	TestMode.set_flag(&"inf_range", true)
+	_check("portée infinie", sp.range_px(sd) >= TestMode.INF_RANGE_PX and r0 < TestMode.INF_RANGE_PX)
+	TestMode.set_flag(&"inf_range", false)
+	_check("portée normale rendue", is_equal_approx(sp.range_px(sd), r0))
+	RunState.gold = 5.0
+	TestMode.set_flag(&"inf_gold", true)
+	_check("or infini : achat accepté", RunState.spend_gold(1.0e9))
+	TestMode.set_flag(&"inf_gold", false)
+	_check("sans or infini : refus", not RunState.spend_gold(1.0e9))
+
+	# --- changement de personnage
+	TestTools.add_item(get_tree(), &"bague_de_vigueur")
+	_player.global_position += Vector2(300, 100)
+	var pos0: Vector2 = _player.global_position
+	var chars: Array = TestTools.characters()
+	_check("10 personnages", chars.size() == 10, str(chars.size()))
+	for c in chars:
+		var cid := StringName(str(c.id))
+		var ok: bool = TestTools.switch_character(get_tree(), cid)
+		await _frames(3)
+		var spell_nodes := _player.get_children().filter(func(n): return n is SpellCaster).size()
+		_check("%s : changement, un seul SpellCaster, objets et position gardés" % cid, ok and _player.character.id == cid and RunState.character == cid and spell_nodes == 1 and RunState.stacks(&"bague_de_vigueur") == 1 and _player.global_position.distance_to(pos0) < 4.0, str(_player.character.id))
+		_player.spells.cast(2)
+		_player.spells.cast(3)
+		await _frames(4)
+	TestTools.switch_character(get_tree(), &"ardent")
+	await _frames(2)
+
+	# --- skins
+	for c in chars:
+		var cid := StringName(str(c.id))
+		var sk: Array = c.get("skins", [])
+		if sk.is_empty():
+			continue
+		var sid := str(sk[0].get("id", ""))
+		var delivered: bool = Skins.has_assets(cid, sid)
+		TestTools.switch_character(get_tree(), cid)
+		TestTools.set_skin(get_tree(), cid, sid)
+		await _frames(2)
+		_check("skin %s : équipé malgré le verrou profil (livré=%s)" % [sid, delivered], Skins.equipped(cid) == sid)
+		TestTools.set_skin(get_tree(), cid, "")
+	TestTools.switch_character(get_tree(), &"ardent")
+
+	# --- panneau
+	var overlay = _main.get_node_or_null(^"TestOverlay")
+	_check("panneau attaché", overlay != null and overlay.panel != null and not overlay.panel.visible)
+	if overlay != null:
+		overlay.open()
+		_check("panneau ouvert : jeu en pause", get_tree().paused and overlay.is_open())
+		for t in TestPanel.TABS:
+			overlay.panel._select_tab(t[1])
+			await get_tree().process_frame
+			_check("onglet %s construit" % t[0], overlay.panel._body.get_child_count() > 0)
+		overlay.close()
+		_check("panneau fermé : pause levée", not get_tree().paused)
+	get_tree().paused = false
+
+	# --- profil
+	_check("profil : aucun fichier écrit", not FileAccess.file_exists(PROFILE_PATH))
+	Profile.save()
+	Profile.add_stat("kills", 5.0)
+	_check("profil : écritures tentées, aucun fichier", not FileAccess.file_exists(PROFILE_PATH))
+	_main.end_run(false, &"abandon")
+	await _frames(2)
+	_check("fin de run en mode test : pas de récap", _main.get(&"end_screen") == null)
+	_check("fin de run : aucun fichier", not FileAccess.file_exists(PROFILE_PATH))
+
+	remove_child(_main)
+	_main.queue_free()
+	await _frames(3)
+	_check("sortie : mode test coupé", not TestMode.active and not Profile.sandbox)
+	_check("sortie : profil identique à l'entrée", JSON.stringify(Profile.to_dict()) == _snapshot)
+	_check("sortie : drapeaux remis", not TestMode.god and not TestMode.inf_range and not TestMode.inf_gold and TestMode.skin_override.is_empty())
+	if FileAccess.file_exists(PROFILE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(PROFILE_PATH))
+	Profile.path = _old_path
+	Profile.write_enabled = _old_write
+	Profile.reset()
+
+	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
+	get_tree().quit(0 if _fails == 0 else 1)

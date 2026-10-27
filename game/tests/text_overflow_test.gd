@@ -178,7 +178,6 @@ func _hud_runs() -> void:
 			var tag := "%dx%d/%s" % [sz.x, sz.y, "tactile" if touch else "souris"]
 			_scan(hud, "%s HUD" % tag)
 			_scan_draw(hud, "%s HUD/_draw" % tag)
-			_scan_world(_main, "%s monde" % tag, hud)
 			_scan_hud_zones(hud, "%s HUD/zones" % tag)
 			await _hud_extras(hud, tag)
 			hud.pause_menu.open()
@@ -283,42 +282,8 @@ func _collect_draw(n: Node, out: Array[Control]) -> void:
 		_collect_draw(ch, out)
 
 
-## Textes du monde (Label hors CanvasLayer) : ceux qui touchent la vue doivent y tenir ENTIÈREMENT et ne recouvrir
-## aucune zone réservée du HUD.
-func _scan_world(root: Node, screen: String, hud: Hud) -> void:
-	var view := get_viewport().get_visible_rect()
-	var reserved := hud.reserved_rects()
-	var labels: Array[Label] = []
-	_collect_world(root, labels)
-	for l in labels:
-		if l.text.strip_edges() == "" or not l.is_visible_in_tree() or l.get_global_transform_with_canvas().get_scale().abs().x < 0.01:
-			continue
-		var xf := l.get_global_transform_with_canvas()
-		var ms := l.get_minimum_size()
-		var w := maxf(l.size.x, ms.x)
-		var h := maxf(l.size.y, ms.y)
-		var loc := Rect2(Vector2((l.size.x - w) * 0.5, 0.0), Vector2(w, h))
-		var r := xf * loc
-		if not r.intersects(view):
-			continue
-		_checked += 1
-		var cut := maxf(maxf(view.position.x - r.position.x, r.end.x - view.end.x), maxf(view.position.y - r.position.y, r.end.y - view.end.y))
-		if cut > TOL:
-			failures.append("%s | %s | « %s » | texte du monde coupé par le bord de l'écran de %.0f px" % [screen, l.get_path(), l.text.left(40), cut])
-		for rr in reserved:
-			var inter := rr.intersection(r)
-			if inter.size.x > TOL and inter.size.y > TOL:
-				failures.append("%s | %s | « %s » | texte du monde %s sur une zone du HUD %s de %.0f px" % [screen, l.get_path(), l.text.left(40), r, rr, minf(inter.size.x, inter.size.y)])
-				break
-
-
-func _collect_world(n: Node, out: Array[Label]) -> void:
-	for ch in n.get_children():
-		if ch is CanvasLayer:
-			continue
-		if ch is Label:
-			out.append(ch as Label)
-		_collect_world(ch, out)
+## Textes du monde (prix des coffres…) : plus contrôlés ici. Décision du joueur (27/10/2026) : ils restent accrochés
+## à leur objet, quitte à sortir de l'écran ou à passer sous le HUD, au lieu de glisser pour rester lisibles.
 
 
 ## Zones du HUD (reserved_rects) : aucune ne doit en recouvrir une autre.
