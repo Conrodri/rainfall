@@ -1,184 +1,142 @@
 # Rapport de la file de nuit Codex
-- 27/10 18:12 == groupe 1
-- 27/10 18:12 groupe 1 déjà fini, sauté
-- 27/10 18:12 == groupe 2
-- 27/10 18:12 groupe 2 déjà fini, sauté
-- 27/10 18:12 == groupe 3
-- 27/10 18:12 groupe 3 déjà fini, sauté
-- 27/10 18:12 == groupe 4
-- 27/10 18:12 groupe 4 déjà fini, sauté
-- 27/10 18:12 == groupe 5
-- 27/10 18:12 groupe 5 déjà fini, sauté
-- 27/10 18:12 == groupe 6
-- 27/10 18:12 groupe 6 déjà fini, sauté
-- 27/10 18:12 == groupe 7
-- 27/10 18:12 groupe 7 déjà fini, sauté
-- 27/10 18:12 == groupe 8
-- 27/10 18:12 groupe 8 déjà fini, sauté
-- 27/10 18:12 == groupe 9
-- 27/10 18:12 groupe 9 déjà fini, sauté
-- 27/10 18:12 == groupe 10
-- 27/10 18:12 groupe 10 déjà fini, sauté
-- 27/10 18:12 == groupe 11
-- 27/10 18:12 groupe 11 déjà fini, sauté
-- 27/10 18:12 == groupe 10
-- 27/10 18:12 groupe 10 déjà fini, sauté
-- 27/10 18:12 == groupe 11
-- 27/10 18:12 groupe 11 déjà fini, sauté
-- 27/10 18:12 == groupe 12
-- 27/10 18:12 groupe 12 déjà fini, sauté
-- 27/10 18:12 == groupe 13
-- 27/10 18:12 groupe 13 déjà fini, sauté
-- 27/10 18:12 == groupe 11
-- 27/10 18:12 groupe 11 déjà fini, sauté
-- 27/10 18:12 == groupe 12
-- 27/10 18:12 groupe 12 déjà fini, sauté
-- 27/10 18:12 == groupe 13
-- 27/10 18:12 groupe 13 déjà fini, sauté
-- 27/10 18:12 == groupe 12
-- 27/10 18:12 groupe 12 déjà fini, sauté
-- 27/10 18:12 == groupe 13
-- 27/10 18:12 groupe 13 déjà fini, sauté
-- 27/10 18:12 == groupe 12
-- 27/10 18:12 groupe 12 déjà fini, sauté
-- 27/10 18:12 == groupe 14
-- 27/10 18:12 groupe 14 déjà fini, sauté
-- 27/10 18:12 == groupe 15
-- 27/10 18:12 groupe 15 déjà fini, sauté
-- 27/10 18:12 == groupe 16
-- 27/10 18:12 groupe 16 déjà fini, sauté
-- 27/10 18:12 == groupe 17
-- 27/10 18:12 groupe 17 déjà fini, sauté
-- 27/10 18:12 == groupe 18
-- 27/10 18:12 groupe 18 déjà fini, sauté
-- 27/10 18:12 == groupe 19
-- 27/10 18:12 groupe 19 déjà fini, sauté
-- 27/10 18:12 == groupe 20
-- 27/10 18:12 groupe 20 déjà fini, sauté
-- 27/10 18:12 == groupe 21
-- 27/10 18:12 groupe 21 déjà fini, sauté
-- 27/10 18:12 == groupe 16
-- 27/10 18:12 groupe 16 déjà fini, sauté
-- 27/10 18:12 == groupe 17
-- 27/10 18:12 groupe 17 déjà fini, sauté
-- 27/10 18:12 == groupe 22
-- 27/10 18:12 groupe 22 déjà fini, sauté
-- 27/10 18:12 == groupe 16
-- 27/10 18:12 groupe 16 déjà fini, sauté
-- 27/10 18:12 == groupe 23
-- 27/10 18:12 groupe 23 déjà fini, sauté
-- 27/10 18:12 == groupe 24
-- 27/10 18:12 groupe 24 déjà fini, sauté
-- 27/10 18:12 == groupe 25
-- 27/10 18:12 groupe 25 déjà fini, sauté
-- 27/10 18:12 == groupe 26
-- 27/10 18:12 groupe 26 déjà fini, sauté
-- 27/10 18:12 == groupe 27
-- 27/10 18:12 groupe 27 déjà fini, sauté
-- 27/10 18:12 == groupe 28
-- 27/10 18:12 groupe 28 déjà fini, sauté
-- 27/10 18:12 == groupe 29
-- 27/10 18:12 groupe 29 déjà fini, sauté
-- 27/10 18:12 == groupe 30
-- 27/10 18:12 groupe 30 déjà fini, sauté
-- 27/10 18:12 == groupe 31
-- 27/10 18:12 groupe 31 déjà fini, sauté
-- 27/10 18:12 == groupe 32
-- 27/10 18:12 groupe 32 déjà fini, sauté
-- 27/10 18:12 == groupe 33
-- 27/10 18:12 groupe 33 déjà fini, sauté
-- 27/10 18:12 == groupe 34
-- 27/10 18:12 groupe 34 déjà fini, sauté
-- 27/10 18:12 == groupe 35
-- 27/10 18:12 groupe 35 déjà fini, sauté
-- 27/10 18:12 == groupe 36
-- 27/10 18:12 groupe 36 déjà fini, sauté
-- 27/10 18:12 == groupe 37
-- 27/10 18:12 groupe 37 déjà fini, sauté
-- 27/10 18:12 == groupe 38
-- 27/10 18:12 groupe 38 déjà fini, sauté
-- 27/10 18:12 == groupe 39
-- 27/10 18:12 groupe 39 déjà fini, sauté
-- 27/10 18:12 == groupe 40
-- 27/10 18:12 groupe 40 déjà fini, sauté
-- 27/10 18:12 == groupe 41
-- 27/10 18:12 groupe 41 déjà fini, sauté
-- 27/10 18:12 == groupe 42
-- 27/10 18:13 lancement art/tools/ui/_passive_icons_a.txt
-- 27/10 18:13 lancement art/tools/ui/_passive_icons_b.txt
-- 27/10 18:15 fin art/tools/ui/_passive_icons_a.txt : 64 ; aucun `_n`. Planche vérifiée : `art/tools/ui/passives_a_contact.png` — 128/72/48 px. Aucun `.gd`/`.tscn` modifié ; politique textures appliquée. `sprites_test.tscn` → `RESULT: OK`. `texture_budget_test.tscn` → `RESULT: FAIL (1)` : budget global `219 Mo <= 180 Mo` dépassé ; hors lot.
-- 27/10 18:15 fin art/tools/ui/_passive_icons_b.txt : : pièce sans texte. Planche : `art/tools/ui/passives_b_contact.png` — 128/72/48 px. `sprites_test.tscn` → `RESULT: OK`. `texture_budget_test.tscn` → `RESULT: FAIL (1)` : `219 Mo <= 180 Mo`. Écart Rainette : clé source `avalement`, fichier demandé `souffle.png` ; aucun `.gd/.tscn` modifié.
-- 27/10 18:15 sprites_test après groupe 42 : RESULT: OK
-- 27/10 18:15 == groupe 43
-- 27/10 18:15 lancement art/tools/night/_tocp1.txt
-- 27/10 18:16 lancement art/tools/night/_tocp2.txt
-- 27/10 18:21 fin art/tools/night/_tocp2.txt : act,zone,arc,end}.tres` ; [câblage Claude](art/tools/tocsin/tocp2_wiring.md). Import Godot PASS ; `sprites_test.tscn` : `RESULT: OK`. Budget global avant/après : 218.765 → 219.661 Mo ; 3 violations préexistantes, modifications TOCP1 concurrentes incluses. Aucun `.gd`/`.tscn` modifié par TOCP2.
-- 27/10 18:23 fin art/tools/night/_tocp1.txt : ULT: FAIL (1)`, dépassement préexistant. Claude : retirer le placeholder `_draw`, phase `PILLAR` ; aucun `.gd/.tscn` écrit. [Planche contact](/C:/Users/const/Documents/Rainfall/art/blender/cel/tocp1/contact.png) · [Contrôles](/C:/Users/const/Documents/Rainfall/art/blender/cel/tocp1/checks.json)
-- 27/10 18:23 sprites_test après groupe 43 : RESULT: OK
-- 27/10 18:23 == groupe 44
-- 27/10 18:23 lancement art/tools/night/_tocp3.txt
-- 27/10 18:23 lancement art/tools/night/_aut1.txt
-- 27/10 18:27 fin art/tools/night/_aut1.txt :  import terminé ; audio_test : RESULT: OK après relance (« ducking relâché » initialement FAIL). audio_director_test : RESULT: OK ; « ERROR: 2 resources still in use at exit ». `.impact` et `.end` non lus actuellement ; câblage Claude : `Audio.play(&"spell.tocsin_bras_pilier.impact", pos)`.
-- 27/10 18:31 fin art/tools/night/_tocp3.txt : ; aucun `.gd`/`.tscn` écrit.   Import réussi ; `sprites_test` : `RESULT: OK` ; [planche contact](/C:/Users/const/Documents/rainfall/art/tools/tocsin/tocp3_contact.png).   Budget mobile : 219.7 → 218.9 Mo ; `texture_budget_test` : `RESULT: FAIL (1)` — dépassement global préexistant de 180 Mo.
-- 27/10 18:31 sprites_test après groupe 44 : RESULT: OK
-- 27/10 18:31 == groupe 45
-- 27/10 18:31 lancement art/tools/night/_tocvi.txt
-- 27/10 18:32 lancement art/tools/night/_vigie_icons_fix.txt
-- 27/10 18:33 fin art/tools/night/_tocvi.txt : ox `(10, 8, 121, 120)` ; aucun `_n` ni `_e`. - Scripts relançables : `art/tools/night/tocvi_build.py`, `tocvi_finish.py`. - [Planche vérifiée](art/tools/night/tocvi_contact.png). - Import réussi ; `sprites_test` : `RESULT: OK`. - `texture_budget_test` : `RESULT: FAIL (1)` — `219 Mo <= 180 Mo`.
-- 27/10 18:34 fin art/tools/night/_vigie_icons_fix.txt : 4 PNG remplacés, 128x128 optimisés ; aucun autre fichier modifié. Luminance Rec.709 à 32x32 : `vigie_trait` 0,2304 ; `vigie_fusee` 0,2168. `vigie_filet` 0,2871 ; `vigie_grele` 0,2614. Blender --background ; aucun `_n.png` produit. `game/tests/spell_icon_contrast_test.tscn` : `RESULT: OK`.
-- 27/10 18:34 sprites_test après groupe 45 : RESULT: OK
-- 27/10 18:34 == groupe 46
-- 27/10 18:34 lancement art/tools/night/_talvi2.txt
-- 27/10 18:36 fin art/tools/night/_talvi2.txt : erre à eau, étincelles ; aucune jambe. 128x128 RGBA ; bbox (10, 8, 121, 120) ; autres icônes et .import intacts ; aucun _n/_e. Planche vérifiée : `art/tools/night/talvi_contact.png`. sprites_test : `RESULT: OK`. texture_budget_test : `RESULT: FAIL (1)` — budget global ASTC : 219 Mo <= 180 Mo.
-- 27/10 18:36 sprites_test après groupe 46 : RESULT: OK
-- 27/10 18:36 == groupe 47
-- 27/10 18:36 lancement art/tools/night/_skin_ardent.txt
-- 27/10 18:36 lancement art/tools/night/_skin_vigie.txt
-- 27/10 18:40 fin art/tools/night/_skin_ardent.txt : ct.png`. Ajout : png **4.786162 Mo** ; mobile **2.637777 Mo**. Import sans erreur ; sprites_test, player_test, chargement SpriteFrames : `RESULT: OK` ; avertissements de nettoyage player_test. Écarts : `texture_budget_test` → `RESULT: FAIL (2)` ; **223 Mo > 180 Mo**, imports Vigie hors politique.
-- 27/10 18:41 fin art/tools/night/_skin_vigie.txt : . IoU alpha minimum : **0.9998349017665511** ; accent : **1.0** ; aucun `_n`. Import sans erreur ; sprites, Vigie, chargement SpriteFrames : `RESULT: OK`. Budget global : **223.813 Mo / 180 Mo** ; `RESULT: FAIL (1)`. Contrôles : `_skin_vigie_verification.json` ; planche : `_skin_vigie_contact.png`.
-- 27/10 18:41 sprites_test après groupe 47 : RESULT: OK
-- 27/10 18:41 == groupe 48
-- 27/10 18:41 lancement art/tools/night/_skin_rictus.txt
-- 27/10 18:41 lancement art/tools/night/_skin_averse.txt
-- 27/10 18:48 fin art/tools/night/_skin_averse.txt : mes ; aucun `_n`. Ajout `characters/averse` : png `6.0938 Mo` ; mobile `3.2461 Mo`. Import sans erreur ; sprites/averse `RESULT: OK` ; chargement skin : `72 animations`. Écarts : budget global `229.5035 Mo > 180 Mo` ; sortie Averse `4 resources still in use` ; test supplémentaire skins `FAIL (1)`.
-- 27/10 18:48 fin art/tools/night/_skin_rictus.txt :  ; [planche comparative](art/tools/night/_skin_rictus_contact.png). IoU alpha/accent : 1.0 ; import sans erreur ; sprites/rictus/chargement : `RESULT: OK`. `characters/rictus` : +4.335 Mo png ; +2.444 Mo mobile. Écart global : 229.503 Mo ; `texture_budget_test` : `RESULT: FAIL (1)`, plafond 180 Mo.
-- 27/10 18:48 sprites_test après groupe 48 : RESULT: OK
-- 27/10 18:48 == groupe 49
-- 27/10 18:48 lancement art/tools/night/_skin_arpenteuse.txt
-- 27/10 18:49 lancement art/tools/night/_skin_rainette.txt
-- 27/10 19:03 fin art/tools/night/_skin_rainette.txt : ; `2.813018798828125` mobile Mo. Godot : import sans erreur ; `sprites_test`, `rainette_test`, 112 animations — OK. Écart : `texture_budget_test` FAIL ; global `234.47331523895264` mobile Mo pour `180` Mo. Preuves : `art/tools/night/_skin_rainette_verification.json`, `_skin_rainette_contact.png`.
-- 27/10 19:11 fin art/tools/night/_skin_arpenteuse.txt : t : `3.81 Mo` PNG ; `2.16 Mo` mobile. Total mobile : `234.48 Mo / 180 Mo` ; `texture_budget_test` : `FAIL`. Import : `0` erreur ; sprites, Arpenteuse et chargement SpriteFrames : `RESULT: OK`. Écart : `arpenteuse_test` signale `Invalid polygon data, triangulation failed` et des ressources en fuite.
-- 27/10 19:11 sprites_test après groupe 49 : RESULT: OK
-- 27/10 19:11 == groupe 50
-- 27/10 19:11 lancement art/tools/night/_skin_avare.txt
-- 27/10 19:11 lancement art/tools/night/_skin_bourbe.txt
-- 27/10 19:17 fin art/tools/night/_skin_avare.txt : Ajout : png +6.191 Mo ; mobile +3.572 Mo. IoU alpha minimum 1.000000 ; accent 1.000000 ; rapport et contact `_skin_avare_*`. Import : 0 erreur ; sprites_test, avare_test, chargement SpriteFrames : RESULT: OK. Écarts : budget global 241.959 / 180 Mo ; avare_test : `4 resources still in use at exit`.
-- 27/10 19:17 fin art/tools/night/_skin_bourbe.txt : gés inchangés ; aucun `_n`. Vérification : `_skin_bourbe_verification.json` ; contact : `_skin_bourbe_contact.png`. Godot : import sans erreur ; sprites, bourbe, chargement SpriteFrames → `RESULT: OK`. Écart global : **241.959 Mo** ; `texture_budget_test` : **243 Mo > 180 Mo**, échec attendu.
-- 27/10 19:17 sprites_test après groupe 50 : RESULT: OK
-- 27/10 19:17 == groupe 51
-- 27/10 19:17 lancement art/tools/night/_skin_morfil.txt
-- 27/10 19:18 lancement art/tools/night/_skin_tocsin.txt
-- 27/10 19:27 fin art/tools/night/_skin_morfil.txt : s : `12 resources still in use at exit` ; budget global **253.304 Mo / 180 Mo**, imports Tocsin hors politique. [Vérification](/C:/Users/const/Documents/Rainfall/art/tools/night/_skin_morfil_verification.json) · [Contact](/C:/Users/const/Documents/Rainfall/art/tools/night/_skin_morfil_contact.png)
-- 27/10 19:47 fin art/tools/night/_skin_tocsin.txt : 2040817` ; import, tests sprites/Tocsin, chargement des `152` animations : OK. - `texture_budget_test` : `RESULT: FAIL (1)` ; total `264 Mo`, limite `180 Mo`, cible `95 Mo`. - Écarts : arcs hérités bleus devenus orange ; référence absente `arm_ground_e.png` neutralisée dans le `.tres` du skin.
-- 27/10 19:47 sprites_test après groupe 51 : RESULT: OK
-- 27/10 19:47 == groupe 52
-- 27/10 19:47 lancement art/tools/night/_raid_kit.txt
-- 27/10 19:49 quota Codex épuisé (art/tools/night/_lograid_kit.txt), reprise vers 23:16
-- 27/10 23:15 lancement art/tools/night/_raid_kit.txt
-- 27/10 23:19 fin art/tools/night/_raid_kit.txt : he contact vérifiée](art/tools/night/_raid_kit_contact.png). Import : `IMPORT_EXIT=0` ; `sprites_test.tscn` : `RESULT: OK`. `texture_budget.py` : `Textures > 4096 px de côté : 0`. `texture_budget_test.tscn` : `RESULT: FAIL (1)` — budget global `267 Mo` / `180 Mo` ; correction hors périmètre.
-- 27/10 23:19 sprites_test après groupe 52 : RESULT: OK
-- 27/10 23:19 == groupe 53
-- 27/10 23:19 lancement art/tools/night/_raid_drowned_idol.txt
-- 27/10 23:32 fin art/tools/night/_raid_drowned_idol.txt : ier à même échelle. Import sans erreur ; `sprites_test`, `drowned_idol_boss_test` : `RESULT: OK`. `0` texture > `4096` ; budget : `RESULT: FAIL` — `272 Mo <= 180 Mo`, lot `5.47 Mo`. `floor1_boss_test` : `RESULT: FAIL` — attend 3 boss, liste actuelle de 4 ; correction interdite dans les `.gd`.
-- 27/10 23:32 sprites_test après groupe 53 : RESULT: OK
-- 27/10 23:32 == groupe 54
-- 27/10 23:32 lancement art/tools/night/_raid_flood_gunner.txt
-- 27/10 23:48 fin art/tools/night/_raid_flood_gunner.txt : ht/_raid_flood_gunner_contact.png) ; albédo `102.46/255`.   Import OK ; `sprites_test`, `flood_gunner_boss_test`, `floor3_boss_test` : `RESULT: OK`.   Sortie du test boss : `ERROR: 14 resources still in use at exit`.   Budget global FAIL : `276 Mo > 180 Mo` ; lot `3.9 Mo` ; aucune texture > `4096`.
-- 27/10 23:48 sprites_test après groupe 54 : RESULT: OK
-- 27/10 23:48 == groupe 55
-- 27/10 23:48 lancement art/tools/night/_raid_salt_king.txt
-- 27/10 23:48 lancement art/tools/audio/_raid_sfx.txt
-- 27/10 23:51 fin art/tools/audio/_raid_sfx.txt : n_raid.py`, `raid_manifest.json`, `verify_raid.py` créés. `game/assets/audio/MANIFEST.md` : section « raid » ajoutée. Vérification : PASS ; crête maximale −1.639 dBFS. Godot `--headless --path game --import` : PASS, aucune erreur. Aucun `.gd` / `.tscn` modifié ; aucune normal map produite.
-- 27/10 23:58 fin art/tools/night/_raid_salt_king.txt : 4096. Import sans erreur ; `sprites_test`, `salt_king_boss_test` : `RESULT: OK`. Deux `RESULT: FAIL (1)` hors périmètre : budget mobile 289 Mo / 180 Mo ; étage 4 attendu à 3 boss. [Planche comparative avec le Reclus](C:/Users/const/Documents/Rainfall/art/tools/night/_raid_salt_king_contact.png).
-- 27/10 23:58 sprites_test après groupe 55 : RESULT: OK
-- 27/10 23:58 FILE TERMINÉE
+- 28/10 00:01 == groupe 1
+- 28/10 00:01 groupe 1 déjà fini, sauté
+- 28/10 00:01 == groupe 2
+- 28/10 00:01 groupe 2 déjà fini, sauté
+- 28/10 00:01 == groupe 3
+- 28/10 00:01 groupe 3 déjà fini, sauté
+- 28/10 00:01 == groupe 4
+- 28/10 00:01 groupe 4 déjà fini, sauté
+- 28/10 00:01 == groupe 5
+- 28/10 00:01 groupe 5 déjà fini, sauté
+- 28/10 00:01 == groupe 6
+- 28/10 00:01 groupe 6 déjà fini, sauté
+- 28/10 00:01 == groupe 7
+- 28/10 00:01 groupe 7 déjà fini, sauté
+- 28/10 00:01 == groupe 8
+- 28/10 00:01 groupe 8 déjà fini, sauté
+- 28/10 00:01 == groupe 9
+- 28/10 00:01 groupe 9 déjà fini, sauté
+- 28/10 00:01 == groupe 10
+- 28/10 00:01 groupe 10 déjà fini, sauté
+- 28/10 00:01 == groupe 11
+- 28/10 00:01 groupe 11 déjà fini, sauté
+- 28/10 00:01 == groupe 10
+- 28/10 00:01 groupe 10 déjà fini, sauté
+- 28/10 00:01 == groupe 11
+- 28/10 00:01 groupe 11 déjà fini, sauté
+- 28/10 00:01 == groupe 12
+- 28/10 00:01 groupe 12 déjà fini, sauté
+- 28/10 00:01 == groupe 13
+- 28/10 00:01 groupe 13 déjà fini, sauté
+- 28/10 00:01 == groupe 11
+- 28/10 00:01 groupe 11 déjà fini, sauté
+- 28/10 00:01 == groupe 12
+- 28/10 00:01 groupe 12 déjà fini, sauté
+- 28/10 00:01 == groupe 13
+- 28/10 00:01 groupe 13 déjà fini, sauté
+- 28/10 00:01 == groupe 12
+- 28/10 00:01 groupe 12 déjà fini, sauté
+- 28/10 00:01 == groupe 13
+- 28/10 00:01 groupe 13 déjà fini, sauté
+- 28/10 00:01 == groupe 12
+- 28/10 00:01 groupe 12 déjà fini, sauté
+- 28/10 00:01 == groupe 14
+- 28/10 00:01 groupe 14 déjà fini, sauté
+- 28/10 00:01 == groupe 15
+- 28/10 00:01 groupe 15 déjà fini, sauté
+- 28/10 00:01 == groupe 16
+- 28/10 00:01 groupe 16 déjà fini, sauté
+- 28/10 00:01 == groupe 17
+- 28/10 00:01 groupe 17 déjà fini, sauté
+- 28/10 00:01 == groupe 18
+- 28/10 00:01 groupe 18 déjà fini, sauté
+- 28/10 00:01 == groupe 19
+- 28/10 00:01 groupe 19 déjà fini, sauté
+- 28/10 00:01 == groupe 20
+- 28/10 00:01 groupe 20 déjà fini, sauté
+- 28/10 00:01 == groupe 21
+- 28/10 00:01 groupe 21 déjà fini, sauté
+- 28/10 00:01 == groupe 16
+- 28/10 00:01 groupe 16 déjà fini, sauté
+- 28/10 00:01 == groupe 17
+- 28/10 00:01 groupe 17 déjà fini, sauté
+- 28/10 00:01 == groupe 22
+- 28/10 00:01 groupe 22 déjà fini, sauté
+- 28/10 00:01 == groupe 16
+- 28/10 00:01 groupe 16 déjà fini, sauté
+- 28/10 00:01 == groupe 23
+- 28/10 00:01 groupe 23 déjà fini, sauté
+- 28/10 00:01 == groupe 24
+- 28/10 00:01 groupe 24 déjà fini, sauté
+- 28/10 00:01 == groupe 25
+- 28/10 00:01 groupe 25 déjà fini, sauté
+- 28/10 00:01 == groupe 26
+- 28/10 00:01 groupe 26 déjà fini, sauté
+- 28/10 00:01 == groupe 27
+- 28/10 00:01 groupe 27 déjà fini, sauté
+- 28/10 00:01 == groupe 28
+- 28/10 00:01 groupe 28 déjà fini, sauté
+- 28/10 00:01 == groupe 29
+- 28/10 00:01 groupe 29 déjà fini, sauté
+- 28/10 00:01 == groupe 30
+- 28/10 00:01 groupe 30 déjà fini, sauté
+- 28/10 00:01 == groupe 31
+- 28/10 00:01 groupe 31 déjà fini, sauté
+- 28/10 00:01 == groupe 32
+- 28/10 00:01 groupe 32 déjà fini, sauté
+- 28/10 00:01 == groupe 33
+- 28/10 00:01 groupe 33 déjà fini, sauté
+- 28/10 00:01 == groupe 34
+- 28/10 00:01 groupe 34 déjà fini, sauté
+- 28/10 00:01 == groupe 35
+- 28/10 00:01 groupe 35 déjà fini, sauté
+- 28/10 00:01 == groupe 36
+- 28/10 00:01 groupe 36 déjà fini, sauté
+- 28/10 00:01 == groupe 37
+- 28/10 00:01 groupe 37 déjà fini, sauté
+- 28/10 00:01 == groupe 38
+- 28/10 00:01 groupe 38 déjà fini, sauté
+- 28/10 00:01 == groupe 39
+- 28/10 00:01 groupe 39 déjà fini, sauté
+- 28/10 00:01 == groupe 40
+- 28/10 00:01 groupe 40 déjà fini, sauté
+- 28/10 00:01 == groupe 41
+- 28/10 00:01 groupe 41 déjà fini, sauté
+- 28/10 00:01 == groupe 42
+- 28/10 00:01 groupe 42 déjà fini, sauté
+- 28/10 00:01 == groupe 43
+- 28/10 00:01 groupe 43 déjà fini, sauté
+- 28/10 00:01 == groupe 44
+- 28/10 00:01 groupe 44 déjà fini, sauté
+- 28/10 00:01 == groupe 45
+- 28/10 00:01 groupe 45 déjà fini, sauté
+- 28/10 00:01 == groupe 46
+- 28/10 00:01 groupe 46 déjà fini, sauté
+- 28/10 00:01 == groupe 47
+- 28/10 00:01 groupe 47 déjà fini, sauté
+- 28/10 00:01 == groupe 48
+- 28/10 00:01 groupe 48 déjà fini, sauté
+- 28/10 00:01 == groupe 49
+- 28/10 00:01 groupe 49 déjà fini, sauté
+- 28/10 00:01 == groupe 50
+- 28/10 00:01 groupe 50 déjà fini, sauté
+- 28/10 00:01 == groupe 51
+- 28/10 00:01 groupe 51 déjà fini, sauté
+- 28/10 00:01 == groupe 52
+- 28/10 00:01 groupe 52 déjà fini, sauté
+- 28/10 00:01 == groupe 53
+- 28/10 00:01 groupe 53 déjà fini, sauté
+- 28/10 00:01 == groupe 54
+- 28/10 00:01 groupe 54 déjà fini, sauté
+- 28/10 00:01 == groupe 55
+- 28/10 00:01 groupe 55 déjà fini, sauté
+- 28/10 00:01 == groupe 56
+- 28/10 00:01 lancement art/tools/night/_test_icons.txt
+- 28/10 00:03 fin art/tools/night/_test_icons.txt :  RGBA : `game/assets/sprites/ui/test/`. 13 masques `_e` 64x64 non vides ; aucun `_n.png`. Blender --background, Eevee, 8 échantillons ; PNG optimisés. Alpha et lisibilité à 48 px vérifiés. Planche : [contrôle](art/tools/night/_test_icons_contact.png). Aucun `.gd`, `.tscn` ou `.tres` modifié.
+- 28/10 00:03 sprites_test après groupe 56 : RESULT: OK
+- 28/10 00:03 == groupe 57
+- 28/10 00:03 lancement art/tools/night/_diff_banner.txt
+- 28/10 00:05 fin art/tools/night/_diff_banner.txt :  14982 bytes. 5 segments 128x48 ; raccords horizontaux identiques pixel par pixel. `marker.png` 32x96 ; `frame.png` 256x64 ; transparences vérifiées. `seg_cataclysme_e.png` 64x24 ; veines violettes discrètes. Planche contact vérifiée sur sol réel ; aucun `_n.png`, aucun autre fichier modifié.
+- 28/10 00:06 sprites_test après groupe 57 : RESULT: OK
+- 28/10 00:06 FILE TERMINÉE
