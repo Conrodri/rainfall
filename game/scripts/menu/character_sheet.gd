@@ -503,15 +503,12 @@ func _build_kit() -> void:
 	_grid.add_theme_constant_override("h_separation", 10)
 	_grid.add_theme_constant_override("v_separation", 10)
 	_right.add_child(_grid)
-	# Variantes masquées tant qu'aucune n'est débloquée (audit M8, divulgation progressive) : une seule ligne
-	# de rappel ; dès qu'une variante du personnage est débloquée, toutes ses variantes apparaissent.
+	# Variantes toujours visibles (demande du joueur, 27/10/2026) : une variante verrouillée est grisée avec un cadenas, mais
+	# sa description et sa quête se lisent (infobulle, zone de détail). Seules les débloquées sont sélectionnables.
 	show_variants = false
-	var variant_count := 0
-	for s in spells:
-		for v in (s as Dictionary).get("variants", []):
-			variant_count += 1
-			if CharacterCard.is_variant_unlocked(profile, v):
-				show_variants = true
+	for s_ in spells:
+		if not ((s_ as Dictionary).get("variants", []) as Array).is_empty():
+			show_variants = true
 	for i in spells.size():
 		_grid.add_child(_build_row(i + 1, spells[i]))
 	# Choix mémorisé pour ce personnage (Profile.loadout), seulement les variantes encore débloquées.
@@ -521,14 +518,6 @@ func _build_kit() -> void:
 		if saved.has(slot) and saved[slot] != chosen.get(slot, &""):
 			chosen[slot] = saved[slot]
 			_refresh_row(r)
-	if not show_variants and variant_count > 0:
-		# Rappel sous le modèle (le tiers gauche a de la place ; la colonne droite est comptée au pixel).
-		var note := CharacterCard.make_label("%d variante%s de sorts à débloquer en jouant" % [variant_count, "s" if variant_count > 1 else ""], _font_floor(), COL_DIM, 4)
-		note.name = "VariantsNote"
-		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		note.custom_minimum_size = Vector2(120, 0)
-		(_root.get_node("Left") as VBoxContainer).add_child(note)
 	_build_detail()
 	_show_detail(1, _option_for_slot(1))
 
@@ -670,7 +659,7 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	var h := HBoxContainer.new()
 	h.add_theme_constant_override("separation", 12)
 	box.add_child(h)
-	var row := {"spell": spell, "buttons": [], "cell": box}
+	var row := {"spell": spell, "buttons": [], "cell": box, "big_box": h}
 	var base_id := StringName(spell.get("id", ""))
 	var base_icon := ArdentKit.spell_icon(base_id)
 	var base_btn := _option_button(ICON_BASE, base_icon, false, null)
@@ -710,6 +699,7 @@ func _build_row(slot: int, spell: Dictionary) -> Control:
 	vrow.add_theme_constant_override("separation", 6)
 	txt.add_child(vrow)
 
+	row["small_box"] = vrow
 	var variants: Array = spell.get("variants", []) if show_variants else []
 	for v in variants:
 		var vid := StringName(v.get("id", ""))
@@ -780,6 +770,7 @@ func _refresh_row(row: Dictionary) -> void:
 		var is_cur := StringName(o.get("id", "")) == cur
 		if is_cur:
 			opt = o
+		_place_button(row, b, is_cur)
 		var border := CharacterCard.COL_FOCUS if is_cur else Color(0.35, 0.38, 0.45)
 		var sb := CharacterCard.panel_box(Color("#1a1620"), border, 4 if is_cur else 1, 0.8, false)
 		sb.content_margin_left = 4
@@ -799,6 +790,44 @@ func _refresh_row(row: Dictionary) -> void:
 	row.dmg.visible = row.dmg.text != "" and not _slim
 	if _detail_name != null and selected_slot == slot:
 		_show_detail(slot, opt)
+
+
+## Place le bouton `b` : l'option choisie prend la grande case (à gauche de la cellule, cadre de sélection), les autres
+## (base comprise) sont dans la rangée de petites icônes. Les icônes s'interchangent à la sélection (demande du joueur).
+func _place_button(row: Dictionary, b: Button, big: bool) -> void:
+	b.set_meta("big", big)
+	var dest: Container = row.big_box if big else row.small_box
+	if b.get_parent() != dest:
+		if b.get_parent() != null:
+			b.get_parent().remove_child(b)
+		dest.add_child(b)
+	if big:
+		dest.move_child(b, 0)
+	b.size_flags_vertical = Control.SIZE_SHRINK_BEGIN if big else Control.SIZE_SHRINK_CENTER
+	_size_button(b, _icon_px(big))
+	# l'ordre des petites icônes reste celui de row.buttons (base d'abord, puis variantes)
+	if not big:
+		var idx := 0
+		for ob in row.buttons:
+			if ob.get_parent() == dest:
+				dest.move_child(ob, idx)
+				idx += 1
+
+
+func _icon_px(big: bool) -> int:
+	return (ICON_BASE - 16) if (big and _compact) else (ICON_BASE if big else ICON_VARIANT - (24 if _compact else 0))
+
+
+func _size_button(b: Button, icon_px: int) -> void:
+	var side := icon_px + 14
+	b.custom_minimum_size = Vector2(side, side)
+	var tr := b.get_child(0) as TextureRect
+	if tr != null:
+		tr.size = Vector2(icon_px, icon_px)
+		tr.position = Vector2((side - icon_px) * 0.5, (side - icon_px) * 0.5)
+	var lk := b.get_node_or_null("Lock") as Control
+	if lk != null:
+		lk.position = Vector2(side - 38, side - 38)
 
 
 ## Option (base ou variante) actuellement choisie pour `slot`, {} sinon.
@@ -866,20 +895,26 @@ func _on_option_pressed(b: Button) -> void:
 	if bool(b.get_meta("locked", false)):
 		CharacterCard.play_ui(&"ui.click", -8.0, 0.7)
 		return
+	var had_focus := b.has_focus()
 	chosen[slot] = StringName(o.get("id", ""))
 	for r in _rows:
 		if r.buttons.has(b):
-			_refresh_row(r)
+			_refresh_row(r) # intervertit les icônes : le bouton choisi passe dans la grande case (reparenté)
+	if had_focus and b.is_inside_tree() and not b.has_focus():
+		b.grab_focus() # le reparentage fait perdre le focus clavier / manette
 	option_chosen.emit(slot, chosen[slot])
 	preview_spell(slot, o)
 	# l'infobulle vient du survol / du focus / de l'appui long, jamais du clic : on rafraîchit seulement son état
 	if tooltip != null and tooltip.visible and tooltip.anchor_control == b:
-		_show_tip(b)
+		if bool(b.get_meta("big", false)):
+			tooltip.hide_tip(b)
+		else:
+			_show_tip(b)
 
 
 func _on_option_hover(b: Button) -> void:
 	_show_detail(int(b.get_meta("slot")), b.get_meta("option"))
-	if bool(b.get_meta("is_base", false)):
+	if bool(b.get_meta("big", false)):
 		if tooltip != null:
 			tooltip.hide_tip()
 		return
@@ -912,15 +947,16 @@ func _on_option_input(ev: InputEvent, b: Button) -> void:
 
 
 func _show_tip(b: Button) -> void:
-	if tooltip == null or bool(b.get_meta("is_base", false)):
-		return
+	if tooltip == null or bool(b.get_meta("big", false)):
+		return # la grande case est l'option retenue : son détail est déjà dans la case et la zone de détail
 	var o: Dictionary = b.get_meta("option")
 	if bool(b.get_meta("locked", false)):
-		tooltip.show_for(b, String(o.get("name", "")), "Quête de déblocage", variant_quest(profile, character, b.get_meta("slot"), o), _tip_area())
+		var quest := variant_quest(profile, character, b.get_meta("slot"), o)
+		tooltip.show_for(b, String(o.get("name", "")), "Verrouillée", String(o.get("desc", "")) + "
+
+Quête de déblocage : " + quest, _tip_area())
 	else:
-		var slot: int = b.get_meta("slot")
-		var sel: bool = StringName(o.get("id", "")) == chosen.get(slot, &"")
-		tooltip.show_for(b, String(o.get("name", "")), "Sélectionnée pour la run" if sel else "Débloquée · appuyer pour choisir", String(o.get("desc", "")), _tip_area())
+		tooltip.show_for(b, String(o.get("name", "")), "Débloquée · appuyer pour choisir", String(o.get("desc", "")), _tip_area())
 
 
 ## Infobulle du passif (survol, focus, appui long) : explication complète, chiffres lus dans le kit.
@@ -1206,17 +1242,7 @@ func _set_compact(on: bool) -> void:
 		preview_stage.custom_minimum_size.y = 100.0 if on else 200.0
 	for r in _rows:
 		for b in r.buttons:
-			var is_base: bool = bool(b.get_meta("is_base", false))
-			var icon_px: int = (ICON_BASE if is_base else ICON_VARIANT) - (16 if on else 0)
-			var side := icon_px + 14
-			b.custom_minimum_size = Vector2(side, side)
-			var tr := b.get_child(0) as TextureRect
-			if tr != null:
-				tr.size = Vector2(icon_px, icon_px)
-				tr.position = Vector2((side - icon_px) * 0.5, (side - icon_px) * 0.5)
-			var lk := b.get_node_or_null("Lock") as Control
-			if lk != null:
-				lk.position = Vector2(side - 38, side - 38)
+			_size_button(b, _icon_px(bool(b.get_meta("big", false))))
 
 
 func _on_resized() -> void:

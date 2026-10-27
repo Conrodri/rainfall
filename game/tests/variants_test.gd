@@ -124,6 +124,9 @@ func _test_selection() -> void:
 	lb.pressed.emit()
 	await _frames(1)
 	_check(s.sheet.chosen.get(1) == &"eclat_de_braise", "variante verrouillée : sort de base gardé")
+	lb.grab_focus() # l'infobulle suit le focus : description complète + quête de déblocage
+	await _frames(2)
+	_check(s.tooltip._body.text.contains("Quête de déblocage"), "variante verrouillée : description et quête dans l'infobulle")
 	_check(s.tooltip._body.text.contains("Gagner une run avec Ardent"), "quête déduite de la règle : " + s.tooltip._body.text)
 	# Variante débloquée : choisie + mémorisée par personnage.
 	vb.pressed.emit()
@@ -164,10 +167,14 @@ func _test_hidden() -> void:
 	await _frames(3)
 	s.open_sheet_for(0, false)
 	await _frames(3)
-	_check(not s.sheet.show_variants, "aucune variante débloquée : colonne masquée")
-	var note: Label = s.sheet.find_child("VariantsNote", true, false)
-	_check(note != null and note.text.begins_with("5 variantes"), "note « N variantes à débloquer »")
-	_check(s.sheet.find_child("Variant_*", true, false) == null, "aucun bouton de variante")
+	_check(s.sheet.show_variants, "aucune variante débloquée : variantes quand même visibles")
+	_check(s.sheet.find_child("VariantsNote", true, false) == null, "plus de note « variantes à débloquer »")
+	var locked := 0
+	for row in s.sheet.focus_rows():
+		for b in row.slice(1):
+			if bool(b.get_meta("locked", false)):
+				locked += 1
+	_check(locked == 5, "5 variantes verrouillées visibles (obtenu %d)" % locked)
 	var all := _all_text(s)
 	_check(not all.contains("todo_design") and not all.to_lower().contains("todo"), "jamais de todo_design affiché")
 	s.queue_free()

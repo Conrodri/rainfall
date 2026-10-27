@@ -343,7 +343,7 @@ func _test_mb_lisible() -> void:
 	var small: Array[String] = []
 	_collect_small_texts(s, small)
 	_check(small.is_empty(), "textes visibles >= 18 px (trop petits : %s)" % ", ".join(small))
-	# M8 : aucune variante débloquée -> colonne masquée + une note.
+	# Variantes toujours visibles (27/10/2026) : aucune débloquée -> boutons grisés et verrouillés, plus de note.
 	var fp := FakeProfile.new()
 	fp.unlocked_spells = []
 	var s2 := _spawn(fp)
@@ -351,10 +351,14 @@ func _test_mb_lisible() -> void:
 	s2.cards[0].pressed.emit()
 	await _frames(12)
 	var variant_btns := 0
+	var unlocked_btns := 0
 	for row in s2.sheet.focus_rows():
 		variant_btns += row.size() - 1
-	_check(variant_btns == 0, "aucune variante débloquée : aucun bouton de variante (obtenu %d)" % variant_btns)
-	_check(s2.sheet.find_child("VariantsNote", true, false) != null, "note « variantes à débloquer »")
+		for b in row.slice(1):
+			if not bool(b.get_meta("locked", false)):
+				unlocked_btns += 1
+	_check(variant_btns > 0 and unlocked_btns == 0, "aucune variante débloquée : boutons de variantes verrouillés présents (obtenu %d / %d libres)" % [variant_btns, unlocked_btns])
+	_check(s2.sheet.find_child("VariantsNote", true, false) == null, "plus de note « variantes à débloquer »")
 	_check(s.sheet.show_variants, "une variante débloquée : variantes affichées")
 	s.queue_free()
 	s2.queue_free()
@@ -451,7 +455,7 @@ func _test_progress() -> void:
 	_check(p.char_cards.size() == _json.size(), "Progression : %d cartes (obtenu %d)" % [_json.size(), p.char_cards.size()])
 	var vr := p.get_viewport_rect()
 	for c in p.char_cards:
-		_check(c.focus_mode == Control.FOCUS_NONE, "Progression : carte %s non focusable" % c.name)
+		_check(c.focus_mode == Control.FOCUS_ALL, "Progression : carte %s focusable (clic = meilleures runs)" % c.name)
 		_check(vr.encloses(c.get_global_rect()), "Progression : carte %s visible sans défilement" % c.name)
 	_check(p.rubies_label.text == "1 234", "Progression : rubis '%s'" % p.rubies_label.text)
 	_check(p.stats_label.text.contains("Monstres tués : 8 412") and p.stats_label.text.contains("1 h 52"), "Progression : stats '%s'" % p.stats_label.text)

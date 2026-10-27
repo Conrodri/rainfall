@@ -790,7 +790,8 @@ func chest_sequence_land() -> void:
 
 func _on_node_added(n: Node) -> void:
 	if n is BaseButton and not n.has_meta(&"no_ui_sound"):
-		(n as BaseButton).pressed.connect(ui_click)
+		if not (n as BaseButton).pressed.is_connected(ui_click): # un bouton reparenté repasse par node_added
+			(n as BaseButton).pressed.connect(ui_click)
 
 
 # --------------------------------------------------------------------------------- Events
