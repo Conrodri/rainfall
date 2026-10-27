@@ -144,18 +144,6 @@ func _build() -> void:
 	_labels.append(tl)
 	_add(_label(info_line(info), 36, COL_DIM))
 	_content.add_child(HSeparator.new())
-	var variant_keys: Array[StringName] = []
-	for u0 in info.get("unlocks", []):
-		if String(u0).begins_with("spell:"):
-			variant_keys.append(StringName(u0))
-	_add_variants_block(variant_keys) # en haut : visible sans défiler
-	var item_keys: Array[StringName] = []
-	for u1 in info.get("unlocks", []):
-		if String(u1).begins_with("item:"):
-			item_keys.append(StringName(u1))
-	_add_new_items_block(item_keys)
-
-
 	var tiles := HBoxContainer.new()
 	tiles.alignment = BoxContainer.ALIGNMENT_CENTER
 	tiles.set_meta(&"sep", 24)
@@ -188,6 +176,21 @@ func _build() -> void:
 		dl.custom_minimum_size = Vector2(1000, 0)
 		_add(dl)
 
+	_add_items_strip()
+	# déblocages sous les stats et les objets de la run (demande du joueur, 27/10/2026)
+	if not (info.get("unlocks", []) as Array).is_empty():
+		_content.add_child(HSeparator.new())
+	var variant_keys: Array[StringName] = []
+	for u0 in info.get("unlocks", []):
+		if String(u0).begins_with("spell:"):
+			variant_keys.append(StringName(u0))
+	_add_variants_block(variant_keys)
+	var item_keys: Array[StringName] = []
+	for u1 in info.get("unlocks", []):
+		if String(u1).begins_with("item:"):
+			item_keys.append(StringName(u1))
+	_add_new_items_block(item_keys)
+
 	for u in info.get("unlocks", []):
 		var key := StringName(u)
 		if String(key).begins_with("spell:") or String(key).begins_with("item:"):
@@ -204,7 +207,6 @@ func _build() -> void:
 		var ul := _label(unlock_text(key), 40, COL_UNLOCK)
 		urow.add_child(ul)
 		_labels.append(ul)
-	_add_items_strip()
 
 	_add_next_objective()
 	var buttons := HBoxContainer.new()
