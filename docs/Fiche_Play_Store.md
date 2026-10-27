@@ -74,9 +74,9 @@ Tous les visuels viennent de Codex / Blender (règle du projet) ; aucun n'existe
 
 ## 4. Coordonnées
 
-- **E-mail** : à renseigner (obligatoire, public)
+- **E-mail** : contact@peakdevelopment.fr
 - **Site web** : facultatif
-- **Règles de confidentialité** : URL obligatoire pour la publication. Le jeu ne collecte rien : une page courte suffit (voir §6).
+- **Règles de confidentialité** : page prête dans `docs/store/confidentialite.html`, à mettre en ligne (proposition : https://peakdevelopment.fr/rainfall/confidentialite.html) puis coller l'URL dans Play Console > Règles et programmes > Contenu de l'application > Règles de confidentialité.
 
 ## 5. Classification du contenu (questionnaire IARC)
 
@@ -107,7 +107,7 @@ Réponses à vérifier au moment de remplir le questionnaire :
 ## 8. À faire avant la publication
 
 1. Produire l'icône 512, l'image de présentation et les captures (lot Codex « store »).
-2. Héberger une page de règles de confidentialité.
+2. Mettre en ligne `docs/store/confidentialite.html` et renseigner son URL.
 3. Remettre les déblocages des personnages ouverts pour les tests, retirer le mode test et l'interrupteur des variantes (voir CLAUDE.md).
 4. Vérifier le nom « Rainfall » sur le Play Store (homonymes possibles) ; repli : « Rainfall : La Source ».
 5. Traduction anglaise pour élargir la fiche (facultatif).
