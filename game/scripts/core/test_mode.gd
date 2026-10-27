@@ -29,6 +29,7 @@ var god := false ## PV illimités : le coup est encaissé (chiffre, flash, son),
 var cdr_full := false ## recharge à 0 : un sort se relance sans attendre
 var inf_range := false ## portée des sorts et ciblage automatique sans limite
 var inf_gold := false ## or infini : les achats ne coûtent rien
+var full_resource := false ## jauge propre au kit toujours au maximum (voir SpellCaster.tick)
 ## Monstres.
 var freeze_ai := false ## IA figée : les monstres ne bougent ni n'attaquent (les DoT et les coups reçus continuent)
 var spawns := false ## le director fait apparaître ses vagues
@@ -70,6 +71,7 @@ func _reset_flags() -> void:
 	cdr_full = false
 	inf_range = false
 	inf_gold = false
+	full_resource = false
 	freeze_ai = false
 	spawns = false
 	freeze_time = true

@@ -337,6 +337,25 @@ func slot_charges(slot: int) -> Vector2i:
 	return Vector2i(charges(slot), n) if n > 1 else Vector2i(-1, 0)
 
 
+## Mode test « ressource pleine » et aperçu : tout membre en recharge est régénéré sur-le-champ, comme à la fin de
+## sa recharge (un membre au sol ou en vol part en braises, un pilier finit d'abord sa décharge). Recharges à zéro.
+func refill_resource() -> void:
+	var any := false
+	for slot: int in queue:
+		var q: Array = queue[slot]
+		while not q.is_empty():
+			var key: StringName = q.pop_front()
+			var l: TocsinLimb = _limb(key)
+			if l != null and l.kind != &"head":
+				l.expire()
+			limbs.erase(key)
+			_regen(key)
+			any = true
+		recharge_left[slot] = 0.0
+	if any:
+		_sync_caster()
+
+
 ## Ressource (contrat KitResource) : membres lancés présents (3 pastilles : bras, bras, tête).
 func resource_state() -> Dictionary:
 	var n := 3 - absent_count()

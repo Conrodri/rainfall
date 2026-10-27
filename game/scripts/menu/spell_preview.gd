@@ -702,12 +702,10 @@ func _prime() -> void:
 	var k: Variant = player.kit
 	if k == null:
 		return
-	if &"water" in k:
-		k.water = AverseKit.WATER_MAX
 	if &"sharpness" in k:
-		k.sharpness = maxf(k.sharpness, SHARP_FLOOR)
-	if k.has_method(&"set_tension"):
-		k.set_tension(1.0)
+		k.sharpness = maxf(k.sharpness, SHARP_FLOOR) # plancher voulu : la démo du sort 3 veut une lame entamée
+	elif k.has_method(&"refill_resource") and not k is TocsinKit and not k is BourbeKit:
+		k.refill_resource() # eau d'Averse, tension de Vigie
 
 
 ## État nécessaire au sort `slot` juste avant son lancer : aiguisage plein (Taliant ; le sort 3 aiguise, il faut donc

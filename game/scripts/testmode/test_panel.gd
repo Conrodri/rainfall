@@ -832,6 +832,7 @@ func _build_cheats() -> void:
 	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.", ICON_CDR)
 	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", ICON_RANGE)
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
+	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
 	_body.add_child(_heading("Partie"))
 	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", ICON_TIMER)
 	var pz := _check("Pause à l'ouverture", TestMode.pause_on_open, func(on: bool) -> void:

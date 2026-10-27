@@ -426,6 +426,12 @@ func water_ratio() -> float:
 	return water / WATER_MAX
 
 
+## Mode test « ressource pleine » et aperçu : eau au maximum, état « à sec » levé.
+func refill_resource() -> void:
+	water = WATER_MAX
+	dry_left = 0.0
+
+
 ## Ressource (contrat KitResource) : l'eau de l'amphore ; repère = seuil du trébuchement.
 ## Repère principal = seuil de la Crue (CRUE_MIN) ; repère secondaire = trébuchement. À sec : jauge éteinte.
 ## Appui refusé faute d'eau : `warn` (la jauge clignote).

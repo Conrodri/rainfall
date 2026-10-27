@@ -452,6 +452,11 @@ func set_tension(v: float) -> void:
 	_update_emission()
 
 
+## Mode test « ressource pleine » et aperçu : tension au maximum.
+func refill_resource() -> void:
+	set_tension(1.0)
+
+
 ## Contrat KitResource : jauge continue, « PRÊTE » qui pulse quand le Trait d'allonge est armé.
 func resource_state() -> Dictionary:
 	var txt := "PRÊTE" if is_full() else "%d %%" % floori(tension * 100.0)

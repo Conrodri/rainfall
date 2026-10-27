@@ -204,6 +204,20 @@ func tick(delta: float) -> void:
 				cast(s.slot)
 		elif auto_cast_enabled and _auto_cast_ok(s.slot) and _nearest_enemy(_trigger_px(s)) != null:
 			cast(s.slot, true)
+	if TestMode.full_resource:
+		refill_kit_resource()
+
+
+## Mode test « ressource pleine » : jauge du kit au maximum (point d'entrée `refill_resource` des kits qui en ont une).
+## Avare n'a pas de jauge : sa puissance suit l'or, remonté au plancher du mode test.
+func refill_kit_resource() -> void:
+	var k := _kit()
+	if k == null:
+		return
+	if k.has_method(&"refill_resource"):
+		k.refill_resource()
+	elif k is AvareKit:
+		RunState.gold = maxf(RunState.gold, TestMode.GOLD_FLOOR)
 
 
 ## Clavier-souris : le pointeur est sur un contrôle d'UI qui capte la souris (bouton, carte, bulle de sort).

@@ -272,6 +272,42 @@ func _run() -> void:
 		TestTools.set_skin(get_tree(), cid, "")
 	TestTools.switch_character(get_tree(), &"ardent")
 
+	# --- ressource pleine : jauge du kit au maximum malgré les sorts lancés
+	TestMode.set_flag(&"full_resource", true)
+	for cid: StringName in [&"averse", &"vigie", &"morfil", &"bourbe", &"tocsin", &"avare"]:
+		TestTools.switch_character(get_tree(), cid)
+		await _frames(3)
+		var kit: Node = _player.kit
+		_check("ressource pleine %s : kit présent" % cid, kit != null)
+		if kit == null:
+			continue
+		if cid == &"averse":
+			kit.water = 5.0
+		elif cid == &"vigie":
+			kit.set_tension(0.1)
+		elif cid == &"morfil":
+			kit.sharpness = 20.0
+		elif cid == &"bourbe":
+			kit.charges = 0
+		elif cid == &"avare":
+			RunState.gold = 1.0
+		for slot in [1, 2, 3, 4]:
+			_player.spells.cast(slot)
+			await get_tree().process_frame
+		await _frames(3)
+		var full := false
+		match cid:
+			&"averse": full = is_equal_approx(kit.water, AverseKit.WATER_MAX)
+			&"vigie": full = is_equal_approx(kit.tension, 1.0)
+			&"morfil": full = is_equal_approx(kit.sharpness, MorfilKit.SHARP_MAX)
+			&"bourbe": full = kit.charges == kit.max_charges()
+			&"tocsin": full = kit.absent_count() == 0
+			&"avare": full = RunState.gold >= TestMode.GOLD_FLOOR
+		_check("ressource pleine %s : jauge au maximum après les sorts" % cid, full)
+	TestMode.set_flag(&"full_resource", false)
+	TestTools.switch_character(get_tree(), &"ardent")
+	await _frames(2)
+
 	# --- panneau
 	var overlay = _main.get_node_or_null(^"TestOverlay")
 	_check("panneau attaché", overlay != null and overlay.panel != null and not overlay.panel.visible)

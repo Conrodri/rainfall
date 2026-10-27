@@ -1015,6 +1015,12 @@ func tick(delta: float) -> void:
 	_update_look()
 
 
+## Mode test « ressource pleine » et aperçu : mottes de Détacher au maximum.
+func refill_resource() -> void:
+	charges = max_charges()
+	_charge_t = 0.0
+
+
 ## Ressource (contrat KitResource) : charges de Détacher (4 pastilles) ; ratio = recharge de la charge en cours.
 func resource_state() -> Dictionary:
 	var m: float = player.stat(&"cooldown_mult")

@@ -915,6 +915,11 @@ func tick(delta: float) -> void:
 	_update_look()
 
 
+## Mode test « ressource pleine » et aperçu : aiguisage au maximum.
+func refill_resource() -> void:
+	sharpness = SHARP_MAX
+
+
 ## Ressource (contrat KitResource) : jauge continue d'aiguisage, repère au seuil de l'ultime.
 func resource_state() -> Dictionary:
 	return KitResource.make(&"sharpness", "Aiguisage", sharp_ratio(), ACCENT,
