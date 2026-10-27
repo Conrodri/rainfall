@@ -1,8 +1,9 @@
 LOT Icône d'application et visuels Play Store (28/10/2026 ; fiche : docs/Fiche_Play_Store.md §2).
 Style : DA officielle (art/briefs/STYLE.md en tête, STYLE_cel.md), palette sombre désaturée, pluie, un accent émissif. Blender --background, PNG optimisés, aucun `_n.png`. Rien téléchargé ; le texte « Rainfall » est rendu avec la police du jeu game/assets/fonts/ (Cinzel, OFL) en objet texte Blender.
-Sujet commun : silhouette d'Ardent (game/assets/sprites/characters/ardent, modèle .blend existant dans art/blender si présent) de trois quarts dos sous une pluie battante, braises orange (accent) dans la main, reflets dans l'eau au sol, ruine des Terrasses noyées en fond.
+Sujet de l'icône (décision du joueur, 28/10/2026) : la CAPUCHE du Semeur de pluie (boss final, modèle art/blender/bosses/rain_sower_iso.blend, sprites game/assets/sprites/bosses/etage/rain_sower ; docs/Design_Etages.md §4 : figure encapuchonnée de bronze noirci, cœur = goutte de cristal blanc). Cadrage serré sur la capuche vue de face, vide et sombre, la pluie qui ruisselle sur le bronze, et dans l'ombre de la capuche la lueur de la goutte de cristal blanc (seul accent émissif). Ouvre le .blend en LECTURE (copie de travail dans art/blender/store/, ne modifie pas l'original) pour réutiliser le modèle et ses matériaux.
+Bannière 1024x500 : le Semeur de pluie entier, encapuchonné, dominant La Source sous la pluie, petite silhouette d'Ardent face à lui au premier plan (braise orange) ; même accent cristal blanc.
 Sorties dans game/assets/store/ (dossier nouveau) :
-- icon_512.png (512x512, opaque, sans texte : la goutte de pluie qui contient une braise, ou le buste d'Ardent ; lisible à 48 px)
+- icon_512.png (512x512, opaque, sans texte : la capuche du Semeur de pluie ; lisible à 48 px)
 - icon_foreground_432.png (432x432, transparent, sujet centré dans le cercle sûr de 264 px) et icon_background_432.png (432x432, opaque, fond pluie sombre) : icône adaptative Android
 - icon_192.png (192x192, opaque, même image que icon_512 réduite)
 - icon_256.png (256x256, pour l'.ico Windows ; même image)
