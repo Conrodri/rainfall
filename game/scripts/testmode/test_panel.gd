@@ -269,7 +269,7 @@ func _icon(t: Texture2D, px: float) -> TextureRect:
 
 
 ## Carte cliquable : vignette + nom (+ mention). Verticale (vignette au-dessus) ou horizontale (vignette à gauche).
-func _card(t: Texture2D, title: String, sub: String, thumb_px: float, horizontal: bool, cb: Callable) -> Button:
+func _card(t: Texture2D, title: String, sub: String, thumb_px: float, horizontal: bool, cb: Callable, gray: bool = false) -> Button:
 	var b := Button.new()
 	b.toggle_mode = false
 	b.clip_contents = true
@@ -286,6 +286,8 @@ func _card(t: Texture2D, title: String, sub: String, thumb_px: float, horizontal
 	box.add_theme_constant_override(&"separation", 10 if horizontal else 2)
 	m.add_child(box)
 	var img := _icon(t, thumb_px)
+	if gray:
+		img.material = CharacterCard.grayscale_material(0.5) # icône absente : celle du sort de base, désaturée
 	if not horizontal:
 		img.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(img)
@@ -715,31 +717,30 @@ func _build_spell_variants(c: Dictionary) -> void:
 		var slot := i + 1
 		var variants: Array = sp.get("variants", []) if sp.get("variants") is Array else []
 		_body.add_child(_label("%d · %s" % [slot, sp.get("name", sp.get("id", ""))], FS_SMALL + 2, UiTheme.COL_TEXT))
-		var row := _grid(2)
+		var base_id := StringName(str(sp.get("id", "")))
+		var base_icon := ArdentKit.spell_icon(base_id)
+		var row := _grid(_cols(260.0))
 		_body.add_child(row)
-		var group := ButtonGroup.new()
 		var chosen := str(lo.get(slot, sp.get("id", "")))
-		var opts: Array = [{"id": str(sp.get("id", "")), "name": str(sp.get("name", "")) + " (base)", "coded": true}]
+		var opts: Array = [{"id": String(base_id), "name": str(sp.get("name", "")) + " (base)", "coded": true, "icon": base_icon, "gray": false}]
 		for v in variants:
 			if v is Dictionary:
 				var vid := StringName(str(v.get("id", "")))
+				var vicon := ArdentKit.spell_icon(vid)
 				opts.append({"id": String(vid), "name": str(v.get("name", vid)),
-					"coded": CharacterData.variant_spell(cid, slot, vid, true) != null})
+					"coded": CharacterData.variant_spell(cid, slot, vid, true) != null,
+					"icon": vicon if vicon != null else base_icon, "gray": vicon == null})
 		for o in opts:
 			var oid := str(o.id)
-			var b := Button.new()
-			b.text = str(o.name) + ("" if bool(o.coded) else "\nnon codée")
+			var is_base: bool = oid == String(base_id)
+			var b := _card(o.icon, str(o.name), "" if bool(o.coded) else "non codée", 84.0, true, func() -> void: _choose_variant(cid, slot, oid, is_base), bool(o.gray))
 			b.name = "Variant_%d_%s" % [slot, oid]
-			b.toggle_mode = true
-			b.button_group = group
 			b.disabled = not bool(o.coded)
-			b.button_pressed = chosen == oid
-			b.custom_minimum_size = Vector2(0, BTN_H)
-			b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			b.add_theme_font_size_override(&"font_size", FS_SMALL + 2)
-			b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			var is_base: bool = oid == str(sp.get("id", ""))
-			b.pressed.connect(func() -> void: _choose_variant(cid, slot, oid, is_base))
+			b.custom_minimum_size = Vector2(0, 108)
+			if chosen == oid:
+				b.add_theme_stylebox_override(&"normal", _current_style())
+				b.add_theme_stylebox_override(&"hover", _current_style())
+				b.add_theme_stylebox_override(&"disabled", _current_style())
 			row.add_child(b)
 
 
@@ -753,6 +754,7 @@ func _choose_variant(cid: StringName, slot: int, variant_id: String, is_base: bo
 	if RunState.character == cid:
 		TestTools.switch_character(get_tree(), cid, lo)
 	say("Sort %d : %s." % [slot, variant_id])
+	_reselect_keep_scroll()
 
 
 func _refresh_level() -> void:
