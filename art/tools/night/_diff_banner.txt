@@ -1,0 +1,9 @@
+LOT bandeau de difficulté défilant (art/briefs/STYLE_cel.md, rendu cel-shadé, Blender --background, PNG optimisés, pas de normal map).
+Contexte : HUD, bandeau horizontal de rectangles successifs, un par palier de difficulté, qui glisse vers la gauche pendant la run ; le nom du palier est écrit PAR LE CODE (ne pas dessiner de texte). Code : game/scripts/ui/difficulty_banner.gd (charge les fichiers s'ils existent).
+Dossier de sortie : game/assets/sprites/ui/difficulty/banner/ (le créer).
+Fichiers :
+- seg_calme.png, seg_tendu.png, seg_hostile.png, seg_furieux.png, seg_cataclysme.png : 128x48 chacun, TUILABLES en largeur (bords gauche/droit raccordables), un seul accent de couleur par palier (vert #59CC73, jaune #F2D940, orange #FA8C26, rouge #E63333, violet #BF33E6), matière métal usé / émail écaillé, coins et arêtes usés, bande claire discrète en haut, centre assez uni pour qu'un texte blanc à contour noir reste lisible. Cataclysme : veines émissives violettes discrètes.
+- marker.png : 32x96, repère vertical fixe (encoche en losange haut et bas, filet clair au centre), fond transparent, blanc cassé/ocre #E8E2D6, centré sur l'axe vertical.
+- frame.png : 256x64, cadre du bandeau (9-slice, marge 12 px, centre TRANSPARENT), fer sombre usé, rivets discrets aux coins.
+Cohérence : même DA que les cadres UI existants (game/assets/sprites/ui/). Poids : chaque PNG le plus léger possible (palette réduite si sans perte visible).
+Vérif : tailles exactes, transparence correcte du frame et du marker, tuilage sans couture (juxtaposer 2 copies). Ne toucher à aucun autre fichier.

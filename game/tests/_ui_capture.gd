@@ -117,6 +117,13 @@ func _hud() -> void:
 		get_window().size = sz
 		await _f(60)
 		_save("%d_hud" % sz.x)
+		if sz.x == 1920: # bandeau de difficulté : début, passage de palier, Cataclysme
+			RunState.running = false # sinon RunState réémet D à chaque image
+			for dv in [1.0, 1.25, 1.9, 2.6, 5.0]:
+				RunState.difficulty_changed.emit(dv, Balance.difficulty_tier_name(dv))
+				await _f(120)
+				_save("diff_%s" % str(dv).replace(".", "_"))
+			RunState.running = true
 		var mgr := get_tree().get_first_node_in_group("stage_manager")
 		hud.call(&"_on_level", RunState.level + 1)
 		if mgr != null:

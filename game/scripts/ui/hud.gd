@@ -16,15 +16,6 @@ extends CanvasLayer
 signal abandon_requested
 signal save_quit_requested ## relaye depuis le menu pause (« Sauvegarder et quitter »)
 
-const TIER_NAMES: Array[StringName] = [&"Calme", &"Tendu", &"Hostile", &"Furieux", &"Cataclysme"]
-const TIER_COLORS := {
-	&"Calme": Color(0.35, 0.8, 0.45),
-	&"Tendu": Color(0.95, 0.85, 0.25),
-	&"Hostile": Color(0.98, 0.55, 0.15),
-	&"Furieux": Color(0.9, 0.2, 0.2),
-	&"Cataclysme": Color(0.75, 0.2, 0.9),
-}
-const D_MAX := 8.0 ## fin de la jauge (Cataclysme >= 6)
 const HELP_DURATION_S := 8.0
 const HELP_FADE_S := 1.0
 const KEY_HINTS_SHOW_S := 5.0 ## invites de touches sous les sorts : durée affichée en début de partie (réglage « toujours » désactivé)
@@ -63,10 +54,7 @@ var _hp_label: Label
 var _xp_bar: ProgressBar
 var _gold_label: Label
 var _time_label: Label
-var _diff_bar: ProgressBar
-var _diff_label: Label
-var _diff_caption: Label ## titre « Difficulté » au-dessus de la jauge (sans lui, la barre restait muette pour un nouveau joueur)
-var _diff_style: StyleBoxFlat
+var _diff_caption: Label ## titre « Difficulté » au-dessus du bandeau (le repère seul resterait muet pour un nouveau joueur)
 var _find_timer := 0.0
 var _top: MarginContainer
 var _left_col: VBoxContainer
@@ -93,7 +81,7 @@ var objectives: ObjectivesPanel ## objectifs d'étage (boss, charge, téléporte
 var spell_hint: SpellHint ## description d'un sort : survol (souris) / appui long (tactile)
 var _overlay_tick := 0.0
 var overhead: OverheadBars ## PV + ressource au-dessus de la tête du personnage (réglage GameSettings.overhead_bars)
-var _diff_box: HBoxContainer ## difficulté (nom du palier + jauge sur une ligne) : sous la minimap, colonne de droite
+var _diff_box: DifficultyBanner ## bandeau de difficulté défilant (un rectangle nommé par palier) : sous la minimap, colonne de droite
 var _hp_regen: Label ## « +X/s » (Player.regen_per_s) dans la barre de PV
 var _regen_tick := 0.0
 var _player_plate: Control ## plaque de la fiche joueur (médaillon, nom, PV, XP)
@@ -296,12 +284,8 @@ func _on_level(l: int) -> void:
 	_progress_level_changed(l) # Choix-L4 : médaillon, « Niveau N », éclat de la barre d'XP
 
 
-func _on_difficulty(D: float, tier_name: StringName) -> void:
-	_diff_bar.value = clampf(D, 0.0, D_MAX)
-	var col: Color = TIER_COLORS.get(tier_name, Color.WHITE)
-	_diff_style.bg_color = col
-	_diff_label.text = String(tier_name)
-	_diff_label.add_theme_color_override("font_color", col)
+func _on_difficulty(D: float, _tier_name: StringName) -> void:
+	_diff_box.set_difficulty(D)
 
 
 # --- Construction : ancrages + conteneurs, dimensions recalculees selon le ratio du viewport
@@ -418,29 +402,14 @@ func _build() -> void:
 	mpb.set_corner_radius_all(14)
 	_map_plate.add_theme_stylebox_override(&"panel", mpb)
 	root.add_child(_map_plate)
-	_diff_box = HBoxContainer.new() # une seule ligne : compacte (le panneau d'objectifs dessous reste hors des sorts tactiles)
+	_diff_box = DifficultyBanner.new() # compact : le panneau d'objectifs dessous reste hors des sorts tactiles
 	_diff_box.name = "Difficulty"
-	_diff_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(_diff_box)
 	_diff_caption = _make_label(root)
 	_diff_caption.name = "DifficultyCaption"
 	_diff_caption.text = "Difficulté"
 	_diff_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_diff_caption.add_theme_color_override("font_color", Color(0.91, 0.886, 0.839)) # blanc cassé du HUD (#E8E2D6)
-	_diff_label = _make_label(_diff_box)
-	_diff_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_diff_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_diff_bar = _make_bar(_diff_box, Color.WHITE)
-	_diff_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_diff_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_diff_bar.max_value = D_MAX
-	_diff_style = _diff_bar.get_theme_stylebox("fill") as StyleBoxFlat
-	var dbg := StyleBoxFlat.new() # fond fer sombre + liseré (lisible jauge vide sur fond sombre)
-	dbg.bg_color = HpBarStyle.COL_BG
-	dbg.border_color = HpBarStyle.COL_FRAME
-	dbg.set_border_width_all(2)
-	dbg.set_corner_radius_all(6)
-	_diff_bar.add_theme_stylebox_override("background", dbg)
 
 	var right_spacer := Control.new()
 	right_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -622,7 +591,6 @@ func _apply_layout() -> void:
 	_hp_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T1_HP, s, mobile))
 	_gold_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T2_GOLD, s, mobile))
 	_time_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T2_TIME, s, mobile))
-	_diff_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T4_SMALL, s, mobile))
 	_diff_caption.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T4_SMALL, s, mobile))
 	_hp_regen.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T4_SMALL, s, mobile))
 	_hp_label.offset_left = 10.0 * s
@@ -977,24 +945,15 @@ func _place_difficulty() -> void:
 	var mr := minimap.map_rect() if not minimap.expanded else Rect2()
 	if mr.size.y > 0.0: # juste sous le losange dessiné (la carte iso n'occupe pas tout son carré)
 		bottom = minf(bottom, minimap.global_position.y + mr.end.y)
-	var sep := maxf(12.0 * s, 8.0)
-	_diff_box.add_theme_constant_override("separation", int(sep))
-	var k := HudMetrics.MOBILE_K if HudMetrics.is_mobile() else 1.0
-	_diff_bar.custom_minimum_size = Vector2(70.0 * s * k, 12.0 * s * k)
-	# libellé de palier : largeur du plus long (« Cataclysme ») fixée d'avance, collé à droite contre la jauge ;
-	# la rangée (donc la plaque) ne change pas de largeur d'un palier à l'autre et la jauge reste dans le cadre.
-	var dfont: Font = _diff_label.get_theme_font(&"font")
 	var dfs := HudMetrics.font(HudMetrics.T4_SMALL, s, HudMetrics.is_mobile())
-	var widest := 0.0
-	for tn in TIER_NAMES:
-		widest = maxf(widest, dfont.get_string_size(String(tn), HORIZONTAL_ALIGNMENT_LEFT, -1, dfs).x)
-	_diff_label.custom_minimum_size.x = ceilf(widest) + 6.0
-	_diff_box.custom_minimum_size.x = maxf(mm.size.x * 0.9, _diff_label.custom_minimum_size.x + sep + _diff_bar.custom_minimum_size.x)
-	_diff_box.reset_size()
+	_diff_box.configure(dfs, maxf(mm.size.x * 0.9, dfs * 12.0)) # largeur de la minimap au moins ; planchers de police via HudMetrics
 	_diff_caption.reset_size()
 	_diff_caption.size.x = _diff_box.size.x
 	_diff_caption.position = Vector2(mm.get_center().x - _diff_caption.size.x * 0.5, bottom + maxf(2.0 * s, UiTheme.ink_pad(HudMetrics.font(HudMetrics.T4_SMALL, s, HudMetrics.is_mobile()))))
-	_diff_box.position = Vector2(mm.get_center().x - _diff_box.size.x * 0.5, _diff_caption.position.y + _diff_caption.size.y)
+	var edge := get_viewport().get_visible_rect().size.x - (HudMetrics.PLATE_PAD + 8.0) * s - _diff_box.size.x # un bandeau plus large que la minimap ne sort pas de l'écran
+	var bx := minf(mm.get_center().x - _diff_box.size.x * 0.5, edge)
+	_diff_caption.position.x = bx + (_diff_box.size.x - _diff_caption.size.x) * 0.5
+	_diff_box.position = Vector2(bx, _diff_caption.position.y + _diff_caption.size.y)
 	# plaque commune : minimap compacte + titre + difficulté (contraste du libellé garanti sur tout décor, H17)
 	var plate := mm.merge(Rect2(_diff_caption.position, _diff_caption.size)).merge(Rect2(_diff_box.position, _diff_box.size)).grow(HudMetrics.PLATE_PAD * s)
 	_map_plate.position = plate.position

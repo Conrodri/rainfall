@@ -166,3 +166,6 @@
 55 art/tools/audio/_raid_sfx.txt art/tools/audio/_lograid_sfx.txt low
 # icônes du mode test (27/10/2026 ; code : game/scripts/testmode/test_panel.gd, branchement après livraison)
 56 art/tools/night/_test_icons.txt art/tools/night/_logtest_icons.txt low
+
+# bandeau de difficulté défilant (27/10/2026 ; code : game/scripts/ui/difficulty_banner.gd)
+57 art/tools/night/_diff_banner.txt art/tools/night/_logdiff_banner.txt low

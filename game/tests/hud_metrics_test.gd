@@ -41,7 +41,7 @@ func _ready() -> void:
 	_check(fs >= HudMetrics.floor_px(mobile), "PV : police %d >= plancher" % fs)
 	_check(hud._time_label.get_theme_font_size("font_size") <= HudMetrics.font(HudMetrics.T2_TIME, 1.0 * HudMetrics.user_scale(), mobile), "chrono <= T2")
 	_check(hud._hp_regen.get_theme_font_size("font_size") >= HudMetrics.floor_px(mobile), "régénération >= plancher")
-	_check(hud._diff_label.get_theme_font_size("font_size") >= HudMetrics.floor_px(mobile), "difficulté >= plancher")
+	_check(hud._diff_box.font_size >= HudMetrics.floor_px(mobile), "difficulté >= plancher")
 	_check(hud._xp_bar.custom_minimum_size.y >= 10.0 * 0.6, "barre d'XP >= 10 px (échelle 1)")
 	var fill := hud._hp_bar.get_theme_stylebox("fill")
 	if fill is StyleBoxFlat:

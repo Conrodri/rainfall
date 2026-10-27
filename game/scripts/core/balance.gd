@@ -324,13 +324,36 @@ func difficulty(t_s: float, stage: int, d: float = 1.0) -> float:
 	return (1.0 + t_s / 60.0 * TIME_SLOPE * d * TIME_COMPRESSION) * pow(K_STAGE, stage - 1)
 
 
-## Seuils resserrés pour l'échelle RoR2 (coeff ≈ 3 en fin d'étage 5 en Moyen ; remplace 1,5/2,5/4/6).
+## Paliers de difficulté (seuils resserrés pour l'échelle RoR2 : coeff ≈ 3 en fin d'étage 5 en Moyen).
+## Source unique : nom, D de début (le palier dure jusqu'au début du suivant ; le dernier est sans fin),
+## identifiant de texture du bandeau (`ui/difficulty/banner/seg_<id>.png`) et couleur.
+const DIFFICULTY_TIERS: Array[Dictionary] = [
+	{"name": &"Calme", "from": 0.0, "id": &"calme", "color": Color(0.35, 0.8, 0.45)},
+	{"name": &"Tendu", "from": 1.25, "id": &"tendu", "color": Color(0.95, 0.85, 0.25)},
+	{"name": &"Hostile", "from": 1.6, "id": &"hostile", "color": Color(0.98, 0.55, 0.15)},
+	{"name": &"Furieux", "from": 2.2, "id": &"furieux", "color": Color(0.9, 0.2, 0.2)},
+	{"name": &"Cataclysme", "from": 3.0, "id": &"cataclysme", "color": Color(0.75, 0.2, 0.9)},
+]
+
+
+func difficulty_tier_index(D: float) -> int:
+	var idx := 0
+	for i in DIFFICULTY_TIERS.size():
+		if D >= float(DIFFICULTY_TIERS[i]["from"]):
+			idx = i
+	return idx
+
+
 func difficulty_tier_name(D: float) -> StringName:
-	if D < 1.25: return &"Calme"
-	if D < 1.6: return &"Tendu"
-	if D < 2.2: return &"Hostile"
-	if D < 3.0: return &"Furieux"
-	return &"Cataclysme"
+	return DIFFICULTY_TIERS[difficulty_tier_index(D)]["name"]
+
+
+## Couleur d'un palier (blanc si le nom est inconnu).
+func difficulty_tier_color(tier_name: StringName) -> Color:
+	for t in DIFFICULTY_TIERS:
+		if t["name"] == tier_name:
+			return t["color"]
+	return Color.WHITE
 
 
 func monster_level(D: float) -> int:

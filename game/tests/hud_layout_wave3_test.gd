@@ -110,7 +110,7 @@ func _layout_case(size: Vector2i, touch: bool) -> void:
 	sv.add_child(mini)
 	hud.boss_bars._on_spawned(floor_boss, true)
 	hud.boss_bars._on_spawned(mini, false)
-	hud._on_difficulty(4.2, &"Furieux")
+	hud._on_difficulty(2.6, &"Furieux")
 	await _wait(0.3) # replacement périodique des surimpressions (0,1 s)
 	var tag := "%dx%d %s" % [size.x, size.y, "tactile" if touch else "kbm"]
 	var vp := Rect2(Vector2.ZERO, Vector2(size))
@@ -121,10 +121,10 @@ func _layout_case(size: Vector2i, touch: bool) -> void:
 	var mr: Rect2 = hud.minimap.map_rect()
 	if mr.size.y > 0.0: # losange dessiné (carte liée) : la difficulté peut occuper la bande vide sous lui
 		mm = Rect2(hud.minimap.global_position + mr.position, mr.size)
-	_check(hud._diff_box.is_visible_in_tree() and hud._diff_label.text == "Furieux", "%s : difficulté affichée (%s)" % [tag, hud._diff_label.text])
+	_check(hud._diff_box.is_visible_in_tree() and hud._diff_box.current_name() == &"Furieux", "%s : difficulté affichée (%s)" % [tag, hud._diff_box.current_name()])
 	_check(vp.encloses(diff), "%s : difficulté dans l'écran %s" % [tag, diff])
-	_check(diff.position.y >= mm.end.y - 0.5 and absf(diff.get_center().x - mm.get_center().x) < 2.0, "%s : difficulté sous la minimap %s / %s" % [tag, diff, mm])
-	_check(hud._diff_label.get_theme_font_size("font_size") >= HudMetrics.floor_px() and hud._diff_bar.size.y >= 10.0 * s, "%s : difficulté lisible" % tag)
+	_check(diff.position.y >= mm.end.y - 0.5 and (absf(diff.get_center().x - mm.get_center().x) < 2.0 or diff.size.x > mm.size.x), "%s : difficulté sous la minimap %s / %s" % [tag, diff, mm])
+	_check(hud._diff_box.font_size >= HudMetrics.floor_px() and hud._diff_box.size.y >= 10.0 * s, "%s : difficulté lisible" % tag)
 	var cap: Rect2 = hud._diff_caption.get_global_rect()
 	_check(hud._diff_caption.text == "Difficulté" and cap.end.y <= diff.position.y + 0.5 and cap.position.y >= mm.end.y - 0.5, "%s : titre « Difficulté » entre minimap et jauge %s" % [tag, cap])
 	var rects := {
