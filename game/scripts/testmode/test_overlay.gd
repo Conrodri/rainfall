@@ -1,6 +1,6 @@
 class_name TestOverlay
 extends Node
-## Mode test : ouverture du panneau (F1, bouton Select / Back de la manette, bouton « TEST » à l'écran en tactile),
+## Mode test : ouverture du panneau (TAB, bouton Select / Back de la manette, bouton « TEST » à l'écran en tactile),
 ## pause facultative pendant qu'il est ouvert, journal des dégâts reçus, invocation par clic dans l'arène.
 ## Attaché à Main par Main._build quand TestMode.active. À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test.
 
@@ -81,7 +81,7 @@ func _build_launcher() -> void:
 	_launcher_layer.add_child(launcher)
 	hint = Label.new()
 	hint.name = "TestHint"
-	hint.text = "Mode test : F1 ou Select ouvre le panneau"
+	hint.text = "Mode test : TAB ou Select ouvre le panneau"
 	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hint.theme = UiTheme.theme()
 	hint.add_theme_font_size_override(&"font_size", 28)
@@ -155,7 +155,7 @@ func sync_pause() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F1:
+	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_TAB:
 		toggle()
 		get_viewport().set_input_as_handled()
 	elif event is InputEventJoypadButton and event.pressed and (event as InputEventJoypadButton).button_index == PAD_BUTTON:

@@ -13,7 +13,7 @@ extends Node
 ## remis à zéro par begin() et end() : hors mode test, ils valent faux et ne coûtent rien.
 
 signal changed ## un réglage a bougé (panneau, HUD)
-signal panel_requested ## F1, bouton de manette ou bouton tactile : ouvre / ferme le panneau
+signal panel_requested ## TAB, bouton de manette ou bouton tactile : ouvre / ferme le panneau
 
 const ARG := "--test-mode"
 ## Portée « infinie » (px) : au-delà de tout écran (≈ 125 u). Les projectiles s'éteignent à cette distance.

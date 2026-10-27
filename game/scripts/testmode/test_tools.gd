@@ -77,7 +77,7 @@ static func spawn_point(center: Vector2) -> Vector2:
 	return center + Vector2.from_angle(a) * r
 
 
-## Fait apparaître `count` fois l'entrée du catalogue. `elite` : monstres de base seulement. `center` : autour de ce point
+## Fait apparaître `count` fois l'entrée du catalogue (un seul exemplaire pour un boss). `elite` : monstres de base seulement. `center` : autour de ce point
 ## (le joueur par défaut). Retourne les monstres créés (peut être plus court si le pool est plein).
 static func spawn(tree: SceneTree, entry: Dictionary, count: int, elite: bool, center: Variant = null) -> Array[Node2D]:
 	var out: Array[Node2D] = []
@@ -93,11 +93,10 @@ static func spawn(tree: SceneTree, entry: Dictionary, count: int, elite: bool, c
 			if e is Node2D:
 				out.append(e)
 		return out
-	# boss : un seul à la fois par appel de bouton, `count` si demandé (pool de 3 puis instanciation à chaud)
-	for i in clampi(count, 1, 5):
-		var b := spawn_boss(tree, StringName(entry.boss_id), kind, spawn_point(c) if i > 0 else c + Vector2(0, -7.0 * Balance.UNIT_PX))
-		if b != null:
-			out.append(b)
+	# mini-boss, boss d'étage, de raid et final : UNE seule apparition par appel, la quantité ne s'applique pas
+	var b := spawn_boss(tree, StringName(entry.boss_id), kind, c + Vector2(0, -7.0 * Balance.UNIT_PX))
+	if b != null:
+		out.append(b)
 	return out
 
 

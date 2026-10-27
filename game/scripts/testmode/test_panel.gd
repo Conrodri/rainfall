@@ -19,6 +19,15 @@ const REFRESH_S := 0.25
 const COL_ON := Color("FFB347")
 const COL_MUTED := Color("A9B2BF")
 const COL_BAD := Color("FF7A5C")
+## Icônes réutilisées des assets existants (aucune n'est dessinée ici). Plusieurs sont des emprunts à des icônes d'objets.
+const ICON_GOD := "res://assets/sprites/icons/items/bague_de_vigueur.png"
+const ICON_CDR := "res://assets/sprites/icons/items/sablier_fele.png"
+const ICON_RANGE := "res://assets/sprites/icons/items/rune_de_portee.png"
+const ICON_GOLD := "res://assets/sprites/ui/da/icon_gold.png"
+const ICON_TIMER := "res://assets/sprites/icons/items/chronometre_brise.png"
+const ICON_PAUSE := "res://assets/sprites/ui/da/icon_pause.png"
+const ICON_HEAL := "res://assets/sprites/icons/items/tonique_vital.png"
+const DIFF_ICONS := {"Calme": "diff_1_calme", "Tension": "diff_2_tension", "Alerte": "diff_3_alerte", "Fournaise": "diff_4_fournaise", "Cataclysme": "diff_5_cataclysme"}
 
 var overlay: TestOverlay
 ## Entrée du catalogue armée pour l'invocation par clic dans l'arène ({} = aucune).
@@ -41,6 +50,7 @@ var _level_label: Label
 var _hits_label: Label
 var _d_slider: HSlider
 var _d_label: Label
+var _d_icon: TextureRect
 var _acc := 0.0
 var _catalog: Array[Dictionary] = []
 
@@ -233,6 +243,69 @@ func _expand(c: Control) -> Control:
 	return c
 
 
+## Largeur utile du corps défilant (px), pour adapter le nombre de colonnes des cartes.
+func _body_width() -> float:
+	var vp := get_viewport_rect().size
+	var w := clampf(vp.x * WIDTH_FRAC, WIDTH_MIN, WIDTH_MAX)
+	return minf(w, vp.x - 40.0) - 90.0
+
+
+## Colonnes d'une grille de cartes : autant que la largeur le permet (cartes de `min_w` px au moins), au moins 2.
+func _cols(min_w: float) -> int:
+	return maxi(2, int(_body_width() / min_w))
+
+
+## TextureRect d'une icône (ratio gardé) ; la texture peut être null (zone vide, jamais de forme dessinée).
+func _icon(t: Texture2D, px: float) -> TextureRect:
+	var r := TextureRect.new()
+	r.texture = t
+	r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	r.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	r.custom_minimum_size = Vector2(px, px)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
+
+
+## Carte cliquable : vignette + nom (+ mention). Verticale (vignette au-dessus) ou horizontale (vignette à gauche).
+func _card(t: Texture2D, title: String, sub: String, thumb_px: float, horizontal: bool, cb: Callable) -> Button:
+	var b := Button.new()
+	b.toggle_mode = false
+	b.clip_contents = true
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.pressed.connect(cb)
+	var m := MarginContainer.new()
+	m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for side in [&"margin_left", &"margin_right", &"margin_top", &"margin_bottom"]:
+		m.add_theme_constant_override(side, 8)
+	b.add_child(m)
+	var box: BoxContainer = HBoxContainer.new() if horizontal else VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_theme_constant_override(&"separation", 10 if horizontal else 2)
+	m.add_child(box)
+	var img := _icon(t, thumb_px)
+	if not horizontal:
+		img.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	box.add_child(img)
+	var col := VBoxContainer.new()
+	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_theme_constant_override(&"separation", 0)
+	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_child(col)
+	var nm := _label(title, FS_SMALL + 1)
+	nm.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT if horizontal else HORIZONTAL_ALIGNMENT_CENTER
+	nm.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	col.add_child(nm)
+	if sub != "":
+		var sl := _label(sub, FS_SMALL - 4, COL_MUTED)
+		sl.horizontal_alignment = nm.horizontal_alignment
+		sl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		col.add_child(sl)
+	return b
+
+
 func say(msg: String) -> void:
 	if _status != null:
 		_status.text = msg
@@ -269,6 +342,7 @@ func _select_tab(t: StringName) -> void:
 	_hits_label = null
 	_d_slider = null
 	_d_label = null
+	_d_icon = null
 	match t:
 		&"monsters": _build_monsters()
 		&"items": _build_items()
@@ -319,6 +393,7 @@ func _build_monsters() -> void:
 	var spawns := _check("Apparitions du director", TestMode.spawns, func(on: bool) -> void: _set_spawns(on))
 	spawns.name = "SpawnsCheck"
 	tools.add_child(_expand(spawns))
+	_body.add_child(_note("La quantité et « Élite » valent pour les monstres ; un mini-boss ou un boss apparaît une seule fois par clic."))
 	var acts := _grid(2)
 	_body.add_child(acts)
 	var kill := _btn("Tuer tout", func() -> void: say("%d monstre(s) tués." % TestTools.kill_all(get_tree())))
@@ -329,18 +404,21 @@ func _build_monsters() -> void:
 	acts.add_child(_expand(clean))
 	var last_group := ""
 	var grid: GridContainer = null
+	var cols := _cols(190.0)
 	for e in _catalog:
 		var gk := "%s|%s" % [e.group, e.sub]
 		if gk != last_group:
 			last_group = gk
 			_body.add_child(_heading(String(e.group) if String(e.sub) == "" else "%s · %s" % [e.group, e.sub]))
-			grid = _grid(2)
+			grid = _grid(cols)
 			_body.add_child(grid)
-		var text := String(e.label) + ("" if bool(e.sprite) else "  (sans sprite)")
 		var entry: Dictionary = e
-		var b := _btn(text, func() -> void: _on_monster_pressed(entry))
+		var th := TestThumbs.monster(entry)
+		var sub := "provisoire (sprite non livré)" if bool(th.provisional) else ""
+		var b := _card(th.tex, String(entry.label), sub, 120.0, false, func() -> void: _on_monster_pressed(entry))
+		b.custom_minimum_size = Vector2(0, 196)
 		b.name = "Spawn_%s" % String(entry.key).replace(":", "_")
-		grid.add_child(_expand(b))
+		grid.add_child(b)
 	if Platform.input_mode == Platform.InputMode.GAMEPAD:
 		_body.add_child(_note("Les monstres apparaissent à 5-8 u autour du joueur."))
 
@@ -402,6 +480,14 @@ func _item_row(it: Dictionary) -> Control:
 	var row := HBoxContainer.new()
 	row.name = "Item_%s" % id
 	row.add_theme_constant_override(&"separation", 8)
+	var ic := Control.new()
+	ic.custom_minimum_size = Vector2(76, 76)
+	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ic.add_child(ItemBar.quality_backing(it.quality))
+	var ir := _icon(TestThumbs.item_icon(id), 76.0)
+	ir.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	ic.add_child(ir)
+	row.add_child(ic)
 	var info := VBoxContainer.new()
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info.add_theme_constant_override(&"separation", 0)
@@ -453,27 +539,20 @@ func _refresh_items() -> void:
 func _build_character() -> void:
 	var cur := String(RunState.character)
 	_body.add_child(_heading("Personnage (1 clic, sur place)"))
-	var grid := _grid(2)
+	var grid := _grid(_cols(420.0))
 	_body.add_child(grid)
-	var group := ButtonGroup.new()
 	var cdata: Dictionary = {}
 	for c in TestTools.characters():
 		var cid := str(c.get("id", ""))
-		var b := Button.new()
-		b.text = "%s\n%s" % [c.get("name", cid), c.get("title", "")]
+		var cc: Dictionary = c
+		var b := _card(TestThumbs.character(cc), str(c.get("name", cid)), str(c.get("title", "")), 104.0, true, func() -> void: _on_character_pressed(StringName(cid)))
 		b.name = "Char_%s" % cid
-		b.toggle_mode = true
-		b.button_group = group
-		b.button_pressed = cid == cur
-		b.custom_minimum_size = Vector2(0, BTN_H + 14)
-		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.add_theme_font_size_override(&"font_size", FS_SMALL + 2)
-		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		b.clip_text = true
-		b.pressed.connect(func() -> void: _on_character_pressed(StringName(cid)))
-		grid.add_child(b)
+		b.custom_minimum_size = Vector2(0, 124)
 		if cid == cur:
+			b.add_theme_stylebox_override(&"normal", _current_style())
+			b.add_theme_stylebox_override(&"hover", _current_style())
 			cdata = c
+		grid.add_child(b)
 	if cdata.is_empty():
 		return
 	_build_skins(cdata)
@@ -501,21 +580,37 @@ func _build_character() -> void:
 	_refresh_level()
 
 
+## Fond de la carte du personnage en jeu (même style que l'onglet actif).
+func _current_style() -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.42, 0.24, 0.08, 1.0)
+	sb.border_color = UiTheme.COL_PRIMARY_TEXT
+	sb.set_border_width_all(3)
+	sb.set_corner_radius_all(10)
+	return sb
+
+
 func _on_character_pressed(cid: StringName) -> void:
 	if cid == RunState.character:
 		return
 	var ok := TestTools.switch_character(get_tree(), cid, _loadouts.get(String(cid), {}))
 	say("%s en jeu." % cid if ok else "Changement impossible.")
-	_select_tab(&"character")
+	_reselect_keep_scroll()
+
+
+func _reselect_keep_scroll() -> void:
+	var sv := _scroll.scroll_vertical
+	_select_tab(tab)
+	await get_tree().process_frame
+	_scroll.scroll_vertical = sv
 
 
 func _build_skins(c: Dictionary) -> void:
 	var cid := StringName(str(c.get("id", "")))
 	var skins: Array = c.get("skins", []) if c.get("skins") is Array else []
 	_body.add_child(_heading("Apparence"))
-	var grid := _grid(2)
+	var grid := _grid(_cols(190.0))
 	_body.add_child(grid)
-	var group := ButtonGroup.new()
 	var forced := str(TestMode.skin_override.get(String(cid), "<profil>"))
 	var entries: Array = [{"id": "", "name": "Défaut"}]
 	for s in skins:
@@ -524,20 +619,17 @@ func _build_skins(c: Dictionary) -> void:
 	for s in entries:
 		var sid := str(s.get("id", ""))
 		var delivered := sid == "" or Skins.has_assets(cid, sid)
-		var b := Button.new()
-		b.text = str(s.get("name", sid)) + ("" if delivered else "\nnon livré")
-		b.name = "Skin_%s" % (sid if sid != "" else "default")
-		b.toggle_mode = true
-		b.button_group = group
-		b.disabled = not delivered
-		b.button_pressed = (forced == sid) or (forced == "<profil>" and sid == "")
-		b.custom_minimum_size = Vector2(0, BTN_H)
-		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.add_theme_font_size_override(&"font_size", FS_SMALL + 2)
-		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		b.pressed.connect(func() -> void:
+		var b := _card(TestThumbs.character(c, sid), str(s.get("name", sid)), "" if delivered else "non livré", 110.0, false, func() -> void:
 			TestTools.set_skin(get_tree(), cid, sid, _loadouts.get(String(cid), {}))
-			say("Apparence : %s." % (str(s.get("name", sid)) if sid != "" else "défaut")))
+			say("Apparence : %s." % (str(s.get("name", sid)) if sid != "" else "défaut"))
+			_reselect_keep_scroll())
+		b.name = "Skin_%s" % (sid if sid != "" else "default")
+		b.disabled = not delivered
+		b.custom_minimum_size = Vector2(0, 180)
+		if (forced == sid) or (forced == "<profil>" and sid == ""):
+			b.add_theme_stylebox_override(&"normal", _current_style())
+			b.add_theme_stylebox_override(&"hover", _current_style())
+			b.add_theme_stylebox_override(&"disabled", _current_style())
 		grid.add_child(b)
 
 
@@ -607,15 +699,16 @@ func _refresh_level() -> void:
 
 func _build_cheats() -> void:
 	_body.add_child(_heading("Triches (chacune indépendante)"))
-	_cheat("PV illimités", &"god", "Les coups sont encaissés (chiffres, flash) mais ne retirent rien.")
-	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.")
-	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).")
-	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.")
+	_cheat("PV illimités", &"god", "Les coups sont encaissés (chiffres, flash) mais ne retirent rien.", ICON_GOD)
+	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.", ICON_CDR)
+	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", ICON_RANGE)
+	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
 	_body.add_child(_heading("Partie"))
-	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.")
+	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", ICON_TIMER)
 	var pz := _check("Pause à l'ouverture", TestMode.pause_on_open, func(on: bool) -> void:
 		TestMode.set_flag(&"pause_on_open", on)
 		overlay.sync_pause())
+	_set_check_icon(pz, ICON_PAUSE)
 	pz.name = "Check_pause_on_open"
 	_body.add_child(pz)
 	_body.add_child(_note("Sans pause, le jeu continue derrière le panneau (le déplacement reste actif)."))
@@ -624,19 +717,36 @@ func _build_cheats() -> void:
 	var heal := _btn("Soigner + recharges", func() -> void:
 		TestTools.restore_player(get_tree())
 		say("PV et recharges rendus."))
+	_set_btn_icon(heal, ICON_HEAL)
 	heal.name = "Restore"
 	acts.add_child(_expand(heal))
 	var gold := _btn("Or +1000", func() -> void:
 		RunState.add_gold(1000.0)
 		say("Or : %d." % int(RunState.gold)))
+	_set_btn_icon(gold, ICON_GOLD)
 	gold.name = "GoldPlus"
 	acts.add_child(_expand(gold))
 
 
-func _cheat(text: String, flag: StringName, note: String) -> void:
+## Icône à gauche du texte d'un bouton (assets existants, 52 px) ; chemin absent : bouton sans icône.
+func _set_btn_icon(b: Button, path: String) -> void:
+	var t := TestThumbs.tex(path)
+	if t == null:
+		return
+	b.icon = t
+	b.expand_icon = true
+	b.add_theme_constant_override(&"icon_max_width", 52)
+
+
+func _set_check_icon(c: CheckButton, path: String) -> void:
+	_set_btn_icon(c, path)
+
+
+func _cheat(text: String, flag: StringName, note: String, icon_path: String = "") -> void:
 	var c := _check(text, bool(TestMode.get(flag)), func(on: bool) -> void:
 		TestMode.set_flag(flag, on)
 		say("%s : %s." % [text, "oui" if on else "non"]))
+	_set_check_icon(c, icon_path)
 	c.name = "Check_%s" % flag
 	_cheat_checks[flag] = c
 	_body.add_child(c)
@@ -649,7 +759,15 @@ func _build_difficulty() -> void:
 	_body.add_child(_heading("Difficulté D (PV et dégâts des monstres)"))
 	_d_label = _label("", FS_BODY + 2, Color.WHITE)
 	_d_label.name = "DLabel"
-	_body.add_child(_d_label)
+	var dhead := HBoxContainer.new()
+	dhead.add_theme_constant_override(&"separation", 12)
+	_d_icon = _icon(null, 72.0)
+	dhead.add_child(_d_icon)
+	_d_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_d_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_d_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	dhead.add_child(_d_label)
+	_body.add_child(dhead)
 	_d_slider = HSlider.new()
 	_d_slider.name = "DSlider"
 	_d_slider.min_value = TestMode.D_MIN
@@ -680,10 +798,11 @@ func _build_difficulty() -> void:
 	_body.add_child(_note("Les monstres déjà présents gardent leurs PV : « Nettoyer » puis invoquez-les à nouveau."))
 	_body.add_child(_heading("Valeurs de base à ce D (avant armure, plafond de coup)"))
 	var table := GridContainer.new()
-	table.columns = 3
+	table.columns = 4
 	table.add_theme_constant_override(&"h_separation", 14)
 	table.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_body.add_child(table)
+	table.add_child(_label("", FS_SMALL, COL_MUTED))
 	table.add_child(_label("", FS_SMALL, COL_MUTED))
 	table.add_child(_label("PV", FS_SMALL, COL_MUTED))
 	table.add_child(_label("Dégâts / coup", FS_SMALL, COL_MUTED))
@@ -710,6 +829,8 @@ func _build_difficulty() -> void:
 
 
 func _table_row(table: GridContainer, title: String, key: String) -> void:
+	var th := TestThumbs.monster(_catalog_sample(key))
+	table.add_child(_icon(th.tex, 52.0))
 	table.add_child(_label(title, FS_SMALL + 2))
 	var hp := _label("", FS_SMALL + 2, Color.WHITE)
 	var dm := _label("", FS_SMALL + 2, Color.WHITE)
@@ -722,6 +843,10 @@ func _refresh_difficulty() -> void:
 	if _d_label == null:
 		return
 	var d := TestMode.d_value
+	var tier_name := Balance.difficulty_tier_name(d)
+	if _d_icon != null:
+		var dn: String = DIFF_ICONS.get(tier_name, "")
+		_d_icon.texture = TestThumbs.tex("res://assets/sprites/ui/difficulty/%s.png" % dn) if dn != "" else null
 	_d_label.text = "D = %.2f · niveau des monstres %d · %s" % [d, Balance.monster_level(d), Balance.difficulty_tier_name(d)]
 	if _d_slider != null and not is_equal_approx(_d_slider.value, d):
 		_d_slider.set_value_no_signal(d)
@@ -736,6 +861,23 @@ func _refresh_difficulty() -> void:
 		for h in overlay.hits:
 			lines.append("−%s  %s" % [_fmt(float(h.amount)), h.source])
 		_hits_label.text = "\n".join(lines)
+
+
+## Entrée du catalogue qui illustre une ligne du tableau (premier du genre).
+func _catalog_sample(key: String) -> Dictionary:
+	var kind: StringName = &"tier"
+	var tier := 1
+	match key:
+		"Nuée": tier = 1
+		"Tireur": tier = 2
+		"Brute", "Brute élite": tier = 3
+		"mini": kind = &"mini"
+		"boss": kind = &"boss"
+		"final": kind = &"final"
+	for e in _catalog:
+		if e.kind == kind and (kind != &"tier" or (int(e.tier) == tier and int(e.variant) != Enemy.VARIANT_LEAPER)):
+			return e
+	return {}
 
 
 func _stats_for(key: String, d: float) -> Dictionary:

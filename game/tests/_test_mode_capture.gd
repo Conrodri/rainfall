@@ -36,5 +36,10 @@ func _run() -> void:
 		if _out != "":
 			CaptureUtil.save_viewport(get_viewport(), "%s/testmode_%s.png" % [_out, t[1]])
 		print("shot ", t[1])
+		for sy in [650, 1500]:
+			o.panel._scroll.scroll_vertical = sy
+			await _f(4)
+			if _out != "":
+				CaptureUtil.save_viewport(get_viewport(), "%s/testmode_%s_%d.png" % [_out, t[1], sy])
 	get_tree().paused = false
 	get_tree().quit()
