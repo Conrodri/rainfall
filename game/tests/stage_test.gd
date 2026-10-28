@@ -327,10 +327,20 @@ func _test_real_maps(director: FakeDirector, player: Node2D) -> void:
 		RunState.stage = 10
 		m.start_stage()
 		_check("sans fin : étage 10 = la Source", m.map_id == "la_source" and m.is_final_floor and m.pillars.size() == 1)
-	_check("une seule variante par étage aujourd'hui : un seul ordre de cartes", orders.size() == 1)
+	# tirage 50/50 seedé parmi les variantes A/B (floors.json) : sur 12 seeds, chaque étage 1-4 sort ses deux cartes
+	var per_floor := {}
+	for o: String in orders:
+		var ids: Array = str_to_var_ids(o)
+		for k in ids.size():
+			if not per_floor.has(k):
+				per_floor[k] = {}
+			(per_floor[k] as Dictionary)[ids[k]] = true
+	for k in 4:
+		_check("étage %d : les deux variantes tirées sur 12 seeds (%s)" % [k + 1, str(per_floor.get(k, {}).keys())], (per_floor.get(k, {}) as Dictionary).size() == 2)
+	_check("étage 5 : La Source sans variante", (per_floor.get(4, {}) as Dictionary).size() == 1)
 	RunState.stage = 1
 	m.start_stage()
-	_check("étage 1 = terrasses_noyees", m.map_id == "terrasses_noyees")
+	_check("étage 1 = terrasses_noyees ou rizieres hautes", m.map_id in FloorPlan.playable_maps(1))
 	# roster (docs/Design_Etages.md) : au moins 3 boss d'étage par étage 1-4, un boss final unique à l'étage 5 ;
 	# chaque boss tiré appartient au roster de son étage (le nombre tiré dépend des sprites livrés)
 	var roster_ok := true
@@ -364,3 +374,11 @@ func _test_real_maps(director: FakeDirector, player: Node2D) -> void:
 	_check("sol praticable obstacle < 100 %", test_map.get_walkable_ratio(Vector2(-900, -700), 150.0) < 0.8)
 	test_map.queue_free()
 	m.queue_free()
+
+
+## `orders` est indexé par str(Array[String]) : relu en tableau d'ids (["a", "b", …]).
+func str_to_var_ids(txt: String) -> Array:
+	var out: Array = []
+	for part in txt.trim_prefix("[").trim_suffix("]").split(","):
+		out.append(part.strip_edges().trim_prefix("\"").trim_suffix("\""))
+	return out

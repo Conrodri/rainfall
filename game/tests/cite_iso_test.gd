@@ -18,6 +18,7 @@ var _fails := 0
 
 
 func _ready() -> void:
+	FloorPlan.force_variant = "A" # ce test vise les cartes A (les variantes B ont leurs propres tests)
 	_main = _new_main({})
 	await _main.game_ready
 	await _frames(5)

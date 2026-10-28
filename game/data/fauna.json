@@ -4,14 +4,14 @@
  "roles": {"1": "swarm", "2": "shooter", "21": "leaper", "3": "brute"},
  "biomes": {
   "terrasses": {
-   "floor": 1, "name": "Terrasses noyées", "maps": ["terrasses_noyees"],
+   "floor": 1, "name": "Terrasses noyées", "maps": ["terrasses_noyees", "terrasses_rizieres_hautes"],
    "monsters": {"swarm": "swarm_tier1", "shooter": "shooter_tier2", "leaper": "leaper_tier2", "brute": "brute_tier3"},
    "elites": {},
    "floor_bosses": ["eclusier", "ox_herder", "jar_bearer", "drowned_idol"],
    "minis": ["frost_bear", "stone_colossus", "iron_heron", "vat_toad", "scarecrow_reaper"]
   },
   "foret": {
-   "floor": 2, "name": "Forêt-brume", "maps": ["foret_brume"],
+   "floor": 2, "name": "Forêt-brume", "maps": ["foret_brume", "foret_mangrove_lanternes"],
    "monsters": {"swarm": "swarm_tier1_moss", "shooter": "shooter_tier2_moss", "leaper": "leaper_tier2_moss", "brute": "brute_tier3_moss"},
    "elites": {},
    "floor_bosses": ["cerf", "weaver", "hermit_cedar"],
@@ -19,14 +19,14 @@
    "summons": {"mist_wolf_cub": "mini/mist_wolf_cub"}
   },
   "cite": {
-   "floor": 3, "name": "Cité de rouille", "maps": ["cite_rouille"],
+   "floor": 3, "name": "Cité de rouille", "maps": ["cite_rouille", "cite_fonderie_canal"],
    "monsters": {"swarm": "swarm_tier1_rust", "shooter": "shooter_tier2_rust", "leaper": "leaper_tier2_rust", "brute": "brute_tier3_rust"},
    "elites": {},
    "floor_bosses": ["sonneur", "crane", "smelter", "flood_gunner"],
    "minis": ["ash_lord", "rust_archon", "steam_hound", "grinder", "blind_pump"]
   },
   "cryptes": {
-   "floor": 4, "name": "Cryptes noyées", "maps": ["cryptes_noyees"],
+   "floor": 4, "name": "Cryptes noyées", "maps": ["cryptes_noyees", "cryptes_ossuaire_pluies"],
    "monsters": {"swarm": "swarm_tier1_salt", "shooter": "shooter_tier2_salt", "leaper": "leaper_tier2_salt", "brute": "brute_tier3_salt"},
    "elites": {},
    "floor_bosses": ["recluse", "crystal_mother", "deep_eel", "salt_king"],

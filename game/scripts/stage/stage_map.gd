@@ -30,6 +30,10 @@ var _player: Node2D = null
 var _tint := {} ## teintes du substitut de biome (ISO_FALLBACK), vide avec les vraies tuiles du biome
 var _ground_overlap := 0 ## ISO_GROUND_OVERLAP du biome (px de texture)
 var _biome := "" ## biome de data/maps/<id>.json
+var _vis_grid: Array = [] ## grille visuelle (D -> #, : -> .), mise à jour à l'ouverture d'une porte scellée
+var _door_cells := {} ## Vector2i -> id du secret (cases « D » de la grille JSON)
+var _doors_open := {} ## id du secret -> true une fois la porte ouverte
+signal secret_door_opened(secret_id: StringName)
 var iso_dir_used := "" ## dossier des tuiles iso effectivement posées (tests : vraies tuiles ou substitut)
 
 const PROJECTION_ISO := "iso45"
@@ -154,7 +158,7 @@ func _build_ground() -> void:
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(json_path))
 	var biome := String(data.get("biome", ""))
 	_biome = biome
-	var grid: Array = data["grid"]
+	var grid: Array = _visual_grid(data)
 	var size_px := Vector2(data["size_px"][0], data["size_px"][1])
 	var origin := -size_px * 0.5
 	var iso_dir: String = ISO_TILES.get(biome, "") if is_iso() else ""
@@ -486,17 +490,7 @@ func _build_outlines(grid: Array, origin: Vector2) -> void:
 		for x in row.length():
 			if row[x] != "#":
 				continue
-			var segs := PackedVector2Array()
-			var p := origin + Vector2(x, y) * OUTLINE_CELL_PX
-			var s := OUTLINE_CELL_PX
-			if y > 0 and not _solid(grid, x, y - 1):
-				segs.append_array([p, p + Vector2(s, 0)])
-			if y < h - 1 and not _solid(grid, x, y + 1):
-				segs.append_array([p + Vector2(0, s), p + Vector2(s, s)])
-			if x > 0 and not _solid(grid, x - 1, y):
-				segs.append_array([p, p + Vector2(0, s)])
-			if x < row.length() - 1 and not _solid(grid, x + 1, y):
-				segs.append_array([p + Vector2(s, 0), p + Vector2(s, s)])
+			var segs := _wall_segments(grid, origin, x, y)
 			if not segs.is_empty():
 				_outline_cells[Vector2i(x, y)] = segs
 	_outline = Node2D.new()
@@ -509,6 +503,80 @@ func _build_outlines(grid: Array, origin: Vector2) -> void:
 		_outline.draw_multiline(_outline_walls, OUTLINE_WALL, 4.0, true))
 	_refresh_outline()
 	_build_water_banks(grid, origin)
+
+
+## Segments de contour d'une case de mur (arêtes qui touchent une case non solide).
+func _wall_segments(grid: Array, origin: Vector2, x: int, y: int) -> PackedVector2Array:
+	var segs := PackedVector2Array()
+	var row: String = grid[y]
+	var p := origin + Vector2(x, y) * OUTLINE_CELL_PX
+	var s := OUTLINE_CELL_PX
+	if y > 0 and not _solid(grid, x, y - 1):
+		segs.append_array([p, p + Vector2(s, 0)])
+	if y < grid.size() - 1 and not _solid(grid, x, y + 1):
+		segs.append_array([p + Vector2(0, s), p + Vector2(s, s)])
+	if x > 0 and not _solid(grid, x - 1, y):
+		segs.append_array([p, p + Vector2(0, s)])
+	if x < row.length() - 1 and not _solid(grid, x + 1, y):
+		segs.append_array([p + Vector2(s, 0), p + Vector2(s, s)])
+	return segs
+
+
+## Grille du JSON pour le rendu : porte scellée « D » dessinée comme un mur, sol scellé « : » comme du sol.
+## Mémorise les cases de porte (`_door_cells`) et la grille résultante (`_vis_grid`).
+func _visual_grid(data: Dictionary) -> Array:
+	var out: Array = []
+	_door_cells.clear()
+	var secrets: Array = data.get("secrets", [])
+	for sc: Dictionary in secrets:
+		for c in sc.get("door_cells", []):
+			_door_cells[Vector2i(int(c[0]), int(c[1]))] = StringName(sc["id"])
+	for row in data["grid"]:
+		out.append(String(row).replace("D", "#").replace(":", "."))
+	_vis_grid = out
+	return out
+
+
+## Ouvre la porte scellée `secret_id` : collision `Door_<id>` coupée, blocs retirés, contours et occluders refaits.
+## Le NavField (Director.bind_map) est relancé par l'appelant (SecretRoom), qui sait quand les monstres sortent.
+func open_secret_door(secret_id: StringName) -> void:
+	if _doors_open.has(secret_id):
+		return
+	_doors_open[secret_id] = true
+	var cs := get_node_or_null("Obstacles/Walls/Door_%s" % String(secret_id)) as CollisionShape2D
+	if cs != null:
+		cs.set_deferred(&"disabled", true)
+	_rects_ready = false
+	var size_px: Vector2 = get_meta(&"size_u", Vector2.ZERO) * UNIT_PX
+	var origin := -size_px * 0.5
+	var touched: Array[Vector2i] = []
+	for cell: Vector2i in _door_cells:
+		if _door_cells[cell] != secret_id:
+			continue
+		touched.append(cell)
+		if _vis_grid.size() > cell.y:
+			var row: String = _vis_grid[cell.y]
+			_vis_grid[cell.y] = row.substr(0, cell.x) + "." + row.substr(cell.x + 1)
+		if _blocks.has(cell):
+			var b: Variant = _blocks[cell]
+			_blocks.erase(cell)
+			if is_instance_valid(b):
+				(b as Node).queue_free()
+		_faded.erase(cell)
+		_outline_cells.erase(cell)
+	for cell in touched: # les murs voisins gagnent l'arête côté porte
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n: Vector2i = cell + d
+			if n.y < 0 or n.y >= _vis_grid.size() or n.x < 0 or n.x >= (_vis_grid[n.y] as String).length():
+				continue
+			if (_vis_grid[n.y] as String)[n.x] == "#":
+				var segs := _wall_segments(_vis_grid, origin, n.x, n.y)
+				if segs.is_empty():
+					_outline_cells.erase(n)
+				else:
+					_outline_cells[n] = segs
+	_refresh_outline()
+	secret_door_opened.emit(secret_id)
 
 
 ## Rive de l'eau profonde « ~ » (retour joueur 22/10/2026 : « bleu clair praticable, bleu foncé non » ne se
@@ -691,7 +759,9 @@ func _build_blocks(grid: Array, origin: Vector2, dir: String) -> void:
 					continue
 				spr.offset = BLOCK_FOOT_OFFSET
 				spr.position = center
-				if tex.begins_with("block"): # décalque d'ombre (rig TOP, repère carte, 0,5) posé par BakedShadows
+				if _door_cells.has(cell): # porte scellée : teinte chaude pour se lire comme un passage, sans ombre cuite
+					spr.self_modulate = spr.self_modulate * Color(1.0, 0.84, 0.62)
+				elif tex.begins_with("block"): # décalque d'ombre (rig TOP, repère carte, 0,5) posé par BakedShadows
 					spr.set_meta(&"shadow_decal_local", Transform2D(deg_to_rad(Iso.MAP_YAW_DEG) if is_iso() else 0.0, Vector2(0.5, 0.5), 0.0, center))
 				root.add_child(spr)
 				_blocks[cell] = spr
@@ -794,6 +864,11 @@ func _floor_source(x: int, y: int) -> int:
 		if r < 0.0:
 			return i
 	return 0
+
+
+## Biome de data/maps/<id>.json (lu au chargement du sol).
+func biome() -> StringName:
+	return StringName(_biome)
 
 
 func get_player_start() -> Vector2:
@@ -899,3 +974,8 @@ func _local_xf(n: Node2D) -> Transform2D:
 			xf = (cur as Node2D).transform * xf
 		cur = cur.get_parent()
 	return xf
+
+
+## Marqueurs `secret_spawn` de la carte (plaques, gardiens, porte), toutes portes scellées confondues.
+func get_secret_markers() -> Array[Marker2D]:
+	return _markers(&"secret_spawn")

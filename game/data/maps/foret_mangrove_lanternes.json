@@ -1,0 +1,300 @@
+{
+ "id": "foret_mangrove_lanternes",
+ "name": "Mangrove des lanternes",
+ "biome": "foret",
+ "scene": "res://scenes/stage/maps/foret_mangrove_lanternes.tscn",
+ "floor": 2,
+ "variant": "B",
+ "size_u": [
+  72,
+  48
+ ],
+ "size_px": [
+  4608,
+  3072
+ ],
+ "unit_px": 64,
+ "projection": "iso45",
+ "origin": "scène centrée sur (0,0) ; position_px = (coord_u - size_u/2) * 64 en repère carte ; repère logique = Rot(+45°) · carte",
+ "floor_boss": "cerf_lanterne",
+ "floor_boss_name": "Le Cerf-Lanterne",
+ "grid_cell_u": 2,
+ "grid": [
+  "####################################",
+  "#C.......C.#:::#.....C............C#",
+  "#..........#:::#............C......#",
+  "#..........#:::#.P.................#",
+  "#...P......##D##......~~,,~~~..P...#",
+  "#.......E............~~~,,~~~......#",
+  "#....................~~.....~~.....#",
+  "#~~,,~~..........C..~~......~~.....#",
+  "#~~,,~~.....G.......~~E......~~..C.#",
+  "#~.C..~............~~....P...~~....#",
+  "#~....~~C..........~~.........~~...#",
+  "#~~,,~~~~.........~~...#......~~...#",
+  "#~~,,~~~~~........~~...........~~..#",
+  "#.......~~~~~,,~~~~.........C..~~..#",
+  "#C.......~~~~,,~~~~....G........~~.#",
+  "#.........~~....~~..............~,,#",
+  "#...G......~..C.~~..C............,,#",
+  "#..........~~,,~~..................#",
+  "#..........~~,,~~..............P...#",
+  "#.........................C........#",
+  "#.....###....P..............###....#",
+  "#.........C................E.....S.#",
+  "#C................C................#",
+  "####################################"
+ ],
+ "player_start_u": [
+  67,
+  43
+ ],
+ "candidates": {
+  "chests": [
+   [
+    3,
+    3
+   ],
+   [
+    19,
+    3
+   ],
+   [
+    43,
+    3
+   ],
+   [
+    69,
+    3
+   ],
+   [
+    57,
+    5
+   ],
+   [
+    35,
+    15
+   ],
+   [
+    67,
+    17
+   ],
+   [
+    7,
+    19
+   ],
+   [
+    17,
+    21
+   ],
+   [
+    57,
+    27
+   ],
+   [
+    3,
+    29
+   ],
+   [
+    29,
+    33
+   ],
+   [
+    41,
+    33
+   ],
+   [
+    53,
+    39
+   ],
+   [
+    21,
+    43
+   ],
+   [
+    3,
+    45
+   ],
+   [
+    37,
+    45
+   ]
+  ],
+  "small_pillars": [
+   [
+    35,
+    7
+   ],
+   [
+    9,
+    9
+   ],
+   [
+    63,
+    9
+   ],
+   [
+    51,
+    19
+   ],
+   [
+    63,
+    37
+   ],
+   [
+    27,
+    41
+   ]
+  ],
+  "big_pillars": [
+   [
+    25,
+    17
+   ],
+   [
+    47,
+    29
+   ],
+   [
+    9,
+    33
+   ]
+  ],
+  "events": [
+   [
+    17,
+    11
+   ],
+   [
+    45,
+    17
+   ],
+   [
+    55,
+    43
+   ]
+  ]
+ },
+ "draw_rules": {
+  "small_chests": 8,
+  "large_chests": 2,
+  "legendary_chance": 0.25,
+  "small_pillars": 2,
+  "big_pillars": 1,
+  "min_pillar_distance_u": 18,
+  "big_pillar_min_spawn_distance_u": 20,
+  "pillar_walkable_ratio_min": 0.7,
+  "pillar_zone_radius_u": {
+   "small": 7,
+   "big": 9
+  },
+  "legendary_chest_min_spawn_distance_u": 24,
+  "trapped_chest_min_spawn_distance_u": 12
+ },
+ "events": {
+  "chance": 0.6,
+  "max_per_floor": 1,
+  "types": {
+   "autel_fortune": "sanctuaire à lanterne sur pilotis",
+   "sanctuaire_risque": "cercle de champignons",
+   "marchand_ombre": "barque sous les racines",
+   "coffre_piege": "coffre pris dans les racines"
+  }
+ },
+ "ambient_event": {
+  "threshold_difficulty": 4.0,
+  "name": "Marée montante",
+  "effect": "visuel : la marée monte, les cases ',' des pontons et des rives s'élargissent d'1 u ; lucioles éteintes, brume à 15 %"
+ },
+ "monster_spawn": {
+  "margin_u": [
+   2,
+   4
+  ],
+  "allowed_cells": [
+   ".",
+   ","
+  ],
+  "forbidden_cells": [
+   "#",
+   "~"
+  ]
+ },
+ "hour_shift_min": -30,
+ "secrets": [
+  {
+   "id": "sanctuaire_racines",
+   "kind": "sealed_door",
+   "skin": "pierres plates à rune + rideau de racines (habillage Forêt)",
+   "door_cells": [
+    [
+     13,
+     4
+    ]
+   ],
+   "room_cells": [
+    [
+     12,
+     1
+    ],
+    [
+     13,
+     1
+    ],
+    [
+     14,
+     1
+    ],
+    [
+     12,
+     2
+    ],
+    [
+     13,
+     2
+    ],
+    [
+     14,
+     2
+    ],
+    [
+     12,
+     3
+    ],
+    [
+     13,
+     3
+    ],
+    [
+     14,
+     3
+    ]
+   ],
+   "plates_u": [
+    [
+     11,
+     21
+    ],
+    [
+     67,
+     13
+    ]
+   ],
+   "guardians_u": [
+    [
+     25,
+     5
+    ],
+    [
+     29,
+     5
+    ]
+   ],
+   "guardian_names": [
+    "Lierre",
+    "Houx"
+   ],
+   "reward": "2 reliquaires (table gardien)"
+  }
+ ]
+}

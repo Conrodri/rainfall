@@ -1,0 +1,377 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/stage_map.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="s0"]
+size = Vector2(4608, 128)
+
+[sub_resource type="RectangleShape2D" id="s1"]
+size = Vector2(128, 2944)
+
+[sub_resource type="RectangleShape2D" id="s2"]
+size = Vector2(128, 512)
+
+[sub_resource type="RectangleShape2D" id="s3"]
+size = Vector2(128, 128)
+
+[sub_resource type="RectangleShape2D" id="s4"]
+size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="s5"]
+size = Vector2(384, 256)
+
+[sub_resource type="RectangleShape2D" id="s6"]
+size = Vector2(128, 384)
+
+[sub_resource type="RectangleShape2D" id="s7"]
+size = Vector2(128, 256)
+
+[sub_resource type="RectangleShape2D" id="s8"]
+size = Vector2(256, 128)
+
+[sub_resource type="RectangleShape2D" id="s9"]
+size = Vector2(384, 128)
+
+[sub_resource type="RectangleShape2D" id="s10"]
+size = Vector2(4352, 128)
+
+[sub_resource type="RectangleShape2D" id="s11"]
+size = Vector2(4864, 128)
+
+[sub_resource type="RectangleShape2D" id="s12"]
+size = Vector2(128, 3328)
+
+[node name="StageMap" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1")
+metadata/map_id = "foret_mangrove_lanternes"
+metadata/size_u = Vector2(72, 48)
+metadata/projection = "iso45"
+
+[node name="Visual" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="Ground" type="TileMapLayer" parent="Visual"]
+
+[node name="Decor" type="TileMapLayer" parent="Visual"]
+
+[node name="Obstacles" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="Walls" type="StaticBody2D" parent="Obstacles"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Block0" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, -1472)
+shape = SubResource("s0")
+
+[node name="Block1" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-2240, 64)
+shape = SubResource("s1")
+
+[node name="Block2" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-832, -1152)
+shape = SubResource("s2")
+
+[node name="Block3" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-320, -1152)
+shape = SubResource("s2")
+
+[node name="Block4" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(2240, 64)
+shape = SubResource("s1")
+
+[node name="Block5" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-704, -960)
+shape = SubResource("s3")
+
+[node name="Block6" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-448, -960)
+shape = SubResource("s3")
+
+[node name="Block7" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(640, -896)
+shape = SubResource("s4")
+
+[node name="Block8" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1216, -896)
+shape = SubResource("s5")
+
+[node name="Block9" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(448, -640)
+shape = SubResource("s2")
+
+[node name="Block10" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(576, -704)
+shape = SubResource("s3")
+
+[node name="Block11" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1408, -640)
+shape = SubResource("s4")
+
+[node name="Block12" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-2048, -512)
+shape = SubResource("s4")
+
+[node name="Block13" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1536, -512)
+shape = SubResource("s4")
+
+[node name="Block14" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(320, -384)
+shape = SubResource("s2")
+
+[node name="Block15" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1536, -384)
+shape = SubResource("s4")
+
+[node name="Block16" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-2112, -128)
+shape = SubResource("s2")
+
+[node name="Block17" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1472, -128)
+shape = SubResource("s2")
+
+[node name="Block18" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(192, -128)
+shape = SubResource("s2")
+
+[node name="Block19" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1344, -64)
+shape = SubResource("s6")
+
+[node name="Block20" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1664, -128)
+shape = SubResource("s4")
+
+[node name="Block21" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1984, 0)
+shape = SubResource("s7")
+
+[node name="Block22" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1600, 0)
+shape = SubResource("s7")
+
+[node name="Block23" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1216, 64)
+shape = SubResource("s6")
+
+[node name="Block24" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(64, 128)
+shape = SubResource("s2")
+
+[node name="Block25" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(704, -64)
+shape = SubResource("s3")
+
+[node name="Block26" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1088, 192)
+shape = SubResource("s6")
+
+[node name="Block27" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1792, 128)
+shape = SubResource("s4")
+
+[node name="Block28" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-832, 256)
+shape = SubResource("s5")
+
+[node name="Block29" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-192, 256)
+shape = SubResource("s5")
+
+[node name="Block30" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1920, 320)
+shape = SubResource("s8")
+
+[node name="Block31" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-896, 448)
+shape = SubResource("s8")
+
+[node name="Block32" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-128, 512)
+shape = SubResource("s4")
+
+[node name="Block33" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1856, 448)
+shape = SubResource("s3")
+
+[node name="Block34" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-832, 704)
+shape = SubResource("s6")
+
+[node name="Block35" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-704, 768)
+shape = SubResource("s7")
+
+[node name="Block36" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-256, 768)
+shape = SubResource("s4")
+
+[node name="Block37" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1344, 1088)
+shape = SubResource("s9")
+
+[node name="Block38" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1472, 1088)
+shape = SubResource("s9")
+
+[node name="Block39" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, 1472)
+shape = SubResource("s10")
+
+[node name="Door_sanctuaire_racines" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-576, -960)
+shape = SubResource("s3")
+
+[node name="OuterN" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, -1600)
+shape = SubResource("s11")
+
+[node name="OuterS" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, 1600)
+shape = SubResource("s11")
+
+[node name="OuterW" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-2368, 0)
+shape = SubResource("s12")
+
+[node name="OuterE" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(2368, 0)
+shape = SubResource("s12")
+
+[node name="Markers" type="Node2D" parent="."]
+rotation = 0.785398163397448
+
+[node name="PlayerStart" type="Marker2D" parent="Markers" groups=["player_start"]]
+position = Vector2(1984, 1216)
+
+[node name="Chest00" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-2112, -1344)
+
+[node name="Chest01" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-1088, -1344)
+
+[node name="Chest02" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(448, -1344)
+
+[node name="Chest03" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(2112, -1344)
+
+[node name="Chest04" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(1344, -1216)
+
+[node name="Chest05" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-64, -576)
+
+[node name="Chest06" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(1984, -448)
+
+[node name="Chest07" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-1856, -320)
+
+[node name="Chest08" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-1216, -192)
+
+[node name="Chest09" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(1344, 192)
+
+[node name="Chest10" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-2112, 320)
+
+[node name="Chest11" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-448, 576)
+
+[node name="Chest12" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(320, 576)
+
+[node name="Chest13" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(1088, 960)
+
+[node name="Chest14" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-960, 1216)
+
+[node name="Chest15" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-2112, 1344)
+
+[node name="Chest16" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(64, 1344)
+
+[node name="PillarS00" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(-64, -1088)
+metadata/pillar_kind = "small"
+
+[node name="PillarS01" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(-1728, -960)
+metadata/pillar_kind = "small"
+
+[node name="PillarS02" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(1728, -960)
+metadata/pillar_kind = "small"
+
+[node name="PillarS03" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(960, -320)
+metadata/pillar_kind = "small"
+
+[node name="PillarS04" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(1728, 832)
+metadata/pillar_kind = "small"
+
+[node name="PillarS05" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]
+position = Vector2(-576, 1088)
+metadata/pillar_kind = "small"
+
+[node name="PillarG00" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_big"]]
+position = Vector2(-704, -448)
+metadata/pillar_kind = "big"
+
+[node name="PillarG01" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_big"]]
+position = Vector2(704, 320)
+metadata/pillar_kind = "big"
+
+[node name="PillarG02" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_big"]]
+position = Vector2(-1728, 576)
+metadata/pillar_kind = "big"
+
+[node name="Event00" type="Marker2D" parent="Markers" groups=["event_spawn"]]
+position = Vector2(-1216, -832)
+
+[node name="Event01" type="Marker2D" parent="Markers" groups=["event_spawn"]]
+position = Vector2(576, -448)
+
+[node name="Event02" type="Marker2D" parent="Markers" groups=["event_spawn"]]
+position = Vector2(1216, 1216)
+
+[node name="Plate_sanctuaire_racines_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-1600, -192)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "plate"
+metadata/index = 0
+
+[node name="Plate_sanctuaire_racines_1" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(1984, -704)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "plate"
+metadata/index = 1
+
+[node name="Guardian_sanctuaire_racines_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-704, -1216)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "guardian"
+metadata/index = 0
+metadata/guardian_name = "Lierre"
+
+[node name="Guardian_sanctuaire_racines_1" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-448, -1216)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "guardian"
+metadata/index = 1
+metadata/guardian_name = "Houx"
+
+[node name="DoorMark_sanctuaire_racines" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-576, -960)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "door"
+metadata/size_u = Vector2(2, 2)

@@ -64,6 +64,7 @@ var pillars: Array[Pillar] = []
 var chests: Array[Node2D] = []
 var capsules: Array[Node2D] = [] ## capsules d'argent de l'étage (Balance.CAPSULES_PER_STAGE)
 var teleporter: ExitTeleporter = null
+var secrets: Array[SecretRoom] = [] ## portes scellées de la carte (cartes B : scène à marqueurs `secret_spawn`)
 var map_order: Array = [] ## obsolète (ancienne rotation) : toujours vide, gardé pour les anciennes sauvegardes
 var floor_plan: Array = [] ## FloorPlan.build(RunState.run_seed) : étages 1..FINAL_STAGE
 var floor_minis: Array = [] ## mini-boss du plan pour l'étage courant (petit pilier i -> floor_minis[i])
@@ -172,6 +173,8 @@ func start_stage(layout: Dictionary = {}) -> void:
 		col.position = pillars[pillars.size() - 1].position
 		map.add_child(col)
 
+	_setup_secrets()
+
 	for xy in layout["capsules"]:
 		var capsule := _make_capsule()
 		if capsule == null:
@@ -189,6 +192,47 @@ func start_stage(layout: Dictionary = {}) -> void:
 		player.global_position = map.to_global(map.get_player_start())
 	Events.floor_started.emit(stage)
 	stage_started.emit(stage)
+
+
+# --- Secrets (docs/Design_Zones_Secretes.md §3, scripts/stage/secret_room.gd)
+## Une SecretRoom par secret dont la scène porte des marqueurs `secret_spawn` (porte scellée des cartes B).
+func _setup_secrets() -> void:
+	secrets.clear()
+	var by_id := {}
+	for m in map.get_secret_markers():
+		var sid := String(m.get_meta(&"secret_id", ""))
+		if sid == "":
+			continue
+		if not by_id.has(sid):
+			by_id[sid] = []
+		(by_id[sid] as Array).append(m)
+	for sid: String in by_id:
+		var room := SecretRoom.new()
+		map.add_child(room)
+		room.setup(map, StringName(sid), by_id[sid], map.biome(), _make_relic)
+		secrets.append(room)
+
+
+## Reliquaire d'un gardien : coffre gratuit (kind `boss`, table « gardien » à créer côté loot) posé en zone accessible.
+func _make_relic(pos: Vector2) -> Node2D:
+	var chest := _make_chest()
+	if chest == null:
+		return null
+	chest.position = reachable_local(pos)
+	map.add_child(chest)
+	if chest.has_method(&"setup"):
+		chest.call(&"setup", &"boss", RunState.stage)
+	chests.append(chest)
+	return chest
+
+
+## État des secrets de l'étage (ligne OBJECTIFS optionnelle, tests) : un dictionnaire par SecretRoom.
+func secret_status() -> Array:
+	var out: Array = []
+	for r in secrets:
+		if is_instance_valid(r):
+			out.append(r.status())
+	return out
 
 
 # --- Cartes
@@ -642,6 +686,7 @@ func _clear_stage() -> void:
 	pillars.clear()
 	chests.clear()
 	capsules.clear() # libérées avec la carte
+	secrets.clear()
 	teleporter = null
 
 
@@ -660,7 +705,16 @@ func to_dict() -> Dictionary:
 		"stage": RunState.stage, "endless": endless, "floor_cleared": floor_cleared,
 		"map_order": map_order, "floor_plan": floor_plan, "chests": _chests_state(), "pillars": ps, "capsules": caps,
 		"projection": String(map.get_meta(&"projection", "flat")) if map != null else "flat",
+		"secrets": _secrets_state(),
 	}
+
+
+func _secrets_state() -> Array:
+	var out: Array = []
+	for r in secrets:
+		if is_instance_valid(r):
+			out.append(r.to_dict())
+	return out
 
 
 ## Disposition des coffres avec `opened` : un coffre ouvert est libéré après son choix d'objet
@@ -705,6 +759,11 @@ func from_dict(d: Dictionary) -> void:
 		call_deferred(&"_convert_legacy_player") # Main pose la position du joueur juste après from_dict
 	for i in pillars.size():
 		pillars[i].from_dict(d["pillars"][i])
+	for sd in d.get("secrets", []): # absent des sauvegardes d'avant les cartes B
+		if sd is Dictionary:
+			for r in secrets:
+				if String(r.secret_id) == String(sd.get("id", "")):
+					r.from_dict(sd)
 	if bool(d.get("floor_cleared", false)):
 		floor_cleared = true
 		teleporter.position = teleporter_local(pillars[pillars.size() - 1].position)

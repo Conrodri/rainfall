@@ -1,0 +1,342 @@
+{
+ "id": "cryptes_ossuaire_pluies",
+ "name": "Ossuaire des pluies",
+ "biome": "cryptes",
+ "scene": "res://scenes/stage/maps/cryptes_ossuaire_pluies.tscn",
+ "floor": 4,
+ "variant": "B",
+ "size_u": [
+  48,
+  76
+ ],
+ "size_px": [
+  3072,
+  4864
+ ],
+ "unit_px": 64,
+ "projection": "iso45",
+ "origin": "scène centrée sur (0,0) ; position_px = (coord_u - size_u/2) * 64 en repère carte ; repère logique = Rot(+45°) · carte",
+ "floor_boss": "recluse",
+ "floor_boss_name": "Le Reclus",
+ "grid_cell_u": 2,
+ "grid": [
+  "########################",
+  "#C....C#...C....#::::::#",
+  "#......#........#::::::#",
+  "#......#........###DD###",
+  "#..P...#..#..#..#......#",
+  "#................C.....#",
+  "#...........P..........#",
+  "#......#C.......#...P..#",
+  "#.,,...#........#......#",
+  "#.,,...#..#..#..#.....C#",
+  "#......#........#......#",
+  "#C.....................#",
+  "#..............C...,,,.#",
+  "#......#...G....#..,,,.#",
+  "#..P...#........#......#",
+  "#......#........#......#",
+  "#........,,,,,,.......E#",
+  "#........,~~~~,........#",
+  "#...E....,~~~~,....G...#",
+  "#C.......,~~~~,........#",
+  "#........,~~~~,........#",
+  "#....C...,,,,,,.......C#",
+  "#......#........#......#",
+  "#.,,,..#.......C#......#",
+  "#.,,,..#...G....#......#",
+  "#......#C.......#.....C#",
+  "#......................#",
+  "#...................P..#",
+  "#......#..#..#..#......#",
+  "#C.....#........#......#",
+  "####...#........#...####",
+  "#.....C#....P...#.....C#",
+  "#......................#",
+  "#.........#..#.........#",
+  "#......#.......E#......#",
+  "#..S...#........#......#",
+  "#C.....#...C....#C.....#",
+  "########################"
+ ],
+ "player_start_u": [
+  7,
+  71
+ ],
+ "candidates": {
+  "chests": [
+   [
+    3,
+    3
+   ],
+   [
+    13,
+    3
+   ],
+   [
+    23,
+    3
+   ],
+   [
+    35,
+    11
+   ],
+   [
+    17,
+    15
+   ],
+   [
+    45,
+    19
+   ],
+   [
+    3,
+    23
+   ],
+   [
+    31,
+    25
+   ],
+   [
+    3,
+    39
+   ],
+   [
+    11,
+    43
+   ],
+   [
+    45,
+    43
+   ],
+   [
+    31,
+    47
+   ],
+   [
+    17,
+    51
+   ],
+   [
+    45,
+    51
+   ],
+   [
+    3,
+    59
+   ],
+   [
+    13,
+    63
+   ],
+   [
+    45,
+    63
+   ],
+   [
+    3,
+    73
+   ],
+   [
+    23,
+    73
+   ],
+   [
+    35,
+    73
+   ]
+  ],
+  "small_pillars": [
+   [
+    7,
+    9
+   ],
+   [
+    25,
+    13
+   ],
+   [
+    41,
+    15
+   ],
+   [
+    7,
+    29
+   ],
+   [
+    41,
+    55
+   ],
+   [
+    25,
+    63
+   ]
+  ],
+  "big_pillars": [
+   [
+    23,
+    27
+   ],
+   [
+    39,
+    37
+   ],
+   [
+    23,
+    49
+   ]
+  ],
+  "events": [
+   [
+    45,
+    33
+   ],
+   [
+    9,
+    37
+   ],
+   [
+    31,
+    69
+   ]
+  ]
+ },
+ "draw_rules": {
+  "small_chests": 8,
+  "large_chests": 2,
+  "legendary_chance": 0.25,
+  "small_pillars": 2,
+  "big_pillars": 1,
+  "min_pillar_distance_u": 18,
+  "big_pillar_min_spawn_distance_u": 20,
+  "pillar_walkable_ratio_min": 0.7,
+  "pillar_zone_radius_u": {
+   "small": 7,
+   "big": 9
+  },
+  "legendary_chest_min_spawn_distance_u": 24,
+  "trapped_chest_min_spawn_distance_u": 12
+ },
+ "events": {
+  "chance": 0.6,
+  "max_per_floor": 1,
+  "types": {
+   "autel_fortune": "reliquaire de cristal",
+   "sanctuaire_risque": "ossuaire scellé",
+   "marchand_ombre": "passeur du puits",
+   "coffre_piege": "sarcophage entrouvert"
+  }
+ },
+ "ambient_event": {
+  "threshold_difficulty": 2.5,
+  "name": "Pluie du puits",
+  "effect": "visuel : la pluie de la ville tombe par le puits de lumière et le bassin central déborde (cases ',' élargies) ; Furieux : cristaux qui s'éteignent par vagues"
+ },
+ "monster_spawn": {
+  "margin_u": [
+   2,
+   4
+  ],
+  "allowed_cells": [
+   ".",
+   ","
+  ],
+  "forbidden_cells": [
+   "#",
+   "~"
+  ]
+ },
+ "hour_shift_min": 0,
+ "secrets": [
+  {
+   "id": "ossuaire_scelle",
+   "kind": "sealed_door",
+   "skin": "dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)",
+   "door_cells": [
+    [
+     19,
+     3
+    ],
+    [
+     20,
+     3
+    ]
+   ],
+   "room_cells": [
+    [
+     17,
+     1
+    ],
+    [
+     18,
+     1
+    ],
+    [
+     19,
+     1
+    ],
+    [
+     20,
+     1
+    ],
+    [
+     21,
+     1
+    ],
+    [
+     22,
+     1
+    ],
+    [
+     17,
+     2
+    ],
+    [
+     18,
+     2
+    ],
+    [
+     19,
+     2
+    ],
+    [
+     20,
+     2
+    ],
+    [
+     21,
+     2
+    ],
+    [
+     22,
+     2
+    ]
+   ],
+   "plates_u": [
+    [
+     3,
+     47
+    ],
+    [
+     45,
+     29
+    ]
+   ],
+   "guardians_u": [
+    [
+     37,
+     9
+    ],
+    [
+     41,
+     11
+    ]
+   ],
+   "guardian_names": [
+    "Sel",
+    "Suie"
+   ],
+   "reward": "2 reliquaires (table gardien)"
+  }
+ ]
+}

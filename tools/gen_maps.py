@@ -48,7 +48,8 @@ U = 64
 # Projection (docs/Design_Isometrique.md §1.2, §3) : "iso45" = grille de carte tournée de +45° dans le repère
 # logique (Visual, Obstacles et Markers portent la rotation ; grilles, positions et rectangles inchangés).
 # Étages 1-3 (terrasses_noyees, foret_brume, cite_rouille) en iso (cite_rouille : lot F3, 22/10/2026).
-ISO = {"terrasses_noyees", "foret_brume", "cite_rouille", "cryptes_noyees", "la_source"}
+ISO = {"terrasses_noyees", "foret_brume", "cite_rouille", "cryptes_noyees", "la_source",
+       "terrasses_rizieres_hautes", "foret_mangrove_lanternes", "cite_fonderie_canal", "cryptes_ossuaire_pluies"}
 # Étages 4 et 5 (docs/Design_Etages.md §3-§4, lot L1) : grilles dessinées ici (pas dans Design_Boss_Cartes).
 # Lettres : C coffre, P petit pilier, G gros pilier, E événement, S départ (cases praticables) ;
 # les repères en u (centre de case = 2 * case + 1) sont déduits des lettres.
@@ -111,6 +112,147 @@ GRID_SOURCE = [
   "#C...#####..S..#####...C#",
   "#########################",
  ]
+# Variantes B (docs/Design_Variantes_B.md, intégrées le 28/10/2026) : grilles du level designer. Lettres en plus :
+# D = porte scellée (solide tant que fermée, rectangle de collision séparé `Door_<secret>`), : = sol scellé
+# (praticable une fois la porte ouverte ; exclu des capsules et des apparitions tant qu'elle est fermée).
+GRID_RIZIERES = [
+  "########################",
+  "#:::#......C.....,,,,,C#",
+  "#:::D............,~~~,.#",
+  "#:::D..P.........,~~~,.#",
+  "#####............,,,,,.#",
+  "#...........G..........#",
+  "#..................P...#",
+  "#C...E.........C.......#",
+  "#......................#",
+  "#######..######..#######",
+  "#...,,,...C.......,,,..#",
+  "#C..,,,.....#.....,,,..#",
+  "#...,,,...........,,,.C#",
+  "##..#######..#######..##",
+  "#C..............E......#",
+  "#......C.,,,,,,.......C#",
+  "#........,~~~~,........#",
+  "#...G....,~~~~,....P...#",
+  "#........,~~~~,.P......#",
+  "#....P...,~~~~,........#",
+  "#........,,,,,,.......C#",
+  "#...........C..........#",
+  "######..########..######",
+  "#.......,,,...,,,......#",
+  "#C......,,,.C.,,,.....C#",
+  "#.......,,,...,,,......#",
+  "###..######..######..###",
+  "#.................C....#",
+  "#....................E.#",
+  "#.........P............#",
+  "#.....P......,,,,..G...#",
+  "#.S..........,~~,......#",
+  "#.......#....,~~,......#",
+  "#.......#..C.,,,,.....C#",
+  "#.......#..............#",
+  "########################",
+ ]
+GRID_MANGROVE = [
+  "####################################",
+  "#C.......C.#:::#.....C............C#",
+  "#..........#:::#............C......#",
+  "#..........#:::#.P.................#",
+  "#...P......##D##......~~,,~~~..P...#",
+  "#.......E............~~~,,~~~......#",
+  "#....................~~.....~~.....#",
+  "#~~,,~~..........C..~~......~~.....#",
+  "#~~,,~~.....G.......~~E......~~..C.#",
+  "#~.C..~............~~....P...~~....#",
+  "#~....~~C..........~~.........~~...#",
+  "#~~,,~~~~.........~~...#......~~...#",
+  "#~~,,~~~~~........~~...........~~..#",
+  "#.......~~~~~,,~~~~.........C..~~..#",
+  "#C.......~~~~,,~~~~....G........~~.#",
+  "#.........~~....~~..............~,,#",
+  "#...G......~..C.~~..C............,,#",
+  "#..........~~,,~~..................#",
+  "#..........~~,,~~..............P...#",
+  "#.........................C........#",
+  "#.....###....P..............###....#",
+  "#.........C................E.....S.#",
+  "#C................C................#",
+  "####################################",
+ ]
+GRID_FONDERIE = [
+  "################################",
+  "#C.......#...............#:::::#",
+  "#.....C..#.C........C....#:::::#",
+  "#........#......P........#:::::#",
+  "#........................##DD###",
+  "#....G...E...~~,,~~............#",
+  "#.C.......~~~~~,,~~~~~........C#",
+  "#........~~~........~~~....P...#",
+  "#.......~~......C.....~~.......#",
+  "####...~~....######....~~...####",
+  "#.....~~....##....##....~~.....#",
+  "#.....~~................~~.....#",
+  "#C....~...#.....#....#...~.....#",
+  "#....~~..##..C.......##..~~...C#",
+  "#....~~..#............#..~~....#",
+  "#....,,.C#..#.........#..,,....#",
+  "#..P.,,..#......G..#..#C.,,.P..#",
+  "#....~~..#...P........#..~~....#",
+  "#....~~..##..E....C..##..~~....#",
+  "#.....~...#....#.....#...~.....#",
+  "#.....~~................~~.....#",
+  "#.....~~....##....##....~~.....#",
+  "####...~~....######....~~...####",
+  "#.......~~......C.....~~.......#",
+  "#........~~~........~~~........#",
+  "#....P....~~~~~,,~~~~~...G.....#",
+  "#............~~,,~~......E.....#",
+  "#..S...........................#",
+  "#........#......P.....#.....P..#",
+  "#........#............#........#",
+  "#........#...C........#.C.....C#",
+  "################################",
+ ]
+GRID_OSSUAIRE = [
+  "########################",
+  "#C....C#...C....#::::::#",
+  "#......#........#::::::#",
+  "#......#........###DD###",
+  "#..P...#..#..#..#......#",
+  "#................C.....#",
+  "#...........P..........#",
+  "#......#C.......#...P..#",
+  "#.,,...#........#......#",
+  "#.,,...#..#..#..#.....C#",
+  "#......#........#......#",
+  "#C.....................#",
+  "#..............C...,,,.#",
+  "#......#...G....#..,,,.#",
+  "#..P...#........#......#",
+  "#......#........#......#",
+  "#........,,,,,,.......E#",
+  "#........,~~~~,........#",
+  "#...E....,~~~~,....G...#",
+  "#C.......,~~~~,........#",
+  "#........,~~~~,........#",
+  "#....C...,,,,,,.......C#",
+  "#......#........#......#",
+  "#.,,,..#.......C#......#",
+  "#.,,,..#...G....#......#",
+  "#......#C.......#.....C#",
+  "#......................#",
+  "#...................P..#",
+  "#......#..#..#..#......#",
+  "#C.....#........#......#",
+  "####...#........#...####",
+  "#.....C#....P...#.....C#",
+  "#......................#",
+  "#.........#..#.........#",
+  "#......#.......E#......#",
+  "#..S...#........#......#",
+  "#C.....#...C....#C.....#",
+  "########################",
+ ]
 NEW_MAPS = [
  dict(id="cryptes_noyees", floor=4, name="Cryptes noyées", biome="cryptes", variant="A", size=(60,60), boss="recluse",
   boss_name="Le Reclus", grid=GRID_CRYPTES,
@@ -121,6 +263,26 @@ NEW_MAPS = [
   rules=dict(small_chests=6, large_chests=2, legendary_chance=1.0, small_pillars=0, big_pillars=1),
   ambient=dict(threshold_difficulty=4.0, name="Colonne de pluie", effect="visuel : la colonne de pluie centrale s'épaissit avec la difficulté"),
   event_names={"autel_fortune":"autel de la Source","sanctuaire_risque":"vasque de pluie","marchand_ombre":"pèlerin sous la colonne","coffre_piege":"offrande noyée"}),
+ dict(id="terrasses_rizieres_hautes", floor=1, name="Rizières hautes", biome="terrasses", variant="B", size=(48,72), boss="eclusier",
+  boss_name="L'Éclusier", grid=GRID_RIZIERES, hour_shift_min=30,
+  ambient=json.loads(r'''{"threshold_difficulty": 2.5, "name": "La noria repart", "effect": "visuel et sonore : la noria du bassin central se remet à tourner (grincement, éclaboussures) ; les cases ',' des rizières s'élargissent d'1 u"}'''),
+  event_names=json.loads(r'''{"autel_fortune": "lanterne de pierre du palier", "sanctuaire_risque": "rizière qu'on draine", "marchand_ombre": "cabane de la noria", "coffre_piege": "coffre dans la boue"}'''),
+  secrets=json.loads(r'''[{"id": "citerne_noria", "kind": "sealed_door", "skin": "dalles de vanne + grille de citerne (habillage Terrasses)", "door_cells": [[4, 2], [4, 3]], "room_cells": [[1, 1], [2, 1], [3, 1], [1, 2], [2, 2], [3, 2], [1, 3], [2, 3], [3, 3]], "plates_u": [[5, 21], [43, 39]], "guardians_u": [[3, 3], [5, 7]], "guardian_names": ["Orme", "Aulne"], "reward": "2 reliquaires (table gardien)"}]''')),
+ dict(id="foret_mangrove_lanternes", floor=2, name="Mangrove des lanternes", biome="foret", variant="B", size=(72,48), boss="cerf_lanterne",
+  boss_name="Le Cerf-Lanterne", grid=GRID_MANGROVE, hour_shift_min=-30,
+  ambient=json.loads(r'''{"threshold_difficulty": 4.0, "name": "Marée montante", "effect": "visuel : la marée monte, les cases ',' des pontons et des rives s'élargissent d'1 u ; lucioles éteintes, brume à 15 %"}'''),
+  event_names=json.loads(r'''{"autel_fortune": "sanctuaire à lanterne sur pilotis", "sanctuaire_risque": "cercle de champignons", "marchand_ombre": "barque sous les racines", "coffre_piege": "coffre pris dans les racines"}'''),
+  secrets=json.loads(r'''[{"id": "sanctuaire_racines", "kind": "sealed_door", "skin": "pierres plates à rune + rideau de racines (habillage Forêt)", "door_cells": [[13, 4]], "room_cells": [[12, 1], [13, 1], [14, 1], [12, 2], [13, 2], [14, 2], [12, 3], [13, 3], [14, 3]], "plates_u": [[11, 21], [67, 13]], "guardians_u": [[25, 5], [29, 5]], "guardian_names": ["Lierre", "Houx"], "reward": "2 reliquaires (table gardien)"}]''')),
+ dict(id="cite_fonderie_canal", floor=3, name="Fonderie du canal", biome="cite", variant="B", size=(64,64), boss="sonneur",
+  boss_name="Le Sonneur", grid=GRID_FONDERIE, hour_shift_min=30,
+  ambient=json.loads(r'''{"threshold_difficulty": 4.0, "name": "Coulée", "effect": "visuel : les creusets de la cour pulsent orange (coulée de métal) ; orage à Furieux ; à Cataclysme le canal circulaire monte"}'''),
+  event_names=json.loads(r'''{"autel_fortune": "lampe à vapeur de l'atelier", "sanctuaire_risque": "vanne de la coulée", "marchand_ombre": "guichet du contremaître", "coffre_piege": "caisse de lingots"}'''),
+  secrets=json.loads(r'''[{"id": "chambre_forte", "kind": "sealed_door", "skin": "plaques de pression rivetées + porte blindée à volant (habillage Cité)", "door_cells": [[27, 4], [28, 4]], "room_cells": [[26, 1], [27, 1], [28, 1], [29, 1], [30, 1], [26, 2], [27, 2], [28, 2], [29, 2], [30, 2], [26, 3], [27, 3], [28, 3], [29, 3], [30, 3]], "plates_u": [[5, 33], [33, 59]], "guardians_u": [[55, 5], [59, 5]], "guardian_names": ["Rivet", "Soudure"], "reward": "2 reliquaires (table gardien)"}]''')),
+ dict(id="cryptes_ossuaire_pluies", floor=4, name="Ossuaire des pluies", biome="cryptes", variant="B", size=(48,76), boss="recluse",
+  boss_name="Le Reclus", grid=GRID_OSSUAIRE, hour_shift_min=0,
+  ambient=json.loads(r'''{"threshold_difficulty": 2.5, "name": "Pluie du puits", "effect": "visuel : la pluie de la ville tombe par le puits de lumière et le bassin central déborde (cases ',' élargies) ; Furieux : cristaux qui s'éteignent par vagues"}'''),
+  event_names=json.loads(r'''{"autel_fortune": "reliquaire de cristal", "sanctuaire_risque": "ossuaire scellé", "marchand_ombre": "passeur du puits", "coffre_piege": "sarcophage entrouvert"}'''),
+  secrets=json.loads(r'''[{"id": "ossuaire_scelle", "kind": "sealed_door", "skin": "dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", "door_cells": [[19, 3], [20, 3]], "room_cells": [[17, 1], [18, 1], [19, 1], [20, 1], [21, 1], [22, 1], [17, 2], [18, 2], [19, 2], [20, 2], [21, 2], [22, 2]], "plates_u": [[3, 47], [45, 29]], "guardians_u": [[37, 9], [41, 11]], "guardian_names": ["Sel", "Suie"], "reward": "2 reliquaires (table gardien)"}]''')),
 ]
 
 def markers(grid, ch):
@@ -176,6 +338,15 @@ for m, grid in list(zip(MAPS, grids)) + [(m, m["grid"]) for m in NEW_MAPS]:
     outer = [("OuterN", (W/2, -1), (W+4, 2)), ("OuterS", (W/2, H+1), (W+4, 2)),
              ("OuterW", (-1, H/2), (2, H+4)), ("OuterE", (W+1, H/2), (2, H+4))]
     for (x, y, w, h) in solid: shape(w*2*U, h*2*U)
+    # portes scellées : un rectangle par secret (boîte des cellules `door_cells`), nœud `Door_<id>` désactivable
+    doors = []
+    for sc in m.get("secrets", []):
+        xs = [c[0] for c in sc["door_cells"]]; ys = [c[1] for c in sc["door_cells"]]
+        dx, dy, dw, dh = min(xs), min(ys), max(xs) - min(xs) + 1, max(ys) - min(ys) + 1
+        assert dw * dh == len(sc["door_cells"]), (m["id"], sc["id"], "porte non rectangulaire")
+        assert all(grid[cy][cx] == "D" for cx, cy in sc["door_cells"]), (m["id"], sc["id"], "cellule D manquante")
+        doors.append((sc["id"], dx, dy, dw, dh)); shape(dw*2*U, dh*2*U)
+    assert sum(r.count("D") for r in grid) == sum(len(sc["door_cells"]) for sc in m.get("secrets", [])), (m["id"], "D orphelin")
     for _, _, (a, b) in outer: shape(a*U, b*U)
     iso = m["id"] in ISO
     proj = "iso45" if iso else "flat"
@@ -192,6 +363,9 @@ for m, grid in list(zip(MAPS, grids)) + [(m, m["grid"]) for m in NEW_MAPS]:
     for i, (x, y, w, h) in enumerate(solid):
         cx, cy = P(x*2 + w, y*2 + h)
         body.append('[node name="Block%d" type="CollisionShape2D" parent="Obstacles/Walls"]\nposition = Vector2(%g, %g)\nshape = SubResource("%s")\n' % (i, cx, cy, shape(w*2*U, h*2*U)))
+    for (sid, dx, dy, dw, dh) in doors:
+        cx, cy = P(dx*2 + dw, dy*2 + dh)
+        body.append('[node name="Door_%s" type="CollisionShape2D" parent="Obstacles/Walls"]\nposition = Vector2(%g, %g)\nshape = SubResource("%s")\n' % (sid, cx, cy, shape(dw*2*U, dh*2*U)))
     for n, (cx, cy), (a, b) in outer:
         p = P(cx, cy)
         body.append('[node name="%s" type="CollisionShape2D" parent="Obstacles/Walls"]\nposition = Vector2(%g, %g)\nshape = SubResource("%s")\n' % (n, p[0], p[1], shape(a*U, b*U)))
@@ -205,6 +379,15 @@ for m, grid in list(zip(MAPS, grids)) + [(m, m["grid"]) for m in NEW_MAPS]:
         body.append('[node name="PillarG%02d" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_big"]]\nposition = Vector2(%g, %g)\nmetadata/pillar_kind = "big"\n' % ((i,)+P(*c)))
     for i, c in enumerate(m["events"]):
         body.append('[node name="Event%02d" type="Marker2D" parent="Markers" groups=["event_spawn"]]\nposition = Vector2(%g, %g)\n' % ((i,)+P(*c)))
+    for sc in m.get("secrets", []):
+        for i, c in enumerate(sc["plates_u"]):
+            assert grid[c[1]//2][c[0]//2] == ".", (m["id"], sc["id"], "plaque hors sol", c)
+            body.append('[node name="Plate_%s_%d" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "plate"\nmetadata/index = %d\n' % ((sc["id"], i) + P(*c) + (sc["id"], i)))
+        for i, c in enumerate(sc["guardians_u"]):
+            body.append('[node name="Guardian_%s_%d" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "guardian"\nmetadata/index = %d\nmetadata/guardian_name = "%s"\n' % ((sc["id"], i) + P(*c) + (sc["id"], i, sc["guardian_names"][i])))
+        for (sid, dx, dy, dw, dh) in doors:
+            if sid == sc["id"]:
+                body.append('[node name="DoorMark_%s" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "door"\nmetadata/size_u = Vector2(%d, %d)\n' % ((sid,) + P(dx*2 + dw, dy*2 + dh) + (sid, dw*2, dh*2)))
     for (w, h), n in shp.items():
         out.append('[sub_resource type="RectangleShape2D" id="%s"]\nsize = Vector2(%g, %g)\n' % (n, w, h))
     out += body
@@ -226,7 +409,9 @@ for m, grid in list(zip(MAPS, grids)) + [(m, m["grid"]) for m in NEW_MAPS]:
             legendary_chest_min_spawn_distance_u=24, trapped_chest_min_spawn_distance_u=12), **m.get("rules", {})),
         events=dict(chance=0.6, max_per_floor=1, types=m["event_names"]),
         ambient_event=m["ambient"],
-        monster_spawn=dict(margin_u=[2,4], allowed_cells=[".", ","], forbidden_cells=["#","~"]))
+        monster_spawn=dict(margin_u=[2,4], allowed_cells=[".", ","], forbidden_cells=["#","~"]),
+        **({"hour_shift_min": m["hour_shift_min"]} if "hour_shift_min" in m else {}),
+        **({"secrets": m["secrets"]} if "secrets" in m else {}))
     os.makedirs(f"{G}/data/maps", exist_ok=True)
     # saut de ligne final : fichiers identiques à ceux de l'éditeur (pas de diff parasite)
     open(f'{G}/data/maps/{m["id"]}.json', "w", encoding="utf-8", newline=NL).write(json.dumps(meta, ensure_ascii=False, indent=1) + NL)

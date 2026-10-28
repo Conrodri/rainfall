@@ -15,12 +15,104 @@ const OUT := "res://data/ambiance/"
 const U := 64.0
 
 
+## Options (après `--`) : `--b-only` ne génère que les profils des variantes B (dérivés des .tres A déjà sur disque,
+## sans écraser les retouches faites aux profils A).
 func _initialize() -> void:
-	for p in [_terrasses(), _foret(), _cite()]:
+	var profiles: Array = []
+	if not ("--b-only" in OS.get_cmdline_user_args()):
+		profiles = [_terrasses(), _foret(), _cite()]
+	profiles.append_array(_variants_b())
+	for p in profiles:
 		var path: String = OUT + String(p.map_id) + ".tres"
 		var err := ResourceSaver.save(p, path)
 		print("%s -> %s (%s)" % [p.map_id, path, error_string(err)])
 	quit()
+
+
+# --- Variantes B (docs/Design_Variantes_B.md §2.5, 3.5, 4.5, 5.5) : copie du profil A + deltas d'heure ------------
+## Les valeurs du document sont « relatives au profil livré » : appliquées en rapports sur les valeurs du .tres A.
+func _variants_b() -> Array:
+	var out: Array = []
+	var pa := _load_a("terrasses_noyees")
+	if pa != null: # 18 h 10 : soleil plus rasant, ombres de murets plus longues, brume de rizière
+		pa.map_id = &"terrasses_rizieres_hautes"
+		pa.display_name = "Rizières hautes"
+		pa.mood = "Fin d'après-midi tardive (18 h 10), soleil rasant qui éclaire les escaliers de biais ; brume de rizière dans les paliers bas."
+		pa.sun_rotation_deg -= 5.0
+		pa.sun_height *= 0.11 / 0.15
+		pa.sun_energy *= 0.45 / 0.50
+		pa.sun_shadow_length_u *= 3.7 / 3.2
+		pa.sun_color = c("#FFC890")
+		pa.rays_count += 1.0
+		pa.fog_low_opacity += 0.02
+		out.append(pa)
+	var pf := _load_a("foret_brume")
+	if pf != null: # 4 h 40 : avant l'aube, plus bleu, les lanternes guident ; lanternes sur les bords du chenal « ~ »
+		pf.map_id = &"foret_mangrove_lanternes"
+		pf.display_name = "Mangrove des lanternes"
+		pf.mood = "Avant l'aube (4 h 40), plus bleu que la forêt-brume ; les lanternes sur pilotis guident le long du chenal."
+		pf.ambient_color = _dim(pf.ambient_color, 0.95)
+		pf.ambient_low = _dim(pf.ambient_low, 0.95)
+		pf.sun_energy *= 0.36 / 0.42
+		pf.map_lights_energy *= 1.15
+		pf.fog_low_opacity += 0.02
+		var rules: Array[Dictionary] = []
+		for r in pf.light_rules:
+			var nr := (r as Dictionary).duplicate()
+			if StringName(nr.get("preset", &"")) == &"shrine_lantern":
+				nr["char"] = "~"
+				nr["spacing_u"] = 12.0 # max inchangé (8) : même coût que la A
+			rules.append(nr)
+		pf.light_rules = rules
+		out.append(pf)
+	var pc := _load_a("cite_rouille")
+	if pc != null: # 20 h : nuit tombée, la fonderie éclaire ; 4 creusets (24 lumières au plus, comme la A)
+		pc.map_id = &"cite_fonderie_canal"
+		pc.display_name = "Fonderie du canal"
+		pc.mood = "Nuit tombée (20 h) : la fonderie éclaire à la place du ciel, creusets orange dans la cour."
+		pc.ambient_color = _dim(pc.ambient_color, 0.96)
+		pc.ambient_low = _dim(pc.ambient_low, 0.96)
+		pc.sun_energy *= 0.34 / 0.40
+		pc.sun_shadow_length_u *= 1.4 / 1.8
+		var crules: Array[Dictionary] = []
+		for r in pc.light_rules:
+			var nr := (r as Dictionary).duplicate()
+			if StringName(nr.get("preset", &"")) == &"steam_lamp":
+				nr["max"] = 20
+			crules.append(nr)
+		pc.light_rules = crules
+		var pls: Array[Dictionary] = [] # cloche d'alerte au centre de la cour (32;32) ; creusets en cases (16,12) (12,15) (19,16) (15,19)
+		pls.append({"pos_u": Vector2(32, 32), "preset": &"alarm_bell"})
+		for cell in [Vector2(16, 12), Vector2(12, 15), Vector2(19, 16), Vector2(15, 19)]:
+			pls.append({"pos_u": cell * 2.0 + Vector2.ONE, "preset": &"steam_lamp", "energy": 1.3})
+		pc.point_lights = pls
+		out.append(pc)
+	var py := _load_a("cryptes_noyees")
+	if py != null: # pas de soleil : le puits de lumière (colonne froide) et sa pluie
+		py.map_id = &"cryptes_ossuaire_pluies"
+		py.display_name = "Ossuaire des pluies"
+		py.mood = "Cryptes sous un puits de lumière : une colonne froide, la seule lumière du jour, et la pluie de la ville qui tombe dedans."
+		var pls2: Array[Dictionary] = []
+		for l in py.point_lights:
+			pls2.append(l)
+		pls2.append({"pos_u": Vector2(24, 37), "preset": &"crystal_vein", "energy": 1.6})
+		py.point_lights = pls2
+		py.rain_intensity = 0.15
+		py.drops_amount *= 1.3
+		out.append(py)
+	return out
+
+
+func _load_a(id: String) -> AmbianceProfile:
+	var src := load(OUT + id + ".tres") as AmbianceProfile
+	if src == null:
+		push_warning("build_profiles : profil A « %s » introuvable, variante B ignorée." % id)
+		return null
+	return src.duplicate(true) as AmbianceProfile
+
+
+static func _dim(col: Color, k: float) -> Color:
+	return Color(col.r * k, col.g * k, col.b * k, col.a)
 
 
 static func c(hex: String, a: float = 1.0) -> Color:

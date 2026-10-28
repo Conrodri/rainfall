@@ -11,6 +11,7 @@ const WARMUP_FRAMES := 30
 const MEASURE_FRAMES := 360 # 6 s simulées à 60 Hz
 const BUDGET_MS := 1.3 # médiane par frame (robuste aux pics des autres processus) ; cible ~1 ms sur PC de dev ; Android bas de gamme ≈ ×5-8
 const MAP := "res://scenes/stage/maps/foret_brume.tscn"
+var _map_path := MAP ## `-- --map=cite_fonderie_canal` : autre carte de scenes/stage/maps (comparaison A / B)
 const BARS_BUDGET_MS := 0.35 ## 250 barres affichées (pire cas)
 const HIT_EVERY := 30 ## phase C : chaque monstre reprend un coup toutes les 30 frames (< 3 s)
 
@@ -40,12 +41,15 @@ func _run() -> void:
 	await get_tree().physics_frame
 	var nodes0 := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
 	var a := await _phase("A terrain vide", Vector2.ZERO, null)
-	var map: Node2D = load(MAP).instantiate()
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--map="):
+			_map_path = "res://scenes/stage/maps/%s.tscn" % arg.trim_prefix("--map=")
+	var map: Node2D = load(_map_path).instantiate()
 	add_child(map)
 	_director.despawn_all()
 	_director.bind_map(map)
 	var nodes1 := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
-	var b := await _phase("B carte %s" % MAP.get_file(), map.get_player_start(), _director.nav)
+	var b := await _phase("B carte %s" % _map_path.get_file(), map.get_player_start(), _director.nav)
 	var nodes2 := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
 	print("Surcoût de la carte : %.3f ms" % (b - a))
 	_director.despawn_all()

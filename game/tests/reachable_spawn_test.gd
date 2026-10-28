@@ -53,9 +53,23 @@ func _run() -> void:
 			await get_tree().process_frame
 			_check_stage(mgr, director, player, not seen.has(mgr.map_id))
 			seen[mgr.map_id] = true
+	# variantes B : imposées l'une après l'autre dans le plan (le tirage 50/50 ne les garantit pas sur 3 seeds)
+	RunState.start_run(&"moyen", 5)
+	mgr.reset_run()
 	for f in DirAccess.get_files_at("res://data/maps"):
-		if f.ends_with(".json") and f.get_basename() != "test_arena": # arène du mode test : hors run
-			_check("carte %s parcourue" % f.get_basename(), seen.has(f.get_basename()))
+		if not f.ends_with(".json") or f.get_basename() == "test_arena": # arène du mode test : hors run
+			continue
+		var mid := f.get_basename()
+		if not seen.has(mid):
+			var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % mid))
+			var fl := int(meta["floor"])
+			(mgr.floor_plan[fl - 1] as Dictionary)["map_id"] = mid
+			RunState.stage = fl
+			mgr.start_stage()
+			await get_tree().process_frame
+			_check_stage(mgr, director, player, true)
+			seen[mid] = true
+		_check("carte %s parcourue" % mid, seen.has(mid))
 
 
 ## API sur une grille synthétique : anneau de murs fermé autour d'une poche.
@@ -143,7 +157,11 @@ func _check_stage(mgr: StageManager, director: Node2D, player: Node2D, verbose: 
 		print("%s : %d cellules accessibles, %d cellules de poche fermée (1 u) dans la carte, %d hors remparts, %d cases « ~ »" % [id, nav.reach_cells.size(), pocket, outside, deep_n])
 	_check("%s : eau profonde « ~ » jamais accessible" % id, deep_ok)
 	# plus aucune poche fermée sur aucune carte (22/10/2026 : la poche de la carte 1 est devenue un bassin « ~ »)
-	_check("%s : aucune case praticable enclose dans la carte (%d cellules)" % [id, pocket], pocket == 0)
+	# exception : la salle d'une porte scellée (cases « : » = 4 cellules de 1 u par case de 2 u) est close tant que la porte tient
+	var sealed := 0
+	for row: String in grid_rows(data0):
+		sealed += row.count(":")
+	_check("%s : aucune case praticable enclose dans la carte hors salles scellées (%d cellules, %d scellées)" % [id, pocket, sealed * 4], pocket == sealed * 4)
 	if id == "terrasses_noyees":
 		# ancien rectangle creux de murs, cases (17-18, 20-23) de la grille de 2 u : bassin d'eau profonde
 		var deep := 0
@@ -185,6 +203,9 @@ func _check_stage(mgr: StageManager, director: Node2D, player: Node2D, verbose: 
 		_check("%s : capsule accessible %s" % [id, c.position], nav.is_reachable(c.global_position))
 	var big := mgr.pillars[mgr.pillars.size() - 1]
 	_check("%s : téléporteur accessible" % id, nav.is_reachable(g.call(mgr.teleporter_local(big.position))))
+	# le champ de flux du Director est calculé depuis la position du joueur : la placer au départ (un point bloqué le vide)
+	player.global_position = g.call(map.get_player_start())
+	nav.compute_now(player.global_position)
 	# Director : flux, vagues, repli, depuis des positions de joueur accessibles
 	var bad := 0
 	var drawn := 0
@@ -201,3 +222,7 @@ func _check_stage(mgr: StageManager, director: Node2D, player: Node2D, verbose: 
 				bad += 1
 	_check("%s : %d points d'apparition de monstres tous accessibles (%d hors zone)" % [id, drawn, bad], bad == 0 and drawn > MONSTER_DRAWS)
 	player.global_position = g.call(map.get_player_start())
+
+
+func grid_rows(data: Dictionary) -> Array:
+	return data.get("grid", [])

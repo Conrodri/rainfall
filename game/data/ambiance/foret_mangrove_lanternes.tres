@@ -1,0 +1,219 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_wsk8p"]
+
+[resource]
+script = ExtResource("1_wsk8p")
+map_id = &"foret_mangrove_lanternes"
+display_name = "Mangrove des lanternes"
+mood = "Avant l'aube (4 h 40), plus bleu que la forêt-brume ; les lanternes sur pilotis guident le long du chenal."
+ambient_color = Color(0.35019612, 0.40980387, 0.43960786, 1)
+ambient_low = Color(0.35019612, 0.40980387, 0.43960786, 1)
+fill_color = Color(0.6588235, 0.7843137, 0.8, 1)
+fill_energy = 0.42
+fill_energy_low = 0.52
+sun_color = Color(0.7215686, 0.8627451, 0.8470588, 1)
+sun_energy = 0.36
+sun_height = 0.7
+sun_shadow_color = Color(0.054902, 0.0941176, 0.1254902, 0.6)
+sun_shadow_smooth = 3.0
+sun_shadow_filter = 2
+lift_color = Color(0.054902, 0.0941176, 0.1254902, 1)
+lift_amount = 0.34
+gain_color = Color(0.8470588, 0.9490196, 0.9098039, 1)
+gain_amount = 0.14
+saturation = 0.9
+contrast = 1.1
+contrast_pivot = 0.38
+vignette_strength = 0.36
+vignette_radius = 0.7
+vignette_softness = 0.55
+vignette_color = Color(0.027451, 0.054902, 0.0705882, 1)
+rain_intensity = 0.35
+rain_angle_deg = 6.0
+rain_opacity = 0.07
+rain_speed_u = 7.0
+rain_length_u = 0.35
+rain_tint = Color(0.78431374, 0.8627451, 0.84705883, 1)
+drops_amount = 80.0
+splash_rate = 45.0
+fog_low_color = Color(0.72156864, 0.78431374, 0.7529412, 1)
+fog_low_opacity = 0.12000000000000001
+fog_low_speed = Vector2(-0.16914468, 0.06156364)
+fog2_color = Color(0.76862746, 0.8235294, 0.8, 1)
+fog2_opacity = 0.0
+fog_high_color = Color(0.8117647, 0.8627451, 0.83137256, 1)
+fog_high_opacity = 0.05
+fog_high_speed = Vector2(-0.2819078, 0.102606066)
+puffs_count = 10.0
+puffs_color = Color(0.76862746, 0.8235294, 0.8, 1)
+cloud_texture = &"canopy_shadow_2048"
+cloud_opacity = 0.25
+cloud_speed_u = Vector2(0.075175405, 0.027361609)
+cloud_breathe = 0.02
+sky_texture = &"sky_dawn_256x64"
+sky_reflect = 0.08
+water_reflect = 0.35
+ripple_hz = 0.3
+particle_defs = Array[Dictionary]([{
+"additive": true,
+"alpha": 0.9,
+"behavior": &"firefly",
+"color": Color(0.72156864, 1, 0.5411765, 1),
+"lifetime": 2.5,
+"name": "lucioles",
+"size_u": Vector2(0.12, 0.2),
+"speed_u": 0.4,
+"texture": &"firefly_16"
+}, {
+"additive": false,
+"alpha": 0.25,
+"behavior": &"rise",
+"color": Color(0.8666667, 0.9098039, 0.84705883, 1),
+"name": "spores",
+"size_u": Vector2(0.05, 0.05),
+"speed_u": 0.2,
+"texture": &"mote_16"
+}, {
+"additive": false,
+"alpha": 0.8,
+"behavior": &"fall",
+"color": Color(1, 1, 1, 1),
+"drift_u": 0.4,
+"name": "feuilles de cèdre",
+"size_u": Vector2(0.2, 0.35),
+"speed_u": 1.2,
+"spin_dps": 70.0,
+"texture": &"leaf_cedar_32"
+}])
+p1_amount = 48.0
+p2_amount = 40.0
+p3_amount = 8.0
+light_rules = Array[Dictionary]([{
+"char": "~",
+"edge": true,
+"max": 8,
+"preset": &"shrine_lantern",
+"spacing_u": 12.0
+}])
+map_lights_energy = 1.15
+lights_energy = 1.4
+tier_overrides = {
+&"Cataclysme": {
+&"ambient_color": Color(0.3215686, 0.3843137, 0.4470588, 1),
+&"ambient_low": Color(0.3215686, 0.3843137, 0.4470588, 1),
+&"cloud_cover": 1.0,
+&"cloud_opacity": 0.35,
+&"cloud_speed_u": Vector2(0.4698463, 0.17101006),
+&"contrast": 1.18,
+&"drops_amount": 200.0,
+&"fill_color": Color(0.6117647, 0.7372549, 0.8, 1),
+&"fill_energy": 0.6,
+&"fill_energy_low": 0.7,
+&"lightning_double_chance": 0.3,
+&"lightning_flash": 0.8,
+&"lightning_interval_max": 16.0,
+&"lightning_interval_min": 8.0,
+&"lights_energy": 1.55,
+&"map_lights_radius": 1.29,
+&"player_light_scale": 1.15,
+&"puffs_count": 22.0,
+&"rain_angle_deg": 15.0,
+&"rain_intensity": 0.9,
+&"rain_opacity": 0.12,
+&"saturation": 0.82,
+&"splash_rate": 135.0,
+&"sun_color": Color(0.5098039, 0.6352941, 0.7137255, 1),
+&"sun_energy": 0.38,
+&"sun_shadow_length_u": 0.6,
+&"vignette_strength": 0.45,
+&"wind_mult": 3.2
+},
+&"Furieux": {
+&"ambient_color": Color(0.3294118, 0.3921569, 0.4470588, 1),
+&"ambient_low": Color(0.3294118, 0.3921569, 0.4470588, 1),
+&"cloud_breathe": 0.04,
+&"cloud_cover": 0.9,
+&"cloud_opacity": 0.32,
+&"cloud_speed_u": Vector2(0.3288924, 0.11970704),
+&"contrast": 1.16,
+&"drops_amount": 160.0,
+&"fill_color": Color(0.627451, 0.7529412, 0.8, 1),
+&"fill_energy": 0.54,
+&"fill_energy_low": 0.64,
+&"fog_low_opacity": 0.15,
+&"lightning_bolt_chance": 0.0,
+&"lightning_flash": 0.5,
+&"lightning_interval_max": 25.0,
+&"lightning_interval_min": 12.0,
+&"lightning_sun_energy": 1.2,
+&"lights_energy": 1.5,
+&"map_lights_energy": 1.56,
+&"map_lights_radius": 1.14,
+&"p1_amount": 0.0,
+&"player_light_scale": 1.1,
+&"puffs_count": 18.0,
+&"rain_angle_deg": 12.0,
+&"rain_intensity": 0.75,
+&"rain_opacity": 0.11,
+&"saturation": 0.84,
+&"splash_rate": 108.0,
+&"sun_color": Color(0.5568627, 0.6901961, 0.745098, 1),
+&"sun_energy": 0.38,
+&"sun_shadow_length_u": 0.6,
+&"vignette_strength": 0.43,
+&"wind_mult": 2.5
+},
+&"Hostile": {
+&"ambient_color": Color(0.3372549, 0.4, 0.4470588, 1),
+&"ambient_low": Color(0.3372549, 0.4, 0.4470588, 1),
+&"cloud_cover": 0.7,
+&"cloud_opacity": 0.3,
+&"cloud_speed_u": Vector2(0.18793853, 0.06840403),
+&"contrast": 1.14,
+&"drops_amount": 130.0,
+&"fill_color": Color(0.6431373, 0.7686275, 0.8, 1),
+&"fill_energy": 0.48,
+&"fill_energy_low": 0.58,
+&"fog_low_opacity": 0.13,
+&"lights_energy": 1.45,
+&"map_lights_energy": 1.33,
+&"p1_amount": 24.0,
+&"player_light_scale": 1.05,
+&"puffs_count": 14.0,
+&"rain_angle_deg": 9.0,
+&"rain_intensity": 0.6,
+&"rain_opacity": 0.09,
+&"saturation": 0.87,
+&"splash_rate": 85.0,
+&"sun_color": Color(0.6196078, 0.7607843, 0.7843137, 1),
+&"sun_energy": 0.4,
+&"sun_shadow_length_u": 0.8,
+&"vignette_strength": 0.4,
+&"wind_mult": 1.8
+},
+&"Tendu": {
+&"ambient_color": Color(0.3529412, 0.4156863, 0.454902, 1),
+&"ambient_low": Color(0.3529412, 0.4156863, 0.454902, 1),
+&"cloud_cover": 0.5,
+&"cloud_speed_u": Vector2(0.112763114, 0.041042414),
+&"contrast": 1.12,
+&"drops_amount": 100.0,
+&"fill_color": Color(0.6588235, 0.7843137, 0.8, 1),
+&"fill_energy": 0.44,
+&"fill_energy_low": 0.54,
+&"fog_low_opacity": 0.11,
+&"map_lights_energy": 1.11,
+&"puffs_count": 12.0,
+&"rain_angle_deg": 7.0,
+&"rain_intensity": 0.45,
+&"rain_opacity": 0.08,
+&"saturation": 0.9,
+&"splash_rate": 63.0,
+&"sun_color": Color(0.6745098, 0.8235294, 0.8235294, 1),
+&"sun_energy": 0.42,
+&"sun_shadow_length_u": 1.0,
+&"vignette_strength": 0.38,
+&"wind_mult": 1.3
+}
+}

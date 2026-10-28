@@ -7,6 +7,11 @@ const MAPS := {
 	"foret_brume": {"chests": 17, "pillars": 9, "small": 6, "big": 3},
 	"cite_rouille": {"chests": 17, "pillars": 11, "small": 8, "big": 3},
 	"cryptes_noyees": {"chests": 20, "pillars": 9, "small": 6, "big": 3},
+	# variantes B (docs/Design_Variantes_B.md §1 : mêmes effectifs que la A du biome) ; porte scellée : `secret`
+	"terrasses_rizieres_hautes": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
+	"foret_mangrove_lanternes": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
+	"cite_fonderie_canal": {"chests": 17, "pillars": 11, "small": 8, "big": 3, "secret": true},
+	"cryptes_ossuaire_pluies": {"chests": 20, "pillars": 9, "small": 6, "big": 3, "secret": true},
 	"la_source": {"chests": 12, "pillars": 1, "small": 0, "big": 1, "final": true}, ## arène du boss final : paratonnerre-mère seul
 }
 const CELL := 32.0 ## 0,5 u
@@ -154,5 +159,69 @@ func _test_map(id: String, exp: Dictionary) -> void:
 			if s.is_in_group("pillar_small") and s.position.distance_to(g.position) >= 18.0 * 64.0:
 				far_ok = true
 	_check(far_ok, id + " pas de couple gros/petit pilier >= 18 u")
+	if bool(exp.get("secret", false)):
+		_test_secrets(id, meta, map, rects, start, s_cell, to_cell, half, grid)
 	print("%s: coffres %d piliers %d (%d/%d) obstacles %d, %d marqueurs atteignables" % [id, chests.size(), pillars.size(), small, big, rects.size(), all.size()])
 	map.free()
+
+
+## Porte scellée des cartes B : grille (D / :), collision `Door_<id>`, marqueurs, salle close puis ouverte.
+func _test_secrets(id: String, meta: Dictionary, map: StageMap, rects: Array[Rect2], start: Vector2, s_cell: Vector2i, to_cell: Callable, half: Vector2, grid: AStarGrid2D) -> void:
+	var secrets: Array = meta.get("secrets", [])
+	_check(secrets.size() == 1, "%s : un secret majeur attendu (%d)" % [id, secrets.size()])
+	var g: Array = meta["grid"]
+	var n_d := 0
+	var n_c := 0
+	for row: String in g:
+		n_d += row.count("D")
+		n_c += row.count(":")
+	var want_d := 0
+	var want_c := 0
+	for sc: Dictionary in secrets:
+		want_d += (sc["door_cells"] as Array).size()
+		want_c += (sc["room_cells"] as Array).size()
+		var sid := String(sc["id"])
+		var door := map.get_node_or_null("Obstacles/Walls/Door_%s" % sid) as CollisionShape2D
+		_check(door != null and not door.disabled, "%s : collision Door_%s manquante" % [id, sid])
+		var marks := {"plate": 0, "guardian": 0, "door": 0}
+		for m: Marker2D in map.get_secret_markers():
+			if String(m.get_meta(&"secret_id", "")) == sid:
+				marks[String(m.get_meta(&"role", ""))] += 1
+		_check(marks == {"plate": 2, "guardian": 2, "door": 1}, "%s : marqueurs de secret %s" % [id, marks])
+		_check((sc["guardian_names"] as Array).size() == 2 and (sc["plates_u"] as Array).size() == 2, id + " : 2 plaques, 2 gardiens nommés")
+		# plaques atteignables, hors obstacle
+		for m: Marker2D in map.get_secret_markers():
+			var role := String(m.get_meta(&"role", ""))
+			var p := m.position
+			if role == "plate":
+				_check(not _blocked(rects, p, 24.0), "%s : plaque dans un obstacle" % id)
+				_check(not grid.get_id_path(s_cell, to_cell.call(p)).is_empty(), "%s : plaque inatteignable" % id)
+		# case de porte : fermée = bloquée ; salle (cases ':') inatteignable porte fermée, atteignable ouverte
+		var room_c := Vector2((sc["room_cells"][0][0] + 0.5) * 128.0, (sc["room_cells"][0][1] + 0.5) * 128.0) - half
+		var rc: Vector2i = to_cell.call(room_c)
+		_check(grid.get_id_path(s_cell, rc).is_empty(), "%s : salle scellée atteignable porte fermée" % id)
+		var open_rects: Array[Rect2] = []
+		for r in rects:
+			if not (absf(r.get_center().x - map.to_map(map.local_pos(_door_marker(map, sid))).x) < 1.0 and absf(r.get_center().y - map.to_map(map.local_pos(_door_marker(map, sid))).y) < 1.0):
+				open_rects.append(r)
+		_check(open_rects.size() == rects.size() - 1, "%s : rectangle de porte introuvable dans les collisions" % id)
+		var cols := int(meta["size_u"][0] * 2.0)
+		var rows_n := int(meta["size_u"][1] * 2.0)
+		var g2 := AStarGrid2D.new()
+		g2.region = Rect2i(0, 0, cols, rows_n)
+		g2.cell_size = Vector2(CELL, CELL)
+		g2.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+		g2.update()
+		for y in rows_n:
+			for x in cols:
+				if _blocked(open_rects, Vector2(x + 0.5, y + 0.5) * CELL - half, CLEARANCE):
+					g2.set_point_solid(Vector2i(x, y))
+		_check(not g2.get_id_path(s_cell, rc).is_empty(), "%s : salle inatteignable porte ouverte" % id)
+	_check(n_d == want_d and n_c == want_c, "%s : cases D/: de la grille (%d/%d) != secrets (%d/%d)" % [id, n_d, n_c, want_d, want_c])
+
+
+func _door_marker(map: StageMap, sid: String) -> Marker2D:
+	for m: Marker2D in map.get_secret_markers():
+		if String(m.get_meta(&"secret_id", "")) == sid and String(m.get_meta(&"role", "")) == "door":
+			return m
+	return null
