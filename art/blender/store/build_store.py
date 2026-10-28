@@ -56,6 +56,16 @@ def lighting():
 def render(name,w,h,transparent=False,glow=True):
     s=bpy.context.scene
     cel.setup_scene(samples=8);cel.toon_materials('boss')
+    if name.startswith('icon_'):
+        # Store portrait: retain the shared three cel tones, with a darker wet
+        # patina. The white crystal stays at its original emission strength.
+        for m in bpy.data.materials:
+            if m.get('icon_v2_patina') or not m.use_nodes:continue
+            for n in m.node_tree.nodes:
+                if n.type=='VALTORGB' and n.name=='CEL tones':
+                    factor=.72 if 'arris' in m.name.lower() else .43
+                    for e in n.color_ramp.elements:e.color=tuple(v*factor for v in e.color[:3])+(1,)
+            m['icon_v2_patina']=True
     cel.install('boss',normals=False)
     cel.cel_passes(WORK/name,'boss',base_configure=base_compositor,normals=False)
     tree=s.compositing_node_group
@@ -119,13 +129,26 @@ def rain_panel(cam,width,height,depth,density,background=True):
 
 def icon_scene():
     root=load_boss();s=bpy.context.scene
-    keep=('Pointed hollow lightning cowl','Dark empty cowl well','Worn pointed cowl arris','Lightning conductor peak','Heart first rain drop','Crystal shaded internal facet')
+    keep=('Pointed hollow lightning cowl','Dark empty cowl well','Worn pointed cowl arris','Lightning conductor peak','Heart first rain drop','Crystal shaded internal facet','Angular shoulder bronze clasp','Verdigris shoulder shackle','Bronze bell folded plate','Hammered bronze fastening')
     for o in root.children_recursive:
         if o.type in ('MESH','CURVE'):o.hide_render=not o.name.startswith(keep)
+    # Crop the working geometry below both complete shoulder clasps, including
+    # the adaptive foreground; never alter the source .blend.
+    import bmesh
+    bpy.context.view_layer.update()
+    for o in root.children_recursive:
+        if o.type!='MESH' or o.hide_render:continue
+        if o.name.startswith(('Bronze bell folded plate','Hammered bronze fastening')):
+            o.data=o.data.copy();bm=bmesh.new();bm.from_mesh(o.data)
+            inv=o.matrix_world.inverted()
+            bmesh.ops.bisect_plane(bm,geom=list(bm.verts)+list(bm.edges)+list(bm.faces),
+                plane_co=inv@Vector((0,0,2.82)),plane_no=o.matrix_world.to_3x3().transposed()@Vector((0,0,1)),
+                clear_inner=True,clear_outer=False)
+            bm.to_mesh(o.data);bm.free()
     heart=bpy.data.objects['Exposed white crystal heart'];heart.location=(0,-.40,3.69);heart.scale=(.40,.40,.40)
     # Only the crystal is luminous. The recess has no face or eyes.
     well=bpy.data.objects['Dark empty cowl well'];well.data.materials.clear();well.data.materials.append(flat('Unlit hollow',(.0025,.004,.005)))
-    wet=material('Hood silver rivulets',(.24,.29,.29),.6)
+    wet=material('Hood silver rivulets',(.055,.065,.066),.6)
     bronze=bpy.data.objects['Pointed hollow lightning cowl']
     # Follow the sloping front surface of the source hood, outside its real opening.
     for side in (-1,1):
@@ -133,16 +156,31 @@ def icon_scene():
             z=3.59+j*.145;x=side*(.46-(z-3.59)*.43)
             pts=[(x,-.365,z+.08),(x+side*.013,-.39,z),(x+side*.020,-.405,z-.08)]
             common.tube('Water coursing over cowl',pts,.004 if j%2 else .0055,wet)
-    cam=camera((0,-7,3.92),(0,0,3.92),1.47)
-    bg=rain_panel(cam,1.6,1.6,9,110)
+    for side in (-1,1):
+        for j in range(3):
+            x=side*(.49+j*.11)
+            common.tube('Water on shoulder bronze',[(x,-.253,3.29),(x+side*.018,-.267,3.16),(x+side*.027,-.25,3.03)],.0035,wet)
+    # Backlight from above-left, very restrained frontal fill.
+    s.world.node_tree.nodes['Background'].inputs[1].default_value=.055
+    for o in s.objects:
+        if o.type=='LIGHT' and not o.hide_render:
+            if o.name=='Rain worn left rim':o.location=(-2,1.0,6);o.data.energy=650;o.data.size=2.2
+            else:o.data.energy=32
+            o.rotation_euler=(Vector((0,0,3.6))-o.location).to_track_quat('-Z','Y').to_euler()
+    cam=camera((0,-7,3.19),(0,0,3.68),2.18)
+    bg=rain_panel(cam,2.35,2.35,9,120)
     render('icon_master',512,512)
     # Same identity, enough breathing space for Android's circular mask.
-    cam.data.ortho_scale=2.92
+    bpy.context.view_layer.update()
+    inv=cam.matrix_world.inverted()
+    pts=[inv@(o.matrix_world@v.co) for o in s.objects if o.type=='MESH' and not o.hide_render and o not in bg for v in o.data.vertices]
+    radius=max(math.hypot(p.x,p.y) for p in pts)
+    cam.data.ortho_scale=2*radius*432/250
     for o in bg:o.hide_render=True
     render('icon_foreground_432',432,432,True)
     for o in list(s.objects):
         if o.type in ('MESH','CURVE'):o.hide_render=True
-    rain_panel(cam,3.1,3.1,9,150)
+    rain_panel(cam,cam.data.ortho_scale*1.05,cam.data.ortho_scale*1.05,9,150)
     render('icon_background_432',432,432)
 
 def text_object(name,width,center,zbase,y,mat):
@@ -234,6 +272,7 @@ def logo_scene():
     render('logo_title',1600,480,True)
 
 if __name__=='__main__':
-    if '--feature-only' in sys.argv:feature_scene()
+    if '--icon-only' in sys.argv:icon_scene()
+    elif '--feature-only' in sys.argv:feature_scene()
     else:icon_scene();feature_scene();logo_scene()
     print('STORE ALL RENDERS PASS',flush=True)

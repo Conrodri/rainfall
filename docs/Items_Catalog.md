@@ -2,9 +2,11 @@
 
 > Généré à partir du même modèle que `Items_Catalog.xlsx` (onglets Audit et Modèle). Les valeurs sont des points de départ à calibrer en playtest.
 
-> **Valeurs de référence (décision du joueur, 26/10/2026)** : en cas d'écart entre ce catalogue et `game/data/items.json`, **le JSON du jeu fait foi** (ex. Pièce porte-bonheur +10 % d'or, Rafale d'acier +30 %, Chronomètre brisé ×0,75, Dé pipé +1 Chance, Moisson +60 %). Ce catalogue reste une source d'idées et de calibrage initial.
+> **Valeurs de référence (décision du joueur, 26/10/2026)** : en cas d'écart entre ce catalogue et `game/data/items.json`, **le JSON du jeu fait foi** (ex. Pièce porte-bonheur +10 % d'or, Dé pipé +1 Chance, Moisson +60 %). Ce catalogue reste une source d'idées et de calibrage initial.
 
-**Plafonds** : vitesse de déplacement des items +10 % au total (aucun item ne ralentit le joueur) ; vitesse d'attaque du sort 1 +200 % (×3) ; vitesse de projectile +100 % (×2) ; recharge minimale 25 % de la base.
+> **Audit des objets du 28/10/2026** (`docs/Audit_Items_2026-10-28.md`, appliqué) : la recharge passe à la **hâte additive** : chaque objet de recharge donne une hâte (clé `cooldown_haste`), les hâtes de tous les objets s'additionnent (H) et la recharge vaut base × max(1 / (1 + H), 0,35). Sablier 0,10, Horloge 0,15, Chronomètre [0,35, 0,20] ; remise du Chronomètre 0,5 s + 0,25 s par exemplaire supplémentaire. Cœur de glace [0,35, 0,15] plafonné à +95 %, Œil du prédateur +8 % de critique et [0,40, 0,25] plafonné à +150 %, Bouclier réactif jamais sous 1,2 s, Rafale d'acier +15 % et tous les 5 tirs, Venin +150 % par exemplaire supplémentaire, Danseur [0,35, 0,20]. Les lignes concernées ci-dessous sont marquées « JSON 28/10/2026 » ; leurs colonnes de valeur et de ratio datent de l'audit v3 et ne sont pas recalculées.
+
+**Plafonds** : vitesse de déplacement des items +10 % au total (aucun item ne ralentit le joueur) ; vitesse d'attaque du sort 1 +200 % (×3) ; vitesse de projectile +100 % (×2) ; recharge minimale 35 % de la base (`Balance.COOLDOWN_FLOOR`, 28/10/2026 ; 25 % avant).
 
 **Stacking** : L = linéaire (a × n), H = hyperbolique (1 - 1 / (1 + a × n)), E = exponentiel ((1 + a)^n - 1), F = effet fixe. La valeur de l'audit est celle d'un seul exemplaire.
 
@@ -85,7 +87,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | # | Item | Effet | Stack | Tags | Valeur 2:30 / 5:00 / 7:30 | Ratio |
 |---|---|---|---|---|---|---|
 | 1 | Lentille aiguisée | +10 % de chance de critique | L | Crit | 10 / 10 / 10 | 0,95 |
-| 2 | Sablier fêlé | +18 % de vitesse de recharge des sorts | L (plancher de recharge 25 %) | Recharge | 10 / 10 / 10 | 1,02 |
+| 2 | Sablier fêlé | +10 % de hâte par exemplaire (recharge ÷ (1 + hâte totale)) (JSON 28/10/2026) | L (hâte, plancher de recharge 35 %) | Recharge | 10 / 10 / 10 | 1,02 |
 | 3 | Antidote | Dégâts de brûlure et de poison subis -40 % | H | Survie | 11 / 11 / 11 | 1,11 |
 | 4 | Botte rapiécée | +5 % de vitesse de déplacement (plafond global +10 % pour tous les items) | L plafonné | Mobilité | 10 / 10 / 10 | 1,00 |
 | 5 | Pierre à aiguiser | +10 % de dégâts | L | Dégâts | 10 / 10 / 10 | 1,00 |
@@ -93,7 +95,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 7 | Amulette de cuir | +10 d'armure (réduction = armure / (armure + 100)) | L | Survie | 10 / 10 / 10 | 1,00 |
 | 8 | Aimant de poche | Rayon de ramassage +40 % et XP gagnée +12 % | L | Or, Progression | 10 / 10 / 10 | 1,02 |
 | 9 | Sifflet de chasse | +22 % de vitesse d'attaque (sort 1) | L (plafond ×3) | Auto | 10 / 10 / 10 | 0,95 |
-| 10 | Étincelle | Proc 18 % : brûlure (100 % du coup sur 3 s) | L (proba) | Feu | 10 / 10 / 10 | 1,01 |
+| 10 | Étincelle | Proc 10 % par exemplaire : brûlure de 240 % du dégât de base sur 3 s (chance et brûlure × coefficient de proc du sort) (JSON 28/10/2026) | L (proba) | Feu | 10 / 10 / 10 | 1,01 |
 | 11 | Flocon | Proc 22 % : ralentissement de 30 % pendant 1,5 s | L (proba) | Givre | 10 / 10 / 10 | 0,99 |
 | 12 | Fiole verte | Proc 18 % : poison (1 cumul : 20 % du coup/s pendant 4 s) | L (proba) | Poison | 10 / 10 / 10 | 1,01 |
 | 13 | Pavois fêlé | Dégâts reçus -9 % | H | Survie | 10 / 10 / 10 | 0,99 |
@@ -108,13 +110,13 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 |---|---|---|---|---|---|---|
 | 1 | Cristal de feu | Proc 40 % : brûlure (100 % du coup sur 3 s) | L (proba) | Feu | 22 / 22 / 22 | 1,02 |
 | 2 | Givre | Proc 40 % : ralentissement de 40 % pendant 2 s | L (proba) | Givre | 22 / 22 / 22 | 1,02 |
-| 3 | Horloge arcanique | +20 % de vitesse de recharge et +18 % de dégâts des sorts à recharge | L | Recharge | 22 / 22 / 22 | 0,98 |
+| 3 | Horloge arcanique | +15 % de hâte et +10 % de dégâts des sorts à recharge par exemplaire (JSON 28/10/2026) | L (hâte) | Recharge | 22 / 22 / 22 | 0,98 |
 | 4 | Lame jumelle | +50 % de dégâts du sort 1 | L | Auto | 22 / 22 / 22 | 0,98 |
-| 5 | Venin concentré | Proc 40 % : poison (cumuls sur la même cible, 20 % du coup/s pendant 4 s) | L (proba) | Poison | 22 / 22 / 22 | 1,02 |
+| 5 | Venin concentré | Proc 10 % : poison de 300 % du coup sur 4 s, +150 % par exemplaire supplémentaire (JSON 28/10/2026) | L (dégâts) | Poison | 22 / 22 / 22 | 1,02 |
 | 6 | Cape de brume | 18 % d'esquive | H | Survie | 22 / 22 / 22 | 1,00 |
 | 7 | Épines | Chaque coup subi déclenche une riposte à 70 % des dégâts du sort 1 sur l'attaquant (1 riposte max par 0,5 s) | L | Survie | 20 / 24 / 25 | 1,10 |
 | 8 | Éclair en bouteille | Proc 15 % : foudre sur 3 cibles à 50 % des dégâts | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
-| 9 | Rune de portée | Zone des sorts +25 % et dégâts des sorts de zone +15 % | L | Zone | 22 / 22 / 22 | 1,01 |
+| 9 | Rune de portée | Zone des sorts +20 % (plafond +100 %) et dégâts des sorts de zone à recharge +15 %, par exemplaire (JSON 28/10/2026) | L | Zone | 22 / 22 / 22 | 1,01 |
 | 10 | Morsure vorace | Chaque monstre tué rend 0,2 % des PV max | L | Survie | 23 / 23 / 23 | 1,03 |
 | 11 | Tonique vital | +15 % de PV max et +0,3 % des PV max par seconde | L | Survie | 22 / 22 / 22 | 0,99 |
 | 12 | Orbe de veille | Bouclier de 28 % des PV max, se reforme après 5 s sans dégâts | L (taille) | Survie | 22 / 22 / 22 | 1,02 |
@@ -128,16 +130,16 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | # | Item | Effet | Stack | Tags | Valeur 2:30 / 5:00 / 7:30 | Ratio |
 |---|---|---|---|---|---|---|
 | 1 | Aimant d'âme | Rayon de ramassage ×2 ; tous les 25 kills, aspire l'or et l'XP de l'écran et donne +80 % de dégâts pendant 3 s | L | Or, Dégâts | 51 / 51 / 51 | 1,02 |
-| 2 | Chronomètre brisé | +70 % de vitesse de recharge ; chaque élite tué rend 0,5 s de recharge à tous les sorts | L (plancher de recharge 25 %) | Recharge | 43 / 48 / 54 | 0,96 |
+| 2 | Chronomètre brisé | +35 % de hâte (+20 % par exemplaire supplémentaire) ; chaque élite ou boss tué rend 0,5 s (+0,25 s par exemplaire supplémentaire) de recharge à tous les sorts (JSON 28/10/2026) | L décalé (hâte, plancher de recharge 35 %) | Recharge | 43 / 48 / 54 | 0,96 |
 | 3 | Tempête de braises | Un monstre qui meurt en brûlant explose : 30 % de ses PV max à 4 ennemis proches | L | Feu, Zone | 48 / 48 / 48 | 0,96 |
-| 4 | Cœur de glace | Les monstres ralentis subissent +75 % de dégâts | L | Givre | 49 / 49 / 49 | 0,97 |
+| 4 | Cœur de glace | Les monstres et boss ralentis ou immobilisés subissent +35 % de dégâts (+15 % par exemplaire supplémentaire, plafond +95 %) (JSON 28/10/2026) | L décalé, plafonné | Givre | 49 / 49 / 49 | 0,97 |
 | 5 | Peste vivante | Un monstre empoisonné qui meurt libère un nuage toxique : 25 % de ses PV max à 4 ennemis proches et 1 cumul de poison | F | Poison, Zone | 45 / 45 / 45 | 0,90 |
-| 6 | Œil du prédateur | +25 % de critique et coups critiques ×3 au lieu de ×2 | L + F | Crit | 52 / 52 / 52 | 1,05 |
-| 7 | Bouclier réactif | 2 charges : chacune annule un coup et se recharge en 3,4 s (affectée par la vitesse de recharge) | H (recharge) | Survie | 53 / 44 / 43 | 0,88 |
+| 6 | Œil du prédateur | +8 % de critique (fixe) ; critiques +40 % (+25 % par exemplaire supplémentaire, plafond +150 %, soit ×3,5 au plus) (JSON 28/10/2026) | L décalé + F, plafonné | Crit | 52 / 52 / 52 | 1,05 |
+| 7 | Bouclier réactif | 2 charges : chacune annule un coup et se recharge en 3,4 s (× recharge issue de la hâte, +50 % de vitesse par exemplaire supplémentaire, jamais sous 1,2 s) (JSON 28/10/2026) | H (recharge) | Survie | 53 / 44 / 43 | 0,88 |
 | 8 | Faveur du marchand | +1 de Chance, prix des coffres -15 % et première relance à l'or de chaque étage gratuite | H + L | Or, Chance | 59 / 59 / 59 | 1,17 |
-| 9 | Danseur | +75 % de dégâts tant que le joueur se déplace | L | Mobilité | 49 / 49 / 49 | 0,97 |
+| 9 | Danseur | +35 % de dégâts tant que le joueur se déplace (+20 % par exemplaire supplémentaire) (JSON 28/10/2026) | L décalé | Mobilité | 49 / 49 / 49 | 0,97 |
 | 10 | Phénix de poche | Ressuscite une fois à 50 % de PV (usage unique, +1 par exemplaire) | L | Survie | 50 / 50 / 50 | 1,00 |
-| 11 | Rafale d'acier | +40 % de vitesse d'attaque (sort 1) ; tous les 4 tirs, le sort 1 tire 3 projectiles d'un coup | L + F | Auto, Projectile | 48 / 48 / 48 | 0,95 |
+| 11 | Rafale d'acier | +15 % de vitesse d'attaque (sort 1) par exemplaire ; tous les 5 tirs, le sort 1 part 3 fois d'un coup (JSON 28/10/2026) | L + F | Auto, Projectile | 48 / 48 / 48 | 0,95 |
 
 ## 6. Légendaires (6)
 
@@ -145,17 +147,17 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 |---|---|---|---|---|---|---|
 | 1 | Cœur du chronomancien | 10 monstres tués en 3 s : remet à zéro la recharge d'un de vos sorts à recharge, au hasard (au plus 1 fois par 2 s) | F | Recharge | 104 / 104 / 104 | 0,87 |
 | 2 | Couronne d'écho | Le sort 1 se répète 3 fois à 100 % des dégâts | E (+1 répétition par exemplaire supplémentaire) | Auto | 130 / 130 / 130 | 1,08 |
-| 3 | Nova infinie | Toutes les 4 s, nova de 400 % du dégât de base par exemplaire (portée 6 u) qui brûle, ralentit et empoisonne | L (dégâts) | Feu, Givre, Poison, Zone | 111 / 111 / 111 | 0,93 |
+| 3 | Nova infinie | Toutes les 4 s, nova de 400 % du dégât de base par exemplaire (portée 6 u) qui brûle (240 % du dégât de base, × (1 + bonus de brûlure)), ralentit et empoisonne (JSON 28/10/2026) | L (dégâts) | Feu, Givre, Poison, Zone | 111 / 111 / 111 | 0,93 |
 | 4 | Armure du colosse | +60 % de PV max, -25 % de dégâts reçus, -10 % de dégâts infligés | E | Survie | 103 / 103 / 103 | 0,86 |
 | 5 | Moisson | Chaque kill donne +0,2 % de dégâts, cumulable jusqu'à +120 % (conservé dans la run) | L (plafond) | Dégâts | 120 / 120 / 120 | 1,00 |
-| 6 | Dé pipé | +3 de Chance (relance du d100, on garde le meilleur) et le premier petit coffre de chaque étage est au moins Peu commun | L | Chance | 126 / 126 / 126 | 1,05 |
+| 6 | Dé pipé | +1 de Chance (relance du d100, on garde le meilleur) et le premier petit coffre de chaque étage est au moins Peu commun (JSON 28/10/2026) | L | Chance | 126 / 126 / 126 | 1,05 |
 
 ---
 
 ## 7. Synergies principales
 
 - **Feu** : Étincelle -> Cristal de feu -> Tempête de braises -> Nova infinie.
-- **Givre** : Flocon -> Givre -> Cœur de glace (ralenti = +75 % de dégâts) -> Danseur pour kiter.
+- **Givre** : Flocon -> Givre -> Cœur de glace (ralenti ou immobilisé = +35 % de dégâts, plafond +95 %) -> Danseur pour kiter.
 - **Poison** : Fiole verte -> Venin concentré -> Peste vivante (foules denses).
 - **Critique** : Lentille aiguisée -> Œil du prédateur -> Sang chaud.
 - **Recharge** : Sablier fêlé -> Horloge arcanique -> Chronomètre brisé -> Cœur du chronomancien.

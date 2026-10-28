@@ -398,12 +398,15 @@ const ITEM_BONUS_CAPS := {
 	"move_speed": MOVE_SPEED_BONUS_CAP, "attack_speed": ATTACK_SPEED_BONUS_CAP,
 	"projectile_speed": PROJECTILE_SPEED_BONUS_CAP, "zone_size_add": 1.0, "xp_mult": 1.0,
 	"range_add": 0.5, "pickup_radius_mult": 2.0, "pierce": float(PIERCE_CAP),
+	## Audit des objets du 28/10/2026 : Cœur de glace plafonné à +95 % (5 exemplaires),
+	## Œil du prédateur à +150 % de dégâts critiques (critique ×3,5 au plus).
+	"slowed_target_damage_add": 0.95, "crit_mult_add": 1.5,
 }
 ## Roulade (esquive d'Ardent) : DODGE_DISTANCE_U en DODGE_DURATION_S, invulnérable pendant, recharge fixe.
 const DODGE_DISTANCE_U := 3.0
 const DODGE_DURATION_S := 0.25
 const DODGE_COOLDOWN_S := 3.0
-const COOLDOWN_FLOOR := 0.25
+const COOLDOWN_FLOOR := 0.35 ## recharge minimale, fraction de la base (audit des objets 28/10/2026 : 0,25 -> 0,35)
 const BASE_CRIT_CHANCE := 0.01 ## RoR2 (remplace 0,05)
 const BASE_CRIT_MULT := 2.0
 
@@ -656,8 +659,14 @@ func armor_reduction(armor: float) -> float:
 	return armor / (armor + 100.0)
 
 
-## Recharge multiplicative façon RoR2 (Alien Head ×0,75ⁿ) : cd_mult = produit des items (1 = neutre),
-## plancher COOLDOWN_FLOOR de la base. Remplace base / (1 + Σ cdr).
+## Hâte de recharge (audit des objets du 28/10/2026, docs/Maths_Scaling.md §9) : les hâtes de tous les
+## objets s'additionnent (H) et la recharge est divisée par (1 + H), donc la cadence croît linéairement.
+## Résultat borné à [COOLDOWN_FLOOR, 1] ; c'est le `cooldown_mult` produit par ItemStats.
+func haste_cooldown_mult(haste_sum: float) -> float:
+	return clampf(1.0 / (1.0 + maxf(haste_sum, 0.0)), COOLDOWN_FLOOR, 1.0)
+
+
+## Recharge effective : base × cd_mult (1 = neutre, issu de la hâte des objets), plancher COOLDOWN_FLOOR de la base.
 func effective_cooldown(base_s: float, cd_mult: float) -> float:
 	return maxf(base_s * cd_mult, base_s * COOLDOWN_FLOOR)
 

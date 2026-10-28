@@ -115,18 +115,24 @@ func _test_item_stats() -> void:
 	_near("colosse x2 : dégâts ×0,81", s["damage_mult"], 0.81, 1e-6)
 	s = ItemStats.compute({&"botte_rapiecee": 10})
 	_near("plafond move_speed", s["move_speed"], Balance.MOVE_SPEED_BONUS_CAP, 1e-6)
-	# Recharge multiplicative (Alien Head) entre items
+	# Hâte de recharge additive entre items (audit 28/10/2026) : cooldown_mult = max(1 / (1 + ΣH), plancher)
 	s = ItemStats.compute({&"sablier_fele": 2, &"chronometre_brise": 1})
-	_near("recharge 0,92² × 0,75", s["cooldown_mult"], 0.92 * 0.92 * 0.75, 1e-6)
-	_near("cooldown effectif plancher 25 %", Balance.effective_cooldown(8.0, 0.1), 2.0, 1e-6)
+	_near("hâte 2 × 0,10 + 0,35 = 0,55", s["cooldown_haste"], 0.55, 1e-6)
+	_near("recharge 1 / 1,55", s["cooldown_mult"], 1.0 / 1.55, 1e-6)
+	s = ItemStats.compute({&"sablier_fele": 4, &"horloge_arcanique": 3, &"chronometre_brise": 1})
+	_near("cumul communs : 1 / 2,2 = 0,455", s["cooldown_mult"], 1.0 / 2.2, 1e-6)
+	_near("Chronomètre x10 : plancher 0,35", ItemStats.compute({&"chronometre_brise": 10})["cooldown_mult"], Balance.COOLDOWN_FLOOR, 1e-6)
+	_near("cooldown effectif plancher 35 %", Balance.effective_cooldown(8.0, 0.1), 2.8, 1e-6)
 	# Bug corrigé : Faveur du marchand donne bien de la Chance (stack linéaire entier)
 	_near("Faveur x2 : Chance 2", ItemStats.compute({&"faveur_du_marchand": 2})["luck"], 2.0, 1e-6)
-	# Stat [premier, suivants] : Cœur de glace +50 % puis +25 %
-	_near("Cœur de glace x3 : +100 %", ItemStats.compute({&"coeur_de_glace": 3})["slowed_target_damage_add"], 1.0, 1e-6)
-	# Œil du prédateur : +5 % de crit une seule fois, ×2 + 0,5 n
+	# Stat [premier, suivants] : Cœur de glace +35 % puis +15 %, plafond +95 %
+	_near("Cœur de glace x3 : +65 %", ItemStats.compute({&"coeur_de_glace": 3})["slowed_target_damage_add"], 0.65, 1e-6)
+	_near("Cœur de glace x10 : plafond +95 %", ItemStats.compute({&"coeur_de_glace": 10})["slowed_target_damage_add"], 0.95, 1e-6)
+	# Œil du prédateur : +8 % de crit une seule fois, crit_mult_add [0,40, 0,25], plafond 1,5
 	s = ItemStats.compute({&"oeil_du_predateur": 3})
-	_near("Œil x3 : crit +5 % (fixe)", s["crit_chance"], 0.05, 1e-6)
-	_near("Œil x3 : crit_mult_add 1,5", s["crit_mult_add"], 1.5, 1e-6)
+	_near("Œil x3 : crit +8 % (fixe)", s["crit_chance"], 0.08, 1e-6)
+	_near("Œil x3 : crit_mult_add 0,90", s["crit_mult_add"], 0.90, 1e-6)
+	_near("Œil x10 : crit_mult_add plafond 1,5", ItemStats.compute({&"oeil_du_predateur": 10})["crit_mult_add"], 1.5, 1e-6)
 	_near("plafond XP +100 %", ItemStats.compute({&"eclat_d_experience": 15})["xp_mult"], 1.0, 1e-6)
 	# procs et specials
 	var burn_id := ""
@@ -145,11 +151,11 @@ func _test_item_stats() -> void:
 	# Bug corrigé : deux items aux procs identiques ne fusionnent plus leurs chances
 	s = ItemStats.compute({&"etincelle": 1, &"cristal_de_feu": 1})
 	_check("procs distincts par item", s["procs"].size() == 2, str(s["procs"]))
-	# Clés `_stack` des données : Givre durée 2 s + 2 s, Venin 300 % n, Éclair 3 + 2 cibles
+	# Clés `_stack` des données : Givre durée 2 s + 2 s, Venin 300 % + 150 % (n - 1), Éclair 3 + 2 cibles
 	s = ItemStats.compute({&"givre": 3})
 	_near("Givre x3 : 6 s", s["procs"][0]["data"]["duration"], 6.0, 1e-6)
 	_check("Givre : clé _stack retirée", not s["procs"][0]["data"].has("duration_stack"))
-	_near("Venin x2 : 600 %", ItemStats.compute({&"venin_concentre": 2})["procs"][0]["data"]["hit_fraction"], 6.0, 1e-6)
+	_near("Venin x2 : 450 %", ItemStats.compute({&"venin_concentre": 2})["procs"][0]["data"]["hit_fraction"], 4.5, 1e-6)
 	_near("Éclair x2 : 5 cibles", ItemStats.compute({&"eclair_en_bouteille": 2})["procs"][0]["data"]["targets"], 5.0, 1e-6)
 	_near("Flocon x1 : chance H 13 %", ItemStats.compute({&"flocon": 1})["procs"][0]["chance"], 0.15 / 1.15, 1e-6)
 	if special_id != "":

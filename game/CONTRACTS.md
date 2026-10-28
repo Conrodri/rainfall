@@ -30,9 +30,9 @@ Chaque agent code contre ces interfaces, même si l'autre côté n'existe pas en
 
 ### Clés de stats d'items (Dictionary passé à `apply_stats`)
 `damage_add` (somme additive, 0.10 = +10 %), `damage_mult` (produit), `auto_damage_add`, `cd_damage_add`, `zone_damage_add` (sorts `is_zone` hors attaque auto : l'auto ne prend que `auto_damage_add`, 23/10), `elite_boss_damage_add`,
-`attack_speed`, `cooldown_mult` (produit, 1 = neutre), `crit_chance`, `crit_mult_add` (ajouté au ×2), `max_hp_pct`, `max_hp_flat`, `armor`, `damage_taken_reduction` (déjà combinée hyperbolique),
+`attack_speed`, `cooldown_mult` (1 = neutre ; produit par ItemStats depuis la hâte : `max(1 / (1 + Σ cooldown_haste), Balance.COOLDOWN_FLOOR)`, 28/10/2026), `cooldown_haste` (somme des hâtes des objets, 0.10 = +10 % ; seule clé de recharge dans items.json), `crit_chance`, `crit_mult_add` (ajouté au ×2, plafond `Balance.ITEM_BONUS_CAPS` 1,5), `max_hp_pct`, `max_hp_flat`, `armor`, `damage_taken_reduction` (déjà combinée hyperbolique),
 `dot_taken_reduction`, `dodge` (blocage, combiné hyperbolique), `regen_flat` (PV/s × (1 + 0,2 (niveau - 1))), `burn_damage_add`, `move_speed`, `projectile_speed`, `range_add`, `zone_size_add`, `pierce`, `pickup_radius_mult`,
-`xp_mult`, `gold_mult`, `luck`, `low_hp_damage_add`, `moving_damage_add`, `slowed_target_damage_add`,
+`xp_mult`, `gold_mult`, `luck`, `low_hp_damage_add`, `moving_damage_add`, `slowed_target_damage_add` (plafond `Balance.ITEM_BONUS_CAPS` 0,95),
 `procs`: Array de {status:&"burn"|&"slow"|&"poison"|&"lightning", chance:float, data:Dictionary}, `specials`: Dictionary id -> stacks pour les effets uniques (Couronne d'écho, Phénix…).
 
 ## Ennemis (`scripts/enemies/`, groupe `enemies`, couche 3)

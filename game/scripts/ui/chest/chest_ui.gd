@@ -67,7 +67,7 @@ const STAT_TEXT := {
 	"armor": ["d'armure", "flat"], "dodge": ["de blocage", "pct"], "luck": ["de Chance", "flat"],
 	"damage_taken_reduction": ["de dégâts subis", "neg"], "dot_taken_reduction": ["de dégâts de brûlure et poison subis", "neg"],
 	"move_speed": ["de vitesse de déplacement", "pct"], "attack_speed": ["de vitesse d'attaque", "pct"],
-	"cooldown_mult": ["de temps de recharge", "pct"], "crit_chance": ["de chance de critique", "pct"],
+	"cooldown_mult": ["de temps de recharge", "pct"], "cooldown_haste": ["de hâte de recharge", "pct"], "crit_chance": ["de chance de critique", "pct"],
 	"crit_mult_add": ["de dégâts critiques", "pct"], "damage_add": ["de dégâts", "pct"], "damage_mult": ["de dégâts infligés", "pct"],
 	"auto_damage_add": ["de dégâts du sort 1", "pct"], "cd_damage_add": ["de dégâts des sorts à recharge", "pct"],
 	"zone_damage_add": ["de dégâts de zone", "pct"], "zone_size_add": ["de taille de zone", "pct"],
@@ -227,6 +227,10 @@ static func stack_line(id: String, owned: int) -> String:
 		var s := str(overrides.get(key, st))
 		var v0 := ItemStats.stat_value(s, stats[key], owned)
 		var v1 := ItemStats.stat_value(s, stats[key], owned + 1)
+		if Balance.ITEM_BONUS_CAPS.has(str(key)): # plafond affiché comme appliqué (Œil, Cœur de glace…)
+			var cap := float(Balance.ITEM_BONUS_CAPS[str(key)])
+			v0 = minf(v0, cap)
+			v1 = minf(v1, cap)
 		if not is_equal_approx(v0, v1):
 			changed = true
 		if parts.size() < 2:

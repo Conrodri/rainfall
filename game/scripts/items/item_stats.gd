@@ -7,7 +7,10 @@ extends RefCounted
 ##  - Une stat donnée en tableau [premier, suivants] vaut premier + suivants × (n - 1).
 ##  - `stat_stack` {clé: type} remplace le type de l'item pour une stat (ex. Armure du colosse).
 ## Entre items différents : somme, sauf
-##  - `damage_mult`, `cooldown_mult` : produit des (1 + v) (1 = neutre ; présentes seulement si un item y contribue),
+##  - `damage_mult`, `cooldown_mult` : produit des (1 + v) (1 = neutre ; présentes seulement si un item y contribue ;
+##    plus aucun objet ne fournit `cooldown_mult` directement depuis l'audit du 28/10/2026, support gardé),
+##  - `cooldown_haste` : somme des hâtes, convertie en sortie en `cooldown_mult` = max(1 / (1 + ΣH), COOLDOWN_FLOOR)
+##    (Balance.haste_cooldown_mult) ; les consommateurs (sorts, kits, Bouclier réactif) ne lisent que `cooldown_mult`,
 ##  - `damage_taken_reduction`, `dot_taken_reduction`, `dodge` : 1 - produit(1 - v) (combinaison hyperbolique).
 ## Procs : un proc par item (pas de fusion entre items aux données identiques). Chance selon le `stack` du proc
 ## (défaut : celui de l'item ; L : min(1, c·n), H : 1 - 1/(1 + c·n), F : c) ; le lanceur la multiplie par le
@@ -89,6 +92,9 @@ static func compute(items: Dictionary) -> Dictionary:
 		var sp: Variant = it.get("special", null)
 		if sp != null and str(sp) != "" and str(sp) != "null":
 			specials[StringName(str(sp))] = int(specials.get(StringName(str(sp)), 0)) + n
+	if out.has("cooldown_haste"):
+		out["cooldown_mult"] = maxf(float(out.get("cooldown_mult", 1.0)) * Balance.haste_cooldown_mult(out["cooldown_haste"]),
+			Balance.COOLDOWN_FLOOR)
 	for key in Balance.ITEM_BONUS_CAPS:
 		if out.has(key):
 			out[key] = minf(out[key], Balance.ITEM_BONUS_CAPS[key])

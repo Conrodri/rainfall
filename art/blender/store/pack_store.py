@@ -1,10 +1,12 @@
 from pathlib import Path
 from PIL import Image
-import hashlib, json, math
+import hashlib, json, math, sys
 ROOT=Path(__file__).resolve().parents[3]
 WORK=Path(__file__).parent
 OUT=ROOT/'game/assets/store'
 SIZES={'icon_512':(512,512),'icon_192':(192,192),'icon_256':(256,256),'icon_foreground_432':(432,432),'icon_background_432':(432,432),'feature_1024x500':(1024,500),'logo_title':(1600,480)}
+ICON_V2='--icon-v2' in sys.argv
+if ICON_V2:SIZES={k:v for k,v in SIZES.items() if k.startswith('icon_')}
 report={}
 for name,size in SIZES.items():
     src=WORK/('icon_master.png' if name in ('icon_512','icon_192','icon_256') else name+'.png')
@@ -26,6 +28,26 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 assert sha(source)==sha(WORK/'rain_sower_store.blend'),'Source model modified'
 report['source_sha256']=sha(source)
 (WORK/'verification.json').write_text(json.dumps(report,indent=2))
+if ICON_V2:
+    import numpy as np
+    baseline=json.loads((WORK/'icon_v2_baseline.json').read_text())
+    for p,digest in baseline.items():assert sha(ROOT/p)==digest,('protected file changed',p)
+    board=Image.new('RGB',(1060,1060),(12,17,23))
+    for col,im in enumerate((Image.open(WORK/'icon_v1_backup.png'),Image.open(OUT/'icon_512.png'))):
+        for size,y in ((512,8),(96,532),(48,640)):
+            tile=im.convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
+            board.paste(tile,(8+col*532+(512-size)//2,y),tile)
+    fg=Image.open(OUT/'icon_foreground_432.png').convert('RGBA')
+    bg=Image.open(OUT/'icon_background_432.png').convert('RGBA')
+    combined=Image.alpha_composite(bg,fg).resize((320,320),Image.Resampling.LANCZOS)
+    yy,xx=np.mgrid[:320,:320];x=(xx-159.5)/159.5;y=(yy-159.5)/159.5
+    for col,mask in enumerate((x*x+y*y<=1,abs(x)**4+abs(y)**4<=1)):
+        preview=combined.copy();preview.putalpha(Image.fromarray((mask*255).astype('uint8')))
+        board.paste(preview,(104+col*532,718),preview)
+    board.save(ROOT/'art/tools/night/_icon_v2_contact.png',optimize=True)
+    print('PASS 5 PNG; sizes; alpha; safe circle <=132 px; protected SHA256; no normals; contact')
+    print('FOREGROUND',report['icon_foreground_432']['bbox'],'BYTES',sum(v['bytes'] for v in report.values() if isinstance(v,dict)))
+    sys.exit(0)
 # Assembly only: each asset shown once, icons also at actual 48/96 px.
 board=Image.new('RGB',(1600,1140),(19,25,30))
 def paste(im,xy):

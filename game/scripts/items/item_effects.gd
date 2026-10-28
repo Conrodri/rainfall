@@ -144,7 +144,7 @@ func _on_enemy_killed(e: Node2D, pos: Vector2, _tier: int, elite: bool) -> void:
 	if elite:
 		var chrono := stacks(ID_CHRONOMETRE)
 		if chrono > 0:
-			_refund_all(float(data_of(ID_CHRONOMETRE).get("elite_refund_s", 0.5)) * chrono)
+			_refund_all(chrono_refund_s(chrono))
 	if e != null and is_instance_valid(e):
 		if stacks(ID_BRAISES) > 0 and e.has_method(&"is_burning") and e.is_burning():
 			_queue_blast(e, pos, ID_BRAISES)
@@ -162,6 +162,14 @@ func _on_enemy_killed(e: Node2D, pos: Vector2, _tier: int, elite: bool) -> void:
 		if _kill_times.size() >= int(d.get("kills", 10)) and _chrono_cd <= 0.0 and _reset_random_spell():
 			_chrono_cd = float(d.get("internal_cd_s", 2.0))
 			_kill_times.clear()
+
+
+## Remise de recharge du Chronomètre brisé par élite ou boss tué : premier exemplaire + suivants × (n - 1).
+func chrono_refund_s(n: int) -> float:
+	if n <= 0:
+		return 0.0
+	var d := data_of(ID_CHRONOMETRE)
+	return float(d.get("elite_refund_s", 0.5)) + float(d.get("elite_refund_per_extra_s", 0.25)) * (n - 1)
 
 
 ## Les boss (mini et d'étage) n'émettent pas enemy_killed mais boss_killed : leur mort compte comme celle d'une élite.
@@ -249,7 +257,8 @@ func _fire_nova(n: int) -> bool:
 	for e in targets:
 		if e.has_method("apply_status"):
 			var b := burn.duplicate()
-			b["total"] = float(burn.get("base_fraction", 2.4)) * base
+			# « toutes vos brûlures » (Cristal de feu) : même règle que les procs et le Phénix d'Ardent
+			b["total"] = float(burn.get("base_fraction", 2.4)) * base * (1.0 + float(player.call(&"stat", &"burn_damage_add")))
 			e.apply_status(&"burn", b)
 			e.apply_status(&"slow", slow.duplicate())
 			var p := poison.duplicate()
@@ -377,8 +386,10 @@ func _charge_time() -> float:
 	var m := float(player.stat(&"cooldown_mult"))
 	if m <= 0.0:
 		m = 1.0 # pas d'item de recharge
+	m = maxf(m, Balance.COOLDOWN_FLOOR) # même plancher que les sorts (Balance.effective_cooldown)
 	var n := stacks(ID_BOUCLIER)
-	return float(d.get("recharge_s", 3.4)) * m / (1.0 + float(d.get("stack_speed", 0.5)) * maxi(n - 1, 0))
+	var t := float(d.get("recharge_s", 3.4)) * m / (1.0 + float(d.get("stack_speed", 0.5)) * maxi(n - 1, 0))
+	return maxf(t, float(d.get("recharge_floor_s", 1.2))) # plancher absolu : cumuls de Boucliers (audit 28/10/2026)
 
 
 func _tick_bouclier(delta: float) -> void:
