@@ -27,6 +27,8 @@ const DAMAGE_ITEMS := ["Petits", "Normaux", "Grands"]
 const COLORBLIND_ITEMS := ["Aucun", "Deutéranopie", "Protanopie", "Tritanopie"]
 const CHEST_REVEAL_ITEMS := ["Complète", "Courte", "Instantanée"] ## Balance.CHEST_REVEAL_MODES
 const RETICLE_ITEMS := ["100 %", "150 %"] ## GameSettings.RETICLE_SCALES
+const TEXT_SIZE_ITEMS := ["100 %", "115 %", "130 %"] ## GameSettings.TEXT_SCALES
+const TOOLTIP_HOLD_ITEMS := ["Au relâchement", "3 secondes", "6 secondes"] ## GameSettings.TOOLTIP_HOLDS
 
 
 ## Interrupteur visuel (Audit_Menus M11) : piste + bouton glissant. Textures toggle_on/off.png (brief Codex
@@ -102,6 +104,8 @@ var _reduce_motion: Button ## « Réduire les mouvements » (GameSettings.reduce
 var _hints: Button ## « Astuces de jeu » (GameSettings.hints, lot M-A)
 var _strong_tel: Button ## « Télégraphes renforcés » (GameSettings.strong_telegraphs, lot A11y-L9)
 var _mono: Button ## « Audio mono » (GameSettings.mono_audio)
+var _text_size: OptionStepper ## « Taille du texte » 100 / 115 / 130 % (GameSettings.text_scale, appliquée par Accessibility)
+var _tooltip_hold: OptionStepper ## « Maintien des infobulles » (GameSettings.tooltip_hold, tactile)
 var _shake: HSlider ## « Secousses de caméra » 0-100 % (GameSettings.shake_scale)
 var _shake_pct: Label
 var _haptic_strength: HSlider ## « Intensité des vibrations » 0-100 % (GameSettings.haptics_strength)
@@ -118,6 +122,7 @@ var _joystick_pct: Label
 var _joystick_row: Control
 var _reticle_row: Control
 var _run_log: Button ## « Journal de run » (RunLog.enabled, journal local des parties)
+var _replay_button: Button ## « Revoir le didacticiel » (OnboardingHints.request_replay)
 var _export_button: Button ## « Exporter les journaux » (RunLogExport)
 var _export_label: Label
 var _dialog: ConfirmDialog
@@ -232,6 +237,13 @@ func _build() -> void:
 	_export_button.pressed.connect(_export_logs)
 	_add_row("Parties enregistrées", _export_button)
 	_export_label = _labels[_labels.size() - 1]
+	_replay_button = MenuBtn.new()
+	_replay_button.text = "Revoir le didacticiel"
+	_replay_button.custom_minimum_size = Vector2(0, ROW_H)
+	_replay_button.pressed.connect(func() -> void:
+		preload("res://scripts/ui/onboarding_hints.gd").request_replay() # relance toutes les invites à la prochaine partie
+		_replay_button.text = "Prévu à la prochaine partie")
+	_add_row("Didacticiel", _replay_button)
 
 	_page(Tab.ACCESS)
 	_flashes = _add_stepper("Flashs", FLASH_ITEMS, func(i: int) -> void: GameSettings.set_flashes(i))
@@ -243,7 +255,14 @@ func _build() -> void:
 		GameSettings.set_strong_telegraphs(on)
 		EnemyTelegraph.refresh_strong()) # effet immédiat (sinon relu après STRONG_REFRESH_MS)
 	_damage = _add_stepper("Taille des chiffres de dégâts", DAMAGE_ITEMS, func(i: int) -> void: GameSettings.set_damage_text_scale(float(GameSettings.DAMAGE_SCALES[i])))
-	_colorblind = _add_stepper("Mode daltonien", COLORBLIND_ITEMS, func(i: int) -> void: GameSettings.set_colorblind(i))
+	_colorblind = _add_stepper("Mode daltonien", COLORBLIND_ITEMS, func(i: int) -> void:
+		GameSettings.set_colorblind(i)
+		CvdPalette.clear_cache() # effet immédiat (sinon relu après CvdPalette.REFRESH_MS)
+		Accessibility.notify_changed())
+	_text_size = _add_stepper("Taille du texte", TEXT_SIZE_ITEMS, func(i: int) -> void:
+		GameSettings.set_text_scale_index(i)
+		Accessibility.notify_changed())
+	_tooltip_hold = _add_stepper("Maintien des infobulles", TOOLTIP_HOLD_ITEMS, func(i: int) -> void: GameSettings.set_tooltip_hold_index(i))
 
 	_bottom = HBoxContainer.new()
 	_bottom.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -474,6 +493,9 @@ func sync() -> void:
 	_flashes.index = clampi(GameSettings.flashes_level(), 0, 2)
 	_damage.index = GameSettings.damage_text_index()
 	_colorblind.index = GameSettings.colorblind()
+	_text_size.index = GameSettings.text_scale_index()
+	_replay_button.text = "Revoir le didacticiel"
+	_tooltip_hold.index = GameSettings.tooltip_hold_index()
 	_chest_reveal.index = maxi(Balance.CHEST_REVEAL_MODES.find(StringName(GameSettings.chest_reveal())), 0)
 	_reticle.index = 1 if GameSettings.reticle_scale() > 1.25 else 0
 	_set_toggle(_fullscreen, GameSettings.fullscreen())
@@ -621,6 +643,8 @@ func _export_logs() -> void:
 
 func _do_reset() -> void:
 	GameSettings.reset_all(get_tree())
+	CvdPalette.clear_cache()
+	Accessibility.notify_changed()
 	sync()
 
 

@@ -174,6 +174,10 @@ func _find_campfire(base: Vector2) -> Vector2:
 func _update_camera(_dt: float) -> void:
 	if camera == null or _points.is_empty():
 		return
+	if GameSettings.reduce_motion(): # « Réduire les mouvements » : plus de dérive ni de respiration de la caméra du titre
+		camera.position = _points[0]
+		camera.offset = Vector2.ZERO
+		return
 	var n := _points.size()
 	# Aller-retour : 0 → 1 → … → n-1 → … → 1 (boucle de 2(n-1) segments).
 	var seg_count := maxi(2 * (n - 1), 1)

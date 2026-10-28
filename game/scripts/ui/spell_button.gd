@@ -356,7 +356,7 @@ func _draw() -> void:
 			draw_arc(c, r + 6.0 * k, 0.0, TAU, 48, Color(1, 0.9, 0.6, _flash / 0.35), 8.0 * maxf(k, 0.5))
 	_draw_charges(c, r, k)
 	if call_pulse:
-		var w := 0.5 + 0.5 * sin(_pulse_t * 6.0)
+		var w := 0.5 if GameSettings.reduce_motion() else 0.5 + 0.5 * sin(_pulse_t * 6.0)
 		draw_arc(c, r + (4.0 + 6.0 * w) * k, 0.0, TAU, 48, Color(0.78, 0.92, 1.0, 0.45 + 0.5 * w), (4.0 + 3.0 * w) * maxf(k, 0.5))
 	if is_auto:
 		var ar := _auto_rect()

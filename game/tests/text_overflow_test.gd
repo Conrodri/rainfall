@@ -10,7 +10,7 @@ extends Node
 ## Règle de marge verticale (26/10) : entre la boîte de texte (ascent + descent réels de la police) et le bord intérieur
 ## visible du cadre (UiTheme.frame_edge), au moins UiTheme.ink_pad(taille) = max(4 px, 15 % de la taille). Les textes
 ## dessinés en `_draw` la passent via la clé `frame` (Rect2 : bord intérieur visible du cadre) de text_rects().
-## godot --path game res://tests/text_overflow_test.tscn [-- --only=title|newrun|settings|endrun|hud --quick]
+## godot --path game res://tests/text_overflow_test.tscn [-- --only=title|newrun|settings|endrun|hud --quick --textscale=0|1|2]
 ## RESULT: OK si 0 échec.
 
 const SIZES: Array[Vector2i] = [Vector2i(1920, 1080), Vector2i(2400, 1080), Vector2i(1440, 1080)]
@@ -55,6 +55,9 @@ func _ready() -> void:
 			_quick = true
 		elif a.begins_with("--shots="):
 			_shot_dir = a.substr(8)
+		elif a.begins_with("--textscale="): # 0 / 1 / 2 : « Taille du texte » 100 / 115 / 130 % (accessibilité)
+			GameSettings.text_scale_override = int(a.substr(12))
+			Accessibility.apply_text_scale()
 	await _frames(3)
 	for touch in [false, true]:
 		_set_touch(touch)

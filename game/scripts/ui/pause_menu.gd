@@ -317,7 +317,7 @@ func _show_item_detail(id: Variant) -> void:
 	var q := StringName(str(it.get("quality", "commun")))
 	var stacks := int(RunState.items.get(id, 0))
 	_detail_name.text = "%s%s  ·  %s" % [str(it.get("name", id)), "  ×%d" % stacks if stacks > 1 else "", QUALITY_WORDS.get(q, "Commun")]
-	_detail_name.add_theme_color_override("font_color", ItemBar.QUALITY_COLORS.get(q, Color.WHITE))
+	_detail_name.add_theme_color_override("font_color", Palette.rarity(q))
 	_detail_effect.text = str(it.get("effect_text", ""))
 
 

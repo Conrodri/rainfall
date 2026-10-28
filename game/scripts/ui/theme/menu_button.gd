@@ -39,7 +39,7 @@ func refresh_subtitle() -> void:
 	# Remonte le libellé pour faire de la place au sous-titre : tout est dérivé des métriques réelles de la police
 	# (trait du cadre + marge d'encre de chaque côté, deux lignes, petit écart entre elles).
 	var fnt := get_theme_font(&"font")
-	var sub_fs := UiTheme.FONT_CAPTION
+	var sub_fs := UiTheme.fsz(UiTheme.FONT_CAPTION) # le sous-titre est posé à FONT_CAPTION puis agrandi par Accessibility
 	var sub_h := UiTheme.line_height(fnt, sub_fs)
 	var sb0 := get_theme_stylebox(&"normal")
 	var edge_pad := UiTheme.v_margin(sb0, sub_fs)

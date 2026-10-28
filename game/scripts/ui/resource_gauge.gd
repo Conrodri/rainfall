@@ -89,6 +89,8 @@ static func is_full(st: Dictionary) -> bool:
 
 ## Alpha du cadre d'état plein à l'instant `t` (s) : 0,35 -> 0,7 à 1 Hz.
 static func pulse_alpha(t: float) -> float:
+	if GameSettings.reduce_motion():
+		return 0.525 # « Réduire les mouvements » : cadre fixe, sans pulsation
 	return 0.525 + 0.175 * sin(t * TAU * PULSE_HZ)
 
 
@@ -231,7 +233,7 @@ func _draw() -> void:
 	if is_full(state): # état plein : cadre qui pulse (canal visuel en plus du texte « PRÊTE » / « +70 % »)
 		draw_rect(rect.grow(-2.0 * k), Color(EDGE_LIGHT, pulse_alpha(_t)), false, maxf(2.0 * k, 1.0))
 	if bool(state.get("warn", false)): # sort refusé faute de ressource : liseré rouge qui clignote
-		var a := 0.55 + 0.45 * sin(_t * 30.0)
+		var a := 0.8 if GameSettings.reduce_motion() or GameSettings.flash_scale() < 1.0 else 0.55 + 0.45 * sin(_t * 30.0) # 30 Hz : fixe si flashs réduits
 		draw_rect(rect.grow(-2.0 * k), Color(1.0, 0.25, 0.2, a), false, maxf(3.0 * k, 1.0))
 
 

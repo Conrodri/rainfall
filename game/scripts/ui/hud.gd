@@ -87,6 +87,8 @@ var _regen_tick := 0.0
 var _player_plate: Control ## plaque de la fiche joueur (médaillon, nom, PV, XP)
 var _map_plate: Panel ## plaque commune minimap + difficulté (H17)
 var _hp_low := false
+var _hp_pal_mode := 0 ## mode daltonien appliqué à la barre de PV
+var _hp_fill_orig: StyleBox = null ## remplissage d'origine mis de côté en mode daltonien
 var _tg_right := 0.0 ## jauge tactile : bord droit (px, relatif au coin bas-droit)
 var _tg_bottom := 0.0 ## idem, bord bas
 var _tg_size := Vector2.ZERO
@@ -104,6 +106,7 @@ func _ready() -> void:
 	root.move_child(offscreen_cues, 1)
 	_apply_layout()
 	get_viewport().size_changed.connect(_apply_layout)
+	Accessibility.changed.connect(_on_a11y_changed)
 	Platform.input_mode_changed.connect(_on_mode_changed)
 	Platform.safe_area_changed.connect(_apply_layout) # encoche passée de côté sans redimensionnement (A11y-L4, E-04)
 	pause_menu = PauseMenu.new()
@@ -238,16 +241,35 @@ func _on_hp(hp: float, max_hp: float) -> void:
 	_set_hp_low(max_hp > 0.0 and hp / max_hp <= HudMetrics.LOW_HP_FRAC)
 
 
-## PV du joueur : vert, rouge vif sous 25 % (même règle que OverheadBars). Sans effet si le remplissage est une texture.
+## PV du joueur : vert, rouge vif sous 25 % (même règle que OverheadBars). Mode daltonien : bleu clair / orange (Palette),
+## remplissage uni à la place de la texture verte.
 func _set_hp_low(low: bool) -> void:
-	if low == _hp_low:
+	if low == _hp_low and _hp_pal_mode == Palette.mode():
 		return
 	_hp_low = low
+	_hp_pal_mode = Palette.mode()
+	if _hp_pal_mode != CvdPalette.NONE:
+		if _hp_fill_orig == null:
+			_hp_fill_orig = _hp_bar.get_theme_stylebox("fill")
+		var fl := StyleBoxFlat.new()
+		fl.bg_color = Palette.hp_low(_hp_pal_mode) if low else Palette.hp(_hp_pal_mode)
+		fl.set_corner_radius_all(6)
+		_hp_bar.add_theme_stylebox_override("fill", fl)
+		return
+	if _hp_fill_orig != null: # retour au mode « aucun » : remplissage d'origine
+		_hp_bar.add_theme_stylebox_override("fill", _hp_fill_orig)
+		_hp_fill_orig = null
 	var sb := _hp_bar.get_theme_stylebox("fill")
 	if sb is StyleBoxFlat:
 		(sb as StyleBoxFlat).bg_color = HudMetrics.COL_HP_LOW if low else HudMetrics.COL_HP
 	elif sb is StyleBoxTexture: # texture verte livrée : teinte rouge sous 25 %
 		(sb as StyleBoxTexture).modulate_color = Color(1.0, 0.45, 0.4) if low else Color.WHITE
+
+
+## Réglage d'accessibilité modifié (palette daltonienne, texte) : barre de PV recolorée, mise en page recalculée.
+func _on_a11y_changed() -> void:
+	_set_hp_low(_hp_low)
+	_apply_layout()
 
 
 func _on_gold(g: float) -> void:
@@ -572,8 +594,8 @@ func _apply_layout() -> void:
 	var bar_w := clampf(vp.x * 0.2 * tk, 180.0, hp_px.x * s) # fiche compacte (retour joueur : elle cachait l'or au sol)
 	# PV : la barre suit la POLICE (plancher 26 px mobile : la ligne de « 90 / 90 » dépasse la table 36 px x s) et la
 	# largeur suit « 8888 / 8888 » + « +88/s » : texte et taux ne se touchent ni ne sortent de la barre.
-	var hp_font := HudMetrics.font(HudMetrics.T1_HP, s, mobile)
-	var rg_font := HudMetrics.font(HudMetrics.T4_SMALL, s, mobile)
+	var hp_font := Accessibility.fs(HudMetrics.font(HudMetrics.T1_HP, s, mobile)) # + « Taille du texte » (les Labels sont agrandis par Accessibility)
+	var rg_font := Accessibility.fs(HudMetrics.font(HudMetrics.T4_SMALL, s, mobile))
 	var th: Font = _hp_label.get_theme_font(&"font")
 	var hp_h := maxf(hp_px.y * s, ceilf(th.get_height(hp_font)) + 4.0)
 	var hp_w := th.get_string_size("8888 / 8888", HORIZONTAL_ALIGNMENT_LEFT, -1, hp_font).x 		+ th.get_string_size("+88/s", HORIZONTAL_ALIGNMENT_LEFT, -1, rg_font).x + 40.0 * s

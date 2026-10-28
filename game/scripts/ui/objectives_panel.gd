@@ -60,8 +60,9 @@ func set_ui_scale(s: float) -> void:
 	ui_scale = s
 	_style.content_margin_left = 18.0 * s
 	_style.content_margin_right = 18.0 * s
-	_style.content_margin_top = (6.0 if _compact else 10.0) * s
-	_style.content_margin_bottom = (8.0 if _compact else 12.0) * s
+	var tk := GameSettings.text_scale() # « Taille du texte » : le texte agrandi garde sa marge
+	_style.content_margin_top = (6.0 if _compact else 10.0) * s * tk
+	_style.content_margin_bottom = (8.0 if _compact else 12.0) * s * tk
 	UiTheme.pad_box(_style, maxi(int(26 * s), HudMetrics.floor_px())) # texte à distance du trait du cadre
 	_title.add_theme_font_size_override("font_size", int(22 * s))
 	for r in [_boss_row, _charge_row, _teleport_row]:
@@ -114,7 +115,7 @@ func _process(delta: float) -> void:
 	refresh()
 	if visible and _teleport_row.visible and not _teleport_row.done:
 		_pulse += delta
-		_teleport_row.modulate.a = 0.7 + 0.3 * (0.5 + 0.5 * sin(_pulse * 4.0))
+		_teleport_row.modulate.a = 0.85 if GameSettings.reduce_motion() else 0.7 + 0.3 * (0.5 + 0.5 * sin(_pulse * 4.0))
 	else:
 		_teleport_row.modulate.a = 1.0
 

@@ -262,6 +262,7 @@ static func reset_all(tree: SceneTree = null) -> void:
 	if q != null:
 		_apply_quality(q, QUALITY_AUTO)
 		q.call(&"set_flashes_level", 2)
+	_ts_path = "<unset>" # section accessibility effacée : texte à 100 %
 	_cache_path = cfg_path # section gameplay effacée : valeurs par défaut
 	_shake = SHAKE_DEFAULT
 	_reduce = false
@@ -412,6 +413,47 @@ static func stick_deadzone() -> float:
 
 static func set_stick_deadzone(v: float) -> void:
 	set_value("accessibility", "stick_deadzone", clampf(snappedf(v, 0.05), DEADZONE_MIN, DEADZONE_MAX))
+
+
+## Taille du texte (passe accessibilité 28/10/2026) : indice 0..2 de TEXT_SCALES (100 / 115 / 130 %), appliqué au thème, au HUD
+## et aux textes des menus par l'autoload Accessibility. Mis en cache (lu par HudMetrics.font à chaque calcul de mise en page).
+const TEXT_SCALES := [1.0, 1.15, 1.3]
+const TOOLTIP_HOLDS := [0.0, 3.0, 6.0] ## secondes de maintien d'une infobulle tactile après le relâchement
+static var text_scale_override := -1 ## tests : force l'indice (>= 0) sans lire ni écrire le fichier
+static var _ts_path := "<unset>"
+static var _ts_idx := 0
+
+
+static func text_scale_index() -> int:
+	if text_scale_override >= 0:
+		return clampi(text_scale_override, 0, TEXT_SCALES.size() - 1)
+	if _ts_path != cfg_path:
+		_ts_path = cfg_path
+		_ts_idx = clampi(int(get_value("accessibility", "text_scale", 0)), 0, TEXT_SCALES.size() - 1)
+	return _ts_idx
+
+
+static func text_scale() -> float:
+	return float(TEXT_SCALES[text_scale_index()])
+
+
+static func set_text_scale_index(i: int) -> void:
+	_ts_path = cfg_path
+	_ts_idx = clampi(i, 0, TEXT_SCALES.size() - 1)
+	set_value("accessibility", "text_scale", _ts_idx)
+
+
+static func tooltip_hold_index() -> int:
+	return clampi(int(get_value("accessibility", "tooltip_hold", 0)), 0, TOOLTIP_HOLDS.size() - 1)
+
+
+## Secondes pendant lesquelles une infobulle tactile reste affichée après le relâchement (0 = disparaît au relâchement).
+static func tooltip_hold() -> float:
+	return float(TOOLTIP_HOLDS[tooltip_hold_index()])
+
+
+static func set_tooltip_hold_index(i: int) -> void:
+	set_value("accessibility", "tooltip_hold", clampi(i, 0, TOOLTIP_HOLDS.size() - 1))
 
 
 static func joystick_scale() -> float:

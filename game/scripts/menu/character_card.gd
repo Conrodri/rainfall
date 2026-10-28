@@ -75,6 +75,7 @@ func setup(character: Dictionary, is_locked: bool) -> void:
 	size = CARD_SIZE
 	pivot_offset = CARD_SIZE * 0.5
 	focus_mode = Control.FOCUS_ALL
+	set_meta(&"a11y_skip", true) # textes ajustés à la carte par _fit() : Accessibility ne les agrandit pas une seconde fois
 	text = ""
 	name = "Card_" + String(character.get("id", ""))
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND

@@ -100,11 +100,11 @@ static func inner_px() -> float:
 
 
 static func fill_color() -> Color:
-	return STRONG_FILL if strong() else FILL
+	return Palette.telegraph(STRONG_FILL if strong() else FILL)
 
 
 static func progress_color() -> Color:
-	return STRONG_PROGRESS if strong() else PROGRESS
+	return Palette.telegraph(STRONG_PROGRESS if strong() else PROGRESS)
 
 
 ## Le télégraphe est-il affiché en ce moment ? (forme active et visible)
@@ -322,7 +322,7 @@ class _Fill extends Node2D:
 	var strong_on := false
 
 	func _draw() -> void:
-		var col := EnemyTelegraph.STRONG_PROGRESS if strong_on else EnemyTelegraph.PROGRESS
+		var col := Palette.telegraph(EnemyTelegraph.STRONG_PROGRESS if strong_on else EnemyTelegraph.PROGRESS)
 		col.a = minf(col.a / EnemyTelegraph.FILL_RAMP_START, 0.85) # alpha final ; modulate = FILL_RAMP_START au début retrouve l'alpha d'origine
 		if _shape == EnemyTelegraph.Shape.CIRCLE:
 			draw_circle(Vector2.ZERO, _radius, col)

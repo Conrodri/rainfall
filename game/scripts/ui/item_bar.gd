@@ -19,15 +19,15 @@ const QUALITY_COLORS := {
 ## Fond de qualité DERRIÈRE l'icône (jamais de cadre par-dessus, retour joueur 26/10) : pastille sombre teintée
 ## de la couleur de qualité, bordure fine de cette couleur, hors de l'icône.
 static func quality_backing(q: Variant, radius := 8) -> Panel:
-	var col: Color = QUALITY_COLORS.get(StringName(str(q)), Color.WHITE)
+	var col: Color = Palette.rarity(StringName(str(q)))
 	var p := Panel.new()
 	p.name = "QualityBack"
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(col.r * 0.22, col.g * 0.22, col.b * 0.22, 0.85)
 	sb.border_color = col
-	sb.set_border_width_all(3)
-	sb.set_corner_radius_all(radius)
+	sb.set_border_width_all(Palette.rank_border(q))
+	sb.set_corner_radius_all(Palette.rank_corner(q, radius))
 	p.add_theme_stylebox_override("panel", sb)
 	p.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	return p
@@ -163,6 +163,7 @@ func _exit_tree() -> void:
 func _build_tooltip() -> void:
 	tooltip = PanelContainer.new()
 	tooltip.top_level = true # hors du découpage du défilement
+	tooltip.set_meta(&"a11y_skip", true) # tailles posées par _fill_tooltip (Accessibility.fs)
 	tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tooltip.z_index = 50
 	var sb := StyleBoxFlat.new()
@@ -354,7 +355,7 @@ func _slot_input(slot: ItemSlot, event: InputEvent) -> void:
 			_press_pos = mb.global_position
 		else:
 			_press_slot = null
-			hide_tooltip()
+			_release_tooltip()
 	var mm := event as InputEventMouseMotion
 	if mm != null and _press_slot != null and mm.global_position.distance_to(_press_pos) > DRAG_CANCEL_PX:
 		_press_slot = null # défilement : pas d'infobulle
@@ -366,7 +367,7 @@ func _process(delta: float) -> void:
 		return
 	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_press_slot = null
-		hide_tooltip()
+		_release_tooltip()
 		return
 	_press_t += delta
 	if _press_t >= LONG_PRESS_S and tooltip_item != _press_slot.item_id:
@@ -397,6 +398,19 @@ func tooltip_rarity_text() -> String:
 	return _tip_rarity.text if tooltip.visible else ""
 
 
+## Relâchement tactile : l'infobulle disparaît tout de suite, ou après le maintien choisi (Accessibilité > Maintien des
+## infobulles) pour laisser le temps de lire.
+func _release_tooltip() -> void:
+	var hold := GameSettings.tooltip_hold()
+	if hold <= 0.0 or tooltip_item == &"":
+		hide_tooltip()
+		return
+	var shown := tooltip_item
+	get_tree().create_timer(hold).timeout.connect(func() -> void:
+		if is_instance_valid(self) and tooltip_item == shown and _press_slot == null:
+			hide_tooltip())
+
+
 func hide_tooltip() -> void:
 	SpellTooltip.set_user_bubble(&"item_tip", false)
 	tooltip_item = &""
@@ -407,18 +421,18 @@ func _fill_tooltip(slot: ItemSlot) -> void:
 	var it := ItemDB.get_item(slot.item_id)
 	var s := ui_scale
 	var q := StringName(str(it.get("quality", "commun")))
-	var qc: Color = QUALITY_COLORS.get(q, Color.WHITE)
+	var qc: Color = Palette.rarity(q)
 	_tip_name.text = str(it.get("name", slot.item_id))
 	_tip_name.add_theme_color_override("font_color", qc)
-	_tip_rarity.text = rarity_word(q).to_upper()
+	_tip_rarity.text = rarity_word(q).to_upper() + Palette.rank_suffix(q)
 	_tip_rarity.add_theme_color_override("font_color", qc)
-	_tip_rarity.add_theme_font_size_override("font_size", maxi(int(22 * s), HudMetrics.floor_px()))
+	_tip_rarity.add_theme_font_size_override("font_size", Accessibility.fs(maxi(int(22 * s), HudMetrics.floor_px()))) # « Taille du texte » (infobulle exclue du passage automatique)
 	_tip_effect.text = str(it.get("effect_text", ""))
 	_tip_count.text = "Exemplaires : %d" % slot.count
-	_tip_name.add_theme_font_size_override("font_size", int(30 * s))
-	_tip_effect.add_theme_font_size_override("font_size", maxi(int(26 * s), HudMetrics.floor_px()))
-	_tip_count.add_theme_font_size_override("font_size", maxi(int(22 * s), HudMetrics.floor_px()))
-	_tip_effect.custom_minimum_size.x = 420.0 * s
+	_tip_name.add_theme_font_size_override("font_size", Accessibility.fs(int(30 * s)))
+	_tip_effect.add_theme_font_size_override("font_size", Accessibility.fs(maxi(int(26 * s), HudMetrics.floor_px())))
+	_tip_count.add_theme_font_size_override("font_size", Accessibility.fs(maxi(int(22 * s), HudMetrics.floor_px())))
+	_tip_effect.custom_minimum_size.x = 420.0 * s * GameSettings.text_scale()
 
 
 ## Sous la case (ou au-dessus si la place manque), bornée à l'écran.

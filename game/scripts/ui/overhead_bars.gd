@@ -326,7 +326,7 @@ func _draw_hp(r: Rect2, s: float, a: float) -> void:
 	if hp_frac > 0.0:
 		var g := HpBarStyle.low_pulse(hp_frac, _clock)
 		var fill := Rect2(r.position, Vector2(w * hp_frac, r.size.y))
-		var hc := COL_HP if hp_frac > HpBarStyle.LOW_HP_FRAC else COL_HP_LOW
+		var hc := Palette.hp() if hp_frac > HpBarStyle.LOW_HP_FRAC else Palette.hp_low()
 		_fill(fill, hp_frac, Color(HpBarStyle.brighten(hc, g), a))
 		draw_rect(Rect2(fill.position, Vector2(fill.size.x, maxf(1.0, 1.5 * s))), Color(COL_HP_EDGE, 0.8 * a))
 		if _clock < _flash: # flash court et partiel : bord du remplissage, ambre

@@ -90,6 +90,18 @@ static func theme() -> Theme:
 	return _theme
 
 
+## Taille de police du thème avec le réglage « Taille du texte » (100 / 115 / 130 %, accessibilité).
+static func fsz(base: int) -> int:
+	return roundi(float(base) * GameSettings.text_scale())
+
+
+## Réapplique le réglage de taille du texte au thème partagé déjà construit (en place : tous les écrans le voient).
+static func refresh_text_scale() -> void:
+	if _theme == null:
+		return
+	_theme.merge_with(_build()) # en place : tailles de police ET marges des cadres (ink_pad) recalculées pour tous les écrans
+
+
 ## Force la reconstruction (après livraison d'assets, ou pour les tests).
 static func reset_cache() -> void:
 	_theme = null
@@ -253,7 +265,7 @@ static func da_box(file: String, content_scale := 1.0, font_size := -1) -> Style
 	sb.content_margin_right = float(ci["right"]) * content_scale
 	sb.content_margin_bottom = float(ci["bottom"]) * content_scale
 	if font_size < 0: # défaut : cadre de texte (26 px) ; les cadres de barres ne portent pas de texte
-		font_size = 0 if file.begins_with("bar_") else FONT_CAPTION
+		font_size = 0 if file.begins_with("bar_") else fsz(FONT_CAPTION)
 	if font_size > 0:
 		pad_box(sb, font_size) # content_scale ne ramène jamais le texte sur le trait du cadre
 	return sb
@@ -291,7 +303,7 @@ static func _btn_styles(primary_style: Variant) -> Dictionary:
 			d[&"pressed"] = _flat(Color("1f2630", 0.95), COL_BORDER, 2)
 			d[&"disabled"] = _flat(Color(COL_PANEL, 0.6), COL_BORDER.darkened(0.3), 2)
 	for k in d:
-		pad_box(d[k] as StyleBox, FONT_BUTTON) # le texte du bouton ne touche jamais le trait du cadre
+		pad_box(d[k] as StyleBox, fsz(FONT_BUTTON)) # le texte du bouton ne touche jamais le trait du cadre
 	d[&"focus"] = _focus_box()
 	return d
 
@@ -343,7 +355,7 @@ static func title_font() -> Font:
 
 static func _build() -> Theme:
 	var t := Theme.new()
-	t.default_font_size = FONT_BODY
+	t.default_font_size = fsz(FONT_BODY)
 	t.default_font = body_font()
 	ThemeDB.fallback_font = body_font() # HUD, barres, tout contrôle sans thème explicite
 
@@ -352,7 +364,7 @@ static func _build() -> Theme:
 	for k in st:
 		t.set_stylebox(k, &"Button", st[k])
 		t.set_stylebox(k, &"CheckButton", st[k])
-	t.set_font_size(&"font_size", &"Button", FONT_BUTTON)
+	t.set_font_size(&"font_size", &"Button", fsz(FONT_BUTTON))
 	t.set_color(&"font_color", &"Button", COL_TEXT)
 	t.set_color(&"font_hover_color", &"Button", Color.WHITE)
 	t.set_color(&"font_pressed_color", &"Button", COL_PRIMARY_TEXT)
@@ -362,7 +374,7 @@ static func _build() -> Theme:
 	t.set_constant(&"outline_size", &"Button", 6)
 
 	# Labels : contour #1a1620 sur fond animé
-	t.set_font_size(&"font_size", &"Label", FONT_BODY)
+	t.set_font_size(&"font_size", &"Label", fsz(FONT_BODY))
 	t.set_color(&"font_color", &"Label", COL_TEXT)
 	t.set_color(&"font_outline_color", &"Label", COL_OUTLINE)
 	t.set_constant(&"outline_size", &"Label", 6)
@@ -376,11 +388,11 @@ static func _build() -> Theme:
 		p.content_margin_top = 28
 		p.content_margin_bottom = 28
 		panel = p
-	pad_box(panel, FONT_BODY)
+	pad_box(panel, fsz(FONT_BODY) if GameSettings.text_scale() <= 1.0 else fsz(FONT_TITLE)) # texte agrandi : un titre en tête de panneau garde sa marge
 	t.set_stylebox(&"panel", &"PanelContainer", panel)
 	t.set_stylebox(&"panel", &"Panel", panel)
 	# variations : petit panneau, bandeau de titre, plaque de chrono
-	for v in [[&"SmallPanel", "panel_small_9slice", FONT_BODY], [&"HeaderPanel", "header_banner", FONT_TITLE], [&"TimerPlate", "timer_plate", 40]]:
+	for v in [[&"SmallPanel", "panel_small_9slice", fsz(FONT_BODY)], [&"HeaderPanel", "header_banner", fsz(FONT_TITLE)], [&"TimerPlate", "timer_plate", fsz(40)]]:
 		var vb := da_box(v[1], 1.0, int(v[2]))
 		if vb != null:
 			t.set_type_variation(v[0], &"PanelContainer")
@@ -398,7 +410,7 @@ static func _build() -> Theme:
 	# titres : capitales espacées
 	t.set_type_variation(&"TitleLabel", &"Label")
 	t.set_font(&"font", &"TitleLabel", title_font())
-	t.set_font_size(&"font_size", &"TitleLabel", FONT_TITLE)
+	t.set_font_size(&"font_size", &"TitleLabel", fsz(FONT_TITLE))
 	t.set_color(&"font_color", &"TitleLabel", COL_PRIMARY_TEXT)
 	# séparateurs
 	var dv := ResourceLoader.exists(DA_DIR + "divider.png")
@@ -445,14 +457,14 @@ static func _build() -> Theme:
 		t.set_icon(n, &"CheckButton", on)
 	for n in [&"unchecked", &"unchecked_disabled", &"unchecked_mirrored"]:
 		t.set_icon(n, &"CheckButton", off)
-	t.set_font_size(&"font_size", &"CheckButton", FONT_BODY + 4)
+	t.set_font_size(&"font_size", &"CheckButton", fsz(FONT_BODY + 4))
 	t.set_color(&"font_color", &"CheckButton", COL_TEXT)
 	t.set_constant(&"h_separation", &"CheckButton", 24)
 
 	# Barre de progression, espacements
 	t.set_stylebox(&"background", &"ProgressBar", _flat(Color("141922", 0.95), COL_BORDER, 2, 8))
 	t.set_stylebox(&"fill", &"ProgressBar", _flat(Color("FF7A1F"), Color("FF7A1F"), 0, 8))
-	t.set_font_size(&"font_size", &"ProgressBar", FONT_CAPTION)
+	t.set_font_size(&"font_size", &"ProgressBar", fsz(FONT_CAPTION))
 	t.set_constant(&"separation", &"VBoxContainer", 16)
 	t.set_constant(&"separation", &"HBoxContainer", 16)
 	return t

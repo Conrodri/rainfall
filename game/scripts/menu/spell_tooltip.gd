@@ -67,6 +67,7 @@ func _init() -> void:
 func show_for(ctrl: Control, title: String, tag: String, body: String, avoid_ctrl: Control = null) -> void:
 	anchor_control = ctrl
 	avoid = avoid_ctrl
+	UiTheme.pad_box(get_theme_stylebox(&"panel"), Accessibility.fs(32)) # « Taille du texte » : le titre agrandi garde sa marge
 	var w := _width
 	if avoid != null and is_instance_valid(avoid) and avoid.is_inside_tree():
 		var room := get_viewport().get_visible_rect().end.x - avoid.get_global_rect().end.x - 28.0

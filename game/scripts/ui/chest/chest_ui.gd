@@ -202,7 +202,7 @@ func _update_rings() -> void:
 		var on := _cards[i].has_focus() and not Platform.is_touch_mode() and _card_front[i].visible
 		_focus_rings[i].visible = on
 		if on and session != null:
-			var qc: Color = QUALITY_COLORS.get(session.quality, Color.WHITE)
+			var qc: Color = Palette.rarity(session.quality)
 			var sb := _focus_rings[i].get_theme_stylebox(&"panel") as StyleBoxFlat
 			if sb != null:
 				sb.border_color = qc.lerp(Color.WHITE, 0.45)
@@ -471,6 +471,7 @@ func _build() -> void:
 	_stage_box.resized.connect(_layout_stage)
 
 	_quality = _label(60)
+	_quality.set_meta(&"a11y_skip", true) # ajusté à la largeur par _fit_quality
 	_quality.custom_minimum_size = Vector2(0, 76)
 	_quality.clip_text = true # largeur minimale 0 : la taille de police s'ajuste (_fit_quality), jamais de débordement
 	header.add_child(_quality)
@@ -595,6 +596,7 @@ func _build() -> void:
 		card.resized.connect(_fit_card.bind(i))
 		_cards.append(card)
 		_card_front.append(front)
+		front.set_meta(&"a11y_skip", true) # textes ajustés à la carte par _fit_card (taille de texte appliquée à l'ajustement)
 		_card_back.append(back)
 
 	_btn_row = HBoxContainer.new() # relances côte à côte
@@ -678,7 +680,7 @@ func _fit_card(i: int) -> void:
 	var rh := clampf(art.size.y * 0.14, 22.0, 40.0)
 	rar_l.position = Vector2(art.position.x + art.size.x * 0.12, art.end.y - rh - 6.0)
 	rar_l.size = Vector2(art.size.x * 0.76, rh)
-	rar_l.add_theme_font_size_override("font_size", clampi(int(rh * 0.62), 14, 24))
+	rar_l.add_theme_font_size_override("font_size", mini(Accessibility.fs(clampi(int(rh * 0.62), 14, 24)), int(rh * 0.9)))
 	# nom
 	var band := _zone(ZONE_BAND, sz, Vector2(ZONE_PAD.x, 0.004))
 	var name_l := f.get_child(1) as Label
@@ -689,7 +691,7 @@ func _fit_card(i: int) -> void:
 	name_l.position = band.position
 	name_l.size = band.size
 	var font := name_l.get_theme_font(&"font")
-	var nfs := clampi(int(band.size.y * 0.8), 12, 34)
+	var nfs := mini(Accessibility.fs(clampi(int(band.size.y * 0.8), 12, 34)), int(band.size.y * 0.95))
 	while nfs > 11 and font.get_string_size(name_l.text, HORIZONTAL_ALIGNMENT_LEFT, -1, nfs).x > band.size.x:
 		nfs -= 1
 	name_l.add_theme_font_size_override("font_size", nfs)
@@ -701,7 +703,7 @@ func _fit_card(i: int) -> void:
 	var own := f.get_child(4) as Label
 	var lines: Array[Label] = [eff, tags, own]
 	var gap := 3.0
-	var fs := clampi(int(tz.size.y * 0.15), 12, 30)
+	var fs := Accessibility.fs(clampi(int(tz.size.y * 0.15), 12, 30)) # « Taille du texte » : la boucle ci-dessous réduit jusqu'à ce que ça tienne
 	var total := 0.0
 	var hs: Array[float] = [0.0, 0.0, 0.0]
 	while true:
@@ -881,7 +883,7 @@ func _build_reel() -> void:
 
 ## Case de rareté : cadre de rareté (kit d'icônes), fond teinté de la couleur de rareté (repli simple), nom.
 func _make_tile(q: StringName) -> Control:
-	var qc: Color = QUALITY_COLORS.get(q, Color.WHITE)
+	var qc: Color = Palette.rarity(q)
 	var tile := Control.new()
 	tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var fill := ColorRect.new()
@@ -893,10 +895,22 @@ func _make_tile(q: StringName) -> Control:
 	fill.offset_right = -10
 	fill.offset_bottom = -10
 	tile.add_child(fill)
-	var fr := TextureRect.new()
-	fr.texture = _tex(RARITY_FRAME % q)
-	fr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	fr.stretch_mode = TextureRect.STRETCH_SCALE
+	var fr: Control
+	if Palette.shapes_on(): # mode daltonien : cadre à la couleur de la palette, forme et épaisseur selon le rang (le PNG garde la teinte d'origine)
+		var pf := Panel.new()
+		var fsb := StyleBoxFlat.new()
+		fsb.bg_color = Color(0, 0, 0, 0)
+		fsb.border_color = qc
+		fsb.set_border_width_all(Palette.rank_border(q, 4))
+		fsb.set_corner_radius_all(Palette.rank_corner(q, 10))
+		pf.add_theme_stylebox_override("panel", fsb)
+		fr = pf
+	else:
+		var tr := TextureRect.new()
+		tr.texture = _tex(RARITY_FRAME % q)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		fr = tr
 	fr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	fr.set_anchors_preset(Control.PRESET_FULL_RECT)
 	tile.add_child(fr)
@@ -918,7 +932,7 @@ func _fit_quality() -> void:
 	var w := _quality.size.x
 	if w < 10.0:
 		w = _quality.get_parent_control().size.x if _quality.get_parent_control() != null else 0.0
-	var fs := 60
+	var fs := Accessibility.fs(60)
 	if w >= 10.0:
 		var font := _quality.get_theme_font(&"font")
 		while fs > HudMetrics.floor_px() and font.get_string_size(_quality.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x * 1.2 > w:
@@ -1045,7 +1059,7 @@ func _process(delta: float) -> void:
 			var cq: StringName = _reel_seq[k]
 			_quality.text = QUALITY_NAMES.get(cq, "")
 			_fit_quality()
-			_quality.add_theme_color_override("font_color", (QUALITY_COLORS.get(cq, Color.WHITE) as Color).darkened(0.35))
+			_quality.add_theme_color_override("font_color", (Palette.rarity(cq) as Color).darkened(0.35))
 		if u >= 1.0:
 			_land_rarity(true)
 	if _rar_landed:
@@ -1067,7 +1081,7 @@ func _land_rarity(fx: bool) -> void:
 	_layout_reel()
 	_icon.position = _icon_home
 	_icon.rotation = 0.0
-	var qc: Color = QUALITY_COLORS.get(session.quality, Color.WHITE)
+	var qc: Color = Palette.rarity(session.quality)
 	_set_chest_state(&"open", Color.WHITE.lerp(qc, 0.25))
 	_quality.text = QUALITY_NAMES.get(session.quality, "")
 	_fit_quality()
@@ -1111,7 +1125,7 @@ func _spin_card(i: int, u: float) -> void:
 		_card_icons[i].texture = _tex(ITEM_ICON % id)
 		var name_l := _card_front[i].get_child(1) as Label
 		name_l.text = str(it.get("name", id))
-		name_l.add_theme_color_override("font_color", (QUALITY_COLORS.get(session.quality, Color.WHITE) as Color).darkened(0.25))
+		name_l.add_theme_color_override("font_color", (Palette.rarity(session.quality) as Color).darkened(0.25))
 		_fit_card(i)
 		Audio.play_ui(&"ui.hover", -12.0 + 4.0 * u, 1.0 + 0.3 * u + 0.1 * i)
 	var art_h := _card_boxes[i].size.y
@@ -1184,15 +1198,15 @@ func _set_card_hidden(i: int) -> void:
 ## Nom de la rareté en capitales sur la carte (la couleur n'est jamais seule à la porter).
 func _set_rarity_label(i: int, q: StringName) -> void:
 	var l := _card_front[i].get_child(5) as Label
-	l.text = String(QUALITY_NAMES.get(q, "")).to_upper()
-	l.add_theme_color_override("font_color", (QUALITY_COLORS.get(q, Color.WHITE) as Color).lerp(Color.WHITE, 0.2))
+	l.text = String(QUALITY_NAMES.get(q, "")).to_upper() + Palette.rank_suffix(q)
+	l.add_theme_color_override("font_color", (Palette.rarity(q) as Color).lerp(Color.WHITE, 0.2))
 
 
 func _fill_card(i: int) -> void:
 	var id: String = session.offered[i]
 	var it := ItemDB.get_item(id)
 	var f := _card_front[i]
-	var qc: Color = QUALITY_COLORS.get(StringName(str(it.get("quality", session.quality))), Color.WHITE)
+	var qc: Color = Palette.rarity(StringName(str(it.get("quality", session.quality))))
 	_card_icons[i].texture = _tex(ITEM_ICON % id)
 	var q := str(it.get("quality", session.quality))
 	_card_rarity[i].texture = _tex(RARITY_FRAME % q)
