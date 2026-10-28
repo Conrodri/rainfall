@@ -22,1413 +22,1413 @@
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_0"]
 atlas = ExtResource("idle_p1")
-region = Rect2(0, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_1"]
 atlas = ExtResource("idle_p1")
-region = Rect2(272, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_2"]
 atlas = ExtResource("idle_p1")
-region = Rect2(544, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_3"]
 atlas = ExtResource("idle_p1")
-region = Rect2(816, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_4"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1088, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_e_5"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1360, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_0"]
 atlas = ExtResource("idle_p1")
-region = Rect2(0, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_1"]
 atlas = ExtResource("idle_p1")
-region = Rect2(272, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_2"]
 atlas = ExtResource("idle_p1")
-region = Rect2(544, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_3"]
 atlas = ExtResource("idle_p1")
-region = Rect2(816, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_4"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1088, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_s_5"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1360, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_0"]
 atlas = ExtResource("idle_p1")
-region = Rect2(0, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_1"]
 atlas = ExtResource("idle_p1")
-region = Rect2(272, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_2"]
 atlas = ExtResource("idle_p1")
-region = Rect2(544, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_3"]
 atlas = ExtResource("idle_p1")
-region = Rect2(816, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_4"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1088, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_w_5"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1360, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_0"]
 atlas = ExtResource("idle_p1")
-region = Rect2(0, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_1"]
 atlas = ExtResource("idle_p1")
-region = Rect2(272, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_2"]
 atlas = ExtResource("idle_p1")
-region = Rect2(544, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_3"]
 atlas = ExtResource("idle_p1")
-region = Rect2(816, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_4"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1088, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p1_n_5"]
 atlas = ExtResource("idle_p1")
-region = Rect2(1360, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_0"]
 atlas = ExtResource("idle_p2")
-region = Rect2(0, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_1"]
 atlas = ExtResource("idle_p2")
-region = Rect2(272, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_2"]
 atlas = ExtResource("idle_p2")
-region = Rect2(544, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_3"]
 atlas = ExtResource("idle_p2")
-region = Rect2(816, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_4"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1088, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_e_5"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1360, 0, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 0, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_0"]
 atlas = ExtResource("idle_p2")
-region = Rect2(0, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_1"]
 atlas = ExtResource("idle_p2")
-region = Rect2(272, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_2"]
 atlas = ExtResource("idle_p2")
-region = Rect2(544, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_3"]
 atlas = ExtResource("idle_p2")
-region = Rect2(816, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_4"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1088, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_s_5"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1360, 172, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 120, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_0"]
 atlas = ExtResource("idle_p2")
-region = Rect2(0, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_1"]
 atlas = ExtResource("idle_p2")
-region = Rect2(272, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_2"]
 atlas = ExtResource("idle_p2")
-region = Rect2(544, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_3"]
 atlas = ExtResource("idle_p2")
-region = Rect2(816, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_4"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1088, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_w_5"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1360, 344, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 240, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_0"]
 atlas = ExtResource("idle_p2")
-region = Rect2(0, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(0, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_1"]
 atlas = ExtResource("idle_p2")
-region = Rect2(272, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(190, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_2"]
 atlas = ExtResource("idle_p2")
-region = Rect2(544, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(380, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_3"]
 atlas = ExtResource("idle_p2")
-region = Rect2(816, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(570, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_4"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1088, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(760, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p2_n_5"]
 atlas = ExtResource("idle_p2")
-region = Rect2(1360, 516, 272, 172)
-margin = Rect2(28, 106, 57, 157)
+region = Rect2(950, 360, 190, 120)
+margin = Rect2(19.6, 74.2, 39.9, 109.9)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_0"]
 atlas = ExtResource("idle_p3")
-region = Rect2(0, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_1"]
 atlas = ExtResource("idle_p3")
-region = Rect2(272, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_2"]
 atlas = ExtResource("idle_p3")
-region = Rect2(544, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_3"]
 atlas = ExtResource("idle_p3")
-region = Rect2(816, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_4"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1088, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_e_5"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1360, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_0"]
 atlas = ExtResource("idle_p3")
-region = Rect2(0, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_1"]
 atlas = ExtResource("idle_p3")
-region = Rect2(272, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_2"]
 atlas = ExtResource("idle_p3")
-region = Rect2(544, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_3"]
 atlas = ExtResource("idle_p3")
-region = Rect2(816, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_4"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1088, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_s_5"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1360, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_0"]
 atlas = ExtResource("idle_p3")
-region = Rect2(0, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_1"]
 atlas = ExtResource("idle_p3")
-region = Rect2(272, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_2"]
 atlas = ExtResource("idle_p3")
-region = Rect2(544, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_3"]
 atlas = ExtResource("idle_p3")
-region = Rect2(816, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_4"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1088, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_w_5"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1360, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_0"]
 atlas = ExtResource("idle_p3")
-region = Rect2(0, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_1"]
 atlas = ExtResource("idle_p3")
-region = Rect2(272, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_2"]
 atlas = ExtResource("idle_p3")
-region = Rect2(544, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_3"]
 atlas = ExtResource("idle_p3")
-region = Rect2(816, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_4"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1088, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="idle_p3_n_5"]
 atlas = ExtResource("idle_p3")
-region = Rect2(1360, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_0"]
 atlas = ExtResource("walk_p1")
-region = Rect2(0, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_1"]
 atlas = ExtResource("walk_p1")
-region = Rect2(272, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_2"]
 atlas = ExtResource("walk_p1")
-region = Rect2(544, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_3"]
 atlas = ExtResource("walk_p1")
-region = Rect2(816, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_4"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1088, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_5"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1360, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_6"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1632, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_e_7"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1904, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_0"]
 atlas = ExtResource("walk_p1")
-region = Rect2(0, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_1"]
 atlas = ExtResource("walk_p1")
-region = Rect2(272, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_2"]
 atlas = ExtResource("walk_p1")
-region = Rect2(544, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_3"]
 atlas = ExtResource("walk_p1")
-region = Rect2(816, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_4"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1088, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_5"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1360, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_6"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1632, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_s_7"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1904, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_0"]
 atlas = ExtResource("walk_p1")
-region = Rect2(0, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_1"]
 atlas = ExtResource("walk_p1")
-region = Rect2(272, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_2"]
 atlas = ExtResource("walk_p1")
-region = Rect2(544, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_3"]
 atlas = ExtResource("walk_p1")
-region = Rect2(816, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_4"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1088, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_5"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1360, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_6"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1632, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_w_7"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1904, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_0"]
 atlas = ExtResource("walk_p1")
-region = Rect2(0, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_1"]
 atlas = ExtResource("walk_p1")
-region = Rect2(272, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_2"]
 atlas = ExtResource("walk_p1")
-region = Rect2(544, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_3"]
 atlas = ExtResource("walk_p1")
-region = Rect2(816, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_4"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1088, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_5"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1360, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_6"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1632, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p1_n_7"]
 atlas = ExtResource("walk_p1")
-region = Rect2(1904, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_0"]
 atlas = ExtResource("walk_p2")
-region = Rect2(0, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_1"]
 atlas = ExtResource("walk_p2")
-region = Rect2(272, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_2"]
 atlas = ExtResource("walk_p2")
-region = Rect2(544, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_3"]
 atlas = ExtResource("walk_p2")
-region = Rect2(816, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_4"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1088, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_5"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1360, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_6"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1632, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_e_7"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1904, 0, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 0, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_0"]
 atlas = ExtResource("walk_p2")
-region = Rect2(0, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_1"]
 atlas = ExtResource("walk_p2")
-region = Rect2(272, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_2"]
 atlas = ExtResource("walk_p2")
-region = Rect2(544, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_3"]
 atlas = ExtResource("walk_p2")
-region = Rect2(816, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_4"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1088, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_5"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1360, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_6"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1632, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_s_7"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1904, 170, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 119, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_0"]
 atlas = ExtResource("walk_p2")
-region = Rect2(0, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_1"]
 atlas = ExtResource("walk_p2")
-region = Rect2(272, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_2"]
 atlas = ExtResource("walk_p2")
-region = Rect2(544, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_3"]
 atlas = ExtResource("walk_p2")
-region = Rect2(816, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_4"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1088, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_5"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1360, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_6"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1632, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_w_7"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1904, 340, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 238, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_0"]
 atlas = ExtResource("walk_p2")
-region = Rect2(0, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(0, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_1"]
 atlas = ExtResource("walk_p2")
-region = Rect2(272, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(190, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_2"]
 atlas = ExtResource("walk_p2")
-region = Rect2(544, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(380, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_3"]
 atlas = ExtResource("walk_p2")
-region = Rect2(816, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(570, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_4"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1088, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(760, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_5"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1360, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(950, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_6"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1632, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1140, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p2_n_7"]
 atlas = ExtResource("walk_p2")
-region = Rect2(1904, 510, 272, 170)
-margin = Rect2(28, 108, 57, 159)
+region = Rect2(1330, 357, 190, 119)
+margin = Rect2(19.6, 75.6, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_0"]
 atlas = ExtResource("walk_p3")
-region = Rect2(0, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_1"]
 atlas = ExtResource("walk_p3")
-region = Rect2(272, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_2"]
 atlas = ExtResource("walk_p3")
-region = Rect2(544, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_3"]
 atlas = ExtResource("walk_p3")
-region = Rect2(816, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_4"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1088, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_5"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1360, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_6"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1632, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1140, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_e_7"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1904, 0, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1330, 0, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_0"]
 atlas = ExtResource("walk_p3")
-region = Rect2(0, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_1"]
 atlas = ExtResource("walk_p3")
-region = Rect2(272, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_2"]
 atlas = ExtResource("walk_p3")
-region = Rect2(544, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_3"]
 atlas = ExtResource("walk_p3")
-region = Rect2(816, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_4"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1088, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_5"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1360, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_6"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1632, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1140, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_s_7"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1904, 170, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1330, 119, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_0"]
 atlas = ExtResource("walk_p3")
-region = Rect2(0, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_1"]
 atlas = ExtResource("walk_p3")
-region = Rect2(272, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_2"]
 atlas = ExtResource("walk_p3")
-region = Rect2(544, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_3"]
 atlas = ExtResource("walk_p3")
-region = Rect2(816, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_4"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1088, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_5"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1360, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_6"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1632, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1140, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_w_7"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1904, 340, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1330, 238, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_0"]
 atlas = ExtResource("walk_p3")
-region = Rect2(0, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(0, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_1"]
 atlas = ExtResource("walk_p3")
-region = Rect2(272, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(190, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_2"]
 atlas = ExtResource("walk_p3")
-region = Rect2(544, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(380, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_3"]
 atlas = ExtResource("walk_p3")
-region = Rect2(816, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(570, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_4"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1088, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(760, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_5"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1360, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(950, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_6"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1632, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1140, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="walk_p3_n_7"]
 atlas = ExtResource("walk_p3")
-region = Rect2(1904, 510, 272, 170)
-margin = Rect2(28, 110, 57, 159)
+region = Rect2(1330, 357, 190, 119)
+margin = Rect2(19.6, 77, 39.9, 111.3)
 
 [sub_resource type="AtlasTexture" id="auto_e_0"]
 atlas = ExtResource("auto")
-region = Rect2(0, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(0, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_e_1"]
 atlas = ExtResource("auto")
-region = Rect2(298, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(209, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_e_2"]
 atlas = ExtResource("auto")
-region = Rect2(596, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(418, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_e_3"]
 atlas = ExtResource("auto")
-region = Rect2(894, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(627, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_e_4"]
 atlas = ExtResource("auto")
-region = Rect2(1192, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(836, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_e_5"]
 atlas = ExtResource("auto")
-region = Rect2(1490, 0, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(1045, 0, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_0"]
 atlas = ExtResource("auto")
-region = Rect2(0, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(0, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_1"]
 atlas = ExtResource("auto")
-region = Rect2(298, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(209, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_2"]
 atlas = ExtResource("auto")
-region = Rect2(596, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(418, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_3"]
 atlas = ExtResource("auto")
-region = Rect2(894, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(627, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_4"]
 atlas = ExtResource("auto")
-region = Rect2(1192, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(836, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_s_5"]
 atlas = ExtResource("auto")
-region = Rect2(1490, 182, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(1045, 127, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_0"]
 atlas = ExtResource("auto")
-region = Rect2(0, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(0, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_1"]
 atlas = ExtResource("auto")
-region = Rect2(298, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(209, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_2"]
 atlas = ExtResource("auto")
-region = Rect2(596, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(418, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_3"]
 atlas = ExtResource("auto")
-region = Rect2(894, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(627, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_4"]
 atlas = ExtResource("auto")
-region = Rect2(1192, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(836, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_w_5"]
 atlas = ExtResource("auto")
-region = Rect2(1490, 364, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(1045, 254, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_0"]
 atlas = ExtResource("auto")
-region = Rect2(0, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(0, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_1"]
 atlas = ExtResource("auto")
-region = Rect2(298, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(209, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_2"]
 atlas = ExtResource("auto")
-region = Rect2(596, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(418, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_3"]
 atlas = ExtResource("auto")
-region = Rect2(894, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(627, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_4"]
 atlas = ExtResource("auto")
-region = Rect2(1192, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(836, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="auto_n_5"]
 atlas = ExtResource("auto")
-region = Rect2(1490, 546, 298, 182)
-margin = Rect2(16, 98, 31, 147)
+region = Rect2(1045, 381, 209, 127)
+margin = Rect2(11.2, 68.6, 21.7, 102.9)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_0"]
 atlas = ExtResource("spell_a")
-region = Rect2(0, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(0, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_1"]
 atlas = ExtResource("spell_a")
-region = Rect2(278, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(195, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_2"]
 atlas = ExtResource("spell_a")
-region = Rect2(556, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(390, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_3"]
 atlas = ExtResource("spell_a")
-region = Rect2(834, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(585, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_4"]
 atlas = ExtResource("spell_a")
-region = Rect2(1112, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(780, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_5"]
 atlas = ExtResource("spell_a")
-region = Rect2(1390, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(975, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_6"]
 atlas = ExtResource("spell_a")
-region = Rect2(1668, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1170, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_e_7"]
 atlas = ExtResource("spell_a")
-region = Rect2(1946, 0, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1365, 0, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_0"]
 atlas = ExtResource("spell_a")
-region = Rect2(0, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(0, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_1"]
 atlas = ExtResource("spell_a")
-region = Rect2(278, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(195, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_2"]
 atlas = ExtResource("spell_a")
-region = Rect2(556, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(390, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_3"]
 atlas = ExtResource("spell_a")
-region = Rect2(834, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(585, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_4"]
 atlas = ExtResource("spell_a")
-region = Rect2(1112, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(780, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_5"]
 atlas = ExtResource("spell_a")
-region = Rect2(1390, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(975, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_6"]
 atlas = ExtResource("spell_a")
-region = Rect2(1668, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1170, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_s_7"]
 atlas = ExtResource("spell_a")
-region = Rect2(1946, 186, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1365, 130, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_0"]
 atlas = ExtResource("spell_a")
-region = Rect2(0, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(0, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_1"]
 atlas = ExtResource("spell_a")
-region = Rect2(278, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(195, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_2"]
 atlas = ExtResource("spell_a")
-region = Rect2(556, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(390, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_3"]
 atlas = ExtResource("spell_a")
-region = Rect2(834, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(585, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_4"]
 atlas = ExtResource("spell_a")
-region = Rect2(1112, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(780, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_5"]
 atlas = ExtResource("spell_a")
-region = Rect2(1390, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(975, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_6"]
 atlas = ExtResource("spell_a")
-region = Rect2(1668, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1170, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_w_7"]
 atlas = ExtResource("spell_a")
-region = Rect2(1946, 372, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1365, 260, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_0"]
 atlas = ExtResource("spell_a")
-region = Rect2(0, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(0, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_1"]
 atlas = ExtResource("spell_a")
-region = Rect2(278, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(195, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_2"]
 atlas = ExtResource("spell_a")
-region = Rect2(556, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(390, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_3"]
 atlas = ExtResource("spell_a")
-region = Rect2(834, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(585, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_4"]
 atlas = ExtResource("spell_a")
-region = Rect2(1112, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(780, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_5"]
 atlas = ExtResource("spell_a")
-region = Rect2(1390, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(975, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_6"]
 atlas = ExtResource("spell_a")
-region = Rect2(1668, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1170, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_a_n_7"]
 atlas = ExtResource("spell_a")
-region = Rect2(1946, 558, 278, 186)
-margin = Rect2(26, 92, 51, 143)
+region = Rect2(1365, 390, 195, 130)
+margin = Rect2(18.2, 64.4, 35.7, 100.1)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_0"]
 atlas = ExtResource("spell_b")
-region = Rect2(0, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(0, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_1"]
 atlas = ExtResource("spell_b")
-region = Rect2(270, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(189, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_2"]
 atlas = ExtResource("spell_b")
-region = Rect2(540, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(378, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_3"]
 atlas = ExtResource("spell_b")
-region = Rect2(810, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(567, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_4"]
 atlas = ExtResource("spell_b")
-region = Rect2(1080, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(756, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_5"]
 atlas = ExtResource("spell_b")
-region = Rect2(1350, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(945, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_6"]
 atlas = ExtResource("spell_b")
-region = Rect2(1620, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1134, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_e_7"]
 atlas = ExtResource("spell_b")
-region = Rect2(1890, 0, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1323, 0, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_0"]
 atlas = ExtResource("spell_b")
-region = Rect2(0, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(0, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_1"]
 atlas = ExtResource("spell_b")
-region = Rect2(270, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(189, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_2"]
 atlas = ExtResource("spell_b")
-region = Rect2(540, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(378, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_3"]
 atlas = ExtResource("spell_b")
-region = Rect2(810, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(567, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_4"]
 atlas = ExtResource("spell_b")
-region = Rect2(1080, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(756, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_5"]
 atlas = ExtResource("spell_b")
-region = Rect2(1350, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(945, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_6"]
 atlas = ExtResource("spell_b")
-region = Rect2(1620, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1134, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_s_7"]
 atlas = ExtResource("spell_b")
-region = Rect2(1890, 172, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1323, 120, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_0"]
 atlas = ExtResource("spell_b")
-region = Rect2(0, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(0, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_1"]
 atlas = ExtResource("spell_b")
-region = Rect2(270, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(189, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_2"]
 atlas = ExtResource("spell_b")
-region = Rect2(540, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(378, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_3"]
 atlas = ExtResource("spell_b")
-region = Rect2(810, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(567, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_4"]
 atlas = ExtResource("spell_b")
-region = Rect2(1080, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(756, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_5"]
 atlas = ExtResource("spell_b")
-region = Rect2(1350, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(945, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_6"]
 atlas = ExtResource("spell_b")
-region = Rect2(1620, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1134, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_w_7"]
 atlas = ExtResource("spell_b")
-region = Rect2(1890, 344, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1323, 240, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_0"]
 atlas = ExtResource("spell_b")
-region = Rect2(0, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(0, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_1"]
 atlas = ExtResource("spell_b")
-region = Rect2(270, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(189, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_2"]
 atlas = ExtResource("spell_b")
-region = Rect2(540, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(378, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_3"]
 atlas = ExtResource("spell_b")
-region = Rect2(810, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(567, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_4"]
 atlas = ExtResource("spell_b")
-region = Rect2(1080, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(756, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_5"]
 atlas = ExtResource("spell_b")
-region = Rect2(1350, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(945, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_6"]
 atlas = ExtResource("spell_b")
-region = Rect2(1620, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1134, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="spell_b_n_7"]
 atlas = ExtResource("spell_b")
-region = Rect2(1890, 516, 270, 172)
-margin = Rect2(30, 108, 59, 157)
+region = Rect2(1323, 360, 189, 120)
+margin = Rect2(21, 75.6, 41.3, 109.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_0"]
 atlas = ExtResource("trans_p2")
-region = Rect2(0, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(0, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_1"]
 atlas = ExtResource("trans_p2")
-region = Rect2(184, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(129, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_2"]
 atlas = ExtResource("trans_p2")
-region = Rect2(368, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(258, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_3"]
 atlas = ExtResource("trans_p2")
-region = Rect2(552, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(387, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_4"]
 atlas = ExtResource("trans_p2")
-region = Rect2(736, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(516, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_5"]
 atlas = ExtResource("trans_p2")
-region = Rect2(920, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(645, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_6"]
 atlas = ExtResource("trans_p2")
-region = Rect2(1104, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(774, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p2_s_7"]
 atlas = ExtResource("trans_p2")
-region = Rect2(1288, 0, 184, 182)
-margin = Rect2(72, 96, 145, 147)
+region = Rect2(903, 0, 129, 127)
+margin = Rect2(50.4, 67.2, 101.5, 102.9)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_0"]
 atlas = ExtResource("trans_p3")
-region = Rect2(0, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(0, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_1"]
 atlas = ExtResource("trans_p3")
-region = Rect2(104, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(73, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_2"]
 atlas = ExtResource("trans_p3")
-region = Rect2(208, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(146, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_3"]
 atlas = ExtResource("trans_p3")
-region = Rect2(312, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(219, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_4"]
 atlas = ExtResource("trans_p3")
-region = Rect2(416, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(292, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_5"]
 atlas = ExtResource("trans_p3")
-region = Rect2(520, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(365, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_6"]
 atlas = ExtResource("trans_p3")
-region = Rect2(624, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(438, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="trans_p3_s_7"]
 atlas = ExtResource("trans_p3")
-region = Rect2(728, 0, 104, 168)
-margin = Rect2(108, 110, 225, 161)
+region = Rect2(511, 0, 73, 118)
+margin = Rect2(75.6, 77, 157.5, 112.7)
 
 [sub_resource type="AtlasTexture" id="death_s_0"]
 atlas = ExtResource("death")
-region = Rect2(0, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(0, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_1"]
 atlas = ExtResource("death")
-region = Rect2(116, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(81, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_2"]
 atlas = ExtResource("death")
-region = Rect2(232, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(162, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_3"]
 atlas = ExtResource("death")
-region = Rect2(348, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(243, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_4"]
 atlas = ExtResource("death")
-region = Rect2(464, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(324, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_5"]
 atlas = ExtResource("death")
-region = Rect2(580, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(405, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_6"]
 atlas = ExtResource("death")
-region = Rect2(696, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(486, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_7"]
 atlas = ExtResource("death")
-region = Rect2(812, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(567, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_8"]
 atlas = ExtResource("death")
-region = Rect2(928, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(648, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="death_s_9"]
 atlas = ExtResource("death")
-region = Rect2(1044, 0, 116, 158)
-margin = Rect2(102, 120, 213, 171)
+region = Rect2(729, 0, 81, 111)
+margin = Rect2(71.4, 84, 149.1, 119.7)
 
 [sub_resource type="AtlasTexture" id="black_pool_s_0"]
 atlas = ExtResource("black_pool")
