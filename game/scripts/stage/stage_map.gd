@@ -86,6 +86,10 @@ const ISO_GROUND_OVERLAP := {"foret": 4, "cite": 4, "cryptes": 4, "source": 4} #
 const GROUND_VARIANTS := ["ground_a", "ground_b", "ground_c", "ground_d"]
 const BLOCK_VARIANTS := ["block_a", "block_b", "block_c"]
 const WATER_TILES := {",": "water_shallow", "~": "water_deep"}
+## Case de VIDE des grilles au contour organique (tools/gen_maps.py, 28/10/2026) : hors carte, abîme. Ni sol ni
+## tuile ; collision (rectangles de la scène) ; jamais d'apparition. Les cases « # » qui la bordent reçoivent les
+## tuiles de bord (rempart côté nord / ouest, falaise côté sud / est) d'après le côté où se trouve le vide.
+const VOID_CHAR := " "
 const SHALLOW_TILE_ALPHA := 0.4 ## « , » praticable : film d'eau sur le sol (les tuiles livrées sont aussi sombres que « ~ »)
 ## Espace billboard d'un rendu iso (R = 90,51 px/u) : SPRITE_K × UNSQUASH.
 const ISO_SCALE := Vector2(Iso.SPRITE_K, Iso.SPRITE_K * 2.0)
@@ -220,9 +224,12 @@ func _build_iso(grid: Array, origin: Vector2, size_px: Vector2, dir: String, gro
 	var tiles := Vector2i(ceili(size_px.x / 256.0), ceili(size_px.y / 256.0))
 	for y in tiles.y:
 		for x in tiles.x:
+			if _block_all_void(grid, x, y): # bloc de 4 u entièrement hors carte : pas de sol
+				continue
 			ground.set_cell(Vector2i(x, y), _variant(Vector2i(x, y), GROUND_VARIANTS.size()), Vector2i.ZERO)
 	_place_billboard_layer(ground, inv_vis, from_map(origin + Vector2(128.0, 128.0)), 512.0 / float(512 - 2 * ov))
 	ground.self_modulate = _tint.get("ground", Color.WHITE)
+	_build_void_mask(grid, origin, dir, vis)
 	cells.self_modulate = _tint.get("water", Color.WHITE)
 	# eau : une tuile par case
 	var water_names: Array = []
@@ -446,6 +453,91 @@ static func _has_textures(dir: String, names: Array) -> bool:
 func _variant(cell: Vector2i, n: int) -> int:
 	var size_u := Vector2i(get_meta(&"size_u", Vector2.ZERO))
 	return absi(hash([cell.x * 73856093, cell.y * 19349663, size_u.x, size_u.y])) % n
+
+
+## Vrai si les 4 cases du bloc de sol (tx, ty) de 4 u sont du vide (ou hors grille).
+func _block_all_void(grid: Array, tx: int, ty: int) -> bool:
+	for dy in 2:
+		for dx in 2:
+			if not _is_void(grid, tx * 2 + dx, ty * 2 + dy):
+				return false
+	return true
+
+
+func _is_void(grid: Array, x: int, y: int) -> bool:
+	if y < 0 or y >= grid.size():
+		return true
+	var row: String = grid[y]
+	return x < 0 or x >= row.length() or row[x] == VOID_CHAR
+
+
+## Masque du vide des cartes au contour organique : les tuiles de sol (4 u) qui chevauchent la découpe sont
+## recouvertes case par case (losanges de 2 u) par la texture de l'abîme, aux mêmes échelle et repère que le
+## fond (_build_void) pour que le raccord soit invisible. Un seul Polygon2D (rectangles de cases fusionnés),
+## sous Visual juste au-dessus du sol, sous l'eau, les rives et les falaises.
+func _build_void_mask(grid: Array, origin: Vector2, dir: String, vis: Node2D) -> void:
+	if not ResourceLoader.exists(dir + "void_1024.png"):
+		return
+	var cells := _cell_rects(grid, VOID_CHAR)
+	if cells.is_empty():
+		return
+	var b := get_bounds().grow(VOID_MARGIN_PX)
+	var pts := PackedVector2Array()
+	var uvs := PackedVector2Array()
+	var polys: Array = []
+	var s := OUTLINE_CELL_PX
+	for r: Rect2i in cells:
+		var p0 := origin + Vector2(r.position) * s
+		var idx := PackedInt32Array()
+		for c in [p0, p0 + Vector2(r.size.x * s, 0.0), p0 + Vector2(r.size.x * s, r.size.y * s), p0 + Vector2(0.0, r.size.y * s)]:
+			idx.append(pts.size())
+			pts.append(c)
+			uvs.append((vis.transform * c - b.position) / VOID_SCALE) # pixel de void_1024 sous ce coin (repère du fond)
+		polys.append(idx)
+	var poly := Polygon2D.new()
+	poly.name = "VoidMask"
+	poly.texture = load(dir + "void_1024.png")
+	poly.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	poly.polygon = pts
+	poly.uv = uvs
+	poly.polygons = polys
+	poly.self_modulate = VOID_TINT * (_tint.get("void", Color.WHITE) as Color) * (VOID_TINT_BIOME.get(_biome, Color.WHITE) as Color)
+	vis.add_child(poly)
+	var ground := vis.get_node_or_null(^"Ground")
+	if ground != null:
+		vis.move_child(poly, ground.get_index() + 1)
+
+
+## Rectangles (en cases) couvrant toutes les cases `ch` de la grille, fusion gloutonne (même règle que
+## tools/gen_maps.py rects()).
+func _cell_rects(grid: Array, ch: String) -> Array[Rect2i]:
+	var out: Array[Rect2i] = []
+	var h := grid.size()
+	var used := {}
+	for y in h:
+		var row: String = grid[y]
+		for x in row.length():
+			if row[x] != ch or used.has(Vector2i(x, y)):
+				continue
+			var x2 := x
+			while x2 + 1 < row.length() and row[x2 + 1] == ch and not used.has(Vector2i(x2 + 1, y)):
+				x2 += 1
+			var y2 := y
+			while y2 + 1 < h:
+				var ok := true
+				var nrow: String = grid[y2 + 1]
+				for i in range(x, x2 + 1):
+					if i >= nrow.length() or nrow[i] != ch or used.has(Vector2i(i, y2 + 1)):
+						ok = false
+						break
+				if not ok:
+					break
+				y2 += 1
+			for yy in range(y, y2 + 1):
+				for xx in range(x, x2 + 1):
+					used[Vector2i(xx, yy)] = true
+			out.append(Rect2i(x, y, x2 - x + 1, y2 - y + 1))
+	return out
 
 
 ## Fond d'abîme (void_1024, rig TOP : 1024 px = 8 u, affiché à 0,5) répété sur la boîte englobante
@@ -734,7 +826,7 @@ func _build_blocks(grid: Array, origin: Vector2, dir: String) -> void:
 				continue
 			var cell := Vector2i(x, y)
 			var center := from_map(origin + (Vector2(x, y) + Vector2(0.5, 0.5)) * s)
-			var tex := _wall_texture(cell, Vector2i(w, h)) if dir != "" else ""
+			var tex := _wall_texture(grid, cell) if dir != "" else ""
 			if tex != "" and ResourceLoader.exists(dir + tex + ".png"):
 				var spr := Sprite2D.new()
 				spr.name = "B%d_%d" % [x, y]
@@ -775,18 +867,30 @@ func _build_blocks(grid: Array, origin: Vector2, dir: String) -> void:
 		edges.add_child(e[1])
 
 
-## Tuile d'une case « # » : bord de carte (anneau extérieur de la grille) ou mur intérieur.
-## Repère carte : rangée 0 = arête haut-droite (rempart NE), colonne 0 = haut-gauche (rempart NW),
-## dernière rangée = bas-gauche (falaise SW), dernière colonne = bas-droite (falaise SE).
-func _wall_texture(c: Vector2i, size: Vector2i) -> String:
-	var last := size - Vector2i.ONE
-	if c.y == 0:
-		return "rampart_corner_n" if c.x == 0 else ("cliff_corner_e" if c.x == last.x else "rampart_ne")
-	if c.y == last.y:
-		return "cliff_corner_w" if c.x == 0 else ("cliff_corner_s" if c.x == last.x else "cliff_sw")
-	if c.x == 0:
+## Tuile d'une case « # » : bord de carte ou mur intérieur, d'après le côté où se trouve le vide (case VOID_CHAR
+## ou hors grille). Repère carte : vide au nord (y − 1) = arête haut-droite (rempart NE), à l'ouest (x − 1) =
+## haut-gauche (rempart NW), au sud = bas-gauche (falaise SW), à l'est = bas-droite (falaise SE) ; deux côtés =
+## pointe (coins). Sur l'ancien anneau rectangulaire, le résultat est le même que par position dans la grille.
+func _wall_texture(grid: Array, c: Vector2i) -> String:
+	var n := _is_void(grid, c.x, c.y - 1)
+	var s := _is_void(grid, c.x, c.y + 1)
+	var w := _is_void(grid, c.x - 1, c.y)
+	var e := _is_void(grid, c.x + 1, c.y)
+	if n and w:
+		return "rampart_corner_n"
+	if n and e:
+		return "cliff_corner_e"
+	if s and w:
+		return "cliff_corner_w"
+	if s and e:
+		return "cliff_corner_s"
+	if n:
+		return "rampart_ne"
+	if w:
 		return "rampart_nw"
-	if c.x == last.x:
+	if s:
+		return "cliff_sw"
+	if e:
 		return "cliff_se"
 	return BLOCK_VARIANTS[_variant(c, BLOCK_VARIANTS.size())]
 
@@ -854,7 +958,7 @@ func _process(_delta: float) -> void:
 
 func _solid(grid: Array, x: int, y: int) -> bool:
 	var c := (grid[y] as String)[x]
-	return c == "#" or c == "~"
+	return c == "#" or c == "~" or c == VOID_CHAR
 
 
 func _floor_source(x: int, y: int) -> int:

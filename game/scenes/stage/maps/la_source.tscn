@@ -3,52 +3,73 @@
 [ext_resource type="Script" path="res://scripts/stage/stage_map.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="s0"]
-size = Vector2(3200, 128)
+size = Vector2(3840, 256)
 
 [sub_resource type="RectangleShape2D" id="s1"]
-size = Vector2(128, 3072)
-
-[sub_resource type="RectangleShape2D" id="s2"]
-size = Vector2(640, 128)
-
-[sub_resource type="RectangleShape2D" id="s3"]
-size = Vector2(256, 128)
-
-[sub_resource type="RectangleShape2D" id="s4"]
 size = Vector2(512, 128)
 
-[sub_resource type="RectangleShape2D" id="s5"]
+[sub_resource type="RectangleShape2D" id="s2"]
+size = Vector2(2176, 128)
+
+[sub_resource type="RectangleShape2D" id="s3"]
 size = Vector2(384, 128)
 
+[sub_resource type="RectangleShape2D" id="s4"]
+size = Vector2(2048, 128)
+
+[sub_resource type="RectangleShape2D" id="s5"]
+size = Vector2(256, 3328)
+
 [sub_resource type="RectangleShape2D" id="s6"]
-size = Vector2(128, 128)
+size = Vector2(128, 2048)
 
 [sub_resource type="RectangleShape2D" id="s7"]
-size = Vector2(128, 384)
+size = Vector2(128, 128)
 
 [sub_resource type="RectangleShape2D" id="s8"]
-size = Vector2(128, 768)
+size = Vector2(256, 1024)
 
 [sub_resource type="RectangleShape2D" id="s9"]
-size = Vector2(128, 256)
+size = Vector2(256, 896)
 
 [sub_resource type="RectangleShape2D" id="s10"]
-size = Vector2(256, 384)
+size = Vector2(128, 512)
 
 [sub_resource type="RectangleShape2D" id="s11"]
-size = Vector2(384, 256)
+size = Vector2(128, 896)
 
 [sub_resource type="RectangleShape2D" id="s12"]
-size = Vector2(3456, 128)
+size = Vector2(128, 1024)
 
 [sub_resource type="RectangleShape2D" id="s13"]
-size = Vector2(128, 3456)
+size = Vector2(128, 384)
+
+[sub_resource type="RectangleShape2D" id="s14"]
+size = Vector2(384, 640)
+
+[sub_resource type="RectangleShape2D" id="s15"]
+size = Vector2(512, 640)
+
+[sub_resource type="RectangleShape2D" id="s16"]
+size = Vector2(896, 512)
+
+[sub_resource type="RectangleShape2D" id="s17"]
+size = Vector2(384, 256)
+
+[sub_resource type="RectangleShape2D" id="s18"]
+size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="s19"]
+size = Vector2(4096, 128)
+
+[sub_resource type="RectangleShape2D" id="s20"]
+size = Vector2(128, 4096)
 
 [node name="StageMap" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1")
 metadata/map_id = "la_source"
-metadata/size_u = Vector2(50, 50)
+metadata/size_u = Vector2(60, 60)
 metadata/projection = "iso45"
 
 [node name="Visual" type="Node2D" parent="."]
@@ -66,221 +87,221 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="Block0" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(0, -1536)
+position = Vector2(0, -1792)
 shape = SubResource("s0")
 
 [node name="Block1" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1536, 64)
+position = Vector2(-1664, -1600)
 shape = SubResource("s1")
 
 [node name="Block2" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-640, -1408)
+position = Vector2(-64, -1600)
 shape = SubResource("s2")
 
 [node name="Block3" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(640, -1408)
-shape = SubResource("s2")
-
-[node name="Block4" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1536, 64)
+position = Vector2(1664, -1600)
 shape = SubResource("s1")
 
-[node name="Block5" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-832, -1280)
+[node name="Block4" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1728, -1472)
 shape = SubResource("s3")
 
+[node name="Block5" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(0, -1472)
+shape = SubResource("s4")
+
 [node name="Block6" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(832, -1280)
+position = Vector2(1728, -1472)
 shape = SubResource("s3")
 
 [node name="Block7" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1216, -1024)
-shape = SubResource("s4")
-
-[node name="Block8" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1216, -1024)
-shape = SubResource("s4")
-
-[node name="Block9" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1280, -896)
+position = Vector2(-1792, 256)
 shape = SubResource("s5")
 
+[node name="Block8" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-704, -1344)
+shape = SubResource("s3")
+
+[node name="Block9" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(640, -1344)
+shape = SubResource("s1")
+
 [node name="Block10" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-384, -896)
-shape = SubResource("s6")
+position = Vector2(1792, 256)
+shape = SubResource("s5")
 
 [node name="Block11" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(384, -896)
+position = Vector2(-1600, 0)
 shape = SubResource("s6")
 
 [node name="Block12" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1280, -896)
-shape = SubResource("s5")
-
-[node name="Block13" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1344, -768)
-shape = SubResource("s3")
-
-[node name="Block14" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1344, -768)
-shape = SubResource("s3")
-
-[node name="Block15" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1408, -512)
+position = Vector2(64, -960)
 shape = SubResource("s7")
 
+[node name="Block13" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1536, -512)
+shape = SubResource("s8")
+
+[node name="Block14" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(-1408, -448)
+shape = SubResource("s9")
+
+[node name="Block15" type="CollisionShape2D" parent="Obstacles/Walls"]
+position = Vector2(1344, -640)
+shape = SubResource("s10")
+
 [node name="Block16" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1408, -512)
+position = Vector2(-704, -704)
 shape = SubResource("s7")
 
 [node name="Block17" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-896, -384)
-shape = SubResource("s6")
+position = Vector2(832, -704)
+shape = SubResource("s7")
 
 [node name="Block18" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(896, -384)
-shape = SubResource("s6")
+position = Vector2(-1472, 448)
+shape = SubResource("s11")
 
 [node name="Block19" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1408, 704)
-shape = SubResource("s8")
+position = Vector2(-960, 64)
+shape = SubResource("s7")
 
 [node name="Block20" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-896, 384)
-shape = SubResource("s6")
+position = Vector2(1088, 64)
+shape = SubResource("s7")
 
 [node name="Block21" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(896, 384)
-shape = SubResource("s6")
+position = Vector2(1600, 512)
+shape = SubResource("s12")
 
 [node name="Block22" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1408, 704)
-shape = SubResource("s8")
+position = Vector2(1472, 704)
+shape = SubResource("s13")
 
 [node name="Block23" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1280, 896)
+position = Vector2(-704, 832)
 shape = SubResource("s7")
 
 [node name="Block24" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1280, 896)
+position = Vector2(832, 832)
 shape = SubResource("s7")
 
 [node name="Block25" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1152, 960)
-shape = SubResource("s9")
+position = Vector2(64, 1088)
+shape = SubResource("s7")
 
 [node name="Block26" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-384, 896)
-shape = SubResource("s6")
+position = Vector2(-704, 1600)
+shape = SubResource("s14")
 
 [node name="Block27" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(384, 896)
-shape = SubResource("s6")
+position = Vector2(640, 1600)
+shape = SubResource("s15")
 
 [node name="Block28" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1152, 960)
-shape = SubResource("s9")
+position = Vector2(-960, 1664)
+shape = SubResource("s10")
 
 [node name="Block29" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1024, 1024)
-shape = SubResource("s6")
+position = Vector2(-64, 1664)
+shape = SubResource("s16")
 
 [node name="Block30" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1024, 1024)
-shape = SubResource("s6")
+position = Vector2(960, 1664)
+shape = SubResource("s10")
 
 [node name="Block31" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-832, 1408)
+position = Vector2(1600, 1664)
 shape = SubResource("s10")
 
 [node name="Block32" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(832, 1408)
-shape = SubResource("s10")
+position = Vector2(-1600, 1728)
+shape = SubResource("s13")
 
 [node name="Block33" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-512, 1472)
-shape = SubResource("s11")
+position = Vector2(-1088, 1728)
+shape = SubResource("s13")
 
 [node name="Block34" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(512, 1472)
-shape = SubResource("s11")
+position = Vector2(1088, 1728)
+shape = SubResource("s13")
 
 [node name="Block35" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1216, 1536)
-shape = SubResource("s4")
+position = Vector2(1472, 1728)
+shape = SubResource("s13")
 
 [node name="Block36" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(0, 1536)
-shape = SubResource("s2")
+position = Vector2(-1344, 1792)
+shape = SubResource("s17")
 
 [node name="Block37" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1216, 1536)
-shape = SubResource("s4")
+position = Vector2(1280, 1792)
+shape = SubResource("s18")
 
 [node name="OuterN" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(0, -1664)
-shape = SubResource("s12")
+position = Vector2(0, -1984)
+shape = SubResource("s19")
 
 [node name="OuterS" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(0, 1664)
-shape = SubResource("s12")
+position = Vector2(0, 1984)
+shape = SubResource("s19")
 
 [node name="OuterW" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(-1664, 0)
-shape = SubResource("s13")
+position = Vector2(-1984, 0)
+shape = SubResource("s20")
 
 [node name="OuterE" type="CollisionShape2D" parent="Obstacles/Walls"]
-position = Vector2(1664, 0)
-shape = SubResource("s13")
+position = Vector2(1984, 0)
+shape = SubResource("s20")
 
 [node name="Markers" type="Node2D" parent="."]
 rotation = 0.785398163397448
 
 [node name="PlayerStart" type="Marker2D" parent="Markers" groups=["player_start"]]
-position = Vector2(0, 1408)
+position = Vector2(64, 1344)
 
 [node name="Chest00" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1408, -1408)
+position = Vector2(-1344, -1344)
 
 [node name="Chest01" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1408, -1408)
+position = Vector2(1216, -1344)
 
 [node name="Chest02" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1024, -1280)
+position = Vector2(-320, -1216)
 
 [node name="Chest03" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1024, -1280)
+position = Vector2(448, -1216)
 
 [node name="Chest04" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(0, -896)
+position = Vector2(-1088, -1088)
 
 [node name="Chest05" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-896, 0)
+position = Vector2(1472, -1088)
 
 [node name="Chest06" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(896, 0)
+position = Vector2(-1344, 64)
 
 [node name="Chest07" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(0, 896)
+position = Vector2(1472, 64)
 
 [node name="Chest08" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1024, 1280)
+position = Vector2(-1088, 1216)
 
 [node name="Chest09" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1024, 1280)
+position = Vector2(1216, 1216)
 
 [node name="Chest10" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1408, 1408)
+position = Vector2(-1344, 1472)
 
 [node name="Chest11" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1408, 1408)
+position = Vector2(1472, 1472)
 
 [node name="PillarG00" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_big"]]
-position = Vector2(0, 0)
+position = Vector2(64, 64)
 metadata/pillar_kind = "big"
 
 [node name="Event00" type="Marker2D" parent="Markers" groups=["event_spawn"]]
-position = Vector2(-512, -768)
+position = Vector2(64, -1216)
 
 [node name="Event01" type="Marker2D" parent="Markers" groups=["event_spawn"]]
-position = Vector2(512, -768)
+position = Vector2(-448, 1216)

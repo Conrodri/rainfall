@@ -3,9 +3,11 @@ extends RefCounted
 ## Génère des LightOccluder2D à partir des rectangles d'obstacles d'une StageMap (mêmes règles
 ## que StageMap._gather_rects : CollisionShape2D rectangulaires des StaticBody2D).
 ##
-## L'eau profonde est aussi un obstacle de collision, mais elle ne doit pas projeter d'ombre :
-## si data/maps/<map_id>.json existe, un rectangle dont la majorité des cases de la grille est
-## « ~ » est ignoré. Les rectangles adjacents de même hauteur/largeur ne sont pas fusionnés
+## L'eau profonde et le vide hors carte (StageMap.VOID_CHAR) sont aussi des obstacles de collision, mais ils
+## ne doivent pas projeter d'ombre : si data/maps/<map_id>.json existe, un rectangle dont la majorité des cases
+## de la grille est « ~ » ou vide est ignoré. Le bord de carte (murs « # » qui touchent le vide : remparts et
+## falaises du contour organique, 28/10/2026) n'en projette pas non plus : les lumières sont toutes à l'intérieur,
+## son ombre tomberait sur l'abîme. Un rectangle fait uniquement de bord, d'eau et de vide est ignoré. Les rectangles adjacents de même hauteur/largeur ne sont pas fusionnés
 ## (35 occluders au plus sur les cartes actuelles : coût négligeable).
 ## Repère (docs/Design_Isometrique.md §2.7) : rectangles en repère CARTE (StageMap.frame_of : Rot +45°
 ## en iso), occluders posés sous un parent qui porte cette rotation -> losanges au sol.
@@ -24,7 +26,7 @@ static func shadow_rects(map: Node2D) -> Array[Rect2]:
 		return rects
 	var out: Array[Rect2] = []
 	for r in rects:
-		if not _is_water(r, grid):
+		if not _no_shadow(r, grid):
 			out.append(r)
 	return out
 
@@ -98,11 +100,13 @@ static func _load_grid(map: Node2D) -> Dictionary:
 	return {"grid": PackedStringArray(data["grid"]), "cell_px": cell, "origin": origin}
 
 
-static func _is_water(r: Rect2, g: Dictionary) -> bool:
+## Vrai si le rectangle est majoritairement eau / vide, ou entièrement fait de bord de carte, d'eau et de vide.
+static func _no_shadow(r: Rect2, g: Dictionary) -> bool:
 	var grid: PackedStringArray = g["grid"]
 	var cell: float = g["cell_px"]
 	var origin: Vector2 = g["origin"]
 	var water := 0
+	var rim := 0
 	var total := 0
 	var y := r.position.y + cell * 0.5
 	while y < r.end.y:
@@ -112,11 +116,26 @@ static func _is_water(r: Rect2, g: Dictionary) -> bool:
 			var gy := int(floor((y - origin.y) / cell))
 			if gy >= 0 and gy < grid.size() and gx >= 0 and gx < grid[gy].length():
 				total += 1
-				if grid[gy][gx] == "~":
+				if grid[gy][gx] == "~" or grid[gy][gx] == StageMap.VOID_CHAR:
 					water += 1
+				elif grid[gy][gx] == "#" and _touches_void(grid, gx, gy):
+					rim += 1
 			x += cell
 		y += cell
-	return total > 0 and water * 2 > total
+	return total > 0 and (water * 2 > total or water + rim == total)
+
+
+## Case « # » dont un des 8 voisins est du vide (ou hors grille) : rempart ou falaise du contour.
+static func _touches_void(grid: PackedStringArray, x: int, y: int) -> bool:
+	for dy: int in [-1, 0, 1]:
+		for dx: int in [-1, 0, 1]:
+			if dx == 0 and dy == 0:
+				continue
+			var nx: int = x + dx
+			var ny: int = y + dy
+			if ny < 0 or ny >= grid.size() or nx < 0 or nx >= grid[ny].length() or grid[ny][nx] == StageMap.VOID_CHAR:
+				return true
+	return false
 
 
 ## Occluder dynamique attaché à une entité (boss, coffre, pilier), Direction §5 : boss dès le

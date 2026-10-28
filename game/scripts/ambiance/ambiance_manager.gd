@@ -432,7 +432,7 @@ func _rule_lights() -> Array:
 				var ok := false
 				var wdir := Vector2i.ZERO
 				if edge:
-					if c != "#" and c != "~" and c != ch:
+					if c != "#" and c != "~" and c != StageMap.VOID_CHAR and c != ch: # jamais sur le vide hors carte
 						for dv in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 							var nx: int = x + dv.x
 							var ny: int = y + dv.y
