@@ -133,9 +133,9 @@ func activate() -> bool:
 			_boss.set_meta(&"boss_id", boss_id)
 		if _boss != null and final_boss:
 			_boss.set_meta(&"final_boss", true) # cerveau du boss final : phases, pas de second multiplicateur
-		# PV × boss final (FINAL_BOSS_HP_MULT) × mode (BOSS_HP_MODE_MULT, gros pilier seulement : boss d'étage, raids,
-		# final). Les cerveaux lisent max_hp au moment de s'en servir (seuils, soutiers, points faibles) : rescaler ici suffit.
-		var hp_mult := Balance.boss_hp_mode_mult(boss_kind, RunState.mode) * (final_hp_mult if final_boss else 1.0)
+		# PV × boss final (FINAL_BOSS_HP_MULT). Le facteur de mode (BOSS_HP_MODE_MULT) est déjà dans Enemy.activate_boss.
+		# Les cerveaux lisent max_hp au moment de s'en servir (seuils, soutiers, points faibles) : rescaler ici suffit.
+		var hp_mult := final_hp_mult if final_boss else 1.0
 		if _boss != null and hp_mult != 1.0 and &"max_hp" in _boss:
 			_boss.set(&"max_hp", float(_boss.get(&"max_hp")) * hp_mult)
 			_boss.set(&"hp", float(_boss.get(&"max_hp")))

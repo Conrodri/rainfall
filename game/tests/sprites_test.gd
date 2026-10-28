@@ -68,6 +68,10 @@ func _ready() -> void:
 	a.set_facing(PI)
 	_check(sa.animation == &"run_w", "essaim : orientation w")
 	_check(sa.sprite_frames.get_frame_count("run_w") == 8, "essaim : 8 frames")
+	_check(sa.sprite_frames.get_frame_count("attack_s") == 6 and sa.sprite_frames.get_frame_count("idle_s") == 4, "essaim v2 : attack_s 6 frames, idle_s 4")
+	_check(sa.sprite_frames.get_frame_count("death_s") == 4 and not sa.sprite_frames.has_animation("death_se"), "essaim v2 : death 4 frames, 4 directions")
+	_check(is_equal_approx(sa.scale.x, EnemyVisual.SPRITES[1]["scale"] * 1.0) and is_equal_approx(sa.offset.y, -20.0), "essaim v2 : échelle 1,0, offset_y -20")
+	_check_v2_roles()
 	_check_emission_sync(sa, "essaim")
 	a.set_flash(true)
 	_check(sa.modulate.r > 1.5 and sa.material is ShaderMaterial, "essaim : flash par shader")
@@ -113,3 +117,33 @@ func _ready() -> void:
 
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(_fails)
+
+
+## Contrat de format v2 (art/briefs/monsters_v2.md §2) : frames par anim et géométrie par dossier.
+func _check_v2_roles() -> void:
+	var want := {
+		"shooter_tier2": {"run_e": 8, "idle_s": 4, "attack_s": 8, "death_s": 4, "off": -44.0},
+		"leaper_tier2": {"run_e": 8, "idle_s": 4, "charge_s": 6, "leap_s": 4, "attack_s": 6, "death_s": 4, "off": -34.0},
+		"brute_tier3": {"run_e": 8, "idle_s": 4, "attack_s": 8, "cast_s": 8, "death_s": 6, "off": -56.0},
+	}
+	for folder: String in want:
+		var f := load("res://assets/sprites/monsters/%s/%s.tres" % [folder, folder]) as SpriteFrames
+		_check(f != null, folder + " : .tres chargé")
+		if f == null:
+			continue
+		for anim: String in want[folder]:
+			if anim == "off":
+				continue
+			_check(f.get_frame_count(anim) == int(want[folder][anim]), "%s : %s %d frames (a %d)" % [folder, anim, want[folder][anim], f.get_frame_count(anim)])
+	var keys := {2: -44.0, EnemyVisual.LEAPER_KEY: -34.0, 3: -56.0, 1: -20.0}
+	for k: int in keys:
+		var cfg: Dictionary = EnemyVisual.monster_entry(k, &"terrasses")[1]
+		_check(is_equal_approx(float(cfg["scale"]), 1.0) and is_equal_approx(float(cfg["offset_y"]), float(keys[k])) and not cfg.has("render_px_per_u"), "terrasses clé %d : géométrie v2" % k)
+	# les biomes encore au format ancien gardent leur géométrie par dossier
+	var old: Dictionary = EnemyVisual.monster_entry(1, &"foret")[1]
+	_check(is_equal_approx(float(old["scale"]), 0.8) and is_equal_approx(float(old["offset_y"]), -36.0) and old.has("render_px_per_u"), "forêt : essaim en géométrie ancienne")
+	var oldb: Dictionary = EnemyVisual.monster_entry(3, &"cite")[1]
+	_check(is_equal_approx(float(oldb["offset_y"]), -50.0), "cité : brute en géométrie ancienne")
+	# v2 jamais redirigé vers un doublon _cel (ancien format)
+	var sf := EnemyVisual.monster_frames(1, &"terrasses")
+	_check(sf != null and not sf.resource_path.contains("_cel"), "essaim v2 : pas de redirection _cel")

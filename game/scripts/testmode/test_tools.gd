@@ -121,8 +121,8 @@ static func spawn_boss(tree: SceneTree, boss_id: StringName, kind: StringName, p
 	(b as Node2D).set_meta(&"boss_id", boss_id)
 	if kind == &"final":
 		(b as Node2D).set_meta(&"final_boss", true)
-	# comme Pillar.activate : × boss final, × mode de la partie (boss d'étage, raids, final ; pas les mini-boss)
-	var mult := (final_hp_mult() if kind == &"final" else 1.0) * Balance.boss_hp_mode_mult(&"mini" if mini else &"etage", RunState.mode)
+	# comme Pillar.activate : × boss final (le facteur de mode est dans Enemy.activate_boss)
+	var mult := final_hp_mult() if kind == &"final" else 1.0
 	if mult != 1.0:
 		(b as Node2D).set(&"max_hp", float((b as Node2D).get(&"max_hp")) * mult)
 		(b as Node2D).set(&"hp", float((b as Node2D).get(&"max_hp")))

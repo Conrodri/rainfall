@@ -25,11 +25,26 @@ const TIER_COLORS := {
 const MONSTER_DIR := "res://assets/sprites/monsters/"
 ## clé de sprite (tier, ou LEAPER_KEY) -> {name, scale, offset_y (px de la frame, avant échelle), energy}
 const LEAPER_KEY := 21 ## tier 2, variante bondisseur
+## Format v2 (art/briefs/monsters_v2.md §2) : rendu à 64 px/u, pas d'échelle en jeu, pieds sur la ligne `bottom`
+## de la cellule (offset_y = hauteur/2 - bottom) : essaim 64x56 (bottom 48), tireur 88x104 (96), bondisseur 96x96
+## (82), brute 128x136 (124).
 const SPRITES := {
-	1: {"name": "swarm_tier1", "scale": 0.8, "offset_y": -36.0, "energy": 2.0, "render_px_per_u": Iso.RENDER_PX_PER_U},   # ~0,8 u de large ; rendu iso C5
-	2: {"name": "shooter_tier2", "scale": 0.9, "offset_y": -32.0, "energy": 2.0},
-	3: {"name": "brute_tier3", "scale": 0.85, "offset_y": -50.0, "energy": 2.0},
-	LEAPER_KEY: {"name": "leaper_tier2", "scale": 0.8, "offset_y": -40.0, "energy": 2.0}, # frames 112 px
+	1: {"name": "swarm_tier1", "scale": 1.0, "offset_y": -20.0, "energy": 2.0},
+	2: {"name": "shooter_tier2", "scale": 1.0, "offset_y": -44.0, "energy": 2.0},
+	3: {"name": "brute_tier3", "scale": 1.0, "offset_y": -56.0, "energy": 2.0},
+	LEAPER_KEY: {"name": "leaper_tier2", "scale": 1.0, "offset_y": -34.0, "energy": 2.0},
+}
+## Dossiers au format v2 : rendus d'emblée en cel-shadé, donc jamais redirigés vers un `_cel` (anciens doublons
+## de l'interrupteur F7, au format ancien : swarm_tier1_cel, brute_tier3_cel).
+const V2_FOLDERS := ["swarm_tier1", "shooter_tier2", "leaper_tier2", "brute_tier3"]
+## Géométrie PAR DOSSIER des sprites encore au format ancien (forêt et cité, avant leurs lots v2) : prime sur
+## SPRITES, avant la surcharge éventuelle de data/fauna.json. À retirer biome par biome à la livraison v2.
+const LEGACY_SWARM := {"scale": 0.8, "offset_y": -36.0, "energy": 2.0, "render_px_per_u": Iso.RENDER_PX_PER_U}
+const LEGACY_GEOM := {
+	"swarm_tier1_moss": LEGACY_SWARM, "swarm_tier1_rust": LEGACY_SWARM,
+	"shooter_tier2_moss": {"scale": 0.9, "offset_y": -32.0}, "shooter_tier2_rust": {"scale": 0.9, "offset_y": -32.0},
+	"leaper_tier2_moss": {"scale": 0.8, "offset_y": -40.0}, "leaper_tier2_rust": {"scale": 0.8, "offset_y": -40.0},
+	"brute_tier3_moss": {"scale": 0.85, "offset_y": -50.0}, "brute_tier3_rust": {"scale": 0.85, "offset_y": -50.0},
 }
 ## --- Boss : sprites Blender par identifiant (dossier sous assets/sprites/bosses/).
 ## dim = grande dimension (px de frame) de la silhouette, moyenne repos/marche ; bottom = ligne des pieds (px de frame),
@@ -97,6 +112,8 @@ var _tier_frames: SpriteFrames = null
 var _key := 1
 var _mon_cfg: Dictionary = {} ## géométrie du sprite de monstre courant (SPRITES + surcharge du biome)
 var _action: StringName = &"run"
+var _timed_frame := -1 ## set_action_timed : frame d'impact attendue (-1 : aucun calage en cours)
+var _timed_scale := 1.0 ## vitesse d'anim avant l'impact
 var _skin_prefix := "" ## set_skin_frames : préfixe des anims (extras `stoker_` du .tres d'un boss), "" = aucun
 # --- état boss sprite
 var _boss_sprite := false
@@ -145,7 +162,7 @@ static func frames_for_tier(tier: int) -> SpriteFrames:
 	var frames: SpriteFrames = null
 	if SPRITES.has(tier):
 		var n: String = SPRITES[tier]["name"]
-		var path := RenderStyle.resolve("%s%s/%s.tres" % [MONSTER_DIR, n, n])
+		var path := _monster_path(n)
 		if ResourceLoader.exists(path):
 			var f := load(path) as SpriteFrames
 			if f != null and f.has_animation(&"run_e"):
@@ -296,15 +313,22 @@ static func _role_cfg(biome: StringName, key: int, elite: bool) -> Dictionary:
 	var cfg: Dictionary = (SPRITES.get(key, {}) as Dictionary).duplicate()
 	if spec is String and spec != "":
 		cfg["name"] = spec
+		cfg.merge(LEGACY_GEOM.get(spec, {}), true)
 	elif spec is Dictionary and (spec as Dictionary).has("name"):
+		cfg.merge(LEGACY_GEOM.get(String((spec as Dictionary)["name"]), {}), true)
 		cfg.merge(spec, true)
 	else:
 		return {}
 	return cfg
 
 
+static func _monster_path(sprite_name: String) -> String:
+	var path := "%s%s/%s.tres" % [MONSTER_DIR, sprite_name, sprite_name]
+	return path if V2_FOLDERS.has(sprite_name) else RenderStyle.resolve(path)
+
+
 static func _load_monster_frames(sprite_name: String) -> SpriteFrames:
-	var path := RenderStyle.resolve("%s%s/%s.tres" % [MONSTER_DIR, sprite_name, sprite_name])
+	var path := _monster_path(sprite_name)
 	if not ResourceLoader.exists(path):
 		return null
 	var f := load(path) as SpriteFrames
@@ -420,6 +444,8 @@ func configure(tier: int, radius_px: float, is_boss: bool, variant: int = 0, bos
 	_flash = false
 	_charge_mod = Color.WHITE
 	_action = &"run"
+	if _timed_frame >= 0:
+		_end_timed()
 	_skin_prefix = ""
 	rotation = 0.0
 	position = Vector2.ZERO
@@ -713,7 +739,9 @@ func _boss_set_action(action: StringName) -> void:
 
 ## Temps naturel (vitesse 1) entre le début de l'anim de coup et sa frame d'impact.
 func attack_impact_time(action: StringName) -> float:
-	if not _boss_sprite or not BOSS_ATTACK_BASES.has(action):
+	if not _boss_sprite:
+		return _mob_impact_time(action)
+	if not BOSS_ATTACK_BASES.has(action):
 		return 0.3
 	var base: String = BOSS_ATTACK_BASES[action][0 if _boss_cfg["floor"] else 1]
 	var sf := _sprite.sprite_frames
@@ -723,6 +751,53 @@ func attack_impact_time(action: StringName) -> float:
 	var fps := maxf(sf.get_animation_speed(n), 1.0)
 	var frac: float = (_boss_cfg.get("impact", {}) as Dictionary).get(action, BOSS_IMPACT_FRAC)
 	return float(roundi(sf.get_frame_count(n) * frac)) / fps
+
+
+## Monstres courants : temps naturel jusqu'à la frame d'impact (index floor(n/2), BOSS_IMPACT_FRAC) de l'anim
+## `<action>_s` du tier ; 0,3 s si l'anim manque (sprites anciens : repli sur run).
+func _mob_impact_time(action: StringName) -> float:
+	if _sprite == null or _sprite.sprite_frames == null:
+		return 0.3
+	var n := StringName("%s%s_s" % [_skin_prefix, action])
+	var sf := _sprite.sprite_frames
+	if not sf.has_animation(n):
+		return 0.3
+	return float(sf.get_frame_count(n) / 2) / maxf(sf.get_animation_speed(n), 1.0)
+
+
+## Anim de coup d'un monstre (tireur, brute, essaim, bondisseur) rejouée depuis la frame 0, accélérée ou
+## ralentie pour que sa frame d'impact tombe dans `impact_in` s (le moment où Enemy applique le coup) ; vitesse
+## naturelle ensuite (récupération). Sans l'anim (sprites anciens) : simple set_action. Pas de fente de corps.
+func set_action_timed(action: StringName, impact_in: float) -> void:
+	set_action(action, true)
+	if _boss_sprite or not _use_sprite or _sprite == null or impact_in <= 0.0:
+		return
+	if not String(_sprite.animation).begins_with(_skin_prefix + String(action)):
+		return # anim absente : repli sur run, rien à caler
+	var frames := _sprite.sprite_frames
+	var impact_frame := frames.get_frame_count(_sprite.animation) / 2
+	var natural := float(impact_frame) / maxf(frames.get_animation_speed(_sprite.animation), 1.0)
+	if impact_frame <= 0:
+		return
+	_timed_scale = clampf(natural / impact_in, BOSS_SPEED_RANGE.x, BOSS_SPEED_RANGE.y)
+	_timed_frame = impact_frame
+	_sprite.speed_scale = _timed_scale
+	if not _sprite.frame_changed.is_connected(_on_timed_frame):
+		_sprite.frame_changed.connect(_on_timed_frame)
+
+
+func _on_timed_frame() -> void:
+	if _sprite.frame >= _timed_frame:
+		_end_timed()
+
+
+func _end_timed() -> void:
+	if _timed_frame < 0:
+		return
+	_timed_frame = -1
+	_sprite.speed_scale = 1.0
+	if _sprite.frame_changed.is_connected(_on_timed_frame):
+		_sprite.frame_changed.disconnect(_on_timed_frame)
 
 
 ## Coup armé d'un boss : anim de coup (ou posture orientée), fente vers `dir` (logique) qui culmine
@@ -858,8 +933,8 @@ const EMISSION_Z := 1
 
 ## Bascule de style à chaud (RenderStyle, F7) : mêmes anim, frame et progression, frames `_cel` ou d'origine.
 func apply_render_style() -> void:
-	if _sprite == null:
-		return
+	if _sprite == null or (_tier_frames != null and V2_FOLDERS.has(_tier_frames.resource_path.get_base_dir().get_file())):
+		return # monstre v2 : un seul rendu (cel-shadé), pas de bascule F7
 	var f := RenderStyle.restyle_sprite(_sprite)
 	if f != null:
 		_tier_frames = f
@@ -916,7 +991,7 @@ const DIRS4_OF8 := ["e", "s", "s", "w", "w", "n", "n", "e"]
 func use_frames(frames: SpriteFrames, cfg: Dictionary = {}) -> void:
 	if frames == null or _boss_sprite:
 		return
-	var c: Dictionary = (SPRITES[1] as Dictionary).duplicate()
+	var c: Dictionary = LEGACY_SWARM.duplicate() # corps d'invocation : défauts de l'ancien essaim
 	c.merge(cfg, true)
 	_mon_cfg = c
 	_use_sprite = true
@@ -960,7 +1035,7 @@ func set_charge(level: int) -> void:
 ## Hitstop : animation figée (le corps et l'émission restent synchronisés par frame_changed).
 func set_frozen(on: bool) -> void:
 	if _sprite != null:
-		_sprite.speed_scale = 0.0 if on else 1.0
+		_sprite.speed_scale = 0.0 if on else (_timed_scale if _timed_frame >= 0 else 1.0)
 
 
 ## Animation d'action (run, charge, attack, cast…). Sans animation correspondante : run.
@@ -989,6 +1064,8 @@ func set_action(action: StringName, restart := false) -> void:
 		return
 	if action == _action and not restart:
 		return
+	if _timed_frame >= 0:
+		_end_timed()
 	_action = action
 	if _use_sprite and _dir >= 0:
 		var d := _dir

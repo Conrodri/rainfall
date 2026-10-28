@@ -89,6 +89,7 @@ func _test_shot() -> void:
 	await _step(e)
 	_check("armement lancé (SHOT)", e._windup == Enemy.Windup.SHOT, str(e._windup))
 	_check("pose d'attaque jouée", String(e.visual.current_anim()).begins_with("attack_") or e.visual.current_anim() == &"", String(e.visual.current_anim()))
+	_check("anim calée : impact frame 4 en SHOOTER_WINDUP_S (vitesse %.2f)" % e.visual._sprite.speed_scale, e.visual._timed_frame == 4 and absf(e.visual._sprite.speed_scale * Balance.SHOOTER_WINDUP_S - 4.0 / 12.0) < 0.02)
 	_check("teinte d'armement", e.visual._charge_mod != Color.WHITE)
 	_check("ligne de visée affichée", e.telegraph.visible)
 	var frames := 1
@@ -240,16 +241,22 @@ func _test_leaper() -> void:
 
 
 func _test_swarm() -> void:
-	print("Essaim : morsure")
+	print("Essaim : morsure armée (détail : swarm_bite_test)")
 	var e := _spawn(1, 0, Vector2(0.5, 0.0))
 	e._attack_cd = 0.0
 	var h0 := _player.hits
 	await _step(e)
-	_check("morsure", _player.hits == h0 + 1)
+	_check("armement, pas encore de coup", _player.hits == h0 and absf(e._attack_cd - Enemy.CONTACT_INTERVAL) < 0.05, str(e._attack_cd))
+	_check("anim de morsure", String(e.visual.current_anim()).begins_with("attack_") or e.visual.current_anim() == &"", String(e.visual.current_anim()))
+	var frames := 1
+	while _player.hits == h0 and frames < 100:
+		await _step(e)
+		frames += 1
+	_check("morsure après SWARM_BITE_WINDUP_S (%.2f s)" % (frames * DT), _player.hits == h0 + 1 and absf(frames * DT - Balance.SWARM_BITE_WINDUP_S) <= 2.5 * DT)
 	_check("petit recul", e.knockback_left().x > 0.0, str(e.knockback_left()))
 	var d_bite := e.position.length()
 	var closer := false
-	var frames := 0
+	frames = 0
 	while e._attack_cd > Enemy.BITE_PAUSE_GATE and frames < 100:
 		await _step(e)
 		frames += 1

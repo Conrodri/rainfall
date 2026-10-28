@@ -40,9 +40,14 @@ const PROJECTILE_SPEED_U := 6.0
 ## Jetons d'attaque (Doom 2016) : au plus SHOOTER_MAX_CHARGING tireurs arment en même temps. Chaque case = fin de
 ## réservation (s, horloge physique) ; rendue au tir ou à l'interruption, expire seule (garde-fou : mort, pool).
 static var _shot_tokens := PackedFloat32Array()
-## Essaim : sur place tant que _attack_cd > BITE_PAUSE_GATE (morsure récente), puis petit recul. Une comparaison
-## de plus dans le chemin chaud du tier 1, aucun état ajouté.
-const BITE_PAUSE_GATE: float = CONTACT_INTERVAL - _BAL.SWARM_BITE_PAUSE_S
+## Essaim : morsure armée (docs : art/briefs/monsters_v2.md §5.1), sans état ajouté, par seuils sur _attack_cd.
+## Armement à _attack_cd <= 0 et dist <= contact + allonge (_attack_cd = CONTACT_INTERVAL, immobile) ; le coup tombe quand
+## _attack_cd franchit BITE_IMPACT_GATE (SWARM_BITE_WINDUP_S plus tard, manqué si le joueur est sorti de l'allonge) ; sur
+## place encore SWARM_BITE_PAUSE_S (jusqu'à BITE_PAUSE_GATE), puis reprise. Au plus une morsure par CONTACT_INTERVAL.
+const BITE_IMPACT_GATE: float = CONTACT_INTERVAL - _BAL.SWARM_BITE_WINDUP_S
+const BITE_PAUSE_GATE: float = BITE_IMPACT_GATE - _BAL.SWARM_BITE_PAUSE_S
+const BITE_REACH_PX: float = _BAL.SWARM_BITE_REACH_U * U
+const BITE_MISS_MARGIN_PX: float = 0.1 * U ## tolérance au moment du coup (le joueur qui recule d'un cheveu est touché)
 const BITE_RECOIL_PX: float = _BAL.SWARM_BITE_RECOIL_U * U
 # Tier 2 variante bondisseur : même auto (projectile / 2 s), sort Charge télégraphiée (10 s)
 const VARIANT_SHOOTER := 0
@@ -136,6 +141,7 @@ var _token_until := 0.0 ## fin de réservation posée par ce monstre (rendue seu
 var _aim_locked := false ## tir armé : visée verrouillée (SHOOTER_AIM_LOCK atteint)
 var _target := Vector2.ZERO
 var _facing := 0.0
+var _face_tick := 0 ## essaim : compteur d'étalement de la mise à jour d'orientation (chemin chaud)
 var _flash_left := 0.0
 var _resolve_flip := false
 var _near_wall := true ## posé par tick() (Director) : faux = aucun mur à portée, resolve() sauté
@@ -425,6 +431,7 @@ func activate(p_tier: int, pos: Vector2, D: float, elite: bool, p_affixes: Array
 	speed_px = Balance.monster_speed(st["speed"], D) * U
 	radius_px = RADIUS_U[tier] * U
 	affixes = p_affixes if elite else ([] as Array[StringName])
+	_face_tick = randi() & 7
 	_attack_cd = randf_range(0.2, 1.0) * (SHOOT_INTERVAL if tier == 2 else (BITE_PAUSE_GATE if tier == 1 else 1.0))
 	_spell_cd = randf_range(3.0, SALVO_CD if tier == 2 else SHOCK_CD)
 	if variant == VARIANT_LEAPER:
@@ -452,7 +459,7 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 		brain = null
 	_boss_sprite_id = EnemyVisual.resolve_boss_id(get_tree() if is_inside_tree() else null, kind, director)
 	is_elite = false
-	max_hp = Balance.boss_hp(kind, D, RunState.stage) * Balance.boss_hp_mult(_boss_sprite_id)
+	max_hp = Balance.boss_hp(kind, D, RunState.stage) * Balance.boss_hp_mult(_boss_sprite_id) * Balance.boss_hp_mode_mult(kind, RunState.mode) # facteur de mode appliqué ICI, une seule fois (pas par Pillar ni TestTools)
 	damage = Balance.boss_damage(kind, D)
 	speed_px = Balance.monster_speed(BOSS_SPEED_U, D) * U
 	radius_px = BOSS_RADIUS_U.get(kind, 1.1) * U
@@ -671,12 +678,39 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 			move1 = (path_dir if path_dir != Vector2.ZERO else to_player / dist) * speed_px * (1.0 + (PACK_SPEED_BONUS if pack_bonus else 0.0))
 			if _slow_left > 0.0:
 				move1 *= 1.0 - _slow_pct
-		if dist <= contact1 and _attack_cd <= 0.0:
-			_attack_cd = CONTACT_INTERVAL
-			_sfx(&"enemy.contact.light")
-			_hit_player(player, damage)
-			if dist > 0.001:
-				_kb -= to_player * (BITE_RECOIL_PX / dist)
+			_face_tick += 1
+			if _face_tick & 7 == 0: # octant du pas (sans atan2), une image sur huit (étalé par monstre) ; set_facing seulement s'il change
+				var ax := absf(move1.x)
+				var ay := absf(move1.y)
+				var oct1 := 0
+				if ay < ax * 0.4142:
+					oct1 = 0 if move1.x > 0.0 else 4
+				elif ax < ay * 0.4142:
+					oct1 = 2 if move1.y > 0.0 else 6
+				elif move1.x > 0.0:
+					oct1 = 1 if move1.y > 0.0 else 7
+				else:
+					oct1 = 3 if move1.y > 0.0 else 5
+				if oct1 != _ev.facing_octant:
+					visual.set_facing(float(oct1) * (TAU / 8.0))
+		var cd1 := _attack_cd
+		if cd1 <= 0.0:
+			if dist <= contact1 + BITE_REACH_PX: # arme la morsure : tête vers le joueur, immobile jusqu'au coup
+				_attack_cd = CONTACT_INTERVAL
+				move1 = Vector2.ZERO
+				visual.set_facing(to_player.angle())
+				visual.set_action_timed(&"attack", _BAL.SWARM_BITE_WINDUP_S)
+				visual.set_charge(1)
+		elif cd1 <= BITE_IMPACT_GATE and cd1 + delta > BITE_PAUSE_GATE: # franchissement d'un seuil (rare)
+			if cd1 + delta > BITE_IMPACT_GATE: # le coup : la distance décide, un essaim repoussé ou dépassé rate
+				visual.set_charge(0)
+				if dist <= contact1 + BITE_REACH_PX + BITE_MISS_MARGIN_PX:
+					_sfx(&"enemy.contact.light")
+					_hit_player(player, damage)
+					if dist > 0.001:
+						_kb -= to_player * (BITE_RECOIL_PX / dist)
+			elif cd1 <= BITE_PAUSE_GATE: # fin de la récupération : reprise de la course
+				visual.set_action(&"run")
 		var p1 := position + (move1 + sep) * delta
 		_resolve_flip = not _resolve_flip
 		if _resolve_flip and _near_wall and nav:
@@ -744,8 +778,9 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 			if _spell_cd <= 0.0 and dist < SHOCK_RADIUS_U * U * 0.85:
 				_spell_cd = SHOCK_CD
 				visual.set_charge(1)
-				visual.set_action(&"cast", true) # pose d'armement (anim cast_<dir>), tenue jusqu'à la fin de RECOVER
-				_start_windup(Windup.SHOCK, SHOCK_WINDUP, position)
+				var shock_wind := maxf(SHOCK_WINDUP, visual.attack_impact_time(&"cast")) # l'impact de l'anim ne tombe jamais avant le coup
+				visual.set_action_timed(&"cast", shock_wind) # anim cast_<dir> calée sur le coup, tenue jusqu'à la fin de RECOVER
+				_start_windup(Windup.SHOCK, shock_wind, position)
 				telegraph.show_circle(position, SHOCK_RADIUS_U * U)
 				_sfx(&"telegraph.warn_heavy.heavy", 0.0, true)
 			elif _attack_cd <= 0.0 and dist < CONE_RANGE_U * U:
@@ -753,8 +788,9 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 				_facing = dir.angle()
 				visual.set_facing(_facing)
 				visual.set_charge(1)
-				visual.set_action(&"attack", true) # coup porté à la fin de l'anim (8 frames à 12 i/s ≈ armement)
-				_start_windup(Windup.CONE, CONE_WINDUP, position)
+				var cone_wind := maxf(CONE_WINDUP, visual.attack_impact_time(&"attack"))
+				visual.set_action_timed(&"attack", cone_wind) # frame d'impact de l'anim = instant du coup
+				_start_windup(Windup.CONE, cone_wind, position)
 				telegraph.show_cone(position, _facing, CONE_RANGE_U * U, CONE_HALF_ANGLE)
 				_sfx(&"telegraph.warn_light.light", -4.0)
 			elif dist > CONE_RANGE_U * U * 0.7:
@@ -798,8 +834,8 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 		var oct := _ev.facing_octant
 		if is_boss or oct < 0 or oct != posmod(roundi(_facing / (TAU / 8.0)), 8):
 			visual.set_facing(_facing)
-	if is_boss:
-		visual.set_action(&"run" if move != Vector2.ZERO else &"idle")
+	if is_boss or _windup == Windup.NONE:
+		visual.set_action(&"run" if move != Vector2.ZERO else &"idle") # idle_<dir> si livré, sinon run (EnemyVisual._play_dir)
 	_move_to(position + (move * slow_mult + sep) * delta)
 
 
@@ -858,7 +894,7 @@ func _begin_shot(dir: Vector2, salvo: bool) -> bool:
 	_facing = dir.angle()
 	_aim_locked = false
 	visual.set_facing(_facing)
-	visual.set_action(&"attack", true) # bondisseur : pas encore de pose (lot Codex MB1) -> repli run, teinte et ligne
+	visual.set_action_timed(&"attack", wind) # frame d'impact = départ du projectile (repli run si l'anim manque)
 	visual.set_charge(1)
 	_start_windup(Windup.SALVO if salvo else Windup.SHOT, wind, position)
 	if salvo:
@@ -928,6 +964,7 @@ func _resolve_windup(player: Node2D, player_pos: Vector2) -> void:
 	match kind:
 		Windup.LEAP:
 			visual.set_charge(0)
+			visual.set_action(&"leap") # boucle pendant la course (repli run si l'anim manque)
 			_dash_dir = Vector2.from_angle(_facing)
 			_dash_left = LEAP_LENGTH_U / LEAP_SPEED_U
 			_dash_hit = false
@@ -979,9 +1016,12 @@ func _dash_step(delta: float, player: Node2D, player_pos: Vector2) -> void:
 	position = p
 	if not _dash_hit and player != null and position.distance_to(player_pos) <= radius_px + PLAYER_RADIUS_PX:
 		_dash_hit = true
+		visual.set_action(&"attack", true) # le coup se voit (le dégât est déjà appliqué au contact)
 		_hit_player(player, damage * LEAP_DMG_MULT)
 	if _dash_left <= 0.0 or blocked:
-		_dash_left = 0.0 # pose de charge tenue pendant la récupération (RECOVER rend la course)
+		_dash_left = 0.0
+		if not _dash_hit:
+			visual.set_action(&"attack", true) # coup dans le vide en fin de course, tenu pendant la récupération
 		_start_windup(Windup.RECOVER, _BAL.LEAPER_DASH_RECOVERY_S, position)
 
 

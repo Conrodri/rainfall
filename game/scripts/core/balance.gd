@@ -100,6 +100,8 @@ const LEAPER_SHOT_RECOVERY_S := 0.3
 const LEAPER_DASH_RECOVERY_S := 0.5 ## immobile après sa course : fenêtre de punition
 const BRUTE_RECOVERY_S := 0.4 ## immobile après le cône ou l'onde de choc
 const SWARM_BITE_PAUSE_S := 0.25 ## essaim : sur place après chaque morsure (contact passif, sans armement)
+const SWARM_BITE_WINDUP_S := 0.35 ## essaim : armement de la morsure (tête en arrière) avant le coup ; au plus une morsure par CONTACT_INTERVAL
+const SWARM_BITE_REACH_U := 0.25 ## essaim : allonge au-delà du contact ; la morsure s'arme à cette distance et manque si le joueur en sort
 const SWARM_BITE_RECOIL_U := 0.25 ## petit recul après la morsure (lisibilité du coup, évite de coller le joueur)
 
 # Boss
@@ -117,8 +119,8 @@ const BOSS_STAGE_K := 1.20
 const FINAL_BOSS_HP_MULT := 1.55
 ## PV des boss d'étage, des raids et du boss final selon le mode (mini-boss non concernés). Difficile 0,85 : sans lui,
 ## les boss d'étage 2-4 du Difficile duraient 101-107 s, au-delà de l'enrage (90 s) ; avec, ≈ 86-91 s (audit §6).
-## Le Difficile reste plus dangereux (dégâts au niveau ambiant) sans devenir une guerre d'usure. Appliqué par Pillar
-## à l'apparition du boss (après BOSS_HP_MULT et FINAL_BOSS_HP_MULT) et par TestTools.
+## Le Difficile reste plus dangereux (dégâts au niveau ambiant) sans devenir une guerre d'usure. Appliqué par
+## Enemy.activate_boss (une seule fois ; Pillar et TestTools ne le réappliquent pas).
 const BOSS_HP_MODE_MULT := {&"facile": 1.0, &"moyen": 1.0, &"difficile": 0.85}
 ## Durée de charge du gros pilier (s, n'avance que joueur dans la zone ; était 90 s codé dans pillar.gd). Le pilier
 ## n'est terminé qu'avec la charge pleine ET le boss mort : avec des boss d'étage de ≈ 70 s, c'est le boss qui fixe la fin.
