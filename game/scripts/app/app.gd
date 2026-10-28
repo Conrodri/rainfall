@@ -14,6 +14,8 @@ const CREDITS_SCENE := preload("res://scenes/menu/credits.tscn")
 const NEW_RUN_SCENE := preload("res://scenes/menu/new_run.tscn")
 const PROGRESS_SCENE := preload("res://scenes/menu/progress.tscn")
 const SETTINGS_SCENE := preload("res://scenes/menu/settings.tscn")
+const ACHIEVEMENTS_SCENE := preload("res://scenes/menu/achievements.tscn")
+const DAILY_SCENE := preload("res://scenes/menu/daily.tscn")
 const BG_SCENE := preload("res://scenes/menu/menu_background.tscn")
 const UI_LAYER := 10
 const FADE_S := 0.18
@@ -30,6 +32,7 @@ var fade: FadeLayer
 var last_config: Dictionary = {} ## dernière config de run, pour « Rejouer »
 var busy := false
 
+var meta: MetaTracker ## succès, défi du jour, notifications (scripts/meta/) : un seul exemplaire pour toute la session
 var _wrap: Node = null ## conteneur d'un écran Control (fond + CanvasLayer)
 var _queued: Array = []
 
@@ -38,6 +41,9 @@ func _ready() -> void:
 	fade = FadeLayer.new()
 	fade.name = "FadeLayer"
 	add_child(fade)
+	meta = MetaTracker.new()
+	meta.name = "MetaTracker"
+	add_child(meta)
 	await show(&"title")
 	if TestMode.requested_by_arg(): # `-- --test-mode` : démarre directement dans le mode test (À RETIRER AVANT LA SORTIE)
 		await start_test_mode()
@@ -45,7 +51,7 @@ func _ready() -> void:
 
 # --- API ---------------------------------------------------------------------
 
-## Affiche un écran de menu : &"title" | &"new_run" | &"progress" | &"settings" | &"credits".
+## Affiche un écran de menu : &"title" | &"new_run" | &"progress" | &"settings" | &"credits" | &"achievements" | &"daily".
 func show(screen: StringName, toast := "") -> void:
 	await _transition(func() -> void: _build_screen(screen, toast))
 
@@ -136,6 +142,8 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.progress_requested.connect(func() -> void: show(&"progress"))
 			t.settings_requested.connect(func() -> void: show(&"settings"))
 			t.credits_requested.connect(func() -> void: show(&"credits"))
+			t.achievements_requested.connect(func() -> void: show(&"achievements"))
+			t.daily_requested.connect(func() -> void: show(&"daily"))
 			t.test_mode_requested.connect(start_test_mode) # À RETIRER OU MASQUER AVANT LA SORTIE
 			t.quit_requested.connect(_on_quit)
 			add_child(t)
@@ -156,6 +164,15 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			var p := PROGRESS_SCENE.instantiate() as ProgressScreen
 			p.back_requested.connect(return_to_title)
 			current = _wrap_control(p)
+		&"achievements":
+			var ac := ACHIEVEMENTS_SCENE.instantiate() as AchievementsScreen
+			ac.back_requested.connect(return_to_title)
+			current = _wrap_control(ac)
+		&"daily":
+			var dl := DAILY_SCENE.instantiate() as DailyScreen
+			dl.start_requested.connect(start_run) # config du jour : personnage, Moyen, graine imposée
+			dl.back_requested.connect(return_to_title)
+			current = _wrap_control(dl)
 		&"settings":
 			var s := SETTINGS_SCENE.instantiate() as SettingsScreen
 			s.back_requested.connect(return_to_title)
@@ -190,7 +207,7 @@ func _build_main(config: Dictionary, resume: Dictionary) -> void:
 	current_name = &"game"
 	var m: Node = (load(MAIN_SCENE) as PackedScene).instantiate()
 	m.set(&"run_mode", StringName(str(config.get("mode", "moyen"))))
-	m.set(&"run_seed", 0)
+	m.set(&"run_seed", int(config.get("seed", 0))) # 0 = tirage normal ; défi du jour : graine de la date (DailyChallenge)
 	m.set(&"resume_data", resume)
 	m.set(&"save_path", save_path)
 	m.set(&"saves_in_headless", saves_in_headless)

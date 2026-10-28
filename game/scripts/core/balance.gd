@@ -4,6 +4,10 @@ extends Node
 
 const UNIT_PX := 64.0 # 1 u = taille du joueur
 
+# Foudre en chaîne (Éclair en bouteille, Ukulele RoR2) : rayon de saut entre deux cibles.
+const CHAIN_LIGHTNING_RANGE_U := 5.0
+const CHAIN_LIGHTNING_RANGE_STACK_U := 0.5 ## par exemplaire au-delà du premier
+
 # Menu pause (docs/ux/Audit_Menus.md M15) : compte à rebours de reprise selon le danger autour du joueur.
 const RESUME_COUNTDOWN_DANGER_S := 3.0 ## danger proche : monstre ou projectile ennemi à portée, ou boss actif
 const RESUME_COUNTDOWN_CALM_S := 1.0 ## sinon
@@ -806,3 +810,19 @@ const PICKUP_EXPIRE_ALPHA_MIN := 0.35
 ## clair (sel, os) il grille : le gain est plafonné pour que la luminance moyenne du sprite × gain reste <= cette valeur
 ## (data/boss_albedo_lum.json, art/tools/measure_emission_mass.py). Les sprites sombres gardent leur gain complet.
 const MINI_BODY_MEAN_MAX := 0.65
+
+
+# --- Défi du jour (méta hors ligne, scripts/meta/daily_challenge.gd) ---
+## Récompense modeste, une seule fois par jour (le premier essai compté) : base + palier de série (plafonné) + bonus de victoire.
+## Une run normale rapporte ~15-45 rubis : le défi du jour reste un petit bonus, pas une ferme à rubis.
+const DAILY_RUBIES_BASE := 10
+const DAILY_RUBIES_STREAK_STEP := 1 ## par jour de série consécutif au-delà du premier
+const DAILY_RUBIES_STREAK_CAP := 7 ## jours de série pris en compte
+const DAILY_RUBIES_WIN := 10
+## Un abandon avant ce temps actif (s) ne compte pas comme un essai du défi du jour.
+const DAILY_MIN_ABANDON_S := 60.0
+
+
+func daily_rubies(streak: int, victory: bool) -> int:
+	var s := clampi(streak, 1, DAILY_RUBIES_STREAK_CAP)
+	return DAILY_RUBIES_BASE + DAILY_RUBIES_STREAK_STEP * (s - 1) + (DAILY_RUBIES_WIN if victory else 0)

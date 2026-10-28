@@ -13,7 +13,9 @@ signal changed
 
 const PATH := "user://profile.json"
 ## Version 2 (26/10) : + unlocked_skins, selected_skin, best_runs. Un fichier v1 se charge tel quel (champs absents = défauts).
-const VERSION := 2
+## Version 3 (28/10) : + achievements, daily, boss_kills, tutorial_replay (méta hors ligne, scripts/meta/). Un fichier v1/v2 se
+## charge tel quel : les champs absents prennent leur défaut, rien n'est perdu.
+const VERSION := 3
 const DEFAULT_MODES: Array = [&"facile", &"moyen"]
 const DEFAULT_CHARACTERS: Array = [&"ardent"]
 ## Mode débloqué par une victoire dans un mode donné.
@@ -62,6 +64,15 @@ var selected_skin := {}
 ## Meilleure run (victoire la plus courte) par personnage et par mode :
 ## id perso -> mode -> {time_s, date (ISO, locale), level, kills, items {id: stacks}, variants {slot: id}, stage}.
 var best_runs := {}
+## Succès locaux (data/achievements.json) : id -> date ISO du déblocage (scripts/meta/achievements.gd).
+var achievements := {}
+## Boss d'étage tués au total : id du boss -> nombre (succès « tuer chaque boss »).
+var boss_kills := {}
+## Défi du jour (scripts/meta/daily_challenge.gd) : {streak, best_streak, last_key (AAAAMMJJ du dernier jour compté),
+## completed (jours comptés au total), wins, days: {"AAAAMMJJ": {tries, counted, best: {...}}}}. {} = jamais joué.
+var daily := {}
+## « Revoir le didacticiel » : vrai = les invites de 1re run reviennent à la prochaine run (OnboardingHints).
+var tutorial_replay := false
 ## TEMPORAIRE (test) : vrai = toutes les variantes passent pour débloquées (lu une fois au démarrage, injectable).
 var unlock_all_variants := _detect_unlock_all_variants()
 ## Roster lu par le moteur de déblocage des variantes (null = data/characters.json ; tests : liste injectée).
@@ -100,6 +111,10 @@ func reset() -> void:
 	last_floor_boss = {}
 	seen_hints = []
 	loadout = {}
+	achievements = {}
+	boss_kills = {}
+	daily = {}
+	tutorial_replay = false
 	_loading = false
 
 
@@ -168,8 +183,45 @@ func _apply_dict(d: Dictionary) -> void:
 		for cid in sk:
 			selected_skin[str(cid)] = str(sk[cid])
 	best_runs = _clean_best_runs(d.get("best_runs", {}))
+	achievements = {}
+	var ac: Variant = d.get("achievements", {})
+	if ac is Dictionary:
+		for k in ac:
+			achievements[str(k)] = str(ac[k])
+	boss_kills = {}
+	var bk: Variant = d.get("boss_kills", {})
+	if bk is Dictionary:
+		for k in bk:
+			if bk[k] is float or bk[k] is int:
+				boss_kills[str(k)] = int(bk[k])
+	daily = _clean_daily(d.get("daily", {}))
+	tutorial_replay = bool(d.get("tutorial_replay", false))
 	_loading = false
 	changed.emit()
+
+
+## Normalise `daily` lu du disque (types sûrs ; illisible = {}).
+static func _clean_daily(src: Variant) -> Dictionary:
+	if not (src is Dictionary) or (src as Dictionary).is_empty():
+		return {}
+	var out := {
+		"streak": int(src.get("streak", 0)), "best_streak": int(src.get("best_streak", 0)),
+		"last_key": int(src.get("last_key", 0)), "completed": int(src.get("completed", 0)), "wins": int(src.get("wins", 0)),
+		"days": {},
+	}
+	var days: Variant = src.get("days", {})
+	if days is Dictionary:
+		for k in days:
+			var e: Variant = days[k]
+			if not (e is Dictionary):
+				continue
+			var best := {}
+			if e.get("best") is Dictionary:
+				var b: Dictionary = e["best"]
+				best = {"victory": bool(b.get("victory", false)), "stage": int(b.get("stage", 0)), "kills": int(b.get("kills", 0)),
+					"time_s": float(b.get("time_s", 0.0)), "level": int(b.get("level", 0)), "character": str(b.get("character", ""))}
+			out["days"][str(k)] = {"tries": int(e.get("tries", 0)), "counted": bool(e.get("counted", false)), "best": best}
+	return out
 
 
 ## Normalise `best_runs` lu du disque (types sûrs, entrées illisibles ignorées).
@@ -223,6 +275,7 @@ func to_dict() -> Dictionary:
 		"last_mode": String(last_mode), "last_character": String(last_character),
 		"stats": stats, "objectives": objectives, "last_floor_boss": last_floor_boss,
 		"seen_hints": seen_hints, "loadout": loadout, "selected_skin": selected_skin, "best_runs": best_runs,
+		"achievements": achievements, "boss_kills": boss_kills, "daily": daily, "tutorial_replay": tutorial_replay,
 	}
 
 
@@ -605,3 +658,46 @@ func mark_hint_seen(id: String) -> void:
 		return
 	seen_hints.append(id)
 	_touch()
+
+
+# --- Méta hors ligne : succès, boss tués, défi du jour, didacticiel ----------------------
+
+func is_achievement_unlocked(id: String) -> bool:
+	return achievements.has(id)
+
+
+## Débloque un succès (date locale ISO). true si c'est nouveau. Rien n'est écrit en mode test (bac à sable).
+func unlock_achievement(id: String) -> bool:
+	if id == "" or achievements.has(id):
+		return false
+	achievements[id] = Time.get_datetime_string_from_system(false, true)
+	_touch()
+	return true
+
+
+## Un boss d'étage de plus tué (id = Enemy.boss_id()).
+func add_boss_kill(boss_id: String) -> void:
+	if boss_id == "":
+		return
+	boss_kills[boss_id] = int(boss_kills.get(boss_id, 0)) + 1
+	_touch()
+
+
+## Remplace l'état du défi du jour (DailyChallenge) et écrit.
+func set_daily(d: Dictionary) -> void:
+	daily = d
+	_touch()
+
+
+## « Revoir le didacticiel » : oublie les invites vues et les relance à la prochaine run, même après la 1re.
+func request_tutorial_replay() -> void:
+	seen_hints = []
+	tutorial_replay = true
+	_touch()
+
+
+## Consommé quand la run du didacticiel est lancée.
+func clear_tutorial_replay() -> void:
+	if tutorial_replay:
+		tutorial_replay = false
+		_touch()

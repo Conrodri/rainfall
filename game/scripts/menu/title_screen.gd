@@ -13,6 +13,9 @@ signal new_run_requested
 signal progress_requested
 signal settings_requested
 signal credits_requested
+## Méta hors ligne (scripts/meta/) : écran du défi du jour (graine = date locale) et écran des succès.
+signal daily_requested
+signal achievements_requested
 ## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : arène d'invocation, triches ; rien n'est écrit au profil.
 signal test_mode_requested
 signal quit_requested
@@ -32,6 +35,7 @@ const GOLD := Color("#FFE9A8")
 const EMBER := Color("#FFB347")
 const MODE_NAMES := {"facile": "Facile", "moyen": "Moyen", "difficile": "Difficile"}
 const QUICK_HOLD_S := 0.6 ## appui long sur « Jouer » = relancer le dernier personnage (E-08 : 0,6 s)
+const PAIR_FONT := 34 ## libellé des boutons côte à côte (302 px de large)
 const VERSION_FONT := 22
 const VERSION_ALPHA := 0.6
 const PHOTO_TITLE := "Avertissement de photosensibilité"
@@ -58,6 +62,8 @@ var new_run_button: Button
 var progress_button: Button
 var settings_button: Button
 var credits_button: Button
+var daily_button: Button
+var achievements_button: Button
 var quit_button: Button
 var ruby_label: Label
 var toast_label: Label
@@ -70,6 +76,7 @@ var _logo: Control
 var _version: Label
 var _ruby_box: HBoxContainer
 var _buttons: Array[Button] = []
+var _rows: Array = [] ## lignes de la colonne : Array[Array[Button]] (1 bouton, ou 2 côte à côte)
 var _toast_tween: Tween
 var _dialog_open := false
 var quick_config: Dictionary = {} ## config de relance (vide : pas de raccourci)
@@ -269,6 +276,7 @@ func _rebuild_column() -> void:
 		_column.remove_child(c)
 		c.queue_free()
 	_buttons.clear()
+	_rows.clear()
 	new_run_button = null
 	quit_button = null
 
@@ -285,15 +293,22 @@ func _rebuild_column() -> void:
 	main_button.button_up.connect(func() -> void: _hold_t = -1.0)
 	_column.add_child(main_button)
 	_buttons.append(main_button)
+	_rows.append([main_button])
 
 	if has_save:
 		new_run_button = _add_sub("Nouvelle run", _on_new_run_pressed)
 		new_run_button.name = "NewRun"
-	progress_button = _add_sub("Progression", func(): progress_requested.emit())
+	daily_button = _add_sub("Défi du jour", _on_daily_pressed)
+	daily_button.name = "Daily"
+	var pr := _add_pair("Progression", func(): progress_requested.emit(), "Succès", func(): achievements_requested.emit())
+	progress_button = pr[0]
 	progress_button.name = "Progress"
-	settings_button = _add_sub("Réglages", func(): settings_requested.emit())
+	achievements_button = pr[1]
+	achievements_button.name = "Achievements"
+	var sc := _add_pair("Réglages", func(): settings_requested.emit(), "Crédits", func(): credits_requested.emit())
+	settings_button = sc[0]
 	settings_button.name = "Settings"
-	credits_button = _add_sub("Crédits", func(): credits_requested.emit())
+	credits_button = sc[1]
 	credits_button.name = "Credits"
 	var test_button := _add_sub("Mode test", func(): test_mode_requested.emit()) # À RETIRER OU MASQUER AVANT LA SORTIE
 	test_button.name = "TestMode"
@@ -301,15 +316,20 @@ func _rebuild_column() -> void:
 		quit_button = _add_sub("Quitter", _on_quit_pressed)
 		quit_button.name = "Quit"
 
-	# Navigation explicite en boucle dans la colonne (pas de saut vers un bouton masqué).
-	for i in _buttons.size():
-		var b := _buttons[i]
-		var up: Control = _buttons[(i - 1 + _buttons.size()) % _buttons.size()]
-		var down: Control = _buttons[(i + 1) % _buttons.size()]
-		b.focus_neighbor_top = b.get_path_to(up)
-		b.focus_neighbor_bottom = b.get_path_to(down)
-		b.focus_neighbor_left = b.get_path_to(b)
-		b.focus_neighbor_right = b.get_path_to(b)
+	# Navigation explicite en boucle dans la colonne (pas de saut vers un bouton masqué) ; une ligne à 2 boutons
+	# garde sa colonne vers le haut / le bas et passe de l'un à l'autre à gauche / droite.
+	for ri in _rows.size():
+		var row: Array = _rows[ri]
+		var up_row: Array = _rows[(ri - 1 + _rows.size()) % _rows.size()]
+		var down_row: Array = _rows[(ri + 1) % _rows.size()]
+		for ci in row.size():
+			var b: Button = row[ci]
+			var up: Control = up_row[mini(ci, up_row.size() - 1)]
+			var down: Control = down_row[mini(ci, down_row.size() - 1)]
+			b.focus_neighbor_top = b.get_path_to(up)
+			b.focus_neighbor_bottom = b.get_path_to(down)
+			b.focus_neighbor_left = b.get_path_to(row[ci - 1] if ci > 0 else b)
+			b.focus_neighbor_right = b.get_path_to(row[ci + 1] if ci + 1 < row.size() else b)
 	UiTheme.hook_sounds(root)
 
 
@@ -318,7 +338,25 @@ func _add_sub(txt: String, cb: Callable) -> MenuBtn:
 	b.pressed.connect(cb)
 	_column.add_child(b)
 	_buttons.append(b)
+	_rows.append([b])
 	return b
+
+
+## Deux boutons secondaires côte à côte sur une même ligne (la colonne garde sa hauteur).
+func _add_pair(txt_a: String, cb_a: Callable, txt_b: String, cb_b: Callable) -> Array:
+	var half := (SUB_SIZE.x - GAP) * 0.5
+	var out: Array = []
+	for pair in [[txt_a, cb_a], [txt_b, cb_b]]:
+		var b := _make_button(pair[0], false)
+		b.custom_minimum_size = Vector2(half, SUB_SIZE.y)
+		b.size = b.custom_minimum_size
+		b.add_theme_font_size_override(&"font_size", PAIR_FONT)
+		b.pressed.connect(pair[1])
+		_column.add_child(b)
+		_buttons.append(b)
+		out.append(b)
+	_rows.append(out)
+	return out
 
 
 func _make_button(txt: String, primary: bool) -> MenuBtn:
@@ -366,16 +404,19 @@ func _layout() -> void:
 	_version.position = Vector2(x + 8.0, _logo.position.y + _logo.size.y + 4.0)
 	_version.size = Vector2(640, 34)
 	# Colonne alignée en bas (6 boutons ne tiennent pas dans 1080 aux pas du doc : 96 de haut, 16 d'écart).
-	var total := GAP * (_buttons.size() - 1)
-	for b in _buttons:
-		total += b.custom_minimum_size.y
+	var total := GAP * (_rows.size() - 1)
+	for row: Array in _rows:
+		total += (row[0] as Button).custom_minimum_size.y
 	var y := (h - bottom) - total
 	_column.position = Vector2(x, 0)
 	_column.size = Vector2(MAIN_SIZE.x, h)
-	for b in _buttons:
-		b.position = Vector2(0, y)
-		b.size = b.custom_minimum_size
-		y += b.size.y + GAP
+	for row: Array in _rows:
+		var bx := 0.0
+		for b: Button in row:
+			b.position = Vector2(bx, y)
+			b.size = b.custom_minimum_size
+			bx += b.size.x + GAP
+		y += (row[0] as Button).custom_minimum_size.y + GAP
 	# Haut-droite : rubis (l'icône Réglages a été retirée, le bouton existe dans la colonne).
 	_ruby_box.reset_size()
 	_ruby_box.position = Vector2(w - right - _ruby_box.size.x, top + 16.0)
@@ -449,6 +490,15 @@ func _on_new_run_pressed() -> void:
 	var line := "%s sera perdue (les rubis déjà gagnés sont conservés)." % _short_summary()
 	if await _confirm("Remplacer la run en cours ?", line, "Annuler", "Remplacer"):
 		new_run_requested.emit()
+
+
+## Défi du jour : s'il y a une run en cours, la même confirmation que « Nouvelle run » (lancer le défi la remplace).
+func _on_daily_pressed() -> void:
+	if has_save:
+		var line := "%s sera perdue si vous lancez le défi du jour (les rubis déjà gagnés sont conservés)." % _short_summary()
+		if not await _confirm("Ouvrir le défi du jour ?", line, "Annuler", "Continuer"):
+			return
+	daily_requested.emit()
 
 
 func _on_quit_pressed() -> void:

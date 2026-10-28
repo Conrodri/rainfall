@@ -110,10 +110,16 @@ static func entry_for_stage(plan: Array, stage: int, run_seed: int, memory: Vari
 	return _draw(f, stage, loop, base_idx, run_seed, _memory(memory))
 
 
+## Vrai pendant un défi du jour (posé par scripts/meta/meta_tracker.gd) : la mémoire des boss du profil est ignorée.
+static var ignore_memory := false
+
+
 ## Mémoire des boss : celle passée, sinon celle de l'autoload Profile (absent : aucune).
 static func _memory(memory: Variant) -> Dictionary:
 	if memory is Dictionary:
 		return memory
+	if ignore_memory:
+		return {} # défi du jour : tirage identique pour tous, sans la mémoire des boss du profil
 	var tree := Engine.get_main_loop() as SceneTree
 	var prof: Node = tree.root.get_node_or_null(^"Profile") if tree != null and tree.root != null else null
 	if prof != null and prof.get(&"last_floor_boss") is Dictionary:
@@ -159,6 +165,30 @@ static func forced_boss(floor_bosses: Array) -> String:
 	return ""
 
 
+## Variante de carte imposée à tous les étages : "A", "B" ou "" (tirage 50/50 seedé). Réglée par les tests et le mode
+## test (`FloorPlan.force_variant = "B"`), ou en ligne de commande : `godot ... -- --force-variant=B`.
+static var force_variant := ""
+
+
+static func forced_variant() -> String:
+	if force_variant != "":
+		return force_variant
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--force-variant="):
+			var v := arg.trim_prefix("--force-variant=").to_upper()
+			return v if v in ["A", "B"] else ""
+	return ""
+
+
+## Test (`godot ... -- --force-map=cite_fonderie_canal`) : impose cette carte si elle fait partie de celles de l'étage, sinon "".
+static func forced_map(maps: Array) -> String:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--force-map="):
+			var id := arg.trim_prefix("--force-map=")
+			return id if id in maps else ""
+	return ""
+
+
 static func _draw(floor_n: int, stage: int, loop: int, base_idx: int, run_seed: int, memory: Dictionary = {}) -> Dictionary:
 	var e := floor_entry(floor_n)
 	var rng := RandomNumberGenerator.new()
@@ -170,6 +200,12 @@ static func _draw(floor_n: int, stage: int, loop: int, base_idx: int, run_seed: 
 		var idx := rng.randi_range(0, maps.size() - 1)
 		if loop > 0 and base_idx >= 0:
 			idx = (base_idx + loop) % maps.size() # sans fin : l'autre variante si elle existe
+		var fv := forced_variant()
+		if fv != "":
+			idx = clampi("AB".find(fv), 0, maps.size() - 1) # test / mode test : variante imposée
+		var fm := forced_map(maps)
+		if fm != "":
+			idx = maps.find(fm) # test : `-- --force-map=<id>`
 		map_id = maps[idx]
 		variant = "AB"[idx] if idx < 2 and maps.size() > 1 else ""
 	var bosses: Array = []

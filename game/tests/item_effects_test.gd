@@ -763,6 +763,52 @@ func _test_procs() -> void:
 	var struck := chain.filter(func(x): return x.taken.size() > 0).size()
 	_check("éclair en bouteille : foudre sur les voisins (%d touchés)" % struck, struck >= 3)
 	_clear_fakes()
+	await _test_chain_lightning()
+
+
+## Foudre en chaîne (Ukulele RoR2) : cibles 3 / 5 / 7, rebond de proche en proche, jamais deux fois, 80 %, portée.
+func _test_chain_lightning() -> void:
+	print("Éclair en bouteille : chaîne")
+	for n in [1, 2, 3]:
+		_give({"eclair_en_bouteille": n})
+		var data: Dictionary = _player.procs[0]["data"]
+		var want: int = 3 + 2 * (int(n) - 1)
+		_check("chaîne x%d : %d cibles prévues" % [n, want], int(data.get("targets", 0)) == want)
+		var v := _fake(Vector2(2.0 * U, 0.0))
+		var line: Array = []
+		for i in 12: # ligne courbe, pas de 3 u (< portée 5 u), l'ordre de création est mélangé
+			var a := float(i) * 0.35
+			line.append(_fake(Vector2((5.0 + 3.0 * i * cos(a * 0.4)) * U, 3.0 * i * sin(a * 0.4) * U)))
+		line.shuffle()
+		var reach: float = (Balance.CHAIN_LIGHTNING_RANGE_U + Balance.CHAIN_LIGHTNING_RANGE_STACK_U * float(int(n) - 1)) * U
+		var ch: Array = _player.spells.chain_targets(v, want, reach)
+		_check("chaîne x%d : %d cibles prises" % [n, want], ch.size() == want)
+		var ok := true
+		var prev: Node2D = v
+		var seen := {}
+		for e in ch:
+			if e.global_position.distance_to(prev.global_position) > reach + 0.01 or seen.has(e) or e == v:
+				ok = false
+			seen[e] = true
+			prev = e
+		_check("chaîne x%d : chaque cible à ≤ portée de la précédente, jamais deux fois" % n, ok)
+		_player.spells._lightning(v, 100.0, data)
+		var hits := 0
+		var dmg_ok := true
+		for e in line:
+			if e.taken.size() > 0:
+				hits += 1
+				if e.taken.size() != 1 or not _near(e.taken[0], 80.0):
+					dmg_ok = false
+		_check("chaîne x%d : %d touchés, 80 %% du coup, un seul coup chacun (pas de re-proc)" % [n, want], hits == want and dmg_ok and v.taken.is_empty())
+		_clear_fakes()
+	# portée : 5,2 u d'écart = hors de portée à 1 exemplaire, atteint à 2 (5,5 u)
+	_give({"eclair_en_bouteille": 1})
+	var v1 := _fake(Vector2.ZERO)
+	_fake(Vector2(5.2 * U, 0.0))
+	_check("portée x1 : 5,2 u hors de portée", _player.spells.chain_targets(v1, 3, 5.0 * U).is_empty())
+	_check("portée x2 : 5,2 u atteint", _player.spells.chain_targets(v1, 3, 5.5 * U).size() == 1)
+	_clear_fakes()
 
 
 # --- Sauvegarde ----------------------------------------------------------------------------------

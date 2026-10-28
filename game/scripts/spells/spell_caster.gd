@@ -5,7 +5,6 @@ extends Node
 
 const PROJECTILE_SCENE := preload("res://scenes/spells/projectile.tscn")
 const ZoneEffect := preload("res://scripts/spells/zone_effect.gd")
-const LIGHTNING_RANGE_U := 5.0
 const LOW_HP_THRESHOLD := 0.35
 
 ## Option d'accessibilité : les slots 2-4 se lancent seuls quand un ennemi est à portée de déclenchement.
@@ -678,16 +677,55 @@ func nearest_enemies(origin: Vector2, range_px: float, count: int, exclude: Node
 	return cands.slice(0, count)
 
 
-## Foudre (Ukulele) : N autres cibles proches de la victime, à damage_fraction du coup (pas de proc en chaîne).
+## Foudre en chaîne (Ukulele RoR2) : `targets` cibles (ItemStats y a déjà ajouté targets_stack × (n-1)) qui se
+## suivent de proche en proche : chacune est le monstre pas encore touché le plus proche de la PRÉCÉDENTE, dans le
+## rayon de saut (CHAIN_LIGHTNING_RANGE_U + _STACK_U × (n-1)). damage_fraction du coup à chacune, jamais deux fois le
+## même, et les coups de foudre passent par take_damage direct : aucun proc en chaîne. Arcs : ChainLightningFx.
 func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 	var frac := float(data.get("damage_fraction", 0.8))
 	var o := origin as Node2D
-	var targets := nearest_enemies(o.global_position, LIGHTNING_RANGE_U * Balance.UNIT_PX, int(data.get("targets", 3)), origin)
-	if not targets.is_empty():
-		Audio.play(&"lightning.chain.medium", o.global_position)
-		LightRig.flash(o.global_position, &"spell_lightning", 0.15)
-	for e in targets:
-		if e is Enemy: # coup direct venu de la victime d'origine (recul à l'opposé)
-			e.take_damage(hit * frac, false, &"lightning", {"source_pos": o.global_position})
+	var n: int = maxi(1, RunState.stacks(&"eclair_en_bouteille"))
+	var reach := (Balance.CHAIN_LIGHTNING_RANGE_U + Balance.CHAIN_LIGHTNING_RANGE_STACK_U * float(n - 1)) * Balance.UNIT_PX
+	var chain := chain_targets(o, int(data.get("targets", 3)), reach)
+	if chain.is_empty():
+		return
+	Audio.play(&"lightning.chain.medium", o.global_position)
+	if Quality.flashes_level > 0:
+		LightRig.flash(o.global_position, &"spell_lightning", 0.15 if Quality.flashes_level == 2 else 0.06)
+	var pts: Array = [o.global_position]
+	var prev: Node2D = o
+	for e in chain:
+		if e is Enemy: # coup venu de la cible précédente (recul à l'opposé)
+			e.take_damage(hit * frac, false, &"lightning", {"source_pos": prev.global_position})
 		else:
 			e.take_damage(hit * frac, false, &"lightning")
+		pts.append((e as Node2D).global_position)
+		prev = e
+	ChainLightningFx.chain(pts, player.get_parent())
+
+
+## Cibles de la chaîne depuis `start` : jusqu'à `count` monstres, chacun le plus proche (non encore pris) du précédent
+## et à ≤ reach_px de lui. `start` est exclu.
+func chain_targets(start: Node2D, count: int, reach_px: float) -> Array:
+	var pool: Array = []
+	for e in player.get_tree().get_nodes_in_group("enemies"):
+		if e != start and e is Node2D and is_instance_valid(e) and e.has_method("take_damage"):
+			pool.append(e)
+	var out: Array = []
+	var cur: Vector2 = start.global_position
+	var r2 := reach_px * reach_px
+	while out.size() < count and not pool.is_empty():
+		var best := -1
+		var best_d := r2
+		for i in pool.size():
+			var d: float = (pool[i] as Node2D).global_position.distance_squared_to(cur)
+			if d <= best_d:
+				best_d = d
+				best = i
+		if best < 0:
+			break
+		var pick: Node2D = pool[best]
+		out.append(pick)
+		pool.remove_at(best)
+		cur = pick.global_position
+	return out

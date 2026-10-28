@@ -7,9 +7,13 @@ extends CanvasLayer
 ## un carton d'étage ou l'aide des commandes. Fondu simple, aucune pulsation (« Flashs réduits »).
 ## Actif seulement si Profile.stats.runs == 0 et le réglage « Astuces de jeu » (gameplay/hints, défaut vrai).
 ## Ligne détail : astuce de data/tips.json (choisie par mot-clé).
+## Didacticiel étendu (28/10/2026) : + "gold" (1er kill, disparaît au 1er ramassage d'or), "aim" (sorts 2-4 : curseur /
+## stick droit / auto mobile, disparaît au 1er lancer), "charge" (gros pilier activé : rester dans le cercle, même pendant
+## le combat de boss). « Revoir le didacticiel » : `request_replay()` (Réglages) relance toute la séquence à la prochaine run,
+## même après la 1re (Profile.tutorial_replay, consommé au branchement).
 ## Branchement : Main._build -> `preload(...).attach(self, hud)` (null si inactif).
 
-const SEQUENCE: Array[String] = ["move", "auto_fire", "dodge", "interact", "pillar", "teleporter"]
+const SEQUENCE: Array[String] = ["move", "auto_fire", "gold", "aim", "dodge", "interact", "pillar", "charge", "teleporter"]
 const LAYER := 11 ## au-dessus du HUD (10), sous la pause (100)
 const NODE_NAME := "OnboardingHints"
 const TIPS_PATH := "res://data/tips.json"
@@ -18,6 +22,8 @@ const SETTING_KEY := "hints"
 
 const MAX_S := 6.0 ## durée max d'une invite
 const MOVE_DONE_U := 2.0
+const AIM_AFTER_S := 30.0 ## temps actif avant l'invite de visée des sorts 2-4
+const CHARGE_DONE_RATIO := 0.03 ## la charge a démarré : l'invite « charge » a fait son travail
 const DODGE_FALLBACK_S := 25.0 ## temps actif avant l'invite de roulade sans dégât subi
 const INTERACT_U := 3.0
 const PILLAR_U := 6.0
@@ -37,7 +43,7 @@ const TEXT := Color("#F2EEE6")
 const DETAIL := Color("#C9C2B6")
 const DETAIL_KEYWORDS := {
 	"auto_fire": "sort 1", "dodge": "roulade", "interact": "capsules",
-	"pillar": "petits piliers", "teleporter": "téléporteur",
+	"pillar": "petits piliers", "teleporter": "téléporteur", "gold": "or",
 }
 
 var hud: Node = null
@@ -60,6 +66,8 @@ var _tips: Array = []
 
 ## Invites actives pour ce profil et ces réglages.
 static func should_run() -> bool:
+	if Profile.tutorial_replay:
+		return true # « Revoir le didacticiel » : passe outre le réglage et le nombre de runs
 	if not bool(GameSettings.get_value(SETTING_SECTION, SETTING_KEY, true)):
 		return false
 	return int(Profile.stats.get("runs", 0)) == 0
@@ -73,7 +81,14 @@ static func attach(parent: Node, hud_node: Node) -> CanvasLayer:
 	n.name = NODE_NAME
 	n.hud = hud_node
 	parent.add_child(n)
+	if Profile.tutorial_replay:
+		Profile.clear_tutorial_replay() # une seule run de rejeu ; seen_hints se remplit de nouveau
 	return n
+
+
+## « Revoir le didacticiel » (bouton des Réglages) : oublie les invites vues, relance la séquence à la prochaine run.
+static func request_replay() -> void:
+	Profile.request_tutorial_replay()
 
 
 func _init() -> void:
@@ -120,13 +135,18 @@ func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.player_damaged.connect(_on_player_damaged)
 	Events.floor_cleared.connect(_on_floor_cleared)
+	Events.pickup_collected.connect(_on_pickup_collected)
+	Events.pillar_state_changed.connect(_on_pillar_state)
+	Events.pillar_charge_progress.connect(_on_charge_progress)
 	Platform.input_mode_changed.connect(_on_mode_changed)
 	trigger("move")
 
 
 func _exit_tree() -> void:
 	for pair in [[Events.enemy_killed, _on_enemy_killed], [Events.player_damaged, _on_player_damaged],
-			[Events.floor_cleared, _on_floor_cleared], [Platform.input_mode_changed, _on_mode_changed]]:
+			[Events.floor_cleared, _on_floor_cleared], [Platform.input_mode_changed, _on_mode_changed],
+			[Events.pickup_collected, _on_pickup_collected], [Events.pillar_state_changed, _on_pillar_state],
+			[Events.pillar_charge_progress, _on_charge_progress]]:
 		if (pair[0] as Signal).is_connected(pair[1]):
 			(pair[0] as Signal).disconnect(pair[1])
 
@@ -154,6 +174,33 @@ func trigger(id: String) -> void:
 
 func _on_enemy_killed(_e: Node2D, _p: Vector2, _tier: int, _elite: bool) -> void:
 	trigger("auto_fire")
+	trigger("gold")
+
+
+## Premier ramassage d'or : l'invite « gold » est faite (affichée ou en attente).
+func _on_pickup_collected(kind: StringName, _amount: float) -> void:
+	if kind == &"gold":
+		_gesture_done("gold")
+
+
+## Gros pilier activé : « rester dans le cercle » (le combat de boss qui démarre ne la bloque pas).
+func _on_pillar_state(pillar: Node, state: StringName) -> void:
+	if state == &"active" and pillar != null and pillar.get(&"kind") == 1: # Pillar.Kind.BIG
+		trigger("charge")
+
+
+func _on_charge_progress(_pillar: Node, ratio: float) -> void:
+	if ratio >= CHARGE_DONE_RATIO:
+		_gesture_done("charge")
+
+
+## Le geste de l'invite `id` est fait : retirée de la file (consommée) ou terminée si affichée.
+func _gesture_done(id: String) -> void:
+	if current == id:
+		_end()
+	elif not Profile.has_seen_hint(id):
+		_drop(id)
+		Profile.mark_hint_seen(id)
 
 
 func _on_player_damaged(_amount: float, _src: Node) -> void:
@@ -172,10 +219,10 @@ func _on_mode_changed(_mode: int) -> void:
 # --- Boucle ------------------------------------------------------------------------
 
 ## Vrai quand une invite ne doit pas s'afficher (boss, carton, pause, aide des commandes).
-func blocked() -> bool:
+func blocked(id := "") -> bool:
 	if not RunState.running or get_tree().paused:
 		return true
-	if not get_tree().get_nodes_in_group(&"bosses").is_empty():
+	if id != "charge" and not get_tree().get_nodes_in_group(&"bosses").is_empty():
 		return true
 	if hud != null and is_instance_valid(hud) and hud.has_method(&"is_help_visible") and hud.is_help_visible():
 		return true
@@ -203,16 +250,18 @@ func _process(delta: float) -> void:
 		elif not Profile.has_seen_hint("move"):
 			_drop("move")
 			Profile.mark_hint_seen("move")
+	if _spell_pressed():
+		_gesture_done("aim")
 	if current == "dodge" and Input.is_action_just_pressed(&"dodge"):
 		_end()
 	elif (current == "interact" or current == "pillar" or current == "teleporter") and Input.is_action_just_pressed(&"interact"):
 		_end()
-	var block := blocked()
+	var block := blocked(current)
 	for q in _queue:
 		q[1] += delta
-	_queue = _queue.filter(func(q: Array) -> bool: return q[0] in ["move", "auto_fire", "dodge", "teleporter"] or q[1] < QUEUE_EXPIRE_S)
+	_queue = _queue.filter(func(q: Array) -> bool: return q[0] in ["move", "auto_fire", "gold", "aim", "dodge", "charge", "teleporter"] or q[1] < QUEUE_EXPIRE_S)
 	if current == "":
-		if not block and not _queue.is_empty():
+		if not _queue.is_empty() and not blocked(String(_queue[0][0])):
 			_show(String(_queue.pop_front()[0]))
 	elif block:
 		_end() # contexte perdu (boss, pause…) : l'invite est consommée
@@ -231,6 +280,8 @@ func _poll_context(p: Node2D) -> void:
 	var pp := p.global_position
 	if _elapsed >= DODGE_FALLBACK_S:
 		trigger("dodge")
+	if _elapsed >= AIM_AFTER_S:
+		trigger("aim")
 	if not Profile.has_seen_hint("interact"):
 		var r2 := pow(INTERACT_U * Balance.UNIT_PX, 2.0)
 		for g in [&"gold_capsules", &"chests"]:
@@ -246,6 +297,13 @@ func _poll_context(p: Node2D) -> void:
 			if pl != null and StringName(pl.get(&"state")) == &"ready" and pl.global_position.distance_squared_to(pp) <= r2p:
 				trigger("pillar")
 				break
+
+
+func _spell_pressed() -> bool:
+	for a in [&"spell_2", &"spell_3", &"spell_4"]:
+		if InputMap.has_action(a) and Input.is_action_just_pressed(a):
+			return true
+	return false
 
 
 func _drop(id: String) -> void:
@@ -296,6 +354,16 @@ static func content(id: String, mode: int) -> Array:
 			if touch:
 				return ["", "Bouton Roulade : traversez les coups sans dégâts"]
 			return ["dodge", "Roulade : traversez les coups sans dégâts"]
+		"gold":
+			return ["", "Passez sur les pièces d'or pour les ramasser : elles paient les coffres"]
+		"aim":
+			if touch:
+				return ["", "Sorts 2 à 4 : touchez les boutons, ils visent tout seuls"]
+			if pad:
+				return ["", "Sorts 2 à 4 : visez avec le stick droit (sinon, l'ennemi le plus proche)"]
+			return ["spell_2", "Sorts 2 à 4 : ils visent le curseur de la souris"]
+		"charge":
+			return ["", "Restez dans le cercle : le pilier se charge tant que vous y êtes"]
 		"interact":
 			if touch:
 				return ["", "Bouton Interagir : ouvrir la capsule ou le coffre"]
