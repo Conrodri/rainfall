@@ -20,6 +20,13 @@ extends RefCounted
 ##   de télégraphe, coef 1,4) ; Procession permanente (60° / 40°/s, répit de 2 s toutes les 8 s : « REFLUX ») ; Stèles x4
 ##   toutes les 6 s ; couronne en orbite à 2,5 u (60° exposés, tournent avec elle, point faible actif en permanence).
 ## Trace après la mort : la marée se retire, les stèles restent.
+##
+## v2 27/10/2026 (retour joueur : « trop simples à esquiver », « il suffit d'attendre » sous bouclier) : mêmes dégâts,
+## plus de pression. Toutes les valeurs de rythme/taille sont dans Balance.BOSS_PRESSURE[&"salt_king"] (voir
+## docs/Design_Boss_Raid.md §2.3) : recharges x0,65, armements x0,8 (plancher), stèles +25 % de rayon et une stèle de plus
+## par phase posée sur la position ANTICIPÉE du joueur (vitesse lissée, `_pvel` / `_lead`), nef sèche plus étroite, Édit
+## plus rapproché et plus épais. Sous bouclier : garde-fou 45 s, impulsion de stèles toutes les 7,5 s sans progrès
+## (BossShield.stall_pulse, n stèles, 3 au plus), soin de Balance.RAID_STALL_HEAL_FRAC + salve finale au garde-fou, chute SANS fenêtre.
 ## Sans sprites (consigne art/tools/night/_raid_salt_king.txt) : silhouette et effets provisoires ; chaque extra du
 ## .tres (stele, throne, throne_rise, salt_crust, crust_burst, edict_ring, tear_drop) remplace son repli dès livré.
 
@@ -40,29 +47,21 @@ const KEEP_U := 2.5
 const COEF := {&"scepter": 1.0, &"procession": 0.4, &"stele": 1.2, &"edict": 1.4} ## repli si Balance.BOSS_ATTACK_COEF l'ignore
 const DAMAGE_TAKEN := [1.0, 1.0, 1.2] ## P3 ancré sur le trône : +20 %
 # Sceptre (auto)
-const AUTO_CD := 1.8
 const AUTO_LEN_U := 4.0
 const AUTO_W_U := 1.0
 const AUTO_REACH_U := 5.2
 # Procession (sort A)
-const PROC_CD := [16.0, 16.0, 0.0]
 const PROC_R_U := 9.0
-const PROC_DEG := [90.0, 60.0, 60.0]
 const PROC_TURN := [30.0, 40.0, 40.0]
 const PROC_DUR := [6.0, 7.0, 1.0e9]
 const PROC_WINDUP := 1.2
 const PROC_CAST_U := 13.0
 # Stèles (sort B)
-const STELE_CD := [11.0, 9.0, 6.0]
-const STELE_COUNT := [4, 6, 4]
 const STELE_RING_U := 3.0
+const SHIELD_STELE_FIRST := 1.5
 const STELE_OUTER_U := 5.0
 const STELE_CAST_U := 13.0
-const STELE_MIN_RISE_S := 1.0
 # Bouclier (transitions 2 et 3)
-const SHIELD_STELE_EVERY := 5.0
-const SHIELD_STELE_FIRST := 1.5
-const TEARS_EVERY := 8.0
 const TEARS_FIRST := 3.0
 const TEARS_COUNT := 6
 const TEARS_FALL_S := 0.8
@@ -78,11 +77,9 @@ const CROWN_ORBIT_TURN := 0.8 ## rad/s (P3)
 const CROWN_STUN_S := 2.0
 const CROWN_REGROW_S := 10.0
 # Édit (P3)
-const EDICT_CD := 4.0
 const EDICT_R0_U := 1.0
 const EDICT_R1_U := 8.0
 const EDICT_SPEED_U := 6.0
-const EDICT_W_U := 1.0
 const EDICT_ANIM_S := 4.0 / 12.0 ## edict_s : impact à la frame 4 (12 fps)
 # Ambiance
 
@@ -126,6 +123,10 @@ var _tide_loop: Dictionary = {} ## boucles Audio.play_loop (marée, murmures de 
 var _court_loop: Dictionary = {}
 var _was_respite := false
 var _ppos := Vector2.ZERO
+var _pvel := Vector2.ZERO ## vitesse lissée du joueur (px/s), pour viser où il va
+var _pprev := Vector2.INF
+var stall_pulses := 0 ## impulsions d'attente reçues (tests)
+var backstop_penalties := 0
 var _player: Node2D = null
 var _rng := RandomNumberGenerator.new()
 var _frames: SpriteFrames = null
@@ -150,6 +151,11 @@ func _init(enemy: Enemy) -> void:
 	shield.broken.connect(_on_shield_broken)
 	enrage = SoftEnrage.create(e)
 	steles = SaltSteles.create(e)
+	steles.hit_r_u = stele_hit_r_u()
+	shield.stall_pulse.connect(_on_stall_pulse)
+	shield.backstop_reached.connect(_on_backstop)
+	_proc_cd = float(_k("first_proc_s"))
+	_stele_cd = float(_k("first_stele_s"))
 	_face_angle = e._facing
 	if e._light != null:
 		e._light.set_preset(&"boss_cerf")
@@ -160,6 +166,36 @@ func _init(enemy: Enemy) -> void:
 	else:
 		_build_body()
 	_apply_phase_look()
+
+
+# --- Réglages de pression (Balance.BOSS_PRESSURE) -------------------------------------------
+
+static func _k(key: String) -> Variant:
+	return Balance.boss_pressure(ID, key)
+
+
+static func _kp(key: String, ph: int) -> Variant:
+	return Balance.pressure_at(ID, key, ph)
+
+
+## Rayon (u) de la zone de coup d'une stèle (tests, joueurs automatiques).
+func stele_hit_r_u() -> float:
+	return float(_k("stele_hit_r_u"))
+
+
+## Où sera le joueur dans `secs` (vitesse lissée), ramené sur le terrain praticable.
+func _lead(ppos: Vector2, secs: float) -> Vector2:
+	var v := _pvel.limit_length(6.0 * U)
+	var p := ppos + v * secs
+	return e.nav.resolve(p, PlayerHitbox.radius_px) if e.nav else p
+
+
+## Armement d'un coup (catégorie BossPace `k`) : table x multiplicateur, jamais sous le plancher.
+func _windup(k: StringName, natural := 0.0) -> float:
+	var auto := k == &"auto"
+	var m := float(_k("auto_windup_mult" if auto else "spell_windup_mult"))
+	var fl := float(_k("auto_windup_floor_s" if auto else "spell_windup_floor_s"))
+	return maxf(maxf(BossPace.windup(k, phase) * m, natural * m), fl)
 
 
 ## Libère tout (mort, retour au pool). Mort : la marée se retire, les stèles restent (trace), la cour est dissoute.
@@ -294,6 +330,9 @@ func crown_node() -> WeakPoint:
 # --- Tick ------------------------------------------------------------------------------------
 
 func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float, path_dir: Vector2) -> Vector2:
+	if _pprev != Vector2.INF and delta > 0.0:
+		_pvel = _pvel.lerp((ppos - _pprev) / delta, minf(delta * 8.0, 1.0))
+	_pprev = ppos
 	_ppos = ppos
 	_player = player
 	pace.tick(delta)
@@ -426,7 +465,8 @@ func _enter_phase(ph: int) -> void:
 	events.append({"kind": &"phase", "phase": ph})
 	if BossShield.should_arm(prev, ph, shield.armed_count, ID):
 		shield.arm([{"kind": &"ultimate_hit", "hits": 1, "label": "FRAPPEZ AVEC L'ULTIME"}],
-			{"exposed_s": EXPOSED_S, "exposed_mult": EXPOSED_MULT})
+							{"exposed_s": EXPOSED_S, "exposed_mult": EXPOSED_MULT, "backstop_s": float(_k("shield_backstop_s")),
+"stall_every_s": float(_k("shield_stall_every_s")), "backstop_heal_frac": Balance.RAID_STALL_HEAL_FRAC})
 	else: # quota de boucliers atteint (ou phase sautée) : simple transition
 		_after_shield()
 	_snd(&"enemy.salt_king_throne.heavy" if ph >= 3 else &"enemy.salt_king_crust.heavy")
@@ -485,10 +525,10 @@ func _tick_shield(delta: float) -> Vector2:
 		_haz_stele -= delta
 		_haz_tears -= delta
 		if _haz_stele <= 0.0:
-			_haz_stele = SHIELD_STELE_EVERY
-			_plant_steles(int(STELE_COUNT[0]), STELE_MIN_RISE_S)
+			_haz_stele = float(_k("shield_stele_every_s"))
+			_plant_steles(int(_kp("stele_ring", 1)), _stele_rise(), true)
 		if _haz_tears <= 0.0:
-			_haz_tears = TEARS_EVERY
+			_haz_tears = float(_k("tears_every_s"))
 			_drop_tears()
 	return Vector2.ZERO
 
@@ -522,11 +562,14 @@ func _apply_phase_look() -> void:
 # --- Sceptre (auto) -------------------------------------------------------------------------
 
 func _start_auto(dir: Vector2) -> void:
-	_auto_cd = AUTO_CD
+	_auto_cd = float(_k("auto_cd"))
 	aim = dir
 	state = S.AUTO
 	_t = 0.0
-	_dur = BossPace.windup(&"auto", phase)
+	_dur = _windup(&"auto")
+	var la := _lead(_ppos, float(_k("auto_lead_s"))) - e.position # vise où le joueur sera à l impact
+	if la.length_squared() > 1.0:
+		aim = la.normalized()
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color(1, 1, 1, 0.8)
@@ -552,11 +595,11 @@ func _release_auto(player: Node2D, ppos: Vector2) -> void:
 
 func _start_procession(dir: Vector2) -> void:
 	var pi := phase - 1
-	_proc_cd = float(PROC_CD[pi])
+	_proc_cd = float(_kp("proc_cd", phase))
 	aim = dir
 	state = S.PROCESSION
 	_t = 0.0
-	_dur = BossPace.windup(&"spell", phase, PROC_WINDUP)
+	_dur = _windup(&"spell", PROC_WINDUP)
 	pace.wind(&"spell")
 	vis.play_attack(&"cast_a", _dur, Vector2.ZERO)
 	_spawn_sector(false)
@@ -572,7 +615,7 @@ func _spawn_sector(permanent: bool) -> void:
 	_turn_sign = -_turn_sign if _turn_sign != 0.0 and not permanent else 1.0
 	var start := (_ppos - e.global_position).angle()
 	sector = SaltSector.spawn_salt(e, e.global_position, {
-		"radius_u": PROC_R_U, "sector_deg": PROC_DEG[pi], "turn_deg_s": float(PROC_TURN[pi]) * _turn_sign,
+		"radius_u": PROC_R_U, "sector_deg": float(_kp("proc_deg", phase)), "turn_deg_s": float(PROC_TURN[pi]) * _turn_sign,
 		"duration_s": PROC_DUR[pi] if not permanent else PROC_DUR[2], "tele_s": PROC_WINDUP,
 		"angle": start}, steles)
 	_was_respite = false
@@ -581,20 +624,24 @@ func _spawn_sector(permanent: bool) -> void:
 # --- Stèles (sort B) ------------------------------------------------------------------------
 
 func _start_steles(dir: Vector2) -> void:
-	var pi := phase - 1
-	_stele_cd = float(STELE_CD[pi])
+	_stele_cd = float(_kp("stele_cd", phase))
 	aim = dir
 	state = S.STELES
 	_t = 0.0
-	_dur = BossPace.windup(&"spell", phase, STELE_MIN_RISE_S)
+	_dur = maxf(_windup(&"spell"), _stele_rise())
 	pace.wind(&"spell")
 	vis.play_attack(&"cast_b", _dur, dir)
-	_plant_steles(int(STELE_COUNT[pi]), _dur)
+	_plant_steles(int(_kp("stele_ring", phase)), _dur, true)
 	_snd(&"telegraph.boss.heavy")
 
 
-## `count` stèles autour du joueur : croix à 3 u (4 premières), les suivantes à 5 u sur la diagonale.
-func _plant_steles(count: int, rise_s: float) -> void:
+func _stele_rise() -> float:
+	return float(_k("stele_rise_s"))
+
+
+## `count` stèles autour du joueur : croix à 3 u (4 premières), les suivantes à 5 u sur la diagonale. `lead` : une stèle de
+## plus sur la position ANTICIPÉE du joueur (deux zones à lire : celle d'autour et celle sous ses pas).
+func _plant_steles(count: int, rise_s: float, lead := false) -> void:
 	var base := _rng.randf() * TAU
 	for k in count:
 		var p: Vector2
@@ -604,7 +651,38 @@ func _plant_steles(count: int, rise_s: float) -> void:
 			p = _ppos + Vector2.from_angle(base + PI * 0.25 + (k - 4) * PI) * STELE_OUTER_U * U
 		if p.distance_to(e.position) < 1.4 * U: # jamais sous le roi
 			continue
-		steles.plant(p, maxf(rise_s, STELE_MIN_RISE_S), _coef(&"stele"))
+		steles.plant(p, maxf(rise_s, _stele_rise()), _coef(&"stele"))
+	if lead:
+		for k in int(_kp("stele_lead", phase)):
+			_plant_lead(rise_s, 0.0 if k == 0 else 2.0)
+
+
+## Stèle sur la position anticipée du joueur (`jitter_u` : décalage aléatoire pour les suivantes).
+func _plant_lead(rise_s: float, jitter_u := 0.0) -> void:
+	var p := _lead(_ppos, float(_k("lead_s")))
+	if jitter_u > 0.0:
+		p += Vector2.from_angle(_rng.randf() * TAU) * jitter_u * U
+	if p.distance_to(e.position) < 1.4 * U:
+		return
+	steles.plant(p, maxf(rise_s, _stele_rise()), _coef(&"stele"), SaltSteles.LIFE_S, false) # stèle de punition : pas un abri
+
+
+# --- Attendre sous bouclier coûte -----------------------------------------------------------
+
+## Impulsion d'attente (rien n'a progressé depuis shield_stall_every_s) : n stèles sur et autour du joueur (3 au plus).
+func _on_stall_pulse(n: int) -> void:
+	stall_pulses += 1
+	for i in mini(n, int(_k("stall_max"))):
+		_plant_lead(float(_k("stall_rise_s")), 0.0 if i == 0 else 2.5)
+	events.append({"kind": &"stall", "phase": phase, "n": n})
+
+
+## Garde-fou : le roi s'est soigné (BossShield) ; salve finale de 3 stèles serrées avant la chute SANS fenêtre.
+func _on_backstop() -> void:
+	backstop_penalties += 1
+	for i in int(_k("stall_max")):
+		_plant_lead(float(_k("stall_rise_s")), 0.0 if i == 0 else 2.5)
+	events.append({"kind": &"backstop_penalty", "phase": phase})
 
 
 # --- Larmes de sel (sous bouclier) ----------------------------------------------------------
@@ -706,10 +784,10 @@ func _start_stun(s: float) -> void:
 # --- Édit (P3) ----------------------------------------------------------------------------
 
 func _start_edict() -> void:
-	_edict_cd = EDICT_CD
+	_edict_cd = float(_k("edict_cd"))
 	state = S.EDICT
 	_t = 0.0
-	_dur = BossPace.windup(&"heavy", phase, 1.0)
+	_dur = maxf(_windup(&"heavy", 1.0), float(_k("edict_windup_floor_s")))
 	_edict_anim = false
 	_edict_hit = false
 	pace.wind(&"heavy")
@@ -742,7 +820,7 @@ func _update_wave(delta: float, player: Node2D, ppos: Vector2) -> void:
 	_wave_r += EDICT_SPEED_U * U * delta
 	if not _edict_hit and player != null:
 		var d := ppos.distance_to(e.position)
-		if d <= EDICT_R1_U * U + PLAYER_R and absf(d - _wave_r) <= EDICT_W_U * 0.5 * U + PLAYER_R: # au-delà de 8 u : à l'abri
+		if d <= EDICT_R1_U * U + PLAYER_R and absf(d - _wave_r) <= float(_k("edict_w_u")) * 0.5 * U + PLAYER_R: # au-delà de 8 u : à l'abri
 			_edict_hit = true
 			edict_hits += 1
 			e._hit_player(player, e.damage * _coef(&"edict"))
@@ -773,7 +851,7 @@ func _make_wave_fx() -> void:
 		_wave_fx = s
 	else:
 		var f := RecluseFx.make(RecluseFx.Kind.RING, Color(SALT, 0.9), 5)
-		f.width = EDICT_W_U * U * 0.5
+		f.width = float(_k("edict_w_u")) * U * 0.5
 		f.color2 = CRYSTAL
 		f.radius = EDICT_R0_U * U
 		_wave_fx = f

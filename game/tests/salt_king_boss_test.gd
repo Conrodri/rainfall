@@ -3,7 +3,7 @@ extends Node
 ## godot --headless --path game res://tests/salt_king_boss_test.tscn  -> RESULT: OK
 ## Cerveau instancié directement sur un Enemy de test (temps piloté par le test : Enemy.tick image par image).
 ## Vérifie :
-## 1. contrat : IA branchée, quota de 2 boucliers, seuils 70 / 35 %, ultime = condition de rupture, garde-fou 20 s ;
+## 1. contrat : IA branchée, quota de 2 boucliers, seuils 70 / 35 %, ultime = condition de rupture, garde-fou 45 s ;
 ## 2. phase 1 : Sceptre (dégâts à la frame d'impact, jamais avant), Procession, Stèles (obstacles, coup si dessus) ;
 ## 3. zone sûre tournante : rotation bornée (bord <= 6,3 u/s), aucun dégât dans la nef, dégâts hors nef seulement,
 ##    abri derrière une stèle, pénalité plafonnée et jamais létale ;
@@ -150,6 +150,10 @@ func _until(cond: Callable, max_s: float, keep_hp := true) -> bool:
 	return cond.call()
 
 
+func _steles_p1() -> int:
+	return int(Balance.pressure_at(&"salt_king", "stele_ring", 1)) + int(Balance.pressure_at(&"salt_king", "stele_lead", 1))
+
+
 func _near_east(u: float = 3.0) -> void:
 	_player.global_position = _boss.position + Vector2(u * U, 0.0)
 
@@ -221,13 +225,13 @@ func _phase1() -> void:
 	_b._auto_cd = 99.0
 	_b._stele_cd = 0.0
 	_step(1)
-	_check("stèles : sort B armé, 4 stèles télégraphées", _b.state == SaltKingBrain.S.STELES and _b.steles.pending_count() == 4,
+	_check("stèles : sort B armé, anneau + 1 stèle anticipée télégraphés", _b.state == SaltKingBrain.S.STELES and _b.steles.pending_count() == _steles_p1(),
 		"%d" % _b.steles.pending_count())
-	_check("stèles : télégraphe >= 1,0 s", _b._dur >= 1.0)
+	_check("stèles : télégraphe >= levée réglée (Balance), jamais sous 0,6 s", _b._dur >= float(Balance.boss_pressure(&"salt_king", "stele_rise_s")) and _b._dur >= 0.6)
 	_secs(0.5)
 	_check("pas encore levées à 0,5 s", _b.steles.live_count() == 0)
 	_secs(_b._dur)
-	_check("4 stèles levées après le télégraphe", _b.steles.live_count() == 4, "%d" % _b.steles.live_count())
+	_check("stèles levées après le télégraphe", _b.steles.live_count() == _steles_p1(), "%d" % _b.steles.live_count())
 	var st: Array[Dictionary] = _b.steles.steles
 	var body_ok := true
 	for c in st:
@@ -255,9 +259,9 @@ func _sector() -> void:
 	_b._stele_cd = 99.0
 	_b._proc_cd = 0.0
 	_step(1)
-	_check("Procession armée, sceptre levé >= 1,2 s", _b.state == SaltKingBrain.S.PROCESSION and _b._dur >= 1.2)
+	_check("Procession armée, armement >= plancher 0,6 s", _b.state == SaltKingBrain.S.PROCESSION and _b._dur >= 0.6)
 	var s: SaltSector = _b.sector
-	_check("nef de 90° / 30°/s en P1, rayon 9 u", s != null and s.sector_deg == 90.0 and absf(s.turn_deg_s) == 30.0 and s.radius_u == 9.0)
+	_check("nef réglée (Balance) / 30°/s en P1, rayon 9 u", s != null and is_equal_approx(s.sector_deg, float(Balance.pressure_at(&"salt_king", "proc_deg", 1))) and absf(s.turn_deg_s) == 30.0 and s.radius_u == 9.0)
 	_check("bord <= 6,3 u/s", s.edge_speed_u() <= SafeSector.MAX_EDGE_SPEED_U + 0.001, str(s.edge_speed_u()))
 	_check("télégraphe >= 1,2 s sans dégât", s.tele_s >= 1.2)
 	# pendant le télégraphe, joueur hors nef : aucun dégât
@@ -331,7 +335,7 @@ func _shield_ultimate() -> void:
 	var hp0 := _boss.hp
 	_boss.take_damage(1e6)
 	_check("aucun dégât sous bouclier", _boss.hp == hp0)
-	_check("condition = ultime, garde-fou 20 s", _b.shield.primary_kind() == &"ultimate_hit" and is_equal_approx(_b.shield.backstop_s, 20.0))
+	_check("condition = ultime, garde-fou 45 s (v2)", _b.shield.primary_kind() == &"ultimate_hit" and is_equal_approx(_b.shield.backstop_s, 45.0))
 	_check("étiquette « FRAPPEZ AVEC L'ULTIME »", String(_boss.brain.boss_state_tag().get("text", "")).begins_with("FRAPPEZ AVEC L'ULTIME"),
 		str(_boss.brain.boss_state_tag()))
 	_check("aucune couronne pendant la transition", _b.crown_node() == null)
@@ -420,16 +424,19 @@ func _backstop() -> void:
 	_boss.hp = _boss.max_hp * 0.69
 	_step(1)
 	var t0 := _clock
-	_until(func(): return _b.shield.state == BossShield.State.BREAKING, 40.0)
+	_until(func(): return _b.shield.state == BossShield.State.BREAKING, 70.0)
 	var dt := _clock - t0
-	_check("sans ultime : rupture par le garde-fou à ~20 s (+ transition)", _b.shield.by_backstop and dt >= 20.0 and dt <= 24.5, "%.1f s" % dt)
+	_check("sans ultime : rupture par le garde-fou à ~45 s (+ transition)", _b.shield.by_backstop and dt >= 45.0 and dt <= 49.5, "%.1f s" % dt)
+	_check("garde-fou : soin du roi + salve de stèles de punition + impulsions d'attente", _b.backstop_penalties == 1 and _b.stall_pulses >= 4 and _boss.hp > _boss.max_hp * 0.69 + 0.05 * _boss.max_hp,
+		"soin %.3f, impulsions %d, salves %d" % [_boss.hp / _boss.max_hp, _b.stall_pulses, _b.backstop_penalties])
 	_check("garde-fou : raid_mechanic_failed(shield_backstop)", int(_ev.get(&"shield_backstop", 0)) == 1)
 	_check("garde-fou : texte « LE BOUCLIER CÈDE »", String(_boss.brain.boss_state_tag().get("text", "")) == "LE BOUCLIER CÈDE")
 	_secs(1.0)
 	_check("garde-fou : aucune fenêtre bonus, le roi reprend", not _b.shield.is_exposed() and not _boss.is_invulnerable()
 		and is_equal_approx(_boss.brain.damage_taken_mult(), 1.0), "mult %.2f" % _boss.brain.damage_taken_mult())
+	var hp_k: float = _boss.hp
 	_boss.take_damage(5.0)
-	_check("le roi est de nouveau touchable", _boss.hp < _boss.max_hp * 0.69)
+	_check("le roi est de nouveau touchable", _boss.hp < hp_k)
 	_secs(6.0)
 	_check("il attaque de nouveau", _b.auto_hits + _b.sector_count + _b.steles.landed_total >= 1)
 
@@ -458,7 +465,7 @@ func _phase3() -> void:
 	_secs(3.8)
 	_check("2e bouclier brisé, roi libéré", _b.shield.state == BossShield.State.IDLE and not _boss.is_invulnerable())
 	_check("P3 : +20 % de dégâts reçus", is_equal_approx(_boss.brain.damage_taken_mult(), 1.2), str(_boss.brain.damage_taken_mult()))
-	_check("Procession permanente (60° / 40°/s)", is_instance_valid(_b.sector) and _b.sector.sector_deg == 60.0
+	_check("Procession permanente (60° / 40°/s)", is_instance_valid(_b.sector) and is_equal_approx(_b.sector.sector_deg, float(Balance.pressure_at(&"salt_king", "proc_deg", 3)))
 		and absf(_b.sector.turn_deg_s) <= 40.2 and _b.sector.duration_s > 1000.0)
 	var wp := _b.crown_node()
 	_check("couronne en orbite à 2,5 u, 60° exposés", wp != null and wp.offset_u == Vector2(2.5, 0.0) and wp.exposed_arc_deg == 60.0)

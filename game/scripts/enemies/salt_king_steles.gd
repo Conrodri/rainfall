@@ -27,6 +27,7 @@ var boss: Node2D = null
 var nav: NavField = null
 var steles: Array[Dictionary] = [] ## {pos, rise, rise_total, tele, body, vis, life, age, coef, eroded}
 var detached := false
+var hit_r_u := HIT_R_U ## rayon de la zone de coup (le cerveau l'élargit : Balance.BOSS_PRESSURE salt_king)
 var permanent := false
 var hits := 0 ## joueur touché à la levée (tests)
 var landed_total := 0
@@ -45,19 +46,20 @@ static func create(p_boss: Node2D) -> SaltSteles:
 	return s
 
 
-## Fait jaillir une stèle en `at` (ramenée sur le sol accessible). Retourne sa position.
-func plant(at: Vector2, rise_s := RISE_S, coef := 1.2, life_s := LIFE_S) -> Vector2:
+## Fait jaillir une stèle en `at` (ramenée sur le sol accessible). Retourne sa position. `shelter` faux : stèle de punition (posée sur
+## le joueur), elle bloque le passage mais ne protège pas de la marée.
+func plant(at: Vector2, rise_s := RISE_S, coef := 1.2, life_s := LIFE_S, shelter := true) -> Vector2:
 	while steles.size() >= MAX_STELES:
 		_remove(0, true)
 	var p := RaidKit.place(boss, at)
 	if nav != null:
 		p = nav.resolve(p, WALL_MARGIN_U * RaidKit.U)
 	var c := {"pos": p, "rise": maxf(rise_s, 0.0), "rise_total": maxf(rise_s, 0.01), "tele": null, "body": null, "vis": null,
-		"life": life_s, "age": 0.0, "coef": coef, "eroded": false}
+		"life": life_s, "age": 0.0, "coef": coef, "eroded": false, "shelter": shelter}
 	if rise_s > 0.0:
 		var t := EnemyTelegraph.new()
 		add_child(t)
-		t.show_circle(p, HIT_R_U * RaidKit.U)
+		t.show_circle(p, hit_r_u * RaidKit.U)
 		c["tele"] = t
 	steles.append(c)
 	if rise_s <= 0.0:
@@ -92,6 +94,10 @@ func shelters(p: Vector2, origin: Vector2) -> bool:
 		if float(c["rise"]) > 0.0:
 			continue
 		var q: Vector2 = c["pos"]
+		if not bool(c.get("shelter", true)):
+			continue
+		if q.distance_to(p) <= r: # le joueur sous la stèle (levée sur lui) n'est pas à l'abri : seule une stèle entre lui et la marée protège
+			continue
 		var ab := p - origin
 		var t := clampf((q - origin).dot(ab) / maxf(ab.length_squared(), 0.001), 0.0, 1.0)
 		if q.distance_to(origin + ab * t) <= r:
@@ -185,7 +191,7 @@ func _land(c: Dictionary, check_player: bool) -> void:
 		nav.add_circle_obstacle(body.get_instance_id(), p, RADIUS_U * RaidKit.U)
 	if check_player:
 		var pl := RaidKit.player_of(self)
-		if pl != null and pl.global_position.distance_to(p) <= HIT_R_U * RaidKit.U:
+		if pl != null and pl.global_position.distance_to(p) <= hit_r_u * RaidKit.U:
 			hits += 1
 			RaidKit.boss_hit(boss, pl, float(c["coef"]))
 	landed_total += 1

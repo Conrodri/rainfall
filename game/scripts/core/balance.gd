@@ -276,7 +276,7 @@ const RAID_STALL_HEAL_FRAC := 0.10
 ## SANS toucher aux dégâts (BOSS_ATTACK_COEF, RAID_*_COEF, BOSS_HP_MULT inchangés) : recharges et armements plus
 ## courts (jamais sous windup_floor_s), zones plus grandes et plus nombreuses, sorts qui visent où le joueur VA
 ## (lead_s), superpositions. Tables [P1, P2, P3] sauf mention. Lues par DrownedIdolBrain / FloodGunnerBrain via
-## boss_pressure(id, clé). Valeurs d'avant : docs/Design_Boss_Raid.md §2.1 / §2.2 (« v2 27/10 »). Roi de sel : à venir.
+## boss_pressure(id, clé). Valeurs d'avant : docs/Design_Boss_Raid.md §2.1 / §2.2 (« v2 27/10 »). Roi de sel : docs/Design_Boss_Raid.md §2.3 (« v2 27/10 »).
 const BOSS_PRESSURE := {
 	&"drowned_idol": {
 		"auto_cd": [1.2, 1.1, 0.9], ## Paume (avant 1,8 / 1,7 / 1,6)
@@ -338,6 +338,30 @@ const BOSS_PRESSURE := {
 		"add_walk_u": 2.4, ## avant 2,0
 		"add_ring_u": 11.0, ## avant 12,0
 		"add_heal_cap_frac": 0.30, ## avant 0,20
+	},
+	&"salt_king": {
+		"auto_cd": 1.17, ## Sceptre (avant 1,8)
+		"auto_windup_mult": 0.8, "auto_windup_floor_s": 0.45, ## armement du Sceptre (table BossPace x, plancher)
+		"spell_windup_mult": 0.8, "spell_windup_floor_s": 0.6, ## armements des sorts (Procession, Stèles, Édit)
+		"proc_cd": [9.0, 8.0, 0.0], ## Procession (avant 16 / 16 ; x0,65 = 10,4 ne suffisait pas aux mesures)
+		"auto_lead_s": 0.45, ## le Sceptre vise où le joueur sera à l'impact (vitesse lissée)
+		"proc_deg": [80.0, 52.0, 52.0], ## nef sèche (avant 90 / 60 / 60) ; vitesses de rotation inchangées
+		"stele_cd": [7.2, 5.9, 6.0], ## Stèles (avant 11 / 9 / 6) ; P3 inchangé : plus de stèles debout abritent le joueur de la marée permanente (mesuré)
+		"stele_ring": [4, 6, 4], ## stèles posées autour du joueur (inchangé)
+		"stele_lead": [1, 1, 1], ## +1 stèle par phase, sur la position anticipée du joueur (avant 4 / 6 / 4 au total)
+		"stele_hit_r_u": 1.125, ## rayon de la zone de coup d'une stèle (avant 0,9 : +25 %)
+		"stele_rise_s": 0.8, ## levée / télégraphe (avant 1,0)
+		"lead_s": 0.9, ## la stèle anticipée vise où le joueur sera dans ce délai (vitesse lissée)
+		"edict_cd": 2.6, ## Édit (avant 4,0)
+		"edict_w_u": 1.3, ## épaisseur de l'anneau (avant 1,0)
+		"edict_windup_floor_s": 0.6,
+		"first_stele_s": 4.0, "first_proc_s": 3.0, ## premières échéances (avant 6,0 / 3,0)
+		"shield_stele_every_s": 3.3, ## stèles sous bouclier (avant 5,0)
+		"tears_every_s": 5.2, ## Larmes de sel sous bouclier (avant 8,0)
+		"shield_backstop_s": 45.0, ## avant 20,0 : à l'échéance, soin + salve de stèles puis chute SANS fenêtre
+		"shield_stall_every_s": 7.5, ## salve de stèles tant que rien ne progresse (n-ième impulsion = n stèles, 3 au plus)
+		"stall_max": 3,
+		"stall_rise_s": 1.0, ## levée des stèles de punition
 	},
 }
 
