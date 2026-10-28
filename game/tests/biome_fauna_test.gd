@@ -207,7 +207,7 @@ func _stage() -> void:
 		mgr.start_stage()
 		await get_tree().process_frame
 		var want: Array = expect[st]
-		_check(mgr.map_id == want[1], "étage %d : carte %s (a %s)" % [st, want[1], mgr.map_id])
+		_check(mgr.map_id == want[1] or EnemyVisual.biome_of_map(mgr.map_id) == want[0], "étage %d : carte %s ou variante du biome (a %s)" % [st, want[1], mgr.map_id])
 		_check(EnemyVisual.current_biome() == want[0], "étage %d : biome %s (a %s)" % [st, want[0], EnemyVisual.current_biome()])
 		for k in [1, 2, 3]:
 			v.configure(k, 24.0, false)

@@ -139,11 +139,11 @@ func _check_v2_roles() -> void:
 	for k: int in keys:
 		var cfg: Dictionary = EnemyVisual.monster_entry(k, &"terrasses")[1]
 		_check(is_equal_approx(float(cfg["scale"]), 1.0) and is_equal_approx(float(cfg["offset_y"]), float(keys[k])) and not cfg.has("render_px_per_u"), "terrasses clé %d : géométrie v2" % k)
-	# les biomes encore au format ancien gardent leur géométrie par dossier
-	var old: Dictionary = EnemyVisual.monster_entry(1, &"foret")[1]
-	_check(is_equal_approx(float(old["scale"]), 0.8) and is_equal_approx(float(old["offset_y"]), -36.0) and old.has("render_px_per_u"), "forêt : essaim en géométrie ancienne")
-	var oldb: Dictionary = EnemyVisual.monster_entry(3, &"cite")[1]
-	_check(is_equal_approx(float(oldb["offset_y"]), -50.0), "cité : brute en géométrie ancienne")
+	# forêt et cité : v2 depuis les lots F/C, même géométrie que les terrasses
+	for b in [&"foret", &"cite", &"cryptes", &"source"]:
+		for k: int in keys:
+			var cb: Dictionary = EnemyVisual.monster_entry(k, b)[1]
+			_check(is_equal_approx(float(cb["scale"]), 1.0) and is_equal_approx(float(cb["offset_y"]), float(keys[k])) and not cb.has("render_px_per_u"), "%s clé %d : géométrie v2" % [b, k])
 	# v2 jamais redirigé vers un doublon _cel (ancien format)
 	var sf := EnemyVisual.monster_frames(1, &"terrasses")
 	_check(sf != null and not sf.resource_path.contains("_cel"), "essaim v2 : pas de redirection _cel")

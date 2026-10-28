@@ -1,154 +1,182 @@
 # Rapport de la file de nuit Codex
-- 28/10 20:53 == groupe 1
-- 28/10 20:53 groupe 1 déjà fini, sauté
-- 28/10 20:53 == groupe 2
-- 28/10 20:53 groupe 2 déjà fini, sauté
-- 28/10 20:53 == groupe 3
-- 28/10 20:53 groupe 3 déjà fini, sauté
-- 28/10 20:53 == groupe 4
-- 28/10 20:53 groupe 4 déjà fini, sauté
-- 28/10 20:53 == groupe 5
-- 28/10 20:53 groupe 5 déjà fini, sauté
-- 28/10 20:53 == groupe 6
-- 28/10 20:53 groupe 6 déjà fini, sauté
-- 28/10 20:53 == groupe 7
-- 28/10 20:53 groupe 7 déjà fini, sauté
-- 28/10 20:53 == groupe 8
-- 28/10 20:53 groupe 8 déjà fini, sauté
-- 28/10 20:53 == groupe 9
-- 28/10 20:53 groupe 9 déjà fini, sauté
-- 28/10 20:53 == groupe 10
-- 28/10 20:53 groupe 10 déjà fini, sauté
-- 28/10 20:53 == groupe 11
-- 28/10 20:53 groupe 11 déjà fini, sauté
-- 28/10 20:53 == groupe 10
-- 28/10 20:53 groupe 10 déjà fini, sauté
-- 28/10 20:53 == groupe 11
-- 28/10 20:53 groupe 11 déjà fini, sauté
-- 28/10 20:53 == groupe 12
-- 28/10 20:53 groupe 12 déjà fini, sauté
-- 28/10 20:53 == groupe 13
-- 28/10 20:53 groupe 13 déjà fini, sauté
-- 28/10 20:53 == groupe 11
-- 28/10 20:53 groupe 11 déjà fini, sauté
-- 28/10 20:53 == groupe 12
-- 28/10 20:53 groupe 12 déjà fini, sauté
-- 28/10 20:53 == groupe 13
-- 28/10 20:53 groupe 13 déjà fini, sauté
-- 28/10 20:53 == groupe 12
-- 28/10 20:53 groupe 12 déjà fini, sauté
-- 28/10 20:53 == groupe 13
-- 28/10 20:53 groupe 13 déjà fini, sauté
-- 28/10 20:53 == groupe 12
-- 28/10 20:53 groupe 12 déjà fini, sauté
-- 28/10 20:53 == groupe 14
-- 28/10 20:53 groupe 14 déjà fini, sauté
-- 28/10 20:53 == groupe 15
-- 28/10 20:53 groupe 15 déjà fini, sauté
-- 28/10 20:53 == groupe 16
-- 28/10 20:53 groupe 16 déjà fini, sauté
-- 28/10 20:53 == groupe 17
-- 28/10 20:53 groupe 17 déjà fini, sauté
-- 28/10 20:53 == groupe 18
-- 28/10 20:53 groupe 18 déjà fini, sauté
-- 28/10 20:53 == groupe 19
-- 28/10 20:53 groupe 19 déjà fini, sauté
-- 28/10 20:53 == groupe 20
-- 28/10 20:53 groupe 20 déjà fini, sauté
-- 28/10 20:53 == groupe 21
-- 28/10 20:53 groupe 21 déjà fini, sauté
-- 28/10 20:53 == groupe 16
-- 28/10 20:53 groupe 16 déjà fini, sauté
-- 28/10 20:53 == groupe 17
-- 28/10 20:53 groupe 17 déjà fini, sauté
-- 28/10 20:53 == groupe 22
-- 28/10 20:53 groupe 22 déjà fini, sauté
-- 28/10 20:53 == groupe 16
-- 28/10 20:53 groupe 16 déjà fini, sauté
-- 28/10 20:53 == groupe 23
-- 28/10 20:53 groupe 23 déjà fini, sauté
-- 28/10 20:53 == groupe 24
-- 28/10 20:53 groupe 24 déjà fini, sauté
-- 28/10 20:53 == groupe 25
-- 28/10 20:53 groupe 25 déjà fini, sauté
-- 28/10 20:53 == groupe 26
-- 28/10 20:53 groupe 26 déjà fini, sauté
-- 28/10 20:53 == groupe 27
-- 28/10 20:53 groupe 27 déjà fini, sauté
-- 28/10 20:53 == groupe 28
-- 28/10 20:53 groupe 28 déjà fini, sauté
-- 28/10 20:53 == groupe 29
-- 28/10 20:53 groupe 29 déjà fini, sauté
-- 28/10 20:53 == groupe 30
-- 28/10 20:53 groupe 30 déjà fini, sauté
-- 28/10 20:53 == groupe 31
-- 28/10 20:53 groupe 31 déjà fini, sauté
-- 28/10 20:53 == groupe 32
-- 28/10 20:53 groupe 32 déjà fini, sauté
-- 28/10 20:53 == groupe 33
-- 28/10 20:53 groupe 33 déjà fini, sauté
-- 28/10 20:53 == groupe 34
-- 28/10 20:53 groupe 34 déjà fini, sauté
-- 28/10 20:53 == groupe 35
-- 28/10 20:53 groupe 35 déjà fini, sauté
-- 28/10 20:53 == groupe 36
-- 28/10 20:53 groupe 36 déjà fini, sauté
-- 28/10 20:53 == groupe 37
-- 28/10 20:53 groupe 37 déjà fini, sauté
-- 28/10 20:53 == groupe 38
-- 28/10 20:53 groupe 38 déjà fini, sauté
-- 28/10 20:53 == groupe 39
-- 28/10 20:53 groupe 39 déjà fini, sauté
-- 28/10 20:53 == groupe 40
-- 28/10 20:53 groupe 40 déjà fini, sauté
-- 28/10 20:53 == groupe 41
-- 28/10 20:53 groupe 41 déjà fini, sauté
-- 28/10 20:53 == groupe 42
-- 28/10 20:53 groupe 42 déjà fini, sauté
-- 28/10 20:53 == groupe 43
-- 28/10 20:53 groupe 43 déjà fini, sauté
-- 28/10 20:53 == groupe 44
-- 28/10 20:53 groupe 44 déjà fini, sauté
-- 28/10 20:53 == groupe 45
-- 28/10 20:53 groupe 45 déjà fini, sauté
-- 28/10 20:53 == groupe 46
-- 28/10 20:53 groupe 46 déjà fini, sauté
-- 28/10 20:53 == groupe 47
-- 28/10 20:53 groupe 47 déjà fini, sauté
-- 28/10 20:53 == groupe 48
-- 28/10 20:53 groupe 48 déjà fini, sauté
-- 28/10 20:53 == groupe 49
-- 28/10 20:53 groupe 49 déjà fini, sauté
-- 28/10 20:53 == groupe 50
-- 28/10 20:53 groupe 50 déjà fini, sauté
-- 28/10 20:53 == groupe 51
-- 28/10 20:53 groupe 51 déjà fini, sauté
-- 28/10 20:53 == groupe 52
-- 28/10 20:53 groupe 52 déjà fini, sauté
-- 28/10 20:53 == groupe 53
-- 28/10 20:53 groupe 53 déjà fini, sauté
-- 28/10 20:53 == groupe 54
-- 28/10 20:53 groupe 54 déjà fini, sauté
-- 28/10 20:53 == groupe 55
-- 28/10 20:53 groupe 55 déjà fini, sauté
-- 28/10 20:53 == groupe 56
-- 28/10 20:53 groupe 56 déjà fini, sauté
-- 28/10 20:53 == groupe 57
-- 28/10 20:53 groupe 57 déjà fini, sauté
-- 28/10 20:53 == groupe 58
-- 28/10 20:53 groupe 58 déjà fini, sauté
-- 28/10 20:53 == groupe 59
-- 28/10 20:53 groupe 59 déjà fini, sauté
-- 28/10 20:53 == groupe 60
-- 28/10 20:53 groupe 60 déjà fini, sauté
-- 28/10 20:53 == groupe 61
-- 28/10 20:53 groupe 61 déjà fini, sauté
-- 28/10 20:53 == groupe 62
-- 28/10 20:53 lancement art/tools/night/_mob_v2_t1.txt
-- 28/10 21:05 fin art/tools/night/_mob_v2_t1.txt :  - Cellules, frames uniques, marges : PASS ; `_e` demi-résolution non noirs ; aucun `_n`. - Import : 0 erreur ; deux tests `RESULT: OK` ; biome : `13 resources still in use at exit`. - Monsters : 8.6 Mo / 12 Mo ; `> 4096` : 0. Hors périmètre : bosses 84.8 Mo, APK 2715 Mo, textures mobiles 248 Mo.
-- 28/10 21:05 sprites_test après groupe 62 : RESULT: OK
-- 28/10 21:05 == groupe 63
-- 28/10 21:05 lancement art/tools/night/_mob_v2_t2.txt
-- 28/10 21:16 fin art/tools/night/_mob_v2_t2.txt : [Planche comparative](art/tools/night/_mob_v2_t2_contact.png) vérifiée. - Cellules, marges, frames uniques, `_e` demi-résolution, aucun `_n` : PASS ; import sans erreur ; deux tests `RESULT: OK`. - Budget `monsters` : `8.7 / 12 Mo` ; textures `> 4096` : `0` ; budget global hors limites, hors lot.
-- 28/10 21:16 sprites_test après groupe 63 : RESULT: OK
-- 28/10 21:16 FILE TERMINÉE
+- 28/10 21:45 == groupe 1
+- 28/10 21:45 groupe 1 déjà fini, sauté
+- 28/10 21:45 == groupe 2
+- 28/10 21:45 groupe 2 déjà fini, sauté
+- 28/10 21:45 == groupe 3
+- 28/10 21:45 groupe 3 déjà fini, sauté
+- 28/10 21:45 == groupe 4
+- 28/10 21:45 groupe 4 déjà fini, sauté
+- 28/10 21:45 == groupe 5
+- 28/10 21:45 groupe 5 déjà fini, sauté
+- 28/10 21:45 == groupe 6
+- 28/10 21:45 groupe 6 déjà fini, sauté
+- 28/10 21:45 == groupe 7
+- 28/10 21:45 groupe 7 déjà fini, sauté
+- 28/10 21:45 == groupe 8
+- 28/10 21:45 groupe 8 déjà fini, sauté
+- 28/10 21:45 == groupe 9
+- 28/10 21:45 groupe 9 déjà fini, sauté
+- 28/10 21:45 == groupe 10
+- 28/10 21:45 groupe 10 déjà fini, sauté
+- 28/10 21:45 == groupe 11
+- 28/10 21:45 groupe 11 déjà fini, sauté
+- 28/10 21:45 == groupe 10
+- 28/10 21:45 groupe 10 déjà fini, sauté
+- 28/10 21:45 == groupe 11
+- 28/10 21:45 groupe 11 déjà fini, sauté
+- 28/10 21:45 == groupe 12
+- 28/10 21:45 groupe 12 déjà fini, sauté
+- 28/10 21:45 == groupe 13
+- 28/10 21:45 groupe 13 déjà fini, sauté
+- 28/10 21:45 == groupe 11
+- 28/10 21:45 groupe 11 déjà fini, sauté
+- 28/10 21:45 == groupe 12
+- 28/10 21:45 groupe 12 déjà fini, sauté
+- 28/10 21:45 == groupe 13
+- 28/10 21:45 groupe 13 déjà fini, sauté
+- 28/10 21:45 == groupe 12
+- 28/10 21:45 groupe 12 déjà fini, sauté
+- 28/10 21:45 == groupe 13
+- 28/10 21:45 groupe 13 déjà fini, sauté
+- 28/10 21:45 == groupe 12
+- 28/10 21:45 groupe 12 déjà fini, sauté
+- 28/10 21:45 == groupe 14
+- 28/10 21:45 groupe 14 déjà fini, sauté
+- 28/10 21:45 == groupe 15
+- 28/10 21:45 groupe 15 déjà fini, sauté
+- 28/10 21:45 == groupe 16
+- 28/10 21:45 groupe 16 déjà fini, sauté
+- 28/10 21:45 == groupe 17
+- 28/10 21:45 groupe 17 déjà fini, sauté
+- 28/10 21:45 == groupe 18
+- 28/10 21:45 groupe 18 déjà fini, sauté
+- 28/10 21:45 == groupe 19
+- 28/10 21:45 groupe 19 déjà fini, sauté
+- 28/10 21:45 == groupe 20
+- 28/10 21:45 groupe 20 déjà fini, sauté
+- 28/10 21:45 == groupe 21
+- 28/10 21:45 groupe 21 déjà fini, sauté
+- 28/10 21:45 == groupe 16
+- 28/10 21:45 groupe 16 déjà fini, sauté
+- 28/10 21:45 == groupe 17
+- 28/10 21:45 groupe 17 déjà fini, sauté
+- 28/10 21:45 == groupe 22
+- 28/10 21:45 groupe 22 déjà fini, sauté
+- 28/10 21:45 == groupe 16
+- 28/10 21:45 groupe 16 déjà fini, sauté
+- 28/10 21:45 == groupe 23
+- 28/10 21:45 groupe 23 déjà fini, sauté
+- 28/10 21:45 == groupe 24
+- 28/10 21:45 groupe 24 déjà fini, sauté
+- 28/10 21:45 == groupe 25
+- 28/10 21:45 groupe 25 déjà fini, sauté
+- 28/10 21:45 == groupe 26
+- 28/10 21:45 groupe 26 déjà fini, sauté
+- 28/10 21:45 == groupe 27
+- 28/10 21:45 groupe 27 déjà fini, sauté
+- 28/10 21:45 == groupe 28
+- 28/10 21:45 groupe 28 déjà fini, sauté
+- 28/10 21:45 == groupe 29
+- 28/10 21:45 groupe 29 déjà fini, sauté
+- 28/10 21:45 == groupe 30
+- 28/10 21:45 groupe 30 déjà fini, sauté
+- 28/10 21:45 == groupe 31
+- 28/10 21:45 groupe 31 déjà fini, sauté
+- 28/10 21:45 == groupe 32
+- 28/10 21:45 groupe 32 déjà fini, sauté
+- 28/10 21:45 == groupe 33
+- 28/10 21:45 groupe 33 déjà fini, sauté
+- 28/10 21:45 == groupe 34
+- 28/10 21:45 groupe 34 déjà fini, sauté
+- 28/10 21:45 == groupe 35
+- 28/10 21:45 groupe 35 déjà fini, sauté
+- 28/10 21:45 == groupe 36
+- 28/10 21:45 groupe 36 déjà fini, sauté
+- 28/10 21:45 == groupe 37
+- 28/10 21:45 groupe 37 déjà fini, sauté
+- 28/10 21:45 == groupe 38
+- 28/10 21:45 groupe 38 déjà fini, sauté
+- 28/10 21:45 == groupe 39
+- 28/10 21:45 groupe 39 déjà fini, sauté
+- 28/10 21:45 == groupe 40
+- 28/10 21:45 groupe 40 déjà fini, sauté
+- 28/10 21:45 == groupe 41
+- 28/10 21:45 groupe 41 déjà fini, sauté
+- 28/10 21:45 == groupe 42
+- 28/10 21:45 groupe 42 déjà fini, sauté
+- 28/10 21:45 == groupe 43
+- 28/10 21:45 groupe 43 déjà fini, sauté
+- 28/10 21:45 == groupe 44
+- 28/10 21:45 groupe 44 déjà fini, sauté
+- 28/10 21:45 == groupe 45
+- 28/10 21:45 groupe 45 déjà fini, sauté
+- 28/10 21:45 == groupe 46
+- 28/10 21:45 groupe 46 déjà fini, sauté
+- 28/10 21:45 == groupe 47
+- 28/10 21:45 groupe 47 déjà fini, sauté
+- 28/10 21:45 == groupe 48
+- 28/10 21:45 groupe 48 déjà fini, sauté
+- 28/10 21:45 == groupe 49
+- 28/10 21:45 groupe 49 déjà fini, sauté
+- 28/10 21:45 == groupe 50
+- 28/10 21:45 groupe 50 déjà fini, sauté
+- 28/10 21:45 == groupe 51
+- 28/10 21:45 groupe 51 déjà fini, sauté
+- 28/10 21:45 == groupe 52
+- 28/10 21:45 groupe 52 déjà fini, sauté
+- 28/10 21:45 == groupe 53
+- 28/10 21:45 groupe 53 déjà fini, sauté
+- 28/10 21:45 == groupe 54
+- 28/10 21:45 groupe 54 déjà fini, sauté
+- 28/10 21:45 == groupe 55
+- 28/10 21:45 groupe 55 déjà fini, sauté
+- 28/10 21:45 == groupe 56
+- 28/10 21:45 groupe 56 déjà fini, sauté
+- 28/10 21:45 == groupe 57
+- 28/10 21:45 groupe 57 déjà fini, sauté
+- 28/10 21:45 == groupe 58
+- 28/10 21:45 groupe 58 déjà fini, sauté
+- 28/10 21:45 == groupe 59
+- 28/10 21:45 groupe 59 déjà fini, sauté
+- 28/10 21:45 == groupe 60
+- 28/10 21:45 groupe 60 déjà fini, sauté
+- 28/10 21:45 == groupe 61
+- 28/10 21:45 groupe 61 déjà fini, sauté
+- 28/10 21:45 == groupe 62
+- 28/10 21:45 groupe 62 déjà fini, sauté
+- 28/10 21:45 == groupe 63
+- 28/10 21:45 groupe 63 déjà fini, sauté
+- 28/10 21:45 == groupe 64
+- 28/10 21:45 lancement art/tools/night/_mob_v2_f1.txt
+- 28/10 21:55 fin art/tools/night/_mob_v2_f1.txt : g). - Grilles, marges, frames uniques validées ; `_e` demi-résolution non noirs ; aucun `_n`. - Import sans erreur ; `sprites_test` et `biome_fauna_test` → `RESULT: OK`. - monsters : 7.5 Mo / 12 ; dépassements 4096 : 0. Hors périmètre : bosses 84.8/45 Mo, textures 247/180 Mo, APK 2714/200 Mo.
+- 28/10 21:55 sprites_test après groupe 64 : RESULT: OK
+- 28/10 21:55 == groupe 65
+- 28/10 21:55 lancement art/tools/night/_mob_v2_f2.txt
+- 28/10 22:05 fin art/tools/night/_mob_v2_f2.txt : (art/tools/night/_mob_v2_f2_contact.png) ; 2 sources `.blend` livrées. - Monsters : 8.0 / 12 Mo ; 0 ligne « > 4096 » ; 3 dépassements globaux préexistants. - Import : 0 erreur ; deux tests `RESULT: OK` ; sortie fauna : `ERROR: 13 resources still in use at exit (run with --verbose for details).`
+- 28/10 22:06 sprites_test après groupe 65 : RESULT: OK
+- 28/10 22:06 == groupe 66
+- 28/10 22:06 lancement art/tools/night/_mob_v2_c1.txt
+- 28/10 22:13 fin art/tools/night/_mob_v2_c1.txt : nctes, `_e` : PASS ; aucun `_n` ; import sans erreur ; deux tests `RESULT: OK` ; fauna : `13 resources still in use at exit`.   `texture_budget.py` : monsters `8.1 Mo / 12 Mo` ; textures `> 4096` : `0`.   Hors périmètre : bosses `84.8 / 45 Mo`, APK `2715 / 200 Mo`, textures mobiles `248 / 180 Mo`.
+- 28/10 22:13 sprites_test après groupe 66 : RESULT: OK
+- 28/10 22:13 == groupe 67
+- 28/10 22:13 lancement art/tools/night/_mob_v2_c2.txt
+- 28/10 22:22 fin art/tools/night/_mob_v2_c2.txt : b_v2_c2_contact.png). Cellules, marges, frames distinctes, `_e` : PASS ; aucun `_n`. Godot import : PASS ; `sprites_test` et `biome_fauna_test` : `RESULT: OK`. Budget monsters `8.8 Mo / 12` ; dépassements 4096 : `0` ; hors périmètre : bosses `84.8 > 45`, APK `2716 > 200`, textures `248 > 180 Mo`.
+- 28/10 22:22 sprites_test après groupe 67 : RESULT: OK
+- 28/10 22:22 == groupe 68
+- 28/10 22:22 lancement art/tools/night/_mob_v2_s1.txt
+- 28/10 22:38 fin art/tools/night/_mob_v2_s1.txt :  non noirs ; aucun `_n`.   Budget `monsters` : `9.6 Mo / 12 Mo` ; budget global : `HORS BUDGET (3)`, hors lot.   Tests : `RESULT: OK` ×2 ; import en erreur, `stage_map.gd:546` : `Invalid operands "NodePath" and "String" for "%" operator.`   [Planche contact](art/tools/night/_mob_v2_s1_contact.png).
+- 28/10 22:38 sprites_test après groupe 68 : RESULT: OK
+- 28/10 22:38 == groupe 69
+- 28/10 22:38 lancement art/tools/night/_mob_v2_s2.txt
+- 28/10 22:52 fin art/tools/night/_mob_v2_s2.txt : t](art/tools/monsters/v2/s2_build.py), [planche](art/tools/night/_mob_v2_s2_contact.png). Budget monsters : `11.6 Mo / 12 Mo` ; `> 4096 : 0`. Import final : `0` erreur ; `sprites_test` : `RESULT: OK`. `biome_fauna_test` : `RESULT: FAIL (2)` — cartes des étages `1 / 2`, hors périmètre autorisé.
+- 28/10 22:53 sprites_test après groupe 69 : RESULT: OK
+- 28/10 22:53 == groupe 70
+- 28/10 22:53 lancement art/tools/night/_mob_v2_q1.txt
+- 28/10 22:59 fin art/tools/night/_mob_v2_q1.txt : es, impacts frontaux, `_e` demi-résolution : PASS ; aucun `_n`. Import sans erreur ; `sprites_test` → `RESULT: OK`. Budget final : `monsters 12.3 Mo > 12 Mo` ; 0 texture > 4096. `biome_fauna_test` → `RESULT: FAIL (2)` : cartes étages 1 et 2, hors périmètre ; aucun `.gd/.tscn/.json` modifié.
+- 28/10 23:00 sprites_test après groupe 70 : RESULT: OK
+- 28/10 23:00 == groupe 71
+- 28/10 23:00 lancement art/tools/night/_mob_v2_q2.txt
+- 28/10 23:12 fin art/tools/night/_mob_v2_q2.txt : _q2_contact.png) livrés. 488 frames validées ; 11 diffus, 11 `_e`, aucun `_n`. Import sans erreur ; `sprites_test` → `RESULT: OK`. `biome_fauna_test` → `RESULT: FAIL (2)` : cartes étages 1–2, hors périmètre. Budget : `monsters 14.1 Mo > 12 Mo` ; hors Q2 déjà `12.348 MiB` ; `> 4096` : 0.
+- 28/10 23:13 sprites_test après groupe 71 : RESULT: OK
+- 28/10 23:13 FILE TERMINÉE

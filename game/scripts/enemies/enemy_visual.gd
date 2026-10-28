@@ -36,16 +36,15 @@ const SPRITES := {
 }
 ## Dossiers au format v2 : rendus d'emblée en cel-shadé, donc jamais redirigés vers un `_cel` (interrupteur F7 ;
 ## les anciens doublons swarm_tier1_cel et brute_tier3_cel sont supprimés depuis le 28/10/2026).
-const V2_FOLDERS := ["swarm_tier1", "shooter_tier2", "leaper_tier2", "brute_tier3"]
-## Géométrie PAR DOSSIER des sprites encore au format ancien (forêt et cité, avant leurs lots v2) : prime sur
-## SPRITES, avant la surcharge éventuelle de data/fauna.json. À retirer biome par biome à la livraison v2.
+const V2_FOLDERS := [
+	"swarm_tier1", "shooter_tier2", "leaper_tier2", "brute_tier3",
+	"swarm_tier1_moss", "shooter_tier2_moss", "leaper_tier2_moss", "brute_tier3_moss",
+	"swarm_tier1_rust", "shooter_tier2_rust", "leaper_tier2_rust", "brute_tier3_rust",
+	"swarm_tier1_salt", "shooter_tier2_salt", "leaper_tier2_salt", "brute_tier3_salt",
+	"swarm_tier1_source", "shooter_tier2_source", "leaper_tier2_source", "brute_tier3_source",
+]
+## Défauts de l'ancien essaim (échelle 0,8), encore utilisés par les corps d'invocation (voir summon_frames). Tous les sprites de monstres de base sont au format v2.
 const LEGACY_SWARM := {"scale": 0.8, "offset_y": -36.0, "energy": 2.0, "render_px_per_u": Iso.RENDER_PX_PER_U}
-const LEGACY_GEOM := {
-	"swarm_tier1_moss": LEGACY_SWARM, "swarm_tier1_rust": LEGACY_SWARM,
-	"shooter_tier2_moss": {"scale": 0.9, "offset_y": -32.0}, "shooter_tier2_rust": {"scale": 0.9, "offset_y": -32.0},
-	"leaper_tier2_moss": {"scale": 0.8, "offset_y": -40.0}, "leaper_tier2_rust": {"scale": 0.8, "offset_y": -40.0},
-	"brute_tier3_moss": {"scale": 0.85, "offset_y": -50.0}, "brute_tier3_rust": {"scale": 0.85, "offset_y": -50.0},
-}
 ## --- Boss : sprites Blender par identifiant (dossier sous assets/sprites/bosses/).
 ## dim = grande dimension (px de frame) de la silhouette, moyenne repos/marche ; bottom = ligne des pieds (px de frame),
 ## fh = hauteur de frame. L'échelle fait tenir la silhouette dans ~BOSS_FILL x le rayon de collision.
@@ -322,9 +321,7 @@ static func _role_cfg(biome: StringName, key: int, elite: bool) -> Dictionary:
 	var cfg: Dictionary = (SPRITES.get(key, {}) as Dictionary).duplicate()
 	if spec is String and spec != "":
 		cfg["name"] = spec
-		cfg.merge(LEGACY_GEOM.get(spec, {}), true)
 	elif spec is Dictionary and (spec as Dictionary).has("name"):
-		cfg.merge(LEGACY_GEOM.get(String((spec as Dictionary)["name"]), {}), true)
 		cfg.merge(spec, true)
 	else:
 		return {}

@@ -3,12 +3,15 @@ extends Node
 ## godot --path game res://tests/capture_monsters_v2.tscn -- --out=<dossier>
 
 var _out := ""
+var _biome := &"terrasses"
 
 
 func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--out="):
 			_out = a.substr(6)
+		if a.begins_with("--biome="):
+			_biome = StringName(a.substr(8))
 	Platform.set_input_mode(Platform.InputMode.KBM)
 	_run.call_deferred()
 
@@ -20,7 +23,7 @@ func _f(n: int) -> void:
 
 func _run() -> void:
 	TestMode.begin()
-	EnemyVisual.biome_override = &"terrasses"
+	EnemyVisual.biome_override = _biome
 	var m: Node = load("res://scenes/main.tscn").instantiate()
 	m.set(&"run_seed", 5)
 	add_child(m)
@@ -66,5 +69,5 @@ func _run() -> void:
 
 func _shot(n: String) -> void:
 	if _out != "":
-		CaptureUtil.save_viewport(get_viewport(), "%s/monv2_%s.png" % [_out, n])
+		CaptureUtil.save_viewport(get_viewport(), "%s/monv2_%s_%s.png" % [_out, _biome, n])
 	print("shot ", n)
