@@ -34,8 +34,8 @@ const SPRITES := {
 	3: {"name": "brute_tier3", "scale": 1.0, "offset_y": -56.0, "energy": 2.0},
 	LEAPER_KEY: {"name": "leaper_tier2", "scale": 1.0, "offset_y": -34.0, "energy": 2.0},
 }
-## Dossiers au format v2 : rendus d'emblée en cel-shadé, donc jamais redirigés vers un `_cel` (anciens doublons
-## de l'interrupteur F7, au format ancien : swarm_tier1_cel, brute_tier3_cel).
+## Dossiers au format v2 : rendus d'emblée en cel-shadé, donc jamais redirigés vers un `_cel` (interrupteur F7 ;
+## les anciens doublons swarm_tier1_cel et brute_tier3_cel sont supprimés depuis le 28/10/2026).
 const V2_FOLDERS := ["swarm_tier1", "shooter_tier2", "leaper_tier2", "brute_tier3"]
 ## Géométrie PAR DOSSIER des sprites encore au format ancien (forêt et cité, avant leurs lots v2) : prime sur
 ## SPRITES, avant la surcharge éventuelle de data/fauna.json. À retirer biome par biome à la livraison v2.
@@ -933,7 +933,7 @@ const EMISSION_Z := 1
 
 ## Bascule de style à chaud (RenderStyle, F7) : mêmes anim, frame et progression, frames `_cel` ou d'origine.
 func apply_render_style() -> void:
-	if _sprite == null or (_tier_frames != null and V2_FOLDERS.has(_tier_frames.resource_path.get_base_dir().get_file())):
+	if _sprite == null or (_sprite.sprite_frames != null and V2_FOLDERS.has(_sprite.sprite_frames.resource_path.get_base_dir().get_file())):
 		return # monstre v2 : un seul rendu (cel-shadé), pas de bascule F7
 	var f := RenderStyle.restyle_sprite(_sprite)
 	if f != null:
