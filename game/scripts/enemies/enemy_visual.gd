@@ -101,6 +101,15 @@ var _tier := 1
 var _radius := 20.0
 var _flash := false
 var _charge_mod := Color.WHITE ## teinte d'armement (set_charge), rendue après un flash de coup
+var _charge_level := 0
+var _base_scale := Vector2.ONE ## échelle de repos du sprite (écrasement / étirement d'armement et d'impact, cadavre)
+var _fx_on := false ## compté dans _fx_live (plafond TELEGRAPH_FX_MAX)
+var _fx_state := 0 ## 0 rien, 1 armement (écrasement tenu), 2 impact (étirement qui retombe)
+var _fx_t := 0.0
+var _fx_axis := Vector2(0.0, 1.0) ## poids écran (|x|, |y|) de l'axe du coup
+var _fx_blink := false
+var _fx_gain := 1.0 ## 1 monstre, moins pour un boss (grand sprite)
+static var _fx_live := 0
 var _poly := PackedVector2Array()
 var _sprite: AnimatedSprite2D = null
 var _use_sprite := false
@@ -442,7 +451,9 @@ func configure(tier: int, radius_px: float, is_boss: bool, variant: int = 0, bos
 	_key = LEAPER_KEY if tier == 2 and variant == 1 else tier
 	_radius = radius_px
 	_flash = false
+	_fx_end(false)
 	_charge_mod = Color.WHITE
+	_charge_level = 0
 	_action = &"run"
 	if _timed_frame >= 0:
 		_end_timed()
@@ -556,6 +567,7 @@ func _setup_boss_sprite(frames: SpriteFrames) -> void:
 	var s: float = fill * _radius / float(_boss_cfg["dim"])
 	var sc := _billboard_scale(s, _boss_cfg)
 	_sprite.scale = sc
+	_base_scale = sc
 	# pieds (ligne bottom) placés à BOSS_FEET x rayon sous l'origine (en y logique : l'échelle verticale du billboard compte)
 	_sprite.offset = Vector2(0.0, BOSS_FEET * _radius / sc.y - float(_boss_cfg["bottom"]) + float(_boss_cfg["fh"]) * 0.5)
 	_sprite.modulate = Color.WHITE
@@ -821,6 +833,8 @@ func play_attack(action: StringName, impact_in: float, dir: Vector2) -> void:
 		_boss_oneshot = action
 		_sprite.stop() # relance même si c'est la même anim
 		_boss_play(false)
+		set_charge(0)
+		set_charge(1) # teinte d'armement jusqu'à l'impact (boss_tick)
 	_strike_end = impact_in + after
 
 
@@ -857,10 +871,13 @@ func boss_tick(delta: float) -> void:
 	_strike_t += delta
 	if _boss_sprite and before < _strike_impact and _strike_t >= _strike_impact:
 		_sprite.speed_scale = _boss_speed(_sprite.animation)
+		set_charge(0) # impact : étirement et éclat
 	position = _strike_dir * _lunge_offset(_strike_t)
 	if _strike_t >= _strike_end:
 		_strike_t = -1.0
 		position = Vector2.ZERO
+		if _charge_level > 0:
+			clear_charge()
 		if _boss_sprite and BOSS_ATTACK_BASES.has(_boss_oneshot):
 			_boss_oneshot = &""
 			_boss_play(false)
@@ -895,6 +912,7 @@ func _setup_sprite(frames: SpriteFrames) -> void:
 		EmissiveOverlay.apply(_sprite, frames, cfg["energy"])
 		_lift_emission()
 	_sprite.scale = _billboard_scale(float(cfg["scale"]), cfg)
+	_base_scale = _sprite.scale
 	_sprite.offset = Vector2(0.0, cfg["offset_y"])
 	_sprite.modulate = Color.WHITE
 	_sprite.self_modulate = Color.WHITE # use_frames peut l'éclaircir (gain), remis à neuf à chaque configure
@@ -909,6 +927,7 @@ func _setup_sprite(frames: SpriteFrames) -> void:
 
 ## Les nœuds du sprite (corps + émission) sont créés dès l'instanciation du pool, jamais en jeu.
 func _ready() -> void:
+	set_process(false) # allumé seulement pendant un armement / impact (_fx_begin_*)
 	add_to_group(RenderStyle.GROUP)
 	var f := frames_for_tier(1)
 	if f != null:
@@ -1016,20 +1035,121 @@ func set_flash(on: bool) -> void:
 ## sur le sprite et son émission, plus vive au niveau 2 (visée verrouillée, coup imminent). Rouge < 1,5 : jamais
 ## confondue avec le drapeau du flash de coup ; alpha > 1 = lueur chaude additive du shader et émission avivée
 ## (sprite_flash.gdshader). Un appel par changement de niveau.
-const CHARGE_MODS: Array[Color] = [Color.WHITE, Color(1.2, 1.08, 0.9, 1.3), Color(1.45, 1.3, 1.0, 1.95)]
+const CHARGE_MODS: Array[Color] = [Color.WHITE, Color(1.25, 1.08, 0.88, 1.55), Color(1.45, 1.25, 0.95, 2.0)]
+const BOSS_CHARGE_MOD := Color(1.15, 1.05, 0.92, 1.35) ## boss : armement plus discret (grand sprite, coups fréquents)
+const IMPACT_MOD := Color(1.45, 1.3, 1.0, 1.75) ## éclat chaud de l'impact (rouge < 1,5 : jamais le blanc du coup reçu)
+## Axe écran (|x|, |y|) du coup par octant (DIRS : e se s sw w nw n ne) et par direction de boss (e s w n).
+const OCT_AXIS: Array[Vector2] = [Vector2(1, 0), Vector2(0.707, 0.707), Vector2(0, 1), Vector2(0.707, 0.707), Vector2(1, 0), Vector2(0.707, 0.707), Vector2(0, 1), Vector2(0.707, 0.707)]
+const DIR4_AXIS: Array[Vector2] = [Vector2(1, 0), Vector2(0, 1), Vector2(1, 0), Vector2(0, 1)]
 
 
-func set_charge(level: int) -> void:
-	var m: Color = CHARGE_MODS[clampi(level, 0, 2)]
-	if m == _charge_mod:
+## `blink` : clignotement de la teinte pendant l'armement (armements >= 0,5 s ; coupé si les flashs sont réduits).
+## Niveau 0 après un niveau > 0 = le coup part : étirement + éclat chaud d'impact (rendu seulement).
+func set_charge(level: int, blink := false) -> void:
+	level = clampi(level, 0, 2)
+	if level == _charge_level:
 		return
+	var prev := _charge_level
+	_charge_level = level
+	var m: Color = BOSS_CHARGE_MOD if (_boss_sprite and level == 1) else CHARGE_MODS[level]
 	_charge_mod = m
+	if prev == 0:
+		_fx_blink = blink
+		_fx_begin(1)
+	elif level == 0:
+		_fx_begin(2)
 	if _flash:
 		return
 	if _use_sprite:
 		_sprite.modulate = m
 	else:
 		queue_redraw()
+
+
+## Retire l'armement sans impact (interruption : emprisonnement, étourdissement).
+func clear_charge() -> void:
+	if _charge_level == 0 and not _fx_on:
+		return
+	_charge_level = 0
+	_charge_mod = Color.WHITE
+	_fx_end(true)
+	if not _use_sprite:
+		queue_redraw()
+
+
+func _fx_begin(state: int) -> void:
+	if not _use_sprite or _sprite == null:
+		return
+	if not _fx_on:
+		if _fx_live >= Balance.TELEGRAPH_FX_MAX:
+			return # plafond atteint : teinte statique seulement
+		_fx_on = true
+		_fx_live += 1
+	_fx_state = state
+	_fx_t = 0.0
+	_fx_gain = 0.6 if _boss_sprite else 1.0
+	if _boss_sprite:
+		_fx_axis = DIR4_AXIS[clampi(_boss_d4, 0, 3)]
+	else:
+		_fx_axis = OCT_AXIS[facing_octant] if facing_octant >= 0 else Vector2(0.0, 1.0)
+	set_process(true)
+
+
+func _fx_end(restore: bool) -> void:
+	if _fx_on:
+		_fx_on = false
+		_fx_live = maxi(_fx_live - 1, 0)
+	_fx_state = 0
+	set_process(false)
+	if restore and _sprite != null and _use_sprite:
+		_sprite.scale = _base_scale
+		if not _flash:
+			_sprite.modulate = _charge_mod
+
+
+func _exit_tree() -> void:
+	_fx_end(false)
+
+
+func _fx_scale(along: float, perp: float) -> void:
+	var a := _fx_axis
+	_sprite.scale = _base_scale * Vector2(1.0 + along * a.x + perp * a.y, 1.0 + along * a.y + perp * a.x)
+
+
+func _process(delta: float) -> void:
+	if _sprite == null or _fx_state == 0:
+		_fx_end(false)
+		return
+	_fx_t += delta
+	var flashy := Quality.flashes_level >= 2
+	if _fx_state == 1:
+		var k := clampf(_fx_t / Balance.ARM_IN_S, 0.0, 1.0)
+		k = k * k * (3.0 - 2.0 * k)
+		var sq := Balance.ARM_SQUASH * k * _fx_gain
+		_fx_scale(-sq, sq * 0.5)
+		if _fx_blink and flashy and not _flash:
+			var m := CHARGE_MODS[maxi(_charge_level, 1)]
+			m.a = clampf(m.a + 0.3 * sin(_fx_t * TAU * Balance.ARM_BLINK_HZ), 1.05, 2.0)
+			_sprite.modulate = m
+	else:
+		var t := _fx_t / Balance.IMPACT_S
+		if t >= 1.0:
+			_fx_end(true)
+			return
+		var f := (1.0 - t) * (1.0 - t)
+		var st := Balance.IMPACT_STRETCH * f * _fx_gain
+		_fx_scale(st, -st * 0.4)
+		if flashy and not _flash:
+			var m2 := IMPACT_MOD
+			m2.a = lerpf(1.75, 1.0, t)
+			_sprite.modulate = m2
+
+
+## Cadavre au sol (CorpsePool) : vrai si ce sprite a l'anim `death_<dir>` ; faux = disparition immédiate (ancien comportement).
+func leave_corpse(pool: CorpsePool, pos: Vector2) -> bool:
+	if _boss_sprite or not _use_sprite or _sprite == null or _skin_prefix != "" or facing_octant < 0:
+		return false
+	return pool.try_spawn(pos, _sprite.sprite_frames, facing_octant, _base_scale, _sprite.offset, _sprite.self_modulate)
 
 
 ## Hitstop : animation figée (le corps et l'émission restent synchronisés par frame_changed).

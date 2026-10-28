@@ -102,6 +102,20 @@ const BRUTE_RECOVERY_S := 0.4 ## immobile après le cône ou l'onde de choc
 const SWARM_BITE_PAUSE_S := 0.25 ## essaim : sur place après chaque morsure (contact passif, sans armement)
 const SWARM_BITE_WINDUP_S := 0.35 ## essaim : armement de la morsure (tête en arrière) avant le coup ; au plus une morsure par CONTACT_INTERVAL
 const SWARM_BITE_REACH_U := 0.25 ## essaim : allonge au-delà du contact ; la morsure s'arme à cette distance et manque si le joueur en sort
+## Cadavres des monstres de base (anim `death_<e|s|w|n>` des sprites v2) : le monstre joue sa mort puis reste
+## au sol, puis s'efface en fondu. Pool plafonné par palier de qualité (Bas / Moyen / Haut), réutilisé sans allocation.
+const CORPSE_MAX_BY_TIER: Array[int] = [12, 24, 40]
+const CORPSE_HOLD_S := 5.0 ## temps au sol (dernière frame) avant le fondu
+const CORPSE_FADE_S := 1.5 ## durée du fondu
+## Lisibilité des attaques (passe du 28/10/2026) : rendu seulement, aucun effet sur les dégâts ni les durées.
+const TELEGRAPH_FX_MAX := 40 ## monstres simultanément animés par l'armement / l'impact (écrasement, clignotement)
+const TELEGRAPH_GROUND_MAX := 14 ## télégraphes au sol de monstres de base (cône de brute, onde, course) affichés en même temps ; au-delà l'attaque est retardée de TELEGRAPH_RETRY_S
+const TELEGRAPH_RETRY_S := 0.35
+const ARM_SQUASH := 0.08 ## armement : le corps s'écrase de 8 % le long de l'axe du coup (et s'élargit de moitié moins)
+const ARM_IN_S := 0.14 ## durée de l'écrasement
+const IMPACT_STRETCH := 0.14 ## impact : étirement de 14 % le long de l'axe du coup
+const IMPACT_S := 0.16 ## durée de l'impact (retour à l'échelle, éclat chaud)
+const ARM_BLINK_HZ := 7.0 ## clignotement de la teinte d'armement (monstres armant >= 0,5 s ; coupé si flashs réduits)
 const SWARM_BITE_RECOIL_U := 0.25 ## petit recul après la morsure (lisibilité du coup, évite de coller le joueur)
 
 # Boss

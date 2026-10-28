@@ -21,6 +21,9 @@ const EDGE_INNER := Color(1.0, 0.886, 0.784, 1.0) ## #FFE2C8, liseré clair
 const EDGE_OUTER_PX := 6.0 ## trait sombre (dépasse de 2 px de chaque côté du clair)
 const EDGE_INNER_PX := 2.0
 const EDGE := EDGE_INNER ## compat : ancien nom
+## Remplissage de progression : dessiné à l'alpha final (PROGRESS / 0,64 ≈ 0,55 ; 0,78 renforcé), modulé de FILL_RAMP_START
+## (alpha d'origine 0,35 au début) à 1 à l'impact : un télégraphe qui se remplit se lit mieux de loin.
+const FILL_RAMP_START := 0.64
 const RING_STEPS := 32.0 ## l'anneau n'est redessiné que tous les 1/32 de progression
 
 ## Télégraphes renforcés (A11y-L9, réglage accessibility/strong_telegraphs, défaut false). Même grammaire de formes
@@ -204,6 +207,7 @@ func _show(shape: Shape, pos: Vector2, angle: float, radius: float, half_angle: 
 func set_progress(p: float) -> void:
 	var k := clampf(p, 0.0, 1.0)
 	_fill.scale = Vector2(k, 1.0) if _shape == Shape.LINE else Vector2(k, k)
+	_fill.modulate.a = lerpf(FILL_RAMP_START, 1.0, k) # le remplissage s'intensifie jusqu'à l'impact (lisible à 250 monstres)
 	var step := int(k * RING_STEPS)
 	if step != _ring_step and _ring != null:
 		_ring_step = step
@@ -319,6 +323,7 @@ class _Fill extends Node2D:
 
 	func _draw() -> void:
 		var col := EnemyTelegraph.STRONG_PROGRESS if strong_on else EnemyTelegraph.PROGRESS
+		col.a = minf(col.a / EnemyTelegraph.FILL_RAMP_START, 0.85) # alpha final ; modulate = FILL_RAMP_START au début retrouve l'alpha d'origine
 		if _shape == EnemyTelegraph.Shape.CIRCLE:
 			draw_circle(Vector2.ZERO, _radius, col)
 		elif _shape == EnemyTelegraph.Shape.CONE:

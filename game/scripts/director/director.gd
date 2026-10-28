@@ -77,6 +77,7 @@ var nav: NavField = null ## champ de flux de la carte liée (lecture seule pour 
 
 var _container: Node2D
 var _projectiles: EnemyProjectilePool
+var corpses: CorpsePool ## cadavres des monstres de base (anim death des sprites v2)
 var _free: Array[Enemy] = []
 var _active: Array[Enemy] = [] ## monstres hors boss (comptent pour le plafond)
 var _free_bosses: Array[Enemy] = []
@@ -115,6 +116,9 @@ func _ready() -> void:
 	# chaîne de tri CanvasItem : le Director doit être trié lui aussi pour que ses monstres se mêlent à
 	# World (joueur, coffres, blocs) ; ses autres enfants (projectiles, impacts) restent au-dessus par z.
 	y_sort_enabled = true
+	corpses = CorpsePool.new()
+	corpses.name = &"Corpses"
+	add_child(corpses)
 	_projectiles = EnemyProjectilePool.new()
 	_projectiles.name = &"EnemyProjectiles"
 	_projectiles.z_index = maxi(_projectiles.z_index, 10) # §2.3 : projectiles au-dessus des murs (lisibilité)
@@ -263,6 +267,7 @@ func release_enemy(e: Enemy) -> void:
 
 ## Retire tous les monstres, boss et projectiles sans émettre de mort (changement d'étage).
 func despawn_all() -> void:
+	corpses.clear()
 	for e in _active.duplicate():
 		release_enemy(e)
 	for b in _bosses.duplicate():

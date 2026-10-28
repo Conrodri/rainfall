@@ -543,6 +543,7 @@ func _common_activate(pos: Vector2) -> void:
 	pack_bonus = false
 	_windup = Windup.NONE
 	_release_token()
+	_tele_release()
 	_aim_locked = false
 	_flash_left = 0.0
 	_burn_left = 0.0
@@ -581,6 +582,8 @@ func deactivate() -> void:
 	telegraph.hide_telegraph()
 	_windup = Windup.NONE
 	_release_token()
+	_tele_release()
+	visual.clear_charge()
 	_dash_left = 0.0
 	if _light != null:
 		_light.set_enabled(false)
@@ -601,6 +604,8 @@ func _die() -> void:
 		Events.boss_killed.emit(self, boss_kind == &"etage")
 	else:
 		Events.enemy_killed.emit(self, position, tier, is_elite)
+		if director != null and director.corpses != null: # anim death du sprite v2 : cadavre au sol (sinon disparition immédiate)
+			visual.leave_corpse(director.corpses, position)
 	if director:
 		director.release_enemy(self)
 	else:
@@ -750,11 +755,14 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 		2 when variant == VARIANT_LEAPER:
 			var keep_l := LEAP_KEEP_DISTANCE_U * U
 			if _spell_cd <= 0.0 and dist < LEAP_TRIGGER_U * U and path_dir == Vector2.ZERO:
+				if not _tele_acquire():
+					_spell_cd = _BAL.TELEGRAPH_RETRY_S
+					return
 				_spell_cd = LEAP_CD
 				_facing = dir.angle()
 				visual.set_facing(_facing)
 				visual.set_action(&"charge")
-				visual.set_charge(1)
+				visual.set_charge(1, true)
 				_start_windup(Windup.LEAP, LEAP_WINDUP, position)
 				telegraph.show_line(position, _facing, LEAP_LENGTH_U * U, LEAP_WIDTH_U * U)
 				_sfx(&"telegraph.warn_light.light", 0.0, true)
@@ -775,19 +783,19 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 			elif dist < RETREAT_U * U: # repli plus lent que le joueur
 				move = -dir * speed_px * _BAL.SHOOTER_RETREAT_SPEED
 		3:
-			if _spell_cd <= 0.0 and dist < SHOCK_RADIUS_U * U * 0.85:
+			if _spell_cd <= 0.0 and dist < SHOCK_RADIUS_U * U * 0.85 and _tele_acquire():
 				_spell_cd = SHOCK_CD
-				visual.set_charge(1)
+				visual.set_charge(1, true)
 				var shock_wind := maxf(SHOCK_WINDUP, visual.attack_impact_time(&"cast")) # l'impact de l'anim ne tombe jamais avant le coup
 				visual.set_action_timed(&"cast", shock_wind) # anim cast_<dir> calée sur le coup, tenue jusqu'à la fin de RECOVER
 				_start_windup(Windup.SHOCK, shock_wind, position)
 				telegraph.show_circle(position, SHOCK_RADIUS_U * U)
 				_sfx(&"telegraph.warn_heavy.heavy", 0.0, true)
-			elif _attack_cd <= 0.0 and dist < CONE_RANGE_U * U:
+			elif _attack_cd <= 0.0 and dist < CONE_RANGE_U * U and _tele_acquire():
 				_attack_cd = CONE_CD
 				_facing = dir.angle()
 				visual.set_facing(_facing)
-				visual.set_charge(1)
+				visual.set_charge(1, true)
 				var cone_wind := maxf(CONE_WINDUP, visual.attack_impact_time(&"attack"))
 				visual.set_action_timed(&"attack", cone_wind) # frame d'impact de l'anim = instant du coup
 				_start_windup(Windup.CONE, cone_wind, position)
@@ -895,7 +903,7 @@ func _begin_shot(dir: Vector2, salvo: bool) -> bool:
 	_aim_locked = false
 	visual.set_facing(_facing)
 	visual.set_action_timed(&"attack", wind) # frame d'impact = départ du projectile (repli run si l'anim manque)
-	visual.set_charge(1)
+	visual.set_charge(1, wind >= 0.5)
 	_start_windup(Windup.SALVO if salvo else Windup.SHOT, wind, position)
 	if salvo:
 		telegraph.show_cone(position, _facing, _BAL.SHOOTER_SALVO_CONE_U * U, SALVO_SPREAD + 0.1)
@@ -905,12 +913,39 @@ func _begin_shot(dir: Vector2, salvo: bool) -> bool:
 	return true
 
 
+## Plafond de télégraphes au sol de monstres de base affichés en même temps (Balance.TELEGRAPH_GROUND_MAX) : une
+## attaque n'est jamais armée sans son télégraphe ; sans place, elle attend TELEGRAPH_RETRY_S (comme les jetons du tireur).
+static var _tele_live := 0
+var _tele_held := false
+
+
+func _tele_acquire() -> bool:
+	if _tele_held:
+		return true
+	if _tele_live >= _BAL.TELEGRAPH_GROUND_MAX:
+		return false
+	_tele_held = true
+	_tele_live += 1
+	return true
+
+
+func _tele_release() -> void:
+	if _tele_held:
+		_tele_held = false
+		_tele_live = maxi(_tele_live - 1, 0)
+
+
+static func ground_telegraphs() -> int:
+	return _tele_live
+
+
 ## Interrompt un armement, une récupération ou une course (emprisonnement) : télégraphe, jeton et pose rendus.
 func _cancel_windup() -> void:
 	_windup = Windup.NONE
 	telegraph.hide_telegraph()
 	_release_token()
-	visual.set_charge(0)
+	_tele_release()
+	visual.clear_charge()
 	visual.set_action(&"run")
 
 
@@ -960,6 +995,7 @@ static func reset_shot_tokens() -> void:
 func _resolve_windup(player: Node2D, player_pos: Vector2) -> void:
 	var kind := _windup
 	_windup = Windup.NONE
+	_tele_release()
 	telegraph.hide_telegraph()
 	match kind:
 		Windup.LEAP:
