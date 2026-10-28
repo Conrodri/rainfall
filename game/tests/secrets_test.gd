@@ -119,6 +119,17 @@ func _test_b(id: String) -> void:
 	await _frames(3)
 	_check("%s : un monstre n'enfonce pas la plaque" % id, not room.plates[0].pressed)
 	foe.queue_free()
+	# ligne OBJECTIFS et minimap : rien avant la 1re dalle (pas de spoiler), porte = mur tant que fermée
+	var panel := ObjectivesPanel.new()
+	panel.stage_manager = _mgr
+	add_child(panel)
+	panel.refresh()
+	_check("%s : pas de ligne secrète avant la 1re dalle" % id, not panel.is_secret_shown())
+	var mm := Minimap.new()
+	add_child(mm)
+	mm._bind_map(map)
+	var dc: Vector2i = mm._secret_cells.keys()[0]
+	_check("%s : minimap porte fermée = mur" % id, mm._vis_cell(dc.x, dc.y) == "#")
 	var seen := {"plate": 0, "open": 0, "spawned": 0, "killed": 0, "done": 0}
 	room.plate_pressed.connect(func(_i, _n, _t) -> void: seen["plate"] += 1)
 	room.opened.connect(func(_i) -> void: seen["open"] += 1)
@@ -130,6 +141,8 @@ func _test_b(id: String) -> void:
 	await _frames(3)
 	_check("%s : plaque 1 enfoncée" % id, room.plates[1].pressed and room.pressed_count() == 1 and not room.is_open)
 	_check("%s : objectif Dalles 1/2" % id, room.objective_text() == "Dalles  1/2")
+	panel.refresh()
+	_check("%s : ligne secrète Dalles 1/2" % id, panel.is_secret_shown() and panel.secret_text() == "Dalles 1/2", panel.secret_text())
 	_player.global_position = map.to_global(map.get_player_start())
 	await _frames(3)
 	_check("%s : la plaque reste enfoncée" % id, room.plates[1].pressed)
@@ -142,6 +155,14 @@ func _test_b(id: String) -> void:
 	nav = _director.nav
 	_check("%s : salle accessible porte ouverte (NavField refait)" % id, nav != null and nav.is_reachable(inside))
 	_check("%s : objectif Gardiens 0/2" % id, room.objective_text() == "Gardiens  0/2")
+	panel.refresh()
+	_check("%s : ligne secrète Gardiens 0/2" % id, panel.secret_text() == "Gardiens 0/2", panel.secret_text())
+	var floor_cells := 0
+	for c: Vector2i in mm._secret_cells:
+		if mm._vis_cell(c.x, c.y) == ".":
+			floor_cells += 1
+	_check("%s : minimap porte ouverte = sol (%d cases)" % [id, floor_cells], floor_cells == mm._secret_cells.size() and floor_cells > 1)
+	var gold0 := RunState.gold
 	# télégraphe 1 s + 2 gardiens espacés de 1,5 s
 	await get_tree().create_timer(SecretRoom.TELEGRAPH_S + SecretRoom.GUARDIAN_GAP_S + 0.6).timeout
 	_check("%s : 2 gardiens apparus" % id, seen["spawned"] == 2, str(seen))
@@ -158,6 +179,11 @@ func _test_b(id: String) -> void:
 			g.take_damage(1.0e9, false, &"test")
 	await _frames(3)
 	_check("%s : 2 gardiens tués" % id, room.dead_count() == 2 and seen["killed"] == 2 and seen["done"] == 1)
+	_check("%s : prime d'or des gardiens" % id, RunState.gold > gold0, "%s -> %s" % [gold0, RunState.gold])
+	panel.refresh()
+	_check("%s : ligne secrète terminée" % id, panel.secret_text().begins_with("Salle secrète"), panel.secret_text())
+	panel.queue_free()
+	mm.queue_free()
 	_check("%s : 2 reliquaires (coffres kind boss)" % id, _mgr.chests.size() == chests0 + 2 and _mgr.chests.back().kind == &"boss")
 	_check("%s : secret terminé" % id, room.is_complete() and room.objective_text() == "" and _mgr.secret_status()[0]["complete"])
 

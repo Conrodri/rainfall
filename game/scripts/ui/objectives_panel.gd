@@ -25,6 +25,7 @@ var _title: Label
 var _boss_row: ObjectiveRow
 var _charge_row: ObjectiveRow
 var _teleport_row: ObjectiveRow
+var _secret_row: ObjectiveRow
 var _style: StyleBoxFlat
 var _pulse := 0.0
 var _compact := false ## tactile : place comptée au-dessus de la grappe de sorts (voir set_compact)
@@ -53,6 +54,9 @@ func _init() -> void:
 	_teleport_row = ObjectiveRow.new("Activer le téléporteur")
 	_teleport_row.visible = false # étage pas encore terminé
 	v.add_child(_teleport_row)
+	_secret_row = ObjectiveRow.new("Salle secrète")
+	_secret_row.visible = false # discrète : seulement une fois une dalle enfoncée (pas de spoiler avant)
+	v.add_child(_secret_row)
 	set_ui_scale(1.0)
 
 
@@ -65,7 +69,7 @@ func set_ui_scale(s: float) -> void:
 	_style.content_margin_bottom = (8.0 if _compact else 12.0) * s * tk
 	UiTheme.pad_box(_style, maxi(int(26 * s), HudMetrics.floor_px())) # texte à distance du trait du cadre
 	_title.add_theme_font_size_override("font_size", int(22 * s))
-	for r in [_boss_row, _charge_row, _teleport_row]:
+	for r in [_boss_row, _charge_row, _teleport_row, _secret_row]:
 		(r as ObjectiveRow).set_ui_scale(s)
 	(_title.get_parent() as VBoxContainer).add_theme_constant_override("separation", int(6 * s))
 
@@ -99,6 +103,7 @@ func _apply_rows() -> void:
 	var hide_done := _compact and _teleport_row.visible
 	_boss_row.visible = not hide_done
 	_charge_row.visible = not hide_done
+	_secret_row.visible = _secret_row.visible and not _compact # tactile : deux lignes au plus
 
 
 ## Coin haut-droit du panneau en `top_right` (px du viewport), largeur bornée par `max_width`.
@@ -127,6 +132,9 @@ func refresh() -> void:
 	var shown := big != null and (big.state == Pillar.STATE_ACTIVE or big.state == Pillar.STATE_DONE)
 	if mgr != null and mgr.floor_cleared:
 		shown = true
+	var sec := _secret_line(mgr)
+	if not sec.is_empty():
+		shown = true
 	visible = shown
 	if not shown:
 		return
@@ -139,7 +147,39 @@ func refresh() -> void:
 	_charge_row.set_state(ratio >= 1.0, COL_DONE if ratio >= 1.0 else (COL_CHARGE if charging else COL_TODO), "%d %%" % pct)
 	_teleport_row.visible = mgr != null and mgr.floor_cleared
 	_teleport_row.set_state(false, COL_TELEPORT, "")
+	if sec.is_empty():
+		_secret_row.visible = false
+	else:
+		_secret_row.visible = true
+		_secret_row.set_text(sec["label"])
+		_secret_row.set_state(sec["done"], COL_DONE if sec["done"] else COL_TODO, sec["value"])
 	_apply_rows()
+
+
+## Ligne de la salle secrète (StageManager.secret_status()) : {} tant qu'aucune dalle n'est enfoncée et que la porte
+## est fermée ; sinon {label, value, done} du premier secret commencé non terminé (le dernier terminé sinon).
+func _secret_line(mgr: StageManager) -> Dictionary:
+	if mgr == null:
+		return {}
+	var out := {}
+	for st: Dictionary in mgr.secret_status():
+		if int(st["plates"]) <= 0 and not bool(st["open"]):
+			continue
+		if bool(st["complete"]):
+			out = {"label": "Salle secrète", "value": "", "done": true}
+			continue
+		if not bool(st["open"]):
+			return {"label": "Dalles", "value": "%d/%d" % [int(st["plates"]), int(st["plates_total"])], "done": false}
+		return {"label": "Gardiens", "value": "%d/%d" % [int(st["guardians_dead"]), int(st["guardians_total"])], "done": false}
+	return out
+
+
+func is_secret_shown() -> bool:
+	return visible and _secret_row.visible
+
+
+func secret_text() -> String:
+	return _secret_row.label_text() + " " + _secret_row.value_text()
 
 
 func is_boss_done() -> bool:
@@ -218,6 +258,12 @@ class ObjectiveRow extends HBoxContainer:
 
 	func value_text() -> String:
 		return _value.text
+
+	func set_text(t: String) -> void:
+		_text.text = t
+
+	func label_text() -> String:
+		return _text.text
 
 
 ## Case à cocher (placeholder dessiné).

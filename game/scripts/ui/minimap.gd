@@ -60,6 +60,9 @@ var iso := false ## carte isométrique : losange (rotation 45° puis écrasement
 var redraw_count := 0 ## nombre de _draw (tests : pas de redessin inutile)
 
 var _map: Node2D = null
+var _grid: Array = [] ## grille du JSON de la carte courante
+var _secret_cells := {} ## Vector2i -> id du secret (porte « D » et sol scellé « : » de sa salle)
+var _secrets_open := {} ## id du secret -> true une fois la porte ouverte (dessinés comme sol), sinon comme mur
 var _frame := Transform2D.IDENTITY ## repère carte -> logique local de la carte (StageMap.frame_of)
 var _sig := -1 ## signature des marqueurs au dernier dessin
 var _grid_size := Vector2i.ZERO
@@ -182,8 +185,12 @@ func _process(delta: float) -> void:
 
 ## Construit l'image de la carte (une seule fois par étage).
 func _bind_map(m: Node2D) -> void:
+	if is_instance_valid(_map) and _map is StageMap and (_map as StageMap).secret_door_opened.is_connected(_on_secret_door_opened):
+		(_map as StageMap).secret_door_opened.disconnect(_on_secret_door_opened)
 	_map = m
 	map_texture = null
+	_secrets_open.clear()
+	_secret_cells.clear()
 	_sig = -1
 	_frame = StageMap.frame_of(m) if m != null else Transform2D.IDENTITY
 	iso = m is StageMap and (m as StageMap).is_iso()
@@ -199,33 +206,83 @@ func _bind_map(m: Node2D) -> void:
 	for row in grid:
 		w = maxi(w, String(row).length())
 	_grid_size = Vector2i(w, h)
+	_grid = grid
+	_index_secret_cells(data)
+	if m is StageMap:
+		(m as StageMap).secret_door_opened.connect(_on_secret_door_opened)
+	_build_image()
+
+
+## Cases de la salle scellée (porte « D » + sol « : » joint par proximité) -> id du secret.
+func _index_secret_cells(data: Dictionary) -> void:
+	for sc: Dictionary in data.get("secrets", []):
+		var id := StringName(sc["id"])
+		var queue: Array[Vector2i] = []
+		for c in sc.get("door_cells", []):
+			var v := Vector2i(int(c[0]), int(c[1]))
+			_secret_cells[v] = id
+			queue.append(v)
+		while not queue.is_empty():
+			var cur: Vector2i = queue.pop_back()
+			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				var n: Vector2i = cur + d
+				if not _secret_cells.has(n) and _raw_cell(n.x, n.y) == ":":
+					_secret_cells[n] = id
+					queue.append(n)
+
+
+func _raw_cell(x: int, y: int) -> String:
+	return _cell(_grid, x, y)
+
+
+func _on_secret_door_opened(secret_id: StringName) -> void:
+	_secrets_open[secret_id] = true
+	_build_image()
+	_sig = -1
+
+
+## Case vue par la minimap : porte scellée et salle scellée = mur tant que la porte est fermée, sol après ouverture.
+func _vis_cell(x: int, y: int) -> String:
+	var c := _raw_cell(x, y)
+	if c != "D" and c != ":":
+		return c
+	var id: Variant = _secret_cells.get(Vector2i(x, y), null)
+	if id != null and _secrets_open.has(id):
+		return "."
+	return "#" if id != null or c == "D" else "."
+
+
+func _build_image() -> void:
+	var grid := _grid
+	var w := _grid_size.x
+	var h := _grid_size.y
 	var img := Image.create(w * IMG_K, h * IMG_K, false, Image.FORMAT_RGBA8)
 	img.fill(COL_FLOOR)
 	for y in h:
 		for x in w:
-			var c := _cell(grid, x, y)
+			var c := _vis_cell(x, y)
 			var r := Rect2i(x * IMG_K, y * IMG_K, IMG_K, IMG_K)
 			if c == "#":
 				img.fill_rect(r, COL_WALL)
 				# contour : bord de la cellule de mur qui touche une cellule non-mur
-				if _cell(grid, x - 1, y) != "#":
+				if _vis_cell(x - 1, y) != "#":
 					img.fill_rect(Rect2i(r.position.x, r.position.y, 1, IMG_K), COL_WALL_EDGE)
-				if _cell(grid, x + 1, y) != "#":
+				if _vis_cell(x + 1, y) != "#":
 					img.fill_rect(Rect2i(r.end.x - 1, r.position.y, 1, IMG_K), COL_WALL_EDGE)
-				if _cell(grid, x, y - 1) != "#":
+				if _vis_cell(x, y - 1) != "#":
 					img.fill_rect(Rect2i(r.position.x, r.position.y, IMG_K, 1), COL_WALL_EDGE)
-				if _cell(grid, x, y + 1) != "#":
+				if _vis_cell(x, y + 1) != "#":
 					img.fill_rect(Rect2i(r.position.x, r.end.y - 1, IMG_K, 1), COL_WALL_EDGE)
 			elif c == "~":
 				img.fill_rect(r, COL_DEEP)
 				# écume : bord qui touche une cellule praticable (ni mur ni eau profonde)
-				if not _cell(grid, x - 1, y) in ["#", "~"]:
+				if not _vis_cell(x - 1, y) in ["#", "~"]:
 					img.fill_rect(Rect2i(r.position.x, r.position.y, 1, IMG_K), COL_DEEP_EDGE)
-				if not _cell(grid, x + 1, y) in ["#", "~"]:
+				if not _vis_cell(x + 1, y) in ["#", "~"]:
 					img.fill_rect(Rect2i(r.end.x - 1, r.position.y, 1, IMG_K), COL_DEEP_EDGE)
-				if not _cell(grid, x, y - 1) in ["#", "~"]:
+				if not _vis_cell(x, y - 1) in ["#", "~"]:
 					img.fill_rect(Rect2i(r.position.x, r.position.y, IMG_K, 1), COL_DEEP_EDGE)
-				if not _cell(grid, x, y + 1) in ["#", "~"]:
+				if not _vis_cell(x, y + 1) in ["#", "~"]:
 					img.fill_rect(Rect2i(r.position.x, r.end.y - 1, IMG_K, 1), COL_DEEP_EDGE)
 			elif c == ",":
 				img.fill_rect(r, COL_SHALLOW)

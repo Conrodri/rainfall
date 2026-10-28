@@ -766,6 +766,16 @@ func gold_to_xp(gold_amount: float, _D: float = 1.0) -> float:
 	return GOLD_TO_XP_SHARE * gold_amount * 0.5
 
 
+## Gardiens des salles secrètes (brutes élites nommées) : leur prime d'élite est multipliée par GUARDIAN_GOLD_MULT
+## (2 = prime d'élite doublée ; l'XP reste celle d'une élite).
+const GUARDIAN_GOLD_MULT := 2.0
+
+
+## Or SUPPLÉMENTAIRE versé à la mort d'un gardien (en plus de la prime d'élite normale du PickupManager).
+func guardian_bonus_gold(D: float, tier: int) -> float:
+	return (GUARDIAN_GOLD_MULT - 1.0) * monster_gold(D, monster_cost(tier, true))
+
+
 func mini_boss_gold(D: float) -> float:
 	return boss_gold(&"mini", D)
 

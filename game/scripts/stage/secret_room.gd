@@ -190,7 +190,7 @@ func _process(delta: float) -> void:
 			busy = true
 			if is_instance_valid(g):
 				var lbl := _labels[i] as Label
-				lbl.position = to_local((g as Node2D).global_position) + Vector2(-lbl.size.x * 0.5, -190.0)
+				lbl.position = to_local((g as Node2D).global_position) + Vector2(-lbl.size.x * 0.5, -150.0) # sous la barre d'élite : nom + barre se lisent ensemble
 	if busy:
 		queue_redraw()
 	else:
@@ -237,6 +237,12 @@ func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) ->
 		(_labels[i] as Label).queue_free()
 		_labels[i] = null
 	_drop_relic(map.to_local(enemy.global_position))
+	var pm := get_tree().get_first_node_in_group(&"pickups")
+	var bonus := Balance.guardian_bonus_gold(RunState.difficulty(), GUARDIAN_TIER)
+	if pm != null and pm.has_method(&"drop_bounty"):
+		pm.call(&"drop_bounty", enemy.global_position, bonus)
+	else:
+		RunState.add_gold(bonus) # sans PickupManager (tests)
 	guardian_killed.emit(secret_id, String(guardian_defs[i]["name"]), dead_count(), guardian_defs.size())
 	if is_complete():
 		completed.emit(secret_id)

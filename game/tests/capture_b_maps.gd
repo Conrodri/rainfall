@@ -50,6 +50,7 @@ func _run() -> void:
 		stage.teleporter.used.emit()
 		await _f(10)
 	await _f(30)
+	await get_tree().create_timer(4.5).timeout
 	print("carte ", stage.map_id)
 	var cam := m.get(&"camera") as Camera2D
 	cam.limit_left = -100000
