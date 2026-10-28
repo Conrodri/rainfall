@@ -12,6 +12,9 @@ const VFX_FADE_IN_S := 0.12
 const VFX_FADE_OUT_S := 0.4 ## extinction d'une zone persistante sans anim `end`
 const VFX_Z := -1 ## sous les personnages, au-dessus du sol (comme les télégraphes)
 const FALLBACK_WIDTH := 2.0 ## contour fin (px logiques)
+const TILE_CLEAR_PX := 77.0 ## pavage : aucune copie à moins de 1,2 u du centre
+const TILE_INNER_SCALE := 0.6 ## copies intérieures plus basses
+const TILE_INNER_ALPHA := 0.45
 const ARC_ANIM_S := 0.25 ## repli de la demi-lune : durée du balayage
 
 var caster: Object = null
@@ -31,6 +34,7 @@ var vfx: AnimatedSprite2D = null
 var outline: ZoneOutline = null ## contour de la zone persistante (null : instantanée, secteur, ou sans couche)
 var _vfx_len := 0.0 ## durée de l'anim `default` (s)
 var _tiles: Array[AnimatedSprite2D] = [] ## copies de pavage (flammes plafonnées), voir SpellData.vfx_flame_h_px
+var _tile_a: Array[float] = []
 var _zone_scale := Vector2.ZERO ## échelle nominale (une seule copie calée sur le rayon)
 var _ending := false ## zone persistante finie : anim `end` en cours, plus de dégâts
 
@@ -89,8 +93,7 @@ func _setup_vfx() -> void:
 	if duration <= 0.0:
 		_anim = maxf(_anim, _vfx_len) # gerbe : la zone vit jusqu'au bout de l'anim (dégâts déjà appliqués)
 	vfx.modulate.a = 0.0 if duration > 0.0 else 1.0
-	for s in _tiles:
-		s.modulate.a = vfx.modulate.a
+	_set_tiles_alpha(vfx.modulate.a)
 
 
 ## Échelle maximale d'une copie pour que les flammes ne dépassent pas vfx_flame_cap_u (0 = pas de plafond).
@@ -101,30 +104,40 @@ func _flame_k_cap() -> float:
 	return spell.vfx_flame_cap_u * Iso.SCREEN_PX_PER_U / spell.vfx_flame_h_px
 
 
-## Pave le disque de jeu de copies à l'échelle k_cap (hexagones, recouvrement léger) : la copie centrale est `vfx`.
+## Habille la zone de copies à l'échelle k_cap sans masquer ce qui brûle dedans : anneau de flammes sur le bord,
+## quelques copies plus basses et translucides à l'intérieur, centre (joueur) dégagé. Max 12 copies.
 func _tile_vfx(frames: SpriteFrames, k_cap: float, asp: float) -> void:
+	vfx.visible = false # la copie centrale ne sert plus que d'horloge d'anim
 	var tile_r := spell.vfx_radius_px * k_cap # rayon de l'empreinte d'une copie (px logiques)
-	var d := tile_r * 1.4
-	var reach := maxf(radius - tile_r * 0.6, 0.0)
-	vfx.scale = Vector2(k_cap, k_cap / asp)
-	var n := int(ceil(reach / (d * 0.866))) + 1
+	var edge_r := maxf(radius - tile_r * 0.6, 0.0)
+	var specs: Array = []
+	var n_edge := 9
+	for i in n_edge:
+		specs.append([Vector2.from_angle(TAU * i / n_edge + 0.3) * edge_r, 1.0, 1.0])
+	var in_r := clampf(edge_r * 0.5, TILE_CLEAR_PX, edge_r)
+	for i in 3:
+		specs.append([Vector2.from_angle(TAU * (i + 0.5) / 3.0 + 1.1) * in_r, TILE_INNER_SCALE, TILE_INNER_ALPHA])
 	var idx := 0
-	for j in range(-n, n + 1):
-		for i in range(-n, n + 1):
-			var c := Vector2(d * (i + 0.5 * j), d * 0.866 * j)
-			if (i == 0 and j == 0) or c.length() > reach:
-				continue
-			idx += 1
-			var s := AnimatedSprite2D.new()
-			s.name = "VfxTile%d" % idx
-			s.position = c
-			s.scale = Vector2(k_cap * (1.0 if idx % 2 == 0 else -1.0), k_cap / asp)
-			s.material = vfx.material
-			add_child(s)
-			EmissiveOverlay.apply(s, frames)
-			s.play(&"default")
-			s.set_frame_and_progress(idx % maxi(frames.get_frame_count(&"default"), 1), 0.0)
-			_tiles.append(s)
+	for sp in specs:
+		idx += 1
+		var s := AnimatedSprite2D.new()
+		s.name = "VfxTile%d" % idx
+		s.position = sp[0]
+		var kk: float = k_cap * float(sp[1])
+		s.scale = Vector2(kk * (1.0 if idx % 2 == 0 else -1.0), kk / asp)
+		s.material = vfx.material
+		add_child(s)
+		EmissiveOverlay.apply(s, frames)
+		s.play(&"default")
+		s.set_frame_and_progress(0, 0.0) # même phase que la gerbe
+		_tiles.append(s)
+		_tile_a.append(float(sp[2]))
+
+
+## Opacité des copies de pavage = a × leur facteur propre (intérieur translucide).
+func _set_tiles_alpha(a: float) -> void:
+	for i in _tiles.size():
+		_tiles[i].modulate.a = a * _tile_a[i]
 
 
 ## Durée d'une anim d'un SpriteFrames (somme des durées relatives / fps), 0 si absente.
@@ -171,7 +184,7 @@ func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
 				queue_free()
 	elif _t >= _anim:
 		queue_free()
-	if vfx == null:
+	if vfx == null or not _tiles.is_empty():
 		queue_redraw()
 
 
@@ -183,8 +196,7 @@ func _update_persistent_vfx() -> void:
 	if not vfx.sprite_frames.has_animation(&"end"):
 		a = minf(a, clampf((duration - _t) / VFX_FADE_OUT_S, 0.0, 1.0))
 	vfx.modulate.a = a
-	for s in _tiles:
-		s.modulate.a = a
+	_set_tiles_alpha(a)
 
 
 func _process(delta: float) -> void:
@@ -207,7 +219,14 @@ func _apply() -> void:
 
 ## Repli sans asset (placeholder, à remplacer par le VFX rendu) : contour fin au rayon réel.
 func _draw() -> void:
-	if spell == null or vfx != null:
+	if spell == null:
+		return
+	if vfx != null:
+		if not _tiles.is_empty(): # flammes clairsemées : la lueur au sol et le contour disent la zone réelle
+			var f := 1.0 - clampf(_t / maxf(_anim, 0.1), 0.0, 1.0) * 0.6
+			var g := Color(1.0, 0.45, 0.12)
+			draw_circle(Vector2.ZERO, radius, Color(g.r, g.g, g.b, 0.12 * f))
+			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(g.r, g.g, g.b, 0.45 * f), 2.0)
 		return
 	var c := spell.color
 	if duration > 0.0:
