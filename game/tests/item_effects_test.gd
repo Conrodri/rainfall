@@ -792,7 +792,10 @@ func _test_chain_lightning() -> void:
 			seen[e] = true
 			prev = e
 		_check("chaîne x%d : chaque cible à ≤ portée de la précédente, jamais deux fois" % n, ok)
+		var zaps0 := ChainLightningFx.zaps_played
 		_player.spells._lightning(v, 100.0, data)
+		await get_tree().create_timer(0.3).timeout
+		_check("chaîne x%d : %d zaps sonores (un par impact)" % [n, want], ChainLightningFx.zaps_played - zaps0 >= want)
 		var hits := 0
 		var dmg_ok := true
 		for e in line:

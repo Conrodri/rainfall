@@ -543,6 +543,19 @@
       "min_interval_ms": 80,
       "vol_db": -3.0
     },
+    "lightning.zap.light": {
+      "priority": 32,
+      "max_instances": 4,
+      "min_interval_ms": 25,
+      "pitch_var": 0.02,
+      "vol_db": -2.0
+    },
+    "lightning.chain_start.medium": {
+      "priority": 34,
+      "max_instances": 2,
+      "min_interval_ms": 80,
+      "vol_db": -2.0
+    },
     "player.heal": {
       "priority": 60,
       "max_instances": 1,
@@ -1268,6 +1281,123 @@
         "#": "stone"
       }
     },
+    "terrasses_rizieres_hautes": {
+      "music": [
+        {
+          "id": "music.terrasses_noyees.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.terrasses_noyees.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.terrasses_noyees",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -18,
+            -17,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -19,
+            -11,
+            -10,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -19,
+            -8,
+            -5
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.terrasses_noyees",
+          "db": [
+            -22,
+            -19,
+            -15,
+            -12,
+            -9
+          ]
+        },
+        {
+          "id": "amb.terrasses_noyees.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -10
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "wet",
+        "~": "water",
+        "#": "stone"
+      }
+    },
     "foret_brume": {
       "music": [
         {
@@ -1385,7 +1515,241 @@
         "#": "dirt"
       }
     },
+    "foret_mangrove_lanternes": {
+      "music": [
+        {
+          "id": "music.foret_brume.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.foret_brume.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.foret_brume.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.foret_brume.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.foret_brume",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -16,
+            -16,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -18,
+            -10,
+            -10,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -18,
+            -8,
+            -5
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.foret_brume.decor",
+          "db": [
+            -12,
+            -12,
+            -13,
+            -16,
+            -20
+          ]
+        },
+        {
+          "id": "amb.wind.foret_brume",
+          "db": [
+            -24,
+            -21,
+            -18,
+            -16,
+            -14
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "dirt",
+        ",": "grass",
+        "~": "water",
+        "#": "dirt"
+      }
+    },
     "cite_rouille": {
+      "music": [
+        {
+          "id": "music.cite_rouille.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.cite_rouille.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.cite_rouille.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.cite_rouille.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.cite_rouille",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -13,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -15,
+            -8,
+            -8,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -16,
+            -6,
+            -3
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.cite_rouille",
+          "db": [
+            -20,
+            -17,
+            -14,
+            -11,
+            -8
+          ]
+        },
+        {
+          "id": "amb.cite_rouille.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -8
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "metal",
+        ",": "metal",
+        "~": "water",
+        "#": "metal"
+      }
+    },
+    "cite_fonderie_canal": {
       "music": [
         {
           "id": "music.cite_rouille.base",

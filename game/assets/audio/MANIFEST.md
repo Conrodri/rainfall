@@ -76,6 +76,8 @@ Format : .ogg Vorbis 44,1 kHz. Crete max mesuree <= -1 dBFS. Volume conseille = 
 | `hit_poison_heavy` | impacts | 3 | 0.71-0.74 | non | heavy | -3.3 | -18.1 | - | 0 dB |
 | `hit_poison_light` | impacts | 3 | 0.31-0.32 | non | light | -5.9 | -18.0 | - | 0 dB |
 | `hit_poison_medium` | impacts | 3 | 0.47-0.48 | non | medium | -2.7 | -18.0 | - | 0 dB |
+| `lightning.zap.light` | impacts | 5 | 0.118-0.167 | non | light | -3.9 | -21.7 | - | 0 dB |
+| `lightning.chain_start.medium` | impacts | 2 | 0.238-0.278 | non | medium | -2.5 | -21.6 | - | 0 dB |
 | `lightning_chain_medium` | impacts | 4 | 0.55-0.58 | non | medium | -3.1 | -18.4 | - | 0 dB |
 | `player_death` | impacts | 4 | 1.50-1.50 | non | - | -3.0 | -18.3 | - | 0 dB |
 | `player_heal` | impacts | 4 | 0.67-0.71 | non | - | -4.9 | -18.2 | - | 0 dB |

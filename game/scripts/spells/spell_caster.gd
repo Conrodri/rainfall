@@ -689,7 +689,8 @@ func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 	var chain := chain_targets(o, int(data.get("targets", 3)), reach)
 	if chain.is_empty():
 		return
-	Audio.play(&"lightning.chain.medium", o.global_position)
+	if not Audio.play(&"lightning.chain_start.medium", o.global_position): # repli : ancien son si le nouveau manque
+		Audio.play(&"lightning.chain.medium", o.global_position)
 	if Quality.flashes_level > 0:
 		LightRig.flash(o.global_position, &"spell_lightning", 0.15 if Quality.flashes_level == 2 else 0.06)
 	var pts: Array = [o.global_position]

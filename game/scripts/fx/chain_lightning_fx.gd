@@ -6,6 +6,8 @@ extends Node2D
 ## Blender ; repli sur arc_8x64.png (8 frames de 64×64) tant que la planche n'est pas importée.
 ## Les segments apparaissent à la file (STEP_S) pour qu'on voie la chaîne courir, durent LIFE_S puis s'estompent.
 ## Plafond MAX_ARCS : au-delà, le segment le plus ancien est recyclé. Espace billboard comme HitFx (échelle UNSQUASH).
+## Son : un « zap » (ZAP_SOUND) à chaque monstre touché, au moment où son éclat apparaît, un demi-ton plus haut à
+## chaque rebond (montée satisfaisante façon Ukulele) ; le départ de la chaîne est joué par SpellCaster._lightning.
 ## API : ChainLightningFx.chain(points_logiques : Array[Vector2]) ; points[0] = victime d'origine.
 
 const ARC_SHEET := "res://assets/sprites/vfx/chain_arc/chain_arc.png"
@@ -25,6 +27,9 @@ const ARC_H_PX := 34.0 ## épaisseur affichée (cellule 48 px -> ~34 px)
 const SPARK_PX := 56.0
 const HIT_LIFT_U := 0.7 ## hauteur du point d'accroche au-dessus des pieds
 const Z := 31
+const ZAP_SOUND := &"lightning.zap.light"
+const ZAP_SEMITONE := 1.0594631 ## 2^(1/12) : +1 demi-ton par rebond
+const ZAP_FADE_DB := 0.8 ## volume en moins par rebond
 
 static var _inst: ChainLightningFx = null
 
@@ -33,6 +38,8 @@ var _arc_t: PackedFloat32Array = PackedFloat32Array() ## âge ; < 0 = en attente
 var _arc_var: PackedInt32Array = PackedInt32Array()
 var _sparks: Array[Sprite2D] = []
 var _spark_t: PackedFloat32Array = PackedFloat32Array()
+var _spark_hop: PackedInt32Array = PackedInt32Array() ## rang du rebond (0 = premier) ; -1 = son déjà joué
+var _spark_world: PackedVector2Array = PackedVector2Array() ## position logique (son spatialisé)
 var _next_arc := 0
 var _next_spark := 0
 var _arc_tex: Texture2D = null
@@ -40,6 +47,7 @@ var _arc_real := false
 var _spark_tex: Texture2D = null
 var _rng := RandomNumberGenerator.new()
 var live_arcs := 0 ## pour les tests
+static var zaps_played := 0 ## nombre de zaps joues depuis le lancement (tests)
 
 
 static func ensure(parent: Node) -> ChainLightningFx:
@@ -95,6 +103,8 @@ func _ready() -> void:
 		add_child(s)
 		_sparks.append(s)
 		_spark_t.append(LIFE_S + 1.0)
+		_spark_hop.append(-1)
+		_spark_world.append(Vector2.ZERO)
 	set_process(false)
 
 
@@ -131,6 +141,8 @@ func _chain(points: Array) -> void:
 		sp.position = b
 		sp.rotation = _rng.randf() * TAU
 		_spark_t[sk] = -STEP_S * i
+		_spark_hop[sk] = i
+		_spark_world[sk] = points[i + 1]
 		sp.visible = false
 	set_process(true)
 
@@ -182,6 +194,9 @@ func _process(delta: float) -> void:
 			_spark_t[k] = LIFE_S + 1.0
 			continue
 		any = true
+		if _spark_hop[k] >= 0:
+			_zap(_spark_hop[k], _spark_world[k])
+			_spark_hop[k] = -1
 		s.visible = true
 		var f := int(t * FPS) % FRAMES
 		if _spark_tex != null:
@@ -194,3 +209,9 @@ func _process(delta: float) -> void:
 	live_arcs = live
 	if not any:
 		set_process(false)
+
+
+## Zap d'impact du rebond `hop` : hauteur montante, volume qui baisse un peu. Repli silencieux si le son manque.
+func _zap(hop: int, at: Vector2) -> void:
+	zaps_played += 1
+	Audio.play(ZAP_SOUND, at, -ZAP_FADE_DB * float(hop), pow(ZAP_SEMITONE, float(hop)))
