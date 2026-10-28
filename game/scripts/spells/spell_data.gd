@@ -52,3 +52,8 @@ enum Behavior { PROJECTILE, NOVA, GROUND_ZONE, ARC, FAN, SPIN, DECOYS, KIT }
 @export var vfx_floor_aspect := 0.5
 ## Le diffus aussi en additif (effets purement lumineux) ; sinon diffus normal + passe _e additive (EmissiveOverlay).
 @export var vfx_additive := false
+## Effet dont les flammes montent haut (px de la frame, au-dessus du sol, 0 = pas de plafond). Si le rayon de jeu
+## imposerait des flammes plus hautes que vfx_flame_cap_u, ZoneEffect pave la zone de copies plus petites
+## (sol iso 2:1 intact, hauteur plafonnée) au lieu d'étirer un seul sprite.
+@export var vfx_flame_h_px := 0.0
+@export var vfx_flame_cap_u := 2.0

@@ -30,6 +30,8 @@ var arc_half := PI
 var vfx: AnimatedSprite2D = null
 var outline: ZoneOutline = null ## contour de la zone persistante (null : instantanée, secteur, ou sans couche)
 var _vfx_len := 0.0 ## durée de l'anim `default` (s)
+var _tiles: Array[AnimatedSprite2D] = [] ## copies de pavage (flammes plafonnées), voir SpellData.vfx_flame_h_px
+var _zone_scale := Vector2.ZERO ## échelle nominale (une seule copie calée sur le rayon)
 var _ending := false ## zone persistante finie : anim `end` en cours, plus de dégâts
 
 
@@ -74,7 +76,12 @@ func _setup_vfx() -> void:
 		m.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 		vfx.material = m
 	var k := radius / maxf(spell.vfx_radius_px, 1.0) if spell.vfx_radius_px > 0.0 else 1.0
-	vfx.scale = Vector2(k, k / clampf(spell.vfx_floor_aspect, 0.1, 1.0))
+	var asp := clampf(spell.vfx_floor_aspect, 0.1, 1.0)
+	vfx.scale = Vector2(k, k / asp)
+	_zone_scale = vfx.scale
+	var k_cap := _flame_k_cap()
+	if k_cap > 0.0 and k > k_cap and arc_half >= PI:
+		_tile_vfx(frames, k_cap, asp)
 	if arc_half < PI:
 		vfx.rotation = arc_dir.angle() # rig TOP (aspect 1) : la rotation au sol reste exacte
 	_vfx_len = anim_length(vfx.sprite_frames, &"default")
@@ -82,6 +89,42 @@ func _setup_vfx() -> void:
 	if duration <= 0.0:
 		_anim = maxf(_anim, _vfx_len) # gerbe : la zone vit jusqu'au bout de l'anim (dégâts déjà appliqués)
 	vfx.modulate.a = 0.0 if duration > 0.0 else 1.0
+	for s in _tiles:
+		s.modulate.a = vfx.modulate.a
+
+
+## Échelle maximale d'une copie pour que les flammes ne dépassent pas vfx_flame_cap_u (0 = pas de plafond).
+## Écran : hauteur = h_px × k (le sol iso écrase y de moitié, annulé par k / aspect) ; 72 px écran / u.
+func _flame_k_cap() -> float:
+	if spell == null or spell.vfx_flame_h_px <= 0.0 or spell.vfx_radius_px <= 0.0:
+		return 0.0
+	return spell.vfx_flame_cap_u * Iso.SCREEN_PX_PER_U / spell.vfx_flame_h_px
+
+
+## Pave le disque de jeu de copies à l'échelle k_cap (hexagones, recouvrement léger) : la copie centrale est `vfx`.
+func _tile_vfx(frames: SpriteFrames, k_cap: float, asp: float) -> void:
+	var tile_r := spell.vfx_radius_px * k_cap # rayon de l'empreinte d'une copie (px logiques)
+	var d := tile_r * 1.4
+	var reach := maxf(radius - tile_r * 0.6, 0.0)
+	vfx.scale = Vector2(k_cap, k_cap / asp)
+	var n := int(ceil(reach / (d * 0.866))) + 1
+	var idx := 0
+	for j in range(-n, n + 1):
+		for i in range(-n, n + 1):
+			var c := Vector2(d * (i + 0.5 * j), d * 0.866 * j)
+			if (i == 0 and j == 0) or c.length() > reach:
+				continue
+			idx += 1
+			var s := AnimatedSprite2D.new()
+			s.name = "VfxTile%d" % idx
+			s.position = c
+			s.scale = Vector2(k_cap * (1.0 if idx % 2 == 0 else -1.0), k_cap / asp)
+			s.material = vfx.material
+			add_child(s)
+			EmissiveOverlay.apply(s, frames)
+			s.play(&"default")
+			s.set_frame_and_progress(idx % maxi(frames.get_frame_count(&"default"), 1), 0.0)
+			_tiles.append(s)
 
 
 ## Durée d'une anim d'un SpriteFrames (somme des durées relatives / fps), 0 si absente.
@@ -104,7 +147,7 @@ func is_ending() -> bool:
 
 
 func vfx_scale() -> Vector2:
-	return vfx.scale if vfx != null else Vector2.ZERO
+	return _zone_scale if vfx != null else Vector2.ZERO
 
 
 func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
@@ -140,6 +183,8 @@ func _update_persistent_vfx() -> void:
 	if not vfx.sprite_frames.has_animation(&"end"):
 		a = minf(a, clampf((duration - _t) / VFX_FADE_OUT_S, 0.0, 1.0))
 	vfx.modulate.a = a
+	for s in _tiles:
+		s.modulate.a = a
 
 
 func _process(delta: float) -> void:

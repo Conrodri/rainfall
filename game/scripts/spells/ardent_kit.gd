@@ -36,7 +36,7 @@ const VFX_DIR := "res://assets/sprites/vfx/"
 const SPELL_VFX := {
 	&"nova_ardente": {"name": "ardent_nova", "radius_px": 189.02, "floor_aspect": 0.4895},
 	&"cendres": {"name": "ardent_ashes", "radius_px": 155.57, "floor_aspect": 0.4829},
-	&"brasier": {"name": "ardent_brasier", "radius_px": 224.60, "floor_aspect": 0.4895},
+	&"brasier": {"name": "ardent_brasier", "radius_px": 224.60, "floor_aspect": 0.4895, "flame_h_px": 560.0},
 	&"flame_pillar": {"name": "flame_pillar", "radius_px": 50.0, "floor_aspect": 0.67},
 	&"meteor_rain": {"name": "meteor_impact", "radius_px": 85.0, "floor_aspect": 0.67},
 	&"phoenix_burst": {"name": "ardent_nova", "radius_px": 189.02, "floor_aspect": 0.4895}, # placeholder : VFX de la Nova
@@ -51,6 +51,7 @@ static func apply_vfx(s: SpellData) -> SpellData:
 		s.vfx_frames = VFX_DIR + "%s/%s.tres" % [v["name"], v["name"]]
 		s.vfx_radius_px = float(v["radius_px"])
 		s.vfx_floor_aspect = float(v["floor_aspect"])
+		s.vfx_flame_h_px = float(v.get("flame_h_px", 0.0))
 	return s
 
 
