@@ -1,142 +1,144 @@
 # Rapport de la file de nuit Codex
-- 28/10 00:12 == groupe 1
-- 28/10 00:12 groupe 1 déjà fini, sauté
-- 28/10 00:12 == groupe 2
-- 28/10 00:12 groupe 2 déjà fini, sauté
-- 28/10 00:12 == groupe 3
-- 28/10 00:12 groupe 3 déjà fini, sauté
-- 28/10 00:12 == groupe 4
-- 28/10 00:12 groupe 4 déjà fini, sauté
-- 28/10 00:12 == groupe 5
-- 28/10 00:12 groupe 5 déjà fini, sauté
-- 28/10 00:12 == groupe 6
-- 28/10 00:12 groupe 6 déjà fini, sauté
-- 28/10 00:12 == groupe 7
-- 28/10 00:12 groupe 7 déjà fini, sauté
-- 28/10 00:12 == groupe 8
-- 28/10 00:12 groupe 8 déjà fini, sauté
-- 28/10 00:12 == groupe 9
-- 28/10 00:12 groupe 9 déjà fini, sauté
-- 28/10 00:12 == groupe 10
-- 28/10 00:12 groupe 10 déjà fini, sauté
-- 28/10 00:12 == groupe 11
-- 28/10 00:12 groupe 11 déjà fini, sauté
-- 28/10 00:12 == groupe 10
-- 28/10 00:12 groupe 10 déjà fini, sauté
-- 28/10 00:12 == groupe 11
-- 28/10 00:12 groupe 11 déjà fini, sauté
-- 28/10 00:12 == groupe 12
-- 28/10 00:12 groupe 12 déjà fini, sauté
-- 28/10 00:12 == groupe 13
-- 28/10 00:12 groupe 13 déjà fini, sauté
-- 28/10 00:12 == groupe 11
-- 28/10 00:12 groupe 11 déjà fini, sauté
-- 28/10 00:12 == groupe 12
-- 28/10 00:12 groupe 12 déjà fini, sauté
-- 28/10 00:12 == groupe 13
-- 28/10 00:12 groupe 13 déjà fini, sauté
-- 28/10 00:12 == groupe 12
-- 28/10 00:12 groupe 12 déjà fini, sauté
-- 28/10 00:12 == groupe 13
-- 28/10 00:12 groupe 13 déjà fini, sauté
-- 28/10 00:12 == groupe 12
-- 28/10 00:12 groupe 12 déjà fini, sauté
-- 28/10 00:12 == groupe 14
-- 28/10 00:12 groupe 14 déjà fini, sauté
-- 28/10 00:12 == groupe 15
-- 28/10 00:12 groupe 15 déjà fini, sauté
-- 28/10 00:12 == groupe 16
-- 28/10 00:12 groupe 16 déjà fini, sauté
-- 28/10 00:12 == groupe 17
-- 28/10 00:12 groupe 17 déjà fini, sauté
-- 28/10 00:12 == groupe 18
-- 28/10 00:12 groupe 18 déjà fini, sauté
-- 28/10 00:12 == groupe 19
-- 28/10 00:12 groupe 19 déjà fini, sauté
-- 28/10 00:12 == groupe 20
-- 28/10 00:12 groupe 20 déjà fini, sauté
-- 28/10 00:12 == groupe 21
-- 28/10 00:12 groupe 21 déjà fini, sauté
-- 28/10 00:12 == groupe 16
-- 28/10 00:12 groupe 16 déjà fini, sauté
-- 28/10 00:12 == groupe 17
-- 28/10 00:12 groupe 17 déjà fini, sauté
-- 28/10 00:12 == groupe 22
-- 28/10 00:12 groupe 22 déjà fini, sauté
-- 28/10 00:12 == groupe 16
-- 28/10 00:12 groupe 16 déjà fini, sauté
-- 28/10 00:12 == groupe 23
-- 28/10 00:12 groupe 23 déjà fini, sauté
-- 28/10 00:12 == groupe 24
-- 28/10 00:12 groupe 24 déjà fini, sauté
-- 28/10 00:12 == groupe 25
-- 28/10 00:12 groupe 25 déjà fini, sauté
-- 28/10 00:12 == groupe 26
-- 28/10 00:12 groupe 26 déjà fini, sauté
-- 28/10 00:12 == groupe 27
-- 28/10 00:12 groupe 27 déjà fini, sauté
-- 28/10 00:12 == groupe 28
-- 28/10 00:12 groupe 28 déjà fini, sauté
-- 28/10 00:12 == groupe 29
-- 28/10 00:12 groupe 29 déjà fini, sauté
-- 28/10 00:12 == groupe 30
-- 28/10 00:12 groupe 30 déjà fini, sauté
-- 28/10 00:12 == groupe 31
-- 28/10 00:12 groupe 31 déjà fini, sauté
-- 28/10 00:12 == groupe 32
-- 28/10 00:12 groupe 32 déjà fini, sauté
-- 28/10 00:12 == groupe 33
-- 28/10 00:12 groupe 33 déjà fini, sauté
-- 28/10 00:12 == groupe 34
-- 28/10 00:12 groupe 34 déjà fini, sauté
-- 28/10 00:12 == groupe 35
-- 28/10 00:12 groupe 35 déjà fini, sauté
-- 28/10 00:12 == groupe 36
-- 28/10 00:12 groupe 36 déjà fini, sauté
-- 28/10 00:12 == groupe 37
-- 28/10 00:12 groupe 37 déjà fini, sauté
-- 28/10 00:12 == groupe 38
-- 28/10 00:12 groupe 38 déjà fini, sauté
-- 28/10 00:12 == groupe 39
-- 28/10 00:12 groupe 39 déjà fini, sauté
-- 28/10 00:12 == groupe 40
-- 28/10 00:12 groupe 40 déjà fini, sauté
-- 28/10 00:12 == groupe 41
-- 28/10 00:12 groupe 41 déjà fini, sauté
-- 28/10 00:12 == groupe 42
-- 28/10 00:12 groupe 42 déjà fini, sauté
-- 28/10 00:12 == groupe 43
-- 28/10 00:12 groupe 43 déjà fini, sauté
-- 28/10 00:12 == groupe 44
-- 28/10 00:12 groupe 44 déjà fini, sauté
-- 28/10 00:12 == groupe 45
-- 28/10 00:12 groupe 45 déjà fini, sauté
-- 28/10 00:12 == groupe 46
-- 28/10 00:12 groupe 46 déjà fini, sauté
-- 28/10 00:12 == groupe 47
-- 28/10 00:12 groupe 47 déjà fini, sauté
-- 28/10 00:12 == groupe 48
-- 28/10 00:12 groupe 48 déjà fini, sauté
-- 28/10 00:12 == groupe 49
-- 28/10 00:12 groupe 49 déjà fini, sauté
-- 28/10 00:12 == groupe 50
-- 28/10 00:12 groupe 50 déjà fini, sauté
-- 28/10 00:12 == groupe 51
-- 28/10 00:12 groupe 51 déjà fini, sauté
-- 28/10 00:12 == groupe 52
-- 28/10 00:12 groupe 52 déjà fini, sauté
-- 28/10 00:12 == groupe 53
-- 28/10 00:12 groupe 53 déjà fini, sauté
-- 28/10 00:12 == groupe 54
-- 28/10 00:12 groupe 54 déjà fini, sauté
-- 28/10 00:12 == groupe 55
-- 28/10 00:12 groupe 55 déjà fini, sauté
-- 28/10 00:12 == groupe 56
-- 28/10 00:12 groupe 56 déjà fini, sauté
-- 28/10 00:12 == groupe 57
-- 28/10 00:12 groupe 57 déjà fini, sauté
-- 28/10 00:12 == groupe 58
-- 28/10 00:12 lancement art/tools/night/_store.txt
-- 28/10 00:16 fin art/tools/night/_store.txt : /). Tailles exactes, opacité, transparence et cercle sûr de 264 px : PASS. Cinzel rendu dans Blender ; bronze assombri ; aucun `_n.png`. [Planche de contrôle](art/tools/night/_store_contact.png), réductions 48 et 96 px. Modèle original intact : SHA256 vérifié ; aucun `.gd` / `.tscn` modifié.
-- 28/10 00:16 sprites_test après groupe 58 : RESULT: OK
-- 28/10 00:16 FILE TERMINÉE
+- 28/10 19:11 == groupe 1
+- 28/10 19:11 groupe 1 déjà fini, sauté
+- 28/10 19:11 == groupe 2
+- 28/10 19:11 groupe 2 déjà fini, sauté
+- 28/10 19:11 == groupe 3
+- 28/10 19:11 groupe 3 déjà fini, sauté
+- 28/10 19:11 == groupe 4
+- 28/10 19:11 groupe 4 déjà fini, sauté
+- 28/10 19:11 == groupe 5
+- 28/10 19:11 groupe 5 déjà fini, sauté
+- 28/10 19:11 == groupe 6
+- 28/10 19:11 groupe 6 déjà fini, sauté
+- 28/10 19:11 == groupe 7
+- 28/10 19:11 groupe 7 déjà fini, sauté
+- 28/10 19:11 == groupe 8
+- 28/10 19:11 groupe 8 déjà fini, sauté
+- 28/10 19:11 == groupe 9
+- 28/10 19:11 groupe 9 déjà fini, sauté
+- 28/10 19:11 == groupe 10
+- 28/10 19:11 groupe 10 déjà fini, sauté
+- 28/10 19:11 == groupe 11
+- 28/10 19:11 groupe 11 déjà fini, sauté
+- 28/10 19:11 == groupe 10
+- 28/10 19:11 groupe 10 déjà fini, sauté
+- 28/10 19:11 == groupe 11
+- 28/10 19:11 groupe 11 déjà fini, sauté
+- 28/10 19:11 == groupe 12
+- 28/10 19:11 groupe 12 déjà fini, sauté
+- 28/10 19:11 == groupe 13
+- 28/10 19:11 groupe 13 déjà fini, sauté
+- 28/10 19:11 == groupe 11
+- 28/10 19:11 groupe 11 déjà fini, sauté
+- 28/10 19:11 == groupe 12
+- 28/10 19:11 groupe 12 déjà fini, sauté
+- 28/10 19:11 == groupe 13
+- 28/10 19:11 groupe 13 déjà fini, sauté
+- 28/10 19:11 == groupe 12
+- 28/10 19:11 groupe 12 déjà fini, sauté
+- 28/10 19:11 == groupe 13
+- 28/10 19:11 groupe 13 déjà fini, sauté
+- 28/10 19:11 == groupe 12
+- 28/10 19:11 groupe 12 déjà fini, sauté
+- 28/10 19:11 == groupe 14
+- 28/10 19:11 groupe 14 déjà fini, sauté
+- 28/10 19:11 == groupe 15
+- 28/10 19:11 groupe 15 déjà fini, sauté
+- 28/10 19:11 == groupe 16
+- 28/10 19:11 groupe 16 déjà fini, sauté
+- 28/10 19:11 == groupe 17
+- 28/10 19:11 groupe 17 déjà fini, sauté
+- 28/10 19:11 == groupe 18
+- 28/10 19:11 groupe 18 déjà fini, sauté
+- 28/10 19:11 == groupe 19
+- 28/10 19:11 groupe 19 déjà fini, sauté
+- 28/10 19:11 == groupe 20
+- 28/10 19:11 groupe 20 déjà fini, sauté
+- 28/10 19:11 == groupe 21
+- 28/10 19:11 groupe 21 déjà fini, sauté
+- 28/10 19:11 == groupe 16
+- 28/10 19:11 groupe 16 déjà fini, sauté
+- 28/10 19:11 == groupe 17
+- 28/10 19:11 groupe 17 déjà fini, sauté
+- 28/10 19:11 == groupe 22
+- 28/10 19:11 groupe 22 déjà fini, sauté
+- 28/10 19:11 == groupe 16
+- 28/10 19:11 groupe 16 déjà fini, sauté
+- 28/10 19:11 == groupe 23
+- 28/10 19:11 groupe 23 déjà fini, sauté
+- 28/10 19:11 == groupe 24
+- 28/10 19:11 groupe 24 déjà fini, sauté
+- 28/10 19:11 == groupe 25
+- 28/10 19:11 groupe 25 déjà fini, sauté
+- 28/10 19:11 == groupe 26
+- 28/10 19:11 groupe 26 déjà fini, sauté
+- 28/10 19:11 == groupe 27
+- 28/10 19:11 groupe 27 déjà fini, sauté
+- 28/10 19:11 == groupe 28
+- 28/10 19:11 groupe 28 déjà fini, sauté
+- 28/10 19:11 == groupe 29
+- 28/10 19:11 groupe 29 déjà fini, sauté
+- 28/10 19:11 == groupe 30
+- 28/10 19:11 groupe 30 déjà fini, sauté
+- 28/10 19:11 == groupe 31
+- 28/10 19:11 groupe 31 déjà fini, sauté
+- 28/10 19:11 == groupe 32
+- 28/10 19:11 groupe 32 déjà fini, sauté
+- 28/10 19:11 == groupe 33
+- 28/10 19:11 groupe 33 déjà fini, sauté
+- 28/10 19:11 == groupe 34
+- 28/10 19:11 groupe 34 déjà fini, sauté
+- 28/10 19:11 == groupe 35
+- 28/10 19:11 groupe 35 déjà fini, sauté
+- 28/10 19:11 == groupe 36
+- 28/10 19:11 groupe 36 déjà fini, sauté
+- 28/10 19:11 == groupe 37
+- 28/10 19:11 groupe 37 déjà fini, sauté
+- 28/10 19:11 == groupe 38
+- 28/10 19:11 groupe 38 déjà fini, sauté
+- 28/10 19:11 == groupe 39
+- 28/10 19:11 groupe 39 déjà fini, sauté
+- 28/10 19:11 == groupe 40
+- 28/10 19:11 groupe 40 déjà fini, sauté
+- 28/10 19:11 == groupe 41
+- 28/10 19:11 groupe 41 déjà fini, sauté
+- 28/10 19:11 == groupe 42
+- 28/10 19:11 groupe 42 déjà fini, sauté
+- 28/10 19:11 == groupe 43
+- 28/10 19:11 groupe 43 déjà fini, sauté
+- 28/10 19:11 == groupe 44
+- 28/10 19:11 groupe 44 déjà fini, sauté
+- 28/10 19:11 == groupe 45
+- 28/10 19:11 groupe 45 déjà fini, sauté
+- 28/10 19:11 == groupe 46
+- 28/10 19:11 groupe 46 déjà fini, sauté
+- 28/10 19:11 == groupe 47
+- 28/10 19:11 groupe 47 déjà fini, sauté
+- 28/10 19:11 == groupe 48
+- 28/10 19:11 groupe 48 déjà fini, sauté
+- 28/10 19:11 == groupe 49
+- 28/10 19:11 groupe 49 déjà fini, sauté
+- 28/10 19:11 == groupe 50
+- 28/10 19:11 groupe 50 déjà fini, sauté
+- 28/10 19:11 == groupe 51
+- 28/10 19:11 groupe 51 déjà fini, sauté
+- 28/10 19:11 == groupe 52
+- 28/10 19:11 groupe 52 déjà fini, sauté
+- 28/10 19:11 == groupe 53
+- 28/10 19:11 groupe 53 déjà fini, sauté
+- 28/10 19:11 == groupe 54
+- 28/10 19:11 groupe 54 déjà fini, sauté
+- 28/10 19:11 == groupe 55
+- 28/10 19:11 groupe 55 déjà fini, sauté
+- 28/10 19:11 == groupe 56
+- 28/10 19:11 groupe 56 déjà fini, sauté
+- 28/10 19:11 == groupe 57
+- 28/10 19:11 groupe 57 déjà fini, sauté
+- 28/10 19:11 == groupe 58
+- 28/10 19:11 groupe 58 déjà fini, sauté
+- 28/10 19:11 == groupe 59
+- 28/10 19:11 lancement art/tools/night/_crypt_minis_fix.txt
+- 28/10 19:14 fin art/tools/night/_crypt_minis_fix.txt : swarm 0.325/0.4121/0.5925. salt_golem 0.3249/0.4275/0.467 ; blind_lamplighter 0.3251/0.4505/0.527. sarcophagus_crab 0.3251/0.4326/0.4466 ; toutes les cibles respectées. `game/data/boss_albedo_lum.json` actualisé ; planche vérifiée. `sprites_test.tscn` et `boss_glow_cap_test.tscn` : `RESULT: OK`.
+- 28/10 19:14 sprites_test après groupe 59 : RESULT: OK
+- 28/10 19:14 FILE TERMINÉE
