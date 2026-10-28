@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=449 format=3]
+[gd_resource type="SpriteFrames" load_steps=420 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/idle_p1.png" id="idle_p1"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/idle_p2.png" id="idle_p2"]
@@ -21,13 +21,6 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/crust_burst.png" id="crust_burst"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/stele.png" id="stele"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/stele_rise.png" id="stele_rise"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/tide_sheet.png" id="tide_sheet"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/tide_sheet_2.png" id="tide_sheet_2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/tide_sheet_3.png" id="tide_sheet_3"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/dry_nave.png" id="dry_nave"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/dry_nave_2.png" id="dry_nave_2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/dry_nave_3.png" id="dry_nave_3"]
-[ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/tide_front.png" id="tide_front"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/crown.png" id="crown"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/crown_guarded.png" id="crown_guarded"]
 [ext_resource type="Texture2D" path="res://assets/sprites/bosses/etage/salt_king/crown_break.png" id="crown_break"]
@@ -1421,94 +1414,6 @@ region = Rect2(512, 0, 128, 256)
 atlas = ExtResource("stele_rise")
 region = Rect2(640, 0, 128, 256)
 
-[sub_resource type="AtlasTexture" id="tide_sheet_s_0"]
-atlas = ExtResource("tide_sheet")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_1"]
-atlas = ExtResource("tide_sheet")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_2"]
-atlas = ExtResource("tide_sheet")
-region = Rect2(2304, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_3"]
-atlas = ExtResource("tide_sheet_2")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_4"]
-atlas = ExtResource("tide_sheet_2")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_5"]
-atlas = ExtResource("tide_sheet_2")
-region = Rect2(2304, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_6"]
-atlas = ExtResource("tide_sheet_3")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_sheet_s_7"]
-atlas = ExtResource("tide_sheet_3")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_0"]
-atlas = ExtResource("dry_nave")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_1"]
-atlas = ExtResource("dry_nave")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_2"]
-atlas = ExtResource("dry_nave")
-region = Rect2(2304, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_3"]
-atlas = ExtResource("dry_nave_2")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_4"]
-atlas = ExtResource("dry_nave_2")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_5"]
-atlas = ExtResource("dry_nave_2")
-region = Rect2(2304, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_6"]
-atlas = ExtResource("dry_nave_3")
-region = Rect2(0, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="dry_nave_s_7"]
-atlas = ExtResource("dry_nave_3")
-region = Rect2(1152, 0, 1152, 1152)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_0"]
-atlas = ExtResource("tide_front")
-region = Rect2(0, 0, 256, 128)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_1"]
-atlas = ExtResource("tide_front")
-region = Rect2(256, 0, 256, 128)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_2"]
-atlas = ExtResource("tide_front")
-region = Rect2(512, 0, 256, 128)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_3"]
-atlas = ExtResource("tide_front")
-region = Rect2(768, 0, 256, 128)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_4"]
-atlas = ExtResource("tide_front")
-region = Rect2(1024, 0, 256, 128)
-
-[sub_resource type="AtlasTexture" id="tide_front_s_5"]
-atlas = ExtResource("tide_front")
-region = Rect2(1280, 0, 256, 128)
-
 [sub_resource type="AtlasTexture" id="crown_s_0"]
 atlas = ExtResource("crown")
 region = Rect2(0, 0, 96, 96)
@@ -1685,6 +1590,7 @@ region = Rect2(384, 0, 96, 128)
 atlas = ExtResource("tear_drop")
 region = Rect2(480, 0, 96, 128)
 
+
 [resource]
 animations = [{"frames": [{"duration": 1.0, "texture": SubResource("idle_p1_e_0")}, {"duration": 1.0, "texture": SubResource("idle_p1_e_1")}, {"duration": 1.0, "texture": SubResource("idle_p1_e_2")}, {"duration": 1.0, "texture": SubResource("idle_p1_e_3")}, {"duration": 1.0, "texture": SubResource("idle_p1_e_4")}, {"duration": 1.0, "texture": SubResource("idle_p1_e_5")}], "loop": true, "name": &"idle_p1_e", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("idle_p1_s_0")}, {"duration": 1.0, "texture": SubResource("idle_p1_s_1")}, {"duration": 1.0, "texture": SubResource("idle_p1_s_2")}, {"duration": 1.0, "texture": SubResource("idle_p1_s_3")}, {"duration": 1.0, "texture": SubResource("idle_p1_s_4")}, {"duration": 1.0, "texture": SubResource("idle_p1_s_5")}], "loop": true, "name": &"idle_p1_s", "speed": 12.0},
@@ -1733,9 +1639,6 @@ animations = [{"frames": [{"duration": 1.0, "texture": SubResource("idle_p1_e_0"
 {"frames": [{"duration": 1.0, "texture": SubResource("crust_burst_s_0")}, {"duration": 1.0, "texture": SubResource("crust_burst_s_1")}, {"duration": 1.0, "texture": SubResource("crust_burst_s_2")}, {"duration": 1.0, "texture": SubResource("crust_burst_s_3")}, {"duration": 1.0, "texture": SubResource("crust_burst_s_4")}, {"duration": 1.0, "texture": SubResource("crust_burst_s_5")}], "loop": false, "name": &"crust_burst", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("stele_s_0")}, {"duration": 1.0, "texture": SubResource("stele_s_1")}, {"duration": 1.0, "texture": SubResource("stele_s_2")}, {"duration": 1.0, "texture": SubResource("stele_s_3")}, {"duration": 1.0, "texture": SubResource("stele_s_4")}, {"duration": 1.0, "texture": SubResource("stele_s_5")}, {"duration": 1.0, "texture": SubResource("stele_s_6")}, {"duration": 1.0, "texture": SubResource("stele_s_7")}, {"duration": 1.0, "texture": SubResource("stele_s_8")}, {"duration": 1.0, "texture": SubResource("stele_s_9")}, {"duration": 1.0, "texture": SubResource("stele_s_10")}, {"duration": 1.0, "texture": SubResource("stele_s_11")}], "loop": true, "name": &"stele", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("stele_rise_s_0")}, {"duration": 1.0, "texture": SubResource("stele_rise_s_1")}, {"duration": 1.0, "texture": SubResource("stele_rise_s_2")}, {"duration": 1.0, "texture": SubResource("stele_rise_s_3")}, {"duration": 1.0, "texture": SubResource("stele_rise_s_4")}, {"duration": 1.0, "texture": SubResource("stele_rise_s_5")}], "loop": false, "name": &"stele_rise", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("tide_sheet_s_0")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_1")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_2")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_3")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_4")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_5")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_6")}, {"duration": 1.0, "texture": SubResource("tide_sheet_s_7")}], "loop": true, "name": &"tide_sheet", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("dry_nave_s_0")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_1")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_2")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_3")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_4")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_5")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_6")}, {"duration": 1.0, "texture": SubResource("dry_nave_s_7")}], "loop": true, "name": &"dry_nave", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("tide_front_s_0")}, {"duration": 1.0, "texture": SubResource("tide_front_s_1")}, {"duration": 1.0, "texture": SubResource("tide_front_s_2")}, {"duration": 1.0, "texture": SubResource("tide_front_s_3")}, {"duration": 1.0, "texture": SubResource("tide_front_s_4")}, {"duration": 1.0, "texture": SubResource("tide_front_s_5")}], "loop": true, "name": &"tide_front", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("crown_s_0")}, {"duration": 1.0, "texture": SubResource("crown_s_1")}, {"duration": 1.0, "texture": SubResource("crown_s_2")}, {"duration": 1.0, "texture": SubResource("crown_s_3")}, {"duration": 1.0, "texture": SubResource("crown_s_4")}, {"duration": 1.0, "texture": SubResource("crown_s_5")}, {"duration": 1.0, "texture": SubResource("crown_s_6")}, {"duration": 1.0, "texture": SubResource("crown_s_7")}], "loop": true, "name": &"crown", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("crown_guarded_s_0")}, {"duration": 1.0, "texture": SubResource("crown_guarded_s_1")}, {"duration": 1.0, "texture": SubResource("crown_guarded_s_2")}, {"duration": 1.0, "texture": SubResource("crown_guarded_s_3")}], "loop": true, "name": &"crown_guarded", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("crown_break_s_0")}, {"duration": 1.0, "texture": SubResource("crown_break_s_1")}, {"duration": 1.0, "texture": SubResource("crown_break_s_2")}, {"duration": 1.0, "texture": SubResource("crown_break_s_3")}, {"duration": 1.0, "texture": SubResource("crown_break_s_4")}, {"duration": 1.0, "texture": SubResource("crown_break_s_5")}], "loop": false, "name": &"crown_break", "speed": 12.0},
