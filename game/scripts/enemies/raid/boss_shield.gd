@@ -9,7 +9,11 @@ extends RefCounted
 ## garde-fou `backstop_s` : 25 s, 20 s si la condition principale est ULTIMATE_HIT) -> BREAKING (`break_s` 0,5,
 ## éclat) -> EXPOSED (`exposed_s` 2,5, dégâts reçus × `exposed_mult` 1,3, boss sonné) -> IDLE.
 ## Garde-fou atteint : le bouclier tombe SANS fenêtre (Events.raid_mechanic_failed(boss, &"shield_backstop") : le
-## HUD affiche « Le bouclier cède »), aucune autre pénalité. Jamais de blocage.
+## HUD affiche « Le bouclier cède »). Jamais de blocage. Attendre doit coûter (v2 27/10/2026) : option `stall_every_s`
+## (0 = coupée, défaut) = toutes les N s actives SANS progrès (cloche ramassée, add tué...), `stall_pulse(n)` est émis
+## (la n-ième impulsion porte n zones : au cerveau de punir) ; option `backstop_heal_frac` (0 = aucun soin, défaut) =
+## au garde-fou le boss se soigne de cette part de ses PV max et `backstop_reached` part avant la chute (salve finale).
+## Option `slow_spell_s` : cadence du sort lent gardé sous bouclier (défaut Balance.BOSS_SHIELD_SLOW_SPELL_S).
 ## Plusieurs conditions : la première remplie gagne (ex. [{kind: &"orbs", count: 3}, {kind: &"timer", s: 25}]).
 ##
 ## Duck typing attendu du cerveau (Enemy le lit) : is_invulnerable() -> shield.is_invulnerable() ;
@@ -23,6 +27,9 @@ extends RefCounted
 signal state_changed(state: int)
 signal progressed(done: int, total: int)
 signal broken(rewarded: bool)
+signal add_consumed(n: int) ## un add a atteint le boss (soin appliqué) : le cerveau punit (salve de vapeur...)
+signal stall_pulse(n: int) ## attente sans progrès : n-ième impulsion de pression (option stall_every_s)
+signal backstop_reached ## garde-fou atteint, avant la chute du bouclier (après le soin éventuel)
 
 enum State { IDLE, TRANSITION, SETUP, ACTIVE, BREAKING, EXPOSED }
 
@@ -58,6 +65,11 @@ var heavy_hits := 0
 var cracks := 0 ## fissures visuelles de la bulle (0..3)
 var adds: PriorityAdds = null
 var objects: Array[Node] = [] ## orbes, points faibles, zones, props posés par la condition
+var stall_every_s := 0.0 ## 0 = pas d'impulsion d'attente
+var stall_n := 0 ## impulsions émises sous ce bouclier
+var backstop_heal_frac := 0.0
+var slow_spell_s := Balance.BOSS_SHIELD_SLOW_SPELL_S
+var _stall_t := 0.0
 var _slow_t := 0.0
 var _caster: Object = null
 var _bubble: Node2D = null
@@ -95,6 +107,11 @@ func arm(conds: Array, opts: Dictionary = {}) -> bool:
 	backstop_s = float(opts.get("backstop_s", Balance.BOSS_SHIELD_BACKSTOP_ULT_S if ult else Balance.BOSS_SHIELD_BACKSTOP_S))
 	exposed_s = float(opts.get("exposed_s", Balance.BOSS_SHIELD_EXPOSED_S))
 	exposed_mult = float(opts.get("exposed_mult", Balance.BOSS_SHIELD_EXPOSED_MULT))
+	stall_every_s = float(opts.get("stall_every_s", 0.0))
+	backstop_heal_frac = float(opts.get("backstop_heal_frac", 0.0))
+	slow_spell_s = float(opts.get("slow_spell_s", Balance.BOSS_SHIELD_SLOW_SPELL_S))
+	stall_n = 0
+	_stall_t = 0.0
 	winner = null
 	rewarded = false
 	by_backstop = false
@@ -141,6 +158,12 @@ func tick(delta: float) -> void:
 					if c.kind == BreakCondition.Kind.TIMER:
 						c.elapsed += delta
 				_slow_t += delta
+				if stall_every_s > 0.0:
+					_stall_t += delta
+					if _stall_t >= stall_every_s:
+						_stall_t = 0.0
+						stall_n += 1
+						stall_pulse.emit(stall_n)
 			for c in conditions:
 				if c.is_met():
 					_break(c)
@@ -148,6 +171,7 @@ func tick(delta: float) -> void:
 			if state == State.ACTIVE and active_t >= backstop_s:
 				by_backstop = true
 				Events.raid_mechanic_failed.emit(boss, &"shield_backstop")
+				_backstop_penalty()
 				_break(null)
 		State.BREAKING:
 			if t >= break_s:
@@ -191,7 +215,7 @@ func slow_only() -> bool:
 
 ## Le sort lent est-il dû ? (consomme l'échéance : au plus un toutes les BOSS_SHIELD_SLOW_SPELL_S)
 func take_slow_spell() -> bool:
-	if state != State.ACTIVE or _slow_t < Balance.BOSS_SHIELD_SLOW_SPELL_S:
+	if state != State.ACTIVE or _slow_t < slow_spell_s:
 		return false
 	_slow_t = 0.0
 	return true
@@ -299,8 +323,17 @@ func _add_kind(k: BreakCondition.Kind, n: int) -> void:
 			_emit_progress(c)
 
 
+## Sanction du garde-fou : soin du boss (option backstop_heal_frac), puis signal pour la salve finale du cerveau.
+func _backstop_penalty() -> void:
+	if backstop_heal_frac > 0.0 and boss != null and is_instance_valid(boss):
+		var mhp: float = float(boss.get(&"max_hp"))
+		boss.set(&"hp", minf(float(boss.get(&"hp")) + mhp * backstop_heal_frac, mhp))
+	backstop_reached.emit()
+
+
 func _emit_progress(c: BreakCondition) -> void:
-	var done := c.done + (c.consumed if c.kind == BreakCondition.Kind.KILL_ADDS else 0)
+	_stall_t = 0.0 # un progrès relance l'attente : seule la passivité déclenche les impulsions
+	var done := c.done
 	Events.boss_shield_progress.emit(boss, done, c.total)
 	progressed.emit(done, c.total)
 	RaidFx.sfx(&"ui.raid_progress", _boss_pos())
@@ -313,9 +346,15 @@ func _on_cond(_node: Node, c: BreakCondition) -> void:
 	_emit_progress(c)
 
 
+## Un add a atteint le boss (soin déjà appliqué par PriorityAdds). Il NE compte PLUS pour la rupture : seuls les adds
+## tués la font (v2 27/10/2026, « attendre ne doit pas suffire »). Il est remplacé tant que le quota de morts n'est pas
+## atteignable (option `respawn`, vrai par défaut), et le cerveau est prévenu par `add_consumed`.
 func _on_add_reached(_e: Enemy, c: BreakCondition) -> void:
 	c.consumed += 1
-	_emit_progress(c)
+	add_consumed.emit(c.consumed)
+	if adds != null and is_instance_valid(adds) and bool(c.params.get("respawn", true)) and c.done + adds.alive() < c.total:
+		var pl := RaidKit.player_of(boss)
+		adds.spawn(1, c.params, pl.global_position if pl != null else Vector2.INF)
 
 
 func _spawn_objects() -> void:
@@ -338,6 +377,7 @@ func _spawn_objects() -> void:
 			BreakCondition.Kind.KILL_ADDS:
 				adds = PriorityAdds.create(boss)
 				adds.heal_frac = float(p.get("heal_frac", Balance.RAID_ADD_HEAL_FRAC))
+				adds.heal_cap_frac = float(p.get("heal_cap_frac", Balance.RAID_ADD_HEAL_CAP_FRAC))
 				adds.add_killed.connect(_on_cond.bind(c))
 				adds.add_reached.connect(_on_add_reached.bind(c))
 				var n := adds.spawn(c.total, p, pl.global_position if pl != null else Vector2.INF)

@@ -69,7 +69,7 @@ func start(aim_angle: float, opts: Dictionary = {}) -> bool:
 			set(k, float(opts[k]))
 	cones = maxi(int(opts.get("cones", cones)), 1)
 	max_live = mini(int(opts.get("max_live", max_live)), Balance.RAID_BARRAGE_MAX_LIVE)
-	telegraph_s = maxf(telegraph_s, Balance.RAID_BARRAGE_TELEGRAPH_S)
+	telegraph_s = maxf(telegraph_s, float(opts.get("telegraph_floor_s", Balance.RAID_BARRAGE_TELEGRAPH_S))) ## plancher propre au boss (Canonnier v2 : 1,0 s)
 	aim = aim_angle
 	state = State.TELEGRAPH
 	t = 0.0

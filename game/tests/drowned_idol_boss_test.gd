@@ -146,6 +146,7 @@ func _new_boss() -> void:
 	_boss.damage = 10.0
 	_brain = DrownedIdolBrain.new(_boss)
 	_boss.brain = _brain
+	_brain.ring_jitter_scale = 0.0 # anneaux du Carillon à leurs rayons nominaux (le hasard est testé à part)
 	_brain._spell_cd = 999.0
 	_brain._attack_cd = 999.0
 	_hits.clear()
@@ -188,7 +189,11 @@ func _contracts() -> void:
 		and Balance.boss_phase(&"etage", ID, 0.36) == 2 and Balance.boss_phase(&"etage", ID, 0.35) == 3)
 	_check("P3 : +20 % de dégâts reçus", is_equal_approx(Balance.boss_damage_taken_mult(ID, 3), 1.2) and Balance.boss_damage_taken_mult(ID, 2) == 1.0)
 	_check("PV x 0,9, 2 boucliers", is_equal_approx(Balance.boss_hp_mult(ID), 0.9) and Balance.boss_shield_count(ID) == 2)
-	_check("garde-fou 25 s", Balance.BOSS_SHIELD_BACKSTOP_S == 25.0)
+	_check("garde-fou 25 s (défaut) ; Idole v2 : 45 s, impulsion toutes les 8 s, soin 10 %", Balance.BOSS_SHIELD_BACKSTOP_S == 25.0
+		and float(Balance.boss_pressure(ID, "shield_backstop_s")) == 45.0 and float(Balance.boss_pressure(ID, "shield_stall_every_s")) == 8.0
+		and Balance.RAID_STALL_HEAL_FRAC == 0.10)
+	_check("v2 : coefs de dégâts inchangés", Balance.boss_attack_coef(ID, &"palm") == 1.0 and Balance.boss_attack_coef(ID, &"carillon") == 1.2
+		and Balance.boss_attack_coef(ID, &"chaplet") == 1.3 and Balance.boss_attack_coef(ID, &"noria") == 0.5 and Balance.boss_attack_coef(ID, &"ring_p3") == 1.0)
 
 
 # --- 2. Phase 1 ---------------------------------------------------------------------------
@@ -210,21 +215,21 @@ func _phase1_palm() -> void:
 func _phase1_carillon() -> void:
 	print("Phase 1 : carillon")
 	await _new_boss()
-	# couloir sûr entre les anneaux de 3 et 6 u (3 -> 5,2 u)
-	_place(Vector2(4.5 * U, 0.0))
+	# v2 : 4 anneaux de 1,0 u d'épaisseur (bandes 1,5-2,5 / 3,5-4,5 / 5,5-6,5 / 7,5-8,5 u) ; couloir sûr à 3,0 u
+	_place(Vector2(3.0 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
 	_check("carillon : télégraphe >= 1,0 s", _brain._dur >= 1.0, str(_brain._dur))
 	await _adv(4.0)
 	var rings := _events(&"ring")
-	_check("carillon : 3 anneaux", rings.size() == 3, str(rings.size()))
+	_check("carillon : 4 anneaux", rings.size() == 4, str(rings.size()))
 	_check("carillon : couloir sûr", _hits.is_empty() and _events(&"ring_hit").is_empty(), str(_hits))
-	_check("carillon : 0,5 s entre deux anneaux", rings.size() == 3 and absf(float(rings[1]["at"]) - float(rings[0]["at"]) - 0.5) < 0.04
-		and absf(float(rings[2]["at"]) - float(rings[1]["at"]) - 0.5) < 0.04)
+	_check("carillon : 0,35 s entre deux anneaux", rings.size() == 4 and absf(float(rings[1]["at"]) - float(rings[0]["at"]) - 0.35) < 0.04
+		and absf(float(rings[2]["at"]) - float(rings[1]["at"]) - 0.35) < 0.04)
 	_check("carillon : lag d'impact", _lag_ok(&"carillon"))
-	_check("carillon : rayons 3 / 6 / 9 u", is_equal_approx(float(rings[0]["r"]), 3.0 * U) and is_equal_approx(float(rings[2]["r"]), 9.0 * U))
-	# dans la bande de l'anneau de 6 u (5,2 -> 6,0 u)
+	_check("carillon : rayons 2,5 / 4,5 / 6,5 / 8,5 u", is_equal_approx(float(rings[0]["r"]), 2.5 * U) and is_equal_approx(float(rings[3]["r"]), 8.5 * U))
+	# dans la bande de l'anneau de 4,5 u (3,5 -> 4,5 u)
 	_brain.events.clear()
-	_place(Vector2(5.6 * U, 0.0))
+	_place(Vector2(4.0 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
 	await _adv(4.0)
 	_check("carillon : l'anneau touche dans sa bande", _events(&"ring_hit").size() == 1 and _hits.size() == 1, str(_hits))
@@ -234,6 +239,20 @@ func _phase1_carillon() -> void:
 	_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
 	await _adv(4.0)
 	_check("carillon : sûr au pied du boss", _hits.is_empty())
+	# décalage aléatoire (couloir imprévisible) : deux Carillons de la P2 ne tombent pas aux mêmes rayons
+	await _new_boss()
+	_brain.ring_jitter_scale = 1.0
+	_brain.phase = 2
+	_place(Vector2(-2000.0, -2000.0))
+	var firsts: Array[float] = []
+	for i in 6:
+		_brain.events.clear()
+		_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
+		await _adv(4.5)
+		var rs := _events(&"ring")
+		if rs.size() == 5:
+			firsts.append(minf(float(rs[0]["r"]), float(rs[4]["r"])))
+	_check("carillon P2 : 5 anneaux, rayons décalés d'un lancer à l'autre", firsts.size() >= 5 and (firsts.max() - firsts.min()) > 0.3 * U, str(firsts))
 
 
 func _phase1_chaplet() -> void:
@@ -242,15 +261,15 @@ func _phase1_chaplet() -> void:
 	_place(Vector2(6.0 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.CHAPLET, _player.global_position)
 	var cs: Array = _brain._circles
-	_check("chapelet : 5 cercles, le dernier sur le joueur", cs.size() == 5 and (cs[4]["pos"] as Vector2).distance_to(_player.global_position) < 2.0)
+	_check("chapelet v2 : 7 cercles en file + 1 sur la position du joueur, le dernier sur lui", cs.size() == 8 and (cs[7]["pos"] as Vector2).distance_to(_player.global_position) < 2.0)
 	var disjoint := true
-	for i in range(1, cs.size()):
-		if (cs[i]["pos"] as Vector2).distance_to(cs[i - 1]["pos"]) < 1.0 * U:
+	for i in range(1, cs.size() - 1):
+		if (cs[i]["pos"] as Vector2).distance_to(cs[i - 1]["pos"]) < 0.7 * U:
 			disjoint = false
 	_check("chapelet : cercles du boss vers le joueur", disjoint)
 	await _adv(3.5)
-	_check("chapelet : le cercle sur le joueur touche (cercles voisins qui se chevauchent : 2 coups au plus)",
-		_events(&"chaplet_hit").size() >= 1 and _hits.size() <= 2, str(_hits))
+	_check("chapelet : le cercle sur le joueur touche (cercles voisins qui se chevauchent : 4 coups au plus)",
+		_events(&"chaplet_hit").size() >= 1 and _hits.size() <= 4, str(_hits))
 	_check("chapelet : lag d'impact", _lag_ok(&"chaplet"))
 	_check("chapelet : plus aucun cercle", _brain._circles.is_empty())
 	# le joueur qui bouge à temps n'est pas touché
@@ -269,20 +288,20 @@ func _shelter() -> void:
 	print("Phase 2 : le muret-abri arrête les anneaux")
 	await _new_boss()
 	_brain.phase = 2
-	# anneau de 6,75 u : bande 5,95 -> 6,75 ; joueur à 6,4 u
-	_place(Vector2(6.4 * U, 0.0))
+	# anneau de 7,4 u : bande 6,4 -> 7,4 ; joueur à 6,9 u
+	_place(Vector2(6.9 * U, 0.0))
 	_brain.debug_add_dike(Vector2(4.0 * U, 0.0), false) # muret vertical entre le boss et le joueur
 	_check("digue posée", _brain.dike_count() == 1)
-	_check("ombre derrière le muret, pas à côté", _brain.sheltered(Vector2.ZERO, Vector2(6.4 * U, 0.0))
-		and not _brain.sheltered(Vector2.ZERO, Vector2(6.4 * U, 8.0 * U)))
+	_check("ombre derrière le muret, pas à côté", _brain.sheltered(Vector2.ZERO, Vector2(6.9 * U, 0.0))
+		and not _brain.sheltered(Vector2.ZERO, Vector2(6.9 * U, 8.0 * U)))
 	_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
 	await _adv(4.5)
-	_check("carillon à 4 anneaux en P2", _events(&"ring").size() == 4, str(_events(&"ring").size()))
+	_check("carillon à 5 anneaux en P2", _events(&"ring").size() == 5, str(_events(&"ring").size()))
 	_check("anneaux arrêtés par le muret", _brain.rings_blocked >= 1 and _hits.is_empty() and _events(&"ring_hit").is_empty(),
 		"bloqués %d, coups %s" % [_brain.rings_blocked, str(_hits)])
 	# sans le muret le même anneau touche
 	_brain._dikes.clear()
-	_place(Vector2(6.4 * U, 0.0))
+	_place(Vector2(6.9 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.CARILLON, _player.global_position)
 	await _adv(4.5)
 	_check("sans muret l'anneau touche", _events(&"ring_hit").size() >= 1, str(_hits))
@@ -295,7 +314,7 @@ func _dikes() -> void:
 	_place(Vector2(6.0 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.DIKES, _player.global_position)
 	var plan: Array = _brain._dike_plan
-	_check("digues télégraphées : 2 murets 1 x 4 u", plan.size() == 2 and _brain._dur >= 0.8)
+	_check("digues télégraphées : 2 murets 1 x 4 u", plan.size() == 2 and _brain._dur >= 0.65)
 	_check("muret de 1 x 4 u", plan.size() == 2 and absf(maxf((plan[0]["rect"] as Rect2).size.x, (plan[0]["rect"] as Rect2).size.y) - 4.0 * U) < 0.5
 		and absf(minf((plan[0]["rect"] as Rect2).size.x, (plan[0]["rect"] as Rect2).size.y) - 1.0 * U) < 0.5)
 	# un joueur sous le premier muret au moment où il jaillit prend le coup (coef 0,6)
@@ -307,7 +326,7 @@ func _dikes() -> void:
 	var nav_ok := _boss.nav == null or _boss.nav.obstacle_count() >= 2
 	_check("obstacles de navigation posés", nav_ok)
 	await _adv(DrownedIdolBrain.DIKE_LIFE_S + 1.5)
-	_check("digues expirées après 8 s", _brain.dike_count() == 0)
+	_check("digues expirées après %.0f s" % DrownedIdolBrain.DIKE_LIFE_S, _brain.dike_count() == 0)
 	if _boss.nav != null:
 		_check("obstacles de navigation retirés", _boss.nav.obstacle_count() == 0, str(_boss.nav.obstacle_count()))
 
@@ -318,25 +337,25 @@ func _noria() -> void:
 	_brain.phase = 2
 	_place(Vector2(5.0 * U, 2.0 * U))
 	_brain.debug_cast(DrownedIdolBrain.Spell.NORIA, _player.global_position)
-	_check("noria : une fixation, verrouillage >= 0,8 s", _brain._noria.size() == 1 and _brain._dur >= 0.8
-		and (_brain._noria[0]["mark"] as FixateMark).lock_s >= 0.8)
+	_check("noria v2 : 2 fixations en P2, verrouillage >= 0,7 s", _brain._noria.size() == 2 and _brain._dur >= 0.7
+		and (_brain._noria[0]["mark"] as FixateMark).lock_s >= 0.7)
 	var mark := _brain._noria[0]["mark"] as FixateMark
 	var pt := mark.point
 	await _until(func(): return mark.is_locked, 3.0)
 	_check("noria : point figé au verrouillage", mark.is_locked and mark.point.distance_to(pt) < 0.5)
 	await _adv(2.6)
 	_check("noria : le joueur resté sur place est touché", _events(&"noria_hit").size() >= 1 and _lag_ok(&"noria"), str(_hits.size()))
-	_check("noria : plafond de coups (4 ticks max)", _hits.size() <= 5, str(_hits.size()))
+	_check("noria : plafond de coups (4 ticks max par roue)", _hits.size() <= 10, str(_hits.size()))
 	# parti avant le verrouillage : rien
 	await _new_boss()
 	_brain.phase = 2
 	_place(Vector2(5.0 * U, 2.0 * U))
 	_brain.debug_cast(DrownedIdolBrain.Spell.NORIA, _player.global_position)
 	await _adv(0.4)
-	_place(Vector2(5.0 * U, 14.0 * U))
+	_place(Vector2(5.0 * U, 22.0 * U))
 	await _adv(4.0)
 	_check("noria : on ne reste pas où l'on était", _hits.is_empty(), str(_hits))
-	# la pale : joueur sur son bras au 1er tick (angle a0 + 45°)
+	# la pale : joueur sur son bras au 1er tick (angle a0 + balayage de 270° en 1,5 s, 1er tick à 0,4 s)
 	await _new_boss()
 	_brain.phase = 2
 	_place(Vector2(5.0 * U, 2.0 * U))
@@ -344,7 +363,8 @@ func _noria() -> void:
 	var ent: Dictionary = _brain._noria[0]
 	var m2 := ent["mark"] as FixateMark
 	await _until(func(): return m2.is_locked, 3.0)
-	_place(m2.point + Vector2.from_angle(float(ent["a0"]) + PI * 0.25) * 5.0 * U)
+	var sweep := float(Balance.boss_pressure(ID, "noria_sweep_rad")) * float(Balance.boss_pressure(ID, "noria_tick_s")) / float(Balance.boss_pressure(ID, "noria_turn_s"))
+	_place(m2.point + Vector2.from_angle(float(ent["a0"]) + sweep) * 5.0 * U)
 	await _adv(0.7)
 	_check("noria : la pale touche à 5 u du centre", _events(&"noria_hit").size() >= 1, str(_hits.size()))
 	await _adv(3.0)
@@ -434,7 +454,7 @@ func _phase3_and_shield_two() -> void:
 		await _frame()
 		vel = _brain.tick(0.0, _player, _player.global_position, Vector2.RIGHT, 6.0 * U, Vector2.RIGHT)
 	_check("P3 : ancrée (immobile)", _brain.anchored and vel == Vector2.ZERO and _boss.position.distance_to(p0) < 1.0)
-	_check("P3 : un anneau toutes les 2,5 s", _events(&"ring_p3").size() >= 3, str(_events(&"ring_p3").size()))
+	_check("P3 v2 : un anneau toutes les 1,1 s", _events(&"ring_p3").size() >= 7, str(_events(&"ring_p3").size()))
 	_check("P3 : l'anneau continu touche en terrain nu", _brain.ring_hits >= 1, str(_brain.ring_hits))
 	# P3 : digues x3, noria x2, spirale x6
 	_place(Vector2(6.0 * U, 0.0))
@@ -444,11 +464,11 @@ func _phase3_and_shield_two() -> void:
 	_check("P3 : 3 digues levées", _brain.dike_count() == 3)
 	_place(Vector2(6.0 * U, 6.0 * U))
 	_brain.debug_cast(DrownedIdolBrain.Spell.NORIA, _player.global_position)
-	_check("P3 : 2 roues", _brain._noria.size() == 2)
+	_check("P3 v2 : 3 roues", _brain._noria.size() == 3)
 	await _adv(5.0)
 	_place(Vector2(6.0 * U, 0.0))
 	_brain.debug_cast(DrownedIdolBrain.Spell.SPIRAL, _player.global_position)
-	_check("P3 : chapelet en spirale de 6 cercles", _brain._circles.size() == 6)
+	_check("P3 v2 : chapelet en spirale de 9 cercles", _brain._circles.size() == 9)
 	await _adv(4.0)
 	# mort : les digues restent (pas de gros pilier en test : tout est libéré proprement)
 	_boss.take_damage(1e9)
@@ -458,20 +478,31 @@ func _phase3_and_shield_two() -> void:
 
 
 func _backstop() -> void:
-	print("Garde-fou 25 s, enrage gelé")
+	print("Attendre sous bouclier coûte : impulsions, garde-fou 45 s (soin + salve), enrage gelé")
+	var back_s := float(Balance.boss_pressure(ID, "shield_backstop_s"))
 	await _new_boss()
-	_place(Vector2(-2000.0, -2000.0))
+	_place(Vector2(-2000.0, -2000.0)) # joueur passif, hors de portée : on regarde ce que fait le boss
 	_boss.hp = _boss.max_hp * 0.69
 	await _adv(0.2)
 	_check("bouclier levé", _brain.is_invulnerable())
-	await _adv(Balance.BOSS_SHIELD_TRANSITION_S + Balance.BOSS_SHIELD_SETUP_S + Balance.BOSS_SHIELD_BACKSTOP_S - 1.0)
-	_check("encore levé avant 25 s", _brain.is_invulnerable())
-	await _until(func(): return not _brain.is_invulnerable(), 3.0)
+	var hp_wait := _boss.hp
+	await _adv(Balance.BOSS_SHIELD_TRANSITION_S + Balance.BOSS_SHIELD_SETUP_S + 9.5)
+	_check("impulsion d'attente après 8 s sans cloche : anneaux supplémentaires", _events(&"stall").size() >= 1 and _brain.stall_rings >= 1,
+		"%d impulsions, %d anneaux" % [_events(&"stall").size(), _brain.stall_rings])
+	await _adv(back_s - 9.5 - 1.0)
+	_check("encore levé avant 45 s (attendre ne suffit pas à 25 s)", _brain.is_invulnerable())
+	_check("n-ième impulsion = n anneaux (3 au plus)", _events(&"stall").size() >= 4 and _brain.stall_rings >= 1 + 2 + 3, "%d impulsions, %d anneaux" % [_events(&"stall").size(), _brain.stall_rings])
+	var rings_before := _brain.stall_rings
+	await _until(func(): return not _brain.is_invulnerable(), 4.0)
 	_check("garde-fou : le bouclier cède", not _brain.is_invulnerable() and _count("failed") >= 1 and (_ev["failed"] as Array)[0][0] == &"shield_backstop")
 	_check("garde-fou : sans fenêtre", _brain.shield.by_backstop and not _brain.shield.rewarded)
+	_check("garde-fou : l'idole se soigne de 10 % de ses PV max", _boss.hp >= hp_wait + _boss.max_hp * 0.10 - 1.0, "%f" % ((_boss.hp - hp_wait) / _boss.max_hp))
+	_check("garde-fou : salve finale annoncée", _events(&"backstop_penalty").size() == 1)
 	await _until(func(): return _brain.shield.state == BossShield.State.IDLE, 2.0)
+	await _adv(2.5)
+	_check("garde-fou : 3 anneaux supplémentaires lâchés", _brain.stall_rings >= rings_before + 3, "%d -> %d" % [rings_before, _brain.stall_rings])
 	_check("garde-fou : retour à la normale (x 1,0)", is_equal_approx(_brain.damage_taken_mult(), 1.0))
-	_check("enrage gelé sous bouclier", _boss.fight_time < 5.0 and _brain.enrage.frozen_s > 20.0,
+	_check("enrage gelé sous bouclier", _boss.fight_time < 5.0 and _brain.enrage.frozen_s > 40.0,
 		"fight_time %.1f gelé %.1f" % [_boss.fight_time, _brain.enrage.frozen_s])
 	_brain.events.clear()
 	_place(Vector2(3.0 * U, 0.0))
@@ -479,6 +510,20 @@ func _backstop() -> void:
 	_brain._spell_cd = 0.0
 	await _adv(6.0)
 	_check("pas de blocage : le combat reprend", _brain.events.size() > 0)
+	# une cloche ramassée relance l'attente : le joueur actif n'est pas puni
+	await _new_boss()
+	_place(Vector2(-2000.0, -2000.0))
+	_boss.hp = _boss.max_hp * 0.69
+	await _until(func(): return _brain.shield.state == BossShield.State.ACTIVE, 4.0)
+	var orbs := _orbs()
+	await _adv(6.0)
+	_place((orbs[0] as RaidOrb).global_position)
+	await _adv(0.4)
+	_place(Vector2(-2000.0, -2000.0))
+	await _adv(6.0)
+	_check("cloche ramassée : pas d'impulsion 6 s plus tard (l'attente repart de zéro)", _events(&"stall").is_empty(), str(_events(&"stall").size()))
+	await _adv(3.0)
+	_check("... mais elle revient si le joueur se remet à attendre", _events(&"stall").size() >= 1)
 
 
 func _penalty_cap() -> void:

@@ -43,6 +43,8 @@ const EMISSION_MASS_TABLE := "res://data/boss_emission_mass.json"
 static var _mass_table: Dictionary = {} ## chemin du _e -> masse émissive
 const EMISSION_BOSS_DIR := "res://assets/sprites/bosses/"
 const META_ENERGY_BASE := &"emission_energy_base"
+const ALBEDO_TABLE := "res://data/boss_albedo_lum.json"
+static var _albedo_table: Dictionary = {} ## id de boss -> {mean, p90} (luminance des pixels opaques de idle.png)
 static var _gain_cache: Dictionary = {} ## "chemin SpriteFrames|anim" -> gain (float)
 
 
@@ -231,6 +233,24 @@ static func emission_mass(tex: Texture2D) -> float:
 	if t == null:
 		return -1.0
 	return float(_mass_table.get(t.resource_path, -1.0))
+
+
+## Gain maximal de corps pour qu'un sprite clair ne grille pas : Balance.MINI_BODY_MEAN_MAX / (luminance moyenne
+## de son idle.png, table mesurée hors ligne). INF si l'id est absent de la table (aucun plafond).
+static func body_gain_cap(boss_id: StringName) -> float:
+	if _albedo_table.is_empty():
+		var f := FileAccess.open(ALBEDO_TABLE, FileAccess.READ)
+		if f != null:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			if d is Dictionary:
+				_albedo_table = d
+		if _albedo_table.is_empty():
+			_albedo_table = {"": {}}
+	var e: Variant = _albedo_table.get(String(boss_id))
+	if not (e is Dictionary):
+		return INF
+	var mean := float((e as Dictionary).get("mean", 0.0))
+	return Balance.MINI_BODY_MEAN_MAX / mean if mean > 0.01 else INF
 
 
 ## Gain (<= 1) appliqué à l'énergie d'émission de l'animation `anim` des SpriteFrames diffus `frames` d'un boss

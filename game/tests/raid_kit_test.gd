@@ -115,6 +115,7 @@ func _run() -> void:
 	_shield_ultimate()
 	_shield_timer()
 	_shield_backstop()
+	_shield_stall()
 	_shield_adds()
 	_shield_weak_point()
 	_shield_soak()
@@ -303,6 +304,45 @@ func _shield_backstop() -> void:
 	_check("garde-fou : aucune fenêtre", _shield().state == BossShield.State.IDLE and _shield().damage_taken_mult() == 1.0)
 
 
+## v2 27/10/2026 : attendre coûte. Impulsions toutes les `stall_every_s` sans progrès, soin + signal au garde-fou.
+func _shield_stall() -> void:
+	print("Bouclier : attendre coûte (impulsions, soin au garde-fou)")
+	_reset_player(Vector2(-2000, -2000))
+	var pulses: Array[int] = []
+	var finals := [0]
+	var cb := func(n: int): pulses.append(n)
+	var fb := func(): finals[0] += 1
+	_shield().stall_pulse.connect(cb)
+	_shield().backstop_reached.connect(fb)
+	_arm([{"kind": &"orbs", "count": 3}], {"backstop_s": 10.0, "stall_every_s": 3.0, "backstop_heal_frac": 0.1, "slow_spell_s": 1.5})
+	_boss.hp = _boss.max_hp * 0.5
+	_tick_shield(Balance.BOSS_SHIELD_TRANSITION_S + Balance.BOSS_SHIELD_SETUP_S + 0.05)
+	_check("options lues (garde-fou 10 s, impulsion 3 s, sort lent 1,5 s)", is_equal_approx(_shield().backstop_s, 10.0)
+		and is_equal_approx(_shield().stall_every_s, 3.0) and is_equal_approx(_shield().slow_spell_s, 1.5))
+	_tick_shield(3.1)
+	_check("1re impulsion après 3 s sans progrès", pulses == [1], str(pulses))
+	_tick_shield(2.0)
+	_shield().note_ultimate_hit() # n'est pas un progrès d'ORBS : l'attente continue
+	_shield().objects[0].on_collect.call(_shield().objects[0]) # une cloche ramassée = progrès
+	_tick_shield(2.5)
+	_check("un progrès relance l'attente (pas d'impulsion 2,5 s après)", pulses == [1], str(pulses))
+	_tick_shield(0.7)
+	_check("2e impulsion = n° 2", pulses == [1, 2], str(pulses))
+	var hp0 := _boss.hp
+	_tick_shield(10.0)
+	_check("garde-fou : signal backstop_reached émis une fois, boss soigné de 10 %", finals[0] == 1 and _shield().by_backstop
+		and _boss.hp >= hp0 + _boss.max_hp * 0.1 - 1.0, "%d %f" % [finals[0], _boss.hp - hp0])
+	_check("garde-fou : toujours SANS fenêtre", not _shield().rewarded)
+	_shield().stall_pulse.disconnect(cb)
+	_shield().backstop_reached.disconnect(fb)
+	_tick_shield(Balance.BOSS_SHIELD_BREAK_S + 0.05)
+	# sans options : rien (rétrocompatible)
+	_arm([{"kind": &"orbs", "count": 3}])
+	_check("sans options : pas d'impulsion ni de soin", is_equal_approx(_shield().stall_every_s, 0.0) and is_equal_approx(_shield().backstop_heal_frac, 0.0))
+	_shield().force_break(false)
+	_tick_shield(Balance.BOSS_SHIELD_BREAK_S + 0.05)
+
+
 func _shield_adds() -> void:
 	print("Bouclier : KILL_ADDS")
 	_reset_player(Vector2(-900, 0))
@@ -324,7 +364,15 @@ func _shield_adds() -> void:
 	_check("add arrivé : boss soigné de 10 %", is_equal_approx(_boss.hp, _boss.max_hp * 0.6), "%f" % (_boss.hp / _boss.max_hp))
 	_check("add arrivé : raid_mechanic_failed(add_reached)", _last("failed")[1] == &"add_reached")
 	_tick_shield(DT)
-	_check("tous tués ou consommés : rupture SANS fenêtre", _shield().state == BossShield.State.BREAKING and not _shield().rewarded)
+	# v2 27/10/2026 : un add arrivé NE compte PAS pour la rupture ; il est remplacé, seule la mort du quota ouvre la fenêtre
+	_check("add arrivé : le bouclier tient (attendre ne suffit pas)", _shield().is_invulnerable() and _shield().state != BossShield.State.BREAKING)
+	_check("add arrivé : remplacé par un nouvel add", pa.alive() == 1 and pa.adds[0] != a1, str(pa.alive()))
+	_check("add arrivé : consommé compté, progrès inchangé (1/2)", _shield().conditions[0].consumed == 1 and _shield().conditions[0].done == 1
+		and String(_shield().state_tag().get("text")) == "SERVITEURS 1/2", str(_shield().state_tag()))
+	var a2: Enemy = pa.adds[0]
+	a2.take_damage(1e9)
+	_tick_shield(DT)
+	_check("tous tués : rupture MÉRITÉE (fenêtre exposée)", _shield().state == BossShield.State.BREAKING and _shield().rewarded)
 	_tick_shield(Balance.BOSS_SHIELD_BREAK_S + 0.05)
 	# plafond de soin : 20 % par groupe
 	var p2 := PriorityAdds.create(_boss)

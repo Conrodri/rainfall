@@ -86,6 +86,8 @@ func _ready() -> void:
 	var mips: Array[String] = []
 	var off_policy: Array[String] = []
 	var mobile_bytes := 0
+	var android_excl := _android_exclude_filters()
+	var n_excl := 0
 	var vram_bytes := 0
 	for p in pngs:
 		var imp := _read_import(p + ".import")
@@ -98,6 +100,9 @@ func _ready() -> void:
 				break
 		var s: Vector2i = _sizes[p]
 		vram_bytes += s.x * s.y * (1 if int(imp.get("compress/mode", "0")) == 2 else 4)
+		if _export_excluded(p.trim_prefix("res://"), android_excl):
+			n_excl += 1 ## exclu de l'export Android (export_presets.cfg) : pas embarqué
+			continue
 		var dests: Array = imp.get("dest_files", [])
 		var has_astc := dests.any(func(x: String) -> bool: return ".astc." in x)
 		for dest: String in dests:
@@ -109,6 +114,7 @@ func _ready() -> void:
 	_check(mips.is_empty(), "aucune texture 2D avec mipmaps %s" % [mips.slice(0, 5)])
 	_check(off_policy.is_empty(), "%d .import conformes à import_policy (sinon : python art/tools/texture_budget.py --apply-policy) %s" % [pngs.size() - off_policy.size(), off_policy.slice(0, 5)])
 	print("  info mémoire GPU si tout était chargé : %.0f Mo" % (vram_bytes / MB))
+	print("  info %d PNG exclues de l'export Android (exclude_filter du preset) non comptées" % n_excl)
 	var cap := float(budget["apk_textures_mb"])
 	_check(mobile_bytes / MB <= cap, "textures embarquées sur mobile (ASTC deflaté) : %.0f Mo <= %.0f Mo" % [mobile_bytes / MB, cap])
 	_finish()
@@ -171,6 +177,28 @@ func _png_size(path: String) -> Vector2i:
 	var w := f.get_32()
 	var hh := f.get_32()
 	return Vector2i(w, hh)
+
+
+## Filtres d'exclusion du preset d'export « Android » (export_presets.cfg), vides si introuvables.
+func _android_exclude_filters() -> PackedStringArray:
+	var cf := ConfigFile.new()
+	if cf.load("res://export_presets.cfg") != OK:
+		return PackedStringArray()
+	for sec in cf.get_sections():
+		if sec.count(".") == 1 and str(cf.get_value(sec, "name", "")) == "Android":
+			var out := PackedStringArray()
+			for f in str(cf.get_value(sec, "exclude_filter", "")).split(",", false):
+				out.append(f.strip_edges())
+			return out
+	return PackedStringArray()
+
+
+## Même règle que l'export Godot : motif comparé au chemin sans « res:// » (* traverse les dossiers).
+func _export_excluded(rel: String, filters: PackedStringArray) -> bool:
+	for f in filters:
+		if rel.matchn(f) or ("res://" + rel).matchn(f):
+			return true
+	return false
 
 
 func _read_import(path: String) -> Dictionary:

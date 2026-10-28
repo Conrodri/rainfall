@@ -266,6 +266,91 @@ const RAID_WEAK_TRANSFER := 2.0
 ## Plafond d'une pénalité d'échec (part des PV max du joueur) ; non létale : jamais sous 1 PV (règle 2).
 const RAID_PENALTY_MAX_FRAC := 0.40
 const RAID_PENALTY_NONLETHAL := true
+## Attendre sous bouclier coûte (retour joueur 27/10/2026 : « il suffit d'attendre »). Garde-fou anti-blocage :
+## le bouclier finit par tomber SANS fenêtre, mais après une sanction (soin du boss de cette part de ses PV max +
+## salve). Tant que rien ne progresse, une impulsion de pression part toutes les `stall_every_s`
+## (BossShield.stall_pulse), la n-ième impulsion portant n zones.
+const RAID_STALL_HEAL_FRAC := 0.10
+
+## Pression des boss d'étage raid, v2 du 27/10/2026 (retour joueur : « trop simples à esquiver, quasi aucun impact »),
+## SANS toucher aux dégâts (BOSS_ATTACK_COEF, RAID_*_COEF, BOSS_HP_MULT inchangés) : recharges et armements plus
+## courts (jamais sous windup_floor_s), zones plus grandes et plus nombreuses, sorts qui visent où le joueur VA
+## (lead_s), superpositions. Tables [P1, P2, P3] sauf mention. Lues par DrownedIdolBrain / FloodGunnerBrain via
+## boss_pressure(id, clé). Valeurs d'avant : docs/Design_Boss_Raid.md §2.1 / §2.2 (« v2 27/10 »). Roi de sel : à venir.
+const BOSS_PRESSURE := {
+	&"drowned_idol": {
+		"auto_cd": [1.2, 1.1, 0.9], ## Paume (avant 1,8 / 1,7 / 1,6)
+		"spell_cd": [3.0, 2.6, 1.6], ## écart entre deux sorts (avant 4,8 / 4,3 / 3,8)
+		"palm_range_u": 4.5, ## avant 3,0
+		"palm_half": 1.05, ## demi-angle 60° = cône de 120° (avant 0,785 = 90°)
+		"windup_heavy_mult": 0.7, "windup_spell_mult": 0.75, "windup_floor_s": 0.65, ## armements ×, plancher
+		"ring_thick_u": 1.0, ## épaisseur d'un anneau du Carillon (avant 0,8)
+		"ring_step_s": 0.35, ## écart entre deux anneaux (avant 0,5)
+		"ring_radii": [[2.5, 4.5, 6.5, 8.5], [2.0, 3.8, 5.6, 7.4, 9.2], [2.0, 3.8, 5.6, 7.4, 9.2]], ## avant 3 / 4 anneaux
+		"ring_jitter_u": 0.6, ## chaque Carillon décale tous ses anneaux de ±0,6 u : le couloir de la fois d'avant ne sert plus
+		"chaplet_count": 7, "spiral_count": 9, ## avant 5 / 6
+		"chaplet_r_u": 1.3, ## avant 1,0
+		"chaplet_step_s": 0.18, ## avant 0,25
+		"chaplet_lines": [1, 3, 3], ## files de cercles (côtés à ±0,38 rad en P2/P3)
+		"lead_s": 0.8, ## le dernier cercle vise où le joueur sera dans ce délai (vitesse lissée)
+		"cycles": [[0, 1, 0, 1], [0, 3, 2, 1, 0, 3, 1], [3, 4, 2, 3, 4]], ## ordre des sorts : Spell.CARILLON 0, CHAPLET 1, DIKES 2, NORIA 3, SPIRAL 4
+		"noria_count": [1, 2, 3], ## avant 1 / 1 / 2
+		"noria_turn_s": 1.5, "noria_sweep_rad": 4.71, ## pale de 270° en 1,5 s (avant 180° en 2,0 s)
+		"noria_blade_u": 9.0, "noria_width_u": 1.8, ## avant 8,0 x 1,5
+		"noria_tick_s": 0.4, ## avant 0,5
+		"ring_every_s": [0.0, 4.0, 1.1], ## anneau continu (avant P3 seule, 2,5)
+		"ring_wind_s": 0.75, "ring_sweep_s": 1.0, ## avant 0,9 / 1,2
+		"shield_slow_spell_s": 2.8, ## Chapelet sous bouclier (avant 4,0)
+		"shield_backstop_s": 45.0, ## avant 25,0 : à l'échéance, soin + salve d'anneaux puis chute SANS fenêtre
+		"shield_stall_every_s": 8.0, ## impulsion d'anneaux tant que rien ne progresse
+	},
+	&"flood_gunner": {
+		"auto_cd": 0.9, ## Culasse (avant 2,0)
+		"windup_min_s": 0.7, ## avant 0,8
+		"breech_speed_u": 13.0, ## avant 11,0
+		"breech_shots": [1, 2, 3], ## rivets par Culasse en éventail (avant 1 / 1 / 2)
+		"breech_split": 0.2, ## écart d'éventail, rad (avant 0,262 en P3)
+		"lead_s": 1.0, ## la Culasse (armement + vol) et l'Obus visent où le joueur sera
+		"plant_count": [2, 3, 2], ## pylônes par plantage (avant 3 / 4 / 3)
+		"pylon_life_s": 11.0, ## avant 14,0
+		"plant_settle_s": 1.2, ## avant 2,5
+		"p3_plant_every_s": 7.0, ## avant 10,0
+		"volley_cd": 3.5, "volley_first_s": 1.2, ## avant 14,0 / 2,0
+		"volley_telegraph_s": 0.9, ## avant 1,5
+		"volley_rate": [32.0, 36.0, 36.0], ## avant 24 projectiles/s partout
+		"volley_duration_s": [7.0, 8.0, 100000.0], ## avant 5 / 6
+		"volley_arc_deg": [140.0, 60.0, 60.0], ## avant 120 / 60 / 60
+		"volley_cones": [1, 3, 3], ## avant 1 / 2 / 2
+		"volley_turn_deg_s": [0.0, 60.0, 30.0], ## avant 0 / 45 / 20
+		"volley_speed_u": [10.0, 10.5, 10.5], ## avant 9
+		"volley_sweep_deg": 40.0, "volley_sweep_period_s": 4.0, ## balayage P1 (avant ±30° sur 5 s)
+		"reload_every_s": 10.0, "reload_s": 1.5, ## P3 (avant 8 / 2)
+		"shell_r_u": 3.6, ## avant 3,0
+		"shell_windup_s": 0.9, ## avant 1,2
+		"shell_every_s": [8.0, 4.0, 3.0], ## avant 0 (aucun) / 8 / 5
+		"shell_first_s": 2.5, ## avant 3,5 (P1 : +2,5 s ; l'Obus de P1 est nouveau)
+		"shell_extra": [0, 0, 1], ## cercles d'Obus supplémentaires (aléatoires autour du joueur)
+		"shield_breech_cd": 1.6, ## Culasse sous bouclier (avant 3,0)
+		"shield_shell_every_s": 5.5, ## Obus aussi sous bouclier (avant : aucun)
+		"shield_backstop_s": 45.0, ## avant 25,0
+		"shield_stall_every_s": 7.0, ## salve de vapeur tant qu'aucun soutier ne tombe
+		"burst_r_u": 4.5, "burst_windup_s": 1.2, ## salve de vapeur (dégâts = coef de l'Obus)
+		"add_walk_u": 2.4, ## avant 2,0
+		"add_ring_u": 11.0, ## avant 12,0
+		"add_heal_cap_frac": 0.30, ## avant 0,20
+	},
+}
+
+
+## Réglage de pression d'un boss (BOSS_PRESSURE[boss_id][key]) ; valeur d'une table par phase : `pressure_at`.
+func boss_pressure(boss_id: StringName, key: String) -> Variant:
+	return (BOSS_PRESSURE[boss_id] as Dictionary)[key]
+
+
+## Entrée de phase `phase` (1-3) d'une table par phase de BOSS_PRESSURE.
+func pressure_at(boss_id: StringName, key: String, phase: int) -> Variant:
+	var t: Array = (BOSS_PRESSURE[boss_id] as Dictionary)[key]
+	return t[clampi(phase - 1, 0, t.size() - 1)]
 
 
 ## Multiplicateur de PV d'un boss façon raid (BOSS_HP_MULT), 1 sinon.
@@ -643,3 +728,10 @@ const UI_EXIT_HOLD_S := 0.6 ## maintien d'« interagir » exigé pour partir par
 const PICKUP_EXPIRE_WARN_S := 1.0
 const PICKUP_EXPIRE_BLINK_HZ := 2.5
 const PICKUP_EXPIRE_ALPHA_MIN := 0.35
+
+
+# --- Lisibilité des mini-boss : plafond de brillance du corps (retour joueur 28/10/2026, Cryptes noyées trop lumineuses) ---
+## Le gain de corps des mini-boss (data/minibosses.json body_gain × biome_gain) éclaircit les sprites sombres. Sur un sprite
+## clair (sel, os) il grille : le gain est plafonné pour que la luminance moyenne du sprite × gain reste <= cette valeur
+## (data/boss_albedo_lum.json, art/tools/measure_emission_mass.py). Les sprites sombres gardent leur gain complet.
+const MINI_BODY_MEAN_MAX := 0.65

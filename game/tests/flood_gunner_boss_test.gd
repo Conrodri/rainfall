@@ -130,6 +130,7 @@ func _new_boss(player_pos: Vector2, hp_frac := 1.0) -> FloodGunnerBrain:
 	if _boss.brain != null:
 		_boss.brain.clear()
 	_boss.brain = FloodGunnerBrain.new(_boss)
+	(_boss.brain as FloodGunnerBrain)._shell_cd = 99.0 # v2 : un Obus existe dès la P1 ; chaque test le rappelle à la main
 	_boss.global_position = Vector2.ZERO
 	_boss.hp = _boss.max_hp * hp_frac
 	_reset_player(player_pos)
@@ -208,15 +209,15 @@ func _t_p1_sequence() -> void:
 	var tv := _until(func(): return b.state == FloodGunnerBrain.S.VOLLEY, 8.0, true)
 	_check("Mitraille lancée ensuite", tv >= 0.0)
 	var planted_at: float = b._plant_t
-	_check("délai pylônes -> Mitraille >= 2,5 s", b._clock - planted_at >= FloodGunnerBrain.PLANT_SETTLE_S - 0.02, "%f" % (b._clock - planted_at))
-	_check("3 pylônes en P1, >= 2 debout", b.plants == 3 and b.pylons.live_count() >= 2, "%d / %d" % [b.plants, b.pylons.live_count()])
-	_check("télégraphe >= 1,5 s, Events.raid_barrage(true), boss planté", b.barrage.telegraph_s >= 1.5 and _count("barrage") >= 1 and b.owns_motion())
-	_run_for(1.4, true)
+	_check("délai pylônes -> Mitraille >= 1,2 s (v2)", b._clock - planted_at >= float(Balance.boss_pressure(&"flood_gunner", "plant_settle_s")) - 0.02, "%f" % (b._clock - planted_at))
+	_check("2 pylônes en P1 (v2), >= 2 debout", b.plants == 2 and b.pylons.live_count() >= 2, "%d / %d" % [b.plants, b.pylons.live_count()])
+	_check("télégraphe v2 >= 0,9 s, Events.raid_barrage(true), boss planté", b.barrage.telegraph_s >= 0.9 and _count("barrage") >= 1 and b.owns_motion())
+	_run_for(0.8, true)
 	_check("aucun tir de Mitraille pendant le télégraphe", b.barrage.fired_total == 0)
-	_run_for(5.5, true)
-	_check("Mitraille : éventail 120°, ~24/s sur 5 s", b.barrage.fired_total >= 60 and b.barrage.arc_deg == 120.0 and b.barrage.cones == 1, "%d" % b.barrage.fired_total)
+	_run_for(7.4, true)
+	_check("Mitraille v2 : éventail 140°, ~32/s sur 7 s", b.barrage.fired_total >= 150 and b.barrage.arc_deg == 140.0 and b.barrage.cones == 1, "%d" % b.barrage.fired_total)
 	_check("plafond <= 160 vivants", b.barrage.peak_live <= Balance.RAID_BARRAGE_MAX_LIVE and b.barrage.peak_live > 0, "%d" % b.barrage.peak_live)
-	_check("fin : raid_barrage(false), recharge 14 s", not b.barrage.is_busy() and b._volley_cd > 5.0 and b.state != FloodGunnerBrain.S.VOLLEY, "cd %f" % b._volley_cd)
+	_check("fin : raid_barrage(false), recharge v2 (3,5 s)", not b.barrage.is_busy() and b._volley_cd > 2.0 and b.state != FloodGunnerBrain.S.VOLLEY, "cd %f" % b._volley_cd)
 
 
 func _t_breech_timing() -> void:
@@ -227,7 +228,7 @@ func _t_breech_timing() -> void:
 	_frame()
 	_check("armement de la Culasse (planté)", b.state == FloodGunnerBrain.S.BREECH and b.pace.planted())
 	var dur: float = b._dur
-	_check("armement >= 0,8 s", dur >= 0.8, "%f" % dur)
+	_check("armement >= 0,7 s (v2)", dur >= 0.7, "%f" % dur)
 	var t0: float = b._clock
 	var shot_t := -1.0
 	for i in int(3.0 / DT):
@@ -295,11 +296,11 @@ func _t_shield_kill() -> void:
 	for a in pa.adds:
 		(a as Enemy).speed_px = 0.0 # à l'arrêt : seule la mort ou l'arrivée compte, pas la marche
 	_check("tag de barre « SOUTIERS 0/2 »", String(b.boss_state_tag().get("text", "")) == "SOUTIERS 0/2", str(b.boss_state_tag()))
-	# sous bouclier : seule la Culasse, toutes les 3 s
+	# sous bouclier : Culasse seulement (v2 : toutes les 1,6 s) ; l'Obus de bouclier est testé à part
 	var shots0 := b.breech_shots
 	b._attack_cd = 0.0
 	_run_for(7.0, true)
-	_check("sous bouclier : Culasse seulement (<= 3 tirs/7 s), ni pylône ni Mitraille", b.breech_shots - shots0 >= 1 and b.breech_shots - shots0 <= 3
+	_check("sous bouclier : Culasse seulement (<= 5 tirs/7 s), ni pylône ni Mitraille", b.breech_shots - shots0 >= 1 and b.breech_shots - shots0 <= 5
 		and b.plants == 0 and not b.barrage.is_busy(), "tirs %d plants %d" % [b.breech_shots - shots0, b.plants])
 	for a in pa.adds.duplicate():
 		(a as Enemy).take_damage(1e9)
@@ -330,11 +331,18 @@ func _t_shield_reached() -> void:
 	pa.step(DT)
 	_check("soutier au contact : +10 % PV (soin), Events.raid_mechanic_failed(add_reached)", is_equal_approx(_boss.hp, _boss.max_hp * 0.7)
 		and _count("failed") >= 1 and (_ev["failed"] as Array).any(func(x): return x[1] == &"add_reached"), "%f" % (_boss.hp / _boss.max_hp))
+	_check("soutier au contact : salve de vapeur télégraphée sur le joueur", b._bursts.size() >= 1 and b.events.any(func(ev): return ev.get("kind") == &"add_consumed"))
 	a1.take_damage(1e9)
 	_frame()
-	_check("1 consommé + 1 tué : rupture SANS fenêtre", b.shield.state == BossShield.State.BREAKING and not b.shield.rewarded)
+	_check("1 consommé + 1 tué : le bouclier TIENT (attendre ne suffit pas)", _boss.is_invulnerable() and b.shield.state != BossShield.State.BREAKING)
+	_check("le soutier arrivé est remplacé", pa.alive() == 1 and pa.adds[0] != a0, str(pa.alive()))
+	pa.adds[0].speed_px = 0.0
+	(pa.adds[0] as Enemy).take_damage(1e9)
+	_frame()
+	_check("les 2 soutiers TUÉS : rupture MÉRITÉE (fenêtre de purge)", b.shield.state == BossShield.State.BREAKING and b.shield.rewarded)
 	_run_for(Balance.BOSS_SHIELD_BREAK_S + 0.05)
-	_check("pas de fenêtre exposée", b.shield.state == BossShield.State.IDLE and b.damage_taken_mult() == 1.0)
+	_check("fenêtre de purge exposée x1,3 conservée", b.shield.is_exposed() and is_equal_approx(b.damage_taken_mult(), 1.3))
+	_run_for(3.2)
 	# plafond de soin 20 % sur un groupe
 	var p2 := PriorityAdds.create(_boss)
 	p2.spawn(3, {"add_hp_frac": 0.05})
@@ -347,7 +355,7 @@ func _t_shield_reached() -> void:
 
 
 func _t_shield_backstop() -> void:
-	print("Bouclier : garde-fou 25 s")
+	print("Bouclier : attendre coûte (salves de vapeur, Obus, garde-fou 45 s avec soin)")
 	var b := _new_boss(Vector2(500, 0))
 	b._attack_cd = 99.0
 	b._volley_cd = 99.0
@@ -356,11 +364,24 @@ func _t_shield_backstop() -> void:
 	var pa := b.shield.adds
 	for a in pa.adds:
 		(a as Enemy).speed_px = 0.0 # soutiers à l'arrêt : ni tués ni arrivés
-	var t := _until(func(): return b.shield.state == BossShield.State.BREAKING, 30.0, true)
-	_check("garde-fou : le bouclier cède seul (~25 s actifs)", t >= 24.5 and t <= 26.5 and b.shield.by_backstop and not b.shield.rewarded, "%f" % t)
+	_boss.hp = _boss.max_hp * 0.6
+	var hp0 := _boss.hp
+	b._attack_cd = 0.0
+	b._shell_cd = 0.0 # l'Obus de bouclier part tout de suite
+	var shells0 := b.shells
+	_run_for(8.0, true)
+	_check("sous bouclier : un Obus tombe aussi (pression passive)", b.shells > shells0 or b.state == FloodGunnerBrain.S.SHELL, "%d" % (b.shells - shells0))
+	var t := _until(func(): return b.shield.state == BossShield.State.BREAKING, 60.0, true)
+	_check("garde-fou : le bouclier ne cède qu'à ~45 s actifs (plus 25 s)", t >= 44.0 - 8.0 and t <= 47.0 - 8.0 and b.shield.by_backstop and not b.shield.rewarded, "%f" % t)
 	_check("Events.raid_mechanic_failed(shield_backstop)", (_ev.get("failed", []) as Array).any(func(x): return x[1] == &"shield_backstop"))
+	_check("impulsions d'attente toutes les 7 s sans mort de soutier (>= 5 salves de vapeur)", b.events.filter(func(ev): return ev.get("kind") == &"stall").size() >= 5,
+		str(b.events.filter(func(ev): return ev.get("kind") == &"stall").size()))
+	_check("garde-fou : le boss se soigne de 10 %", _boss.hp >= hp0 + _boss.max_hp * 0.10 - 1.0, "%f" % ((_boss.hp - hp0) / _boss.max_hp))
+	_check("garde-fou : 3 salves de vapeur finales", b.events.any(func(ev): return ev.get("kind") == &"backstop_penalty") and b._bursts.size() >= 3, str(b._bursts.size()))
+	_run_for(3.0, true)
+	_check("salves de vapeur tombées (zones larges télégraphées)", b.bursts_fired >= 5, str(b.bursts_fired))
 	_run_for(1.0, true)
-	_check("boss de nouveau vulnérable (x1)", not _boss.is_invulnerable() and b.damage_taken_mult() == 1.0)
+	_check("boss de nouveau vulnérable (x1), sans fenêtre", not _boss.is_invulnerable() and b.damage_taken_mult() == 1.0)
 
 
 func _t_p2_shell_and_volley() -> void:
@@ -378,7 +399,7 @@ func _t_p2_shell_and_volley() -> void:
 	b._shell_cd = 0.0
 	b._shell_n = 1 # le prochain (n°2) vise le pylône le plus proche du joueur
 	_frame()
-	_check("Obus : armement 1,2 s min, cercle de 3 u", b.state == FloodGunnerBrain.S.SHELL and b._dur >= 1.2 and b._shell_on_pylon)
+	_check("Obus v2 : armement 0,9 s min, cercle de 3,6 u", b.state == FloodGunnerBrain.S.SHELL and b._dur >= 0.9 and b.shell_radius_u() == 3.6 and b._shell_on_pylon)
 	var hp0: float = _player.hp
 	_run_for(b._dur + 0.1)
 	_check("Obus : le pylône visé est cassé", b.shell_pylon_hits == 1 and b.pylons.pylons.size() == 1, "%d / %d" % [b.shell_pylon_hits, b.pylons.pylons.size()])
@@ -402,7 +423,7 @@ func _t_p2_shell_and_volley() -> void:
 	_reset_player(Vector2(300, 100) * 1.6)
 	var a0 := -1.0
 	_until(func(): return b.barrage.is_busy(), 3.0, true)
-	_check("Mitraille tournante P2 : 2 cônes de 60° à 45°/s", b.barrage.cones == 2 and b.barrage.arc_deg == 60.0 and b.barrage.turn_deg_s == 45.0)
+	_check("Mitraille tournante P2 v2 : 3 cônes de 60° à 60°/s", b.barrage.cones == 3 and b.barrage.arc_deg == 60.0 and b.barrage.turn_deg_s == 60.0)
 	_until(func(): return b.barrage.is_firing(), 2.0, true)
 	a0 = b.barrage.aim
 	_run_for(1.0, true)
@@ -433,10 +454,10 @@ func _t_p3() -> void:
 	b._pylon_cd = 0.0
 	var seen_two := false
 	var t := _until(func():
-		if b.barrage.is_firing() and b.barrage.cones == 2:
+		if b.barrage.is_firing() and b.barrage.cones == 3:
 			seen_two = true
 		return seen_two, 12.0, true)
-	_check("Mitraille continue lancée (2 cônes de 60° à 20°/s)", t >= 0.0 and b.barrage.arc_deg == 60.0 and b.barrage.turn_deg_s == 20.0, "t %f" % t)
+	_check("Mitraille continue lancée (3 cônes de 60° à 30°/s)", t >= 0.0 and b.barrage.arc_deg == 60.0 and b.barrage.turn_deg_s == 30.0, "t %f" % t)
 	_check("le boss reste libre d'attaquer (Mitraille non bloquante)", b.state != FloodGunnerBrain.S.VOLLEY)
 	# rechargement 2 s toutes les 8 s
 	var saw_reload := false
@@ -454,11 +475,11 @@ func _t_p3() -> void:
 		live_busy = live_busy and b.barrage.is_busy()
 	_check("rechargement : barre « RECHARGE »", saw_reload and not fired_in_reload)
 	_check("Mitraille toujours en cours après 14 s (continue)", live_busy and b.barrage.peak_live <= 160)
-	_check("pylônes replantés (>= 6 posés)", b.plants >= 6, "%d" % b.plants)
+	_check("pylônes replantés (>= 4 posés, 2 par plantage en P3)", b.plants >= 4, "%d" % b.plants)
 	var shots0 := b.breech_shots
 	b._attack_cd = 0.0
 	_until(func(): return b.breech_shots > shots0, 4.0, true)
-	_check("Culasse x2 en P3", b.events.any(func(ev): return ev.get("kind") == &"breech" and ev.get("shots") == 2))
+	_check("Culasse x3 en P3 (éventail)", b.events.any(func(ev): return ev.get("kind") == &"breech" and ev.get("shots") == 3))
 
 
 func _t_full_fight() -> void:

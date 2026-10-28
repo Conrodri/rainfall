@@ -11,7 +11,7 @@ extends Node
 
 const SAVE := "user://test_run_flow.json"
 const FLOOR_TIME_S := 240.0 ## temps actif ajouté par étage (≈ 4 min : difficulté réaliste)
-const KILL_GUARD := 900 ## frames max pour tuer un boss (phases, invulnérabilités de cerveau)
+const KILL_GUARD := 9000 ## frames max pour tuer un boss (phases, invulnérabilités de cerveau ; bouclier de raid ignoré = garde-fou de 45 s par phase)
 
 var _main: Node
 var _fails := 0
@@ -100,6 +100,7 @@ func _clear_pillar(p: Pillar, player: Node2D, director: Director, floor_n: int) 
 		_check(label + " : rain_sower final", boss.get_meta(&"boss_id", &"") == &"rain_sower" and bool(boss.get_meta(&"final_boss", false)))
 	var guard := 0
 	while boss.active and guard < KILL_GUARD:
+		player.set(&"hp", player.get(&"max_hp")) # le flux ne teste pas la survie : les boss de raid pressent un joueur immobile (DoT compris)
 		if boss.hp > 0.0:
 			boss.take_damage(boss.max_hp * 0.2)
 		await get_tree().physics_frame

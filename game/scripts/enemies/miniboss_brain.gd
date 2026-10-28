@@ -270,6 +270,7 @@ func _apply_fallback() -> void:
 	var gain := float(cfg.get("body_gain", 1.0)) # corps éclairci : jamais une silhouette noire sur le sol de nuit
 	gain *= float((cfg.get("biome_gain", {}) as Dictionary).get(String(cfg.get("biome", "")), 1.0)) # biomes nocturnes (Cité, Cryptes)
 	if EnemyVisual.boss_available(mini_id):
+		gain = minf(gain, maxf(NormalMaps.body_gain_cap(mini_id), 1.0)) # sprite clair (sel, os) : pas de gain qui grille
 		vis.modulate = Color(gain, gain, gain)
 		return
 	var want := StringName(fb.get("sprite", ""))
