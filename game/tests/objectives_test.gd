@@ -102,7 +102,7 @@ func _ready() -> void:
 	await _wait(1.2)
 	var pct := int(floor(big.charge_ratio() * 100.0))
 	_check(big.charge > 0.5 and panel.charge_text() == "%d %%" % pct, "la charge réelle monte : %s (pilier %.2f s)" % [panel.charge_text(), big.charge])
-	big.charge = Pillar.CHARGE_TIME - 0.05
+	big.charge = Balance.PILLAR_CHARGE_S - 0.05
 	await _wait(0.3)
 	_check(panel.is_charge_done() and panel.charge_text() == "100 %", "charge terminée cochée (%s)" % panel.charge_text())
 	_check(not panel.is_boss_done(), "boss encore vivant")

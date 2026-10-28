@@ -135,7 +135,7 @@ func _physics_process(delta: float) -> void:
 			if _t > TRACE_S:
 				var g := _gloom as RecluseGloom
 				_check("trace : les blocs restent après la mort (charge en cours)", is_instance_valid(g) and g.trace_count() >= 1, str(g.trace_count() if is_instance_valid(g) else -1))
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 0.6:

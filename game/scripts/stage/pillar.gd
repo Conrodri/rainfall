@@ -2,7 +2,7 @@ class_name Pillar
 extends Area2D
 ## Pilier d'étage. Petit : mini-boss + zone de combat, terminé à la mort du boss.
 ## Gros : verrouillé tant que les petits ne sont pas finis ; boss d'étage + zone de charge
-## (CHARGE_TIME s, n'avance que joueur dedans) ; terminé quand chargé ET boss mort.
+## (Balance.PILLAR_CHARGE_S s, n'avance que joueur dedans) ; terminé quand chargé ET boss mort.
 ## Couche 7 (interactables), masque 2 (joueur).
 
 signal finished(pillar: Pillar)
@@ -14,7 +14,6 @@ const STATE_READY := &"ready"
 const STATE_ACTIVE := &"active"
 const STATE_DONE := &"done"
 
-const CHARGE_TIME := 90.0
 const SMALL_ZONE_RADIUS := 512.0 ## 8 u
 const BIG_ZONE_RADIUS := 576.0 ## 9 u
 const BOSS_OFFSET := Vector2(200.0, 0.0)
@@ -103,11 +102,11 @@ func zone_radius() -> float:
 
 
 func charge_ratio() -> float:
-	return clampf(charge / CHARGE_TIME, 0.0, 1.0)
+	return clampf(charge / Balance.PILLAR_CHARGE_S, 0.0, 1.0)
 
 
 func is_charged() -> bool:
-	return charge >= CHARGE_TIME
+	return charge >= Balance.PILLAR_CHARGE_S
 
 
 func unlock() -> void:
@@ -134,9 +133,12 @@ func activate() -> bool:
 			_boss.set_meta(&"boss_id", boss_id)
 		if _boss != null and final_boss:
 			_boss.set_meta(&"final_boss", true) # cerveau du boss final : phases, pas de second multiplicateur
-			if final_hp_mult != 1.0 and &"max_hp" in _boss:
-				_boss.set(&"max_hp", float(_boss.get(&"max_hp")) * final_hp_mult)
-				_boss.set(&"hp", float(_boss.get(&"max_hp")))
+		# PV × boss final (FINAL_BOSS_HP_MULT) × mode (BOSS_HP_MODE_MULT, gros pilier seulement : boss d'étage, raids,
+		# final). Les cerveaux lisent max_hp au moment de s'en servir (seuils, soutiers, points faibles) : rescaler ici suffit.
+		var hp_mult := Balance.boss_hp_mode_mult(boss_kind, RunState.mode) * (final_hp_mult if final_boss else 1.0)
+		if _boss != null and hp_mult != 1.0 and &"max_hp" in _boss:
+			_boss.set(&"max_hp", float(_boss.get(&"max_hp")) * hp_mult)
+			_boss.set(&"hp", float(_boss.get(&"max_hp")))
 	else:
 		push_warning("Pillar : aucun Director (groupe `director`), pas de boss.")
 	_update_zone(true)
@@ -154,7 +156,7 @@ func tick(delta: float) -> void:
 		return
 	_update_zone(false)
 	if kind == Kind.BIG and player_in_zone and not is_charged():
-		charge = minf(charge + delta, CHARGE_TIME)
+		charge = minf(charge + delta, Balance.PILLAR_CHARGE_S)
 		Events.pillar_charge_progress.emit(self, charge_ratio())
 		_update_charge_light()
 		queue_redraw()

@@ -339,7 +339,7 @@ func _end_p3() -> void:
 	_check("dégâts à la frame d'impact (tous les coups)", _sync_n >= 10 and _sync_bad == 0, "%d / %d" % [_sync_bad, _sync_n])
 	_check("coups reçus par le joueur (total)", _hits >= 6, str(_hits))
 	print("  cerf : %d coups reçus, %d impacts vérifiés, octants %s" % [_hits, _sync_n, str(_octants.keys())])
-	_pillar.charge = Pillar.CHARGE_TIME
+	_pillar.charge = Balance.PILLAR_CHARGE_S
 	_boss.take_damage(_boss.hp + 1.0)
 	_check("cerf mort", not _boss.active)
 	_check("mort : IA libérée", _boss.brain == null)

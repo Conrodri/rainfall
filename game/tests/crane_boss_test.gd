@@ -128,7 +128,7 @@ func _physics_process(delta: float) -> void:
 			if _t > KEEP_S:
 				_check("trace : les conteneurs restent après la mort (charge en cours)", is_instance_valid(_yard) and _yard.is_kept() and _yard.count() > 0,
 					str(_yard.count()) if is_instance_valid(_yard) else "libéré")
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 2.4:

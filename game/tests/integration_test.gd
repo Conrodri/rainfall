@@ -125,7 +125,7 @@ func _ready() -> void:
 	_check(_ev["charge"] > 0 and big.charge > 0.0, "charge qui avance + Events.pillar_charge_progress (%d)" % _ev["charge"])
 	var cl: LightRig.Handle = big.get(&"_charge_light")
 	_check(cl != null and cl.radius_mult > 1.0, "lumière de charge qui monte (rayon ×%.2f)" % (cl.radius_mult if cl else 0.0))
-	big.charge = Pillar.CHARGE_TIME - 0.05
+	big.charge = Balance.PILLAR_CHARGE_S - 0.05
 	await _frames(10)
 	_check(big.is_charged(), "gros pilier chargé")
 	fboss.take_damage(1.0e9)

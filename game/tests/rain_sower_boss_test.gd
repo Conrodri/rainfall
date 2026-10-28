@@ -4,7 +4,7 @@ extends Node
 ## Capture : sans --headless, images clés en temps réel : `--resolution 1280x720 -- capture shots=<dossier absolu>`.
 ## Vérifie :
 ## 1. IA branchée, chemin du sprite enregistré (fauna.json), silhouette provisoire ou anims directionnelles,
-##    dégâts de base ×32/28, PV ×2 (paratonnerre-mère), rayon 1,8 u, centre de l'arène = paratonnerre ;
+##    dégâts de base ×32/28, PV × Balance.FINAL_BOSS_HP_MULT (paratonnerre-mère), rayon 1,8 u, centre de l'arène = paratonnerre ;
 ## 2. entrée : le Semeur descend dans la colonne (≥ 2 s, aucun coup) ;
 ## 3. phase 1 : 8 directions : fouet / averse / vague face au joueur (≥ 6 octants), impacts calés ; averse
 ##    (cercles disjoints, un sur le joueur) ; le front de la vague touche dans le couloir ;
@@ -294,7 +294,7 @@ func _spawn() -> void:
 	var hp_k := _boss.max_hp / Balance.boss_hp(&"etage", D, RunState.stage)
 	print("  PV : %.0f (×%.2f d'un boss d'étage)" % [_boss.max_hp, hp_k])
 	if _pillar.final_boss:
-		_check("PV ×2 (paratonnerre-mère, une seule fois)", absf(hp_k - 2.0) < 0.05, "%.3f" % hp_k)
+		_check("PV × FINAL_BOSS_HP_MULT × mode (paratonnerre-mère, une seule fois)", absf(hp_k - Balance.FINAL_BOSS_HP_MULT * Balance.boss_hp_mode_mult(&"etage", RunState.mode)) < 0.05, "%.3f" % hp_k)
 	_check("silhouette 4,5 u : rayon 1,8 u", is_equal_approx(_boss.radius_px, 1.8 * U), str(_boss.radius_px))
 	_check("centre de l'arène = paratonnerre", b.center.distance_to(_pillar.global_position) < 1.0, str(b.center))
 	_check("coefficients dans Balance (foudre 2,5)", is_equal_approx(Balance.boss_attack_coef(&"rain_sower", &"lightning"), 2.5)

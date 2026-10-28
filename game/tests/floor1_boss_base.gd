@@ -144,7 +144,7 @@ func _physics_process(delta: float) -> void:
 			_player().global_position = _pillar.global_position + Vector2(64.0, 0.0)
 			if _t > TRACE_S:
 				_check("trace : les zones au sol restent après la mort (charge en cours)", is_instance_valid(_hz) and _trace_ok(_hz), "")
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 0.6:

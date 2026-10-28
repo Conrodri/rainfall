@@ -171,9 +171,10 @@ func _run() -> void:
 	player.global_position = big.global_position
 	big.tick(1.0)
 	_check("zone de charge active", director.last_zone(big.zone_id) == true)
-	for i in 88:
+	var charge_s := int(Balance.PILLAR_CHARGE_S) # 60 s depuis le 28/10/2026 (était 90)
+	for i in charge_s - 2:
 		big.tick(1.0)
-	_check("charge 89 s", absf(big.charge - 89.0) < 0.001 and not big.is_charged())
+	_check("charge %d s" % (charge_s - 1), absf(big.charge - (charge_s - 1)) < 0.001 and not big.is_charged())
 	_kill(director, 2, true)
 	_check("boss mort mais non chargé = actif", big.state == &"active" and big.boss_dead)
 	_check("pas d'étage terminé", _floor_cleared.is_empty())

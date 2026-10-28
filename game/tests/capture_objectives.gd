@@ -36,10 +36,10 @@ func _process(delta: float) -> void:
 				_big = p
 		_main.player.global_position = _big.global_position + Vector2(-120, 60)
 		_big.activate()
-		_big.charge = Pillar.CHARGE_TIME * 0.4
+		_big.charge = Balance.PILLAR_CHARGE_S * 0.4
 	if _step == 1 and _t > 2.5:
 		_step = 2
-		_big.charge = Pillar.CHARGE_TIME
+		_big.charge = Balance.PILLAR_CHARGE_S
 		if _big._boss != null:
 			_big._boss.take_damage(1.0e9)
 	if _step == 2 and _t > 3.5:

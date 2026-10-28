@@ -104,10 +104,25 @@ const SWARM_BITE_RECOIL_U := 0.25 ## petit recul après la morsure (lisibilité 
 
 # Boss
 ## Alignement RoR2 : PV = base × niveau ambiant (+30 %/niv) × √coeff (le téléporteur RoR2 dépense 600·√coeff)
-## × BOSS_STAGE_K^(étage-1) (compense les ~10 objets/étage). Base étage 3000 (était 4300) : ~50-60 s en Moyen (remplace 2200 × D^1,6).
-const BOSS_BASE_HP := {&"mini": 1000.0, &"etage": 3000.0} ## −23 % / −30 % (retour joueur 21/10 : boss d'étage 1 ≈ 3 min avec 8 objets)
+## × BOSS_STAGE_K^(étage-1) : +20 % de PV par étage pour suivre les ~10 objets que le joueur gagne à chaque étage
+## (audit docs/Audit_PV_Boss_2026-10-28.md, option A, décision du joueur du 28/10 ; était 0,95, qui retirait des PV
+## et faisait tomber le TTK des boss d'étage de 63 à 33 s entre les étages 1 et 4). Vaut aussi pour les mini-boss.
+## Base étage 3300 (était 3000) : boss d'étage ≈ 65-75 s en Moyen, build moyen, à tous les étages.
+const BOSS_BASE_HP := {&"mini": 1000.0, &"etage": 3300.0}
 const BOSS_BASE_DMG := {&"mini": 20.0, &"etage": 28.0} ## +20 %/niveau ambiant (remplace 25/35 × (1 + 0,3 (D-1)))
-const BOSS_STAGE_K := 0.95
+const BOSS_STAGE_K := 1.20
+## Boss final (la Source) : PV = boss d'étage de l'étage 5 × ce facteur (était 2,0 dans data/floors.json).
+## TTK visé 120-150 s en Moyen, build moyen (décision du joueur du 28/10) : 1,55 → ≈ 135 s (audit §8 : 1,2 → 105 s,
+## 1,5 → 130 s, 2,0 → 175 s). Lu par StageManager (Pillar.setup_final) et par TestTools.final_hp_mult().
+const FINAL_BOSS_HP_MULT := 1.55
+## PV des boss d'étage, des raids et du boss final selon le mode (mini-boss non concernés). Difficile 0,85 : sans lui,
+## les boss d'étage 2-4 du Difficile duraient 101-107 s, au-delà de l'enrage (90 s) ; avec, ≈ 86-91 s (audit §6).
+## Le Difficile reste plus dangereux (dégâts au niveau ambiant) sans devenir une guerre d'usure. Appliqué par Pillar
+## à l'apparition du boss (après BOSS_HP_MULT et FINAL_BOSS_HP_MULT) et par TestTools.
+const BOSS_HP_MODE_MULT := {&"facile": 1.0, &"moyen": 1.0, &"difficile": 0.85}
+## Durée de charge du gros pilier (s, n'avance que joueur dans la zone ; était 90 s codé dans pillar.gd). Le pilier
+## n'est terminé qu'avec la charge pleine ET le boss mort : avec des boss d'étage de ≈ 70 s, c'est le boss qui fixe la fin.
+const PILLAR_CHARGE_S := 60.0
 ## Valeur director d'un boss (en coûts de tier 1) pour sa prime : or = 2 × coeff × valeur × R, XP = la moitié.
 const BOSS_VALUE := {&"mini": 25.0, &"etage": 60.0}
 const BOSS_ENRAGE_AFTER_S := 90.0 ## boss d'étage visé ~75 s : l'enrage arrive après (remplace 60)
@@ -380,6 +395,13 @@ func pressure_at(boss_id: StringName, key: String, phase: int) -> Variant:
 ## Multiplicateur de PV d'un boss façon raid (BOSS_HP_MULT), 1 sinon.
 func boss_hp_mult(boss_id: StringName) -> float:
 	return float(BOSS_HP_MULT.get(boss_id, 1.0))
+
+
+## Multiplicateur de PV d'un boss selon le mode de la partie (BOSS_HP_MODE_MULT) ; 1 pour les mini-boss et les modes inconnus.
+func boss_hp_mode_mult(kind: StringName, mode: StringName) -> float:
+	if kind == &"mini":
+		return 1.0
+	return float(BOSS_HP_MODE_MULT.get(mode, 1.0))
 
 
 ## Nombre de boucliers de phase d'un boss (BOSS_SHIELDS, défaut BOSS_SHIELDS_DEFAULT).

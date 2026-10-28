@@ -263,7 +263,7 @@ func _end_fight() -> void:
 	var pm: Node = _main.get(&"pickups")
 	var drops_before := int(pm.get(&"active_count")) if pm != null else 0
 	if is_floor:
-		_pillar.charge = Pillar.CHARGE_TIME # zone de charge terminée : seule la mort du boss manque
+		_pillar.charge = Balance.PILLAR_CHARGE_S # zone de charge terminée : seule la mort du boss manque
 	_boss.take_damage(_boss.hp * 10.0 + 1.0) # ×10 : gardes des mini-boss (MiniBossBrain, réduction plancher 0,3)
 	_check("%s : mort" % sid, not _boss.active)
 	_check("%s : pilier terminé à sa mort" % sid, _pillar.state == Pillar.STATE_DONE, str(_pillar.state))

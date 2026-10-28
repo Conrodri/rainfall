@@ -226,13 +226,10 @@ func _entry_for_stage(stage: int) -> Dictionary:
 	return out
 
 
-## Multiplicateur de PV du boss final : Balance (BOSS_BASE_HP[&"final"] / [&"etage"]) s'il existe, sinon
-## draw_rules_override.final_boss_hp_mult de data/floors.json (Design_Etages §4 : 2 × boss d'étage).
+## Multiplicateur de PV du boss final : source unique Balance.FINAL_BOSS_HP_MULT (la clé final_boss_hp_mult de
+## data/floors.json a été retirée le 28/10/2026 : le mode test ne la lisait pas).
 func _final_hp_mult() -> float:
-	var hp: Dictionary = Balance.BOSS_BASE_HP
-	if float(hp.get(&"final", 0.0)) > 0.0 and float(hp.get(&"etage", 0.0)) > 0.0:
-		return float(hp[&"final"]) / float(hp[&"etage"])
-	return float(rules.get("final_boss_hp_mult", 2.0))
+	return Balance.FINAL_BOSS_HP_MULT
 
 
 func _small_pillar_count() -> int:

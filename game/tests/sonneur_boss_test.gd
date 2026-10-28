@@ -144,7 +144,7 @@ func _physics_process(delta: float) -> void:
 			if _t > STORM_S:
 				_check("orage : la foudre continue après la mort", is_instance_valid(_storm) and int(_storm.get(&"strikes")) >= 1,
 					str(_storm.get(&"strikes")) if is_instance_valid(_storm) else "pas d'orage")
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 0.6:

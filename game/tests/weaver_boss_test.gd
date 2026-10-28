@@ -150,7 +150,7 @@ func _physics_process(delta: float) -> void:
 			_player().global_position = _pillar.global_position + Vector2(64.0, 0.0)
 			if _t > 1.5:
 				_check("trace : fils et toile restent après la mort (charge en cours)", is_instance_valid(_snare) and not _snare.boss_alive and _snare.has_web())
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 0.6:

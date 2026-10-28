@@ -159,7 +159,7 @@ func _physics_process(delta: float) -> void:
 			p.global_position = _pillar.global_position + Vector2(64.0, 0.0)
 			if _t > GLOOM_S:
 				_check("trace : l'obscurité reste après la mort (charge en cours)", is_instance_valid(_gloom) and not bool(_gloom.get(&"boss_alive")))
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 0.6:

@@ -133,7 +133,7 @@ func _physics_process(delta: float) -> void:
 				_check("trace : le métal reste après la mort (charge en cours)", is_instance_valid(_slag) and _slag.is_kept() and _slag.metal_count() > 0,
 					str(_slag.metal_count()) if is_instance_valid(_slag) else "libéré")
 				_check("trace : le métal brûle encore le joueur", _slag_hits >= 1, str(_slag_hits))
-				_pillar.charge = Pillar.CHARGE_TIME
+				_pillar.charge = Balance.PILLAR_CHARGE_S
 				_next(5)
 		5:
 			if _t > 1.0:

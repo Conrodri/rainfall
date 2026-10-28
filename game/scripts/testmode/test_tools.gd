@@ -121,7 +121,9 @@ static func spawn_boss(tree: SceneTree, boss_id: StringName, kind: StringName, p
 	(b as Node2D).set_meta(&"boss_id", boss_id)
 	if kind == &"final":
 		(b as Node2D).set_meta(&"final_boss", true)
-		var mult := final_hp_mult()
+	# comme Pillar.activate : × boss final, × mode de la partie (boss d'étage, raids, final ; pas les mini-boss)
+	var mult := (final_hp_mult() if kind == &"final" else 1.0) * Balance.boss_hp_mode_mult(&"mini" if mini else &"etage", RunState.mode)
+	if mult != 1.0:
 		(b as Node2D).set(&"max_hp", float((b as Node2D).get(&"max_hp")) * mult)
 		(b as Node2D).set(&"hp", float((b as Node2D).get(&"max_hp")))
 	return b
@@ -129,10 +131,7 @@ static func spawn_boss(tree: SceneTree, boss_id: StringName, kind: StringName, p
 
 ## PV du boss final par rapport à un boss d'étage (comme StageManager._final_hp_mult).
 static func final_hp_mult() -> float:
-	var hp: Dictionary = Balance.BOSS_BASE_HP
-	if float(hp.get(&"final", 0.0)) > 0.0 and float(hp.get(&"etage", 0.0)) > 0.0:
-		return float(hp[&"final"]) / float(hp[&"etage"])
-	return 2.0
+	return Balance.FINAL_BOSS_HP_MULT
 
 
 # --- Poutch (mannequin d'entraînement) -----------------------------------------------
@@ -283,6 +282,7 @@ static func base_stats(entry: Dictionary, d: float, elite := false) -> Dictionar
 	var hp_b := Balance.boss_hp(k, d, RunState.stage) * Balance.boss_hp_mult(StringName(entry.boss_id))
 	if kind == &"final":
 		hp_b *= final_hp_mult()
+	hp_b *= Balance.boss_hp_mode_mult(k, RunState.mode)
 	return {"hp": hp_b, "damage": Balance.boss_damage(k, d)}
 
 
