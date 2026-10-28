@@ -9,6 +9,9 @@ signal item_added(item_id: StringName, stacks: int)
 ## Retrait d'objets (mode test : RunState.remove_item / clear_items) : la barre d'objets se reconstruit.
 signal items_changed
 signal difficulty_changed(D: float, tier_name: StringName)
+## Or réellement débité par spend_gold (coffres, relances, kits) ; jamais émis en or infini (mode test).
+## Écouté par le journal de run (or dépensé par étage).
+signal gold_spent(amount: float)
 
 var mode: StringName = &"moyen"
 var stage := 1
@@ -125,6 +128,7 @@ func spend_gold(amount: float) -> bool:
 		return false
 	gold -= amount
 	gold_changed.emit(gold)
+	gold_spent.emit(amount)
 	return true
 
 

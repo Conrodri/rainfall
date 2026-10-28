@@ -93,6 +93,7 @@ Réponses à vérifier au moment de remplir le questionnaire :
 - **L'application collecte-t-elle ou partage-t-elle des données ?** Non.
 - **Données chiffrées en transit** : sans objet.
 - **Suppression des données** : la sauvegarde est locale à l'appareil (supprimée avec l'application).
+- **Journal de run** : un journal local des 50 dernières parties (statistiques de jeu, aucune donnée personnelle) sert à l'équilibrage. Il ne quitte l'appareil que si le joueur appuie sur « Exporter les journaux » (Réglages > Jeu) puis choisit lui-même de partager le fichier ; aucune transmission automatique, toujours aucune permission Internet. Rien à déclarer comme « collecte » au sens de Google Play (données qui ne quittent l'appareil que par une action explicite de l'utilisateur, via la feuille de partage du système).
 
 À revoir dès que les publicités (relance de coffre) ou les achats (pass « Sans pub ») seront branchés : il faudra alors déclarer les identifiants publicitaires et les données d'achat, et réactiver la permission Internet.
 

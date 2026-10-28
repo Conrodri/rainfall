@@ -32,3 +32,10 @@ signal boss_shield_progress(boss: Node2D, done: int, total: int)
 signal raid_mechanic_failed(boss: Node2D, kind: StringName)
 ## Barrage de projectiles (BarrageEmitter) : true au début du télégraphe, false à la fin de l'émission.
 signal raid_barrage(boss: Node2D, active: bool)
+## --- Cycle de vie de la run (journal de run local, scripts/telemetry/) ---
+## Run lancée dans la scène de jeu (Main._ready, après RunState.start_run ou from_dict, avant le premier floor_started).
+## resumed = reprise d'une sauvegarde. Émis aussi en mode test (les écouteurs testent TestMode.active).
+signal run_started(resumed: bool)
+## Run terminée (Main.end_run) : victoire, mort ou abandon (reason : &"victory" | &"death" | &"abandon").
+## Émis avant le récap ; aussi en mode test (fin sans récap).
+signal run_finished(victory: bool, reason: StringName)

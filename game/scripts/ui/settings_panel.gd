@@ -117,6 +117,9 @@ var _joystick: HSlider ## « Taille du joystick » 80-150 % (GameSettings.joysti
 var _joystick_pct: Label
 var _joystick_row: Control
 var _reticle_row: Control
+var _run_log: Button ## « Journal de run » (RunLog.enabled, journal local des parties)
+var _export_button: Button ## « Exporter les journaux » (RunLogExport)
+var _export_label: Label
 var _dialog: ConfirmDialog
 var _reset_button: Button
 var _controls_button: Button
@@ -221,6 +224,14 @@ func _build() -> void:
 	_reticle = _add_stepper("Taille du réticule", RETICLE_ITEMS,
 		func(i: int) -> void: GameSettings.set_reticle_scale(float(GameSettings.RETICLE_SCALES[i])))
 	_reticle_row = _rows[_rows.size() - 1]
+	# Journal de run local (équilibrage par les données) : rien ne quitte l'appareil sans l'export volontaire.
+	_run_log = _add_toggle("Journal de run", func(on: bool) -> void: RunLog.set_enabled(on))
+	_export_button = MenuBtn.new()
+	_export_button.text = "Exporter les journaux"
+	_export_button.custom_minimum_size = Vector2(0, ROW_H)
+	_export_button.pressed.connect(_export_logs)
+	_add_row("Parties enregistrées", _export_button)
+	_export_label = _labels[_labels.size() - 1]
 
 	_page(Tab.ACCESS)
 	_flashes = _add_stepper("Flashs", FLASH_ITEMS, func(i: int) -> void: GameSettings.set_flashes(i))
@@ -478,6 +489,8 @@ func sync() -> void:
 	_set_toggle(_hints, GameSettings.hints())
 	_set_toggle(_strong_tel, GameSettings.strong_telegraphs())
 	_set_toggle(_mono, GameSettings.mono_audio())
+	_set_toggle(_run_log, RunLog.enabled())
+	_export_label.text = "Parties enregistrées : %d" % RunLog.list_logs().size()
 	_set_slider(_shake, _shake_pct, GameSettings.shake_scale())
 	_set_slider(_haptic_strength, _haptic_pct, GameSettings.haptics_strength())
 	_set_slider(_ui_scale, _ui_scale_pct, GameSettings.ui_scale())
@@ -570,6 +583,40 @@ func _ask_reset() -> void:
 		_do_reset()
 	elif Platform.input_mode != Platform.InputMode.TOUCH:
 		_reset_button.grab_focus.call_deferred()
+
+
+## Export volontaire des journaux de run (RunLogExport) : archive .zip, puis dossier ouvert (PC), feuille de
+## partage (Android) ou app Fichiers (iOS) ; un dialogue dit où se trouve le fichier.
+func _export_logs() -> void:
+	if is_confirming():
+		return
+	var res := RunLogExport.export_and_show(RunLog.log_dir)
+	var ok: bool = res["ok"]
+	var title := "Journaux exportés" if ok else "Rien à exporter"
+	var line: String = ("%d partie(s). " % int(res["count"]) if ok else "") + String(res.get("where", ""))
+	var action := "OK"
+	if ok:
+		match OS.get_name():
+			"Android":
+				action = "Partager"
+			"iOS":
+				action = "Copier le chemin"
+			_:
+				action = "Ouvrir le dossier"
+	_dialog = ConfirmDialog.new()
+	add_child(_dialog)
+	var again: bool = await _dialog.ask(title, line, "Fermer", action)
+	_dialog = null
+	if again and ok:
+		match OS.get_name():
+			"Android":
+				RunLogExport._android_share(String(res["abs_path"]))
+			"iOS":
+				DisplayServer.clipboard_set(String(res["abs_path"]))
+			_:
+				OS.shell_show_in_file_manager(String(res["abs_path"]), true)
+	if Platform.input_mode != Platform.InputMode.TOUCH and is_instance_valid(_export_button):
+		_export_button.grab_focus.call_deferred()
 
 
 func _do_reset() -> void:

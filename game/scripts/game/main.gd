@@ -92,6 +92,7 @@ func _ready() -> void:
 		RunState.from_dict(resume_data.get("run", {}))
 		run_mode = RunState.mode
 		pillars_done = int(resume_data.get("run", {}).get("pillars_done", 0))
+	Events.run_started.emit(not resume_data.is_empty()) # journal de run (RunLog) : avant le premier floor_started
 	RunState.running = false # le temps actif ne court qu'une fois l'étage lancé
 	Audio.auto_start_map = false
 	Audio.thunder_driven = true
@@ -366,6 +367,7 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 	if run_over:
 		return
 	run_over = true
+	Events.run_finished.emit(victory, reason) # journal de run (RunLog) : écrit le fichier de la run
 	if TestMode.active:
 		go_to_title() # mode test : ni récap, ni profil, ni rubis
 		return
