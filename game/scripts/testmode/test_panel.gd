@@ -20,6 +20,7 @@ const COL_ON := Color("FFB347")
 const COL_MUTED := Color("A9B2BF")
 const COL_BAD := Color("FF7A5C")
 ## Icônes réutilisées des assets existants (aucune n'est dessinée ici). Plusieurs sont des emprunts à des icônes d'objets.
+const TEST_ICON := "res://assets/sprites/ui/test/test_icon_%s.png"
 const ICON_GOD := "res://assets/sprites/icons/items/bague_de_vigueur.png"
 const ICON_CDR := "res://assets/sprites/icons/items/sablier_fele.png"
 const ICON_RANGE := "res://assets/sprites/icons/items/rune_de_portee.png"
@@ -378,6 +379,9 @@ func _build_monsters() -> void:
 	qrow.add_theme_constant_override(&"separation", 8)
 	var qlabel := _label("Quantité : %d" % quantity(), FS_BODY)
 	qlabel.name = "QuantityLabel"
+	var qtex := TestThumbs.tex(_ti("quantity"))
+	if qtex != null:
+		qrow.add_child(_icon(qtex, 44.0))
 	qlabel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	qrow.add_child(_btn("−", func() -> void:
 		_quantity_idx = maxi(_quantity_idx - 1, 0)
@@ -389,6 +393,7 @@ func _build_monsters() -> void:
 	qrow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tools.add_child(qrow)
 	var elite := _check("Élite", _elite, func(on: bool) -> void: _elite = on)
+	_set_check_icon(elite, _ti("elite"))
 	elite.name = "EliteCheck"
 	tools.add_child(_expand(elite))
 	if Platform.input_mode != Platform.InputMode.GAMEPAD:
@@ -396,22 +401,27 @@ func _build_monsters() -> void:
 			_at_cursor = on
 			armed_entry = {}
 			say("Choisissez un monstre, puis cliquez dans l'arène." if on else "Apparition près du joueur."))
+		_set_check_icon(cur, _ti("click"))
 		cur.name = "CursorCheck"
 		tools.add_child(_expand(cur))
 	var ai := _check("IA figée", TestMode.freeze_ai, func(on: bool) -> void:
 		TestMode.set_flag(&"freeze_ai", on))
+	_set_check_icon(ai, _ti("freeze"))
 	ai.name = "FreezeCheck"
 	tools.add_child(_expand(ai))
 	var spawns := _check("Apparitions du director", TestMode.spawns, func(on: bool) -> void: _set_spawns(on))
+	_set_check_icon(spawns, _ti("director"))
 	spawns.name = "SpawnsCheck"
 	tools.add_child(_expand(spawns))
 	_body.add_child(_note("La quantité et « Élite » valent pour les monstres ; un mini-boss ou un boss apparaît une seule fois par clic."))
 	var acts := _grid(2)
 	_body.add_child(acts)
 	var kill := _btn("Tuer tout", func() -> void: say("%d monstre(s) tués." % TestTools.kill_all(get_tree())))
+	_set_btn_icon(kill, _ti("kill"))
 	kill.name = "KillAll"
 	acts.add_child(_expand(kill))
 	var clean := _btn("Nettoyer", func() -> void: say("%d monstre(s) retirés." % TestTools.clean(get_tree())))
+	_set_btn_icon(clean, _ti("clear"))
 	clean.name = "Clean"
 	acts.add_child(_expand(clean))
 	_build_poutch()
@@ -828,13 +838,13 @@ func _refresh_level() -> void:
 
 func _build_cheats() -> void:
 	_body.add_child(_heading("Triches (chacune indépendante)"))
-	_cheat("PV illimités", &"god", "Les coups sont encaissés (chiffres, flash) mais ne retirent rien.", ICON_GOD)
-	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.", ICON_CDR)
-	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", ICON_RANGE)
+	_cheat("PV illimités", &"god", "Les coups sont encaissés (chiffres, flash) mais ne retirent rien.", _ti("god", ICON_GOD))
+	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.", _ti("cdr", ICON_CDR))
+	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", _ti("range", ICON_RANGE))
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
 	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
 	_body.add_child(_heading("Partie"))
-	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", ICON_TIMER)
+	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", _ti("timer_stop", ICON_TIMER))
 	var pz := _check("Pause à l'ouverture", TestMode.pause_on_open, func(on: bool) -> void:
 		TestMode.set_flag(&"pause_on_open", on)
 		overlay.sync_pause())
@@ -847,7 +857,7 @@ func _build_cheats() -> void:
 	var heal := _btn("Soigner + recharges", func() -> void:
 		TestTools.restore_player(get_tree())
 		say("PV et recharges rendus."))
-	_set_btn_icon(heal, ICON_HEAL)
+	_set_btn_icon(heal, _ti("heal", ICON_HEAL))
 	heal.name = "Restore"
 	acts.add_child(_expand(heal))
 	var gold := _btn("Or +1000", func() -> void:
@@ -866,6 +876,12 @@ func _set_btn_icon(b: Button, path: String) -> void:
 	b.icon = t
 	b.expand_icon = true
 	b.add_theme_constant_override(&"icon_max_width", 52)
+
+
+## Chemin de l'icône dédiée du mode test `icon_name` si elle existe, sinon `fallback` (icône empruntée).
+func _ti(icon_name: String, fallback: String = "") -> String:
+	var p := TEST_ICON % icon_name
+	return p if ResourceLoader.exists(p) else fallback
 
 
 func _set_check_icon(c: CheckButton, path: String) -> void:
@@ -953,6 +969,7 @@ func _build_difficulty() -> void:
 	var rst := _btn("Effacer le journal", func() -> void:
 		overlay.reset_hits()
 		_refresh_difficulty())
+	_set_btn_icon(rst, _ti("hits"))
 	rst.name = "ResetHits"
 	_body.add_child(rst)
 	_refresh_difficulty()

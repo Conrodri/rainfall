@@ -19,7 +19,7 @@ signal quit_requested
 signal quick_start_requested(config: Dictionary) ## {character, mode, spells} : relance du dernier personnage
 
 const BG_SCENE := preload("res://scenes/menu/menu_background.tscn")
-const LOGO_PATHS := ["res://assets/sprites/ui/menu/logo.png", "res://assets/sprites/ui/menu/logo_rainfall.png"]
+const LOGO_PATHS := ["res://assets/store/logo_title.png", "res://assets/sprites/ui/menu/logo.png", "res://assets/sprites/ui/menu/logo_rainfall.png"]
 const RUBY_PATHS := ["res://assets/sprites/ui/menu/ruby_large.png", "res://assets/sprites/ui/hud/icon_ruby.png"]
 const UI_LAYER := 10
 const COL_X := 96.0
@@ -182,6 +182,7 @@ func _make_logo() -> Control:
 			tr.texture = load(p) as Texture2D
 			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 			tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			return tr
 	# Placeholder texte tant que le logo Blender n'existe pas.
@@ -360,8 +361,9 @@ func _layout() -> void:
 	_gradient.offsets = PackedFloat32Array([0.0, clampf(1100.0 / maxf(w, 1.0), 0.05, 1.0)])
 	var x := left + COL_X
 	_logo.position = Vector2(x, 40.0 + top)
-	_logo.size = Vector2(640, 220)
-	_version.position = Vector2(x + 8.0, _logo.position.y + 224.0)
+	# Logo Codex 1600x480 (10:3) : 720x216 garde le ratio ; texte de repli à l'aise dans la même boîte.
+	_logo.size = Vector2(720, 216)
+	_version.position = Vector2(x + 8.0, _logo.position.y + _logo.size.y + 4.0)
 	_version.size = Vector2(640, 34)
 	# Colonne alignée en bas (6 boutons ne tiennent pas dans 1080 aux pas du doc : 96 de haut, 16 d'écart).
 	var total := GAP * (_buttons.size() - 1)
