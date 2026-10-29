@@ -1,0 +1,6 @@
+OBJECTIF (2 lignes max) : <ce qu'il faut produire/corriger, pour quel asset>.
+TOUCHER (chemins exacts) : <art/blender/..., art/tools/..., game/assets/sprites/...>.
+NE PAS LIRE : <briefs complets, docs/, CLAUDE.md, autres lots, dossiers entiers>.
+SCRIPT À REPRENDRE : <art/tools/<famille>/<lot>_build.py> : modifier les paramètres <liste> puis relancer en --background, journal dans <fichier>.
+VÉRIF : <script de vérif à lancer : dimensions, alpha, contraste, frames distinctes> ; au plus une planche de contrôle <= 1024 px.
+RAPPORT (6 lignes max, ultracave) : fichiers touchés, résultat de la vérif, problèmes restants.

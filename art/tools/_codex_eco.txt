@@ -9,3 +9,7 @@ CONTRAT : tu REMPLACES des assets provisoires de Claude à l'identique (mêmes n
 PLUS DE NORMAL MAPS (décision du joueur, 22/10/2026, budget mobile) : ne produis ni ne livres AUCUN <f>_n.png (pas de passe Normal en espace écran, cel.install(<profil>, normals=False), pas de cel.quantize_normal_files) ; .tres sans CanvasTexture ni normal_texture ; masques _e conservés. Toute mention de _n dans la consigne qui suit est caduque.
 _e : `_e` livré à demi-résolution ((w+1)//2 × (h+1)//2 du diffus) ou pleine taille (réduit ensuite par art/tools/halve_emission.py) ; jamais d'autre taille ; aucun _e noir ou vide (ne pas le livrer).
 STYLE ULTRACAVE : rapport final et messages en fragments, chaque fait une fois, aucun récapitulatif ; chemins, commandes, erreurs et nombres verbatim.
+RETOUCHES : si un script de construction existe (art/tools/**/<lot>_build.py, gen_*.py), le modifier par paramètres et le relancer ; ne pas relire les briefs complets ni explorer le dépôt.
+BLENDER : préférer `blender.exe --background --python <script>` (script qui n'imprime qu'une ligne de bilan) aux appels MCP ; MCP seulement pour une inspection ponctuelle.
+IMAGES : vérifier par script (dimensions, alpha, contraste, frames distinctes) ; au plus UNE petite planche de contrôle (≤ 1024 px de large) regardée en fin de lot.
+SORTIES : rediriger les journaux Blender/Godot/Python dans des fichiers ; ne lire que la fin ou les erreurs (tail -n 20, grep -i error).
