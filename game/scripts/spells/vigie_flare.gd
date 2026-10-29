@@ -15,6 +15,7 @@ var color := Color("#FF3A4F")
 var follow: Node2D = null ## Fanal : la lumière suit ce nœud (Vigie)
 var counts_exposed := true ## compte dans `vigie_exposed` (Fusée, Fanal ; pas le Tir de signal)
 var seen := {} ## instance_id des monstres déjà comptés pour cette fusée
+var netted := {} ## instance_id des cloués sous cette fusée au moment de la pose (combo Filet -> Fusée)
 var _bb: Node2D = null
 var _t := 0.0
 var _ending := false
@@ -58,6 +59,12 @@ func set_visual_scale(k: float) -> void:
 
 func is_ending() -> bool:
 	return _ending
+
+
+## Allonge sur un exposé : la fusée vit `extra_s` de plus, sans dépasser `max_life_s`.
+func revive(extra_s: float, max_life_s: float) -> void:
+	if not _ending:
+		life = minf(life + extra_s, max_life_s)
 
 
 func step(delta: float) -> void: ## public pour les tests sans boucle de rendu

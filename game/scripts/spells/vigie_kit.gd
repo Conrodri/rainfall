@@ -60,7 +60,7 @@ const TRAIT_CD := 0.6
 const TRAIT_RANGE_U := 9.0
 const TRAIT_SPEED_U := 16.0
 const TRAIT_PIERCE := 1 ## traverse 1 monstre (comme l'Éclat d'Ardent) : la ligne compte aussi hors allonge
-const ALLONGE_COEF := 2.0
+const ALLONGE_COEF := 1.8 ## combos 29/10 : 2,0 -> 1,8 (compensation de l'Allonge sur exposé)
 const ALLONGE_RANGE_U := 12.0
 const ALLONGE_SPEED_U := 24.0
 const ALLONGE_PIERCE := 30 ## « perce tout » (plafond de sécurité)
@@ -68,7 +68,7 @@ const ALLONGE_KNOCK_U := 0.8
 
 # --- Sort 2 : Fusée de détresse ---------------------------------------------------------------------
 const FUSEE_CD := 8.0
-const FUSEE_COEF := 1.2 ## flèche-fusée sur le premier monstre touché
+const FUSEE_COEF := 1.1 ## flèche-fusée sur le premier monstre touché ; combos 29/10 : 1,2 -> 1,1
 const FUSEE_RANGE_U := 9.0
 const FUSEE_SPEED_U := 14.0
 const FLARE_RADIUS_U := 3.0
@@ -77,6 +77,18 @@ const EXPOSE_MULT := 1.1 ## +10 % de dégâts subis dans la lumière (toutes sou
 const EXPOSE_ID := &"vigie_expose"
 const EXPOSE_REFRESH_S := 0.2
 const EXPOSE_HOLD_S := 0.35 ## durée de la marque posée à chaque rafraîchissement
+## Combos (docs/Design_Combos.md §5.6) : Filet -> Fusée -> Allonge ; Grêle sur cloués ; Repli -> Allonge.
+const ALLONGE_EXPOSED_COEF := 2.6 ## Trait d'allonge sur un exposé (1,8 sinon)
+const NET_FLARE_EXPOSE := 1.25 ## exposition d'un cloué sous une fusée posée sur lui (1,1 sinon), tant que le filet tient
+const NET_FLARE_EXTEND_S := 0.5 ## le filet tient 0,5 s de plus sous cette fusée
+const NET_FLARE_REACH_U := 1.0 ## la fusée « s'arrête sur un cloué » : un emprisonné à cette distance du point d'arrêt
+const FLARE_REVIVE_S := 1.0 ## une Allonge sur un exposé ravive la fusée qui l'éclaire (+1 s)
+const FLARE_MAX_LIFE_S := 7.0 ## plafond de vie d'une fusée ravivée
+const REVIVE_GAP_MS := 250 ## une avivée par volée (le trait perce plusieurs monstres)
+const HAIL_NETTED_MULT := 1.4 ## Grêle : chaque volée sur un cloué
+const SIGNAL_NETTED_MULT := 1.2 ## Tir de signal sur un monstre déjà cloué avant l'impact
+const DODGE_CHAIN_GAP_S := 1.0 ## deux replis séparés de moins que cela font partie de la même série
+const ANCHOR_FREE_S := 0.5 ## après le 3e repli de la série : comptée ancrée tout de suite (ANCHOR_DELAY_S ignoré)
 
 # --- Sort 3 : Filet lesté ------------------------------------------------------------------------
 const FILET_CD := 9.0
@@ -87,11 +99,12 @@ const FILET_SPEED_U := 13.0
 const NET_RADIUS_U := 3.0
 const NET_HOLD_S := 1.5
 const NET_BOSS_SLOW_PCT := 0.4
+const AUTO_WAIT_NET_S := 0.5 ## auto-cast : la Fusée attend un Filet qui revient dans ce délai
 const MIN_SHOT_U := 1.5 ## un tir visé trop près part quand même à cette distance
 
 # --- Sort 4 : Grêle ------------------------------------------------------------------------------
 const GRELE_CD := 20.0
-const GRELE_COEF := 0.7 ## par volée (toutes les HAIL_TICK_S, première à l'arrivée)
+const GRELE_COEF := 0.64 ## par volée (toutes les HAIL_TICK_S, première à l'arrivée) ; combos 29/10 : 0,7 -> 0,64
 const GRELE_RANGE_U := 10.0
 const HAIL_RADIUS_U := 4.5
 const HAIL_LIFE_S := 2.5
@@ -180,6 +193,12 @@ var _expose_t := 0.0
 var _emission_step := -1
 var _ready_light: LightRig.Handle = null
 var _was_full := false
+var _net_t := 0.0 ## fenêtre de combo : secondes restantes de la tenue du dernier filet
+var _dash_chain := 0 ## replis achevés dans la série en cours
+var _dash_gap_t := 0.0
+var _anchor_free_t := 0.0 ## > 0 : ancrage sans délai (après le 3e repli)
+var _pre_netted := {} ## Tir de signal : instance_id des monstres déjà cloués avant son impact
+var _revive_ms := -10000
 var _allonge_cast := false ## Trait d'allonge lancé : l'anim d'action du slot 1 est `draw`
 var volley_spell: SpellData = null ## Volée d'allonge (Tir double)
 var fanal_t := 0.0 ## s restantes du Fanal (Tension au rythme ancré)
@@ -443,7 +462,7 @@ func is_full() -> bool:
 
 
 func is_anchored() -> bool:
-	return still_t >= ANCHOR_DELAY_S
+	return still_t >= ANCHOR_DELAY_S or _anchor_free_t > 0.0
 
 
 ## Remplissage par seconde (0-1/s) : ancrée ou en marche, accéléré par la vitesse d'attaque des items.
@@ -499,11 +518,56 @@ func can_dodge() -> bool:
 	return true
 
 
-## Auto-cast (accessibilité, simulateur) : le Filet sert à recharger la Tension, pas à la gâcher.
+## Auto-cast (accessibilité, simulateur) : le Filet sert à recharger la Tension, pas à la gâcher ; la Fusée attend
+## un Filet qui revient dans la demi-seconde (elle doit s'arrêter sur un cloué), sauf si un filet tient déjà.
 func auto_cast_ok(slot: int) -> bool:
 	if slot == 3:
 		return tension < 0.5
+	if slot == 2 and _net_t <= 0.0 and _caster() != null and _caster().has_slot(3):
+		var rem := _caster().cooldown_remaining(3)
+		return not (rem > 0.0 and rem <= AUTO_WAIT_NET_S and tension < 0.5)
 	return true
+
+
+## Monstre cloué (filet, signal) : emprisonné.
+func is_netted(e: Node) -> bool:
+	return is_instance_valid(e) and e.has_method(&"is_imprisoned") and e.is_imprisoned()
+
+
+## Monstre exposé (lumière de fusée ou pluie de Grêle).
+func is_exposed(e: Node) -> bool:
+	return is_instance_valid(e) and e.has_method(&"has_damage_taken_mod") and e.has_damage_taken_mod(EXPOSE_ID)
+
+
+## SpellCaster.compute_damage : Trait d'allonge sur un exposé, 1,8 -> 2,6.
+func combo_coef_add(s: SpellData, enemy: Node) -> float:
+	if s.id == &"vigie_allonge" and is_exposed(enemy):
+		return ALLONGE_EXPOSED_COEF - ALLONGE_COEF
+	return 0.0
+
+
+## SpellCaster.compute_damage : Grêle sur un cloué x1,4 ; Tir de signal sur un monstre cloué avant l'impact x1,2.
+func combo_mult(s: SpellData, enemy: Node) -> float:
+	if s.id == &"vigie_grele" and is_netted(enemy):
+		return HAIL_NETTED_MULT
+	if s.id == V_SIGNAL and enemy != null and _pre_netted.has(enemy.get_instance_id()):
+		return SIGNAL_NETTED_MULT
+	return 1.0
+
+
+## SpellCaster.deal_damage : chiffre en accent et son lourd pour ces coups.
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	return combo_coef_add(s, enemy) > 0.0 or combo_mult(s, enemy) > 1.0
+
+
+## SpellCaster (aide de visée mobile) : cloués et exposés pèsent plus dans le paquet visé.
+func is_marked(e: Node) -> bool:
+	return is_netted(e) or is_exposed(e)
+
+
+## Fenêtre de combo (HUD : le bouton pulse) : tant qu'un filet tient, la Fusée (s'arrêter sur un cloué) et la Grêle (x1,4).
+func combo_ready(slot: int) -> bool:
+	return _net_t > 0.0 and (slot == 2 or slot == 4)
 
 
 func speed_mult() -> float:
@@ -561,6 +625,12 @@ func on_dodge_start(dir: Vector2) -> void:
 ## Chaque pas de repli achevé bande l'arc.
 func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
 	set_tension(tension + DODGE_TENSION_GAIN)
+	_dash_chain = _dash_chain + 1 if _dash_gap_t > 0.0 else 1
+	_dash_gap_t = DODGE_CHAIN_GAP_S
+	if _dash_chain >= DODGE_CHARGES: # 3e repli : l'Allonge qui suit part sans attendre l'ancrage
+		_dash_chain = 0
+		_dash_gap_t = 0.0
+		_anchor_free_t = ANCHOR_FREE_S
 
 
 func _no_move_input() -> bool:
@@ -712,7 +782,30 @@ func plant_flare(at: Vector2) -> Node2D:
 	flares.append(f)
 	LightRig.flash(at, &"vigie_flare", 0.35, {"radius": 1.4})
 	_expose_t = 0.0
+	_light_the_net(f, at)
 	return f
+
+
+## Fusée qui s'arrête sur un cloué : la lumière s'allume dans le filet. Les cloués de la zone sont exposés à x1,25 tant qu'ils
+## tiennent (`f.netted`, lu par _expose_tick) et le filet tient 0,5 s de plus.
+func _light_the_net(f: VigieFlare, at: Vector2) -> void:
+	var reach := NET_FLARE_REACH_U * Balance.UNIT_PX
+	var found := false
+	var held: Array = []
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_netted(e):
+			continue
+		var d := (e as Node2D).global_position.distance_to(at)
+		if d <= f.radius:
+			held.append(e)
+			found = found or d <= reach
+	if not found:
+		return
+	for e in held:
+		f.netted[e.get_instance_id()] = true
+		var left := float(e.get(&"_held_left")) if &"_held_left" in e else 0.0
+		e.apply_status(&"imprisoned", {"duration": left + NET_FLARE_EXTEND_S})
+	_net_t += NET_FLARE_EXTEND_S
 
 
 func flare_radius_px() -> float:
@@ -736,6 +829,7 @@ func open_net(at: Vector2) -> void:
 		else:
 			e.apply_status(&"imprisoned", {"duration": NET_HOLD_S})
 			RunState.add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
+	_net_t = NET_HOLD_S
 	_caster().spawn_zone(_net_burst, at)
 	_net_outline(at, r)
 	LightRig.flash(at, &"vigie_net", 0.3)
@@ -838,16 +932,20 @@ func signal_impact(s: SpellData, at: Vector2) -> void:
 	if player == null or player.dead:
 		return
 	var r: float = SIGNAL_RADIUS_U * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+	_pre_netted.clear()
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"apply_status"):
 			continue
 		if (e as Node2D).global_position.distance_to(at) > r:
 			continue
+		if is_netted(e): # déjà cloué (filet) : x1,2 à l'impact
+			_pre_netted[e.get_instance_id()] = true
 		if e.get(&"is_boss") == true:
 			e.apply_status(&"slow", {"pct": SIGNAL_BOSS_SLOW_PCT, "duration": SIGNAL_BOSS_SLOW_S})
 		else:
 			e.apply_status(&"imprisoned", {"duration": SIGNAL_HOLD_S})
 	_caster().spawn_zone(s, at)
+	_pre_netted.clear()
 	LightRig.flash(at, &"vigie_hail", 0.5)
 	var f := VigieFlare.new()
 	_caster().effects_parent().add_child(f)
@@ -876,6 +974,20 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 		enemy.set_meta(META_LAST_HIT, true)
 	elif enemy.has_meta(META_LAST_HIT):
 		enemy.remove_meta(META_LAST_HIT)
+	if s.id == &"vigie_allonge" and enemy is Node2D and is_exposed(enemy):
+		_revive_flare(enemy as Node2D)
+
+
+## Le Trait d'allonge sur un exposé ravive la fusée qui l'éclaire (+1 s, plafond 7 s), une fois par trait.
+func _revive_flare(e: Node2D) -> void:
+	var now := Time.get_ticks_msec()
+	if now - _revive_ms < REVIVE_GAP_MS:
+		return
+	for f in flares:
+		if is_instance_valid(f) and not f.is_ending() and e.global_position.distance_to(f.global_position) <= float(f.radius):
+			_revive_ms = now
+			f.revive(FLARE_REVIVE_S, FLARE_MAX_LIFE_S)
+			return
 
 
 func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
@@ -919,9 +1031,11 @@ func _expose_tick() -> void:
 			continue
 		var p: Vector2 = (e as Node2D).global_position
 		var lit := false
+		var net_lit := false # cloué sous une fusée posée sur lui : x1,25 tant qu'il tient
 		for f in live_f:
 			if p.distance_to(f.global_position) <= float(f.radius):
 				lit = true
+				net_lit = f.netted.has(e.get_instance_id()) and is_netted(e)
 				if f.counts_exposed and not f.seen.has(e.get_instance_id()):
 					f.seen[e.get_instance_id()] = true
 					RunState.add_counter(COUNTER_EXPOSED) # déblocage du Fanal
@@ -932,7 +1046,7 @@ func _expose_tick() -> void:
 				hailed = true
 				break
 		if (lit or hailed) and e.has_method(&"add_damage_taken_mod"):
-			e.add_damage_taken_mod(EXPOSE_ID, EXPOSE_MULT, EXPOSE_HOLD_S)
+			e.add_damage_taken_mod(EXPOSE_ID, NET_FLARE_EXPOSE if net_lit else EXPOSE_MULT, EXPOSE_HOLD_S)
 		if hailed and e.has_method(&"apply_status"):
 			e.apply_status(&"slow", {"pct": HAIL_SLOW_PCT, "duration": HAIL_SLOW_S})
 
@@ -960,6 +1074,9 @@ func tick(delta: float) -> void:
 		if is_full():
 			_set_ready_fx(true)
 	fanal_t = maxf(fanal_t - delta, 0.0)
+	_net_t = maxf(_net_t - delta, 0.0)
+	_anchor_free_t = maxf(_anchor_free_t - delta, 0.0)
+	_dash_gap_t = maxf(_dash_gap_t - delta, 0.0)
 	_expose_t -= delta
 	if _expose_t <= 0.0:
 		_expose_t = EXPOSE_REFRESH_S
@@ -998,6 +1115,11 @@ func clear_transients() -> void:
 			z.queue_free()
 	caltrops.clear()
 	fanal_t = 0.0
+	_net_t = 0.0
+	_anchor_free_t = 0.0
+	_dash_chain = 0
+	_dash_gap_t = 0.0
+	_pre_netted.clear()
 
 
 func _on_floor_started(_n: int) -> void:

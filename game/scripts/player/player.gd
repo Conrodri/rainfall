@@ -118,6 +118,18 @@ var _action_impact_left := 0.0 ## s avant la frame d'impact
 var _action_impact_pending := false ## impact pas encore émis
 var _action_dir := Vector2.ZERO
 var _action_serial := 0
+## Rythme des sorts (docs/Design_Feel_Sorts.md) : catégorie du geste en cours (auto / spell / ult / &""), temps écoulé depuis sa
+## frame d'impact (< 0 : impact pas encore émis), gel du corps à l'impact, kick et tassement d'impact.
+var _action_kind: StringName = &""
+var _since_impact := -1.0
+var _freeze_left := 0.0
+var _kick_left := 0.0
+var _kick_px := 0.0
+var _kick_dir := Vector2.ZERO
+var _squash_left := 0.0
+var _squash_k := 0.0
+var _ult_freeze_at_ms := -100000
+var _dodge_buf := 0.0
 var _shown_serial := -1
 var _fallback_on := false
 var _vis_base_scale := Vector2.ONE
@@ -410,6 +422,12 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 	_action = &""
 	_action_left = 0.0
 	_action_impact_pending = false
+	_action_kind = &""
+	_since_impact = -1.0
+	_freeze_left = 0.0
+	_kick_left = 0.0
+	_squash_left = 0.0
+	_dodge_buf = 0.0
 	_fallback_on = false
 	_apply_character_look()
 	apply_render_style()
@@ -438,8 +456,16 @@ func _physics_process(delta: float) -> void:
 	if dead:
 		return
 	if _dodge != null and InputMap.has_action(&"dodge"):
+		if _dodge_buf > 0.0:
+			_dodge_buf -= delta
+			if can_cancel_into(&"dodge") and dodge():
+				_dodge_buf = 0.0
 		if Input.is_action_just_pressed(&"dodge"):
-			dodge()
+			if can_cancel_into(&"dodge"):
+				_dodge_buf = 0.0
+				dodge()
+			else:
+				_dodge_buf = Balance.INPUT_BUFFER_S # buffer : l'esquive part à la première frame permise
 		elif _dodge.active and _dodge.is_hold() and not Input.is_action_pressed(&"dodge"):
 			_dodge.release() # Glissade d'Averse : relâcher = fin
 	if _dodge != null and _dodge.active:
@@ -929,6 +955,7 @@ func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> voi
 ## Retourne le délai avant la frame d'impact (s) ; 0 : impact déjà émis (ou pas d'anim).
 func on_cast(spell: SpellData, dir := Vector2.ZERO) -> float:
 	var to_impact := play_action(action_base_for(spell), dir)
+	_action_kind = &"auto" if spell.is_auto else (&"ult" if spell.slot == ArdentKit.ULTIMATE_SLOT else &"spell")
 	if kit != null:
 		kit.on_cast(spell)
 	return to_impact
@@ -985,11 +1012,112 @@ func play_action(base: StringName, dir := Vector2.ZERO) -> float:
 	_action_total = maxf(_action_total, 0.01)
 	_action_left = _action_total
 	_action_impact_pending = true
+	_since_impact = -1.0
+	_action_kind = &""
 	_action_serial += 1
 	var to_impact := maxf(_action_impact_left, 0.0)
 	if _action_impact_left <= 0.0:
 		_flush_action_impact()
 	return to_impact
+
+
+## Peut-on lancer un geste de catégorie `kind` (auto, spell, ult, dodge) maintenant ? Table de cancel de
+## docs/Design_Feel_Sorts.md §3.1 : un geste plus engagé coupe un geste moins engagé, l'esquive coupe presque tout, l'auto
+## ne coupe rien (elle attend, sans être perdue). Jamais avant la frame d'impact (le sort lancé part toujours), et seulement
+## dans la récupération. Lu par SpellCaster.tick (appuis, auto, auto-cast) et _physics_process (esquive) ; les appels directs
+## (tests, kits) ne passent pas par là.
+func can_cancel_into(kind: StringName) -> bool:
+	if _action_left <= 0.0 or _action == &"" or _action_kind == &"":
+		return true
+	var cur := _action_kind
+	if kind == &"auto":
+		return cur == &"auto" # le sort 1 ne coupe jamais un sort 2-4 : il attend la fin de la récupération
+	if _since_impact < 0.0:
+		return cur == &"auto" and kind == &"dodge" # l'esquive coupe un sort 1 même avant son impact
+	var key: StringName
+	match cur:
+		&"auto":
+			key = &"auto"
+		&"spell":
+			key = &"spell" if kind == &"spell" else &"spell_by_dodge" # esquive ou ultime : impact + 2 f
+		_:
+			key = &"ult_by_dodge" if kind == &"dodge" else &"ult_by_spell"
+	var frames: int = int(Balance.CANCEL_AFTER_IMPACT_F.get(key, 4))
+	return _since_impact >= float(frames) / 60.0
+
+
+## Vrai juste après la frame d'impact d'un sort 2-4 (les coups portés maintenant comptent pour le poids du lancer).
+func in_cast_feel_window() -> bool:
+	return (_action_kind == &"spell" or _action_kind == &"ult") and _since_impact >= 0.0 \
+		and _since_impact <= Balance.CAST_FEEL_WINDOW_S
+
+
+## Poids du lancer (appelé une fois par image par SpellCaster) : gel du corps, kick, tassement d'ultime, gel global, secousse.
+## `f` = force du plus fort des coups, `hits` = monstres touchés. Tout est coupé par GameSettings (mouvement réduit,
+## secousses) ; le gel de l'ultime est réarmé à 1 par seconde.
+func apply_cast_feel(ult: bool, f: float, hits: int, crit: bool, boss: bool) -> void:
+	if dead:
+		return
+	var motion := GameSettings.hitstop_enabled() # « mouvement réduit » coupe gel, kick et tassement
+	if motion:
+		var fr := Balance.player_hitstop_frames(f, crit)
+		if ult:
+			fr = maxi(fr, 4)
+		if fr > 0:
+			_freeze_left = float(fr) / 60.0
+		if _action_anim != &"" and _action_dir != Vector2.ZERO:
+			_kick_px = Balance.ULT_KICK_PX if ult else (Balance.CAST_KICK_PX if f >= 0.35 else 0.0)
+			_kick_left = 9.0 / 60.0 if _kick_px > 0.0 else 0.0
+			_kick_dir = _action_dir
+		if ult:
+			_squash_left = float(Balance.ULT_SQUASH_F) / 60.0
+			_squash_k = Balance.ULT_SQUASH
+		var now := Time.get_ticks_msec()
+		if (ult or f >= 0.85 or hits >= Balance.ULT_GLOBAL_FREEZE_HITS) and is_inside_tree() \
+				and now - _ult_freeze_at_ms >= int(Balance.ULT_GLOBAL_FREEZE_REARM_S * 1000.0):
+			_ult_freeze_at_ms = now
+			_hitstop(Balance.ULT_GLOBAL_FREEZE_S)
+	var cat: StringName = &""
+	if ult:
+		cat = &"ult"
+	elif f >= 0.6:
+		cat = &"heavy"
+	elif hits >= Balance.CAST_SHAKE_MIN_HITS or boss:
+		cat = &"spell"
+	if cat != &"" and is_inside_tree():
+		var shaker := _find_shaker()
+		if shaker != null:
+			shaker.shake(float(Balance.CAST_SHAKE_PX[cat]), float(Balance.CAST_SHAKE_HZ[cat]), float(Balance.CAST_SHAKE_S[cat]))
+
+
+## Gel du corps restant (s), pour les tests.
+func freeze_left() -> float:
+	return _freeze_left
+
+
+func _update_cast_feel(delta: float) -> void:
+	var spr := _visual as AnimatedSprite2D
+	if spr == null:
+		return
+	if _freeze_left > 0.0:
+		_freeze_left -= delta
+		spr.pause()
+		if _freeze_left <= 0.0:
+			spr.play()
+	if _kick_left > 0.0:
+		_kick_left = maxf(_kick_left - delta, 0.0)
+		var t := 1.0 - _kick_left / (9.0 / 60.0) # 3 f aller, 6 f retour
+		var k := t / (1.0 / 3.0) if t < 1.0 / 3.0 else (1.0 - t) / (2.0 / 3.0)
+		var sd := Iso.to_screen_dir(_kick_dir) if _kick_dir != Vector2.ZERO else Vector2.ZERO
+		spr.offset = _vis_base_offset - sd * _kick_px * clampf(k, 0.0, 1.0)
+		if _kick_left <= 0.0:
+			spr.offset = _vis_base_offset
+	if _squash_left > 0.0:
+		_squash_left = maxf(_squash_left - delta, 0.0)
+		var q := _squash_k * (_squash_left / (float(Balance.ULT_SQUASH_F) / 60.0))
+		spr.scale = _vis_base_scale * Vector2(1.0 + q, 1.0 - q)
+		if _squash_left <= 0.0:
+			spr.scale = _vis_base_scale
 
 
 ## Action en cours (&"" sinon), anim jouée (&"" = repli procédural), temps restant.
@@ -1014,6 +1142,8 @@ func _action_step(delta: float) -> void:
 	if _action_left <= 0.0:
 		return
 	_action_left = maxf(_action_left - delta, 0.0)
+	if _since_impact >= 0.0:
+		_since_impact += delta
 	if _action_impact_pending:
 		_action_impact_left -= delta
 		if _action_impact_left <= 0.0:
@@ -1028,6 +1158,7 @@ func _flush_action_impact() -> void:
 		return
 	_action_impact_pending = false
 	_action_impact_left = 0.0
+	_since_impact = 0.0
 	if not dead:
 		action_impact.emit(_action)
 
@@ -1099,6 +1230,7 @@ func _update_visual(delta: float) -> void:
 		var k := _hurt_flash_left / HURT_FLASH_S # retour vers le blanc sur la durée du flash
 		_visual.modulate = Color.WHITE.lerp(_hurt_flash_color, k)
 	_update_action_fallback()
+	_update_cast_feel(delta)
 	if _visual is AnimatedSprite2D:
 		var spr := _visual as AnimatedSprite2D
 		var anim := StringName(("run_" if is_moving else "idle_") + _dir_name())

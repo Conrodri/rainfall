@@ -1,8 +1,8 @@
 class_name ArdentTracker
 extends Node
 ## Compteurs de déblocage des variantes d'Ardent (RunState.add_counter, versés au profil en fin de run).
-## Enfant du joueur Ardent, installé par ArdentTracker.ensure_hook() (appelé par ArdentKit.variant_a()) pour ne pas
-## faire de l'Ardent de base un personnage « à kit » (SpellCaster diffère les effets de l'anim d'action sans kit).
+## Enfant du joueur Ardent, installé par ArdentTracker.ensure_hook() (appelé par ArdentKit.variant_a()). Ardent porte
+## aujourd'hui un nœud de kit (ArdentBaseKit : marque braise) ; le tracker reste séparé (compteurs de déblocage).
 ## Sans hook dans SpellCaster (signal de dégâts par sort), l'attribution se fait par observation :
 ##   ardent.nova_big_casts      lancers de Nova ardente qui touchent >= NOVA_BIG_HITS monstres  (-> Pilier de flamme)
 ##   ardent.cendres_kills       monstres morts dans une zone de Cendres active (approximation : tout kill dans la

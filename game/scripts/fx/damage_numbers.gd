@@ -51,6 +51,10 @@ const OUTLINE_COLOR := Color(0.05, 0.035, 0.03, 0.8)
 const FONT_PATH := "res://assets/sprites/ui/damage_font/damage_font.fnt"
 const FALLBACK_FONTS := ["Bahnschrift SemiCondensed", "Bahnschrift", "Roboto Condensed", "sans-serif-condensed", "Arial Narrow"]
 
+## Teinte du chiffre d'un coup de combo (docs/Design_Combos.md §6) : posée par SpellCaster.deal_damage le temps de
+## take_damage (alpha 0 = aucune). Évite de changer la signature du signal enemy_damaged.
+static var combo_tint := Color(0, 0, 0, 0)
+
 var active_count := 0
 var _labels: Array[Label] = []
 var _age := PackedFloat32Array()
@@ -122,6 +126,8 @@ func _on_damaged(enemy: Node2D, amount: float, is_crit: bool, element: StringNam
 	if enemy == null or not is_instance_valid(enemy):
 		return
 	var col: Color = CRIT_COLOR if is_crit else CvdPalette.element(element)
+	if combo_tint.a > 0.0:
+		col = combo_tint
 	var gp := enemy.global_position
 	show_number(Vector2(gp.x + randf_range(-14.0, 14.0), gp.y / Iso.UNSQUASH.y - HEAD_PX), amount, col, is_crit)
 

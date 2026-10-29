@@ -345,7 +345,7 @@ func _test_braises(ch: StringName) -> void:
 		_give({"tempete_de_braises": n})
 		var dying := _fake(Vector2.ZERO)
 		dying.burning = true
-		dying.max_hp = 200.0
+		dying.max_hp = 100.0 # sous le plafond Balance.BLAST_HP_CAP_HITS (12 coups de base = 144 au niveau 1)
 		var near: Array = []
 		for i in 6:
 			near.append(_fake(Vector2((1.0 + i * 0.2) * U, 0.0)))
@@ -354,7 +354,7 @@ func _test_braises(ch: StringName) -> void:
 		_player.item_fx.tick(0.016)
 		var hit_n := near.filter(func(e): return e.taken.size() == 1).size()
 		_check("[%s] braises x%d : 4 ennemis proches touchés (%d)" % [ch, n, hit_n], hit_n == 4)
-		_check("[%s] braises x%d : %d %% des PV max du mort (%.1f)" % [ch, n, 30 * n, near[0].total()], _near(near[0].total(), 200.0 * 0.30 * n, 0.01))
+		_check("[%s] braises x%d : %d %% des PV max du mort (%.1f)" % [ch, n, 30 * n, near[0].total()], _near(near[0].total(), 100.0 * 0.30 * n, 0.01))
 		_check("[%s] braises : les plus proches d'abord, hors portée épargné" % ch, near[3].taken.size() == 1 and near[4].taken.is_empty() and far.taken.is_empty())
 		_clear_fakes()
 		var calm := _fake(Vector2.ZERO)
@@ -370,6 +370,17 @@ func _test_braises(ch: StringName) -> void:
 	_kill(d2)
 	_player.item_fx.tick(0.016)
 	_check("[%s] sans braises : pas d'explosion" % ch, o2.taken.is_empty())
+	# Plafond d'une brute (monstre ordinaire à PV énormes) : BLAST_HP_CAP_HITS coups de dégât de base.
+	_clear_fakes()
+	_give({"tempete_de_braises": 1})
+	var big := _fake(Vector2.ZERO)
+	big.burning = true
+	big.max_hp = 1.0e6
+	var victim := _fake(Vector2(U, 0.0))
+	_kill(big)
+	_player.item_fx.tick(0.016)
+	var cap_brute := Balance.BLAST_HP_CAP_HITS * Balance.player_base_damage(RunState.level)
+	_check("[%s] braises : brute plafonnée à %.0f coups de base (%.1f)" % [ch, Balance.BLAST_HP_CAP_HITS, victim.total()], _near(victim.total(), cap_brute * 0.30, 0.01))
 	# Réaction en chaîne : un voisin qui brûle meurt de l'explosion et explose à son tour, étalé sur les images (pas de récursion).
 	_clear_fakes()
 	_give({"tempete_de_braises": 1})
@@ -393,7 +404,7 @@ func _test_peste(ch: StringName) -> void:
 		_give({"peste_vivante": n})
 		var dying := _fake(Vector2.ZERO)
 		dying.poisoned = true
-		dying.max_hp = 400.0
+		dying.max_hp = 100.0 # sous le plafond (144 PV au niveau 1)
 		var near: Array = []
 		for i in 6:
 			near.append(_fake(Vector2((1.0 + i * 0.2) * U, 0.0)))
@@ -401,7 +412,7 @@ func _test_peste(ch: StringName) -> void:
 		_player.item_fx.tick(0.016)
 		var hit_n := near.filter(func(e): return e.taken.size() == 1).size()
 		_check("[%s] peste x%d : 4 ennemis proches touchés (%d)" % [ch, n, hit_n], hit_n == 4)
-		_check("[%s] peste x%d : 25 %% des PV max (fixe, %.1f)" % [ch, n, near[0].total()], _near(near[0].total(), 100.0, 0.01))
+		_check("[%s] peste x%d : 25 %% des PV max (fixe, %.1f)" % [ch, n, near[0].total()], _near(near[0].total(), 25.0, 0.01))
 		var pd: Dictionary = near[0].status_data(&"poison")
 		var want := 1.8 * Balance.player_base_damage(RunState.level)
 		_check("[%s] peste x%d : 1 cumul de poison (%.2f vs %.2f)" % [ch, n, float(pd.get("total", 0.0)), want], _near(float(pd.get("total", 0.0)), want, 0.01) and float(pd.get("duration", 0.0)) == 4.0)

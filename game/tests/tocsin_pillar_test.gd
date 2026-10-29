@@ -172,7 +172,9 @@ func _run() -> void:
 		_player.global_position = p1.global_position
 		p1.pickup.step(DT)
 		_check("un bras de retour : 1 charge", _kit.charges(2) == 1 and bool(_kit.present[&"arm_l"]) and not bool(_kit.present[&"arm_r"]))
-		_check("sort prêt (reste une charge)", _near(_player.spells._remaining[2], 0.0), str(_player.spells._remaining[2]))
+		# audit P7 : sans charge en main, le ramassage ne rend que 50 % de la recharge restante (le bras est là, le lancer attend)
+		var lock_s := float(_player.spells._remaining[2])
+		_check("ramassage bridé (P7) : lancer suivant dans <= 50 % de la recharge", lock_s > 0.0 and lock_s <= TocsinKit.PILLAR_CD_S * TocsinKit.PICKUP_CD_REFUND + 0.05, str(lock_s))
 		_check("le bras droit reste en recharge", _kit.is_queued(&"arm_r") and float(_kit.recharge_left[2]) > 0.0)
 
 	print("Fin de recharge pendant la décharge : le pilier finit puis part en braises")

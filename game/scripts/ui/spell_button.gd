@@ -65,6 +65,8 @@ var affordable := true ## faux : ressource du kit insuffisante (voile gris + lac
 var lack_text := ""
 var call_pulse := false ## pulsation d'appel (ultime attendu par un bouclier de boss : ULTIMATE_HIT)
 var _pulse_t := 0.0
+var combo_pulse := false ## fenêtre de combo ouverte (kit.combo_ready) : le cadre pulse dans la couleur d'accent
+var combo_color := READY_COLOR
 var cost_text := "" ## coût du sort (« 20 d'eau »), affiché par SpellHint au lieu de la recharge
 
 
@@ -191,6 +193,16 @@ func set_cooldown(rem: float, tot: float) -> void:
 
 
 ## Active / coupe la pulsation d'appel (HUD : bouclier ULTIMATE_HIT actif sur un boss).
+## Active / coupe la pulsation de combo (HUD : `combo` de get_spell_cooldowns), couleur d'accent du personnage.
+func set_combo_pulse(on: bool, color: Color = READY_COLOR) -> void:
+	combo_color = color
+	if combo_pulse == on:
+		return
+	combo_pulse = on
+	_pulse_t = 0.0
+	queue_redraw()
+
+
 func set_call_pulse(on: bool) -> void:
 	if call_pulse == on:
 		return
@@ -200,7 +212,7 @@ func set_call_pulse(on: bool) -> void:
 
 
 func _process(delta: float) -> void:
-	if call_pulse:
+	if call_pulse or combo_pulse:
 		_pulse_t += delta
 		queue_redraw()
 	if _flash > 0.0:
@@ -355,6 +367,10 @@ func _draw() -> void:
 		if _flash > 0.0:
 			draw_arc(c, r + 6.0 * k, 0.0, TAU, 48, Color(1, 0.9, 0.6, _flash / 0.35), 8.0 * maxf(k, 0.5))
 	_draw_charges(c, r, k)
+	if combo_pulse and not cooling:
+		# période COMBO_PULSE_PERIOD_S ; mouvement réduit : halo fixe (jamais un clignotement)
+		var cw := 0.5 if GameSettings.reduce_motion() else 0.5 + 0.5 * sin(_pulse_t * TAU / Balance.COMBO_PULSE_PERIOD_S)
+		draw_arc(c, r + (3.0 + 5.0 * cw) * k, 0.0, TAU, 48, Color(combo_color.r, combo_color.g, combo_color.b, 0.4 + 0.55 * cw), (4.0 + 3.0 * cw) * maxf(k, 0.5))
 	if call_pulse:
 		var w := 0.5 if GameSettings.reduce_motion() else 0.5 + 0.5 * sin(_pulse_t * 6.0)
 		draw_arc(c, r + (4.0 + 6.0 * w) * k, 0.0, TAU, 48, Color(0.78, 0.92, 1.0, 0.45 + 0.5 * w), (4.0 + 3.0 * w) * maxf(k, 0.5))

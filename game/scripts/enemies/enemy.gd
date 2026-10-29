@@ -426,7 +426,7 @@ func activate(p_tier: int, pos: Vector2, D: float, elite: bool, p_affixes: Array
 	_boss_sprite_id = &""
 	is_elite = elite
 	var st: Dictionary = Balance.TIER_STATS[tier]
-	max_hp = Balance.monster_hp(st["hp"], D) * (Balance.ELITE_HP if elite else 1.0)
+	max_hp = Balance.monster_hp(st["hp"], D, tier) * (Balance.ELITE_HP if elite else 1.0)
 	damage = Balance.monster_damage(st["dmg"], D) * (Balance.ELITE_DMG if elite else 1.0)
 	speed_px = Balance.monster_speed(st["speed"], D) * U
 	radius_px = RADIUS_U[tier] * U

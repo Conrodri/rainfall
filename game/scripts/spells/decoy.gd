@@ -30,6 +30,15 @@ var lures_bosses := false
 ## En l'air (motte lancée) : ni provoquée par les monstres ni touchée par leurs tirs.
 var airborne := false
 
+## Charge de combo (docs/Design_Combos.md §5.1) : 0 = normale, 1 = chargée (couteau de l'Éventail passé à travers).
+## Une doublure chargée explose avec `charge_explode_add` de coef en plus et vole avec `charge_flight_coef`
+## (valeurs posées par le kit propriétaire ; 0 = pas de bonus, cas de Bourbe). Ses coups portent la méta `combo`
+## (le kit la lit dans combo_hit : chiffre en couleur d'accent, son lourd).
+var charged := 0.0
+var charge_explode_add := 0.0
+var charge_flight_coef := 0.0
+const CHARGE_TINT := Color(1.5, 1.7, 1.9) ## argent spectral HDR : les fissures s'allument
+
 ## Rayon de provocation propre à ce leurre (u). Un leurre dépasse le `max_px` passé par l'appelant (4 u) s'il
 ## a un rayon plus grand : les appelants existants n'ont rien à changer.
 var provoke_range_u := PROVOKE_RANGE_U
@@ -101,6 +110,25 @@ static func clear_all() -> void:
 			d.exploded = true
 			d.queue_free()
 	live.clear()
+
+
+## Charge la doublure (une seule fois). Les sorts d'explosion et de vol sont dupliqués : ceux du kit, partagés par les
+## six doublures, restent intacts. Retourne false si déjà chargée, explosée ou en l'air.
+func charge(amount := 1.0) -> bool:
+	if exploded or airborne or charged > 0.0 or amount <= 0.0:
+		return false
+	charged = clampf(amount, 0.0, 1.0)
+	if explode_spell != null:
+		explode_spell = explode_spell.duplicate() as SpellData
+		explode_spell.coef += charge_explode_add * charged
+		explode_spell.set_meta(&"combo", true)
+	if flight_spell != null and charge_flight_coef > 0.0:
+		flight_spell = flight_spell.duplicate() as SpellData
+		flight_spell.coef = lerpf(flight_spell.coef, charge_flight_coef, charged)
+		flight_spell.set_meta(&"combo", true)
+	if _sprite != null:
+		_sprite.self_modulate = _sprite.self_modulate * CHARGE_TINT
+	return true
 
 
 ## Copie l'apparence du sprite du joueur (sans ses enfants : ni Montreur, ni fils).

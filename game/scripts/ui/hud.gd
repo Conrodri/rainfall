@@ -56,6 +56,7 @@ var _gold_label: Label
 var _time_label: Label
 var _diff_caption: Label ## titre « Difficulté » au-dessus du bandeau (le repère seul resterait muet pour un nouveau joueur)
 var _find_timer := 0.0
+var _card_char: StringName = &"" ## personnage affiché dans le cartouche (nom, portrait)
 var _top: MarginContainer
 var _left_col: VBoxContainer
 var _center_col: VBoxContainer
@@ -176,6 +177,7 @@ func _process(delta: float) -> void:
 			_find_timer = 0.5
 			_find_player()
 		return
+	_refresh_character_card()
 	if player.has_method("get_spell_cooldowns"):
 		var cds: Array = player.get_spell_cooldowns()
 		for cd in cds:
@@ -190,6 +192,7 @@ func _process(delta: float) -> void:
 					b.set_charges(ch.x, ch.y, _accent())
 					var cost: Dictionary = cd.get("cost", {})
 					b.set_affordable(bool(cd.get("affordable", true)), String(cost.get("lack", "")), String(cost.get("cost", "")))
+					b.set_combo_pulse(bool(cd.get("combo", false)), _accent())
 			var ready := rem <= 0.0
 			if sl >= 2 and ready and _was_ready.has(sl) and not _was_ready[sl]:
 				Audio.spell_ready(sl)
@@ -920,6 +923,32 @@ func reserved_rects() -> Array[Rect2]:
 func _accent() -> Color:
 	var c: Variant = player.get(&"character") if player != null else null
 	return (c as CharacterData).accent_color if c is CharacterData else SpellButton.READY_COLOR
+
+
+## Cartouche (nom, portrait) à jour si le personnage change en cours de partie (mode test : TestTools.switch_character).
+func _refresh_character_card() -> void:
+	if _card_char == RunState.character:
+		return
+	_card_char = RunState.character
+	if _name_label != null:
+		_name_label.text = _character_name()
+	var pinfo := CharacterCard.portrait_info({"id": String(RunState.character)})
+	var ptex: Texture2D = pinfo.tex if pinfo.bust else null
+	if _portrait != null:
+		_portrait.texture = ptex
+		_portrait.visible = ptex != null
+	elif ptex != null and _name_label != null:
+		var prow := _name_label.get_parent().get_parent()
+		_portrait = TextureRect.new()
+		_portrait.texture = ptex
+		_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_portrait.name = "Portrait"
+		prow.add_child(_portrait)
+		prow.move_child(_portrait, 0)
+		_apply_layout()
 
 
 ## Nom du personnage choisi (data/characters.json), en capitales.

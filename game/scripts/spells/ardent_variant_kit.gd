@@ -1,8 +1,8 @@
 class_name ArdentVariantKit
-extends Node
+extends ArdentBaseKit
 ## Kit-nœud d'Ardent quand le joueur a choisi au moins une variante de sort à comportement propre
 ## (docs/Variantes_Sorts.md §2.1 ; ajouté par CharacterData.apply_loadout via la méta `kit_script` du SpellData).
-## Ardent de base n'a pas de kit : ce nœud n'existe que pour les variantes.
+## Prolonge ArdentBaseKit (marque braise et combos) avec les sorts des variantes.
 ## - Braises errantes (sort 1, auto) : ArdentEmberRing, 3 orbes qui tournent autour du joueur.
 ## - Pilier de flamme (sort 2) : télégraphe 0,3 s puis ZoneEffect persistante (SpellCaster.spawn_zone) + ralentissement.
 ## - Pluie de météores (sort 3) : 5 impacts télégraphiés 0,8 s, un toutes les 0,4 s, sur un disque de 3 u.
@@ -19,7 +19,6 @@ const METEOR_EVERY_S := 0.4
 const METEOR_TELEGRAPH_S := 0.8
 const METEOR_CELL_U := 1.0
 
-var player: CharacterBody2D = null
 var ring: ArdentEmberRing = null
 var phoenix: ArdentPhoenix = null
 var _events: Array[Dictionary] = [] ## effets différés : {t, kind, pos, spell}
@@ -27,62 +26,11 @@ var _pillars: Array[Dictionary] = [] ## piliers actifs : {pos, r, left}
 var _slow_t := 0.0
 
 
-func setup(new_player: CharacterBody2D) -> void:
-	player = new_player
-	Events.player_died.connect(_on_player_died)
-	Events.floor_started.connect(_on_floor_started)
-
-
-# --- Hooks génériques du joueur (aucun effet) -------------------------------------------------
-
-func speed_mult() -> float:
-	return 1.0
-
-
-func slow_immune() -> bool:
-	return false
-
-
-func inertia_s() -> float:
-	return 0.0
-
-
-func locks_facing() -> bool:
-	return false
-
-
-func can_dodge() -> bool:
-	return true
-
-
-func on_dodge_start(_dir: Vector2) -> void:
-	pass
-
-
-func dodge_ghosts() -> bool:
-	return true
-
-
-func visual_anim(anim: StringName) -> StringName:
-	return anim
-
-
-func on_cast(_spell: SpellData) -> void:
-	pass
-
-
-## Sorts de base d'Ardent gardés à côté d'une variante : tir / zone à la frame d'impact, comme sans kit (SpellCaster).
-func defers_effects() -> bool:
-	return true
-
-
-## Anim d'action : mêmes bases que le joueur sans kit (Player.action_base_for) ; les braises ne jouent rien.
+## Anim d'action : mêmes bases que la base (Player.action_base_for) ; les braises ne jouent rien.
 func action_for(spell: SpellData) -> StringName:
 	if spell.id == &"roaming_embers":
 		return &""
-	if spell.is_auto:
-		return &"attack"
-	return &"cast_ult" if spell.slot == ArdentKit.ULTIMATE_SLOT else &"cast"
+	return super.action_for(spell)
 
 
 # --- Sorts ---------------------------------------------------------------------------------
@@ -183,6 +131,7 @@ func _telegraph(pos: Vector2, r_px: float, life: float, fall: bool) -> void:
 # --- Boucle ---------------------------------------------------------------------------------
 
 func tick(delta: float) -> void:
+	super.tick(delta)
 	if player == null or player.spells == null:
 		return
 	if ring != null and is_instance_valid(ring):
@@ -237,11 +186,13 @@ func _tick_pillars(delta: float) -> void:
 
 
 func _on_player_died() -> void:
+	super._on_player_died()
 	if phoenix != null and is_instance_valid(phoenix) and not phoenix.exploded:
 		phoenix.explode() # « à la mort d'Ardent » : il se consume
 
 
 func _on_floor_started(_stage: int) -> void:
+	super._on_floor_started(_stage)
 	_events.clear()
 	_pillars.clear()
 	if phoenix != null and is_instance_valid(phoenix):

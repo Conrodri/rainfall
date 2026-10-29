@@ -83,7 +83,7 @@ const RAIN_POLL_S := 0.5
 const KILL_GAIN := 0.9
 ## « Chaque goutte revient à l'amphore » : une Goutte-lame qui touche rend HIT_WATER (BIG_HIT_WATER sur une élite
 ## ou un boss : contre une cible unique, l'auto-attaque est la vraie source d'eau).
-const HIT_WATER := 0.5
+const HIT_WATER := 0.4 ## combos 29/10 : 0,5 -> 0,4 (compense AV-3, docs/Design_Combos.md §4.3)
 const BIG_HIT_WATER := 1.0 ## équilibrage P1 23/10 : 2,0 -> 1,0 (eau sur boss ×2,5 trop forte)
 ## Eau de la carte 12 -> 7/s (retour joueur 23/10) : à 12 (+2,5 de pluie) l'amphore se remplissait en ~7 s, une
 ## Crue pleine toutes les 8 s en restant dans l'eau (+19 % de DPS moyen, +45-57 % sur élite / mini-boss mesurés).
@@ -97,7 +97,7 @@ const DRY_LOCK_S := 2.0
 const COST_FLOOR := 0.75
 
 # --- Sorts ---------------------------------------------------------------------------------------
-const GOUTTE_COEF_MIN := 0.75 ## équilibrage 22/10 : 0,6 -> 0,75
+const GOUTTE_COEF_MIN := 0.7 ## équilibrage 22/10 : 0,6 -> 0,75 ; combos 29/10 : 0,7 (compense AV-3)
 const GOUTTE_COEF_WATER := 0.4
 const GOUTTE_RANGE_U := 9.0
 const GOUTTE_CD := 0.6 ## cadence d'attaque du sort 1 (auto), pas une recharge
@@ -109,7 +109,7 @@ const GOUTTE_SPEED_U := 13.0
 const CAST_LOCK_S := 0.2
 
 const WAVE_COST := 20.0
-const WAVE_COEF := 3.5
+const WAVE_COEF := 3.4 ## combos 29/10 : 3,5 -> 3,4 (compense AV-2)
 const WAVE_LENGTH_U := 6.0 ## 5 -> 6 u (retour joueur 23/10 + P1 : cône 19 u²)
 const WAVE_SPREAD_DEG := 70.0 ## P1 23/10 : 60 -> 70
 const WAVE_KNOCK_U := 1.5
@@ -133,11 +133,29 @@ const CRUE_CD := 12.0
 ## Retour joueur 23/10 (« la Crue tape énormément pour son coût ») : 15 × (eau/100)^1,5 -> 9 × (eau/100)^1,25
 ## (40 -> 2,9 ; 70 -> 5,8 ; 100 -> 9, comme le Brasier d'Ardent qui a 20 s de recharge), rayon 4 + 0,02/eau ->
 ## 5 + 0,02/eau (7 u à 100). P1 23/10 : exposant 1,25 -> 1,2, recharge CRUE_CD.
-const CRUE_COEF_FULL := 9.0
+const CRUE_COEF_FULL := 8.6 ## combos 29/10 : 9 -> 8,6 (compense AV-1 : +20 % sur les trempés)
 const CRUE_COEF_EXP := 1.2
 const CRUE_RADIUS_U := 5.0
 const CRUE_RADIUS_PER_WATER_U := 0.02 ## 5 + 0,02/eau : 7 u à 100 (P1)
 const CRUE_KNOCK_U := 3.0
+
+# --- Combos (docs/Design_Combos.md §4) -----------------------------------------------------------
+const CRUE_SOAK_MULT := 1.2 ## AV-1 : la Crue (ou la Mousson) fait +20 % sur un monstre déjà trempé
+const CRUE_SOAK_KNOCK_U := 4.5 ## AV-1 : recul de la Crue sur un trempé (3 u sinon)
+const WAVE_PUDDLE_ADD := 0.5 ## AV-2 : coef additif de la Vague de fond (cône qui traverse une Flaque ou part d'elle)
+const WAVE_PUDDLE_SOAK_S := 8.0 ## AV-2 : trempe prolongée
+const WAVE_PUDDLE_SOAK_PCT := 0.4
+const WAVE_PUDDLE_PULSE := 1.15 ## la Flaque pulse (échelle) quand la Vague de fond la traverse
+const WAVE_PUDDLE_PULSE_S := 0.3
+const SOAK_HIT_WATER := 1.0 ## AV-3 : eau rendue en plus par une Goutte-lame sur un trempé
+const SOAK_GOUTTE_ADD := 0.25 ## AV-3 : coef additif de la Goutte-lame sur un trempé
+const BRUINE_SOAK_WATER := 0.33 ## AV-3, Bruine : eau en plus par goutte sur un trempé
+const BRUINE_SOAK_VOLLEY_CAP := 2.0 ## plafond de salve sur un trempé (1,0 sinon)
+const WAKE_SOAK_S := 2.0 ## AV-4 : le sillage de la Glissade trempe, sans dégât
+const WAKE_SOAK_PCT := 0.3
+const WAKE_POLL_S := 0.25
+const COMBO_READY_POLL_S := 0.25 ## cache de combo_ready (le HUD l'interroge toutes les 0,1 s)
+const COMBO_READY_MIN := 3 ## trempés dans le rayon pour que la Crue pulse (un boss trempé suffit)
 
 # --- Variantes de sorts (docs/Variantes_Sorts.md §2.4) --------------------------------------------
 const V_BRUINE := &"averse_bruine" ## slot 1 (remplace la Goutte-lame)
@@ -278,6 +296,12 @@ var monsoons: Array = [] ## ZoneEffect (Mousson) attachées à Averse
 var monsoon_left := 0.0 ## s de Mousson restantes (eau rendue pendant ce temps)
 var in_rivulet := false
 var _kit_clock := 0.0 ## horloge du kit (s), avance dans tick()
+var _wave_deep := false ## AV-2 : la Vague en cours d'application traverse une Flaque (lu par combo_coef_add)
+var _wake_pts := PackedVector2Array() ## AV-4 : polyligne du sillage (monde), <= SLIDE_WAKE_MAX_POINTS
+var _wake_left := 0.0 ## s pendant lesquelles le sillage trempe encore après l'arrêt de la glisse
+var _wake_t := 0.0
+var _ready_t := -10.0 ## combo_ready : dernier sondage (horloge du kit)
+var _ready := {2: false, 4: false}
 var _soaked_until := {} ## instance id -> _kit_clock de fin de trempe (compteur de trempés sans recomptage)
 var _lifted: Array = [] ## Geyser : [{e, t, y0, shadow}] monstres en l'air
 var _delayed: Array = [] ## [{t, fn}] effets à retardement (télégraphe du Geyser)
@@ -661,6 +685,8 @@ func slide_begin() -> bool:
 	sliding = true
 	_spawn_splash(player.global_position)
 	_start_wake()
+	_wake_pts = PackedVector2Array([player.global_position])
+	_wake_left = 0.0
 	return true
 
 
@@ -679,6 +705,7 @@ func slide_end(_by_wall: bool) -> void:
 		stumble_left = STUMBLE_RECOVER_S
 	if player != null:
 		Audio.play(SLIDE_STOP_SOUND[0], player.global_position, SLIDE_STOP_SOUND[1], SLIDE_STOP_SOUND[2])
+	_wake_left = SLIDE_WAKE_FADE_S # la trace s'efface en 1 s : elle trempe encore jusque-là
 	_end_wake()
 
 
@@ -692,6 +719,7 @@ func slide_trail(_from: Vector2, to: Vector2) -> void:
 	_wake.add_point(to)
 	if _wake.get_point_count() > SLIDE_WAKE_MAX_POINTS:
 		_wake.remove_point(0)
+	_wake_pts = _wake.points # polyligne sondée par AV-4 (monde : la Line2D est à l'origine)
 
 
 ## En glisse, elle passe à travers la mêlée : le coup d'un monstre à portée de contact est ignoré (boss compris) ;
@@ -831,6 +859,7 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 	if s.slot != 1 or not is_instance_valid(enemy):
 		return
 	var big: bool = enemy.get(&"is_elite") == true or enemy.is_in_group(&"bosses")
+	var wet := is_soaked(enemy) # AV-3 : la Goutte sur un trempé rend plus d'eau
 	var volley: Variant = s.get_meta(&"volley", null) if s.has_meta(&"volley") else null
 	if volley is Dictionary: # Bruine : plafond d'eau par salve, bonus élite / boss une fois par salve
 		var v := volley as Dictionary
@@ -838,12 +867,13 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 			v["big"] = true
 			gain_water(BIG_HIT_WATER)
 		else:
-			var g := minf(HIT_WATER, BRUINE_VOLLEY_WATER_CAP - float(v["gain"]))
+			var cap := BRUINE_SOAK_VOLLEY_CAP if wet else BRUINE_VOLLEY_WATER_CAP
+			var g := minf(HIT_WATER + (BRUINE_SOAK_WATER if wet else 0.0), cap - float(v["gain"]))
 			if g > 0.0:
 				v["gain"] = float(v["gain"]) + g
 				gain_water(g)
 		return
-	gain_water(BIG_HIT_WATER if big else HIT_WATER)
+	gain_water((BIG_HIT_WATER if big else HIT_WATER) + (SOAK_HIT_WATER if wet else 0.0))
 
 
 ## 4,4 u/s à vide -> 3,4 u/s pleine (linéaire, avant les items) ; ×0,6 en se relevant d'un trébuchement.
@@ -1024,13 +1054,88 @@ func flush_pending() -> void:
 # --- Effets --------------------------------------------------------------------------------------
 
 ## Trempé : ralenti 30 % pendant 4 s (clé `slow`, rafraîchi). Les boss aussi (leur propre plancher).
-func _soak(e: Node) -> void:
+## Une trempe plus courte (sillage 2 s) n'écourte jamais une trempe en cours (Vague de fond 8 s).
+func _soak(e: Node, duration := SOAK_S, pct := SOAK_PCT) -> void:
 	if is_instance_valid(e) and e.has_method(&"apply_status"):
-		e.apply_status(&"slow", {"pct": SOAK_PCT, "duration": SOAK_S})
 		var id := e.get_instance_id() # compteur de déblocage : une nouvelle trempe, pas un rafraîchissement
-		if _kit_clock >= float(_soaked_until.get(id, -1.0)):
+		var until := float(_soaked_until.get(id, -1.0))
+		var fresh := _kit_clock >= until
+		if fresh:
 			RunState.add_counter(COUNTER_SOAKED)
-		_soaked_until[id] = _kit_clock + SOAK_S
+		var end := _kit_clock + duration
+		if fresh or end >= until:
+			e.apply_status(&"slow", {"pct": pct, "duration": duration})
+			_soaked_until[id] = end
+
+
+## Trempé (état lu par les combos AV-1 à AV-3 et l'aide de visée) ; la fin de trempe est suivie par l'horloge du kit.
+func is_soaked(e: Node) -> bool:
+	return e != null and is_instance_valid(e) and float(_soaked_until.get(e.get_instance_id(), -1.0)) > _kit_clock
+
+
+## Aide de visée mobile (SpellCaster.densest_point) : les trempés pèsent plus.
+func is_marked(e: Node) -> bool:
+	return is_soaked(e)
+
+
+## SpellCaster.compute_damage : coef additif. Goutte-lame sur trempé (AV-3), Vague de fond (AV-2).
+func combo_coef_add(s: SpellData, enemy: Node) -> float:
+	if s.slot == 1 and s.id != V_BRUINE and is_soaked(enemy):
+		return SOAK_GOUTTE_ADD
+	if s.slot == 2 and _wave_deep:
+		return WAVE_PUDDLE_ADD
+	return 0.0
+
+
+## SpellCaster.compute_damage : multiplicateur. Crue / Mousson sur trempé (AV-1).
+func combo_mult(s: SpellData, enemy: Node) -> float:
+	if s.slot == 4 and is_soaked(enemy):
+		return CRUE_SOAK_MULT
+	return 1.0
+
+
+## SpellCaster.deal_damage : chiffre d'accent (Crue sur trempé, Vague de fond).
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	if s.slot == 4:
+		return is_soaked(enemy)
+	return s.slot == 2 and _wave_deep
+
+
+## Fenêtre de combo (HUD, boutons qui pulsent), sondée au plus toutes les COMBO_READY_POLL_S : Crue = au moins
+## COMBO_READY_MIN trempés dans son rayon (ou un boss trempé) ; Vague = une Flaque vivante autour d'Averse.
+func combo_ready(slot: int) -> bool:
+	if player == null or not is_inside_tree():
+		return false
+	if _kit_clock - _ready_t >= COMBO_READY_POLL_S:
+		_probe_ready()
+	return bool(_ready.get(slot, false))
+
+
+func invalidate_combo_cache() -> void:
+	_ready_t = -10.0
+
+
+func _probe_ready() -> void:
+	_ready_t = _kit_clock
+	_ready[2] = false
+	_ready[4] = false
+	var here := player.global_position
+	var wave_r := WAVE_LENGTH_U * Balance.UNIT_PX
+	for z in puddles:
+		if is_instance_valid(z) and not z.is_ending() and z.global_position.distance_to(here) <= wave_r + float(z.radius):
+			_ready[2] = true
+			break
+	if _soaked_until.is_empty():
+		return
+	var r := crue_radius_u(water) * Balance.UNIT_PX
+	var n := 0
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_soaked(e) or (e as Node2D).global_position.distance_to(here) > r:
+			continue
+		n += 1
+		if e.get(&"is_boss") == true or n >= COMBO_READY_MIN:
+			_ready[4] = true
+			break
 
 
 ## Recul imposé au-delà du plafond des coups directs (KB_MAX_U) : poussée complémentaire × masse.
@@ -1059,6 +1164,34 @@ func _enemies_in_cone(origin: Vector2, dir: Vector2, r: float, half: float) -> A
 	return out
 
 
+## Une Flaque vivante dont le centre est dans le cône, ou dont le disque contient Averse (Vague lancée depuis elle).
+## Elle n'est pas consommée ; elle pulse.
+func _puddle_in_cone(origin: Vector2, dir: Vector2, r: float, half: float) -> bool:
+	var found := false
+	for z in puddles:
+		if not is_instance_valid(z) or z.is_ending():
+			continue
+		var v: Vector2 = z.global_position - origin
+		var inside: bool = v.length() <= float(z.radius)
+		if not inside and v.length() <= r and (v.length_squared() < 1.0 or absf(dir.angle_to(v)) <= half):
+			inside = true
+		if inside:
+			found = true
+			_pulse_puddle(z)
+	return found
+
+
+func _pulse_puddle(z: Node) -> void:
+	var v: Variant = z.get(&"vfx")
+	if not (v is Node2D) or not is_instance_valid(v):
+		return
+	var n := v as Node2D
+	var base := n.scale
+	var tw := n.create_tween()
+	tw.tween_property(n, ^"scale", base * WAVE_PUDDLE_PULSE, WAVE_PUDDLE_PULSE_S * 0.4)
+	tw.tween_property(n, ^"scale", base, WAVE_PUDDLE_PULSE_S * 0.6)
+
+
 func wave_radius_px(s: SpellData) -> float:
 	return s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
 
@@ -1067,10 +1200,17 @@ func wave_radius_px(s: SpellData) -> float:
 func _wave(s: SpellData, dir: Vector2) -> void:
 	var origin := player.global_position
 	var r := wave_radius_px(s)
-	for e in _enemies_in_cone(origin, dir, r, deg_to_rad(s.spread_deg) * 0.5):
+	var half := deg_to_rad(s.spread_deg) * 0.5
+	var deep := _puddle_in_cone(origin, dir, r, half) # AV-2 : Vague de fond
+	_wave_deep = deep
+	for e in _enemies_in_cone(origin, dir, r, half):
 		_caster().deal_damage(e, s, {"source_pos": origin, "anim": true})
-		_soak(e)
+		if deep:
+			_soak(e, WAVE_PUDDLE_SOAK_S, WAVE_PUDDLE_SOAK_PCT)
+		else:
+			_soak(e)
 		_shove(e, origin, WAVE_KNOCK_U)
+	_wave_deep = false
 	_spawn_wave_vfx(origin, dir, r / (WAVE_VFX_LENGTH_U * Balance.UNIT_PX))
 	LightRig.flash(origin + dir * r * 0.5, s.light_preset, 0.45)
 
@@ -1166,13 +1306,21 @@ func _geyser_burst(s: SpellData, at: Vector2, r: float, fx: Node) -> void:
 		return
 	if is_instance_valid(fx):
 		fx.burst()
+	var on_puddle := false # AV-2 : Geyser posé sur une Flaque, trempe longue
+	for z in puddles:
+		if is_instance_valid(z) and not z.is_ending() and z.global_position.distance_to(at) <= float(z.radius):
+			on_puddle = true
+			break
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
 		if e.global_position.distance_to(at) > r:
 			continue
 		_caster().deal_damage(e, s, {"anim": true})
-		_soak(e)
+		if on_puddle:
+			_soak(e, WAVE_PUDDLE_SOAK_S, WAVE_PUDDLE_SOAK_PCT)
+		else:
+			_soak(e)
 		if e.get(&"is_boss") == true or not e.has_method(&"apply_status"):
 			continue
 		e.apply_status(&"imprisoned", {"duration": GEYSER_LIFT_S})
@@ -1306,13 +1454,19 @@ func _crue(s: SpellData, spent: float) -> void:
 	wave.behavior = SpellData.Behavior.NOVA
 	wave.coef = crue_coef(spent)
 	wave.radius_u = crue_radius_u(spent)
+	var wet_before := {} # AV-1 : trempés avant la Crue (la zone frappe à sa création, avant la trempe de la Crue)
+	if not _soaked_until.is_empty():
+		for e in player.get_tree().get_nodes_in_group(&"enemies"):
+			if is_soaked(e):
+				wet_before[e.get_instance_id()] = true
 	var z := _caster().spawn_zone(wave, origin) # dégâts radiaux (recul depuis le centre) à la création
 	_tint_vfx(z, CRUE_VFX_TINT)
 	var r: float = z.radius
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(origin) <= r:
+			var wet := wet_before.has(e.get_instance_id())
 			_soak(e)
-			_shove(e, origin, CRUE_KNOCK_U)
+			_shove(e, origin, CRUE_SOAK_KNOCK_U if wet else CRUE_KNOCK_U)
 	LightRig.flash(origin, s.light_preset, 0.9)
 	var puddle := _puddle_spell()
 	if puddle != null:
@@ -1373,6 +1527,7 @@ func tick(delta: float) -> void:
 	_tick_delayed(delta)
 	_tick_lifted(delta)
 	_tick_readout(delta)
+	_tick_wake(delta)
 	_soak_t -= delta
 	if _soak_t <= 0.0 and not (puddles.is_empty() and rivulets.is_empty() and monsoons.is_empty()):
 		_soak_t = PUDDLE_SOAK_POLL_S
@@ -1432,6 +1587,26 @@ func _soak_puddles() -> void:
 				_soaked_until.erase(k)
 
 
+## AV-4 : le sillage trempe (WAKE_SOAK_S / WAKE_SOAK_PCT, aucun dégât) les monstres qu'il traverse ou qui le traversent.
+## Sondage toutes les WAKE_POLL_S sur la polyligne (<= SLIDE_WAKE_MAX_POINTS points), pas par image.
+func _tick_wake(delta: float) -> void:
+	if not sliding and _wake_left <= 0.0:
+		return
+	if not sliding:
+		_wake_left -= delta
+	_wake_t -= delta
+	if _wake_t > 0.0 or _wake_pts.size() < 2:
+		return
+	_wake_t = WAKE_POLL_S
+	var reach := SLIDE_WAKE_WIDTH_U * 0.5 * Balance.UNIT_PX
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"apply_status"):
+			continue
+		var rad: float = float(e.get(&"radius_px")) if &"radius_px" in e else 20.0
+		if ArpenteuseKit.dist_to_polyline((e as Node2D).global_position, _wake_pts) <= reach + rad:
+			_soak(e, WAKE_SOAK_S, WAKE_SOAK_PCT)
+
+
 ## Effets à retardement (télégraphe du Geyser) ; flush_delayed les déclenche tout de suite (tests).
 func _tick_delayed(delta: float) -> void:
 	for d in _delayed.duplicate():
@@ -1476,6 +1651,10 @@ func clear_transients() -> void:
 	stumble_left = 0.0
 	sliding = false
 	_end_wake()
+	_wake_pts = PackedVector2Array()
+	_wake_left = 0.0
+	_wave_deep = false
+	_ready_t = -10.0
 	_lock_left = 0.0
 	_warn_left = 0.0
 

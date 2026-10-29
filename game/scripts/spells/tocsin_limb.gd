@@ -37,6 +37,8 @@ var _light: LightRig.Handle = null
 var ring: AnimatedSprite2D = null ## tête : télégraphe `head_ring` (T6) posé au sol sur la cible, frère du membre
 var _frames: Dictionary = {} ## nom -> SpriteFrames chargées
 var _ticks := 0 ## ticks de décharge / de fumée déjà joués
+var _max_ticks := TocsinKit.PILLAR_TICKS ## ticks de la décharge en cours (le Coup de tocsin en ajoute, un bras redressé en a moins)
+var _tolled := false ## le Coup de tocsin a déjà prolongé ce pilier
 var _tick_flash := 0.0 ## éclair visuel du dernier tick (placeholder des arcs)
 
 
@@ -211,10 +213,11 @@ func _outline(life_s: float) -> void:
 
 func _step_pillar() -> void:
 	queue_redraw()
-	while _ticks < pillar_ticks_due(t):
+	var due := mini(int(t / TocsinKit.PILLAR_TICK_S + 0.0001) + 1, _max_ticks)
+	while _ticks < due:
 		_ticks += 1
 		_pillar_tick()
-	if t >= TocsinKit.PILLAR_S:
+	if t >= _max_ticks * TocsinKit.PILLAR_TICK_S:
 		_pillar_end()
 
 
@@ -230,8 +233,69 @@ func _pillar_tick() -> void:
 		caster.deal_damage(e, spell, {"is_dot": true})
 		if _alive(e):
 			e.apply_status(&"slow", {"pct": TocsinKit.PILLAR_SLOW_PCT, "duration": TocsinKit.PILLAR_TICK_S + 0.2})
+			if e.has_method(&"add_damage_taken_mod"): # « électrisé » : étiquette sans effet propre, lue par la Tête-cloche
+				e.add_damage_taken_mod(TocsinKit.CHARGE_TAG, 1.0, TocsinKit.CHARGE_TAG_S)
 	Audio.play(&"hit.heavy", c, -14.0, 1.9) # crépitement : un coup sec par tick
 	kit.on_pillar_tick(self, c)
+
+
+## Monstres vivants dans la zone du pilier (sondé par le kit toutes les 0,25 s au plus).
+func count_inside() -> int:
+	var n := 0
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and _alive(e) and (e as Node2D).global_position.distance_to(global_position) <= radius_px + _radius_of(e) * 0.5:
+			n += 1
+	return n
+
+
+## Dégâts d'une décharge supplémentaire à tout monstre de la zone (coef `coef`, proc du pilier), chiffre de combo.
+func _extra_discharge(coef: float) -> void:
+	var sd := spell.duplicate() as SpellData
+	sd.coef = coef
+	var c := global_position
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not e.has_method(&"take_damage") or not _alive(e):
+			continue
+		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
+			continue
+		caster.deal_damage(e, sd, {"combo": true})
+	_tick_flash = 0.2
+	kit.on_pillar_tick(self, c)
+
+
+## La Tête-cloche explose dans le rayon du pilier : il sonne. Ses ticks restants partent d'un coup (PILLAR_COEF x restants,
+## plafond PILLAR_RING_CAP) puis le bras tombe, ramassable. Sans effet hors décharge.
+func head_ring() -> void:
+	if phase != Phase.PILLAR:
+		return
+	var left := maxi(_max_ticks - _ticks, 0)
+	if left > 0:
+		_extra_discharge(minf(spell.coef * float(left), TocsinKit.PILLAR_RING_CAP))
+	_ticks = _max_ticks
+	_pillar_end()
+
+
+## L'onde du Coup de tocsin atteint le pilier : décharge supplémentaire PILLAR_RING_COEF et PILLAR_RING_TICKS ticks en plus
+## (une fois par pilier). Un bras au sol se redresse pour PILLAR_RISE_TICKS ticks, sans recharge en plus.
+func toll_hit() -> void:
+	if phase == Phase.PILLAR:
+		_extra_discharge(TocsinKit.PILLAR_RING_COEF)
+		if not _tolled:
+			_tolled = true
+			_max_ticks += TocsinKit.PILLAR_RING_TICKS
+	elif phase == Phase.GROUND and kind == &"arm":
+		if pickup != null and is_instance_valid(pickup):
+			pickup.queue_free()
+		pickup = null
+		phase = Phase.PILLAR
+		t = 0.0
+		_ticks = 1
+		_max_ticks = TocsinKit.PILLAR_RISE_TICKS
+		_tolled = true
+		_play(&"arm_clamp", dir)
+		_outline(_max_ticks * TocsinKit.PILLAR_TICK_S)
+		_pillar_tick()
+		queue_redraw()
 
 
 ## Fin de décharge : au sol et ramassable, sauf si la recharge du bras est déjà finie (braises).
@@ -313,7 +377,7 @@ func _smoke_tick() -> void:
 			continue
 		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
 			continue
-		var held: bool = e.has_method(&"is_imprisoned") and bool(e.is_imprisoned())
+		var held: bool = (e.has_method(&"is_imprisoned") and bool(e.is_imprisoned())) or kit.is_charged(e)
 		caster.deal_damage(e, spell, {"is_dot": true})
 		if held and _alive(e):
 			caster.deal_damage(e, kit.smoke_bonus_spell, {"is_dot": true})
@@ -337,6 +401,9 @@ func _blast() -> void:
 		if _alive(e) and not _is_boss(e):
 			var away := e.global_position - c
 			_push(e, (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * TocsinKit.HEAD_PUSH_EXTRA_U)
+	for pl: TocsinLimb in kit._pillars(): # la cloche sur le pilier : tout pilier dans le rayon sonne
+		if is_instance_valid(pl) and pl != self and pl.global_position.distance_to(c) <= r:
+			pl.head_ring()
 	kit.on_head_blast(self, c)
 	queue_free()
 

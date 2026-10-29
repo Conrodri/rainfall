@@ -1,0 +1,134 @@
+{
+  "passed": true,
+  "count": 7,
+  "stack_true_peak_dbfs": -3.2234189084535974,
+  "errors": [],
+  "files": [
+    {
+      "path": "impacts/lightning_zap_light_01.ogg",
+      "duration_s": 0.11800453514739229,
+      "true_peak_dbfs": -5.041656017303467,
+      "useful_rms_dbfs": -18.151561737060547,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_zap_light_02.ogg",
+      "duration_s": 0.12900226757369615,
+      "true_peak_dbfs": -3.259402275085449,
+      "useful_rms_dbfs": -18.22684097290039,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_zap_light_03.ogg",
+      "duration_s": 0.14199546485260772,
+      "true_peak_dbfs": -2.976363182067871,
+      "useful_rms_dbfs": -16.848791122436523,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_zap_light_04.ogg",
+      "duration_s": 0.15501133786848073,
+      "true_peak_dbfs": -3.193622589111328,
+      "useful_rms_dbfs": -18.10837173461914,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_zap_light_05.ogg",
+      "duration_s": 0.16700680272108845,
+      "true_peak_dbfs": -2.3594119548797607,
+      "useful_rms_dbfs": -18.723411560058594,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_start_medium_01.ogg",
+      "duration_s": 0.23800453514739228,
+      "true_peak_dbfs": -2.0081329345703125,
+      "useful_rms_dbfs": -16.141746520996094,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    },
+    {
+      "path": "impacts/lightning_chain_start_medium_02.ogg",
+      "duration_s": 0.2780045351473923,
+      "true_peak_dbfs": -2.1974902153015137,
+      "useful_rms_dbfs": -16.895606994628906,
+      "checks": {
+        "rate": true,
+        "stereo": true,
+        "codec": true,
+        "finite": true,
+        "duration": true,
+        "true_peak": true,
+        "useful_rms": true,
+        "attack": true,
+        "manifest": true,
+        "tail_edge": true
+      }
+    }
+  ]
+}

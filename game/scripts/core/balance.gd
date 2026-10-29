@@ -42,10 +42,15 @@ const RAMP_ALIVE_MIN := 8
 ## Plafond de vivants 150 (au lieu de 250) et coût moyen visé 1 + 1,0 × (D - 1) (doc : 0,5) :
 ## à crédits égaux, moins de monstres mais plus de tiers 2-3 et d'élites.
 const RAMP_ALIVE_MAX := 150
-## Alignement RoR2 : pente 0,4 (rythme de kills décroissant, comme RoR2 où le coût moyen monte avec le coeff).
-const DIRECTOR_MEAN_COST_SLOPE := 0.4
-const TIER_COST := {1: 1.0, 2: 4.0, 3: 12.0}
-const TIER_MIN_D := {1: 0.0, 2: 1.35, 3: 2.0} ## T2 vers 70 s au lieu de 40 s (retour joueur : mort avant 2 min)
+## Audit monstres simples (29/10/2026, docs/Audit_Monstres_Simples_2026-10-29.md) : moins de corps, plus de poids.
+## Pente 0,55 (était 0,4) : le coût moyen monte plus vite avec le coeff, donc plus de tireurs/brutes par crédit.
+const DIRECTOR_MEAN_COST_SLOPE := 0.55
+const TIER_COST := {1: 1.0, 2: 5.0, 3: 16.0} ## était 1 / 4 / 12 ; la prime suit le coût (PV par crédit presque inchangé)
+## T2 vers 70 s (retour joueur : mort avant 2 min) ; T3 à D 1,6 (première brute vers 4 min, pendant la charge du pilier).
+const TIER_MIN_D := {1: 0.0, 2: 1.35, 3: 1.6}
+const T3_RAMP_D := 1.0 ## T3 atteint son poids plein 1 point de D après son apparition
+const T3_SHARE := 0.5 ## p3 = 0,5 × p2 à pleine rampe (était 0,4, constante locale du director)
+const LEAPER_SHARE := 0.4 ## part des tier 2 qui sont des bondisseurs (le reste : tireurs)
 const ELITE_COST_MULT := 6.0 ## RoR2 élites tier 1 : coût ×6 (remplace ×4)
 ## Vagues (principe Risk of Rain 2) : WAVE_STREAM_SHARE des crédits part en flux continu, le reste est
 ## mis de côté et lâché d'un coup (groupe du même côté hors écran) toutes les WAVE_INTERVAL_MIN_S à
@@ -57,7 +62,7 @@ const WAVE_RETRY_S := 3.0 ## vague reportée (crédits ou place insuffisants) : 
 const WAVE_MIN_COUNT := 3 ## en dessous, la vague attend (sinon elle passe au tier 1)
 const WAVE_MAX_COUNT := 50 ## au-delà, le reliquat de la vague repasse au flux continu
 const WAVE_SAME_TYPE_CHANCE := 0.75 ## vague d'un seul type (tier + variante), sinon mélange
-const WAVE_LEADER_BASE := 0.15 ## chance d'une élite en tête : base + 2 × elite_chance(D), plafonnée
+const WAVE_LEADER_BASE := 0.20 ## chance d'une élite en tête : base + 2 × elite_chance(D), plafonnée
 const WAVE_LEADER_MAX := 0.6
 const WAVE_SIDE_SPREAD := 0.45 ## part du bord d'écran occupée par la vague
 const WAVE_ANNOUNCE_S := 1.5 ## flèche au bord de l'écran, côté de la vague
@@ -68,17 +73,25 @@ const WAVE_ANNOUNCE_S := 1.5 ## flèche au bord de l'écran, côté de la vague
 # (clé « reward » et ELITE_REWARD remplacés : or et XP ∝ coût director, comme RoR2).
 const TIER_STATS := {
 	1: {"hp": 18.0, "dmg": 5.0, "speed": 2.0},
-	2: {"hp": 80.0, "dmg": 10.0, "speed": 2.0},
-	3: {"hp": 300.0, "dmg": 24.0, "speed": 1.6},
+	2: {"hp": 90.0, "dmg": 10.0, "speed": 2.0}, ## 80 avant l'audit du 29/10/2026
+	3: {"hp": 360.0, "dmg": 24.0, "speed": 1.6}, ## 300 avant l'audit du 29/10/2026
 }
-## Croissance RoR2 par niveau ambiant (niveau = 1 + (coeff - 1) / 0,33) : +30 % PV, +20 % dégâts.
+## Croissance RoR2 par niveau ambiant (niveau = 1 + (coeff - 1) / 0,33) : +30 % PV (boss seulement, gelés), +20 % dégâts.
 const LEVEL_HP_GROWTH := 0.30
+## Croissance des PV des monstres simples par niveau ambiant et par tier (audit 29/10/2026) : les tiers lourds
+## montent plus vite que l'essaim, qui reste fauché en 1-2 coups. Les boss restent sur LEVEL_HP_GROWTH.
+const MONSTER_HP_GROWTH := {1: 0.33, 2: 0.36, 3: 0.40}
 const LEVEL_DMG_GROWTH := 0.20
 const ELITE_HP := 4.0 ## RoR2 élites tier 1 (remplace 3,5)
 const ELITE_DMG := 2.0 ## (remplace 1,5)
 ## Prime des kills (RoR2 : or = 2 × coeff × coût × R, XP = coeff × coût × R ; R = 0,2 pour les directors
 ## continus). Calibré par simulation (docs/Maths_Scaling.md §14) : 0,235.
 const REWARD_MULT := 0.235
+## Explosions proportionnelles aux PV du mort (Tempête de braises, Peste vivante) : les PV servant de base sont
+## plafonnés à BLAST_HP_CAP_HITS coups de dégât de base du joueur (monstre ordinaire ; les boss : 40, voir ItemEffects),
+## et la file d'explosions en attente est bornée (chaînes de morts sur mobile).
+const BLAST_HP_CAP_HITS := 12.0
+const BLAST_QUEUE_MAX := 48
 const MAX_HIT_FRACTION := 0.25 # d'un monstre, en part des PV max du joueur
 const MAX_HIT_FRACTION_BOSS := 0.40
 ## Comportements des monstres (docs/Comportements_Monstres.md, retour joueur « ils tirent en marchant ») :
@@ -502,7 +515,8 @@ func difficulty(t_s: float, stage: int, d: float = 1.0) -> float:
 	return (1.0 + t_s / 60.0 * TIME_SLOPE * d * TIME_COMPRESSION) * pow(K_STAGE, stage - 1)
 
 
-## Paliers de difficulté (seuils resserrés pour l'échelle RoR2 : coeff ≈ 3 en fin d'étage 5 en Moyen).
+## Paliers de difficulté (seuils resserrés pour l'échelle RoR2). D atteint ≈ 6,9 à 19,5 min en Moyen (fin d'étage 5) :
+## le palier Cataclysme (D ≥ 3,0) est franchi vers l'étage 3.
 ## Source unique : nom, D de début (le palier dure jusqu'au début du suivant ; le dernier est sans fin),
 ## identifiant de texture du bandeau (`ui/difficulty/banner/seg_<id>.png`) et couleur.
 const DIFFICULTY_TIERS: Array[Dictionary] = [
@@ -554,8 +568,12 @@ func director_alive_cap(t_s: float) -> int:
 	return int(lerpf(RAMP_ALIVE_MIN, RAMP_ALIVE_MAX, clampf(t_s / RAMP_TIME_S, 0.0, 1.0)))
 
 
+const ELITE_CHANCE_SLOPE := 0.06 ## était 0,05 (audit 29/10/2026)
+const ELITE_CHANCE_MAX := 0.25
+
+
 func elite_chance(D: float) -> float:
-	return clampf(0.05 * (D - 1.0), 0.0, 0.25)
+	return clampf(ELITE_CHANCE_SLOPE * (D - 1.0), 0.0, ELITE_CHANCE_MAX)
 
 
 ## Chance qu'une vague du Director soit menée par une élite.
@@ -569,8 +587,9 @@ func elite_affix_count(D: float) -> int:
 
 # --- Monstres
 ## Remplacé : base × D^1,15 (PV) et base × (1 + 0,3 (D-1)) (dégâts). Désormais par niveau ambiant (RoR2).
-func monster_hp(base: float, D: float) -> float:
-	return base * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1))
+## `tier` : 1 essaim, 2 tireur/bondisseur, 3 brute (croissance MONSTER_HP_GROWTH[tier]).
+func monster_hp(base: float, D: float, tier: int) -> float:
+	return base * (1.0 + float(MONSTER_HP_GROWTH.get(tier, LEVEL_HP_GROWTH)) * (monster_level(D) - 1))
 
 
 func monster_damage(base: float, D: float) -> float:
@@ -662,11 +681,46 @@ const HITSTOP_MAX_S := 0.080 ## plafond (f = 1)
 const HITSTOP_REARM_S := 0.10 ## délai minimal entre deux gels d'un même monstre (pas de gel permanent sous un flot de coups)
 const KB_MIN_U := 0.1 ## recul pour f = 0
 const KB_MAX_U := 0.6 ## recul pour f = 1, avant le facteur de masse ; c'est aussi le plafond cumulé
-const KB_MASS := {1: 1.0, 2: 0.7, 3: 0.4} ## essaim > tireur > brute
+const KB_MASS := {1: 1.0, 2: 0.7, 3: 0.25} ## essaim > tireur > brute
 const KB_ELITE_MULT := 0.6
 const KB_BOSS_MULT := {&"mini": 0.08, &"etage": 0.04} ## presque immunisés (les boss ne gèlent pas)
 const HIT_FLASH_MIN_S := 0.06
 const HIT_FLASH_MAX_S := 0.08
+
+# --- Rythme des sorts (docs/Design_Feel_Sorts.md) : cancel, buffer, poids du lancer côté joueur
+const INPUT_BUFFER_S := 0.133 ## 8 f : un appui de sort 2-4 ou d'esquive pendant une fenêtre non annulable part à la première frame permise
+## Frames (60 Hz) après l'impact avant qu'un geste puisse en couper un autre (docs/Design_Feel_Sorts.md §3.1).
+const CANCEL_AFTER_IMPACT_F := {&"auto": 1, &"spell": 4, &"ult_by_spell": 12, &"ult_by_dodge": 6, &"spell_by_dodge": 2, &"ult_by_ult": 12}
+const CAST_SHAKE_PX := {&"spell": 2.0, &"heavy": 3.5, &"ult": 6.0}
+const CAST_SHAKE_HZ := {&"spell": 22.0, &"heavy": 20.0, &"ult": 18.0}
+const CAST_SHAKE_S := {&"spell": 0.15, &"heavy": 0.2, &"ult": 0.25}
+const CAST_SHAKE_MIN_HITS := 3 ## sorts 2-3 : secousse seulement à partir de 3 touchés (ou un boss)
+const CAST_FEEL_WINDOW_S := 0.12 ## les coups portés dans ce délai après la frame d'impact comptent pour le poids du lancer (pas les ticks de zone)
+const CAST_KICK_PX := 5.0
+const ULT_KICK_PX := 9.0
+const ULT_SQUASH := 0.08 ## tassement d'impact de l'ultime (échelle)
+const ULT_SQUASH_F := 4 ## durée en frames
+const ULT_GLOBAL_FREEZE_S := 0.05 ## gel global (3 f) à l'impact d'un ultime ou d'un coup f >= 0,85
+const ULT_GLOBAL_FREEZE_REARM_S := 1.0
+const ULT_GLOBAL_FREEZE_HITS := 8 ## ou >= 8 monstres touchés d'un coup
+const COMBO_SEMITONES := 2.0 ## coup de combo : son lourd, +2 demi-tons
+const COMBO_SOUND_GAP_S := 0.05
+const AIM_MARKED_WEIGHT := 1.5 ## aide de visée mobile : poids d'un monstre marqué / trempé dans densest_point
+const COMBO_PULSE_PERIOD_S := 0.6 ## pulsation du bouton de sort quand `kit.combo_ready(slot)`
+
+
+## Frames de gel du corps du joueur à l'impact d'un sort selon la force f du coup (0 : léger).
+func player_hitstop_frames(f: float, is_crit: bool) -> int:
+	var n := 0
+	if f >= 0.85:
+		n = 4
+	elif f >= 0.6:
+		n = 3
+	elif f >= 0.35:
+		n = 2
+	if n > 0 and is_crit:
+		n += 1
+	return n
 
 
 func hit_force(amount: float, base_damage: float, is_crit: bool) -> float:

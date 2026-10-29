@@ -57,7 +57,7 @@ func _run() -> void:
 	# 2. Réutilisation sans instanciation
 	var e2: Node2D = _director.spawn_enemy(3, Vector2(-80, 0), true, [&"burn", &"poison"] as Array[StringName])
 	_check("instance réutilisée", e2 == e)
-	_check("élite PV ×ELITE_HP (4, Alignement RoR2)", is_equal_approx(e2.max_hp, root.get_node("Balance").monster_hp(300.0, 1.0) * root.get_node("Balance").ELITE_HP))
+	_check("élite PV ×ELITE_HP (4, Alignement RoR2)", is_equal_approx(e2.max_hp, root.get_node("Balance").monster_hp(360.0, 1.0, 3) * root.get_node("Balance").ELITE_HP))
 
 	# 3. Statuts subis : brûlure cumulable (total sur 3 s), poison (cumuls plafonnés à DOT_MAX_STACKS), ralentissement
 	e2.apply_status(&"burn", {"total": 18.0, "duration": 3.0})

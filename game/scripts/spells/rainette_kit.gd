@@ -76,13 +76,13 @@ const DODGE_HEIGHT_U := 0.6
 const BACK_HOP_U := 3.5 ## bond arrière (roulade) : 3 u de Balance -> 3,5 u (équilibrage 22/10, sa défense = la distance) ## bond arrière : arc visuel
 
 # --- Sorts ----------------------------------------------------------------------------------------
-const TONGUE_COEF := 1.15 ## cible principale (refonte 26/10 : monocible). Avant : 1,1 pour toute la ligne
+const TONGUE_COEF := 1.1 ## cible principale (refonte 26/10 : monocible). Combos 29/10 : 1,15 -> 1,1 (compensation de la Langue sur étourdi)
 const TONGUE_LINE_COEF := 0.9 ## autres monstres de la ligne (zone un peu réduite en compensation)
 const TONGUE_RANGE_U := 4.5
 const TONGUE_WIDTH_U := 0.5 ## équilibrage 22/10 : 0,35 -> 0,5 (essaim −27 %) ; demi-largeur de la ligne frappée (+ rayon du monstre)
 const TONGUE_PULL_U := 0.25
 const SWALLOW_HEAL_PCT := 0.01
-const LEAP_COEF := 3.8 ## équilibrage 22/10 : 3,0 -> 3,8 (burst)
+const LEAP_COEF := 3.4 ## équilibrage 22/10 : 3,0 -> 3,8 (burst) ; combos 29/10 : 3,8 -> 3,4 (compensation Écrasement)
 const LEAP_CD := 7.0
 const LEAP_RANGE_U := 6.0
 const LEAP_MIN_U := 1.5
@@ -93,7 +93,7 @@ const LEAP_AIR_S := 0.55
 const LEAP_HEIGHT_U := 1.6
 const LEAP_GRACE_S := 0.35 ## équilibrage 22/10 : 0,15 -> 0,35 ; invulnérabilité à l'atterrissage du Grand saut (lisibilité de l'impact)
 const LEAP_SHAKE_PX := 7.0
-const GOO_SPLASH_COEF := 1.4 ## équilibrage 22/10 : 1,0 -> 1,4 (zone)
+const GOO_SPLASH_COEF := 1.3 ## équilibrage 22/10 : 1,0 -> 1,4 (zone) ; combos 29/10 : 1,4 -> 1,3 (compensation)
 const GOO_CD := 8.0
 const GOO_RANGE_U := 6.0
 const GOO_RADIUS_U := 2.5
@@ -147,7 +147,16 @@ const CHOEUR_DURATION_S := 8.0
 const CHOEUR_GOO_U := 1.5
 const CHOEUR_GOO_S := 2.0
 const CHOEUR_GOO_MAX := 10 ## mini-flaques vivantes en même temps (plafond de perf)
-const COUNTER_LEAP_STUNS := "rainette.leap_stuns" ## monstres (hors boss) étourdis par le Grand saut
+## Combos (docs/Design_Combos.md §5.3). Écrasement : Gluant -> Grand saut qui atterrit dans la flaque.
+const CRUSH_ADD := 0.3 ## coef additif du Grand saut sur un monstre collé (3,4 -> 3,7)
+const CRUSH_STUN_S := 1.0 ## étourdissement des collés (0,5 s sur les autres)
+const GOO_BURST_COEF := 1.2 ## la flaque éclate : un coup dans tout son rayon, puis elle est consommée
+const GOO_BURST_END_SPEED := 2.0 ## vitesse de l'animation `end` de la flaque qui éclate
+const TONGUE_STUN_COEF := 1.6 ## Langue sur cible étourdie ou collée (cible principale)
+const TONGUE_STUN_PULL_U := 0.75 ## traction de cette Langue (0,25 u sinon)
+const CRUSH_READY_RANGE_U := 1.0 ## combo_ready(2) : une flaque à portée de saut (portée + marge)
+const AUTO_WAIT_GOO_S := 1.0 ## auto-cast : le Grand saut attend le Gluant s'il revient dans moins de ce délai
+const COUNTER_LEAP_STUNS :="rainette.leap_stuns" ## monstres (hors boss) étourdis par le Grand saut
 const COUNTER_GLUED := "rainette.glued" ## monstres pris dans le Gluant (1 fois par flaque)
 const COUNTER_SWALLOWED := "rainette.swallowed" ## T1 avalés par la Langue
 const WALL_MASK := 1
@@ -183,6 +192,7 @@ var _queued_leap: Variant = null ## Grand saut pressé en l'air : {spell, aim}
 var _leap_spell: SpellData = null
 var _ric_second := false ## le bond en cours est le second du Ricochet
 var _mini_goo_sd: SpellData = null
+var _crush_ids := {} ## instance_id -> true : monstres collés à l'atterrissage du Grand saut (lus par combo_coef_add)
 var _pending := {} ## base d'action -> {spell, aim, target}
 var _visual: AnimatedSprite2D = null
 var _shadow: Node2D = null
@@ -413,6 +423,66 @@ func dodge_ghosts() -> bool:
 
 func dodge_label() -> String:
 	return "Bond"
+
+
+## Distance du Bond (esquive) : +50 % depuis une flaque de Gluant (comme les bonds), docs/Design_Combos.md §5.3.
+func dodge_distance_u() -> float:
+	return BACK_HOP_U * (1.0 + GOO_HOP_BONUS) if in_goo() else BACK_HOP_U
+
+
+## Monstre étourdi, emprisonné ou collé dans une flaque : la cible de « Langue sur étourdi ».
+func _is_held(e: Node) -> bool:
+	if not is_instance_valid(e) or not (e is Node2D):
+		return false
+	if e.has_method(&"is_stunned") and e.is_stunned():
+		return true
+	if e.has_method(&"is_imprisoned") and e.is_imprisoned():
+		return true
+	return RainetteGoo.contains((e as Node2D).global_position)
+
+
+## SpellCaster.compute_damage : coef additif de combo. Grand saut sur un collé : +0,3 ; Langue principale sur un étourdi : 1,1 -> 1,6.
+func combo_coef_add(s: SpellData, enemy: Node) -> float:
+	if s.slot == 2 and s.id == &"rainette_grand_saut" and enemy != null and _crush_ids.has(enemy.get_instance_id()):
+		return CRUSH_ADD
+	if s.slot == 1 and s.id == &"rainette_langue" and s != _line_sd and _is_held(enemy):
+		return TONGUE_STUN_COEF - TONGUE_COEF
+	return 0.0
+
+
+## SpellCaster.deal_damage : chiffre en accent et son lourd pour ces coups.
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	return combo_coef_add(s, enemy) > 0.0
+
+
+## Fenêtre de combo du slot 2 (HUD : le bouton pulse) : une flaque de Gluant à portée de saut. Sans boucle sur les monstres.
+func combo_ready(slot: int) -> bool:
+	if slot != 2 or player == null or not is_inside_tree():
+		return false
+	var s := _spell_of(2)
+	if s == null or s.id != &"rainette_grand_saut":
+		return false
+	var reach := _u(s.range_u + CRUSH_READY_RANGE_U) * (1.0 + float(player.stat(&"range_add")))
+	for g in RainetteGoo.live:
+		if is_instance_valid(g) and not g.mini and not g.is_ending() 				and g.global_position.distance_to(player.global_position) <= reach + g.radius:
+			return true
+	return false
+
+
+## Auto-cast (jamais en manuel) : le Grand saut attend le Gluant s'il revient dans la seconde et qu'aucune flaque n'est posée.
+func auto_cast_ok(slot: int) -> bool:
+	if slot != 2 or _caster() == null:
+		return true
+	var s := _spell_of(2)
+	if s == null or s.id != &"rainette_grand_saut" or not _caster().has_slot(3):
+		return true
+	var rem := _caster().cooldown_remaining(3)
+	if rem <= 0.0 or rem > AUTO_WAIT_GOO_S:
+		return true
+	for g in RainetteGoo.live:
+		if is_instance_valid(g) and not g.mini and not g.is_ending():
+			return true
+	return false
 
 
 func dodge_sound() -> Array:
@@ -694,10 +764,13 @@ func _lash(s: SpellData, target: Variant, dir0: Vector2) -> void:
 		hit.append(e)
 	var primary := _tongue_primary(hit, origin)
 	var line_sd := _tongue_line_spell(s)
+	var held := primary != null and s.id == &"rainette_langue" and _is_held(primary) # Langue sur étourdi (docs/Design_Combos.md §5.3)
 	for e in hit:
 		# source au-delà de la cible : le recul la TIRE vers Rainette
 		_caster().deal_damage(e, s if e == primary else line_sd, {"source_pos": (e as Node2D).global_position + dir * Balance.UNIT_PX})
 		_check_swallow(e)
+	if held and is_instance_valid(primary) and primary.has_method(&"push") and not _is_dead(primary):
+		primary.push(-dir * _u(TONGUE_STUN_PULL_U - TONGUE_PULL_U)) # traction 0,25 -> 0,75 u
 	LightRig.flash(origin + dir * length * 0.5, LIGHT, 0.12)
 
 
@@ -902,6 +975,12 @@ func _takeoff() -> void:
 
 func _leap_impact(pos: Vector2) -> void:
 	var s := _leap_spell if _leap_spell != null else _spell_of(2)
+	var goo: RainetteGoo = _crush_goo_at(pos) if s.id == &"rainette_grand_saut" else null
+	_crush_ids.clear()
+	if goo != null: # Écrasement : les monstres collés dans la flaque où elle atterrit
+		for e in get_tree().get_nodes_in_group(&"enemies"):
+			if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(goo.global_position) <= goo.radius:
+				_crush_ids[e.get_instance_id()] = true
 	var z := s.duplicate() as SpellData
 	z.behavior = SpellData.Behavior.NOVA
 	z.duration = 0.0
@@ -910,13 +989,25 @@ func _leap_impact(pos: Vector2) -> void:
 	var ric := s.id == V_RICOCHET
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e) and e.has_method(&"stun") and (e as Node2D).global_position.distance_to(pos) <= r:
-			e.stun(RIC_STUN_S if ric else LEAP_STUN_S)
+			var crushed := _crush_ids.has(e.get_instance_id())
+			e.stun(RIC_STUN_S if ric else (CRUSH_STUN_S if crushed else LEAP_STUN_S))
 			if not ric and e.get(&"is_boss") != true:
 				RunState.add_counter(COUNTER_LEAP_STUNS) # déblocage du Ricochet
+	_crush_ids.clear()
+	if goo != null:
+		goo.burst(_caster(), GOO_BURST_COEF, GOO_BURST_END_SPEED) # la flaque éclate, consommée
 	player.grant_invulnerability(RIC_GRACE_S if ric else LEAP_GRACE_S)
 	LightRig.flash(pos, LIGHT, 0.4, {"radius": 1.6})
 	Audio.play(&"enemy.shockwave.heavy", pos, -3.0, 1.25)
 	_shake(LEAP_SHAKE_PX)
+
+
+## Flaque de Gluant (hors mini-flaques du Chœur) qui contient `pos`, ou null.
+func _crush_goo_at(pos: Vector2) -> RainetteGoo:
+	for g in RainetteGoo.live:
+		if is_instance_valid(g) and not g.mini and not g.is_ending() and g.global_position.distance_to(pos) <= g.radius:
+			return g
+	return null
 
 
 func _shake(px: float) -> void:

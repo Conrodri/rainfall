@@ -102,14 +102,40 @@ func step(delta: float) -> void:
 	else:
 		queue_redraw()
 	if _t >= duration:
-		_ending = true
-		if _light != null:
-			_light.set_fade(FADE_OUT_S)
-		if vfx != null and vfx.sprite_frames.has_animation(&"end"):
-			vfx.sprite_frames.set_animation_loop(&"end", false)
-			vfx.play(&"end")
-		elif vfx == null:
-			queue_free()
+		_begin_end()
+
+
+## Début de la fin de vie (durée écoulée ou flaque qui éclate) : animation `end`, ou disparition sans visuel.
+func _begin_end(speed := 1.0) -> void:
+	_ending = true
+	if _light != null:
+		_light.set_fade(FADE_OUT_S)
+	if vfx != null and vfx.sprite_frames.has_animation(&"end"):
+		vfx.sprite_frames.set_animation_loop(&"end", false)
+		vfx.play(&"end", speed)
+	elif vfx == null:
+		queue_free()
+
+
+func is_ending() -> bool:
+	return _ending
+
+
+## Écrasement (RainetteKit, Grand saut atterri dans la flaque) : un coup `coef` à tout monstre dans la flaque, puis elle est
+## consommée (animation de fin accélérée). Sans effet si elle finit déjà.
+func burst(caster: SpellCaster, coef: float, end_speed := 2.0) -> void:
+	if _ending:
+		return
+	if caster != null and spell != null:
+		var sd := spell.duplicate() as SpellData
+		sd.coef = coef
+		sd.light_preset = &""
+		for e in get_tree().get_nodes_in_group(&"enemies"):
+			if e is Node2D and is_instance_valid(e) and (not (&"active" in e) or bool(e.get(&"active"))) \
+					and (e as Node2D).global_position.distance_to(global_position) <= radius:
+				caster.deal_damage(e, sd, {"source_pos": global_position, "combo": true})
+	_t = maxf(_t, duration)
+	_begin_end(end_speed)
 
 
 func _affect(delta: float) -> void:

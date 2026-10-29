@@ -38,6 +38,19 @@ var _repeat_mult := 1.0 ## facteur de dégâts du rejeu en cours (repeat_cast)
 ## aim_override) est ignorée et le « paquet le plus dense » devient le monstre le plus proche. Point central lu par
 ## cast(), get_manual_aim_point() et densest_point() : les kits qui les appellent pendant un lancer sont alignés d'office.
 var _auto_ctx := false
+## Rythme des sorts (docs/Design_Feel_Sorts.md §3) : appuis mis en attente pendant une récupération non annulable
+## (slot -> s restantes) ; coups du lancer en cours (poids : hitstop, secousse), agrégés puis appliqués une fois par image.
+var _input_buf := {}
+var _feel_hits := 0
+var _feel_f := 0.0
+var _feel_crit := false
+var _feel_boss := false
+var _feel_slot := 0
+var _feel_queued := false
+## Fenêtres de combo lues par le HUD (kit.combo_ready(slot)), sondées toutes les 0,1 s (jamais une boucle par image).
+var _combo_ready := {}
+var _combo_poll := 0.0
+const COMBO_POLL_S := 0.1
 
 
 func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
@@ -84,8 +97,33 @@ func get_spell_cooldowns() -> Array:
 	for s in character.spells:
 		out.append({"slot": s.slot, "id": s.id, "name": s.display_name, "auto": s.is_auto,
 			"remaining": maxf(_remaining[s.slot], 0.0), "total": _totals[s.slot], "blocked": is_slot_blocked(s.slot),
-			"charges": slot_charges(s.slot), "affordable": slot_affordable(s.slot), "cost": slot_cost_info(s.slot)})
+			"charges": slot_charges(s.slot), "affordable": slot_affordable(s.slot), "cost": slot_cost_info(s.slot),
+			"combo": combo_ready(s.slot)})
 	return out
+
+
+## Catégorie de geste d'un sort pour le cancel (Player.can_cancel_into) : auto, spell ou ult.
+func _cancel_kind(s: SpellData) -> StringName:
+	if s.is_auto:
+		return &"auto"
+	return &"ult" if s.slot == ArdentKit.ULTIMATE_SLOT else &"spell"
+
+
+## Fenêtre de combo ouverte pour ce slot (kit : `combo_ready(slot) -> bool`), valeur sondée toutes les 0,1 s.
+## Le HUD fait pulser le bouton du sort dans la couleur d'accent (docs/Design_Combos.md §1.1 règle 4).
+func combo_ready(slot: int) -> bool:
+	return bool(_combo_ready.get(slot, false))
+
+
+func _poll_combo_ready() -> void:
+	var k := _kit()
+	if k == null or not k.has_method(&"combo_ready"):
+		if not _combo_ready.is_empty():
+			_combo_ready.clear()
+		return
+	for sp in character.spells:
+		if not sp.is_auto:
+			_combo_ready[sp.slot] = bool(k.combo_ready(sp.slot))
 
 
 ## Ressource suffisante pour le slot (kit : `slot_affordable(slot) -> bool`, Averse : eau) ; vrai sans hook.
@@ -194,15 +232,35 @@ func tick(delta: float) -> void:
 		return
 	for s in character.spells:
 		_remaining[s.slot] = maxf(_remaining[s.slot] - delta, 0.0)
+		if _input_buf.has(s.slot):
+			_input_buf[s.slot] = float(_input_buf[s.slot]) - delta
 		if _remaining[s.slot] > 0.0 or is_slot_blocked(s.slot):
 			continue
+		var kind := _cancel_kind(s)
 		if s.is_auto:
-			cast(s.slot)
+			# sort 1 : ne coupe jamais un sort 2-4 (différé jusqu'à la fin de sa récupération, jamais perdu)
+			if player.can_cancel_into(kind):
+				cast(s.slot)
 		elif Input.is_action_just_pressed("spell_%d" % s.slot):
 			if not ui_press:
+				if player.can_cancel_into(kind):
+					_input_buf.erase(s.slot)
+					cast(s.slot)
+				else:
+					_input_buf[s.slot] = Balance.INPUT_BUFFER_S # buffer : part à la première frame permise
+		elif _input_buf.has(s.slot):
+			if float(_input_buf[s.slot]) <= 0.0:
+				_input_buf.erase(s.slot)
+			elif player.can_cancel_into(kind):
+				_input_buf.erase(s.slot)
 				cast(s.slot)
-		elif auto_cast_enabled and _auto_cast_ok(s.slot) and _nearest_enemy(_trigger_px(s)) != null:
+		elif auto_cast_enabled and _auto_cast_ok(s.slot) and player.can_cancel_into(kind) \
+				and _nearest_enemy(_trigger_px(s)) != null:
 			cast(s.slot, true)
+	_combo_poll -= delta
+	if _combo_poll <= 0.0:
+		_combo_poll = COMBO_POLL_S
+		_poll_combo_ready()
 	if TestMode.full_resource:
 		refill_kit_resource()
 
@@ -569,12 +627,24 @@ func densest_point(range_px: float) -> Variant:
 		return null
 	var r2 := pow(DENSE_RADIUS_U * Balance.UNIT_PX, 2.0)
 	var best: Node2D = cands[0]
-	var best_n := -1
-	for a in cands:
-		var n := 0
-		for b in cands:
-			if a.global_position.distance_squared_to(b.global_position) <= r2:
-				n += 1
+	var best_n := -1.0
+	# aide de visée (docs/Design_Combos.md §6) : un monstre marqué / trempé / électrisé pèse AIM_MARKED_WEIGHT
+	var k := _kit()
+	var weights: Array[float] = []
+	weights.resize(cands.size())
+	var marked_any := false
+	for i in cands.size():
+		var w := 1.0
+		if k != null and k.has_method(&"is_marked") and bool(k.is_marked(cands[i])):
+			w = Balance.AIM_MARKED_WEIGHT
+			marked_any = true
+		weights[i] = w
+	for ia in cands.size():
+		var a: Node2D = cands[ia]
+		var n := 0.0
+		for ib in cands.size():
+			if a.global_position.distance_squared_to((cands[ib] as Node2D).global_position) <= r2:
+				n += weights[ib] if marked_any else 1.0
 		if n > best_n:
 			best_n = n
 			best = a
@@ -592,17 +662,54 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	if s.hit_force >= 0.0 and not hit.has("force"):
 		hit = hit.duplicate()
 		hit["force"] = s.hit_force
+	var k := _kit() # coup porté (Averse : une élite ou un boss touché rend de l'eau)
+	# coup de combo (docs/Design_Combos.md §6) : le kit le déclare (hit["combo"] ou combo_hit) -> chiffre en accent, son lourd +2 demi-tons
+	var combo: bool = bool(hit.get("combo", false))
+	if not combo and k != null and k.has_method(&"combo_hit"):
+		combo = bool(k.combo_hit(s, enemy))
+	if combo:
+		DamageNumbers.combo_tint = character.accent_color if character != null else Color.WHITE
 	if enemy is Enemy:
 		enemy.take_damage(amount, is_crit, s.element, hit)
 	else: # cibles factices des tests : signature à 3 arguments
 		enemy.take_damage(amount, is_crit, s.element)
+	DamageNumbers.combo_tint = Color(0, 0, 0, 0)
 	Audio.play_hit(s.id, amount, is_crit, at, s.element)
+	if combo:
+		Audio.play_combo(s.id, at)
+	if not s.is_auto and not bool(hit.get("is_dot", false)):
+		_feel_note(s, enemy, amount, is_crit, float(hit.get("force", -1.0)))
 	_roll_procs(enemy, amount, s.proc_coef)
-	var k := _kit() # coup porté (Averse : une élite ou un boss touché rend de l'eau)
 	if k != null and k.has_method(&"on_spell_hit"):
 		k.on_spell_hit(s, enemy, amount)
 	spell_hit.emit(s, enemy, amount)
 	return amount
+
+
+## Poids du lancer (docs/Design_Feel_Sorts.md §4) : les coups d'un sort 2-4 portés juste après la frame d'impact sont
+## agrégés, puis appliqués une fois en fin d'image (hitstop du joueur, kick, secousse, gel de l'ultime).
+func _feel_note(s: SpellData, enemy: Node, amount: float, is_crit: bool, force: float) -> void:
+	if player == null or not player.has_method(&"in_cast_feel_window") or not player.in_cast_feel_window():
+		return
+	var f := force if force >= 0.0 else Balance.hit_force(amount, Balance.player_base_damage(RunState.level), is_crit)
+	_feel_hits += 1
+	_feel_f = maxf(_feel_f, f)
+	_feel_crit = _feel_crit or is_crit
+	_feel_boss = _feel_boss or (enemy != null and enemy.is_in_group("bosses"))
+	_feel_slot = s.slot
+	if not _feel_queued:
+		_feel_queued = true
+		_flush_feel.call_deferred()
+
+
+func _flush_feel() -> void:
+	_feel_queued = false
+	if player != null and is_instance_valid(player) and player.has_method(&"apply_cast_feel"):
+		player.apply_cast_feel(_feel_slot == ArdentKit.ULTIMATE_SLOT, _feel_f, _feel_hits, _feel_crit, _feel_boss)
+	_feel_hits = 0
+	_feel_f = 0.0
+	_feel_crit = false
+	_feel_boss = false
 
 
 func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
@@ -627,7 +734,14 @@ func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
 	var mult: float = player.stat(&"damage_mult")
 	if mult <= 0.0:
 		mult = 1.0
-	var dmg: float = s.coef * Balance.player_base_damage(RunState.level) * (1.0 + add) * mult
+	var coef := s.coef
+	var cmult := 1.0
+	if kit != null and enemy != null: # bonus de combo du kit (docs/Design_Combos.md) : coef additif, puis multiplicateur
+		if kit.has_method(&"combo_coef_add"):
+			coef += float(kit.combo_coef_add(s, enemy))
+		if kit.has_method(&"combo_mult"):
+			cmult = float(kit.combo_mult(s, enemy))
+	var dmg: float = coef * Balance.player_base_damage(RunState.level) * (1.0 + add) * mult * cmult
 	if is_crit:
 		dmg *= player.crit_mult()
 	return dmg

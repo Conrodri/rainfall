@@ -170,7 +170,7 @@ func _test_player_switch() -> void:
 func _test_defers_effects() -> void:
 	print("SpellCaster.defers_effects")
 	var base := _new_player(&"ardent")
-	_check(base.kit == null and base.spells.defers_effects(), "Ardent de base : sans kit, effets différés")
+	_check(base.kit is ArdentBaseKit and base.spells.defers_effects(), "Ardent de base : kit de base, effets différés")
 	base.queue_free()
 	await get_tree().process_frame
 	var v := _new_player(&"ardent", {2: &"flame_pillar"})

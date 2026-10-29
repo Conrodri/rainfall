@@ -122,7 +122,7 @@ func _ready() -> void:
 func _test_substitution() -> void:
 	print("Substitution")
 	var base := CharacterData.for_id(&"ardent")
-	_check(base.kit_script == null and base.loadout.is_empty(), "Ardent de base : aucun kit, aucun loadout")
+	_check(base.kit_script == ArdentBaseKit and base.loadout.is_empty(), "Ardent de base : kit de base (marque braise), aucun loadout")
 	var cd := CharacterData.for_id(&"ardent", LOADOUT)
 	for slot in LOADOUT:
 		var s: SpellData = null
@@ -295,7 +295,7 @@ func _test_counters() -> void:
 	await get_tree().process_frame
 	var tr := p.get_node_or_null("ArdentTracker")
 	_check(tr is ArdentTracker, "tracker installé sur l'Ardent de base")
-	_check(p.kit == null, "…sans faire de l'Ardent de base un personnage à kit")
+	_check(p.kit is ArdentBaseKit and not (p.kit is ArdentVariantKit), "…qui porte le nœud ArdentBaseKit (sans variante)")
 	# Nova sur 16 monstres : un grand lancer
 	for i in 16:
 		_enemy(Vector2.from_angle(TAU * i / 16.0) * 1.5 * U)

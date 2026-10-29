@@ -443,6 +443,10 @@ func _queue_blast(e: Node2D, pos: Vector2, id: StringName) -> void:
 		return
 	if e.is_in_group(&"bosses") or bool(e.get("is_boss")):
 		hp = minf(hp, BOSS_BLAST_HITS * Balance.player_base_damage(RunState.level)) # un boss ne détruit pas le paquet voisin
+	else:
+		hp = minf(hp, Balance.BLAST_HP_CAP_HITS * Balance.player_base_damage(RunState.level)) # une brute non plus
+	if _blasts.size() >= Balance.BLAST_QUEUE_MAX:
+		return # garde-fou des chaînes d'explosions (perf mobile)
 	_blasts.append({"pos": e.global_position if e.is_inside_tree() else pos, "hp": hp, "id": id})
 
 

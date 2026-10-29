@@ -76,7 +76,7 @@ const MOTTE_CHASE_U := 6.0 ## laisse : cibles à 6 u de Bourbe
 const MOTTE_FOLLOW_U := 1.3
 const MOTTE_FIGHT_S := 10.0
 const MOTTE_RADIUS_U := 0.3
-const MOTTE_CONTACT_COEF := 0.40 ## équilibrage 22/10 : 0,4 -> 0,45 -> 0,40 (soir) ; 23/10 (modèle masse) : voir §2.5
+const MOTTE_CONTACT_COEF := 0.35 ## docs/Design_Combos.md §5.5 : 0,40 -> 0,35 (compensation du combo Gifle transmise). Avant : 0,4 -> 0,45 -> 0,40 (soir) ; 23/10 (modèle masse) : voir §2.5
 const MOTTE_CONTACT_INTERVAL_S := 0.8
 const MOTTE_CONTACT_PROC := 0.5
 const MOTTE_FLY_S := 0.35
@@ -96,7 +96,21 @@ const DETACH_LOCK_S := 0.35 ## entre deux lancers (durée du geste)
 ## le refus sous 50 % de PV du 22/10 au soir). Détacher ne retire plus de PV actuels : jamais mortel par construction.
 
 # --- Sorts -------------------------------------------------------------------------------------
-const SLAP_COEF := 1.0
+const SLAP_COEF := 0.85 ## docs/Design_Combos.md §5.5 : 1,0 -> 0,85 (compensation, levier 0,8)
+## Combo « Gifle transmise » (§5.5) : Détacher -> Gifle dont l'arc passe sur une motte : elle regagne SLAP_FEED_HEAL de ses
+## PV et son prochain coup de contact vaut SLAP_FEED_MULT (Bouture : SLAP_FEED_MULT_BIG). Une fois par motte et par SLAP_FEED_CD_S.
+const SLAP_FEED_HEAL := 0.1
+const SLAP_FEED_MULT := 3.0
+const SLAP_FEED_MULT_BIG := 2.0
+const SLAP_FEED_CD_S := 2.0
+## Bourbier avec des mottes dehors : chacune éclate (coef, rayon) avant de fusionner. Rappel avec une motte à <= RECALL_HOME_U :
+## plouf de la motte autour d'elle au lieu d'une traversée vide.
+const BOG_MOTTE_BURST_COEF := 1.0
+const BOG_MOTTE_BURST_U := 1.5
+const RECALL_HOME_U := 1.0
+## Coulée : une motte dans la traînée de vase file à cette vitesse (u/s) pendant FLOW_TRAIL_MOTTE_HOLD_S après son passage.
+const FLOW_TRAIL_MOTTE_SPEED_U := 4.8
+const FLOW_TRAIL_MOTTE_HOLD_S := 0.5
 const SLAP_INTERVAL_S := 0.8
 const SLAP_RADIUS_U := 2.6 ## équilibrage 22/10 : 1,5 -> 2,0 ; retour joueur 26/10 (mêlée trop courte) : 2,0 -> 2,6 (le VFX se met à l'échelle sur radius_u)
 const SLAP_SPREAD_DEG := 210.0 ## équilibrage 22/10 : 150° -> 210° (la vase gifle autour d'elle ; essaim −30 %)
@@ -106,7 +120,7 @@ const RECALL_CD := 6.0
 const RECALL_SPEED_U := 12.0
 const RECALL_WIDTH_U := 0.45
 const RECALL_KNOCK_U := 0.8
-const BOG_COEF := 1.2 ## équilibrage 22/10 : 1,0 -> 1,4 ; soir : 1,2 (cible unique +24 % au niv 12)
+const BOG_COEF := 1.1 ## docs/Design_Combos.md §5.5 : 1,2 -> 1,1. Équilibrage 22/10 : 1,0 -> 1,4 ; soir : 1,2 (cible unique +24 % au niv 12)
 const BOG_CD := 22.0
 const BOG_RADIUS_U := 5.0
 const BOG_DURATION_S := 4.0
@@ -220,6 +234,11 @@ var _big_land_spell: SpellData = null
 var _big_recall_spell: SpellData = null
 var _recall_spell: SpellData = null
 var _big_contact_spell: SpellData = null
+var _contact_fed: SpellData = null ## coup de contact ×SLAP_FEED_MULT (méta `combo`)
+var _big_contact_fed: SpellData = null
+var _land_guard: SpellData = null ## plouf de garde (Rappel avec une motte contre elle), méta `combo`
+var _big_land_guard: SpellData = null
+var _bog_burst: SpellData = null ## éclat des mottes au Bourbier, méta `combo`
 var tide_left := 0.0 ## Marée de vase en cours (s restantes)
 var _tide_shield := 0.0 ## part du bouclier encore à la Marée (retirée à la fin)
 var _tide_saved: Dictionary = {} ## réglages du sort 1 avant la Marée
@@ -425,6 +444,25 @@ func _build_sub_spells() -> void:
 	_recall_spell.is_zone = false
 	_recall_spell.proc_coef = 1.0
 	_recall_spell.hit_force = _force_for(RECALL_KNOCK_U)
+	# combos (§5.5) : copies marquées `combo` (chiffre en accent, son lourd)
+	_contact_fed = _combo_copy(_contact_spell, SLAP_FEED_MULT)
+	_big_contact_fed = _combo_copy(_big_contact_spell, SLAP_FEED_MULT_BIG)
+	_land_guard = _combo_copy(_land_spell, 1.0)
+	_big_land_guard = _combo_copy(_big_land_spell, 1.0)
+	_bog_burst = _spell(&"motte_eclat", "Éclat de motte", 4, SpellData.Behavior.NOVA, BOG_MOTTE_BURST_COEF, 0.0)
+	_bog_burst.radius_u = BOG_MOTTE_BURST_U
+	_bog_burst.proc_coef = MOTTE_LAND_PROC
+	_bog_burst.hit_force = _force_for(0.4)
+	_bog_burst.color = MUD_COLOR
+	_with_vfx(_bog_burst, MUD_SPLASH_FRAMES)
+	_bog_burst.set_meta(&"combo", true)
+
+
+static func _combo_copy(src: SpellData, mult: float) -> SpellData:
+	var c := src.duplicate() as SpellData
+	c.coef = src.coef * mult
+	c.set_meta(&"combo", true)
+	return c
 
 
 func _caster() -> SpellCaster:
@@ -615,6 +653,7 @@ func _spawn_mud_trail(from: Vector2, to: Vector2) -> void:
 	t.tick_s = FLOW_TRAIL_TICK_S
 	t.slow_pct = FLOW_TRAIL_SLOW_PCT
 	t.slow_s = FLOW_TRAIL_SLOW_S
+	t.kit = self
 	t.frames_path = MUD_SPLASH_FRAMES
 	t.sprites = FLOW_TRAIL_SPRITES
 	t.sprite_scale = FLOW_TRAIL_SPRITE_SCALE
@@ -631,6 +670,7 @@ class MudTrail extends Node2D:
 	var slow_pct := 0.3
 	var slow_s := 0.6
 	var frames_path := ""
+	var kit: Node = null ## BourbeKit : ses mottes dans la traînée accélèrent (combo Coulée)
 	var sprites := 3
 	var sprite_scale := 0.6
 	var _t := 0.0
@@ -660,6 +700,8 @@ class MudTrail extends Node2D:
 		if _tick_t > 0.0:
 			return
 		_tick_t = tick_s
+		if kit != null and is_instance_valid(kit):
+			kit.boost_mottes_on_segment(from, to, half_px)
 		var seg := to - from
 		var len2 := maxf(seg.length_squared(), 1.0)
 		for e in get_tree().get_nodes_in_group(&"enemies"):
@@ -746,8 +788,83 @@ func has_pending() -> bool:
 	return not _pending.is_empty()
 
 
-func on_cast(_s: SpellData) -> void:
-	pass
+func on_cast(s: SpellData) -> void:
+	if s.id == &"gifle_de_vase" and not mottes.is_empty():
+		_slap_feed(s)
+
+
+# --- Combo « Gifle transmise » (docs/Design_Combos.md §5.5) -----------------------------------------------------
+
+## La gifle passe sur une motte alliée : elle regagne SLAP_FEED_HEAL de ses PV et son prochain coup de contact vaut
+## SLAP_FEED_MULT. Géométrie de l'ARC reconstruite comme SpellCaster : centre sur le joueur, secteur de spread_deg autour
+## du sens du monstre le plus proche dans le rayon.
+func _slap_feed(s: SpellData) -> void:
+	var c := _caster()
+	if c == null or player == null:
+		return
+	var reach := s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+	var target := c.nearest_enemy(reach)
+	if target == null:
+		return
+	var adir := target.global_position - player.global_position
+	if adir.length_squared() < 1.0:
+		adir = player.facing
+	adir = adir.normalized()
+	var half := deg_to_rad(s.spread_deg) * 0.5
+	for m in mottes:
+		if not is_instance_valid(m) or m.fed or m.feed_cd_left > 0.0 or m.state == BourbeMotte.State.FLY or m.state == BourbeMotte.State.GONE:
+			continue
+		var off: Vector2 = m.global_position - player.global_position
+		if off.length() > reach + m.radius_u * Balance.UNIT_PX:
+			continue
+		if off.length_squared() > 1.0 and absf(adir.angle_to(off)) > half:
+			continue
+		m.feed(SLAP_FEED_HEAL, SLAP_FEED_CD_S)
+
+
+## Coup de contact d'une motte nourrie : ×SLAP_FEED_MULT (Bouture ×SLAP_FEED_MULT_BIG).
+func fed_contact_spell(m: BourbeMotte) -> SpellData:
+	return _big_contact_fed if m.big else _contact_fed
+
+
+## SpellCaster.deal_damage : coup de combo = copie du sort marquée `combo` (motte nourrie, plouf de garde, éclat du Bourbier).
+func combo_hit(s: SpellData, _enemy: Node) -> bool:
+	return s != null and s.has_meta(&"combo")
+
+
+## Fenêtre de combo du slot (HUD, sondé toutes les 0,1 s) : Gifle tant qu'une motte à portée attend d'être nourrie ;
+## Rappel tant qu'une motte est contre Bourbe (plouf de garde) ; Bourbier avec au moins 2 mottes dehors (éclats).
+func combo_ready(slot: int) -> bool:
+	if mottes.is_empty() or player == null:
+		return false
+	match slot:
+		1:
+			var r: float = SLAP_RADIUS_U * Balance.UNIT_PX
+			for m in mottes:
+				if is_instance_valid(m) and not m.fed and m.feed_cd_left <= 0.0 and m.state != BourbeMotte.State.FLY \
+						and m.global_position.distance_to(player.global_position) <= r:
+					return true
+		3:
+			var home := RECALL_HOME_U * Balance.UNIT_PX
+			for m in mottes:
+				if is_instance_valid(m) and m.state != BourbeMotte.State.FLY and m.global_position.distance_to(player.global_position) <= home:
+					return true
+		4:
+			return sunk_left <= 0.0 and out_count() >= 2
+	return false
+
+
+## Coulée : les mottes qui marchent dans la traînée de vase filent à FLOW_TRAIL_MOTTE_SPEED_U (MudTrail l'appelle).
+func boost_mottes_on_segment(from: Vector2, to: Vector2, half_px: float) -> void:
+	var seg := to - from
+	var len2 := maxf(seg.length_squared(), 1.0)
+	for m in mottes:
+		if not is_instance_valid(m) or m.state == BourbeMotte.State.FLY or m.state == BourbeMotte.State.GONE:
+			continue
+		var p: Vector2 = m.global_position
+		var k := clampf((p - from).dot(seg) / len2, 0.0, 1.0)
+		if p.distance_to(from + seg * k) <= half_px:
+			m.flow_left = FLOW_TRAIL_MOTTE_HOLD_S
 
 
 # --- Sort 2 : Détacher -------------------------------------------------------------------------
@@ -858,7 +975,11 @@ func merge_refund(m: BourbeMotte) -> float:
 # --- Sort 3 : Rappel ---------------------------------------------------------------------------
 
 func _recall_all() -> void:
-	for m in mottes:
+	var home := RECALL_HOME_U * Balance.UNIT_PX
+	for m in mottes.duplicate():
+		if m.state != BourbeMotte.State.FLY and player != null and m.global_position.distance_to(player.global_position) <= home:
+			# plouf de garde : la motte contre Bourbe éclate sur place au lieu d'une traversée vide
+			_caster().spawn_zone(_big_land_guard if m.big else _land_guard, m.global_position)
 		m.recall()
 	if player != null:
 		LightRig.flash(player.global_position, LIGHT_SPELL, 0.35)
@@ -876,6 +997,8 @@ func _start_sink(s: SpellData) -> void:
 	player.grant_invulnerability(BOG_DURATION_S) # inciblable : rien ne la touche sous la vase
 	# les mottes fusionnent : toute la masse revient tout de suite, masse perdue comprise (règle d'origine)
 	for m in mottes.duplicate():
+		if is_instance_valid(m) and m.state != BourbeMotte.State.FLY: # §5.5 : chaque motte éclate avant de fusionner
+			_caster().spawn_zone(_bog_burst, m.global_position)
 		m.merge()
 	dead_mass.clear()
 	_recompute_mass()

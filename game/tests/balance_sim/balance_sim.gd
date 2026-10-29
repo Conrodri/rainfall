@@ -40,6 +40,10 @@ const CONFIGS := {
 	"L12": {"label": "Niv 12, Difficile ét.3 4 min", "level": 12, "mode": "difficile", "stage": 3, "t": 240.0, "gold": 400.0,
 		"items": {"pierre_a_aiguiser": 2, "sifflet_de_chasse": 2, "bague_de_vigueur": 2, "amulette_de_cuir": 2,
 			"sablier_fele": 2, "lentille_aiguisee": 2, "rune_de_portee": 1, "horloge_arcanique": 1, "tonique_vital": 1}},
+	## Vraie run Moyen vers l'étage 4 (D ≈ 4,9, niveau ambiant 12, ≈ 30 objets) ; L12 ci-dessus est à D ≈ 2,5 seulement.
+	"L12m": {"label": "Niv 12, Moyen ét.4 14,5 min (D≈4,9)", "level": 12, "mode": "moyen", "stage": 4, "t": 870.0, "gold": 800.0,
+		"items": {"pierre_a_aiguiser": 5, "sifflet_de_chasse": 3, "bague_de_vigueur": 5, "amulette_de_cuir": 3,
+			"sablier_fele": 3, "lentille_aiguisee": 4, "rune_de_portee": 2, "horloge_arcanique": 2, "tonique_vital": 3}},
 }
 
 ## Erreurs captées (Logger) pendant le combat en cours.

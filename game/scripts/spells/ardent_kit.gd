@@ -9,8 +9,13 @@ const VARIANT_B_IDS := {1: &"roaming_embers", 2: &"flame_pillar", 3: &"meteor_ra
 const ULTIMATE_SLOT := 4
 ## Équilibrage (simulateur du 22/10/2026) : Ardent reste le débutant sûr (kite, zone) mais ne domine plus la cible
 ## unique. Nova 3,0 -> 2,5 et Brasier 10 -> 8 (≈ −10 % de DPS cible, zone quasi inchangée).
-const NOVA_COEF := 2.5
-const BRASIER_COEF := 8.0
+## Combos (docs/Design_Combos.md §3, 29/10/2026) : −8 % de base pour compenser les bonus de la marque braise
+## (ArdentBaseKit) : Nova 2,5 -> 2,3 et Brasier 8 -> 7,4.
+const NOVA_COEF := 2.3
+const BRASIER_COEF := 7.4
+## Frames d'impact des anims d'action (Design_Feel_Sorts §9.2) : `cast` (Nova et Cendres) 3 -> 2, soit 10 f au lieu de 15 f
+## à 12 fps. Éclat auto (`attack`, 2) et Brasier (`cast_ult`, 4) inchangés ; la pose tenue et les retimings attendent Codex.
+const ACTION_IMPACT_FRAMES := {&"attack": 2, &"cast": 2, &"cast_ult": 4}
 ## Variantes de sorts (docs/Variantes_Sorts.md §2.1) : coefs de départ, ajustés au simulateur (balance_sim_run
 ## --chars=ardent) pour rester à ±15 % du sort de base : tests/ardent_variants_bench.tscn (sort isolé, base vs variante).
 ## 23/10 : valeurs de la 2e passe de mesure ; METEOR_COEF (6,0) est une extrapolation à re-mesurer (voir art/tools/night/reprise/ardent.md).
@@ -40,6 +45,7 @@ const SPELL_VFX := {
 	&"flame_pillar": {"name": "flame_pillar", "radius_px": 50.0, "floor_aspect": 0.67},
 	&"meteor_rain": {"name": "meteor_impact", "radius_px": 85.0, "floor_aspect": 0.67},
 	&"phoenix_burst": {"name": "ardent_nova", "radius_px": 189.02, "floor_aspect": 0.4895}, # placeholder : VFX de la Nova
+	&"ash_flare": {"name": "ardent_nova", "radius_px": 189.02, "floor_aspect": 0.4895}, # flambée d'une Cendres (ArdentBaseKit)
 }
 
 
@@ -173,6 +179,8 @@ static func variant_a() -> CharacterData:
 	c.id = &"ardent"
 	c.display_name = "Ardent"
 	c.dodge_kind = DodgeMove.KIND_BLINK # Éclat : téléportation courte en braises (docs/Design_Esquives.md)
+	c.kit_script = ArdentBaseKit # marque braise et combos (Design_Combos §3) ; remplacé par ArdentVariantKit avec une variante
+	c.action_impact_frames = ACTION_IMPACT_FRAMES
 
 	var s1 := _spell(&"eclat_de_braise", "Éclat de braise", 1, SpellData.Behavior.PROJECTILE, 0.8, 0.6)
 	s1.is_auto = true

@@ -475,6 +475,19 @@ func play_cast(spell_id: StringName, pos: Vector2, power := 1.0) -> void:
 	play(id, pos, -3.0 + 5.0 * t, 1.08 - 0.18 * t)
 
 
+var _combo_sound_ms := -1000
+
+## Coup de combo (docs/Design_Combos.md §6) : le son du sort en variante lourde, +2 demi-tons. Au plus un par 50 ms.
+func play_combo(spell_id: StringName, pos: Vector2) -> void:
+	var now := Time.get_ticks_msec()
+	if now - _combo_sound_ms < int(Balance.COMBO_SOUND_GAP_S * 1000.0):
+		return
+	_combo_sound_ms = now
+	var id := _first_available(["spell.%s.cast_heavy" % spell_id, "spell.%s.combo" % spell_id, "spell.%s.cast" % spell_id, "spell.cast"])
+	if id != &"":
+		play(id, pos, -1.0, pow(2.0, Balance.COMBO_SEMITONES / 12.0))
+
+
 ## Variante légère / moyenne / lourde d'un lancement selon `power` (rapport Dégât attendu / Dégât_base,
 ## soit coef du sort × bonus d'items, cf. SpellCaster.cast_power). Seuils de config.hit_power.
 func power_level(power: float) -> String:

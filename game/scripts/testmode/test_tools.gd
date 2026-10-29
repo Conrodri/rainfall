@@ -272,7 +272,7 @@ static func base_stats(entry: Dictionary, d: float, elite := false) -> Dictionar
 	var kind: StringName = entry.get("kind", &"tier")
 	if kind == &"tier":
 		var st: Dictionary = Balance.TIER_STATS[int(entry.tier)]
-		var hp := Balance.monster_hp(float(st["hp"]), d)
+		var hp := Balance.monster_hp(float(st["hp"]), d, int(entry.tier))
 		var dmg := Balance.monster_damage(float(st["dmg"]), d)
 		if elite:
 			hp *= Balance.ELITE_HP

@@ -99,7 +99,7 @@ const SWING_ARC_DEG := 150.0
 const SWING_KNOCK_U := 0.4
 
 # --- Sort 2 : Poignée de pièces ----------------------------------------------------------------------
-const COINS_COEF := 1.2
+const COINS_COEF := 1.1 ## combos 29/10 : 1,2 -> 1,1 (compense COIN_MARKED_COEF)
 const COINS_CD := 5.0
 const COINS_COUNT := 5
 const COINS_SPREAD_DEG := 50.0
@@ -120,7 +120,7 @@ const RANSOM_MARK_S := 4.0
 const RANSOM_GOLD_BONUS := 0.5
 
 # --- Sort 4 : Faillite -------------------------------------------------------------------------------
-const RUIN_BASE_COEF := 5.0 ## équilibrage 23/10 : 6 -> 7 -> 5,0 (burst d'ouverture : mini-boss L12 1,55 -> cible)
+const RUIN_BASE_COEF := 4.6 ## combos 29/10 : 5,0 -> 4,6 (compense RUIN_MARKED_ADD) ; avant : équilibrage 23/10 : 6 -> 7 -> 5,0 (burst d'ouverture : mini-boss L12 1,55 -> cible)
 const RUIN_BONUS_COEF := 3.5 ## équilibrage 23/10 : 4 -> 3,5
 const RUIN_BONUS_AT_P := 4.0
 const RUIN_CD := 25.0
@@ -187,6 +187,15 @@ const BLEED_RING_U := Vector2(0.9, 1.6)
 const BLEED_MIN_GOLD := 0.5
 ## Pièces au sol : plafond (perf, ≤ 15-40 GroundPickup) ; au-delà la plus ancienne rentre dans la bourse.
 const MAX_GROUND_COINS := 40
+
+## Combos (docs/Design_Combos.md §5.4) : la Rançon marque, la Poignée et la Faillite encaissent sur les marqués.
+const COIN_MARKED_COEF := 1.8 ## Poignée : coef par pièce sur un marqué (au lieu de COINS_COEF) ; levier : 1,6
+const COIN_MARKED_REFUND := 1.0 ## part du coût que rend une pièce qui retombe sur un marqué (au lieu de COINS_REFUND_FRAC) ; aucun or neuf
+const COIN_MARKED_NEAR_PX := 70.0 ## une pièce qui s'arrête à cette distance d'un marqué compte comme tombée sur lui
+const RUIN_MARKED_ADD := 1.0 ## Faillite : coef additif sur chaque monstre marqué
+const SWING_MARK_EXTEND_S := 0.5 ## Coup de coffre sur un marqué : la marque dure plus longtemps
+const MARK_MAX_S := 6.0 ## plafond de la marque restante
+const SWING_MARKED_GUARD_S := 0.6 ## coffre-bouclier quand le coup touche un marqué (au lieu de GUARD_S / RAM_GUARD_S)
 const PLAYER_RESOURCE_META := &"player_resource" ## marquage « ressource de joueur » (contrat 22/10/2026)
 
 # --- Tutoriel de la bourse ---------------------------------------------------------------------------
@@ -652,6 +661,8 @@ func on_projectile_rest(s: SpellData, at: Vector2, group: Dictionary) -> void:
 		group["coin"] = _salvo_coin_value
 	var v: float = group["coin"]
 	if v > 0.0:
+		if _marked_near(at): # le marqué rembourse : 100 % de la part du coût au lieu de 80 % (jamais d'or neuf)
+			v *= COIN_MARKED_REFUND / COINS_REFUND_FRAC
 		drop_coin(at, v, COIN_LIFE_S)
 
 
@@ -990,6 +1001,52 @@ func _on_player_damaged(_amount: float, _source: Node) -> void:
 func is_marked(e: Node) -> bool:
 	var m: Variant = marks.get(e.get_instance_id())
 	return m != null and float(m["t"]) > _clock
+
+
+## Combos : coef additif (Poignée +0,7 et Faillite +1,0 sur un marqué).
+func combo_coef_add(s: SpellData, enemy: Node) -> float:
+	if enemy == null or not is_marked(enemy):
+		return 0.0
+	if s.id == &"avare_poignee_de_pieces":
+		return COIN_MARKED_COEF - COINS_COEF
+	if s.id == &"avare_faillite":
+		return RUIN_MARKED_ADD
+	return 0.0
+
+
+## Coup de combo (chiffre d'accent, son lourd) : Poignée, Faillite ou Coup de coffre sur un marqué. Le Coup de coffre
+## prolonge la marque (+0,5 s, plafond 6 s) et rallonge le coffre-bouclier.
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	if enemy == null or not is_marked(enemy):
+		return false
+	if s.slot == 1:
+		var m: Dictionary = marks[enemy.get_instance_id()]
+		m["t"] = minf(float(m["t"]) + SWING_MARK_EXTEND_S, _clock + MARK_MAX_S)
+		guard_left = maxf(guard_left, SWING_MARKED_GUARD_S)
+		return true
+	return s.id == &"avare_poignee_de_pieces" or s.id == &"avare_faillite"
+
+
+## HUD : la Poignée et la Faillite pulsent tant qu'un monstre est marqué.
+func combo_ready(slot: int) -> bool:
+	if slot != 2 and slot != 4:
+		return false
+	for id in marks:
+		if float(marks[id]["t"]) > _clock:
+			return true
+	return false
+
+
+## Une marque vivante près de `at` (peu de marques : jamais une boucle sur les monstres).
+func _marked_near(at: Vector2) -> bool:
+	for id in marks:
+		var m: Dictionary = marks[id]
+		if float(m["t"]) <= _clock:
+			continue
+		var e: Node2D = (m["ref"] as WeakRef).get_ref() as Node2D
+		if e != null and e.global_position.distance_to(at) <= COIN_MARKED_NEAR_PX:
+			return true
+	return false
 
 
 func _on_enemy_killed(enemy: Node2D, pos: Vector2, tier: int, is_elite: bool) -> void:

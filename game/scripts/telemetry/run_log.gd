@@ -20,7 +20,9 @@ extends Node
 ##    fights [{id, cat (mini | etage | raid | final), stage, hp_max, t_spawn, t_hit, t_end, ttk, outcome (kill |
 ##             death | unfinished), dmg_dealt, dmg_taken, dmg_from_boss, shield_s, enrage_s, player_died}],
 ##    minutes [{m, dmg {sort: x, other: y}, casts {sort: n}, cd {sort: recharge moyenne s}, taken {source: x},
-##              kills [t1, t2, t3, élites], gold (or gagné cumulé), items (nb d'objets), lvl, d}],
+##              kills [t1, t2, t3, élites], gold (or gagné cumulé), items (nb d'objets), lvl, d,
+##              alive {avg, max} (monstres vivants, échantillonnés toutes les ALIVE_SAMPLE_S s),
+##              credits {avg, max} (crédits reportés du director : flux continu + vagues)}],
 ##    end {result (victory | death | abandon), cause, stage, minute, active_s, level, kills, gold_earned,
 ##         gold_spent, items {id: n}} | null (run en cours ou quittée sans reprise)}
 ## Sources de dégâts reçus : "boss:<id>", "t1", "t2_tir", "t2_saut", "t3" (+ "_elite"), "env:<script>", "inconnu".
@@ -53,6 +55,7 @@ var _gold_spent := 0.0
 var _last_source := "inconnu"
 var _pending_chest: Dictionary = {}
 var _last_write_t := -999.0 ## temps actif de la dernière écriture « en cours »
+const ALIVE_SAMPLE_S := 2.0 ## période d'échantillonnage des vivants et des crédits du director (temps de jeu actif)
 const SAVE_WRITE_EVERY_S := 60.0 ## écriture sur sauvegarde de run (Events.run_saved) au plus une fois par minute
 
 # Minute en cours (dictionnaires réutilisés : vidés, jamais réalloués)
@@ -63,6 +66,13 @@ var _m_casts := {}
 var _m_cd := {} ## id de sort -> somme des recharges lancées
 var _m_taken := {} ## clé de source (String) -> dégâts
 var _m_kills := PackedInt32Array([0, 0, 0, 0])
+var _m_alive_sum := 0.0
+var _m_alive_max := 0
+var _m_credit_sum := 0.0
+var _m_credit_max := 0.0
+var _m_samples := 0
+var _next_sample_s := 0.0
+var _director: Director = null
 
 
 func _ready() -> void:
@@ -303,6 +313,24 @@ func _process(_delta: float) -> void:
 	if recording and int(RunState.active_time_s / 60.0) != _m_idx:
 		_flush_minute()
 		_m_idx = int(RunState.active_time_s / 60.0)
+	if recording and RunState.active_time_s >= _next_sample_s:
+		_next_sample_s = RunState.active_time_s + ALIVE_SAMPLE_S
+		_sample_director()
+
+
+## Monstres vivants et crédits reportés du director (équilibrage : saturation de la zone de charge).
+func _sample_director() -> void:
+	if not is_instance_valid(_director):
+		_director = get_tree().get_first_node_in_group(&"director") as Director
+		if _director == null:
+			return
+	var alive := _director.active_count()
+	var cr: float = _director.credits + _director.wave_credits
+	_m_alive_sum += alive
+	_m_alive_max = maxi(_m_alive_max, alive)
+	_m_credit_sum += cr
+	_m_credit_max = maxf(_m_credit_max, cr)
+	_m_samples += 1
 
 
 func _clear_minute() -> void:
@@ -312,6 +340,11 @@ func _clear_minute() -> void:
 	_m_cd.clear()
 	_m_taken.clear()
 	_m_kills.fill(0)
+	_m_alive_sum = 0.0
+	_m_alive_max = 0
+	_m_credit_sum = 0.0
+	_m_credit_max = 0.0
+	_m_samples = 0
 
 
 func _minute_dict() -> Dictionary:
@@ -331,7 +364,9 @@ func _minute_dict() -> Dictionary:
 		taken[k] = roundi(_m_taken[k])
 	return {"m": _m_idx, "dmg": dmg, "casts": casts, "cd": cd, "taken": taken, "kills": Array(_m_kills),
 		"gold": roundi(_gold_earned), "items": _item_count(), "lvl": RunState.level,
-		"d": snappedf(RunState.difficulty(), 0.01)}
+		"d": snappedf(RunState.difficulty(), 0.01),
+		"alive": {"avg": snappedf(_m_alive_sum / maxf(_m_samples, 1.0), 0.1), "max": _m_alive_max},
+		"credits": {"avg": snappedf(_m_credit_sum / maxf(_m_samples, 1.0), 0.1), "max": snappedf(_m_credit_max, 0.1)}}
 
 
 func _flush_minute() -> void:

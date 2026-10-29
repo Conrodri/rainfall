@@ -49,6 +49,9 @@ var mass_frac := 0.0 ## part des PV max (non divisés) retirée à Bourbe tant q
 var fight_left := 0.0
 var target: Node2D = null
 var hits := 0 ## coups de contact portés (tests)
+var fed := false ## nourrie par une Gifle (docs/Design_Combos.md §5.5) : son prochain coup de contact est multiplié
+var feed_cd_left := 0.0 ## s avant de pouvoir être nourrie de nouveau
+var flow_left := 0.0 ## s restantes de vitesse de traînée (Coulée : BourbeKit.FLOW_TRAIL_MOTTE_SPEED_U)
 var _fly_from := Vector2.ZERO
 var _fly_to := Vector2.ZERO
 var _fly_t := 0.0
@@ -77,7 +80,22 @@ func _u() -> float:
 
 
 func _speed_px() -> float:
-	return speed_u * _u()
+	return (maxf(speed_u, BourbeKit.FLOW_TRAIL_MOTTE_SPEED_U) if flow_left > 0.0 else speed_u) * _u()
+
+
+## Gifle transmise : soin (fraction des PV max), prochain coup de contact multiplié, flambée du follet et de l'anneau.
+func feed(heal_frac: float, cd_s: float) -> void:
+	if state == State.GONE or state == State.FLY:
+		return
+	hp = minf(hp + heal_frac * max_hp, max_hp)
+	fed = true
+	feed_cd_left = cd_s
+	if _sprite != null:
+		_sprite.modulate = Color(1.9, 2.3, 1.9) # follet qui flambe, retombe en 0,4 s
+		create_tween().tween_property(_sprite, "modulate", Color.WHITE, 0.4)
+	if _ring != null:
+		_ring.modulate = Color(1.8, 2.2, 1.8)
+	Audio.play(&"pickup.coin", global_position, -10.0, 1.4)
 
 
 # --- Lancement ---------------------------------------------------------------------------------
@@ -287,6 +305,8 @@ func step(delta: float) -> void:
 		die()
 		return
 	_moving = false
+	feed_cd_left = maxf(feed_cd_left - delta, 0.0)
+	flow_left = maxf(flow_left - delta, 0.0)
 	match state:
 		State.FLY:
 			_step_fly(delta)
@@ -349,7 +369,13 @@ func _step_fight(delta: float) -> void:
 			if to.length_squared() > 1.0:
 				facing = to.normalized()
 			hits += 1
-			caster.deal_damage(target, contact_spell, {"source_pos": global_position})
+			var cs := contact_spell
+			if fed and kit != null and is_instance_valid(kit) and kit.has_method(&"fed_contact_spell"):
+				cs = kit.fed_contact_spell(self) # ×3 une fois (Gifle transmise)
+				fed = false
+				if _ring != null:
+					_ring.modulate = Color.WHITE
+			caster.deal_damage(target, cs, {"source_pos": global_position})
 	else: # sans cible : reste au pied de Bourbe
 		var home := bourbe.global_position - global_position
 		var keep := BourbeKit.MOTTE_FOLLOW_U * u

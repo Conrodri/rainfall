@@ -72,7 +72,17 @@ const FLIGHT_COEF := 1.2 ## retour joueur 26/10 : ultime plus impactant (1,0 -> 
 ## Équilibrage (simulateur du 22/10/2026) : cible unique −36 % et dégâts subis ×1,8-2,4 vs Ardent à l'origine.
 const ARC_COEF := 0.8 ## demi-lune 0,6 -> 0,8
 const FAN_COEF := 1.35 ## Éventail 1,2 -> 1,6 -> 1,8 -> 1,35 par couteau (équilibrage 23/10 : 1,8 -> 1,35 ; sous la plage P3 1,7-1,9 : les 5 couteaux touchent tous un boss)
-const DECOY_COEF := 2.4 ## retour joueur 26/10 : ultime plus fort (1,8 -> 2,6) ; avant : ## Doublures 2,5 -> 3,0 -> 2,0 -> 1,8 (équilibrage 23/10 : 2,0 -> 1,8, bas de la plage P3 : sans effet mesurable sur le DPS boss, la toupie domine)
+## Combo « L'étoile armée » (docs/Design_Combos.md §5.1) : Doublures -> Éventail (les couteaux chargent les doublures
+## traversées) -> Toupie (les chargées expédiées font FLIGHT_CHARGED_COEF en vol et DECOY_CHARGE_ADD de plus à l'explosion).
+## Compensation de base : DECOY_COEF 2,4 -> 2,2 (sans combo −8 %, avec les 3 charges ≈ +4 %).
+const DECOY_CHARGE_ADD := 0.7 ## coef ajouté à l'explosion d'une doublure chargée
+const FLIGHT_CHARGED_COEF := 1.6 ## coef en vol d'une doublure chargée (1,2 sinon)
+const CHARGE_MAX_PER_SALVE := 3 ## doublures chargées par salve d'Éventail (2-3 selon la géométrie)
+const FAN_WATCH_S := 0.7 ## durée de surveillance des couteaux après le lancer (portée 7 u à 14 u/s = 0,5 s)
+const KNIFE_CHARGE_PAD_U := 0.2 ## rayon du couteau : marge de passage sur une doublure (une salve de 5 couteaux sur 60° charge 3 doublures)
+## Esquive Levée : atterrir à cette distance de doublures en attente les détone tout de suite (aucun dégât en plus).
+const LIFT_DETONATE_U := 2.4
+const DECOY_COEF := 2.2 ## 2,4 -> 2,2 (combo ci-dessus). Retour joueur 26/10 : ultime plus fort (1,8 -> 2,6) ; avant : ## Doublures 2,5 -> 3,0 -> 2,0 -> 1,8 (équilibrage 23/10 : 2,0 -> 1,8, bas de la plage P3 : sans effet mesurable sur le DPS boss, la toupie domine)
 ## Garde du Montreur : après chaque demi-lune, les fils tirent le pantin hors des coups (−30 % de dégâts subis
 ## pendant GUARD_S). La mêlée garde son risque hors attaque (déplacement, vertige).
 ## Pointe de la toupie (retour joueur 26/10 : manque de monocible) : à chaque tick, un coup supplémentaire frappe l'ennemi
@@ -148,6 +158,8 @@ var _pir_elapsed := 0.0
 var _pir_struck := false
 var _pir_spell: SpellData = null
 var pendulums: Array = [] ## RictusPendulum en vol
+var _fan_watch := 0.0 ## s restantes de surveillance des couteaux de l'Éventail (charge des doublures)
+var _salve_charged := 0 ## doublures déjà chargées par la salve en cours
 
 
 # --- Données -------------------------------------------------------------------------------------
@@ -442,6 +454,9 @@ func decoys_pending() -> bool:
 func on_cast(s: SpellData) -> void:
 	if s.slot == 1 and s.id != V_MAIN: # Main du Montreur : garde posée par _cast_main (conditionnelle)
 		guard_left = GUARD_S
+	if s.behavior == SpellData.Behavior.FAN and not Decoy.live.is_empty(): # Éventail : les couteaux chargent
+		_fan_watch = FAN_WATCH_S
+		_salve_charged = 0
 
 
 ## Hook Player.take_damage : garde du Montreur juste après une demi-lune.
@@ -487,7 +502,81 @@ func tick(delta: float) -> void:
 		_spin_step(delta)
 	if pirouette_left > 0.0:
 		_pirouette_step(delta)
+	if _fan_watch > 0.0:
+		_fan_watch -= delta
+		_charge_by_knives()
 	_update_rig()
+
+
+# --- Combo « L'étoile armée » (docs/Design_Combos.md §5.1) ---------------------------------------------------
+
+## Un couteau de l'Éventail qui passe sur une doublure en attente la charge (une charge par doublure, au plus
+## CHARGE_MAX_PER_SALVE par salve). Appelé seulement pendant FAN_WATCH_S après le lancer, sur ≤ 6 doublures.
+func _charge_by_knives() -> void:
+	var c := _caster()
+	if c == null or _salve_charged >= CHARGE_MAX_PER_SALVE or Decoy.live.is_empty():
+		return
+	var host := c.effects_parent()
+	if host == null:
+		return
+	var reach := (Decoy.RADIUS_U + KNIFE_CHARGE_PAD_U) * Balance.UNIT_PX
+	for k in host.get_children():
+		if not (k is Node2D) or k.get(&"active") != true:
+			continue
+		var ks: Variant = k.get(&"spell")
+		if not (ks is SpellData) or (ks as SpellData).behavior != SpellData.Behavior.FAN:
+			continue
+		for d in Decoy.live:
+			if _salve_charged >= CHARGE_MAX_PER_SALVE:
+				return
+			if is_instance_valid(d) and not d.exploded and not d.flying and not d.airborne and d.charged <= 0.0 \
+					and (k as Node2D).global_position.distance_to(d.global_position) <= reach:
+				d.charge_explode_add = DECOY_CHARGE_ADD
+				d.charge_flight_coef = FLIGHT_CHARGED_COEF
+				if d.charge():
+					_salve_charged += 1
+					Audio.play(&"pickup.coin", d.global_position, -10.0, 2.0) # grelot de la charge
+					LightRig.flash(d.global_position, &"spell_steel", 0.15)
+
+
+## Doublures chargées encore en attente (fenêtre de la Toupie).
+func charged_decoys() -> int:
+	var n := 0
+	for d in Decoy.live:
+		if is_instance_valid(d) and d.charged > 0.0 and not d.exploded and not d.pushed:
+			n += 1
+	return n
+
+
+## SpellCaster.deal_damage : coup de combo = explosion / vol d'une doublure chargée (méta `combo` du sort).
+func combo_hit(s: SpellData, _enemy: Node) -> bool:
+	return s != null and s.has_meta(&"combo")
+
+
+## Fenêtre de combo du slot (HUD, sondé par SpellCaster toutes les 0,1 s) : l'Éventail pulse tant qu'une doublure
+## attend sa charge, la Toupie tant qu'une doublure chargée attend d'être expédiée.
+func combo_ready(slot: int) -> bool:
+	if Decoy.live.is_empty():
+		return false
+	if slot == 3:
+		return charged_decoys() > 0
+	if slot == 2:
+		for d in Decoy.live:
+			if is_instance_valid(d) and not d.exploded and not d.pushed and d.charged <= 0.0:
+				return true
+	return false
+
+
+## Levée (DodgeMove, fin de l'esquive) : atterrir près de doublures en attente les détone tout de suite. Le joueur choisit
+## le moment ; l'invulnérabilité de la levée couvre l'explosion. Aucun dégât direct de l'esquive (règle 5).
+func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
+	if player == null or Decoy.live.is_empty():
+		return
+	var r := LIFT_DETONATE_U * Balance.UNIT_PX
+	for d in Decoy.live.duplicate():
+		if is_instance_valid(d) and not d.exploded and not d.flying and not d.airborne \
+				and d.global_position.distance_to(player.global_position) <= r:
+			d.explode(d.explode_spell)
 
 
 func _start_spin(s: SpellData) -> bool:

@@ -129,6 +129,14 @@ const BOSS_FLOOR := 2
 const GUARD_TAKEN_MULT := 0.55
 const GUARD_S := 0.6
 
+# --- Combos (docs/Design_Combos.md §5.7) ----------------------------------------------------------------
+const IAI_OPEN_S := 1.5 ## après un Iaï, la lame est déjà dégainée : fenêtre de la Fauche-lune au rabais
+const COST_CRESCENT_AFTER_IAI := 8.0 ## aiguisage retiré par une Fauche-lune (ou un Fendoir) dans la fenêtre (au lieu de 15)
+const IAI_OPEN_KNOCK_U := 1.4 ## recul de la Fauche-lune dans la fenêtre (au lieu de 1,0 u)
+const PARRY_SHARP := 2.0 ## aiguisage rendu par un coup encaissé sous garde
+const PARRY_CD_S := 0.3 ## une parade au plus par intervalle
+const COMBO_HIT_S := 0.5 ## après le lancer, les coups de la Fauche comptent comme coups de combo
+
 # --- Roulade : Iaï ------------------------------------------------------------------------------------
 const IAI_COEF := 1.5
 const IAI_RADIUS_U := 0.9
@@ -175,6 +183,9 @@ var cleaves := 0 ## Fendoirs lancés (tests)
 var _guard_mult := GUARD_TAKEN_MULT
 var _iai_hit := {} ## instance_id -> true (une fois par roulade)
 var _iai_spell: SpellData = null
+var _iai_open_left := 0.0 ## fenêtre « Iaï -> Fauche-lune » (s restantes)
+var _combo_hit_left := 0.0 ## la Fauche-lune lancée dans la fenêtre résout encore ses coups
+var _parry_cd := 0.0
 var _visual: AnimatedSprite2D = null
 var _twin_blade: Node2D = null
 
@@ -323,6 +334,7 @@ func setup(p: CharacterBody2D) -> void:
 	Events.floor_started.connect(_on_floor_started)
 	Events.player_died.connect(_on_player_died)
 	Events.boss_killed.connect(_on_boss_killed)
+	Events.player_damaged.connect(_on_player_damaged)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 
@@ -334,6 +346,8 @@ func _exit_tree() -> void:
 		Events.player_died.disconnect(_on_player_died)
 	if Events.boss_killed.is_connected(_on_boss_killed):
 		Events.boss_killed.disconnect(_on_boss_killed)
+	if Events.player_damaged.is_connected(_on_player_damaged):
+		Events.player_damaged.disconnect(_on_player_damaged)
 	_pending.clear()
 	_delayed.clear()
 
@@ -420,7 +434,7 @@ func slot_affordable(slot: int) -> bool:
 func slot_cost_info(slot: int) -> Dictionary:
 	match slot:
 		2:
-			return {"cost": "%d %% d'aiguisage" % int(COST_CRESCENT)}
+			return {"cost": "%d %% d'aiguisage" % int(COST_CRESCENT_AFTER_IAI if _iai_open_left > 0.0 else COST_CRESCENT)}
 		4:
 			return {"cost": "aiguisage ≥ %d %%" % int(SHARP_ULT_MIN), "lack": "lame émoussée (%d %% requis)" % int(SHARP_ULT_MIN)}
 	return {}
@@ -479,6 +493,7 @@ func on_dodge_start(_dir: Vector2) -> void:
 	_iai_active = true
 	_iai_paid = false
 	_iai_hit.clear()
+	_iai_open_left = IAI_OPEN_S
 	_iai_from = player.global_position
 
 
@@ -712,12 +727,40 @@ func _thrust(dir: Vector2) -> void:
 
 
 func _crescent(dir: Vector2) -> void:
-	var s := _strike_spell(&"fauche_lune", CRESCENT_COEF, CRESCENT_PROC, CRESCENT_KNOCK_U, CRESCENT_RADIUS_U)
+	var open := _iai_open_left > 0.0
+	var s := _strike_spell(&"fauche_lune", CRESCENT_COEF, CRESCENT_PROC, IAI_OPEN_KNOCK_U if open else CRESCENT_KNOCK_U, CRESCENT_RADIUS_U)
 	s.spread_deg = CRESCENT_SPREAD_DEG
 	_with_vfx(s, CRESCENT_FRAMES)
 	if _count_in_arc(dir, CRESCENT_RADIUS_U * Balance.UNIT_PX * _zone_k(), deg_to_rad(CRESCENT_SPREAD_DEG) * 0.5) >= CRESCENT_BIG_HITS:
 		RunState.add_counter(COUNTER_CRESCENT_BIG) # déblocage du Fendoir
-	_swing(s, COST_CRESCENT, player.global_position, dir)
+	_swing(s, _crescent_cost(), player.global_position, dir)
+
+
+## Coût de la Fauche-lune / du Fendoir : réduit dans la fenêtre de l'Iaï, qui se referme au lancer.
+func _crescent_cost() -> float:
+	if _iai_open_left <= 0.0:
+		return COST_CRESCENT
+	_iai_open_left = 0.0
+	_combo_hit_left = COMBO_HIT_S
+	return COST_CRESCENT_AFTER_IAI
+
+
+## HUD : le bouton de la Fauche-lune pulse tant que la fenêtre de l'Iaï est ouverte.
+func combo_ready(slot: int) -> bool:
+	return slot == 2 and _iai_open_left > 0.0
+
+
+## Coup de combo (chiffre d'accent, son lourd) : la Fauche-lune lancée dans la fenêtre.
+func combo_hit(s: SpellData, _enemy: Node) -> bool:
+	return _combo_hit_left > 0.0 and (s.id == &"fauche_lune" or s.id == V_CLEAVE)
+
+
+## Garde qui rend : un coup encaissé sous garde (ou sous les Lames jumelles) redonne un peu d'aiguisage.
+func _on_player_damaged(_amount: float, _source: Node) -> void:
+	if _parry_cd > 0.0 or player == null or player.dead or not (guard_left > 0.0 or is_twin()):
+		return
+	_parry_cd = PARRY_CD_S
+	sharpness = minf(sharpness + PARRY_SHARP, SHARP_MAX)
 
 
 ## Monstres dans un secteur (déblocage du Fendoir : 12 touchés d'une seule Fauche-lune).
@@ -754,7 +797,7 @@ func _cleave(dir: Vector2) -> void:
 	swings += 1
 	guard_left = GUARD_S
 	_guard_mult = GUARD_TAKEN_MULT
-	consume(COST_CRESCENT)
+	consume(_crescent_cost())
 	_cleave_line(hit, player.global_position, dir)
 	LightRig.flash(player.global_position, LIGHT_SPELL, 0.25 * damage_mult() + 0.1)
 	player.move_and_collide(dir * CLEAVE_STEP_U * Balance.UNIT_PX)
@@ -893,6 +936,9 @@ func tick(delta: float) -> void:
 		return
 	sharpen_left = maxf(sharpen_left - delta, 0.0)
 	guard_left = maxf(guard_left - delta, 0.0)
+	_iai_open_left = maxf(_iai_open_left - delta, 0.0)
+	_combo_hit_left = maxf(_combo_hit_left - delta, 0.0)
+	_parry_cd = maxf(_parry_cd - delta, 0.0)
 	if twin_left > 0.0:
 		twin_left = maxf(twin_left - delta, 0.0)
 	if temper_left > 0.0:
@@ -915,6 +961,7 @@ func tick(delta: float) -> void:
 			_iai_step()
 		else:
 			_iai_active = false
+			_iai_open_left = IAI_OPEN_S # la fenêtre court depuis la fin de la roulade
 			_iai_trail(_iai_from, player.global_position)
 	_update_look()
 
@@ -950,6 +997,8 @@ func clear_transients() -> void:
 	_delayed.clear()
 	_iai_active = false
 	_iai_hit.clear()
+	_iai_open_left = 0.0
+	_combo_hit_left = 0.0
 	_end_edge()
 
 

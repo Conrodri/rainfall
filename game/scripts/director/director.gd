@@ -43,9 +43,6 @@ const SEP_PHASES := 4 ## séparation recalculée pour 1/4 des monstres par frame
 const PACK_RADIUS_PX := 3.0 * 64.0 ## « 3 m » = 3 u
 const PACK_MIN_ALLIES := 5
 const PACK_SLICES := 15
-const T3_RAMP_D := 1.0 ## T3 atteint son poids plein 1 point de D après son apparition
-const T3_SHARE := 0.4 ## p3 = 0,4 × p2 à pleine rampe
-const LEAPER_SHARE := 0.4 ## part des tier 2 qui sont des bondisseurs (le reste : tireurs)
 
 @export var spawning_enabled := true
 @export var enemy_pool_size := Balance.MAX_ENEMIES
@@ -224,7 +221,7 @@ func set_zone(id: int, center: Vector2, radius: float, active: bool, kind: Strin
 
 
 ## Fait apparaître un monstre immédiatement (hors budget). Utilisé par le director et les tests.
-## `variant` (tier 2) : Enemy.VARIANT_SHOOTER / VARIANT_LEAPER, -1 = tirage (LEAPER_SHARE).
+## `variant` (tier 2) : Enemy.VARIANT_SHOOTER / VARIANT_LEAPER, -1 = tirage (Balance.LEAPER_SHARE).
 func spawn_enemy(tier: int, pos: Vector2, elite: bool = false, affixes: Array[StringName] = [], variant: int = -1) -> Enemy:
 	if _free.is_empty():
 		return null
@@ -232,7 +229,7 @@ func spawn_enemy(tier: int, pos: Vector2, elite: bool = false, affixes: Array[St
 	if elite and affixes.is_empty():
 		affixes = _roll_affixes(D)
 	if variant < 0:
-		variant = Enemy.VARIANT_LEAPER if tier == 2 and _rng.randf() < LEAPER_SHARE else Enemy.VARIANT_SHOOTER
+		variant = Enemy.VARIANT_LEAPER if tier == 2 and _rng.randf() < Balance.LEAPER_SHARE else Enemy.VARIANT_SHOOTER
 	var e: Enemy = _free.pop_back()
 	spawned_total += 1
 	if nav != null and nav.is_enclosed(pos): # invocation, cocon… tombé dans une poche fermée : rabattu dehors
@@ -482,7 +479,7 @@ func _launch_wave(ppos: Vector2, D: float, alive_cap: int) -> bool:
 		return false
 	var variant := -1 # tier 2 : une seule variante pour toute la vague (tireurs ou bondisseurs)
 	if tier == 2:
-		variant = Enemy.VARIANT_LEAPER if _rng.randf() < LEAPER_SHARE else Enemy.VARIANT_SHOOTER
+		variant = Enemy.VARIANT_LEAPER if _rng.randf() < Balance.LEAPER_SHARE else Enemy.VARIANT_SHOOTER
 	var same := _rng.randf() < Balance.WAVE_SAME_TYPE_CHANCE
 	var bank := wave_credits
 	var members: Array[Dictionary] = []
@@ -596,7 +593,7 @@ func _pick_tier(D: float) -> int:
 	var p2 := 0.0
 	var p3 := 0.0
 	if D >= Balance.TIER_MIN_D[3]:
-		var r := clampf((D - Balance.TIER_MIN_D[3]) / T3_RAMP_D, 0.0, 1.0) * T3_SHARE
+		var r := clampf((D - Balance.TIER_MIN_D[3]) / Balance.T3_RAMP_D, 0.0, 1.0) * Balance.T3_SHARE
 		p2 = (mean - 1.0) / ((Balance.TIER_COST[2] - 1.0) + (Balance.TIER_COST[3] - 1.0) * r)
 		p3 = p2 * r
 	elif D >= Balance.TIER_MIN_D[2]:

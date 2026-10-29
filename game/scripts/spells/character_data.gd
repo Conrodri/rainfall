@@ -145,7 +145,7 @@ static func apply_loadout(cd: CharacterData, cid: StringName, spell_loadout: Dic
 		cd.loadout[slot] = vid
 		# Personnage sans kit (Ardent) : une variante peut porter son nœud de kit en méta `kit_script`.
 		var ks: Variant = sd.get_meta(&"kit_script") if sd.has_meta(&"kit_script") else null
-		if cd.kit_script == null and ks is Script:
+		if (cd.kit_script == null or cd.kit_script == ArdentBaseKit) and ks is Script:
 			cd.kit_script = ks
 
 

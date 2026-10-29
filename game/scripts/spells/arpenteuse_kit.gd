@@ -72,7 +72,7 @@ const PIQUET_CD := 8.0
 const PIQUET_RANGE_U := 6.0
 const PIQUET_DEFAULT_U := 3.0 ## sans visée ni cible : devant elle
 const PEG_LIFE_S := 5.0
-const PEG_IMMUNITY_S := 0.65 ## 26/10/2026 : 0,5 -> 0,65 (cible élite 1,30 de l'Arpenteuse, docs/Equilibrage_Personnages.md §2.4) ; ≈ 1,5 coef/s par cible
+const PEG_IMMUNITY_S := 0.7 ## 29/10/2026 : 0,65 -> 0,7 (décision du joueur, élite 1,37 -> cible 1,30, docs/Design_Combos.md §7.3) ; ≈ 1,4 coef/s par cible
 const PEG_PROC := 0.5
 const PEG_KNOCK_U := 0.3
 const PEG_SNAP_U := 10.0 ## plus loin, le piquet est arraché
@@ -133,6 +133,13 @@ const CERCEAU_TICK_S := 0.5
 const CERCEAU_PROC := 0.4
 const CERCEAU_KNOCK_U := 0.6
 const CERCEAU_POINTS := 40
+## Combos (docs/Design_Combos.md §2, 29/10/2026) : la chaîne et ses lignes sont l'état ; le Halage lit les emprisonnés (Tendeur
+## juste avant) et le segment tendu (Trait juste avant) ; un monstre « croisé » (chaîne ET ligne du piquet) fait rougir la chaîne.
+const HALAGE_HELD_ADD := 0.5 ## Tendeur -> Halage : +0,5 coef sur les emprisonnés (plage sûre 0,3-0,7)
+const HALAGE_TAUT_ADD := 0.5 ## Trait -> Halage : +0,5 coef sur la bande du segment tendu (plage 0,3-0,6)
+const CROSS_FLASH_ENERGY := 6.0
+const CROSS_MIN_LINES_HITS := 3 ## combo_ready(Tendeur) : un croisé, ou au moins 3 monstres sur les lignes
+const COMBO_PROBE_S := 0.25 ## sondage des fenêtres (jamais une boucle par monstre et par image)
 const LOOP_AUTO_MIN_HITS := 2 ## auto-cast de la Boucle / du Nœud : attend au moins 2 monstres pris (1 si élite ou boss)
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 
@@ -156,6 +163,11 @@ var _peg_hits := {} ## instance_id -> temps du dernier coup
 var _time := 0.0
 # Variantes
 var _lestee := false ## sort 1 = Chaîne lestée
+var _taut_seg := PackedVector2Array() ## segment du Trait (départ -> arrivée) : la bande tendue du Halage
+var _cross_t := 0.0 ## flash « croisé » restant
+var _probe_combo_t := -10.0
+var _ready2 := false
+var _ready4 := false
 var taut_left := 0.0 ## Trait tendu : chaîne tendue après la roulade (ralentissement TAUT_SLOW_PCT)
 var jal_stage := 0 ## Jalons : 0 rien, 1 piquet A lancé (fenêtre de 3 s pour B), 2 piquet B lancé
 var jal_a := Vector2.ZERO
@@ -391,6 +403,67 @@ func blocks_slot(slot: int) -> bool:
 	return slot == 1
 
 
+# --- Combos (docs/Design_Combos.md §2) ----------------------------------------------------------------
+
+## Halage de base (sort 2 hors Nœud) : bonus de coef sur les emprisonnés (AR-2) et sur la bande du segment tendu (AR-3).
+func _halage_bonus(s: SpellData, enemy: Node) -> float:
+	if s.slot != 2 or _spell_id(2) == V_NOEUD or not is_instance_valid(enemy):
+		return 0.0
+	var add := 0.0
+	if enemy.has_method(&"is_imprisoned") and enemy.is_imprisoned():
+		add += HALAGE_HELD_ADD
+	if taut_left > 0.0 and _taut_seg.size() >= 2 and enemy is Node2D \
+			and dist_to_polyline((enemy as Node2D).global_position, _taut_seg) <= BOUCLE_BAND_U * Balance.UNIT_PX + _radius_of(enemy):
+		add += HALAGE_TAUT_ADD
+	return add
+
+
+## SpellCaster.compute_damage : coef additif de combo.
+func combo_coef_add(s: SpellData, enemy: Node) -> float:
+	return _halage_bonus(s, enemy)
+
+
+## SpellCaster.deal_damage : coup de combo (chiffre en accent, son lourd) = Halage préparé, ou Tendeur / Piquet sur un croisé.
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	if s.slot == 2:
+		return _halage_bonus(s, enemy) > 0.0
+	if s.slot == 4 or s.slot == 3:
+		return is_instance_valid(enemy) and enemy is Node2D and _is_crossed(enemy as Node2D)
+	return false
+
+
+## Monstre touché par la chaîne ET par une ligne (piquet, Jalons) : la double chaîne.
+func _is_crossed(e: Node2D) -> bool:
+	var reach := CHAIN_HALF_WIDTH_U * Balance.UNIT_PX + _radius_of(e)
+	var on_chain := dist_to_polyline(e.global_position, chain_points()) <= reach
+	if not on_chain:
+		return false
+	for seg in [peg_segment(), jal_segment()]:
+		if seg.size() >= 2 and dist_to_polyline(e.global_position, seg) <= reach:
+			return true
+	return false
+
+
+## Fenêtre de combo du slot (HUD : le bouton pulse). Halage : un Tendeur vient d'emprisonner ou le Trait tend la chaîne ;
+## Tendeur : un croisé ou >= 3 monstres sur les lignes. Sondé toutes les COMBO_PROBE_S.
+func combo_ready(slot: int) -> bool:
+	if player == null or not is_inside_tree():
+		return false
+	if _time - _probe_combo_t >= COMBO_PROBE_S:
+		_probe_combo_t = _time
+		_ready2 = taut_left > 0.0
+		_ready4 = false
+		var lines := _lines()
+		var on := _enemies_on_lines(lines, CHAIN_HALF_WIDTH_U * Balance.UNIT_PX)
+		for e in on:
+			if not _ready2 and e.has_method(&"is_imprisoned") and e.is_imprisoned():
+				_ready2 = true
+			if not _ready4 and _is_crossed(e):
+				_ready4 = true
+		_ready4 = _ready4 or on.size() >= CROSS_MIN_LINES_HITS
+	return _ready2 if slot == 2 else (_ready4 if slot == 4 else false)
+
+
 func can_dodge() -> bool:
 	return true
 
@@ -421,8 +494,9 @@ func on_dodge_start(_dir: Vector2) -> void:
 
 ## Trait tendu : la chaîne posée par la roulade reste tendue TAUT_S (ralentissement TAUT_SLOW_PCT au lieu de
 ## CHAIN_SLOW_PCT, sans dégât de plus).
-func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
+func on_dodge_end(from: Vector2, to: Vector2) -> void:
 	taut_left = TAUT_S
+	_taut_seg = PackedVector2Array([from, to])
 
 
 func dodge_label() -> String:
@@ -669,6 +743,7 @@ func tick(delta: float) -> void:
 			if ring_left <= 0.0: # Cerceau : la chaîne a quitté le sol, l'anneau tient lieu de sort 1
 				_chain_tick(s1)
 	_heat_t = maxf(_heat_t - delta, 0.0)
+	_cross_t = maxf(_cross_t - delta, 0.0)
 	if peg_left > 0.0:
 		_peg_step(delta)
 	_jalons_step(delta)
@@ -684,8 +759,12 @@ func _chain_tick(s: SpellData) -> int:
 	if s == null or _caster() == null:
 		return 0
 	var hit := 0
+	var lines_other := peg_left > 0.0 or jal_line
 	for e in _enemies_on(chain_points(), _half_w_u() * Balance.UNIT_PX):
-		_caster().deal_damage(e, s, {})
+		var crossed := lines_other and e is Node2D and _is_crossed(e as Node2D)
+		_caster().deal_damage(e, s, {"combo": true} if crossed else {})
+		if crossed:
+			_cross_t = HEAT_FLASH_S
 		if is_instance_valid(e) and e.has_method(&"apply_status"):
 			e.apply_status(&"slow", {"pct": _slow_pct(), "duration": CHAIN_SLOW_S})
 		hit += 1
@@ -773,7 +852,8 @@ func _do_boucle(s: SpellData) -> void:
 		var c := _closest_on_lines(lines, pos)
 		_caster().deal_damage(e, s, {})
 		hits += 1
-		if is_instance_valid(e) and e.has_method(&"push") and not e.is_in_group(&"bosses"):
+		var held: bool = e.has_method(&"is_imprisoned") and e.is_imprisoned() # tenu par le Tendeur : rien à attirer
+		if is_instance_valid(e) and e.has_method(&"push") and not e.is_in_group(&"bosses") and not (held and _spell_id(2) != V_NOEUD):
 			e.push((c - pos).limit_length(BOUCLE_PULL_U * Balance.UNIT_PX))
 	last_loop = {"hits": hits, "length_px": lines_length()}
 	RunState.add_counter("arpenteuse.boucle_hits", float(hits)) # déblocage du Nœud
@@ -887,7 +967,10 @@ func _peg_step(delta: float) -> void:
 			continue
 		_peg_hits[id] = _time
 		var c := Geometry2D.get_closest_point_to_segment(e.global_position, peg_pos, player.global_position)
-		_caster().deal_damage(e, s, {"source_pos": c}) # balayé : écarté de la ligne
+		var crossed := e is Node2D and dist_to_polyline((e as Node2D).global_position, chain_points()) <= CHAIN_HALF_WIDTH_U * Balance.UNIT_PX + _radius_of(e)
+		_caster().deal_damage(e, s, {"source_pos": c, "combo": true} if crossed else {"source_pos": c}) # balayé : écarté de la ligne
+		if crossed:
+			_cross_t = HEAT_FLASH_S
 		RunState.add_counter("arpenteuse.piquet_hits") # déblocage des Jalons
 		_heat_t = HEAT_FLASH_S
 
@@ -1403,6 +1486,8 @@ func _update_visuals(delta: float) -> void:
 	var tile_px := CHAIN_VIS_WIDTH_U * Balance.UNIT_PX * ArpenteuseChainLine.CELL_ASPECT
 	line.u_offset = fposmod((_tail_s - _m) / tile_px, 1.0)
 	line.energy = lerpf(HEAT_ENERGY, HEAT_FLASH_ENERGY, _heat_t / HEAT_FLASH_S)
+	if _cross_t > 0.0 and Quality.flashes_level > 0: # monstre croisé (double chaîne) : la chaîne rougit plus fort
+		line.energy = lerpf(line.energy, CROSS_FLASH_ENERGY, _cross_t / HEAT_FLASH_S)
 	if snap_left > 0.0:
 		line.energy = HEAT_FLASH_ENERGY * 1.4
 	if ring_left > 0.0:

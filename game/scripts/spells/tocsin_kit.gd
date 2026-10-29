@@ -56,7 +56,7 @@ const FURNACE_KICK := 0.6 ## bouffée à chaque rivet
 const FURNACE_KICK_S := 0.12
 
 # --- Sort 2 : Bras-pilier (23/10/2026, remplace le Bras-grappin) -------------------------------------
-const PILLAR_COEF := 0.75 ## par tick de décharge, à tout monstre de la zone
+const PILLAR_COEF := 0.7 ## par tick de décharge, à tout monstre de la zone (combos 29/10 : 0,75 -> 0,7)
 const PILLAR_CD_S := 8.0 ## recharge par bras (2 charges)
 const PILLAR_RANGE_U := 7.0 ## portée du lancer
 const PILLAR_RANGE_HEADLESS_U := 4.0
@@ -70,7 +70,7 @@ const PILLAR_PROC := 0.25
 const PILLAR_SLOW_PCT := 0.25 ## ralentissement rafraîchi à chaque tick (décharge qui engourdit)
 
 # --- Sort 3 : Coup de tocsin (23/10/2026, remplace les Coups de botte) ----------------------------------
-const TOLL_COEF := 2.5
+const TOLL_COEF := 2.3 ## combos 29/10 : 2,5 -> 2,3 (compensation du Coup qui fait sonner)
 const TOLL_CD_S := 7.0
 const TOLL_RADIUS_U := 3.0 ## onde autour de Tocsin (zone_size_add compte)
 const TOLL_PUSH_U := 2.5 ## × masse (comme la poussée de la Tête-cloche, sans effet sur les boss)
@@ -78,7 +78,7 @@ const TOLL_PROC := 1.0
 const TOLL_SHAKE_PX := 6.0
 
 # --- Sort 4 : Tête-cloche -----------------------------------------------------------------------------
-const HEAD_COEF := 10.0 ## équilibrage 23/10 : 12 -> 10 (22/10 : 10 -> 12)
+const HEAD_COEF := 9.0 ## équilibrage 23/10 : 12 -> 10 (22/10 : 10 -> 12) ; combos 29/10 : 10 -> 9 (compensation de la cloche sur le pilier)
 const HEAD_CD_S := 22.0
 const HEAD_RANGE_U := 6.0
 const HEAD_RADIUS_U := 4.0
@@ -88,6 +88,18 @@ const HEAD_LOB_HEIGHT_U := 2.2
 const HEAD_PUSH_EXTRA_U := 1.4 ## + le recul du coup (0,6 u) = 2 u × masse
 const HEAD_SHAKE_PX := 10.0
 const HEAD_BOSS_ADD := 0.3 ## équilibrage 22/10 : la cloche sonne plus fort sur les boss (+30 % additif)
+## Combos (docs/Design_Combos.md §5.2). « La cloche sur le pilier » : Bras-pilier -> Tête-cloche ; « Le Coup qui fait sonner ».
+const CHARGE_TAG := &"tocsin_charge" ## étiquette « électrisé » : add_damage_taken_mod(CHARGE_TAG, 1.0, CHARGE_TAG_S), sans effet propre
+const CHARGE_TAG_S := 0.6 ## durée de l'étiquette, rafraîchie à chaque tick du pilier
+const HEAD_CHARGE_ADD := 0.5 ## Tête-cloche sur un électrisé : +50 %, additif avec HEAD_BOSS_ADD (1,8 sur un boss électrisé)
+const PILLAR_RING_CAP := 5.0 ## le pilier qui sonne : PILLAR_COEF x ticks restants, plafonné à ce coef
+const PILLAR_RING_COEF := 1.5 ## décharge supplémentaire du pilier atteint par l'onde du Coup de tocsin
+const PILLAR_RING_TICKS := 2 ## ticks gagnés par ce pilier (+1 s), une fois
+const PILLAR_RISE_TICKS := 4 ## un bras au sol atteint par l'onde se redresse 2 s (sans recharge en plus)
+const PICKUP_CD_REFUND := 0.5 ## audit P7 : ramasser un bras sans charge en main ne laisse que 50 % de sa recharge restante avant le lancer suivant
+const STEAM_CHARGED_SLOW_PCT := 0.5 ## Vapeur lâchée dans un pilier en décharge : ralentissement des électrisés (0,3 sinon)
+const AUTO_PROBE_S := 0.25 ## auto_cast_ok(4) : sondage du pilier
+const AUTO_PILLAR_MIN_HITS := 2 ## la Tête automatique attend ce nombre de monstres dans un pilier actif
 
 # --- Variantes de sorts (docs/Variantes_Sorts.md §2.3) ------------------------------------------------
 ## Retirées le 23/10/2026 avec leur sort de base : Bras-harpon (le grappin n'existe plus) et Jambes-ressorts
@@ -158,6 +170,10 @@ var _ghost_t := 0.0
 var _kick_left := 0.0
 var _absent_cache := -1
 var _vignette: CanvasLayer = null
+var _time := 0.0
+var _pickup_lock := {2: 0.0, 4: 0.0} ## slot -> secondes de recharge laissées par un ramassage (P7)
+var _probe_t := -10.0
+var _probe_pillar_ok := true
 var _regen_frames: SpriteFrames = null
 
 
@@ -443,16 +459,76 @@ func can_dodge() -> bool:
 	return true
 
 
-## Auto-cast (SpellCaster._auto_cast_ok) : plus de combo à protéger, tout part tout de suite.
-func auto_cast_ok(_slot: int) -> bool:
-	return true
+## Auto-cast (SpellCaster._auto_cast_ok, jamais en manuel) : la Tête automatique attend, tant qu'un pilier décharge, qu'au
+## moins AUTO_PILLAR_MIN_HITS monstres s'y trouvent (le pilier finit en 5 s au plus). Le reste part tout de suite.
+func auto_cast_ok(slot: int) -> bool:
+	if slot != 4 or player == null or not player.is_inside_tree():
+		return true
+	if _time - _probe_t >= AUTO_PROBE_S:
+		_probe_t = _time
+		_probe_pillar_ok = true
+		for l: TocsinLimb in _pillars():
+			_probe_pillar_ok = false
+			if l.count_inside() >= AUTO_PILLAR_MIN_HITS:
+				_probe_pillar_ok = true
+				break
+	return _probe_pillar_ok
 
 
-## SpellCaster.compute_damage : Tête-cloche renforcée sur les boss.
+## SpellCaster.compute_damage : Tête-cloche renforcée sur les boss (+30 %) et sur les électrisés (+50 %), additifs.
 func damage_add(s: SpellData, enemy: Node) -> float:
-	if s.slot == 4 and s.id != V_FUMIGENE and is_instance_valid(enemy) and enemy.is_in_group(&"bosses"):
-		return HEAD_BOSS_ADD
+	if s.slot == 4 and s.id != V_FUMIGENE and is_instance_valid(enemy):
+		var add := 0.0
+		if enemy.is_in_group(&"bosses"):
+			add += HEAD_BOSS_ADD
+		if is_charged(enemy):
+			add += HEAD_CHARGE_ADD
+		return add
 	return 0.0
+
+
+## Monstre « électrisé » (étiquette posée par les ticks d'un pilier).
+func is_charged(e: Node) -> bool:
+	return is_instance_valid(e) and e.has_method(&"has_damage_taken_mod") and e.has_damage_taken_mod(CHARGE_TAG)
+
+
+## SpellCaster.deal_damage : chiffre en accent et son lourd pour la Tête sur un électrisé.
+func combo_hit(s: SpellData, enemy: Node) -> bool:
+	return s.slot == 4 and s.id != V_FUMIGENE and is_charged(enemy)
+
+
+## SpellCaster (aide de visée mobile) : les électrisés pèsent plus dans le paquet visé.
+func is_marked(e: Node) -> bool:
+	return is_charged(e)
+
+
+## Fenêtre de combo (HUD : le bouton pulse) : Tête-cloche = un pilier en décharge à portée du lancer ; Coup de tocsin = un
+## pilier (en décharge ou au sol) dans son onde. Sondé par SpellCaster toutes les 0,1 s ; ne boucle que sur les 2 bras.
+func combo_ready(slot: int) -> bool:
+	if player == null or (slot != 3 and slot != 4):
+		return false
+	var s := _spell_of(slot)
+	if s == null:
+		return false
+	var zone: float = 1.0 + float(player.stat(&"zone_size_add"))
+	for l: TocsinLimb in _pillars(slot == 3):
+		var d := l.global_position.distance_to(player.global_position)
+		if slot == 3 and d <= TOLL_RADIUS_U * zone * Balance.UNIT_PX:
+			return true
+		if slot == 4 and s.id != V_FUMIGENE and l.phase == TocsinLimb.Phase.PILLAR \
+				and d <= _range_px(s) + HEAD_RADIUS_U * zone * Balance.UNIT_PX:
+			return true
+	return false
+
+
+## Bras-pilier en jeu : en décharge, et (`with_ground`) au sol.
+func _pillars(with_ground := false) -> Array:
+	var out: Array = []
+	for key in [&"arm_l", &"arm_r"]:
+		var l := _limb(key)
+		if l != null and l.kind == &"arm" and (l.phase == TocsinLimb.Phase.PILLAR or (with_ground and l.phase == TocsinLimb.Phase.GROUND)):
+			out.append(l)
+	return out
 
 
 ## Aucune perte de vitesse liée aux membres lancés (23/10/2026).
@@ -502,10 +578,16 @@ func _steam_burst(dir: Vector2) -> void:
 	TocsinSteamFx.spawn(player.get_parent(), player.global_position, TocsinSteamFx.Mode.RING, r, dir, STEAM_S)
 	if not player.is_inside_tree():
 		return
+	var in_pillar := false # dans un pilier en décharge : les électrisés ralentissent à 50 % au lieu de 30 %
+	for l: TocsinLimb in _pillars():
+		if l.global_position.distance_to(player.global_position) <= l.radius_px:
+			in_pillar = true
+			break
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e) and e.has_method(&"apply_status") \
 				and (e as Node2D).global_position.distance_to(player.global_position) <= r:
-			e.apply_status(&"slow", {"pct": STEAM_SLOW_PCT, "duration": STEAM_SLOW_S})
+			var pct := STEAM_CHARGED_SLOW_PCT if in_pillar and is_charged(e) else STEAM_SLOW_PCT
+			e.apply_status(&"slow", {"pct": pct, "duration": STEAM_SLOW_S})
 
 
 func cast_spell(s: SpellData, aim: Variant) -> bool:
@@ -658,16 +740,22 @@ func collect_limb(l: TocsinLimb) -> void:
 	l.queue_free()
 	limbs.erase(key)
 	var slot := _slot_of(key)
+	var lock := 0.0
 	if slot != 0:
 		var q: Array = queue[slot]
 		var idx := q.find(key)
 		if idx >= 0:
+			if charges(slot) == 0: # audit P7 : sans charge en main, la recharge restante de ce bras n'est rendue qu'à moitié
+				lock = (float(recharge_left[slot]) + idx * _cooldown(_spell_of(slot))) * (1.0 - PICKUP_CD_REFUND)
+				lock = maxf(lock, 0.0)
 			q.remove_at(idx)
 			if q.is_empty():
 				recharge_left[slot] = 0.0
 			# tête de file retirée : le suivant reprend le temps restant (il ne repart pas de zéro)
 	if not bool(present[key]):
 		_regen(key)
+	if lock > 0.0:
+		_pickup_lock[slot] = maxf(float(_pickup_lock[slot]), lock)
 	_sync_caster()
 	Audio.play(&"pickup.coin", player.global_position, -6.0, 0.7)
 
@@ -744,6 +832,9 @@ func _cast_toll(s: SpellData) -> bool:
 		if TocsinLimb._alive(e) and not TocsinLimb._is_boss(e):
 			var away: Vector2 = (e as Node2D).global_position - at
 			TocsinLimb._push(e, (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * TOLL_PUSH_U)
+	for l: TocsinLimb in _pillars(true): # le Coup qui fait sonner : décharge en plus, ticks en plus, bras au sol redressé
+		if l.global_position.distance_to(at) <= r:
+			l.toll_hit()
 	if _visual != null and _resolve("cast") != &"":
 		_last_action = &"cast"
 	TocsinSteamFx.spawn(player.get_parent(), at, TocsinSteamFx.Mode.WAVE, r, Vector2.RIGHT, 0.3)
@@ -820,8 +911,10 @@ func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 func tick(delta: float) -> void:
 	if player == null or player.dead:
 		return
+	_time += delta
 	for slot: int in queue:
 		_recharge_step(slot, delta)
+		_pickup_lock[slot] = maxf(float(_pickup_lock[slot]) - delta, 0.0)
 	_sync_caster()
 	if _kick_left > 0.0:
 		_kick_left = maxf(_kick_left - delta, 0.0)
@@ -869,6 +962,12 @@ func _sync_caster() -> void:
 			if r < float(recharge_left[slot]) - 0.001:
 				recharge_left[slot] = r
 			want = float(recharge_left[slot])
+		var lock := float(_pickup_lock.get(slot, 0.0))
+		if lock > want: # ramassage bridé (P7) : le sort ne repart qu'après ce délai, même avec un bras en main
+			want = lock
+			if r < want - 0.001:
+				c.set_cooldown(slot, want, want)
+				r = want
 		if r > want:
 			c.reduce_cooldown(slot, r - want)
 
@@ -1014,6 +1113,8 @@ func visual_anim(fallback: StringName) -> StringName:
 
 func clear_transients() -> void:
 	_pending.clear()
+	for slot: int in _pickup_lock:
+		_pickup_lock[slot] = 0.0
 	for k in limbs.keys():
 		var l: TocsinLimb = _limb(k)
 		if l != null:
