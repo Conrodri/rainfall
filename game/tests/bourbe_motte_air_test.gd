@@ -95,7 +95,7 @@ func _reset() -> void:
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
 	_player._invuln = 0.0
-	_player._dodge_cd = 0.0
+	_player.reset_dodge()
 
 
 func _run() -> void:

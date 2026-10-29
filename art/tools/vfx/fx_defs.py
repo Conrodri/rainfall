@@ -44,3 +44,52 @@ def build_impact(f, n):
     if t < .5: sprite('star', 0, .12, .9 * (1 - t * 2) + .1, color=CORE, alpha=1 - t * 2, d=.3)
 
 eff('ember_shard_impact', (96, 96), {'default': A(6, 18, False, build_impact)}, ppu=52)
+
+# ---------------- Esquives ----------------
+def build_dodge_out(f, n):
+    t = f / n; rng = random.Random(140)
+    # Silhouette qui se disperse en braises.
+    if t < .58:
+        q = t / .58
+        sprite('glow', 0, .1, .72 * (1-q) + .08, .95 * (1-q) + .08, color=FIRE, alpha=1-q, d=.1)
+        for i in range(9):
+            a = TAU * i / 9; r = .12 + .32*q
+            sprite('flame', math.cos(a)*r, .08 + math.sin(a)*r*.55, .20*(1-q)+.04, .3*(1-q)+.04, color=GOLD if i%2 else FIRE, alpha=1-q, rot=a)
+    burst_sparks(rng, 18, t, .12, 1.2, .32, size=(.22,.045), tmax=.92)
+
+def build_dodge_in(f, n):
+    t = f / n; rng = random.Random(141)
+    # Anneau de braises qui converge au sol.
+    r = .18 + 1.0 * (1-t)
+    ground('ring', 0, 0, r, alpha=.78*(1-t)+.06, color=FIRE)
+    for i in range(10):
+        a = TAU*i/10 + .12*math.sin(t*TAU)
+        rr = r*(.55 + .08*math.sin(i*7+t*5))
+        sprite('flame', math.cos(a)*rr, .05+math.sin(a)*rr*.48, .12+.05*(1-t), .2+.08*(1-t), color=GOLD if i%2 else FIRE, alpha=.35+.55*t, rot=a-math.pi/2)
+    if t > .5: sprite('glow', 0, .08, .25+(.6*(t-.5)), color=CORE, alpha=(t-.5)*1.5, d=.2)
+
+def build_dodge_splash(f, n):
+    t = f / n; rng = random.Random(142)
+    # Gerbe cyan qui retombe et s'étale en film au sol.
+    ground('ring', 0, -.05, .42 + .8*t, h=.18+.18*t, color=XPC, alpha=.36*(1-t)+.16)
+    for i in range(13):
+        a = TAU*i/13; reach=.18+.58*t
+        x=math.cos(a)*reach; y=.05+math.sin(a)*reach*.55 + .28*(1-t)
+        sprite('spark', x, y, .085, .22*(1-t)+.035, color=XPC, alpha=.9*(1-t)+.08, rot=-a)
+    sprite('glow', 0, .08, .34+.3*t, .16+.1*t, color=XPC, alpha=.45*(1-t)+.08)
+
+def build_slide_wake(f, n):
+    # Ruban d'eau plat, avec profil transversal doux et bords périodiques.
+    sprite('glow', 0, .075, .98, .44, color=(.122, .565, .68, 1), alpha=.98)
+    sprite('glow', 0, .075, .98, .30, color=(.22, .72, .82, 1), alpha=.96)
+    # Filets fins, sinusoïdaux et raccordés entre les deux bords.
+    for phase, y, width in ((0.0, -.025, .010), (2.2, -.10, .007), (4.0, -.055, .006)):
+        pts = []
+        for i in range(33):
+            x = -.98 + 1.96 * i / 32
+            yy = y + .022 * math.sin((x + 1.0) * math.pi + phase) + .006 * math.sin((x + 1.0) * 2 * math.pi)
+            pts.append((x, yy))
+        ribbon('spark', pts, width, color=(1, 1, 1, 1), alpha=.98)
+
+eff('dodge_blink', (128, 128), {'out': A(6, 18, False, build_dodge_out), 'in': A(6, 18, False, build_dodge_in)}, ppu=64, samples=16)
+eff('dodge_slide', (128, 96), {'splash': A(6, 18, False, build_dodge_splash), 'wake': A(1, 18, False, build_slide_wake)}, ppu=64, samples=16)

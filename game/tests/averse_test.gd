@@ -1,7 +1,7 @@
 extends Node
 ## Test headless d'Averse (docs/Design_Personnages.md §2.1) : stats, eau (pluie, kills, flaque), vitesse selon
 ## l'eau, 4 sorts (Behavior.KIT, effet à la frame d'impact), trempe, coûts et blocages, Crue proportionnelle,
-## roulade raccourcie à amphore pleine, rendu (anims, émission, lumières), partie réelle.
+## glissade (esquive au maintien qui consomme l'eau), rendu (anims, émission, lumières), partie réelle.
 ## godot --headless --path game res://tests/averse_test.tscn
 
 class FakeEnemy extends Node2D:
@@ -132,8 +132,7 @@ func _reset(w: float = 50.0) -> void:
 	_player.spells.aim_override = null
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
-	_player._dodge_cd = 0.0
-	_player._dodge_left = 0.0
+	_player.reset_dodge()
 	_player._invuln = 0.0
 
 
@@ -312,16 +311,45 @@ func _run() -> void:
 			live += 1
 	_check("2 flaques au plus (la plus ancienne s'assèche)", live == AverseKit.PUDDLE_MAX, str(live))
 
-	print("Roulade et trébuchement")
-	_reset(90.0)
-	_check("roulade (pleine)", _player.dodge(Vector2.RIGHT))
-	_check("raccourcie à 1,5 u (0,125 s)", _near(_player.dodge_duration_s(), 0.125, 0.001), str(_player.dodge_duration_s()))
-	_check("anim stumble", String(_kit.visual_anim(&"idle_e")).begins_with("stumble"))
-	_check("pas de fantômes en trébuchant", not _kit.dodge_ghosts())
-	_player._dodge_left = 0.0
-	_check("se relève lentement (×0,6)", _player.move_speed() < 3.6 * U * 0.61)
+	print("Glissade (esquive au maintien, consomme l'eau)")
 	_reset(50.0)
-	_check("roulade normale sous 80", _player.dodge(Vector2.RIGHT) and _near(_player.dodge_duration_s(), 0.25, 0.001))
+	_check("esquive = SlideDodge", _player.dodge_move() is SlideDodge, str(_player.dodge_move()))
+	_check("glissade lancée", _player.dodge(Vector2.RIGHT))
+	_check("départ : -SLIDE_START_COST d'eau", _near(_kit.water, 50.0 - AverseKit.SLIDE_START_COST, 0.01), str(_kit.water))
+	_check("invulnérable au départ (0,15 s)", _player.is_invulnerable() and _near(_player.dodge_move().invuln_left, SlideDodge.SLIDE_IFRAME_S, 0.001))
+	_check("en glisse (sliding)", _kit.sliding and _player.is_dodging())
+	var w1: float = _kit.water
+	for i in 30: # 0,25 s tenue
+		_player.dodge_step(1.0 / 120.0)
+		_player.tick(1.0 / 120.0)
+	_check("drain SLIDE_DRAIN_PER_S (moins la pluie)", _near(w1 - _kit.water, (AverseKit.SLIDE_DRAIN_PER_S - AverseKit.RAIN_GAIN_PER_S) * 0.25, 0.6), str(w1 - _kit.water))
+	_check("9 u/s", _near(_player.global_position.x, AverseKit.SLIDE_SPEED_U * U * 0.25, 2.0), str(_player.global_position.x / U))
+	_check("plus invulnérable en glisse", not _player.is_invulnerable())
+	_player.dodge_release()
+	_player.dodge_step(1.0 / 120.0)
+	_check("relâcher = fin", not _player.is_dodging() and not _kit.sliding)
+	_check("amphore < 80 : pas de freinage", _kit.stumble_left <= 0.0)
+	_check("verrou de relance", not _player.dodge(Vector2.RIGHT))
+	_player.reset_dodge()
+	_reset(5.0)
+	_check("sans l'eau du départ : refusée", not _player.dodge(Vector2.RIGHT) and not _kit.can_dodge())
+	_reset(12.0)
+	_check("part à 12 d'eau", _player.dodge(Vector2.RIGHT))
+	for i in 240:
+		if not _player.is_dodging():
+			break
+		_player.dodge_step(1.0 / 120.0)
+		_player.tick(1.0 / 120.0)
+	_check("réservoir vide = arrêt", not _player.is_dodging() and _kit.water <= 0.1, str(_kit.water))
+	_player.reset_dodge()
+	_reset(100.0) # 100 - 10 au départ - drain mini 0,15 s = 86 > STUMBLE_WATER
+	_player.dodge(Vector2.RIGHT)
+	_player.dodge_release()
+	for i in 30:
+		_player.dodge_step(1.0 / 120.0)
+		_player.tick(1.0 / 120.0)
+	_check("amphore ≥ 80 : freine mal (anim stumble, ×0,6)", _kit.stumble_left > 0.0 and String(_kit.visual_anim(&"idle_e")).begins_with("stumble") and _player.move_speed() < 3.6 * U * 0.61)
+	_player.reset_dodge()
 
 	print("Mort")
 	_reset(50.0)

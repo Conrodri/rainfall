@@ -42,11 +42,11 @@ func _process(delta: float) -> void:
 		print("roulade par l'action : ", p.get_dodge_cooldown())
 	elif _step == 3 and _t > 2.0:
 		_step = 4
-		p._dodge_cd = 0.0
+		p.reset_dodge()
 		p.dodge(Vector2(-1, -0.4))
 	elif _step == 4 and _t > 3.0:
 		_step = 5
-		p._dodge_cd = 0.0
+		p.reset_dodge()
 		p.dodge(Vector2.DOWN)
 	elif _step == 5 and _t > 4.5:
 		get_tree().quit()

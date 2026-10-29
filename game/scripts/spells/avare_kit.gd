@@ -64,6 +64,13 @@ const REGEN_PER_LEVEL := 0.16
 const SPEED_U := 3.8
 const HITBOX_U := 0.5
 const DODGE_U := 2.5 ## roulade lourde (Balance.DODGE_DISTANCE_U = 3 u, coupée à 2,5 u)
+## Râfle du coffre (esquive, docs/Design_Esquives.md §Avare) : dash lourd à RAKE_SPEED_U ; pendant et RAKE_AFTER_S
+## après, ses propres pièces à RAKE_PICKUP_U sont ramassées (jamais l'or des monstres : aucun or créé).
+const RAKE_SPEED_U := 10.0
+const RAKE_PICKUP_U := 1.2
+const RAKE_AFTER_S := 0.3
+const DODGE_GHOST_COLOR := Color(0.95, 0.76, 0.31, 0.4) ## #F2C14E
+const DODGE_SOUND := [&"spell.avare_coup_de_coffre.cast_light", -6.0, 1.1]
 
 # --- Puissance de l'or -----------------------------------------------------------------------------
 const GOLD_POWER_PER_P := 0.15
@@ -194,6 +201,7 @@ var last_buried := {} ## dernier Trésor enterré : {buried, coef, cause}
 var mines: Array = [] ## AvareMine posés (Trésor enterré)
 var _clock := 0.0
 var guard_left := 0.0 ## coffre-bouclier
+var rake_left := 0.0 ## Râfle du coffre : ramassage élargi des pièces après le dash
 var _pending := {} ## base d'anim -> Callable (effet à la frame d'impact)
 var _salvo_coin_value := 0.0
 var _power_override := -1.0 ## puissance figée pendant Faillite (l'or vient d'être dépensé)
@@ -512,8 +520,40 @@ func dodge_ghosts() -> bool:
 	return true
 
 
+func dodge_ghost_color() -> Color:
+	return DODGE_GHOST_COLOR
+
+
+func dodge_label() -> String:
+	return "Râfle"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
+
+
+func dodge_speed_u() -> float:
+	return RAKE_SPEED_U
+
+
 func on_dodge_start(_dir: Vector2) -> void:
-	pass
+	rake_left = RAKE_AFTER_S # le temps du dash puis RAKE_AFTER_S (remis à la fin)
+	_rake()
+
+
+func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
+	rake_left = RAKE_AFTER_S
+
+
+## Le coffre râfle ses pièces au passage (ressources de joueur, ramassage normal : aucun or créé).
+func _rake() -> void:
+	if player == null:
+		return
+	var r := RAKE_PICKUP_U * Balance.UNIT_PX
+	for g in coins.duplicate():
+		if g is GroundPickup and is_instance_valid(g) and not g.is_queued_for_deletion() \
+				and (g as Node2D).global_position.distance_to(player.global_position) <= r:
+			g.collect()
 
 
 func action_for(s: SpellData) -> StringName:
@@ -974,6 +1014,11 @@ func _on_enemy_killed(enemy: Node2D, pos: Vector2, tier: int, is_elite: bool) ->
 func tick(delta: float) -> void:
 	_clock += delta
 	guard_left = maxf(guard_left - delta, 0.0)
+	if player != null and player.is_dodging():
+		_rake()
+	elif rake_left > 0.0:
+		rake_left = maxf(rake_left - delta, 0.0)
+		_rake()
 	if not marks.is_empty() and Engine.get_physics_frames() % 30 == 0:
 		for id in marks.keys():
 			if float(marks[id]["t"]) <= _clock or (marks[id]["ref"] as WeakRef).get_ref() == null:

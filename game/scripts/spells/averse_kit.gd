@@ -17,7 +17,10 @@ extends Node
 ## - Eau : pluie × carte (0,5-1,5), gouttes qui touchent, monstres tués, eau de la carte, sa Flaque.
 ## - À sec : une Vague / Flaque qui vide l'amphore (< DRY_BELOW) la laisse « à sec » DRY_LOCK_S s, sans aucun gain.
 ##   La Crue, vidange volontaire, n'est jamais pénalisée.
-## - Amphore ≥ 80 : roulade raccourcie à 1,5 u, elle trébuche (anim `stumble`, vitesse ×0,6 un court instant).
+## - Esquive = Glissade (SlideDodge, docs/Design_Esquives.md) : elle verse de l'eau sous ses pieds et glisse tant que le
+##   bouton est tenu et qu'il reste de l'eau (SLIDE_START_COST au départ puis SLIDE_DRAIN_PER_S, drain ÷2 sur l'eau de
+##   la carte, une Flaque ou une Gouttière) ; contact des monstres ignoré en glisse (projectiles et zones touchent).
+## - Amphore ≥ 80 : à l'arrêt de la glisse, elle freine mal (anim `stumble`, vitesse ×0,6 STUMBLE_RECOVER_S).
 ## Variantes (docs/Variantes_Sorts.md §2.4, `variant(slot, id)`) : Bruine (sort 1, 3 gouttes en éventail), Geyser (sort 2,
 ##   projection en l'air), Gouttière (sort 3, ligne qui porte Averse), Mousson (sort 4, déluge attaché à Averse).
 ## Rendu : averse.tres (lot AV1) ; niveau d'eau = énergie du masque `_e` (fenêtre de l'amphore) ; VFX AV2.
@@ -219,9 +222,30 @@ const SOAK_S := 4.0 ## trempé = ralenti (clé `slow`)
 const SOAK_PCT := 0.30
 
 const STUMBLE_WATER := 80.0
-const STUMBLE_DODGE_U := 1.5
 const STUMBLE_RECOVER_S := 0.25
 const STUMBLE_SPEED_MULT := 0.6
+
+# --- Glissade (esquive, docs/Design_Esquives.md §Averse) -------------------------------------------------
+const SLIDE_SPEED_U := 9.0 ## indépendante du niveau d'eau (lente à pied pleine, glisse à la même vitesse)
+const SLIDE_START_COST := 10.0 ## la gerbe de lancement ; sous ce niveau d'eau, bouton grisé
+const SLIDE_DRAIN_PER_S := 25.0 ## amphore pleine : 3,6 s de glisse, 32 u
+const SLIDE_WATER_DRAIN_MULT := 0.5 ## sur l'eau de la carte, une Flaque ou une Gouttière : l'eau porte
+const SLIDE_WAKE_WIDTH_U := 0.6
+const SLIDE_WAKE_GLOW := 1.15 ## teinte légèrement > 1 (glow HDR) en additif ; la queue de la trace s'estompe (dégradé)
+const SLIDE_WAKE_ALPHA := 0.7
+const SLIDE_WAKE_FADE_S := 1.0
+const SLIDE_WAKE_MAX_POINTS := 80
+const SLIDE_WAKE_MIN_STEP_PX := 6.0
+const SLIDE_CONTACT_MARGIN_U := 0.3 ## portée de contact d'un monstre : son rayon + celui d'Averse + cette marge
+const SLIDE_SOUND := [&"spell.vague.cast_light", -6.0, 1.25]
+const SLIDE_STOP_SOUND := [&"spell.flaque_miroir.cast_light", -10.0, 1.3]
+## Trace d'eau : texture `slide_wake` du lot Codex (art/tools/vfx/_dodge_vfx.txt), en additif ; absente = bande cyan unie
+## (PLACEHOLDER temporaire, pas un asset final).
+const SLIDE_WAKE_TEX := "res://assets/sprites/vfx/dodge_slide/slide_wake.png"
+const SLIDE_SPLASH_FRAMES := "res://assets/sprites/vfx/dodge_slide/dodge_slide.tres" ## anim `splash` (lot Codex)
+const SLIDE_SPLASH_FALLBACK := ASSET_DIR + "effects/puddle_mirror/puddle_mirror.tres" ## sa Flaque, en petit
+const SLIDE_SPLASH_SCALE := 0.6
+const SLIDE_SPLASH_FADE_S := 0.7
 
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 
@@ -229,6 +253,8 @@ var player: CharacterBody2D = null
 var water := WATER_START
 var puddles: Array = [] ## ZoneEffect des Flaques-miroirs vivantes
 var stumble_left := 0.0
+var sliding := false ## Glissade en cours (SlideDodge)
+var _wake: Line2D = null ## trace d'eau de la glisse en cours
 var _visual: AnimatedSprite2D = null
 var _pending: Array = [] ## [{base, fn, t}] effets en attente de la frame d'impact
 var _rain_mult := RAIN_FALLBACK_MULT
@@ -600,8 +626,152 @@ func is_cast_locked() -> bool:
 	return false
 
 
+## Glissade : il faut l'eau du départ (sinon bouton grisé) ; à sec, rien ne part.
 func can_dodge() -> bool:
+	return sliding or (water >= SLIDE_START_COST and dry_left <= 0.0)
+
+
+# --- Glissade (hooks SlideDodge) ---------------------------------------------------------------------
+
+func make_dodge() -> DodgeMove:
+	return SlideDodge.new()
+
+
+func dodge_label() -> String:
+	return "Glissade"
+
+
+func dodge_sound() -> Array:
+	return SLIDE_SOUND
+
+
+func slide_speed_u() -> float:
+	return SLIDE_SPEED_U
+
+
+func slide_can_start() -> bool:
+	return can_dodge()
+
+
+## Départ : la gerbe coûte SLIDE_START_COST d'eau ; eau versée sous ses pieds (VFX), trace commencée.
+func slide_begin() -> bool:
+	if water < SLIDE_START_COST or dry_left > 0.0:
+		return false
+	add_water(-SLIDE_START_COST)
+	sliding = true
+	_spawn_splash(player.global_position)
+	_start_wake()
 	return true
+
+
+## Drain par image ; sur l'eau (carte, Flaque, Gouttière) l'eau porte : drain ÷2. Faux = réservoir vide : la
+## glisse s'arrête.
+func slide_drain(delta: float) -> bool:
+	var mult := SLIDE_WATER_DRAIN_MULT if (in_map_water or in_puddle or in_rivulet) else 1.0
+	add_water(-SLIDE_DRAIN_PER_S * mult * delta)
+	return water > 0.0
+
+
+## Fin (relâcher, vide, mur de face) : amphore ≥ 80 = elle freine mal (anim stumble, ×0,6).
+func slide_end(_by_wall: bool) -> void:
+	sliding = false
+	if water >= STUMBLE_WATER:
+		stumble_left = STUMBLE_RECOVER_S
+	if player != null:
+		Audio.play(SLIDE_STOP_SOUND[0], player.global_position, SLIDE_STOP_SOUND[1], SLIDE_STOP_SOUND[2])
+	_end_wake()
+
+
+## Trace d'eau au sol : un point par pas de glisse (Line2D qui s'efface après l'arrêt).
+func slide_trail(_from: Vector2, to: Vector2) -> void:
+	if _wake == null or not is_instance_valid(_wake):
+		return
+	var n := _wake.get_point_count()
+	if n > 0 and _wake.get_point_position(n - 1).distance_to(to) < SLIDE_WAKE_MIN_STEP_PX:
+		return
+	_wake.add_point(to)
+	if _wake.get_point_count() > SLIDE_WAKE_MAX_POINTS:
+		_wake.remove_point(0)
+
+
+## En glisse, elle passe à travers la mêlée : le coup d'un monstre à portée de contact est ignoré (boss compris) ;
+## projectiles, zones et ondes touchent. Règle de Rainette en l'air.
+func ignores_hit(source: Node) -> bool:
+	if not sliding or source == null or not is_instance_valid(source) or not (source is Node2D):
+		return false
+	var r: float = float(source.get(&"radius_px")) if &"radius_px" in source else 20.0
+	var reach: float = r + player.hit_radius_px() + SLIDE_CONTACT_MARGIN_U * Balance.UNIT_PX
+	return (source as Node2D).global_position.distance_to(player.global_position) <= reach
+
+
+func _start_wake() -> void:
+	_end_wake()
+	if player == null or player.get_parent() == null:
+		return
+	var l := Line2D.new()
+	l.width = SLIDE_WAKE_WIDTH_U * Balance.UNIT_PX
+	l.joint_mode = Line2D.LINE_JOINT_ROUND
+	l.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	l.end_cap_mode = Line2D.LINE_CAP_ROUND
+	l.z_index = -1 # au ras du sol, sous les sprites
+	if ResourceLoader.exists(SLIDE_WAKE_TEX):
+		l.texture = load(SLIDE_WAKE_TEX)
+		l.texture_mode = Line2D.LINE_TEXTURE_TILE
+		var tint := Color(ACCENT.r * SLIDE_WAKE_GLOW, ACCENT.g * SLIDE_WAKE_GLOW, ACCENT.b * SLIDE_WAKE_GLOW, SLIDE_WAKE_ALPHA)
+		var g := Gradient.new()
+		g.set_offset(0, 0.0)
+		g.set_color(0, Color(tint, 0.0)) # queue : s'évapore
+		g.set_offset(1, 0.45)
+		g.set_color(1, tint)
+		l.gradient = g
+		l.material = _additive()
+	else:
+		l.default_color = Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.35) # PLACEHOLDER (lot Codex dodge_slide)
+	player.get_parent().add_child(l)
+	l.global_position = Vector2.ZERO
+	l.add_point(player.global_position)
+	_wake = l
+
+
+static func _additive() -> CanvasItemMaterial:
+	var m := CanvasItemMaterial.new()
+	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	return m
+
+
+func _end_wake() -> void:
+	if _wake == null or not is_instance_valid(_wake):
+		_wake = null
+		return
+	var l := _wake
+	_wake = null
+	var tw := l.create_tween()
+	tw.tween_property(l, ^"modulate:a", 0.0, SLIDE_WAKE_FADE_S)
+	tw.tween_callback(l.queue_free)
+
+
+## Eau versée sous ses pieds au départ : anim `splash` du lot Codex, sinon sa Flaque-miroir en petit, qui s'efface.
+func _spawn_splash(at: Vector2) -> void:
+	if player == null or player.get_parent() == null:
+		return
+	var path := SLIDE_SPLASH_FRAMES if ResourceLoader.exists(SLIDE_SPLASH_FRAMES) else SLIDE_SPLASH_FALLBACK
+	if not ResourceLoader.exists(path):
+		return
+	var sf := load(path) as SpriteFrames
+	if sf == null:
+		return
+	var anim: StringName = &"splash" if sf.has_animation(&"splash") else StringName(sf.get_animation_names()[0])
+	var fx := AnimatedSprite2D.new()
+	fx.scale = Vector2.ONE * SLIDE_SPLASH_SCALE
+	fx.z_index = -1
+	fx.material = _additive()
+	player.get_parent().add_child(fx)
+	fx.global_position = at
+	EmissiveOverlay.apply(fx, sf)
+	fx.play(anim)
+	var tw := fx.create_tween()
+	tw.tween_property(fx, ^"modulate:a", 0.0, SLIDE_SPLASH_FADE_S)
+	tw.tween_callback(fx.queue_free)
 
 
 ## Auto-cast (SpellCaster._auto_cast_ok, option d'accessibilité et simulateur ; jamais en manuel) :
@@ -698,18 +868,13 @@ func locks_facing() -> bool:
 	return false
 
 
+## Pas de fantômes de sprite : la glisse se lit par la trace d'eau.
 func dodge_ghosts() -> bool:
-	return stumble_left <= 0.0
-
-
-## Amphore ≥ 80 : roulade de 1,5 u (Player : durée réduite d'autant, invulnérabilité comprise).
-func dodge_distance_u() -> float:
-	return STUMBLE_DODGE_U if water >= STUMBLE_WATER else Balance.DODGE_DISTANCE_U
+	return false
 
 
 func on_dodge_start(_dir: Vector2) -> void:
-	if water >= STUMBLE_WATER:
-		stumble_left = player.dodge_duration_s() + STUMBLE_RECOVER_S
+	stumble_left = 0.0
 
 
 func on_cast(_s: SpellData) -> void:
@@ -1309,6 +1474,8 @@ func clear_transients() -> void:
 	_delayed.clear()
 	_release_lifted()
 	stumble_left = 0.0
+	sliding = false
+	_end_wake()
 	_lock_left = 0.0
 	_warn_left = 0.0
 
@@ -1337,7 +1504,7 @@ func _dir_of(v: Vector2) -> String:
 	return DIR_NAMES[(i + 8) % 8]
 
 
-## Trébuchement (roulade à amphore pleine) prioritaire ; sinon l'anim d'action ou idle/run.
+## Freinage (arrêt de glisse à amphore pleine, anim `stumble`) prioritaire ; sinon l'anim d'action ou idle/run.
 func visual_anim(fallback: StringName) -> StringName:
 	if stumble_left > 0.0 and _visual != null and _visual.sprite_frames != null:
 		var a := StringName("stumble_" + _dir_of(player.facing))

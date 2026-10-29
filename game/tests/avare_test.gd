@@ -120,7 +120,7 @@ func _reset() -> void:
 	_player.spells.aim_override = null
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
-	_player._dodge_cd = 0.0
+	_player.reset_dodge()
 	_player._invuln = 0.0
 	RunState.gold = 0.0
 
@@ -384,7 +384,7 @@ func _run() -> void:
 	_check("roulade lancée", _player.dodge(Vector2.RIGHT))
 	var t := 0.0
 	while _player.is_dodging() and t < 1.0:
-		_player._dodge_step(1.0 / 120.0)
+		_player.dodge_step(1.0 / 120.0)
 		_player.tick(1.0 / 120.0)
 		t += 1.0 / 120.0
 	_check("distance ≈ 2,5 u", absf(_player.global_position.x - 2.5 * U) <= 0.15 * U, str(_player.global_position.x / U))

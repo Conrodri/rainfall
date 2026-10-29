@@ -67,7 +67,7 @@ func _advance(t: float, auto := false) -> void:
 		if not auto:
 			_player.spells._remaining[1] = 99.0
 		if _player.is_dodging():
-			_player._dodge_step(1.0 / 60.0)
+			_player.dodge_step(1.0 / 60.0)
 		_player.tick(1.0 / 60.0)
 	if not auto:
 		_player.spells._remaining[1] = 0.0
@@ -99,8 +99,7 @@ func _reset() -> void:
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
 	_player._invuln = 0.0
-	_player._dodge_cd = 0.0
-	_player._dodge_left = 0.0
+	_player.reset_dodge()
 
 
 func _cast(slot: int) -> bool:

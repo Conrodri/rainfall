@@ -37,6 +37,9 @@ extends Resource
 ## invulnérabilité d'autant). 0 = Balance.DODGE_DISTANCE_U. Un kit dont la roulade varie en jeu (Tocsin,
 ## Averse) expose en plus `dodge_distance_u()`, lu par Player.dodge_distance_u() au départ de la roulade.
 @export var dodge_distance_u := 0.0
+## Genre d'esquive (DodgeMove.KIND_*, docs/Design_Esquives.md) : &"" / &"roll" = roulade, &"blink" = Éclat (Ardent),
+## &"slide" = Glissade. Un kit qui expose `make_dodge()` a priorité.
+@export var dodge_kind: StringName = &""
 ## Lumières du joueur (presets LightRig `player` / `player_core`) ; alpha 0 = couleur du preset (braise d'Ardent).
 @export var light_color := Color(0, 0, 0, 0)
 @export var light_core_color := Color(0, 0, 0, 0)

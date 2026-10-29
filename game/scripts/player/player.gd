@@ -69,19 +69,13 @@ var _look_scene_frames: SpriteFrames = null
 var _look_scene_scale := Vector2.ONE
 var _look_scene_modulate := Color.WHITE
 
-## Roulade (action `dodge`, Balance.DODGE_*) : court dash invulnérable, bloqué par les murs.
-## Aucune collision avec les monstres (masque 1 = monde seulement) ; coups et statuts ignorés pendant.
-const DODGE_SOUND := &"spell.cendres.cast_light" ## souffle de braise bref (pas de « whoosh » dédié au manifeste)
-const DODGE_SOUND_DB := -4.0
-const DODGE_SOUND_PITCH := 1.3
-const DODGE_GHOST_EVERY_S := 0.04 ## fantômes du sprite d'Ardent laissés pendant la roulade
+## Esquive (action `dodge`) : stratégie DodgeMove choisie par le kit / CharacterData.dodge_kind (docs/Design_Esquives.md) :
+## roulade (RollDodge, Balance.DODGE_*), Éclat d'Ardent (BlinkDodge), Glissade d'Averse (SlideDodge, au maintien).
+## Toute esquive est un déplacement balayé (jamais à travers un mur ni hors de la zone praticable), sans collision
+## avec les monstres (masque 1 = monde seulement) ; coups et statuts ignorés tant que `_dodge.is_invulnerable()`.
 const DODGE_GHOST_FADE_S := 0.3
 const DODGE_GHOST_COLOR := Color(1.0, 0.72, 0.45, 0.5)
-var _dodge_left := 0.0
-var _dodge_total := Balance.DODGE_DURATION_S ## durée de la roulade en cours (distance / vitesse de Balance)
-var _dodge_cd := 0.0
-var _dodge_dir := Vector2.ZERO
-var _ghost_t := 0.0
+var _dodge: DodgeMove = null
 
 ## Ressenti des coups reçus (retour joueur sur terrasses_noyees : « aucune impression de perdre de la
 ## vie ») : flash rouge du sprite, vignette rouge (HurtFeedback), chiffre rouge (DamageNumbers, via
@@ -162,6 +156,7 @@ func _ready() -> void:
 		kit.name = "Kit"
 		add_child(kit)
 		kit.setup(self)
+	_dodge = DodgeMove.make(self, kit, character)
 	RunState.level_up.connect(_on_level_up)
 	Events.enemy_killed.connect(_on_enemy_killed)
 	item_fx = ItemEffects.new()
@@ -397,6 +392,8 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 		return false
 	RunState.character = cid
 	RunState.loadout = spell_loadout.duplicate()
+	if _dodge != null:
+		_dodge.abort()
 	if kit != null:
 		remove_child(kit)
 		kit.queue_free()
@@ -424,6 +421,7 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 		kit.name = "Kit"
 		add_child(kit)
 		kit.setup(self)
+	_dodge = DodgeMove.make(self, kit, character)
 	_light.set_color(character.light_color if character.light_color.a > 0.0 else Color(0, 0, 0, 0))
 	_light_core.set_color(character.light_core_color if character.light_core_color.a > 0.0 else Color(0, 0, 0, 0))
 	clear_statuses()
@@ -439,10 +437,15 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
-	if InputMap.has_action(&"dodge") and Input.is_action_just_pressed(&"dodge"):
-		dodge()
-	if _dodge_left > 0.0:
-		_dodge_step(delta)
+	if _dodge != null and InputMap.has_action(&"dodge"):
+		if Input.is_action_just_pressed(&"dodge"):
+			dodge()
+		elif _dodge.active and _dodge.is_hold() and not Input.is_action_pressed(&"dodge"):
+			_dodge.release() # Glissade d'Averse : relâcher = fin
+	if _dodge != null and _dodge.active:
+		_dodge.step(delta)
+	if _dodge != null and _dodge.active and not _dodge.allows_move():
+		pass # esquive qui tient le corps (roulade, dispersion de l'Éclat)
 	elif kit != null and kit.has_method(&"locomote"): # locomotion propre au kit (S11, bonds de Rainette)
 		kit.locomote(Input.get_vector("move_left", "move_right", "move_up", "move_down"), delta)
 	else:
@@ -469,7 +472,8 @@ func tick(delta: float) -> void:
 	if dead:
 		return
 	_invuln = maxf(_invuln - delta, 0.0)
-	_dodge_cd = maxf(_dodge_cd - delta, 0.0)
+	if _dodge != null:
+		_dodge.tick(delta)
 	_action_step(delta)
 	if item_fx != null:
 		item_fx.tick(delta)
@@ -504,7 +508,7 @@ func tick(delta: float) -> void:
 # --- Dégâts, soin, statuts ----------------------------------------------
 
 func take_damage(amount: float, source: Node = null) -> void:
-	if dead or amount <= 0.0 or _invuln > 0.0 or _dodge_left > 0.0:
+	if dead or amount <= 0.0 or _invuln > 0.0 or (_dodge != null and _dodge.is_invulnerable()):
 		return
 	if kit != null and kit.has_method(&"ignores_hit") and kit.ignores_hit(source): # ex. en l'air : pas de contact
 		return
@@ -547,6 +551,8 @@ func _damage_hp(amount: float) -> void:
 			return
 		dead = true
 		velocity = Vector2.ZERO
+		if _dodge != null:
+			_dodge.abort()
 		Haptics.pulse(Haptics.Kind.DEATH)
 		Events.player_died.emit()
 
@@ -611,27 +617,34 @@ func grant_invulnerability(seconds: float) -> void:
 
 
 func is_invulnerable() -> bool:
-	return _invuln > 0.0 or _dodge_left > 0.0
+	return _invuln > 0.0 or (_dodge != null and _dodge.is_invulnerable())
 
 
-# --- Roulade ---------------------------------------------------------------
+# --- Esquive (DodgeMove) ---------------------------------------------------
 
+## Esquive en cours (roulade, Éclat, Glissade…). Pas forcément invulnérable (Glissade : contact seulement).
 func is_dodging() -> bool:
-	return _dodge_left > 0.0
+	return _dodge != null and _dodge.active
 
 
-## Recharge de la roulade pour l'UI : {remaining, total, active}.
+## Stratégie d'esquive courante (tests, HUD).
+func dodge_move() -> DodgeMove:
+	return _dodge
+
+
+## État de l'esquive pour l'UI : {remaining, total, active, charges, max_charges, hold, label, kind, blocked}.
 func get_dodge_cooldown() -> Dictionary:
-	return {"remaining": _dodge_cd, "total": Balance.DODGE_COOLDOWN_S, "active": _dodge_left > 0.0,
-		"blocked": kit != null and not kit.can_dodge()}
+	var d: Dictionary = _dodge.ui_state() if _dodge != null else {"remaining": 0.0, "total": Balance.DODGE_COOLDOWN_S, "active": false}
+	d["blocked"] = kit != null and not kit.can_dodge()
+	return d
 
 
-## Fraction restante de la roulade en cours (1 au départ, 0 à la fin).
+## Fraction restante de l'esquive en cours (1 au départ, 0 à la fin).
 func dodge_progress_left() -> float:
-	return clampf(_dodge_left / maxf(_dodge_total, 0.001), 0.0, 1.0)
+	return _dodge.progress_left() if _dodge != null else 0.0
 
 
-## Longueur de la roulade qui partirait maintenant (u) : hook du kit (varie en jeu : Tocsin, Averse), sinon
+## Longueur de la roulade qui partirait maintenant (u) : hook du kit (varie en jeu : Tocsin), sinon
 ## CharacterData.dodge_distance_u (Avare, Bourbe), sinon Balance. Seul mécanisme de longueur de roulade.
 func dodge_distance_u() -> float:
 	if kit != null and kit.has_method(&"dodge_distance_u"):
@@ -639,9 +652,9 @@ func dodge_distance_u() -> float:
 	return character.base_dodge_distance_u() if character != null else Balance.DODGE_DISTANCE_U
 
 
-## Durée de la roulade en cours : vitesse de Balance constante, une roulade courte est plus brève.
+## Durée de l'esquive en cours (roulade : distance / vitesse, une roulade courte est plus brève).
 func dodge_duration_s() -> float:
-	return _dodge_total
+	return _dodge.duration_s() if _dodge != null else Balance.DODGE_DURATION_S
 
 
 ## Direction par défaut : déplacement en cours, sinon curseur (clavier-souris), sinon l'avant.
@@ -656,49 +669,41 @@ func dodge_direction() -> Vector2:
 	return facing.normalized() if facing != Vector2.ZERO else Vector2.DOWN
 
 
-## Lance une roulade (dir nulle = dodge_direction()). Faux si en recharge, déjà en roulade ou mort.
+## Lance l'esquive (dir nulle = dodge_direction()). Faux si en recharge, déjà en cours (sauf charges), interdite par
+## le kit (Rictus : vertige ; Averse : pas assez d'eau) ou mort.
 func dodge(dir := Vector2.ZERO) -> bool:
-	if dead or _dodge_left > 0.0 or _dodge_cd > 0.0:
+	if dead or _dodge == null:
 		return false
 	if kit != null and not kit.can_dodge(): # Rictus : pas de roulade pendant le vertige
 		return false
+	if not _dodge.can_start():
+		return false
 	if dir.length_squared() < 0.0001:
 		dir = dodge_direction()
-	dir = dir.normalized()
-	# hook : sens réel du déplacement (bond arrière de Rainette) ; l'orientation suit, le kit peut la reprendre
-	_dodge_dir = kit.dodge_motion_dir(dir).normalized() if kit != null and kit.has_method(&"dodge_motion_dir") else dir
-	facing = _dodge_dir
-	_dodge_total = Balance.DODGE_DURATION_S * dodge_distance_u() / Balance.DODGE_DISTANCE_U
-	_dodge_left = _dodge_total
-	_dodge_cd = Balance.DODGE_COOLDOWN_S
-	_ghost_t = 0.0
-	Audio.play(DODGE_SOUND, global_position, DODGE_SOUND_DB, DODGE_SOUND_PITCH)
-	if kit != null:
-		kit.on_dodge_start(dir)
-	return true
+	return _dodge.start(dir.normalized())
 
 
-## Pas de roulade : vitesse constante (distance exacte), move_and_collide (les murs arrêtent,
-## le reste glisse le long du mur), fantômes du sprite.
-func _dodge_step(delta: float) -> void:
-	var step := minf(delta, _dodge_left)
-	_dodge_left -= delta
-	is_moving = true
-	velocity = Vector2.ZERO
-	var motion := _dodge_dir * (Balance.DODGE_DISTANCE_U * Balance.UNIT_PX / Balance.DODGE_DURATION_S) * step
-	var col := move_and_collide(motion)
-	if col != null:
-		var rest := col.get_remainder().slide(col.get_normal())
-		if rest.length_squared() > 0.01:
-			move_and_collide(rest)
-	_ghost_t -= delta
-	if _ghost_t <= 0.0 and (kit == null or kit.dodge_ghosts()):
-		_ghost_t = DODGE_GHOST_EVERY_S
-		_spawn_ghost()
+## Bouton relâché (esquive au maintien : Glissade d'Averse). Tests et bouton tactile.
+func dodge_release() -> void:
+	if _dodge != null:
+		_dodge.release()
 
 
-## Copie semi-transparente de l'image courante d'Ardent qui s'estompe (effet sur l'asset existant).
-func _spawn_ghost() -> void:
+## Un pas d'esquive hors boucle de physique (tests).
+func dodge_step(delta: float) -> void:
+	if _dodge != null and _dodge.active:
+		_dodge.step(delta)
+
+
+## Recharge à zéro, charges pleines, esquive arrêtée (tests, mode test).
+func reset_dodge() -> void:
+	if _dodge != null:
+		_dodge.reset()
+
+
+## Copie semi-transparente de l'image courante du personnage qui s'estompe (fantômes de roulade : effet sur
+## l'asset existant). `fade` : durée du fondu.
+func spawn_dodge_ghost(color := DODGE_GHOST_COLOR, fade := DODGE_GHOST_FADE_S) -> void:
 	var spr := _visual as AnimatedSprite2D
 	if spr == null or spr.sprite_frames == null or get_parent() == null:
 		return
@@ -710,12 +715,18 @@ func _spawn_ghost() -> void:
 	g.centered = spr.centered
 	g.offset = spr.offset
 	g.flip_h = spr.flip_h
-	g.modulate = DODGE_GHOST_COLOR
+	g.modulate = color
 	get_parent().add_child(g)
 	g.global_transform = spr.global_transform
 	var tw := g.create_tween()
-	tw.tween_property(g, "modulate:a", 0.0, DODGE_GHOST_FADE_S)
+	tw.tween_property(g, "modulate:a", 0.0, fade)
 	tw.tween_callback(g.queue_free)
+
+
+## Opacité du sprite (dispersion / reformation de l'Éclat d'Ardent).
+func set_visual_alpha(a: float) -> void:
+	if _visual != null:
+		_visual.modulate.a = clampf(a, 0.0, 1.0)
 
 
 ## Battement de la lumière du joueur plus rapide sous 30 % PV (Direction §4.1).
@@ -738,7 +749,7 @@ func heal(amount: float) -> void:
 ## data : {hit, source?}. Même filtre que take_damage : un coup que le kit ignore (Rainette en l'air au contact)
 ## n'applique pas non plus ses affixes d'élite.
 func apply_status(status: StringName, data: Dictionary) -> void:
-	if dead or _dodge_left > 0.0:
+	if dead or (_dodge != null and _dodge.is_invulnerable()):
 		return
 	var source: Variant = data.get("source")
 	if source != null and kit != null and kit.has_method(&"ignores_hit") and kit.ignores_hit(source):
@@ -885,11 +896,12 @@ func _push_move(motion: Vector2) -> void:
 		var rest := col.get_remainder().slide(col.get_normal())
 		if rest.length_squared() > 0.01:
 			move_and_collide(rest)
-	_keep_walkable()
+	keep_walkable()
 
 
-## Bord de carte sans collision ou case de mur : ramené dans la zone praticable (champ du Director).
-func _keep_walkable() -> void:
+## Bord de carte sans collision ou case de mur : ramené dans la zone praticable (champ du Director). Public pour
+## les esquives (DodgeMove._sweep) : aucun déplacement ne finit dans le vide hors carte.
+func keep_walkable() -> void:
 	if not is_inside_tree():
 		return
 	var d := get_tree().get_first_node_in_group(&"director")

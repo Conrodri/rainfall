@@ -46,6 +46,11 @@ const CHAIN_PROC := 0.3
 const CHAIN_FORCE := 0.1 ## petit flash sans recul (la chaîne mord, ne repousse pas)
 const CHAIN_SLOW_PCT := 0.35 ## équilibrage 22/10 : 0,2 -> 0,35 (sa défense : ce qui la poursuit s'englue dans la chaîne)
 const CHAIN_SLOW_S := 0.6
+## Trait tendu (esquive, docs/Design_Esquives.md §Arpenteuse) : après la roulade, la chaîne reste tendue TAUT_S :
+## ralentissement TAUT_SLOW_PCT sur toute la chaîne, sans dégât de plus.
+const TAUT_S := 1.5
+const TAUT_SLOW_PCT := 0.5
+const DODGE_SOUND := [&"spell.arpenteuse_tendeur.cast_light", -6.0, 1.2]
 const CHAIN_IDLE_S := 0.6 ## immobile plus longtemps : le touret rembobine
 const CHAIN_REEL_U_S := 4.0
 const CHAIN_JUMP_U := 4.0 ## saut de position (téléporteur) : la chaîne est coupée
@@ -151,6 +156,7 @@ var _peg_hits := {} ## instance_id -> temps du dernier coup
 var _time := 0.0
 # Variantes
 var _lestee := false ## sort 1 = Chaîne lestée
+var taut_left := 0.0 ## Trait tendu : chaîne tendue après la roulade (ralentissement TAUT_SLOW_PCT)
 var jal_stage := 0 ## Jalons : 0 rien, 1 piquet A lancé (fenêtre de 3 s pour B), 2 piquet B lancé
 var jal_a := Vector2.ZERO
 var jal_b := Vector2.ZERO
@@ -356,7 +362,8 @@ func _half_w_u() -> float:
 
 
 func _slow_pct() -> float:
-	return LESTEE_SLOW_PCT if _lestee else CHAIN_SLOW_PCT
+	var base := LESTEE_SLOW_PCT if _lestee else CHAIN_SLOW_PCT
+	return maxf(base, TAUT_SLOW_PCT) if taut_left > 0.0 else base
 
 
 func _reel_u_s() -> float:
@@ -410,6 +417,20 @@ func dodge_ghosts() -> bool:
 
 func on_dodge_start(_dir: Vector2) -> void:
 	pass # la roulade déroule 3 u de chaîne d'un coup : rien de spécial à faire
+
+
+## Trait tendu : la chaîne posée par la roulade reste tendue TAUT_S (ralentissement TAUT_SLOW_PCT au lieu de
+## CHAIN_SLOW_PCT, sans dégât de plus).
+func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
+	taut_left = TAUT_S
+
+
+func dodge_label() -> String:
+	return "Trait"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
 
 
 func on_cast(_s: SpellData) -> void:
@@ -624,6 +645,7 @@ func tick(delta: float) -> void:
 	if player == null or player.dead:
 		return
 	_time += delta
+	taut_left = maxf(taut_left - delta, 0.0)
 	for b in _pending.keys(): # jamais d'effet perdu : impact manqué (anim coupée) -> effet au bout du délai
 		_pending[b]["t"] = float(_pending[b]["t"]) + delta
 		if float(_pending[b]["t"]) >= PENDING_TIMEOUT_S:

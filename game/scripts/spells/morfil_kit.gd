@@ -470,6 +470,10 @@ func dodge_ghosts() -> bool:
 	return false # pas de fantômes braise d'Ardent : le fil de l'Iaï (repli) se lit seul
 
 
+func dodge_label() -> String:
+	return "Iaï"
+
+
 ## Iaï : la roulade dégaine ; chaque monstre traversé est tranché une fois (tick).
 func on_dodge_start(_dir: Vector2) -> void:
 	_iai_active = true

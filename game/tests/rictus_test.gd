@@ -124,7 +124,7 @@ func _reset() -> void:
 	_player.spells.aim_override = null
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
-	_player._dodge_cd = 0.0
+	_player.reset_dodge()
 	_player._invuln = 0.0
 
 

@@ -147,8 +147,7 @@ func _reset() -> void:
 	_player.spells.aim_override = null
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
-	_player._dodge_cd = 0.0
-	_player._dodge_left = 0.0
+	_player.reset_dodge()
 	_player._invuln = 0.0
 
 
@@ -358,9 +357,9 @@ func _run() -> void:
 	_check("bond arrière lancé", _player.dodge(Vector2.RIGHT))
 	_check("recule en gardant la menace en face", _kit.dodge_motion_dir(Vector2.RIGHT).is_equal_approx(Vector2.LEFT) and _player.facing.is_equal_approx(Vector2.RIGHT))
 	var x0: float = _player.global_position.x
-	_player._dodge_step(0.05)
+	_player.dodge_step(0.05)
 	_check("le bond arrière part vers l'arrière (hook dodge_motion_dir)", _player.global_position.x < x0 - 1.0, str(_player.global_position.x - x0))
-	_player._dodge_left = 0.0
+	_player.reset_dodge()
 	_reset()
 	_player.spells.aim_override = Vector2(300, 0)
 	_player.spells.cast(2)

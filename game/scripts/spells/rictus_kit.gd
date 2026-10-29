@@ -372,6 +372,10 @@ func dodge_ghosts() -> bool:
 	return false # la levée se lit par le pantin soulevé, pas par des fantômes
 
 
+func dodge_label() -> String:
+	return "Levée"
+
+
 func on_dodge_start(_dir: Vector2) -> void:
 	lifting = true
 	# au-dessus des monstres : masque sans la couche 3 (le joueur n'a déjà que le monde) ; les murs arrêtent

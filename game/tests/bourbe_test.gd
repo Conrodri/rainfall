@@ -95,7 +95,7 @@ func _reset() -> void:
 	for k in _player.spells._remaining:
 		_player.spells._remaining[k] = 0.0
 	_player._invuln = 0.0
-	_player._dodge_cd = 0.0
+	_player.reset_dodge()
 
 
 func _run() -> void:
@@ -119,7 +119,7 @@ func _run() -> void:
 	_check("vitesse 3,6 u/s", _near(_player.move_speed(), 3.6 * U), str(_player.move_speed()))
 	var shape := (_player.get_node("CollisionShape2D") as CollisionShape2D).shape as CircleShape2D
 	var hb0 := shape.radius
-	_check("roulade 2,5 u (CharacterData)", _near(_player.dodge_distance_u(), 2.5) and _near(_player.character.dodge_distance_u, 2.5))
+	_check("roulade 3 u (CharacterData)", _near(_player.dodge_distance_u(), 3.0) and _near(_player.character.dodge_distance_u, 3.0))
 	var follet := true
 	for sp in BourbeKit.character().spells:
 		follet = follet and String(sp.light_preset).begins_with("bourbe_") and LightRig.has_preset(sp.light_preset)

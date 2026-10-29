@@ -411,6 +411,14 @@ func dodge_ghosts() -> bool:
 	return false # le bond se lit par l'arc et l'ombre
 
 
+func dodge_label() -> String:
+	return "Bond"
+
+
+func dodge_sound() -> Array:
+	return [&"spell.rainette_grand_saut.cast_light", -8.0, 1.3]
+
+
 ## En l'air : intouchable au contact (coup d'un monstre à portée de contact, boss compris depuis l'équilibrage du
 ## 22/10/2026 : elle bondit par-dessus) ; les projectiles touchent toujours.
 func ignores_hit(source: Node) -> bool:

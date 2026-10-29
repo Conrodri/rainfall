@@ -120,6 +120,13 @@ const FUMI_PRISONER_BONUS := 0.5 ## +50 % sur les monstres étourdis par l'entr�
 const PICKUP_CONTACT_U := 0.6
 const PICKUP_DELAY_S := 0.0 ## 23/10/2026 : plus de délai, le contact rattache le membre tout de suite
 const DODGE_U := 3.0
+## Coup de vapeur (docs/Design_Esquives.md §Tocsin) : la chaudière lâche sa vapeur au départ de la roulade :
+## nuage STEAM_RADIUS_U pendant STEAM_S, monstres dedans ralentis STEAM_SLOW_PCT pendant STEAM_SLOW_S. Pas de dégâts.
+const STEAM_RADIUS_U := 1.2
+const STEAM_S := 0.6
+const STEAM_SLOW_PCT := 0.3
+const STEAM_SLOW_S := 1.0
+const DODGE_SOUND := [&"spell.tocsin_bras_pilier.end", -6.0, 1.2]
 const GHOST_EVERY_S := 0.04
 const GHOST_FADE_S := 0.3
 const GHOST_COLOR := Color(1.0, 0.62, 0.35, 0.45)
@@ -474,8 +481,31 @@ func dodge_ghosts() -> bool:
 	return layers == null
 
 
-func on_dodge_start(_dir: Vector2) -> void:
+func on_dodge_start(dir: Vector2) -> void:
 	_ghost_t = 0.0
+	_steam_burst(dir)
+
+
+func dodge_label() -> String:
+	return "Vapeur"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
+
+
+## Nuage de vapeur au départ : anneau (TocsinSteamFx) et ralentissement des monstres à portée.
+func _steam_burst(dir: Vector2) -> void:
+	if player == null:
+		return
+	var r := STEAM_RADIUS_U * Balance.UNIT_PX
+	TocsinSteamFx.spawn(player.get_parent(), player.global_position, TocsinSteamFx.Mode.RING, r, dir, STEAM_S)
+	if not player.is_inside_tree():
+		return
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and is_instance_valid(e) and e.has_method(&"apply_status") \
+				and (e as Node2D).global_position.distance_to(player.global_position) <= r:
+			e.apply_status(&"slow", {"pct": STEAM_SLOW_PCT, "duration": STEAM_SLOW_S})
 
 
 func cast_spell(s: SpellData, aim: Variant) -> bool:

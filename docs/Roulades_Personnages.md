@@ -1,4 +1,6 @@
-# Roulades par personnage (design v1)
+# Roulades par personnage (design v1, REMPLACÉ)
+
+> **Remplacé le 29/10/2026 par `docs/Design_Esquives.md`** (v2 implémentée : Averse glisse en consommant son eau, Ardent se téléporte, Vigie a 3 petits dashs). Gardé pour l'historique des choix.
 
 > Statut : **document de design** (Fable, game-designer, 23/10/2026) sur demande du joueur : « une roulade différente par personnage ». Le joueur a imposé Ardent (téléportation) et Averse (glisse sur l'eau, sans recharge, jauge d'endurance) ; les huit autres mobilités sont **décidées ici** par délégation. Rien n'est implémenté ; les chiffres sont des points de départ à valider en playtest (le simulateur `art/tools/night/balance_sim.py` ne modélise pas la roulade : tout ce qui touche à la survie est **non vérifié**).
 > Conventions : 1 u = 64 px ; « coef » = multiplicateur de Dégât_base(L) ; `slow` = clé de ralentissement existante (Givre, Vague) ; i-frames = invulnérabilité (`Player.is_invulnerable()`).

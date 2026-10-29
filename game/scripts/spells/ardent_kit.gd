@@ -172,6 +172,7 @@ static func variant_a() -> CharacterData:
 	c.ultimate_grade = AmbianceManager.WARM_COLOR # #FFD6B0 (Brasier, Direction §4.2), réglé à la main
 	c.id = &"ardent"
 	c.display_name = "Ardent"
+	c.dodge_kind = DodgeMove.KIND_BLINK # Éclat : téléportation courte en braises (docs/Design_Esquives.md)
 
 	var s1 := _spell(&"eclat_de_braise", "Éclat de braise", 1, SpellData.Behavior.PROJECTILE, 0.8, 0.6)
 	s1.is_auto = true

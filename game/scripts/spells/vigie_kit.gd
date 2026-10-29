@@ -160,6 +160,13 @@ const ACTION_GENERIC := {&"attack": &"attack", &"draw": &"attack", &"flare": &"c
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
 const PENDING_SAFETY_S := 1.0 ## effet jamais déclenché (anim coupée) : part quand même
 
+# --- Repli (esquive, docs/Design_Esquives.md §Vigie) : 3 petits dashs enchaînables ------------------------
+const DODGE_CHARGES := 3
+const DODGE_U := 1.0 ## par charge (3 u en tout, même budget que la roulade)
+const DODGE_TENSION_GAIN := 0.08 ## par dash achevé : reculer bande l'arc (0,24 pour les 3)
+const DODGE_GHOST_COLOR := Color(1.0, 0.23, 0.31, 0.35) ## #FF3A4F, rouge de fusée
+const DODGE_SOUND := [&"spell.cendres.cast_light", -8.0, 1.6]
+
 var player: CharacterBody2D = null
 var tension := 0.0
 var still_t := 0.0 ## temps immobile continu
@@ -519,8 +526,45 @@ func dodge_ghosts() -> bool:
 	return true
 
 
-func on_dodge_start(_dir: Vector2) -> void:
+func dodge_ghost_color() -> Color:
+	return DODGE_GHOST_COLOR
+
+
+func dodge_label() -> String:
+	return "Repli"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
+
+
+func dodge_charges() -> int:
+	return DODGE_CHARGES
+
+
+func dodge_distance_u() -> float:
+	return DODGE_U
+
+
+## Sans entrée de déplacement, elle rompt à l'opposé de la visée (curseur / l'avant) en gardant la cible en face ;
+## avec le joystick, elle part où il pousse.
+func dodge_motion_dir(dir: Vector2) -> Vector2:
+	return -dir if _no_move_input() else dir
+
+
+func on_dodge_start(dir: Vector2) -> void:
 	still_t = 0.0
+	if _no_move_input():
+		player.facing = dir # recule face à la menace
+
+
+## Chaque pas de repli achevé bande l'arc.
+func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
+	set_tension(tension + DODGE_TENSION_GAIN)
+
+
+func _no_move_input() -> bool:
+	return Input.get_vector("move_left", "move_right", "move_up", "move_down").length_squared() < 0.0001
 
 
 func on_cast(_s: SpellData) -> void:

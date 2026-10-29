@@ -48,7 +48,20 @@ const BASE_SPEED_U := 3.6
 const SPEED_PER_MOTTE_U := 0.15
 const HITBOX_U := 0.6
 const HITBOX_MIN_U := 0.45 ## à MAX_MOTTES dehors
-const DODGE_U := 2.5
+## Coulée (esquive, docs/Design_Esquives.md §Bourbe) : elle se liquéfie et coule DODGE_U à FLOW_SPEED_U (0,30 s,
+## invulnérable), hitbox FLOW_HITBOX_U pendant ; traînée de vase FLOW_TRAIL_S derrière elle : ralentissement
+## FLOW_TRAIL_SLOW_PCT (rafraîchi toutes les FLOW_TRAIL_TICK_S), sans dégât (le Bourbier garde le DoT).
+const DODGE_U := 3.0
+const FLOW_SPEED_U := 10.0
+const FLOW_HITBOX_U := 0.35
+const FLOW_TRAIL_S := 2.0
+const FLOW_TRAIL_HALF_U := 0.4
+const FLOW_TRAIL_SLOW_PCT := 0.3
+const FLOW_TRAIL_SLOW_S := 0.6
+const FLOW_TRAIL_TICK_S := 0.25
+const FLOW_TRAIL_SPRITES := 3 ## éclaboussures de vase (mud_splash, lot BO3) posées le long de la traînée
+const FLOW_TRAIL_SPRITE_SCALE := 0.6
+const DODGE_SOUND := [&"spell.gifle_de_vase.cast_light", -6.0, 0.8]
 
 # --- Masse et mottes ---------------------------------------------------------------------------
 const MAX_MOTTES := 4
@@ -560,12 +573,102 @@ func locks_facing() -> bool:
 	return sunk_left > 0.0
 
 
+## Pas de fantômes : la coulée se lit par la traînée de vase.
 func dodge_ghosts() -> bool:
-	return true
+	return false
 
 
+func dodge_label() -> String:
+	return "Coulée"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
+
+
+func dodge_speed_u() -> float:
+	return FLOW_SPEED_U
+
+
+## À plat pendant la coulée : hitbox réduite (lisible ; sans effet sur les dégâts, elle est invulnérable).
 func on_dodge_start(_dir: Vector2) -> void:
-	pass
+	if player != null:
+		player.set_hitbox_u(FLOW_HITBOX_U)
+
+
+## Redressée : hitbox rendue (mottes dehors, Marée) ; traînée de vase sur le trajet.
+func on_dodge_end(from: Vector2, to: Vector2) -> void:
+	_last_out = -1000 # force _refresh_body à reposer la hitbox
+	_refresh_body()
+	_spawn_mud_trail(from, to)
+
+
+## Traînée de vase (Node2D, un seul par coulée) : ralentit les monstres sur le segment, s'efface en FLOW_TRAIL_S.
+func _spawn_mud_trail(from: Vector2, to: Vector2) -> void:
+	if player == null or player.get_parent() == null or from.distance_to(to) < 4.0:
+		return
+	var t := MudTrail.new()
+	t.from = from
+	t.to = to
+	t.half_px = FLOW_TRAIL_HALF_U * Balance.UNIT_PX
+	t.life = FLOW_TRAIL_S
+	t.tick_s = FLOW_TRAIL_TICK_S
+	t.slow_pct = FLOW_TRAIL_SLOW_PCT
+	t.slow_s = FLOW_TRAIL_SLOW_S
+	t.frames_path = MUD_SPLASH_FRAMES
+	t.sprites = FLOW_TRAIL_SPRITES
+	t.sprite_scale = FLOW_TRAIL_SPRITE_SCALE
+	player.get_parent().add_child(t)
+	t.global_position = Vector2.ZERO
+
+
+class MudTrail extends Node2D:
+	var from := Vector2.ZERO
+	var to := Vector2.ZERO
+	var half_px := 25.0
+	var life := 2.0
+	var tick_s := 0.25
+	var slow_pct := 0.3
+	var slow_s := 0.6
+	var frames_path := ""
+	var sprites := 3
+	var sprite_scale := 0.6
+	var _t := 0.0
+	var _tick_t := 0.0
+
+	func _ready() -> void:
+		z_index = -1
+		if frames_path != "" and ResourceLoader.exists(frames_path):
+			var sf := load(frames_path) as SpriteFrames
+			if sf != null and sf.get_animation_names().size() > 0:
+				var anim := StringName(sf.get_animation_names()[0])
+				for i in sprites:
+					var s := AnimatedSprite2D.new()
+					s.scale = Iso.UNSQUASH * sprite_scale
+					add_child(s)
+					s.global_position = from.lerp(to, (float(i) + 0.5) / float(sprites))
+					EmissiveOverlay.apply(s, sf)
+					s.play(anim)
+
+	func _physics_process(delta: float) -> void:
+		_t += delta
+		if _t >= life:
+			queue_free()
+			return
+		modulate.a = clampf((life - _t) / 0.5, 0.0, 1.0)
+		_tick_t -= delta
+		if _tick_t > 0.0:
+			return
+		_tick_t = tick_s
+		var seg := to - from
+		var len2 := maxf(seg.length_squared(), 1.0)
+		for e in get_tree().get_nodes_in_group(&"enemies"):
+			if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"apply_status"):
+				continue
+			var p := (e as Node2D).global_position
+			var k := clampf((p - from).dot(seg) / len2, 0.0, 1.0)
+			if p.distance_to(from + seg * k) <= half_px:
+				e.apply_status(&"slow", {"pct": slow_pct, "duration": slow_s})
 
 
 
