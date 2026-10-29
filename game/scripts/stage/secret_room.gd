@@ -44,6 +44,8 @@ var dead: Array[bool] = []
 var relics: Array[Node2D] = []
 var relic_maker: Callable = Callable() ## (pos local) -> Node2D : coffre gratuit posé, ajouté à la carte
 var door_pos := Vector2.ZERO
+var _wall_state := -1 ## état d'affichage du mur fissuré (0 discret, 1 fissuré, 2 très fissuré), -1 = aucun sprite
+var _wall_overlays: Array[Sprite2D] = []
 var door_size_px := Vector2(UNIT * 2.0, UNIT * 2.0)
 var _map_rot := 0.0
 var _spawn_at: Array[float] = [] ## minuteur d'apparition par gardien (< 0 : non armé / fait)
@@ -105,6 +107,7 @@ func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringNam
 			wall.damaged.connect(_on_wall_damaged)
 			wall.broken.connect(_on_trigger_done)
 			add_child(wall)
+			_refresh_wall_sprites.call_deferred() # après la pose des blocs de la carte
 		&"pillar":
 			beacon = SecretBeacon.new()
 			beacon.position = map.local_pos(beacon_mark)
@@ -211,7 +214,80 @@ func _on_plate_pressed(_plate: SecretPlate) -> void:
 
 
 func _on_wall_damaged(_ratio: float) -> void:
+	_refresh_wall_sprites()
 	queue_redraw()
+
+
+# --- Mur fissuré : sprites `wall_<biome>_{0,1,2}` posés sur les cases D, effondrement `wall_<biome>_break` ---
+const WALL_DIR := "res://assets/sprites/props/secret/"
+const WALL_STATE_FROM := [0.0, 0.25, 0.60] ## part de dégâts à partir de laquelle chaque état s'affiche
+const WALL_BREAK_FRAME_S := 0.09
+
+
+func _wall_path(suffix: String) -> String:
+	return RenderStyle.resolve("%swall_%s_%s.png" % [WALL_DIR, biome, suffix])
+
+
+func _wall_state_for(ratio: float) -> int:
+	var k := 0
+	for i in WALL_STATE_FROM.size():
+		if ratio >= WALL_STATE_FROM[i]:
+			k = i
+	return k
+
+
+## Pose ou met à jour la superposition sur chaque bloc de la porte (enfant du bloc : même pied, même échelle,
+## même tri en y). Sans sprite livré : rien, le dessin provisoire de `_draw` reste.
+func _refresh_wall_sprites() -> void:
+	if trigger != &"wall" or is_open or map == null:
+		return
+	var k := _wall_state_for(wall.ratio() if wall != null else 0.0)
+	if k == _wall_state and not _wall_overlays.is_empty():
+		return
+	var path := _wall_path(str(k))
+	if not ResourceLoader.exists(path):
+		return
+	_wall_state = k
+	for o in _wall_overlays:
+		if is_instance_valid(o):
+			o.queue_free() # l'enfant d'émission (_e) dépend de la texture : on repart de zéro
+	_wall_overlays.clear()
+	var tex := load(path) as Texture2D
+	for b in map.door_blocks(secret_id):
+		var o := Sprite2D.new()
+		o.name = "CrackedWall"
+		o.texture = tex
+		o.offset = StageMap.BLOCK_FOOT_OFFSET
+		b.add_child(o)
+		NormalMaps.apply_to_sprite(o)
+		_wall_overlays.append(o)
+
+
+## Anim d'effondrement (planche horizontale de cadres 256 px) posée à la place des blocs retirés.
+func _play_wall_collapse() -> void:
+	var path := _wall_path("break")
+	if _wall_overlays.is_empty() or not ResourceLoader.exists(path):
+		return
+	var tex := load(path) as Texture2D
+	var n := maxi(int(round(float(tex.get_width()) / float(tex.get_height()))), 1)
+	for b in map.door_blocks(secret_id):
+		var parent := b.get_parent()
+		if parent == null:
+			continue
+		var c := Sprite2D.new()
+		c.name = "WallCollapse"
+		c.texture = tex
+		c.hframes = n
+		c.scale = b.scale
+		c.offset = StageMap.BLOCK_FOOT_OFFSET
+		c.position = b.position
+		parent.add_child(c)
+		NormalMaps.apply_to_sprite(c)
+		var tw := c.create_tween()
+		for f in range(1, n):
+			tw.tween_callback(c.set.bind(&"frame", f)).set_delay(WALL_BREAK_FRAME_S)
+		tw.tween_property(c, "modulate:a", 0.0, 0.3).set_delay(0.5)
+		tw.tween_callback(c.queue_free)
 
 
 ## Levier tiré, mur cédé ou pilier chargé : la porte s'ouvre.
@@ -232,6 +308,9 @@ func open_door(silent: bool = false) -> void:
 		Audio.play(&"chest.open.large", door_pos)
 	if not silent: # une fois par zone (le compteur est sauvegardé avec la run : pas de recompte à la reprise)
 		RunState.add_counter("secret_zones")
+	if not silent:
+		_play_wall_collapse()
+	_wall_overlays.clear()
 	map.open_secret_door(secret_id)
 	queue_redraw()
 	_after_open.call_deferred(silent) # après le set_deferred de la collision de la porte
@@ -347,7 +426,7 @@ func _drop_relic(local_pos: Vector2) -> void:
 func _draw() -> void:
 	if map == null:
 		return
-	if not is_open and trigger == &"wall":
+	if not is_open and trigger == &"wall" and _wall_state < 0:
 		draw_set_transform(door_pos, _map_rot) # lézardes discrètes (placeholder du lot Codex _secret_wall), plus nettes avec les dégâts
 		var a := 0.35 + 0.5 * (wall.ratio() if wall != null else 0.0)
 		var cr := Color(0.08, 0.07, 0.06, a)
@@ -397,6 +476,7 @@ func from_dict(d: Dictionary) -> void:
 		&"wall":
 			if wall != null:
 				wall.restore_ratio(prog)
+				_refresh_wall_sprites()
 		&"pillar":
 			if beacon != null:
 				beacon.restore_ratio(prog)

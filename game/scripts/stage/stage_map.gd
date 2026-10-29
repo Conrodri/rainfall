@@ -629,6 +629,17 @@ func _visual_grid(data: Dictionary) -> Array:
 	return out
 
 
+## Sprites de mur des cases de la porte scellée `secret_id` (superposition « mur fissuré », SecretRoom).
+func door_blocks(secret_id: StringName) -> Array[Sprite2D]:
+	var out: Array[Sprite2D] = []
+	for cell: Vector2i in _door_cells:
+		if _door_cells[cell] == secret_id and _blocks.has(cell) and is_instance_valid(_blocks[cell]):
+			var b := _blocks[cell] as Sprite2D
+			if b != null:
+				out.append(b)
+	return out
+
+
 ## Ouvre la porte scellée `secret_id` : collision `Door_<id>` coupée, blocs retirés, contours et occluders refaits.
 ## Le NavField (Director.bind_map) est relancé par l'appelant (SecretRoom), qui sait quand les monstres sortent.
 func open_secret_door(secret_id: StringName) -> void:
