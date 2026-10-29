@@ -93,6 +93,7 @@ func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringNam
 				plates.append(pl)
 		&"lever":
 			lever = SecretLever.new()
+			lever.biome = biome
 			lever.position = map.local_pos(lever_mark)
 			lever.activated.connect(_on_trigger_done)
 			add_child(lever)

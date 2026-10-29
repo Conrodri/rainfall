@@ -2,18 +2,26 @@ class_name SecretLever
 extends Node2D
 ## Levier caché d'une salle secrète (déclencheur « lever », docs/Design_Variantes_B.md « Déclencheurs »). Posé dans un
 ## recoin de la carte (marqueur `lever`). S'actionne uniquement par l'action « interagir » (contrat Interaction, comme
-## le téléporteur : jamais au contact) ; définitif pour l'étage. Visuel provisoire (socle + manche dessinés en code)
-## en attendant le lot Codex art/tools/props/_secret_lever.txt.
+## le téléporteur : jamais au contact) ; définitif pour l'étage. Sprites Codex `lever_<biome>_{off,on}` (+ `_e`
+## émission, `_shadow` décalque cuit par BakedShadows), rendus iso 2,25 u / 128 px.
 
 signal activated
 
+const SPRITE_DIR := "res://assets/sprites/props/secret/"
+const DEFAULT_BIOME := &"terraces"
+const RENDER_PX_PER_U := 128.0 / 2.25 ## ortho_scale 2,25 u sur 128 px (art/tools/props/secret_lever_build.py)
+const SPRITE_BASE_Y := 0.80 ## socle à 80 % de la hauteur de frame : posé sur la position
+
 var used := false
+## Biome (à fixer avant add_child) : choisit la déclinaison de sprites.
+var biome: StringName = DEFAULT_BIOME
 var _player: Node2D = null
+var _sprite: Sprite2D = null
 
 
 func _ready() -> void:
 	add_to_group(&"interactable")
-	queue_redraw()
+	_refresh_sprite()
 
 
 func _player_node() -> Node2D:
@@ -56,16 +64,26 @@ func pull(silent: bool = false) -> void:
 		return
 	used = true
 	remove_from_group(&"interactable")
-	queue_redraw()
+	_refresh_sprite()
 	if not silent:
 		Audio.play(&"chest.lock", global_position)
 		activated.emit()
 
 
-func _draw() -> void:
-	# placeholder : socle de pierre, manche levé (armé) ou abaissé (utilisé)
-	draw_rect(Rect2(-22.0, -8.0, 44.0, 16.0), Color(0.3, 0.28, 0.25))
-	draw_rect(Rect2(-22.0, -8.0, 44.0, 16.0), Color(0.6, 0.55, 0.45), false, 3.0)
-	var tip := Vector2(-18.0, -6.0) if used else Vector2(12.0, -46.0)
-	draw_line(Vector2(0.0, -4.0), tip, Color(0.75, 0.7, 0.6), 6.0)
-	draw_circle(tip, 8.0, Color(0.35, 0.35, 0.3) if used else Color(1.0, 0.82, 0.45))
+func _refresh_sprite() -> void:
+	var state := "on" if used else "off"
+	var path := RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, biome, state])
+	if not ResourceLoader.exists(path):
+		path = RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, DEFAULT_BIOME, state])
+		if not ResourceLoader.exists(path):
+			return
+	if _sprite != null:
+		_sprite.queue_free() # l'enfant d'émission (_e) dépend de la texture : on repart de zéro
+	_sprite = Sprite2D.new()
+	_sprite.name = &"Sprite"
+	var tex := load(path) as Texture2D
+	_sprite.texture = tex
+	_sprite.scale = Iso.UNSQUASH * (64.0 / RENDER_PX_PER_U) # billboard iso, 64 px/u
+	_sprite.offset = Vector2(0.0, -float(tex.get_height()) * (SPRITE_BASE_Y - 0.5))
+	add_child(_sprite)
+	NormalMaps.apply_to_sprite(_sprite)
