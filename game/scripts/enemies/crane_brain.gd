@@ -366,7 +366,7 @@ func _start_hook(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_line(e.position, aim.angle(), HOOK_LEN_U * U, HOOK_W_U * U)
+	e.telegraph.show_line(e.position, aim.angle(), HOOK_LEN_U * U, HOOK_W_U * U, EnemyTelegraph.Weight.LIGHT)
 	if _body != null:
 		_body.boom_angle = aim.angle()
 	e._sfx(&"telegraph.warn_light.light", -4.0)

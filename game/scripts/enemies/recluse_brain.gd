@@ -366,7 +366,7 @@ func _start_staff(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), STAFF_RANGE_U * U, STAFF_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), STAFF_RANGE_U * U, STAFF_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 

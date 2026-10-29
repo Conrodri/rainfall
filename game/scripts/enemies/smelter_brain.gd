@@ -336,7 +336,7 @@ func _start_ladle(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), LADLE_RANGE_U * U, LADLE_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), LADLE_RANGE_U * U, LADLE_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 
@@ -390,7 +390,7 @@ func _start_spell(dir: Vector2, ppos: Vector2) -> void:
 			pace.wind(&"spell")
 			vis.play_attack(&"cast_b", _dur, aim)
 			e.telegraph.modulate = Color(1.0, 1.0, 1.0, 0.6)
-			e.telegraph.show_cone(e.position, aim.angle(), SPARK_TELE_U * U, SPARK_SPREAD * (SPARK_COUNT - 1) * 0.5 + 0.08)
+			e.telegraph.show_cone(e.position, aim.angle(), SPARK_TELE_U * U, SPARK_SPREAD * (SPARK_COUNT - 1) * 0.5 + 0.08, EnemyTelegraph.Weight.LIGHT)
 			e._sfx(&"telegraph.warn_light.light", 0.0, true)
 
 

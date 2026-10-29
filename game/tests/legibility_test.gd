@@ -163,6 +163,7 @@ func _test_ground_cap() -> void:
 		brutes.append(e)
 	var peak := 0
 	var naked := 0
+	var light_drawn := 0
 	for f in 90:
 		await get_tree().physics_frame
 		for e in brutes:
@@ -170,11 +171,14 @@ func _test_ground_cap() -> void:
 				e.tick(DT, _player, pp, Vector2.ZERO)
 		peak = maxi(peak, Enemy.ground_telegraphs())
 		for e in brutes:
-			if e._windup == Enemy.Windup.CONE or e._windup == Enemy.Windup.SHOCK:
+			if e._windup == Enemy.Windup.SHOCK: # coup lourd : zone au sol ; le cône léger n'en a plus (anticipation du corps)
 				if not e.telegraph.is_showing():
 					naked += 1
+			elif e._windup == Enemy.Windup.CONE and e.telegraph.is_showing():
+				light_drawn += 1
 	_check("pic de télégraphes au sol %d <= %d" % [peak, Balance.TELEGRAPH_GROUND_MAX], peak <= Balance.TELEGRAPH_GROUND_MAX and peak > 0)
 	_check("aucune attaque armée sans télégraphe", naked == 0, str(naked))
+	_check("cône léger : pas de zone au sol (réglage normal)", light_drawn == 0, str(light_drawn))
 	for e in brutes:
 		_director.release_enemy(e)
 	_check("compteur revenu à zéro", Enemy.ground_telegraphs() == 0, str(Enemy.ground_telegraphs()))

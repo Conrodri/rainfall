@@ -393,7 +393,7 @@ func _start_breech(dir: Vector2) -> void:
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
 	_breech_offs = _breech_offsets(_breech_count())
-	e.telegraph.show_line(e.position, aim.angle(), BREECH_LEN_U * U, BREECH_W_U * U)
+	e.telegraph.show_line(e.position, aim.angle(), BREECH_LEN_U * U, BREECH_W_U * U, EnemyTelegraph.Weight.LIGHT)
 	for t in _breech_teles:
 		if is_instance_valid(t):
 			t.queue_free()
@@ -403,7 +403,7 @@ func _start_breech(dir: Vector2) -> void:
 			continue # le télégraphe principal porte le rivet central
 		var bt := EnemyTelegraph.new()
 		e.get_parent().add_child(bt)
-		bt.show_line(e.position, aim.angle() + off, BREECH_LEN_U * U, BREECH_W_U * U)
+		bt.show_line(e.position, aim.angle() + off, BREECH_LEN_U * U, BREECH_W_U * U, EnemyTelegraph.Weight.LIGHT)
 		_breech_teles.append(bt)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 

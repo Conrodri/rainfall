@@ -573,7 +573,7 @@ func _start_auto(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color(1, 1, 1, 0.8)
-	e.telegraph.show_line(e.position, aim.angle(), AUTO_LEN_U * U, AUTO_W_U * U)
+	e.telegraph.show_line(e.position, aim.angle(), AUTO_LEN_U * U, AUTO_W_U * U, EnemyTelegraph.Weight.LIGHT)
 	_snd(&"enemy.salt_king_scepter.medium", -3.0)
 
 

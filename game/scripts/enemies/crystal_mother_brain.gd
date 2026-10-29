@@ -407,7 +407,7 @@ func _start_shard(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color(1, 1, 1, 0.8)
-	e.telegraph.show_line(e.position, aim.angle(), 8.0 * U, SHARD_R_U * 2.0 * U)
+	e.telegraph.show_line(e.position, aim.angle(), 8.0 * U, SHARD_R_U * 2.0 * U, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 
@@ -740,7 +740,7 @@ func _arm_prism(dir: Vector2) -> void:
 	for i in _prism.size():
 		var sg: Dictionary = _prism[i]
 		var t := _tele(STAL_COUNT + i)
-		t.show_line(sg["from"], sg["angle"], sg["len"], PRISM_W_U * U)
+		t.show_line(sg["from"], sg["angle"], sg["len"], PRISM_W_U * U, EnemyTelegraph.Weight.DEADLY)
 		t.set_progress(0.0)
 
 

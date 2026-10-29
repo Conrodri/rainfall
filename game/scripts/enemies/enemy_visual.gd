@@ -108,6 +108,7 @@ var _fx_t := 0.0
 var _fx_axis := Vector2(0.0, 1.0) ## poids écran (|x|, |y|) de l'axe du coup
 var _fx_blink := false
 var _fx_gain := 1.0 ## 1 monstre, moins pour un boss (grand sprite)
+var _arm_total := 0.0 ## durée de l'armement en cours (monstres ; set_arm_total) : sert à l'anticipation des dernières ms
 static var _fx_live := 0
 var _poly := PackedVector2Array()
 var _sprite: AnimatedSprite2D = null
@@ -885,6 +886,8 @@ func _lunge_offset(t: float) -> float:
 	var reach := BOSS_LUNGE_RADIUS * _radius
 	var back := -BOSS_WINDBACK * reach
 	var t_in := maxf(_strike_impact - BOSS_LUNGE_IN_S, 0.0)
+	# pose qui se creuse puis « gèle » juste avant la fente (recul +60 % sur ANTICIP_HOLD_S), puis claque : même instant d'impact
+	back *= 1.0 + 0.6 * smoothstep(maxf(t_in - Balance.ANTICIP_HOLD_S, 0.0), t_in, t)
 	if t < t_in:
 		return back * smoothstep(0.0, maxf(t_in, 0.001), t)
 	if t < _strike_impact:
@@ -1064,6 +1067,12 @@ func set_charge(level: int, blink := false) -> void:
 
 
 ## Retire l'armement sans impact (interruption : emprisonnement, étourdissement).
+## Durée totale de l'armement qui vient de commencer (monstres) : active le resserrement d'avant impact
+## (Balance.ANTICIP_*). Purement visuel, le coup tombe quand Enemy le décide.
+func set_arm_total(seconds: float) -> void:
+	_arm_total = seconds
+
+
 func clear_charge() -> void:
 	if _charge_level == 0 and not _fx_on:
 		return
@@ -1093,6 +1102,7 @@ func _fx_begin(state: int) -> void:
 
 
 func _fx_end(restore: bool) -> void:
+	_arm_total = 0.0
 	if _fx_on:
 		_fx_on = false
 		_fx_live = maxi(_fx_live - 1, 0)
@@ -1113,6 +1123,19 @@ func _fx_scale(along: float, perp: float) -> void:
 	_sprite.scale = _base_scale * Vector2(1.0 + along * a.x + perp * a.y, 1.0 + along * a.y + perp * a.x)
 
 
+## Montée 0..1 de l'anticipation sur les Balance.ANTICIP_HOLD_S avant l'impact (coup de boss : _strike_impact ;
+## monstre : _arm_total). 0 si la durée est inconnue.
+func _anticip() -> float:
+	var remaining := INF
+	if _strike_t >= 0.0:
+		remaining = _strike_impact - _strike_t
+	elif _arm_total > 0.0:
+		remaining = _arm_total - _fx_t
+	if remaining >= Balance.ANTICIP_HOLD_S:
+		return 0.0
+	return smoothstep(0.0, 1.0, 1.0 - maxf(remaining, 0.0) / Balance.ANTICIP_HOLD_S)
+
+
 func _process(delta: float) -> void:
 	if _sprite == null or _fx_state == 0:
 		_fx_end(false)
@@ -1122,9 +1145,14 @@ func _process(delta: float) -> void:
 	if _fx_state == 1:
 		var k := clampf(_fx_t / Balance.ARM_IN_S, 0.0, 1.0)
 		k = k * k * (3.0 - 2.0 * k)
-		var sq := Balance.ARM_SQUASH * k * _fx_gain
+		var h := _anticip()
+		var sq := Balance.ARM_SQUASH * k * _fx_gain * (1.0 + Balance.ANTICIP_EXTRA * h)
 		_fx_scale(-sq, sq * 0.5)
-		if _fx_blink and flashy and not _flash:
+		if h > 0.0 and flashy and not _flash: # dernières ms : la teinte d'armement monte vers l'éclat d'impact
+			var ma := CHARGE_MODS[maxi(_charge_level, 1)].lerp(IMPACT_MOD, Balance.ANTICIP_FLASH * h)
+			ma.a = clampf(ma.a + 0.5 * h, 1.05, 2.0)
+			_sprite.modulate = ma
+		elif _fx_blink and flashy and not _flash:
 			var m := CHARGE_MODS[maxi(_charge_level, 1)]
 			m.a = clampf(m.a + 0.3 * sin(_fx_t * TAU * Balance.ARM_BLINK_HZ), 1.05, 2.0)
 			_sprite.modulate = m

@@ -650,7 +650,7 @@ func _start_bite(dir: Vector2) -> void:
 		e._light.set_energy(LIGHT_ENERGY[phase - 1])
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), BITE_RANGE_U * U, BITE_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), BITE_RANGE_U * U, BITE_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 

@@ -338,7 +338,7 @@ func _start_horns(dir: Vector2, bogged := false) -> void:
 		pace.wind(&"auto")
 	vis.play_attack(&"attack", _horns_wind, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), HORNS_RANGE_U * U, HORNS_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), HORNS_RANGE_U * U, HORNS_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 	if bogged:
 		_horns_bogged_t = _horns_wind

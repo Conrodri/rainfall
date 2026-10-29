@@ -8,6 +8,9 @@ extends Node2D
 ## matériau unshaded et light_mask 0 ; libérée avec son monstre.
 
 enum Shape { NONE, CONE, CIRCLE, LINE }
+## Poids du coup annoncé (passe du 29/10/2026) : LIGHT = pas de zone au sol (lu par l'anticipation du corps), sauf avec le réglage
+## « Télégraphes renforcés » ; HEAVY = zone fine dont le remplissage monte ; DEADLY = idem, plus dense.
+enum Weight { LIGHT, HEAVY, DEADLY }
 
 static var _unshaded: CanvasItemMaterial = null
 
@@ -42,6 +45,8 @@ static var _strong := false
 static var _strong_ms := -1000000
 
 var _shape := Shape.NONE
+var _weight := Weight.HEAVY
+var _tint := Color(0.95, 0.10, 0.10)
 ## true : reste dans le monde (z -1 : sur le sol, sous les corps) au lieu de la couche des télégraphes.
 ## DÉFAUT GÉNÉRIQUE : vrai pour tout télégraphe de boss / mini-boss (hôte non-Enemy = cerveau, zone ou
 ## fabrique de boss ; hôte Enemy = is_boss, mis à jour à chaque activation par Enemy._common_activate) ;
@@ -91,12 +96,29 @@ static func refresh_strong() -> void:
 	_strong_ms = -1000000
 
 
+## Bord : renforcé = épais (ancien affichage complet) ; normal = fin et net (Balance.TELEGRAPH_LITE_*).
 static func outer_px() -> float:
-	return STRONG_OUTER_PX if strong() else EDGE_OUTER_PX
+	return STRONG_OUTER_PX if strong() else Balance.TELEGRAPH_LITE_OUTER_PX
 
 
 static func inner_px() -> float:
-	return STRONG_INNER_PX if strong() else EDGE_INNER_PX
+	return STRONG_INNER_PX if strong() else Balance.TELEGRAPH_LITE_INNER_PX
+
+
+## Poids d'un coup d'après son coefficient de dégâts (Balance.TELEGRAPH_LIGHT_MAX_COEF / DEADLY_MIN_COEF).
+static func weight_for_coef(coef: float) -> int:
+	if coef <= Balance.TELEGRAPH_LIGHT_MAX_COEF:
+		return Weight.LIGHT
+	return Weight.DEADLY if coef >= Balance.TELEGRAPH_DEADLY_MIN_COEF else Weight.HEAVY
+
+
+## Teinte d'alerte : rouge (ou orange en daltonisme, Palette) mêlé à l'accent du biome courant (normal seulement).
+static func alert_tint() -> Color:
+	var base := Palette.telegraph_tint()
+	if strong() or Palette.telegraph_tint(CvdPalette.NONE) != base:
+		return base
+	var acc: Variant = Balance.TELEGRAPH_BIOME_TINT.get(EnemyVisual.current_biome(), null)
+	return base.lerp(acc as Color, Balance.TELEGRAPH_BIOME_MIX) if acc is Color else base
 
 
 static func fill_color() -> Color:
@@ -173,21 +195,26 @@ func set_in_world(on: bool, host: Node = null) -> void:
 		_move_to_layer()
 
 
-func show_cone(origin: Vector2, angle: float, radius: float, half_angle: float) -> void:
-	_show(Shape.CONE, origin, angle, radius, half_angle)
+func show_cone(origin: Vector2, angle: float, radius: float, half_angle: float, weight: int = Weight.HEAVY) -> void:
+	_show(Shape.CONE, origin, angle, radius, half_angle, weight)
 
 
-func show_circle(center: Vector2, radius: float) -> void:
-	_show(Shape.CIRCLE, center, 0.0, radius, 0.0)
+func show_circle(center: Vector2, radius: float, weight: int = Weight.HEAVY) -> void:
+	_show(Shape.CIRCLE, center, 0.0, radius, 0.0, weight)
 
 
 ## Ligne (charge) : rectangle de `length` px vers `angle`, `width` px de large, depuis `origin`.
 ## La largeur passe par le paramètre half_angle (réutilisé).
-func show_line(origin: Vector2, angle: float, length: float, width: float) -> void:
-	_show(Shape.LINE, origin, angle, length, width)
+func show_line(origin: Vector2, angle: float, length: float, width: float, weight: int = Weight.HEAVY) -> void:
+	_show(Shape.LINE, origin, angle, length, width, weight)
 
 
-func _show(shape: Shape, pos: Vector2, angle: float, radius: float, half_angle: float) -> void:
+func _show(shape: Shape, pos: Vector2, angle: float, radius: float, half_angle: float, weight: int = Weight.HEAVY) -> void:
+	if weight == Weight.LIGHT and not strong():
+		hide_telegraph() # coup léger : lu par l'anticipation du corps, pas de zone au sol
+		return
+	_weight = weight
+	_tint = alert_tint()
 	_shape = shape
 	global_position = pos
 	rotation = angle
@@ -195,6 +222,8 @@ func _show(shape: Shape, pos: Vector2, angle: float, radius: float, half_angle: 
 	_half_angle = half_angle
 	_strong_on = strong()
 	_fill.strong_on = _strong_on
+	_fill.weight = weight
+	_fill.tint = _tint
 	_fill.setup(shape, radius, half_angle)
 	_fill.scale = Vector2.ZERO
 	_ring.setup(shape, radius, half_angle, _strong_on)
@@ -207,7 +236,8 @@ func _show(shape: Shape, pos: Vector2, angle: float, radius: float, half_angle: 
 func set_progress(p: float) -> void:
 	var k := clampf(p, 0.0, 1.0)
 	_fill.scale = Vector2(k, 1.0) if _shape == Shape.LINE else Vector2(k, k)
-	_fill.modulate.a = lerpf(FILL_RAMP_START, 1.0, k) # le remplissage s'intensifie jusqu'à l'impact (lisible à 250 monstres)
+	# le remplissage monte jusqu'à l'impact (lisible à 250 monstres) ; normal : courbe douce depuis TELEGRAPH_LITE_FILL_START
+	_fill.modulate.a = lerpf(FILL_RAMP_START, 1.0, k) if _strong_on else lerpf(Balance.TELEGRAPH_LITE_FILL_START, 1.0, k * k)
 	var step := int(k * RING_STEPS)
 	if step != _ring_step and _ring != null:
 		_ring_step = step
@@ -228,6 +258,17 @@ func _draw() -> void:
 
 
 func _draw_shape() -> void:
+	if not _strong_on: # normal : aplat de fond quasi invisible, bord fin ; le remplissage qui monte est _Fill
+		var base := Color(_tint.r, _tint.g, _tint.b, Balance.TELEGRAPH_LITE_BASE_ALPHA)
+		match _shape:
+			Shape.CIRCLE:
+				draw_circle(Vector2.ZERO, _radius, base)
+			Shape.CONE:
+				draw_colored_polygon(cone_points(_radius, _half_angle), base)
+			Shape.LINE:
+				draw_rect(Rect2(0.0, -_half_angle * 0.5, _radius, _half_angle), base)
+		edge_shape(self, _shape, _radius, _half_angle, 1.0)
+		return
 	match _shape:
 		Shape.CIRCLE:
 			draw_circle(Vector2.ZERO, _radius, fill_color())
@@ -320,10 +361,17 @@ class _Fill extends Node2D:
 		queue_redraw()
 
 	var strong_on := false
+	var weight := 1
+	var tint := Color(0.95, 0.10, 0.10)
 
 	func _draw() -> void:
-		var col := Palette.telegraph(EnemyTelegraph.STRONG_PROGRESS if strong_on else EnemyTelegraph.PROGRESS)
-		col.a = minf(col.a / EnemyTelegraph.FILL_RAMP_START, 0.85) # alpha final ; modulate = FILL_RAMP_START au début retrouve l'alpha d'origine
+		var col: Color
+		if strong_on:
+			col = Palette.telegraph(EnemyTelegraph.STRONG_PROGRESS)
+			col.a = minf(col.a / EnemyTelegraph.FILL_RAMP_START, 0.85) # alpha final ; modulate = FILL_RAMP_START au début retrouve l'alpha d'origine
+		else:
+			col = tint
+			col.a = Balance.TELEGRAPH_LITE_FILL_END_DEADLY if weight == EnemyTelegraph.Weight.DEADLY else Balance.TELEGRAPH_LITE_FILL_END
 		if _shape == EnemyTelegraph.Shape.CIRCLE:
 			draw_circle(Vector2.ZERO, _radius, col)
 		elif _shape == EnemyTelegraph.Shape.CONE:

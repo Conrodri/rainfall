@@ -521,7 +521,7 @@ func _start_lash(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_line(e.position, aim.angle(), LASH_LEN_U * U, LASH_W_U * U)
+	e.telegraph.show_line(e.position, aim.angle(), LASH_LEN_U * U, LASH_W_U * U, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 
@@ -547,7 +547,7 @@ func _start_whirl(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, Vector2.ZERO)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_circle(e.position, WHIRL_R_U * U)
+	e.telegraph.show_circle(e.position, WHIRL_R_U * U, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", 0.0, true)
 
 
@@ -963,7 +963,7 @@ func _update_cross(delta: float, player: Node2D, ppos: Vector2) -> void:
 func _start_strike(ppos: Vector2) -> void:
 	var pos := _walkable(ppos)
 	var tele := _tele(30 + (_strikes.size() % 3))
-	tele.show_circle(pos, LIGHTNING_R_U * U)
+	tele.show_circle(pos, LIGHTNING_R_U * U, EnemyTelegraph.Weight.DEADLY)
 	_strikes.append({"pos": pos, "t": 0.0, "tele": tele})
 	e._sfx(&"telegraph.warn_heavy.heavy", -2.0, true)
 

@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	if not _pending and _t >= STORM_EVERY - SonneurBrain.LIGHTNING_WINDUP:
 		_pending = true
 		_pos = player.global_position
-		_tele.show_circle(_pos, SonneurBrain.LIGHTNING_R_U * SonneurBrain.U)
+		_tele.show_circle(_pos, SonneurBrain.LIGHTNING_R_U * SonneurBrain.U, EnemyTelegraph.Weight.DEADLY)
 	if _pending:
 		_tele.set_progress((_t - (STORM_EVERY - SonneurBrain.LIGHTNING_WINDUP)) / SonneurBrain.LIGHTNING_WINDUP)
 		if _t >= STORM_EVERY:

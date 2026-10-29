@@ -341,7 +341,7 @@ func _start_gate(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), GATE_RANGE_U * U, GATE_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), GATE_RANGE_U * U, GATE_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 

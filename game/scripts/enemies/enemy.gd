@@ -764,7 +764,7 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 				visual.set_action(&"charge")
 				visual.set_charge(1, true)
 				_start_windup(Windup.LEAP, LEAP_WINDUP, position)
-				telegraph.show_line(position, _facing, LEAP_LENGTH_U * U, LEAP_WIDTH_U * U)
+				telegraph.show_line(position, _facing, LEAP_LENGTH_U * U, LEAP_WIDTH_U * U, EnemyTelegraph.Weight.LIGHT)
 				_sfx(&"telegraph.warn_light.light", 0.0, true)
 				return
 			if dist > keep_l:
@@ -799,7 +799,7 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 				var cone_wind := maxf(CONE_WINDUP, visual.attack_impact_time(&"attack"))
 				visual.set_action_timed(&"attack", cone_wind) # frame d'impact de l'anim = instant du coup
 				_start_windup(Windup.CONE, cone_wind, position)
-				telegraph.show_cone(position, _facing, CONE_RANGE_U * U, CONE_HALF_ANGLE)
+				telegraph.show_cone(position, _facing, CONE_RANGE_U * U, CONE_HALF_ANGLE, EnemyTelegraph.Weight.LIGHT)
 				_sfx(&"telegraph.warn_light.light", -4.0)
 			elif dist > CONE_RANGE_U * U * 0.7:
 				move = go * speed_px
@@ -829,7 +829,7 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 				var wind := maxf(visual.attack_impact_time(&"attack"), BOSS_AUTO_MIN_WINDUP)
 				visual.play_attack(&"attack", wind, dir)
 				_start_windup(Windup.AUTO, wind, player_pos)
-				telegraph.show_line(position, _facing, BOSS_AUTO_LINE_U * U, BOSS_AUTO_LINE_WIDTH_U * U)
+				telegraph.show_line(position, _facing, BOSS_AUTO_LINE_U * U, BOSS_AUTO_LINE_WIDTH_U * U, EnemyTelegraph.Weight.LIGHT)
 				_sfx(&"telegraph.warn_light.light", -6.0)
 				return
 			elif dist > radius_px + 2.0 * U:
@@ -881,6 +881,7 @@ func _start_windup(kind: Windup, duration: float, target: Vector2) -> void:
 	_windup_left = duration
 	_windup_total = duration
 	_target = target
+	visual.set_arm_total(duration)
 
 
 ## Tireur et bondisseur : demande un jeton puis s'arrête et arme le tir (`salvo` : salve de 3, sort).
@@ -906,9 +907,9 @@ func _begin_shot(dir: Vector2, salvo: bool) -> bool:
 	visual.set_charge(1, wind >= 0.5)
 	_start_windup(Windup.SALVO if salvo else Windup.SHOT, wind, position)
 	if salvo:
-		telegraph.show_cone(position, _facing, _BAL.SHOOTER_SALVO_CONE_U * U, SALVO_SPREAD + 0.1)
+		telegraph.show_cone(position, _facing, _BAL.SHOOTER_SALVO_CONE_U * U, SALVO_SPREAD + 0.1, EnemyTelegraph.Weight.LIGHT)
 	else:
-		telegraph.show_line(position, _facing, _BAL.SHOOTER_AIM_LINE_U * U, _BAL.SHOOTER_AIM_LINE_WIDTH_U * U)
+		telegraph.show_line(position, _facing, _BAL.SHOOTER_AIM_LINE_U * U, _BAL.SHOOTER_AIM_LINE_WIDTH_U * U, EnemyTelegraph.Weight.LIGHT)
 	_sfx(&"telegraph.warn_light.light", -4.0 if salvo else -9.0, salvo)
 	return true
 

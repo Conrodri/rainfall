@@ -40,7 +40,7 @@ static func begin(b: MiniBossBrain, p: Dictionary) -> void:
 			b.set_camo(true)
 			b.vis.play_attack(anim, wind, b.aim)
 		"projectile_fan":
-			b.tele(0).show_line(b.e.position, b.aim.angle(), PROJ_LINE_U * U, 0.5 * U)
+			b.tele(0).show_line(b.e.position, b.aim.angle(), PROJ_LINE_U * U, 0.5 * U, _w(p))
 			p["_vol"] = int(p.get("volleys", 1))
 			b.vis.play_attack(anim, wind, b.aim)
 		"ring":
@@ -199,6 +199,15 @@ static func _retarget(b: MiniBossBrain) -> void:
 
 # --- Cône (et rayon canalisé en cône / ligne) ---------------------------------------------
 
+## Poids du télégraphe d'un motif : d'après son coef de dégâts ; un rayon canalisé, un motif à ticks (tick_s) ou à trace au sol (zone) est une zone
+## persistante : toujours dessinée (lourde au moins).
+static func _w(p: Dictionary) -> int:
+	var w := EnemyTelegraph.weight_for_coef(float(p.get("coef", 1.0)))
+	if w == EnemyTelegraph.Weight.LIGHT and (p.has("tick_s") or p.has("zone") or String(p.get("type", "")) == "beam"):
+		return EnemyTelegraph.Weight.HEAVY
+	return w
+
+
 static func _show_cones(b: MiniBossBrain, p: Dictionary, beam: bool) -> void:
 	var angs: Array = p.get("angles_deg", [0]) if beam else [0]
 	var rot := float(p.get("_rot", 0.0))
@@ -206,9 +215,9 @@ static func _show_cones(b: MiniBossBrain, p: Dictionary, beam: bool) -> void:
 	for i in angs.size():
 		var a := b.aim.angle() + rot + deg_to_rad(float(angs[i]))
 		if String(p.get("shape", "cone")) == "line" and beam:
-			b.tele(i).show_line(b.e.position, a, r, float(p.get("width_u", 1.5)) * U)
+			b.tele(i).show_line(b.e.position, a, r, float(p.get("width_u", 1.5)) * U, _w(p))
 		else:
-			b.tele(i).show_cone(b.e.position, a, r, deg_to_rad(float(p.get("half_deg", 45.0))))
+			b.tele(i).show_cone(b.e.position, a, r, deg_to_rad(float(p.get("half_deg", 45.0))), _w(p))
 
 
 static func _progress(b: MiniBossBrain, n: int, k: float) -> void:
@@ -331,7 +340,7 @@ static func _show_lines(b: MiniBossBrain, p: Dictionary) -> void:
 	var ls := _lines(b, p)
 	for i in ls.size():
 		var l: Array = ls[i]
-		b.tele(i).show_line(l[0], float(l[1]), float(l[2]), float(l[3]))
+		b.tele(i).show_line(l[0], float(l[1]), float(l[2]), float(l[3]), _w(p))
 	p["_n"] = ls.size()
 
 
@@ -398,7 +407,7 @@ static func _step_line(b: MiniBossBrain, p: Dictionary) -> bool:
 
 static func _show_charge(b: MiniBossBrain, p: Dictionary) -> void:
 	var back := b.e.radius_px * 0.6
-	b.tele(0).show_line(b.e.position - b.aim * back, b.aim.angle(), float(p.get("length_u", 10.0)) * U + back, float(p.get("width_u", 2.0)) * U)
+	b.tele(0).show_line(b.e.position - b.aim * back, b.aim.angle(), float(p.get("length_u", 10.0)) * U + back, float(p.get("width_u", 2.0)) * U, _w(p))
 
 
 static func _step_charge(b: MiniBossBrain, p: Dictionary, delta: float) -> bool:
@@ -542,7 +551,7 @@ static func _show_ring(b: MiniBossBrain, p: Dictionary) -> void:
 		f.global_position = c
 		f.set_param(r, inner, 0.0)
 	else:
-		b.tele(0).show_circle(c, r)
+		b.tele(0).show_circle(c, r, _w(p))
 
 
 static func _step_ring(b: MiniBossBrain, p: Dictionary) -> bool:
@@ -630,7 +639,7 @@ static func _place_circles(b: MiniBossBrain, p: Dictionary) -> void:
 	p["_targets"] = tg
 	p["_done"] = []
 	for i in tg.size():
-		b.tele(i).show_circle(tg[i], r)
+		b.tele(i).show_circle(tg[i], r, _w(p))
 		(p["_done"] as Array).append(false)
 
 
@@ -705,7 +714,7 @@ static func _leap_target(b: MiniBossBrain, p: Dictionary) -> Vector2:
 static func _begin_leap(b: MiniBossBrain, p: Dictionary) -> void:
 	p["_to"] = _leap_target(b, p)
 	p["_moving"] = false
-	b.tele(0).show_circle(p["_to"], float(p.get("radius_u", 2.5)) * U)
+	b.tele(0).show_circle(p["_to"], float(p.get("radius_u", 2.5)) * U, _w(p))
 	b.vis.play_attack(StringName(p.get("anim", "cast_b")), float(p["_wind"]) + float(p.get("air_s", 0.5)), b.aim)
 
 
@@ -797,7 +806,7 @@ static func _step_burrow(b: MiniBossBrain, p: Dictionary, delta: float) -> bool:
 			p["_stage"] = 2
 			p["_armed"] = true
 			p["_t2"] = b.t
-			b.tele(0).show_circle(p["_to"], r)
+			b.tele(0).show_circle(p["_to"], r, _w(p))
 			b.vis.play_attack(StringName(p.get("anim", "cast_b")), EMERGE_WARN, b.aim)
 			e._sfx(&"telegraph.boss.heavy", 0.0, true)
 			return false

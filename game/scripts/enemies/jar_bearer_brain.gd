@@ -353,7 +353,7 @@ func _start_throw(dir: Vector2, ppos: Vector2) -> void:
 	vis.play_attack(&"attack", _dur, aim)
 	var to := _walkable(ppos)
 	var tele := _tele(_free_tele_index())
-	tele.show_circle(to, THROW_R_U * U)
+	tele.show_circle(to, THROW_R_U * U, EnemyTelegraph.Weight.LIGHT)
 	_throws.append({"from": e.position, "to": to, "t": -_dur, "wind": _dur, "jar": null, "tele": tele, "launched": false})
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 

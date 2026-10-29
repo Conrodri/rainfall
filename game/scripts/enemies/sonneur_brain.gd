@@ -389,7 +389,7 @@ func _start_hammer(dir: Vector2) -> void:
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
 	e.telegraph.modulate = Color.WHITE
-	e.telegraph.show_cone(e.position, aim.angle(), HAMMER_RANGE_U * U, HAMMER_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), HAMMER_RANGE_U * U, HAMMER_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 
@@ -576,7 +576,7 @@ func _resolve_bolts(player: Node2D, ppos: Vector2) -> void:
 func _start_strike(ppos: Vector2) -> void:
 	var pos := _walkable(ppos)
 	var tele := _tele(BOLT_COUNT + (_strikes.size() % 3))
-	tele.show_circle(pos, LIGHTNING_R_U * U)
+	tele.show_circle(pos, LIGHTNING_R_U * U, EnemyTelegraph.Weight.DEADLY)
 	_strikes.append({"pos": pos, "t": 0.0, "tele": tele})
 	e._sfx(&"telegraph.warn_heavy.heavy", -2.0, true)
 

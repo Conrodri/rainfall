@@ -346,7 +346,7 @@ func _start_gore(dir: Vector2) -> void:
 	_dur = BossPace.windup(&"auto", phase)
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
-	e.telegraph.show_cone(e.position, aim.angle(), GORE_RANGE_U * U, GORE_HALF)
+	e.telegraph.show_cone(e.position, aim.angle(), GORE_RANGE_U * U, GORE_HALF, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -4.0)
 
 
@@ -370,7 +370,7 @@ func _start_auto(dir: Vector2) -> void:
 	_dur = BossPace.windup(&"auto", phase, vis.attack_impact_time(&"attack"))
 	pace.wind(&"auto")
 	vis.play_attack(&"attack", _dur, aim)
-	e.telegraph.show_line(e.position, aim.angle(), SHOOT_LINE_U * U, SHOOT_LINE_W_U * U)
+	e.telegraph.show_line(e.position, aim.angle(), SHOOT_LINE_U * U, SHOOT_LINE_W_U * U, EnemyTelegraph.Weight.LIGHT)
 	e._sfx(&"telegraph.warn_light.light", -6.0)
 
 
@@ -628,7 +628,7 @@ func _update_wisps(delta: float, player: Node2D, ppos: Vector2) -> void:
 					w["t"] = 0.0
 					var tele := EnemyTelegraph.new()
 					e.get_parent().add_child(tele)
-					tele.show_circle(pos, WISP_R_U * U)
+					tele.show_circle(pos, WISP_R_U * U, EnemyTelegraph.Weight.LIGHT)
 					w["tele"] = tele
 					e._sfx(&"telegraph.warn_light.light", -4.0)
 			1: # arrêté : cercle d'alerte
