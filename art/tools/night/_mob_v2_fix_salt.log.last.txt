@@ -1,0 +1,5 @@
+`swarm_tier1_salt` retouché : volumes épaissis, os sombres, sel blanc, cristal renforcé ; impact frontal distinct.
+Cellule `64x56`, frames, directions, `.tres` conservés ; `_e` demi-résolution ; aucun `_n`.
+Dossier : `574563 → 515512` octets ; chaque PNG ≤ avant ; textures `> 4096` : `0`.
+Godot import terminé ; `sprites_test` et `biome_fauna_test` : `RESULT: OK`.
+Sortie fauna : `50 ObjectDB instances were leaked` ; `11 resources still in use at exit`.

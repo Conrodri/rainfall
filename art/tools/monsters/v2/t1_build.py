@@ -173,7 +173,87 @@ def shooter():
                 knee.rotation_euler.x=-f*.3
     produce('shooter_tier2',(88,104),96,dict(idle=4,run=8,attack=8,death=4),root,pose)
 
+
+def front_impact(role):
+    """Retouch existing keyed sources; patch only s/se/sw impact cells."""
+    import tempfile
+    specs={'swarm':('swarm_tier1',(64,56),48),
+           'shooter':('shooter_tier2',(88,104),96),
+           'leaper':('leaper_tier2',(96,96),82),
+           'brute':('brute_tier3',(128,136),124)}
+    name,size,bottom=specs[role]
+    source=ROOT/'art/blender/monsters/v2'/(name+'.blend')
+    bpy.ops.wm.open_mainfile(filepath=str(source))
+    s=bpy.context.scene
+    root=next(o for o in s.objects if 'v2_cell' in o)
+    s.render.engine='BLENDER_EEVEE'
+    s.eevee.taa_render_samples=8
+    cel.install('creature',normals=False)
+    out=ROOT/'game/assets/sprites/monsters'/name
+    work=Path(tempfile.mkdtemp(prefix='rainfall_terr_render_'))
+    objects={o.name:o for o in root.children_recursive}
+    def edit(action):
+        touched=[]
+        def node(n):
+            o=objects[n]; touched.append(o); return o
+        if role=='swarm':
+            h=node('Telescoping head'); h.location.y=-.35; h.location.z=.04
+            h.rotation_euler.x=-.22; h.rotation_euler.z=0
+            for o in objects.values():
+                if o.type=='EMPTY' and o.name.startswith('Mandible hinge'):
+                    touched.append(o); o.rotation_euler.z=1.05 if o.location.x>0 else -1.05
+            node('Impact mouth').scale=(1.25,1.3,1.3)
+        elif role=='shooter':
+            w=node('Blowpipe aim'); w.rotation_euler.x=-.28; w.location.y=-.095; w.location.z=.255
+            node('Impact water puff').scale=(1.65,1.8,1.5)
+            for o in objects.values():
+                if o.type=='EMPTY' and o.name.startswith('Shoulder '):
+                    touched.append(o); o.rotation_euler.x=-1.15
+        elif role=='leaper':
+            h=node('Lateral neck hinge'); h.location.y=-.43; h.location.z=.05
+            h.rotation_euler.z=0; h.rotation_euler.x=-.20
+            node('Lower jaw pivot').rotation_euler.x=1.05
+            node('Impact open cyan palate').scale=(1.05,1.25,1.4)
+        else:
+            for sign in (-1,1):
+                sh=node('Shoulder '+str(sign)); el=node('Elbow '+str(sign))
+                if sign>0 or action=='cast':
+                    sh.rotation_euler.x=-1.6; sh.rotation_euler.y=0
+                    sh.rotation_euler.z=-.25*sign if action=='cast' else .12
+                    el.rotation_euler.x=-.12
+            w=node('Broken noria wheel weapon'); w.rotation_euler.y=.22; w.rotation_euler.z=-.18
+        for o in touched:
+            for prop in ('location','rotation_euler','scale'):
+                o.keyframe_insert(data_path=prop,frame=s.frame_current)
+    markers=sorted(s.timeline_markers,key=lambda m:m.frame)
+    for action in ('attack','cast') if role=='brute' else ('attack',):
+        marker=next(m for m in markers if m.name==action)
+        n=6 if role in ('swarm','leaper') else 8
+        f=n//2; s.frame_set(marker.frame+f); edit(action)
+        sheets={suffix:Image.open(out/(action+suffix+'.png')).convert('RGBA') for suffix in ('','_e')}
+        for d in ('se','s','sw'):
+            row=DIRS.index(d); root.rotation_euler.z=math.radians(90-45*row)
+            rot=root.rotation_euler.to_matrix(); refs=[Vector(v) for v in root['foot_reference']]
+            lowest=min((rot@p).y*.5+p.z*math.cos(math.pi/6) for p in refs)
+            s.camera.data.shift_y=(bottom-size[1]/2+lowest*64)/size[0]
+            bpy.context.view_layer.update()
+            path=work/(action+'_'+d+'.png'); iso_rig.common.configure_passes(path)
+            s.render.filepath=str(path); bpy.ops.render.render(write_still=True)
+            for suffix in ('','_e'):
+                src=path if not suffix else next(work.glob(path.stem+'_e__*.png'))
+                tile=Image.open(src).convert('RGBA').resize(size,Image.Resampling.LANCZOS)
+                if suffix: tile=tile.resize((size[0]//2,size[1]//2),Image.Resampling.LANCZOS)
+                sheets[suffix].paste(tile,(f*tile.width,row*tile.height))
+        for suffix,im in sheets.items():
+            im.save(out/(action+suffix+'.png'),optimize=True,compress_level=9)
+    root.rotation_euler.z=0; s.frame_set(1)
+    bpy.context.preferences.filepaths.save_version=0
+    bpy.ops.wm.save_as_mainfile(filepath=str(source))
+    print('FRONT IMPACT PASS',name,flush=True)
+
 if __name__=='__main__':
     role=sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'swarm'
-    {'swarm':swarm,'shooter':shooter,'contact':contact}[role]()
-    if role=='shooter': contact()
+    if '--front-impact' in sys.argv: front_impact(role)
+    else:
+        {'swarm':swarm,'shooter':shooter,'contact':contact}[role]()
+        if role=='shooter': contact()

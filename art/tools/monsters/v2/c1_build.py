@@ -31,6 +31,18 @@ def nut_quarter(name,j,mat,parent):
             a=layer*6+k; faces.append((a,a+3,a+9,a+6))
     return mesh(name,verts,faces,mat,parent)
 
+
+def deliver(name,size,bottom,counts,root,pose):
+    produce(name,size,bottom,counts,root,pose)
+    # Reuse q1 byte-ceiling compression; preserve original atlas budgets.
+    import os, subprocess
+    limits = {'shooter_tier2_rust': {'attack.png': 269564, 'attack_e.png': 34696, 'death.png': 72357, 'death_e.png': 9481, 'idle.png': 132980, 'idle_e.png': 16774, 'run.png': 318887, 'run_e.png': 41168}, 'swarm_tier1_rust': {'attack.png': 141504, 'attack_e.png': 17346, 'death.png': 38602, 'death_e.png': 5149, 'idle.png': 89983, 'idle_e.png': 10923, 'run.png': 180788, 'run_e.png': 21799}}
+    for filename,limit in limits[name].items():
+        path=ROOT/"game/assets/sprites/monsters"/name/filename
+        if path.stat().st_size>limit:
+            subprocess.run([os.environ.get("RAINFALL_PNGQUANT","pngquant"),"--force","--ext",".png","--speed","1","--quality","85-100",str(path)],check=True)
+        assert path.stat().st_size<=limit,(filename,path.stat().st_size,limit)
+
 def swarm():
     setup((64,56),48)
     cream=material('Pale tallow belly and dorsal folds','D3C7A0')
@@ -85,17 +97,17 @@ def swarm():
                 if math.cos(phase)>0: knee.rotation_euler.y=sign*.55*math.cos(phase)
             head.rotation_euler.x=.075*math.sin(t-1.1)
         if a=='attack':
-            reach=(0,-.027,-.048,.043,.022,.006)[f]
+            reach=(0,-.027,-.048,.030,.022,.006)[f]
             body.location.y-=reach*.32; head.location.y-=reach*.68
             for j,p in enumerate(segments): p.scale.y=1+reach*(j+1)*.8
             opening=(.0,.12,.20,1,.40,.06)[f]
             for j,p in enumerate(jaws):
                 a0=j*math.pi/2+math.pi/4
-                p.location.x=.042*opening*math.cos(a0); p.location.z=.042*opening*math.sin(a0)
+                p.location.x=.058*opening*math.cos(a0); p.location.z=.058*opening*math.sin(a0)
                 p.rotation_euler.x=-.35*opening*math.sin(a0)
                 p.rotation_euler.z=.35*opening*math.cos(a0)
             if f==3: mouth.scale=(1,)*3
-            head.rotation_euler.x=-.07*opening
+            head.rotation_euler.x=.48*opening
         if a=='death':
             body.location.y-=(0,.009,.014,.018)[f]
             body.location.z-=(0,.012,.025,.035)[f]
@@ -104,7 +116,7 @@ def swarm():
             head.rotation_euler.x=f*.13
             for j,p in enumerate(segments): p.rotation_euler.z=f*.035*math.sin(j+1)
             for hip,knee,j,sign in legs: hip.rotation_euler.y=sign*f*.20
-    produce('swarm_tier1_rust',(64,56),48,dict(idle=4,run=8,attack=6,death=4),root,pose)
+    deliver('swarm_tier1_rust',(64,56),48,dict(idle=4,run=8,attack=6,death=4),root,pose)
 
 def shooter():
     setup((88,104),96)
@@ -116,17 +128,18 @@ def shooter():
     orange=material('Lamp and muzzle FF9A3C','FF9A3C',1.3)
     root=empty('Riveteur direction'); pelvis=empty('Pelvis',(0,0,.45),root)
     torso=empty('Hunched shoulders',(0,.025,.24),pelvis)
-    ellipsoid('Clothed narrow chest',(0,0,0),(.13,.11,.23),pale,torso,2)
+    ellipsoid('Clothed narrow chest',(0,0,0),(.169,.143,.23),pale,torso,2)
     # Actual draped polygon panels with irregular hems and a forward split.
     cloth=[]
     for j in range(8):
         a=math.tau*j/8; panel=empty('Oilcloth shoulder fold %d'%j,(0,0,.20),torso); cloth.append(panel)
         verts=[]
-        for r,z in ((.08,0),(.19,-.14),(.145,-.43-(j%3)*.025)):
+        for r,z in ((.104,0),(.247,-.14),(.1885,-.43-(j%3)*.025)):
             for u in (a-.36,a+.36): verts.append((r*math.cos(u),r*.78*math.sin(u),z))
         mesh('Pale creased tarpaulin',verts,[(0,1,3,2),(2,3,5,4)],pale,panel)
         taper('Dark tar hem',verts[4],verts[5],(.018,.012),tar,panel,4)
-    tank=empty('Dorsal pressure cylinder',(0,.15,.04),torso)
+    tank=empty('Dorsal pressure cylinder',(0,.19,.04),torso)
+    tank.scale=(1.3,1.3,1.12)
     taper('Broad light brass bottle',(0,0,-.22),(0,0,.22),(.092,.066),brass,tank,8)
     for z in (-.13,.10): taper('Iron cylinder band',(0,0,z-.015),(0,0,z+.015),(.096,.092),iron,tank,8)
     taper('Gas valve',(0,0,.21),(.055,0,.27),(.026,.014),rust,tank,5)
@@ -145,7 +158,8 @@ def shooter():
         taper('Gaiter shin',(0,0,0),(0,-.018,-.205),(.036,.023),pale,knee,5)
         taper('Work boot',(0,-.002,-.192),(0,-.102,-.205),(.041,.027),iron,knee,5)
         legs.append((hip,knee,sign)); feet.extend(((sign*.075,-.102,.025),(sign*.075,.035,.025)))
-    gun=empty('Riveter two hand grip',(.09,-.15,.015),torso)
+    gun=empty('Riveter two hand grip',(.11,-.18,.015),torso)
+    gun.scale=(1.3,1.0,1.3)
     taper('Riveter steam chamber',(0,.06,0),(0,-.18,0),(.065,.047),brass,gun,8)
     taper('Riveter tapered barrel',(0,-.17,0),(0,-.30,0),(.042,.025),iron,gun,6)
     taper('Riveter muzzle ring',(0,-.28,0),(0,-.32,0),(.045,.034),rust,gun,6)
@@ -158,12 +172,12 @@ def shooter():
     for j in range(len(pts)-1): taper('Steam hose',pts[j],pts[j+1],(.023,.018),tar,hose,5)
     arms=[]
     for sign in (-1,1):
-        shoulder=empty('Shoulder %d'%sign,(sign*.14,-.015,.12),torso)
+        shoulder=empty('Shoulder %d'%sign,(sign*.182,-.015,.12),torso)
         elbow=empty('Elbow',(sign*.035,-.09,-.09),shoulder)
-        taper('Heavy sleeve upper arm',(0,0,0),tuple(elbow.location),(.056,.037),pale,shoulder,6)
+        taper('Heavy sleeve upper arm',(0,0,0),tuple(elbow.location),(.073,.048),pale,shoulder,6)
         target=(.09-sign*.175,-.14,.015)
-        taper('Gloved tapered forearm',(0,0,0),target,(.039,.027),tar,elbow,6)
-        ellipsoid('Gloved supporting hand',target,(.039,.045,.035),rust,elbow)
+        taper('Gloved tapered forearm',(0,0,0),target,(.051,.035),tar,elbow,6)
+        ellipsoid('Gloved supporting hand',target,(.051,.058,.045),rust,elbow)
         arms.append((shoulder,elbow,sign))
     root['foot_reference']=feet; reset=resetters(root)
     def pose(a,f,n):
@@ -185,15 +199,21 @@ def shooter():
             hose.rotation_euler.x=.07*math.sin(t-1.2)
             for j,p in enumerate(cloth): p.rotation_euler.x=.11*math.sin(t-1+j*.3)
         if a=='attack':
-            reach=(0,-.025,-.06,-.045,.065,-.025,.025,.005)[f]
+            reach=(0,-.025,-.06,-.045,.075,-.025,.025,.005)[f]
             gun.location.y-=reach; gun.location.z+=(0,.02,.055,.07,.07,.04,.02,0)[f]
-            gun.rotation_euler.x=(0,-.08,-.12,-.09,0,.14,.05,0)[f]
+            gun.rotation_euler.x=(0,-.08,-.12,-.09,.48,.14,.05,0)[f]
             torso.location.y-=reach*.22
             for shoulder,elbow,sign in arms:
                 shoulder.rotation_euler.x=-reach*.9-.12*(f in (2,3,4))
                 elbow.rotation_euler.z=sign*reach*.7
             hose.scale.y=1+reach*.9
-            if f==4: flash.scale=(1,)*3
+            if f==4:
+                flash.scale=(1,)*3
+                gun.location.x-=.07
+                for shoulder,elbow,sign in arms:
+                    shoulder.location.y-=.09
+                    shoulder.rotation_euler.x=.55
+                    elbow.rotation_euler.x=.25
         if a=='death':
             pelvis.rotation_euler.x=(.05,.35,.63,.88)[f]
             pelvis.location.z-=(0,.035,.065,.095)[f]
@@ -204,7 +224,7 @@ def shooter():
             for hip,knee,sign in legs:
                 hip.rotation_euler.x=-pelvis.rotation_euler.x+f*.22; knee.rotation_euler.x=-f*.48
             for j,p in enumerate(cloth): p.rotation_euler.x=-f*.075
-    produce('shooter_tier2_rust',(88,104),96,dict(idle=4,run=8,attack=8,death=4),root,pose)
+    deliver('shooter_tier2_rust',(88,104),96,dict(idle=4,run=8,attack=8,death=4),root,pose)
 
 def c1_contact():
     # Reuse the pilot's assembly and in-game Ash Lord scaling, with this biome.
@@ -239,6 +259,6 @@ def audit(name,size,bottom,counts,root,pose):
     assert not failures
 
 if __name__=='__main__':
-    if '--audit' in sys.argv: produce=audit
+    if '--audit' in sys.argv: deliver=audit
     role=sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'swarm'
     {'swarm':swarm,'shooter':shooter,'contact':c1_contact}[role]()

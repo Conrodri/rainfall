@@ -26,7 +26,31 @@ def setup(size,bottom):
 def deliver(*args):
     if '--audit' in sys.argv:
         audit(*args)
-    else: finish(*args)
+    else:
+        # Shared pipeline, restricted to the three frontal impact cells.
+        import common_v2 as cv
+        name,size,bottom,counts,root,pose=args
+        out=ROOT/'game/assets/sprites/monsters'/name
+        limits={p.name:p.stat().st_size for p in out.glob('*.png')}
+        original_tres=(out/(name+'.tres')).read_bytes()
+        source=inspect.getsource(cv.produce).replace('def produce(', 'def impact_produce(')
+        source=source.replace("sheets={k:Image.new('RGBA',(size[0]*n,size[1]*len(dirs))) for k in ('','_e')}",
+            "sheets={k:Image.open(out/(a+k+'.png')).convert('RGBA') for k in ('','_e')}")
+        source=source.replace("for row,d in enumerate(dirs):", "for row,d in enumerate(dirs):\n            if d not in ('s','se','sw'): continue")
+        source=source.replace("for f in range(n):\n                pose", "for f in range(n):\n                if f != n//2: continue\n                pose")
+        source=source.replace("sheets[suffix].paste(im,(f*size[0],row*size[1]))", "sheets[suffix].paste(im.resize((size[0]//2,size[1]//2),Image.Resampling.LANCZOS) if suffix else im,(f*size[0]//2,row*size[1]//2) if suffix else (f*size[0],row*size[1]))")
+        source=source.replace("if suffix: im=im.resize(((im.width+1)//2,(im.height+1)//2),Image.Resampling.LANCZOS)", "# Emission atlas already at half resolution.")
+        source=source.replace('    tres(name,size,counts,out)', '    # Preserve existing SpriteFrames bytes.')
+        ns=dict(vars(cv)); exec(source,ns); ns['impact_produce'](*args)
+        assert (out/(name+'.tres')).read_bytes()==original_tres
+        for filename,limit in limits.items():
+            p=out/filename
+            if p.stat().st_size>limit:
+                # Lossless recompression preserves every untouched atlas pixel.
+                import subprocess
+                subprocess.run(['python','-c',
+                    'import sys,zopfli.png; p=sys.argv[1]; data=open(p,"rb").read(); result=zopfli.png.optimize(data,num_iterations=5); open(p,"wb").write(result)',str(p)],check=True)
+            assert p.stat().st_size<=limit,(filename,p.stat().st_size,limit)
 
 def leaper():
     pale,rust,dark,glow=setup((96,96),82)
@@ -89,7 +113,14 @@ def leaper():
             ext=(0,-.035,-.065,.085,.035,.006)[f]; front.location.y-=ext; coil.scale.y=1+ext*2
             jaw.rotation_euler.x=(.12,.30,.60,.025,.16,.07)[f]; head.rotation_euler.x=(0,-.08,-.16,.15,.05,.01)[f]
             body.location.y-=ext*.3
-            if f==3: flash.scale=(1,)*3
+            if f==3:
+                flash.scale=(1,)*3
+                if abs(root.rotation_euler.z)<=math.pi/4+.001:
+                    head.location.y-=.19
+                    head.location.z+=.035
+                    head.rotation_euler.x=.38
+                    head.rotation_euler.z=0
+                    jaw.rotation_euler.x=.52
         if a=='death':
             p=f/(n-1); body.location.z-=.12*p; body.location.y-=.04*p
             body.rotation_euler.x=.32*p; body.scale.z=1-.24*p; coil.scale.y=1-.2*p
@@ -192,7 +223,17 @@ def brute():
                 chain.rotation_euler.x=-.12 if f==4 else .10*math.sin(t)
                 if f==4: chain.scale.z=1.6; chain.location.z-=.06
                 if f>=4: wave.scale=(.45+.17*(f-4),)*2+(1,)
-            if f==4: flash.scale=(1,)*3
+            if f==4:
+                flash.scale=(1,)*3
+                if abs(root.rotation_euler.z)<=math.pi/4+.001:
+                    shoulders[1].location.x-=.16
+                    shoulders[1].rotation_euler.x=-.90 if a=='attack' else -.62
+                    shoulders[1].rotation_euler.z=-.08
+                    elbows[1].rotation_euler.x=-.30
+                    chain.rotation_euler.x=.35 if a=='attack' else -.18
+                    chain.scale.z=1.0 if a=='attack' else 1.30
+                    hook.rotation_euler.z=.35
+                    hook.location.y-=.025
             head.rotation_euler.x=.08*extension; shoulders[0].rotation_euler.x=.12*extension
         if a=='death':
             p=f/(n-1); hips.location.z-=.16*p; hips.location.y-=.04*p

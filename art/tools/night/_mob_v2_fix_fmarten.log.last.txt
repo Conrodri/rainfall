@@ -1,0 +1,5 @@
+Impacts s/se/sw retouchés ; corps, autres frames et .tres inchangés ; aucun _n.
+leaper_tier2_moss : 1618374 → 1552787 octets.
+brute_tier3_moss : 3373894 → 3371661 octets ; chaque PNG ≤ avant.
+Contrôle sur sol réel validé ; import Godot terminé ; sprites_test et biome_fauna_test : RESULT: OK.
+texture_budget.py : Textures > 4096 px de côté : 0 ; HORS BUDGET (4) global.

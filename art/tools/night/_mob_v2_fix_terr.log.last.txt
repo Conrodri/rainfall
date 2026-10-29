@@ -1,0 +1,5 @@
+15 impacts frontaux retouchés ; autres pixels et `.tres` inchangés ; aucun `_n`.
+Dossiers, octets : swarm_tier1 716573 → 685672 ; shooter_tier2 1352877 → 1308260.
+leaper_tier2 1480463 → 1446678 ; brute_tier3 2607585 → 2485859 ; aucun PNG augmenté.
+Import : PASS ; sprites_test.tscn et biome_fauna_test.tscn : RESULT: OK.
+texture_budget.py : 0 texture > 4096 ; 4 dépassements globaux subsistent.

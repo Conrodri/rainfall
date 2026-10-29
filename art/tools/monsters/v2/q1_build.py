@@ -1,5 +1,5 @@
 ﻿"""MOB_V2_Q1: new storm bronze / flowing water creatures. No normal outputs."""
-import sys, math
+import sys, math, os, subprocess
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from common_v2 import *
@@ -7,7 +7,9 @@ from t1_build import resetters
 
 def deliver(name,size,bottom,counts,root,pose):
     if '--bounds' not in sys.argv:
-        return produce(name,size,bottom,counts,root,pose)
+        result=produce(name,size,bottom,counts,root,pose)
+        compact(name)
+        return result
     failures=[]
     for a,n in counts.items():
         for d in (('e','s','w','n') if a=='death' else DIRS):
@@ -25,10 +27,24 @@ def deliver(name,size,bottom,counts,root,pose):
                             failures.append((a,d,f,o.name,round(x,1),round(y,1))); break
     print('BOUNDS',name,'PASS' if not failures else failures[:12],flush=True)
 
+def compact(name):
+    # Original per-atlas byte ceilings; pngquant is only needed above the ceiling.
+    limits = {'swarm_tier1_source': (122846,21317,36505,6342,78589,13761,161307,27254),
+              'shooter_tier2_source': (326232,46234,75989,10765,158901,21925,353270,48764)}
+    for filename,limit in zip(('attack.png','attack_e.png','death.png','death_e.png','idle.png','idle_e.png','run.png','run_e.png'),limits[name]):
+        path=ROOT/'game/assets/sprites/monsters'/name/filename
+        if path.stat().st_size>limit:
+            subprocess.run([os.environ.get('RAINFALL_PNGQUANT','pngquant'),'--force','--ext','.png','--speed','1','--quality','85-100',str(path)],check=True)
+        assert path.stat().st_size<=limit,(filename,path.stat().st_size,limit)
+
 def palette():
-    return (material('Rain blackened bronze','555549'),material('Worn bronze bevels','A8946E'),
-            material('Opaque silver water reflections','BCD4D5'),material('Water deep folds','5F8F80'),
-            material('Cold white DDF6FF','DDF6FF',1.1))
+    return (material('Rain blackened bronze','887354'),material('Worn bronze bevels','B49A6C'),
+            material('Opaque silver water reflections','A49C85'),material('Water deep folds','687C73'),
+            material('Cold white DDF6FF','DDF6FF',1.8))
+
+_taper = taper
+def taper(name, a, b, radii, mat, parent, sides=5):
+    return _taper(name,a,b,tuple(r*1.4 for r in radii),mat,parent,sides)
 
 def spike(name,loc,width,length,height,mat,parent):
     # Chiselled lightning fin: solid wedge, broken diamond cross section.
@@ -44,12 +60,12 @@ def solve(hip,knee,y,z,l1,l2):
 def swarm():
     rig((64,56),48); bronze,edge,water,fold,glow=palette()
     root=empty('Goutte rampante direction'); body=empty('Crawling lightning keel',(0,0,.22),root)
-    spike('Forged central lightning point',(0,-.015,0),.125,.28,.15,bronze,body)
-    spike('Pale rain flowing on upper bevel',(0,.005,.10),.12,.24,.075,water,body)
+    spike('Forged central lightning point',(0,-.015,0),.15,.28,.17,bronze,body)
+    spike('Pale rain flowing on upper bevel',(0,.005,.10),.145,.24,.09,water,body)
     tail=empty('Lagged runoff fin',(0,.14,.045),body)
     spike('Broad broken rear barb',(0,0,0),.17,.10,.07,water,tail)
     head=empty('Thrust pivot',(0,-.14,.04),body)
-    ellipsoid('White water bead',(0,-.025,.025),(.074,.075,.073),glow,head,2)
+    ellipsoid('White water bead',(0,-.025,.025),(.090,.090,.084),glow,head,2)
     for sign in (-1,1):
         taper('Bronze head fork',(sign*.082,.055,-.025),(sign*.053,-.12,-.015),(.032,.005),edge,head)
     tip=empty('Impact lightning point',(0,-.08,-.005),head)
@@ -85,11 +101,11 @@ def swarm():
                 solve(hip,knee,y,.01+lift-body.location.z,.105,.105)
             tail.rotation_euler.z=.17*math.sin(t-.8)
         if a=='attack':
-            extension=(0,-.045,-.075,.070,.035,.012)[f]
+            extension=(0,-.045,-.075,.080,.045,.012)[f]
             head.location.y-=extension
             head.rotation_euler.x=(0,-.15,-.23,.28,.12,.02)[f]
             body.location.y+=(0,.018,.025,-.018,-.008,0)[f]
-            if f==3: flash.scale=(1,1,1); head.scale=(1.25,1.12,1.15)
+            if f==3: flash.scale=(1,1,1); head.scale=(1.32,1.20,1.18)
         if a=='death':
             body.rotation_euler.x=(.18,.55,.95,1.12)[f]
             body.location.z=(.23,.25,.26,.24)[f]; body.location.y=.008*f
@@ -101,14 +117,14 @@ def shooter():
     rig((88,104),96); bronze,edge,water,fold,glow=palette()
     root=empty('Paratonnerre errant direction'); pelvis=empty('Articulated bronze pelvis',(0,0,.50),root)
     torso=empty('Forged rain conductor',(0,0,.10),pelvis)
-    taper('Angular breast',(0,0,-.12),(0,0,.33),(.09,.12),bronze,torso,6)
+    taper('Angular breast',(0,0,-.12),(0,0,.33),(.12,.156),bronze,torso,6)
     spike('Silver sternum',(0,-.09,.13),.072,.045,.14,water,torso)
     head=empty('Split lightning sphere',(0,0,.42),torso)
     # Two asymmetrical sphere lobes leave a true open fissure around the luminous bead.
     for sign in (-1,1):
-        ellipsoid('Split bronze lightning ball',(sign*.073,0,0),(.082,.115,.13),edge,head,2)
+        ellipsoid('Split bronze lightning ball',(sign*.073,0,0),(.096,.13,.145),edge,head,2)
         spike('Lightning crown prong',(sign*.087,.015,.085),.026,.045,.13,bronze,head)
-    ellipsoid('Cold water in split head',(0,-.035,.005),(.033,.092,.095),glow,head,2)
+    ellipsoid('Cold water in split head',(0,-.035,.005),(.045,.105,.106),glow,head,2)
     cape=[]
     for j in range(7):
         angle=math.pi*j/6
@@ -134,7 +150,7 @@ def shooter():
         taper('Tapered upper conductor arm',(0,0,0),tuple(elbow.location),(.045,.026),bronze,arm)
         taper('Long conductor forearm',(0,0,0),(0,-.035,-.20),(.031,.019),edge,elbow)
         hand=empty('Conductor palm',(0,-.035,-.20),elbow)
-        ellipsoid('Wide split bronze palm',(0,0,0),(.047,.04,.057),bronze,hand)
+        ellipsoid('Wide split bronze palm',(0,0,0),(.062,.052,.070),bronze,hand)
         for dx in (-.027,.027): taper('Conducting finger',(dx,0,-.01),(dx,-.035,-.11),(.012,.004),edge,hand)
         arms.append((arm,elbow,hand,sign))
     shot=empty('Detached impact droplet',(0,-.04,-.07),arms[1][2])
@@ -154,12 +170,12 @@ def shooter():
             for j,p in enumerate(cape): p.rotation_euler.x=.16*math.sin(t-.8+j*.4)
         if a=='attack':
             arm,elbow,hand,sign=arms[1]
-            arm.rotation_euler.x=(.05,-.35,-.52,.45,1.55,1.17,.55,.12)[f]
+            arm.rotation_euler.x=(.05,-.35,-.52,.45,1.80,1.17,.55,.12)[f]
             elbow.rotation_euler.x=(-.15,-.4,-.7,-.45,0,-.15,-.25,-.18)[f]
             arm.rotation_euler.z=(0,.12,.20,.10,-.18,-.10,0,0)[f]
             torso.rotation_euler.x=(0,-.07,-.10,-.03,.09,.06,.02,0)[f]
             head.rotation_euler.x=.10 if f==4 else -.03*f/8
-            if f==4: shot.scale=(1,1,1); hand.scale=(1.25,1.25,1.15)
+            if f==4: shot.scale=(1.35,1.35,1.35); hand.scale=(1.45,1.40,1.25); arm.location.y-=.08
         if a=='death':
             pelvis.rotation_euler.x=(.18,.60,1.0,1.26)[f]
             pelvis.location.z=(.50,.45,.34,.29)[f]; pelvis.location.y=.025*f

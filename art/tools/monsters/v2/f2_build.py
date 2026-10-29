@@ -28,6 +28,46 @@ def trunk(name, sections, mat, parent, pale=None):
     return o
 
 
+def finish_front_impact(name,size,bottom,counts,root,pose):
+    """Reuse the shared writer; render and replace only the three frontal impact cells."""
+    import inspect, common_v2 as cv
+    from PIL import Image
+    out=ROOT/'game/assets/sprites/monsters'/name
+    selected={a:n for a,n in counts.items() if a in ('attack','cast')}
+    originals={(a,suffix):Image.open(out/(a+suffix+'.png')).convert('RGBA')
+               for a in selected for suffix in ('','_e')}
+    tres_path=out/(name+'.tres'); original_tres=tres_path.read_bytes()
+    ceilings={path.name:path.stat().st_size for path in out.glob('*.png')}
+    source=inspect.getsource(cv.produce).replace('def produce(', 'def impact_produce(')
+    source=source.replace("for row,d in enumerate(dirs):", "for row,d in enumerate(dirs):\n            if d not in ('s','se','sw'): continue")
+    source=source.replace('for f in range(n):\n                pose(a,f,n)',
+                          'for f in (n//2,):\n                pose(a,f,n)')
+    source=source.replace('    verify(name,size,counts)', '')
+    scope=dict(vars(cv)); exec(source,scope)
+    old_argv=sys.argv[:]
+    try:
+        sys.argv=old_argv+['--only',','.join(selected)]
+        scope['impact_produce'](name,size,bottom,counts,root,pose)
+        for (a,suffix),original in originals.items():
+            path=out/(a+suffix+'.png')
+            with Image.open(path) as rendered:
+                w,h=(size[0]//2,size[1]//2) if suffix else size
+                for d in ('s','se','sw'):
+                    x=selected[a]//2*w; y=DIRS.index(d)*h
+                    box=(x,y,x+w,y+h)
+                    original.paste(rendered.crop(box),(x,y))
+            original.save(path,optimize=True,compress_level=9)
+            if path.stat().st_size>ceilings[path.name]:
+                import subprocess
+                subprocess.run(['python','-c',
+                    'import sys,zopfli.png; p=sys.argv[1]; data=open(p,"rb").read(); result=zopfli.png.optimize(data,num_iterations=5); open(p,"wb").write(min((data,result),key=len))',str(path)],check=True)
+            assert path.stat().st_size<=ceilings[path.name],path.name
+        cv.verify(name,size,counts)
+    finally:
+        sys.argv=old_argv
+        tres_path.write_bytes(original_tres)
+
+
 def deliver(name,size,bottom,counts,root,pose):
     # Mesh projections before expensive rendering; the cell is never expanded.
     s=bpy.context.scene; failures=[]
@@ -47,7 +87,7 @@ def deliver(name,size,bottom,counts,root,pose):
     root.rotation_euler.z=0
     assert not failures, (len(failures), failures[:20])
     print('F2 PREFLIGHT PASS',name,flush=True)
-    if '--check' not in sys.argv: finish(name,size,bottom,counts,root,pose)
+    if '--check' not in sys.argv: finish_front_impact(name,size,bottom,counts,root,pose)
 
 
 def leaper():
@@ -124,7 +164,14 @@ def leaper():
             head.rotation_euler.z=(.1,.26,.40,-.48,-.16,.02)[f]
             head.location.y-=ext; body.location.y-=ext*.30
             jaw.rotation_euler.x=(.04,.18,.32,.85,.34,.07)[f]
-            if f==3: mouth.scale=(1,1,1)
+            if f==3:
+                mouth.scale=(1,1,1)
+                if abs(root.rotation_euler.z)<=math.pi/4+.001:
+                    chest.rotation_euler.z=0
+                    head.rotation_euler.z=0
+                    head.location.y-=.10
+                    head.rotation_euler.x=-.18
+                    jaw.rotation_euler.x=1.05
         if a=='death':
             p=f/(n-1); body.location.y-=.065*p; body.location.z-=.195*p
             body.rotation_euler.x=.20*p; body.scale.z=1-.30*p
@@ -229,8 +276,16 @@ def brute():
                     shoulder.rotation_euler.y=-.12*ext if a=='attack' else .12*max(0,ext)
                     elbow.rotation_euler.x=-.25*abs(ext)
                 else: shoulder.rotation_euler.x=-.18*ext
+            if f==n//2 and abs(root.rotation_euler.z)<=math.pi/4+.001:
+                for shoulder,elbow,sign in arms:
+                    if sign>0:
+                        shoulder.rotation_euler.x=-1.20 if a=='attack' else -.85
+                        shoulder.rotation_euler.z=-.65
+                        shoulder.rotation_euler.y=0
+                        elbow.rotation_euler.x=-.25
+                weapon.rotation_euler.x=-.18 if a=='attack' else .05
             if a=='cast':
-                crouch=.12*max(0,ext); hips.location.z-=crouch; weapon.rotation_euler.x=.55*max(0,ext)
+                crouch=.12*max(0,ext); hips.location.z-=crouch; weapon.rotation_euler.x=(.05 if f==n//2 and abs(root.rotation_euler.z)<=math.pi/4+.001 else .55*max(0,ext))
                 for hip,knee,foot,sign in legs:
                     plant(hip,knee,foot,(0,-.24),(0,-.23),0,-.475+crouch)
             chain.rotation_euler.x=.30*math.sin(t-math.pi/4)

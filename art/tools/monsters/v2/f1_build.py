@@ -26,8 +26,9 @@ def fine_leg(name,a,b,radii,mat,parent):
 
 def swarm():
     rig((64,56),48)
-    pale=material('Grey green sunbleached lichen','BAC5A5')
-    wood=material('Dead cedar exposed edges','74634D')
+    pale=material('Grey green sunbleached lichen','D0D5BE')
+    rim=material('Bleached upper plate ridge','E2E5D2')
+    wood=material('Dead cedar exposed edges','92927B')
     moss=material('Deep damp moss','4E6B54')
     joint=material('Root joints','44473A')
     glow=material('Pale green 9CF0C8','9CF0C8',1.25)
@@ -39,14 +40,17 @@ def swarm():
         p=empty('Dorsal plate pivot %d'%i,(0,y,0),body); plates.append(p)
         plate('Bevelled deadwood plate %d'%i,w,.084,.145,wood,p)
         top=empty('Pale lichen crown %d'%i,(0,-.003,.025),p)
-        plate('Broad pale dorsal lichen %d'%i,w*.94,.067,.135,pale,top)
+        crown=plate('Broad pale dorsal lichen %d'%i,w*.94,.067,.135,pale,top)
+        crown.data.materials.append(rim)
+        for face in crown.data.polygons:
+            if face.index in (4,5): face.material_index=1
         for sign in (-1,1):
             taper('Trailing moss fringe',(sign*w*.8,.021,.065),(sign*w*1.05,.06,.025),(.022,.004),moss,p,4)
     head=empty('Head and front closing plates',(0,-.27,.035),body)
     ellipsoid('Cedar head',(0,0,0),(.12,.077,.067),wood,head,2)
     jaws=[]; antennae=[]
     for sign in (-1,1):
-        ellipsoid('Green eye',(sign*.077,-.064,.035),(.024,.017,.019),glow,head)
+        ellipsoid('Green eye',(sign*.077,-.064,.035),(.031,.020,.024),glow,head)
         jaw=empty('Front plate hinge',(sign*.078,-.042,-.008),head); jaws.append(jaw)
         plate('Snapping front lichen plate',.052,.09,.059,pale,jaw)
         ant=empty('Antenna root',(sign*.062,-.048,.045),head); antennae.append(ant)
@@ -90,12 +94,16 @@ def swarm():
         if a=='attack':
             pull=(0,.025,.043,-.012,-.006,0)[f]
             body.location.y+=pull; body.rotation_euler.x=(0,-.12,-.22,.22,.10,.02)[f]
-            head.location.y+=(0,.008,.018,-.012,-.006,0)[f]
+            head.location.y+=(0,.008,.018,-.025,-.006,0)[f]
+            if f==3:
+                head.location.z+=.035
+                head.scale=(1,1,1.12)
+                body.scale.y=.90
             for ant in antennae: ant.rotation_euler.x=.55 if f==3 else 0
             for j,sign in zip(jaws,(-1,1)):
                 j.rotation_euler.z=sign*(.12,.45,.68,-.36,-.12,0)[f]
                 j.location.y-=.035 if f==3 else 0
-            if f==3: mouth.scale=(1,1,1)
+            if f==3: mouth.scale=(1.35,1.3,1.2)
         if a=='death':
             body.rotation_euler.x=(.06,.25,.22,.18)[f]
             body.location.y-=(.0,.006,.010,.012)[f]
@@ -212,6 +220,17 @@ def shooter():
                 arm.rotation_euler.x=(-draw*3 if sign<0 else -.18-draw)
                 elbow.rotation_euler.z=draw*2 if sign<0 else -.08
             if f==4: release.scale=(1,1,1)
+            if f==4 and abs(root.rotation_euler.z)<=math.pi/4+.001:
+                torso.rotation_euler.x=.18
+                bow.location.y-=.035
+                bow.location.x+=.035
+                bow.rotation_euler.y=-.22
+                nock.location.y-=.06
+                release.location.y-=.035
+                release.scale=(1.2,1.1,1.2)
+                for arm,elbow,sign in arms:
+                    arm.rotation_euler.x=-.65 if sign>0 else -.35
+                    elbow.rotation_euler.z=-.28 if sign>0 else .16
         if a=='death':
             pelvis.rotation_euler.x=(.08,.38,.65,.82)[f]
             pelvis.location.z-=(0,.035,.06,.08)[f]

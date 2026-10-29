@@ -1,0 +1,5 @@
+shooter_tier2_rust : corps/toile +30 %, équipement épaissi ; impacts frontaux des deux monstres validés sur sol rust.
+Dossiers : shooter 937497 → 379362 octets ; swarm 544717 → 439617 octets.
+Cellules, frames, directions, .tres inchangés ; aucun _n ; _e conformes ; 0 texture > 4096.
+Godot --import terminé ; sprites_test et biome_fauna_test : RESULT: OK.
+Sortie biome_fauna_test : WARNING: 50 ObjectDB instances were leaked at exit ; ERROR: 11 resources still in use at exit.

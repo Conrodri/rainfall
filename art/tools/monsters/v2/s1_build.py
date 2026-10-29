@@ -32,31 +32,33 @@ def crystal(name,loc,r,h,mat,parent):
 
 def swarm():
     rig((64,56),48)
-    bone=material('Ivory ossuary bone','D8D5BD'); salt=material('White salt crust','EEE8D8')
-    shade=material('Mineral blue fissures','697E88'); glow=material('Crystal BFF4FF','BFF4FF',1.4)
+    bone=material('Ivory ossuary bone','727469'); salt=material('White salt crust','F4F1E5')
+    shade=material('Mineral blue fissures','303D45'); glow=material('Crystal BFF4FF','BFF4FF',2.2)
     root=empty('Main ossuaire direction'); palm=empty('Carpal arch breathing',(0,.035,.26),root)
     # Broad knuckled palm with distinct metacarpals, never a radial insect body.
-    ellipsoid('Flattened carpal bridge',(0,.005,0),(.17,.145,.065),bone,palm,2)
+    ellipsoid('Flattened carpal bridge',(0,.005,0),(.198,.155,.086),bone,palm,2)
+    ellipsoid('Salt dorsal plate',(-.025,.025,.058),(.145,.115,.033),salt,palm,1)
+    ellipsoid('Deep carpal cleft',(.035,-.075,.047),(.025,.050,.019),shade,palm,1)
     wrist=empty('Broken wrist secondary',(0,.16,.015),palm)
     taper('Broken radius',(-.065,0,0),(-.065,.105,.015),(.043,.028),bone,wrist)
     taper('Broken ulna',(.055,0,-.008),(.055,.085,.015),(.036,.022),bone,wrist)
     wristgem=empty('Wrist crystal pulse',(0,.035,.055),wrist)
-    crystal('Wrist crystal',(0,0,0),.055,.09,glow,wristgem)
+    crystal('Wrist crystal',(0,0,0),.062,.10,glow,wristgem)
     fingers=[]; refs=[]
     for i,(x,y,fan,length) in enumerate(((-.14,-.055,-.7,.16),(-.10,-.10,-.19,.205),(0,-.13,0,.23),(.095,-.11,.13,.21),(.155,-.055,.42,.17))):
-        taper('Metacarpal %d'%i,(x*.53,.065,.014),(x,y,.015),(.036,.027),bone,palm)
+        taper('Metacarpal %d'%i,(x*.53,.065,.014),(x,y,.015),(.046,.035),bone,palm)
         hip=empty('Knuckle %d'%i,(x,y,0),palm); hip.rotation_euler.z=fan
         knee=empty('Middle joint %d'%i,(0,-length*.58,-.04),hip)
         tip=empty('Distal joint %d'%i,(0,-length*.44,-.065),knee)
-        ellipsoid('Salt knuckle %d'%i,(0,0,.006),(.042,.045,.037),salt,hip)
-        taper('Proximal phalanx %d'%i,(0,0,0),tuple(knee.location),(.034,.024),bone,hip)
-        taper('Middle phalanx %d'%i,(0,0,0),tuple(tip.location),(.027,.018),salt,knee)
-        taper('Curved fingertip %d'%i,(0,0,0),(0,-.04,-.144),(.022,.005),bone,tip)
+        ellipsoid('Salt knuckle %d'%i,(0,0,.006),(.053,.053,.046),salt,hip)
+        taper('Proximal phalanx %d'%i,(0,0,0),tuple(knee.location),(.044,.031),bone,hip)
+        taper('Middle phalanx %d'%i,(0,0,0),tuple(tip.location),(.035,.023),salt,knee)
+        taper('Curved fingertip %d'%i,(0,0,0),(0,-.04,-.144),(.028,.006),bone,tip)
         crystal('Salt spur %d'%i,(.012,-.03,.018),.027,.055,salt,knee)
         fingers.append((hip,knee,tip,i,fan))
         refs.append((x+math.sin(fan)*(length+.04),y-math.cos(fan)*(length+.04)+.035,.011))
     # A forward socket supplies a directional eye even when the wrist faces away.
-    ellipsoid('Crystal in finger socket',(0,-.13,.052),(.032,.027,.022),glow,palm)
+    ellipsoid('Crystal in finger socket',(0,-.13,.052),(.043,.034,.030),glow,palm)
     flash=empty('Claw impact',(0,-.205,-.035),palm)
     crystal('Claw impact splinter',(0,0,0),.048,.10,glow,flash)
     root['foot_reference']=refs; reset=resetters(root)
@@ -79,18 +81,18 @@ def swarm():
                 knee.rotation_euler.x=theta-q; tip.rotation_euler.x=-theta
             wrist.rotation_euler.y=.17*math.sin(t-math.pi/4)
         if a=='attack':
-            reach=(0,-.035,-.065,.05,.025,.008)[f]
+            reach=(0,-.035,-.065,.065,.035,.008)[f]
             palm.location.y-=reach
-            palm.rotation_euler.x=(0,-.12,-.23,.20,.09,.015)[f]
+            palm.rotation_euler.x=(0,-.12,-.23,-.16,.09,.015)[f]
             wrist.location.z+=(0,.025,.055,0,0,0)[f]
             if f==3: wrist.location.y+=.07
             wristgem.scale.z=(1,.75,.45,1,1,1)[f]
             for hip,knee,tip,i,fan in fingers:
-                hip.rotation_euler.x=(-.60,-.80,-1.05,-.12,-.35,-.50)[f]
+                hip.rotation_euler.x=(-.60,-.80,-1.05,-1.28,-.35,-.50)[f]
                 hip.rotation_euler.z=fan*(.72,.65,.60,1.12,.9,.8)[f]
-                hip.scale.y=(1,1,1,1.12,1.05,1)[f]
-                knee.rotation_euler.x=(-.25,-.30,-.40,.02,.10,.0)[f]
-                tip.rotation_euler.x=(0,-.1,-.18,.65,.25,.06)[f]
+                hip.scale.y=(1,1,1,1.0,1.05,1)[f]
+                knee.rotation_euler.x=(-.25,-.30,-.40,-.25,.10,.0)[f]
+                tip.rotation_euler.x=(0,-.1,-.18,.28,.25,.06)[f]
                 if f!=3: tip.rotation_euler.x=-hip.rotation_euler.x-knee.rotation_euler.x-palm.rotation_euler.x
             if f==3: flash.scale=(1,1,1)
         if a=='death':

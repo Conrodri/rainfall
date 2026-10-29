@@ -1,0 +1,5 @@
+swarm_tier1_moss : dos et arêtes éclaircis, yeux agrandis, impact #9CF0C8 ; contraste vérifié sur fog_forest.
+shooter_tier2_moss : impact frontal seul retouché, directions s/se/sw.
+Dossiers : swarm 629169 → 555092 octets ; shooter 1036271 → 914261 octets ; chaque PNG réduit.
+Contrat conservé ; .tres identiques ; aucun _n ; _e conformes ; textures > 4096 : 0.
+Godot --headless --path game --import : OK ; sprites_test.tscn et biome_fauna_test.tscn : RESULT: OK.

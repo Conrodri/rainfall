@@ -5,7 +5,7 @@ import sys, math
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from common_v2 import *
-from t1_build import resetters
+from t1_build import resetters, front_impact
 
 def plate(name,loc,size,mat,parent,bevel=.025):
     bpy.ops.mesh.primitive_cube_add(size=1)
@@ -270,4 +270,5 @@ def contact_t2():
 
 if __name__=='__main__':
     role=sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'leaper'
-    {'leaper':leaper,'brute':brute,'contact':contact_t2}[role]()
+    if '--front-impact' in sys.argv: front_impact(role)
+    else: {'leaper':leaper,'brute':brute,'contact':contact_t2}[role]()
