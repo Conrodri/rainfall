@@ -303,7 +303,21 @@
     "Lierre",
     "Houx"
    ],
-   "reward": "2 reliquaires (table gardien)"
+   "reward": "2 reliquaires (table gardien)",
+   "trigger_spots": {
+    "lever": [
+     [
+      45,
+      59
+     ]
+    ],
+    "pillar": [
+     [
+      59,
+      55
+     ]
+    ]
+   }
   }
  ]
 }

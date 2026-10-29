@@ -557,6 +557,18 @@ metadata/role = "guardian"
 metadata/index = 1
 metadata/guardian_name = "Houx"
 
+[node name="Lever_sanctuaire_racines_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(192, 1728)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "lever"
+metadata/index = 0
+
+[node name="Beacon_sanctuaire_racines_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(1088, 1472)
+metadata/secret_id = "sanctuaire_racines"
+metadata/role = "beacon"
+metadata/index = 0
+
 [node name="DoorMark_sanctuaire_racines" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(-576, -1088)
 metadata/secret_id = "sanctuaire_racines"

@@ -383,3 +383,50 @@ Pas de soleil, donc pas de décalage horaire : la nuance de B est le **puits de 
 - **Durée** : Fonderie +10 s estimé ; à valider en partie réelle (`balance_sim_test`, partie chronométrée).
 - **Boss** : aucun nouveau boss ; les boss d'étage et mini-boss des biomes apparaissent au gros pilier tiré comme dans les A. Le Cèdre-Ermite ou la Grue n'ont pas été testés contre les obstacles centraux (cèdre, creusets) : vérifier qu'ils ne s'y coincent pas.
 - **À trancher par le joueur** : (1) départ excentré sur les 4 B (proposé) ou départ central comme les A ; (2) Terrasses B : porte scellée (proposée, mécanique déjà validée) ou « écluse » (vanne qui vide un bassin, Design_Zones_Secretes §2.1) que Design_Etages §2.4 associait aux Rizières ; (3) props propres aux B (noria, creusets, pontons…) : bonus ou à produire avant la sortie.
+
+## 9. Fréquence des secrets (joueur, 29/10/2026)
+
+Les secrets ne sont plus toujours armés. Au début de la run, `FloorPlan.mark_secret` (générateur propre `hash([seed, "secret_run"])`, indépendant des cartes et des boss) tire avec `Balance.SECRET_RUN_CHANCE` = 1/3 si la run a un secret ; si oui, un étage uniforme parmi 1 à `Balance.SECRET_MAX_FLOOR` = 4 dont la carte tirée en porte un. **Au plus un secret par run, jamais l'étage 5, jamais en sans fin.** Depuis le 29/10/2026 les 4 cartes A ont aussi leur secret (voir §10) : les 8 cartes des étages 1-4 sont candidates, la run a donc un secret dans un tiers des cas (mesure : 0,330 sur 3000 graines ; 221 / 243 / 272 / 255 pour les étages 1 à 4). Déterministe par graine (le défi du jour est identique pour tous) ; l'étage et le déclencheur sont mémorisés dans le plan d'étages de la sauvegarde de run (`secret`, `secret_trigger` ; une sauvegarde d'avant le tirage le recalcule depuis la graine).
+
+Sur les autres étages la salle reste scellée et invisible comme secret : la porte `D` est un mur (collision et rendu), aucune plaque ni aucun gardien n'est posé (`StageManager._setup_secrets` ne crée pas de `SecretRoom`), aucune ligne d'objectif, la minimap la montre en mur.
+
+Options de test : `-- --force-secret=<étage>` (0 = aucun ; un étage sans carte à secret donne aucun) et `-- --force-trigger=plates|lever|wall|pillar`, à côté de `--force-variant`. En code : `FloorPlan.force_secret`, `FloorPlan.force_trigger`. Tests : `secrets_test` (fréquence, jamais 2 secrets, jamais l'étage 5, déterminisme, sauvegarde).
+
+## 10. Secrets des cartes A
+
+Les 4 cartes A des étages 1-4 (`terrasses_noyees`, `foret_brume`, `cite_rouille`, `cryptes_noyees` ; pas `la_source`) portent le même système que les B : 2 plaques, porte `D`, salle scellée `:` de 3 × 3 cases creusée dans le vide du contour (anneau de vide rendu mur), 2 gardiens nommés, 2 reliquaires. Posés par `tools/gen_maps.py` (`A_SECRETS`, `add_a_secret`) après la mise en forme organique. Les cryptes gagnent 6 colonnes de vide à droite (caverne ronde sans coin libre).
+
+| Carte | Secret | Porte (case) | Plaques (cases) | Gardiens |
+|---|---|---|---|---|
+| terrasses_noyees | bassin_vanne | (7, 31) ouest | (13, 2) ; (19, 34) | Vase, Crue |
+| foret_brume | cercle_brume | (5, 4) ouest | (36, 19) ; (1, 11) | Mousse, Fougère |
+| cite_rouille | salle_pompes | (5, 5) ouest | (20, 1) ; (4, 37) | Boulon, Chaudron |
+| cryptes_noyees | chapelle_basse | (34, 7) est | (3, 10) ; (20, 32) | Algue, Nef |
+
+Plaques éloignées l'une de l'autre, hors chemin principal (près des bords), accessibles du départ, ni sur le départ ni près d'un gros pilier. Affixes des gardiens selon le biome, comme les B.
+
+## 11. Table de butin des reliquaires
+
+Les 2 reliquaires d'un secret sont des coffres gratuits de type `guardian` (`Balance.CHEST_QUALITY_TABLE`), au lieu de `boss`. Visuel : sprite du grand coffre teinté turquoise (aucun nouvel asset) ; lumière `chest_guardian`.
+
+| Coffre | Commun | Peu commun | Rare | Légendaire |
+|---|---|---|---|---|
+| petit | 78 | 20 | 2 | 0 |
+| large | 0 | 80 | 18 | 2 |
+| boss d'étage | 0 | 85 | 15 | 0 |
+| **reliquaire (guardian)** | **0** | **88** | **12** | **0** |
+
+Jamais Commun ; Rare 12 % (6 fois un petit coffre) mais sous le coffre de boss (15 %) ; pas de Légendaire (le coffre de boss n'en donne pas : la récompense d'un secret reste sous celle du boss). Gratuit, aucun or ni relance en plus (la Chance relance le d100 comme partout), aucune pitié (RoR2 n'en a pas). La liste d'objets « reliques de secret » n'est pas créée : elle ne s'intègre pas naturellement au tirage par qualité. Mesure sur 5000 tirages : 4436 Peu commun, 564 Rare (11,3 %).
+
+## 12. Déclencheurs
+
+Chaque secret a un déclencheur tiré (seedé, uniforme) parmi quatre ; la salle, la porte, les gardiens et les reliquaires ne changent pas. Constantes dans `Balance` (`SECRET_*`).
+
+| Déclencheur | Mécanique | Ligne d'objectif (après la 1re interaction) | Code |
+|---|---|---|---|
+| `plates` | 2 plaques de pression qui restent enfoncées | « Dalles 1/2 » | `secret_plate.gd` |
+| `lever` | levier caché dans un recoin, action « interagir » (portée 1,5 u, jamais au contact) | « Gardiens 0/2 » dès qu'il est tiré | `secret_lever.gd` |
+| `wall` | la porte `D` est un mur fissuré ; elle cède après `SECRET_WALL_SECONDS` (3,5 s) × `SECRET_WALL_COEF_PER_S` (3) coups de référence au niveau du joueur. Seuls les sorts du joueur comptent : projectiles (`Projectile._on_hit`) et zones (`ZoneEffect._apply`) ; les sorts propres à un kit qui cherchent leurs cibles eux-mêmes ne l'entament pas | « Mur fissuré 40 % » | `secret_wall.gd` |
+| `pillar` | petit pilier éteint loin de la salle : rester `SECRET_PILLAR_CHARGE_S` (6 s, cumulées) dans son cercle de 3 u | « Pilier 3/6 s » | `secret_beacon.gd` |
+
+Positions dans le JSON de chaque carte (`secrets[0].trigger_spots` : `lever`, `pillar` ; le mur est la porte), marqueurs `Lever_*` et `Beacon_*` des scènes, générés par `tools/gen_maps.py` (`TRIGGER_SPOTS`). Minimap inchangée. Sauvegarde : `trigger` et `progress` (0 à 1) par secret. Sons réutilisés : `chest.lock` (levier), `ui.spell_ready` (pilier chargé), `chest.open.large` (porte ouverte). Visuels : placeholders (levier et lézardes dessinés en code, pilier = sprite du petit pilier) en attendant les consignes Codex `art/tools/props/_secret_lever.txt` et `_secret_wall.txt` (à lancer par `sh art/tools/run_codex.sh <consigne> <journal> low`).

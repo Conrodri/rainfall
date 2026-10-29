@@ -532,6 +532,18 @@ metadata/role = "guardian"
 metadata/index = 1
 metadata/guardian_name = "Aulne"
 
+[node name="Lever_citerne_noria_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(960, 2368)
+metadata/secret_id = "citerne_noria"
+metadata/role = "lever"
+metadata/index = 0
+
+[node name="Beacon_citerne_noria_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-1728, 320)
+metadata/secret_id = "citerne_noria"
+metadata/role = "beacon"
+metadata/index = 0
+
 [node name="DoorMark_citerne_noria" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(-448, -1920)
 metadata/secret_id = "citerne_noria"

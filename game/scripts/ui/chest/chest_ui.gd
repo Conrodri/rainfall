@@ -25,7 +25,7 @@ const QUALITY_NAMES := {
 	&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire",
 }
 const KIND_NAMES := {
-	&"petit": "Petit coffre", &"large": "Grand coffre", &"legendaire": "Coffre légendaire", &"boss": "Coffre du boss",
+	&"petit": "Petit coffre", &"large": "Grand coffre", &"legendaire": "Coffre légendaire", &"boss": "Coffre du boss", &"guardian": "Reliquaire",
 }
 ## Sprite du coffre (rendu Blender) montré pendant l'intro : fermé, puis ouvert quand la rareté est posée.
 const CHEST_FRAMES := {
@@ -33,6 +33,7 @@ const CHEST_FRAMES := {
 	&"large": "res://assets/sprites/chests/chest_large/chest_large.tres",
 	&"legendaire": "res://assets/sprites/chests/chest_legendary/chest_legendary.tres",
 	&"boss": "res://assets/sprites/chests/chest_legendary/chest_legendary.tres",
+	&"guardian": "res://assets/sprites/chests/chest_large/chest_large.tres",
 }
 const ITEM_ICON := "res://assets/sprites/icons/items/%s.png"
 const RARITY_FRAME := "res://assets/sprites/icons/frame_%s.png"

@@ -664,6 +664,18 @@ metadata/role = "guardian"
 metadata/index = 1
 metadata/guardian_name = "Soudure"
 
+[node name="Lever_chambre_forte_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(1088, 2112)
+metadata/secret_id = "chambre_forte"
+metadata/role = "lever"
+metadata/index = 0
+
+[node name="Beacon_chambre_forte_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(576, 832)
+metadata/secret_id = "chambre_forte"
+metadata/role = "beacon"
+metadata/index = 0
+
 [node name="DoorMark_chambre_forte" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(-128, -1728)
 metadata/secret_id = "chambre_forte"

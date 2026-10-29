@@ -131,10 +131,14 @@ func _rest() -> void:
 
 
 func _on_hit(node: Node) -> void:
-	if not active or node in _already_hit or not node.is_in_group("enemies"):
+	var is_wall := node.is_in_group(&"secret_wall") # mur fissuré d'une salle secrète (SecretWall)
+	if not active or node in _already_hit or not (is_wall or node.is_in_group("enemies")):
 		return
 	_already_hit.append(node)
-	if caster != null:
+	if is_wall:
+		if caster != null:
+			node.call(&"take_hit", caster.compute_damage(spell, null, false))
+	elif caster != null:
 		# coup direct : recul dans le sens du vol (origine un peu en arrière du projectile), éclat animé
 		caster.deal_damage(node, spell, {"source_pos": global_position - direction * Balance.UNIT_PX, "anim": true})
 	hits_left -= 1

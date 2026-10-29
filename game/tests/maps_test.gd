@@ -3,11 +3,11 @@ extends Node
 ## godot --headless --path game res://tests/maps_test.tscn
 
 const MAPS := {
-	"terrasses_noyees": {"chests": 18, "pillars": 10, "small": 7, "big": 3},
-	"foret_brume": {"chests": 17, "pillars": 9, "small": 6, "big": 3},
-	"cite_rouille": {"chests": 17, "pillars": 11, "small": 8, "big": 3},
-	"cryptes_noyees": {"chests": 20, "pillars": 9, "small": 6, "big": 3},
-	# variantes B (docs/Design_Variantes_B.md §1 : mêmes effectifs que la A du biome) ; porte scellée : `secret`
+	"terrasses_noyees": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
+	"foret_brume": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
+	"cite_rouille": {"chests": 17, "pillars": 11, "small": 8, "big": 3, "secret": true},
+	"cryptes_noyees": {"chests": 20, "pillars": 9, "small": 6, "big": 3, "secret": true},
+	# (secrets des cartes A ajoutés le 29/10/2026) variantes B (docs/Design_Variantes_B.md §1 : mêmes effectifs que la A du biome) ; porte scellée : `secret`
 	"terrasses_rizieres_hautes": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
 	"foret_mangrove_lanternes": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
 	"cite_fonderie_canal": {"chests": 17, "pillars": 11, "small": 8, "big": 3, "secret": true},
@@ -183,19 +183,19 @@ func _test_secrets(id: String, meta: Dictionary, map: StageMap, rects: Array[Rec
 		var sid := String(sc["id"])
 		var door := map.get_node_or_null("Obstacles/Walls/Door_%s" % sid) as CollisionShape2D
 		_check(door != null and not door.disabled, "%s : collision Door_%s manquante" % [id, sid])
-		var marks := {"plate": 0, "guardian": 0, "door": 0}
+		var marks := {"plate": 0, "guardian": 0, "door": 0, "lever": 0, "beacon": 0}
 		for m: Marker2D in map.get_secret_markers():
 			if String(m.get_meta(&"secret_id", "")) == sid:
 				marks[String(m.get_meta(&"role", ""))] += 1
-		_check(marks == {"plate": 2, "guardian": 2, "door": 1}, "%s : marqueurs de secret %s" % [id, marks])
+		_check(marks == {"plate": 2, "guardian": 2, "door": 1, "lever": 1, "beacon": 1}, "%s : marqueurs de secret %s" % [id, marks])
 		_check((sc["guardian_names"] as Array).size() == 2 and (sc["plates_u"] as Array).size() == 2, id + " : 2 plaques, 2 gardiens nommés")
 		# plaques atteignables, hors obstacle
 		for m: Marker2D in map.get_secret_markers():
 			var role := String(m.get_meta(&"role", ""))
 			var p := m.position
-			if role == "plate":
-				_check(not _blocked(rects, p, 24.0), "%s : plaque dans un obstacle" % id)
-				_check(not grid.get_id_path(s_cell, to_cell.call(p)).is_empty(), "%s : plaque inatteignable" % id)
+			if role == "plate" or role == "lever" or role == "beacon": # plaques et emplacements des autres déclencheurs
+				_check(not _blocked(rects, p, 24.0), "%s : %s dans un obstacle" % [id, role])
+				_check(not grid.get_id_path(s_cell, to_cell.call(p)).is_empty(), "%s : %s inatteignable" % [id, role])
 		# case de porte : fermée = bloquée ; salle (cases ':') inatteignable porte fermée, atteignable ouverte
 		var room_c := Vector2((sc["room_cells"][0][0] + 0.5) * 128.0, (sc["room_cells"][0][1] + 0.5) * 128.0) - half
 		var rc: Vector2i = to_cell.call(room_c)

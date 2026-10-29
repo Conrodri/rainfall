@@ -547,9 +547,83 @@ SHAPES = {"cryptes_noyees": _shape_cryptes, "la_source": _shape_source, "terrass
 def shape_grid(mid, grid):
     return SHAPES[mid](grid) if mid in SHAPES else grid
 
+# Secrets des cartes A (29/10/2026, demande du joueur) : même système que les cartes B (2 plaques, porte D, salle
+# scellée « : », 2 gardiens nommés, reliquaires), posés APRÈS la mise en forme dans le vide au bord du contour : une
+# salle de 3 × 3 cases dont l'anneau de vide devient mur, et une porte « D » à la place d'une case de contour.
+# `door` = case de contour remplacée par la porte, `dir` = sens du sol vers la salle, `pad_right` = colonnes de vide
+# ajoutées à droite (cryptes : la caverne ronde n'a pas assez de vide), `plates` = cases « . » (plaques éloignées,
+# hors chemin principal, ni départ ni arène de boss ; accessibles depuis le départ).
+A_SECRETS = {
+ "terrasses_noyees": dict(id="bassin_vanne", skin="dalles de vanne + grille de bassin (habillage Terrasses)", door=(7, 31), dir=(-1, 0),
+                          plates=[(13, 2), (19, 34)], names=["Vase", "Crue"]),
+ "foret_brume": dict(id="cercle_brume", skin="pierres plates à rune + rideau de brume (habillage Forêt)", door=(5, 4), dir=(-1, 0),
+                     plates=[(36, 19), (1, 11)], names=["Mousse", "Fougère"]),
+ "cite_rouille": dict(id="salle_pompes", skin="plaques de pression rivetées + porte à volant (habillage Cité)", door=(5, 5), dir=(-1, 0),
+                      plates=[(20, 1), (4, 37)], names=["Boulon", "Chaudron"]),
+ "cryptes_noyees": dict(id="chapelle_basse", skin="dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", door=(34, 7), dir=(1, 0),
+                        pad_right=6, plates=[(3, 10), (20, 32)], names=["Algue", "Nef"]),
+}
+
+def add_a_secret(g, sp):
+    """Pose le secret `sp` sur la grille mise en forme `g` ; retourne (grille, entrée `secrets`)."""
+    if sp.get("pad_right"):
+        g = pad(g, right=sp["pad_right"], fill=VOID)
+    g = [list(r) for r in g]
+    H, W = len(g), len(g[0])
+    x, y = sp["door"]; dx, dy = sp["dir"]; px, py = abs(dy), abs(dx)
+    assert g[y][x] == "#" and g[y - dy][x - dx] == ".", (sp["id"], "porte hors contour")
+    cells = [(x + dx * d + px * s, y + dy * d + py * s) for d in (1, 2, 3) for s in (-1, 0, 1)]
+    rs = set(cells)
+    for (cx, cy) in cells:
+        assert g[cy][cx] == VOID, (sp["id"], "salle hors du vide", cx, cy)
+    for (cx, cy) in cells:
+        for i in (-1, 0, 1):
+            for j in (-1, 0, 1):
+                n = (cx + i, cy + j)
+                if n in rs or n == (x, y):
+                    continue
+                assert 0 <= n[0] < W and 0 <= n[1] < H and g[n[1]][n[0]] in VOID + "#", (sp["id"], "anneau de la salle", n)
+                g[n[1]][n[0]] = "#"
+    for s in (-1, 1):
+        assert g[y + py * s][x + px * s] in VOID + "#", (sp["id"], "flanc de porte")
+        g[y + py * s][x + px * s] = "#"
+    for (cx, cy) in cells:
+        g[cy][cx] = ":"
+    g[y][x] = "D"
+    for (cx, cy) in sp["plates"]:
+        assert g[cy][cx] == ".", (sp["id"], "plaque hors sol", cx, cy)
+    entry = dict(id=sp["id"], kind="sealed_door", skin=sp["skin"], door_cells=[[x, y]], room_cells=[list(c) for c in cells],
+                 plates_u=[[2 * cx + 1, 2 * cy + 1] for cx, cy in sp["plates"]],
+                 guardians_u=[[2 * cells[i][0] + 1, 2 * cells[i][1] + 1] for i in (3, 8)],
+                 guardian_names=sp["names"], reward="2 reliquaires (table gardien)")
+    return ["".join(r) for r in g], entry
+
+# Emplacements des déclencheurs de secret autres que les plaques (29/10/2026) : levier caché dans un recoin
+# (« interagir »), pilier éteint loin de la salle (rester dans son cercle). Cases « . » accessibles du départ, loin de la
+# porte, hors départ, coffres et piliers de boss. Le mur fissuré est la porte « D » elle-même. Le tirage du déclencheur
+# par run est dans FloorPlan.mark_secret (scripts/stage/floor_plan.gd) ; positions en cases de grille (x, y).
+TRIGGER_SPOTS = {
+ "terrasses_noyees": dict(lever=(27, 4), pillar=(29, 10)),
+ "foret_brume": dict(lever=(24, 32), pillar=(4, 23)),
+ "cite_rouille": dict(lever=(16, 43), pillar=(27, 26)),
+ "cryptes_noyees": dict(lever=(1, 21), pillar=(11, 12)),
+ "terrasses_rizieres_hautes": dict(lever=(23, 38), pillar=(2, 22)),
+ "foret_mangrove_lanternes": dict(lever=(22, 29), pillar=(29, 27)),
+ "cite_fonderie_canal": dict(lever=(27, 35), pillar=(23, 25)),
+ "cryptes_ossuaire_pluies": dict(lever=(23, 40), pillar=(3, 28)),
+}
+
 ALL_MAPS = list(zip(MAPS, grids)) + [(m, m["grid"]) for m in NEW_MAPS]
 for _m, _g in ALL_MAPS:
     _g = shape_grid(_m["id"], _g)
+    if _m["id"] in A_SECRETS:
+        _g, _sec = add_a_secret(_g, A_SECRETS[_m["id"]])
+        _m["secrets"] = [_sec]
+    if _m["id"] in TRIGGER_SPOTS:
+        _ts = TRIGGER_SPOTS[_m["id"]]
+        for _k, (_cx, _cy) in _ts.items():
+            assert _g[_cy][_cx] == ".", (_m["id"], _k, "emplacement hors sol", _cx, _cy)
+        _m["secrets"][0]["trigger_spots"] = {k: [[2 * cx + 1, 2 * cy + 1]] for k, (cx, cy) in _ts.items()}
     assert all(len(r) == len(_g[0]) for r in _g), (_m["id"], "rangées de longueurs différentes")
     _m["grid"] = _g
     _m["size"] = (2 * len(_g[0]), 2 * len(_g))
@@ -658,6 +732,10 @@ def main():
                 body.append('[node name="Plate_%s_%d" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "plate"\nmetadata/index = %d\n' % ((sc["id"], i) + P(*c) + (sc["id"], i)))
             for i, c in enumerate(sc["guardians_u"]):
                 body.append('[node name="Guardian_%s_%d" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "guardian"\nmetadata/index = %d\nmetadata/guardian_name = "%s"\n' % ((sc["id"], i) + P(*c) + (sc["id"], i, sc["guardian_names"][i])))
+            for k, role in (("lever", "lever"), ("pillar", "beacon")):
+                for i, c in enumerate(sc.get("trigger_spots", {}).get(k, [])):
+                    assert grid[c[1]//2][c[0]//2] == ".", (m["id"], sc["id"], k, "emplacement hors sol", c)
+                    body.append('[node name="%s_%s_%d" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "%s"\nmetadata/index = %d\n' % ((role.capitalize(), sc["id"], i) + P(*c) + (sc["id"], role, i)))
             for (sid, dx, dy, dw, dh) in doors:
                 if sid == sc["id"]:
                     body.append('[node name="DoorMark_%s" type="Marker2D" parent="Markers" groups=["secret_spawn"]]\nposition = Vector2(%g, %g)\nmetadata/secret_id = "%s"\nmetadata/role = "door"\nmetadata/size_u = Vector2(%d, %d)\n' % ((sid,) + P(dx*2 + dw, dy*2 + dh) + (sid, dw*2, dh*2)))

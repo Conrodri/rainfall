@@ -1,10 +1,11 @@
 class_name SecretRoom
 extends Node2D
-## Porte scellée (docs/Design_Zones_Secretes.md §3) : 2 plaques de pression qui restent enfoncées -> la porte
+## Porte scellée (docs/Design_Zones_Secretes.md §3) : un DÉCLENCHEUR (tiré par run, FloorPlan.mark_secret : 2 plaques de
+## pression qui restent enfoncées, levier caché, mur fissuré, pilier éteint) ouvre la porte
 ## `D` s'ouvre (collision `Door_<id>` coupée, NavField et occluders refaits) -> 2 gardiens nommés (brutes élites
 ## tier 3, affixes selon le biome) sortent après un télégraphe de 1 s, 1,5 s d'écart -> chacun lâche un
-## reliquaire (coffre gratuit) à sa mort. Aucune interaction : tout se déclenche au passage du joueur.
-## Posée par StageManager sur chaque carte dont la scène porte des marqueurs `secret_spawn` (cartes B).
+## reliquaire (coffre gratuit) à sa mort. Plaques : tout se déclenche au passage du joueur ; levier : action « interagir » ; mur : dégâts de sorts du joueur ;
+## pilier : rester dans son cercle. Posée par StageManager sur l'étage tiré avec secret (cartes à marqueurs `secret_spawn`).
 ## Visuels provisoires (glyphe de porte, cercle de télégraphe, nom flottant) en attendant les lots Codex S-A / S-B.
 
 signal plate_pressed(secret_id: StringName, pressed_count: int, total: int)
@@ -32,6 +33,10 @@ var secret_id: StringName = &""
 var map: StageMap = null
 var biome: StringName = &""
 var plates: Array[SecretPlate] = []
+var trigger: StringName = &"plates" ## plates | lever | wall | pillar (Balance.SECRET_TRIGGERS)
+var lever: SecretLever = null
+var wall: SecretWall = null
+var beacon: SecretBeacon = null
 var is_open := false
 var guardian_defs: Array[Dictionary] = [] ## {pos (local carte), name}
 var guardians: Array = [] ## Enemy | null par gardien
@@ -47,8 +52,9 @@ var _labels: Array = []
 
 
 ## `markers` : marqueurs `secret_spawn` de CE secret (rôles plate, guardian, door).
-func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringName, p_relic_maker: Callable) -> void:
+func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringName, p_relic_maker: Callable, p_trigger: StringName = &"plates") -> void:
 	map = p_map
+	trigger = p_trigger
 	secret_id = p_id
 	biome = p_biome
 	relic_maker = p_relic_maker
@@ -57,8 +63,12 @@ func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringNam
 	_map_rot = map.map_xform().get_rotation()
 	var plate_marks: Array = []
 	var guard_marks: Array = []
+	var lever_mark: Marker2D = null
+	var beacon_mark: Marker2D = null
 	for m: Marker2D in markers:
 		match String(m.get_meta(&"role", "")):
+			"lever": lever_mark = m
+			"beacon": beacon_mark = m
 			"plate": plate_marks.append(m)
 			"guardian": guard_marks.append(m)
 			"door":
@@ -68,15 +78,38 @@ func setup(p_map: StageMap, p_id: StringName, markers: Array, p_biome: StringNam
 	var by_index := func(a: Marker2D, b: Marker2D) -> bool: return int(a.get_meta(&"index")) < int(b.get_meta(&"index"))
 	plate_marks.sort_custom(by_index)
 	guard_marks.sort_custom(by_index)
-	for m: Marker2D in plate_marks:
-		var pl := SecretPlate.new()
-		pl.secret_id = secret_id
-		pl.index = int(m.get_meta(&"index"))
-		pl.position = map.local_pos(m)
-		pl.rotation = _map_rot
-		pl.pressed_changed.connect(_on_plate_pressed)
-		add_child(pl)
-		plates.append(pl)
+	if (trigger == &"lever" and lever_mark == null) or (trigger == &"pillar" and beacon_mark == null) or not Balance.SECRET_TRIGGERS.has(trigger):
+		trigger = &"plates" # carte sans emplacement pour ce déclencheur : plaques
+	match trigger:
+		&"plates":
+			for m: Marker2D in plate_marks:
+				var pl := SecretPlate.new()
+				pl.secret_id = secret_id
+				pl.index = int(m.get_meta(&"index"))
+				pl.position = map.local_pos(m)
+				pl.rotation = _map_rot
+				pl.pressed_changed.connect(_on_plate_pressed)
+				add_child(pl)
+				plates.append(pl)
+		&"lever":
+			lever = SecretLever.new()
+			lever.position = map.local_pos(lever_mark)
+			lever.activated.connect(_on_trigger_done)
+			add_child(lever)
+		&"wall":
+			wall = SecretWall.new()
+			wall.position = door_pos
+			wall.rotation = _map_rot
+			wall.setup(door_size_px, SecretWall.hp_for_level(RunState.level))
+			wall.damaged.connect(_on_wall_damaged)
+			wall.broken.connect(_on_trigger_done)
+			add_child(wall)
+		&"pillar":
+			beacon = SecretBeacon.new()
+			beacon.position = map.local_pos(beacon_mark)
+			beacon.progressed.connect(func(_r: float) -> void: queue_redraw())
+			beacon.charged.connect(_on_trigger_done)
+			add_child(beacon)
 	for m: Marker2D in guard_marks:
 		guardian_defs.append({"pos": map.local_pos(m), "name": String(m.get_meta(&"guardian_name", "Gardien"))})
 		guardians.append(null)
@@ -122,13 +155,50 @@ func objective_text() -> String:
 	if is_complete():
 		return ""
 	if not is_open:
-		return "Dalles  %d/%d" % [pressed_count(), plates.size()]
+		return "%s  %s" % [trigger_label(), trigger_value()]
 	return "Gardiens  %d/%d" % [dead_count(), guardian_defs.size()]
+
+
+## Libellé et valeur du déclencheur fermé (« Dalles 1/2 », « Mur fissuré 40 % », « Pilier 3/6 s », « Levier »).
+func trigger_label() -> String:
+	match trigger:
+		&"lever": return "Levier"
+		&"wall": return "Mur fissuré"
+		&"pillar": return "Pilier"
+	return "Dalles"
+
+
+func trigger_value() -> String:
+	match trigger:
+		&"lever": return ""
+		&"wall": return "%d %%" % roundi(wall.ratio() * 100.0) if wall != null else ""
+		&"pillar": return "%d/%d s" % [int(beacon.charge_s), int(Balance.SECRET_PILLAR_CHARGE_S)] if beacon != null else ""
+	return "%d/%d" % [pressed_count(), plates.size()]
+
+
+## Le joueur a commencé : une dalle enfoncée, un coup sur le mur, un pas dans le cercle du pilier. Le levier ouvre dès la
+## première interaction (la porte est ouverte avant que la ligne n'ait à s'afficher). La ligne OBJECTIFS attend ça.
+func trigger_started() -> bool:
+	match trigger:
+		&"wall": return wall != null and wall.ratio() > 0.0
+		&"pillar": return beacon != null and beacon.charge_s > 0.0
+		&"lever": return lever != null and lever.used
+	return pressed_count() > 0
+
+
+## Avancement du déclencheur, 0..1 (sauvegarde).
+func trigger_progress() -> float:
+	match trigger:
+		&"wall": return wall.ratio() if wall != null else 0.0
+		&"pillar": return beacon.ratio() if beacon != null else 0.0
+		&"lever": return 1.0 if (lever != null and lever.used) else 0.0
+	return float(pressed_count()) / maxf(float(plates.size()), 1.0)
 
 
 func status() -> Dictionary:
 	return {"id": String(secret_id), "plates": pressed_count(), "plates_total": plates.size(), "open": is_open,
-		"guardians_dead": dead_count(), "guardians_total": guardian_defs.size(), "complete": is_complete()}
+		"guardians_dead": dead_count(), "guardians_total": guardian_defs.size(), "complete": is_complete(),
+		"trigger": String(trigger), "started": trigger_started(), "label": trigger_label(), "value": trigger_value()}
 
 
 # --- Plaques -> porte ----------------------------------------------------------------
@@ -139,11 +209,26 @@ func _on_plate_pressed(_plate: SecretPlate) -> void:
 		open_door()
 
 
+func _on_wall_damaged(_ratio: float) -> void:
+	queue_redraw()
+
+
+## Levier tiré, mur cédé ou pilier chargé : la porte s'ouvre.
+func _on_trigger_done() -> void:
+	if not is_open:
+		open_door()
+
+
 ## Ouvre la porte (aussi appelé directement par les tests). `silent` : restauration, gardiens non réveillés ici.
 func open_door(silent: bool = false) -> void:
 	if is_open:
 		return
 	is_open = true
+	if wall != null and is_instance_valid(wall):
+		wall.queue_free()
+		wall = null
+	if not silent:
+		Audio.play(&"chest.open.large", door_pos)
 	if not silent: # une fois par zone (le compteur est sauvegardé avec la run : pas de recompte à la reprise)
 		RunState.add_counter("secret_zones")
 	map.open_secret_door(secret_id)
@@ -261,7 +346,15 @@ func _drop_relic(local_pos: Vector2) -> void:
 func _draw() -> void:
 	if map == null:
 		return
-	if not is_open:
+	if not is_open and trigger == &"wall":
+		draw_set_transform(door_pos, _map_rot) # lézardes discrètes (placeholder du lot Codex _secret_wall), plus nettes avec les dégâts
+		var a := 0.35 + 0.5 * (wall.ratio() if wall != null else 0.0)
+		var cr := Color(0.08, 0.07, 0.06, a)
+		draw_polyline(PackedVector2Array([Vector2(-6.0, -52.0), Vector2(4.0, -26.0), Vector2(-8.0, -4.0), Vector2(6.0, 22.0), Vector2(-2.0, 50.0)]), cr, 3.0)
+		draw_polyline(PackedVector2Array([Vector2(4.0, -26.0), Vector2(22.0, -18.0)]), cr, 2.0)
+		draw_polyline(PackedVector2Array([Vector2(-8.0, -4.0), Vector2(-26.0, 6.0)]), cr, 2.0)
+		draw_set_transform(Vector2.ZERO, 0.0)
+	elif not is_open and trigger == &"plates":
 		draw_set_transform(door_pos, _map_rot)
 		# glyphe : un cran par plaque, allumé une fois la plaque enfoncée
 		var n := plates.size()
@@ -289,7 +382,8 @@ func to_dict() -> Dictionary:
 	for r in relics:
 		if is_instance_valid(r) and not (r.has_method(&"is_opened") and r.call(&"is_opened")):
 			rel.append([r.position.x, r.position.y])
-	return {"id": String(secret_id), "plates": pl, "open": is_open, "dead": dead.duplicate(), "relics": rel}
+	return {"id": String(secret_id), "plates": pl, "open": is_open, "dead": dead.duplicate(), "relics": rel,
+		"trigger": String(trigger), "progress": trigger_progress()}
 
 
 func from_dict(d: Dictionary) -> void:
@@ -297,12 +391,27 @@ func from_dict(d: Dictionary) -> void:
 	for i in mini(pl.size(), plates.size()):
 		if bool(pl[i]):
 			plates[i].press(true)
+	var prog := float(d.get("progress", 0.0))
+	match trigger: # avancement du déclencheur (absent des sauvegardes d'avant les déclencheurs : plaques seules)
+		&"wall":
+			if wall != null:
+				wall.restore_ratio(prog)
+		&"pillar":
+			if beacon != null:
+				beacon.restore_ratio(prog)
+		&"lever":
+			if lever != null and prog >= 1.0:
+				lever.pull(true)
 	var dd: Array = d.get("dead", [])
 	for i in mini(dd.size(), dead.size()):
 		dead[i] = bool(dd[i])
 	for xy in d.get("relics", []):
 		_drop_relic(Vector2(float(xy[0]), float(xy[1])))
 	if bool(d.get("open", false)):
+		if beacon != null:
+			beacon.complete(true)
+		if lever != null:
+			lever.pull(true)
 		open_door(true)
 		_arm_guardians(0.5) # gardiens vivants à la reprise : ils reviennent (PV pleins)
 	queue_redraw()

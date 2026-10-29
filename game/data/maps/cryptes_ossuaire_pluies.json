@@ -341,7 +341,21 @@
     "Sel",
     "Suie"
    ],
-   "reward": "2 reliquaires (table gardien)"
+   "reward": "2 reliquaires (table gardien)",
+   "trigger_spots": {
+    "lever": [
+     [
+      47,
+      81
+     ]
+    ],
+    "pillar": [
+     [
+      7,
+      57
+     ]
+    ]
+   }
   }
  ]
 }

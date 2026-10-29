@@ -12,6 +12,7 @@ const COLORS := {
 	&"large": Color(0.29, 0.56, 0.89),
 	&"legendaire": Color(1.0, 0.72, 0.11),
 	&"boss": Color(0.78, 0.29, 0.87),
+	&"guardian": Color(0.3, 0.85, 0.8),
 }
 
 ## Sprites Blender (closed / open), 1 u = 64 px, pivot aux pieds (offset dans la scène).
@@ -20,6 +21,7 @@ const SPRITES := {
 	&"large": {"path": "res://assets/sprites/chests/chest_large/chest_large.tres", "scale": 0.8},
 	&"legendaire": {"path": "res://assets/sprites/chests/chest_legendary/chest_legendary.tres", "scale": 0.9},
 	&"boss": {"path": "res://assets/sprites/chests/chest_legendary/chest_legendary.tres", "scale": 0.95},
+	&"guardian": {"path": "res://assets/sprites/chests/chest_large/chest_large.tres", "scale": 0.85}, # reliquaire : grand coffre teinté
 }
 
 var kind: StringName = &"petit"
@@ -70,7 +72,7 @@ func _update_light() -> void:
 
 
 func is_free() -> bool:
-	return kind == &"boss"
+	return kind == &"boss" or kind == &"guardian"
 
 
 func current_price() -> float:
@@ -98,7 +100,7 @@ func _refresh_visual() -> void:
 		_visual.set_frames(frames)
 	_visual.scale = Iso.UNSQUASH * float(cfg["scale"]) # billboard (sprite ancien, 64 px/u)
 	# le coffre de boss reprend la teinte violette du placeholder
-	_visual.modulate = Color.WHITE if kind != &"boss" else Color(1, 1, 1).lerp(COLORS[&"boss"], 0.55)
+	_visual.modulate = Color.WHITE if not (kind == &"boss" or kind == &"guardian") else Color(1, 1, 1).lerp(COLORS[kind], 0.55)
 	_show_state(&"open" if _opening else &"closed")
 	_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	_label.add_theme_constant_override("outline_size", 8)
@@ -115,7 +117,7 @@ func _refresh_price() -> void:
 	price = current_price()
 	if is_free():
 		_label.text = "GRATUIT"
-		_label.modulate = COLORS[&"boss"].lightened(0.4)
+		_label.modulate = COLORS[kind].lightened(0.4)
 	else:
 		var missing := missing_gold()
 		# trop cher : le manque est écrit (SC 1.4.1, pas la couleur seule)

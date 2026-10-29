@@ -95,7 +95,97 @@ static func build(run_seed: int, memory: Variant = null) -> Array:
 	var out: Array = []
 	for f in range(1, final_floor() + 1):
 		out.append(_draw(f, f, 0, -1, run_seed, mem))
+	mark_secret(out, run_seed)
 	return out
+
+
+## Secret à plaques de la run (docs/Design_Variantes_B.md « Fréquence des secrets ») : au plus un par partie.
+## Tirage Balance.SECRET_RUN_CHANCE, puis un étage uniforme parmi 1..4 dont la carte tirée porte un secret (cartes B).
+## Générateur PROPRE (seed + "secret_run") : ne touche ni les cartes ni les boss ; déterministe (défi du jour).
+## Pose `secret` (bool) sur chaque entrée du plan ; retourne l'étage choisi (0 = aucun).
+static func mark_secret(plan: Array, run_seed: int) -> int:
+	var cands: Array[int] = []
+	for e in plan:
+		var d := e as Dictionary
+		var f := int(d.get("floor", 0))
+		if f >= 1 and f <= Balance.SECRET_MAX_FLOOR and not bool(d.get("final", false)) and map_has_secret(String(d.get("map_id", ""))):
+			cands.append(f)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([run_seed, "secret_run"])
+	var roll := rng.randf()
+	var pick := cands[rng.randi_range(0, cands.size() - 1)] if not cands.is_empty() else 0
+	var trig: StringName = Balance.SECRET_TRIGGERS[rng.randi_range(0, Balance.SECRET_TRIGGERS.size() - 1)] # tiré après l'étage : tirages précédents inchangés
+	var chosen := 0
+	if not cands.is_empty() and roll < Balance.SECRET_RUN_CHANCE:
+		chosen = pick
+	var fs := forced_secret()
+	if fs >= 0:
+		chosen = fs if fs in cands else 0 # test : `-- --force-secret=<étage>` (0 = aucun)
+	var ft := forced_trigger()
+	if ft != &"":
+		trig = ft # test : `-- --force-trigger=plates|lever|wall|pillar`
+	for e in plan:
+		var armed := int((e as Dictionary).get("floor", 0)) == chosen and chosen > 0
+		(e as Dictionary)["secret"] = armed
+		(e as Dictionary)["secret_trigger"] = String(trig) if armed else ""
+	return chosen
+
+
+static var _secret_maps := {}
+
+
+## Vrai si data/maps/<id>.json déclare au moins un secret (clé `secrets`).
+static func map_has_secret(map_id: String) -> bool:
+	if not _secret_maps.has(map_id):
+		var has := false
+		if map_exists(map_id):
+			var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("%s/%s.json" % [MAPS_DIR, map_id]))
+			has = d is Dictionary and not (d as Dictionary).get("secrets", []).is_empty()
+		_secret_maps[map_id] = has
+	return _secret_maps[map_id]
+
+
+## Étage du secret imposé : -1 = tirage normal, 0 = aucun, 1..4 = cet étage (s'il a une carte à secret).
+## Réglé par les tests (`FloorPlan.force_secret = 2`) ou en ligne de commande : `godot ... -- --force-secret=2`.
+static var force_secret := -1
+
+
+static func forced_secret() -> int:
+	if force_secret >= 0:
+		return force_secret
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--force-secret="):
+			var v := arg.trim_prefix("--force-secret=")
+			return int(v) if v.is_valid_int() else -1
+	return -1
+
+
+## Déclencheur imposé (`FloorPlan.force_trigger = &"wall"` ou `-- --force-trigger=wall`) : &"" = tirage normal.
+static var force_trigger := &""
+
+
+static func forced_trigger() -> StringName:
+	if force_trigger != &"":
+		return force_trigger
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--force-trigger="):
+			var v := StringName(arg.trim_prefix("--force-trigger="))
+			return v if Balance.SECRET_TRIGGERS.has(v) else &""
+	return &""
+
+
+## Déclencheur du secret d'une entrée de plan (&"plates" pour une sauvegarde d'avant les déclencheurs).
+static func trigger_of(entry: Dictionary) -> StringName:
+	var t := StringName(String(entry.get("secret_trigger", "")))
+	return t if Balance.SECRET_TRIGGERS.has(t) else &"plates"
+
+
+## Étage de la run portant le secret (0 = aucun) d'après un plan.
+static func secret_floor(plan: Array) -> int:
+	for e in plan:
+		if bool((e as Dictionary).get("secret", false)):
+			return int((e as Dictionary).get("floor", 0))
+	return 0
 
 
 ## Entrée de plan pour l'étage de run `stage` : celle du plan (boucle 1), sinon tirée à la demande (sans fin).
@@ -235,7 +325,7 @@ static func _draw(floor_n: int, stage: int, loop: int, base_idx: int, run_seed: 
 	return {
 		"floor": floor_n, "stage": stage, "biome": String(e.get("biome", "")), "name": String(e.get("name", "")),
 		"map_id": map_id, "variant": variant, "floor_boss": floor_boss, "minis": minis,
-		"final": bool(e.get("final", false)),
+		"final": bool(e.get("final", false)), "secret": false, "secret_trigger": "",
 	}
 
 
@@ -247,7 +337,7 @@ static func normalize(e: Dictionary) -> Dictionary:
 	return {
 		"floor": int(e.get("floor", 1)), "stage": int(e.get("stage", 1)), "biome": String(e.get("biome", "")),
 		"name": String(e.get("name", "")), "map_id": String(e.get("map_id", "")), "variant": String(e.get("variant", "")),
-		"floor_boss": String(e.get("floor_boss", "")), "minis": minis, "final": bool(e.get("final", false)),
+		"floor_boss": String(e.get("floor_boss", "")), "minis": minis, "final": bool(e.get("final", false)), "secret": bool(e.get("secret", false)), "secret_trigger": String(e.get("secret_trigger", "")),
 	}
 
 

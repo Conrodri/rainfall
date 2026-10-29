@@ -198,6 +198,12 @@ func start_stage(layout: Dictionary = {}) -> void:
 ## Une SecretRoom par secret dont la scène porte des marqueurs `secret_spawn` (porte scellée des cartes B).
 func _setup_secrets() -> void:
 	secrets.clear()
+	var trig: StringName = &"plates"
+	if map_scene == null and not bare_arena:
+		var pe := plan_entry(RunState.stage)
+		if not bool(pe.get("secret", false)):
+			return # secret non tiré pour cet étage (FloorPlan.mark_secret) : salle scellée, porte = mur, aucun marqueur actif
+		trig = FloorPlan.trigger_of(pe)
 	var by_id := {}
 	for m in map.get_secret_markers():
 		var sid := String(m.get_meta(&"secret_id", ""))
@@ -209,11 +215,11 @@ func _setup_secrets() -> void:
 	for sid: String in by_id:
 		var room := SecretRoom.new()
 		map.add_child(room)
-		room.setup(map, StringName(sid), by_id[sid], map.biome(), _make_relic)
+		room.setup(map, StringName(sid), by_id[sid], map.biome(), _make_relic, trig)
 		secrets.append(room)
 
 
-## Reliquaire d'un gardien : coffre gratuit (kind `boss`, table « gardien » à créer côté loot) posé en zone accessible.
+## Reliquaire d'un gardien : coffre gratuit (kind `guardian`, Balance.CHEST_QUALITY_TABLE) posé en zone accessible.
 func _make_relic(pos: Vector2) -> Node2D:
 	var chest := _make_chest()
 	if chest == null:
@@ -221,7 +227,7 @@ func _make_relic(pos: Vector2) -> Node2D:
 	chest.position = reachable_local(pos)
 	map.add_child(chest)
 	if chest.has_method(&"setup"):
-		chest.call(&"setup", &"boss", RunState.stage)
+		chest.call(&"setup", &"guardian", RunState.stage)
 	chests.append(chest)
 	return chest
 
@@ -742,6 +748,12 @@ func from_dict(d: Dictionary) -> void:
 			floor_plan.append(FloorPlan.normalize(e))
 	if floor_plan.is_empty(): # sauvegarde d'avant le plan : recalculé à l'identique depuis la seed
 		floor_plan = FloorPlan.build(RunState.run_seed)
+	else:
+		var has_flag := false
+		for e in d.get("floor_plan", []):
+			has_flag = has_flag or (e is Dictionary and (e as Dictionary).has("secret"))
+		if not has_flag: # sauvegarde d'avant le tirage des secrets : tirage depuis la seed
+			FloorPlan.mark_secret(floor_plan, RunState.run_seed)
 	var lp: Array = []
 	for p: Dictionary in d["pillars"]:
 		lp.append({"kind": int(p["kind"]), "marker": int(p["marker"])})

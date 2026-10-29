@@ -149,7 +149,7 @@ func _run() -> void:
 		chests.append(ch)
 		_check("coffre %s posé, près du joueur, vignette" % ce.chest_kind, ch != null and ch.kind == ce.chest_kind and ch.is_in_group(&"chests") and ch.global_position.distance_to(_player.global_position) < 5.0 * 64.0 and TestThumbs.chest(ce) != null)
 		await get_tree().process_frame
-		_check("coffre %s : prix %s" % [ce.chest_kind, ch.current_price()], (ch.current_price() == 0.0) == (ce.chest_kind == &"boss"))
+		_check("coffre %s : prix %s" % [ce.chest_kind, ch.current_price()], (ch.current_price() == 0.0) == (ce.chest_kind == &"boss" or ce.chest_kind == &"guardian"))
 	_check("%d coffres sur la carte" % ccat.size(), get_tree().get_nodes_in_group(&"chests").size() == ccat.size())
 	var big = chests[1]
 	RunState.gold = 0.0

@@ -215,6 +215,9 @@ func _apply() -> void:
 				if v.length_squared() > 1.0 and absf(arc_dir.angle_to(v)) > arc_half:
 					continue
 			caster.deal_damage(e, spell, hit)
+	for w in get_tree().get_nodes_in_group(&"secret_wall"): # mur fissuré d'une salle secrète (SecretWall)
+		if w is Node2D and w.global_position.distance_to(global_position) <= radius + 64.0:
+			w.call(&"take_hit", caster.compute_damage(spell, null, false))
 
 
 ## Repli sans asset (placeholder, à remplacer par le VFX rendu) : contour fin au rayon réel.

@@ -163,13 +163,13 @@ func _secret_line(mgr: StageManager) -> Dictionary:
 		return {}
 	var out := {}
 	for st: Dictionary in mgr.secret_status():
-		if int(st["plates"]) <= 0 and not bool(st["open"]):
+		if not bool(st.get("started", int(st["plates"]) > 0)) and not bool(st["open"]):
 			continue
 		if bool(st["complete"]):
 			out = {"label": "Salle secrète", "value": "", "done": true}
 			continue
 		if not bool(st["open"]):
-			return {"label": "Dalles", "value": "%d/%d" % [int(st["plates"]), int(st["plates_total"])], "done": false}
+			return {"label": String(st.get("label", "Dalles")), "value": String(st.get("value", "%d/%d" % [int(st["plates"]), int(st["plates_total"])])), "done": false}
 		return {"label": "Gardiens", "value": "%d/%d" % [int(st["guardians_dead"]), int(st["guardians_total"])], "done": false}
 	return out
 

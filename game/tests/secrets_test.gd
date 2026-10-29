@@ -1,11 +1,12 @@
 extends Node
-## Porte scellée des 4 cartes B (docs/Design_Zones_Secretes.md §3, docs/Design_Variantes_B.md) :
-## - une SecretRoom par carte B, 2 plaques / 2 gardiens nommés / 1 porte ; porte fermée = salle inaccessible (NavField) ;
+## Porte scellée des 8 cartes des étages 1-4 (A et B) (docs/Design_Zones_Secretes.md §3, docs/Design_Variantes_B.md) :
+## - une SecretRoom par carte tirée avec secret, 2 plaques / 2 gardiens nommés / 1 porte ; porte fermée = salle inaccessible (NavField) ;
 ## - une plaque ne réagit qu'au joueur (un monstre dessus ne fait rien), reste enfoncée, ordre libre ;
 ## - 2e plaque : collision de porte coupée, bloc de mur retiré, salle accessible (NavField refait), télégraphe puis
 ##   2 gardiens élites tier 3 nommés (affixes du biome) ; mort -> 2 reliquaires ; secret terminé ;
 ## - sauvegarde / reprise : plaque enfoncée, porte ouverte, gardien mort conservés ;
-## - cartes A : aucun secret.
+## - étage 5 (la_source) : aucun secret ;
+## - fréquence : au plus un secret par run (≈ 1/3), étage 1-4 seulement, déterministe par graine, sauvegardé.
 ## godot --headless --path game res://tests/secrets_test.tscn  -> RESULT: OK
 
 const B_MAPS := ["terrasses_rizieres_hautes", "foret_mangrove_lanternes", "cite_fonderie_canal", "cryptes_ossuaire_pluies"]
@@ -62,20 +63,30 @@ func _run() -> void:
 	_mgr.chest_factory = _make_chest
 	add_child(_mgr)
 	await _frames(2)
-	for id in A_MAPS:
-		await _load_map(id)
-		_check("%s : aucun secret sur une carte A" % id, _mgr.secrets.is_empty())
-	for id in B_MAPS:
+	for id in A_MAPS + B_MAPS: # secrets sur les 8 cartes des étages 1-4 (A ajoutés le 29/10/2026)
 		await _test_b(id)
+	await _load_map("la_source")
+	_check("la_source : aucun secret", _mgr.secrets.is_empty())
 	await _test_save(B_MAPS[0])
+	await _test_unarmed(B_MAPS[1])
+	for id in [A_MAPS[1], B_MAPS[3]]:
+		for trig in ["lever", "wall", "pillar"]:
+			await _test_trigger(id, trig)
+	await _test_trigger_save(A_MAPS[2])
+	_test_frequency()
+	_test_trigger_draw()
+	_test_guardian_loot()
+	await _test_plan_save()
 
 
-func _load_map(id: String) -> void:
+func _load_map(id: String, armed: bool = true, trig: String = "plates") -> void:
 	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % id))
 	RunState.start_run(&"moyen", 31)
 	_mgr.reset_run()
 	var fl := int(meta["floor"])
 	(_mgr.floor_plan[fl - 1] as Dictionary)["map_id"] = id
+	(_mgr.floor_plan[fl - 1] as Dictionary)["secret"] = armed and FloorPlan.map_has_secret(id)
+	(_mgr.floor_plan[fl - 1] as Dictionary)["secret_trigger"] = trig
 	RunState.stage = fl
 	_mgr.start_stage()
 	await _frames(2)
@@ -184,7 +195,7 @@ func _test_b(id: String) -> void:
 	_check("%s : ligne secrète terminée" % id, panel.secret_text().begins_with("Salle secrète"), panel.secret_text())
 	panel.queue_free()
 	mm.queue_free()
-	_check("%s : 2 reliquaires (coffres kind boss)" % id, _mgr.chests.size() == chests0 + 2 and _mgr.chests.back().kind == &"boss")
+	_check("%s : 2 reliquaires (coffres kind guardian)" % id, _mgr.chests.size() == chests0 + 2 and _mgr.chests.back().kind == &"guardian")
 	_check("%s : secret terminé" % id, room.is_complete() and room.objective_text() == "" and _mgr.secret_status()[0]["complete"])
 
 
@@ -219,3 +230,259 @@ func _test_save(id: String) -> void:
 	_check("reprise : gardien 0 mort, reliquaire rendu", room.dead[0] and not room.dead[1] and room.relics.size() == 1)
 	await get_tree().create_timer(3.8).timeout
 	_check("reprise : le gardien vivant revient", room.guardians[1] != null)
+
+
+## Carte B dont le secret n'est pas tiré : salle scellée, aucune SecretRoom, ni plaque, ni gardien, ni ligne d'objectif.
+func _test_unarmed(id: String) -> void:
+	await _load_map(id, false)
+	_check("%s non tiré : aucune SecretRoom" % id, _mgr.secrets.is_empty() and _mgr.secret_status().is_empty())
+	var panel := ObjectivesPanel.new()
+	panel.stage_manager = _mgr
+	add_child(panel)
+	panel.refresh()
+	_check("%s non tiré : aucune ligne secrète" % id, not panel.is_secret_shown())
+	panel.queue_free()
+	var mm := Minimap.new()
+	add_child(mm)
+	mm._bind_map(_mgr.map)
+	var dc: Vector2i = mm._secret_cells.keys()[0]
+	_check("%s non tiré : minimap porte = mur" % id, mm._vis_cell(dc.x, dc.y) == "#")
+	mm.queue_free()
+	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % id))
+	var door := _mgr.map.get_node("Obstacles/Walls/Door_%s" % String(meta["secrets"][0]["id"])) as CollisionShape2D
+	_check("%s non tiré : porte pleine" % id, door != null and not door.disabled)
+	var d := _mgr.to_dict()
+	_check("%s non tiré : sauvegarde sans secret" % id, (d["secrets"] as Array).is_empty())
+
+
+func _test_frequency() -> void:
+	FloorPlan.force_secret = -1
+	var n := 3000
+	var with_secret := 0
+	var per_floor := {1: 0, 2: 0, 3: 0, 4: 0}
+	var multi := 0
+	var on_five := 0
+	var cand_floor := 0
+	for s in n:
+		var plan := FloorPlan.build(s * 7919 + 13, {})
+		var count := 0
+		for e: Dictionary in plan:
+			if bool(e["secret"]):
+				count += 1
+				if int(e["floor"]) >= 5 or bool(e["final"]):
+					on_five += 1
+				elif per_floor.has(int(e["floor"])):
+					per_floor[int(e["floor"])] += 1
+				_check("secret seulement sur une carte à secret (seed %d)" % s, FloorPlan.map_has_secret(String(e["map_id"])))
+		if count > 1:
+			multi += 1
+		with_secret += mini(count, 1)
+		if FloorPlan.secret_floor(plan) != 0:
+			cand_floor += 1
+		if s < 50: # déterminisme
+			var again := FloorPlan.build(s * 7919 + 13, {})
+			_check("plan déterministe (seed %d)" % s, FloorPlan.secret_floor(again) == FloorPlan.secret_floor(plan))
+	var freq := float(with_secret) / float(n)
+	print("secrets : fréquence %.3f sur %d graines, par étage %s" % [freq, n, per_floor])
+	_check("fréquence ≈ 1/3 (%.3f)" % freq, absf(freq - 1.0 / 3.0) <= 0.03)
+	_check("jamais 2 secrets dans une run", multi == 0)
+	_check("jamais d'étage 5", on_five == 0)
+	_check("les 4 étages sont tirés", per_floor[1] > 0 and per_floor[2] > 0 and per_floor[3] > 0 and per_floor[4] > 0, str(per_floor))
+	# option de test
+	FloorPlan.force_variant = "B"
+	FloorPlan.force_secret = 3
+	_check("force_secret=3 -> étage 3", FloorPlan.secret_floor(FloorPlan.build(5, {})) == 3)
+	FloorPlan.force_secret = 5
+	_check("force_secret=5 -> aucun (jamais l'étage 5)", FloorPlan.secret_floor(FloorPlan.build(5, {})) == 0)
+	FloorPlan.force_secret = 0
+	_check("force_secret=0 -> aucun", FloorPlan.secret_floor(FloorPlan.build(5, {})) == 0)
+	FloorPlan.force_secret = -1
+	FloorPlan.force_variant = ""
+	# sans fin : jamais de secret au-delà du plan
+	var plan1 := FloorPlan.build(77, {})
+	for st in range(6, 16):
+		_check("sans fin étage %d : pas de secret" % st, not bool(FloorPlan.entry_for_stage(plan1, st, 77, {}).get("secret", false)))
+
+
+## Le tirage est mémorisé dans le plan sauvegardé : aller-retour JSON identique, étage armé conservé.
+func _test_plan_save() -> void:
+	FloorPlan.force_variant = "B"
+	FloorPlan.force_secret = 2
+	RunState.start_run(&"moyen", 31)
+	_mgr.reset_run()
+	FloorPlan.force_secret = -1 # la reprise ne doit pas dépendre de l'option de test
+	FloorPlan.force_variant = ""
+	RunState.stage = 2
+	_mgr.start_stage()
+	await _frames(2)
+	_check("plan : secret armé à l'étage 2", _mgr.secrets.size() == 1)
+	var d := _mgr.to_dict()
+	_mgr.from_dict(JSON.parse_string(JSON.stringify(d)))
+	await _frames(2)
+	_check("reprise : secret toujours armé à l'étage 2", _mgr.secrets.size() == 1 and FloorPlan.secret_floor(_mgr.floor_plan) == 2)
+	RunState.stage = 1
+	_mgr.start_stage()
+	await _frames(2)
+	_check("étage 1 : aucun secret", _mgr.secrets.is_empty())
+
+
+## Table de butin des reliquaires (kind guardian) : jamais Commun, Rare ≈ 12 %, jamais Légendaire (sous le coffre de boss).
+func _test_guardian_loot() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 4242
+	var n := 5000
+	var cnt := {&"commun": 0, &"peu_commun": 0, &"rare": 0, &"legendaire": 0}
+	for i in n:
+		cnt[LootRoller.roll_quality(&"guardian", rng)["quality"]] += 1
+	var rare := float(cnt[&"rare"]) / n
+	print("reliquaire : ", cnt, " rare %.3f" % rare)
+	_check("reliquaire : jamais Commun", cnt[&"commun"] == 0)
+	_check("reliquaire : jamais Légendaire", cnt[&"legendaire"] == 0)
+	_check("reliquaire : Rare ≈ 12 %% (%.3f)" % rare, absf(rare - 0.12) <= 0.02)
+	_check("reliquaire : Rare sous le coffre de boss", float(Balance.CHEST_QUALITY_TABLE[&"guardian"][&"rare"]) <= float(Balance.CHEST_QUALITY_TABLE[&"boss"][&"rare"]))
+	_check("reliquaire : table à 100", int(Balance.CHEST_QUALITY_TABLE[&"guardian"].values().reduce(func(a, b): return a + b)) == 100)
+	var ch := Chest.new()
+	_check("reliquaire : gratuit", (func() -> bool:
+		ch.kind = &"guardian"
+		return ch.is_free()).call())
+	ch.free()
+
+
+## Ouvre la porte par un déclencheur autre que les plaques : même salle, mêmes gardiens, mêmes reliquaires.
+func _test_trigger(id: String, trig: String) -> void:
+	await _load_map(id, true, trig)
+	var tag := "%s/%s" % [id, trig]
+	_check("%s : une SecretRoom au bon déclencheur" % tag, _mgr.secrets.size() == 1 and _mgr.secrets[0].trigger == StringName(trig))
+	if _mgr.secrets.size() != 1:
+		return
+	var room := _mgr.secrets[0]
+	var map := _mgr.map
+	_check("%s : aucune plaque" % tag, room.plates.is_empty())
+	var panel := ObjectivesPanel.new()
+	panel.stage_manager = _mgr
+	add_child(panel)
+	panel.refresh()
+	_check("%s : pas de ligne avant la 1re interaction" % tag, not panel.is_secret_shown())
+	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % id))
+	var door := map.get_node("Obstacles/Walls/Door_%s" % String(room.secret_id)) as CollisionShape2D
+	_check("%s : porte fermée" % tag, not room.is_open and door != null and not door.disabled)
+	match trig:
+		"lever":
+			_check("%s : levier posé" % tag, room.lever != null and room.lever.is_in_group(&"interactable"))
+			_player.global_position = map.to_global(map.get_player_start())
+			await _frames(2)
+			_check("%s : levier hors de portée : pas d'interaction" % tag, not room.lever.can_interact() and not room.lever.interact())
+			_player.global_position = room.lever.global_position # au contact seulement : rien ne se passe sans « interagir »
+			await _frames(3)
+			_check("%s : pas d'ouverture au contact" % tag, not room.is_open and room.lever.can_interact())
+			_check("%s : invite du levier" % tag, bool(room.lever.interact_state()["visible"]) and room.lever.interact_state()["label"] == "Actionner")
+			_check("%s : interagir -> levier tiré" % tag, room.lever.interact() and room.lever.used)
+		"wall":
+			var w: SecretWall = room.wall
+			_check("%s : mur fissuré posé, couche ennemis" % tag, w != null and w.collision_layer == 4 and w.is_in_group(&"secret_wall"))
+			_check("%s : PV du mur = %.1f s de dégâts de référence" % [tag, Balance.SECRET_WALL_SECONDS], absf(w.hp_max - SecretWall.hp_for_level(RunState.level)) < 0.01)
+			var stub := GDScript.new() # lanceur factice : un coup de projectile vaut 7 PV (chemin Projectile._on_hit)
+			stub.source_code = "extends RefCounted
+func compute_damage(_s, _e, _c):
+	return 7.0
+"
+			stub.reload()
+			var proj: Area2D = load("res://scenes/spells/projectile.tscn").instantiate()
+			add_child(proj)
+			proj.caster = stub.new()
+			proj.spell = SpellData.new()
+			proj.active = true
+			proj.hits_left = 2
+			proj.call(&"_on_hit", w)
+			_check("%s : un projectile entame le mur" % tag, absf(w.hp_max - w.hp - 7.0) < 0.01 and proj.hits_left == 1)
+			proj.call(&"_on_hit", w)
+			_check("%s : un même projectile ne frappe pas deux fois" % tag, absf(w.hp_max - w.hp - 7.0) < 0.01)
+			proj.queue_free()
+			w.hp = w.hp_max
+			w.take_hit(w.hp_max * 0.4)
+			panel.refresh()
+			_check("%s : ligne « Mur fissuré 40 %% »" % tag, panel.is_secret_shown() and panel.secret_text() == "Mur fissuré 40 %", panel.secret_text())
+			_check("%s : toujours fermée à 40 %%" % tag, not room.is_open)
+			w.take_hit(w.hp_max)
+		"pillar":
+			var b: SecretBeacon = room.beacon
+			_check("%s : pilier éteint posé" % tag, b != null)
+			_player.global_position = map.to_global(map.get_player_start())
+			RunState.running = true
+			await _frames(3)
+			_check("%s : hors du cercle, aucune charge" % tag, b.charge_s == 0.0)
+			_player.global_position = b.global_position
+			await _frames(30)
+			panel.refresh()
+			_check("%s : charge en cours (ligne « Pilier »)" % tag, b.charge_s > 0.0 and panel.is_secret_shown() and panel.secret_text().begins_with("Pilier "), panel.secret_text())
+			b.charge_s = Balance.SECRET_PILLAR_CHARGE_S - 0.05 # abrège l'attente : le dernier tour de charge reste réel
+			await _frames(6)
+			RunState.running = false
+	await _frames(4)
+	_check("%s : porte ouverte" % tag, room.is_open and door.disabled and int(RunState.counters.get("secret_zones", 0.0)) == 1)
+	var nav: NavField = _director.nav
+	var inside := map.to_global(_room_point(meta))
+	_check("%s : salle accessible porte ouverte" % tag, nav != null and nav.is_reachable(inside))
+	await get_tree().create_timer(SecretRoom.TELEGRAPH_S + SecretRoom.GUARDIAN_GAP_S + 0.6).timeout
+	_check("%s : 2 gardiens apparus" % tag, room.guardians[0] != null and room.guardians[1] != null)
+	var chests0 := _mgr.chests.size()
+	for i in 2:
+		if room.guardians[i] != null:
+			room.guardians[i].take_damage(1.0e9, false, &"test")
+	await _frames(3)
+	_check("%s : secret terminé, 2 reliquaires" % tag, room.is_complete() and _mgr.chests.size() == chests0 + 2 and _mgr.chests.back().kind == &"guardian")
+	panel.queue_free()
+
+
+## Sauvegarde / reprise de chaque déclencheur : avancement conservé, déclencheur inchangé.
+func _test_trigger_save(id: String) -> void:
+	await _load_map(id, true, "wall")
+	var room := _mgr.secrets[0]
+	room.wall.take_hit(room.wall.hp_max * 0.5)
+	var d := _mgr.to_dict()
+	_check("sauvegarde mur : déclencheur et avancement", d["secrets"][0]["trigger"] == "wall" and absf(float(d["secrets"][0]["progress"]) - 0.5) < 0.01)
+	_mgr.from_dict(JSON.parse_string(JSON.stringify(d)))
+	await _frames(3)
+	room = _mgr.secrets[0]
+	_check("reprise mur : fissure à 50 %", room.trigger == &"wall" and absf(room.wall.ratio() - 0.5) < 0.01 and not room.is_open)
+	await _load_map(id, true, "pillar")
+	room = _mgr.secrets[0]
+	room.beacon.charge_s = 3.0
+	d = _mgr.to_dict()
+	_mgr.from_dict(JSON.parse_string(JSON.stringify(d)))
+	await _frames(3)
+	room = _mgr.secrets[0]
+	_check("reprise pilier : 3/6 s", room.trigger == &"pillar" and absf(room.beacon.charge_s - 3.0) < 0.01)
+	await _load_map(id, true, "lever")
+	room = _mgr.secrets[0]
+	room.lever.pull(false)
+	await _frames(3)
+	d = _mgr.to_dict()
+	_mgr.from_dict(JSON.parse_string(JSON.stringify(d)))
+	await _frames(4)
+	room = _mgr.secrets[0]
+	_check("reprise levier : tiré, porte ouverte", room.trigger == &"lever" and room.lever.used and room.is_open)
+
+
+## Tirage du déclencheur : déterministe par graine, les 4 types sortent, l'option de test l'impose.
+func _test_trigger_draw() -> void:
+	FloorPlan.force_secret = -1
+	var count := {}
+	for sd in 600:
+		var plan := FloorPlan.build(sd * 131 + 7, {})
+		var again := FloorPlan.build(sd * 131 + 7, {})
+		var f := FloorPlan.secret_floor(plan)
+		_check("déclencheur déterministe (seed %d)" % sd, f == FloorPlan.secret_floor(again) and (f == 0 or FloorPlan.trigger_of(plan[f - 1]) == FloorPlan.trigger_of(again[f - 1])))
+		if f > 0:
+			var t := FloorPlan.trigger_of(plan[f - 1])
+			count[t] = int(count.get(t, 0)) + 1
+	print("déclencheurs : ", count)
+	for t in Balance.SECRET_TRIGGERS:
+		_check("déclencheur %s tiré" % t, int(count.get(t, 0)) > 20, str(count))
+	FloorPlan.force_secret = 2
+	for t in Balance.SECRET_TRIGGERS:
+		FloorPlan.force_trigger = t
+		var plan := FloorPlan.build(11, {})
+		_check("--force-trigger=%s" % t, FloorPlan.secret_floor(plan) == 2 and FloorPlan.trigger_of(plan[1]) == t)
+	FloorPlan.force_trigger = &""
+	FloorPlan.force_secret = -1

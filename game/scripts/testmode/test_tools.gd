@@ -200,7 +200,7 @@ static func reset_poutchs(tree: SceneTree) -> void:
 
 const CHEST_SCENE := "res://scenes/chests/chest.tscn"
 const CHEST_RING_U := Vector2(2.5, 4.0) ## distance d'apparition d'un coffre autour du joueur (u) : à portée d'interaction
-const CHEST_ORDER: Array[StringName] = [&"petit", &"large", &"legendaire", &"boss"]
+const CHEST_ORDER: Array[StringName] = [&"petit", &"large", &"legendaire", &"boss", &"guardian"]
 
 
 ## Types de coffre existants (Chest.SPRITES), dans l'ordre d'affichage : {kind, label, frames}.
@@ -214,7 +214,7 @@ static func chest_catalog() -> Array[Dictionary]:
 		if not Chest.SPRITES.has(k):
 			continue
 		out.append({"kind": &"chest", "chest_kind": k, "key": "chest:%s" % k, "frames": str((Chest.SPRITES[k] as Dictionary).get("path", "")),
-			"label": String(ChestUI.KIND_NAMES.get(k, String(k))), "free": k == &"boss"})
+			"label": String(ChestUI.KIND_NAMES.get(k, String(k))), "free": k == &"boss" or k == &"guardian"})
 	return out
 
 

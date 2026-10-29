@@ -54,6 +54,7 @@
 	"chest_large": {"color": "#6AA8F0", "energy": 1.0, "radius_u": 2.6, "height": 24, "category": "chest", "priority": 205, "pulse": 0.12, "pulse_hz": 0.5, "texture": "light_hard_256", "reflect": true},
 	"chest_legendaire": {"color": "#FFCC4A", "energy": 1.4, "radius_u": 4.0, "height": 32, "category": "chest", "priority": 215, "pulse": 0.15, "pulse_hz": 0.5, "texture": "light_soft_256", "reflect": true},
 	"chest_boss": {"color": "#D070F0", "energy": 1.2, "radius_u": 3.2, "height": 32, "category": "chest", "priority": 210, "pulse": 0.1, "pulse_hz": 0.8, "texture": "light_soft_256", "reflect": true},
+	"chest_guardian": {"color": "#4CD9C8", "energy": 1.2, "radius_u": 3.2, "height": 32, "category": "chest", "priority": 210, "pulse": 0.1, "pulse_hz": 0.8, "texture": "light_soft_256", "reflect": true},
 	"chest_piege": {"color": "#D9A86A", "energy": 0.75, "radius_u": 2.0, "height": 24, "category": "chest", "priority": 200, "outage_min": 1.5, "outage_max": 3.0, "outage_ms": 80, "texture": "light_hard_256"},
 	"chest_open": {"color": "#FFF4E0", "energy": 2.4, "radius_u": 3.0, "height": 32, "category": "event", "priority": 600, "texture": "light_soft_256", "reflect": true},
 	"level_up": {"color": "#FFD27A", "energy": 2.6, "radius_u": 3.5, "height": 32, "category": "event", "priority": 600, "texture": "light_soft_256", "reflect": true},

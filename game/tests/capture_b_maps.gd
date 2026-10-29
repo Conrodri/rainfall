@@ -1,7 +1,7 @@
 extends Node
 ## Captures (SANS --headless) d'une variante B dans une vraie run : vue large de la carte, porte scellée fermée,
 ## arène du gros pilier, puis porte ouverte et gardiens sortis.
-## godot --path game res://tests/capture_b_maps.tscn -- --out=<dossier> --force-map=<id>
+## godot --path game res://tests/capture_b_maps.tscn -- --out=<dossier> --force-map=<id> --force-secret=<étage de la carte>
 var _out := ""
 
 

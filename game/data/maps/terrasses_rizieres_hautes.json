@@ -323,7 +323,21 @@
     "Orme",
     "Aulne"
    ],
-   "reward": "2 reliquaires (table gardien)"
+   "reward": "2 reliquaires (table gardien)",
+   "trigger_spots": {
+    "lever": [
+     [
+      47,
+      77
+     ]
+    ],
+    "pillar": [
+     [
+      5,
+      45
+     ]
+    ]
+   }
   }
  ]
 }

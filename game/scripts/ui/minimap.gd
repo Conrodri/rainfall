@@ -47,6 +47,7 @@ const CHEST_COLORS := { # même code couleur que Chest.COLORS (rareté)
 	&"large": Color(0.29, 0.56, 0.89),
 	&"legendaire": Color(1.0, 0.72, 0.11),
 	&"boss": Color(0.78, 0.29, 0.87),
+	&"guardian": Color(0.3, 0.85, 0.8),
 }
 
 static var _json_cache := {} ## map_id -> Dictionary
@@ -450,7 +451,7 @@ func _draw() -> void:
 	for c in ([] if jammed else _chests):
 		var q := xf * (c[0] as Vector2)
 		var ck: StringName = c[2] if c.size() > 2 else &"petit"
-		var cname := "chest_legendary" if (ck == &"legendaire" or ck == &"boss") else ("chest_large" if ck == &"large" else "chest")
+		var cname := "chest_legendary" if (ck == &"legendaire" or ck == &"boss") else ("chest_large" if (ck == &"large" or ck == &"guardian") else "chest")
 		if not _draw_icon(cname, q, u * 2.6):
 			draw_rect(Rect2(q - Vector2(u, u) * 0.6, Vector2(u, u) * 1.2), c[1])
 	for g in (PackedVector2Array() if jammed else _gold):

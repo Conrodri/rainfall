@@ -531,6 +531,18 @@ metadata/role = "guardian"
 metadata/index = 1
 metadata/guardian_name = "Suie"
 
+[node name="Lever_ossuaire_scelle_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(1216, 2496)
+metadata/secret_id = "ossuaire_scelle"
+metadata/role = "lever"
+metadata/index = 0
+
+[node name="Beacon_ossuaire_scelle_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
+position = Vector2(-1344, 960)
+metadata/secret_id = "ossuaire_scelle"
+metadata/role = "beacon"
+metadata/index = 0
+
 [node name="DoorMark_ossuaire_scelle" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(512, -1984)
 metadata/secret_id = "ossuaire_scelle"

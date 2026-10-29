@@ -345,7 +345,21 @@
     "Rivet",
     "Soudure"
    ],
-   "reward": "2 reliquaires (table gardien)"
+   "reward": "2 reliquaires (table gardien)",
+   "trigger_spots": {
+    "lever": [
+     [
+      55,
+      71
+     ]
+    ],
+    "pillar": [
+     [
+      47,
+      51
+     ]
+    ]
+   }
   }
  ]
 }

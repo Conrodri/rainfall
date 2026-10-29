@@ -121,6 +121,26 @@ const IMPACT_STRETCH := 0.14 ## impact : étirement de 14 % le long de l'axe du 
 const IMPACT_S := 0.16 ## durée de l'impact (retour à l'échelle, éclat chaud)
 const ARM_BLINK_HZ := 7.0 ## clignotement de la teinte d'armement (monstres armant >= 0,5 s ; coupé si flashs réduits)
 const SWARM_BITE_RECOIL_U := 0.25 ## petit recul après la morsure (lisibilité du coup, évite de coller le joueur)
+## Passe télégraphes (29/10/2026, docs/Audit_Telegraphes_2026-10-29.md) : rendu seulement, dégâts / PV / durées inchangés.
+## Hiérarchie : un coup au sol n'a de zone dessinée que s'il est lourd ou mortel ; les coups légers (coef <= TELEGRAPH_LIGHT_MAX_COEF)
+## sont lus par l'anticipation du corps. Le réglage « Télégraphes renforcés » rend tout, comme avant.
+const TELEGRAPH_LIGHT_MAX_COEF := 1.1 ## coup de boss / mini-boss : coef de dégâts <= à ça = léger (pas de zone au sol)
+const TELEGRAPH_DEADLY_MIN_COEF := 2.0 ## coef >= à ça = mortel (remplissage plus dense)
+const TELEGRAPH_LITE_BASE_ALPHA := 0.035 ## aplat de fond de la zone (presque invisible : seul le bord dit où)
+const TELEGRAPH_LITE_FILL_END := 0.20 ## alpha du remplissage à l'impact, coup lourd
+const TELEGRAPH_LITE_FILL_END_DEADLY := 0.30 ## idem, coup mortel
+const TELEGRAPH_LITE_FILL_START := 0.10 ## part de l'alpha final au début de l'armement (le remplissage monte, en courbe douce)
+const TELEGRAPH_LITE_OUTER_PX := 4.0 ## bord fin : trait sombre (lisible sur tous les sols) ...
+const TELEGRAPH_LITE_INNER_PX := 1.6 ## ... et liseré clair net par-dessus
+const TELEGRAPH_BIOME_MIX := 0.35 ## part de la teinte du biome mêlée au rouge d'alerte (nulle en mode daltonien)
+const TELEGRAPH_BIOME_TINT := {&"terrasses": Color(1.0, 0.55, 0.12), &"foret": Color(0.95, 0.22, 0.42),
+	&"cite": Color(1.0, 0.42, 0.08), &"cryptes": Color(0.72, 0.20, 0.80), &"source": Color(0.98, 0.80, 0.30)}
+## Anticipation du corps (visuelle, le coup tombe au même instant) : dans les ANTICIP_HOLD_S avant l'impact le corps s'écrase
+## davantage (ANTICIP_EXTRA × ARM_SQUASH), la pose « gèle » (la fente d'un boss part en courbe lente puis claque) et un
+## bref éclat d'émission monte (ANTICIP_FLASH).
+const ANTICIP_HOLD_S := 0.18
+const ANTICIP_EXTRA := 1.2
+const ANTICIP_FLASH := 0.3
 
 # Boss
 ## Alignement RoR2 : PV = base × niveau ambiant (+30 %/niv) × √coeff (le téléporteur RoR2 dépense 600·√coeff)
@@ -470,6 +490,10 @@ const CHEST_QUALITY_TABLE := {
 	&"large": {&"peu_commun": 80, &"rare": 18, &"legendaire": 2},
 	&"legendaire": {&"legendaire": 100},
 	&"boss": {&"peu_commun": 85, &"rare": 15},
+	## Reliquaire de gardien de salle secrète (29/10/2026) : jamais Commun, Rare 12 % (6 × un petit coffre, un peu sous le
+	## coffre de boss à 15 %), pas de Légendaire (le coffre de boss n'en donne pas : la récompense reste sous celui du boss).
+	## Gratuit, sans relance spéciale (relances du d100 = Chance, comme partout), aucune pitié (RoR2 n'en a pas).
+	&"guardian": {&"peu_commun": 88, &"rare": 12},
 }
 
 
@@ -769,6 +793,19 @@ func gold_to_xp(gold_amount: float, _D: float = 1.0) -> float:
 ## Gardiens des salles secrètes (brutes élites nommées) : leur prime d'élite est multipliée par GUARDIAN_GOLD_MULT
 ## (2 = prime d'élite doublée ; l'XP reste celle d'une élite).
 const GUARDIAN_GOLD_MULT := 2.0
+
+## Fréquence des secrets à plaques (joueur, 29/10/2026) : au plus un par run, SECRET_RUN_CHANCE de chances qu'elle en
+## ait un, sur un étage tiré entre 1 et SECRET_MAX_FLOOR parmi ceux dont la carte tirée en porte un (jamais l'étage 5).
+const SECRET_RUN_CHANCE := 1.0 / 3.0
+const SECRET_MAX_FLOOR := 4
+## Déclencheurs d'ouverture, tirés (seedé) pour chaque secret : plaques de pression, levier caché (interagir), mur fissuré
+## (dégâts de sorts du joueur), pilier éteint (rester dans son cercle). Salle, porte, gardiens et reliquaires identiques.
+const SECRET_TRIGGERS: Array[StringName] = [&"plates", &"lever", &"wall", &"pillar"]
+const SECRET_LEVER_RANGE_U := 1.5 ## portée d'« interagir » du levier
+const SECRET_WALL_SECONDS := 3.5 ## mur fissuré : secondes de dégâts de référence pour céder (~3-4 s demandées)
+const SECRET_WALL_COEF_PER_S := 3.0 ## dégâts de référence par seconde, en coefficients de sort (≈ auto 1,5/s + sorts à recharge)
+const SECRET_PILLAR_CHARGE_S := 6.0 ## pilier éteint : secondes cumulées dans le cercle (les gros piliers de boss : PILLAR_CHARGE_S)
+const SECRET_PILLAR_RADIUS_U := 3.0 ## rayon du cercle du pilier éteint
 
 
 ## Or SUPPLÉMENTAIRE versé à la mort d'un gardien (en plus de la prime d'élite normale du PickupManager).
