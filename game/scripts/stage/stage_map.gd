@@ -679,7 +679,8 @@ func open_secret_door(secret_id: StringName) -> void:
 ## SHORE_FOAM_TEX) si livrée, sinon traits provisoires en code.
 const BANK_Z := 3 ## relatif à Visual (Z_GROUND -20) : -17, au-dessus de l'eau d'AmbianceWater (-18), sous les nuages (-16)
 const BANK_INK := Color(0.094, 0.071, 0.063, 1.0) ## #181210, encre cel (art/briefs/STYLE_cel.md)
-const BANK_FOAM := Color(0.84, 0.93, 0.96, 0.95)
+const BANK_FOAM := Color(0.5, 0.58, 0.64, 0.4) ## repli en traits : écume discrète (le blanc cru jurait avec la DA sombre, 29/10/2026)
+const BANK_FOAM_TINT := Color(0.52, 0.6, 0.66, 0.42) ## teinte de la texture d'écume : grise-bleutée, alpha bas
 const BANK_SHADOW := Color(0.0, 0.0, 0.0, 0.55)
 const BANK_INK_PX := 7.0
 const BANK_FOAM_PX := 7.0
@@ -746,7 +747,7 @@ func _draw_water_bank() -> void:
 			if tex != null:
 				# repère local : x le long de l'arête, y vers l'eau ; bande répétée en x
 				water_bank.draw_set_transform_matrix(Transform2D(along, inward, a))
-				water_bank.draw_texture_rect(tex, Rect2(0.0, -SHORE_FOAM_EDGE_PX, a.distance_to(b), float(tex.get_height())), true)
+				water_bank.draw_texture_rect(tex, Rect2(0.0, -SHORE_FOAM_EDGE_PX, a.distance_to(b), float(tex.get_height())), true, BANK_FOAM_TINT)
 				water_bank.draw_set_transform_matrix(Transform2D.IDENTITY)
 				continue
 			# prolongés d'une demi-épaisseur : coins de la rive fermés (entrants et saillants)

@@ -27,7 +27,7 @@ const COL_WALL_EDGE := Color(0.93, 0.93, 0.96)
 ## Eau (cohérente avec le jeu, retour joueur 22/10/2026) : « ~ » profonde bloquante = bleu soutenu + liseré
 ## d'écume clair côté praticable (comme sa rive en jeu) ; « , » peu profonde praticable = sol à peine bleuté.
 const COL_DEEP := Color(0.1, 0.24, 0.52)
-const COL_DEEP_EDGE := Color(0.84, 0.93, 0.96)
+const COL_DEEP_EDGE := Color(0.36, 0.5, 0.62) ## liseré d écume atténué (29/10/2026)
 const COL_SHALLOW := Color(0.13, 0.19, 0.24)
 const COL_BG := Color(0.0, 0.0, 0.0, 0.6)
 const COL_BRONZE := Color(0.62, 0.45, 0.25, 0.85) ## liseré fin du losange
@@ -257,7 +257,7 @@ func _build_image() -> void:
 	var w := _grid_size.x
 	var h := _grid_size.y
 	var img := Image.create(w * IMG_K, h * IMG_K, false, Image.FORMAT_RGBA8)
-	img.fill(COL_FLOOR)
+	img.fill(Color(0, 0, 0, 0)) # hors carte (StageMap.VOID_CHAR) : transparent
 	for y in h:
 		for x in w:
 			var c := _vis_cell(x, y)
@@ -276,16 +276,18 @@ func _build_image() -> void:
 			elif c == "~":
 				img.fill_rect(r, COL_DEEP)
 				# écume : bord qui touche une cellule praticable (ni mur ni eau profonde)
-				if not _vis_cell(x - 1, y) in ["#", "~"]:
+				if not _vis_cell(x - 1, y) in ["#", "~", StageMap.VOID_CHAR]:
 					img.fill_rect(Rect2i(r.position.x, r.position.y, 1, IMG_K), COL_DEEP_EDGE)
-				if not _vis_cell(x + 1, y) in ["#", "~"]:
+				if not _vis_cell(x + 1, y) in ["#", "~", StageMap.VOID_CHAR]:
 					img.fill_rect(Rect2i(r.end.x - 1, r.position.y, 1, IMG_K), COL_DEEP_EDGE)
-				if not _vis_cell(x, y - 1) in ["#", "~"]:
+				if not _vis_cell(x, y - 1) in ["#", "~", StageMap.VOID_CHAR]:
 					img.fill_rect(Rect2i(r.position.x, r.position.y, IMG_K, 1), COL_DEEP_EDGE)
-				if not _vis_cell(x, y + 1) in ["#", "~"]:
+				if not _vis_cell(x, y + 1) in ["#", "~", StageMap.VOID_CHAR]:
 					img.fill_rect(Rect2i(r.position.x, r.end.y - 1, IMG_K, 1), COL_DEEP_EDGE)
 			elif c == ",":
 				img.fill_rect(r, COL_SHALLOW)
+			elif c != StageMap.VOID_CHAR:
+				img.fill_rect(r, COL_FLOOR)
 	map_image = img
 	map_texture = ImageTexture.create_from_image(img)
 	build_count += 1
@@ -429,15 +431,7 @@ func _draw() -> void:
 		var fr := _frame_side() * 0.5 * FRAME_FILL
 		draw_circle(mr.get_center(), fr, COL_BG)
 	elif iso:
-		# fond et bordure en losange (la carte n'occupe pas son rectangle englobant)
-		var g := maxf(3.0, mr.size.y * 0.02)
-		var c := mr.get_center()
-		var hx := mr.size.x * 0.5 + g * 2.0
-		var hy := mr.size.y * 0.5 + g
-		var dia := PackedVector2Array([c + Vector2(0, -hy), c + Vector2(hx, 0), c + Vector2(0, hy), c + Vector2(-hx, 0)])
-		draw_colored_polygon(dia, COL_BG)
-		dia.append(dia[0])
-		draw_polyline(dia, COL_BRONZE, 1.5)
+		pass # hors carte transparent : la carte organique se découpe seule (plus de losange de fond ni de liseré)
 	else:
 		draw_rect(frame, COL_BG)
 		draw_rect(frame, COL_BORDER, false, 2.0)

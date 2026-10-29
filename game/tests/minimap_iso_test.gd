@@ -51,7 +51,16 @@ func _ready() -> void:
 	_check(Rect2(Vector2.ZERO, mm.size).encloses(mr), "losange dans le contrôle %s / %s" % [mr, mm.size])
 	# point logique connu : cellule carte (3, 7) -> repère logique -> pixel attendu calculé à la main
 	var map: StageMap = stage.map
-	var m_px := -gs * 128.0 * 0.5 + (Vector2(3.5, 7.5)) * 128.0 ## repère carte, origine au centre
+	# cellule de sol « . » la plus proche du centre (les cartes organiques ont du vide près des coins)
+	var probe := Vector2(3.5, 7.5)
+	var best := 1.0e9
+	for gy in mm._grid.size():
+		var row := String(mm._grid[gy])
+		for gx in row.length():
+			if row[gx] == "." and Vector2(gx + 0.5, gy + 0.5).distance_to(gs * 0.5) < best:
+				best = Vector2(gx + 0.5, gy + 0.5).distance_to(gs * 0.5)
+				probe = Vector2(gx + 0.5, gy + 0.5)
+	var m_px := -gs * 128.0 * 0.5 + probe * 128.0 ## repère carte, origine au centre
 	var l := Transform2D(PI / 4.0, Vector2.ZERO) * m_px ## Rot(+45°) = repère logique
 	var span_x := (gs.x + gs.y) * 128.0 * cos(PI / 4.0) ## largeur logique du losange
 	var k := mr.size.x / span_x
