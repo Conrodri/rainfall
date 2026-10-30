@@ -233,6 +233,20 @@ func _run() -> void:
 	_check("portée infinie", sp.range_px(sd) >= TestMode.INF_RANGE_PX and r0 < TestMode.INF_RANGE_PX)
 	TestMode.set_flag(&"inf_range", false)
 	_check("portée normale rendue", is_equal_approx(sp.range_px(sd), r0))
+	# recharge 0 : sorts 2-4 sans attente, sort auto (slot 1) inchangé
+	TestMode.set_flag(&"cdr_full", true)
+	sp._remaining[1] = 0.0
+	sp._remaining[2] = 0.0
+	var ok1: bool = sp.cast(1)
+	var cd1: float = sp._remaining[1]
+	var tot1: float = sp._totals[1]
+	var ok2: bool = sp.cast(2)
+	var cd2: float = sp._remaining[2]
+	TestMode.set_flag(&"cdr_full", false)
+	if ok1:
+		_check("recharge 0 : le sort 1 garde sa recharge", cd1 > 0.0 and is_equal_approx(cd1, tot1), "%s %s" % [cd1, tot1])
+	if ok2:
+		_check("recharge 0 : le sort 2 est à 0", cd2 == 0.0, str(cd2))
 	RunState.gold = 5.0
 	TestMode.set_flag(&"inf_gold", true)
 	_check("or infini : achat accepté", RunState.spend_gold(1.0e9))

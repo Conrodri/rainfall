@@ -393,7 +393,7 @@ func _cast(slot: int) -> bool:
 	if not ok:
 		return false
 	_totals[slot] = _cooldown_of(s)
-	_remaining[slot] = 0.0 if TestMode.cdr_full else _totals[slot] # mode test : recharge nulle
+	_remaining[slot] = 0.0 if (TestMode.cdr_full and not s.is_auto) else _totals[slot] # mode test : recharge nulle, sauf le sort auto (slot 1)
 	spell_cast.emit(s)
 	if not effect.is_valid():
 		player.on_cast(s, aim_dir)

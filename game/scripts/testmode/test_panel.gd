@@ -839,7 +839,7 @@ func _refresh_level() -> void:
 func _build_cheats() -> void:
 	_body.add_child(_heading("Triches (chacune indépendante)"))
 	_cheat("PV illimités", &"god", "Les coups sont encaissés (chiffres, flash) mais ne retirent rien.", _ti("god", ICON_GOD))
-	_cheat("Recharge 100 % (CDR)", &"cdr_full", "Les sorts se relancent sans attendre. Les ressources propres aux kits restent limitées.", _ti("cdr", ICON_CDR))
+	_cheat("Recharge 0 (sorts 2-4)", &"cdr_full", "Les sorts 2-4 se relancent sans attendre ; le sort automatique (sort 1) garde sa recharge. Les ressources propres aux kits restent limitées.", _ti("cdr", ICON_CDR))
 	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", _ti("range", ICON_RANGE))
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
 	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
