@@ -68,6 +68,8 @@ var _look_captured := false
 var _look_scene_frames: SpriteFrames = null
 var _look_scene_scale := Vector2.ONE
 var _look_scene_modulate := Color.WHITE
+var _scene_nodes: Array[Node] = [] ## enfants du joueur et de Visual issus de la scène (le reste vient du kit : purgé au changement de personnage)
+var _scene_visual_state: Dictionary = {} ## état de Visual à l'apparition (offset, matériau, z, rotation...) : restauré au changement de personnage
 
 ## Esquive (action `dodge`) : stratégie DodgeMove choisie par le kit / CharacterData.dodge_kind (docs/Design_Esquives.md) :
 ## roulade (RollDodge, Balance.DODGE_*), Éclat d'Ardent (BlinkDodge), Glissade d'Averse (SlideDodge, au maintien).
@@ -148,6 +150,7 @@ func _ready() -> void:
 	var cam := get_node_or_null(^"Camera2D") as Camera2D
 	if cam != null:
 		cam.zoom = Iso.camera_zoom() # vue isométrique 2:1 (Visual en billboard : échelle (k, 2k))
+	_snapshot_scene_nodes()
 	spells = SpellCaster.new()
 	spells.name = "Spells"
 	add_child(spells)
@@ -395,6 +398,43 @@ func _apply_character_look() -> void:
 	spr.scale *= character.placeholder_scale
 
 
+## Mémorise les nœuds de la scène (joueur et Visual) et l'état de Visual avant que sorts et kit n'ajoutent quoi que ce soit.
+func _snapshot_scene_nodes() -> void:
+	_scene_nodes.clear()
+	_scene_nodes.append_array(get_children())
+	var spr := _visual as AnimatedSprite2D
+	if spr == null:
+		return
+	_scene_nodes.append_array(spr.get_children())
+	_scene_visual_state = {"offset": spr.offset, "position": spr.position, "rotation": spr.rotation, "skew": spr.skew,
+		"flip_h": spr.flip_h, "flip_v": spr.flip_v, "z_index": spr.z_index, "modulate": spr.modulate,
+		"material": spr.material, "visible": spr.visible, "speed_scale": spr.speed_scale, "centered": spr.centered}
+
+
+## Retire ce que l'ancien kit a posé sur le joueur et sur Visual (calques de Tocsin, cordes et compagnon de Rictus, doublures,
+## traqueurs, flous...), puis remet Visual dans l'état de la scène : un changement de personnage vaut une apparition propre.
+func _purge_kit_nodes() -> void:
+	var keep: Array[Node] = _scene_nodes.duplicate()
+	if _hitbox_ring != null:
+		keep.append(_hitbox_ring)
+	if item_fx != null:
+		keep.append(item_fx)
+	var holders: Array[Node] = [self]
+	if _visual != null:
+		holders.append(_visual)
+	for h in holders:
+		for c in h.get_children():
+			if keep.has(c) or c.name == NormalMaps.EMISSION_NODE: # Emission : géré par EmissiveOverlay.apply (connexions de synchro)
+				continue
+			h.remove_child(c)
+			c.queue_free()
+	var spr := _visual as AnimatedSprite2D
+	if spr == null or _scene_visual_state.is_empty():
+		return
+	for k in _scene_visual_state:
+		spr.set(k, _scene_visual_state[k])
+
+
 ## Changement de personnage en place (mode test) : garde objets, niveau et position ; refait les sorts, le kit, l'apparence,
 ## la hitbox et les lumières du nouveau personnage (CharacterData.for_id). `spell_loadout` : variantes de sorts {slot: id}.
 ## Les statuts et la recharge de l'ancien kit sont perdus. Retourne faux si l'id est inconnu.
@@ -413,6 +453,7 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 	spells.teardown()
 	remove_child(spells)
 	spells.queue_free()
+	_purge_kit_nodes()
 	character = new_char
 	spells = SpellCaster.new()
 	spells.name = "Spells"
@@ -439,6 +480,7 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 		kit.name = "Kit"
 		add_child(kit)
 		kit.setup(self)
+	ArdentTracker.install(self) # comme à l'apparition (hook `ready`) : compteurs de variantes d'Ardent
 	_dodge = DodgeMove.make(self, kit, character)
 	_light.set_color(character.light_color if character.light_color.a > 0.0 else Color(0, 0, 0, 0))
 	_light_core.set_color(character.light_core_color if character.light_core_color.a > 0.0 else Color(0, 0, 0, 0))
