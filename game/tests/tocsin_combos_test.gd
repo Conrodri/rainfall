@@ -138,7 +138,10 @@ func _throw_head(x_u: float, watch: FakeEnemy) -> int:
 		prev = watch.taken.size()
 		_sim(DT)
 		guard += DT
-		if watch.taken.size() > prev and float(watch.taken[watch.taken.size() - 1]) >= 8.0 * BASE:
+		var hit_head := false
+		for a in watch.taken.slice(prev):
+			hit_head = hit_head or float(a) >= 8.0 * BASE
+		if hit_head:
 			break
 	return prev
 
@@ -228,6 +231,7 @@ func _run() -> void:
 	_check("pilier fini ensuite au sol", p4.phase == TocsinLimb.Phase.GROUND and p4.pickup != null, str(p4.phase))
 
 	print("Coup sur un bras au sol : il se redresse 2 s")
+	_kit.recharge_left[2] = 30.0 # recharge loin de finir : le bras ne part pas en braises pendant le test
 	_player.spells._remaining[3] = 0.0
 	var n2 := t1.taken.size()
 	_player.spells.cast(3)

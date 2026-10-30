@@ -94,6 +94,10 @@ func _motte_at(at: Vector2) -> BourbeMotte:
 	_player.spells._remaining[2] = 0.0
 	_player.spells.aim_override = at
 	_player.spells.cast(2)
+	var t := 0.0
+	while _kit.has_pending() and t < 1.0: # la motte part à la frame d'impact de l'anim de lancer
+		_advance(1.0 / 60.0)
+		t += 1.0 / 60.0
 	_advance(0.45)
 	_player.spells.aim_override = null
 	var m: BourbeMotte = _kit.mottes[_kit.mottes.size() - 1]
@@ -212,6 +216,7 @@ func _run() -> void:
 	_check("Rappel pulse (motte contre Bourbe)", _kit.combo_ready(3))
 	_player.spells._remaining[3] = 0.0
 	_check("Rappel lancé", _player.spells.cast(3))
+	_wait_pending()
 	_advance(0.1)
 	_check("plouf de garde 1,4 x base", fg.has_value(BourbeKit.MOTTE_LAND_COEF * BASE), str(fg.taken))
 	_check("plouf marqué combo", _kit.combo_hit(_kit._land_guard, null))
@@ -222,6 +227,7 @@ func _run() -> void:
 	_check("motte loin : pas de pulsation du Rappel", not _kit.combo_ready(3))
 	_player.spells._remaining[3] = 0.0
 	_player.spells.cast(3)
+	_wait_pending()
 	_advance(0.03)
 	_check("motte loin : pas de plouf de garde", not ff.has_value(BourbeKit.MOTTE_LAND_COEF * BASE), str(ff.taken))
 	_check("motte loin rappelée", mf.state == BourbeMotte.State.RECALL or mf.state == BourbeMotte.State.GONE)
@@ -249,3 +255,11 @@ func _run() -> void:
 	RunState.character = &"ardent"
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)
+
+
+## Attend la frame d'impact de l'anim d'action (Rappel, Bourbier) : l'effet en attente part.
+func _wait_pending() -> void:
+	var t := 0.0
+	while _kit.has_pending() and t < 1.0:
+		_advance(1.0 / 60.0)
+		t += 1.0 / 60.0

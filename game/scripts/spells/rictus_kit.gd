@@ -519,7 +519,7 @@ func _charge_by_knives() -> void:
 	var host := c.effects_parent()
 	if host == null:
 		return
-	var reach := (Decoy.RADIUS_U + KNIFE_CHARGE_PAD_U) * Balance.UNIT_PX
+	var reach: float = (Decoy.RADIUS_U + KNIFE_CHARGE_PAD_U) * Balance.UNIT_PX
 	for k in host.get_children():
 		if not (k is Node2D) or k.get(&"active") != true:
 			continue

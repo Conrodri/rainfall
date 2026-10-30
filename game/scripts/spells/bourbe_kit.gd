@@ -802,7 +802,7 @@ func _slap_feed(s: SpellData) -> void:
 	var c := _caster()
 	if c == null or player == null:
 		return
-	var reach := s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+	var reach: float = s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
 	var target := c.nearest_enemy(reach)
 	if target == null:
 		return

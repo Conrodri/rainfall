@@ -241,7 +241,7 @@ func _test_brasier() -> void:
 		flare_hit += a.taken[i]
 	_check(_near(flare_hit, 2.0 * dmg), "flambée : 2,0 x base sur le monstre (%s)" % str(a.taken))
 	z.step(DT)
-	_check(z.is_ending(), "Cendres éteinte par la flambée")
+	_check(z.is_ending() or z.is_queued_for_deletion(), "Cendres éteinte par la flambée")
 	await get_tree().process_frame
 
 

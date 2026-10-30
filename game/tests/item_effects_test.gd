@@ -720,6 +720,13 @@ func _test_conditionnels(ch: StringName) -> void:
 	_check("[%s] danseur : rien à l'arrêt" % ch, _near(_dmg(), d0, d0 * 0.01))
 	_player.is_moving = true
 	_check("[%s] danseur : +35 %% en mouvement" % ch, _near(_dmg(), d0 * 1.35, d0 * 0.01))
+	_give({"danseur": 3})
+	_check("[%s] danseur x3 : +75 %%" % ch, _near(_dmg(), d0 * 1.75, d0 * 0.01))
+	_give({"danseur": 4})
+	_check("[%s] danseur x4 : +95 %%" % ch, _near(_dmg(), d0 * 1.95, d0 * 0.01))
+	_give({"danseur": 10})
+	_check("[%s] danseur x10 : plafonné à +95 %%" % ch, _near(_dmg(), d0 * 1.95, d0 * 0.01) and _near(_player.stat(&"moving_damage_add"), 0.95, 0.001))
+	_give({"danseur": 1})
 	_player.is_moving = false
 	_give({"oeil_du_predateur": 1})
 	_check("[%s] œil du prédateur : critique x2,4" % ch, _near(_player.crit_mult(), 2.4))
@@ -816,6 +823,22 @@ func _test_chain_lightning() -> void:
 					dmg_ok = false
 		_check("chaîne x%d : %d touchés, 80 %% du coup, un seul coup chacun (pas de re-proc)" % [n, want], hits == want and dmg_ok and v.taken.is_empty())
 		_clear_fakes()
+	# plafond : 5 exemplaires = 11 cibles prévues, 8 touchées au plus
+	_give({"eclair_en_bouteille": 5})
+	var data5: Dictionary = _player.procs[0]["data"]
+	_check("chaîne x5 : 11 cibles prévues avant plafond", int(data5.get("targets", 0)) == 11)
+	var v5 := _fake(Vector2(2.0 * U, 0.0))
+	var line5: Array = []
+	for i in 14:
+		line5.append(_fake(Vector2((5.0 + 1.5 * i) * U, 0.0)))
+	_player.spells._lightning(v5, 100.0, data5)
+	await get_tree().create_timer(0.3).timeout
+	var hits5 := 0
+	for e in line5:
+		if e.taken.size() > 0:
+			hits5 += 1
+	_check("chaîne x5 : %d touchés, plafond %d" % [hits5, Balance.CHAIN_LIGHTNING_MAX_TARGETS], hits5 == Balance.CHAIN_LIGHTNING_MAX_TARGETS)
+	_clear_fakes()
 	# portée : 5,2 u d'écart = hors de portée à 1 exemplaire, atteint à 2 (5,5 u)
 	_give({"eclair_en_bouteille": 1})
 	var v1 := _fake(Vector2.ZERO)

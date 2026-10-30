@@ -248,7 +248,7 @@ func _run() -> void:
 	_check("anim d'action throw", _player.action_base() == &"throw")
 	await _frames(40) # 6 u à 13 u/s ≈ 0,46 s
 	var pw := AvareKit.gold_power_for(1000.0 - cost)
-	_check("pièce centrale : coef 1,2 × or", target.taken.size() >= 1 and _near(target.taken[0], 1.2 * BASE * (1.0 + pw), 0.05), str(target.taken))
+	_check("pièce centrale : coef COINS_COEF × or", target.taken.size() >= 1 and _near(target.taken[0], AvareKit.COINS_COEF * BASE * (1.0 + pw), 0.05), str(target.taken))
 	_check("5 pièces retombées", _kit.coins.size() == 5, str(_kit.coins.size()))
 	_check("80 % du coût au sol", _near(_kit.ground_gold(), 0.8 * cost, 0.01), str(_kit.ground_gold()))
 	_check("recharge 5 s", _near(_player.spells._remaining[2], 5.0, 0.6), str(_player.spells._remaining[2]))

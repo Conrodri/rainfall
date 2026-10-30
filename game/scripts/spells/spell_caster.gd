@@ -800,7 +800,7 @@ func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 	var o := origin as Node2D
 	var n: int = maxi(1, RunState.stacks(&"eclair_en_bouteille"))
 	var reach := (Balance.CHAIN_LIGHTNING_RANGE_U + Balance.CHAIN_LIGHTNING_RANGE_STACK_U * float(n - 1)) * Balance.UNIT_PX
-	var chain := chain_targets(o, int(data.get("targets", 3)), reach)
+	var chain := chain_targets(o, mini(int(data.get("targets", 3)), Balance.CHAIN_LIGHTNING_MAX_TARGETS), reach)
 	if chain.is_empty():
 		return
 	if not Audio.play(&"lightning.chain_start.medium", o.global_position): # repli : ancien son si le nouveau manque

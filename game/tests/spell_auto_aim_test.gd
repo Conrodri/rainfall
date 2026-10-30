@@ -123,6 +123,7 @@ func _run() -> void:
 		if s.slot != 3:
 			sp._remaining[s.slot] = 99.0 # un seul sort tire
 	sp._remaining[1] = 99.0
+	_player._action_left = 0.0 # le lancer précédent (cast direct) ne doit pas retenir l auto-cast : cancel/buffer du 29/10
 	sp.tick(0.016)
 	sp.flush_pending()
 	z = _zones()

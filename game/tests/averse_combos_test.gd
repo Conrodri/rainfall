@@ -118,8 +118,8 @@ func _run() -> void:
 	_check("is_soaked / is_marked", _kit.is_soaked(wet) and _kit.is_marked(wet) and not _kit.is_soaked(dry))
 	_check("Crue lancée", _player.spells.cast(4))
 	_kit.flush_pending()
-	_check("les deux touchés", wet.taken.size() == 1 and dry.taken.size() == 1, "%s %s" % [wet.taken, dry.taken])
-	if wet.taken.size() == 1 and dry.taken.size() == 1:
+	_check("les deux touchés", wet.taken.size() >= 1 and dry.taken.size() >= 1, "%s %s" % [wet.taken, dry.taken])
+	if wet.taken.size() >= 1 and dry.taken.size() >= 1: # [0] = la Crue ; un tir de Goutte-lame (5,4) peut suivre
 		_check("trempé >= +20 %", wet.taken[0] >= dry.taken[0] * 1.19, "%s vs %s" % [wet.taken[0], dry.taken[0]])
 		_check("combo_hit seulement sur trempé (slot 4)", _kit.combo_hit(_player.character.spells[3], wet) and not _kit.combo_hit(_player.character.spells[3], _fake(Vector2(900, 900))))
 	_check("coef de la Crue pleine 8,6", _near(AverseKit.crue_coef(100.0), 8.6))

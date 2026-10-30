@@ -139,11 +139,11 @@ func _run() -> void:
 	var at := Vector2(5 * U, 0)
 	var held1 := _fake(at + Vector2(10, 0))
 	var held2 := _fake(at + Vector2(1.5 * U, 0))
-	var lit_free := _fake(at + Vector2(0, 2.2 * U)) # dans la lumière (3 u), jamais cloué
 	_check("aucune fenêtre avant le filet", not _kit.combo_ready(2) and not _kit.combo_ready(4))
 	_kit.open_net(at)
 	_check("filet : cloués 1,5 s", _near(held1._held_left, VigieKit.NET_HOLD_S) and _near(held2._held_left, VigieKit.NET_HOLD_S))
 	_check("combo_ready : Fusée et Grêle pulsent, pas les autres", _kit.combo_ready(2) and _kit.combo_ready(4) and not _kit.combo_ready(3))
+	var lit_free := _fake(at + Vector2(0, 2.2 * U)) # dans la lumière (3 u), arrivé après le filet : jamais cloué
 	var fl := _kit.plant_flare(held1.global_position) as VigieFlare
 	_check("fusée posée sur un cloué : filet +0,5 s", _near(held1._held_left, VigieKit.NET_HOLD_S + VigieKit.NET_FLARE_EXTEND_S) and _near(held2._held_left, VigieKit.NET_HOLD_S + VigieKit.NET_FLARE_EXTEND_S), "%s %s" % [held1._held_left, held2._held_left])
 	_check("cloués mémorisés par la fusée", fl.netted.has(held1.get_instance_id()) and fl.netted.has(held2.get_instance_id()) and not fl.netted.has(lit_free.get_instance_id()))
@@ -165,7 +165,7 @@ func _run() -> void:
 	_hit(held1, al) # même trait / même instant : pas de seconde avivée
 	_check("une avivée par trait (250 ms)", _near(fl.life, VigieKit.FLARE_LIFE_S + VigieKit.FLARE_REVIVE_S, 0.01), str(fl.life))
 	fl.life = 6.5
-	await get_tree().create_timer(0.3).timeout
+	_kit._revive_ms = -10000 # l'intervalle de 250 ms est en temps réel
 	_hit(held1, al)
 	_check("plafond de vie 7 s", _near(fl.life, VigieKit.FLARE_MAX_LIFE_S, 0.01), str(fl.life))
 

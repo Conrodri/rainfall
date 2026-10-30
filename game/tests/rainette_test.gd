@@ -280,7 +280,7 @@ func _run() -> void:
 	var lone := _fake(Vector2(100, 0))
 	_player.spells.cast(1)
 	_to_impact()
-	_check("monocible : une cible seule prend le coup principal 1,15 (la ligne entière prenait 1,1 avant la refonte)", _near(lone.total(), 1.15 * BASE))
+	_check("monocible : une cible seule prend le coup principal TONGUE_COEF", _near(lone.total(), RainetteKit.TONGUE_COEF * BASE))
 	_reset()
 	var snack := _fake(Vector2(150, 0))
 	snack.tier = 1

@@ -462,7 +462,7 @@ func combo_ready(slot: int) -> bool:
 	var s := _spell_of(2)
 	if s == null or s.id != &"rainette_grand_saut":
 		return false
-	var reach := _u(s.range_u + CRUSH_READY_RANGE_U) * (1.0 + float(player.stat(&"range_add")))
+	var reach: float = _u(s.range_u + CRUSH_READY_RANGE_U) * (1.0 + float(player.stat(&"range_add")))
 	for g in RainetteGoo.live:
 		if is_instance_valid(g) and not g.mini and not g.is_ending() 				and g.global_position.distance_to(player.global_position) <= reach + g.radius:
 			return true
@@ -495,7 +495,7 @@ func ignores_hit(source: Node) -> bool:
 	if state != State.AIR or source == null or not is_instance_valid(source) or not (source is Node2D):
 		return false
 	var r: float = float(source.get(&"radius_px")) if &"radius_px" in source else 20.0
-	var reach := r + 26.0 + _u(CONTACT_MARGIN_U)
+	var reach: float = r + 26.0 + _u(CONTACT_MARGIN_U)
 	return (source as Node2D).global_position.distance_to(player.global_position) <= reach
 
 

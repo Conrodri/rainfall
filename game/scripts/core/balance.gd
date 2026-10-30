@@ -476,7 +476,11 @@ const ITEM_BONUS_CAPS := {
 	## Audit des objets du 28/10/2026 : Cœur de glace plafonné à +95 % (5 exemplaires),
 	## Œil du prédateur à +150 % de dégâts critiques (critique ×3,5 au plus).
 	"slowed_target_damage_add": 0.95, "crit_mult_add": 1.5,
+	## Danseur : +35 % puis +20 % par exemplaire, plafonné à +95 % (1/3/4/5/10 ex. = 35/75/95/95/95 %).
+	"moving_damage_add": 0.95,
 }
+## Foudre en chaîne (Éclair en bouteille) : cibles maximum, quel que soit le nombre d'exemplaires (perf mobile).
+const CHAIN_LIGHTNING_MAX_TARGETS := 8
 ## Roulade (esquive d'Ardent) : DODGE_DISTANCE_U en DODGE_DURATION_S, invulnérable pendant, recharge fixe.
 const DODGE_DISTANCE_U := 3.0
 const DODGE_DURATION_S := 0.25

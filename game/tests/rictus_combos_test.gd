@@ -150,7 +150,7 @@ func _run() -> void:
 	await _frames(3)
 	_check("explosion chargée = 2,9 x base", foe_c.has_value((RictusKit.DECOY_COEF + RictusKit.DECOY_CHARGE_ADD) * BASE), str(foe_c.taken))
 	_check("explosion normale = 2,2 x base", foe_p.has_value(RictusKit.DECOY_COEF * BASE), str(foe_p.taken))
-	_check("doublure explosée : plus de charge possible", not east.charge())
+	_check("doublure explosée : plus de charge possible", not is_instance_valid(east) or not east.charge())
 
 	print("Éventail -> Toupie : vol chargé 1,6 puis explosion chargée")
 	_reset()

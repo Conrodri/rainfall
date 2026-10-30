@@ -122,7 +122,7 @@ func _run() -> void:
 	_kit._iai_open_left = 1.0
 	var spy := _kit._strike_spell(&"fauche_lune", 4.0, 1.0, MorfilKit.IAI_OPEN_KNOCK_U, 3.5)
 	var base := _kit._strike_spell(&"fauche_lune", 4.0, 1.0, MorfilKit.CRESCENT_KNOCK_U, 3.5)
-	_check("hit_force plus grande", spy.hit_force > base.hit_force, "%s %s" % [spy.hit_force, base.hit_force])
+	_check("hit_force au moins égale (déjà plafonnée à 1)", spy.hit_force >= base.hit_force, "%s %s" % [spy.hit_force, base.hit_force])
 
 	print("Garde qui rend")
 	_reset()

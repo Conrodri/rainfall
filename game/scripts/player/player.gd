@@ -621,11 +621,13 @@ func _hitstop(seconds: float) -> void:
 	if _hitstop_active:
 		return
 	_hitstop_active = true
+	var prev_scale := Engine.time_scale # un test ou un mode de debug peut accélérer le jeu : on rend cette vitesse
 	Engine.time_scale = HURT_HITSTOP_SCALE
 	get_tree().create_timer(seconds, true, false, true).timeout.connect(func() -> void:
 		if _hitstop_active:
 			_hitstop_active = false
-			Engine.time_scale = 1.0)
+			if is_equal_approx(Engine.time_scale, HURT_HITSTOP_SCALE): # rien d'autre n'a changé la vitesse entre-temps (test, debug)
+				Engine.time_scale = prev_scale)
 
 
 ## Hitstop global en cours (tests).

@@ -115,7 +115,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 5 | Venin concentré | Proc 10 % : poison de 300 % du coup sur 4 s, +150 % par exemplaire supplémentaire (JSON 28/10/2026) | L (dégâts) | Poison | 22 / 22 / 22 | 1,02 |
 | 6 | Cape de brume | 18 % d'esquive | H | Survie | 22 / 22 / 22 | 1,00 |
 | 7 | Épines | Chaque coup subi déclenche une riposte à 70 % des dégâts du sort 1 sur l'attaquant (1 riposte max par 0,5 s) | L | Survie | 20 / 24 / 25 | 1,10 |
-| 8 | Éclair en bouteille | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
+| 8 | Éclair en bouteille | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire, jusqu'à 8), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
 | 9 | Rune de portée | Zone des sorts +20 % (plafond +100 %) et dégâts des sorts de zone à recharge +15 %, par exemplaire (JSON 28/10/2026) | L | Zone | 22 / 22 / 22 | 1,01 |
 | 10 | Morsure vorace | Chaque monstre tué rend 0,2 % des PV max | L | Survie | 23 / 23 / 23 | 1,03 |
 | 11 | Tonique vital | +15 % de PV max et +0,3 % des PV max par seconde | L | Survie | 22 / 22 / 22 | 0,99 |
@@ -137,7 +137,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 6 | Œil du prédateur | +8 % de critique (fixe) ; critiques +40 % (+25 % par exemplaire supplémentaire, plafond +150 %, soit ×3,5 au plus) (JSON 28/10/2026) | L décalé + F, plafonné | Crit | 52 / 52 / 52 | 1,05 |
 | 7 | Bouclier réactif | 2 charges : chacune annule un coup et se recharge en 3,4 s (× recharge issue de la hâte, +50 % de vitesse par exemplaire supplémentaire, jamais sous 1,2 s) (JSON 28/10/2026) | H (recharge) | Survie | 53 / 44 / 43 | 0,88 |
 | 8 | Faveur du marchand | +1 de Chance, prix des coffres -15 % et première relance à l'or de chaque étage gratuite | H + L | Or, Chance | 59 / 59 / 59 | 1,17 |
-| 9 | Danseur | +35 % de dégâts tant que le joueur se déplace (+20 % par exemplaire supplémentaire) (JSON 28/10/2026) | L décalé | Mobilité | 49 / 49 / 49 | 0,97 |
+| 9 | Danseur | +35 % de dégâts tant que le joueur se déplace (+20 % par exemplaire supplémentaire, plafond +95 %) (JSON 28/10/2026) | L décalé | Mobilité | 49 / 49 / 49 | 0,97 |
 | 10 | Phénix de poche | Ressuscite une fois à 50 % de PV (usage unique, +1 par exemplaire) | L | Survie | 50 / 50 / 50 | 1,00 |
 | 11 | Rafale d'acier | +15 % de vitesse d'attaque (sort 1) par exemplaire ; tous les 5 tirs, le sort 1 part 3 fois d'un coup (JSON 28/10/2026) | L + F | Auto, Projectile | 48 / 48 / 48 | 0,95 |
 

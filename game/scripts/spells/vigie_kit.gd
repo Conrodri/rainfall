@@ -789,7 +789,7 @@ func plant_flare(at: Vector2) -> Node2D:
 ## Fusée qui s'arrête sur un cloué : la lumière s'allume dans le filet. Les cloués de la zone sont exposés à x1,25 tant qu'ils
 ## tiennent (`f.netted`, lu par _expose_tick) et le filet tient 0,5 s de plus.
 func _light_the_net(f: VigieFlare, at: Vector2) -> void:
-	var reach := NET_FLARE_REACH_U * Balance.UNIT_PX
+	var reach: float = NET_FLARE_REACH_U * Balance.UNIT_PX
 	var found := false
 	var held: Array = []
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):

@@ -192,7 +192,7 @@ func _test_defers_effects() -> void:
 	# aucun autre kit ne déclare le hook : comportement inchangé (effets immédiats)
 	var dir := DirAccess.open("res://scripts/spells")
 	for f in dir.get_files():
-		if not f.ends_with("_kit.gd") or f in ["ardent_kit.gd", "ardent_variant_kit.gd"]:
+		if not f.ends_with("_kit.gd") or f in ["ardent_kit.gd", "ardent_variant_kit.gd", "ardent_base_kit.gd"]:
 			continue
 		# lecture du texte (pas de chargement : un kit en cours d'édition par un autre agent ne casse pas ce test)
 		var has := FileAccess.get_file_as_string("res://scripts/spells/" + f).contains("func defers_effects")

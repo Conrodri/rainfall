@@ -363,7 +363,7 @@ func _flare(ash: Node2D) -> void:
 		ArdentKit.apply_vfx(_flare_spell)
 	player.spells.spawn_zone(_flare_spell, ash.global_position)
 	# la Cendres se contracte et éclate : anim `end` à x2, extinction immédiate
-	ash.set(&"duration", float(ash.get(&"_t")))
+	ash.set(&"duration", maxf(float(ash.get(&"_t")), 0.01)) # > 0 : une durée nulle ferait une zone instantanée
 	var v: Variant = ash.get(&"vfx")
 	if v is AnimatedSprite2D:
 		(v as AnimatedSprite2D).speed_scale = 2.0

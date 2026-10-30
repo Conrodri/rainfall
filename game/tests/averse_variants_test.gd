@@ -417,7 +417,8 @@ func _run() -> void:
 	_kit._rain_mult = 1.0
 	_advance(6.0)
 	var total: float = m_near.total()
-	_check("dégâts totaux ≈ crue_coef(eau) × base sur 6 s (à ±10 %)", _near(total, AverseKit.crue_coef(100.0) * AverseKit.MOUSSON_TOTAL_MULT * BASE, AverseKit.crue_coef(100.0) * BASE * 0.1), "%s / %s" % [total, AverseKit.crue_coef(100.0) * BASE])
+	# ticks +20 % sur trempés (AV-1) : borne haute x(CRUE_SOAK_MULT + 0,05)
+	_check("dégâts totaux ≈ crue_coef(eau) × base sur 6 s (à ±10 %)", total >= AverseKit.crue_coef(100.0) * AverseKit.MOUSSON_TOTAL_MULT * BASE * 0.9 and total <= AverseKit.crue_coef(100.0) * AverseKit.MOUSSON_TOTAL_MULT * BASE * (AverseKit.CRUE_SOAK_MULT + 0.05), "%s / %s" % [total, AverseKit.crue_coef(100.0) * BASE])
 	_check("trempe sur la zone", m_near.soaked())
 	_check("eau rendue : ~18 d'eau + pluie, sous le seuil de relance (40)", _kit.water > 14.0 and _kit.water < AverseKit.CRUE_MIN, str(_kit.water))
 	_check("pas de boucle Mousson -> Mousson : bloquée (eau) et en recharge", not _player.spells.cast(4) and _player.spells._remaining[4] > 0.0)
