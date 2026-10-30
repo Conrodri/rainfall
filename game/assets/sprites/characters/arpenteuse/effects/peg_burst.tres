@@ -1,0 +1,43 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/peg_burst.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="F_0_0"]
+
+atlas = ExtResource("1")
+
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_0_1"]
+
+atlas = ExtResource("1")
+
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_0_2"]
+
+atlas = ExtResource("1")
+
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_0_3"]
+
+atlas = ExtResource("1")
+
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_0_4"]
+
+atlas = ExtResource("1")
+
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="F_0_5"]
+
+atlas = ExtResource("1")
+
+region = Rect2(960, 0, 192, 192)
+
+[resource]
+
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("F_0_0")}, {"duration": 1.0, "texture": SubResource("F_0_1")}, {"duration": 1.0, "texture": SubResource("F_0_2")}, {"duration": 1.0, "texture": SubResource("F_0_3")}, {"duration": 1.0, "texture": SubResource("F_0_4")}, {"duration": 1.0, "texture": SubResource("F_0_5")}], "loop": false, "name": &"default", "speed": 24.0}]

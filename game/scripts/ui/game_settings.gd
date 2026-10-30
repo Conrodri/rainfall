@@ -104,6 +104,16 @@ static func set_reduce_motion(on: bool) -> void:
 	set_value("gameplay", "reduce_motion", on)
 
 
+## « Contours de zones complets » (accessibilité, 30/10/2026) : les zones au sol des joueurs gardent leur voile et leur
+## liseré appuyés ; par défaut seul un liseré discret reste, la forme de la zone se lit dans l'effet rendu.
+static func zone_outline_full() -> bool:
+	return bool(get_value("gameplay", "zone_outline_full", false))
+
+
+static func set_zone_outline_full(on: bool) -> void:
+	set_value("gameplay", "zone_outline_full", on)
+
+
 ## Arrêts sur image autorisés (joueur, monstres, boss).
 static func hitstop_enabled() -> bool:
 	return not reduce_motion()

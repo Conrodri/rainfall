@@ -1,0 +1,105 @@
+{
+  "chain_tile": {
+    "size": [
+      512,
+      64
+    ],
+    "emission": [
+      256,
+      32
+    ],
+    "distinct": 4,
+    "bytes": 5716,
+    "budget_ratio": 0.352,
+    "alpha_pixels": [
+      1488,
+      1488,
+      1488,
+      1488
+    ]
+  },
+  "chain_snap": {
+    "size": [
+      768,
+      64
+    ],
+    "emission": [
+      384,
+      32
+    ],
+    "distinct": 6,
+    "bytes": 68411,
+    "budget_ratio": 1.166,
+    "alpha_pixels": [
+      2870,
+      2928,
+      2740,
+      2501,
+      2208,
+      1978
+    ]
+  },
+  "chain_rewind": {
+    "size": [
+      768,
+      64
+    ],
+    "emission": [
+      384,
+      32
+    ],
+    "distinct": 6,
+    "bytes": 66130,
+    "budget_ratio": 1.177,
+    "alpha_pixels": [
+      2704,
+      2972,
+      2733,
+      2483,
+      2140,
+      1723
+    ]
+  },
+  "loop_blaze": {
+    "size": [
+      1368,
+      214
+    ],
+    "emission": [
+      684,
+      107
+    ],
+    "distinct": 6,
+    "bytes": 189575,
+    "budget_ratio": 0.74,
+    "alpha_pixels": [
+      11931,
+      11961,
+      11818,
+      8481,
+      7612,
+      6398
+    ]
+  },
+  "peg_burst": {
+    "size": [
+      1152,
+      192
+    ],
+    "emission": [
+      576,
+      96
+    ],
+    "distinct": 6,
+    "bytes": 24786,
+    "budget_ratio": null,
+    "alpha_pixels": [
+      507,
+      722,
+      784,
+      796,
+      646,
+      458
+    ]
+  }
+}

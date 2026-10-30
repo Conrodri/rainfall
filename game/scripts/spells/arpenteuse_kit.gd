@@ -86,7 +86,7 @@ const TENDEUR_STUN_S := 1.5 ## équilibrage 22/10 : 1,0 -> 1,5
 const TENDEUR_KEEP_U := 1.0 ## les monstres traînés s'arrêtent à 1 u d'elle
 const SNAP_S := 0.25
 ## Frames d'impact (index 0) des anims d'action d'AR1 (planches vérifiées : geste au sol / bras tendu).
-const ACTION_IMPACT_FRAMES := {&"plant": 2, &"loop": 2, &"whip": 2, &"attack": 3, &"cast": 2, &"cast_ult": 3}
+const ACTION_IMPACT_FRAMES := {&"plant": 2, &"loop": 2, &"whip": 4, &"attack": 3, &"cast": 2, &"cast_ult": 3}
 const PENDING_TIMEOUT_S := 1.0
 const WALL_MASK := 1
 ## Équilibrage 22/10/2026 : boucler une cible mobile est rare (cible unique −44 % vs Ardent au simulateur).

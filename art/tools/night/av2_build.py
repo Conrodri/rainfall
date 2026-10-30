@@ -1,89 +1,118 @@
-"""AV2: sculpted water VFX, original CD portrait, AV1 PBR emblems.
-No gameplay edits. --resume skips complete effects; --verify assembles one contact.
-Wave: CREA 30 deg R=90.5097, 1024 cells, eight directions. Zones: native TOP 128 px/u.
-"""
-import sys, math, json, hashlib, random
+"""AV2 water cel: three spells; existing atlas packing/resources preserved. --resume-render reuses final cells."""
+import sys, math, json, hashlib, random, warnings
+warnings.filterwarnings("ignore",category=DeprecationWarning)
 from pathlib import Path
 sys.dont_write_bytecode=True
 import bpy
+import re, inspect, textwrap, subprocess, shutil
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[3]
 sys.path[:0]=[str(ROOT/'art/tools/night'),str(ROOT/'art/tools/characters'),str(ROOT/'art/tools/iso')]
 import av1_build as av1
 import iso_rig
+sys.path.insert(0,str(ROOT/'art/tools/cel'))
+import cel_style as cel
 from ardent_iso_build import worn, mesh, bead, empty
 from cd_cd1_common import tube, rgb
 from PIL import Image
 DEST=av1.DEST
 SRC=ROOT/'art/blender/characters'
-WORK=SRC/'averse_av2_frames'
+WORK=SRC/'averse_av2_water_final'
 SPECS={'wave_cone':('CREA',1024,6,8,False),'puddle_mirror':('TOP',768,6,1,True),'crue_ring':('TOP',1664,8,1,False),'goutte_lame':('CREA',128,4,1,True)}
 
 def materials():
-    water=worn('AV2 black rainwater wet relief','08191E','29454D',.32,.21)
-    p=water.node_tree.nodes.get('Principled BSDF');p.inputs['Coat Weight'].default_value=.65;p.inputs['Coat Roughness'].default_value=.13
-    foam=worn('AV2 sediment silver foam','253D41','779397',.22,.38)
-    cyan=worn('AV2 cyan refracted water veins','17414C','5FD4E8',.4,.24)
+    def solid(name,color):
+        mat=bpy.data.materials.new(name);mat.use_nodes=True
+        bsdf=mat.node_tree.nodes.get('Principled BSDF');bsdf.inputs['Base Color'].default_value=rgb(color)
+        bsdf.inputs['Roughness'].default_value=.30
+        return mat
+    water=solid('AV2 dark slate water cel','294D59')
+    foam=solid('AV2 pale silver white foam cel','BCD0D0')
+    cyan=solid('AV2 cyan refracted veins','5FD4E8')
     p=cyan.node_tree.nodes.get('Principled BSDF');p.inputs['Emission Color'].default_value=rgb('5FD4E8');p.inputs['Emission Strength'].default_value=.75
     return water,foam,cyan
 
 def crest(root,radius,start,end,height,water,foam,cyan,phase=0):
-    # Rolled continuous sheet with an undercut lip; asymmetry is modelled, never drawn.
-    count=max(36,int((end-start)*radius*20));verts=[]
+    count=max(32,int((end-start)*radius*18)); verts=[]; rings=13
+    def point(a,t):
+        roll=t*math.pi*1.42
+        wav=.085*math.sin(a*17+phase)+.048*math.sin(a*31-phase)
+        rr=radius-.22+.34*math.sin(roll)+wav
+        z=.025+height*(1-math.cos(roll))*.52*(1+.19*math.sin(a*11+phase))
+        return (rr*math.cos(a),rr*math.sin(a),z)
     for j in range(count+1):
         a=start+(end-start)*j/count
-        wob=.024*math.sin(a*19+phase)+.014*math.sin(a*37-phase)
-        for k in range(7):
-            t=k/6;rr=radius-.20+.30*t+.09*math.sin(t*math.pi)
-            z=.025+height*(math.sin(t*math.pi*.73)**1.25)*(1+.17*math.sin(a*11+phase))
-            verts.append(((rr+wob)*math.cos(a),(rr+wob)*math.sin(a),z))
-    faces=[(j*7+k,(j+1)*7+k,(j+1)*7+k+1,j*7+k+1) for j in range(count) for k in range(6)]
-    ob=mesh('Undercut rainwater crest',verts,faces,water,root)
-    for p in ob.data.polygons:p.use_smooth=True
-    sol=ob.modifiers.new('Water sheet thickness','SOLIDIFY');sol.thickness=.018
-    for band in range(2):
-        pts=[]
-        for j in range(count+1):
-            a=start+(end-start)*j/count;rr=radius+.07+band*.035+.025*math.sin(a*19+phase)
-            z=.025+height*(.91-band*.15)*(1+.17*math.sin(a*11+phase))
-            pts.append((rr*math.cos(a),rr*math.sin(a),z))
-        tube('Broken cyan caustic' if band==0 else 'Silt foam crest',pts,.012 if band==0 else .021,cyan if band==0 else foam,root)
-    rng=random.Random(int(radius*1000)+43)
-    for j in range(max(8,int((end-start)*radius*6))):
-        a=rng.uniform(start,end);rr=radius+rng.uniform(.08,.33);z=height*rng.uniform(.9,1.5)+.05
-        ob=bead('Sharp thrown rain splinter',(rr*math.cos(a),rr*math.sin(a),z),(.018,.018,rng.uniform(.04,.10)),foam if j%3 else cyan,root)
-        ob.rotation_euler=(.25*math.sin(a),.3*math.cos(a),a)
+        for k in range(rings):verts.append(point(a,k/(rings-1)))
+    ob=mesh('Hollow breaking water wall',verts,[(j*rings+k,(j+1)*rings+k,(j+1)*rings+k+1,j*rings+k+1) for j in range(count) for k in range(rings-1)],water,root)
+    sol=ob.modifiers.new('Liquid thickness','SOLIDIFY');sol.thickness=.025
+    for j in range(count):
+        a=start+(end-start)*j/count
+        if j%5!=4:
+            pts=[point(a+(end-start)/count*q,.80+.04*math.sin(j+phase)) for q in (0,.35,.7,1.05)]
+            tube('Torn white foam lip',pts,.043+.018*(1+math.sin(j*2)),foam,root)
+            if j%3==0:bead('Churning foam tuft',point(a,.82),(.065,.08,.045),foam,root)
+        if j%6==0:
+            tube('Cyan falling water vein',[point(a,q) for q in (.15,.3,.5,.68)],.013,cyan,root)
+    if root.get('peak'):
+        for band in (.33,.57):
+            for arc in range(4):
+                aa=start+(end-start)*arc/4;bb=aa+(end-start)*.21
+                tube('Initial breaking cyan caustic',[point(aa+(bb-aa)*j/18,band) for j in range(19)],.023,cyan,root)
+    rng=random.Random(43+int(radius*1000))
+    for j in range(max(14,int((end-start)*radius*12))):
+        a=rng.uniform(start,end);rr=radius+rng.uniform(-.15,.23);z=height*rng.uniform(.75,1.6)+.05
+        ob=bead('Thrown spray droplet',(rr*math.cos(a),rr*math.sin(a),z),(.028+rng.random()*.034,.032,rng.uniform(.05,.14)),foam if j%3 else cyan,root)
+        ob.rotation_euler=(.5*math.sin(a),.5*math.cos(a),a)
 
 def geometry(key,f,n,mats):
-    water,foam,cyan=mats;t=f/(n-1);phase=f*math.tau/n;r=empty(key+' frame '+str(f))
+    water,foam,cyan=mats;t=f/(n-1);phase=f*math.tau/n;r=empty(key+' frame '+str(f));r['peak']=f==0
     if key=='wave_cone':
-        rad=.72+3.98*t;h=.25+.55*math.sin(math.pi*(.12+.78*t))
-        # Model faces south like the character; direction e is obtained by the CREA rotation.
-        for lane in range(2):crest(r,rad-lane*.28,-math.pi/2-.53,-math.pi/2+.53,h*(1-lane*.55),water,foam,cyan,phase+lane)
-        for j in range(9):
-            a=-math.pi/2-.48+j*.12
-            tube('Dragged water wake',[(q*rad*math.cos(a),q*rad*math.sin(a),.023+.012*math.sin(q*12+phase)) for q in (.18,.28,.4,.55,.7,.85)],.014,water,r)
+        rad=1.4+3.15*t;h=1.30*(1-.68*t)
+        crest(r,rad,-math.pi/2-.53,-math.pi/2+.53,h,water,foam,cyan,phase)
+        for j in range(7):
+            a=-math.pi/2-.47+j*.157
+            pts=[(q*rad*math.cos(a+.035*math.sin(q*15+phase)),q*rad*math.sin(a+.035*math.sin(q*15+phase)),.04+.035*math.sin(q*10+phase)**2) for q in (.28,.4,.55,.7,.85)]
+            tube('Broken turbulent wake',pts,.035,foam if j%3==0 else water,r)
     elif key=='puddle_mirror':
-        seg=128;verts=[(0,0,.018)]
+        seg=144;verts=[(0,0,.018)]
         for j in range(seg):
-            a=j*math.tau/seg;rad=2.28+.09*math.sin(a*7)+.055*math.sin(a*13+phase)*.35
-            verts.append((rad*math.cos(a),rad*math.sin(a),.018+.007*math.sin(a*9+phase)))
-        ob=mesh('Black mirror puddle',verts,[(0,1+j,1+(j+1)%seg) for j in range(seg)],water,r)
-        for k in range(3):
-            rad=.48+k*.69+.035*math.sin(phase+k)
-            pts=[((rad+.014*math.sin(a*9+phase))*math.cos(a),(rad+.014*math.sin(a*9+phase))*math.sin(a),.027+.004*math.sin(a*6+phase)) for a in [j*math.tau/128 for j in range(129)]]
-            tube('Mirror ripple reflected cyan' if k==2 else 'Mirror raised meniscus',pts,.010 if k==2 else .017,cyan if k==2 else foam,r)
-        for k in range(7):
-            a=k*.9+.2;pts=[((2.22+.03*math.sin(j))*math.cos(a+j*.03),(2.22+.03*math.sin(j))*math.sin(a+j*.03),.028) for j in range(14)]
-            tube('Broken reflective bank',pts,.023,water,r)
+            a=j*math.tau/seg;rad=2.15+.12*math.sin(a*7)+.07*math.sin(a*13+phase)+.035*math.sin(a*29)
+            verts.append((rad*math.cos(a),rad*math.sin(a),.02+.012*math.sin(a*9+phase)))
+        mesh('Irregular dark mirror water',verts,[(0,1+j,1+(j+1)%seg) for j in range(seg)],water,r)
+        for k in range(4):
+            rad=.25+((k*.46+t*.45)%1.85)
+            for arc in range(3):
+                pts=[]
+                for j in range(36):
+                    a=arc*math.tau/3+j*.047;rr=rad+.035*math.sin(a*8+phase)
+                    pts.append((rr*math.cos(a),rr*math.sin(a),.045+.015*math.sin(a*7+phase)))
+                tube('Pulsing broken concentric reflection',pts,.014 if k%2 else .021,cyan if k%2 else foam,r)
+        for j in range(18):
+            a=j*2.399;rr=.5+(j%5)*.31;z=.10+.24*(.5+.5*math.sin(phase+j))
+            bead('Jumping mirror water',(rr*math.cos(a),rr*math.sin(a),z),(.025,.035,.055),cyan if j%3==0 else foam,r)
+        for j in range(7):
+            a=j*.87;rr=1.2+.4*math.sin(j)
+            tube('Jagged reflected sky',[(rr*math.cos(a)+q,rr*math.sin(a)+.04*math.sin(q*30+phase),.04) for q in (-.18,-.09,0,.08,.15)],.025,foam,r)
     elif key=='crue_ring':
-        rad=.62+5.13*t;h=.08+.40*math.sin(math.pi*(.12+t*.84))
-        for k in range(7):
-            a=k*math.tau/7+.015*math.sin(phase+k)
-            crest(r,rad,a,a+math.tau/7-.035,h*(.8+.2*math.sin(k+phase)),water,foam,cyan,phase+k)
-        if f>1:
-            rad2=rad*.72
-            tube('Inner receding flood reflection',[(rad2*math.cos(a),rad2*math.sin(a),.018) for a in [j*math.tau/192 for j in range(193)]],.015,water,r)
+        rad=2.0+3.45*t;h=1.65*(1-.78*t)
+        if f<3:
+            verts=[(0,0,h*.80)];seg=72;bands=9
+            for ring in range(1,bands+1):
+                q=ring/bands
+                for j in range(seg):
+                    a=j*math.tau/seg;rr=rad*q*(.95+.025*math.sin(a*9+phase))
+                    verts.append((rr*math.cos(a),rr*math.sin(a),.04+h*.80*math.sqrt(max(0,1-q*q))*(1-.20*f)))
+            faces=[(0,1+j,1+(j+1)%seg) for j in range(seg)]
+            faces += [(1+ring*seg+j,1+ring*seg+(j+1)%seg,1+(ring+1)*seg+(j+1)%seg,1+(ring+1)*seg+j) for ring in range(bands-1) for j in range(seg)]
+            mesh('Rising flood dome collapsing',verts,faces,water,r)
+        for k in range(9):
+            a=k*math.tau/9
+            crest(r,rad,a,a+math.tau/9-.045,h*(.84+.16*math.sin(k+phase)),water,foam,cyan,phase+k)
+        for k in range(17):
+            a=k*2.399+.12*math.sin(phase);rr=rad*(.50+.38*(k%4)/3)
+            pts=[((rr+q)*math.cos(a+.07*math.sin(q*5+phase)),(rr+q)*math.sin(a+.07*math.sin(q*5+phase)),.04+.10*math.sin(q*3+phase)**2) for q in (-.35,-.16,0,.16,.3)]
+            tube('Crashing spiral flood current',pts,.035,foam if k%3==0 else water,r)
+            ob=bead('Flood carried dark debris',(rr*math.cos(a),rr*math.sin(a),.13+.15*math.sin(phase+k)**2),(.09,.035,.045),water,r);ob.rotation_euler.z=a+phase
     else:
         # Razor drop: asymmetric liquid blade and torn trailing filaments, points to screen east.
         pts=[(.49,0,.09),(-.12,-.11,.09),(-.42,-.045,.09),(-.30,0,.16),(-.42,.045,.09),(-.12,.11,.09),(0,0,.20)]
@@ -94,57 +123,86 @@ def geometry(key,f,n,mats):
     return r
 
 def resource(key,cell,n,dirs,loop):
-    base='res://assets/sprites/characters/averse/effects/'+key
-    folder=DEST/'effects'/key;lines=[];anims=[]
-    for em in (False,True):
-        ext=f'[ext_resource type="Texture2D" path="{base}/{key}{"_e" if em else ""}.png" id="1"]\n'
-        subs=[]
-        if not em:
-            ext+=f'[ext_resource type="Texture2D" path="{base}/{key}_n.png" id="2"]\n'
-            subs.append('[sub_resource type="CanvasTexture" id="ct"]\ndiffuse_texture = ExtResource("1")\nnormal_texture = ExtResource("2")')
-        anims=[]
-        for row,d in enumerate(dirs):
-            frames=[]
-            for f in range(n):
-                ident=f'a{row}_{f}';atlas='ExtResource("1")' if em else 'SubResource("ct")'
-                subs.append(f'[sub_resource type="AtlasTexture" id="{ident}"]\natlas = {atlas}\nregion = Rect2({f*cell}, {row*cell}, {cell}, {cell})')
-                frames.append('{"duration": 1.0, "texture": SubResource("'+ident+'")}')
-            name=key+'_'+d if len(dirs)>1 else 'default'
-            anims.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(loop).lower()}, "name": &"{name}", "speed": 12.0'+'}')
-        path=folder/(key+('_emission' if em else '')+'.tres')
-        if not path.exists():path.write_text('[gd_resource type="SpriteFrames" format=3]\n'+ext+'\n\n'+'\n\n'.join(subs)+'\n\n[resource]\nanimations = ['+',\n'.join(anims)+']\n')
+    # Delivered packed resources are authoritative: retain regions, margins and fps.
+    for suffix in ('','_emission'):
+        data=(DEST/'effects'/key/(key+suffix+'.tres')).read_text()
+        assert 'CanvasTexture' not in data and 'normal_texture' not in data
+        assert len(re.findall(r'region = Rect2',data))==n*len(dirs)
+
 
 def effects():
-    for key,(rig,cell,n,nd,loop) in SPECS.items():
-        folder=DEST/'effects'/key;folder.mkdir(parents=True,exist_ok=True)
-        if '--resume' in sys.argv and not (key=='goutte_lame' and '--refresh-projectile' in sys.argv) and all((folder/(key+su+'.png')).exists() for su in ('','_n','_e')):continue
-        s=iso_rig.create_rig(rig,cell);s.eevee.taa_render_samples=12
-        s.render.threads_mode='FIXED';s.render.threads=8
-        mats=materials();basis=s.camera.rotation_euler.to_matrix();ppu=128 if rig=='TOP' else iso_rig.R
-        dirs=list(iso_rig.DIRECTIONS) if nd==8 else ['e' if key=='goutte_lame' else 'default']
-        atlases={su:Image.new('RGBA',(cell*n,cell*nd)) for su in ('','_n','_e')}
-        for f in range(n):
-            r=geometry(key,f,n,mats)
-            iso_rig.bake_ao_shadows(r)
-            if f==n//2:
-                s['AV2_effect']=key;s['AV2_frames']=n;s['AV2_native_px_per_u']=ppu;s['AV2_direction_order']=','.join(dirs)
-                s['AV2_contact_frame']=f;s['AV2_pivot']=[cell/2,cell/2]
-                bpy.context.preferences.filepaths.save_version=0
-                bpy.ops.wm.save_as_mainfile(filepath=str(SRC/('averse_'+key+'.blend')))
-            for row,d in enumerate(dirs):
-                r.rotation_euler.z=iso_rig.DIRECTIONS[d] if nd==8 else 0
-                path=WORK/key/(d+'_'+str(f)+'.png')
-                # Native-resolution Eevee, 12 samples; preserve exact rig projection.
-                iso_rig.set_frame(cell,rig);s.render.resolution_percentage=50
-                iso_rig.render_frame(path)
-                for su in atlases:
-                    p=path.with_name(path.stem+su+'.png')
-                    assert p.exists(),(key,f,su)
-                    with Image.open(p) as im:atlases[su].alpha_composite(im.convert('RGBA'),(f*cell,row*cell))
-            for ob in [*r.children_recursive,r]:bpy.data.objects.remove(ob,do_unlink=True)
-        for su,im in atlases.items():im.save(folder/(key+su+'.png'),optimize=True,compress_level=9)
+    # Keep the delivered atlas layout and SpriteFrames byte for byte.
+    src=textwrap.dedent(inspect.getsource(iso_rig.render_frame)).replace("('_n','_e')","('_e',)")
+    exec(compile(src,'<av2-no-normals>','exec'),iso_rig.__dict__)
+    baseline={}; report={}; board=Image.new('RGBA',(960,576),(19,24,28,255))
+    for line,key in enumerate(('wave_cone','puddle_mirror','crue_ring')):
+        folder=DEST/'effects'/key;res=(folder/(key+'.tres')).read_text()
+        ext={i:folder/Path(path).name for path,i in re.findall(r'\[ext_resource[^\n]*path="([^"]+)" id="([^"]+)"',res)}
+        blocks=re.findall(r'\[sub_resource type="AtlasTexture"[^\]]*\]([^\[]+)',res)
+        cells=[]
+        for block in blocks:
+            aid=re.search(r'ExtResource\("([^"]+)"\)',block)[1]
+            rect=tuple(map(int,re.search(r'region = Rect2\(([^)]+)\)',block)[1].split(',')))
+            margin=re.search(r'margin = Rect2\(([^)]+)\)',block)
+            cells.append((ext[aid],rect,tuple(map(int,margin[1].split(','))) if margin else (0,0,0,0)))
+        paths=set(ext.values()); baseline[key]=sum(meta['bytes'] for rel,meta in json.loads((ROOT/'art/blender/av2_baseline.json').read_text()).items() if Path(rel).parts[0]==key and rel.endswith('.png'))
+        atlases={p:Image.new('RGBA',Image.open(p).size) for p in paths}; emiss={p:Image.new('RGBA',Image.open(p).size) for p in paths}
+        rig,_,n,nd,loop=SPECS[key];cell=1024 if key=='wave_cone' else cells[0][1][2]
+        s=iso_rig.create_rig(rig,cell);s.eevee.taa_render_samples=8;s.render.threads_mode='FIXED';s.render.threads=8
+        if rig=='TOP':s.camera.data.ortho_scale=cell/65.5
+        mats=materials();mats[2]['rainfall_emissive']=True
+        cel.install('prop',normals=False)
+        dirs=list(iso_rig.DIRECTIONS) if nd==8 else ['default']
         resource(key,cell,n,dirs,loop)
-        print('AV2 EFFECT PASS '+key,flush=True)
+        for f in range(n):
+            strength=1.5*(1-.94*f/(n-1))**2
+            for node in mats[2].node_tree.nodes:
+                if node.type=='BSDF_PRINCIPLED':node.inputs['Emission Strength'].default_value=strength
+                elif node.type=='EMISSION':node.inputs['Strength'].default_value=strength
+                elif node.type=='OUTPUT_AOV':node.inputs['Color'].default_value=tuple(c*strength for c in rgb('5FD4E8')[:3])+(1,)
+            root=geometry(key,f,n,mats)
+            for row,d in enumerate(dirs):
+                root.rotation_euler.z=iso_rig.DIRECTIONS[d] if nd==8 else 0
+                p,rect,margin=cells[row*n+f];x,y,w,h=rect
+                path=WORK/key/(d+'_'+str(f)+'.png')
+                iso_rig.set_frame(cell,rig)
+                if rig=='TOP':s.camera.data.ortho_scale=cell/65.5
+                s.render.resolution_percentage=100
+                if not ('--resume-render' in sys.argv and path.exists() and path.with_name(path.stem+'_e.png').exists() and Image.open(path).size==(cell,cell) and not ('--refresh-peak' in sys.argv and f==0 and key!='puddle_mirror')):iso_rig.render_frame(path)
+                for suffix,target in (('',atlases),('_e',emiss)):
+                    im=Image.open(path.with_name(path.stem+suffix+'.png')).convert('RGBA')
+                    box=(margin[0],margin[1],margin[0]+w,margin[1]+h)
+                    tile=im.crop(box)
+                    assert tile.getchannel('A').getbbox(),(key,f,row,'empty')
+                    # Assert the established crop still contains the water silhouette.
+                    full=im.getchannel('A').getbbox()
+                    assert full[0]>=box[0] and full[1]>=box[1] and full[2]<=box[2] and full[3]<=box[3],(key,f,row,full,box)
+                    target[p].alpha_composite(tile,(x,y))
+                    if not suffix and row==0 and f in (0,n//2,n-1):
+                        tile.thumbnail((300,180),Image.Resampling.LANCZOS);board.alpha_composite(tile,((0 if f==0 else 320 if f==n//2 else 640)+(300-tile.width)//2,line*192))
+                if f==0 and row==0:
+                    bpy.context.preferences.filepaths.save_version=0;bpy.ops.wm.save_as_mainfile(filepath=str(SRC/('averse_'+key+'.blend')))
+            for ob in [*root.children_recursive,root]:bpy.data.objects.remove(ob,do_unlink=True)
+        for p,im in atlases.items():
+            im.save(p,optimize=True,compress_level=9)
+            optimized=WORK/('optimized_'+p.name)
+            filters="lutrgb=r='floor(val/16+0.5)*16':g='floor(val/16+0.5)*16':b='floor(val/16+0.5)*16':a='floor(val/32+0.5)*32'"
+            with (WORK/'compression.log').open('a') as log:
+                subprocess.run([shutil.which('ffmpeg'),'-v','error','-y','-i',str(p),'-vf',filters,'-frames:v','1','-compression_level','9',str(optimized)],stdout=log,stderr=log,check=True)
+            optimized.replace(p)
+            e=emiss[p].resize(((im.width+1)//2,(im.height+1)//2),Image.Resampling.LANCZOS)
+            assert max(e.convert('RGB').getextrema()[i][1] for i in range(3))>8
+            ep=p.with_name(p.stem+'_e.png');e.save(ep,optimize=True,compress_level=9)
+            ef="lutrgb=r='floor(val/32+0.5)*32':g='floor(val/32+0.5)*32':b='floor(val/32+0.5)*32':a='floor(val/64+0.5)*64'"
+            with (WORK/'compression.log').open('a') as log:
+                subprocess.run([shutil.which('ffmpeg'),'-v','error','-y','-i',str(ep),'-vf',ef,'-frames:v','1','-compression_level','9',str(optimized)],stdout=log,stderr=log,check=True)
+            optimized.replace(ep)
+        after=sum(p.stat().st_size+p.with_name(p.stem+'_e.png').stat().st_size for p in paths)
+        report[key]={'before':baseline[key],'after':after,'frames':n,'rows':nd,'sizes':{p.name:list(im.size) for p,im in atlases.items()}}
+        assert after<=baseline[key]*1.30,(key,'budget',after,baseline[key])
+        cel.uninstall()
+    board.save(WORK/'control.png',optimize=True)
+    (WORK/'report.json').write_text(json.dumps(report,indent=2))
 
 def portrait():
     bpy.ops.wm.open_mainfile(filepath=str(av1.SOURCE));s=bpy.context.scene;s.frame_set(1)
@@ -158,56 +216,14 @@ def portrait():
     print('AV2 PORTRAIT PASS',flush=True)
 
 def verify():
-    board=Image.new('RGBA',(1840,1960),(19,24,28,255));result={}
-    for anim,n in av1.ANIMS.items():
-        for su in ('','_n','_e'):
-            with Image.open(DEST/(anim+su+'.png')) as im:assert im.size==(192*n,1536),(anim,su,im.size)
-    for row,(key,(rig,cell,n,nd,loop)) in enumerate(SPECS.items()):
-        folder=DEST/'effects'/key
-        hashes=[]
-        for su in ('','_n','_e'):
-            with Image.open(folder/(key+su+'.png')) as raw:
-                assert raw.size==(cell*n,cell*nd),(key,su,raw.size)
-                for d in range(nd):
-                    unique=[]
-                    for f in range(n):
-                        tile=raw.crop((f*cell,d*cell,(f+1)*cell,(d+1)*cell));bb=tile.getchannel('A').getbbox()
-                        assert bb and min(bb[:2])>=3 and max(bb[2:])<=cell-3,(key,d,f,bb)
-                        unique.append(hashlib.sha256(tile.tobytes()).hexdigest())
-                        if not su and d==0:
-                            tile.thumbnail((220,220),Image.Resampling.LANCZOS);board.alpha_composite(tile,(f*230,row*230))
-                    assert len(set(unique))==n,(key,d,su,'duplicate')
-        result[key]={'rig':rig,'cell':cell,'frames':n,'directions':nd,'pivot':[cell/2,cell/2],'px_per_u':128 if rig=='TOP' else iso_rig.R,'loop':loop}
-    portrait=Image.open(DEST/'portrait.png').convert('RGBA');assert portrait.size==(256,256);board.alpha_composite(portrait,(1248,680))
-    frame=Image.open(ROOT/'game/assets/sprites/ui/spell_frame.png').convert('RGBA')
-    keys=['averse_goutte_lame','averse_vague','averse_flaque_miroir','averse_crue','eclat_de_braise','nova_ardente','cendres','brasier']
-    for j,key in enumerate(keys):
-        path=av1.ICONS/(key+'.png')
-        if not path.exists():continue
-        im=Image.open(path).convert('RGBA');assert im.size==(128,128),(key,im.size)
-        for size,y in [(128,940),(64,1080)]:
-            tile=im.resize((size,size),Image.Resampling.LANCZOS);tile.alpha_composite(frame.resize((size,size),Image.Resampling.LANCZOS));board.alpha_composite(tile,(j*192+(192-size)//2,y))
-    refs=['art/tools/characters/_cd_averse.png','art/tools/ui/_i2_contact.png','art/tools/iso/_c4_contact.png','art/tools/characters/_m2_contact.png','art/tools/iso/_c1_contact.png']
-    for j,ref in enumerate(refs):
-        im=Image.open(ROOT/ref).convert('RGBA');im.thumbnail((300,280),Image.Resampling.LANCZOS);board.alpha_composite(im,(j*305,1160))
-    for row,su in enumerate(('','_n','_e')):
-        with Image.open(DEST/'effects/wave_cone'/('wave_cone'+su+'.png')) as im:
-            for d in range(8):
-                tile=im.crop((3072,d*1024,4096,(d+1)*1024));tile.thumbnail((155,155),Image.Resampling.LANCZOS)
-                board.alpha_composite(tile,(d*192,1470+row*160))
-    board.save(ROOT/'art/tools/night/_av2_contact.png',optimize=True)
-    result['portrait']='portrait.png, 256px, original AV1 geometry';result['icons']='AV1 four bevelled bronze emblems, 128px; shared studio / cyan water';result['integration']='CREA cone eight rows e,se,s,sw,w,nw,n,ne; TOP zones centered; projectile points east; animate at 12fps; TOP projected by game ground transform'
-    (DEST/'av2_manifest.json').write_text(json.dumps(result,indent=2))
-    prior=json.loads((DEST/'averse_manifest.json').read_text());prior['lot_2_remaining']=[];prior['lot_2_manifest']='av2_manifest.json'
-    (DEST/'averse_manifest.json').write_text(json.dumps(prior,indent=2))
-    print('AV2 VERIFY PASS: 66 VFX frames, diffuse/normal/emission, portrait, four icons',flush=True)
+    import runpy
+    runpy.run_path(str(ROOT/'art/blender/av2_check.py'),run_name='__main__')
 
 if __name__=='__main__':
     WORK.mkdir(parents=True,exist_ok=True)
     if '--verify' in sys.argv:verify()
     else:
-        effects();portrait()
-        if '--keep-icons' not in sys.argv:av1.icons()
+        effects()
         verify()
 
 def godot_verify():

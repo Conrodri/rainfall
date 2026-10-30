@@ -100,6 +100,7 @@ var _long_press: Button
 var _key_hints: Button
 var _overhead: Button ## barres au-dessus du personnage (GameSettings.overhead_bars)
 var _show_hitbox: Button ## cercle de collision du héros (GameSettings.show_hitbox)
+var _zone_full: Button ## « Contours de zones complets » (GameSettings.zone_outline_full)
 var _reduce_motion: Button ## « Réduire les mouvements » (GameSettings.reduce_motion)
 var _hints: Button ## « Astuces de jeu » (GameSettings.hints, lot M-A)
 var _strong_tel: Button ## « Télégraphes renforcés » (GameSettings.strong_telegraphs, lot A11y-L9)
@@ -251,6 +252,7 @@ func _build() -> void:
 	_shake = ss[0]
 	_shake_pct = ss[1]
 	_reduce_motion = _add_toggle("Réduire les mouvements", func(on: bool) -> void: GameSettings.set_reduce_motion(on))
+	_zone_full = _add_toggle("Contours de zones complets", func(on: bool) -> void: GameSettings.set_zone_outline_full(on))
 	_strong_tel = _add_toggle("Télégraphes renforcés", func(on: bool) -> void:
 		GameSettings.set_strong_telegraphs(on)
 		EnemyTelegraph.refresh_strong()) # effet immédiat (sinon relu après STRONG_REFRESH_MS)
@@ -508,6 +510,7 @@ func sync() -> void:
 	_set_toggle(_overhead, GameSettings.overhead_bars())
 	_set_toggle(_show_hitbox, GameSettings.show_hitbox())
 	_set_toggle(_reduce_motion, GameSettings.reduce_motion())
+	_set_toggle(_zone_full, GameSettings.zone_outline_full())
 	_set_toggle(_hints, GameSettings.hints())
 	_set_toggle(_strong_tel, GameSettings.strong_telegraphs())
 	_set_toggle(_mono, GameSettings.mono_audio())

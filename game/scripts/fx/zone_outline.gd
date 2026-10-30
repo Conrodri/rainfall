@@ -28,6 +28,8 @@ enum Shape { DISC, CAPSULE, BAND } ## disque ; capsule autour d'un segment (lign
 const STRONG_WIDTH := 4.0 ## contour appuyé (emphasize) : zones de contrôle à lire d'un coup d'oeil
 const STRONG_FILL := 0.16
 const STRONG_EDGE := 1.0
+const DISCREET_EDGE := 0.4 ## facteur d'opacité du liseré hors accessibilité « contours complets »
+const DISCREET_WIDTH := 1.5
 const HALO_COLOR := Color(0.04, 0.03, 0.05, 0.6) ## liseré sombre sous le contour : lisible sur sol clair comme sombre
 const HALO_EXTRA := 3.0
 
@@ -36,6 +38,7 @@ var width := WIDTH
 var fill_alpha := FILL_ALPHA
 var edge_alpha := EDGE_ALPHA
 var halo := false
+var strong := false ## contour appuyé (emphasize) : jamais atténué
 var radius := 64.0 ## DISC : rayon ; BAND : rayon extérieur ; CAPSULE : demi-largeur de la bande
 var inner := 0.0 ## BAND : rayon intérieur
 var color := Color.WHITE
@@ -104,6 +107,7 @@ static func attach_band(p_host: Node2D, r_out: float, r_in: float, p_color: Colo
 
 ## Contour appuyé (Filet lesté, Grêle) : trait épais, voile plus net, liseré sombre. Renvoie `self`.
 func emphasize() -> ZoneOutline:
+	strong = true
 	width = STRONG_WIDTH
 	fill_alpha = STRONG_FILL
 	edge_alpha = STRONG_EDGE
@@ -244,24 +248,29 @@ func _draw() -> void:
 	var edge := Color(color.r, color.g, color.b, 1.0).lightened(EDGE_LIGHTEN)
 	edge.a = edge_alpha
 	var fill := Color(color.r, color.g, color.b, fill_alpha)
+	var lw := width
+	if not strong and not GameSettings.zone_outline_full(): # 30/10/2026 : liseré discret, la forme vient du VFX rendu
+		fill.a = 0.0
+		edge.a *= DISCREET_EDGE
+		lw = DISCREET_WIDTH
 	match shape:
 		Shape.CAPSULE:
 			if _poly.size() > 3:
 				draw_colored_polygon(_poly, fill)
 				if halo:
-					draw_polyline(_poly, HALO_COLOR, width + HALO_EXTRA, true)
-				draw_polyline(_poly, edge, width, true)
+					draw_polyline(_poly, HALO_COLOR, lw + HALO_EXTRA, true)
+				draw_polyline(_poly, edge, lw, true)
 		Shape.BAND:
 			var mid := (radius + inner) * 0.5
 			draw_arc(Vector2.ZERO, mid, 0.0, TAU, 72, fill, maxf(radius - inner, 1.0))
 			if halo:
-				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
-			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, edge, width, true)
+				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, lw + HALO_EXTRA, true)
+			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, edge, lw, true)
 			if inner > 1.0:
 				if halo:
-					draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
-				draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, edge, width, true)
+					draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, HALO_COLOR, lw + HALO_EXTRA, true)
+				draw_arc(Vector2.ZERO, inner, 0.0, TAU, 72, edge, lw, true)
 		_:
 			if halo:
-				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, width + HALO_EXTRA, true)
-			RecluseFx.draw_disc(self, radius, fill, edge, width)
+				draw_arc(Vector2.ZERO, radius, 0.0, TAU, 72, HALO_COLOR, lw + HALO_EXTRA, true)
+			RecluseFx.draw_disc(self, radius, fill, edge, lw)

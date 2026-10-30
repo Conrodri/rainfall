@@ -107,7 +107,7 @@ def render_frame(path,passes=True):
     size=tuple(s['iso_frame'])
     files=[path]
     if passes:
-        for suffix in ('_n','_e'):
+        for suffix in (('_e',) if not passes else ('_n','_e')):
             candidates=list(path.parent.glob(path.stem+suffix+'__*.png'))
             if len(candidates)!=1: raise RuntimeError('Missing/ambiguous pass '+suffix)
             dest=path.with_name(path.stem+suffix+'.png');candidates[0].replace(dest);files.append(dest)

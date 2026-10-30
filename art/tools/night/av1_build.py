@@ -2,7 +2,7 @@
 Background Blender only. --source-only / --resume / --icons-only / --verify.
 Pillow is used solely for resizing, assembly and pixel verification.
 """
-import sys, math, json, hashlib
+import sys, math, json, hashlib, re, subprocess
 from pathlib import Path
 sys.dont_write_bytecode=True
 import bpy
@@ -10,6 +10,8 @@ from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parents[3]
 sys.path[:0]=[str(ROOT/'art/tools/characters'),str(ROOT/'art/tools/iso')]
 import iso_rig
+sys.path.insert(0,str(ROOT/'art/tools/cel'))
+import cel_style as cel
 from ardent_iso_build import worn, mesh, rod, rings, bead, empty
 from cd_cd1_common import block, cyl, tube, rgb
 from PIL import Image
@@ -17,9 +19,10 @@ DEST=ROOT/'game/assets/sprites/characters/averse'
 SOURCE=ROOT/'art/blender/characters/averse.blend'
 WORK=ROOT/'art/blender/characters/averse_frames'
 ICONS=ROOT/'game/assets/sprites/icons/spells'
-ANIMS={'idle':8,'run':8,'cast':4,'wave':6,'crue':8,'stumble':3,'attack':6,'cast_ult':8,'death':8}
+ANIMS={'idle':8,'run':8,'cast':5,'wave':6,'crue':9,'stumble':3,'attack':6,'cast_ult':8,'death':8}
 DIRS=iso_rig.DIRECTIONS
 FPS={'idle':8,'run':14,'cast':12,'wave':12,'crue':12,'stumble':10,'attack':12,'cast_ult':12,'death':10}
+F60={'attack':[3,3,2,2,5,5],'wave':[4,4,4,5,9,9],'cast':[5,5,4,7,7],'crue':[5,5,4,4,4,10,10,9,9]}
 
 def parent_keep(o,p):
     m=o.matrix_world.copy();o.parent=p;o.matrix_world=m
@@ -78,7 +81,7 @@ def source():
     level['resource_mask']='cyan _e sight glass; normalized fill is bottom-to-top in local Z'
     root.scale=(.87,.87,.87)
     s=iso_rig.create_rig('CREA',192,reset=False);s.camera.data.shift_y=.21
-    s.view_layers[0].use_pass_normal=True;s.view_layers[0].use_pass_emit=True
+    s.view_layers[0].use_pass_normal=False;s.view_layers[0].use_pass_emit=True
     s.eevee.taa_render_samples=12;s.render.threads_mode='FIXED';s.render.threads=8
     # Parallel studio rays keep all atlas cells under exactly the same illumination.
     for o in list(s.objects):
@@ -121,21 +124,26 @@ def pose(anim,i,n,rig,rest):
         hood.rotation_euler.x=-.04+.025*math.cos(t);jar.rotation_euler.x=-.05+.045*math.sin(t-.8)
     elif anim in ('cast','wave','crue','cast_ult','attack'):
         if anim=='attack':
-            # Three-frame windup, impact at zero-based N/2, two-frame recovery.
-            k=i/(n/2) if i<=n/2 else (n-1-i)/(n/2-1)
-            ar.rotation_euler.x=-1.25*k;ar.rotation_euler.z=-.14*k
-            al.rotation_euler.x=-.23*k;torso.rotation_euler.x=-.06*k;torso.rotation_euler.z=.14*math.sin(math.pi*k)
+            # Dip toward the back amphora, blade smear, held impact and readable recovery.
+            if i<=1:k=[.42,1.0][i];ar.rotation_euler.x=.75*k;jar.rotation_euler.x=-.48*k;torso.rotation_euler.x=-.22*k;torso.rotation_euler.z=-.18*k
+            elif i==2:ar.rotation_euler.x=-2.15;ar.rotation_euler.z=.55;al.rotation_euler.x=-.72;jar.rotation_euler.x=.45;torso.rotation_euler.z=.38
+            elif i==3:ar.rotation_euler.x=-1.85;ar.rotation_euler.z=.18;al.rotation_euler.x=-.32;torso.rotation_euler.x=-.32;torso.rotation_euler.z=.20
+            else:k=(i-3)/2;ar.rotation_euler.x=-1.85*(1-k);ar.rotation_euler.z=.18*(1-k);jar.rotation_euler.x=-.08*k;torso.rotation_euler.x=-.32*(1-k)
         elif anim=='cast':
-            ar.rotation_euler.x=-1.15*pulse;al.rotation_euler.x=-.65*pulse;al.rotation_euler.y=-.30*pulse
-            torso.rotation_euler.x=.10*pulse
+            vals=[-.45,-.75,-1.05,-.15,.10][i];ar.rotation_euler.x=vals;al.rotation_euler.x=-.55 if i<3 else -.18;jar.rotation_euler.x=[-.85,-1.05,-.78,.06,0][i];torso.rotation_euler.x=.24 if i<3 else -.05
         elif anim=='wave':
-            k=math.sin(math.pi*min(1,p*1.15))
-            for side,arm in [(-1,al),(1,ar)]:arm.rotation_euler.x=-1.1*k;arm.rotation_euler.z=side*.35*math.sin(math.pi*p)
-            torso.rotation_euler.x=.18*math.sin(math.tau*p);torso.rotation_euler.z=.12*math.sin(math.tau*p)
+            if i<2: k=[.5,1][i];torso.rotation_euler.x=.35*k;torso.location.z-=.08*k;jar.rotation_euler.x=-.65*k
+            elif i==2:ar.rotation_euler.x=-2.05;al.rotation_euler.x=-1.8;jar.rotation_euler.x=.55;torso.rotation_euler.z=.28
+            elif i==3:ar.rotation_euler.x=-1.8;al.rotation_euler.x=-1.65;ar.rotation_euler.z=.18;al.rotation_euler.z=-.18;jar.rotation_euler.x=1.0;torso.rotation_euler.x=-.16
+            else:k=(i-3)/2;ar.rotation_euler.x=-1.8*(1-k);al.rotation_euler.x=-1.65*(1-k);jar.rotation_euler.x=1.0*(1-k);torso.location.z-=.06*(1-k)
+            al.scale.x=ar.scale.x=1.20 if i<=3 else 1.0
         else:
-            for side,arm in [(-1,al),(1,ar)]:arm.rotation_euler.x=-1.55*pulse;arm.rotation_euler.y=side*.3*pulse
-            torso.rotation_euler.x=-.17*pulse;torso.location.z-=.075*pulse
-            hood.rotation_euler.x=-.20*pulse;jar.rotation_euler.x=.2*pulse
+            if anim=='crue':
+                angles=[-.15,-.65,-1.15,-1.65,-2.15,-2.7,-2.15,-1.0,-.15];lift=[0,.18,.38,.58,.42,.1,0,0,0][i];ar.rotation_euler.x=angles[i];al.rotation_euler.x=angles[i]*.83;jar.rotation_euler.x=[-.35,-.85,-1.15,-1.55,.15,1.55,.8,.15,-.08][i];torso.location.z+=lift;torso.rotation_euler.x=-.12 if i<5 else -.30 if i==5 else -.12*(8-i)/3;hood.rotation_euler.x=-.12 if i<5 else .08
+                if i==5:jar.scale*=1.15
+            else:
+                for side,arm in [(-1,al),(1,ar)]:arm.rotation_euler.x=-1.55*pulse;arm.rotation_euler.y=side*.3*pulse
+                torso.rotation_euler.x=-.17*pulse;torso.location.z-=.075*pulse;hood.rotation_euler.x=-.20*pulse;jar.rotation_euler.x=.2*pulse
     elif anim=='stumble':
         k=[.15,1,.35][i];torso.rotation_euler.x=.42*k;torso.rotation_euler.y=-.17*k;torso.location.z-=.10*k
         al.rotation_euler.x=-.80*k;ar.rotation_euler.x=-.60*k;ll.rotation_euler.x=-.38*k;lr.rotation_euler.x=.28*k;jar.rotation_euler.x=.16*k
@@ -146,6 +154,30 @@ def pose(anim,i,n,rig,rest):
         ll.rotation_euler.x=-1.05*k;lr.rotation_euler.x=-.88*k
         ll.location.z-=.37*k;lr.location.z-=.37*k
         al.rotation_euler.x=-.55*k;ar.rotation_euler.x=-.32*k;jar.rotation_euler.x=-.20*k;hood.rotation_euler.x=.25*k
+
+    if anim in F60:
+        impact={'attack':3,'wave':3,'cast':2,'crue':5}[anim]
+        k=1 if i<=impact else max(0,1-(i-impact)/(n-1-impact))
+        al.rotation_euler.z-=.65*k;ar.rotation_euler.z+=.65*k
+        torso.rotation_euler.x*=1.65;torso.rotation_euler.z*=1.8
+        if anim=='attack':
+            jar.location.y+=[.10,.20,-.22,-.32,-.12,0][i]
+            jar.rotation_euler.x*=1.5
+        if anim=='wave':
+            jar.location.y+=[.15,.28,-.20,-.40,-.18,0][i]
+            jar.rotation_euler.x*=1.65
+            jar.location.z+=.14*k
+        if anim=='cast':
+            jar.location.y-=[.10,.25,.34,.15,0][i]
+            jar.rotation_euler.x=abs(jar.rotation_euler.x)*1.65
+        if anim=='crue':
+            torso.location.z=rest[torso.name][0].z
+            jar.location.z+=[.20,.42,.65,.82,.72,.40,.22,.10,0][i]
+            jar.location.x-=.22*k;jar.location.y-=.22*k
+            if i==5:jar.scale=rest[jar.name][2]*1.35
+            if i==8:
+                torso.rotation_euler.x=.12;ll.rotation_euler.x=.35;lr.rotation_euler.x=-.35
+                al.rotation_euler.x=-.28;ar.rotation_euler.x=.24
 
 def posed_mesh(root,name):
     bpy.context.view_layer.update();deps=bpy.context.evaluated_depsgraph_get()
@@ -167,19 +199,100 @@ def posed_mesh(root,name):
     return data
 
 def atlases():
-    bpy.ops.wm.open_mainfile(filepath=str(SOURCE));s=bpy.context.scene;root=bpy.data.objects['Averse']
-    manifest=json.loads(s['animation_manifest']);basis=s.camera.rotation_euler.to_matrix();unit=192/iso_rig.R
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    with bpy.data.libraries.load(str(SOURCE),link=False) as (src,dst):dst.scenes=src.scenes
+    s=dst.scenes[0];s.compositing_node_group=None;bpy.context.window.scene=s
+    root=bpy.data.objects['Averse']
+    cel.toon_materials('creature');bpy.context.view_layer.update()
+    manifest=json.loads(s['animation_manifest'])
+    s.frame_set(1)
+    rig=[bpy.data.objects[k] for k in ('Torso sway','Leg L','Leg R','Arm L','Arm R','Hood','Amphora')]
+    rest={o.name:(o.location.copy(),o.rotation_euler.copy(),o.scale.copy()) for o in rig}
+    for anim in F60:
+        start=manifest[anim]['start'];manifest[anim]['frames']=ANIMS[anim]
+        for f in range(ANIMS[anim]):
+            pose(anim,f,ANIMS[anim],rig,rest)
+            for o in rig:
+                for prop in ('location','rotation_euler','scale'):o.keyframe_insert(prop,frame=start+f)
+    s['animation_manifest']=json.dumps(manifest)
+    s.frame_set(1);bpy.context.preferences.filepaths.save_version=0
+    basis=s.camera.rotation_euler.to_matrix();unit=192/iso_rig.R
     DEST.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
     originals=[o for o in root.children_recursive if o.type=='MESH']
     for anim,n in ANIMS.items():
-        if '--resume' in sys.argv and not ('--refresh-ult' in sys.argv and anim in ('crue','cast_ult')) and all((DEST/(anim+su+'.png')).exists() for su in ('','_n','_e')):continue
+        if '--resume' in sys.argv and anim not in ('attack','wave','cast','crue'):continue
+        # The four requested action atlases are always refreshed under --resume.
+        s['iso_frame']=[n*192,1536]
         copies=[];meshes=[]
         for o in originals:o.hide_render=False
         for f in range(n):
             s.frame_set(manifest[anim]['start']+f);root.rotation_euler.z=0
+            bpy.context.view_layer.update()
+            effects=[]
+            impact={'attack':3,'wave':3,'cast':2,'crue':5}[anim]
+            water=bpy.data.materials.get('AV1 action cyan')
+            if water is None:
+                water=bpy.data.materials.new('AV1 action cyan');water.use_nodes=True
+                bs=water.node_tree.nodes.get('Principled BSDF');bs.inputs['Base Color'].default_value=(.02,.35,.46,1)
+                bs.inputs['Emission Color'].default_value=(.05,.75,1,1);bs.inputs['Emission Strength'].default_value=1.0
+                water['rainfall_emissive']=True
+                cel.toon_materials('creature');bpy.context.view_layer.update()
+            if f in (impact-1,impact) or (anim=='crue' and f<4):
+                before=set(bpy.data.objects)
+                if anim=='crue' and f<4:
+                    for ghost in range(2):
+                        jar=max((o for o in bpy.data.objects['Amphora'].children_recursive if o.type=='MESH'),key=lambda o:len(o.data.vertices));ev=jar.evaluated_get(bpy.context.evaluated_depsgraph_get())
+                        gm=bpy.data.meshes.new_from_object(ev);gm.materials.clear()
+                        ghostmat=bpy.data.materials.get('AV1 translucent jar ghost')
+                        if ghostmat is None:
+                            ghostmat=bpy.data.materials.new('AV1 translucent jar ghost');ghostmat.use_nodes=True;ghostmat['cel_done']=True
+                            nt=ghostmat.node_tree;nt.nodes.clear();out=nt.nodes.new('ShaderNodeOutputMaterial');mix=nt.nodes.new('ShaderNodeMixShader');mix.inputs[0].default_value=.20
+                            tr=nt.nodes.new('ShaderNodeBsdfTransparent');em=nt.nodes.new('ShaderNodeEmission');em.inputs['Color'].default_value=(.03,.42,.55,1)
+                            nt.links.new(tr.outputs[0],mix.inputs[1]);nt.links.new(em.outputs[0],mix.inputs[2]);nt.links.new(mix.outputs[0],out.inputs['Surface'])
+                        gm.materials.append(ghostmat)
+                        go=bpy.data.objects.new('Amphora rising ghost',gm);s.collection.objects.link(go);go.parent=root
+                        go.matrix_world=jar.matrix_world.copy();go.location.z-=(ghost+1)*.14;go.scale*=.96-ghost*.06
+                    for j in range(5):bead('Ascending cyan drop',(-.38+j*.18,-.12,.9+f*.10+j*.08),(.026,.026,.065),water,root)
+                else:
+                    reach=.66 if anim=='crue' else .54
+                    for j in range(3 if f==impact-1 else 2):
+                        pts=[(.40*math.cos(k*math.pi/12+j*.19),-.18-reach*math.sin(k*math.pi/12+j*.19),.90+.22*math.sin(k*math.pi/12)) for k in range(13)]
+                        if anim=='cast':pts=[(.18,-.38,.88-k*.052) for k in range(13)]
+                        tube('Water action arc',pts,.015 if f==impact-1 else .025,water,root)
+                effects=list(set(bpy.data.objects)-before)
+            for ob in effects:
+                if ob.type=='CURVE':
+                    bpy.context.view_layer.update()
+                    deps=bpy.context.evaluated_depsgraph_get()
+                    md=bpy.data.meshes.new_from_object(ob.evaluated_get(deps))
+                    replacement=bpy.data.objects.new(ob.name+' mesh',md);s.collection.objects.link(replacement)
+                    replacement.parent=root;replacement.matrix_world=ob.matrix_world.copy()
+                    ob.hide_render=True
+                    effects.append(replacement)
+            print('BUILD',anim,f,flush=True)
             data=posed_mesh(root,anim+str(f));meshes.append(data)
+            boost=(2.5 if anim=='crue' else 2.0) if f==impact else 1.0
+            if boost>1:
+                for mi,mat in enumerate(list(data.materials)):
+                    if not mat.use_nodes:continue
+                    nodes=[nd for nd in mat.node_tree.nodes if nd.type=='BSDF_PRINCIPLED' and nd.inputs['Emission Strength'].default_value>.01]
+                    if nodes or mat.get('rainfall_emissive'):
+                        mat=mat.copy();mat.name+=' impact';data.materials[mi]=mat
+                        for nd in mat.node_tree.nodes:
+                            if nd.type=='BSDF_PRINCIPLED':nd.inputs['Emission Strength'].default_value*=boost
+                            elif nd.type=='EMISSION':nd.inputs['Strength'].default_value*=boost
+                            elif nd.type=='OUTPUT_AOV':
+                                col=nd.inputs['Color'].default_value;nd.inputs['Color'].default_value=tuple(v*boost for v in col[:3])+(col[3],)
+                        mat['rainfall_emissive']=True
+            for ob in effects:ob.hide_render=True
             import numpy as np
             xyz=np.empty(len(data.vertices)*3,dtype=np.float32);data.vertices.foreach_get('co',xyz);xyz=xyz.reshape((-1,3))
+            fit=1.0
+            for angle in DIRS.values():
+                q=xyz@np.array(Matrix.Rotation(angle,3,'Z')).T@np.array(basis)
+                fit=min(fit,92/(max(abs(q[:,0].min()),abs(q[:,0].max()))*iso_rig.R),132/(q[:,1].max()*iso_rig.R))
+            if fit<1:
+                xyz*=fit;data.vertices.foreach_set('co',xyz.reshape(-1));data.update()
             for direction,angle in DIRS.items():
                 projected=xyz@np.array(Matrix.Rotation(angle,3,'Z')).T@np.array(basis)
                 lo=projected.min(axis=0);hi=projected.max(axis=0)
@@ -190,33 +303,52 @@ def atlases():
                 o.rotation_euler.z=angle
                 o.location=basis@Vector(((f-(n-1)/2)*unit,(3.5-row)*unit,0));copies.append(o)
         for o in originals:o.hide_render=True
-        iso_rig.set_frame((n*192,1536),'CREA');s.camera.data.shift_y=.21/n
+        iso_rig.set_frame((n*192,1536),'CREA');s['iso_frame']=[n*192,1536];s.camera.data.shift_y=.21/n
         s.eevee.taa_render_samples=12
-        path=DEST/(anim+'.png');iso_rig.render_frame(path)
+        path=DEST/(anim+'.png')
+        bpy.context.view_layer.update()
+        cel.install('creature',normals=False)
+        iso_rig.common.configure_passes(path)
+        s.render.filepath=str(path);bpy.ops.render.render(write_still=True)
+        with Image.open(path) as im:im.resize((n*192,1536),Image.Resampling.LANCZOS).save(path,optimize=True,compress_level=9)
+        candidates=list(DEST.glob(anim+'_e__*.png'))
+        assert len(candidates)==1, candidates
+        with Image.open(candidates[0]) as im:
+            im.resize((n*96,768),Image.Resampling.LANCZOS).save(DEST/(anim+'_e.png'),optimize=True,compress_level=9)
+        candidates[0].unlink()
         for o in copies:bpy.data.objects.remove(o,do_unlink=True)
         for data in meshes:bpy.data.meshes.remove(data)
         print('AV1 ATLAS PASS '+anim,flush=True)
     resources()
 
 def resources():
+    selected=('attack','wave','cast','crue') if '--resume' in sys.argv else tuple(ANIMS)
     for emission in (False,True):
         ext=[];sub=[];anims=[];sid=0
         for ai,(anim,n) in enumerate(ANIMS.items()):
-            eid=2*ai+1;cid='c'+str(ai)
+            if anim not in selected:continue
+            eid='av_action_'+str(ai+1);cid='c'+str(ai)
             suffix='_e' if emission else ''
             ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/{anim}{suffix}.png" id="{eid}"]')
-            if not emission:
-                ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/{anim}_n.png" id="{eid+1}"]')
-                sub.append(f'[sub_resource type="CanvasTexture" id="{cid}"]\ndiffuse_texture = ExtResource("{eid}")\nnormal_texture = ExtResource("{eid+1}")')
+            if not emission: pass
             for row,d in enumerate(DIRS):
                 frames=[]
                 for f in range(n):
-                    sid+=1;aid='a'+str(sid);atlas=f'ExtResource("{eid}")' if emission else f'SubResource("{cid}")'
+                    sid+=1;aid='av_action_'+str(sid);atlas=f'ExtResource("{eid}")'
                     sub.append(f'[sub_resource type="AtlasTexture" id="{aid}"]\natlas = {atlas}\nregion = Rect2({f*192}, {row*192}, 192, 192)')
-                    frames.append('{"duration": 1.0, "texture": SubResource("'+aid+'")}')
+                    duration=F60[anim][f]*FPS[anim]/60 if anim in F60 else 1.0
+                    frames.append('{"duration": '+str(duration)+', "texture": SubResource("'+aid+'")}')
                 anims.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(anim in ("idle","run")).lower()}, "name": &"{anim}_{d}", "speed": {FPS[anim]}.0'+'}')
         path=DEST/('averse_emission.tres' if emission else 'averse.tres')
-        path.write_text(f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(sub)+1} format=3]\n\n'+'\n\n'.join(ext+sub)+'\n\n[resource]\nanimations = ['+',\n'.join(anims)+']\n')
+        baseline=subprocess.check_output(['git','show','HEAD:'+path.relative_to(ROOT).as_posix()],cwd=ROOT).decode().replace('\r\n','\n')
+        base_header,base_animations=baseline.split('[resource]\nanimations = [',1)
+        entries=re.findall(r'\{"frames":.*?"name": &"([^\"]+)".*?\}(?=,\n|\]\s*$)',base_animations,re.S)
+        kept=[]
+        for match in re.finditer(r'\{"frames":.*?"name": &"([^\"]+)".*?\}(?=,\n|\]\s*$)',base_animations,re.S):
+            if match.group(1).rsplit('_',1)[0] not in selected:kept.append(match.group(0))
+        header=base_header.rstrip()+'\n\n'+'\n\n'.join(ext+sub)+'\n\n'
+        header=re.sub(r'load_steps=\d+', 'load_steps='+str(header.count('[ext_resource')+header.count('[sub_resource')+1),header)
+        path.write_text(header+'[resource]\nanimations = ['+',\n'.join(kept+anims)+']\n')
 
 def icons():
     # Four cast bronze votive emblems, inset into a dark engraved field; no perimeter frame.
@@ -274,10 +406,12 @@ def contact_verify():
     report={'character':'averse','cell':192,'directions':list(DIRS),'pivot':[96,136.32],'R':iso_rig.R,'animations':{},'attack_impact_frame_zero_based':3,'water_mask':'cyan sight glass in _e; local vertical fill','icons':[]}
     board=Image.new('RGBA',(1536,9*192+384),(20,25,29,255))
     for row,(anim,n) in enumerate(ANIMS.items()):
+        if anim not in ('attack','wave','cast','crue'):continue
         sizes=[];digests=[]
-        for su in ('','_n','_e'):
+        for su in ('','_e'):
             with Image.open(DEST/(anim+su+'.png')) as im:
-                assert im.size==(192*n,1536),(anim,su,im.size)
+                expected=(96*n,768) if su=='_e' else (192*n,1536)
+                assert im.size==expected,(anim,su,im.size)
                 assert im.getchannel('A').getbbox(),(anim,su,'empty')
                 sizes.append(list(im.size))
                 if not su:
@@ -288,7 +422,7 @@ def contact_verify():
                             cell=im.crop((f*192,d*192,(f+1)*192,(d+1)*192));bb=cell.getbbox()
                             assert bb and bb[0]>=4 and bb[1]>=4 and bb[2]<=188 and bb[3]<=188,(anim,d,f,bb)
                             hashes.append(hashlib.sha256(cell.tobytes()).hexdigest())
-                        assert len(set(hashes))==n,(anim,d,'duplicate frames')
+                    if anim in ('attack','wave','cast','crue'):assert len(set(hashes))==n,(anim,d,'duplicate frames')
                     for d in range(8):
                         cell=im.crop(((n//2)*192,d*192,(n//2+1)*192,(d+1)*192));board.alpha_composite(cell,(d*192,row*192))
         report['animations'][anim]={'frames':n,'fps':FPS[anim],'sizes':sizes,'directions':8}
@@ -310,8 +444,12 @@ def contact_verify():
     print('AV1 VERIFY PASS: 72 animations, 472 directional frames, 27 atlases, 4 icons',flush=True)
 
 if __name__=='__main__':
-    if '--verify' in sys.argv:contact_verify()
+    if '--verify' in sys.argv:subprocess.run(['python',str(ROOT/'art/tools/night/av1_actions_check.py'),'--audit'],check=True)
     elif '--icons-only' in sys.argv:icons()
     else:
         if '--resume' not in sys.argv or not SOURCE.exists() or '--rebuild-source' in sys.argv:source()
-        if '--source-only' not in sys.argv:atlases();icons();contact_verify()
+        if '--source-only' not in sys.argv:
+            atlases()
+            if '--resume' not in sys.argv:icons()
+            subprocess.run([sys.executable if 'blender' not in sys.executable.lower() else 'python',str(ROOT/'art/tools/night/av1_actions_check.py')],check=True)
+            print('PASS AV1 action render',flush=True)

@@ -228,8 +228,9 @@ func _draw() -> void:
 		if not _tiles.is_empty(): # flammes clairsemées : la lueur au sol et le contour disent la zone réelle
 			var f := 1.0 - clampf(_t / maxf(_anim, 0.1), 0.0, 1.0) * 0.6
 			var g := Color(1.0, 0.45, 0.12)
-			draw_circle(Vector2.ZERO, radius, Color(g.r, g.g, g.b, 0.12 * f))
-			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(g.r, g.g, g.b, 0.45 * f), 2.0)
+			var full := GameSettings.zone_outline_full() # 30/10/2026 : liseré discret hors accessibilité
+			draw_circle(Vector2.ZERO, radius, Color(g.r, g.g, g.b, (0.12 if full else 0.0) * f))
+			draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(g.r, g.g, g.b, (0.45 if full else 0.16) * f), 2.0 if full else 1.5)
 		return
 	var c := spell.color
 	if duration > 0.0:

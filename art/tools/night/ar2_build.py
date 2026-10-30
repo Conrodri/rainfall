@@ -2,11 +2,13 @@
 Background Blender only. --effects / --portrait / --icons / --verify / --contact.
 Pillow only assembles, resizes and verifies Blender renders; no drawn artwork.
 """
-import sys, math, json, random, hashlib, subprocess, tempfile
+import sys, math, json, random, hashlib, subprocess, tempfile, inspect, textwrap, re
 from pathlib import Path
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT/'art/tools/night'))
+sys.path.insert(0,str(ROOT/'art/tools/cel'))
+import cel_style as cel
 import ar1_build as ar1
 import bpy
 from mathutils import Vector
@@ -25,7 +27,7 @@ SPECS={'chain_tile':((128,64),4,1,'TOP',True),
 
 def setup(kind,size):
     s=iso.create_rig(kind,size)
-    s.eevee.taa_render_samples=16
+    s.eevee.taa_render_samples=8
     s.render.threads_mode='FIXED';s.render.threads=8
     s.render.dither_intensity=0
     if kind=='CREA':s.camera.data.shift_y=.21
@@ -59,22 +61,24 @@ def shard(parent,p,height,angle,mat):
 
 def build_chain(name,f,n):
     s=setup('TOP',(128,64));root=cd.empty('AR2_'+name)
-    t=f/max(1,n-1)
-    hot.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=1.4+1.2*math.sin((f+.5)*math.pi/n)
-    shift=-t*.50 if name=='chain_rewind' else 0
-    for i in range(-2,11):
-        x=-.50+i*.125+shift
-        y=(.017*math.sin(math.tau*(i%8)/8+f*math.pi/2) if name=='chain_tile' else .018*math.sin(i*math.pi+f))
-        if name=='chain_rewind':y+=.07*math.sin(i*.8-f)
-        link(root,(x,y,.055),i,heat=(i%8+f)%3!=0)
+    t=f/max(1,n-1);pulse=1-t if name!='chain_tile' else .55+.35*math.cos(f*math.pi/2)
+    hot.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=.5+2.8*pulse
+    for i in range(-2,12):
+        x=-.5+i*.125
+        y=.018*math.sin(i*1.6-f*1.1) if name=='chain_tile' else .055*(1-t)*math.sin(i*1.1-f*1.4)
+        link(root,(x,0 if name=='chain_tile' else y,.055),i,0 if name=='chain_tile' else .15*math.sin(i-f),heat=(i%4==f if name=='chain_tile' else (i+f)%3!=0))
     if name!='chain_tile':
-        for i in range(16):
-            x=-.49+(i%8)*.14
-            y=(-1 if i%2 else 1)*(.055+.13*math.sin(math.pi*(t*.8+.12)))
-            shard(root,(x,y,.03),.035+random.random()*.05,i,hot if i%3 else copper)
-        if name=='chain_snap':
-            for sign in (-1,1):
-                curve('Copper shock filament',[(x/16-.50,sign*(.11+.08*math.sin(t*math.pi))+.012*math.sin(x*2+f),.018) for x in range(17)],.005*(1-.55*t),hot,root)
+        front=-.40+.80*t if name=='chain_snap' else .40-.80*t
+        for j in range(22-f*3):
+            sign=1 if j%2 else -1
+            x=front+(random.random()-.5)*(.8-.35*t)
+            y=sign*(.07+random.random()*.14)*(1-.4*t)
+            shard(root,(x,y,.04),.035+random.random()*.09,j,hot if j%3 else copper)
+        for sign in (-1,1):
+            pts=[(front-.18+k*.035,sign*(.025+.17*math.sin(k*math.pi/10))*(1-.65*t),.03) for k in range(11)]
+            curve('Traveling shock crest',pts,.012*(1-.7*t),hot,root)
+        for j in range(max(1,5-f)):
+            link(root,(front+(j-2)*.12,(-1 if j%2 else 1)*(.14+.035*t),.08),j,j*.8+f*.5,heat=True)
     return s,root
 
 def build_peg():
@@ -97,71 +101,83 @@ def build_peg():
     return s,root
 
 def build_loop(f,n):
-    s=setup('TOP',(256,256));root=cd.empty('AR2 consumed copper polygon')
-    t=f/(n-1);radius=.73+.04*math.sin(t*math.pi)
-    hot.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=1.0+2.0*math.sin(math.pi*(t*.84+.08))
-    # A broken, six-sided survey boundary, with the closure chord deliberately straight.
-    vertices=[Vector((radius*math.cos(i*math.tau/6+.2),radius*math.sin(i*math.tau/6+.2),.035)) for i in range(6)]
-    for j,a in enumerate(vertices):
-        b=vertices[(j+1)%6];v=b-a;angle=math.atan2(v.y,v.x)
-        for i in range(7):link(root,a+v*(i/7),i+j,angle,heat=(i+f)%3!=0)
-    # Inward curling filaments make the attraction readable without a solid opaque zone.
-    for j in range(12):
-        a=j*math.tau/12+.12
-        pts=[]
-        for k in range(8):
-            r=(.66-k*.062)*(1-.15*t);q=a+.05*k+t*.42
-            pts.append((r*math.cos(q),r*math.sin(q),.014))
-        curve('Inward ember shear',pts,.004+.004*math.sin(t*math.pi),hot if j%3 else copper,root)
-    for j in range(36):
-        a=j*math.tau/36;r=radius*(.89+.04*math.sin(j*4))
-        h=.05+.20*math.sin(math.pi*(t*.8+.1))*(.4+random.random()*.6)
-        shard(root,(r*math.cos(a),r*math.sin(a),.022),h,a+t,hot if j%4 else copper)
-    # Sparse char flakes, built as real geometry, never a painted disk.
-    for j in range(24):
-        a=j*2.399;r=.18+.51*random.random()
-        shard(root,(r*math.cos(a),r*math.sin(a),.006),.005,j,ash)
+    s=setup('TOP',(256,256));root=cd.empty('AR2 tangled burning chain crown')
+    t=f/(n-1)
+    hot.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=3.2*(1-t)+.3
+    for j in range(46):
+        a=j*math.tau/46
+        r=.66+.10*math.sin(3*a+.4)+.035*math.sin(7*a)
+        if f>=3 and (j*7)%11 < (f-2)*2:continue
+        link(root,(r*math.cos(a),r*math.sin(a),.055+.025*math.sin(5*a)),j,a+math.pi/2+.4*math.sin(3*a),heat=(j+f)%4!=0)
+    # Loose interwoven bights, never straight polygon edges.
+    for j in range(18):
+        a=j*math.tau/18+.2;r=.54+.11*math.sin(j*2.3)
+        if f>2 and j%3!=0:continue
+        link(root,(r*math.cos(a),r*math.sin(a),.10),j,a+.7,heat=True)
+    for j in range(44-f*5):
+        a=j*2.399+.16*t;r=.61+.13*math.sin(j*1.7)+.05*t
+        shard(root,(r*math.cos(a),r*math.sin(a),.04),.07+.12*random.random()*(1-t),a+f,hot if j%4 else copper)
+    return s,root
+
+def build_burst(f,n):
+    s=setup('TOP',(192,192));root=cd.empty('Peg copper and mineral impact')
+    t=f/(n-1)
+    for j in range(36-f*5):
+        a=j*2.399;r=(.04+.16*random.random())*(.45+t)
+        shard(root,(r*math.cos(a),r*math.sin(a),.02),(.12+.35*random.random())*(1-.65*t),a,hot if j%4==0 else iron if j%3 else copper)
     return s,root
 
 def effects():
-    FX.mkdir(parents=True,exist_ok=True)
+    # Existing atlas regions and transparent margins are contractual.
+    source=textwrap.dedent(inspect.getsource(iso.render_frame)).replace("('_n','_e')","('_e',)")
+    exec(compile(source,__file__,'exec'),iso.__dict__)
+    baseline={}
+    for name in ('chain_snap','chain_rewind','chain_tile','loop_blaze'):
+        baseline[name]={q:(FX/(name+q+'.png')).stat().st_size for q in ('','_e')}
+    if (SRC/'ar2_fx_baseline.json').exists():baseline=json.loads((SRC/'ar2_fx_baseline.json').read_text())
+    SPECS.pop('peg',None)
+    SPECS['peg_burst']=((192,192),6,1,'TOP',False)
     for name,(size,n,rows,kind,looping) in SPECS.items():
         if '--tile-only' in sys.argv and name!='chain_tile':continue
+        if '--burst-only' in sys.argv and name!='peg_burst':continue
+        tres=FX/(name+'.tres')
+        if name!='peg_burst':
+            txt=tres.read_text();reg=[int(v) for v in re.search(r'region = Rect2\(([^)]+)',txt)[1].split(',')]
+            margin=re.search(r'margin = Rect2\(([^)]+)',txt)
+            left,top=([int(v) for v in margin[1].split(',')][:2] if margin else [0,0])
+            cw,ch=reg[2:]
+        else:left=top=0;cw,ch=size
+        sheets={q:Image.new('RGBA',(cw*n,ch)) for q in ('','_e')}
         for f in range(n):
             random.seed(220)
-            s,root=build_peg() if name=='peg' else build_loop(f,n) if name=='loop_blaze' else build_chain(name,f,n)
-            for row,(direction,angle) in enumerate(list(iso.DIRECTIONS.items())[:rows]):
-                root.rotation_euler.z=angle if rows==8 else 0
-                s.frame_set(f+1)
-                s['AR2_contract']=json.dumps({'name':name,'frame':size,'rig':kind,'pivot_px':[96,136.32] if kind=='CREA' else [size[0]/2,size[1]/2],'accent':'FF7A1F'})
-                if f==0 and row==0:
-                    bpy.ops.wm.save_as_mainfile(filepath=str(SRC/f'arpenteuse_{name}.blend'))
-                path=RAW/name/f'{direction}_{f:02}.png'
-                iso.render_frame(path)
-        for suffix in ('','_n','_e'):
-            sheet=Image.new('RGBA',(size[0]*n,size[1]*rows))
-            for row,d in enumerate(list(iso.DIRECTIONS)[:rows]):
-                for f in range(n):
-                    with Image.open(RAW/name/f'{d}_{f:02}{suffix}.png') as im:sheet.paste(im,(f*size[0],row*size[1]))
-            sheet.save(FX/f'{name}{suffix}.png',optimize=True,compress_level=9)
-        resource(name)
-        print('AR2 EFFECT PASS',name,flush=True)
+            s,root=build_burst(f,n) if name=='peg_burst' else build_loop(f,n) if name=='loop_blaze' else build_chain(name,f,n)
+            cel.install('prop',normals=False)
+            path=RAW/name/f'e_{f:02}.png'
+            if f==0:bpy.ops.wm.save_as_mainfile(filepath=str(SRC/f'arpenteuse_{name}.blend'))
+            iso.render_frame(path)
+            for q in sheets:
+                with Image.open(path.with_name(path.stem+q+'.png')) as im:
+                    sheets[q].paste(im.crop((left,top,left+cw,top+ch)),(f*cw,0))
+        for q,im in sheets.items():
+            if q:im=im.resize(((im.width+1)//2,(im.height+1)//2),Image.Resampling.LANCZOS)
+            im.save(FX/(name+q+'.png'),optimize=True,compress_level=9)
+        if name=='peg_burst':resource(name)
+    (SRC/'ar2_fx_baseline.json').write_text(json.dumps(baseline))
+    print('AR2 FX PASS: 5 effects, cel prop, normals=False',flush=True)
 
 def resource(name):
     size,n,rows,kind,looping=SPECS[name]
-    lines=['[gd_resource type="SpriteFrames" load_steps='+str(5+n*rows)+' format=3]']
-    for i,suffix in enumerate(('','_n','_e'),1):lines.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/{name}{suffix}.png" id="{i}"]')
-    lines+=['[sub_resource type="CanvasTexture" id="Canvas"]','diffuse_texture = ExtResource("1")','normal_texture = ExtResource("2")']
-    # Godot CanvasTexture has no emission slot; _e is separately available to the VFX shader.
+    lines=['[gd_resource type="SpriteFrames" load_steps='+str(2+n*rows)+' format=3]']
+    for i,suffix in enumerate(('',),1):lines.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/arpenteuse/effects/{name}{suffix}.png" id="{i}"]')
     animations=[]
     for row,d in enumerate(list(iso.DIRECTIONS)[:rows]):
         frames=[]
         for f in range(n):
             ident=f'F_{row}_{f}'
-            lines += [f'[sub_resource type="AtlasTexture" id="{ident}"]','atlas = SubResource("Canvas")',f'region = Rect2({f*size[0]}, {row*size[1]}, {size[0]}, {size[1]})']
+            lines += [f'[sub_resource type="AtlasTexture" id="{ident}"]','atlas = ExtResource("1")',f'region = Rect2({f*size[0]}, {row*size[1]}, {size[0]}, {size[1]})']
             frames.append('{"duration": 1.0, "texture": SubResource("'+ident+'")}')
         anim=f'peg_{d}' if rows==8 else 'default'
-        animations.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(looping).lower()}, "name": &"{anim}", "speed": {8 if name=="chain_tile" else 12}.0'+'}')
+        animations.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(looping).lower()}, "name": &"{anim}", "speed": {8 if name=="chain_tile" else 24 if name=="peg_burst" else 12}.0'+'}')
     lines+=['[resource]','animations = ['+',\n'.join(animations)+']']
     (FX/f'{name}.tres').write_text('\n\n'.join(lines)+'\n',encoding='utf8')
 
