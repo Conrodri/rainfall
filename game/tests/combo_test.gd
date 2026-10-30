@@ -136,13 +136,13 @@ func _run() -> void:
 	_check("INPUT_BUFFER_S = 0,133", _near(Balance.INPUT_BUFFER_S, 0.133, 0.0001))
 	_check("PEG_IMMUNITY_S = 0,7", _near(ArpenteuseKit.PEG_IMMUNITY_S, 0.7, 0.0001))
 
-	print("Coup de combo : chiffre en accent, teinte remise à zéro")
+	print("Coup de combo : chiffre en couleur de combo, teinte remise à zéro")
 	_reset()
 	var t1 := _fake(Vector2(2 * U, 0))
 	var sp3: SpellData = _player.spells._spell_for(3)
 	_player.spells.deal_damage(t1, sp3, {"combo": true})
 	_player.spells.deal_damage(t1, sp3, {})
-	_check("coup de combo : teinte d'accent posée pendant take_damage", t1.tints[0].a > 0.0 and t1.tints[0].is_equal_approx(_player.character.accent_color), str(t1.tints))
+	_check("coup de combo : teinte de combo posée pendant take_damage", t1.tints[0].a > 0.0 and t1.tints[0].is_equal_approx(DamageNumbers.COMBO_COLOR), str(t1.tints))
 	_check("coup normal : aucune teinte", t1.tints[1].a == 0.0, str(t1.tints))
 	_check("teinte remise à zéro après le coup", DamageNumbers.combo_tint.a == 0.0)
 

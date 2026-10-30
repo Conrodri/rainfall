@@ -161,8 +161,12 @@ func _test_nova() -> void:
 	# hors fenêtre : 1,5 s
 	var o := _enemy(Vector2(0, 1.0 * U))
 	_kit.add_mark(o)
+	_player.spells._poll_marks()
+	_check(o.get_node_or_null(^"MarkIndicator") != null, "indicateur présent tant que marqué")
 	_adv(1.6)
 	_check(not _kit.is_marked(o), "marque expirée après 1,5 s")
+	_player.spells._poll_marks()
+	_check(o.get_node_or_null(^"MarkIndicator") == null or o.get_node(^"MarkIndicator").is_queued_for_deletion(), "indicateur retiré à l expiration")
 	_cast(2)
 	_check(_near(o.total(), 2.3 * dmg), "hors fenêtre : pas de bonus")
 	# rafraîchie, prolongée, plafonnée à 3 s
@@ -202,6 +206,24 @@ func _test_ash_extend() -> void:
 	var zs := _zones(&"cendres")
 	_check(zs.size() == 1, "une zone de Cendres")
 	_check(_kit.is_marked(a) and _kit.is_marked(b), "chaque tick de Cendres marque")
+	_player.spells._poll_marks()
+	_check(a.get_node_or_null(^"MarkIndicator") != null and b.get_node_or_null(^"MarkIndicator") != null, "indicateur de marque au-dessus de chaque marqué")
+	var far := _enemy(Vector2(0, 9 * U))
+	_player.spells._poll_marks()
+	_check(far.get_node_or_null(^"MarkIndicator") == null, "pas d'indicateur sur un non marqué")
+	var dn := DamageNumbers.new()
+	add_child(dn)
+	DamageNumbers.combo_tint = DamageNumbers.COMBO_COLOR
+	dn._on_damaged(a, 10.0, false, &"fire")
+	DamageNumbers.combo_tint = Color(0, 0, 0, 0)
+	dn._on_damaged(a, 10.0, false, &"fire")
+	var nb_combo := 0
+	for i in dn._active.size():
+		if dn._active[i] == 1 and dn._combo[i] == 1 and dn._color[i] == DamageNumbers.COMBO_COLOR:
+			nb_combo += 1
+	_check(nb_combo == 1 and dn.active_count == 2, "chiffre de combo en couleur de combo, distinct du chiffre normal")
+	dn.queue_free()
+	far.queue_free()
 	var z: Node = zs[0]
 	_check(_near(float(z.duration), 5.0), "Cendres 5 s")
 	_check(_cast(2), "Nova sur les marqués")

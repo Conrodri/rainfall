@@ -54,6 +54,10 @@ const FALLBACK_FONTS := ["Bahnschrift SemiCondensed", "Bahnschrift", "Roboto Con
 ## Teinte du chiffre d'un coup de combo (docs/Design_Combos.md §6) : posée par SpellCaster.deal_damage le temps de
 ## take_damage (alpha 0 = aucune). Évite de changer la signature du signal enemy_damaged.
 static var combo_tint := Color(0, 0, 0, 0)
+## Couleur UNIQUE des chiffres de combo (réglage ici) : magenta vif, distinct de l'or du critique, du cramoisi des
+## dégâts subis et des éléments sur les 4 biomes ; taille x COMBO_FONT_MULT et pop d'échelle.
+const COMBO_COLOR := Color("#FF4FD8")
+const COMBO_FONT_MULT := 1.25
 
 var active_count := 0
 var _labels: Array[Label] = []
@@ -63,6 +67,7 @@ var _origin := PackedVector2Array()
 var _color: Array[Color] = []
 var _active := PackedByteArray()
 var _crit := PackedByteArray()
+var _combo := PackedByteArray()
 var _crit_tex: Texture2D
 var _next := 0
 var _font: Font = null
@@ -118,6 +123,7 @@ func _ready() -> void:
 		_color.append(Color.WHITE)
 		_active.append(0)
 		_crit.append(0)
+		_combo.append(0)
 	Events.enemy_damaged.connect(_on_damaged)
 	Events.player_damaged.connect(_on_player_damaged)
 
@@ -126,10 +132,11 @@ func _on_damaged(enemy: Node2D, amount: float, is_crit: bool, element: StringNam
 	if enemy == null or not is_instance_valid(enemy):
 		return
 	var col: Color = CRIT_COLOR if is_crit else CvdPalette.element(element)
-	if combo_tint.a > 0.0:
+	var is_combo := combo_tint.a > 0.0
+	if is_combo:
 		col = combo_tint
 	var gp := enemy.global_position
-	show_number(Vector2(gp.x + randf_range(-14.0, 14.0), gp.y / Iso.UNSQUASH.y - HEAD_PX), amount, col, is_crit)
+	show_number(Vector2(gp.x + randf_range(-14.0, 14.0), gp.y / Iso.UNSQUASH.y - HEAD_PX), amount, col, is_crit, is_combo)
 
 
 func _on_player_damaged(amount: float, _source: Node) -> void:
@@ -142,9 +149,9 @@ func _on_player_damaged(amount: float, _source: Node) -> void:
 	show_number(Vector2(gp.x, gp.y / Iso.UNSQUASH.y - PLAYER_HEAD_PX), amount, PLAYER_HURT_COLOR)
 
 
-func show_number(at: Vector2, amount: float, col: Color, is_crit: bool = false) -> void:
+func show_number(at: Vector2, amount: float, col: Color, is_crit: bool = false, is_combo: bool = false) -> void:
 	for i in POOL_SIZE:
-		if _active[i] == 1 and _age[i] < MERGE_WINDOW_S and _color[i] == col and _crit[i] == int(is_crit) \
+		if _active[i] == 1 and _age[i] < MERGE_WINDOW_S and _color[i] == col and _crit[i] == int(is_crit) and _combo[i] == int(is_combo) \
 				and _origin[i].distance_to(at) < MERGE_DIST:
 			_sum[i] += amount
 			_labels[i].text = _text(_sum[i], is_crit, col == PLAYER_HURT_COLOR)
@@ -171,10 +178,11 @@ func show_number(at: Vector2, amount: float, col: Color, is_crit: bool = false) 
 	_color[idx] = col
 	_active[idx] = 1
 	_crit[idx] = int(is_crit)
+	_combo[idx] = int(is_combo)
 	var hurt := col == PLAYER_HURT_COLOR
 	l.text = _text(amount, is_crit, hurt)
 	l.modulate = Color(col, MAX_ALPHA)
-	l.add_theme_font_size_override("font_size", font_px(is_crit, hurt))
+	l.add_theme_font_size_override("font_size", roundi(font_px(is_crit, hurt) * (COMBO_FONT_MULT if is_combo else 1.0)))
 	l.add_theme_constant_override("outline_size", HURT_OUTLINE_PX if hurt else (CRIT_OUTLINE_PX if is_crit else OUTLINE_PX))
 	l.add_theme_color_override("font_outline_color", HURT_OUTLINE_COLOR if hurt else OUTLINE_COLOR)
 	var icon := l.get_node(^"CritIcon") as TextureRect
@@ -201,9 +209,9 @@ func _process(delta: float) -> void:
 			continue
 		var l := _labels[i]
 		l.position = _origin[i] + Vector2(-l.size.x * 0.5, -RISE * t)
-		if _crit[i] == 1: # pop : 1,5 -> 1 sur CRIT_POP_S
+		if _crit[i] == 1 or _combo[i] == 1: # pop : 1,35 (1,5 en combo) -> 1 sur CRIT_POP_S
 			l.pivot_offset = l.size * 0.5
-			l.scale = Vector2.ONE * lerpf(1.35, 1.0, clampf(_age[i] / CRIT_POP_S, 0.0, 1.0))
+			l.scale = Vector2.ONE * lerpf(1.5 if _combo[i] == 1 else 1.35, 1.0, clampf(_age[i] / CRIT_POP_S, 0.0, 1.0))
 		else:
 			l.scale = Vector2.ONE
 		var m := _color[i]

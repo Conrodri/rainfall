@@ -50,7 +50,10 @@ var _feel_queued := false
 ## Fenêtres de combo lues par le HUD (kit.combo_ready(slot)), sondées toutes les 0,1 s (jamais une boucle par image).
 var _combo_ready := {}
 var _combo_poll := 0.0
+var _marks_poll := 0.0
+var _marks_shown := false
 const COMBO_POLL_S := 0.1
+const MARKS_POLL_S := 0.25 ## indicateur de marque au-dessus des monstres (MarkIndicator)
 
 
 func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
@@ -70,6 +73,8 @@ func setup(new_player: CharacterBody2D, new_character: CharacterData) -> void:
 
 ## Démontage (changement de personnage en mode test) : conteneur d'effets libéré, plus aucun écho de l'anim d'action.
 func teardown() -> void:
+	if player != null and is_instance_valid(player) and player.is_inside_tree():
+		MarkIndicator.clear_all(player.get_tree())
 	_pending.clear()
 	if player != null and player.has_signal(&"action_impact") and player.action_impact.is_connected(_on_action_impact):
 		player.action_impact.disconnect(_on_action_impact)
@@ -113,6 +118,26 @@ func _cancel_kind(s: SpellData) -> StringName:
 ## Le HUD fait pulser le bouton du sort dans la couleur d'accent (docs/Design_Combos.md §1.1 règle 4).
 func combo_ready(slot: int) -> bool:
 	return bool(_combo_ready.get(slot, false))
+
+
+## Pose / retire l'indicateur de marque (MarkIndicator) sur les monstres que le kit déclare marqués (is_marked).
+func _poll_marks() -> void:
+	var k := _kit()
+	if k == null or not k.has_method(&"is_marked"):
+		if _marks_shown:
+			_marks_shown = false
+			MarkIndicator.clear_all(player.get_tree())
+		return
+	var tint: Color = character.accent_color if character != null else Color(1.0, 0.55, 0.12)
+	tint.a = 1.0
+	_marks_shown = true
+	for e in player.get_tree().get_nodes_in_group("enemies"):
+		if not (e is Node2D) or not is_instance_valid(e):
+			continue
+		if e.get(&"active") != false and bool(k.is_marked(e)):
+			MarkIndicator.show_on(e as Node2D, tint)
+		else:
+			MarkIndicator.clear_on(e)
 
 
 func _poll_combo_ready() -> void:
@@ -261,6 +286,10 @@ func tick(delta: float) -> void:
 	if _combo_poll <= 0.0:
 		_combo_poll = COMBO_POLL_S
 		_poll_combo_ready()
+	_marks_poll -= delta
+	if _marks_poll <= 0.0:
+		_marks_poll = MARKS_POLL_S
+		_poll_marks()
 	if TestMode.full_resource:
 		refill_kit_resource()
 
@@ -668,7 +697,7 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	if not combo and k != null and k.has_method(&"combo_hit"):
 		combo = bool(k.combo_hit(s, enemy))
 	if combo:
-		DamageNumbers.combo_tint = character.accent_color if character != null else Color.WHITE
+		DamageNumbers.combo_tint = DamageNumbers.COMBO_COLOR # couleur de combo unique (damage_numbers.gd)
 	if enemy is Enemy:
 		enemy.take_damage(amount, is_crit, s.element, hit)
 	else: # cibles factices des tests : signature à 3 arguments
