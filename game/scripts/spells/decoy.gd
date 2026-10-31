@@ -242,7 +242,7 @@ func _fly(delta: float) -> void:
 		if e.get(&"active") == false:
 			continue
 		var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
-		if e.global_position.distance_to(global_position) > RADIUS_U * u + er:
+		if e.global_position.distance_to(global_position) > RADIUS_U * u + er or not StageMap.los(get_tree(), global_position, e.global_position):
 			continue
 		_flight_hits.append(e)
 		if caster != null and flight_spell != null:

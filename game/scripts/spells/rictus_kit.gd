@@ -1,15 +1,23 @@
 class_name RictusKit
 extends Node
-## Kit de Rictus, pantin de la barge noyée (docs/Design_Personnages.md §2.6) : 4 sorts / 0 passif,
-## le Montreur (fantôme) est un trait intégré. Données : character(). Logique d'état : ce nœud, enfant
-## « Kit » du joueur (CharacterData.kit_script) ; le joueur et SpellCaster l'interrogent par des hooks
-## (blocks_slot, cast_spell, speed_mult, inertia_s, slow_immune, can_dodge, visual_anim…).
-## - Sort 1 Dagues en demi-lune : SpellData ARC (SpellCaster), vers l'ennemi le plus proche, jamais le curseur.
-## - Sort 2 Éventail : SpellData FAN, 5 couteaux ; un couteau en fin de course reste planté (GroundPickup, S6).
-## - Sort 3 Toupie : état SPIN (ticks de zone, glisse avec inertie, roulade interdite, sort 1 suspendu), vertige.
-## - Sort 4 Les Doublures : 6 leurres Decoy (S14) en hexagone ; la Toupie les expédie en étoile.
+## Kit de Rictus, pantin de la barge noyée (docs/Design_Personnages.md §2.6, refonte docs/Design_Rictus_v2.md option 1
+## « Le fil et la lame », 31/10/2026) : 4 sorts / 0 passif, le Montreur (fantôme) est un trait intégré.
+## Données : character(). Logique d'état : ce nœud, enfant « Kit » du joueur (CharacterData.kit_script) ;
+## le joueur et SpellCaster l'interrogent par des hooks (blocks_slot, cast_spell, speed_mult, inertia_s, slow_immune,
+## can_dodge, visual_anim, auto_cast_ok, combo_ready, on_spell_hit…).
+## - Sort 1 Dagues en demi-lune : SpellData ARC (SpellCaster), vers l'ennemi le plus proche, jamais le curseur ;
+##   chaque coup sur le monstre ficelé enroule un tour de fil (TOUR_MAX).
+## - Sort 2 Couteau ficelé : un seul couteau lourd (RictusPendulum), lancé à KNIFE_RANGE_U, planté dans le premier monstre
+##   touché (« ficelé » FICELE_S, un seul à la fois) ; le fil scie toutes les SAW_TICK_S tant que le monstre est à
+##   <= FICELE_RANGE_U (et hors mur). Grisé tant que le couteau n'est pas en main.
+## - Sort 3 Saccade (3 s) : le couteau s'arrache (1,4 + 0,25 par tour), revient en ligne (0,6 à tout monstre traversé),
+##   le sort 2 est prêt au rattrapage ; un non-boss ficelé est tiré de 1,5 u ; les Doublures posées explosent
+##   (+30 % si une cible est ficelée). Grisée tant que le couteau est en main.
+## - Sort 4 Les Doublures : 6 leurres Decoy (S14) en hexagone autour du ficelé (sinon du point visé, du paquet, de soi).
+## - Variantes : Éventail (slot 2, l'ancien sort de base), Toupie (slot 3, l'ancien sort de base, étoile comprise),
+##   Main du Montreur (slot 1), Rideau (slot 4).
 ## - Roulade = levée : même dash que la roulade (Balance.DODGE_*), pantin soulevé de LIFT_HEIGHT_U.
-## - Fils tendus : +2 % PV max en fin de Toupie et à la première explosion de chaque Doublures.
+## - Fils tendus : +2 % PV max à la première explosion de chaque Doublures (et en fin de Toupie).
 ## Rendu : CompanionSprite (le Montreur) + StringRig (5 fils) ; assets M1-M3 absents = repli sur Ardent teinté.
 
 # --- Assets attendus (lots Codex M2/M3) : chemins et noms d'anims de §2.6.11 ----------------------
@@ -19,7 +27,7 @@ const SPRITE_FRAMES := ASSET_DIR + "rictus.tres" ## idle/run/slash/throw/stagger
 const MONTREUR_FRAMES := MONTREUR_DIR + "montreur.tres" ## hover_<dir>, pull_<dir>
 const STRINGS_MANIFEST := ASSET_DIR + "strings.json" ## points d'attache des fils (format : StringRig)
 const STRING_TEXTURE := MONTREUR_DIR + "string_tile/string_tile.png"
-const KNIFE_FRAMES := ASSET_DIR + "knife/knife.tres" ## anim `default`, pointe vers +X
+const KNIFE_FRAMES := ASSET_DIR + "knife/knife.tres" ## anim `default`, pointe vers +X (couteaux légers de l'Éventail)
 const KNIFE_PLANTED_FRAMES := ASSET_DIR + "knife_planted/knife_planted.tres" ## `default_<dir>`
 ## Demi-lune au sol (lot M3, rig TOP 128 px/u, 4 frames, arc centré sur +X, Rictus au centre de la frame) ;
 ## absente = croissant dessiné par ZoneEffect. Rayon de l'arc dans la frame : 2,5 u × 128 px.
@@ -57,7 +65,7 @@ const STAGGER_SPEED_MULT := 0.5
 const HEAL_PCT := 0.02
 const LIFT_HEIGHT_U := 0.8
 const ARC_KNOCK_U := 0.2
-const KNIFE_LIFE_S := 4.0
+const KNIFE_LIFE_S := 4.0 ## couteau planté au sol (Éventail) : durée de vie
 const KNIFE_CONTACT_U := 0.6
 const KNIFE_REFUND_S := 1.0
 const KNIFE_REFUND_CAP_S := 5.0 ## par salve
@@ -68,13 +76,47 @@ const DECOY_LIFE_S := 3.0
 const DECOY_BURST_U := 2.4 ## rayon d'explosion de chaque doublure (2,0 -> 2,4 u, retour joueur 26/10)
 const DECOY_DEATH_FRAC := 0.6
 const DECOY_BLOCK_PUSH_U := 0.5
-const FLIGHT_COEF := 1.2 ## retour joueur 26/10 : ultime plus impactant (1,0 -> 1,4 par doublure expédiée par la Toupie)
-## Équilibrage (simulateur du 22/10/2026) : cible unique −36 % et dégâts subis ×1,8-2,4 vs Ardent à l'origine.
+const FLIGHT_COEF := 1.2 ## vol d'une doublure expédiée par la Toupie (variante)
 const ARC_COEF := 0.8 ## demi-lune 0,6 -> 0,8
-const FAN_COEF := 1.35 ## Éventail 1,2 -> 1,6 -> 1,8 -> 1,35 par couteau (équilibrage 23/10 : 1,8 -> 1,35 ; sous la plage P3 1,7-1,9 : les 5 couteaux touchent tous un boss)
-## Combo « L'étoile armée » (docs/Design_Combos.md §5.1) : Doublures -> Éventail (les couteaux chargent les doublures
-## traversées) -> Toupie (les chargées expédiées font FLIGHT_CHARGED_COEF en vol et DECOY_CHARGE_ADD de plus à l'explosion).
-## Compensation de base : DECOY_COEF 2,4 -> 2,2 (sans combo −8 %, avec les 3 charges ≈ +4 %).
+const FAN_COEF := 1.35 ## Éventail (variante) : par couteau
+## Refonte v2 (docs/Design_Rictus_v2.md §3.9) ----------------------------------------------------------------------
+const KNIFE_COEF := 1.5 ## impact du couteau lourd
+const KNIFE_RANGE_U := 8.0
+const KNIFE_SPEED_U := 14.0
+const KNIFE_KNOCK_U := 0.3
+const KNIFE_RECAST_S := 1.0 ## anti-spam : le vrai verrou est « couteau en main »
+const KNIFE_REMAKE_S := 6.0 ## couteau perdu : le Montreur en refait un (6 s après sa chute)
+const FICELE_S := 5.0 ## fenêtre du combo
+const FICELE_RANGE_U := 9.0 ## longueur du fil
+const FICELE_RANGE_CAP_U := 30.0 ## plafond de la longueur du fil avec les bonus de portée (et la portée infinie du mode test)
+const FICELE_POLL_S := 0.25 ## sondage de la distance et des murs (jamais une boucle par image)
+const SAW_COEF := 0.22
+const SAW_TICK_S := 0.5
+const SAW_PROC := 0.3
+const TOUR_MAX := 3
+const SACCADE_CD := 3.0
+const SACCADE_COEF := 1.0
+const SACCADE_TOUR_ADD := 0.25
+const SACCADE_PULL_U := 1.5
+const SACCADE_KNOCK_U := 0.5
+const SACCADE_LINE_COEF := 0.6 ## retour du couteau, perce tout
+const SACCADE_LINE_KNOCK_U := 0.2
+const DECOY_COEF := 1.8 ## 2,2 -> 1,8 (compensation du monocible)
+const DECOY_FICELE_MULT := 1.3 ## détonées par la Saccade avec une cible ficelée
+const DECOY_THROW_RANGE_U := 7.0
+const DECOY_AUTO_RANGE_U := 6.0
+const DECOY_AUTO_NEAR_U := 3.0
+const DECOY_AUTO_PACK_N := 3 ## ficelé entouré de >= 3 monstres (à DECOY_BURST_U) : ultime auto
+const AUTO_PLANT_S := 2.0 ## Saccade auto : couteau planté depuis >= 2,0 s
+const AUTO_STRING_LIMIT_U := 8.5 ## Saccade auto : le ficelé sort de 8,5 u (le fil va casser)
+const AUTO_DECOYS_S := 1.5 ## Saccade auto : doublures posées depuis >= 1,5 s et une cible ficelée
+const COUNTER_CLOSE := "rictus.close_kills" ## monstres tués à moins de CLOSE_KILL_U (déblocage Toupie)
+const CLOSE_KILL_U := 2.0
+## Sons de repli (rien de dédié livré) : Saccade ~ claquement d'un sort existant, plantage ~ grelot grave.
+const SND_SACCADE := &"spell.detacher.cast_light" ## à remplacer par `rictus_saccade` (Codex)
+const SND_PLANT := &"pickup.coin" ## à remplacer par `rictus_knife_plant` (Codex)
+## Combo « L'étoile armée » (variantes Éventail + Toupie ; docs/Design_Combos.md §5.1) : Doublures -> Éventail (les couteaux
+## chargent les doublures traversées) -> Toupie (les chargées expédiées font FLIGHT_CHARGED_COEF en vol et DECOY_CHARGE_ADD de plus).
 const DECOY_CHARGE_ADD := 0.7 ## coef ajouté à l'explosion d'une doublure chargée
 const FLIGHT_CHARGED_COEF := 1.6 ## coef en vol d'une doublure chargée (1,2 sinon)
 const CHARGE_MAX_PER_SALVE := 3 ## doublures chargées par salve d'Éventail (2-3 selon la géométrie)
@@ -82,32 +124,32 @@ const FAN_WATCH_S := 0.7 ## durée de surveillance des couteaux après le lancer
 const KNIFE_CHARGE_PAD_U := 0.2 ## rayon du couteau : marge de passage sur une doublure (une salve de 5 couteaux sur 60° charge 3 doublures)
 ## Esquive Levée : atterrir à cette distance de doublures en attente les détone tout de suite (aucun dégât en plus).
 const LIFT_DETONATE_U := 2.4
-const DECOY_COEF := 2.2 ## 2,4 -> 2,2 (combo ci-dessus). Retour joueur 26/10 : ultime plus fort (1,8 -> 2,6) ; avant : ## Doublures 2,5 -> 3,0 -> 2,0 -> 1,8 (équilibrage 23/10 : 2,0 -> 1,8, bas de la plage P3 : sans effet mesurable sur le DPS boss, la toupie domine)
 ## Garde du Montreur : après chaque demi-lune, les fils tirent le pantin hors des coups (−30 % de dégâts subis
 ## pendant GUARD_S). La mêlée garde son risque hors attaque (déplacement, vertige).
-## Pointe de la toupie (retour joueur 26/10 : manque de monocible) : à chaque tick, un coup supplémentaire frappe l'ennemi
-## le plus proche (la cible clouée au centre). Aucune dépendance à l'ultime : la Toupie devient la source monocible.
+## Pointe de la toupie (variante) : à chaque tick, un coup supplémentaire frappe l'ennemi le plus proche.
 const TOUPIE_FOCUS_COEF := 0.15
 const TOUPIE_FOCUS_RADIUS_U := 0.9
-const TOUPIE_COEF := 0.42 ## Toupie, par tick (équilibrage 23/10 : 0,7 -> 0,5 ; levier principal sur les boss, la toupie touche tous les ticks)
+const TOUPIE_COEF := 0.42 ## Toupie, par tick
 const GUARD_TAKEN_MULT := 0.7
 const GUARD_S := 0.3 ## équilibrage 23/10 : 0,5 -> 0,35 -> 0,3
 const FLIGHT_PROC := 0.5
-## Anims d'action (Player.play_action) : slash à chaque demi-lune (anim complète), throw (Éventail),
+## Anims d'action (Player.play_action) : slash à chaque demi-lune (anim complète), throw (couteau, Éventail),
 ## summon (Doublures, posées à la frame d'impact). Frames d'impact (index 0) des anims de rictus.tres.
 ## Lot M2b : `throw_ult` (6 frames × 8 dir, impact frame 3) remplace `summon` pour les Doublures (bras lancés
 ## vers l'extérieur, tirés par les fils) ; `summon` reste le repli si throw_ult n'est pas livrée.
-const ACTION_IMPACT_FRAMES := {&"slash": 1, &"throw": 2, &"summon": 3, &"throw_ult": 3}
+## `catch` (Saccade, 4 frames × 8 dir) : pas encore livrée -> repli `throw`.
+const ACTION_IMPACT_FRAMES := {&"slash": 1, &"throw": 2, &"summon": 3, &"throw_ult": 3, &"catch": 2}
 const ULT_ACTIONS: Array[StringName] = [&"throw_ult", &"summon"]
 const WALL_MASK := 1
 
 # --- Variantes de sorts (docs/Variantes_Sorts.md §2.2 ; contrat CONTRACTS.md « Variantes de sorts ») ---------
 const V_MAIN := &"rictus_main_du_montreur" ## slot 1 (remplace les Dagues en demi-lune)
-const V_PENDULE := &"rictus_lame_pendule" ## slot 2 (remplace l'Éventail)
-const V_PIROUETTE := &"rictus_pirouette" ## slot 3 (remplace la Toupie)
+const V_EVENTAIL := &"rictus_eventail" ## slot 2 (remplace le Couteau ficelé)
+const V_TOUPIE := &"rictus_toupie" ## slot 3 (remplace la Saccade)
 const V_RIDEAU := &"rictus_rideau" ## slot 4 (remplace Les Doublures)
-const COUNTER_KNIVES := "rictus.knives_picked" ## couteaux plantés ramassés (déblocage Lame-pendule)
-const COUNTER_DOUBLES := "rictus.doubles_launched" ## doublures expédiées par Toupie / Pirouette (déblocage Pirouette)
+const ID_KNIFE := &"couteau_ficele"
+const ID_SACCADE := &"rictus_saccade"
+const COUNTER_KNIVES := "rictus.knives_picked" ## couteaux plantés ramassés ou rappelés (déblocage Éventail)
 const VAR_DIR := ASSET_DIR + "variants/" ## VFX des variantes (lot Codex RICV), absents = replis dessinés
 ## Main du Montreur : claquement au sol sur le paquet le plus dense à portée.
 const MAIN_RANGE_U := 4.0
@@ -115,49 +157,48 @@ const MAIN_RADIUS_U := 1.4
 const MAIN_GUARD_U := 1.5 ## la garde ne vaut que si le claquement tombe à cette distance de Rictus
 const MAIN_COEF := 1.3 ## doc 0,8 ; sim : le pilote tient 2,8 u et perd l'uptime de ses sorts de mêlée -> coef relevé
 const MAIN_KNOCK_U := 0.2
-## Lame-pendule : aller-retour à tout monstre traversé.
-const PENDULE_RANGE_U := 7.0
-const PENDULE_SPEED_U := 14.0
-const PENDULE_COEF := 3.5 ## à l'aller ET au retour (doc 2,5 ; sim : un seul couteau touche un boss là où 5 touchaient)
-const PENDULE_KNOCK_U := 0.4
-const PENDULE_CD := 6.0
-## Pirouette : tour bref, invulnérable, immobile ; impact à mi-course.
-const PIROUETTE_S := 0.6
-const PIROUETTE_IMPACT_S := 0.3
-const PIROUETTE_RADIUS_U := 2.2
-const PIROUETTE_COEF := 3.7
-const PIROUETTE_KNOCK_U := 1.0
-const PIROUETTE_CD := 8.0
 ## Rideau : 6 doublures en ligne perpendiculaire à la visée.
 const RIDEAU_AHEAD_U := 2.0
 const RIDEAU_SPACING_U := 1.0
 const RIDEAU_LIFE_S := 6.0
 const RIDEAU_HP_FRAC := 0.3
-const RIDEAU_COEF := 1.7 ## doc 2,5 (calé sur la base à 3,0) ; base ramenée à 1,8 -> même rapport 15/18 ; 26/10 : 1,35 -> 1,95 (base 1,8 -> 2,6)
+const RIDEAU_COEF := 1.5 ## 1,7 -> 1,5 (même rapport que la base 2,2 -> 1,8)
 const RIDEAU_AIM_U := 8.0 ## sans visée manuelle : ennemi le plus proche à cette distance
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
+
+## État du couteau lourd (table §3.4).
+enum K { HAND, FLYING, PLANTED, GROUND, RETURNING, LOST }
 
 var player: CharacterBody2D = null
 var companion: CompanionSprite = null
 var strings: StringRig = null
-var knives: Array = [] ## GroundPickup plantés
+var knives: Array = [] ## GroundPickup plantés (Éventail)
 var spin_left := 0.0
 var stagger_left := 0.0
 var lifting := false
+var kstate: K = K.HAND
+var knife: RictusPendulum = null ## couteau lourd en vol / planté / au sol / en retour
+var ficele: Node2D = null ## monstre ficelé (kstate PLANTED)
+var tours := 0 ## tours de fil enroulés sur le ficelé
+var _ficele_t := 0.0 ## s restantes de la fenêtre
+var _saw_n := 0 ## ticks de scie déjà portés
+var _poll_t := 0.0
+var _planted_age := 0.0
+var _since_drop := 0.0
+var _clock := 0.0
+var _decoys_landed_at := -100.0
+var _knife_spell: SpellData = null ## sort 2 lancé (copie de base des coups de scie et de retour)
+var _heavy := true ## sort 2 équipé = Couteau ficelé (sinon Éventail)
+var _sacc := true ## sort 3 équipé = Saccade (sinon Toupie)
 var _spin_elapsed := 0.0
 var _spin_ticks := 0
 var _spin_total := 2.5
 var _spin_tick_spell: SpellData = null
 var _spin_focus_spell: SpellData = null
-var _pending_decoys := {} ## Doublures lancées, posées à la frame d'impact de `summon` : {spell, aim}
+var _pending_decoys := {} ## Doublures lancées, posées à la frame d'impact de `summon` : {spell, aim, center}
 var _visual: AnimatedSprite2D = null
 var guard_left := 0.0 ## garde du Montreur après une demi-lune
 var spin_blur: AnimatedSprite2D = null ## traînée additive pendant la toupie (null sans asset)
-var pirouette_left := 0.0 ## variante Pirouette en cours (s restantes)
-var _pir_elapsed := 0.0
-var _pir_struck := false
-var _pir_spell: SpellData = null
-var pendulums: Array = [] ## RictusPendulum en vol
 var _fan_watch := 0.0 ## s restantes de surveillance des couteaux de l'Éventail (charge des doublures)
 var _salve_charged := 0 ## doublures déjà chargées par la salve en cours
 
@@ -203,6 +244,7 @@ static func character() -> CharacterData:
 
 	var s1 := _spell(&"dagues_demi_lune", "Dagues en demi-lune", 1, SpellData.Behavior.ARC, ARC_COEF, 0.6)
 	s1.is_auto = true
+	s1.is_zone = false # audit P3 : l'auto ne cumule pas zone_damage_add (comme les autos d'Ardent et de Tocsin)
 	s1.range_u = 3.0 # retour joueur 23/10 : portée de l'auto 2,5 -> 3,0 u (le VFX se met à l'échelle : k = rayon / DAGGER_ARC_RADIUS_PX)
 	s1.radius_u = 3.0
 	s1.spread_deg = 180.0
@@ -212,33 +254,27 @@ static func character() -> CharacterData:
 	s1.vfx_radius_px = DAGGER_ARC_RADIUS_PX
 	s1.vfx_floor_aspect = 1.0 # rig TOP : jamais pré-écrasé
 
-	var s2 := _spell(&"eventail", "Éventail", 2, SpellData.Behavior.FAN, FAN_COEF, 6.0)
-	s2.count = 5
-	s2.spread_deg = 60.0
-	s2.speed_u = 14.0
-	s2.range_u = 7.0
-	s2.pierce = 1
-	s2.item_pierce = false # Pointe perforante : sort 1 seulement
+	var s2 := _spell(ID_KNIFE, "Couteau ficelé", 2, SpellData.Behavior.KIT, KNIFE_COEF, KNIFE_RECAST_S)
+	s2.range_u = KNIFE_RANGE_U
+	s2.speed_u = KNIFE_SPEED_U
 	s2.is_zone = false
+	s2.item_pierce = false # Pointe perforante : sort 1 seulement
 	s2.proc_coef = 0.8
-	s2.rests_on_ground = true
-	s2.target_mode = &"densest"
-	s2.trigger_range_u = 6.0
-	s2.projectile_frames = KNIFE_FRAMES
+	s2.hit_force = _force_for(KNIFE_KNOCK_U)
+	s2.trigger_range_u = KNIFE_RANGE_U
 
-	var s3 := _spell(&"toupie", "Toupie", 3, SpellData.Behavior.SPIN, TOUPIE_COEF, 8.0)
-	s3.radius_u = 2.2 # retour joueur : toupie plus large (1,5 -> 2,2 u)
-	s3.duration = 2.5
-	s3.tick = SPIN_TICK_S
-	s3.proc_coef = 0.3
-	s3.trigger_range_u = 2.5
-	s3.hit_force = _force_for(SPIN_KNOCK_U)
+	var s3 := _spell(ID_SACCADE, "Saccade", 3, SpellData.Behavior.KIT, SACCADE_COEF, SACCADE_CD)
+	s3.is_zone = false
+	s3.item_pierce = false
+	s3.proc_coef = 0.8
+	s3.hit_force = _force_for(SACCADE_KNOCK_U)
+	s3.trigger_range_u = FICELE_RANGE_U
 
 	var s4 := _spell(&"doublures", "Les Doublures", 4, SpellData.Behavior.DECOYS, DECOY_COEF, 20.0)
 	s4.radius_u = DECOY_BURST_U
 	s4.duration = DECOY_LIFE_S
 	s4.proc_coef = 1.0
-	s4.trigger_range_u = 3.0
+	s4.trigger_range_u = KNIFE_RANGE_U ## le filtre fin est dans auto_cast_ok(4)
 	s4.hit_force = 1.0
 
 	c.spells = [s1, s2, s3, s4]
@@ -261,27 +297,29 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s1.vfx_radius_px = MAIN_RADIUS_U * 128.0 # rig TOP 128 px/u
 			s1.vfx_floor_aspect = 1.0
 			return s1
-		[2, V_PENDULE]:
-			var s2 := _spell(V_PENDULE, "Lame-pendule", 2, SpellData.Behavior.KIT, PENDULE_COEF, PENDULE_CD)
-			s2.range_u = PENDULE_RANGE_U
-			s2.speed_u = PENDULE_SPEED_U
+		[2, V_EVENTAIL]: # l'ancien sort de base : 5 couteaux légers, multi-cible au lieu du monocible
+			var s2 := _spell(V_EVENTAIL, "Éventail", 2, SpellData.Behavior.FAN, FAN_COEF, 6.0)
+			s2.count = 5
+			s2.spread_deg = 60.0
+			s2.speed_u = 14.0
+			s2.range_u = 7.0
+			s2.pierce = 1
+			s2.item_pierce = false # Pointe perforante : sort 1 seulement
 			s2.is_zone = false
-			s2.item_pierce = false
 			s2.proc_coef = 0.8
-			s2.hit_force = _force_for(PENDULE_KNOCK_U)
+			s2.rests_on_ground = true
 			s2.target_mode = &"densest"
 			s2.trigger_range_u = 6.0
+			s2.projectile_frames = KNIFE_FRAMES
 			return s2
-		[3, V_PIROUETTE]:
-			var s3 := _spell(V_PIROUETTE, "Pirouette", 3, SpellData.Behavior.KIT, PIROUETTE_COEF, PIROUETTE_CD)
-			s3.radius_u = PIROUETTE_RADIUS_U
-			s3.duration = 0.0 # coup direct (recul), pas un DoT
-			s3.proc_coef = 0.8
+		[3, V_TOUPIE]: # l'ancien sort de base : tourne 2,5 s invulnérable, pousse les doublures en étoile
+			var s3 := _spell(V_TOUPIE, "Toupie", 3, SpellData.Behavior.SPIN, TOUPIE_COEF, 8.0)
+			s3.radius_u = 2.2 # retour joueur : toupie plus large (1,5 -> 2,2 u)
+			s3.duration = 2.5
+			s3.tick = SPIN_TICK_S
+			s3.proc_coef = 0.3
 			s3.trigger_range_u = 2.5
-			s3.hit_force = _force_for(PIROUETTE_KNOCK_U)
-			s3.vfx_frames = VAR_DIR + "pirouette_burst/pirouette_burst.tres"
-			s3.vfx_radius_px = PIROUETTE_RADIUS_U * 128.0 # rig TOP 128 px/u
-			s3.vfx_floor_aspect = 1.0
+			s3.hit_force = _force_for(SPIN_KNOCK_U)
 			return s3
 		[4, V_RIDEAU]:
 			var s4 := _spell(V_RIDEAU, "Rideau", 4, SpellData.Behavior.DECOYS, RIDEAU_COEF, 20.0)
@@ -298,6 +336,7 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 
 func setup(p: CharacterBody2D) -> void:
 	player = p
+	refresh_equipment()
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
 	if _visual != null:
 		companion = CompanionSprite.attach(p, _visual, MONTREUR_FRAMES, MONTREUR_LIFT_U, MONTREUR_ALPHA)
@@ -307,8 +346,17 @@ func setup(p: CharacterBody2D) -> void:
 		_attach_spin_blur()
 	Events.floor_started.connect(_on_floor_started)
 	Events.player_died.connect(_on_player_died)
+	Events.enemy_killed.connect(_on_enemy_killed)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
+
+
+## Quels sorts de base ou variantes sont équipés (Couteau ficelé / Éventail, Saccade / Toupie).
+func refresh_equipment() -> void:
+	var s2 := _spell_of(2)
+	var s3 := _spell_of(3)
+	_heavy = s2 == null or s2.id == ID_KNIFE
+	_sacc = s3 == null or s3.id == ID_SACCADE
 
 
 func _exit_tree() -> void:
@@ -316,6 +364,8 @@ func _exit_tree() -> void:
 		Events.floor_started.disconnect(_on_floor_started)
 	if Events.player_died.is_connected(_on_player_died):
 		Events.player_died.disconnect(_on_player_died)
+	if Events.enemy_killed.is_connected(_on_enemy_killed):
+		Events.enemy_killed.disconnect(_on_enemy_killed)
 	clear_transients()
 
 
@@ -324,6 +374,8 @@ func _caster() -> SpellCaster:
 
 
 func _spell_of(slot: int) -> SpellData:
+	if player == null or player.character == null:
+		return null
 	for s in player.character.spells:
 		if s.slot == slot:
 			return s
@@ -340,15 +392,36 @@ func is_staggered() -> bool:
 	return stagger_left > 0.0
 
 
-## Table d'états §2.6.4.
+func knife_in_hand() -> bool:
+	return kstate == K.HAND
+
+
+## Monstre ficelé (couteau planté dedans), ou null.
+func ficele_enemy() -> Node2D:
+	return ficele if _ficele_valid() else null
+
+
+## Table d'états §3.4 : le sort 2 exige le couteau en main, la Saccade exige qu'il soit planté (monstre ou sol).
 func blocks_slot(slot: int) -> bool:
 	if lifting:
 		return true
-	if spin_left > 0.0:
-		return slot == 1 or slot == 3
-	if stagger_left > 0.0:
-		return slot == 3
+	if spin_left > 0.0 and (slot == 1 or slot == 3):
+		return true
+	if stagger_left > 0.0 and slot == 3:
+		return true
+	if slot == 2 and _heavy and kstate != K.HAND:
+		return true
+	if slot == 3 and _sacc and not saccade_ready():
+		return true
 	return false
+
+
+## Saccade utilisable : couteau lourd planté (dans un monstre ou au sol) ; avec l'Éventail : couteaux plantés au sol
+## à rappeler ou doublures à détoner.
+func saccade_ready() -> bool:
+	if _heavy:
+		return kstate == K.PLANTED or kstate == K.GROUND
+	return not knives.is_empty() or _decoys_waiting()
 
 
 ## Retour joueur : la levée est permise pendant la Toupie (la toupie continue) ; seul le vertige l'interdit.
@@ -357,8 +430,6 @@ func can_dodge() -> bool:
 
 
 func speed_mult() -> float:
-	if pirouette_left > 0.0:
-		return 0.0 # Pirouette : immobile (pas de glisse)
 	if spin_left > 0.0:
 		return SPIN_SPEED_U / maxf(player.character.base_speed_u, 0.01)
 	if stagger_left > 0.0:
@@ -400,15 +471,15 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 	match s.id:
 		V_MAIN:
 			return _cast_main(s)
-		V_PENDULE:
-			return _cast_pendule(s, aim)
-		V_PIROUETTE:
-			return _start_pirouette(s)
+		ID_KNIFE:
+			return _cast_knife(s, aim)
+		ID_SACCADE:
+			return _cast_saccade(s)
 	match s.behavior:
 		SpellData.Behavior.SPIN:
 			return _start_spin(s)
 		SpellData.Behavior.DECOYS:
-			_pending_decoys = {"spell": s, "aim": aim}
+			_pending_decoys = {"spell": s, "aim": aim, "center": _decoy_fallback(aim)}
 			return true
 	return false
 
@@ -419,12 +490,28 @@ func action_for(s: SpellData) -> StringName:
 		SpellData.Behavior.ARC:
 			return &"slash"
 		SpellData.Behavior.KIT:
-			return &"slash" if s.id == V_MAIN else &""
+			if s.id == V_MAIN:
+				return &"slash"
+			if s.id == ID_KNIFE:
+				return &"throw"
+			if s.id == ID_SACCADE:
+				return catch_action()
+			return &""
 		SpellData.Behavior.FAN:
 			return &"throw"
 		SpellData.Behavior.DECOYS:
 			return ult_action()
 	return &""
+
+
+## Anim du rattrapage : `catch` si livrée (Codex), sinon `throw` (pas de lecture à l'envers : Player.play_action n'en a pas).
+func catch_action() -> StringName:
+	if _visual != null and _visual.sprite_frames != null:
+		var sf := _visual.sprite_frames
+		for a: StringName in [&"catch_s", &"catch"]:
+			if sf.has_animation(a):
+				return &"catch"
+	return &"throw"
 
 
 ## Anim de lancement des Doublures : `throw_ult` (M2b) si livrée, sinon `summon`.
@@ -442,7 +529,7 @@ func _on_action_impact(base: StringName) -> void:
 		var pend := _pending_decoys
 		_pending_decoys = {}
 		if player != null and not player.dead:
-			_spawn_decoys(pend["spell"], pend["aim"])
+			_spawn_decoys(pend["spell"], pend["aim"], pend.get("center", null))
 
 
 ## Doublures lancées mais pas encore posées (avant la frame d'impact).
@@ -464,7 +551,15 @@ func damage_taken_mult(_source: Node) -> float:
 	return GUARD_TAKEN_MULT if guard_left > 0.0 else 1.0
 
 
-## Couteau en fin de course (portée ou mur) : planté KNIFE_LIFE_S ; marcher dessus rend 1 s à l'Éventail.
+## Coup de sort 1 sur le monstre ficelé : un tour de fil de plus (TOUR_MAX), le fil s'enroule autour du couteau.
+func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
+	if s != null and s.slot == 1 and kstate == K.PLANTED and enemy == ficele and tours < TOUR_MAX:
+		tours += 1
+		if knife != null and is_instance_valid(knife):
+			knife.tours = tours
+
+
+## Couteau (Éventail) en fin de course (portée ou mur) : planté KNIFE_LIFE_S ; marcher dessus rend 1 s à l'Éventail.
 func on_projectile_rest(s: SpellData, at: Vector2, group: Dictionary) -> void:
 	if player == null or player.dead or player.get_parent() == null:
 		return
@@ -493,6 +588,7 @@ func _collect_knife(slot: int, group: Dictionary) -> void:
 # --- Boucle (appelée par Player.tick, avant les sorts) -------------------------------------------
 
 func tick(delta: float) -> void:
+	_clock += delta
 	guard_left = maxf(guard_left - delta, 0.0)
 	if stagger_left > 0.0:
 		stagger_left = maxf(stagger_left - delta, 0.0)
@@ -500,15 +596,317 @@ func tick(delta: float) -> void:
 		lifting = false
 	if spin_left > 0.0:
 		_spin_step(delta)
-	if pirouette_left > 0.0:
-		_pirouette_step(delta)
 	if _fan_watch > 0.0:
 		_fan_watch -= delta
 		_charge_by_knives()
+	_knife_step(delta)
 	_update_rig()
 
 
-# --- Combo « L'étoile armée » (docs/Design_Combos.md §5.1) ---------------------------------------------------
+# --- Couteau ficelé (sort 2) -------------------------------------------------------------------------------------
+
+## Cible du lancer sans visée (mobile, manette au repos, auto) : boss / mini-boss d'abord (priorité de visée de
+## SpellCaster.nearest_enemy), sinon l'élite ou le T3 le plus proche, sinon le monstre le plus proche.
+func _pick_target(range_px: float) -> Node2D:
+	var c := _caster()
+	if c == null:
+		return null
+	var best: Node2D = c.nearest_enemy(range_px)
+	if best != null:
+		var pr: Variant = best.get(&"aim_priority")
+		if pr != null and float(pr) > 1.0:
+			return best
+	var pick: Node2D = null
+	var pd := INF
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or e.get(&"active") == false:
+			continue
+		var tier: Variant = e.get(&"tier")
+		if not (e.get(&"is_elite") == true or (tier != null and int(tier) >= 3)):
+			continue
+		var d: float = e.global_position.distance_to(player.global_position)
+		if d <= range_px and d < pd:
+			pd = d
+			pick = e
+	return pick if pick != null else best
+
+
+func _cast_knife(s: SpellData, aim: Variant) -> bool:
+	var c := _caster()
+	if c == null or kstate != K.HAND:
+		return false
+	var rng := c.range_px(s)
+	var dir: Vector2 = player.facing if player.facing != Vector2.ZERO else Vector2.DOWN
+	if aim != null and ((aim as Vector2) - player.global_position).length_squared() > 1.0:
+		dir = ((aim as Vector2) - player.global_position).normalized()
+	else:
+		var tgt := _pick_target(rng)
+		if tgt != null and (tgt.global_position - player.global_position).length_squared() > 1.0:
+			dir = (tgt.global_position - player.global_position).normalized()
+	var spd := s.speed_u * Balance.UNIT_PX * (1.0 + minf(player.stat(&"projectile_speed"), Balance.PROJECTILE_SPEED_BONUS_CAP))
+	_knife_spell = s
+	knife = RictusPendulum.launch(c, player, s, dir, spd, rng)
+	knife.hand_fn = _hand_pos
+	knife.planted_in.connect(_on_knife_planted)
+	knife.dropped.connect(_on_knife_dropped)
+	knife.caught.connect(_on_knife_caught)
+	knife.expired.connect(_on_knife_expired)
+	kstate = K.FLYING
+	tours = 0
+	player.facing = dir
+	if strings != null:
+		strings.vibrate(STRING_VIBRATE_S)
+	return true
+
+
+func _hand_pos() -> Vector2:
+	if companion != null and is_instance_valid(companion):
+		return companion.global_position
+	return player.global_position + Vector2(0.0, Iso.lift_logical(MONTREUR_LIFT_U))
+
+
+## Le couteau se plante dans `e` : ficelé FICELE_S (un seul à la fois), grelot.
+func _on_knife_planted(e: Node2D) -> void:
+	kstate = K.PLANTED
+	ficele = e
+	_ficele_t = FICELE_S
+	_saw_n = 0
+	_poll_t = FICELE_POLL_S
+	_planted_age = 0.0
+	tours = 0
+	Audio.play(SND_PLANT, e.global_position, -8.0, 0.7)
+	LightRig.flash(e.global_position, &"spell_steel", 0.15)
+
+
+## Le couteau tombe au sol (bout de course, mur, fil cassé, cible morte, fin de la fenêtre).
+func _on_knife_dropped(_at: Vector2, _lost: bool) -> void:
+	kstate = K.GROUND
+	ficele = null
+	tours = 0
+	_since_drop = 0.0
+	if _heavy and not _sacc and knife != null and is_instance_valid(knife): # pas de Saccade : le Montreur le rappelle seul
+		knife.recall(_line_spell(_knife_spell, KNIFE_COEF))
+		kstate = K.RETURNING
+
+
+func _on_knife_caught() -> void:
+	knife = null
+	ficele = null
+	tours = 0
+	kstate = K.HAND
+	var c := _caster()
+	if c != null:
+		c.set_cooldown(2, 0.0, 1.0) # sort 2 prêt dans la même frame
+	if strings != null:
+		strings.vibrate(STRING_VIBRATE_S * 0.5)
+
+
+func _on_knife_expired() -> void:
+	knife = null
+	kstate = K.LOST # le Montreur en refait un à KNIFE_REMAKE_S après la chute
+
+
+func _ficele_valid() -> bool:
+	return kstate == K.PLANTED and ficele != null and is_instance_valid(ficele) and ficele.is_inside_tree() \
+			and ficele.get(&"active") != false
+
+
+## Longueur du fil (px) : 9 u + le bonus de portée du lancer, plafonné.
+func ficele_range_px() -> float:
+	var extra := 0.0
+	var s2 := _spell_of(2)
+	if s2 != null and _caster() != null:
+		extra = maxf(_caster().range_px(s2) / Balance.UNIT_PX - KNIFE_RANGE_U, 0.0)
+	return minf(FICELE_RANGE_U + extra, FICELE_RANGE_CAP_U) * Balance.UNIT_PX
+
+
+func _knife_step(delta: float) -> void:
+	match kstate:
+		K.PLANTED:
+			_planted_age += delta
+			_ficele_t -= delta
+			if not _ficele_valid():
+				return # le couteau retombe tout seul au prochain pas (cible morte ou disparue)
+			var elapsed := FICELE_S - _ficele_t
+			var due := mini(int((elapsed + 0.0001) / SAW_TICK_S), int(roundf(FICELE_S / SAW_TICK_S)))
+			while _saw_n < due and _ficele_valid():
+				_saw_n += 1
+				_saw_tick()
+			_poll_t -= delta
+			if _poll_t <= 0.0 and _ficele_valid():
+				_poll_t = FICELE_POLL_S
+				_poll_ficele()
+			if _ficele_t <= 0.0 and _ficele_valid() and knife != null and is_instance_valid(knife):
+				knife.drop_at(ficele.global_position) # fenêtre finie : le couteau tombe au sol
+		K.GROUND, K.LOST:
+			_since_drop += delta
+			if _since_drop >= KNIFE_REMAKE_S:
+				if knife != null and is_instance_valid(knife):
+					knife.queue_free()
+				knife = null
+				kstate = K.HAND
+				var c := _caster()
+				if c != null:
+					c.set_cooldown(2, 0.0, 1.0)
+
+
+## Fil trop tendu (au-delà de FICELE_RANGE_U) ou coupé par un mur : le couteau tombe là où est le monstre.
+func _poll_ficele() -> void:
+	if knife == null or not is_instance_valid(knife):
+		return
+	var too_far := ficele.global_position.distance_to(player.global_position) > ficele_range_px()
+	if too_far or _wall_between(player.global_position, ficele.global_position):
+		knife.drop_at(ficele.global_position)
+
+
+func _wall_between(a: Vector2, b: Vector2) -> bool:
+	if player == null or not player.is_inside_tree():
+		return false
+	var q := PhysicsRayQueryParameters2D.create(a, b, WALL_MASK, [player.get_rid()])
+	return not player.get_world_2d().direct_space_state.intersect_ray(q).is_empty()
+
+
+## Point de `target` atteignable depuis `origin` sans traverser un mur (le dernier point libre devant le mur).
+func _clip_to_wall(origin: Vector2, target: Vector2) -> Vector2:
+	if player == null or not player.is_inside_tree():
+		return target
+	var q := PhysicsRayQueryParameters2D.create(origin, target, WALL_MASK, [player.get_rid()])
+	var r := player.get_world_2d().direct_space_state.intersect_ray(q)
+	if r.is_empty():
+		return target
+	var back := (origin - target).normalized() * 0.5 * Balance.UNIT_PX
+	return (r["position"] as Vector2) + back
+
+
+## Coup de scie sur le ficelé (public : tests ; la Toupie en porte un par tick).
+func _saw_tick() -> void:
+	var c := _caster()
+	if c == null or not _ficele_valid() or not StageMap.los(player.get_tree(), player.global_position, ficele.global_position):
+		return
+	var base := _knife_spell if _knife_spell != null else _spell_of(2)
+	if base == null:
+		return
+	var sp := base.duplicate() as SpellData
+	sp.coef = base.coef * SAW_COEF / KNIFE_COEF
+	sp.proc_coef = SAW_PROC
+	sp.hit_force = 0.0
+	sp.is_zone = false
+	var at := ficele.global_position
+	c.deal_damage(ficele, sp, {"source_pos": player.global_position})
+	LightRig.flash(at, &"spell_steel", 0.1)
+	Audio.play(&"pickup.coin", at, -12.0, 2.0) # grelot de chaque tick de scie
+
+
+## Sort du retour du couteau (0,6 à tout monstre traversé), calé sur le sort `base` (écho, items).
+func _line_spell(base: SpellData, base_coef: float) -> SpellData:
+	var sp: SpellData = (base if base != null else _spell_of(2)).duplicate() as SpellData
+	sp.coef = SACCADE_LINE_COEF * sp.coef / base_coef
+	sp.proc_coef = 0.8
+	sp.hit_force = _force_for(SACCADE_LINE_KNOCK_U)
+	sp.is_zone = false
+	return sp
+
+
+# --- Saccade (sort 3) -------------------------------------------------------------------------------------------
+
+func _decoys_waiting() -> bool:
+	for d in Decoy.live:
+		if is_instance_valid(d) and not d.exploded and not d.flying and not d.airborne:
+			return true
+	return false
+
+
+func _cast_saccade(s: SpellData) -> bool:
+	var c := _caster()
+	if c == null or not saccade_ready():
+		return false
+	var had_ficele := _ficele_valid()
+	var did := false
+	if _heavy:
+		if knife == null or not is_instance_valid(knife):
+			return false
+		var ret := s.duplicate() as SpellData
+		ret.coef = SACCADE_LINE_COEF * s.coef / SACCADE_COEF
+		ret.hit_force = _force_for(SACCADE_LINE_KNOCK_U)
+		if had_ficele:
+			_pull_ficele(s)
+		knife.recall(ret)
+		kstate = K.RETURNING
+		ficele = null
+		tours = 0
+		did = true
+	else: # Éventail : les couteaux plantés reviennent en ligne
+		did = _recall_fan(s)
+	var det := _detonate_decoys(had_ficele)
+	if not did and det == 0:
+		return false
+	if strings != null:
+		strings.vibrate(STRING_VIBRATE_S)
+	Audio.play(SND_SACCADE, player.global_position, -2.0, 1.6)
+	return true
+
+
+## Arrachement : coup 1,4 + 0,25 par tour, recul, non-boss tiré de SACCADE_PULL_U vers Rictus.
+func _pull_ficele(s: SpellData) -> void:
+	var c := _caster()
+	var e := ficele
+	var sp := s.duplicate() as SpellData
+	sp.coef = s.coef * (SACCADE_COEF + SACCADE_TOUR_ADD * tours) / SACCADE_COEF
+	var at := e.global_position
+	if StageMap.los(player.get_tree(), player.global_position, at):
+		c.deal_damage(e, sp, {"source_pos": player.global_position})
+	HitFx.impact(at, (at - player.global_position).normalized(), &"physical", 0.8)
+	LightRig.flash(at, &"spell_steel", 0.4)
+	if is_instance_valid(e) and e.get(&"active") != false and e.has_method(&"push") and not e.is_in_group(&"bosses"):
+		var to := player.global_position - e.global_position
+		var d := minf(SACCADE_PULL_U * Balance.UNIT_PX, maxf(to.length() - 0.5 * Balance.UNIT_PX, 0.0))
+		if d > 0.0:
+			e.push(to.normalized() * d)
+
+
+## Les doublures posées explosent toutes ensemble (+30 % et couleur de combo si une cible est ficelée).
+func _detonate_decoys(had_ficele: bool) -> int:
+	var n := 0
+	for d in Decoy.live.duplicate():
+		if not is_instance_valid(d) or d.exploded or d.flying or d.airborne:
+			continue
+		var sp: SpellData = d.explode_spell
+		if had_ficele and sp != null:
+			sp = sp.duplicate() as SpellData
+			sp.coef *= DECOY_FICELE_MULT
+			sp.set_meta(&"combo", true)
+		d.explode(sp)
+		n += 1
+	return n
+
+
+## Éventail + Saccade : les couteaux plantés reviennent en ligne (0,6 chacun, perce tout), 1 s de recharge rendue chacun.
+func _recall_fan(s: SpellData) -> bool:
+	var c := _caster()
+	if c == null or knives.is_empty():
+		return false
+	var s2 := _spell_of(2)
+	var sp := (s2 if s2 != null else s).duplicate() as SpellData
+	sp.coef = SACCADE_LINE_COEF * s.coef / SACCADE_COEF
+	sp.proc_coef = 0.8
+	sp.hit_force = _force_for(SACCADE_LINE_KNOCK_U)
+	sp.is_zone = false
+	var group := {"refunded": 0.0}
+	var spd := KNIFE_SPEED_U * Balance.UNIT_PX * (1.0 + minf(player.stat(&"projectile_speed"), Balance.PROJECTILE_SPEED_BONUS_CAP))
+	var n := 0
+	for k in knives.duplicate():
+		if not is_instance_valid(k):
+			continue
+		var at: Vector2 = k.global_position
+		k.queue_free()
+		var r := RictusPendulum.recall_light(c, player, sp, at, spd, KNIFE_FRAMES)
+		r.on_caught = func() -> void: _collect_knife(2, group)
+		n += 1
+	knives.clear()
+	return n > 0
+
+
+# --- Combo « L'étoile armée » (variantes Éventail + Toupie ; docs/Design_Combos.md §5.1) -------------------------------
 
 ## Un couteau de l'Éventail qui passe sur une doublure en attente la charge (une charge par doublure, au plus
 ## CHARGE_MAX_PER_SALVE par salve). Appelé seulement pendant FAN_WATCH_S après le lancer, sur ≤ 6 doublures.
@@ -548,23 +946,65 @@ func charged_decoys() -> int:
 	return n
 
 
-## SpellCaster.deal_damage : coup de combo = explosion / vol d'une doublure chargée (méta `combo` du sort).
+## SpellCaster.deal_damage : coup de combo = explosion / vol d'une doublure chargée ou détonée sur un ficelé (méta `combo`).
 func combo_hit(s: SpellData, _enemy: Node) -> bool:
 	return s != null and s.has_meta(&"combo")
 
 
-## Fenêtre de combo du slot (HUD, sondé par SpellCaster toutes les 0,1 s) : l'Éventail pulse tant qu'une doublure
-## attend sa charge, la Toupie tant qu'une doublure chargée attend d'être expédiée.
+## Fenêtre de combo du slot (HUD, sondé par SpellCaster toutes les 0,1 s). Saccade : pulse tant qu'un monstre est
+## ficelé ou que des doublures attendent. Variantes : l'Éventail pulse tant qu'une doublure attend sa charge, la Toupie
+## tant qu'une doublure chargée attend d'être expédiée.
 func combo_ready(slot: int) -> bool:
+	if slot == 3 and _sacc:
+		return _ficele_valid() or _decoys_waiting()
 	if Decoy.live.is_empty():
 		return false
 	if slot == 3:
 		return charged_decoys() > 0
-	if slot == 2:
+	if slot == 2 and not _heavy:
 		for d in Decoy.live:
 			if is_instance_valid(d) and not d.exploded and not d.pushed and d.charged <= 0.0:
 				return true
 	return false
+
+
+## Lancer automatique (mobile, « Sorts automatiques », docs §3.5) : la Saccade attend son moment, l'ultime vise le ficelé.
+func auto_cast_ok(slot: int) -> bool:
+	if slot == 3 and _sacc:
+		if not saccade_ready():
+			return false
+		if not _heavy:
+			return true
+		if kstate == K.GROUND:
+			return true # (c) ficelé mort, fil cassé : le couteau est au sol
+		if not _ficele_valid():
+			return false
+		if _planted_age >= AUTO_PLANT_S: # (a)
+			return true
+		if ficele.global_position.distance_to(player.global_position) > AUTO_STRING_LIMIT_U * Balance.UNIT_PX: # (b)
+			return true
+		if tours >= TOUR_MAX: # (e)
+			return true
+		return _decoys_waiting() and _clock - _decoys_landed_at >= AUTO_DECOYS_S # (d)
+	if slot == 4:
+		var c := _caster()
+		if c == null:
+			return false
+		if c.nearest_enemy(DECOY_AUTO_NEAR_U * Balance.UNIT_PX) != null:
+			return true
+		if _ficele_valid():
+			var pr: Variant = ficele.get(&"aim_priority")
+			if ficele.is_in_group(&"bosses") or (pr != null and float(pr) > 1.0):
+				return true # boss ou mini-boss ficelé
+			var n := 0
+			var r := DECOY_BURST_U * Balance.UNIT_PX
+			for e in player.get_tree().get_nodes_in_group(&"enemies"):
+				if e is Node2D and is_instance_valid(e) and e.get(&"active") != false \
+						and (e as Node2D).global_position.distance_to(ficele.global_position) <= r:
+					n += 1
+			return n >= DECOY_AUTO_PACK_N
+		return false
+	return true
 
 
 ## Levée (DodgeMove, fin de l'esquive) : atterrir près de doublures en attente les détone tout de suite. Le joueur choisit
@@ -578,6 +1018,8 @@ func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
 				and d.global_position.distance_to(player.global_position) <= r:
 			d.explode(d.explode_spell)
 
+
+# --- Toupie (variante du slot 3) --------------------------------------------------------------------------------------
 
 func _start_spin(s: SpellData) -> bool:
 	if spin_left > 0.0 or lifting:
@@ -622,6 +1064,8 @@ func _spin_tick() -> void:
 			var tgt := _caster().nearest_enemy(spin_radius_px())
 			if tgt != null:
 				_caster().spawn_zone(_spin_focus_spell, tgt.global_position)
+		if _ficele_valid(): # le fil s'enroule autour de la toupie : un tick de scie par tick de Toupie
+			_saw_tick()
 
 
 func spin_radius_px() -> float:
@@ -636,8 +1080,7 @@ func _push_decoys(radius_px := -1.0) -> void:
 	var r := radius_px if radius_px >= 0.0 else spin_radius_px()
 	for d in Decoy.live.duplicate():
 		if is_instance_valid(d) and not d.pushed and d.global_position.distance_to(player.global_position) <= r:
-			if d.push():
-				RunState.add_counter(COUNTER_DOUBLES)
+			d.push()
 
 
 ## Fin de toupie : fils tendus (+2 % PV), vertige.
@@ -650,7 +1093,7 @@ func _end_spin() -> void:
 		strings.vibrate(STRING_VIBRATE_S)
 
 
-# --- Variantes : Main du Montreur, Lame-pendule, Pirouette ------------------------------------------
+# --- Main du Montreur (variante du slot 1) -------------------------------------------------------------------------
 
 ## Main du Montreur : claquement (disque) sur le paquet le plus dense à MAIN_RANGE_U ; la garde ne vaut que de près.
 func _cast_main(s: SpellData) -> bool:
@@ -675,56 +1118,35 @@ func _cast_main(s: SpellData) -> bool:
 	return true
 
 
-## Lame-pendule : couteau-pendule vers la visée (curseur / paquet le plus dense), sinon devant ; plusieurs en vol permis.
-func _cast_pendule(s: SpellData, aim: Variant) -> bool:
-	var c := _caster()
-	if c == null:
-		return false
-	var dir: Vector2 = player.facing if player.facing != Vector2.ZERO else Vector2.DOWN
-	if aim != null and ((aim as Vector2) - player.global_position).length_squared() > 1.0:
-		dir = ((aim as Vector2) - player.global_position).normalized()
-	var spd := s.speed_u * Balance.UNIT_PX * (1.0 + minf(player.stat(&"projectile_speed"), Balance.PROJECTILE_SPEED_BONUS_CAP))
-	var n := RictusPendulum.launch(c, player, s, dir, spd, c.range_px(s))
-	pendulums.append(n)
-	n.tree_exiting.connect(func() -> void: pendulums.erase(n))
-	player.facing = dir
-	return true
+# --- Doublures (S14) ----------------------------------------------------------------------------------------------
 
-
-## Pirouette : 0,6 s invulnérable et immobile ; coup de zone à mi-course ; roulade et sort 1 libres, pas de vertige.
-func _start_pirouette(s: SpellData) -> bool:
-	if pirouette_left > 0.0 or spin_left > 0.0 or lifting:
-		return false
-	_pir_spell = s.duplicate() as SpellData
-	_pir_spell.behavior = SpellData.Behavior.NOVA
-	_pir_spell.duration = 0.0
-	pirouette_left = PIROUETTE_S
-	_pir_elapsed = 0.0
-	_pir_struck = false
-	player.grant_invulnerability(PIROUETTE_S)
-	if strings != null:
-		strings.tension = 1.0
-	return true
-
-
-func _pirouette_step(delta: float) -> void:
-	_pir_elapsed += delta
-	if not _pir_struck and _pir_elapsed + 0.0001 >= PIROUETTE_IMPACT_S:
-		_pir_struck = true
-		if _caster() != null and _pir_spell != null:
-			_caster().spawn_zone(_pir_spell, player.global_position)
-			_push_decoys(_pir_spell.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add")))
-		if strings != null:
-			strings.vibrate(STRING_VIBRATE_S)
-	pirouette_left = maxf(PIROUETTE_S - _pir_elapsed, 0.0)
-
-
-# --- Doublures (S14) ----------------------------------------------------------------------------
-
-func _spawn_decoys(s: SpellData, aim: Variant) -> void:
+## Centre de repli des Doublures sans ficelé : point visé (curseur / stick, plafond 7 u), sinon le paquet le plus
+## dense à 6 u (le monstre le plus proche en lancer auto), sinon Rictus. Jamais derrière un mur.
+func _decoy_fallback(aim: Variant) -> Vector2:
 	var origin := player.global_position
-	var first := Vector2.UP # sans visée : vers le haut de l'écran
+	var pt: Variant = null
 	if aim != null and ((aim as Vector2) - origin).length_squared() > 1.0:
+		pt = origin + ((aim as Vector2) - origin).limit_length(DECOY_THROW_RANGE_U * Balance.UNIT_PX)
+	elif _caster() != null:
+		pt = _caster().densest_point(DECOY_AUTO_RANGE_U * Balance.UNIT_PX)
+	if pt == null:
+		return origin
+	return _clip_to_wall(origin, pt as Vector2)
+
+
+func _spawn_decoys(s: SpellData, aim: Variant, center_fallback: Variant = null) -> void:
+	var origin := player.global_position
+	var rideau := s.id == V_RIDEAU
+	var center := origin
+	if not rideau: # autour du ficelé (même sur PC), sinon le repli calculé au lancement
+		if _ficele_valid():
+			center = ficele.global_position
+		elif center_fallback is Vector2:
+			center = center_fallback
+	var first := Vector2.UP # sans visée : vers le haut de l'écran
+	if (center - origin).length_squared() > 1.0:
+		first = (center - origin).normalized()
+	elif aim != null and ((aim as Vector2) - origin).length_squared() > 1.0:
 		first = ((aim as Vector2) - origin).normalized()
 	var explode := s.duplicate() as SpellData
 	explode.behavior = SpellData.Behavior.NOVA
@@ -743,18 +1165,19 @@ func _spawn_decoys(s: SpellData, aim: Variant) -> void:
 	var token := {"healed": false}
 	var parent := player.get_parent()
 	var space := player.get_world_2d().direct_space_state if player.is_inside_tree() else null
-	var rideau := s.id == V_RIDEAU
 	var fwd := Vector2.UP
 	if rideau: # ligne perpendiculaire à la visée, dos à Rictus (poussée vers l'avant)
 		fwd = _rideau_forward(aim)
 	for i in DECOY_COUNT:
 		var dir := first.rotated(i * TAU / DECOY_COUNT)
-		var pos := origin + dir * DECOY_RING_U * Balance.UNIT_PX
+		var pos := center + dir * DECOY_RING_U * Balance.UNIT_PX
+		var ray_from := center
 		if rideau:
 			dir = fwd
 			pos = origin + fwd * RIDEAU_AHEAD_U * Balance.UNIT_PX + fwd.orthogonal() * (float(i) - (DECOY_COUNT - 1) * 0.5) * RIDEAU_SPACING_U * Balance.UNIT_PX
+			ray_from = origin
 		if space != null: # position dans un mur (ou derrière) : sautée
-			var q := PhysicsRayQueryParameters2D.create(origin, pos, WALL_MASK, [player.get_rid()])
+			var q := PhysicsRayQueryParameters2D.create(ray_from, pos, WALL_MASK, [player.get_rid()])
 			if not space.intersect_ray(q).is_empty():
 				continue
 		for e in get_tree().get_nodes_in_group(&"enemies"):
@@ -776,7 +1199,8 @@ func _spawn_decoys(s: SpellData, aim: Variant) -> void:
 		d.global_position = pos
 		d.copy_look(_visual)
 		d.appear()
-	if spin_left > 0.0: # ultime pendant la toupie : percutées à la frame suivante (au plus tard)
+	_decoys_landed_at = _clock
+	if spin_left > 0.0: # ultime pendant la toupie (variante) : percutées à la frame suivante (au plus tard)
 		_push_decoys()
 
 
@@ -800,14 +1224,25 @@ func _on_decoy_exploded(token: Dictionary) -> void:
 		player.heal(HEAL_PCT * player.max_hp)
 
 
+## Monstre tué à moins de CLOSE_KILL_U : compteur de run (déblocage de la variante Toupie).
+func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
+	if player != null and is_instance_valid(player) and not player.dead \
+			and pos.distance_to(player.global_position) <= CLOSE_KILL_U * Balance.UNIT_PX:
+		RunState.add_counter(COUNTER_CLOSE)
+
+
 # --- Nettoyage (§2.6.5 : étage, mort) ------------------------------------------------------------
 
 func clear_transients() -> void:
 	_pending_decoys = {}
-	for n in pendulums.duplicate():
-		if is_instance_valid(n):
-			n.queue_free()
-	pendulums.clear()
+	if knife != null and is_instance_valid(knife):
+		knife.queue_free()
+	knife = null
+	ficele = null
+	tours = 0
+	kstate = K.HAND # couteau rendu en main
+	if player != null and is_instance_valid(player) and player.spells != null:
+		player.spells.set_cooldown(2, 0.0, 1.0)
 	Decoy.clear_all()
 	for k in knives.duplicate():
 		if is_instance_valid(k):
@@ -821,7 +1256,6 @@ func _on_floor_started(_n: int) -> void:
 
 func _on_player_died() -> void:
 	spin_left = 0.0
-	pirouette_left = 0.0
 	stagger_left = 0.0
 	clear_transients()
 	if strings != null:
@@ -857,7 +1291,7 @@ func visual_anim(fallback: StringName) -> StringName:
 	var base := &""
 	if lifting:
 		base = &"lift"
-	elif spin_left > 0.0 or pirouette_left > 0.0:
+	elif spin_left > 0.0:
 		base = &"spin"
 	elif stagger_left > 0.0:
 		base = &"stagger"
@@ -891,14 +1325,16 @@ func _attach_spin_blur() -> void:
 
 func _update_rig() -> void:
 	if spin_blur != null:
-		var on := spin_left > 0.0 or pirouette_left > 0.0
+		var on := spin_left > 0.0
 		if on != spin_blur.visible:
 			spin_blur.visible = on
 			if on:
 				spin_blur.play(&"default")
 			else:
 				spin_blur.stop()
-	var taut: bool = lifting or spin_left > 0.0 or pirouette_left > 0.0 or player.action_base() in ULT_ACTIONS
+	# fils tendus : levée, toupie, lancer d'ultime, couteau en vol ou en retour (Montreur `pull`)
+	var taut: bool = lifting or spin_left > 0.0 or player.action_base() in ULT_ACTIONS \
+			or kstate == K.FLYING or kstate == K.RETURNING
 	if _visual != null:
 		# levée : le pantin monte et redescend (arc sinus), à la hauteur LIFT_HEIGHT_U au milieu du saut
 		var k := 0.0
@@ -911,7 +1347,6 @@ func _update_rig() -> void:
 		strings.tension = 1.0 if taut else 0.0
 
 
-
 # --- Passif expliqué (infobulle du HUD ; contrat KitResource.passive) ------------------------------------
 
 static func passive_info() -> Dictionary:
@@ -919,5 +1354,5 @@ static func passive_info() -> Dictionary:
 		"Pas de jauge : deux effets passifs. Les fils tirent le pantin hors des coups, et se tendent pour le réparer.",
 		"",
 		"",
-		"Garde : -%s de dégâts subis pendant %s s après chaque demi-lune. Fils tendus : +%s des PV max rendus en fin de Toupie et à la première explosion de chaque Doublures. Pointe : chaque tick de Toupie frappe en plus l'ennemi le plus proche (coef %s)." % [
-			KitResource.pct(1.0 - GUARD_TAKEN_MULT), KitResource.fmt(GUARD_S), KitResource.pct(HEAL_PCT), KitResource.fmt(TOUPIE_FOCUS_COEF)])
+		"Garde : -%s de dégâts subis pendant %s s après chaque demi-lune. Fils tendus : +%s des PV max rendus à la première explosion de chaque Doublures (et en fin de Toupie). Ficelé : un seul monstre à la fois porte le couteau lourd (%s s) ; chaque demi-lune sur lui enroule un tour de fil (%d au plus) qui renforce la Saccade." % [
+			KitResource.pct(1.0 - GUARD_TAKEN_MULT), KitResource.fmt(GUARD_S), KitResource.pct(HEAL_PCT), KitResource.fmt(FICELE_S), TOUR_MAX])

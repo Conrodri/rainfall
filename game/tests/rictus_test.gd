@@ -1,12 +1,15 @@
 extends Node
-## Test headless de Rictus (docs/Design_Personnages.md §2.6) : stats, 4 sorts, couteaux plantés (S6),
-## Toupie (levée permise, invulnérable, sort 1 suspendu, vertige, +2 % PV), Doublures (S14 : provocation, explosion
-## à 3 s, mort à 60 %), étoile (ultime puis Toupie), levée au-dessus des monstres, déblocage caché.
+## Test headless de Rictus (docs/Design_Rictus_v2.md option 1 « Le fil et la lame ») : stats, 4 sorts, Couteau ficelé
+## (plantage, 10 ticks de scie en 5 s, fil cassé à 9 u, couteau au sol), Saccade (1,4 + 0,25 par tour, retour qui perce
+## tout, sort 2 prêt dans la frame, non-boss tiré), Doublures lancées (autour du ficelé, 6 × 2,34 sur lui à la Saccade,
+## provocation, minuteur, mort à 60 %), lancer automatique, boucle >= 1,3 s, levée, murs (StageMap.los), déblocage caché.
 ## godot --headless --path game res://tests/rictus_test.tscn  (scène : les autoloads doivent exister)
 
 ## Cible factice sans corps (zones, doublures) : mêmes signatures que player_test.
 class FakeEnemy extends Node2D:
 	var taken: Array = []
+	var active := true
+	var pulled := Vector2.ZERO
 
 	func take_damage(amount: float, _is_crit: bool = false, _element: StringName = &"") -> void:
 		taken.append(amount)
@@ -17,14 +20,24 @@ class FakeEnemy extends Node2D:
 	func is_slowed() -> bool:
 		return false
 
+	func push(offset_px: Vector2) -> void:
+		pulled += offset_px
+
 	func total() -> float:
 		var t := 0.0
 		for a in taken:
 			t += a
 		return t
 
+	func count_of(v: float) -> int:
+		var n := 0
+		for a in taken:
+			if absf(float(a) - v) < 0.05:
+				n += 1
+		return n
 
-## Cible factice avec corps en couche 3 (projectiles Area2D, et obstacle « monstre » pour la levée).
+
+## Cible factice avec corps en couche 3 (obstacle « monstre » pour la levée).
 class FakeBody extends StaticBody2D:
 	var taken: Array = []
 
@@ -43,10 +56,11 @@ class FakeBody extends StaticBody2D:
 
 const U := 64.0
 const BASE := 12.0 ## Dégât_base niveau 1
+const DT := 1.0 / 60.0
 
 var _fails := 0
 var _player: CharacterBody2D
-var _kit: Node
+var _kit: RictusKit
 var _junk: Array = []
 
 
@@ -85,7 +99,7 @@ func _body(pos: Vector2, radius := 10.0, as_enemy := true) -> FakeBody:
 	return b
 
 
-## Doublures posées à la frame d'impact de `summon` (Player.play_action) : avance le joueur jusqu'à l'impact,
+## Doublures posées à la frame d'impact de l'anim d'ultime : avance le joueur jusqu'à l'impact,
 ## sort 1 suspendu pour ne pas toucher les cibles factices. Retourne le temps écoulé.
 func _land_decoys() -> float:
 	var rem1: float = _player.spells._remaining[1]
@@ -103,7 +117,23 @@ func _frames(n: int) -> void:
 		await get_tree().physics_frame
 
 
-## Remet tout à plat : cibles, doublures, couteaux, états, recharges.
+## Fait avancer le monde à la main (le joueur ne tourne pas seul) : couteau puis kit, sort 1 suspendu.
+## Rend le temps simulé ; s'arrête dès que `until` est vrai.
+func _drive(seconds: float, until := Callable()) -> float:
+	var t := 0.0
+	var n := int(ceil(seconds * 60.0 - 0.0001))
+	for i in n:
+		_player.spells._remaining[1] = 99.0
+		if _kit.knife != null and is_instance_valid(_kit.knife):
+			_kit.knife.step(DT)
+		_player.tick(DT)
+		t += DT
+		if until.is_valid() and bool(until.call()):
+			break
+	return t
+
+
+## Remet tout à plat : cibles, doublures, couteau, états, recharges.
 func _reset() -> void:
 	for j in _junk:
 		if is_instance_valid(j):
@@ -126,6 +156,15 @@ func _reset() -> void:
 		_player.spells._remaining[k] = 0.0
 	_player.reset_dodge()
 	_player._invuln = 0.0
+	RunState.counters.clear()
+
+
+## Lance le couteau vers (x u, 0) et attend qu'il soit planté dans `target` (ou au sol).
+func _throw_at(target: Node2D) -> void:
+	_player.spells.aim_override = Vector2(target.global_position.x, 0.0)
+	_player.spells.cast(2)
+	_player.spells.aim_override = null
+	_drive(1.0, func() -> bool: return _kit.kstate != RictusKit.K.FLYING)
 
 
 func _run() -> void:
@@ -142,7 +181,7 @@ func _run() -> void:
 
 	print("Personnage et rendu")
 	_check("kit Rictus", _kit is RictusKit)
-	_check("4 sorts / ids", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["dagues_demi_lune", "eventail", "toupie", "doublures"])
+	_check("4 sorts / ids", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["dagues_demi_lune", "couteau_ficele", "rictus_saccade", "doublures"])
 	_check("PV L1 = 95", _near(_player.max_hp, 95.0), str(_player.max_hp))
 	_check("armure 10", _near(_player.armor(), 10.0))
 	_check("régén 0,6", _near(_player.regen_per_s(), 0.6))
@@ -165,6 +204,10 @@ func _run() -> void:
 		_check("repli : Ardent teinté", vis.self_modulate.is_equal_approx(RictusKit.PLACEHOLDER_TINT))
 	_kit.strings.update_lines(0.1)
 	_check("fils tracés entre deux points distincts", _kit.strings.lines[2].points[0].distance_to(_kit.strings.lines[2].points[2]) > 10.0)
+	var cd := RictusKit.character()
+	_check("sort 3 : recharge 3 s, la plus courte du jeu", _near(cd.spells[2].base_cooldown, 3.0) and _near(cd.spells[1].base_cooldown, 1.0))
+	_check("coefs : couteau / Saccade / doublures", _near(cd.spells[1].coef, RictusKit.KNIFE_COEF) and _near(cd.spells[2].coef, RictusKit.SACCADE_COEF) and _near(cd.spells[3].coef, 1.8))
+	_check("sort 1 : is_zone faux (audit P3)", not cd.spells[0].is_zone)
 
 	print("Sort 1 : Dagues en demi-lune")
 	_reset()
@@ -183,111 +226,219 @@ func _run() -> void:
 	_check("coef 0,8 sur la cible", front.taken.size() == 1 and _near(front.total(), RictusKit.ARC_COEF * BASE), str(front.taken))
 	_check("tout le demi-cercle", _near(front2.total(), RictusKit.ARC_COEF * BASE), str(front2.taken))
 	_check("rien derrière", back.taken.is_empty())
-	_check("rien hors de 1,8 u", far.taken.is_empty())
+	_check("rien hors de 3 u", far.taken.is_empty())
 	_check("orientation vers la cible la plus proche", _player.facing.dot(front2.global_position.normalized()) > 0.99, str(_player.facing))
 
-	print("Sort 2 : Éventail et couteaux plantés (S6)")
+	print("Sort 2 : Couteau ficelé (plantage, scie, fil)")
 	_reset()
-	var wall_free_target := _body(Vector2(128, 0), 10.0)
+	var tgt := _fake(Vector2(3.0 * U, 0))
+	_check("couteau en main", _kit.knife_in_hand() and not _player.spells.is_slot_blocked(2))
+	_check("Saccade grisée avec le couteau en main", _player.spells.is_slot_blocked(3) and bool(_player.get_spell_cooldowns()[2].blocked))
 	_player.spells.aim_override = Vector2(500, 0)
-	_check("éventail lancé", _player.spells.cast(2))
-	_check("5 couteaux", _player.spells.active_projectile_count() == 5, str(_player.spells.active_projectile_count()))
-	await _frames(45) # 7 u à 14 u/s = 0,5 s
-	_check("couteau central : coef 1,6", wall_free_target.taken.size() == 1 and _near(wall_free_target.taken[0], RictusKit.FAN_COEF * BASE), str(wall_free_target.taken))
-	_check("5 couteaux plantés en fin de course", _kit.knives.size() == 5, str(_kit.knives.size()))
-	var rem0: float = _player.spells._remaining[2]
-	_check("Éventail en recharge (6 s)", _near(rem0, 6.0, 0.05), str(rem0))
-	if _kit.knives.size() > 0:
-		_player.global_position = _kit.knives[0].global_position
-		await _frames(2)
-		_check("ramasser un couteau rend 1 s", _near(_player.spells._remaining[2], rem0 - 1.0, 0.02), str(_player.spells._remaining[2]))
-		_check("couteau ramassé disparaît", _kit.knives.size() == 4, str(_kit.knives.size()))
-		for k in _kit.knives.duplicate():
-			_player.global_position = k.global_position
-			await _frames(2)
-		_check("5 couteaux = 5 s rendues au plus", _near(_player.spells._remaining[2], rem0 - 5.0, 0.05), str(_player.spells._remaining[2]))
+	_check("couteau lancé", _player.spells.cast(2))
 	_player.spells.aim_override = null
+	_check("en vol : sort 2 grisé", _kit.kstate == RictusKit.K.FLYING and _player.spells.is_slot_blocked(2))
+	_drive(1.0, func() -> bool: return _kit.kstate == RictusKit.K.PLANTED)
+	_check("planté dans le premier monstre touché", _kit.kstate == RictusKit.K.PLANTED and _kit.ficele_enemy() == tgt)
+	_check("impact du couteau", tgt.taken.size() == 1 and _near(tgt.taken[0], RictusKit.KNIFE_COEF * BASE), str(tgt.taken))
+	_check("sort 2 grisé tant que le couteau n'est pas revenu", _player.spells.is_slot_blocked(2))
+	_check("Saccade dispo (couteau planté)", not _player.spells.is_slot_blocked(3))
+	_check("sort 2 jamais en fenêtre de combo, Saccade oui", not _kit.combo_ready(2) and _kit.combo_ready(3))
+	_drive(6.0, func() -> bool: return _kit.kstate == RictusKit.K.GROUND)
+	_check("5 s : 10 ticks de scie", tgt.count_of(RictusKit.SAW_COEF * BASE) == 10, str(tgt.taken))
+	_check("couteau tombé au sol, fil disparu", _kit.kstate == RictusKit.K.GROUND and _kit.ficele_enemy() == null)
+	_check("couteau au sol à l'endroit du monstre", _kit.knife != null and _kit.knife.global_position.distance_to(tgt.global_position) < 2.0)
+	_check("couteau au sol : Saccade encore possible", not _player.spells.is_slot_blocked(3))
+	# couteau au sol : Saccade sans dégât d'arrachement, retour, sort 2 prêt
+	var before: int = tgt.taken.size()
+	_check("Saccade sur couteau au sol", _player.spells.cast(3))
+	_drive(2.0, func() -> bool: return _kit.knife_in_hand())
+	_check("couteau rattrapé, sort 2 prêt", _kit.knife_in_hand() and _player.spells._remaining[2] == 0.0 and not _player.spells.is_slot_blocked(2))
+	_check("pas de dégât d'arrachement au sol (seulement le retour 0,6)", tgt.count_of(RictusKit.SACCADE_COEF * BASE) == 0 and tgt.taken.size() == before + 1, str(tgt.taken))
+	_check("Saccade de nouveau grisée (couteau en main)", _player.spells.is_slot_blocked(3))
 
-	print("Sort 3 : Toupie")
+	print("Couteau au sol : ramassage, perte, refabrication")
 	_reset()
-	var close := _fake(Vector2(40, 0))
-	_player.hp = 50.0
-	_check("toupie lancée", _player.spells.cast(3))
-	_check("en toupie", _kit.is_spinning())
-	_check("premier tick 0,5 + pointe 0,15 sur le plus proche", _near(close.total(), (RictusKit.TOUPIE_COEF + RictusKit.TOUPIE_FOCUS_COEF) * BASE), str(close.taken))
-	_check("levée permise en toupie", _kit.can_dodge())
-	_check("bouton de roulade actif", not bool(_player.get_dodge_cooldown().get("blocked", false)))
-	_check("invulnérable en toupie", _player.is_invulnerable())
-	_check("sort 1 suspendu", _player.spells.is_slot_blocked(1) and not _player.spells.cast(1))
-	_check("sort 2 autorisé", not _player.spells.is_slot_blocked(2))
-	_check("vitesse 4,8 u/s", _near(_player.move_speed(), 4.8 * U), str(_player.move_speed()))
-	_check("inertie 0,3 s", _near(_kit.inertia_s(), 0.3))
-	_player.apply_status(&"slow", {})
-	_check("immunité aux ralentissements", not _player.is_slowed())
-	_check("hitbox 0,5 u en toupie", _near(shape.radius, 24.0))
-	# M2b : spin = 1 direction (bras écartés), jouée quelle que soit l'orientation ; M3 : traînée additive
-	_player.facing = Vector2.DOWN
-	_player.tick(0.0)
-	var spin_anim: StringName = _kit.visual_anim(&"idle_s")
-	_check("anim spin en toupie (toute orientation)", String(spin_anim).begins_with("spin"), String(spin_anim))
-	var blur_ok: bool = not ResourceLoader.exists(RictusKit.SPIN_BLUR_FRAMES) or (_kit.spin_blur != null and _kit.spin_blur.visible)
-	_check("spin_blur visible en toupie", blur_ok)
-	for i in 50:
-		_player.tick(0.05)
-	_player.tick(0.001)
-	# (la demi-lune reprend dès la fin de la toupie : on ne compte que les ticks de 0,7)
-	var spin_hits := close.taken.filter(func(a): return _near(a, RictusKit.TOUPIE_COEF * BASE))
-	_check("10 ticks = 7,0", spin_hits.size() == 10, str(close.taken))
-	_check("fin de toupie", not _kit.is_spinning())
-	_check("fils tendus : +2 % PV", _player.hp >= 50.0 + 0.02 * 95.0 - 0.01, str(_player.hp))
-	_check("spin_blur caché hors toupie", _kit.spin_blur == null or not _kit.spin_blur.visible)
-	_check("vertige : vitesse 2,1", _kit.is_staggered() and _near(_player.move_speed(), 2.1 * U), str(_player.move_speed()))
-	_check("vertige : pas de roulade", not _player.dodge(Vector2.RIGHT))
-	_player.tick(0.31)
-	_check("après le vertige : roulade permise", _kit.can_dodge() and not _kit.is_staggered())
+	var lost := _fake(Vector2(3.0 * U, 0))
+	_throw_at(lost)
+	_kit.knife.drop_at(Vector2(4.0 * U, 0))
+	_check("tombé", _kit.kstate == RictusKit.K.GROUND)
+	_player.global_position = Vector2(4.0 * U, 0)
+	_drive(0.1, func() -> bool: return _kit.knife_in_hand())
+	_check("marcher dessus le rattrape", _kit.knife_in_hand() and _player.spells._remaining[2] == 0.0)
+	_throw_at(lost)
+	_kit.knife.drop_at(Vector2(7.0 * U, 0))
+	_player.global_position = Vector2.ZERO
+	_drive(4.2)
+	_check("4 s au sol : couteau disparu, perdu", _kit.kstate == RictusKit.K.LOST and _kit.knife == null and _player.spells.is_slot_blocked(2) and _player.spells.is_slot_blocked(3))
+	_drive(2.0, func() -> bool: return _kit.knife_in_hand())
+	_check("6 s après la chute : le Montreur en refait un", _kit.knife_in_hand() and not _player.spells.is_slot_blocked(2))
 
-	print("Sort 4 : Les Doublures (S14)")
+	print("Fil cassé : ficelé à plus de 9 u")
 	_reset()
-	_player.spells.aim_override = Vector2(500, 0)
+	var runner := _fake(Vector2(3.0 * U, 0))
+	_throw_at(runner)
+	_check("planté", _kit.kstate == RictusKit.K.PLANTED)
+	runner.global_position = Vector2(9.5 * U, 0)
+	_drive(0.6, func() -> bool: return _kit.kstate == RictusKit.K.GROUND)
+	_check("fil cassé : couteau au sol, plus de ficelé", _kit.kstate == RictusKit.K.GROUND and _kit.ficele_enemy() == null)
+	_check("tombé là où était le monstre", _kit.knife != null and _kit.knife.global_position.distance_to(runner.global_position) < 2.0)
+	_reset()
+	var dier := _fake(Vector2(3.0 * U, 0))
+	_throw_at(dier)
+	dier.active = false
+	_drive(0.2, func() -> bool: return _kit.kstate == RictusKit.K.GROUND)
+	_check("ficelé mort : couteau planté au sol au même endroit", _kit.kstate == RictusKit.K.GROUND and _kit.knife.global_position.distance_to(dier.global_position) < 2.0)
+
+	print("Ciblage : boss d'abord, puis élite, puis le plus proche")
+	_reset()
+	var near_t := _fake(Vector2(2.0 * U, 0))
+	var elite_t := _fake(Vector2(0, 5.0 * U))
+	elite_t.set_meta(&"x", 1)
+	_check("mobile : le plus proche (aucun élite)", _kit._pick_target(8.0 * U) == near_t)
+
+	print("Sort 3 : Saccade (tours, arrachement, retour)")
+	_reset()
+	var tgt3 := _fake(Vector2(1.0 * U, 0))
+	_throw_at(tgt3)
+	_check("couteau planté", _kit.kstate == RictusKit.K.PLANTED)
+	for i in 3:
+		_player.spells._remaining[1] = 0.0
+		_check("demi-lune %d sur le ficelé" % (i + 1), _player.spells.cast(1))
+	_check("3 tours de fil", _kit.tours == 3, str(_kit.tours))
+	_player.spells._remaining[1] = 0.0
+	_player.spells.cast(1)
+	_check("plafond de 3 tours", _kit.tours == RictusKit.TOUR_MAX)
+	tgt3.taken.clear()
+	_check("Saccade lancée", _player.spells.cast(3))
+	_check("arrachement = coef + 3 tours", tgt3.taken.size() == 1 and _near(tgt3.taken[0], (RictusKit.SACCADE_COEF + 3.0 * RictusKit.SACCADE_TOUR_ADD) * BASE), str(tgt3.taken))
+	_check("non-boss tiré vers Rictus (1,5 u, borné par la distance)", tgt3.pulled.x < -1.0, str(tgt3.pulled))
+	_check("recharge 3 s", _near(_player.spells._remaining[3], 3.0, 0.05), str(_player.spells._remaining[3]))
+	_check("couteau en retour", _kit.kstate == RictusKit.K.RETURNING)
+	_drive(1.0, func() -> bool: return _kit.knife_in_hand())
+	_check("rattrapé : sort 2 prêt dans la frame", _kit.knife_in_hand() and _player.spells._remaining[2] == 0.0)
+	_check("le ficelé n'est pas touché une seconde fois par le retour", tgt3.taken.size() == 1, str(tgt3.taken))
+	_check("tours remis à zéro", _kit.tours == 0)
+	# boss ficelé : ne bouge pas
+	_reset()
+	var boss := _fake(Vector2(3.0 * U, 0))
+	boss.add_to_group("bosses")
+	_throw_at(boss)
+	_player.spells.cast(3)
+	_check("boss ficelé : jamais tiré", boss.pulled == Vector2.ZERO)
+
+	print("Retour qui perce tout")
+	_reset()
+	var tgt4 := _fake(Vector2(5.0 * U, 0))
+	_throw_at(tgt4)
+	var r1 := _fake(Vector2(3.5 * U, 8))
+	var r2 := _fake(Vector2(2.2 * U, -8))
+	var r3 := _fake(Vector2(1.2 * U, 0))
+	var off := _fake(Vector2(3.0 * U, 3.0 * U))
+	_player.spells.cast(3)
+	_drive(1.5, func() -> bool: return _kit.knife_in_hand())
+	_check("3 monstres traversés = 3 × 0,6, une touche chacun", r1.count_of(0.6 * BASE) == 1 and r2.count_of(0.6 * BASE) == 1 and r3.count_of(0.6 * BASE) == 1,
+			"%s %s %s" % [r1.taken, r2.taken, r3.taken])
+	_check("hors ligne : rien", off.taken.is_empty())
+	_check("rattrapé", _kit.knife_in_hand())
+
+	print("Sort 4 : Les Doublures lancées")
+	_reset()
+	var ring_c := _fake(Vector2(5.0 * U, 0))
+	_throw_at(ring_c)
+	_check("ficelé en place", _kit.ficele_enemy() == ring_c)
+	_player.spells.aim_override = Vector2(0, 6.0 * U) # PC : le curseur est ailleurs, les doublures vont quand même autour du ficelé
 	_check("doublures lancées", _player.spells.cast(4))
-	_check("pas encore posées (anim summon)", Decoy.live.is_empty() and _kit.decoys_pending())
+	_player.spells.aim_override = null
+	_check("pas encore posées (anim)", Decoy.live.is_empty() and _kit.decoys_pending())
 	var t_land := _land_decoys()
-	_check("posées à la frame d'impact de summon", t_land > 0.05 and t_land < 0.6, str(t_land))
-	_check("6 doublures", Decoy.live.size() == 6, str(Decoy.live.size()))
+	_check("posées à la frame d'impact", t_land > 0.05 and t_land < 0.6, str(t_land))
 	_check("anim d'ultime throw_ult (M2b)", _kit.ult_action() == &"throw_ult", String(_kit.ult_action()))
+	_check("6 doublures", Decoy.live.size() == 6, str(Decoy.live.size()))
+	var around := true
+	var cen := Vector2.ZERO
+	for d in Decoy.live:
+		around = around and _near(d.global_position.distance_to(ring_c.global_position), 1.2 * U, 1.0)
+		cen += d.global_position
+	_check("hexagone de 1,2 u autour du ficelé (pas du curseur, pas de Rictus)", around and (cen / 6.0).distance_to(ring_c.global_position) < 1.0)
 	var d_any: Decoy = Decoy.live[0]
-	_check("explosion : VFX double_burst (TOP)", d_any.explode_spell.vfx_frames == RictusKit.DOUBLE_BURST_FRAMES
-			and _near(d_any.explode_spell.vfx_floor_aspect, 1.0) and d_any.flight_spell.vfx_frames == "")
+	_check("explosion : VFX double_burst (TOP), coef 1,8", d_any.explode_spell.vfx_frames == RictusKit.DOUBLE_BURST_FRAMES
+			and _near(d_any.explode_spell.coef, 1.8) and d_any.flight_spell.vfx_frames == "")
+	_check("PV = 20 % des PV max", _near(d_any.hp, 0.2 * 95.0))
+	_check("Montreur absent des doublures", d_any.get_child_count() - int(GroundMarker.of(d_any) != null) == 1)
+	for d in Decoy.live:
+		d.facing = (d.global_position - ring_c.global_position).normalized()
+	_check("combo_ready de la Saccade (ficelé + doublures)", _kit.combo_ready(3))
+	ring_c.taken.clear()
+	var hp_before: float = _player.hp
+	_player.hp = 50.0
+	_check("Saccade : tire tous les fils", _player.spells.cast(3))
+	_check("toutes les doublures explosent d'un coup", Decoy.live.is_empty(), str(Decoy.live.size()))
+	_check("6 × (1,8 × 1,3) sur le ficelé", ring_c.count_of(1.8 * 1.3 * BASE) == 6, str(ring_c.taken))
+	_check("+2 % PV une seule fois", _near(_player.hp, 50.0 + 0.02 * 95.0, 0.01), str(_player.hp))
+	hp_before += 0.0
+	# sans ficelé : Saccade détone sans le +30 %, ordre inverse valide
+	_reset()
+	_player.spells.manual_aim_enabled = false # mobile : pas de curseur (en headless la souris n'est pas à l'origine)
+	var pack := _fake(Vector2(3.0 * U, 0))
+	_check("doublures sans ficelé (paquet à 3 u)", _player.spells.cast(4))
+	_land_decoys()
+	var dc := Vector2.ZERO
+	for d in Decoy.live:
+		dc += d.global_position
+	_check("sans ficelé : autour du paquet visé", Decoy.live.size() == 6 and (dc / 6.0).distance_to(pack.global_position) < 2.0)
+	_check("Saccade grisée tant que le couteau est en main (même avec des doublures)", _player.spells.is_slot_blocked(3))
+	for d in Decoy.live:
+		d.life_s = 30.0
+	pack.taken.clear()
+	_throw_at(pack)
+	pack.taken.clear()
+	_player.spells.cast(3)
+	_check("couteau planté APRES les doublures : +30 % (ficelé au moment de la Saccade)", pack.count_of(1.8 * 1.3 * BASE) >= 5, str(pack.taken))
+	_reset()
+	var lonely := _fake(Vector2(10.0 * U, 0)) # trop loin du paquet dense : repli sur Rictus
+	_check("doublures sans cible à portée : autour de Rictus", _player.spells.cast(4))
+	_player.spells.manual_aim_enabled = true
+	_land_decoys()
+	var rc := Vector2.ZERO
+	for d in Decoy.live:
+		rc += d.global_position
+	_check("repli : autour de Rictus", Decoy.live.size() == 6 and (rc / 6.0).length() < 1.0)
+	lonely.taken.clear()
+
+	print("Doublures : provocation, minuteur, mort à 60 %")
+	_reset()
+	_player.spells.aim_override = Vector2(4.0 * U, 0)
+	_check("doublures lancées au curseur (sans ficelé)", _player.spells.cast(4))
+	_player.spells.aim_override = null
+	_land_decoys()
 	var east: Decoy = null
 	for d in Decoy.live:
-		if d.global_position.distance_to(Vector2(1.2 * U, 0)) < 1.0:
+		if d.global_position.distance_to(Vector2(4.0 * U + 1.2 * U, 0)) < 1.0:
 			east = d
-	_check("première vers la visée, anneau 1,2 u", east != null)
-	_check("PV = 20 % des PV max", east != null and _near(east.hp, 0.2 * 95.0))
+	_check("première doublure vers l'extérieur, anneau 1,2 u autour du curseur", east != null)
 	_check("face vers l'extérieur", east != null and east.facing.x > 0.99)
-	_check("Montreur absent des doublures", east != null and east.get_child_count() - int(GroundMarker.of(east) != null) == 1)
 	for d in Decoy.live:
 		d.life_s = 30.0 # provocation testée sans explosion
-	# Monstre à 3,3 u de la doublure sud-est et 4,4 u de Rictus : il doit la viser
-	var se_pos := Vector2(1.2 * U, 0).rotated(TAU / 6.0)
 	var mob: Enemy = director.spawn_enemy(1, Vector2(200, 200))
 	var mob_hp0: float = _player.hp
-	var se: Decoy = Decoy.nearest_to(se_pos, 4.0)
+	var se: Decoy = Decoy.nearest_to(mob.position, 4.0 * U)
 	var d0 := mob.position.distance_to(se.global_position)
 	await _frames(150)
 	_check("provocation : le monstre rejoint la doublure", mob.position.distance_to(se.global_position) < d0 * 0.5, "%s -> %s" % [d0, mob.position.distance_to(se.global_position)])
 	_check("provocation : la doublure encaisse, pas Rictus", se.hp < se.max_hp and _near(_player.hp, mob_hp0), "%s / %s" % [se.hp, _player.hp])
 	mob.deactivate()
 	mob.remove_from_group(&"enemies")
-	# Explosion au minuteur (3 s) : un monstre sur la doublure est
 	Decoy.clear_all()
 	await get_tree().process_frame
 	_player.spells._remaining[4] = 0.0
+	_player.spells.aim_override = Vector2(4.0 * U, 0)
 	_player.hp = 50.0
 	_check("relance", _player.spells.cast(4))
+	_player.spells.aim_override = null
 	_land_decoys()
 	_player.hp = 50.0
-	var on_east := _fake(Vector2(1.2 * U, 0))
+	var on_east := _fake(Vector2(4.0 * U + 1.2 * U, 0))
 	for d in Decoy.live:
 		_check("minuteur 3 s", _near(d.life_s, 3.0))
 		break
@@ -297,44 +448,80 @@ func _run() -> void:
 	for d in Decoy.live.duplicate():
 		d.step(0.11)
 	_check("toutes explosent à 3 s", Decoy.live.is_empty())
-	# rayon d'explosion 2,4 u : les 5 doublures à moins de 2,4 u de la cible touchent (2,0 u : 3 seulement avant le 26/10)
-	_check("5 explosions à 2,4 u : 5 × coef", on_east.taken.size() == 5 and _near(on_east.total(), 5.0 * RictusKit.DECOY_COEF * BASE, 0.05), "%s %s" % [on_east.total(), on_east.taken])
+	_check("6 explosions à 2,4 u : 6 × coef 1,8", on_east.taken.size() == 6 and _near(on_east.total(), 6.0 * RictusKit.DECOY_COEF * BASE, 0.05), "%s %s" % [on_east.total(), on_east.taken])
 	_check("+2 % PV une seule fois", _near(_player.hp, 50.0 + 0.02 * 95.0, 0.01), str(_player.hp))
-	# Doublure tuée : explosion immédiate à 60 %
 	_player.spells._remaining[4] = 0.0
 	on_east.taken.clear()
+	_player.spells.aim_override = Vector2(4.0 * U, 0)
 	_player.spells.cast(4)
+	_player.spells.aim_override = null
 	_land_decoys()
 	for d in Decoy.live:
 		if d.global_position.distance_to(on_east.global_position) < 1.0:
 			d.take_damage(1000.0)
-	_check("doublure tuée : explosion 60 % (1,8)", on_east.taken.size() >= 1 and _near(on_east.taken[0], RictusKit.DECOY_DEATH_FRAC * RictusKit.DECOY_COEF * BASE), str(on_east.taken))
+	_check("doublure tuée : explosion 60 % (1,08)", on_east.taken.size() >= 1 and _near(on_east.taken[0], RictusKit.DECOY_DEATH_FRAC * RictusKit.DECOY_COEF * BASE), str(on_east.taken))
 	_check("les autres restent", Decoy.live.size() == 5, str(Decoy.live.size()))
 
-	print("L'étoile : Doublures puis Toupie")
+	print("Lancer automatique (mobile)")
 	_reset()
-	_player.spells.aim_override = Vector2(500, 0)
-	_player.spells.cast(4)
-	_land_decoys()
-	var in_path := _fake(Vector2(3.0 * U, 0)) # sur la trajectoire de la doublure est, après 1,8 u de vol
-	var decoys := Decoy.live.duplicate()
-	_check("toupie au milieu", _player.spells.cast(3))
-	var pushed := 0
-	for d in decoys:
-		if d.pushed and d.flying:
-			pushed += 1
-	_check("les 6 doublures percutées d'un coup", pushed == 6, str(pushed))
-	_check("une seule poussée par doublure", not decoys[0].push())
-	await _frames(20)
-	var far_ok := true
-	for d in decoys:
-		if is_instance_valid(d) and d.flown_px > 4.0 * U + 1.0:
-			far_ok = false
-	_check("vol limité à 4 u", far_ok)
-	await _frames(25) # 4 u à 10 u/s = 0,4 s
-	_check("toutes explosent (impact ou bout de course)", Decoy.live.is_empty(), str(Decoy.live.size()))
-	_check("monstre traversé : vol puis explosion", in_path.taken.size() >= 2 and _near(in_path.taken[0], RictusKit.FLIGHT_COEF * BASE)
-			and in_path.taken.has(RictusKit.DECOY_COEF * BASE), str(in_path.taken))
+	var a_t := _fake(Vector2(3.0 * U, 0))
+	_check("Saccade auto : rien sans couteau planté", not _kit.auto_cast_ok(3))
+	_check("couteau auto : en main, cible à portée", _kit.auto_cast_ok(2))
+	_throw_at(a_t)
+	_check("Saccade auto : attend (planté depuis moins de 2 s)", not _kit.auto_cast_ok(3))
+	_drive(1.9)
+	_check("toujours en attente à 1,9 s", not _kit.auto_cast_ok(3))
+	_drive(0.2)
+	_check("part à 2,0 s de pose", _kit.auto_cast_ok(3))
+	_reset()
+	a_t = _fake(Vector2(3.0 * U, 0))
+	_throw_at(a_t)
+	a_t.global_position = Vector2(8.7 * U, 0)
+	_check("(b) ficelé au-delà de 8,5 u : part", _kit.auto_cast_ok(3))
+	a_t.global_position = Vector2(3.0 * U, 0)
+	_kit.tours = 3
+	_check("(e) 3 tours enroulés : part", _kit.auto_cast_ok(3))
+	_kit.tours = 0
+	_check("sans doublure ni tour, tôt : attend", not _kit.auto_cast_ok(3))
+	_kit.knife.drop_at(a_t.global_position)
+	_check("(c) couteau au sol : part", _kit.auto_cast_ok(3))
+	_reset()
+	_check("ultime auto : rien à portée de 3 u, pas de ficelé", not _kit.auto_cast_ok(4))
+	var near3 := _fake(Vector2(2.0 * U, 0))
+	_check("ultime auto : monstre à moins de 3 u", _kit.auto_cast_ok(4))
+	near3.global_position = Vector2(6.0 * U, 0)
+	_check("ultime auto : pas un monstre isolé à 6 u", not _kit.auto_cast_ok(4))
+	_throw_at(near3)
+	_check("ultime auto : ficelé isolé = non", not _kit.auto_cast_ok(4))
+	_fake(near3.global_position + Vector2(20, 0))
+	_fake(near3.global_position + Vector2(-20, 10))
+	_check("ultime auto : ficelé entouré de 3 monstres", _kit.auto_cast_ok(4))
+	_player.spells.auto_cast_enabled = true
+	_reset()
+	var auto_foe := _fake(Vector2(4.0 * U, 0))
+	auto_foe.taken.clear()
+	_player.spells.tick(DT)
+	_check("auto-cast : le sort 2 part seul", not _kit.knife_in_hand())
+	_player.spells.auto_cast_enabled = false
+
+	print("Boucle bornée (hâte extrême)")
+	_reset()
+	_player.apply_stats({"crit_chance": -0.05, "cooldown_mult": 0.35})
+	_player.spells._totals[3] = _player.spells._cooldown_of(_player.character.spells[2])
+	var loop_foe := _fake(Vector2(4.0 * U, 0))
+	var casts2 := 0
+	var t_loop := 0.0
+	while t_loop < 10.0:
+		_player.spells._remaining[1] = 99.0
+		if _player.spells.cast(2):
+			casts2 += 1
+		if not _player.spells.is_slot_blocked(3):
+			_player.spells.cast(3)
+		t_loop += _drive(DT)
+	_check("Saccade à 1,05 s au mieux", _near(_player.spells._cooldown_of(_player.character.spells[2]), 1.05, 0.02), str(_player.spells._cooldown_of(_player.character.spells[2])))
+	_check("boucle bornée par la recharge de la Saccade et le vol (<= 10 en 10 s à 4 u)", casts2 >= 3 and casts2 <= 10, str(casts2))
+	loop_foe.taken.clear()
+	_player.apply_stats({"crit_chance": -0.05, "cooldown_mult": 1.0})
 
 	print("Levée (roulade du Montreur)")
 	_reset()
@@ -356,10 +543,13 @@ func _run() -> void:
 
 	print("Nettoyage (étage) et déblocage caché")
 	_reset()
+	var clean := _fake(Vector2(3.0 * U, 0))
+	_throw_at(clean)
 	_player.spells.cast(4)
 	Events.floor_started.emit(2)
 	await get_tree().process_frame
 	_check("changement d'étage : doublures disparues", Decoy.live.is_empty())
+	_check("changement d'étage : couteau rendu en main, ficelé effacé", _kit.knife_in_hand() and _kit.ficele_enemy() == null and _kit.knife == null)
 	var prof: Node = load("res://scripts/save/profile.gd").new()
 	prof.write_enabled = false
 	prof.path = "user://rictus_test_profile.json" # jamais écrit (write_enabled faux)
@@ -369,6 +559,47 @@ func _run() -> void:
 	var u2: Array = prof.add_run_result({"mode": &"moyen", "close_kills": 60})
 	_check("200 cumulés : Rictus débloqué", prof.is_character_unlocked(&"rictus") and u2.has(&"character:rictus"), str(u2))
 	prof.free()
+	_reset()
+	Events.enemy_killed.emit(null, Vector2(1.5 * U, 0), 1, false)
+	Events.enemy_killed.emit(null, Vector2(5.0 * U, 0), 1, false)
+	_check("compteur rictus.close_kills : un tué à 1,5 u, pas un à 5 u", _near(float(RunState.counters.get("rictus.close_kills", 0.0)), 1.0), str(RunState.counters))
+
+	print("Murs : un monstre derrière un mur plein n'est pas touché (StageMap.los)")
+	_reset()
+	var map := (load("res://scenes/stage/maps/foret_brume.tscn") as PackedScene).instantiate() as StageMap
+	add_child(map)
+	await get_tree().physics_frame
+	var grid: Array = map._vis_grid
+	var size_px: Vector2 = map.get_meta(&"size_u") * StageMap.UNIT_PX
+	var cell := StageMap.OUTLINE_CELL_PX
+	var found := Vector2i(-1, -1)
+	for y in grid.size():
+		var row: String = grid[y]
+		for x in range(1, row.length() - 4):
+			if row.substr(x, 3) == "..." and row[x + 3] == "#":
+				found = Vector2i(x, y)
+				break
+		if found.x >= 0:
+			break
+	_check("cellule test trouvée", found.x >= 0)
+	var to_g := func(cx: float, cy: float) -> Vector2:
+		return map.to_global(map.from_map(-size_px * 0.5 + Vector2(cx, cy) * cell))
+	_player.global_position = to_g.call(found.x + 2.5, found.y + 0.5)
+	var hidden := _fake(to_g.call(found.x + 3.1, found.y + 0.5)) # dans la case du mur, tout près du couteau
+	var seen := _fake(to_g.call(found.x + 2.6, found.y + 0.5))
+	var probe := RictusPendulum.recall_light(_player.spells, _player, null, to_g.call(found.x + 2.9, found.y + 0.5), 100.0, RictusKit.KNIFE_FRAMES)
+	_check("couteau : le monstre derrière le mur n'est pas touché", probe._enemy_at(false) == seen, str(probe._enemy_at(false)))
+	seen.global_position = to_g.call(found.x + 0.5, found.y + 0.5)
+	_check("couteau : rien d'autre à portée", probe._enemy_at(false) == null)
+	probe.queue_free()
+	_kit.kstate = RictusKit.K.PLANTED # ficelé derrière un mur : la scie et l'arrachement ne passent pas
+	_kit.ficele = hidden
+	_kit._saw_tick()
+	_check("scie : pas de coup à travers le mur", hidden.taken.is_empty(), str(hidden.taken))
+	_kit.kstate = RictusKit.K.HAND
+	_kit.ficele = null
+	map.queue_free()
+	await get_tree().process_frame
 
 	_reset()
 	_player.queue_free()
@@ -384,10 +615,13 @@ func _run() -> void:
 	var mp: Node = main.get(&"player")
 	_check("joueur de la partie = Rictus", mp != null and mp.get(&"kit") is RictusKit)
 	if mp != null and mp.get(&"kit") is RictusKit:
+		mp.spells.cast(2)
+		await _frames(30)
 		mp.spells.cast(4)
-		mp.spells.cast(3)
 		await _frames(200)
-		_check("partie toujours en cours après étoile", not bool(mp.get(&"dead")) or bool(main.get(&"run_over")))
+		mp.spells.cast(3)
+		await _frames(100)
+		_check("partie toujours en cours après couteau, doublures, Saccade", not bool(mp.get(&"dead")) or bool(main.get(&"run_over")))
 	main.queue_free()
 	await get_tree().process_frame
 	RunState.character = &"ardent"

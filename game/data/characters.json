@@ -84,7 +84,7 @@
     "id": "rictus",
     "name": "Rictus",
     "title": "Pantin de la barge noyée",
-    "style": "Mêlée rapide, leurres, burst",
+    "style": "Mêlée rapide, fil, leurres, burst",
     "config": "4 sorts",
     "difficulty": 2,
     "unlocked": true,
@@ -106,7 +106,7 @@
           {
             "id": "rictus_main_du_montreur",
             "name": "Main du Montreur",
-            "desc": "La main du fantôme claque au sol sur le paquet le plus dense à 4 u. Près de toi, elle te protège encore.",
+            "desc": "La main du fantôme claque au sol sur le paquet le plus dense à 4 u. Près de toi, elle te protège encore ; sur le monstre ficelé, elle enroule un tour de fil.",
             "unlock_text": "Gagner une run avec Rictus.",
             "unlock_key": "spell:rictus_main_du_montreur",
             "unlock_rule": {"type": "win_with", "character": "rictus"}
@@ -114,34 +114,34 @@
         ]
       },
       {
-        "id": "eventail",
-        "name": "Éventail",
+        "id": "couteau_ficele",
+        "name": "Couteau ficelé",
         "slot": "cd",
-        "desc": "Cinq couteaux en éventail ; un couteau planté au sol rend 1 s de recharge quand on le ramasse. Les couteaux qui traversent une doublure la chargent (3 par salve).",
+        "desc": "Lance un couteau lourd au bout d'un fil (8 u) : il se plante dans le premier monstre touché, qui reste ficelé 5 s et se fait scier toutes les 0,5 s tant qu'il est à moins de 9 u. Un seul monstre ficelé à la fois. Grisé tant que le couteau n'est pas revenu en main (Saccade, ou en marchant dessus).",
         "variants": [
           {
-            "id": "rictus_lame_pendule",
-            "name": "Lame-pendule",
-            "desc": "Un couteau lourd au bout d'un fil : il part à 7 u et revient en tranchant tout sur la ligne.",
+            "id": "rictus_eventail",
+            "name": "Éventail",
+            "desc": "Cinq couteaux légers en éventail à la place du couteau lourd : le multi-cible. Un couteau planté au sol rend 1 s de recharge quand on le ramasse, et la Saccade les rappelle tous en ligne. Ils chargent les doublures qu'ils traversent (3 par salve).",
             "unlock_text": "Ramasser 150 couteaux plantés.",
-            "unlock_key": "spell:rictus_lame_pendule",
+            "unlock_key": "spell:rictus_eventail",
             "unlock_rule": {"type": "counter", "key": "rictus.knives_picked", "value": 150}
           }
         ]
       },
       {
-        "id": "toupie",
-        "name": "Toupie",
+        "id": "rictus_saccade",
+        "name": "Saccade",
         "slot": "cd",
-        "desc": "Rictus tourne 2,5 s en glissant et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche. Pas de roulade pendant, vertige à la fin. Doublures chargées : vol 1,6, explosion 2,9.",
+        "desc": "Le Montreur tire le fil : le couteau s'arrache du monstre ficelé (plus fort avec chaque tour de fil enroulé par tes demi-lunes, 3 au plus), revient en ligne en blessant tout sur son chemin, et le Couteau ficelé est de nouveau prêt. Un monstre ficelé (sauf un boss) est tiré de 1,5 u vers toi ; les doublures posées explosent d'un coup, 30 % plus fort si un monstre est ficelé. Recharge 3 s.",
         "variants": [
           {
-            "id": "rictus_pirouette",
-            "name": "Pirouette",
-            "desc": "Un tour sur toi-même, bref et invulnérable : tout autour est frappé et repoussé. Pas de vertige.",
-            "unlock_text": "Expédier 30 doublures avec la Toupie.",
-            "unlock_key": "spell:rictus_pirouette",
-            "unlock_rule": {"type": "counter", "key": "rictus.doubles_launched", "value": 30}
+            "id": "rictus_toupie",
+            "name": "Toupie",
+            "desc": "Rictus tourne 2,5 s en glissant, invulnérable, et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche, et le fil scie le monstre ficelé. Percute les doublures en étoile. Pas de roulade pendant, vertige à la fin. Recharge 8 s, sans Saccade.",
+            "unlock_text": "Tuer 100 monstres à moins de 2 u.",
+            "unlock_key": "spell:rictus_toupie",
+            "unlock_rule": {"type": "counter", "key": "rictus.close_kills", "value": 100}
           }
         ]
       },
@@ -149,12 +149,12 @@
         "id": "doublures",
         "name": "Les Doublures",
         "slot": "ultime",
-        "desc": "Six doublures en hexagone attirent les monstres puis explosent en grand (2,4 u) ; la Toupie les expédie en étoile, et chaque doublure lancée frappe plus fort. Chargée +0,7. La Levée près d'elles les fait exploser.",
+        "desc": "Lance six doublures en hexagone autour du monstre ficelé (sinon autour du point visé, du paquet ou de toi) : elles attirent les monstres puis explosent en grand (2,4 u). La Saccade les fait exploser d'un coup, 30 % plus fort si un monstre est ficelé ; la Levée près d'elles aussi.",
         "variants": [
           {
             "id": "rictus_rideau",
             "name": "Rideau",
-            "desc": "Six doublures en ligne devant toi forment un rideau 6 s : il attire, encaisse, puis explose.",
+            "desc": "Six doublures en ligne devant toi forment un rideau 6 s : il attire, encaisse, puis explose (la Saccade le fait exploser d'un coup).",
             "unlock_text": "Atteindre l'étage 3 avec Rictus.",
             "unlock_key": "spell:rictus_rideau",
             "unlock_rule": {"type": "floor_reached", "character": "rictus", "floor": 3}

@@ -1,7 +1,7 @@
 extends Node
 ## Test headless des variantes de sorts de Rictus (docs/Variantes_Sorts.md §2.2, CONTRACTS.md « Variantes de sorts ») :
-## substitution par CharacterData.for_id, lancer et dégâts de chacune (Main du Montreur, Lame-pendule, Pirouette,
-## Rideau), compteurs de déblocage (couteaux ramassés, doublures expédiées) et règles de déblocage de characters.json.
+## substitution par CharacterData.for_id, lancer et dégâts de chacune (Main du Montreur, Éventail, Toupie,
+## Rideau), compteurs de déblocage (couteaux rappelés, monstres tués à moins de 2 u) et règles de déblocage de characters.json.
 ## godot --headless --path game res://tests/rictus_variants_test.tscn  (scène : les autoloads doivent exister)
 
 class FakeEnemy extends Node2D:
@@ -35,7 +35,7 @@ class FakeProfile extends RefCounted:
 const VU := preload("res://scripts/save/variant_unlocks.gd")
 const U := 64.0
 const BASE := 12.0 ## Dégât_base niveau 1
-const LOADOUT := {1: &"rictus_main_du_montreur", 2: &"rictus_lame_pendule", 3: &"rictus_pirouette", 4: &"rictus_rideau"}
+const LOADOUT := {1: &"rictus_main_du_montreur", 2: &"rictus_eventail", 3: &"rictus_toupie", 4: &"rictus_rideau"}
 
 var _fails := 0
 var _player: CharacterBody2D
@@ -83,7 +83,6 @@ func _reset() -> void:
 	_kit.clear_transients()
 	_kit.spin_left = 0.0
 	_kit.stagger_left = 0.0
-	_kit.pirouette_left = 0.0
 	_kit.guard_left = 0.0
 	_kit.lifting = false
 	_player.global_position = Vector2.ZERO
@@ -115,20 +114,20 @@ func _run() -> void:
 	# --- substitution (sans joueur) ---------------------------------------------------------------
 	print("Substitution")
 	var base_cd := CharacterData.for_id(&"rictus", {})
-	_check("sans loadout : sorts de base", base_cd.spells.map(func(s): return String(s.id)) == ["dagues_demi_lune", "eventail", "toupie", "doublures"])
+	_check("sans loadout : sorts de base", base_cd.spells.map(func(s): return String(s.id)) == ["dagues_demi_lune", "couteau_ficele", "rictus_saccade", "doublures"])
 	_check("sans loadout : variant_of vide", base_cd.variant_of(1) == &"" and base_cd.variant_of(4) == &"")
 	var var_cd := CharacterData.for_id(&"rictus", LOADOUT)
-	_check("4 variantes substituées (ids)", var_cd.spells.map(func(s): return String(s.id)) == ["rictus_main_du_montreur", "rictus_lame_pendule", "rictus_pirouette", "rictus_rideau"], str(var_cd.spells.map(func(s): return s.id)))
+	_check("4 variantes substituées (ids)", var_cd.spells.map(func(s): return String(s.id)) == ["rictus_main_du_montreur", "rictus_eventail", "rictus_toupie", "rictus_rideau"], str(var_cd.spells.map(func(s): return s.id)))
 	_check("slots conservés", var_cd.spells.map(func(s): return s.slot) == [1, 2, 3, 4])
-	_check("variant_of(slot)", var_cd.variant_of(1) == &"rictus_main_du_montreur" and var_cd.variant_of(2) == &"rictus_lame_pendule"
-			and var_cd.variant_of(3) == &"rictus_pirouette" and var_cd.variant_of(4) == &"rictus_rideau")
+	_check("variant_of(slot)", var_cd.variant_of(1) == &"rictus_main_du_montreur" and var_cd.variant_of(2) == &"rictus_eventail"
+			and var_cd.variant_of(3) == &"rictus_toupie" and var_cd.variant_of(4) == &"rictus_rideau")
 	_check("slot 1 reste auto", var_cd.spells[0].is_auto)
-	var mix_cd := CharacterData.for_id(&"rictus", {3: &"rictus_pirouette"})
-	_check("substitution partielle : seul le slot 3", mix_cd.spells[0].id == &"dagues_demi_lune" and mix_cd.spells[2].id == &"rictus_pirouette" and mix_cd.spells[3].id == &"doublures")
+	var mix_cd := CharacterData.for_id(&"rictus", {3: &"rictus_toupie"})
+	_check("substitution partielle : seul le slot 3", mix_cd.spells[0].id == &"dagues_demi_lune" and mix_cd.spells[2].id == &"rictus_toupie" and mix_cd.spells[3].id == &"doublures")
 	_check("variante inconnue : sort de base", CharacterData.for_id(&"rictus", {1: &"rictus_fantome"}).spells[0].id == &"dagues_demi_lune")
-	_check("variant() inconnue = null", RictusKit.variant(1, &"nope") == null and RictusKit.variant(2, &"rictus_pirouette") == null)
+	_check("variant() inconnue = null", RictusKit.variant(1, &"nope") == null and RictusKit.variant(2, &"rictus_toupie") == null and RictusKit.variant(3, &"rictus_pirouette") == null)
 	_check("variant_spell (fiche) rend un nouveau SpellData",
-			CharacterData.variant_spell(&"rictus", 2, &"rictus_lame_pendule", true) != CharacterData.variant_spell(&"rictus", 2, &"rictus_lame_pendule", true))
+			CharacterData.variant_spell(&"rictus", 2, &"rictus_eventail", true) != CharacterData.variant_spell(&"rictus", 2, &"rictus_eventail", true))
 
 	# --- characters.json ---------------------------------------------------------------------------
 	print("characters.json")
@@ -143,8 +142,8 @@ func _run() -> void:
 		for v in spells_json[i].get("variants", []):
 			declared[i + 1] = str(v.get("id", ""))
 	_check("4 variantes déclarées (une par slot)", declared.size() == 4, str(declared))
-	_check("ids déclarés = ids codés", declared.get(1) == "rictus_main_du_montreur" and declared.get(2) == "rictus_lame_pendule"
-			and declared.get(3) == "rictus_pirouette" and declared.get(4) == "rictus_rideau", str(declared))
+	_check("ids déclarés = ids codés", declared.get(1) == "rictus_main_du_montreur" and declared.get(2) == "rictus_eventail"
+			and declared.get(3) == "rictus_toupie" and declared.get(4) == "rictus_rideau", str(declared))
 	var all_coded := true
 	for slot in declared:
 		all_coded = all_coded and RictusKit.variant(int(slot), StringName(declared[slot])) != null
@@ -159,13 +158,13 @@ func _run() -> void:
 	_check("Main : pas de victoire", not VU.evaluate(prof, chars, {"victory": false, "character": "rictus", "stage": 2}).has(&"spell:rictus_main_du_montreur"))
 	_check("Main : victoire d'un autre personnage", not VU.evaluate(prof, chars, {"victory": true, "character": "tocsin", "stage": 5}).has(&"spell:rictus_main_du_montreur"))
 	prof.stats["rictus.knives_picked"] = 149.0
-	_check("Lame-pendule : 149 couteaux = non", not VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_lame_pendule"))
+	_check("Éventail : 149 couteaux = non", not VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_eventail"))
 	prof.stats["rictus.knives_picked"] = 150.0
-	_check("Lame-pendule : 150 couteaux", VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_lame_pendule"))
-	prof.stats["rictus.doubles_launched"] = 29.0
-	_check("Pirouette : 29 doublures = non", not VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_pirouette"))
-	prof.stats["rictus.doubles_launched"] = 30.0
-	_check("Pirouette : 30 doublures", VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_pirouette"))
+	_check("Éventail : 150 couteaux", VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_eventail"))
+	prof.stats["rictus.close_kills"] = 99.0
+	_check("Toupie : 99 tués à moins de 2 u = non", not VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_toupie"))
+	prof.stats["rictus.close_kills"] = 100.0
+	_check("Toupie : 100 tués à moins de 2 u", VU.evaluate(prof, chars, {"character": "rictus", "stage": 1}).has(&"spell:rictus_toupie"))
 	_check("Rideau : étage 2 = non", not VU.evaluate(prof, chars, {"character": "rictus", "stage": 2}).has(&"spell:rictus_rideau"))
 	_check("Rideau : étage 3 atteint (même sans victoire)", VU.evaluate(prof, chars, {"victory": false, "character": "rictus", "stage": 3}).has(&"spell:rictus_rideau"))
 	_check("Rideau : étage 3 avec un autre personnage = non", not VU.evaluate(prof, chars, {"character": "ardent", "stage": 3}).has(&"spell:rictus_rideau"))
@@ -186,8 +185,8 @@ func _run() -> void:
 	_kit = _player.kit
 	print("Joueur avec variantes")
 	_check("kit Rictus", _kit is RictusKit)
-	_check("sorts du joueur = variantes", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["rictus_main_du_montreur", "rictus_lame_pendule", "rictus_pirouette", "rictus_rideau"], str(_player.get_spell_cooldowns().map(func(c): return c.id)))
-	_check("variant_of côté nœud", _player.character.variant_of(2) == &"rictus_lame_pendule")
+	_check("sorts du joueur = variantes", _player.get_spell_cooldowns().map(func(c): return String(c.id)) == ["rictus_main_du_montreur", "rictus_eventail", "rictus_toupie", "rictus_rideau"], str(_player.get_spell_cooldowns().map(func(c): return c.id)))
+	_check("variant_of côté nœud", _player.character.variant_of(2) == &"rictus_eventail")
 
 	print("Sort 1 : Main du Montreur")
 	_reset()
@@ -210,23 +209,17 @@ func _run() -> void:
 	_check("garde finie", is_equal_approx(_kit.damage_taken_mult(null), 1.0))
 	_check("anim d'action slash", _kit.action_for(_player.character.spells[0]) == &"slash")
 
-	print("Sort 2 : Lame-pendule")
+	print("Sort 2 : Éventail")
 	_reset()
-	var line := _fake(Vector2(3.0 * U, 0)) # sur la ligne
-	var beyond := _fake(Vector2(6.0 * U, 0)) # sur la ligne aussi (perce tout)
-	var side := _fake(Vector2(3.0 * U, 3.0 * U)) # hors ligne
+	_check("sort 2 jamais grisé (pas de couteau lourd)", not _kit.blocks_slot(2))
 	_player.spells.aim_override = Vector2(500, 0)
-	_check("pendule lancé", _player.spells.cast(2))
-	_check("un pendule en vol", _kit.pendulums.size() == 1)
-	_check("recharge 6 s", _near(_player.spells._remaining[2], RictusKit.PENDULE_CD, 0.05), str(_player.spells._remaining[2]))
-	await _frames(100) # 7 u à 14 u/s + retour : ~1 s
-	_check("aller + retour : 2 × 2,5 sur la ligne proche", line.taken.size() == 2 and _near(line.total(), 2.0 * RictusKit.PENDULE_COEF * BASE), str(line.taken))
-	_check("perce tout : cible lointaine touchée 2 fois", beyond.taken.size() == 2, str(beyond.taken))
-	_check("hors ligne : rien", side.taken.is_empty())
-	_check("rattrapé : plus de pendule", _kit.pendulums.is_empty())
+	_check("éventail lancé", _player.spells.cast(2))
+	_check("recharge 6 s", _near(_player.spells._remaining[2], 6.0, 0.05), str(_player.spells._remaining[2]))
 	_player.spells.aim_override = null
+	await _frames(60) # 7 u à 14 u/s = 0,5 s
+	_check("couteaux plantés en fin de course", _kit.knives.size() >= 3, str(_kit.knives.size()))
 
-	print("Compteur : couteaux ramassés")
+	print("Compteur : couteaux rappelés")
 	_reset()
 	_kit._collect_knife(2, {"refunded": 0.0})
 	_kit._collect_knife(2, {"refunded": 0.0})
@@ -267,41 +260,19 @@ func _run() -> void:
 	_check("toutes explosent à 6 s", Decoy.live.is_empty())
 	_check("explosion coef 2,5 par doublure à 2 u", in_range >= 1 and _near(victim.total(), in_range * RictusKit.RIDEAU_COEF * BASE, 0.05), "%s dans %d" % [victim.taken, in_range])
 
-	print("Sort 3 : Pirouette")
+	print("Sort 3 : Toupie")
 	_reset()
-	_player.spells._remaining[4] = 0.0
-	_player.spells.aim_override = Vector2(500, 0)
-	_player.spells.cast(4)
-	_land_decoys()
-	_player.spells.aim_override = null
-	for d in Decoy.live:
-		d.life_s = 30.0
-	var hit_e := _fake(Vector2(1.5 * U, 0.2 * U)) # dans les 2,2 u
-	var out_e := _fake(Vector2(0, 3.0 * U)) # hors de 2,2 u
-	_check("pirouette lancée", _player.spells.cast(3))
-	_check("en pirouette (0,6 s)", _kit.pirouette_left > 0.5)
-	_check("invulnérable", _player.is_invulnerable())
-	_check("immobile (vitesse nulle)", _near(_player.move_speed(), 0.0), str(_player.move_speed()))
-	_check("pas de vertige, roulade permise", _kit.can_dodge() and not _kit.is_staggered())
-	_check("sort 1 non suspendu", not _player.spells.is_slot_blocked(1) and not _kit.blocks_slot(1) and not _kit.blocks_slot(3))
-	_check("pas d'impact avant 0,3 s", hit_e.taken.is_empty())
-	_check("anim spin", String(_kit.visual_anim(&"idle_s")).begins_with("spin") or not ResourceLoader.exists(RictusKit.SPRITE_FRAMES))
-	_kit.tick(0.31)
-	_check("impact à 0,3 s : coef 4,0", hit_e.taken.size() == 1 and _near(hit_e.total(), RictusKit.PIROUETTE_COEF * BASE), str(hit_e.taken))
-	_check("rayon 2,2 u", out_e.taken.is_empty())
-	var launched := 0
-	var same_dir := true
-	for d in Decoy.live:
-		if d.pushed:
-			launched += 1
-			same_dir = same_dir and d.facing.x > 0.99
-	_check("doublures percutées dans le rayon (2 sur 6), toutes vers l'avant", launched == 2 and same_dir, "%d" % launched)
-	_check("compteur rictus.doubles_launched +2", _near(float(RunState.counters.get("rictus.doubles_launched", 0.0)), 2.0), str(RunState.counters))
-	_kit.tick(0.31)
-	_check("fin de pirouette sans vertige", _kit.pirouette_left <= 0.0 and not _kit.is_staggered())
-	_check("vitesse normale", _near(_player.move_speed(), 4.2 * U), str(_player.move_speed()))
+	var close := _fake(Vector2(40, 0))
+	_check("toupie lancée", _player.spells.cast(3))
+	_check("en toupie", _kit.is_spinning())
 	_check("recharge 8 s", _near(_player.spells._remaining[3], 8.0, 0.1), str(_player.spells._remaining[3]))
-	_check("une seule frappe", hit_e.taken.size() == 1)
+	_check("invulnérable, sort 1 suspendu", _player.is_invulnerable() and _kit.blocks_slot(1))
+	_kit.tick(3.0)
+	_check("fin de toupie : vertige", _kit.is_staggered() and not _kit.is_spinning())
+	_check("dégâts reçus par le plus proche", close.total() >= RictusKit.TOUPIE_COEF * BASE * 5.0, str(close.taken))
+	_reset()
+	Events.enemy_killed.emit(null, Vector2(1.0 * U, 0), 1, false)
+	_check("rictus.close_kills +1 pour un tué à 1 u", _near(float(RunState.counters.get(RictusKit.COUNTER_CLOSE, 0.0)), 1.0), str(RunState.counters))
 
 	# --- nettoyage --------------------------------------------------------------------------------
 	RunState.loadout = {}
