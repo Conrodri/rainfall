@@ -52,6 +52,11 @@ var _shots_dir := ""
 var _shot_n := 0
 var _shot_t := 0.0
 var _shot_seen := {}
+var _strand_state := 0
+var _strand_h0 := 0
+var _strand_hp0 := 0.0
+var _strand_pos := Vector2.ZERO
+var _strand_samples: Array[int] = []
 
 
 func _ready() -> void:
@@ -106,7 +111,10 @@ func _physics_process(delta: float) -> void:
 			_scan()
 			_probe_projectile()
 			if _t > SLOT_S * 8.0 + 2.0:
-				_end_p1()
+				_next(11)
+		11:
+			_scan()
+			_strand_probe()
 		2:
 			if not _trans_checked and _t > 0.2:
 				_trans_checked = true
@@ -277,6 +285,38 @@ func _scan() -> void:
 				_aim_bad += 1
 				print("  %s : visée %.0f°, joueur à %.0f°" % [kind, rad_to_deg(aim.angle()), rad_to_deg(v.angle())])
 			_octants[posmod(roundi(v.angle() / (TAU / 8.0)), 8)] = true
+
+
+## Sonde des brins : un fil permanent-court posé sous le joueur -> tics réguliers, pas de dégât pendant l'immunité.
+func _strand_probe() -> void:
+	var sn := _brain().snare()
+	if _strand_state == 0:
+		if _brain().state != WeaverBrain.S.CHASE or _boss.visual.call(&"is_attacking"):
+			_place(_slot)
+			return
+		var mid := _player().global_position
+		sn.add_thread(mid - Vector2(200, 0), mid + Vector2(200, 0), 0.8, 4.0)
+		_strand_h0 = sn.strand_hits
+		_strand_hp0 = _player().hp
+		_strand_pos = mid
+		_strand_state = 1
+		_t = 0.0
+		return
+	_player().global_position = _strand_pos
+	_heal()
+	_strand_samples.append(sn.strand_hits - _strand_h0)
+	if _t > 2.0 and not (_brain().state in [WeaverBrain.S.ASCEND, WeaverBrain.S.HANG, WeaverBrain.S.DROP]):
+		var n: int = sn.strand_hits - _strand_h0
+		var tic := Balance.WEAVER_STRAND_TIC_S
+		_check("fils : dégâts par tic au contact", n >= 2, "%d tics" % n)
+		_check("fils : immunité entre deux tics", n <= int(_t / tic) + 1, "%d tics en %.1f s" % [n, _t])
+		var gaps_ok := true
+		for k in range(1, _strand_samples.size()):
+			if _strand_samples[k] - _strand_samples[k - 1] > 1:
+				gaps_ok = false
+		_check("fils : jamais deux tics sur la même frame", gaps_ok)
+		_check("coefficient fils dans Balance", Balance.WEAVER_STRAND_COEF > 0.0 and Balance.WEAVER_STRAND_COEF < Balance.boss_attack_coef(&"weaver", &"bite"))
+		_end_p1()
 
 
 func _end_p1() -> void:

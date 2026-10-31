@@ -156,6 +156,18 @@ const V_TRACE_TICK_S := 0.5
 const V_TRACE_SLOW_MULT := 0.7 ## ralentissement dans la trace (Player.apply_slow : -30 %)
 const V_TRACE_HALF_W_U := 1.7 ## demi-largeur de la zone (u)
 const V_TRACE_MAX := 4 ## traces actives max par boss (mobile) : la plus ancienne se referme
+
+
+## Angles (rad, centrés sur la visée) d'un éventail de n branches réparties sur `spread` : toujours une branche
+## au centre (n pair -> n + 1 branches), donc jamais de trou au point visé. Aide commune des coups en V.
+static func v_fan_angles(n: int, spread: float) -> Array[float]:
+	var m := maxi(n, 1)
+	if m > 1 and m % 2 == 0:
+		m += 1
+	var out: Array[float] = []
+	for i in m:
+		out.append(0.0 if m == 1 else -spread * 0.5 + spread * float(i) / float(m - 1))
+	return out
 ## Anticipation du corps (visuelle, le coup tombe au même instant) : dans les ANTICIP_HOLD_S avant l'impact le corps s'écrase
 ## davantage (ANTICIP_EXTRA × ARM_SQUASH), la pose « gèle » (la fente d'un boss part en courbe lente puis claque) et un
 ## bref éclat d'émission monte (ANTICIP_FLASH).
@@ -654,6 +666,13 @@ func boss_damage(kind: StringName, D: float) -> float:
 func boss_enrage_mult(fight_time_s: float) -> float:
 	return 1.0 + BOSS_ENRAGE_PER_S * maxf(0.0, fight_time_s - BOSS_ENRAGE_AFTER_S)
 
+
+# --- Tisseuse : fils et toile ---------------------------------------------------------
+## Les fils posés et la toile (phase 2+) blessent au contact en plus du ralentissement : un tic de
+## WEAVER_STRAND_COEF × dégâts du boss (même échelle que BOSS_ATTACK_COEF), puis WEAVER_STRAND_TIC_S s
+## d'immunité aux brins (un tic par intervalle, tous brins confondus).
+const WEAVER_STRAND_COEF := 0.35
+const WEAVER_STRAND_TIC_S := 0.7
 
 ## Coefficient d'un coup de boss à IA propre (BOSS_ATTACK_COEF), 1 si inconnu.
 func boss_attack_coef(boss_id: StringName, attack: StringName) -> float:

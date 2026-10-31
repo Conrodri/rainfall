@@ -28,6 +28,10 @@ var blocked := 0 ## projectiles arrêtés (tests)
 var hatched := 0 ## cocons éclos (tests)
 var frames: SpriteFrames = null ## .tres du boss (extras), null = formes provisoires
 var prefix := "Weaver" ## préfixe des nœuds (tests : rien ne doit rester)
+## Boss dont les brins blessent au contact (posé par WeaverBrain ; null = pas de dégâts, ex. Cèdre-Ermite).
+var strand_owner: Enemy = null
+var strand_hits := 0 ## tics de dégâts infligés par les brins (tests)
+var _strand_cd := 0.0
 
 var _threads: Array[Dictionary] = [] ## {a, b, w, life, max, node}
 var _web: Dictionary = {} ## {center, r, w, gaps, gap_half, node, segs}
@@ -250,6 +254,7 @@ func _physics_process(delta: float) -> void:
 	var player := get_tree().get_first_node_in_group(&"player") as Node2D
 	var ppos := player.global_position if player != null else Vector2.INF
 	_touch_cd -= delta
+	_strand_cd -= delta
 	var segs := PackedVector2Array()
 	# fils
 	var i := _threads.size() - 1
@@ -273,6 +278,7 @@ func _physics_process(delta: float) -> void:
 		if player != null and _seg_dist(ppos, t["a"], t["b"]) <= float(t["w"]) * 0.5 + PLAYER_R:
 			t["glow"] = 1.0
 			_slow(player)
+			_strand_damage(player)
 		i -= 1
 	# toile
 	if not _web.is_empty():
@@ -290,6 +296,7 @@ func _physics_process(delta: float) -> void:
 			while k + 1 < ws.size():
 				if _seg_dist(ppos, ws[k], ws[k + 1]) <= float(_web["w"]) * 0.5 + PLAYER_R:
 					_slow(player)
+					_strand_damage(player)
 					if _touch_cd <= 0.0 and boss_alive:
 						_touch_cd = TOUCH_CD
 						web_touches.append(ppos)
@@ -323,6 +330,15 @@ func _physics_process(delta: float) -> void:
 		elif float(o["life"]) < FADE_S and is_instance_valid(o["node"]):
 			(o["node"] as CanvasItem).modulate.a = float(o["life"]) / FADE_S
 		i -= 1
+
+
+## Tic de dégâts au contact d'un brin (fil ou toile) : coef × dégâts du boss, puis immunité aux brins.
+func _strand_damage(player: Node2D) -> void:
+	if _strand_cd > 0.0 or not boss_alive or not is_instance_valid(strand_owner):
+		return
+	_strand_cd = Balance.WEAVER_STRAND_TIC_S
+	strand_hits += 1
+	strand_owner._hit_player(player, strand_owner.damage * Balance.WEAVER_STRAND_COEF)
 
 
 func _slow(player: Node2D) -> void:

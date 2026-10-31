@@ -120,6 +120,7 @@ func _init(enemy: Enemy) -> void:
 	_snare = WeaverSnare.create(e, "Weaver")
 	if _snare != null:
 		_snare.frames = _frames
+		_snare.strand_owner = e
 	_apply_phase_look()
 
 
