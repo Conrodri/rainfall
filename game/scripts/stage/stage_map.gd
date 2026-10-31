@@ -220,16 +220,21 @@ func _build_iso(grid: Array, origin: Vector2, size_px: Vector2, dir: String, gro
 	# sol : bloc (tx, ty) de 4 u -> cellule iso (tx, ty) ; centre du bloc (0, 0) aligné sur la carte
 	iso_dir_used = dir
 	var ov := _ground_overlap
-	ground.tile_set = _iso_tileset(dir, GROUND_VARIANTS, Vector2i(512, 256), ov)
-	var tiles := Vector2i(ceili(size_px.x / 256.0), ceili(size_px.y / 256.0))
-	for y in tiles.y:
-		for x in tiles.x:
-			if _block_all_void(grid, x, y): # bloc de 4 u entièrement hors carte : pas de sol
-				continue
-			ground.set_cell(Vector2i(x, y), _variant(Vector2i(x, y), GROUND_VARIANTS.size()), Vector2i.ZERO)
+	var splat := use_ground_splat and ground_v2_enabled and GroundSplat.available(_biome)
+	if splat: # sol v2 : un quad mélangé en shader ; Ground reste vide et sans TileSet (losanges non chargés)
+		_build_ground_splat(grid, origin, vis, ground)
+	else:
+		ground.tile_set = _iso_tileset(dir, GROUND_VARIANTS, Vector2i(512, 256), ov)
+		var tiles := Vector2i(ceili(size_px.x / 256.0), ceili(size_px.y / 256.0))
+		for y in tiles.y:
+			for x in tiles.x:
+				if _block_all_void(grid, x, y): # bloc de 4 u entièrement hors carte : pas de sol
+					continue
+				ground.set_cell(Vector2i(x, y), _variant(Vector2i(x, y), GROUND_VARIANTS.size()), Vector2i.ZERO)
 	_place_billboard_layer(ground, inv_vis, from_map(origin + Vector2(128.0, 128.0)), 512.0 / float(512 - 2 * ov))
 	ground.self_modulate = _tint.get("ground", Color.WHITE)
-	_build_void_mask(grid, origin, dir, vis)
+	if not splat: # le GroundSplat découpe lui-même le vide (alpha lissé du masque)
+		_build_void_mask(grid, origin, dir, vis)
 	cells.self_modulate = _tint.get("water", Color.WHITE)
 	# eau : une tuile par case
 	var water_names: Array = []
@@ -243,12 +248,58 @@ func _build_iso(grid: Array, origin: Vector2, size_px: Vector2, dir: String, gro
 		for y in grid.size():
 			var row: String = grid[y]
 			for x in row.length():
-				if WATER_TILES.has(row[x]):
+				if WATER_TILES.has(row[x]) and not (splat and row[x] == ","): # « , » : film d'eau du GroundSplat
 					cells.set_cell(Vector2i(x, y), water_names.find(WATER_TILES[row[x]]), Vector2i.ZERO)
 		_place_billboard_layer(cells, inv_vis, from_map(origin + Vector2(64.0, 64.0)))
 	_build_void(dir, inv_vis)
 	_build_outlines(grid, origin)
 	_build_blocks(grid, origin, dir)
+
+
+## --- Sol v2 (GroundSplat + GroundDecals, 31/10/2026) ---------------------------------------------------
+## Retour joueur : « le sol fait très tiles rectangulaires ». Cause : sol en losanges de 4 u tirés parmi 4
+## variantes dont chacune porte des motifs uniques (canaux, grilles, plaques, cercles) et des valeurs
+## différentes, bord sombre sur l'arête : le réseau de 4 u se lisait partout. Remplacé par un quad mélangé
+## en shader (scripts/stage/ground_splat.gd) + décalques semés (ground_decals.gd), contrat
+## art/briefs/SOL_contrat.md. `use_ground_splat = false` (ou biome sans textures) : ancien sol en tuiles.
+static var ground_v2_enabled := true ## interrupteur global (captures avant / après : tests/capture_sol_v2 --sol-v1)
+var use_ground_splat := true
+var ground_splat: GroundSplat = null
+var ground_decals: GroundDecals = null
+
+
+func _build_ground_splat(grid: Array, origin: Vector2, vis: Node2D, ground: Node) -> void:
+	var id := String(get_meta(&"map_id", ""))
+	ground_splat = GroundSplat.new()
+	ground_splat.setup(_biome, grid, origin, OUTLINE_CELL_PX, id)
+	vis.add_child(ground_splat)
+	vis.move_child(ground_splat, ground.get_index() + 1)
+	var cfg := GroundSplat.config_for(_biome)
+	var atlas_path := String(cfg.get("dir", "")) + "decals.png"
+	if not ResourceLoader.exists(atlas_path):
+		return
+	ground_decals = GroundDecals.new()
+	ground_decals.setup(cfg, load(atlas_path), grid, origin, OUTLINE_CELL_PX, id, _marker_cells())
+	var em_path := String(cfg.get("dir", "")) + "decals_e.png"
+	if ResourceLoader.exists(em_path):
+		ground_decals.add_emission(load(em_path), cfg.get("decals", {}))
+	vis.add_child(ground_decals)
+	vis.move_child(ground_decals, ground_splat.get_index() + 1)
+
+
+## Cases (2 u) des repères du JSON de la carte (départ, candidats coffres / piliers / événements).
+func _marker_cells() -> Array[Vector2i]:
+	var keep: Array[Vector2i] = []
+	var data = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % String(get_meta(&"map_id", ""))))
+	if data is Dictionary:
+		var cand: Dictionary = data.get("candidates", {})
+		for k in cand:
+			for xy in cand[k]:
+				keep.append(Vector2i(int(xy[0]) / 2, int(xy[1]) / 2))
+		var ps: Array = data.get("player_start_u", [])
+		if ps.size() == 2:
+			keep.append(Vector2i(int(ps[0]) / 2, int(ps[1]) / 2))
+	return keep
 
 
 ## --- Props de biome (crochet du lot F2p, forêt : cèdre géant, sanctuaires à lanterne, arches de racines,

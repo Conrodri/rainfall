@@ -84,7 +84,7 @@ func _check_floor4(stage: StageManager) -> void:
 	var map := stage.map
 	_check("cryptes iso", map.is_iso() and map.get_meta(&"projection", "") == "iso45")
 	var ground := map.get_node(^"Visual/Ground") as TileMapLayer
-	_check("sol en tuiles iso", ground.tile_set != null and ground.tile_set.tile_shape == TileSet.TILE_SHAPE_ISOMETRIC)
+	_check("sol v2 (GroundSplat) ou tuiles iso", (map.ground_splat != null and ground.get_used_cells().is_empty()) or (ground.tile_set != null and ground.tile_set.tile_shape == TileSet.TILE_SHAPE_ISOMETRIC))
 	_check("fond d'abîme", map.get_node_or_null(^"Visual/Void") != null)
 	_check("falaises de bord", map.get_node_or_null(^"Visual/Edges") != null)
 	var blocks := map.get_node_or_null(^"Blocks")

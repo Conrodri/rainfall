@@ -116,7 +116,7 @@ func _check_floor2(stage: StageManager) -> void:
 	var map := stage.map
 	_check("foret iso", map.is_iso())
 	var ground := map.get_node(^"Visual/Ground") as TileMapLayer
-	_check("sol en tuiles iso", ground.tile_set != null and ground.tile_set.tile_shape == TileSet.TILE_SHAPE_ISOMETRIC)
+	_check("sol v2 (GroundSplat) ou tuiles iso", (map.ground_splat != null and ground.get_used_cells().is_empty()) or (ground.tile_set != null and ground.tile_set.tile_shape == TileSet.TILE_SHAPE_ISOMETRIC))
 	_check("fond d'abîme", map.get_node_or_null(^"Visual/Void") != null)
 	var blocks := map.get_node_or_null(^"Blocks")
 	var sprites := 0
@@ -186,14 +186,17 @@ func _check_real_tiles(map: StageMap, ground: TileMapLayer) -> void:
 	_check("F2 : pas de substitut teinté (ISO_FALLBACK)", (map.get(&"_tint") as Dictionary).is_empty() and not StageMap.ISO_FALLBACK.has("foret"))
 	_check("F2 : dossier de tuiles = fog_forest/iso", map.iso_dir_used == F2, map.iso_dir_used)
 	var bad: Array = []
-	var ts := ground.tile_set
-	for i in ts.get_source_count():
-		var src := ts.get_source(ts.get_source_id(i)) as TileSetAtlasSource
-		var path := _tex_path(src.texture if src != null else null)
-		if not path.begins_with(F2 + "ground_"):
-			bad.append(path)
-	_check("F2 : sol ground_a..d du lot forêt", ts.get_source_count() == 4 and bad.is_empty(), str(bad))
-	_check("F2 : tuiles de sol chevauchantes (504 × 252 pour 512 × 256)", ts.tile_size == Vector2i(504, 252), str(ts.tile_size))
+	if map.ground_splat != null: # sol v2 (GroundSplat, 31/10/2026) : plus de losanges ground_a..d
+		_check("F2 : sol v2 sans losanges ni TileSet", ground.tile_set == null and ground.get_used_cells().is_empty())
+	else:
+		var ts := ground.tile_set
+		for i in ts.get_source_count():
+			var src := ts.get_source(ts.get_source_id(i)) as TileSetAtlasSource
+			var path := _tex_path(src.texture if src != null else null)
+			if not path.begins_with(F2 + "ground_"):
+				bad.append(path)
+		_check("F2 : sol ground_a..d du lot forêt", ts.get_source_count() == 4 and bad.is_empty(), str(bad))
+		_check("F2 : tuiles de sol chevauchantes (504 × 252 pour 512 × 256)", ts.tile_size == Vector2i(504, 252), str(ts.tile_size))
 	var decor := map.get_node(^"Visual/Decor") as TileMapLayer
 	if decor.tile_set != null:
 		bad.clear()
