@@ -709,7 +709,7 @@ func _enemies_on(pts: PackedVector2Array, reach: float) -> Array:
 		var pos: Vector2 = e.global_position
 		if not box.has_point(pos):
 			continue
-		if dist_to_polyline(pos, pts) <= reach + _radius_of(e):
+		if dist_to_polyline(pos, pts) <= reach + _radius_of(e) and StageMap.los(get_tree(), player.global_position, pos):
 			out.append(e)
 	return out
 
@@ -1143,6 +1143,8 @@ func _knot_step(delta: float) -> void:
 			continue
 		if (e as Node2D).global_position.distance_to(_knot_pos) > reach + _radius_of(e):
 			continue
+		if not StageMap.los(get_tree(), _knot_pos, e.global_position):
+			continue
 		_caster().deal_damage(e, s, {"source_pos": _knot_pos})
 		hits += 1
 		if not is_instance_valid(e):
@@ -1192,7 +1194,8 @@ func auto_cast_ok(slot: int) -> bool:
 			var c := _mean(tail)
 			var reach := _knot_reach()
 			for e in get_tree().get_nodes_in_group(&"enemies"):
-				if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(c) <= reach + _radius_of(e):
+				if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(c) <= reach + _radius_of(e) \
+						and StageMap.los(get_tree(), c, (e as Node2D).global_position):
 					found.append(e)
 	else:
 		found = _enemies_on_lines(_lines(), BOUCLE_BAND_U * Balance.UNIT_PX)
@@ -1412,7 +1415,7 @@ func _ring_hit(s: SpellData) -> int:
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
 		var d := (e as Node2D).global_position.distance_to(c)
-		if absf(d - r) > half + _radius_of(e):
+		if absf(d - r) > half + _radius_of(e) or not StageMap.los(get_tree(), c, e.global_position):
 			continue
 		_caster().deal_damage(e, s, {"source_pos": c})
 		hits += 1

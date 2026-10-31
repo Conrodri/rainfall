@@ -4,8 +4,9 @@ extends Node
 ## godot --headless --path game res://tests/projectile_wall_test.tscn  -> RESULT: OK
 
 class FakeEnemy extends Node2D:
+	var hits := 0
 	func take_damage(_a: float, _c: bool = false, _e: StringName = &"", _h: Dictionary = {}) -> void:
-		pass
+		hits += 1
 
 var _fails := 0
 
@@ -87,6 +88,29 @@ func _run() -> void:
 	_check("ciblage auto : cible visible choisie", pick == seen, str(pick))
 	seen.remove_from_group("enemies")
 	_check("seule cible cachée : aucune", sp.nearest_enemy(1500.0) == null)
+
+	# mêlée / zone : le monstre derrière le mur n'est pas touché, le monstre visible l'est
+	seen.add_to_group("enemies")
+	var spell := SpellData.new()
+	spell.id = &"wall_test_nova"
+	spell.behavior = SpellData.Behavior.NOVA
+	spell.radius_u = 6.0
+	var zone_pos: Vector2 = pstart
+	var z := sp.spawn_zone(spell, zone_pos)
+	_check("zone : monstre visible dans le rayon", seen.global_position.distance_to(zone_pos) <= z.radius)
+	_check("zone : monstre caché dans le rayon", hidden.global_position.distance_to(zone_pos) <= z.radius)
+	_check("zone : le visible est touché", seen.hits > 0, str(seen.hits))
+	_check("zone : le caché derrière le mur n'est pas touché", hidden.hits == 0, str(hidden.hits))
+	_check("ligne de vue : caché bloqué", not StageMap.los(get_tree(), zone_pos, hidden.global_position))
+	_check("ligne de vue : visible dégagé", StageMap.los(get_tree(), zone_pos, seen.global_position))
+	var orig_hits := sp.nearest_enemies(zone_pos, 1500.0, 5)
+	_check("nearest_enemies ignore le caché", seen in orig_hits and not (hidden in orig_hits), str(orig_hits))
+	var dense = sp.densest_point(1500.0)
+	_check("densest_point ignore le caché", dense != null and (dense as Vector2).distance_to(hidden.global_position) > 1.0)
+	var chain := sp.chain_targets(seen, 3, 2000.0)
+	_check("chaîne : pas de rebond à travers le mur", not (hidden in chain), str(chain))
+	_check("chaîne : atteint le visible", seen != null and sp.chain_targets(player, 3, 2000.0).has(seen))
+	_check("sans arbre ni carte : tout est visible", StageMap.los(null, Vector2.ZERO, Vector2.ONE))
 
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(1 if _fails > 0 else 0)

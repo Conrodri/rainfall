@@ -1160,6 +1160,8 @@ func _enemies_in_cone(origin: Vector2, dir: Vector2, r: float, half: float) -> A
 			continue
 		if v.length_squared() > 1.0 and absf(dir.angle_to(v)) > half:
 			continue
+		if not StageMap.los(player.get_tree(), origin, e.global_position):
+			continue
 		out.append(e)
 	return out
 
@@ -1314,7 +1316,7 @@ func _geyser_burst(s: SpellData, at: Vector2, r: float, fx: Node) -> void:
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
-		if e.global_position.distance_to(at) > r:
+		if e.global_position.distance_to(at) > r or not StageMap.los(player.get_tree(), at, e.global_position):
 			continue
 		_caster().deal_damage(e, s, {"anim": true})
 		if on_puddle:
@@ -1463,7 +1465,8 @@ func _crue(s: SpellData, spent: float) -> void:
 	_tint_vfx(z, CRUE_VFX_TINT)
 	var r: float = z.radius
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(origin) <= r:
+		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(origin) <= r \
+				and StageMap.los(player.get_tree(), origin, e.global_position):
 			var wet := wet_before.has(e.get_instance_id())
 			_soak(e)
 			_shove(e, origin, CRUE_SOAK_KNOCK_U if wet else CRUE_KNOCK_U)

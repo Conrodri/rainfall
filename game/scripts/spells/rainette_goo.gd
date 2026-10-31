@@ -132,7 +132,8 @@ func burst(caster: SpellCaster, coef: float, end_speed := 2.0) -> void:
 		sd.light_preset = &""
 		for e in get_tree().get_nodes_in_group(&"enemies"):
 			if e is Node2D and is_instance_valid(e) and (not (&"active" in e) or bool(e.get(&"active"))) \
-					and (e as Node2D).global_position.distance_to(global_position) <= radius:
+					and (e as Node2D).global_position.distance_to(global_position) <= radius \
+					and StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 				caster.deal_damage(e, sd, {"source_pos": global_position, "combo": true})
 	_t = maxf(_t, duration)
 	_begin_end(end_speed)

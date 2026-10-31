@@ -214,6 +214,8 @@ func _apply() -> void:
 				var v: Vector2 = e.global_position - global_position
 				if v.length_squared() > 1.0 and absf(arc_dir.angle_to(v)) > arc_half:
 					continue
+			if not StageMap.los(get_tree(), global_position, e.global_position):
+				continue # mur plein entre le centre de la zone et le monstre
 			caster.deal_damage(e, spell, hit)
 	for w in get_tree().get_nodes_in_group(&"secret_wall"): # mur fissuré d'une salle secrète (SecretWall)
 		if w is Node2D and w.global_position.distance_to(global_position) <= radius + 64.0:

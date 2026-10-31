@@ -245,7 +245,8 @@ func _fire_nova(n: int) -> bool:
 	var radius_px: float = s.radius_u * Balance.UNIT_PX * (1.0 + float(player.call(&"stat", &"zone_size_add")))
 	var targets: Array = []
 	for e in player.get_tree().get_nodes_in_group("enemies"):
-		if e is Node2D and e.has_method("take_damage") and e.global_position.distance_to(player.global_position) <= radius_px:
+		if e is Node2D and e.has_method("take_damage") and e.global_position.distance_to(player.global_position) <= radius_px \
+				and StageMap.los(player.get_tree(), player.global_position, e.global_position):
 			targets.append(e)
 	if targets.is_empty():
 		return false # rien à toucher : la nova attend un ennemi à portée

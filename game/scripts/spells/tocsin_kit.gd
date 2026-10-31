@@ -826,7 +826,8 @@ func _cast_toll(s: SpellData) -> bool:
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
-		if (e as Node2D).global_position.distance_to(at) > r + TocsinLimb._radius_of(e) * 0.5:
+		if (e as Node2D).global_position.distance_to(at) > r + TocsinLimb._radius_of(e) * 0.5 \
+				or not StageMap.los(player.get_tree(), at, (e as Node2D).global_position):
 			continue
 		c.deal_damage(e, s, {"source_pos": at})
 		if TocsinLimb._alive(e) and not TocsinLimb._is_boss(e):
@@ -878,7 +879,7 @@ func _cast_vapeur(s: SpellData) -> bool:
 		var off: Vector2 = (e as Node2D).global_position - origin
 		var rad := TocsinLimb._radius_of(e)
 		var dist := off.length()
-		if dist > reach + rad:
+		if dist > reach + rad or not StageMap.los(player.get_tree(), origin, (e as Node2D).global_position):
 			continue
 		if not ring and dist > rad + 0.3 * Balance.UNIT_PX: # cône : l'angle compte (marge = rayon du corps vu de là)
 			var slack := asin(clampf(rad / maxf(dist, 1.0), 0.0, 1.0))

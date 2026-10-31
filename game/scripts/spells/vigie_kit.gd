@@ -822,7 +822,7 @@ func open_net(at: Vector2) -> void:
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"apply_status"):
 			continue
-		if (e as Node2D).global_position.distance_to(at) > r:
+		if (e as Node2D).global_position.distance_to(at) > r or not StageMap.los(player.get_tree(), at, (e as Node2D).global_position):
 			continue
 		if e.get(&"is_boss") == true:
 			e.apply_status(&"slow", {"pct": NET_BOSS_SLOW_PCT, "duration": NET_HOLD_S})

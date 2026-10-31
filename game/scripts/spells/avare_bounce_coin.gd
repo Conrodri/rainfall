@@ -76,7 +76,7 @@ func _enemy_near(p: Vector2, r: float) -> Node2D:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e) and not _hit.has(e.get_instance_id()) and e.has_method(&"take_damage"):
 			var d := (e as Node2D).global_position.distance_to(p)
-			if d <= best_d:
+			if d <= best_d and StageMap.los(get_tree(), p, (e as Node2D).global_position):
 				best_d = d
 				best = e
 	return best

@@ -136,7 +136,7 @@ func _strike() -> void:
 			continue
 		var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
 		var closest := Geometry2D.get_closest_point_to_segment(e.global_position, a, b)
-		if closest.distance_to(e.global_position) > LINE_HALF_W_U * u + er:
+		if closest.distance_to(e.global_position) > LINE_HALF_W_U * u + er or not StageMap.los(get_tree(), _impact, e.global_position):
 			continue
 		strikes_hit += 1
 		caster.deal_damage(e, dive_spell, {"source_pos": global_position})

@@ -830,6 +830,8 @@ func _cleave_line(hit: SpellData, origin: Vector2, dir: Vector2) -> int:
 		var along := rel.dot(dir)
 		if along < -er or along > len_px + er or absf(rel.cross(dir)) > half_w + er:
 			continue
+		if not StageMap.los(get_tree(), origin, e.global_position):
+			continue
 		n += 1
 		c.deal_damage(e, hit, {"source_pos": e.global_position - dir * Balance.UNIT_PX}) # recul dans l'axe
 	if player.get_parent() != null:
@@ -897,7 +899,7 @@ func _iai_step() -> void:
 		if not (e is Node2D) or not is_instance_valid(e) or _iai_hit.has(e.get_instance_id()):
 			continue
 		var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
-		if e.global_position.distance_to(player.global_position) <= r + er:
+		if e.global_position.distance_to(player.global_position) <= r + er and StageMap.los(get_tree(), player.global_position, e.global_position):
 			_iai_hit[e.get_instance_id()] = true
 			c.deal_damage(e, hit, {"source_pos": player.global_position})
 			if is_twin():

@@ -759,7 +759,7 @@ func _lash(s: SpellData, target: Variant, dir0: Vector2) -> void:
 		var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
 		if along < -er or along > length + er:
 			continue
-		if absf(v.cross(dir)) > half + er:
+		if absf(v.cross(dir)) > half + er or not StageMap.los(get_tree(), origin, (e as Node2D).global_position):
 			continue
 		hit.append(e)
 	var primary := _tongue_primary(hit, origin)
@@ -866,7 +866,8 @@ func _croak(s: SpellData) -> void:
 	var r := _croak_radius_px(s)
 	var smalls: Array = []
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(pos) <= r and _is_small(e):
+		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(pos) <= r and _is_small(e) \
+				and StageMap.los(get_tree(), pos, (e as Node2D).global_position):
 			smalls.append(e)
 	var z := s.duplicate() as SpellData
 	z.behavior = SpellData.Behavior.NOVA
@@ -988,7 +989,8 @@ func _leap_impact(pos: Vector2) -> void:
 	var r: float = _u(s.radius_u) * (1.0 + player.stat(&"zone_size_add"))
 	var ric := s.id == V_RICOCHET
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and is_instance_valid(e) and e.has_method(&"stun") and (e as Node2D).global_position.distance_to(pos) <= r:
+		if e is Node2D and is_instance_valid(e) and e.has_method(&"stun") and (e as Node2D).global_position.distance_to(pos) <= r \
+				and StageMap.los(get_tree(), pos, (e as Node2D).global_position):
 			var crushed := _crush_ids.has(e.get_instance_id())
 			e.stun(RIC_STUN_S if ric else (CRUSH_STUN_S if crushed else LEAP_STUN_S))
 			if not ric and e.get(&"is_boss") != true:
@@ -1040,7 +1042,8 @@ func _cast_goo(s: SpellData, aim: Variant) -> bool:
 func _spawn_goo(s: SpellData, at: Vector2) -> void:
 	var r: float = _u(s.radius_u) * (1.0 + player.stat(&"zone_size_add"))
 	for e in get_tree().get_nodes_in_group(&"enemies"): # éclaboussure : un coup à l'arrivée
-		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(at) <= r:
+		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(at) <= r \
+				and StageMap.los(get_tree(), at, (e as Node2D).global_position):
 			_caster().deal_damage(e, s, {"source_pos": at})
 	_spawn_goo_glob(at)
 	var g := RainetteGoo.new()

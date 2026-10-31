@@ -70,7 +70,8 @@ func _apply() -> void:
 	if caster == null or not is_instance_valid(caster) or spell == null:
 		return
 	for e in get_tree().get_nodes_in_group("enemies"):
-		if e is Node2D and e.has_method("take_damage") and contains((e as Node2D).global_position):
+		if e is Node2D and e.has_method("take_damage") and contains((e as Node2D).global_position) \
+				and StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 			caster.deal_damage(e, spell, {"is_dot": true})
 
 

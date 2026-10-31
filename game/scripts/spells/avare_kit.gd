@@ -765,7 +765,8 @@ func ram_targets(origin: Vector2, dir: Vector2, length: float, half_w: float) ->
 		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage"):
 			var v: Vector2 = (e as Node2D).global_position - origin
 			var along := v.dot(n)
-			if along >= -8.0 and along <= length + 8.0 and absf(v.cross(n)) <= half_w + 14.0:
+			if along >= -8.0 and along <= length + 8.0 and absf(v.cross(n)) <= half_w + 14.0 \
+					and StageMap.los(get_tree(), origin, (e as Node2D).global_position):
 				out.append(e)
 	return out
 
@@ -1152,7 +1153,7 @@ func _nearest_enemy(max_dist: float) -> Node2D:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if e is Node2D and is_instance_valid(e):
 			var d: float = (e as Node2D).global_position.distance_to(player.global_position)
-			if d <= best_d:
+			if d <= best_d and StageMap.los(get_tree(), player.global_position, (e as Node2D).global_position):
 				best_d = d
 				best = e
 	return best
@@ -1161,7 +1162,8 @@ func _nearest_enemy(max_dist: float) -> Node2D:
 func _enemies_in(pos: Vector2, r: float) -> Array:
 	var out: Array = []
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(pos) <= r:
+		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(pos) <= r \
+				and StageMap.los(get_tree(), pos, (e as Node2D).global_position):
 			out.append(e)
 	return out
 

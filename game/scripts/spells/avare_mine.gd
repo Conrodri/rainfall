@@ -37,7 +37,8 @@ func crush_points() -> int:
 	var pts := 0
 	var r := TRIGGER_U * Balance.UNIT_PX
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(global_position) <= r:
+		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(global_position) <= r \
+				and StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 			pts += point_value(e)
 	return pts
 

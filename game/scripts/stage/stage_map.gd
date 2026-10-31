@@ -1213,6 +1213,20 @@ func is_projectile_blocked(a: Vector2, b: Vector2) -> bool:
 	return false
 
 
+## Ligne de vue pour les attaques de mêlée / de zone et le ciblage : vrai si aucun mur plein ne coupe a-b.
+## Carte retrouvée une fois par frame (cache statique) ; sans carte ou sans grille (arène de test) : toujours vrai.
+static var _los_map: StageMap = null
+static var _los_frame := -1
+static func los(tree: SceneTree, a: Vector2, b: Vector2) -> bool:
+	if tree == null:
+		return true
+	var f := Engine.get_process_frames()
+	if f != _los_frame or _los_map == null or not is_instance_valid(_los_map) or not _los_map.is_inside_tree():
+		_los_frame = f
+		_los_map = tree.get_first_node_in_group(&"stage_map") as StageMap
+	return _los_map == null or not _los_map.is_projectile_blocked(a, b)
+
+
 ## Position locale (à la carte) d'un marqueur.
 func local_pos(m: Node2D) -> Vector2:
 	return to_local(m.global_position)

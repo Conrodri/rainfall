@@ -229,7 +229,8 @@ func _pillar_tick() -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not e.has_method(&"take_damage") or not _alive(e):
 			continue
-		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
+		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5 \
+				or not StageMap.los(get_tree(), c, (e as Node2D).global_position):
 			continue
 		caster.deal_damage(e, spell, {"is_dot": true})
 		if _alive(e):
@@ -257,7 +258,8 @@ func _extra_discharge(coef: float) -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not e.has_method(&"take_damage") or not _alive(e):
 			continue
-		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
+		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5 \
+				or not StageMap.los(get_tree(), c, (e as Node2D).global_position):
 			continue
 		caster.deal_damage(e, sd, {"combo": true})
 	_tick_flash = 0.2
@@ -344,7 +346,8 @@ func _start_smoke() -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not e.has_method(&"take_damage") or not _alive(e):
 			continue
-		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
+		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5 \
+				or not StageMap.los(get_tree(), c, (e as Node2D).global_position):
 			continue
 		if _is_boss(e): # le boss n'est pas étourdi : ralenti
 			e.apply_status(&"slow", {"pct": TocsinKit.FUMI_BOSS_SLOW_PCT, "duration": TocsinKit.FUMI_STUN_S})
@@ -376,7 +379,8 @@ func _smoke_tick() -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not e.has_method(&"take_damage") or not _alive(e):
 			continue
-		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5:
+		if (e as Node2D).global_position.distance_to(c) > radius_px + _radius_of(e) * 0.5 \
+				or not StageMap.los(get_tree(), c, (e as Node2D).global_position):
 			continue
 		var held: bool = (e.has_method(&"is_imprisoned") and bool(e.is_imprisoned())) or kit.is_charged(e)
 		caster.deal_damage(e, spell, {"is_dot": true})
@@ -395,7 +399,8 @@ func _blast() -> void:
 	var r := radius_px
 	var victims: Array = []
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if e is Node2D and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(c) <= r + _radius_of(e) * 0.5:
+		if e is Node2D and e.has_method(&"take_damage") and (e as Node2D).global_position.distance_to(c) <= r + _radius_of(e) * 0.5 \
+			and StageMap.los(get_tree(), c, (e as Node2D).global_position):
 			victims.append(e)
 	for e: Node2D in victims:
 		caster.deal_damage(e, spell, {"source_pos": c})

@@ -54,7 +54,8 @@ static func clear_all() -> void:
 ## Gobe les monstres du point d'éclatement (appelé par le kit une fois la bulle posée).
 func capture() -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
-		if not (e is Node2D) or not is_instance_valid(e) or (e as Node2D).global_position.distance_to(global_position) > catch_px:
+		if not (e is Node2D) or not is_instance_valid(e) or (e as Node2D).global_position.distance_to(global_position) > catch_px \
+				or not StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 			continue
 		if e.get(&"is_boss") == true:
 			if e.has_method(&"apply_status"):
@@ -101,7 +102,8 @@ func _burst() -> void:
 	burst_done = true
 	if caster != null and is_instance_valid(caster):
 		for e in get_tree().get_nodes_in_group(&"enemies"):
-			if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(global_position) <= burst_px:
+			if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_to(global_position) <= burst_px \
+					and StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 				caster.deal_damage(e, spell, {"source_pos": global_position})
 	LightRig.flash(global_position, &"rainette_jade", 0.3)
 	Audio.play(&"status.poison.light", global_position, -2.0, 1.3)

@@ -467,7 +467,7 @@ func _find_target() -> Node2D:
 			continue
 		var boss := _is_boss(e)
 		var d: float = e.global_position.distance_to(global_position)
-		if d > (BOSS_DETECT_U if boss else DETECT_U) * u or not _in_leash(e):
+		if d > (BOSS_DETECT_U if boss else DETECT_U) * u or not _in_leash(e) or not StageMap.los(get_tree(), global_position, e.global_position):
 			continue
 		var rank := 0 if boss else (1 if e.get(&"is_elite") == true else 2)
 		var d2 := d * d

@@ -89,7 +89,8 @@ func _scan() -> void:
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
-		if (e as Node2D).global_position.distance_to(global_position) > radius:
+		if (e as Node2D).global_position.distance_to(global_position) > radius \
+				or not StageMap.los(get_tree(), global_position, (e as Node2D).global_position):
 			continue
 		var boss: bool = e.get(&"is_boss") == true
 		if e.has_method(&"apply_status"):

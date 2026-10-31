@@ -663,7 +663,8 @@ func densest_point(range_px: float) -> Variant:
 		return near.global_position if near != null else null
 	var cands: Array = []
 	for e in player.get_tree().get_nodes_in_group("enemies"):
-		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(player.global_position) <= range_px:
+		if e is Node2D and is_instance_valid(e) and e.global_position.distance_to(player.global_position) <= range_px \
+				and StageMap.los(player.get_tree(), player.global_position, e.global_position):
 			cands.append(e)
 	if cands.is_empty():
 		return null
@@ -827,7 +828,7 @@ func nearest_enemies(origin: Vector2, range_px: float, count: int, exclude: Node
 	var cands: Array = []
 	for e in player.get_tree().get_nodes_in_group("enemies"):
 		if e != exclude and e is Node2D and is_instance_valid(e) and e.has_method("take_damage") \
-				and e.global_position.distance_to(origin) <= range_px:
+				and e.global_position.distance_to(origin) <= range_px and StageMap.los(player.get_tree(), origin, e.global_position):
 			cands.append(e)
 	cands.sort_custom(func(a, b): return a.global_position.distance_squared_to(origin) < b.global_position.distance_squared_to(origin))
 	return cands.slice(0, count)
@@ -874,11 +875,21 @@ func chain_targets(start: Node2D, count: int, reach_px: float) -> Array:
 	while out.size() < count and not pool.is_empty():
 		var best := -1
 		var best_d := r2
-		for i in pool.size():
-			var d: float = (pool[i] as Node2D).global_position.distance_squared_to(cur)
-			if d <= best_d:
-				best_d = d
-				best = i
+		var skip: Array = []
+		for _try in 4: # candidat le plus proche ; derrière un mur on l'écarte (ligne testée seulement pour lui)
+			best = -1
+			best_d = r2
+			for i in pool.size():
+				if i in skip:
+					continue
+				var d: float = (pool[i] as Node2D).global_position.distance_squared_to(cur)
+				if d <= best_d:
+					best_d = d
+					best = i
+			if best < 0 or StageMap.los(player.get_tree(), cur, (pool[best] as Node2D).global_position):
+				break
+			skip.append(best)
+			best = -1
 		if best < 0:
 			break
 		var pick: Node2D = pool[best]
