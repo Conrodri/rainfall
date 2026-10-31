@@ -12,6 +12,8 @@ var _geysers_seen := 0
 var _double_seen := false
 var _angles := {}
 var _anchored_seen := false
+var _trace_seen := 0
+var _trace_cap_ok := true
 
 
 func _init() -> void:
@@ -58,6 +60,10 @@ func _tick_phase(p: int) -> void:
 					_geysers_ok = false
 	if p == 2 and b.wave_count() >= 2:
 		_double_seen = true
+	var tn := b.hazards().count(&"wave_trace")
+	_trace_seen = maxi(_trace_seen, tn)
+	if tn > Balance.V_TRACE_MAX:
+		_trace_cap_ok = false
 	if p == 3:
 		if String(_boss.visual.call(&"current_anim")) == "anchored_s":
 			_anchored_seen = true
@@ -81,10 +87,16 @@ func _end_p2() -> void:
 	_check("phase 2 : 2 geysers permanents", hz.count(&"spring") == 2, str(hz.count(&"spring")))
 	_check("phase 2 : les geysers permanents jaillissent (/ 4 s)", hz.pulses >= 4, str(hz.pulses))
 	_check("phase 2 : lâcher d'eau double (±30°)", _double_seen)
+	# Coup en V : le suivi central touche un joueur resté immobile au point visé ; chaque branche laisse une trace.
+	_check("V : suivi central qui touche un joueur immobile", _b().center_hits >= 1, str(_b().center_hits))
+	_check("V : une trace par branche", _b().traces_opened >= 2 and _trace_seen >= 2, "%d / %d" % [_b().traces_opened, _trace_seen])
+	_check("V : traces plafonnées (mobile)", _trace_cap_ok)
 
 
 func _end_p3() -> void:
 	var b := _b()
+	_check("V : les traces disparaissent (pas de reste en fin de phase)", b.hazards().count(&"wave_trace") <= Balance.V_TRACE_MAX
+		and _trace_seen >= 2)
 	_check("phase 3 : ancré (immobile)", _boss.position.distance_to(_anchor) < 4.0, "%.1f px" % _boss.position.distance_to(_anchor))
 	_check("phase 3 : pose « anchored »", _anchored_seen or not _has_art)
 	_check("phase 3 : roue (extra wheel) qui tourne", b.get(&"_wheel") != null or not _has_art)
@@ -101,7 +113,7 @@ func _end_p3() -> void:
 func _trace_ok(h: Node) -> bool:
 	var hz := h as Floor1Hazards
 	print("  trace : %d geysers permanents, %d jaillissements" % [hz.count(&"spring"), hz.pulses])
-	return hz.trace and hz.count(&"spring") == 2 and hz.count(&"water") == 1
+	return hz.trace and hz.count(&"spring") == 2 and hz.count(&"water") == 1 and hz.count(&"wave_trace") == 0
 
 
 func _shot_key() -> String:

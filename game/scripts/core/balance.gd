@@ -148,6 +148,14 @@ const TELEGRAPH_LITE_INNER_PX := 1.6 ## ... et liseré clair net par-dessus
 const TELEGRAPH_BIOME_MIX := 0.35 ## part de la teinte du biome mêlée au rouge d'alerte (nulle en mode daltonien)
 const TELEGRAPH_BIOME_TINT := {&"terrasses": Color(1.0, 0.55, 0.12), &"foret": Color(1.0, 0.48, 0.18),
 	&"cite": Color(1.0, 0.42, 0.08), &"cryptes": Color(0.72, 0.20, 0.80), &"source": Color(0.98, 0.80, 0.30)}
+## --- Coups en V (retour joueur 31/10/2026) : le trou central est fermé par un suivi télégraphié, chaque branche laisse une trace ---
+const V_FOLLOWUP_DELAY_S := 0.5 ## délai entre les branches et le coup central (visée figée du lâcher d'eau)
+const V_TRACE_LIFE_S := 2.5 ## durée d'une trace de branche, comptée à partir de la fin du trajet de la vague
+const V_TRACE_DMG_COEF := 0.15 ## dégâts par tick de trace = dégâts du boss × ce coef (faible)
+const V_TRACE_TICK_S := 0.5
+const V_TRACE_SLOW_MULT := 0.7 ## ralentissement dans la trace (Player.apply_slow : -30 %)
+const V_TRACE_HALF_W_U := 1.7 ## demi-largeur de la zone (u)
+const V_TRACE_MAX := 4 ## traces actives max par boss (mobile) : la plus ancienne se referme
 ## Anticipation du corps (visuelle, le coup tombe au même instant) : dans les ANTICIP_HOLD_S avant l'impact le corps s'écrase
 ## davantage (ANTICIP_EXTRA × ARM_SQUASH), la pose « gèle » (la fente d'un boss part en courbe lente puis claque) et un
 ## bref éclat d'émission monte (ANTICIP_FLASH).

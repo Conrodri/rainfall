@@ -102,6 +102,9 @@ var _teles: Array[EnemyTelegraph] = []
 var _waves: Array[Dictionary] = [] ## {origin, dir, d, front, trail, cast}
 var _wave_dirs: Array[Vector2] = []
 var _wave_offsets: Array = [0.0] ## décalages angulaires des lignes (P2+ : ±30°)
+var _center := {} ## V : coup central en attente {dir, origin, t}
+var traces_opened := 0 ## traces de branche créées (tests)
+var center_hits := 0 ## coups centraux qui ont touché (tests)
 var _wave_cast := {} ## lancer en cours : {hit} (un même lancer ne touche qu'une fois)
 var _geysers: Array[Dictionary] = [] ## {pos, tele, pre}
 var _cross_t := 0.0
@@ -212,6 +215,7 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 	if ph > phase:
 		_enter_phase(ph)
 	_update_waves(delta, player, ppos)
+	_update_center(delta)
 	_update_cross(delta, player, ppos)
 	_update_fx(delta)
 	_update_water(delta)
@@ -295,6 +299,7 @@ func _cancel() -> void:
 			(g["pre"] as Node).queue_free()
 	_geysers.clear()
 	_wave_dirs.clear()
+	_center = {}
 	_cross_shown = false
 
 
@@ -414,35 +419,50 @@ func _release_waves() -> void:
 	e._sfx(&"enemy.shockwave.heavy", 3.0, true)
 	LightRig.flash(e.global_position, &"boss_lightning", 0.35, {"color": CYAN, "radius": 1.6})
 	_wave_cast = {"hit": false}
+	var branches := _wave_dirs.size() >= 2
 	for d in _wave_dirs:
-		var w := {"origin": e.position, "dir": d, "d": 0.0, "cast": _wave_cast, "front": null, "trail": null}
-		if _frames != null and _frames.has_animation(&"wave"):
-			var s := Floor1Fx.sprite(_frames, &"wave", "Eclusier_", 2.0)
-			s.rotation = d.angle() # long axe du front perpendiculaire au trajet
-			s.scale = Vector2(WAVE_BAND_U * U / WAVE_SRC_T, WAVE_W_U * U / WAVE_SRC_W)
-			e.get_parent().add_child(s)
-			s.play(&"wave")
-			w["front"] = s
-			if _frames.has_animation(&"ground_wave"):
-				var tr := Floor1Fx.sprite(_frames, &"ground_wave", "Eclusier_", 1.2, -1)
-				tr.rotation = d.angle() - PI * 0.5
-				e.get_parent().add_child(tr)
-				tr.play(&"ground_wave")
-				w["trail"] = tr
-		else:
-			var f := RecluseFx.make(RecluseFx.Kind.WAVE, Color(CYAN.r * 0.5, CYAN.g * 0.6, CYAN.b * 0.7, 0.75), 0)
-			f.radius = WAVE_W_U * 0.5 * U
-			f.width = WAVE_BAND_U * U
-			f.color2 = Color(0.85, 0.97, 1.0, 0.9)
-			f.name = &"Eclusier_wave"
-			f.rotation = d.angle()
-			e.get_parent().add_child(f)
-			w["front"] = f
-		_waves.append(w)
-		_place_wave(w)
+		_spawn_wave(d, _wave_cast, branches, e.position)
+	if branches: # V : le centre est fermé par un suivi télégraphié
+		_center = {"dir": aim, "origin": e.position, "t": 0.0}
+		var ct := _tele(_wave_dirs.size())
+		ct.show_line(e.position, aim.angle(), WAVE_LEN_U * U, WAVE_W_U * U)
+		ct.global_position = e.position
+		ct.rotation = aim.angle()
+		ct.set_progress(0.0)
 	_wave_dirs.clear()
 	pace.strike(&"heavy", phase)
 	state = S.CHASE
+
+
+func _spawn_wave(d: Vector2, cast: Dictionary, trace: bool, origin: Vector2) -> void:
+	var w := {"origin": origin, "dir": d, "d": 0.0, "cast": cast, "zone": null, "branch": trace, "front": null, "trail": null}
+	if _frames != null and _frames.has_animation(&"wave"):
+		var s := Floor1Fx.sprite(_frames, &"wave", "Eclusier_", 2.0)
+		s.rotation = d.angle() # long axe du front perpendiculaire au trajet
+		s.scale = Vector2(WAVE_BAND_U * U / WAVE_SRC_T, WAVE_W_U * U / WAVE_SRC_W)
+		e.get_parent().add_child(s)
+		s.play(&"wave")
+		w["front"] = s
+		if _frames.has_animation(&"ground_wave"):
+			var tr := Floor1Fx.sprite(_frames, &"ground_wave", "Eclusier_", 1.2, -1)
+			tr.rotation = d.angle() - PI * 0.5
+			e.get_parent().add_child(tr)
+			tr.play(&"ground_wave")
+			w["trail"] = tr
+	else:
+		var f := RecluseFx.make(RecluseFx.Kind.WAVE, Color(CYAN.r * 0.5, CYAN.g * 0.6, CYAN.b * 0.7, 0.75), 0)
+		f.radius = WAVE_W_U * 0.5 * U
+		f.width = WAVE_BAND_U * U
+		f.color2 = Color(0.85, 0.97, 1.0, 0.9)
+		f.name = &"Eclusier_wave"
+		f.rotation = d.angle()
+		e.get_parent().add_child(f)
+		w["front"] = f
+
+	_waves.append(w)
+	_place_wave(w)
+	if trace:
+		_open_trace(w)
 
 
 func _place_wave(w: Dictionary) -> void:
@@ -455,7 +475,8 @@ func _place_wave(w: Dictionary) -> void:
 	var tr := w["trail"] as Node2D
 	if is_instance_valid(tr):
 		tr.global_position = o + d * dist * 0.5
-		tr.scale = Vector2(WAVE_W_U * U / WAVE_SRC_T, maxf(dist, 1.0) / WAVE_SRC_W)
+		var tw := 2.0 * Balance.V_TRACE_HALF_W_U if w.get("branch", false) else WAVE_W_U
+		tr.scale = Vector2(tw * U / WAVE_SRC_T, maxf(dist, 1.0) / WAVE_SRC_W)
 
 
 func _update_waves(delta: float, player: Node2D, ppos: Vector2) -> void:
@@ -465,6 +486,9 @@ func _update_waves(delta: float, player: Node2D, ppos: Vector2) -> void:
 		w["d"] = float(w["d"]) + WAVE_SPEED_U * U * delta
 		var dist := float(w["d"])
 		_place_wave(w)
+		var zone = w.get("zone")
+		if zone != null:
+			zone["len"] = minf(dist, WAVE_LEN_U * U)
 		var k := clampf(dist / (WAVE_LEN_U * U), 0.0, 1.0)
 		for key in ["front", "trail"]:
 			var n := w[key] as CanvasItem
@@ -480,13 +504,67 @@ func _update_waves(delta: float, player: Node2D, ppos: Vector2) -> void:
 				if player.is_in_group(&"player") and player.has_method(&"push"):
 					if player.push(w["dir"] as Vector2, WAVE_PUSH_U, WAVE_PUSH_S):
 						pushes += 1
-				events.append({"kind": &"wave_hit", "phase": phase, "anim": &"", "frame": -1, "expect": -1, "lag": 0.0})
+				if bool(cast.get("center", false)):
+					center_hits += 1
+				events.append({"kind": &"wave_hit", "phase": phase, "anim": &"", "frame": -1, "expect": -1, "lag": 0.0,
+					"center": bool(cast.get("center", false))})
 		if dist >= WAVE_LEN_U * U:
+			var kept := w.get("zone") != null
+			if kept:
+				_close_trace(w)
 			for key in ["front", "trail"]:
+				if key == "trail" and kept:
+					continue # le sillage devient la trace au sol (Floor1Hazards)
 				if is_instance_valid(w[key]):
 					(w[key] as Node).queue_free()
 			_waves.remove_at(i)
 		i -= 1
+
+
+# --- Coup en V : suivi central et traces --------------------------------------------------
+
+## Suivi dans l'axe de la visée figée, V_FOLLOWUP_DELAY_S après les branches : le trou central est fermé.
+func _update_center(delta: float) -> void:
+	if _center.is_empty():
+		return
+	_center["t"] = float(_center["t"]) + delta
+	var ct := _tele(2)
+	ct.set_progress(float(_center["t"]) / Balance.V_FOLLOWUP_DELAY_S)
+	if float(_center["t"]) < Balance.V_FOLLOWUP_DELAY_S:
+		return
+	ct.hide_telegraph()
+	_spawn_wave(_center["dir"], {"hit": false, "center": true}, false, _center["origin"]) # part du point où le V a été lancé
+	e._sfx(&"enemy.shockwave.heavy", 2.0, true)
+	_center = {}
+
+
+## Zone de trace sous une branche : suit le front, ralentit et blesse faiblement, plafonnée (Balance.V_TRACE_MAX).
+func _open_trace(w: Dictionary) -> void:
+	if not is_instance_valid(_hz):
+		return
+	if _hz.count(&"wave_trace") >= Balance.V_TRACE_MAX: # la plus ancienne se referme
+		for z in _hz.zones:
+			if z["kind"] == &"wave_trace":
+				z["kind"] = &"wave_trace_closing"
+				z["life"] = float(z["age"]) + 0.3
+				break
+	var tint: Color = Balance.TELEGRAPH_BIOME_TINT.get(EnemyVisual.current_biome(), CYAN)
+	var tr := w.get("trail") as CanvasItem
+	if tr != null:
+		tr.modulate = Color(tint.r, tint.g, tint.b, tr.modulate.a)
+	w["zone"] = _hz.add_zone({"kind": &"wave_trace", "shape": &"line", "pos": w["origin"], "dir": w["dir"], "len": 0.0,
+		"r": Balance.V_TRACE_HALF_W_U * U, "life": -1.0, "slow": true, "slow_mult": Balance.V_TRACE_SLOW_MULT,
+		"dmg": e.damage * Balance.V_TRACE_DMG_COEF, "tick": Balance.V_TRACE_TICK_S, "trace": false, "node": tr, "alpha": 0.85})
+	traces_opened += 1
+
+
+## Fin du trajet : la trace garde sa longueur et s'éteint après V_TRACE_LIFE_S.
+func _close_trace(w: Dictionary) -> void:
+	var z: Dictionary = w["zone"]
+	z["len"] = WAVE_LEN_U * U
+	if float(z["life"]) < 0.0:
+		z["life"] = float(z["age"]) + Balance.V_TRACE_LIFE_S
+	w["zone"] = null
 
 
 # --- Geysers -------------------------------------------------------------------------
