@@ -136,7 +136,7 @@
       "phase2": {"speed_mult": 1.25},
       "patterns": [
         {"id": "blade", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.5, "windup": 0.5, "max_u": 2.5, "range_u": 2.4, "half_deg": 50},
-        {"id": "scissors", "type": "line", "anim": "cast_a", "coef": 1.4, "cd": 8, "first_cd": 3, "windup": 1.0, "max_u": 7, "length_u": 8, "width_u": 1.0, "angles_deg": [-18, 18], "p2": {"angles_deg": [45, -45, 135, -135]}},
+        {"id": "scissors", "type": "line", "anim": "cast_a", "coef": 1.4, "cd": 8, "first_cd": 3, "windup": 1.0, "max_u": 7, "length_u": 8, "width_u": 1.0, "angles_deg": [-18, 0, 18], "p2": {"angles_deg": [0, 45, -45, 135, -135]}},
         {"id": "ambush", "type": "charge", "anim": "cast_b", "coef": 1.8, "cd": 11, "first_cd": 6, "windup": 1.5, "camo": true, "min_u": 2.5, "max_u": 9, "length_u": 10, "width_u": 2.0, "speed_u": 16}
       ]
     },
@@ -173,7 +173,7 @@
       "patterns": [
         {"id": "bite", "type": "cone", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.4, "windup": 0.45, "max_u": 2.2, "range_u": 2.0, "half_deg": 40},
         {"id": "charge", "type": "charge", "anim": "cast_a", "coef": 1.6, "cd": 8, "first_cd": 2.5, "windup": 1.0, "min_u": 3.0, "max_u": 11, "length_u": 12, "width_u": 2.0, "speed_u": 14, "stun_wall_s": 3.0, "p2": {"chain": 1}},
-        {"id": "vents", "type": "line", "anim": "cast_b", "coef": 0.8, "cd": 9, "first_cd": 6, "windup": 0.9, "max_u": 5, "length_u": 6, "width_u": 1.0, "angles_deg": [90, -90], "status": "burn", "p2": {"angles_deg": [0, 90, 180, 270]}}
+        {"id": "vents", "type": "line", "anim": "cast_b", "coef": 0.8, "cd": 9, "first_cd": 6, "windup": 0.9, "max_u": 5, "length_u": 6, "width_u": 1.0, "angles_deg": [90, 0, -90], "status": "burn", "p2": {"angles_deg": [0, 90, 180, 270]}}
       ]
     },
     "grinder": {
@@ -245,7 +245,7 @@
       "phase2": {"speed_mult": 1.0},
       "patterns": [
         {"id": "pole", "type": "line", "anim": "attack", "auto": true, "coef": 1.0, "cd": 1.6, "windup": 0.5, "max_u": 4.0, "length_u": 4.0, "width_u": 0.8},
-        {"id": "light_cone", "type": "beam", "anim": "cast_a", "coef": 0.5, "cd": 10, "first_cd": 3, "windup": 1.0, "max_u": 9, "shape": "cone", "range_u": 10, "half_deg": 22.5, "channel_s": 1.5, "tick_s": 0.5, "sweep_deg": 30, "status": "burn", "p2": {"angles_deg": [-28, 28]}},
+        {"id": "light_cone", "type": "beam", "anim": "cast_a", "coef": 0.5, "cd": 10, "first_cd": 3, "windup": 1.0, "max_u": 9, "shape": "cone", "range_u": 10, "half_deg": 22.5, "channel_s": 1.5, "tick_s": 0.5, "sweep_deg": 30, "status": "burn", "p2": {"angles_deg": [-28, 0, 28]}},
         {"id": "lantern", "type": "circles", "anim": "cast_b", "coef": 0.8, "cd": 12, "first_cd": 6, "windup": 1.0, "max_u": 9, "count": 1, "radius_u": 1.2, "spread_u": 0, "zone": {"linger_s": 8.0, "slow_only": true, "light": true, "radius_u": 4.0, "color": "#BFF4FF"}, "p2": {"count": 2, "spread_u": 3.0}}
       ]
     },

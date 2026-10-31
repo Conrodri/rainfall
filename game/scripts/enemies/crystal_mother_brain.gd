@@ -12,7 +12,7 @@ extends RefCounted
 ## - Phase 1 « Croissance » : éclat (auto : projectile de cristal, arrêté par les blocs et les murs) ;
 ##   Stalactites (spell_a : 6 cercles de 1,5 u, 1,2 s ; chacun laisse un BLOC de cristal de 1 u, 6 s, qui
 ##   arrête les projectiles ennemis : un abri) ; Prisme (spell_b : ligne 1,5 × 16 u, 1 s, coef 2 ; si la
-##   ligne croise un bloc, elle s'y arrête et se DIVISE en 2 lignes à ±30° : l'abri devient un piège).
+##   ligne croise un bloc, elle s'y arrête et se DIVISE en 3 lignes (±30° et centrale) : l'abri devient un piège).
 ## - Phase 2 « Lampes » (70 %) : la Mère boit la lumière des cristaux de l'arène (RecluseGloom à 55 %) et
 ##   ses blocs deviennent des LAMPES (seules vraies lumières) : tout monstre dans une lampe subit +15 %,
 ##   la Mère comprise (l'attirer dans sa propre lumière). SURPRISE « Reflet » : elle se fond dans le sol et
@@ -707,7 +707,8 @@ func refresh_lamp_mods() -> int:
 # --- Prisme ---------------------------------------------------------------------------
 
 ## Segments d'un rayon : tout droit sur PRISM_LEN_U, sauf s'il croise un bloc : il s'y arrête et repart en
-## 2 lignes à ±30° depuis le bloc (longueur restante).
+## 3 lignes simultanées depuis le bloc (longueur restante) : ±30° et la ligne centrale, dans l'axe de la visée
+## (règle « aucune attaque en V esquivable sur place » : pas de trou au point visé). Un seul coup par tir.
 func _prism_paths(origin: Vector2, angle: float) -> Array[Dictionary]:
 	var d := Vector2.from_angle(angle)
 	var best := -1
@@ -729,6 +730,7 @@ func _prism_paths(origin: Vector2, angle: float) -> Array[Dictionary]:
 	out.append({"from": origin, "angle": angle, "len": best_along, "split": false})
 	out.append({"from": bp, "angle": angle + PRISM_SPLIT, "len": rest, "split": true})
 	out.append({"from": bp, "angle": angle - PRISM_SPLIT, "len": rest, "split": true})
+	out.append({"from": bp, "angle": angle, "len": rest, "split": true})
 	return out
 
 

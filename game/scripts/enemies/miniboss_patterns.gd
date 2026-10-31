@@ -489,7 +489,8 @@ static func _step_fan(b: MiniBossBrain, p: Dictionary) -> bool:
 	var n := maxi(int(p.get("count", 1)), 1)
 	var spread := deg_to_rad(float(p.get("spread_deg", 0.0)))
 	var spd := float(p.get("speed_u", 8.0)) * U
-	var dmg := Balance.mini_attack_damage(e.damage, float(p.get("coef", 0.8))) * b.damage_out_mult()
+	var fan := Balance.v_fan_angles(n, spread) # toujours une branche au centre (n pair -> n + 1)
+	var dmg := Balance.mini_attack_damage(e.damage, float(p.get("coef", 0.8))) * b.damage_out_mult() * float(n) / float(fan.size())
 	var fired := 0
 	var bounces := int(p.get("bounces", 0))
 	var st := String(p.get("status", ""))
@@ -497,14 +498,12 @@ static func _step_fan(b: MiniBossBrain, p: Dictionary) -> bool:
 		var h := b.haz()
 		if h != null:
 			var col: Color = MiniBossBrain.STATUS_COLORS.get(st, MiniBossBrain.color_of(p.get("color"), Color(0.85, 0.82, 0.78)))
-			for i in n:
-				var a := 0.0 if n == 1 else -spread * 0.5 + spread * float(i) / float(n - 1)
+			for a in fan:
 				var d := dir.rotated(a)
 				h.fire(e.position + d * e.radius_px, d * spd, dmg, st, bounces, float(p.get("radius_u", 0.2)), col)
 				fired += 1
 	elif e.director != null and e.director.has_method(&"fire_projectile"):
-		for i in n:
-			var a := 0.0 if n == 1 else -spread * 0.5 + spread * float(i) / float(n - 1)
+		for a in fan:
 			var d := dir.rotated(a)
 			e.director.fire_projectile(e, e.position + d * e.radius_px, d * spd, dmg)
 			fired += 1

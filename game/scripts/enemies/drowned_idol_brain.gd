@@ -95,6 +95,7 @@ var _teles: Array[EnemyTelegraph] = [] ## télégraphes du coup armé (paume)
 var _rings: Array[Dictionary] = [] ## Carillon : {r, tele, fire_at, fired, manual}
 var _circles: Array[Dictionary] = [] ## Chapelet : {pos, show_at, fire_at, tele, shown, manual}
 var _dike_plan: Array[Dictionary] = [] ## Digues télégraphiées : {rect, tele}
+var _dike_side := 1.0 ## côté du muret latéral (P1-P2), alterné à chaque pose
 var _dikes: Array[Dictionary] = [] ## Digues levées : {rect, node, zone}
 var _noria: Array[Dictionary] = [] ## {mark, a0, lock_at, tele, locked}
 var _cring: Array[Dictionary] = [] ## P3 : anneaux mobiles {r, node, hit}
@@ -747,7 +748,9 @@ func _plan_dikes(ppos: Vector2, count: int) -> void:
 	var to := ppos - e.position
 	var base := to.angle()
 	var d := clampf(to.length(), float(DIKE_DIST_U[0]) * U, float(DIKE_DIST_U[1]) * U)
-	var offsets: Array = [-0.7, 0.7] if count == 2 else [-0.95, 0.0, 0.95]
+	# jamais de trou au point visé : un muret central, plus (à 2) un muret latéral au côté alterné à chaque pose
+	_dike_side = -_dike_side
+	var offsets: Array = [0.0, 0.7 * _dike_side] if count == 2 else [0.0, -0.95, 0.95]
 	for o in offsets:
 		var c := _walkable(e.position + Vector2.from_angle(base + o) * d)
 		var radial := c - e.position

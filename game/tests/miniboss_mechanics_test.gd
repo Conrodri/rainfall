@@ -531,3 +531,43 @@ func _finish() -> void:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE))
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)
+
+
+# --- 10. Coups en V : aucun trou au point visé (règle du joueur, 31/10/2026) ------------------------------
+
+func _v_holes() -> void:
+	print("Coups en V : pas de trou au point visé")
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/minibosses.json"))
+	var bad: Array[String] = []
+	var seen := 0
+	var pats: Array = []
+	_collect_patterns(data, pats)
+	for p in pats:
+		var variants: Array = [p]
+		if p.has("p2"):
+			var m: Dictionary = (p as Dictionary).duplicate()
+			m.merge(p["p2"], true)
+			variants.append(m)
+		for v in variants:
+			var t := String(v.get("type", ""))
+			if t == "projectile_fan":
+				seen += 1
+				if not Balance.v_fan_angles(int(v.get("count", 1)), deg_to_rad(float(v.get("spread_deg", 0.0)))).any(func(a): return absf(a) < 1e-6):
+					bad.append(String(v.get("id")))
+			elif (t == "beam" or t == "line") and v.has("angles_deg") and String(v.get("from", "self")) != "player":
+				var a: Array = v["angles_deg"]
+				if a.size() >= 2 and not a.any(func(x): return absf(float(x)) < 1e-6):
+					bad.append(String(v.get("id")) + " (branches sans axe visé)")
+	_check("éventails : branche centrale toujours présente (%d vérifiés)" % seen, bad.is_empty() and seen > 0, str(bad))
+	_check("v_fan_angles : n pair -> n + 1 branches, dont le centre", Balance.v_fan_angles(8, 1.0).size() == 9 and Balance.v_fan_angles(3, 1.0).size() == 3 and Balance.v_fan_angles(1, 1.0) == [0.0])
+
+
+func _collect_patterns(node: Variant, out: Array) -> void:
+	if node is Dictionary:
+		if node.has("type") and node.has("id"):
+			out.append(node)
+		for k in node:
+			_collect_patterns(node[k], out)
+	elif node is Array:
+		for x in node:
+			_collect_patterns(x, out)

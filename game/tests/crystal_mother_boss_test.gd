@@ -191,8 +191,17 @@ func _spawn() -> void:
 	b.add_block(bp)
 	_director().fire_projectile(_boss, bp, Vector2.ZERO, 1.0)
 	var paths: Array[Dictionary] = b._prism_paths(_anchor, -PI * 0.5)
-	var ok := paths.size() == 3 and (paths[0]["len"] as float) <= 3.0 * 64.0 + 0.5 and absf(absf(angle_difference(paths[1]["angle"], -PI * 0.5)) - CrystalMotherBrain.PRISM_SPLIT) < 0.01
-	_check("prisme : divisé en 2 lignes à ±30° sur un bloc", ok, str(paths))
+	var ok := paths.size() == 4 and (paths[0]["len"] as float) <= 3.0 * 64.0 + 0.5 and absf(absf(angle_difference(paths[1]["angle"], -PI * 0.5)) - CrystalMotherBrain.PRISM_SPLIT) < 0.01
+	_check("prisme : divisé en 3 lignes (±30° + centrale) sur un bloc", ok, str(paths))
+	# règle « pas de V esquivable sur place » : un joueur immobile dans l'axe, derrière le bloc, est touché
+	var behind := bp + Vector2(0.0, -4.0 * 64.0)
+	var cover := false
+	for sg in paths:
+		var v: Vector2 = behind - (sg["from"] as Vector2)
+		var d := Vector2.from_angle(sg["angle"])
+		if sg["split"] and v.dot(d) >= 0.0 and v.dot(d) <= float(sg["len"]) and absf(v.cross(d)) <= CrystalMotherBrain.PRISM_W_U * 0.5 * 64.0:
+			cover = true
+	_check("prisme : joueur immobile dans l'axe derrière le bloc touché (branche centrale)", cover)
 	var straight: Array[Dictionary] = b._prism_paths(_anchor, PI * 0.5)
 	_check("prisme : droit sans bloc", straight.size() == 1 and is_equal_approx(straight[0]["len"], CrystalMotherBrain.PRISM_LEN_U * 64.0))
 	_next(1)
