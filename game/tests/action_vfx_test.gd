@@ -118,7 +118,8 @@ func _ardent() -> void:
 	_check("nova lancée", p.spells.cast(2))
 	_check("nova : effet différé à la frame d'impact", _last_zone(p) == null and p.spells.has_pending())
 	var imp: float = p._action_impact_left
-	_check("nova : impact cast frame 3 (0,25 s)", _near(imp, 3.0 / 12.0, 0.02), str(imp))
+	# Kit d'Ardent : cast impact frame 2 (ACTION_IMPACT_FRAMES), 12 i/s -> 0,167 s.
+	_check("nova : impact cast frame 2 (0,167 s)", _near(imp, 2.0 / 12.0, 0.02), str(imp))
 	p._action_step(imp * 0.5)
 	_check("nova : rien avant l'impact", _last_zone(p) == null)
 	p._action_step(imp * 0.5 + 0.001)
@@ -197,7 +198,7 @@ func _ardent() -> void:
 			var an := StringName("%s_%s" % [b[0], d])
 			a2 = a2 and sf.has_animation(an) and sf.get_frame_count(an) == b[1] and not sf.get_animation_loop(an)
 	_check("A2 : attack 5 / cast 6 / cast_ult 8 frames × 8 dirs, sans boucle", a2)
-	_check("A2 : impacts 2 / 3 / 4", p.character.action_impact_frames == {&"attack": 2, &"cast": 3, &"cast_ult": 4}, str(p.character.action_impact_frames))
+	_check("A2 : impacts 2 / 2 / 4 (ACTION_IMPACT_FRAMES du kit)", p.character.action_impact_frames == {&"attack": 2, &"cast": 2, &"cast_ult": 4}, str(p.character.action_impact_frames))
 	_check("auto : tir différé (frame 2)", p.spells.has_pending() and _near(p._action_impact_left, 2.0 / 12.0, 0.02), str(p._action_impact_left))
 	p._update_visual(0.0)
 	_advance(p, 0.05)

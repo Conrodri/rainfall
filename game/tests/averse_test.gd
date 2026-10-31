@@ -211,7 +211,8 @@ func _run() -> void:
 	while _kit.has_pending() and t < 1.0:
 		_advance(0.01)
 		t += 0.01
-	_check("impact à la frame 3 (12 i/s : 0,25 s)", _near(t, 0.25, 0.03), str(t))
+	# Lot « ressenti » 30/10 : durées de frame 0,6 / 0,6 / 0,4 à 12 i/s, impact frame 3 = 0,133 s (le coup part plus vite).
+	_check("impact à la frame 3 (0,133 s)", _near(t, 0.133, 0.03), str(t))
 	_check("projectile parti à l'impact", _player.spells.active_projectile_count() == 1)
 	await _frames(30)
 	_check("coef 0,75 + 0,4 × eau (0,95 à 50)", tgt.taken.size() == 1 and _near(tgt.taken[0], (AverseKit.GOUTTE_COEF_MIN + 0.5 * AverseKit.GOUTTE_COEF_WATER) * BASE, 0.05), str(tgt.taken))

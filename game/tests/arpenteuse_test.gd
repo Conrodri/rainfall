@@ -252,8 +252,9 @@ func _run() -> void:
 	var far_link := _fake(Vector2(2 * U, 2.0 * U))
 	_check("Tendeur lancé", _player.spells.cast(4))
 	_check("anim d'action whip", String(_player.action_anim()).begins_with("whip"))
+	# Lot « ressenti » 30/10 : la frame d'impact du whip passe de 2 à 4 (smear avant, pose d'extension tenue 1,87 f) ; impact = 4 × 0,933 / 14 = 0,267 s.
 	var tw := _to_impact()
-	_check("impact (≈ 0,14 s)", tw > 0.08 and tw < 0.25, str(tw))
+	_check("impact à la frame 4 (whip : 8 frames, pose tenue, 4 frames courtes avant ≈ 0,27 s)", tw > 0.22 and tw < 0.32, str(tw))
 	_check("claque : coef 10 à 1 u de la chaîne", _near(near_link.total(), 10.0 * BASE), str(near_link.taken))
 	_check("rien au-delà de 1 u", far_link.taken.is_empty())
 	_check("chaîne qui claque (planche snap)", _kit.line.sheet == &"snap" and _kit.is_rewinding())

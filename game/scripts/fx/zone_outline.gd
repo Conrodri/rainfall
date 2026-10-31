@@ -256,7 +256,8 @@ func _draw() -> void:
 	match shape:
 		Shape.CAPSULE:
 			if _poly.size() > 3:
-				draw_colored_polygon(_poly, fill)
+				if fill.a > 0.0 and not Geometry2D.triangulate_polygon(_poly).is_empty(): # capsule dégénérée : pas de remplissage
+					draw_colored_polygon(_poly, fill)
 				if halo:
 					draw_polyline(_poly, HALO_COLOR, lw + HALO_EXTRA, true)
 				draw_polyline(_poly, edge, lw, true)

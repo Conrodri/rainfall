@@ -21,6 +21,7 @@ extends Node
 const ASSET_DIR := "res://assets/sprites/characters/arpenteuse/"
 const SPRITE_FRAMES := ASSET_DIR + "arpenteuse.tres" ## idle/run/plant/loop/whip/attack/cast/cast_ult/death _<dir>
 const PEG_FRAMES := ASSET_DIR + "effects/peg.tres" ## peg_<dir> (CREA 192, 1 frame, chaîne pendante vers <dir>)
+const PEG_BURST_FRAMES := ASSET_DIR + "effects/peg_burst.tres" ## gerbe d'éclats au sol à la plantation (6 frames 192 px, 24 i/s, emprise 40 px de rayon)
 const LOOP_BLAZE_FRAMES := ASSET_DIR + "effects/loop_blaze.tres" ## `default` TOP 256, 6 frames, hexagone de chaîne
 const LOOP_BLAZE_RADIUS_PX := 108.0 ## rayon de l'hexagone dans la cellule (mesuré sur la planche AR2)
 const TOP_PX_PER_U := 128.0 ## rig TOP
@@ -938,6 +939,7 @@ func _do_piquet(s: SpellData, aim: Variant) -> void:
 	peg_left = s.duration if s.duration > 0.0 else PEG_LIFE_S
 	_peg_hits.clear()
 	_spawn_peg_visual()
+	_spawn_peg_burst()
 	peg_line.visible = true
 	LightRig.flash(peg_pos, &"arpenteuse_snap", 0.25, {"energy": 0.6})
 
@@ -973,6 +975,23 @@ func _peg_step(delta: float) -> void:
 			_cross_t = HEAT_FLASH_S
 		RunState.add_counter("arpenteuse.piquet_hits") # déblocage des Jalons
 		_heat_t = HEAT_FLASH_S
+
+
+## Gerbe d'éclats posée au sol à l'impact du piquet (jouée une fois, puis libérée). Absente : rien.
+func _spawn_peg_burst() -> void:
+	if not ResourceLoader.exists(PEG_BURST_FRAMES):
+		return
+	var frames := load(PEG_BURST_FRAMES) as SpriteFrames
+	if frames == null or not frames.has_animation(&"default"):
+		return
+	var fx := AnimatedSprite2D.new()
+	fx.name = "PegBurst"
+	fx_root.add_child(fx)
+	fx.global_position = peg_pos
+	EmissiveOverlay.apply(fx, frames, 2.0)
+	fx.sprite_frames.set_animation_loop(&"default", false)
+	fx.play(&"default")
+	fx.animation_finished.connect(fx.queue_free)
 
 
 func _spawn_peg_visual() -> void:
