@@ -47,15 +47,20 @@ def botte_rapiecee():
     box(.23,.85,.18,.15,glow,y=-.40,d=.05)
 
 def pierre_a_aiguiser():
-    stone=mat('#818C8D');light=mat('#BFC9C7');dark=mat('#424F52');steel=mat('#AEBEC0');edge=mat('#E3E4D3');wood=mat('#8D694C');glow=accent('#F2C14E')
-    plate([(-1.02,-.59),(-.94,-.05),(.73,.12),(1,-.12),(.88,-.67),(-.73,-.83)],.48,stone,'Flat whetstone',bevel=.065)
-    line([(-.86,-.12),(.66,.03),(.86,-.15)],light,.035,y=-.27,name='Stone upper bevel')
-    for x in [-.55,-.12,.28]:line([(x,-.30),(x+.24,-.37)],dark,.016,y=-.27,name='Sharpening groove')
-    plate([(-.77,.87),(-.49,.95),(.55,-.05),(.57,-.39),(.24,-.28)],.09,steel,'Blade touching stone',y=-.39)
-    line([(-.76,.86),(.25,-.26),(.54,-.37)],edge,.025,y=-.46,name='Honed edge')
-    line([(-.66,.88),(-1.02,1.29)],wood,.115,y=-.36,name='Knife handle')
-    line([(-.85,.92),(-.52,1.18)],dark,.045,y=-.38,name='Knife guard')
-    for points in [[(.46,-.22),(.81,.15)],[(.52,-.29),(.97,-.19)],[(.48,-.18),(.52,.22)]]:line(points,glow,.032,y=-.52,name='Contact spark')
+    stone=mat('#AAA18B');light=mat('#D0C7AF');dark=mat('#625E55');steel=mat('#727C7C');edge=mat('#C3C8BC');wood=mat('#604634');glow=accent('#F2C14E')
+    # Long, chamfered oilstone with a shallow concave wear bed.
+    plate([(-1.12,-.71),(-1.03,-.48),(.94,-.34),(1.10,-.49),(1.02,-.75),(-.94,-.89)],.42,dark,'Whetstone lower bevel',bevel=.035)
+    plate([(-1.08,-.50),(-.97,-.28),(.91,-.16),(1.04,-.38),(.98,-.53),(-.99,-.68)],.38,stone,'Long fine-grain sharpening stone',y=-.16,bevel=.045)
+    line([(-.98,-.31),(-.63,-.34),(-.18,-.36),(.32,-.36),(.89,-.25)],light,.026,y=-.38,name='Worn stone chamfer')
+    # A curved, gently dished center and subtle mineral grain, kept broad for 48px.
+    line([(-.78,-.46),(-.38,-.51),(.05,-.52),(.49,-.48),(.82,-.40)],dark,.027,y=-.39,name='Concave wear trough')
+    for x,z in [(-.77,-.39),(-.48,-.43),(-.15,-.45),(.25,-.43),(.58,-.40),(.82,-.34)]:
+        disk(x,z,.012,light,y=-.40,depth=.008)
+    plate([(-.77,.82),(-.43,.92),(.57,-.16),(.64,-.37),(.42,-.32)],.11,steel,'Angled knife blade',y=-.47,bevel=.018)
+    line([(-.73,.82),(.45,-.29),(.62,-.38)],edge,.025,y=-.55,name='Knife honed edge')
+    line([(-.68,.86),(-1.10,1.30)],wood,.14,y=-.42,name='Knife handle')
+    line([(-.87,.89),(-.55,1.19)],dark,.060,y=-.45,name='Knife bolster')
+    for points in [[(.49,-.30),(.72,.01)],[(.55,-.35),(.91,-.24)],[(.51,-.27),(.56,.08)]]:line(points,glow,.034,y=-.60,name='Gold sharpening spark')
 
 def bague_de_vigueur():
     gold=mat('#C4A565');shade=mat('#80643D');light=mat('#E4CF98');ruby=mat('#9D353D');facet=mat('#CE6565');glow=accent('#E94B53')
@@ -96,7 +101,14 @@ def sifflet_de_chasse():
     box(0,.91,.57,.21,brass,d=.42);box(0,.43,.37,.26,dark,y=-.23,d=.03)
     box(0,.25,.44,.09,brass,y=-.26,d=.05)
     torus((0,-.03,-.86),.14,.042,brass,'Lanyard eye')
-    line([(.10,-.90),(.57,-1.03),(.83,-.70),(.93,.10),(.70,.31),(.48,.03),(.61,-.66),(.10,-.90)],cord,.04,y=.04,name='Hunting cord loop')
+    # Soft hanging loop, round section; paired spirals suggest a compact braid.
+    loop=[(.10,-.89),(.30,-1.02),(.56,-1.03),(.78,-.86),(.87,-.58),(.90,-.20),(.88,.12),(.72,.29),(.57,.24),(.49,.08),(.54,-.22),(.62,-.60),(.52,-.78),(.30,-.80),(.10,-.89)]
+    line(loop,cord,.065,y=.04,name='Soft braided hunting cord')
+    for i in range(7):
+        z=-.71+i*.145
+        line([(.59,z),(.73,z+.055),(.76,z+.10)],mat('#A58C69'),.018,y=-.025,name='Cord braid wrap')
+    for x,z in [(.55,-.94),(.76,.22)]:
+        torus((x,-.02,z),.085,.023,brass,'Cord knot')
     line([(-.14,-.16),(-.07,-.33),(-.15,-.48)],shade,.022,y=-.24,name='Bone scratch')
     line([(-.17,.27),(.17,.27)],glow,.03,y=-.30,name='Single brass lip glint')
 

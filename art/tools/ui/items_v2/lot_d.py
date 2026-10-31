@@ -24,13 +24,20 @@ def cristal_de_feu():crystal()
 def givre():crystal(True)
 
 def horloge_arcanique():
-    bronze=mat('#8E8972');brass=mat('#C4B18B');rim=mat('#585F59');face=mat('#C4C4AF');ink=mat('#303C40');glow=accent('#8A6AB0')
-    disk(0,0,1.12,rim,y=.03,depth=.24);disk(0,0,1.025,brass,y=-.12,depth=.08);disk(0,0,.88,face,y=-.18,depth=.04)
-    torus((0,-.23,0),.94,.045,bronze,'Heavy brass bezel')
+    bronze=mat('#635D4E');brass=mat('#A8946E');rim=mat('#252A2D');face=mat('#2E3438');glass=mat('#42494B');index=mat('#C5AB73');ink=mat('#15191B');hand=mat('#C3B58F');glow=accent('#8A6AB0')
+    disk(0,0,1.12,rim,y=.03,depth=.24);disk(0,0,1.025,bronze,y=-.12,depth=.08);disk(0,0,.88,face,y=-.18,depth=.04)
+    torus((0,-.23,0),.94,.055,brass,'Worn raised brass bezel')
+    torus((0,-.245,0),.825,.018,rim,'Recessed dial boundary')
+    plate([(-.51,.63),(-.25,.75),(.28,.50),(.47,.24),(.36,.34),(-.30,.63)],.012,glass,'Smoked glass catchlight',y=-.246,bevel=.008)
     for i in range(12):
         a=math.tau*i/12;s,c=math.sin(a),math.cos(a)
-        line([(.70*s,.70*c),(.81*s,.81*c)],ink,.024,y=-.224,name='Hour index')
-    line([(0,-.10),(0,.59)],ink,.045,y=-.28,name='Minute hand');line([(-.08,-.05),(.42,.26)],ink,.052,y=-.29,name='Hour hand');disk(0,0,.095,brass,y=-.32)
+        line([(.68*s,.68*c),(.80*s,.80*c)],index,.029,y=-.264,name='Raised brass hour index')
+    # Dark offset strokes form visible hand shadows beneath the relief hands.
+    line([(.025,-.13),(.025,.62)],ink,.062,y=-.29,name='Minute hand shadow')
+    line([(-.09,-.075),(.46,.29)],ink,.070,y=-.30,name='Hour hand shadow')
+    line([(0,-.12),(0,.61)],hand,.036,y=-.35,name='Raised minute hand')
+    line([(-.07,-.04),(.40,.25)],brass,.040,y=-.36,name='Raised hour hand')
+    disk(0,0,.105,brass,y=-.39,depth=.055)
     for a in [0,120,240]:
         t=math.radians(a);x=.985*math.sin(t);z=.985*math.cos(t)
         line([(x-.07,z-.06),(x,z+.06),(x+.07,z-.06)],glow,.028,y=-.30,name='Arcane rune')

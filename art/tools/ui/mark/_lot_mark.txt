@@ -1,0 +1,6 @@
+IMPORTANT : commence chaque commande par Set-Location C:/Users/const/Documents/Rainfall ; chemins absolus.
+OBJECTIF : icône de la marque de combo (debuff au-dessus d'un monstre) : game/assets/sprites/ui/debuff/mark_generic.png, 48x48 RGBA, fond transparent, icône BLANCHE/neutre (gris très clair, ombrage cel en gris clair, encre fine foncée autorisée) lisible à 24 px ; teintée en jeu par modulate. Motif : cible/sceau anguleux « sérieux » (ex. losange-rune entaillé, 4 pointes, centre creux), pas jouet, silhouette grosse masse. Pas de _n.
+TOUCHER : art/tools/ui/mark/mark_build.py (à créer, Blender --background, modèle : art/tools/ui/items_v2/iv2_lib.py + cel profil 'icon' via art/tools/cel/cel_style.py ; rendre 192 puis LANCZOS -> 48, optimiser PNG), art/blender/ui/mark.blend, art/renders/ui_mark/ (rendus bruts), game/assets/sprites/ui/debuff/mark_generic.png.
+NE PAS LIRE : briefs, docs, CLAUDE.md.
+VÉRIF : 48x48, alpha, bbox centrée, marge >= 3 px ; planche art/renders/ui_mark/mark_check.png (icône 48 px + 24 px sur fond sombre et clair) <= 512 px.
+RAPPORT (4 lignes max, ultracave).

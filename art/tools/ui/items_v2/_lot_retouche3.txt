@@ -1,0 +1,8 @@
+IMPORTANT : commence chaque commande par Set-Location C:/Users/const/Documents/Rainfall ; chemins absolus.
+OBJECTIF : retoucher 3 icônes d'items (256x256 RGBA, DA sérieuse cel, voir art/briefs/items_v2.md section Contrat/DA seulement) :
+- horloge_arcanique (art/tools/ui/items_v2/lot_d.py, def horloge_arcanique) : cadran trop clair et plat -> cadran sombre (ardoise/verre fumé #2E3438), profondeur (anneau en retrait, aiguilles en relief avec ombre), chiffres/index laiton, un seul accent violet #8A6AB0 (runes/cœur), boîtier laiton/fer usé.
+- pierre_a_aiguiser (lot_b.py, def pierre_a_aiguiser) : lecture moyenne -> VRAIE pierre à aiguiser : bloc rectangulaire allongé gris-beige grain fin, bords biseautés, usure concave au centre, lame de couteau posée en biais dessus avec étincelles or, éventuellement socle bois. Lisible à 48 px.
+- sifflet_de_chasse (lot_b.py, def sifflet_de_chasse) : cordelette octogonale filaire peu naturelle -> cordelette souple tressée/épaisse (courbe lisse, section ronde, quelques noeuds), sifflet os + embouchure laiton lisible.
+TOUCHER : ces fonctions dans lot_b.py/lot_d.py (ne pas changer les autres builders), relancer en --background avec sous-ensemble (`-- id id`) pour ces 3 ids ; livrer game/assets/sprites/icons/items/<id>.png (mêmes noms, 256x256, <= 60 Ko, aucun _e/_n). Avant : art/renders/items_v2/before/<id>.png existe (sinon le copier d'abord depuis la version actuelle sous art/renders/items_v2/before_retouche3/). Planche avant/après : art/renders/items_v2/retouche3_before_after.png (<= 1024 px). Comparer l'avant en lisant l'image avant de coder.
+NE PAS LIRE : autres briefs, docs.
+RAPPORT (5 lignes max, ultracave).
