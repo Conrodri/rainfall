@@ -4,7 +4,7 @@ extends Node2D
 ## Spawn par Director.spawn_enemy (tier `tier`, pool commun : aucune instanciation), PV = add_hp_frac des PV du boss,
 ## vitesse walk_u, aucun coup (dégâts 0), `aim_priority` 2 (ciblage automatique), `walk_target` = le boss
 ## (Enemy marche vers lui). Habillage : extras `<prefix>run_<dir>` du .tres du boss (EnemyVisual.set_skin_frames),
-## sinon le monstre du biome ; halo clignotant 2 Hz (forme provisoire RaidFx RING tant que le kit n'est pas rendu).
+## sinon le monstre du biome ; anneau rouge au sol sous les pieds (hitbox_ring.png modulé, pouls 2 Hz).
 ## Échec : add au contact du boss -> boss soigné de heal_frac de ses PV max (plafond heal_cap_frac pour ce groupe),
 ## Events.raid_mechanic_failed(boss, &"add_reached"), add retiré sans prime. Plafond : MAX adds vivants.
 
@@ -14,6 +14,14 @@ signal add_reached(add: Enemy)
 const MAX := 3
 const BLINK_HZ := 2.0
 const SPAWN_RING_U := 6.0
+## Marqueur au sol sous les pieds (demande du joueur, 31/10/2026) : anneau rouge vif, sous le sprite, qui pulse.
+const MARKER_TEX := "res://assets/sprites/fx/hitbox/hitbox_ring.png" ## 256², anneau blanc à moduler
+const MARKER_PEAK_PX := 97.0 ## rayon du pic de l'anneau dans la texture
+const MARKER_COLOR := Color(1.0, 0.12, 0.10) ## rouge vif, lisible sur tous les biomes
+const MARKER_RADIUS_K := 1.2 ## x l'emprise (radius_px) du monstre
+const MARKER_PULSE := 0.08 ## amplitude du pouls d'échelle (+-)
+const MARKER_ALPHA_MIN := 0.7
+const MARKER_ALPHA_MAX := 1.0
 
 var boss: Node2D = null
 var heal_frac := Balance.RAID_ADD_HEAL_FRAC
@@ -77,14 +85,28 @@ func spawn(count: int, opts: Dictionary = {}, toward := Vector2.INF) -> int:
 		e.walk_target = boss
 		if frames != null and e.visual is EnemyVisual:
 			(e.visual as EnemyVisual).set_skin_frames(frames, prefix)
-		var halo := RaidFx.visual(&"raid_add_halo", RaidFx.Kind.RING, RaidFx.CYAN, e.radius_px * 1.4)
-		halo.z_index = -1
+		var halo := _make_marker(e.radius_px)
 		e.add_child(halo)
 		e.add_to_group(RaidFx.CUE_GROUP)
 		adds.append(e)
 		_halos.append(halo)
 		n += 1
 	return n
+
+
+## Anneau rouge au sol (Sprite2D « SoutierMarker »), sous le corps ; échelle de base dans la méta `base_scale`.
+func _make_marker(radius_px: float) -> Sprite2D:
+	var m := Sprite2D.new()
+	m.name = &"SoutierMarker"
+	m.texture = load(MARKER_TEX) as Texture2D
+	m.modulate = MARKER_COLOR
+	m.light_mask = 0
+	m.material = EnemyTelegraph.unshaded_material()
+	m.z_index = -1
+	var k := radius_px * MARKER_RADIUS_K / MARKER_PEAK_PX
+	m.scale = Vector2(k, k)
+	m.set_meta(&"base_scale", k)
+	return m
 
 
 func _physics_process(delta: float) -> void:
@@ -102,7 +124,9 @@ func step(delta: float) -> void:
 		else:
 			var h := _halos[i]
 			if is_instance_valid(h):
-				h.modulate.a = blink
+				h.modulate.a = lerpf(MARKER_ALPHA_MIN, MARKER_ALPHA_MAX, (blink - 0.1) / 0.9)
+				var k: float = float(h.get_meta(&"base_scale", 1.0)) * (1.0 + MARKER_PULSE * cos(TAU * BLINK_HZ * _t))
+				h.scale = Vector2(k, k)
 			if boss != null and is_instance_valid(boss) \
 					and e.global_position.distance_to(boss.global_position) <= e.radius_px + float(boss.get(&"radius_px")) + 8.0:
 				_reach(i)

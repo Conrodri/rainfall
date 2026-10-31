@@ -24,6 +24,9 @@ func _ready() -> void:
 	_run.call_deferred()
 
 
+var _marker_probe: Node = null
+
+
 func _check(label: String, ok: bool, detail: String = "") -> void:
 	if ok:
 		print("  ok  " + label)
@@ -293,6 +296,12 @@ func _t_shield_kill() -> void:
 	var pa := b.shield.adds
 	_check("2 soutiers sortis, priorité de visée 2, loin du boss", pa != null and pa.alive() == 2 and (pa.adds[0] as Enemy).aim_priority == 2.0
 		and (pa.adds[0] as Enemy).global_position.distance_to(_boss.global_position) > 8.0 * U)
+	var all_marked := true
+	for a in pa.adds:
+		var mk := (a as Enemy).get_node_or_null("SoutierMarker") as Sprite2D
+		all_marked = all_marked and mk != null and mk.modulate.r > 0.9 and mk.modulate.g < 0.3 and mk.z_index < 0
+	_check("chaque soutier a son marqueur rouge au sol", all_marked)
+	_marker_probe = (pa.adds[0] as Enemy).get_node_or_null("SoutierMarker")
 	for a in pa.adds:
 		(a as Enemy).speed_px = 0.0 # à l'arrêt : seule la mort ou l'arrivée compte, pas la marche
 	_check("tag de barre « SOUTIERS 0/2 »", String(b.boss_state_tag().get("text", "")) == "SOUTIERS 0/2", str(b.boss_state_tag()))
@@ -305,6 +314,7 @@ func _t_shield_kill() -> void:
 	for a in pa.adds.duplicate():
 		(a as Enemy).take_damage(1e9)
 	_frame()
+	_check("marqueur retiré à la mort du soutier", _marker_probe == null or not is_instance_valid(_marker_probe) or _marker_probe.is_queued_for_deletion() or not _marker_probe.is_inside_tree())
 	_check("2 soutiers tués : rupture méritée", b.shield.state == BossShield.State.BREAKING and b.shield.rewarded)
 	_run_for(Balance.BOSS_SHIELD_BREAK_S + 0.05)
 	_check("purge 3 s : exposé x1,3, boss sonné (aucune attaque)", b.shield.is_exposed() and is_equal_approx(b.damage_taken_mult(), 1.3)
