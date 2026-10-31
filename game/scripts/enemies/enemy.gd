@@ -472,6 +472,7 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 	_attack_cd = 1.5
 	_spell_cd = 3.0
 	_common_activate(pos)
+	aim_priority = Balance.BOSS_AIM_PRIORITY # ciblage automatique (SpellCaster._nearest_enemy) : distance ÷ ce facteur
 	add_to_group(&"enemies")
 	add_to_group(&"bosses")
 	_set_light(&"boss")
@@ -809,7 +810,7 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 				move = go * speed_px
 		BOSS_TIER when brain != null: # Cerf-Lanterne : IA à phases (scripts/enemies/cerf_brain.gd)
 			move = brain.tick(delta, player, player_pos, dir, dist, path_dir)
-			if brain.owns_motion():
+			if brain != null and brain.owns_motion(): # le tick peut finir le boss (mort -> brain = null)
 				return
 		BOSS_TIER:
 			_facing = dir.angle() # face au joueur (la marche reprend la direction du pas plus bas)

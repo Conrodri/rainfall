@@ -161,6 +161,8 @@ func _spell(slot: int) -> SpellData:
 
 ## {dir: direction de fuite, left: s avant l'impact} si le télégraphe de `e` couvre `ppos`, sinon {}.
 func _danger(e: Node2D, ppos: Vector2) -> Dictionary:
+	if not (e is Enemy): # nœuds du groupe « enemies » sans télégraphe d'Enemy (jarres, appendices, leurres...)
+		return {}
 	var w: int = int(e.get(&"_windup"))
 	var id := e.get_instance_id()
 	if w == Enemy.Windup.NONE or w == Enemy.Windup.AUTO:

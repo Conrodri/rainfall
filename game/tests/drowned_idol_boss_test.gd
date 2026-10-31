@@ -188,7 +188,7 @@ func _contracts() -> void:
 	_check("seuils 70 / 35 %", Balance.boss_phase(&"etage", ID, 0.71) == 1 and Balance.boss_phase(&"etage", ID, 0.70) == 2
 		and Balance.boss_phase(&"etage", ID, 0.36) == 2 and Balance.boss_phase(&"etage", ID, 0.35) == 3)
 	_check("P3 : +20 % de dégâts reçus", is_equal_approx(Balance.boss_damage_taken_mult(ID, 3), 1.2) and Balance.boss_damage_taken_mult(ID, 2) == 1.0)
-	_check("PV x 0,9, 2 boucliers", is_equal_approx(Balance.boss_hp_mult(ID), 0.9) and Balance.boss_shield_count(ID) == 2)
+	_check("PV x 0,7 (audit runs 31/10/2026, était 0,9), 2 boucliers", is_equal_approx(Balance.boss_hp_mult(ID), 0.7) and Balance.boss_shield_count(ID) == 2)
 	_check("garde-fou 25 s (défaut) ; Idole v2 : 45 s, impulsion toutes les 8 s, soin 10 %", Balance.BOSS_SHIELD_BACKSTOP_S == 25.0
 		and float(Balance.boss_pressure(ID, "shield_backstop_s")) == 45.0 and float(Balance.boss_pressure(ID, "shield_stall_every_s")) == 8.0
 		and Balance.RAID_STALL_HEAL_FRAC == 0.10)

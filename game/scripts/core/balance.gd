@@ -163,11 +163,26 @@ const ANTICIP_FLASH := 0.3
 ## Base étage 3300 (était 3000) : boss d'étage ≈ 65-75 s en Moyen, build moyen, à tous les étages.
 const BOSS_BASE_HP := {&"mini": 1000.0, &"etage": 3300.0}
 const BOSS_BASE_DMG := {&"mini": 20.0, &"etage": 28.0} ## +20 %/niveau ambiant (remplace 25/35 × (1 + 0,3 (D-1)))
-const BOSS_STAGE_K := 1.20
+## Audit runs complètes 31/10/2026 (docs/Audit_Runs_Completes_2026-10-31.md) : 1,20 -> 1,0 (neutre, gardé comme levier).
+## Avec 1,20 le rapport PV / DPS du joueur passait de ~70 s (étages 1-3) à 110-200 s à l'étage 4 et au boss final ;
+## à 1,12 puis 1,05 l'étage 4 restait 1,8 puis 1,4 × l'étage 1 en rencontre ciblée (rythme visé de 19 min). Le niveau
+## ambiant et √coeff suffisent à suivre les objets.
+const BOSS_STAGE_K := 1.0
+## Part du DPS qui touche réellement le boss (audit du 31/10/2026) : les PV ci-dessus visaient 65-75 s avec 100 % des
+## dégâts sur le boss ; en jeu (monstres de la charge, zones, procs) seuls 35-50 % le touchent. Facteur de PV calibré
+## pour les cibles AVEC monstres (médiane de 6 personnages, rencontres ciblées au rythme visé) : mini-boss 21-30 s,
+## boss d'étage 65-75 s, boss final 120-150 s.
+const BOSS_FOCUS_HP_MULT := {&"mini": 0.55, &"etage": 0.5}
 ## Boss final (la Source) : PV = boss d'étage de l'étage 5 × ce facteur (était 2,0 dans data/floors.json).
 ## TTK visé 120-150 s en Moyen, build moyen (décision du joueur du 28/10) : 1,55 → ≈ 135 s (audit §8 : 1,2 → 105 s,
 ## 1,5 → 130 s, 2,0 → 175 s). Lu par StageManager (Pillar.setup_final) et par TestTools.final_hp_mult().
-const FINAL_BOSS_HP_MULT := 1.55
+## Audit runs complètes 31/10/2026 : 1,55 -> 1,35 (boss final 4 tués sur 30 en 420 s dans les runs simulées).
+const FINAL_BOSS_HP_MULT := 1.35
+## Priorité de ciblage automatique des boss et mini-boss (Enemy.aim_priority : distance effective ÷ ce facteur dans
+## SpellCaster._nearest_enemy). Seule la visée AUTO est concernée (sort 1, sorts 2-4 sur mobile ou « Sorts automatiques »,
+## repli manette au repos) ; la visée au curseur et au stick n'en tient pas compte. Audit du 31/10/2026 : sans elle, 36-50 %
+## seulement des dégâts touchent le boss (monstres de la charge plus proches) ; avec 2,0 : TTK -10 à -25 %.
+const BOSS_AIM_PRIORITY := 2.0
 ## PV des boss d'étage, des raids et du boss final selon le mode (mini-boss non concernés). Difficile 0,85 : sans lui,
 ## les boss d'étage 2-4 du Difficile duraient 101-107 s, au-delà de l'enrage (90 s) ; avec, ≈ 86-91 s (audit §6).
 ## Le Difficile reste plus dangereux (dégâts au niveau ambiant) sans devenir une guerre d'usure. Appliqué par
@@ -290,7 +305,7 @@ const BOSS_PACE_SHAKE_S := 0.22
 ## « question ouverte » attendent l'arbitrage du joueur (§5) : ils sont centralisés ici pour être changés sans code.
 ## PV des boss à deux boucliers (§0 règle 5) : × ce facteur, lu par boss_hp_mult(boss_id) (à appliquer à
 ## l'activation du boss, boss_hp() reste inchangé).
-const BOSS_HP_MULT := {&"drowned_idol": 0.9, &"flood_gunner": 0.9, &"salt_king": 0.9}
+const BOSS_HP_MULT := {&"drowned_idol": 0.7, &"flood_gunner": 0.9, &"salt_king": 0.9} ## Idole 0,9 -> 0,7 (audit 31/10/2026 : 2,1 × le TTK médian de l'étage 1, garde-fou de bouclier de 45 s compris)
 ## Nombre de boucliers de phase par boss (question ouverte 1 : 2 pour les nouveaux, 1 pour les existants).
 const BOSS_SHIELDS := {&"drowned_idol": 2, &"flood_gunner": 2, &"salt_king": 2}
 const BOSS_SHIELDS_DEFAULT := 1
@@ -621,7 +636,7 @@ func monster_gold(D: float, cost: float) -> float:
 
 ## `stage` : étage du combat (RunState.stage côté jeu).
 func boss_hp(kind: StringName, D: float, stage: int = 1) -> float:
-	return BOSS_BASE_HP[kind] * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1)) * sqrt(D) * pow(BOSS_STAGE_K, stage - 1)
+	return BOSS_BASE_HP[kind] * float(BOSS_FOCUS_HP_MULT.get(kind, 1.0)) * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1)) * sqrt(D) * pow(BOSS_STAGE_K, stage - 1)
 
 
 func boss_damage(kind: StringName, D: float) -> float:

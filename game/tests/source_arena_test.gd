@@ -62,7 +62,9 @@ func _ready() -> void:
 	var boss: Enemy = rod.get(&"_boss")
 	_check("boss rain_sower (méta, sprite id)", boss != null and boss.get_meta(&"boss_id", &"") == &"rain_sower" and boss.get(&"_boss_sprite_id") == &"rain_sower", str(boss.get(&"_boss_sprite_id")) if boss != null else "null")
 	_check("boss final marqué", boss != null and bool(boss.get_meta(&"final_boss", false)))
-	_check("PV ×2 du boss d'étage", boss != null and absf(boss.max_hp - hp_etage * 2.0) < hp_etage * 0.05, "%.0f vs %.0f" % [boss.max_hp if boss else 0.0, hp_etage * 2.0])
+	# Attente périmée (×2 de l'ancien floors.json) : la source unique est Balance.FINAL_BOSS_HP_MULT (audit du 31/10/2026).
+	var hp_final := hp_etage * Balance.FINAL_BOSS_HP_MULT * Balance.boss_hp_mode_mult(&"etage", RunState.mode)
+	_check("PV × FINAL_BOSS_HP_MULT du boss d'étage", boss != null and absf(boss.max_hp - hp_final) < hp_final * 0.05, "%.0f vs %.0f" % [boss.max_hp if boss else 0.0, hp_final])
 	await _frames(2)
 	var z: Dictionary = director._zones.get(rod.zone_id, {})
 	_check("zone Director : 22 u, gros pilier (×2,33)", bool(z.get("active", false)) and is_equal_approx(float(z.get("radius", 0.0)), 22.0 * 64.0) and z.get("kind") == &"etage", str(z))
