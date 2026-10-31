@@ -10,6 +10,7 @@ var stage: int
 var price: float ## prix de référence des relances à l'or
 var quality: StringName = &"commun"
 var die := 0
+var rolls: Array = [] ## dés de tous les tirages de rareté (1 + Chance) ; `die` = le meilleur
 var offered: Array = [] ## 2 ids (String)
 var shown: Array = [] ## tous les ids déjà montrés pour ce coffre
 var gold_rerolls := 0
@@ -47,20 +48,16 @@ func start() -> void:
 	var res := LootRoller.roll_quality(kind, rng, roundi(stats.get("luck", 0.0)))
 	quality = res["quality"]
 	die = res["die"]
-	_apply_de_pipe()
+	rolls = res.get("rolls", [die])
 	_draw()
 
 
-## Dé pipé : le premier petit coffre de chaque étage est au moins Peu commun (étage retenu dans RunState.counters,
-## donc sauvegardé avec la run).
-func _apply_de_pipe() -> void:
-	if kind != &"petit" or RunState.stacks(&"de_pipe") <= 0 or int(RunState.counters.get("de_pipe_stage", 0)) == stage:
-		return
-	RunState.counters["de_pipe_stage"] = stage
-	var min_q := StringName(str(ItemEffects.data_of(&"de_pipe").get("min_quality", "peu_commun")))
-	if LootRoller.quality_rank(quality) < LootRoller.quality_rank(min_q):
-		quality = min_q
-		die = LootRoller.die_range(kind, min_q).x
+## Rareté de chaque jet (une roue par jet).
+func roll_qualities() -> Array:
+	var out: Array = []
+	for d in rolls:
+		out.append(LootRoller.quality_from_die(kind, int(d)))
+	return out
 
 
 func _draw() -> void:

@@ -106,6 +106,12 @@ var _reel_pos := 0.0 ## index (flottant) de la case au centre
 var _reel_from := 2.0
 var _reel_to := 0.0
 var _tile_px := 110.0
+## Roues de rareté supplémentaires (objets « +1 Chance » : un jet de plus par exemplaire, on garde le meilleur).
+## La roue principale (_reel) porte le meilleur jet ; chaque entrée : panel, reel, tiles, seq, to, pos, rank, dur, landed, last, slot.
+const MAX_WHEELS := 3 ## plafond visuel (le tirage, lui, garde tous les jets)
+const MULTI_WHEEL_K := 0.7 ## les roues multiples tournent plus vite : la phase de rareté reste courte
+var _xr: Array = []
+var _main_slot := 0
 var _flash: ColorRect
 var _card_styles: Array[StyleBoxTexture] = []
 var _front_sb: Array[StyleBox] = []
@@ -746,8 +752,15 @@ func _layout_stage() -> void:
 	_icon.pivot_offset = _icon.size * 0.5
 	_icon.position = Vector2((w - icon_s) * 0.5, top)
 	_icon_home = _icon.position
-	_reel_panel.position = Vector2(0.0, top + icon_s + 16.0)
-	_reel_panel.size = Vector2(w, rh)
+	var nw := wheel_count()
+	var gap := 16.0
+	var pw := (w - gap * float(nw - 1)) / float(nw)
+	var ry := top + icon_s + 16.0
+	_reel_panel.position = Vector2(float(_main_slot) * (pw + gap), ry)
+	_reel_panel.size = Vector2(pw, rh)
+	for x in _xr:
+		(x["panel"] as Control).position = Vector2(float(x["slot"]) * (pw + gap), ry)
+		(x["panel"] as Control).size = Vector2(pw, rh)
 	if _flash == null:
 		return
 	_flash.position = Vector2(0.0, top)
@@ -879,11 +892,68 @@ func _build_reel() -> void:
 	_last_tick = roundi(_reel_pos)
 	for q in _reel_seq:
 		_reel_tiles.append(_make_tile(q))
+	_build_extra_reels()
 	_layout_reel()
 
 
+## Nombre de roues affichées (1 sans Chance).
+func wheel_count() -> int:
+	return 1 + _xr.size()
+
+
+## Roues des jets non retenus (au plus MAX_WHEELS - 1) ; la meilleure reste la roue principale.
+func _build_extra_reels() -> void:
+	for x in _xr:
+		(x["panel"] as Node).queue_free()
+	_xr.clear()
+	_main_slot = 0
+	if session == null or session.rolls.size() <= 1:
+		return
+	var best_i := 0
+	for i in session.rolls.size():
+		if int(session.rolls[i]) > int(session.rolls[best_i]):
+			best_i = i
+	var quals: Array = session.roll_qualities()
+	var table: Dictionary = Balance.CHEST_QUALITY_TABLE.get(session.kind, {})
+	var slot := 0
+	for i in session.rolls.size():
+		if i == best_i:
+			_main_slot = mini(slot, MAX_WHEELS - 1)
+			slot += 1
+			continue
+		if _xr.size() >= MAX_WHEELS - 1:
+			continue
+		var q: StringName = quals[i]
+		var rk := maxi(0, LootRoller.quality_rank(q))
+		var panel := PanelContainer.new()
+		panel.theme_type_variation = &"SmallPanel"
+		panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_stage_box.add_child(panel)
+		var reel := Control.new()
+		reel.clip_contents = true
+		reel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		panel.add_child(reel)
+		reel.resized.connect(_layout_reel)
+		var qs: Array[StringName] = []
+		var ws: Array[float] = []
+		for qq in LootRoller.ORDER:
+			qs.append(qq)
+			ws.append(2.0 + 0.4 * sqrt(float(table.get(qq, 0))))
+		var n: int = RARITY_TILES[rk]
+		var seq: Array[StringName] = []
+		for k in n + 4:
+			seq.append(qs[_pres.rand_weighted(PackedFloat32Array(ws))])
+		seq[n] = q
+		var tiles: Array[Control] = []
+		for qq in seq:
+			tiles.append(_make_tile(qq, reel))
+		_xr.append({"panel": panel, "reel": reel, "tiles": tiles, "seq": seq, "to": float(n), "pos": 2.0,
+			"rank": rk, "dur": 0.0, "landed": false, "last": 2, "slot": slot, "q": q})
+		slot += 1
+
+
 ## Case de rareté : cadre de rareté (kit d'icônes), fond teinté de la couleur de rareté (repli simple), nom.
-func _make_tile(q: StringName) -> Control:
+func _make_tile(q: StringName, parent: Control = null) -> Control:
 	var qc: Color = Palette.rarity(q)
 	var tile := Control.new()
 	tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -924,7 +994,7 @@ func _make_tile(q: StringName) -> Control:
 	l.offset_left = 8
 	l.offset_right = -8
 	tile.add_child(l)
-	_reel.add_child(tile)
+	(parent if parent != null else _reel).add_child(tile)
 	return tile
 
 
@@ -942,25 +1012,31 @@ func _fit_quality() -> void:
 
 
 func _layout_reel() -> void:
-	if _reel == null or _reel.size.x < 10.0:
+	_layout_strip(_reel, _reel_tiles, _reel_pos)
+	for x in _xr:
+		_layout_strip(x["reel"], x["tiles"], float(x["pos"]))
+
+
+func _layout_strip(reel: Control, tiles: Array, pos: float) -> void:
+	if reel == null or reel.size.x < 10.0:
 		return
-	var w := _reel.size.x
-	var h := _reel.size.y
+	var w := reel.size.x
+	var h := reel.size.y
 	_tile_px = clampf(h - 6.0, 60.0, 150.0)
 	var t := _tile_px
 	var pitch := t + 16.0
 	# police : le mot le plus long (« Légendaire ») tient sur la largeur de la case, jamais coupé
 	var fs := clampi(int(t * 0.17), 12, 26)
-	if not _reel_tiles.is_empty():
-		var font := (_reel_tiles[0].get_child(2) as Label).get_theme_font(&"font")
+	if not tiles.is_empty():
+		var font := (tiles[0].get_child(2) as Label).get_theme_font(&"font")
 		var widest := ["Légendaire", "Peu commun"] # + tous les noms des cases : le plus large (« Peu commun ») fixe la police
-		for tl in _reel_tiles:
+		for tl in tiles:
 			widest.append((tl.get_child(2) as Label).text)
 		while fs > 10 and widest.any(func(s: String) -> bool: return font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > t - 22.0):
 			fs -= 1
-	for k in _reel_tiles.size():
-		var tile := _reel_tiles[k]
-		var d := float(k) - _reel_pos
+	for k in tiles.size():
+		var tile: Control = tiles[k]
+		var d := float(k) - pos
 		var ad := absf(d)
 		tile.size = Vector2(t, t)
 		tile.pivot_offset = tile.size * 0.5
@@ -996,7 +1072,13 @@ func _start_reveal(with_rarity: bool) -> void:
 		_item_dur[i] = float(ITEM_DUR[i]) * item_k
 	if with_rarity:
 		_build_reel()
-		_rar_dur = RARITY_DUR[_rank] * rar_k
+		_rar_dur = RARITY_DUR[_rank] * rar_k * (MULTI_WHEEL_K if not _xr.is_empty() else 1.0)
+		for x in _xr:
+			x["dur"] = minf(RARITY_DUR[int(x["rank"])] * rar_k * MULTI_WHEEL_K, _rar_dur)
+			x["landed"] = _rar_dur <= 0.0
+			x["pos"] = 2.0
+			(x["panel"] as Control).modulate = Color.WHITE
+		_layout_stage()
 		_rar_landed = false
 		_item_t0 = _rar_dur + ITEM_GAP
 	else:
@@ -1052,6 +1134,17 @@ func _process(delta: float) -> void:
 		var amp := (3.0 + 15.0 * u) * (0.7 + 0.2 * _rank)
 		_icon.position = _icon_home + Vector2(_pres.randf_range(-amp, amp), _pres.randf_range(-amp, amp) * 0.5)
 		_icon.rotation = deg_to_rad(_pres.randf_range(-amp, amp) * 0.25)
+		for x in _xr:
+			if x["landed"]:
+				continue
+			var xu := clampf(_anim_t / maxf(float(x["dur"]), 0.01), 0.0, 1.0)
+			x["pos"] = lerpf(2.0, float(x["to"]), 1.0 - pow(1.0 - xu, RARITY_EASE[int(x["rank"])]))
+			var xk := roundi(float(x["pos"]))
+			if xk != int(x["last"]):
+				x["last"] = xk
+				Audio.play_ui(&"ui.hover", -14.0 + 4.0 * xu, 0.7 + 0.35 * xu)
+			if xu >= 1.0:
+				_land_extra(x, true)
 		var k := roundi(_reel_pos)
 		if k != _last_tick:
 			_last_tick = k
@@ -1075,6 +1168,38 @@ func _process(delta: float) -> void:
 		_end_reveal()
 
 
+## Pose une roue secondaire sur son jet.
+func _land_extra(x: Dictionary, fx: bool) -> void:
+	if x["landed"] and x["pos"] == x["to"]:
+		return
+	x["landed"] = true
+	x["pos"] = x["to"]
+	_layout_reel()
+	if fx:
+		var tl: Array = x["tiles"]
+		var tile: Control = tl[int(x["to"])]
+		var tw := create_tween()
+		tw.tween_property(tile, "scale", Vector2.ONE * 1.2, 0.08)
+		tw.tween_property(tile, "scale", Vector2.ONE * 1.12, 0.12)
+
+
+## La roue principale est posée : les autres s'arrêtent, se grisent ; la meilleure est mise en valeur.
+func _settle_wheels(fx: bool) -> void:
+	if _xr.is_empty():
+		return
+	for x in _xr:
+		_land_extra(x, false)
+		(x["panel"] as Control).modulate = Color(0.55, 0.55, 0.6, 0.8)
+	_reel_panel.modulate = Color.WHITE
+	if fx:
+		_reel_panel.pivot_offset = _reel_panel.size * 0.5
+		var tp := create_tween()
+		tp.tween_property(_reel_panel, "scale", Vector2.ONE * 1.06, 0.1)
+		tp.tween_property(_reel_panel, "scale", Vector2.ONE * 1.03, 0.14)
+	else:
+		_reel_panel.scale = Vector2.ONE
+
+
 ## Rareté posée : coffre ouvert, nom en couleur ; `fx` = rebond, flash (rare et plus) et son.
 func _land_rarity(fx: bool) -> void:
 	_rar_landed = true
@@ -1087,6 +1212,7 @@ func _land_rarity(fx: bool) -> void:
 	_quality.text = QUALITY_NAMES.get(session.quality, "")
 	_fit_quality()
 	_quality.add_theme_color_override("font_color", qc)
+	_settle_wheels(fx)
 	if session != null and Audio.has_method(&"chest_sequence_land"):
 		Audio.chest_sequence_land() # frappe légendaire calée sur l'arrêt réel (ou le skip)
 	if not fx:

@@ -43,9 +43,12 @@ static func quality_from_die(kind: StringName, die: int) -> StringName:
 ## d100 de qualité. luck = relances (on garde le meilleur). Retourne {quality, die}.
 static func roll_quality(kind: StringName, rng: RandomNumberGenerator, luck: int = 0) -> Dictionary:
 	var best := 0
+	var rolls: Array[int] = [] ## tous les jets, dans l'ordre (une roue de rareté par jet côté UI)
 	for i in range(maxi(luck, 0) + 1):
-		best = maxi(best, rng.randi_range(1, 100))
-	return {"quality": quality_from_die(kind, best), "die": best}
+		var d := rng.randi_range(1, 100)
+		rolls.append(d)
+		best = maxi(best, d)
+	return {"quality": quality_from_die(kind, best), "die": best, "rolls": rolls}
 
 
 static func build_tags(owned: Dictionary) -> Dictionary:

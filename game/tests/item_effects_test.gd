@@ -50,7 +50,7 @@ const HANDLED := {
 	&"peste_vivante": "ItemEffects (mort empoisonné)", &"bouclier_reactif": "ItemEffects.absorb_hit",
 	&"faveur_marchand": "ItemEffects + Chest + ChestSession", &"phenix": "ItemEffects.try_revive",
 	&"rafale_acier": "ItemEffects (sort 1)", &"coeur_chronomancien": "ItemEffects", &"couronne_echo": "ItemEffects",
-	&"nova_infinie": "ItemEffects", &"moisson": "ItemEffects", &"de_pipe": "ChestSession",
+	&"nova_infinie": "ItemEffects", &"moisson": "ItemEffects",
 }
 const CHARS := [&"ardent", &"rictus", &"vigie"]
 const U := 64.0

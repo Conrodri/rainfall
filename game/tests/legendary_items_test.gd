@@ -378,36 +378,20 @@ func _test_de_pipe(ch: StringName) -> void:
 	if ch != &"ardent":
 		_give({})
 		return
-	var bad := 0
-	for sd in 300:
-		RunState.start_run(&"moyen", 1000 + sd)
-		RunState.add_item(&"de_pipe")
-		var s1 := ChestSession.new(&"petit", 2, 50.0, RunState.rng)
-		s1.start()
-		if LootRoller.quality_rank(s1.quality) < 1:
-			bad += 1
-	_check("dé pipé : 1er petit coffre de l'étage >= Peu commun (%d échecs/300)" % bad, bad == 0)
+	# Trèfle à 5 feuilles : un jet de rareté de plus par exemplaire, on garde le meilleur
 	RunState.start_run(&"moyen", 31)
 	RunState.add_item(&"de_pipe")
-	var commons := 0
-	for i in 200:
-		var s2 := ChestSession.new(&"petit", 1, 50.0, RunState.rng)
-		s2.start()
-		if i > 0 and s2.quality == &"commun":
-			commons += 1
-	_check("dé pipé : petits coffres suivants du même étage normaux (%d communs)" % commons, commons > 50)
-	var s3 := ChestSession.new(&"petit", 2, 50.0, RunState.rng)
-	s3.start()
-	_check("dé pipé : nouvel étage = nouveau coffre garanti", LootRoller.quality_rank(s3.quality) >= 1)
-	RunState.start_run(&"moyen", 32)
-	var base_commons := 0
-	var n := 300
-	for i in n:
-		var sx := ChestSession.new(&"petit", 1, 50.0, RunState.rng)
-		sx.start()
-		if sx.quality == &"commun":
-			base_commons += 1
-	_check("sans dé pipé : communs fréquents (%d/%d)" % [base_commons, n], base_commons > n / 2)
+	var bad := 0
+	for i in 100:
+		var s1 := ChestSession.new(&"petit", 1, 50.0, RunState.rng)
+		s1.start()
+		if s1.rolls.size() != 2 or s1.die != maxi(int(s1.rolls[0]), int(s1.rolls[1])):
+			bad += 1
+	_check("trèfle : 2 jets de rareté, meilleur gardé (%d échecs/100)" % bad, bad == 0)
+	RunState.add_item(&"de_pipe")
+	var s2 := ChestSession.new(&"petit", 1, 50.0, RunState.rng)
+	s2.start()
+	_check("trèfle x2 : 3 jets", s2.rolls.size() == 3)
 	_give({})
 
 
