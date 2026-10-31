@@ -1,0 +1,3 @@
+OBJECTIF : retouche de fiole_verte (lot C) : le liquide a un visage souriant (deux yeux + bouche) = jouet, interdit. Retirer tout visage ; fiole à col en métal, liquide vert toxique (#7FA35B, un seul accent émissif), bulles discrètes, silhouette lisible à 48 px.
+TOUCHER : art/tools/ui/items_v2/lot_c.py (seulement le builder fiole_verte), relancer en --background pour fiole_verte seul (sous-ensemble si supporté, sinon tout le lot C) ; livrer game/assets/sprites/icons/items/fiole_verte.png (256x256 RGBA, <= 60 Ko, aucun _e/_n) ; regénérer art/renders/items_v2/lotC_before_after.png.
+NE PAS lire de briefs. RAPPORT 3 lignes ultracave.

@@ -1,0 +1,6 @@
+OBJECTIF : retouche lot A (planche art/renders/items_v2/lotA_before_after.png) : eclair_en_bouteille (ukulélé) et moisson (faux) trop petits et sombres à 48 px.
+TOUCHER : art/tools/ui/items_v2/lot_a.py, iv2_lib.py ; relancer en --background (`-- eclair_en_bouteille moisson` si supporté) ; livrer dans game/assets/sprites/icons/items/<id>.png.
+CORRIGER : (1) cadrer ces 2 objets en DIAGONALE (~40° d'inclinaison dans le plan écran) pour qu'ils remplissent 85-90 % du carré 256 (marge 12 px) ; (2) ukulélé : corps plus large, bois plus clair (#7A4E2E base), cordes claires visibles, fissures cyan plus épaisses, arc de foudre cyan plus gros ; (3) faux : lame d'acier plus claire (ton lumière nettement distinct du fond #20242c), lame plus large, manche en bois mieux visible, un fil de lame rouge braise plus net ; (4) rien d'autre ne change.
+NE PAS livrer de fichier _e (ni dans game/ ni ailleurs dans game/assets/sprites/icons/items/) : supprimer ceux qui apparaissent. Ne pas lire de briefs.
+VÉRIF : check.py, puis régénérer art/renders/items_v2/lotA_before_after.png ; regarde-la une fois.
+RAPPORT (4 lignes max, ultracave).
