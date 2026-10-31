@@ -158,6 +158,77 @@ static func bake_mask(grid: Array, cols: int, rows: int) -> Image:
 	return img
 
 
+## --- Eau à bords organiques (31/10/2026) ---------------------------------------------------------------
+## Masque RGBA8 de l'eau, même résolution et même agrandissement cubique que bake_mask : R eau profonde « ~ »,
+## G eau peu profonde « , », B sol praticable (ni « ~ » ni mur ni vide), A = 1. Un mur « # » / « D » voisin d'une
+## case d'eau en prend la valeur (l'eau finit sous le mur, pas devant) ; le vide « espace » reste sec.
+## Les shaders d'eau et de rive (puddle_common.gdshaderinc, water_bank.gdshader) seuillent ce masque lissé à 0,5
+## avec le bruit du sol : bord sinueux, rien par image.
+const WATER_SOLIDS := "#D"
+const WARP_PERIOD_DIV := 6.0 ## le bruit de bord tourne 6 fois plus vite que celui du sol (taches de ~1,5 case)
+
+static var _water_cache_key := -1
+static var _water_cache: Image = null
+
+
+static func bake_water_mask(grid: Array, cols: int, rows: int) -> Image:
+	var key := hash(grid) ^ (cols * 7919 + rows)
+	if key == _water_cache_key and _water_cache != null:
+		return _water_cache
+	var data := PackedByteArray()
+	data.resize(cols * rows * 4)
+	for y in rows:
+		var row: String = grid[y]
+		for x in cols:
+			var ch := row[x] if x < row.length() else " "
+			var deep := 0
+			var shallow := 0
+			var walk := 0
+			if ch == "~":
+				deep = 255
+			elif ch == ",":
+				shallow = 255
+				walk = 255
+			elif WATER_SOLIDS.contains(ch):
+				for o in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+					var nx: int = x + o.x
+					var ny: int = y + o.y
+					if nx < 0 or ny < 0 or nx >= cols or ny >= rows:
+						continue
+					var nrow: String = grid[ny]
+					var nch := nrow[nx] if nx < nrow.length() else " "
+					if nch == "~":
+						deep = 255
+					elif nch == ",":
+						shallow = 255
+			elif ch != " ":
+				walk = 255
+			var i := (y * cols + x) * 4
+			data[i] = deep
+			data[i + 1] = shallow
+			data[i + 2] = walk
+			data[i + 3] = 255
+	var img := Image.create_from_data(cols, rows, false, Image.FORMAT_RGBA8, data)
+	img.resize(cols * MASK_K, rows * MASK_K, Image.INTERPOLATE_CUBIC)
+	_water_cache_key = key
+	_water_cache = img
+	return img
+
+
+## Renseigne les uniforms « region » (puddle_common.gdshaderinc / water_bank.gdshader) d'un matériau :
+## masque `tex` (couvre `size` px, coin haut-gauche = origine locale du quad), canal `chan`, bruit du sol décalé par carte.
+static func set_region(mat: ShaderMaterial, tex: Texture2D, chan: Vector4, size: Vector2, seed_key: String, detail: int) -> void:
+	mat.set_shader_parameter(&"use_region", true)
+	mat.set_shader_parameter(&"region_tex", tex)
+	mat.set_shader_parameter(&"region_chan", chan)
+	mat.set_shader_parameter(&"region_inv_size", Vector2(1.0 / size.x, 1.0 / size.y))
+	mat.set_shader_parameter(&"warp_tex", noise_texture())
+	mat.set_shader_parameter(&"warp_inv_px", WARP_PERIOD_DIV / (NOISE_PERIOD_U * 64.0))
+	var h := absi(hash(seed_key + "_eau"))
+	mat.set_shader_parameter(&"warp_offset", Vector2(float(h % 997) / 997.0, float((h / 997) % 991) / 991.0))
+	mat.set_shader_parameter(&"warp_detail", detail)
+
+
 ## Ajoute une influence décroissante (1 au centre, ~0 à r + 1 cases) autour de (cx, cy), en gardant le max.
 static func _splat(buf: PackedFloat32Array, cols: int, rows: int, cx: int, cy: int, r: int) -> void:
 	for dy in range(-r, r + 1):

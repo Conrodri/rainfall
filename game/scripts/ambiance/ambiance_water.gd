@@ -2,7 +2,7 @@ class_name AmbianceWater
 extends Node2D
 ## Eau et flaques (World z -18, §1.3, §2) à partir de la grille de la carte
 ## (data/maps/<map_id>.json) : cases « , » (eau peu profonde) et « ~ » (eau profonde, miroir),
-## fusionnées en bandes horizontales ; plus un calque de flaques du sol (masque
+## un quad par couche découpé en shader par le masque lissé (bords organiques) ; plus un calque de flaques du sol (masque
 ## `puddle_mask_1024`, Moyen et Haut). Shader `puddle.gdshader` : ciel reflété + ondulations
 ## (normal map : les lumières à bit 2 s'y reflètent) + miroir des entités en Haut + flash d'éclair.
 
@@ -15,7 +15,7 @@ const MASK_WORLD := 8 ## = LightRig.MASK_GROUND : l'eau est du sol (pas de « fi
 const MASK_PUDDLES := 2
 ## Lisibilité praticable / bloquant (retour joueur 22/10/2026) : l'eau profonde « ~ » (bloquante) est nettement
 ## plus sombre et plus couvrante que l'eau peu profonde « , » (film clair sur le sol), et animée par les
-## caustiques Codex `water_caustics_512` (sans normal map). Sa rive est tracée par StageMap._build_water_banks.
+## caustiques Codex `water_caustics_512` (sans normal map). Sa rive est tracée par StageMap._build_water_banks (même masque, shader water_bank).
 const DEEP_TINT := Color(0.035, 0.07, 0.095) ## presque noir bleuté
 const DEEP_ALPHA_BASE := 0.62 ## + water_reflect × DEEP_ALPHA_K, plafonné à DEEP_ALPHA_MAX
 const DEEP_ALPHA_K := 0.15
@@ -102,29 +102,38 @@ func setup(map: Node2D, profile: AmbianceProfile) -> void:
 	var grid: PackedStringArray = g["grid"]
 	var cell: float = g["cell_px"]
 	var origin: Vector2 = g["origin"]
-	for y in grid.size():
-		var row := grid[y]
-		var x := 0
-		while x < row.length():
-			var ch := row[x]
-			if ch == "," or ch == "~":
-				var x0 := x
-				while x < row.length() and row[x] == ch:
-					x += 1
-				var r := ColorRect.new()
-				r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				r.position = origin + Vector2(x0 * cell, y * cell)
-				r.size = Vector2((x - x0) * cell, cell)
-				if ch == ",":
-					r.material = _shallow_mat
-					shallow_root.add_child(r)
-					shallow_rects += 1
-				else:
-					r.material = _deep_mat
-					deep_root.add_child(r)
-					deep_rects += 1
-			else:
-				x += 1
+	# Bords organiques (31/10/2026) : UN quad par couche (eau peu profonde, eau profonde) couvrant la carte ;
+	# le masque cuit et lissé de GroundSplat.bake_water_mask, déformé par le bruit du sol, découpe l'eau en shader.
+	var cols := 0
+	for row in grid:
+		cols = maxi(cols, row.length())
+	var rows := grid.size()
+	var size := Vector2(cols, rows) * cell
+	var tex := ImageTexture.create_from_image(GroundSplat.bake_water_mask(Array(grid), cols, rows))
+	var key := String(map.get_meta(&"map_id", ""))
+	var detail := 1 if int(Quality.get_setting(&"puddles")) >= 1 else 0
+	GroundSplat.set_region(_shallow_mat, tex, Vector4(0.0, 1.0, 0.0, 0.0), size, key, detail)
+	GroundSplat.set_region(_deep_mat, tex, Vector4(1.0, 0.0, 0.0, 0.0), size, key, detail)
+	var has_shallow := false
+	var has_deep := false
+	for row in grid:
+		has_shallow = has_shallow or row.contains(",")
+		has_deep = has_deep or row.contains("~")
+	if has_shallow:
+		shallow_root.add_child(_region_rect(origin, size, _shallow_mat))
+		shallow_rects = 1
+	if has_deep:
+		deep_root.add_child(_region_rect(origin, size, _deep_mat))
+		deep_rects = 1
+
+
+func _region_rect(origin: Vector2, size: Vector2, mat: ShaderMaterial) -> ColorRect:
+	var r := ColorRect.new()
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	r.position = origin
+	r.size = size
+	r.material = mat
+	return r
 
 
 ## Grille de la carte : {grid, cell_px, origin (coin haut-gauche, espace local de la carte)}.
@@ -172,6 +181,7 @@ func update_water(view: Rect2, p: Dictionary, delta: float) -> void:
 		sm.set_shader_parameter(&"mirror_alpha", float(p[&"mirror_alpha"]))
 		sm.set_shader_parameter(&"mirror_offset_uv", mirror_uv)
 		sm.set_shader_parameter(&"flash", _flash)
+		sm.set_shader_parameter(&"warp_detail", 1 if mode >= 1 else 0)
 	_shallow_mat.set_shader_parameter(&"strength", clampf(float(p[&"puddle_reflect"]) * 0.6, 0.0, 0.8))
 	_deep_mat.set_shader_parameter(&"strength", minf(DEEP_ALPHA_BASE + float(p[&"water_reflect"]) * DEEP_ALPHA_K, DEEP_ALPHA_MAX))
 	_deep_mat.set_shader_parameter(&"sky_amount", float(p[&"sky_reflect"]) * DEEP_SKY_K)

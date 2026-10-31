@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bp86kcdeb4oan"
-path.bptc="res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.bptc.ctex"
-path.astc="res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.astc.ctex"
+path.s3tc="res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.s3tc.ctex"
+path.etc2="res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/rictus/spin_blur/default.png"
-dest_files=["res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.bptc.ctex", "res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.astc.ctex"]
+dest_files=["res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.s3tc.ctex", "res://.godot/imported/default.png-1d04a1bfa2c079cf3ee0e184029c34fe.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

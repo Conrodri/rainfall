@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://djya8444ou7h0"
-path.bptc="res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.bptc.ctex"
-path.astc="res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.astc.ctex"
+path.s3tc="res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.s3tc.ctex"
+path.etc2="res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/rictus/skins/rictus_skin1/summon_e.png"
-dest_files=["res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.bptc.ctex", "res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.astc.ctex"]
+dest_files=["res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.s3tc.ctex", "res://.godot/imported/summon_e.png-1fee6cf8229919ea49985d010d5344ae.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

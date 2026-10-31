@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qhmi3u5am6xt"
-path.bptc="res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.bptc.ctex"
-path.astc="res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.astc.ctex"
+path.s3tc="res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.s3tc.ctex"
+path.etc2="res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/rictus/stagger.png"
-dest_files=["res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.bptc.ctex", "res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.astc.ctex"]
+dest_files=["res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.s3tc.ctex", "res://.godot/imported/stagger.png-313273d99dbdc6acde50816584155152.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

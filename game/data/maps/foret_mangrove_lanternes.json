@@ -1,6 +1,6 @@
 {
  "id": "foret_mangrove_lanternes",
- "name": "Mangrove des lanternes",
+ "name": "Les Galeries noyées",
  "biome": "foret",
  "scene": "res://scenes/stage/maps/foret_mangrove_lanternes.tscn",
  "floor": 2,
@@ -203,16 +203,16 @@
   "chance": 0.6,
   "max_per_floor": 1,
   "types": {
-   "autel_fortune": "sanctuaire à lanterne sur pilotis",
-   "sanctuaire_risque": "cercle de champignons",
-   "marchand_ombre": "barque sous les racines",
-   "coffre_piege": "coffre pris dans les racines"
+   "autel_fortune": "autel sous le rai",
+   "sanctuaire_risque": "cercle de champignons luisants",
+   "marchand_ombre": "barque sur la rivière souterraine",
+   "coffre_piege": "coffre pris dans la calcite"
   }
  },
  "ambient_event": {
-  "threshold_difficulty": 4.0,
-  "name": "Marée montante",
-  "effect": "visuel : la marée monte, les cases ',' des pontons et des rives s'élargissent d'1 u ; lucioles éteintes, brume à 15 %"
+  "threshold_difficulty": 2.5,
+  "name": "Vent de gouffre",
+  "effect": "visuel et sonore : bouffées de vent froid dans les galeries (spores et brume qui filent, mycélium qui vacille, souffle grave) toutes les 20-30 s ; aucun effet de jeu"
  },
  "monster_spawn": {
   "margin_u": [
@@ -234,7 +234,7 @@
   {
    "id": "sanctuaire_racines",
    "kind": "sealed_door",
-   "skin": "pierres plates à rune + rideau de racines (habillage Forêt)",
+   "skin": "dalles de calcite à mycélium + coulée fissurée (habillage Gouffre)",
    "door_cells": [
     [
      16,
@@ -300,8 +300,8 @@
     ]
    ],
    "guardian_names": [
-    "Lierre",
-    "Houx"
+    "Ocre",
+    "Basalte"
    ],
    "reward": "2 reliquaires (table gardien)",
    "trigger_spots": {

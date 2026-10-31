@@ -548,14 +548,14 @@ position = Vector2(-704, -1344)
 metadata/secret_id = "sanctuaire_racines"
 metadata/role = "guardian"
 metadata/index = 0
-metadata/guardian_name = "Lierre"
+metadata/guardian_name = "Ocre"
 
 [node name="Guardian_sanctuaire_racines_1" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(-448, -1344)
 metadata/secret_id = "sanctuaire_racines"
 metadata/role = "guardian"
 metadata/index = 1
-metadata/guardian_name = "Houx"
+metadata/guardian_name = "Basalte"
 
 [node name="Lever_sanctuaire_racines_0" type="Marker2D" parent="Markers" groups=["secret_spawn"]]
 position = Vector2(192, 1728)

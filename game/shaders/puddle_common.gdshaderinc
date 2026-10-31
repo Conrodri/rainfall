@@ -33,10 +33,14 @@ uniform sampler2D caustics : repeat_enable, filter_linear;
 uniform float caustic_amount = 0.0;
 uniform float caustic_tile_px = 960.0;
 
+#include "res://shaders/water_region.gdshaderinc"
+
 varying vec2 world;
+varying vec2 local;
 
 void vertex() {
 	world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+	local = VERTEX;
 }
 
 void fragment() {
@@ -72,5 +76,8 @@ void fragment() {
 		col += vec3(0.55, 0.78, 0.9) * smoothstep(0.12, 0.5, c1 * c2) * caustic_amount; // croisements seuls : éclats épars
 	}
 	col = mix(col, flash_color.rgb, flash);
+	if (use_region) {
+		m *= smoothstep(0.5 - edge_soft, 0.5 + edge_soft, region_value(local * region_inv_size, local));
+	}
 	COLOR = vec4(col, ldr_alpha(clamp(strength * m + flash * 0.5 * m, 0.0, 1.0), col));
 }

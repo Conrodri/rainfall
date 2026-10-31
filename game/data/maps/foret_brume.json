@@ -1,6 +1,6 @@
 {
  "id": "foret_brume",
- "name": "Forêt-brume",
+ "name": "Le Gouffre",
  "biome": "foret",
  "scene": "res://scenes/stage/maps/foret_brume.tscn",
  "floor": 2,
@@ -204,16 +204,16 @@
   "chance": 0.6,
   "max_per_floor": 1,
   "types": {
-   "autel_fortune": "sanctuaire à lanterne",
-   "sanctuaire_risque": "cercle de champignons",
-   "marchand_ombre": "silhouette sous une racine",
-   "coffre_piege": "coffre couvert de mousse"
+   "autel_fortune": "autel de mycélium",
+   "sanctuaire_risque": "cercle de champignons luisants",
+   "marchand_ombre": "silhouette dans une diaclase",
+   "coffre_piege": "coffre pris dans la calcite"
   }
  },
  "ambient_event": {
   "threshold_difficulty": 4.0,
-  "name": "Lucioles éteintes",
-  "effect": "visuel : brume à 15 %, lanternes allumées"
+  "name": "Puits voilés",
+  "effect": "visuel : l'orage de surface voile les puits de jour (lumière et rai à 40 %), le mycélium monte (la salle passe du blanc-chaud au violet), jamais d'obscurité ; aucun effet de jeu"
  },
  "monster_spawn": {
   "margin_u": [
@@ -234,7 +234,7 @@
   {
    "id": "cercle_brume",
    "kind": "sealed_door",
-   "skin": "pierres plates à rune + rideau de brume (habillage Forêt)",
+   "skin": "dalles de calcite à mycélium + coulée fissurée (habillage Gouffre)",
    "door_cells": [
     [
      5,
@@ -300,8 +300,8 @@
     ]
    ],
    "guardian_names": [
-    "Mousse",
-    "Fougère"
+    "Lichen",
+    "Silex"
    ],
    "reward": "2 reliquaires (table gardien)",
    "trigger_spots": {

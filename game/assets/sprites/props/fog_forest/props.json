@@ -99,6 +99,50 @@
       "px_per_u": 90.51,
       "fade": false,
       "shadow_rig": "top"
+    },
+    {
+      "name": "stalagmite_cluster",
+      "weight": 3,
+      "foot": [
+        96,
+        170
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "gour_rim",
+      "weight": 2,
+      "foot": [
+        128,
+        64
+      ],
+      "px_per_u": 128.0,
+      "fade": false,
+      "flat": true
+    },
+    {
+      "name": "geode_dark",
+      "weight": 1,
+      "foot": [
+        64,
+        100
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "boulder_split",
+      "weight": 1,
+      "foot": [
+        96,
+        166
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
     }
   ]
 }

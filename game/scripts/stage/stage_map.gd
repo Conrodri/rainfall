@@ -245,12 +245,18 @@ func _build_iso(grid: Array, origin: Vector2, size_px: Vector2, dir: String, gro
 		# eau peu profonde « , » (praticable) : tuile translucide, le sol reste visible dessous (lisibilité)
 		var sh_src := cells.tile_set.get_source(water_names.find("water_shallow")) as TileSetAtlasSource
 		sh_src.get_tile_data(Vector2i.ZERO, 0).modulate = Color(1.0, 1.0, 1.0, SHALLOW_TILE_ALPHA)
+		var deep_src := water_names.find(WATER_TILES["~"])
 		for y in grid.size():
 			var row: String = grid[y]
 			for x in row.length():
 				if WATER_TILES.has(row[x]) and not (splat and row[x] == ","): # « , » : film d'eau du GroundSplat
 					cells.set_cell(Vector2i(x, y), water_names.find(WATER_TILES[row[x]]), Vector2i.ZERO)
+				elif splat and row[x] != "#" and row[x] != "," and row[x] != VOID_CHAR and _touches_deep(grid, x, y):
+					# bord organique : la tuile déborde d'une case sur le sol, le shader la découpe
+					cells.set_cell(Vector2i(x, y), deep_src, Vector2i.ZERO)
 		_place_billboard_layer(cells, inv_vis, from_map(origin + Vector2(64.0, 64.0)))
+		if splat:
+			_cut_water_tiles(cells, origin, grid)
 	_build_void(dir, inv_vis)
 	_build_outlines(grid, origin)
 	_build_blocks(grid, origin, dir)
@@ -285,6 +291,40 @@ func _build_ground_splat(grid: Array, origin: Vector2, vis: Node2D, ground: Node
 		ground_decals.add_emission(load(em_path), cfg.get("decals", {}))
 	vis.add_child(ground_decals)
 	vis.move_child(ground_decals, ground_splat.get_index() + 1)
+
+
+## Vrai si une des 8 cases voisines de (x, y) est de l'eau profonde « ~ ».
+func _touches_deep(grid: Array, x: int, y: int) -> bool:
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var ny := y + dy
+			var nx := x + dx
+			if (dx == 0 and dy == 0) or ny < 0 or ny >= grid.size() or nx < 0 or nx >= (grid[ny] as String).length():
+				continue
+			if (grid[ny] as String)[nx] == "~":
+				return true
+	return false
+
+
+const WATER_TILE_CUT := preload("res://shaders/water_tile_cut.gdshader")
+
+
+## Découpe les tuiles d'eau profonde par le masque lissé de l'eau (même bord que l'eau d'ambiance et la rive).
+func _cut_water_tiles(cells: TileMapLayer, origin: Vector2, grid: Array) -> void:
+	var cols := 0
+	for r in grid:
+		cols = maxi(cols, (r as String).length())
+	var size := Vector2(cols, grid.size()) * OUTLINE_CELL_PX
+	var mat := ShaderMaterial.new()
+	mat.shader = WATER_TILE_CUT
+	var tex := ImageTexture.create_from_image(GroundSplat.bake_water_mask(grid, cols, grid.size()))
+	GroundSplat.set_region(mat, tex, Vector4(1.0, 0.0, 0.0, 0.0), size, String(get_meta(&"map_id", "")), 1)
+	# couche -> repère du GroundSplat (= repère carte, polygone dont le coin est `origin`) -> relatif au coin
+	var rel := ground_splat.get_global_transform().affine_inverse() * cells.get_global_transform()
+	mat.set_shader_parameter(&"map_x", rel.x)
+	mat.set_shader_parameter(&"map_y", rel.y)
+	mat.set_shader_parameter(&"map_o", rel.origin - origin)
+	cells.material = mat
 
 
 ## Cases (2 u) des repères du JSON de la carte (départ, candidats coffres / piliers / événements).
@@ -369,6 +409,10 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 			var tex: Texture2D = load(dir + String(pr["name"]) + ".png")
 			var size := tex.get_size()
 			var foot: Array = pr.get("foot", [size.x * 0.5, size.y * 0.85])
+			if bool(pr.get("flat", false)):
+				if _add_flat_prop(tex, pr, origin + (Vector2(c) + Vector2(0.5, 0.5)) * OUTLINE_CELL_PX, c):
+					n += 1
+				continue
 			var center := from_map(origin + (Vector2(c) + Vector2(0.5, 0.5)) * OUTLINE_CELL_PX)
 			var spr := Sprite2D.new()
 			spr.name = "P%d_%d" % [x, y]
@@ -385,6 +429,31 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 				_blocks[c] = spr # fondu devant le joueur (_process)
 			n += 1
 	set_meta(&"props_count", n)
+
+
+## Prop plat posé au sol (manifeste `"flat": true`, rig TOP, ex. `gour_rim` de la grotte) : décalque dans le repère
+## carte sous Visual, juste au-dessus du sol v2 et de ses décalques, sans ombre ni collision ; `px_per_u` défaut 128
+## (rig TOP). Quart de tour et miroir tirés par hachage de case. Sans GroundSplat (ancien sol), rien n'est posé.
+func _add_flat_prop(tex: Texture2D, pr: Dictionary, pos_map: Vector2, c: Vector2i) -> bool:
+	if ground_splat == null:
+		return false
+	var vis := get_node(^"Visual") as Node2D
+	var h := absi(hash([c.x * 40503, c.y * 9973, 29]))
+	var spr := Sprite2D.new()
+	spr.name = "G%d_%d" % [c.x, c.y]
+	spr.texture = tex
+	spr.position = pos_map
+	spr.rotation = float(h % 4) * PI * 0.5
+	spr.flip_h = (h / 4) % 2 == 1
+	spr.scale = Vector2.ONE * (UNIT_PX / float(pr.get("px_per_u", 128.0)))
+	var foot: Array = pr.get("foot", [tex.get_width() * 0.5, tex.get_height() * 0.5])
+	spr.offset = tex.get_size() * 0.5 - Vector2(float(foot[0]), float(foot[1]))
+	spr.set_meta(&"prop", true)
+	spr.set_meta(&"flat_prop", true)
+	vis.add_child(spr)
+	var anchor: Node = ground_decals if ground_decals != null else ground_splat
+	vis.move_child(spr, anchor.get_index() + 1)
+	return true
 
 
 ## Props posés à un endroit fixe de la grille (manifeste `fixed` : [{"name", "pos_u": [x, y], "foot",
@@ -756,7 +825,47 @@ var water_bank: Node2D = null ## nœud « WaterBank » sous Visual (tests, captu
 var _bank_sides: Array = [] ## [[normale vers l'eau (Vector2), segments fusionnés (PackedVector2Array)], …]
 
 
+const WATER_BANK_SHADER := preload("res://shaders/water_bank.gdshader")
+
+
+## Sol v2 : la rive suit le bord organique de l'eau (même masque lissé et même bruit que AmbianceWater), un seul
+## quad et un shader au lieu de segments droits par arête de case.
+func _build_water_banks_organic(grid: Array, origin: Vector2) -> void:
+	var has_deep := false
+	var cols := 0
+	for r in grid:
+		has_deep = has_deep or (r as String).contains("~")
+		cols = maxi(cols, (r as String).length())
+	if not has_deep:
+		return
+	var size := Vector2(cols, grid.size()) * OUTLINE_CELL_PX
+	var mat := ShaderMaterial.new()
+	mat.shader = WATER_BANK_SHADER
+	var tex := ImageTexture.create_from_image(GroundSplat.bake_water_mask(grid, cols, grid.size()))
+	GroundSplat.set_region(mat, tex, Vector4(1.0, 0.0, 0.0, 0.0), size, String(get_meta(&"map_id", "")), 1)
+	mat.set_shader_parameter(&"ink_color", BANK_INK)
+	mat.set_shader_parameter(&"foam_color", BANK_FOAM_TINT)
+	mat.set_shader_parameter(&"shadow_color", BANK_SHADOW)
+	mat.set_shader_parameter(&"px_per_unit", OUTLINE_CELL_PX)
+	mat.set_shader_parameter(&"ink_px", BANK_INK_PX)
+	mat.set_shader_parameter(&"foam_px", BANK_FOAM_PX)
+	mat.set_shader_parameter(&"shadow_px", BANK_SHADOW_PX)
+	water_bank = Node2D.new()
+	water_bank.name = "WaterBank"
+	water_bank.z_index = BANK_Z
+	var rect := ColorRect.new()
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rect.position = origin
+	rect.size = size
+	rect.material = mat
+	water_bank.add_child(rect)
+	get_node(^"Visual").add_child(water_bank)
+
+
 func _build_water_banks(grid: Array, origin: Vector2) -> void:
+	if ground_splat != null:
+		_build_water_banks_organic(grid, origin)
+		return
 	# côtés N, S, O, E de la case d'eau ; un tableau par côté (une arête fusionnée garde son côté)
 	var dirs: Array[Vector2i] = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]
 	var sides: Array[PackedVector2Array] = [PackedVector2Array(), PackedVector2Array(), PackedVector2Array(), PackedVector2Array()]
