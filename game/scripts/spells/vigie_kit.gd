@@ -175,7 +175,7 @@ const PENDING_SAFETY_S := 1.0 ## effet jamais déclenché (anim coupée) : part 
 
 # --- Repli (esquive, docs/Design_Esquives.md §Vigie) : 3 petits dashs enchaînables ------------------------
 const DODGE_CHARGES := 3
-const DODGE_U := 1.0 ## par charge (3 u en tout, même budget que la roulade)
+const DODGE_U := 1.6 ## par charge (4,8 u en tout ; retour joueur 31/10 : 1,0 trop court)
 const DODGE_TENSION_GAIN := 0.08 ## par dash achevé : reculer bande l'arc (0,24 pour les 3)
 const DODGE_GHOST_COLOR := Color(1.0, 0.23, 0.31, 0.35) ## #FF3A4F, rouge de fusée
 const DODGE_SOUND := [&"spell.cendres.cast_light", -8.0, 1.6]
