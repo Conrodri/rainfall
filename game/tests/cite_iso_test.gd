@@ -234,7 +234,12 @@ func _check_real_tiles(map: StageMap, ground: TileMapLayer) -> void:
 				if ch is CanvasItem and (ch as CanvasItem).visible:
 					lit += 1
 					break
-		if (b as CanvasItem).self_modulate != Color.WHITE:
+		# Une porte de secret scellée est teintée en chaud à dessein (stage_map.gd, _door_cells, 28/10/2026) : exclue du contrôle.
+		var door_cell := Vector2i(-1, -1)
+		var parts: PackedStringArray = String(b.name).trim_prefix("B").split("_")
+		if parts.size() == 2:
+			door_cell = Vector2i(int(parts[0]), int(parts[1]))
+		if not map._door_cells.has(door_cell) and (b as CanvasItem).self_modulate != Color.WHITE:
 			bad.append("teinte " + path)
 	_check("F3 : murs, remparts et falaises du lot cité (sans teinte)", bad.is_empty(), str(bad.slice(0, 6)))
 	var want := ["block_a", "block_b", "block_c", "rampart_ne", "rampart_nw", "rampart_corner_n", "cliff_sw", "cliff_se"]
