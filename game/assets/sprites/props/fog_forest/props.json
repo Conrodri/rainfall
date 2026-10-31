@@ -66,6 +66,39 @@
       "px_per_u": 90.51,
       "fade": true,
       "shadow_rig": "top"
+    },
+    {
+      "name": "hanging_roots",
+      "weight": 1,
+      "foot": [
+        128,
+        300
+      ],
+      "px_per_u": 90.51,
+      "fade": true,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "calcite_cascade",
+      "weight": 1,
+      "foot": [
+        96,
+        236
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
+    },
+    {
+      "name": "mushroom_shelf",
+      "weight": 1,
+      "foot": [
+        96,
+        166
+      ],
+      "px_per_u": 90.51,
+      "fade": false,
+      "shadow_rig": "top"
     }
   ]
 }

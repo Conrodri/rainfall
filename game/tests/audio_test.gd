@@ -127,7 +127,7 @@ func _ready() -> void:
 			water = Vector2(((x + 0.5) * cu - float(sz[0]) * 0.5) * 64.0, ((y + 0.5) * cu - float(sz[1]) * 0.5) * 64.0)
 			break
 	_check(is_finite(water.x) and A.surface_at(water) == &"water", "surface water déduite de la grille")
-	_check(A.surface_at(Vector2(99999, 99999)) == &"dirt", "hors carte -> surface par défaut de la carte (dirt, fichiers step_*_dirt)")
+	_check(A.surface_at(Vector2(99999, 99999)) == &"stone", "hors carte -> surface par défaut de la carte (stone : le Gouffre luisant, fichiers step_*_stone)")
 	A.start_map("cite_rouille")
 	_check(A.surface_at(Vector2(32, 32)) in [&"metal", &"water"], "carte Cité : sol métal")
 

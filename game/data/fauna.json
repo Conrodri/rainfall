@@ -11,7 +11,7 @@
    "minis": ["frost_bear", "stone_colossus", "iron_heron", "vat_toad", "scarecrow_reaper"]
   },
   "foret": {
-   "floor": 2, "name": "Forêt-brume", "maps": ["foret_brume", "foret_mangrove_lanternes"],
+   "floor": 2, "name": "Le Gouffre luisant", "maps": ["foret_brume", "foret_mangrove_lanternes"],
    "monsters": {"swarm": "swarm_tier1_moss", "shooter": "shooter_tier2_moss", "leaper": "leaper_tier2_moss", "brute": "brute_tier3_moss"},
    "elites": {},
    "floor_bosses": ["cerf", "weaver", "hermit_cedar"],

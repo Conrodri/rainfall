@@ -16,12 +16,18 @@ const U := 64.0
 
 
 ## Options (après `--`) : `--b-only` ne génère que les profils des variantes B (dérivés des .tres A déjà sur disque,
-## sans écraser les retouches faites aux profils A).
+## sans écraser les retouches faites aux profils A) ; `--gouffre` ne génère que l'étage 2 (A et B), sans toucher aux autres .tres.
 func _initialize() -> void:
 	var profiles: Array = []
-	if not ("--b-only" in OS.get_cmdline_user_args()):
-		profiles = [_terrasses(), _foret(), _cite()]
-	profiles.append_array(_variants_b())
+	var args := OS.get_cmdline_user_args()
+	if "--gouffre" in args:
+		# Étage 2 seulement (A puis B dérivée de A en mémoire) : ne touche à aucun .tres des autres biomes.
+		var pa := _foret()
+		profiles = [pa, _foret_b(pa.duplicate(true) as AmbianceProfile)]
+	else:
+		if not ("--b-only" in args):
+			profiles = [_terrasses(), _foret(), _cite()]
+		profiles.append_array(_variants_b())
 	for p in profiles:
 		var path: String = OUT + String(p.map_id) + ".tres"
 		var err := ResourceSaver.save(p, path)
@@ -47,24 +53,8 @@ func _variants_b() -> Array:
 		pa.fog_low_opacity += 0.02
 		out.append(pa)
 	var pf := _load_a("foret_brume")
-	if pf != null: # 4 h 40 : avant l'aube, plus bleu, les lanternes guident ; lanternes sur les bords du chenal « ~ »
-		pf.map_id = &"foret_mangrove_lanternes"
-		pf.display_name = "Mangrove des lanternes"
-		pf.mood = "Avant l'aube (4 h 40), plus bleu que la forêt-brume ; les lanternes sur pilotis guident le long du chenal."
-		pf.ambient_color = _dim(pf.ambient_color, 0.95)
-		pf.ambient_low = _dim(pf.ambient_low, 0.95)
-		pf.sun_energy *= 0.36 / 0.42
-		pf.map_lights_energy *= 1.15
-		pf.fog_low_opacity += 0.02
-		var rules: Array[Dictionary] = []
-		for r in pf.light_rules:
-			var nr := (r as Dictionary).duplicate()
-			if StringName(nr.get("preset", &"")) == &"shrine_lantern":
-				nr["char"] = "~"
-				nr["spacing_u"] = 12.0 # max inchangé (8) : même coût que la A
-			rules.append(nr)
-		pf.light_rules = rules
-		out.append(pf)
+	if pf != null:
+		out.append(_foret_b(pf))
 	var pc := _load_a("cite_rouille")
 	if pc != null: # 20 h : nuit tombée, la fonderie éclaire ; 4 creusets (24 lumières au plus, comme la A)
 		pc.map_id = &"cite_fonderie_canal"
@@ -101,6 +91,36 @@ func _variants_b() -> Array:
 		py.drops_amount *= 1.3
 		out.append(py)
 	return out
+
+
+## Variante B « Les Galeries noyées » (docs/Design_Etage2_Grotte.md §5.2) : dérivée de A, sans puits de jour, plus profonde ;
+## mycélium le long de la rivière « ~ ». `pf` = copie du profil A.
+func _foret_b(pf: AmbianceProfile) -> AmbianceProfile:
+	pf.map_id = &"foret_mangrove_lanternes"
+	pf.display_name = "Les Galeries noyées"
+	pf.mood = "Galeries profondes sans puits de jour : la rivière souterraine coule entre des rives de mycélium améthyste, un jour résiduel filtre de très loin."
+	pf.ambient_color = _dim(pf.ambient_color, 0.92)
+	pf.ambient_low = _dim(pf.ambient_low, 0.92)
+	pf.sun_color = c("#E8D8C8")
+	pf.sun_energy = 0.22
+	pf.map_lights_energy = 1.2
+	pf.fog_low_opacity = 0.10
+	pf.p1_amount *= 1.5 # 3 nuées de spores
+	pf.p2_amount = 0.0 # pas de poussière (pas de rai)
+	pf.water_reflect = 0.8
+	pf.ripple_hz = 0.35
+	pf.cloud_opacity = 0.28
+	pf.point_lights = [] # aucun puits de lumière
+	var rules: Array[Dictionary] = []
+	for r in pf.light_rules:
+		var nr := (r as Dictionary).duplicate()
+		if StringName(nr.get("preset", &"")) == &"mycelium_glow":
+			nr["char"] = "~"
+			nr["spacing_u"] = 12.0 # max inchangé (8) : même coût que la A
+		rules.append(nr)
+	pf.light_rules = rules
+	pf.tier_overrides = _gouffre_tiers(pf)
+	return pf
 
 
 func _load_a(id: String) -> AmbianceProfile:
@@ -190,66 +210,83 @@ func _terrasses() -> AmbianceProfile:
 	return p
 
 
-# --- Carte 2 -----------------------------------------------------------------
+# --- Carte 2 : « Le Gouffre luisant » (docs/Design_Etage2_Grotte.md §5.1) --------
+## Les valeurs de teinte du document sont exprimées dans la convention du générateur ; les .tres livrés des
+## autres biomes en sont à 0,64-0,66 de ces valeurs (éclairage profond v2, ambiante sombre + fill) :
+## même facteur ici pour que la grotte reste « profonde » comme les autres étages.
+const GOUFFRE_DEEP := 0.66
+
 func _foret() -> AmbianceProfile:
 	var p := AmbianceProfile.new()
 	p.map_id = &"foret_brume"
-	p.display_name = "Forêt-brume"
-	p.mood = "Aube brumeuse (5 h 10), heure bleue sous la canopée ; lanternes vert pâle, lucioles. Quand D monte, l'aube ne vient jamais (§2.2, §3.3)."
-	p.ambient_color = c("#8FA3A8")
-	p.ambient_low = c("#A6B8BC")
+	p.display_name = "Le Gouffre"
+	p.mood = "Gouffre karstique sous les rizières, midi dehors : trois puits de jour blanc-chaud tombent dans la grande salle, le reste est éclairé par le mycélium améthyste des fissures."
+	p.ambient_color = _dim(c("#A89686"), GOUFFRE_DEEP)
+	# Le document propose #B8A898 en palier Bas, mais les tests de profil imposent ambient_low <= ambient_color (le garde-fou du
+	# sol relève déjà l'ambiante sans directionnelle) : comme les autres biomes, ambient_low = ambient_color.
+	p.ambient_low = p.ambient_color
+	# Fill des entités : gris légèrement violet (froid, désaturé, lisible) à la place de l ancien fill cyan, qui verdissait les monstres sur l ocre.
+	p.fill_color = c("#B2ADB8"); p.fill_energy = 0.42; p.fill_energy_low = 0.52
 	p.sun_rotation_deg = 315.0
-	p.sun_color = c("#C2E6E0")
-	p.sun_energy = 0.45
-	p.sun_height = 0.8
-	p.sun_shadow_color = c("#1C2A33", 0.5)
-	p.sun_shadow_length_u = 0.0 # aube diffuse : aucune ombre, la canopée en multiply la remplace
-	p.lift_color = c("#1C2A33"); p.lift_amount = 0.25
-	p.gain_color = c("#D8F2E8"); p.gain_amount = 0.15
-	p.saturation = 0.92; p.contrast = 0.96; p.contrast_pivot = 0.45
-	p.vignette_strength = 0.30; p.vignette_radius = 0.72; p.vignette_softness = 0.55; p.vignette_color = c("#0E1A1E")
-	p.rain_intensity = 0.35; p.rain_angle_deg = 6.0; p.rain_opacity = 0.07; p.rain_speed_u = 7.0; p.rain_length_u = 0.35
-	p.rain_tint = c("#C8DCD8"); p.rain_layers = 1.0
-	p.drops_amount = 80.0; p.splash_rate = 45.0
-	p.fog_low_color = c("#B8C8C0"); p.fog_low_opacity = 0.10; p.fog_low_speed = v(0.18, 160.0) # « vers bas-gauche »
-	p.fog2_color = c("#C4D2CC"); p.fog2_opacity = 0.0
-	p.fog_high_color = c("#CFDCD4"); p.fog_high_opacity = 0.05; p.fog_high_speed = v(0.3, 160.0)
-	p.puffs_count = 10.0; p.puffs_opacity = 0.07; p.puffs_color = c("#C4D2CC")
-	p.cloud_texture = &"canopy_shadow_2048"; p.cloud_opacity = 0.25; p.cloud_speed_u = v(0.08, 20.0); p.cloud_breathe = 0.02; p.cloud_cover = 0.3
+	p.sun_color = c("#FFE2B8")
+	p.sun_energy = 0.30
+	p.sun_height = 0.95
+	p.sun_shadow_color = c("#140C08", 0.5)
+	p.sun_shadow_length_u = 0.5 # quasi zénithale : petites ombres cuites (le document dit 0 ; 0,5 garde l'ancrage des props)
+	p.sun_shadow_smooth = 3.0; p.sun_shadow_filter = 2
+	p.lift_color = c("#1E1410"); p.lift_amount = 0.25
+	p.gain_color = c("#FFD9B0"); p.gain_amount = 0.12
+	p.saturation = 1.02; p.contrast = 1.10; p.contrast_pivot = 0.42
+	p.vignette_strength = 0.34; p.vignette_radius = 0.70; p.vignette_softness = 0.55; p.vignette_color = c("#140C08")
+	p.rain_intensity = 0.0; p.rain_angle_deg = 6.0; p.rain_opacity = 0.0; p.rain_speed_u = 7.0; p.rain_length_u = 0.35
+	p.rain_tint = c("#C8DCD8"); p.rain_layers = 0.0
+	p.drops_amount = 60.0; p.splash_rate = 0.0
+	p.wind_mult = 0.6
+	p.fog_low_color = c("#8C7E78"); p.fog_low_opacity = 0.08; p.fog_low_speed = v(0.1, 160.0)
+	p.fog2_color = c("#9A8A84"); p.fog2_opacity = 0.0
+	p.fog_high_color = c("#9A8A84"); p.fog_high_opacity = 0.0; p.fog_high_speed = v(0.1, 160.0)
+	p.puffs_count = 6.0; p.puffs_opacity = 0.06; p.puffs_color = c("#9A8A84")
+	# Voûte fixe : ombres de stalactites en multiply (texture Codex ; absente = calque coupé, pas de repli feuillu).
+	p.cloud_texture = &"cave_ceiling_2048"; p.cloud_opacity = 0.22; p.cloud_speed_u = Vector2.ZERO; p.cloud_breathe = 0.0; p.cloud_cover = 0.0
 	p.rays_count = 0.0
-	p.sky_texture = &"sky_dawn_256x64"; p.sky_reflect = 0.25; p.puddle_reflect = 0.4; p.water_reflect = 0.8
-	p.ripple_hz = 0.3; p.mirror_alpha = 0.25
+	p.sky_texture = &""; p.sky_reflect = 0.0; p.puddle_reflect = 0.45; p.water_reflect = 0.7
+	p.ripple_hz = 0.2; p.mirror_alpha = 0.25
 	p.particle_defs = [
-		{"name": "lucioles", "texture": &"firefly_16", "behavior": &"firefly", "color": c("#B8FF8A"), "size_u": Vector2(0.12, 0.2), "speed_u": 0.4, "alpha": 0.9, "additive": true, "lifetime": 2.5},
-		{"name": "spores", "texture": &"mote_16", "behavior": &"rise", "color": c("#DDE8D8"), "size_u": Vector2(0.05, 0.05), "speed_u": 0.2, "alpha": 0.25, "additive": false},
-		{"name": "feuilles de cèdre", "texture": &"leaf_cedar_32", "behavior": &"fall", "color": c("#FFFFFF"), "size_u": Vector2(0.2, 0.35), "speed_u": 1.2, "drift_u": 0.4, "spin_dps": 70.0, "alpha": 0.8, "additive": false},
+		{"name": "spores", "texture": &"mote_16", "behavior": &"drift", "color": c("#C27BFF"), "size_u": Vector2(0.06, 0.10), "speed_u": 0.15, "alpha": 0.55, "additive": true, "lifetime": 5.0},
+		{"name": "poussière", "texture": &"mote_16", "behavior": &"rise", "color": c("#FFE2B8"), "size_u": Vector2(0.05, 0.05), "speed_u": 0.08, "alpha": 0.3, "additive": false},
+		{"name": "gouttes de voûte", "texture": &"drop_32", "behavior": &"fall", "color": c("#C8D8D4"), "size_u": Vector2(0.12, 0.22), "speed_u": 2.5, "spin_dps": 0.0, "alpha": 0.6, "additive": false},
 	]
-	p.p1_amount = 48.0; p.p2_amount = 40.0; p.p3_amount = 8.0
+	p.p1_amount = 36.0; p.p2_amount = 30.0; p.p3_amount = 40.0
+	p.lights_energy = 1.4
+	p.map_lights_energy = 1.0
+	# Mycélium le long des fissures (remplace les lanternes) ; puits de jour sur les 3 gros piliers possibles.
 	p.light_rules = [
-		{"preset": &"shrine_lantern", "char": "#", "edge": true, "spacing_u": 16.0, "max": 8},
+		{"preset": &"mycelium_glow", "char": "#", "edge": true, "spacing_u": 14.0, "max": 8},
 	]
-	p.tier_overrides = {
-		&"Tendu": {&"sun_color": c("#B8DCDA"), &"ambient_color": c("#8C9EA6"), &"fog_low_opacity": 0.11, &"puffs_count": 12.0,
-			&"cloud_speed_u": v(0.12, 20.0), &"rain_intensity": 0.45, &"rain_angle_deg": 7.0, &"drops_amount": 100.0, &"rain_opacity": 0.08,
-			&"splash_rate": 63.0, &"map_lights_energy": 1.11, &"contrast": 0.98, &"saturation": 0.90, &"vignette_strength": 0.32, &"wind_mult": 1.3,
-			&"cloud_cover": 0.5},
-		&"Hostile": {&"sun_color": c("#A8CCD0"), &"sun_energy": 0.42, &"ambient_color": c("#889AA6"), &"fog_low_opacity": 0.13, &"puffs_count": 14.0,
-			&"p1_amount": 24.0, &"cloud_opacity": 0.30, &"cloud_speed_u": v(0.2, 20.0), &"rain_intensity": 0.6, &"rain_angle_deg": 9.0,
-			&"drops_amount": 130.0, &"rain_opacity": 0.09, &"splash_rate": 85.0, &"map_lights_energy": 1.33, &"contrast": 1.0, &"saturation": 0.87,
-			&"vignette_strength": 0.35, &"wind_mult": 1.8, &"cloud_cover": 0.7, &"player_light_scale": 1.05},
-		&"Furieux": {&"sun_color": c("#98B8C4"), &"sun_energy": 0.40, &"ambient_color": c("#8494A4"), &"fog_low_opacity": 0.15, &"puffs_count": 18.0,
-			&"p1_amount": 0.0, &"map_lights_energy": 1.56, &"map_lights_radius": 1.14, &"cloud_opacity": 0.32, &"cloud_speed_u": v(0.35, 20.0),
-			&"cloud_breathe": 0.04, &"rain_intensity": 0.75, &"rain_angle_deg": 12.0, &"drops_amount": 160.0, &"rain_opacity": 0.11,
-			&"splash_rate": 108.0, &"contrast": 1.02, &"saturation": 0.84, &"vignette_strength": 0.38, &"wind_mult": 2.5, &"cloud_cover": 0.9,
-			&"player_light_scale": 1.10, &"lightning_interval_min": 12.0, &"lightning_interval_max": 25.0, &"lightning_flash": 0.5,
-			&"lightning_sun_energy": 1.2, &"lightning_bolt_chance": 0.0},
-		&"Cataclysme": {&"sun_color": c("#8CA8BC"), &"ambient_color": c("#8494A4"), &"puffs_count": 22.0, &"map_lights_radius": 1.29,
-			&"cloud_opacity": 0.35, &"cloud_speed_u": v(0.5, 20.0), &"rain_intensity": 0.9, &"rain_angle_deg": 15.0, &"drops_amount": 200.0,
-			&"rain_opacity": 0.12, &"splash_rate": 135.0, &"contrast": 1.04, &"saturation": 0.82, &"vignette_strength": 0.40, &"wind_mult": 3.2,
-			&"cloud_cover": 1.0, &"player_light_scale": 1.15, &"lightning_interval_min": 8.0, &"lightning_interval_max": 16.0,
-			&"lightning_flash": 0.8, &"lightning_double_chance": 0.3},
-	}
+	p.point_lights = [
+		{"pos_u": Vector2(31, 27), "preset": &"light_shaft"},
+		{"pos_u": Vector2(57, 23), "preset": &"light_shaft"},
+		{"pos_u": Vector2(31, 53), "preset": &"light_shaft"},
+	]
+	p.tier_overrides = _gouffre_tiers(p)
 	return p
+
+
+## Paliers du Gouffre (§5.1) : Tendu spores ×1,5 ; Hostile lumières 1,2 + gouttes 90 ; Furieux lumières 1,35, ambiante +4 %
+## (événement « Puits voilés » côté AmbianceManager) ; Cataclysme gouttes 130, vent 1,2. `pf` = profil déjà réglé (ambiante de base).
+static func _gouffre_tiers(pf: AmbianceProfile) -> Dictionary:
+	var sp := pf.p1_amount
+	var le := pf.lights_energy
+	var mle := pf.map_lights_energy
+	var amb := pf.ambient_color
+	var low := pf.ambient_low
+	var up := func(col: Color) -> Color: return Color(minf(col.r * 1.04, 1.0), minf(col.g * 1.04, 1.0), minf(col.b * 1.04, 1.0), col.a)
+	return {
+		&"Tendu": {&"p1_amount": sp * 1.5},
+		&"Hostile": {&"p1_amount": sp * 1.5, &"map_lights_energy": maxf(mle, 1.2), &"drops_amount": 90.0, &"lights_energy": le * 1.04},
+		&"Furieux": {&"map_lights_energy": maxf(mle, 1.35), &"ambient_color": up.call(amb), &"ambient_low": up.call(low), &"lights_energy": le * 1.07},
+		&"Cataclysme": {&"drops_amount": 130.0, &"wind_mult": 1.2, &"lights_energy": le * 1.1},
+	}
 
 
 # --- Carte 3 -----------------------------------------------------------------

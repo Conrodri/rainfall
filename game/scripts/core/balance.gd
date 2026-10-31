@@ -146,7 +146,7 @@ const TELEGRAPH_LITE_FILL_START := 0.10 ## part de l'alpha final au début de l'
 const TELEGRAPH_LITE_OUTER_PX := 4.0 ## bord fin : trait sombre (lisible sur tous les sols) ...
 const TELEGRAPH_LITE_INNER_PX := 1.6 ## ... et liseré clair net par-dessus
 const TELEGRAPH_BIOME_MIX := 0.35 ## part de la teinte du biome mêlée au rouge d'alerte (nulle en mode daltonien)
-const TELEGRAPH_BIOME_TINT := {&"terrasses": Color(1.0, 0.55, 0.12), &"foret": Color(0.95, 0.22, 0.42),
+const TELEGRAPH_BIOME_TINT := {&"terrasses": Color(1.0, 0.55, 0.12), &"foret": Color(1.0, 0.48, 0.18),
 	&"cite": Color(1.0, 0.42, 0.08), &"cryptes": Color(0.72, 0.20, 0.80), &"source": Color(0.98, 0.80, 0.30)}
 ## Anticipation du corps (visuelle, le coup tombe au même instant) : dans les ANTICIP_HOLD_S avant l'impact le corps s'écrase
 ## davantage (ANTICIP_EXTRA × ARM_SQUASH), la pose « gèle » (la fente d'un boss part en courbe lente puis claque) et un

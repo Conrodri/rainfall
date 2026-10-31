@@ -63,6 +63,18 @@ const VIGNETTE_SHADER := preload("res://shaders/vignette_mul.gdshader")
 const LDR_SUN_REF := 1.0
 const LDR_POINT_ENERGY := 0.5
 const LDR_POINT_RADIUS := 1.0
+## Étage 2 « Le Gouffre luisant » : puits de jour (préréglage `light_shaft`) et leur rai billboard, événements ambiants
+## de la carte (`ambient_event` du JSON : « Puits voilés » en A, « Vent de gouffre » en B ; aucun effet de jeu).
+const SHAFT_PRESET := &"light_shaft"
+const SHAFT_TEX := &"lightshaft_256x1024"
+const SHAFT_ALPHA := 0.35 ## alpha du rai (additif)
+const SHAFT_SCALE := 1.6
+const VEIL_LIGHT_MULT := 0.4 ## « Puits voilés » : énergie des puits x0,4 (fondu de LIGHT_FADE_S)
+const VEIL_RAY_MULT := 0.12 / 0.35 ## alpha du rai 0,35 -> 0,12
+const GUST_WIND := 2.0 ## « Vent de gouffre » : wind_mult pendant une bouffée
+const GUST_DURATION_S := 4.0
+const GUST_GAP_S := Vector2(20.0, 30.0)
+const GUST_FLICKER := Vector2(0.08, 2.0) ## (amplitude, Hz) du mycélium pendant une bouffée
 
 @export var enforce_ground_z := true ## place le nœud « Visual » de la carte à z -20
 @export var auto_bind := true ## se branche seul sur Events.floor_started / RunState
@@ -114,6 +126,16 @@ var _ldr_dirty := true ## matériaux d'ambiance à (re)marquer LDR / HDR (_apply
 ## true quand le HDR 2D est coupé (Moyen, Bas) : lu par les sous-systèmes (ldr_alpha côté CPU).
 static var ldr_mode := false
 var _smooth_src := -1
+var shafts: Node2D ## rais des puits de jour (un Sprite2D additif par lumière `light_shaft`)
+var _shaft_sprites: Array[Sprite2D] = []
+var _event_name := "" ## `ambient_event.name` de la carte (JSON), "" si aucun
+var _event_threshold := 99.0
+var _veil_on := false ## « Puits voilés » en cours
+var _ray_k := 1.0 ## multiplicateur lissé de l'alpha des rais
+var _gust := 0.0 ## enveloppe 0..1 de la bouffée « Vent de gouffre »
+var _gust_t := -1.0 ## temps écoulé dans la bouffée (< 0 : au repos)
+var _gust_wait := 0.0
+var _gust_flicker := false
 
 
 # --- Statique ---------------------------------------------------------------
@@ -203,6 +225,10 @@ func _build() -> void:
 	weather = AmbianceWeather.new()
 	weather.name = "Weather"
 	add_child(weather)
+	shafts = Node2D.new()
+	shafts.name = "LightShafts"
+	shafts.z_index = 32 # même plan que les rayons (cf. chaîne de rendu)
+	add_child(shafts)
 
 	grade_layer = CanvasLayer.new()
 	grade_layer.name = "GradeLayer"
@@ -362,6 +388,7 @@ func _rebuild_map_dependent() -> void:
 		OccluderBuilder.build(map, occluders)
 	else:
 		OccluderBuilder.clear(occluders)
+	_load_ambient_event()
 	_build_map_lights()
 
 
@@ -383,6 +410,7 @@ func _build_map_lights() -> void:
 		(ml["handle"] as LightRig.Handle).release()
 	_map_lights.clear()
 	_bell = null
+	_clear_shafts()
 	if map == null or profile == null:
 		return
 	var defs: Array = []
@@ -405,6 +433,8 @@ func _build_map_lights() -> void:
 			(map as StageMap).add_light_prop(StringName(d["preset"]), d["cell"], d.get("water_dir", Vector2i.ZERO))
 		if StringName(d["preset"]) == &"alarm_bell":
 			_bell = h
+		if StringName(d["preset"]) == SHAFT_PRESET:
+			_add_shaft(d["global"])
 	_update_map_lights_tier()
 
 
@@ -467,8 +497,117 @@ func _update_map_lights_tier() -> void:
 	var idx := AmbianceProfile.tier_index(tier_name)
 	for ml in _map_lights:
 		var h: LightRig.Handle = ml["handle"]
-		var on := AmbianceProfile.tier_in_range(idx, ml["def"])
-		h.set_energy(float((ml["def"] as Dictionary).get("energy", 1.0)) if on else 0.0)
+		var d: Dictionary = ml["def"]
+		var on := AmbianceProfile.tier_in_range(idx, d)
+		var e := float(d.get("energy", 1.0)) if on else 0.0
+		if _veil_on and StringName(d["preset"]) == SHAFT_PRESET:
+			e *= VEIL_LIGHT_MULT
+		h.set_energy(e)
+
+
+# --- Étage 2 : puits de jour (rais) et événements ambiants --------------------
+
+func _clear_shafts() -> void:
+	for sp in _shaft_sprites:
+		if is_instance_valid(sp):
+			sp.queue_free()
+	_shaft_sprites.clear()
+
+
+## Rai billboard additif sous un puits de jour. Texture absente (lot Codex G7 pas livré) : pas de rai, la lumière reste.
+func _add_shaft(world_pos: Vector2) -> void:
+	if shafts == null or not AmbianceTextures.exists(SHAFT_TEX):
+		return
+	var tex := AmbianceTextures.get_tex(SHAFT_TEX)
+	if tex == null:
+		return
+	var sp := Sprite2D.new()
+	sp.name = "Shaft"
+	sp.texture = tex
+	sp.centered = true
+	sp.offset = Vector2(0, -tex.get_height() * 0.5) # pied du rai sur la lumière, il monte vers la voûte
+	sp.scale = Vector2.ONE * SHAFT_SCALE
+	var m := CanvasItemMaterial.new()
+	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	sp.material = m
+	sp.modulate = Color(1.0, 0.91, 0.77, SHAFT_ALPHA * _ray_k)
+	shafts.add_child(sp)
+	sp.global_position = world_pos
+	_shaft_sprites.append(sp)
+
+
+## Lit `ambient_event` du JSON de la carte (nom + seuil de difficulté) ; événements connus : voir _process_event.
+func _load_ambient_event() -> void:
+	_event_name = ""
+	_event_threshold = 99.0
+	_veil_on = false
+	_ray_k = 1.0
+	_gust = 0.0
+	_gust_t = -1.0
+	_gust_wait = randf_range(GUST_GAP_S.x, GUST_GAP_S.y)
+	if map == null:
+		return
+	var path := "res://data/maps/%s.json" % String(map.get_meta(&"map_id", ""))
+	if not FileAccess.file_exists(path):
+		return
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if data is Dictionary and (data as Dictionary).get("ambient_event") is Dictionary:
+		var ev: Dictionary = (data as Dictionary)["ambient_event"]
+		_event_name = String(ev.get("name", ""))
+		_event_threshold = float(ev.get("threshold_difficulty", 99.0))
+
+
+func event_name() -> String:
+	return _event_name
+
+
+## Vrai si l'événement ambiant de la carte est en cours (difficulté >= seuil).
+func event_active() -> bool:
+	return _event_name != "" and difficulty >= _event_threshold
+
+
+## « Puits voilés » (Furieux, A) : les puits s'estompent, le mycélium domine. « Vent de gouffre » (Hostile, B) : bouffées.
+func _process_event(delta: float) -> void:
+	var active := event_active()
+	var veil := active and _event_name == "Puits voilés"
+	if veil != _veil_on:
+		_veil_on = veil
+		_update_map_lights_tier() # énergie des puits : fondu de LIGHT_FADE_S via le handle
+	var ray_target := VEIL_RAY_MULT if _veil_on else 1.0
+	_ray_k = move_toward(_ray_k, ray_target, delta * (1.0 - VEIL_RAY_MULT) / LIGHT_FADE_S)
+	if not _shaft_sprites.is_empty():
+		var rays_ok := int(Quality.get_setting(&"rays_max")) > 0
+		for sp in _shaft_sprites:
+			if is_instance_valid(sp):
+				sp.visible = rays_ok
+				sp.modulate.a = SHAFT_ALPHA * _ray_k
+	var gusting := active and _event_name == "Vent de gouffre"
+	if gusting:
+		if _gust_t >= 0.0:
+			_gust_t += delta
+			var u := _gust_t / GUST_DURATION_S
+			_gust = smoothstep(0.0, 0.15, u) * (1.0 - smoothstep(0.7, 1.0, u))
+			if _gust_t >= GUST_DURATION_S:
+				_gust_t = -1.0
+				_gust = 0.0
+				_gust_wait = randf_range(GUST_GAP_S.x, GUST_GAP_S.y)
+		else:
+			_gust_wait -= delta
+			if _gust_wait <= 0.0:
+				_gust_t = 0.0
+	else:
+		_gust = 0.0
+		_gust_t = -1.0
+	var want_flicker := _gust > 0.05
+	if want_flicker != _gust_flicker:
+		_gust_flicker = want_flicker
+		for ml in _map_lights:
+			if StringName((ml["def"] as Dictionary)["preset"]) == &"mycelium_glow":
+				var lh: LightRig.Handle = ml["handle"]
+				if want_flicker:
+					lh.set_flicker_override(GUST_FLICKER.x, GUST_FLICKER.y)
+				else:
+					lh.set_flicker_override(-1.0)
 
 
 ## Nombre de sources de la carte (tests).
@@ -561,6 +700,7 @@ func _process(delta: float) -> void:
 		_lights_tier = tier_name
 		_update_map_lights_tier()
 	_warmth = move_toward(_warmth, _warmth_target, delta / 0.5)
+	_process_event(delta)
 	if _bell_t >= 0.0:
 		_bell_t += delta
 		if _bell_t > 0.3 and _bell != null:
@@ -668,6 +808,15 @@ func _push(delta: float) -> void:
 	if _current.is_empty():
 		return
 	var p := _current
+	var wind_saved: Variant = p.get(&"wind_mult")
+	if _gust > 0.0 and wind_saved != null:
+		p[&"wind_mult"] = lerpf(float(wind_saved), maxf(float(wind_saved), GUST_WIND), _gust)
+	_push_body(p, delta)
+	if wind_saved != null:
+		p[&"wind_mult"] = wind_saved
+
+
+func _push_body(p: Dictionary, delta: float) -> void:
 	var view := view_rect()
 	var sun_on := sun.visible
 	var fill_on := fill.visible

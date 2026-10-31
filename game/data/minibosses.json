@@ -77,7 +77,7 @@
       ]
     },
     "bramble_queen": {
-      "name": "Reine des ronces", "biome": "foret", "speed_u": 2.4, "keep_u": 4.0,
+      "name": "Reine du mycélium", "biome": "foret", "speed_u": 2.4, "keep_u": 4.0,
       "light": {"preset": "boss_reine", "color": "#94C878", "energy": [1.7, 2.1], "radius": [1.4, 1.6], "rim": {"color": "#C2E6E0", "energy": 0.9}},
       "fallback": {"sprite": "bramble_queen"},
       "passives": [{"type": "summon_regen", "min": 3, "pct_s": 0.01, "cap": 0.08}],
@@ -101,7 +101,7 @@
       ]
     },
     "mist_wolf": {
-      "name": "Loup de brume", "biome": "foret", "speed_u": 3.2, "keep_u": 1.6,
+      "name": "Loup des gouffres", "biome": "foret", "speed_u": 3.2, "keep_u": 1.6,
       "light": {"color": "#9CF0C8", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#C2E6E0", "energy": 0.9}},
       "fallback": {"sprite": "frost_bear", "tint": "#C8DCCC", "scale": 0.9},
       "body_gain": 1.9,
@@ -129,7 +129,7 @@
       ]
     },
     "moss_mantis": {
-      "name": "Mante de mousse", "biome": "foret", "speed_u": 3.0, "keep_u": 1.9,
+      "name": "Mante de lichen", "biome": "foret", "speed_u": 3.0, "keep_u": 1.9,
       "light": {"color": "#B8E89C", "energy": [1.7, 2.1], "radius": [1.2, 1.4], "rim": {"color": "#C2E6E0", "energy": 0.9}},
       "fallback": {"sprite": "bramble_queen", "tint": "#C8E2B4", "scale": 1.0},
       "passives": [{"type": "front_guard", "mult": 0.6, "half_deg": 60}],

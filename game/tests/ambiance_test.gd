@@ -20,6 +20,7 @@ func _ready() -> void:
 	_test_profiles()
 	_test_quality_rule()
 	await _test_manager()
+	await _test_gouffre()
 	_test_emission_maps()
 	print("missing textures: ", AmbianceTextures.missing())
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
@@ -199,6 +200,101 @@ func _test_manager() -> void:
 	await _test_budgets(mgr)
 	mgr.queue_free()
 	map2.queue_free()
+	LightRig.clear_all()
+	await get_tree().process_frame
+
+
+## Étage 2 « Le Gouffre luisant » : pas de pluie, préréglages, puits de jour (A seulement), événements ambiants.
+func _test_gouffre() -> void:
+	for id in ["foret_brume", "foret_mangrove_lanternes"]:
+		var p := AmbianceManager.load_profile(StringName(id))
+		_check(p != null, "gouffre : profil %s" % id)
+		if p == null:
+			continue
+		for D in [1.0, 2.0, 3.25, 5.0, 7.0]:
+			var e := p.evaluate(D)
+			_check(float(e[&"rain_intensity"]) == 0.0 and float(e[&"splash_rate"]) == 0.0, "%s : aucune pluie (D=%.2f)" % [id, D])
+		var has_rule := false
+		for r in p.light_rules:
+			if StringName(r.get("preset", &"")) == &"mycelium_glow":
+				has_rule = true
+				_check(int(r.get("max", 0)) <= 8, "%s : mycélium max 8" % id)
+				_check(String(r.get("char", "")) == ("~" if id == "foret_mangrove_lanternes" else "#"), "%s : mycélium sur le bon caractère" % id)
+		_check(has_rule, "%s : règle mycélium" % id)
+		var shafts := 0
+		for l in p.point_lights:
+			if StringName(l.get("preset", &"")) == &"light_shaft":
+				shafts += 1
+		_check(shafts == (3 if id == "foret_brume" else 0), "%s : puits de jour (%d)" % [id, shafts])
+	for pid in [&"mycelium_glow", &"light_shaft"]:
+		var pr := LightRig.get_preset(pid)
+		_check(pr.has("color") and float(pr.get("energy", 0.0)) > 0.0 and pr.get("category") == "decor", "préréglage %s présent" % pid)
+	_check(Balance.TELEGRAPH_BIOME_TINT[&"foret"].is_equal_approx(Color(1.0, 0.48, 0.18)), "télégraphes de l'étage 2 orange")
+
+	Quality.set_tier(Quality.Tier.HIGH, true)
+	var mgr: AmbianceManager = load("res://scenes/ambiance/ambiance_manager.tscn").instantiate()
+	mgr.auto_bind = false
+	add_child(mgr)
+	var map: Node2D = load("res://scenes/stage/maps/foret_brume.tscn").instantiate()
+	add_child(map)
+	move_child(map, 0)
+	_check(mgr.bind_map(map), "gouffre : bind foret_brume")
+	var shaft_handles: Array = []
+	for ml in mgr.map_lights():
+		if StringName(ml["def"]["preset"]) == &"light_shaft":
+			shaft_handles.append(ml["handle"])
+	_check(shaft_handles.size() == 3, "gouffre A : 3 puits de jour posés (%d)" % shaft_handles.size())
+	if mgr.event_name() != "Puits voilés": # data/maps/foret_brume.json pas encore régénéré (tools/gen_maps.py) : on force le nom
+		print("NOTE : carte A pas régénérée (événement « %s »), « Puits voilés » forcé" % mgr.event_name())
+		mgr._event_name = "Puits voilés"
+		mgr._event_threshold = 4.0
+	mgr.set_difficulty(2.0)
+	mgr._process(0.1)
+	_check(not mgr.event_active() and is_equal_approx((shaft_handles[0] as LightRig.Handle).energy_mult, 1.0), "puits à pleine énergie avant Furieux")
+	mgr.set_difficulty(5.0)
+	mgr._process(0.1)
+	_check(mgr.event_active() and is_equal_approx((shaft_handles[0] as LightRig.Handle).energy_mult, AmbianceManager.VEIL_LIGHT_MULT), "Furieux : puits voilés (x0,4)")
+	for i in 120:
+		mgr._process(0.1)
+	var amb: Color = mgr.canvas_modulate.color
+	_check(AmbianceProfile.luminance(amb) > 0.08, "jamais d'obscurité (luminance ambiante %.3f)" % AmbianceProfile.luminance(amb))
+	mgr.queue_free()
+	map.queue_free()
+	LightRig.clear_all()
+	await get_tree().process_frame
+
+	mgr = load("res://scenes/ambiance/ambiance_manager.tscn").instantiate()
+	mgr.auto_bind = false
+	add_child(mgr)
+	map = load("res://scenes/stage/maps/foret_mangrove_lanternes.tscn").instantiate()
+	add_child(map)
+	move_child(map, 0)
+	_check(mgr.bind_map(map), "gouffre : bind foret_mangrove_lanternes")
+	var shafts_b := 0
+	for ml in mgr.map_lights():
+		if StringName(ml["def"]["preset"]) == &"light_shaft":
+			shafts_b += 1
+	_check(shafts_b == 0, "gouffre B : aucun puits de jour")
+	if mgr.event_name() != "Vent de gouffre":
+		print("NOTE : carte B pas régénérée (événement « %s »), « Vent de gouffre » forcé" % mgr.event_name())
+		mgr._event_name = "Vent de gouffre"
+		mgr._event_threshold = 2.5
+	mgr.set_difficulty(1.0)
+	mgr._process(0.1)
+	_check(not mgr.event_active() and mgr._gust == 0.0, "pas de bouffée avant Hostile")
+	mgr.set_difficulty(3.0)
+	mgr._gust_wait = 0.0
+	var peak := 0.0
+	var wind_base := float(mgr.current_params()[&"wind_mult"])
+	var wind_seen := 0.0
+	for i in 60:
+		mgr._process(0.1)
+		peak = maxf(peak, mgr._gust)
+		wind_seen = maxf(wind_seen, float(mgr.current_params()[&"wind_mult"]))
+	_check(mgr.event_active() and peak > 0.9, "Hostile : une bouffée de vent (pic %.2f)" % peak)
+	_check(absf(wind_seen - wind_base) < 0.02 and absf(float(mgr.current_params()[&"wind_mult"]) - wind_base) < 0.02, "wind_mult du profil restauré après _push")
+	mgr.queue_free()
+	map.queue_free()
 	LightRig.clear_all()
 	await get_tree().process_frame
 

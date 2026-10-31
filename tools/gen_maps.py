@@ -1,6 +1,7 @@
 import json, re, os, sys
 DOC = open(r"C:/Users/const/Documents/Rainfall/docs/Design_Boss_Cartes.md", encoding="utf-8").read()
-G = r"C:/Users/const/Documents/Rainfall/game"
+# GEN_MAPS_OUT : dossier de sortie alternatif (essais sur une copie de `game/`, sans toucher aux cartes du projet).
+G = os.environ.get("GEN_MAPS_OUT", r"C:/Users/const/Documents/Rainfall/game")
 blocks = re.findall(r"```\n(.*?)```", DOC, re.S)
 grids = [b.strip("\n").split("\n") for b in blocks if b.lstrip().startswith("#") and "S" in b][:3]
 # Retouches de grille décidées après Design_Boss_Cartes.md (guide en lecture seule) : (carte, rangée, colonne, texte)
@@ -26,10 +27,10 @@ MAPS = [
   boss_name="L'Éclusier",
   ambient=dict(threshold_difficulty=2.5, name="Bassins débordants", effect="visuel : les cases ',' du sud s'élargissent d'1 u"),
   event_names={"autel_fortune":"lanterne de pierre","sanctuaire_risque":"bassin qu'on vide","marchand_ombre":"barque amarrée","coffre_piege":"coffre à demi immergé"}),
- dict(id="foret_brume", floor=2, name="Forêt-brume", biome="foret", boss="cerf_lanterne",
+ dict(id="foret_brume", floor=2, name="Le Gouffre", biome="foret", boss="cerf_lanterne",
   boss_name="Le Cerf-Lanterne",
-  ambient=dict(threshold_difficulty=4.0, name="Lucioles éteintes", effect="visuel : brume à 15 %, lanternes allumées"),
-  event_names={"autel_fortune":"sanctuaire à lanterne","sanctuaire_risque":"cercle de champignons","marchand_ombre":"silhouette sous une racine","coffre_piege":"coffre couvert de mousse"}),
+  ambient=dict(threshold_difficulty=4.0, name="Puits voilés", effect="visuel : l'orage de surface voile les puits de jour (lumière et rai à 40 %), le mycélium monte (la salle passe du blanc-chaud au violet), jamais d'obscurité ; aucun effet de jeu"),
+  event_names={"autel_fortune":"autel de mycélium","sanctuaire_risque":"cercle de champignons luisants","marchand_ombre":"silhouette dans une diaclase","coffre_piege":"coffre pris dans la calcite"}),
  dict(id="cite_rouille", floor=3, name="Cité de rouille", biome="cite", boss="sonneur",
   boss_name="Le Sonneur",
   ambient=dict(threshold_difficulty=4.0, name="Orage", effect="visuel : éclair de décor toutes les 10-20 s ; à Cataclysme le canal monte"),
@@ -260,11 +261,11 @@ NEW_MAPS = [
   ambient=json.loads(r'''{"threshold_difficulty": 2.5, "name": "La noria repart", "effect": "visuel et sonore : la noria du bassin central se remet à tourner (grincement, éclaboussures) ; les cases ',' des rizières s'élargissent d'1 u"}'''),
   event_names=json.loads(r'''{"autel_fortune": "lanterne de pierre du palier", "sanctuaire_risque": "rizière qu'on draine", "marchand_ombre": "cabane de la noria", "coffre_piege": "coffre dans la boue"}'''),
   secrets=json.loads(r'''[{"id": "citerne_noria", "kind": "sealed_door", "skin": "dalles de vanne + grille de citerne (habillage Terrasses)", "door_cells": [[12, 4], [12, 5]], "room_cells": [[9, 3], [10, 3], [11, 3], [9, 4], [10, 4], [11, 4], [9, 5], [10, 5], [11, 5]], "plates_u": [[15, 25], [49, 43]], "guardians_u": [[19, 7], [21, 11]], "guardian_names": ["Orme", "Aulne"], "reward": "2 reliquaires (table gardien)"}]''')),
- dict(id="foret_mangrove_lanternes", floor=2, name="Mangrove des lanternes", biome="foret", variant="B", boss="cerf_lanterne",
+ dict(id="foret_mangrove_lanternes", floor=2, name="Les Galeries noyées", biome="foret", variant="B", boss="cerf_lanterne",
   boss_name="Le Cerf-Lanterne", grid=GRID_MANGROVE, hour_shift_min=-30,
-  ambient=json.loads(r'''{"threshold_difficulty": 4.0, "name": "Marée montante", "effect": "visuel : la marée monte, les cases ',' des pontons et des rives s'élargissent d'1 u ; lucioles éteintes, brume à 15 %"}'''),
-  event_names=json.loads(r'''{"autel_fortune": "sanctuaire à lanterne sur pilotis", "sanctuaire_risque": "cercle de champignons", "marchand_ombre": "barque sous les racines", "coffre_piege": "coffre pris dans les racines"}'''),
-  secrets=json.loads(r'''[{"id": "sanctuaire_racines", "kind": "sealed_door", "skin": "pierres plates à rune + rideau de racines (habillage Forêt)", "door_cells": [[16, 7]], "room_cells": [[15, 4], [16, 4], [17, 4], [15, 5], [16, 5], [17, 5], [15, 6], [16, 6], [17, 6]], "plates_u": [[17, 27], [73, 19]], "guardians_u": [[31, 11], [35, 11]], "guardian_names": ["Lierre", "Houx"], "reward": "2 reliquaires (table gardien)"}]''')),
+  ambient=json.loads(r'''{"threshold_difficulty": 2.5, "name": "Vent de gouffre", "effect": "visuel et sonore : bouffées de vent froid dans les galeries (spores et brume qui filent, mycélium qui vacille, souffle grave) toutes les 20-30 s ; aucun effet de jeu"}'''),
+  event_names=json.loads(r'''{"autel_fortune": "autel sous le rai", "sanctuaire_risque": "cercle de champignons luisants", "marchand_ombre": "barque sur la rivière souterraine", "coffre_piege": "coffre pris dans la calcite"}'''),
+  secrets=json.loads(r'''[{"id": "sanctuaire_racines", "kind": "sealed_door", "skin": "dalles de calcite à mycélium + coulée fissurée (habillage Gouffre)", "door_cells": [[16, 7]], "room_cells": [[15, 4], [16, 4], [17, 4], [15, 5], [16, 5], [17, 5], [15, 6], [16, 6], [17, 6]], "plates_u": [[17, 27], [73, 19]], "guardians_u": [[31, 11], [35, 11]], "guardian_names": ["Ocre", "Basalte"], "reward": "2 reliquaires (table gardien)"}]''')),
  dict(id="cite_fonderie_canal", floor=3, name="Fonderie du canal", biome="cite", variant="B", boss="sonneur",
   boss_name="Le Sonneur", grid=GRID_FONDERIE, hour_shift_min=30,
   ambient=json.loads(r'''{"threshold_difficulty": 4.0, "name": "Coulée", "effect": "visuel : les creusets de la cour pulsent orange (coulée de métal) ; orage à Furieux ; à Cataclysme le canal circulaire monte"}'''),
@@ -556,8 +557,8 @@ def shape_grid(mid, grid):
 A_SECRETS = {
  "terrasses_noyees": dict(id="bassin_vanne", skin="dalles de vanne + grille de bassin (habillage Terrasses)", door=(7, 31), dir=(-1, 0),
                           plates=[(13, 2), (19, 34)], names=["Vase", "Crue"]),
- "foret_brume": dict(id="cercle_brume", skin="pierres plates à rune + rideau de brume (habillage Forêt)", door=(5, 4), dir=(-1, 0),
-                     plates=[(36, 19), (1, 11)], names=["Mousse", "Fougère"]),
+ "foret_brume": dict(id="cercle_brume", skin="dalles de calcite à mycélium + coulée fissurée (habillage Gouffre)", door=(5, 4), dir=(-1, 0),
+                     plates=[(36, 19), (1, 11)], names=["Lichen", "Silex"]),
  "cite_rouille": dict(id="salle_pompes", skin="plaques de pression rivetées + porte à volant (habillage Cité)", door=(5, 5), dir=(-1, 0),
                       plates=[(20, 1), (4, 37)], names=["Boulon", "Chaudron"]),
  "cryptes_noyees": dict(id="chapelle_basse", skin="dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", door=(34, 7), dir=(1, 0),
@@ -629,6 +630,10 @@ for _m, _g in ALL_MAPS:
     _m["size"] = (2 * len(_g[0]), 2 * len(_g))
     _m.update(chests=markers(_g, "C"), small=markers(_g, "P"), big=markers(_g, "G"), events=markers(_g, "E"),
               spawn=markers(_g, "S")[0])
+    if _m["id"] == "foret_brume":
+        # Les 3 puits de jour de l'étage 2 (data/ambiance/foret_brume.tres, point_lights `light_shaft`) sont posés
+        # sur les 3 candidats de gros pilier : si la grille bouge, déplacer les lumières dans build_profiles.gd.
+        assert sorted(tuple(c) for c in _m["big"]) == [(31, 27), (31, 53), (57, 23)], ("puits de jour", _m["big"])
 
 ROT45 = 0.785398163397448
 NL = chr(10)

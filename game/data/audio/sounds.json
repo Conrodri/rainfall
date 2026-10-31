@@ -1455,39 +1455,6 @@
       ],
       "ambience": [
         {
-          "id": "amb.rain.light",
-          "db": [
-            -16,
-            -16,
-            -80,
-            -80,
-            -80
-          ],
-          "rain": true
-        },
-        {
-          "id": "amb.rain.medium",
-          "db": [
-            -80,
-            -18,
-            -10,
-            -10,
-            -80
-          ],
-          "rain": true
-        },
-        {
-          "id": "amb.rain.heavy",
-          "db": [
-            -80,
-            -80,
-            -18,
-            -8,
-            -5
-          ],
-          "rain": true
-        },
-        {
           "id": "amb.foret_brume.decor",
           "db": [
             -12,
@@ -1509,10 +1476,10 @@
         }
       ],
       "surfaces": {
-        ".": "dirt",
-        ",": "grass",
+        ".": "stone",
+        ",": "water",
         "~": "water",
-        "#": "dirt"
+        "#": "stone"
       }
     },
     "foret_mangrove_lanternes": {
@@ -1572,39 +1539,6 @@
       ],
       "ambience": [
         {
-          "id": "amb.rain.light",
-          "db": [
-            -16,
-            -16,
-            -80,
-            -80,
-            -80
-          ],
-          "rain": true
-        },
-        {
-          "id": "amb.rain.medium",
-          "db": [
-            -80,
-            -18,
-            -10,
-            -10,
-            -80
-          ],
-          "rain": true
-        },
-        {
-          "id": "amb.rain.heavy",
-          "db": [
-            -80,
-            -80,
-            -18,
-            -8,
-            -5
-          ],
-          "rain": true
-        },
-        {
           "id": "amb.foret_brume.decor",
           "db": [
             -12,
@@ -1626,10 +1560,10 @@
         }
       ],
       "surfaces": {
-        ".": "dirt",
-        ",": "grass",
+        ".": "stone",
+        ",": "water",
         "~": "water",
-        "#": "dirt"
+        "#": "stone"
       }
     },
     "cite_rouille": {
