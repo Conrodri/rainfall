@@ -81,19 +81,19 @@ func _ready() -> void:
 	_check(not "settings_icon_button" in t and t.root.find_child("SettingsIcon", true, false) == null, "M9 : icône Réglages retirée")
 	_check(not t._version.text.contains("Godot") and t._version.get_theme_font_size(&"font_size") == 22 and is_equal_approx(t._version.modulate.a, 0.6), "M9 : version seule, 22 px, 60 %")
 	_check(not t.hints_label.text.contains("—") and t.hints_label.text.contains("[Entrée] Valider"), "M9 : invites sans « — » (%s)" % t.hints_label.text)
-	for b in [t.main_button, t.progress_button, t.settings_button, t.credits_button]:
+	for b in [t.main_button, t.achievements_button, t.settings_button, t.credits_button]:
 		_check(b.custom_minimum_size.x >= 88 and b.custom_minimum_size.y >= 88, "%s >= 88 px" % b.name)
 	_check(t.quit_button != null, "PC : bouton Quitter présent")
 
 	# --- Signaux
 	_got.clear()
-	for sig in [&"new_run_requested", &"progress_requested", &"settings_requested", &"credits_requested"]:
+	for sig in [&"new_run_requested", &"achievements_requested", &"settings_requested", &"credits_requested"]:
 		t.connect(sig, func(): _got.append(sig))
 	t.main_button.pressed.emit()
-	t.progress_button.pressed.emit()
+	t.achievements_button.pressed.emit()
 	t.settings_button.pressed.emit()
 	t.credits_button.pressed.emit()
-	_check(_got == [&"new_run_requested", &"progress_requested", &"settings_requested", &"credits_requested"], "signaux des boutons : %s" % str(_got))
+	_check(_got == [&"new_run_requested", &"achievements_requested", &"settings_requested", &"credits_requested"], "signaux des boutons : %s" % str(_got))
 
 	# --- Quitter : confirmation
 	_got.clear()

@@ -139,7 +139,6 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.resume_requested.connect(resume_run)
 			t.new_run_requested.connect(func() -> void: show(&"new_run"))
 			t.quick_start_requested.connect(start_run) # M16 : appui long / [Y] sur « Jouer »
-			t.progress_requested.connect(func() -> void: show(&"progress"))
 			t.settings_requested.connect(func() -> void: show(&"settings"))
 			t.credits_requested.connect(func() -> void: show(&"credits"))
 			t.achievements_requested.connect(func() -> void: show(&"achievements"))

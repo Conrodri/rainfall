@@ -66,7 +66,7 @@ func _ready() -> void:
 	# 2b. Retour arrière puis Progression, Réglages, Crédits : chacun revient au titre.
 	nr.back_requested.emit()
 	await _until(_on_title, "retour titre depuis Nouvelle run")
-	for pair in [[&"progress", ProgressScreen], [&"settings", SettingsScreen], [&"credits", CreditsScreen]]:
+	for pair in [[&"settings", SettingsScreen], [&"credits", CreditsScreen]]:
 		await app.show(pair[0])
 		await _until(func() -> bool: return is_instance_of(app.current, pair[1]) and not app.busy, "écran " + String(pair[0]))
 		_check(is_instance_of(app.current, pair[1]), "show(%s)" % pair[0])

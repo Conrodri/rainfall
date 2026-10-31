@@ -10,7 +10,6 @@ extends Node
 
 signal resume_requested
 signal new_run_requested
-signal progress_requested
 signal settings_requested
 signal credits_requested
 ## Méta hors ligne (scripts/meta/) : écran du défi du jour (graine = date locale) et écran des succès.
@@ -59,7 +58,6 @@ var has_save := false
 var summary: Dictionary = {}
 var main_button: MenuBtn
 var new_run_button: Button
-var progress_button: Button
 var settings_button: Button
 var credits_button: Button
 var daily_button: Button
@@ -300,10 +298,7 @@ func _rebuild_column() -> void:
 		new_run_button.name = "NewRun"
 	daily_button = _add_sub("Défi du jour", _on_daily_pressed)
 	daily_button.name = "Daily"
-	var pr := _add_pair("Progression", func(): progress_requested.emit(), "Succès", func(): achievements_requested.emit())
-	progress_button = pr[0]
-	progress_button.name = "Progress"
-	achievements_button = pr[1]
+	achievements_button = _add_sub("Succès", func(): achievements_requested.emit())
 	achievements_button.name = "Achievements"
 	var sc := _add_pair("Réglages", func(): settings_requested.emit(), "Crédits", func(): credits_requested.emit())
 	settings_button = sc[0]
