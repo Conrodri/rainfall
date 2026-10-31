@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c03pofmyq5jvd"
-path.bptc="res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.bptc.ctex"
-path.astc="res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.astc.ctex"
+path.s3tc="res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.s3tc.ctex"
+path.etc2="res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/morfil/skins/morfil_skin1/hurt.png"
-dest_files=["res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.bptc.ctex", "res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.astc.ctex"]
+dest_files=["res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.s3tc.ctex", "res://.godot/imported/hurt.png-f9672bf5dc1894919052dacd513fb01c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

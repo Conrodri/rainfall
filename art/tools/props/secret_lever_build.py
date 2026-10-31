@@ -3,13 +3,13 @@ from mathutils import Vector
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
 OUT = os.path.join(ROOT, 'game/assets/sprites/props/secret')
-BLEND = os.path.join(ROOT, 'art/blender/props/secret_lever.blend')
+BLEND = os.path.join(ROOT, 'art/blender/props/g6_secret_lever.blend')
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(os.path.dirname(BLEND), exist_ok=True)
 
 BIOMES = {
     'terraces': ((.27,.34,.31,1), (.08,.48,.42,1)),
-    'fog_forest': ((.25,.23,.17,1), (.80,.37,.08,1)),
+    'fog_forest': ((.35,.255,.19,1), (.76,.36,1.0,1)),
     'rust_city': ((.31,.17,.10,1), (.95,.22,.035,1)),
     'crypts': ((.28,.29,.27,1), (.10,.60,.85,1)),
 }
@@ -38,7 +38,10 @@ def sphere(name, loc, scale, material):
 def build(biome, pulled):
     for o in list(bpy.context.scene.objects):
         if o.type=='MESH': bpy.data.objects.remove(o, do_unlink=True)
-    base, accent=BIOMES[biome]; stone=mat('worn substrate',base); iron=mat('black iron',(.105,.095,.08,1)); glow=mat('biome accent',accent,2.5)
+    base, accent=BIOMES[biome]; stone=mat('worn substrate',base); iron=mat('black iron',(.105,.095,.08,1)); glow=mat('biome accent',accent,2.5 if pulled else .25)
+    if biome=='fog_forest':
+        bpy.ops.mesh.primitive_cone_add(vertices=7, radius1=.39, radius2=.07, depth=.62, location=(0,0,.32), rotation=(0,0,.18)); rock=bpy.context.object; rock.name='split sandstone stalagmite'; rock.data.materials.append(stone)
+        cube('split shadow seam',(0,-.252,.31),(.035,.018,.42),glow,.008)
     cube('irregular socket',(0,0,.15),(.72,.52,.28),stone,.075)
     cube('iron mounting plate',(0,-.03,.34),(.38,.20,.20),iron,.025)
     for x in (-.22,.22): sphere('fixing rivet',(x,-.145,.31),(.045,.024,.045),glow if x<0 else iron)
@@ -81,8 +84,8 @@ def render(biome,pulled):
     shadow=mat('baked shadow',(.008,.006,.005,1)); bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=8, location=(0,0,.01)); sh=bpy.context.object; sh.scale=(.65,.38,.025); sh.data.materials.append(shadow)
     s.render.filepath=os.path.join(OUT,name+'_shadow.png'); bpy.ops.render.render(write_still=True)
 
-for b in BIOMES:
+for b in ('fog_forest',):
     for pulled in (False,True):
         build(b,pulled); render(b,pulled)
 bpy.ops.wm.save_as_mainfile(filepath=BLEND)
-print('PASS secret_lever 16 renders')
+print('PASS G6 secret_lever fog_forest 6 renders')

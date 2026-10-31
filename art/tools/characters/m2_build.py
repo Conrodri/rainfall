@@ -25,6 +25,8 @@ def delta(rig,name):
     bpy.context.view_layer.update();return rig.pose.bones[name].matrix @ rig.data.bones[name].matrix_local.inverted()
 
 def pose(actor,root,rig,anim,f,n):
+    if actor=='rictus' and anim in ACTION_F60:
+        return action_pose(root,rig,anim,f,n)
     for b in rig.pose.bones:b.matrix_basis=Matrix.Identity(4)
     root.rotation_euler=(0,0,0);root.location=(0,0,0)
     t=f/n;w=math.tau*t; pulse=math.sin(math.pi*f/(n-1)) if n>1 else 0
@@ -98,6 +100,39 @@ def pose(actor,root,rig,anim,f,n):
             rig.pose.bones['thigh.'+suffix].rotation_mode='XYZ';rig.pose.bones['thigh.'+suffix].rotation_euler.x=.48*math.sin(w+side*math.pi/2)
             rig.pose.bones['shin.'+suffix].rotation_mode='XYZ';rig.pose.bones['shin.'+suffix].rotation_euler.x=-.38*max(0,math.cos(w+side*math.pi/2))
         if anim=='lift':rig.pose.bones['shin.'+suffix].rotation_mode='XYZ';rig.pose.bones['shin.'+suffix].rotation_euler.x=-.25*pulse
+    bpy.context.view_layer.update()
+
+ACTION_F60={'slash':[3,5,4,5,6],'throw':[3,2,6,4,5,6],'throw_ult':[4,4,2,8,5,6,7],'summon':[4,4,2,8,5,6,7]}
+ACTION_IMPACT={'slash':1,'throw':2,'throw_ult':3,'summon':3}
+
+def action_pose(root,rig,anim,f,n):
+    # Explicit snapped keys: raised elbows, suspended knees, maximum extension.
+    pose('rictus',root,rig,'run',0,8)
+    impact=ACTION_IMPACT[anim]
+    stages={'slash':[.78,1,.62,.28,0], 'throw':[.75,.86,1,.64,.30,0],
+            'throw_ult':[.72,.86,.92,1,.66,.30,0], 'summon':[.72,.86,.92,1,.66,.30,0]}
+    k=stages[anim][f]; anticipation=f<impact
+    root.scale=(1.15,)*3
+    b=rig.pose.bones['root']
+    yaw=(-.50 if anticipation else .16)*k
+    b.matrix=Matrix.Translation((0,0,.10*k)) @ Euler(((-.22 if anticipation else .10)*k, .12*k,yaw)).to_matrix().to_4x4() @ rig.data.bones['root'].matrix_local
+    spine=delta(rig,'spine')
+    for side,suffix in [(-1,'L'),(1,'R')]:
+        # Anticipation above the shoulders; impact spreads the complete blade chain.
+        upper=Vector((side,.05,.04)).lerp(Vector((side*.78,.18, .95 if anticipation else .08)),k)
+        fore=Vector((side*.06,.10,-1)).lerp(Vector((side*.85,-.45 if anim in ('slash','throw') else .12,.85 if anticipation else .02)),k)
+        if anim=='slash' and not anticipation: upper.y=-side*.45*k
+        du=aim(rig,'upper_arm.'+suffix,upper,spine)
+        bb=rig.data.bones['forearm.'+suffix]
+        rig.pose.bones[bb.name].matrix=Matrix.Translation(du@bb.head_local) @ (bb.tail_local-bb.head_local).rotation_difference(fore).to_matrix().to_4x4() @ bb.matrix_local.to_3x3().to_4x4()
+        bpy.context.view_layer.update()
+        for name in ('hand.'+suffix,'dagger.'+suffix):
+            bb=rig.data.bones[name];pb=rig.pose.bones[name]
+            pd=delta(rig,pb.parent.name)
+            pb.matrix=Matrix.Translation(pd@bb.head_local) @ (bb.tail_local-bb.head_local).rotation_difference(fore).to_matrix().to_4x4() @ bb.matrix_local.to_3x3().to_4x4()
+            bpy.context.view_layer.update()
+        for name,angle in [('thigh.',side*.36*k),('shin.',-.72*k)]:
+            pb=rig.pose.bones[name+suffix];pb.rotation_mode='XYZ';pb.rotation_euler.x=angle
     bpy.context.view_layer.update()
 
 def corrections(root,rig):

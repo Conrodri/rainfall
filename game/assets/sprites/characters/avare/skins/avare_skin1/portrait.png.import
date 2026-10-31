@@ -3,16 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://y6868lbsgs1y"
-valid=false
+path.s3tc="res://.godot/imported/portrait.png-7bcdaa6320fee3423b752d5e25df9e1e.s3tc.ctex"
+path.etc2="res://.godot/imported/portrait.png-7bcdaa6320fee3423b752d5e25df9e1e.etc2.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
+}
 
 [deps]
 
 source_file="res://assets/sprites/characters/avare/skins/avare_skin1/portrait.png"
+dest_files=["res://.godot/imported/portrait.png-7bcdaa6320fee3423b752d5e25df9e1e.s3tc.ctex", "res://.godot/imported/portrait.png-7bcdaa6320fee3423b752d5e25df9e1e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

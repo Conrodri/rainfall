@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://rg4exxm8j1wj"
-path.bptc="res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.bptc.ctex"
-path.astc="res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.astc.ctex"
+path.s3tc="res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.s3tc.ctex"
+path.etc2="res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/skins/bourbe_skin1/slap.png"
-dest_files=["res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.bptc.ctex", "res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.astc.ctex"]
+dest_files=["res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.s3tc.ctex", "res://.godot/imported/slap.png-f6b25ee59837dd2e3f532a77f0394cad.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

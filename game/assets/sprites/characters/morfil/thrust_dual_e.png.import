@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgowuwphuqx61"
-path.bptc="res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.bptc.ctex"
-path.astc="res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.astc.ctex"
+path.s3tc="res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.s3tc.ctex"
+path.etc2="res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/morfil/thrust_dual_e.png"
-dest_files=["res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.bptc.ctex", "res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.astc.ctex"]
+dest_files=["res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.s3tc.ctex", "res://.godot/imported/thrust_dual_e.png-6a080baeef1dc0e3d8308b5a4e8e877e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

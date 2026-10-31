@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4yf075ieef4k"
-path.bptc="res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.bptc.ctex"
-path.astc="res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.astc.ctex"
+path.s3tc="res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.s3tc.ctex"
+path.etc2="res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/avare/skins/avare_skin1/ult.png"
-dest_files=["res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.bptc.ctex", "res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.astc.ctex"]
+dest_files=["res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.s3tc.ctex", "res://.godot/imported/ult.png-bdc87c2ed37c4651a13dd262a1371a36.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

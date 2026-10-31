@@ -17,11 +17,15 @@ from PIL import Image
 
 OUT = ROOT / 'art/tools/night/_sa1_out'
 DEST = ROOT / 'game/assets/sprites/characters/morfil'
-SOURCE = ROOT / 'art/blender/characters/morfil.blend'
+SOURCE = ROOT / 'art/blender/cel/morfil_actions_work.blend'
 DIRS = list(iso.DIRECTIONS)
 BASE = dict(idle=8, run=8, cut_circle=6, thrust=6, crescent=8, sharpen=8, twin_draw=8, dodge=5, hurt=3, death=8)
+ACTION_FRAMES = dict(cut_circle=6, thrust=6, crescent=8, sharpen=9, twin_draw=8)
 ANIMS = dict(BASE, **{a+'_dual': BASE[a] for a in ('idle','run','cut_circle','thrust','crescent')})
+ANIMS.update(ACTION_FRAMES)
+ANIMS.update({a+'_dual': ACTION_FRAMES[a] for a in ('cut_circle','thrust','crescent')})
 IMPACTS = dict(cut_circle=2, thrust=2, crescent=4, sharpen=5, twin_draw=4)
+F60 = dict(cut_circle=[3,3,2,4,8,8], thrust=[3,3,2,4,8,8], crescent=[4,4,3,2,2,6,7,7], sharpen=[5,5,4,3,2,2,5,8,8], twin_draw=[4,3,2,2,2,5,7,7])
 RNG = random.Random(4617)
 P = {}
 
@@ -199,6 +203,14 @@ def pose(rig, anim, f, n):
         if tip:tip.rotation_euler=(0,0,0)
     for i,leg in enumerate(rig['legs']):leg.rotation_euler=(.04 if i==0 else -.08,0,0)
     for arm in rig['arms']:arm.location.z=.35
+    # Action stance: low planted base, visibly loaded before the cut.
+    if a in ('cut_circle','thrust','crescent','sharpen','twin_draw'):
+        rig['legs'][0].rotation_euler.x=-.82
+        rig['legs'][1].rotation_euler.x=.46
+        body.location.z=.68
+        body.rotation_euler.x=.24
+        rig['legs'][0].scale=(1.16,1.16,1.16)
+        rig['legs'][1].scale=(.92,.92,.92)
     # Quaternions aim the anatomical upper arm and the fused forearm blade independently.
     r_upper=(-.07,-.04,-.23);r_blade=(-.32,-.28,-.83)
     l_upper=(.05,-.07,-.22);l_fore=(-.07,-.16,-.12)
@@ -215,24 +227,58 @@ def pose(rig, anim, f, n):
         hat.rotation_euler.y=.035*math.sin(t)
     if a in ('cut_circle','crescent'):
         # Peak passage in front at the gameplay impact; recovery keeps the full sweep.
-        theta=(-math.pi/2+(f-2)*math.tau/6) if a=='cut_circle' else (-math.pi+(f/7)*math.pi)
+        impact=IMPACTS[a];smear=impact-1
+        theta=(-math.pi/2+(f-impact)*math.tau/6) if a=='cut_circle' else (-math.pi+(f-impact)*math.pi/7)
         v=(math.cos(theta),math.sin(theta),-.13)
+        if f==0:
+            v=(-.78,.32,.76);body.rotation_euler.z=-.62;body.rotation_euler.x=.42
+        elif f==smear:
+            v=(-.72,-.24,.65);body.rotation_euler.z=.58
+        elif f==impact:
+            v=(1.22,-.16,-.28);body.location.z=.62
+            body.rotation_euler.z=.42
         r_upper=(.205,-.015,-.10);r_blade=v
         body.rotation_euler.z=.24*math.sin(theta);body.rotation_euler.x=.05
         for arm in rig['arms']:arm.location.z=.29
         l_upper=(-.205,.015,-.10);l_fore=(-v[0],-v[1],-.17)
+        if f==smear:l_fore=(-.3,.95,.62)
+        if dual:
+            growth=1
+            if f==smear:l_fore=(-.3,.95,.62)
     if a=='thrust':
-        reach=[0,.35,1,.85,.35,0][f]
+        impact=IMPACTS['thrust'];smear=impact-1
+        reaches=[.24,.56,1,.9,.48,.14]
+        reach=reaches[f]
+        if f==0:reach=.18
+        if f==smear:reach=.68
+        if f==impact:reach=1.28
         body.rotation_euler.x=.12+.25*reach;body.location.y=-.08*reach
         r_upper=(-.09+.295*reach,-.02+.15*reach,-.16+.06*reach);r_blade=(-.06,-.3-.7*reach,-.8+.8*reach)
         l_upper=(.08-.285*reach,.13*reach,-.18+.08*reach);l_fore=(.06,-.6,-.12)
+        if f==0:body.rotation_euler.z=-.52
+        if f==smear:r_blade=(-.28,-.95,.75)
+        if f==impact:body.location.z=.62;body.rotation_euler.z=.30
+        if dual:growth=1
     if a=='sharpen':
+        # Raised whetstone and broad two-handed draw across the sap edge.
+        contact=IMPACTS['sharpen'];smear=contact-1
         r_upper=(-.12,-.10,-.10);r_blade=(.88,-.22,.08)
         l_upper=(-.06,-.18,-.07);l_fore=(-.40+.45*p,-.10,.1)
         rig['stone'].location=(-.30+.72*p,-.28,.16)
+        if f==0:r_upper=(-.4,.22,.55);r_blade=(.45,.5,.72);rig['stone'].location=(-.42,-.24,.60)
+        elif f==1:r_upper=(-.25,.12,.48);r_blade=(.5,.2,.75);rig['stone'].location=(-.3,-.24,.49)
+        elif f==smear:r_blade=(-.9,-.28,.72);l_fore=(.8,-.2,.6);rig['stone'].location=(.36,-.24,.48)
+        elif f==contact:r_blade=(.25,-.18,.04);rig['stone'].location=(.28,-.28,.17);body.location.z=.61
+        elif f==n-1:
+            body.rotation_euler.x=.08;body.location.z=.70
     if a=='twin_draw':
+        contact=IMPACTS['twin_draw'];smear=contact-1
         growth=max(.001,min(1,(f-1)/3));l_upper=(-.205,.02,-.10);l_fore=(.55,-.40,-.35)
-        body.rotation_euler.z=-.12+.24*p
+        body.rotation_euler.z=-.30+.58*p
+        if f==0:r_blade=(-.9,.3,.72);body.rotation_euler.z=-.72
+        elif f==smear:r_blade=(.82,-.45,.82);l_fore=(-.82,.25,.8);growth=.15
+        elif f==contact:r_blade=(.15,-.25,-.98);l_fore=(.35,-.92,-.7);growth=1;body.location.z=.60
+        elif f>=contact+1:body.rotation_euler.z=.16
     if a=='dodge':
         body.rotation_euler.x=.5+.25*math.sin(math.pi*p);body.location.z=.62-.08*math.sin(math.pi*p)
         r_upper=(-.07,-.15,-.1);r_blade=(.90,-.25+.4*p,.04)
@@ -256,6 +302,7 @@ def pose(rig, anim, f, n):
     for arm,fore,vec in [(rig['arms'][0],rig['blades'][0],r_blade),(rig['arms'][1],rig['leftfore'],l_fore)]:
         aim(fore,arm.rotation_quaternion.inverted()@Vector(vec))
     rig['blades'][1].scale=(growth*.90,growth*.90,growth*.90)
+    rig['blades'][0].scale=(1.12 if a in ('cut_circle','thrust','crescent','twin_draw') and f==IMPACTS.get(a,-1) else 1,)*3
     rig['drops'].location.z=-.06*((f%4)/4)
     # The edge mask is independent of the eyes; stone contact restores it at impact 5.
     strength=(.12 if f<5 else 1.3) if a=='sharpen' else 1.3
@@ -267,6 +314,7 @@ def pose(rig, anim, f, n):
             if node.type=='OUTPUT_AOV':
                 color=next((v.inputs['Color'].default_value for v in nodes if v.type=='EMISSION'),(1,1,1,1))
                 node.inputs['Color'].default_value=tuple(c*strength for c in color[:3])+(1,)
+    bpy.context.view_layer.update()
 
 def key_source(rig):
     s=bpy.context.scene;manifest={};nodes=[o for o in rig['root'].children_recursive if o.type=='EMPTY']
@@ -284,13 +332,28 @@ def key_source(rig):
     pose(rig,'idle',0,8);bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE))
     for o in nodes:o.animation_data_clear()
 
-def render(path, size, profile='creature'):
+def render(path, size, profile='creature', samples=8):
     # Reuse shared compositor. iso.render_frame expects a normal file, so use its diffuse pipeline directly.
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     s=bpy.context.scene;bpy.context.view_layer.update()
     iso.common.configure_passes(path)
-    s.eevee.taa_render_samples=8;s.render.filepath=str(path)
+    s.eevee.taa_render_samples=samples;s.render.filepath=str(path)
     bpy.ops.render.render(write_still=True)
+    # Add two faint motion echoes only to the dedicated smear frame in diffuse.
+    stem=path.stem
+    try:
+        parts=stem.rsplit('_',2);anim='_'.join(parts[:-2]);d=parts[-2];frame=int(parts[-1])
+        base=anim.replace('_dual','')
+        if base in IMPACTS and frame==IMPACTS[base]-1:
+            from PIL import ImageChops
+            with Image.open(path) as src:current=src.convert('RGBA')
+            echo=Image.new('RGBA',current.size)
+            for dx,dy,alpha in ((-13,7,48),(11,-5,30)):
+                shifted=Image.new('RGBA',current.size);shifted.alpha_composite(current,(dx,dy))
+                shifted.putalpha(shifted.getchannel('A').point(lambda v,a=alpha:v*a//255))
+                echo=Image.alpha_composite(echo,shifted)
+            current=Image.alpha_composite(echo,current);current.save(path,optimize=True,compress_level=9)
+    except (ValueError, IndexError):pass
     for suffix in ('','_e'):
         dest=path.with_name(path.stem+suffix+'.png')
         if suffix:
@@ -298,6 +361,8 @@ def render(path, size, profile='creature'):
             assert len(candidates)==1,(path,candidates)
             candidates[0].replace(dest)
         with Image.open(dest) as src:im=src.convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
+        if suffix and anim.replace('_dual','') in IMPACTS and frame==IMPACTS[anim.replace('_dual','')]:
+            im=im.point(lambda v:min(255,v*2))
         im.save(dest,optimize=True,compress_level=9)
 
 def resources():
@@ -310,7 +375,9 @@ def resources():
             for f in range(n):
                 sid+=1;aid='a'+str(sid)
                 subs.append(f'[sub_resource type="AtlasTexture" id="{aid}"]\natlas = ExtResource("{anim}")\nregion = Rect2({f*192}, {row*192}, 192, 192)')
-                frames.append('{"duration": 1.0, "texture": SubResource("'+aid+'")}')
+                base=anim.replace('_dual','')
+                duration=F60[base][f]*16/60 if base in F60 else 1.0
+                frames.append('{"duration": '+f'{duration:.6f}'.rstrip('0').rstrip('.')+', "texture": SubResource("'+aid+'")}')
             loop=anim.replace('_dual','') in ('idle','run')
             speed=8 if anim.startswith('idle') else 12 if anim.startswith('run') else 10 if anim=='death' else 16
             anims.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(loop).lower()}, "name": &"{anim}_{d}", "speed": {speed}.0'+'}')
@@ -329,6 +396,7 @@ def sheet(anim,n):
 def character(stage,reuse):
     rig=build();key_source(rig);cel.install('creature',normals=False)
     selected=list(BASE) if stage=='base' else [a for a in ANIMS if a.endswith('_dual')] if stage=='dual' else ['idle'] if stage=='model' else list(ANIMS)
+    if '--actions' in sys.argv:selected=list(ACTION_FRAMES)+[a+'_dual' for a in ('cut_circle','thrust','crescent')]
     if '--anims' in sys.argv:selected=sys.argv[sys.argv.index('--anims')+1].split(',')
     DEST.mkdir(parents=True,exist_ok=True)
     for anim in selected:
@@ -337,7 +405,7 @@ def character(stage,reuse):
             for f in range(n):
                 path=OUT/anim/f'{d}_{f:02}.png'
                 if reuse and path.exists() and path.with_name(path.stem+'_e.png').exists():continue
-                pose(rig,anim,f,n);rig['root'].rotation_euler.z=angle
+                pose(rig,anim,f,n);rig['root'].rotation_euler.z=angle;bpy.context.view_layer.update()
                 render(path,192)
         sheet(anim,n);resources();print('PASS SA1',anim,flush=True)
     cel.uninstall()
@@ -363,34 +431,134 @@ def vfx():
     if '--effects' in sys.argv:
         names=sys.argv[sys.argv.index('--effects')+1].split(',');specs={k:v for k,v in specs.items() if k in names}
     for name,(n,size,rigtype) in specs.items():
+        # Work copies only; never overwrite the artist-provided source blends.
+        source_copy=ROOT/'art/blender/cel'/('morfil_'+name+'_reinforced_work.blend')
+        if source_copy.exists():
+            import time
+            source_copy=source_copy.with_stem(source_copy.stem+'_'+str(time.time_ns()))
         iso.create_rig(rigtype,size);s=bpy.context.scene
         s.render.threads_mode='FIXED';s.render.threads=6
-        dark=mat('Ink heartwood trail','303930');sap=mat('Sap edge CDEB6E','CDEB6E',1.4)
+        # Keep the contractual pixel scale and origin; project actual raised geometry at 30 degrees.
+        s.camera.rotation_euler=(math.pi/3,0,0)
+        s.camera.location=s.camera.rotation_euler.to_matrix()@Vector((0,0,12))
+        dark=mat('Dark steel wind body','46554B');sap=mat('Sap edge CDEB6E','CDEB6E',2.4)
+        bark=mat('Torn heartwood','706346')
         r=size*.45/(128 if rigtype=='TOP' else iso.R)
         root=empty('VFX '+name);objects=[]
         for f in range(n):
             group=empty('Frame '+str(f),parent=root);objects.append(group);p=f/max(1,n-1)
-            if name in ('cut_circle','cut_crescent','twin_draw'):
+            energy=(1-.86*p)**1.15
+            if name=='cut_circle':
+                # Broad overlapping helical blades, with lifted bark: a dense torn vortex.
+                for layer in range(6):
+                    pts=[];widths=[]
+                    for j in range(39):
+                        t=j/38;a=t*math.pi*1.92+layer*.91+f*.34
+                        rr=r*(.65+.045*math.sin(a*5+layer))*(1-.20*p)
+                        x,y=rr*math.cos(a),rr*math.sin(a)
+                        z=r*(.08+layer*.205+.05*math.sin(a*4+layer))
+                        ceiling=(size/128*.465-y*.5)/.866-r*.25
+                        z=min(z,ceiling)
+                        pts.append((x,y,z));widths.append(r*.275*energy*(.78+.22*math.sin(math.pi*t)**.3))
+                    tube('Thick helical steel air blade',pts,widths,dark,group,7)
+                    core=[(x,y,z+r*.065) for x,y,z in pts]
+                    tube('Broad sap-lit vortex crest',core,[w*.54 for w in widths],sap,group,5)
+                for j in range(24):
+                    a=j*2.399+f*.4;rr=r*(.36+.47*((j*13)%17)/16)
+                    x,y=rr*math.cos(a),rr*math.sin(a);z=r*(.07+.55*((j*7)%13)/12)
+                    tube('Large tumbling bark chip',[(x*.86,y*.86,z),(x,y,z+r*.18),(x*.93,y*.93,z+r*.31)], [r*.10*energy,r*.075*energy,r*.008],bark if j%3 else sap,group,4)
+            elif name=='cut_crescent':
+                pts=[];widths=[]
+                for j in range(43):
+                    t=j/42;a=-math.pi*.64+t*math.pi*1.28+f*.12
+                    rr=r*(.57+.035*math.sin(a*9+f))*(1-.15*p)
+                    pts.append((rr*math.cos(a),rr*math.sin(a),r*(.12+.09*math.cos(a*3))))
+                    widths.append(r*.355*energy*max(.025,math.sin(math.pi*t)**.48))
+                tube('Thick tapered crescent body',pts,widths,dark,group,8)
+                tube('Luminous crescent heart',[(x,y,z+r*.10) for x,y,z in pts],[w*.64 for w in widths],sap,group,6)
+                for j in range(15):
+                    t=(j+.5)/15;a=-math.pi*.64+t*math.pi*1.28+f*.12
+                    rr=r*(.58+.17*((j*7)%11)/10);x,y=rr*math.cos(a),rr*math.sin(a)
+                    tube('Ripped serrated bark crest',[(x*.84,y*.84,r*.18),(x,y,r*(.30+.20*(j%3)/2)),(x*.93,y*.93,r*.53)], [r*.10*energy,r*.065*energy,r*.002],sap if j%3==0 else bark,group,4)
+            elif name=='cut_thrust':
+                # A thick pointed pressure lance, with a genuine polygonal cross section.
+                pts=[(-r*.94,0,r*.18),(-r*.60,0,r*.20),(-r*.13,0,r*.24),(r*.40,0,r*.25),(r*.94,0,r*.27)]
+                widths=[r*v*energy for v in (.02,.63,.73,.55,.001)]
+                tube('Volumetric pointed air lance',pts,widths,dark,group,10)
+                tube('Long bright sap spear heart',[(x,y,z+r*.12) for x,y,z in pts],[v*.68 for v in widths],sap,group,7)
+                for j in range(12):
+                    a=math.tau*j/12+f*.21
+                    yy=r*.62*math.sin(a);zz=r*(.25+.51*math.cos(a))
+                    tube('Thick conical shock vane',[(r*.05,yy*.75,zz),(r*.48,yy*.65,zz*.8),(r*.88,0,r*.27)], [r*.13*energy,r*.09*energy,r*.001],sap if j%4==0 else dark,group,5)
+                for j in range(12):
+                    x=r*(-.7+1.35*j/11);y=r*(.40 if j%2 else -.40)
+                    tube('Ejected lance bark',[(x,y,r*.02),(x+r*.12,y*1.35,r*(.22+.12*(j%3)))], [r*.085*energy,r*.003],bark if j%3 else sap,group,4)
+            elif name=='twin_draw':
+                # Two broad crossing, rising draw jets; splinters share their motion.
+                for side in (-1,1):
+                    pts=[];widths=[]
+                    for j in range(21):
+                        t=j/20;x=side*r*(-.72+1.44*t);y=r*(-.55+.95*t)
+                        z=r*(.08+.55*t+.07*math.sin(t*math.pi*5+f))
+                        pts.append((x,y,z));widths.append(r*.405*energy*max(.02,math.sin(math.pi*t)**.35))
+                    tube('Crossing broad draw burst',pts,widths,dark,group,7)
+                    tube('Bright sap draw core',[(x,y,z+r*.06) for x,y,z in pts],[w*.68 for w in widths],sap,group,5)
+                    for j in range(12):
+                        t=(j+.3)/12;x=side*r*(-.70+1.4*t);y=r*(-.55+.95*t);z=r*(.1+.55*t)
+                        tube('Flying draw splinter',[(x,y,z),(x+side*r*.12,y+r*.07,z+r*.23)], [r*.09*energy,r*.003],sap if j%2 else bark,group,4)
+            elif name in ('cut_circle','cut_crescent','twin_draw'):
                 loops=2 if name=='twin_draw' else 1
-                for ring in range(loops):
-                    arc=math.tau if name!='cut_crescent' else math.pi
-                    start=(-math.pi/2 if name=='cut_crescent' else -.4+f*.44)+ring*.5
-                    radius=r*(.63+.37*math.sin((p*.75+.2)*math.pi))
-                    for band in range(4):
-                        rr=radius-band*r*.035;pts=[]
-                        for j in range(97):
-                            a=start+arc*j/96
-                            x=rr*math.cos(a);y=rr*math.sin(a)
-                            if name=='twin_draw':
-                                y*=.65;angle=(-.55,.55)[ring]
-                                x,y=x*math.cos(angle)-y*math.sin(angle),x*math.sin(angle)+y*math.cos(angle)
-                            pts.append((x,y,.015+ring*.006))
-                        tube('Swept ink ribbon' if band else 'Thin luminous cutting edge',pts,r*(.004 if band==0 else .014)*(1-.4*p),sap if band==0 else dark,group,4)
+                layers = (3 if name=='cut_circle' else 1) if name!='twin_draw' else 1
+                for ring in range(loops*layers):
+                    side=ring%loops;layer=ring//loops
+                    arc=math.tau if name!='cut_crescent' else math.pi*1.18
+                    start=(-math.pi*.59 if name=='cut_crescent' else -.4+f*.44)+side*.5+layer*.12
+                    # Strong first frame, then a shrinking, fragmenting wake.
+                    energy=1.0 if f==0 else max(.12,1-p)
+                    radius=r*(.63 if f==0 else .63+.37*math.sin((p*.75+.2)*math.pi))*(1-layer*.13)
+                    z=(.025+layer*.095) if name=='cut_circle' else (.025+side*.035)
+                    count=49 if f==0 else 33
+                    pts=[]
+                    for j in range(count):
+                        a=start+arc*j/(count-1);waviness=1+.10*math.sin(a*7+f*1.7+layer)
+                        rr=radius*waviness
+                        x=rr*math.cos(a);y=rr*math.sin(a)
+                        if name=='twin_draw':
+                            y*=.60;angle=(-.60,.60)[side]
+                            x,y=x*math.cos(angle)-y*math.sin(angle),x*math.sin(angle)+y*math.cos(angle)
+                        pts.append((x,y,z+.025*math.sin(a*5+f)))
+                    tube('Raised torn wind blade',pts,[r*(.055 if name=='cut_crescent' else .042)*energy]*len(pts),dark,group,6)
+                    tube('Sap cut crest',pts,[r*.012*energy]*len(pts),sap,group,5)
+                    # Lifted bark and sap shards make the swept volume visible.
+                    for shard in range(7 if name=='cut_circle' else 9):
+                        a=start+arc*(shard+.35)/(8 if name=='cut_circle' else 10)
+                        rr=radius*(.78+.16*((shard*37+f*13)%11)/10)
+                        x=rr*math.cos(a);y=rr*math.sin(a)
+                        if name=='twin_draw':
+                            y*=.60;angle=(-.60,.60)[side]
+                            x,y=x*math.cos(angle)-y*math.sin(angle),x*math.sin(angle)+y*math.cos(angle)
+                        height=.12+.18*((shard*19+f*7)%9)/8
+                        shardmat=sap if shard%3==0 else dark
+                        tube('Flying bark and sap splinter',[(x,y,z),(x*.98,y*.98,z+height),(x*1.03,y*1.03,z+height*.6)], [r*.016,r*.004,r*.001],shardmat,group,4)
             elif name in ('cut_thrust','iai_trail'):
-                tip=r*(.55+.45*math.sin((p*.7+.2)*math.pi));width=r*(.30 if name=='cut_thrust' else .055)*(1-.4*p)
-                mesh('Black pointed stroke',[(-r*.15,-width,.01),(tip,0,.01),(-r*.15,width,.01),(-r*.27,0,.01)],[(0,1,2,3)],dark,group)
-                for side in (-1,1):tube('Sap pointed edge',[(-r*.13,side*width,.018),(tip,0,.018)],r*.004,sap,group,4)
-                tube('Residual splinter',[(-r*.7,0,.012),(-r*.3,0,.012)],[r*.008,r*.002],dark,group,4)
+                if name=='cut_thrust':
+                    energy=1.0 if f==0 else max(.12,1-p);tip=r*.82*(1-.10*p);width=r*.27*energy
+                    # A tapered, lifted spear with jagged side vanes (same ground reach).
+                    mesh('Volumetric wind spear', [(-r*.78,-width*.42,.02),(-r*.08,-width,.10),(tip,0,.20),(-r*.08,width,.10),(-r*.78,width*.42,.02),(-r*.47,0,.13)],[(0,1,5),(1,2,5),(2,3,5),(3,4,5),(4,0,5)],dark,group)
+                    tube('Sap spear ridge',[(-r*.69,0,.14),(tip,0,.21)],[r*.020*energy,r*.001],sap,group,5)
+                    # Conical pressure front, broken into raised wedges.
+                    for j in range(11):
+                        a=math.tau*j/11;back=tip-r*(.16+.08*(j%3));side=r*.18*energy
+                        q=[(back,0,.06),(tip+r*.025*math.cos(a),r*.31*math.sin(a),.11+.05*math.sin(a*3)),(back,side*math.sin(a),.27+.09*(j%4)/3)]
+                        mesh('Shock cone shard',q,[(0,1,2)],sap if j%3==0 else dark,group)
+                    for j in range(10):
+                        a=math.tau*j/10;d=r*(.38+.34*((j*17)%9)/8)
+                        tube('Air and bark splinter',[(-r*.45,d*math.sin(a),.05),( -r*.45+d*.16*math.cos(a),d*math.sin(a),.24)], [r*.022,r*.002],sap if j%3==0 else dark,group,4)
+                else:
+                    tip=r*(.55+.45*math.sin((p*.7+.2)*math.pi));width=r*.055*(1-.4*p)
+                    mesh('Black pointed stroke',[(-r*.15,-width,.01),(tip,0,.01),(-r*.15,width,.01),(-r*.27,0,.01)],[(0,1,2,3)],dark,group)
+                    for side in (-1,1):tube('Sap pointed edge',[(-r*.13,side*width,.018),(tip,0,.018)],r*.004,sap,group,4)
+                    tube('Residual splinter',[(-r*.7,0,.012),(-r*.3,0,.012)],[r*.008,r*.002],dark,group,4)
             else:
                 for j in range(11):
                     a=j*2.399;length=.15+.48*p;u=Vector((math.cos(a)*.55,-.1,math.sin(a)*.4+.5))
@@ -402,7 +570,10 @@ def vfx():
         for f,group in enumerate(objects):
             for g in objects:
                 for o in g.children_recursive:o.hide_render=g!=group
-            path=OUT/'vfx'/name/f'{f:02}.png';render(path,size)
+            # A single sharp cel sample keeps this small mobile effect within HEAD's byte budget.
+            if name=='cut_thrust':
+                s.render.resolution_x=size;s.render.resolution_y=size
+            path=OUT/'vfx'/name/f'{f:02}.png';render(path,size,samples=1 if name=='cut_thrust' else 8)
             frames.append(path);emissions.append(path.with_name(path.stem+'_e.png'))
         cel.uninstall();dest=DEST/name;dest.mkdir(parents=True,exist_ok=True)
         # At most 3840 px wide: exact same cuts for diffuse and half-size emission.
@@ -411,14 +582,14 @@ def vfx():
             with Image.open(path) as im:atlas.paste(im,(f*size,0))
             with Image.open(e) as im:accent.paste(im,(f*size,0))
         atlas.save(dest/(name+'.png'),optimize=True)
-        accent.resize((n*size//2,size//2),Image.Resampling.LANCZOS).save(dest/(name+'_e.png'),optimize=True)
+        accent.resize((n*size//2,size//2),Image.Resampling.BOX if name=='cut_thrust' else Image.Resampling.LANCZOS).save(dest/(name+'_e.png'),optimize=True,compress_level=9)
         subs=[];entries=[]
         for f in range(n):
             subs.append(f'[sub_resource type="AtlasTexture" id="a{f}"]\natlas = ExtResource("1")\nregion = Rect2({f*size}, 0, {size}, {size})')
             entries.append('{"duration": 1.0, "texture": SubResource("a'+str(f)+'")}')
-        (dest/(name+'.tres')).write_text(f'[gd_resource type="SpriteFrames" load_steps={n+2} format=3]\n\n[ext_resource type="Texture2D" path="res://assets/sprites/characters/morfil/{name}/{name}.png" id="1"]\n\n'+'\n\n'.join(subs)+'\n\n[resource]\nanimations = [{"frames": ['+', '.join(entries)+'], "loop": false, "name": &"default", "speed": 18.0}]\n')
+        # Existing SpriteFrames are authoritative: retain bytes, FPS, regions and line endings.
         bpy.context.preferences.filepaths.save_version=0
-        bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE.with_name('morfil_'+name+'.blend')))
+        bpy.ops.wm.save_as_mainfile(filepath=str(source_copy))
         print('PASS SA1 VFX',name,flush=True)
 
 def main():

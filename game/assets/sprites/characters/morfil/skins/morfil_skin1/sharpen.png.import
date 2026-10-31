@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cglua6wd6367x"
-path.bptc="res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.bptc.ctex"
-path.astc="res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.astc.ctex"
+path.s3tc="res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.s3tc.ctex"
+path.etc2="res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/morfil/skins/morfil_skin1/sharpen.png"
-dest_files=["res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.bptc.ctex", "res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.astc.ctex"]
+dest_files=["res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.s3tc.ctex", "res://.godot/imported/sharpen.png-c93e8d56171aea76ebc703767304085d.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

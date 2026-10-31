@@ -12,11 +12,14 @@ from mathutils import Vector, Matrix
 import iso_rig
 from PIL import Image
 OUT = ROOT/'game/assets/sprites/characters/bourbe'
+SPR = ROOT/'game/assets/sprites'
 WORK = ROOT/'art/blender/characters/bourbe_frames'
 SOURCE = ROOT/'art/blender/characters/bourbe.blend'
 DIRS = list(iso_rig.DIRECTIONS)
-ANIMS = dict(idle=8, run=8, slap=4, throw=4, recall=4, sink=4, rise=4, attack=4, cast=4, cast_ult=6, death=8)
+ANIMS = dict(idle=8, run=8, slap=7, throw=7, recall=7, sink=7, rise=7, attack=7, cast=7, cast_ult=9, death=8)
 ALIASES = {'attack':'slap', 'cast':'throw'}
+ACTION_ANIMS = ('slap','throw','recall','sink','rise','cast_ult')
+F60 = {'slap':[2,2,5,2,4,5,5], 'throw':[3,3,6,2,4,5,5], 'recall':[3,3,6,2,4,5,5], 'sink':[3,3,6,2,4,5,5], 'rise':[3,3,6,2,4,5,5], 'cast_ult':[4,4,4,7,4,5,5,5,5]}
 
 def build_model():
     bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/blender/characters/cd_bourbe.blend'))
@@ -114,37 +117,110 @@ def pose(rig,anim,f,n):
         for side,sgn in [('L',1),('R',-1)]:
             rot('leg.'+side,.40*sgn*math.sin(phase),0,0);rot('foot.'+side,-.15*sgn*math.sin(phase)+.16*max(0,sgn*math.cos(phase)),0,0)
             rot('arm.'+side,-.33*sgn*math.sin(phase),0,.05*sgn);rot('hand.'+side,-.1-.16*max(0,sgn*math.sin(phase)),0,0)
-    elif anim=='slap':
-        # The broad hand crosses the front on exact frame N/2.
-        rot('chest',.06,0,[.18,.40,-.48,0][f]);rot('arm.R',[-.2,-1.15,-1.10,0][f],0,[-.15,-.65,.8,0][f]);rot('hand.R',[-.2,-.6,.25,0][f],0,0)
-        rot('arm.L',-.25,0,-.15)
-    elif anim=='throw':
-        rot('chest',[-.1,-.20,.22,0][f],0,[.1,.2,-.25,0][f]);rot('arm.R',[-.6,-1.55,-1.30,0][f],0,[.1,.25,-.25,0][f]);rot('hand.R',[-.3,-.65,.15,0][f])
-        rot('arm.L',-.35,0,-.3)
+    elif anim in ('slap','throw'):
+        # Explicit keyed poses: the former six constants ignored f entirely.
+        if anim=='slap':
+            twist=[-.698,.12,.55,.32,.14,.04,-.06][f]
+            rx=[1.65,-.65,-1.45,-1.15,-.65,-.25,.12][f]
+            rz=[-1.15,.65,1.0,.75,.4,.12,.05][f]
+            reach=[1.55,1.6,1.6,1.35,1.15,1.04,1][f]
+            rot('chest',[-.18,.1,.42,.38,.24,.12,.08][f],0,twist)
+            rot('arm.R',rx,0,rz);rot('hand.R',[-.15,-.5,-.15,.1,.16,.1,0][f])
+            rot('arm.L',[-.65,-1,-1.35,-.85,-.5,-.25,.12][f],0,-.65)
+            rig.pose.bones['arm.L'].scale=(1,1.2 if f<3 else 1,1)
+        else:
+            rx=[-2.85,-2.1,-1.25,-.95,-.6,-.2,.12][f]
+            reach=[1.4,1.5,1.6,1.3,1.12,1.04,1][f]
+            rot('chest',[-.38,-.1,.52,.38,.22,.1,.06][f],0,0)
+            for side,sgn in [('L',-1),('R',1)]:
+                rot('arm.'+side,rx,0,sgn*[.35,.65,1.0,.65,.35,.12,.04][f])
+                rot('hand.'+side,[-.1,-.15,0,.1,.15,.08,0][f])
+                rig.pose.bones['arm.'+side].scale=(1,reach,1)
+                rig.pose.bones['hand.'+side].scale=(1,reach,1)
+        if anim=='slap':
+            for b in ('arm.R','hand.R'):rig.pose.bones[b].scale=(1,reach,1)
+        squash=[1,.9,.78,.82,.92,1.03,1][f]
+        pelvis.scale=(1+(1-squash)*.9,squash,1+(1-squash)*.4)
+        pelvis.location.y=[0,-.02,-.06,-.05,-.02,.01,0][f]
     elif anim=='recall':
-        v=[.35,1,.65,0][f];rot('arm.L',-.9*v,0,-.8*v);rot('arm.R',-.9*v,0,.8*v);rot('hand.L',-.5*v);rot('hand.R',-.5*v);chest.scale=(1+.08*v,1+.04*v,1)
+        pre,smear,hit,release,settle,home=([0,.14,.76,1,.38,.08] if anim=='slap' else [0,.14,.82,1,.4,.08])
+        if anim=='slap':
+            rot('chest',.12+(.62*pre)-.35*hit,0,.4*pre-.25*hit)
+            rot('arm.R',-.35-1.5*pre-2.25*smear+1.45*hit-.65*release,0,-.2-1.0*pre-1.45*smear+1.2*hit)
+            rot('hand.R',-.3-1.1*pre-1.8*smear+1.4*hit,0,0);rot('arm.L',-.35-.3*pre,0,-.2)
+        elif anim=='throw':
+            rot('chest',-.15-1.0*pre+.65*smear-.25*hit,0,.15+.35*pre-.2*hit)
+            rot('arm.R',-.4-1.9*pre-2.5*smear+1.8*hit-.75*release,0,.2+.3*pre-.25*hit)
+            rot('hand.R',-.25-1.1*pre-1.7*smear+1.4*hit,0,0);rot('arm.L',-.45-.8*pre-.5*hit,0,-.35)
+        else:
+            v=[.18,.72,1,.78,.5,.26,.06][f]
+            rot('chest',.65*v,0,0);rot('arm.L',-1.4*v-.5*smear,0,-1.25*v-.55*smear);rot('arm.R',-1.4*v-.5*smear,0,1.25*v+.55*smear)
+            rot('hand.L',-.7*v);rot('hand.R',-.7*v)
+        pelvis.location.y=-.12*pre+.1*hit+.07*settle
+        pelvis.scale=(1+.12*pre+.18*hit,1-.16*pre-.2*hit+.08*settle,1+.12*pre+.16*hit)
     elif anim in ('sink','rise','cast_ult','death'):
-        v=t if anim in ('sink','cast_ult','death') else 1-t
-        if anim=='cast_ult':v=max(0,(t-.15)/.85)
-        pelvis.location.y=-.36*v;pelvis.scale=(1+.30*v,1-.78*v,1+.23*v)
-        rot('chest',.30*v);rot('arm.L',-.65*v,0,-.7*v);rot('arm.R',-.65*v,0,.7*v)
+        if anim=='sink': vals=[0,.35,.82,1,.82,.4,.08];v=vals[f]
+        elif anim=='rise': vals=[.95,.25,0,.52,.72,.35,.08];v=vals[f]
+        elif anim=='cast_ult': vals=[0,.18,.36,.8,1,.72,.48,.24,.06];v=vals[f]
+        else:v=t
+        pelvis.location.y=-.25*v;pelvis.scale=(1+.45*v,1-.35*v,1+.34*v)
+        rot('chest',.38*v);rot('arm.L',-.9*v,0,-1.05*v);rot('arm.R',-.9*v,0,1.05*v)
+        if anim=='cast_ult' and f in (1,2):
+            rot('arm.L',-1.4,0,-1.65);rot('arm.R',-1.4,0,1.65)
         if anim=='death':pelvis.scale=(1+.65*v,1-.94*v,1+.5*v);rot('head',.7*v);rot('hand.L',.6*v);rot('hand.R',.6*v)
     bpy.context.view_layer.update()
+    # Aim the weighted clay limbs in character space; avoid compounded parent scales.
+    def aim(name, endpoint, stretch=False):
+        b=rig.pose.bones[name];head=b.head.copy();v=Vector(endpoint)-head
+        length=rig.data.bones[name].length
+        if anim=='slap' and f==1 and name=='arm.R':
+            v=v.normalized()*(length*1.6)
+        m=Matrix.Translation(head) @ v.to_track_quat('Y','Z').to_matrix().to_4x4()
+        m @= Matrix.Diagonal((1,v.length/length,1,1))
+        b.matrix=m;bpy.context.view_layer.update()
+    if anim in ACTION_ANIMS:
+        hit=3 if anim=='cast_ult' else 2
+        if anim=='slap':
+            elbows=[(.62,.2,.98),(.62,-.08,1.1),(.65,-.27,1.08),(.58,-.25,.98),(.48,-.14,.85),(.42,-.05,.7),(.41,-.05,.65)]
+            hands=[(.96,.22,.94),(.9,-.32,1.02),(.72,-.3,.95),(.87,-.45,.85),(.64,-.28,.6),(.49,-.2,.35),(.45,-.17,.27)]
+            aim('arm.R',elbows[f]);aim('hand.R',hands[f])
+            if f==0:
+                aim('arm.L',(-.62,.02,.96));aim('hand.L',(-.95,.02,.94))
+        elif anim=='throw':
+            for side,sign in [('L',-1),('R',1)]:
+                elbows=[(.84,.02,1.08),(.7,-.1,1.32),(.64,-.25,1.05),(.56,-.2,.9),(.48,-.1,.78),(.42,-.05,.69),(.41,-.05,.65)]
+                hands=[(.15,-.06,1.32),(.4,-.24,1.22),(.73,-.28,.99),(.78,-.38,.78),(.6,-.23,.5),(.48,-.18,.33),(.45,-.17,.27)]
+                e=elbows[f];h=hands[f];aim('arm.'+side,(sign*e[0],e[1],e[2]));aim('hand.'+side,(sign*h[0],h[1],h[2]))
+        elif f<=hit:
+            reach=(1.06 if anim=='cast_ult' else 1.0) if f==hit else (1.0 if anim=='cast_ult' else .94)
+            for side,sign in [('L',-1),('R',1)]:
+                low=(anim in ('sink','cast_ult') and f==hit) or (anim=='rise' and f==0)
+                aim('arm.'+side,(sign*.59,0,.70 if low else .98));aim('hand.'+side,(sign*reach,-.06,.64 if low else (1.03 if f<hit else .95)))
+    if anim in ('slap','throw','recall','sink','rise','cast_ult'):
+        # The aimed forearm matrix must not be decomposed again after posing.
+        rig.pose.bones['head'].rotation_euler.y += .018*math.cos((f+1)*1.7)
+        pelvis.location.z += .018*math.sin((f+1)*1.3)
+        bpy.context.view_layer.update()
 
 def resources():
     ext=[];subs=[];animations=[]
+    original=(OUT/'bourbe.tres').read_text(encoding='utf8') if (OUT/'bourbe.tres').exists() else ''
     for i,(anim,n) in enumerate(ANIMS.items()):
+        if anim not in ACTION_ANIMS and anim not in ALIASES: continue
         eid=i*2+1;cid='c'+str(i)
-        for k,suffix in enumerate(('','_n')):ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/{anim}{suffix}.png" id="{eid+k}"]')
-        subs.append(f'[sub_resource type="CanvasTexture" id="{cid}"]\ndiffuse_texture = ExtResource("{eid}")\nnormal_texture = ExtResource("{eid+1}")')
+        ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/{anim}.png" id="{eid}"]')
+        subs.append(f'[sub_resource type="AtlasTexture" id="{cid}"]\natlas = ExtResource("{eid}")')
         for row,d in enumerate(DIRS):
             frames=[]
             for f in range(n):
                 aid=f'a{i}_{row}_{f}';subs.append(f'[sub_resource type="AtlasTexture" id="{aid}"]\natlas = SubResource("{cid}")\nregion = Rect2({f*192}, {row*192}, 192, 192)')
-                frames.append('{"duration": 1.0, "texture": SubResource("'+aid+'")}')
-            speed=8 if anim=='idle' else 12
+                f60=F60.get(anim,[5]*n)[f]
+                frames.append('{"duration": '+f'{f60*12/60:.6g}'+', "texture": SubResource("'+aid+'")}')
+            speed=12
             animations.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(anim in ("idle","run")).lower()}, "name": &"{anim}_{d}", "speed": {speed}.0'+'}')
-    (OUT/'bourbe.tres').write_text(f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(subs)+1} format=3]\n\n'+'\n\n'.join(ext+subs)+'\n\n[resource]\nanimations = ['+',\n'.join(animations)+']\n')
+    rebuilt=f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(subs)+1} format=3]\n\n'+'\n\n'.join(ext+subs)+'\n\n[resource]\nanimations = ['+',\n'.join(animations)+']\n'
+    if original: (OUT/'bourbe.tres').write_text(original,encoding='utf8')
+    (OUT/'bourbe_actions.tres').write_text(rebuilt,encoding='utf8')
 
 def render_actor():
     OUT.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
@@ -156,15 +232,20 @@ def render_actor():
         return optimize(path,*args,**kwargs)
     iso_rig.optimize_png=preserve_pass
     root,rig=build_model()
-    refresh=sys.argv[sys.argv.index('--refresh')+1].split(',') if '--refresh' in sys.argv else []
+    refresh=list(ACTION_ANIMS)
+    aliases={'attack':'slap','cast':'throw'}
     for anim,n in ANIMS.items():
-        if anim in ALIASES:
-            for suffix in ('','_n','_e'):shutil.copyfile(OUT/(ALIASES[anim]+suffix+'.png'),OUT/(anim+suffix+'.png'))
+        if anim in aliases:
+            for suffix in ('','_e'):shutil.copyfile(OUT/(aliases[anim]+suffix+'.png'),OUT/(anim+suffix+'.png'))
             continue
+        if anim not in ACTION_ANIMS: continue
+        (WORK/anim).mkdir(parents=True,exist_ok=True)
+        if anim in ('slap','throw','recall','sink','rise','cast_ult'):
+            (WORK/anim).mkdir(parents=True,exist_ok=True)
         for row,d in enumerate(DIRS):
             for f in range(n):
                 p=WORK/anim/f'{d}_{f:02}.png'
-                if '--reuse' in sys.argv and anim not in refresh and all(p.with_name(p.stem+x+'.png').exists() for x in ('','_n','_e')):continue
+                if '--reuse' in sys.argv and anim not in refresh and all(p.with_name(p.stem+x+'.png').exists() for x in ('','_e')):continue
                 pose(rig,anim,f,n);root.rotation_euler.z=iso_rig.DIRECTIONS[d]
                 for attempt in range(4):
                     try:
@@ -172,7 +253,7 @@ def render_actor():
                     except PermissionError:
                         if attempt==3:raise
                         time.sleep(.3)
-        for suffix in ('','_n','_e'):
+        for suffix in ('','_e'):
             sheet=Image.new('RGBA',(n*192,8*192))
             for row,d in enumerate(DIRS):
                 for f in range(n):
@@ -183,7 +264,7 @@ def render_actor():
                     sheet.paste(cell,(f*192,row*192))
             sheet.save(OUT/(anim+suffix+'.png'),optimize=True)
         print('BO1 PASS '+anim,flush=True)
-    resources()
+    # Replace only action animation entries in the original SpriteFrames resource.
     (OUT/'bo1_manifest.json').write_text(json.dumps({'status':'PASS','source':'cd_bourbe.blend','cell':192,'pivot':[96,136.32],'px_per_u':iso_rig.R,'directions':DIRS,'animations':ANIMS,'impact_frame':{'slap':2,'attack':2,'throw':2,'cast':2,'recall':2,'sink':2,'cast_ult':3},'accent':'#8DDBA8','lot':'1/3: actor + spell icons; familiars and ground VFX reserved for following lots'},indent=2))
 
 def icons():

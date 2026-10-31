@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cs1cq0uwalbv8"
-path.bptc="res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.bptc.ctex"
-path.astc="res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.astc.ctex"
+path.s3tc="res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.s3tc.ctex"
+path.etc2="res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/sink.png"
-dest_files=["res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.bptc.ctex", "res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.astc.ctex"]
+dest_files=["res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.s3tc.ctex", "res://.godot/imported/sink.png-4eba73fa664dd1d8ca28edd3a416b69c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -8,6 +8,9 @@ sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT/'art/tools/night'))
 import aa1_build as aa1
+import boss_common
+sys.path.insert(0,str(ROOT/'art/tools/cel'))
+import cel_style as cel
 import bpy
 from mathutils import Vector
 from PIL import Image
@@ -26,12 +29,19 @@ def setup(rig,cell,feet_pivot=False):
     if feet_pivot:s.camera.data.shift_y=.21
     s.render.threads_mode='FIXED';s.render.threads=8
     s.render.resolution_percentage=50;s.render.dither_intensity=0
-    s.view_layers[0].use_pass_normal=True;s.view_layers[0].use_pass_emit=True
+    s.view_layers[0].use_pass_normal=False;s.view_layers[0].use_pass_emit=True
+    s.view_layers[0].aovs.add().name=cel.AOV
     global metal,iron,hot,stone
     metal=aa1.worn('AA2 worn struck monetary brass','483A22','B09A60',1,.34)
     iron=aa1.worn('AA2 blackened treasury iron','131719','51524A',1,.48)
     stone=aa1.worn('AA2 fractured wet terrace slate','111619','4B4B42',0,.88)
     hot=cd.emit('AA2 sole accent gold F2C14E','F2C14E',1.8)
+    cel.setup_scene(s,samples=12)
+    active='vfx' if bpy.context.scene.get('AA2_effect')=='ransom_ring' else 'prop'
+    cel.toon_materials(active,only_new=True)
+    import bpy as _bpy
+    aov=_bpy.context.view_layer.aovs.get(cel.AOV)
+    if aov is None:aov=_bpy.context.view_layer.aovs.add();aov.name=cel.AOV
     return s
 
 def coin(root,p,scale=1,rot=(0,0,0),glow=True):
@@ -55,7 +65,77 @@ def arc(root,r,a,b,z,width,mat,phase=0):
         pts.append((rr*math.cos(t),rr*math.sin(t),z+.006*math.sin(11*t)))
     cd.tube('Broken raised pressure seam',pts,width,mat,root)
 
+def torn_band(root, inner, outer, start, end, z, height, mat, rng, count=26):
+    """Solid forged crescent, with torn radial teeth and a raised broken crest."""
+    vertices=[];faces=[]
+    for j in range(count+1):
+        a=start+(end-start)*j/count
+        ro=outer+rng.uniform(-.025,.018)
+        ri=inner+rng.uniform(-.025,.025)
+        top=z+height*rng.uniform(.7,1.3)
+        vertices.extend([(ri*math.cos(a),ri*math.sin(a),z),
+                         (ro*math.cos(a),ro*math.sin(a),z),
+                         (ri*math.cos(a),ri*math.sin(a),top),
+                         (ro*math.cos(a),ro*math.sin(a),top)])
+        if j:
+            k=(j-1)*4;l=j*4
+            faces.extend([(k,k+1,l+1,l),(k+2,l+2,l+3,k+3),
+                          (k,l,l+2,k+2),(k+1,k+3,l+3,l+1)])
+    faces.extend([(0,2,3,1),(count*4,count*4+1,count*4+3,count*4+2)])
+    mesh=bpy.data.meshes.new('Torn treasury pressure volume');mesh.from_pydata(vertices,[],faces);mesh.update()
+    ob=bpy.data.objects.new('Heavy forged sweep',mesh);bpy.context.collection.objects.link(ob)
+    ob.parent=root;ob.data.materials.append(mat)
+
+def minted_fragment(root,p,size,rot,ingot=False):
+    """Low polygon minted debris; the relief and bevel remain actual geometry."""
+    if ingot:
+        ob=cd.cube('Ejected treasury ingot',p,(size*1.8,size*.8,size*.55),metal,root,.018)
+        ob.rotation_euler=rot
+    else:
+        pivot=cd.empty('Ejected clipped coin');pivot.parent=root;pivot.location=p;pivot.rotation_euler=rot
+        bpy.ops.mesh.primitive_cylinder_add(vertices=12,radius=size,depth=size*.25)
+        ob=bpy.context.object;ob.name='Thick struck gold coin';ob.parent=pivot;ob.data.materials.append(metal)
+        cd.torus('Raised gold rim',(0,0,size*.14),size*.78,size*.065,hot,pivot)
+        cd.cube('Raised mint tally',(0,0,size*.18),(size*.25,size*1.1,size*.16),hot,pivot,.002)
+
+def reinforced_geometry(name,f,n):
+    root=cd.empty('AA2 reinforced '+name);rng=random.Random(904);t=f/(n-1)
+    if name=='coffre_arc':
+        # 58 px footprint at R=90.51. Height gives mass in every direction.
+        end=-.25+t*1.1;span=2.65*(1-.70*t);start=end-span
+        h=.22*(1-.7*t)
+        torn_band(root,.35+.13*t,.615,start,end,.055,h,iron,rng)
+        torn_band(root,.40+.11*t,.622,start+.04,end,.07+h*.45,h*.54,metal,rng)
+        torn_band(root,.568,.625,start+.06,end,.08+h*.75,h*.27,hot,rng)
+        for j in range(round(26*(1-.8*t))):
+            a=rng.uniform(start,end);rr=rng.uniform(.37,.55);z=rng.uniform(.12,.34)*(1-.6*t)
+            minted_fragment(root,(rr*math.cos(a),rr*math.sin(a),z),rng.uniform(.044,.075)*(1-.45*t),
+                            (rng.random()*2,rng.random()*3,a),j%3==0)
+        for j in range(round(23*(1-.85*t))):
+            a=rng.uniform(start,end);rr=rng.uniform(.45,.60);z=rng.uniform(.14,.40)*(1-.7*t)
+            cd.tube('Torn luminous steel spark',[(rr*math.cos(a-.20),rr*math.sin(a-.20),z*.65),
+                    (rr*math.cos(a),rr*math.sin(a),z)],rng.uniform(.009,.018)*(1-.6*t),hot,root)
+    else:
+        # Peak first: dense flying coins, broad ingot wakes and a raised fractured core.
+        for j in range(round(96*(1-.90*t))):
+            a=j*2.399963+rng.uniform(-.1,.1);rr=rng.uniform(.25,2.08)*(1-.12*t)
+            z=(.18+2.35*(1-rr/2.65)*rng.uniform(.48,1))*(1-.72*t)
+            size=rng.uniform(.085,.15)*(1-.7*t)
+            p=(rr*math.cos(a),rr*math.sin(a),z)
+            minted_fragment(root,p,size,(rng.random()*3+t*5,rng.random()*3+t*4,a),j%4==0)
+            cd.tube('Molten treasury wake',[(p[0]*.65,p[1]*.65,z*.56),
+                    (p[0]*.85,p[1]*.85,z*.84),p],size*.27,hot if j%3 else metal,root)
+        for j in range(round(23*(1-.87*t))):
+            a=j*math.tau/23;rr=rng.uniform(.45,.95)*(1-.65*t)
+            z=rng.uniform(.5,1.25)*(1-.80*t)
+            cd.tube('Fractured golden impact lance',[(0,0,.04),
+                    (rr*.55*math.cos(a),rr*.55*math.sin(a),z*.70),
+                    (rr*math.cos(a),rr*math.sin(a),z)],rng.uniform(.055,.10)*(1-.8*t),hot if j%3 else iron,root)
+    return root
+
 def geometry(name,f,n):
+    if '--reinforce' in sys.argv and name in ('coffre_arc','coin_burst'):
+        return reinforced_geometry(name,f,n)
     r=cd.empty('AA2 '+name);t=f/(n-1);rng=random.Random(904)
     if name in ('coin_projectile','coin_pickup'):
         if name=='coin_projectile':
@@ -105,12 +185,11 @@ def resource(name):
         dest=folder/(name+('_emission' if emission else '')+'.tres')
         if dest.exists():continue
         lines=['[gd_resource type="SpriteFrames" format=3]',f'[ext_resource type="Texture2D" path="{base}{"_e" if emission else ""}.png" id="1"]']
-        if not emission:lines += [f'[ext_resource type="Texture2D" path="{base}_n.png" id="2"]','[sub_resource type="CanvasTexture" id="ct"]\ndiffuse_texture = ExtResource("1")\nnormal_texture = ExtResource("2")']
         anims=[]
         for row,d in enumerate(list(iso.DIRECTIONS)[:rows]):
             frames=[]
             for f in range(n):
-                ident=f'f{row}_{f}';atlas='ExtResource("1")' if emission else 'SubResource("ct")'
+                ident=f'f{row}_{f}';atlas='ExtResource("1")'
                 lines.append(f'[sub_resource type="AtlasTexture" id="{ident}"]\natlas = {atlas}\nregion = Rect2({f*cell}, {row*cell}, {cell}, {cell})')
                 frames.append('{"duration": 1.0, "texture": SubResource("'+ident+'")}')
             anim=name+'_'+d if rows==8 else 'default'
@@ -122,19 +201,25 @@ def effects():
         selected=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--only=')),None)
         if selected and name!=selected:continue
         folder=OUT/'effects'/name;folder.mkdir(parents=True,exist_ok=True)
-        if '--resume' in sys.argv and all((folder/(name+s+'.png')).exists() for s in ('','_n','_e')):resource(name);continue
+        if '--resume' in sys.argv and all((folder/(name+s+'.png')).exists() for s in ('','_e')):resource(name);continue
         feet_pivot=name in ('coffre_arc','gold_bleed')
-        s=setup(rig,cell,feet_pivot);sheets={su:Image.new('RGBA',(cell*n,cell*rows)) for su in ('','_n','_e')}
+        bpy.context.scene['AA2_effect']=name
+        s=setup(rig,cell,feet_pivot)
+        reinforced='--reinforce' in sys.argv
+        sheets={su:Image.new('RGBA',(cell*n,cell*rows) if reinforced else (cell*rows,cell*n)) for su in ('','_e')}
         for f in range(n):
             root=geometry(name,f,n);iso.bake_ao_shadows(root)
             for row,(d,angle) in enumerate(list(iso.DIRECTIONS.items())[:rows]):
                 root.rotation_euler.z=angle if rows==8 else 0
-                if f==n//2 and row==0:
+                if f==(0 if reinforced else n//2) and row==0:
                     s['AA2_contract']=json.dumps({'name':name,'cell':cell,'frames':n,'rows':rows,'rig':rig,'pivot':[cell/2,cell*(.71 if feet_pivot else .5)],'accent':'F2C14E','native_ppu':128 if rig=='TOP' else iso.R})
-                    bpy.context.preferences.filepaths.save_version=0;bpy.ops.wm.save_as_mainfile(filepath=str(SRC/('avare_'+name+'.blend')))
+                    target=ROOT/'art/blender/cel'/('avare_'+name+('_reinforced' if reinforced else '')+'.blend')
+                    if reinforced and target.exists():
+                        target=target.with_stem(target.stem+'_'+str(__import__('time').time_ns()))
+                    bpy.context.preferences.filepaths.save_version=0;bpy.ops.wm.save_as_mainfile(filepath=str(target))
                 path=RAW/name/f'{d}_{f:02}.png';iso.render_frame(path)
                 for su in sheets:
-                    with Image.open(path.with_name(path.stem+su+'.png')) as im:sheets[su].alpha_composite(im.convert('RGBA'),(f*cell,row*cell))
+                    with Image.open(path.with_name(path.stem+su+'.png')) as im:sheets[su].alpha_composite(im.convert('RGBA'),(f*cell,row*cell) if reinforced else (row*cell,f*cell))
             for ob in [*root.children_recursive,root]:bpy.data.objects.remove(ob,do_unlink=True)
         for su,im in sheets.items():im.save(folder/(name+su+'.png'),optimize=True,compress_level=9)
         resource(name);print('AA2 EFFECT PASS '+name,flush=True)

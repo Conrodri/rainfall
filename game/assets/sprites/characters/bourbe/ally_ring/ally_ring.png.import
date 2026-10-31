@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3per3ddua787"
-path.bptc="res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.bptc.ctex"
-path.astc="res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.astc.ctex"
+path.s3tc="res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.s3tc.ctex"
+path.etc2="res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/ally_ring/ally_ring.png"
-dest_files=["res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.bptc.ctex", "res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.astc.ctex"]
+dest_files=["res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.s3tc.ctex", "res://.godot/imported/ally_ring.png-6fd9b67b73f3fbff22a1f79802fbe26a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

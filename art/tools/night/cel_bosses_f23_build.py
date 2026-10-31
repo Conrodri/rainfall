@@ -12,6 +12,9 @@ ROOT = HERE.parents[2]
 sys.path[:0] = [str(HERE), str(ROOT / 'art/tools/cel')]
 import cel_style as cel
 WORK = ROOT / 'art/blender/cel/bosses_f23'
+G9 = '--g9' in sys.argv
+if G9:
+    WORK = ROOT / 'art/blender/cel/g9'
 SUBJECTS = ('cerf', 'sonneur')
 REL = {n: 'bosses/etage/' + n for n in SUBJECTS}
 STATE = HERE / '_cel_bosses_f23_state.json'
@@ -70,6 +73,38 @@ def no_normal_compositor(path):
     f.format.color_mode = 'RGBA'
     f.format.color_depth = '8'
     tree.links.new(rl.outputs['Emission'], f.inputs[0])
+
+
+def g9_materials():
+    """Gouffre palette only; original meshes, animation and alpha graphs retained."""
+    import bpy
+    def lin(h):
+        return tuple(((v / 255 + .055) / 1.055) ** 2.4 if v > 10 else v / 3294.6 for v in bytes.fromhex(h))
+    palette = [('Black drowned oak', '5A4232', '7A5D45'),
+               ('Split wet bark edges', '625448', '958779'),
+               ('Forest moss', '5A4232', '7A5D45'),
+               ('Old ash antler', '75675C', 'B2A491'),
+               ('Lantern forged iron', '3A3634', '635C58'),
+               ('Verdigris cage fittings', '5A4232', '8A7360'),
+               ('Hoof black horn', '292625', '3A3634')]
+    for mat in bpy.data.materials:
+        if mat.get('f23_copy') or not mat.use_nodes:
+            continue
+        bs = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        if bs is None:
+            continue
+        for prefix, lo, hi in palette:
+            if mat.name.startswith(prefix):
+                for node in mat.node_tree.nodes:
+                    if node.type == 'VALTORGB':
+                        els = node.color_ramp.elements
+                        for j, el in enumerate(els):
+                            t = j / max(1, len(els)-1)
+                            el.color = (*[(1-t)*a+t*b for a,b in zip(lin(lo),lin(hi))],1)
+        if any(x in mat.name.lower() for x in ('wisp', 'mint', 'brume', 'mist')):
+            tint = 'A28A76' if any(x in mat.name.lower() for x in ('brume','mist')) else 'C27BFF'
+            bs.inputs['Base Color'].default_value = (*lin(tint),1)
+            bs.inputs['Emission Color'].default_value = (*lin(tint),1)
 
 
 def adapt_materials():
@@ -167,7 +202,7 @@ def render_sheet(subject, lot, task, root, pose, frames, directions, cell, emiss
     s = bpy.context.scene
     s.render.resolution_x, s.render.resolution_y = cell[0] * 2, cell[1] * 2
     s.render.resolution_percentage = 100
-    if subject == 'cerf':
+    if subject == 'cerf' and not G9:
         for mat in bpy.data.materials:
             if mat.name.startswith(('Black drowned oak', 'Split wet bark edges', 'Old ash antler')):
                 for node in mat.node_tree.nodes:
@@ -178,6 +213,8 @@ def render_sheet(subject, lot, task, root, pose, frames, directions, cell, emiss
                         factor = max(1, .45 / max(.0001, luma))
                         for el in ramp.elements:
                             el.color = (*[min(.72, x * factor) for x in el.color[:3]], el.color[3])
+    if G9:
+        g9_materials()
     pairs = adapt_materials()
     common.configure_passes = no_normal_compositor
     cel.uninstall()
@@ -230,7 +267,7 @@ def render():
     def body_sheets(subject, lot, base, builder):
         result = builder()
         root, pose = result[:2]
-        if subject == 'cerf':
+        if subject == 'cerf' and not G9:
             # Source albedo lift requested for night readability; retain wood/bone hues.
             for mat in b.bpy.data.materials:
                 if mat.name.startswith(('Black drowned oak', 'Split wet bark edges', 'Old ash antler')):
@@ -269,6 +306,8 @@ def render():
         else:
             fn2 = lambda i, t, task=task: d.charge_pose(root, pose, i) if task == 'charge_dirs' else d.lantern_pose(root, pose, i)
         render_sheet('cerf', 'C7d', task, root, fn2, n, ['s'] if task == 'wisp_bolt' else d.DIRS, (w, h), task == 'antlers_dirs')
+    if G9:
+        return
     body_sheets('sonneur', 'C7c', c, c.build)
     for task in sorted(c.EXTRAS):
         root, pose = c.extra(task)

@@ -30,7 +30,7 @@ def render():
     from PIL import Image
     import bo1_build as bo1, bo2_build as bo2, bo3_build as bo3, m2_build as m2
     # Shared exporter otherwise unconditionally expects a removed normal output.
-    patched(iso_rig,'render_frame',[("for suffix in ('_n','_e'):","for suffix in ('_e',):")])
+    patched(iso_rig,'render_frame',[("for suffix in (('_e',) if not passes else ('_n','_e')):","for suffix in ('_e',):"),("for p in files:","files=[path]+[path.with_name(path.stem+'_e.png')]\n    for p in files:")])
     iso_rig.optimize_png=lambda *a,**k:None
     def open_source(name,profile):
         bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/blender/characters'/name))
@@ -42,7 +42,7 @@ def render():
         rig=bpy.data.objects['Bourbe_Rig'];rig.animation_data_clear()
         return root,rig
     bo1.build_model=actor_source;bo1.OUT=WORK/'stage/characters/bourbe';bo1.WORK=WORK/'raw/bourbe';bo1.resources=lambda:None
-    patched(bo1,'render_actor',[("('','_n','_e')","('','_e')")])
+    patched(bo1,'render_actor',[("sheet.save(OUT/(anim+suffix+'.png'),optimize=True)","sheet.save(OUT/(anim+suffix+'.png'),optimize=True)\n            if anim in ('slap','throw','recall','sink','rise','cast_ult'):\n                import shutil\n                shutil.copy2(OUT/(anim+suffix+'.png'),SPR/'characters/bourbe'/(anim+suffix+'.png'))")])
     bo2.SOURCE=ROOT/'art/blender/characters/bourbe_motte.blend';bo2.DEST=WORK/'stage/characters/bourbe/motte';bo2.WORK=WORK/'raw/motte';bo2.resources=lambda:None
     bo3.OUT=WORK/'stage/characters/bourbe';bo3.WORK=WORK/'raw/effects';bo3.resources=lambda key:None
     def effect_source(key):
@@ -57,14 +57,25 @@ def render():
     patched(bo3,'effects',[("('','_n','_e')","('','_e')"),("mat.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=1.25+.25*math.sin(phase)","cel_strength(mat,1.25+.25*math.sin(phase))")])
     m2.OUT=WORK/'raw/montreur';m2.DEST=WORK/'stage/characters';m2.resources=lambda actor:None
     m2.cel=cel
-    patched(m2,'build',[("('','_n','_e')","('','_e')"),("s=bpy.context.scene", "cel.install('creature',normals=False);s=bpy.context.scene"),("bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art/blender/characters'/(actor+'.blend')))", "# Source immutable; no save.")])
     def group(name,fn):
         marker=WORK/(name+'.done')
         if '--resume' in sys.argv and marker.exists():return
         fn();marker.write_text('PASS');print('PASS '+name,flush=True)
     group('bourbe',bo1.render_actor)
+    import shutil
+    for action in bo1.ACTION_ANIMS:
+        for suffix in ('','_e'):
+            shutil.copy2(bo1.OUT/(action+suffix+'.png'),SPR/'characters/bourbe'/(action+suffix+'.png'))
+    for alias,source in (('attack','slap'),('cast','throw')):
+        for suffix in ('','_e'):
+            shutil.copy2(bo1.OUT/(source+suffix+'.png'),SPR/'characters/bourbe'/(alias+suffix+'.png'))
+    import shutil
+    for action in bo1.ACTION_ANIMS:
+        for suffix in ('','_e'):shutil.copy2(bo1.OUT/(action+suffix+'.png'),SPR/'characters/bourbe'/(action+suffix+'.png'))
+    for alias,source in (('attack','slap'),('cast','throw')):
+        for suffix in ('','_e'):shutil.copy2(bo1.OUT/(source+suffix+'.png'),SPR/'characters/bourbe'/(alias+suffix+'.png'))
     bo2.cel=cel
-    patched(bo2,'atlases',[("if '--resume' in sys.argv and","if False and"),("('','_n','_e')","('','_e')"),("s=bpy.context.scene;root=", "cel.install('prop',normals=False);s=bpy.context.scene;s.compositing_node_group=None;cel.setup_scene();cel.toon_materials('prop');bpy.context.view_layer.update();root=")])
+    bo2.atlases=lambda:None
     group('motte',bo2.atlases)
     def portrait():
         open_source('bourbe_portrait.blend','creature')

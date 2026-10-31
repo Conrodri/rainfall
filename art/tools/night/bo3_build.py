@@ -16,12 +16,15 @@ from PIL import Image, ImageChops
 OUT=ROOT/'game/assets/sprites/characters/bourbe'
 SRC=ROOT/'art/blender/characters'
 WORK=SRC/'bourbe_bo3_frames'
+CEL_WORK=ROOT/'art/blender/cel/feel2'
 SPECS={'bog_zone':(720,8,8,True,5.0),'ally_ring':(64,1,1,True,.42),'mud_slap':(288,4,12,False,2.0),'mud_splash':(288,6,14,False,2.0)}
 TAU=math.tau
 
 def studio(size):
     s=iso_rig.create_rig('TOP',size)
-    # TOP renders at the game's 64 px/u, without hidden supersized margins.
+    # 30-degree isometric elevation, calibrated to the same 64 px/u footprint.
+    cam=s.camera;cam.rotation_euler=(math.pi/3,0,0)
+    cam.location=cam.rotation_euler.to_matrix()@Vector((0,0,12))
     s.camera.data.ortho_scale=size/64
     s.eevee.taa_render_samples=12
     s.render.threads_mode='FIXED';s.render.threads=6
@@ -60,31 +63,47 @@ def radial(name,radius,ma,parent,seed,z=.0):
     for p in ob.data.polygons:p.use_smooth=True
     return ob
 
+def jagged_lobe(name, angle, reach, width, height, ma, parent, seed):
+    rng=random.Random(seed); verts=[]; faces=[]; steps=13
+    for layer in range(3):
+        t=(layer+1)/3
+        for j in range(steps):
+            u=j/(steps-1)*2-1
+            a=angle+u*width*(.55+.45*t)+rng.uniform(-.045,.045)
+            r=.28+reach*t*(1-.13*abs(u))+rng.uniform(-.05,.05)
+            z=.08+height*t*(1-abs(u)**1.6)+rng.uniform(-.035,.035)
+            verts.append((r*math.cos(a),r*math.sin(a),z))
+    for l in range(2):
+        for j in range(steps-1):
+            q=l*steps+j;faces.append((q,q+1,q+steps+1,q+steps))
+    ob=mesh(name,verts,faces,ma,parent);ob.modifiers.new('Raised wet lobe','SOLIDIFY').thickness=.07
+    return ob
+
 def build_effect(key):
     size,n,_,_,radius=SPECS[key];studio(size);clay,water,rootmat,bronze,fire=materials();root=empty('BO3 '+key)
     rng=random.Random(365)
     if key=='bog_zone':
-        radial('Irregular silt shore',4.96,clay,root,7,.015)
-        radial('Viscous black water',4.68,water,root,13,.045)
-        for j in range(17):
-            a=j*TAU/17;rr=4.65+rng.uniform(-.12,.12)
+        # Uneven bog bank with raised mud hummocks; the footprint stays within radius 5.
+        shore=radial('Torn silt islands',4.45,clay,root,7,.025)
+        shore.scale.y=.73
+        pool=radial('Viscous broken pools',3.98,water,root,13,.075);pool.scale.y=.72
+        for j in range(19):
+            a=j*TAU/19;rr=4.12+rng.uniform(-.34,.34)
             pts=[]
-            for k in range(10):
-                t=a+(k-4.5)*.026;r=rr+.055*math.sin(k*1.4+j)
-                pts.append((r*math.cos(t),r*math.sin(t),.07+.02*math.sin(k)))
-            tube('Torn shore root',pts,.035+rng.random()*.035,rootmat,root)
-        for j in range(7):
+            for k in range(8):
+                t=a+(k-3.5)*.055;r=rr+.12*math.sin(k*1.4+j)
+                pts.append((r*math.cos(t),r*.72*math.sin(t),.12+.05*math.sin(k)))
+            tube('Raised ragged bank',pts,.075+rng.random()*.045,clay,root)
+        for j in range(11):
             a=j*TAU/7+.3;pts=[]
-            for k in range(22):
-                r=.6+k*.17;t=a+.13*k
-                pts.append((r*math.cos(t),r*math.sin(t),.09+.014*math.sin(k*.9)))
-            tube('Drowned root spiral',pts,.035,clay,root)
-            # Broken, narrow light leaks; no neon outline around the whole area.
-            tube('Follet through mire',[(x,y,z+.055) for x,y,z in pts[5:15]],.014,fire,root)
-            p=pts[17];ell('Oxidised buried clasp',p,(.16,.08,.035),bronze,root).rotation_euler.z=a
-        for j in range(25):
-            a=rng.random()*TAU;r=math.sqrt(rng.random())*4.3;x=r*math.cos(a);y=r*math.sin(a);rad=rng.uniform(.065,.17)
-            tube('Ruptured gas crater',[(x+rad*math.cos(t*TAU/19),y+rad*math.sin(t*TAU/19),.092) for t in range(20)],.012,clay,root)
+            for k in range(16):
+                r=.35+k*.22;t=a+.11*k
+                pts.append((r*math.cos(t),r*.72*math.sin(t),.11+.09*math.sin(k*.8+j)))
+            tube('Drowned root ridge',pts,.045,rootmat,root)
+            tube('Wandering follet filament',[(x,y,z+.06) for x,y,z in pts[3:11]],.022,fire,root)
+        for j in range(13):
+            a=TAU*j/13;r=rng.uniform(1.2,3.8);x=r*math.cos(a);y=r*.72*math.sin(a)
+            ell('Raised bursting mire bubble',(x,y,rng.uniform(.16,.28)),(.18,.14,.16),water,root)
     elif key=='ally_ring':
         # One broken bronze ally seal; no opaque centre underneath the familiar.
         for j in range(3):
@@ -93,31 +112,38 @@ def build_effect(key):
             tube('Ally bronze arc',pts,.018,bronze,root)
             tube('Ally cold inlay',[(x,y,z+.018) for x,y,z in pts[3:33]],.010,fire,root)
     elif key=='mud_slap':
-        N=64;vs=[]
-        for k in range(3):
-            for j in range(N+1):
-                a=math.radians(-105+210*j/N);r=(.72,1.66,1.95)[k]+.03*math.sin(j*2.7)
-                vs.append((r*math.cos(a),r*math.sin(a),.06+(k==1)*.16*math.sin(j*math.pi/N)))
-        fs=[(k*(N+1)+j,k*(N+1)+j+1,(k+1)*(N+1)+j+1,(k+1)*(N+1)+j) for k in range(2) for j in range(N)]
-        ob=mesh('Ragged 210 degree mud impact',vs,fs,clay,root,.006)
-        ob.modifiers.new('Mud sheet thickness','SOLIDIFY').thickness=.035
-        for j in range(9):
-            a=math.radians(-96+j*24)
-            tube('Clay root spray',[(r*math.cos(a+.04*math.sin(k)),r*math.sin(a+.04*math.sin(k)),.12+.12*math.sin(k)) for k,r in enumerate((.85,1.3,1.8))],.025,rootmat,root)
-        tube('Follet leading fault',[(1.83*math.cos(a),1.83*math.sin(a),.27) for a in [math.radians(-72+j*3) for j in range(49)]],.016,fire,root)
+        # Thick lifted sheets fan outward with separated tips and airborne clods.
+        for j in range(7):
+            a=math.radians(-70+j*23)
+            lobe=jagged_lobe('Thick projected mud tongue',a,1.65,.20,.80+(j%3)*.16,clay,root,91+j)
+            lobe.rotation_euler.x=.12
+            pts=[]
+            for k in range(6):
+                t=k/5;r=.55+1.32*t;aa=a+.08*math.sin(k*1.7+j)
+                pts.append((r*math.cos(aa),r*math.sin(aa),.18+.62*math.sin(t*math.pi)+.09*math.sin(k)))
+            tube('Jagged raised spray ridge',pts,.065,rootmat,root)
+        for j in range(15):
+            a=math.radians(-83+j*11.8);r=rng.uniform(1.35,1.93)
+            ell('Flying irregular mud droplet',(r*math.cos(a),r*math.sin(a),rng.uniform(.22,.72)),(.07,.11,.09),clay,root).rotation_euler.y=rng.uniform(-.8,.8)
+        for j in (1,3,5):
+            a=math.radians(-70+j*23)
+            tube('Follet in the thrown mire',[(r*math.cos(a),r*math.sin(a),.3+.48*math.sin(k*math.pi/5)) for k,r in enumerate((.7,.95,1.2,1.45,1.7,1.85))],.025,fire,root)
     else:
-        radial('Plouf impact basin',1.4,water,root,19,.035)
-        for j in range(13):
-            a=j*TAU/13;pts=[]
-            for k in range(8):
-                r=.35+k*.2;t=a+.035*k;pts.append((r*math.cos(t),r*math.sin(t),.05+.32*math.sin(k*math.pi/8)))
-            tube('Torn clay splash',pts,.040+(j%3)*.012,clay,root)
-            if j%3==0:tube('Cold seam in splash',[(x,y,z+.075) for x,y,z in pts[1:6]],.016,fire,root)
-            ell('Airborne angular wet clod',(1.84*math.cos(a),1.84*math.sin(a),.2),(.055,.095,.09),clay,root).rotation_euler.z=a
+        radial('Broken shallow splash pool',1.35,water,root,19,.04)
+        for j in range(17):
+            a=j*TAU/17;pts=[]
+            for k in range(9):
+                t=k/8;r=.42+1.14*t;aa=a+.065*math.sin(k*1.5+j)
+                pts.append((r*math.cos(aa),r*math.sin(aa),.10+.74*math.sin(t*math.pi)+.07*math.sin(j+k)))
+            tube('Raised jagged splash crown',pts,.052+(j%3)*.014,clay,root)
+            if j%3==0:tube('Follet splash thread',[(x,y,z+.05) for x,y,z in pts[2:7]],.021,fire,root)
+            r=rng.uniform(1.45,1.92)
+            ell('Falling angular mud drop',(r*math.cos(a),r*math.sin(a),rng.uniform(.25,.92)),(.075,.11,.13),clay,root).rotation_euler.z=a
     iso_rig.bake_ao_shadows(root)
     s=bpy.context.scene;s['BO3']='TOP; 64 px/u; broken root-tendon geometry, tannin water, cold green seams; mobile atlases <=4096'
     bpy.context.preferences.filepaths.save_version=0
-    bpy.ops.wm.save_as_mainfile(filepath=str(SRC/('bourbe_'+key+'.blend')))
+    CEL_WORK.mkdir(parents=True,exist_ok=True)
+    bpy.ops.wm.save_as_mainfile(filepath=str(CEL_WORK/('bourbe_'+key+'.blend')))
     return root
 
 def resources(key):
@@ -128,8 +154,8 @@ def resources(key):
             stem=key+(f'_{a:02}' if a else '')
             if emission:ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/{key}/{stem}_e.png" id="d{a}"]')
             else:
-                for tag,suf in [('d',''),('n','_n')]:ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/{key}/{stem}{suf}.png" id="{tag}{a}"]')
-                subs.append(f'[sub_resource type="CanvasTexture" id="c{a}"]\ndiffuse_texture = ExtResource("d{a}")\nnormal_texture = ExtResource("n{a}")')
+                ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/{key}/{stem}.png" id="d{a}"]')
+                subs.append(f'[sub_resource type="AtlasTexture" id="c{a}"]\natlas = ExtResource("d{a}")')
         for f in range(n):
             a=f//cols;ref=f'ExtResource("d{a}")' if emission else f'SubResource("c{a}")'
             subs.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = {ref}\nregion = Rect2({(f%cols)*cell}, 0, {cell}, {cell})')
@@ -139,8 +165,9 @@ def resources(key):
 
 def effects():
     for key,(cell,n,fps,loop,radius) in SPECS.items():
+        if key not in ('bog_zone','mud_slap','mud_splash'):continue
         folder=OUT/key;folder.mkdir(parents=True,exist_ok=True);raw=WORK/key;raw.mkdir(parents=True,exist_ok=True)
-        complete=all((raw/f'{f:02}{s}.png').exists() for f in range(n) for s in ('','_n','_e'))
+        complete=all((raw/f'{f:02}{s}.png').exists() for f in range(n) for s in ('','_e'))
         if not ('--resume' in sys.argv and complete):
             root=build_effect(key)
             surfaces=[(o,tuple(v.co.copy() for v in o.data.vertices)) for o in root.children_recursive if o.type=='MESH' and 'water' in o.name.lower()]
@@ -151,25 +178,32 @@ def effects():
                         for v,co in zip(ob.data.vertices,base):v.co.z=co.z+.018*math.sin(co.x*3+co.y*2+phase)
                     root.rotation_euler.z=.007*math.sin(phase)
                     for mat in bpy.data.materials:
-                        if mat.name.startswith('BO3 cold follet'):mat.node_tree.nodes.get('Principled BSDF').inputs['Emission Strength'].default_value=1.25+.25*math.sin(phase)
+                        if mat.name.startswith('BO3 cold follet'):
+                            node=mat.node_tree.nodes.get('Principled BSDF') or mat.node_tree.nodes.get('Emission')
+                            node.inputs['Emission Strength' if node.type=='BSDF_PRINCIPLED' else 'Strength'].default_value=1.25+.25*math.sin(phase)
                 elif key=='mud_slap':
-                    root.rotation_euler.z=math.radians(-18+12*f);root.scale=(.76+.08*f,)*3
+                    pulse=(1.0,.91,.73,.54)[f]
+                    root.rotation_euler.z=math.radians(-18+12*f);root.scale=(pulse,)*3
                 elif key=='mud_splash':
-                    sc=(.58,.78,.94,1,.86,.64)[f];root.scale=(sc,sc,1+.12*f);root.rotation_euler.z=f*.035
-                iso_rig.render_frame(raw/f'{f:02}.png')
+                    sc=(1.0,.91,.78,.63,.48,.34)[f];root.scale=(sc,sc,1+.12*f);root.rotation_euler.z=f*.035
+                if key=='bog_zone':
+                    pulse=(1.0,.96,.91,.85,.78,.72,.66,.60)[f];root.scale=(pulse,pulse,pulse)
+                iso_rig.render_frame(raw/f'{f:02}.png',passes=True)
         cols=min(n,4096//cell)
         for a in range(math.ceil(n/cols)):
             count=min(cols,n-a*cols);stem=key+(f'_{a:02}' if a else '')
-            for suffix in ('','_n','_e'):
-                atlas=Image.new('RGBA',(count*cell,cell))
+            for suffix in ('','_e'):
+                scale=2 if suffix=='_e' else 1
+                atlas=Image.new('RGBA',(count*cell//scale,cell//scale))
                 for j in range(count):
                     f=a*cols+j
                     with Image.open(raw/f'{f:02}{suffix}.png') as im:im=im.convert('RGBA')
                     if suffix:
                         with Image.open(raw/f'{f:02}.png') as d:im.putalpha(d.getchannel('A'))
-                    atlas.paste(im,(j*cell,0))
+                        im=im.resize((cell//2,cell//2),Image.Resampling.LANCZOS)
+                    atlas.paste(im,(j*cell//scale,0))
                 atlas.save(folder/(stem+suffix+'.png'),optimize=True,compress_level=9)
-        resources(key);print('BO3 PASS '+key,flush=True)
+        print('BO3 PASS '+key,flush=True)
 
 def icons():
     # Reuse BO2's bevelled sculptural emblems, with an explicit shared studio.

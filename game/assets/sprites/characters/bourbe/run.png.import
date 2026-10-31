@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b04wi7drm0fyb"
-path.bptc="res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.bptc.ctex"
-path.astc="res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.astc.ctex"
+path.s3tc="res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.s3tc.ctex"
+path.etc2="res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/run.png"
-dest_files=["res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.bptc.ctex", "res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.astc.ctex"]
+dest_files=["res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.s3tc.ctex", "res://.godot/imported/run.png-4d57de9c481807ea62097ab4b0a5efac.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

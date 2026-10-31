@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlpdrqqxin0s6"
-path.bptc="res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.bptc.ctex"
-path.astc="res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.astc.ctex"
+path.s3tc="res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.s3tc.ctex"
+path.etc2="res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/skins/bourbe_skin1/recall.png"
-dest_files=["res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.bptc.ctex", "res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.astc.ctex"]
+dest_files=["res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.s3tc.ctex", "res://.godot/imported/recall.png-88b94c2d280eb3ecbfd855e3198dde81.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

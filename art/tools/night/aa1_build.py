@@ -17,9 +17,11 @@ DEST=ROOT/'game/assets/sprites/characters/avare'
 SOURCE=ROOT/'art/blender/characters/avare.blend'
 WORK=ROOT/'art/blender/characters/avare_frames'
 ICONS=ROOT/'game/assets/sprites/icons/spells'
-ANIMS={'idle':8,'run':8,'swing':4,'throw':4,'slam':6,'ult':8,'attack':4,'cast':4,'cast_ult':8,'death':8}
+ANIMS={'idle':8,'run':8,'swing':7,'throw':7,'slam':9,'ult':11,'attack':7,'cast':7,'cast_ult':11,'death':8}
 DIRS=iso_rig.DIRECTIONS
 FPS={a:(8 if a=='idle' else 14 if a=='run' else 10 if a=='death' else 12) for a in ANIMS}
+F60={'swing':[2,2,2,3,3,4,4],'throw':[2,2,2,3,3,4,4],'slam':[2,2,2,2,3,3,4,4,4],'ult':[2,2,2,2,2,3,3,3,4,4,4]}
+IMPACT={'swing':3,'throw':3,'slam':4,'ult':6}
 import cd_cd3_common as cd
 
 def parent_keep(o,p):
@@ -104,23 +106,34 @@ def pose(anim,i,n,rig,rest):
         rarm.rotation_euler.x=-.32*math.sin(w);larm.rotation_euler.x=-.18
         safe.location.y+=.12+.035*math.sin(w);safe.rotation_euler.x=.08+.04*math.sin(w+.6)
     elif anim in ('swing','attack'):
-        # N/2 is the forward chest contact; other frames wind up and recover.
-        angles=[-1.0,-.55,1.65,.65];a=angles[i]
-        safe.location=(.64*math.sin(a),-.61*math.cos(a)-.04,.12+.17*math.sin(math.pi*q))
-        if i==hit:safe.location=(.25,-.66,.13)
-        safe.rotation_euler.z=a;safe.rotation_euler.y=.25*math.sin(a)
-        torso.rotation_euler.z=-.30 if i<hit else .30*(1-q);torso.rotation_euler.x=.12 if i==hit else -.06
-        larm.rotation_euler.x=.75 if i<hit else -.65;larm.rotation_euler.y=-.42;rarm.rotation_euler.x=.35*math.sin(math.pi*q)
+        phase=[-.5,-1.35,-.95,.85,1.65,.95,.30][i]
+        safe.location=(.96*math.sin(phase),-.88*math.cos(phase)-.10,.18+.30*math.sin(math.pi*q))
+        safe.rotation_euler.z=phase;safe.rotation_euler.y=.5*math.sin(phase)
+        torso.rotation_euler.z=-.62 if i<3 else .58*(1-q);torso.rotation_euler.x=.20 if i==IMPACT['swing'] else -.12
+        larm.rotation_euler.x=.95 if i<3 else -.9;larm.rotation_euler.y=-.7;rarm.rotation_euler.x=.6*math.sin(math.pi*q)
+        if i==2:
+            for j,o in enumerate(links):o.location.x+=(-.16+j*.08);o.scale=(1.12,1.32,1.12)
+        if i==IMPACT['swing']:safe.location=(.45,-1.0,.25)
     elif anim in ('throw','cast'):
-        rarm.rotation_euler.x=[-.35,.75,-1.35,-.45][i];rarm.rotation_euler.z=[.12,-.35,-.45,.12][i]
-        torso.rotation_euler.z=.16*math.sin(math.pi*q);torso.rotation_euler.x=-.10*math.sin(math.pi*q)
+        k=[-.25,-1.0,-.65,1.65,1.0,.40,.12][i]
+        rarm.rotation_euler.x=[-.45,-1.1,-.8,1.35,.15,-.25,-.12][i];rarm.rotation_euler.z=[.2,.65,.45,-.8,-.35,-.12,0][i]
+        larm.rotation_euler.x=.65 if i<3 else -.4
+        torso.rotation_euler.z=k*.42;torso.rotation_euler.x=-.22 if i<3 else .12
+        if i in (2,3):
+            for j,o in enumerate(links):o.location.x+=(-.18+j*.10);o.scale=(.8,1.55,.8)
     elif anim=='slam':
-        lift=[0,.32,.72,.05,.015,.025][i];safe.location=(-.38,-.18,lift);safe.rotation_euler.y=[0,-.4,-.8,.15,.04,0][i]
-        larm.rotation_euler.x=[0,.5,.9,-.7,-.35,0][i];torso.location.z-=.10 if i==hit else 0;torso.rotation_euler.x=.24 if i==hit else -.10*math.sin(math.pi*q)
+        lift=[0,.35,.82,1.35,1.48,.25,.02,.015,.02][i];safe.location=(-.50,-.24,lift);safe.rotation_euler.y=[0,-.25,-.62,-.95,-.85,.42,.18,.05,0][i]
+        larm.rotation_euler.x=[0,.45,.85,1.15,1.05,-.85,-.45,-.12,0][i];rarm.rotation_euler.x=[0,.3,.7,.95,.85,-.65,-.35,-.08,0][i]
+        torso.location.z-=.2 if i==IMPACT['slam'] else .10*math.sin(math.pi*q);torso.rotation_euler.x=.42 if i==IMPACT['slam'] else -.24*math.sin(math.pi*q)
+        if i==IMPACT['slam']:
+            for j,o in enumerate(links):o.location.z+=.16*(1-abs(j-1.5)/2);o.scale=(1.5,1.5,1.5)
     elif anim in ('ult','cast_ult'):
-        power=math.sin(math.pi*q);torso.location.z-=.08*power;torso.rotation_euler.x=-.13*power
-        larm.rotation_euler.y=-.7*power;rarm.rotation_euler.y=.95*power;rarm.rotation_euler.x=-.8*power
-        safe.rotation_euler.x=-.34*power;safe.location.z+=.09*power
+        power=[0,.45,.8,1,1,.85,.55,.25,.05,0,0][i]
+        torso.location.z+=.12*power;torso.rotation_euler.x=-.28*power
+        larm.rotation_euler.y=-1.0*power;rarm.rotation_euler.y=1.15*power;rarm.rotation_euler.x=-1.0*power
+        safe.rotation_euler.x=-.85*power if i>=5 else -.18*power;safe.location.z+=.75*power
+        if i in (6,7,8):
+            for j,o in enumerate(links):o.location.x+=(-.12+j*.08);o.scale=(.75,1.6,.75)
     elif anim=='death':
         fall=min(1,q*1.3);torso.rotation_euler.x=-1.25*fall;torso.location.z-=.40*fall;torso.location.y+=.08*fall
         torso.rotation_euler.z=.22*fall;lleg.rotation_euler.x=-.45*fall;rleg.rotation_euler.x=.35*fall
@@ -158,7 +171,7 @@ def atlases():
     DEST.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
     originals=[o for o in root.children_recursive if o.type=='MESH']
     for anim,n in ANIMS.items():
-        if '--resume' in sys.argv and all((DEST/(anim+su+'.png')).exists() for su in ('','_n','_e')):continue
+        if '--resume' in sys.argv and all((DEST/(anim+su+'.png')).exists() for su in ('','_e')):continue
         copies=[];meshes=[]
         for o in originals:o.hide_render=False
         for f in range(n):
@@ -185,24 +198,31 @@ def atlases():
     resources()
 
 def resources():
+    old={}
+    for name in ('avare.tres','avare_emission.tres'):
+        p=DEST/name
+        if p.exists():
+            import re
+            old[name]=re.search(r'(?m)^\[gd_resource[^\r\n]*\](?:\r?\n){2}(?=\[ext_resource)',p.read_text()).group(0)
     for emission in (False,True):
         ext=[];sub=[];anims=[];sid=0
         for ai,(anim,n) in enumerate(ANIMS.items()):
-            eid=2*ai+1;cid='c'+str(ai)
-            suffix='_e' if emission else ''
-            ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/avare/{anim}{suffix}.png" id="{eid}"]')
-            if not emission:
-                ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/avare/{anim}_n.png" id="{eid+1}"]')
-                sub.append(f'[sub_resource type="CanvasTexture" id="{cid}"]\ndiffuse_texture = ExtResource("{eid}")\nnormal_texture = ExtResource("{eid+1}")')
+            eid=ai+1
+            ext.append(f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/avare/{anim}{"_e" if emission else ""}.png" id="{eid}"]')
             for row,d in enumerate(DIRS):
                 frames=[]
                 for f in range(n):
-                    sid+=1;aid='a'+str(sid);atlas=f'ExtResource("{eid}")' if emission else f'SubResource("{cid}")'
-                    sub.append(f'[sub_resource type="AtlasTexture" id="{aid}"]\natlas = {atlas}\nregion = Rect2({f*192}, {row*192}, 192, 192)')
-                    frames.append('{"duration": 1.0, "texture": SubResource("'+aid+'")}')
+                    sid+=1;aid='a'+str(sid)
+                    sub.append(f'[sub_resource type="AtlasTexture" id="{aid}"]\natlas = ExtResource("{eid}")\nregion = Rect2({f*192}, {row*192}, 192, 192)')
+                    dur=(F60.get(anim,[1]*n)[f]*FPS[anim]/60) if anim in F60 else 1.0
+                    frames.append('{"duration": '+str(dur)+', "texture": SubResource("'+aid+'")}')
                 anims.append('{"frames": ['+', '.join(frames)+f'], "loop": {str(anim in ("idle","run")).lower()}, "name": &"{anim}_{d}", "speed": {FPS[anim]}.0'+'}')
         path=DEST/('avare_emission.tres' if emission else 'avare.tres')
-        path.write_text(f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(sub)+1} format=3]\n\n'+'\n\n'.join(ext+sub)+'\n\n[resource]\nanimations = ['+',\n'.join(anims)+']\n')
+        import re
+        nl='\r\n' if path.exists() and '\r\n' in path.read_bytes().decode('utf8') else '\n'
+        header=old.get(path.name,f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(sub)+1} format=3]{nl}{nl}')
+        body=nl.join(ext+sub)+nl+nl+'[resource]'+nl+'animations = ['+nl+(','+nl).join(anims)+']'+nl
+        path.write_text(re.sub(r'(?m)^\[gd_resource[^\r\n]*\](?:\r?\n){2}',f'[gd_resource type="SpriteFrames" load_steps={len(ext)+len(sub)+1} format=3]{nl}{nl}',header)+body,newline='')
 
 
 def icons():

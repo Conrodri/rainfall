@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://48t4hjqkhi3r"
-path.bptc="res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.bptc.ctex"
-path.astc="res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.astc.ctex"
+path.s3tc="res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.s3tc.ctex"
+path.etc2="res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/morfil/skins/morfil_skin1/cut_circle_dual.png"
-dest_files=["res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.bptc.ctex", "res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.astc.ctex"]
+dest_files=["res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.s3tc.ctex", "res://.godot/imported/cut_circle_dual.png-190331abd3d841a8685908b657ed8cbe.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

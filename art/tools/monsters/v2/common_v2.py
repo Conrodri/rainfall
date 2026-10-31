@@ -76,6 +76,9 @@ def produce(name,size,bottom,counts,root,pose):
     iso_rig.bake_ao_shadows(root)
     cel.install('creature',normals=False)
     cel.toon_materials('creature')
+    if '--g8' in sys.argv:
+        import g8_build
+        g8_build.materials()
     for mat in bpy.data.materials:
         if not mat.use_nodes: continue
         diffuse=next((n for n in mat.node_tree.nodes if n.type=='BSDF_DIFFUSE'),None)
@@ -127,6 +130,10 @@ def produce(name,size,bottom,counts,root,pose):
             if suffix: im=im.resize(((im.width+1)//2,(im.height+1)//2),Image.Resampling.LANCZOS)
             im.save(out/(a+suffix+'.png'),optimize=True)
         print('V2 COMPLETE',name,a,flush=True)
+    if '--g8' in sys.argv:
+        cel.uninstall()
+        print('PASS G8',name,flush=True)
+        return
     tres(name,size,counts,out)
     for o,action in actions: o.animation_data.action=action
     root.rotation_euler.z=0; s.frame_set(1)

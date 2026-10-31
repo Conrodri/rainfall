@@ -69,6 +69,8 @@ def finish_front_impact(name,size,bottom,counts,root,pose):
 
 
 def deliver(name,size,bottom,counts,root,pose):
+    if '--g8' in sys.argv:
+        return produce(name,size,bottom,counts,root,pose)
     # Mesh projections before expensive rendering; the cell is never expanded.
     s=bpy.context.scene; failures=[]
     for a,n in counts.items():

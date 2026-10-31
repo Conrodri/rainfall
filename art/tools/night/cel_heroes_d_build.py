@@ -59,8 +59,25 @@ def render():
         marker=WORK/'done'/(hashlib.sha256(str(path).encode()).hexdigest()+'.json')
         if resume and marker.exists() and path.exists():return path
         cel.install(active[0],normals=False)
+        if stage=='avare_effects':
+            common=cel._boss_common();base_configure=cel._installed['configure_passes']
+            def configure(target):
+                base_configure(target)
+                group=bpy.context.scene.compositing_node_group
+                if group is None:group=bpy.data.node_groups.get('Boss_passes')
+                rl=next(n for n in group.nodes if n.bl_idname=='CompositorNodeRLayers')
+                out=next(n for n in group.nodes if n.bl_idname=='NodeGroupOutput')
+                for link in list(group.links):
+                    if link.to_node==out and link.to_socket.name=='Image':group.links.remove(link)
+                group.links.new(rl.outputs['Image'],out.inputs['Image'])
+                for node in list(group.nodes):
+                    if node.bl_idname=='CompositorNodeOutputFile':
+                        slot_path=node.file_slots[0].path if hasattr(node,'file_slots') else node.file_name
+                        if '_e__' in slot_path:group.links.new(rl.outputs['Emission'],node.inputs[0])
+            common.configure_passes=configure
+            iso.common.configure_passes=configure
         result=original(path,passes=passes)
-        if path.is_relative_to(SPR):restore_emission()
+        if path.is_relative_to(SPR) and path.parent.name!='avare':restore_emission()
         marker.parent.mkdir(parents=True,exist_ok=True);marker.write_text(json.dumps({'path':str(path)}))
         return result
     iso.render_frame=frame
@@ -78,14 +95,51 @@ def render():
     for mod,src in [(aa2,None),(ra2,ra2._effects_source)]:
         if stage not in ('all','avare_effects' if mod is aa2 else 'rainette_effects'):continue
         specs=dict(mod.SPECS)
+        if mod is aa2:
+            selected={'coffre_arc','ransom_ring','coin_burst'}
+            mod.SPECS={name:spec for name,spec in specs.items() if name in selected}
         exporter=adapted(mod.effects if src is None else None,source=src,namespace=mod.__dict__)
-        for name,spec in specs.items():
+        for name,spec in mod.SPECS.items():
             active[0]='vfx' if name in ('ransom_ring','land_ring') else 'prop'
             mod.SPECS={name:spec}
             exporter()
             restore_emission()
         mod.SPECS=specs
-    restore_emission()
+    if stage!='avare':restore_emission()
+def reinforce_avare():
+    """Rebuild only the two approved retouches, preserving resources and other effects."""
+    import bpy, iso_rig as iso, aa2_build as aa2
+    from halve_emission import downscale
+    from PIL import Image
+    adapted(iso.render_frame)
+    original=iso.render_frame
+    def frame(path,passes=True):
+        cel.install('prop',normals=False)
+        base_configure=cel._boss_common().configure_passes
+        def configure(target):
+            base_configure(target)
+            s=bpy.context.scene;s.eevee.taa_render_samples=12
+            group=s.compositing_node_group
+            rl=next(n for n in group.nodes if n.bl_idname=='CompositorNodeRLayers')
+            out=next(n for n in group.nodes if n.bl_idname=='NodeGroupOutput')
+            group.links.new(rl.outputs['Image'],out.inputs['Image'])
+            for node in group.nodes:
+                if node.bl_idname=='CompositorNodeOutputFile':
+                    slot=node.file_slots[0].path if hasattr(node,'file_slots') else node.file_name
+                    if '_e__' in slot:group.links.new(rl.outputs['Emission'],node.inputs[0])
+        iso.common.configure_passes=configure
+        return original(path,passes=passes)
+    iso.render_frame=frame
+    aa2.RAW=WORK/'avare_reinforced_frames'
+    aa2.resource=lambda *args:None
+    aa2.SPECS={n:s for n,s in aa2.SPECS.items() if n in ('coffre_arc','coin_burst')}
+    aa2.effects()
+    for name in aa2.SPECS:
+        path=aa2.OUT/'effects'/name/(name+'_e.png')
+        with Image.open(path) as im:small=downscale(im.convert('RGBA'))
+        small.save(path,optimize=True,compress_level=9)
+    print('PASS avare reinforced: 2 effects, no normals, half emission',flush=True)
+
 def verify():
     from PIL import Image
     import numpy as np
@@ -177,6 +231,9 @@ def driver():
     assert protected()==before,'protected files changed during verification'
     if '--verify-only' not in sys.argv:checks()
 if __name__=='__main__':
-    if '--render' in sys.argv:render()
+    if '--reinforce' in sys.argv:
+        sys.path.insert(0,str(ROOT/'art/tools'))
+        reinforce_avare()
+    elif '--render' in sys.argv:render()
     elif '--checks-only' in sys.argv:checks()
     else:driver()

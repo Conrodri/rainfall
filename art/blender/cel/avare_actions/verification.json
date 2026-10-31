@@ -1,0 +1,114 @@
+{
+  "swing": {
+    "frames": 6,
+    "impact": 2,
+    "F60": [
+      3,
+      2,
+      7,
+      5,
+      6,
+      7
+    ],
+    "impact_at_F60": 5,
+    "bytes": 709344,
+    "bytes_e": 46926,
+    "anticipation_bbox_ratio": 1.4274193548387097,
+    "impact_bbox_ratio": 1.467741935483871,
+    "anticipation_frame": 0,
+    "impact_bbox": [
+      4,
+      36,
+      186,
+      148
+    ],
+    "min_adjacent_delta": 0.2059968847352025
+  },
+  "throw": {
+    "frames": 6,
+    "impact": 2,
+    "F60": [
+      4,
+      2,
+      7,
+      5,
+      6,
+      7
+    ],
+    "impact_at_F60": 6,
+    "bytes": 263684,
+    "bytes_e": 43034,
+    "anticipation_bbox_ratio": 1.4435483870967742,
+    "impact_bbox_ratio": 1.467741935483871,
+    "anticipation_frame": 0,
+    "impact_bbox": [
+      5,
+      27,
+      187,
+      148
+    ],
+    "min_adjacent_delta": 0.1933570581257414
+  },
+  "slam": {
+    "frames": 7,
+    "impact": 3,
+    "F60": [
+      3,
+      3,
+      2,
+      8,
+      6,
+      7,
+      8
+    ],
+    "impact_at_F60": 8,
+    "bytes": 813968,
+    "bytes_e": 55442,
+    "anticipation_bbox_ratio": 1.4112903225806452,
+    "impact_bbox_ratio": 1.435483870967742,
+    "anticipation_frame": 1,
+    "impact_bbox": [
+      6,
+      44,
+      184,
+      153
+    ],
+    "min_adjacent_delta": 0.10447512893029447
+  },
+  "ult": {
+    "frames": 9,
+    "impact": 5,
+    "F60": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      10,
+      7,
+      8,
+      9
+    ],
+    "impact_at_F60": 14,
+    "bytes": 1109709,
+    "bytes_e": 72123,
+    "anticipation_bbox_ratio": 1.403225806451613,
+    "impact_bbox_ratio": 1.4516129032258065,
+    "anticipation_frame": 2,
+    "impact_bbox": [
+      7,
+      26,
+      187,
+      154
+    ],
+    "min_adjacent_delta": 0.1145919208573784
+  },
+  "idle_bbox": [
+    17,
+    19,
+    141,
+    160
+  ],
+  "errors": [],
+  "status": "PASS"
+}

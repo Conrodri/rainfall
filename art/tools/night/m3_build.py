@@ -64,7 +64,7 @@ def render(path,size,rig='CREA',target=(0,0,0),passes=True):
 def atlas(name,rows,size,anims=None):
     dest=DEST/name;dest.mkdir(exist_ok=True)
     for sheet,grid in rows.items():
-        for suffix in ['','_n','_e']:
+        for suffix in ['','_e']:
             if not any(p.with_name(p.stem+suffix+'.png').exists() for row in grid for p in row):continue
             canvas=Image.new('RGBA',(len(grid[0])*size,len(grid)*size))
             for y,row in enumerate(grid):
@@ -77,10 +77,10 @@ def atlas(name,rows,size,anims=None):
     anims=anims or [('default',next(iter(rows)),0,len(next(iter(rows.values()))[0]),False)]
     ex=[];subs=[];animations=[]
     for sheet in rows:
-        for suffix in ['','_n','_e']:
+        for suffix in ['','_e']:
             p=dest/(sheet+suffix+'.png')
             if p.exists():ex.append(f'[ext_resource type="Texture2D" path="res://{p.relative_to(ROOT/"game").as_posix()}" id="{sheet+suffix}"]')
-        subs.append(f'[sub_resource type="CanvasTexture" id="c_{sheet}"]\ndiffuse_texture = ExtResource("{sheet}")\nnormal_texture = ExtResource("{sheet}_n")')
+        subs.append(f'[sub_resource type="CanvasTexture" id="c_{sheet}"]\ndiffuse_texture = ExtResource("{sheet}")')
     for anim,sheet,row,count,loop in anims:
         frames=[]
         for i in range(count):
@@ -177,45 +177,62 @@ def knives():
 
 def arc():
     paths=[]
+    # Full 140 degree fan, 320 px radius at 128 px/u. Faceted blade volumes.
     for f in range(4):
-        clear();span=[.75,1.35,math.pi,math.pi][f];end=[-.65,.65,math.pi/2,math.pi/2][f]
-        for j in range(3):
-            if f==3:
-                for k in range(5):ribbon(2.5-j*.075,end-span+span*k/5,end-span+span*(k+.65)/5,.018 if j==0 else .009,glow,.025+j*.008,f+j+k)
-            else:ribbon(2.5-j*.075,end-span,end,.055 if j==0 else .026,glow if j!=1 else silver,.025+j*.008,f+j)
-        for j in range(9):
-            a=end-span+span*j/9;r=2.32+.04*math.sin(j)
-            ui.curve([(r*math.cos(a),r*math.sin(a),.05),((r-.06)*math.cos(a-.035),(r-.06)*math.sin(a-.035),.05)],.008,silver)
+        clear();strength=[1,.72,.40,.16][f]
+        for j in range(11):
+            a=math.radians(-68+j*13.6)+f*.018
+            def pt(r,da,z):return (r*math.cos(a+da),r*math.sin(a+da),z)
+            outer=2.49-.035*(j%3);inner=outer-(.89+.16*(j%2))*strength
+            v=[pt(inner,-.18,.045),pt(outer-.13,-.065,.07),pt(outer,.012,.12),
+               pt(outer-.32,.09,.16),pt(inner+.18,.12,.08),pt((inner+outer)/2,-.005,.42*strength+.08)]
+            mesh('spectral swept dagger',v,[(0,1,5),(1,2,5),(2,3,5),(3,4,5),(4,0,5),(4,3,2,1,0)],silver,0)
+            # Broad angular wake, tapering toward the broken trailing edge.
+            mesh('jagged raised blade wake',[pt(inner-.12,-.26,.04),pt(outer-.20,-.1,.09),pt(outer-.35,.055,.17),pt(inner+.17,.04,.21)],[(0,1,2),(0,2,3)],glow,0)
+            ui.curve([pt(inner,-.18,.05),pt((inner+outer)/2,-.05,.28*strength+.08),pt(outer,.012,.12)],.019*strength,glow)
+            # Shattered silver points remain inside the contractual floor radius.
+            for k in range(2):
+                rr=1.24+.37*k+.06*(j%3)
+                mesh('broken silver shard',[pt(rr,-.12,.12),pt(rr+.17,-.09,.24),pt(rr+.05,-.04,.10)],[(0,1,2)],glow if k else silver,0)
+            if j%2==0:ui.curve([pt(.9,-.08,.06),pt(1.27,-.04,.31),pt(1.39,-.09,.43)],.009*strength,glow)
+        for o in bpy.context.scene.objects:
+            if o.type not in {'LIGHT','CAMERA'}:
+                o.scale *= [1,.84,.62,.35][f];o.location *= [1,.84,.62,.35][f]
         p=OUT/f'arc_{f}.png';render(p,672,'TOP');paths.append(p)
     atlas('dagger_arc',{'default':[paths]},672)
 
 def burst():
     top=[];crea=[]
     for f in range(6):
-        clear();t=(f+1)/6;rng=random.Random(306)
-        for j in range(42):
-            a=rng.random()*math.tau;v=rng.uniform(.6,1.8);r=v*t;z=max(.02,math.sin(t*math.pi)*rng.uniform(.1,.85))
-            m=[wood,porcelain,iron,silver][j%4];k=rng.uniform(.018,.06)*(1-.55*t)
-            o=ui.slab([(-k,-k*2),(k,-k),(k*.6,k*3),(-k*.5,k)],m,k,.0,k*.15)
+        clear();t=f/5;rng=random.Random(306)
+        # Frame zero carries the full blast; later frames scatter and fade.
+        reach=.68+.32*t
+        for j in range(46):
+            a=rng.random()*math.tau;v=rng.uniform(.45,1.88);r=v*reach
+            z=max(.025,(1-t)*rng.uniform(.22,.88)+rng.uniform(.02,.16))
+            m=[wood,porcelain,iron,silver][j%4];k=rng.uniform(.025,.075)*(1-.42*t)
+            o=ui.slab([(-k,-k*2),(k,-k),(k*.6,k*3),(-k*.5,k)],m,k*.8,0,k*.16)
             o.location=(r*math.cos(a),r*math.sin(a),z);o.rotation_euler=(j*.9,t*j,j)
-        for j in range(8):
-            a=j*math.tau/8+.15
-            rr=1.92*t
-            ui.curve([(.4*rr*math.cos(a-.12),.4*rr*math.sin(a-.12),.05),(.72*rr*math.cos(a),.72*rr*math.sin(a),.13*(1-t)),(rr*math.cos(a+.06),rr*math.sin(a+.06),.02)],.012*(1-.7*t),glow)
-        for j in range(3):ribbon(1.94*t-j*.035,j*2.1+.2,j*2.1+1.7,.026*(1-.65*t),glow)
+        # Jagged raised shockwave, with separated peaks instead of a flat ring.
+        for j in range(13):
+            a=j*math.tau/13+.08;r=1.92*reach
+            k=rng.uniform(.12,.24)
+            ui.curve([((r-k)*math.cos(a-.08),(r-k)*math.sin(a-.08),.05), (r*math.cos(a),r*math.sin(a),.36+.12*(j%3)),((r+k)*math.cos(a+.07),(r+k)*math.sin(a+.07),.04)],.018,glow)
+        for j in range(11):
+            a=rng.random()*math.tau;rr=rng.uniform(.65,1.82)*reach
+            ui.curve([(rr*math.cos(a),rr*math.sin(a),.08),( (rr+.18)*math.cos(a+.07),(rr+.18)*math.sin(a+.07),.27)],.012,silver if j%2 else glow)
+        # Hot splinters retain the silver emission accent at impact.
+        for j in range(10):
+            a=rng.random()*math.tau;rr=rng.uniform(.5,1.65)*reach
+            ui.bead(rr*math.cos(a),rr*math.sin(a),.025,-.02,silver if j%3 else glow)
         p=OUT/f'burst_top_{f}.png';render(p,512,'TOP');top.append(p)
         p=OUT/f'burst_crea_{f}.png';render(p,384,target=(0,0,.25));crea.append(p)
-    # Both projections keep the same 512 frame to share one SpriteFrames contract.
     for p in crea:
-        for suffix in ['','_n','_e']:
+        for suffix in ['','_e']:
             q=p.with_name(p.stem+suffix+'.png')
             if q.exists():
                 im=Image.open(q);canvas=Image.new('RGBA',(512,512));canvas.paste(im,(64,64));canvas.save(q,compress_level=9)
     atlas('double_burst',{'top':[top],'crea':[crea]},512,[('default','top',0,6,False),('default_top','top',0,6,False),('default_crea','crea',0,6,False)])
-    clear();ui.curve([(-.125,0,.005),(.125,0,.005)],.004,glow)
-    dest=ROOT/'game/assets/sprites/characters/montreur/string_tile';dest.mkdir(exist_ok=True)
-    render(dest/'string_tile.png',(32,4),'TOP',passes=False)
-    print('M3_SPRITES_PASS',flush=True)
 
 def portrait():
     bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/blender/characters/rictus.blend'))
@@ -242,4 +259,8 @@ if __name__=='__main__':
     mode=sys.argv[-1]
     if mode=='icons':icons()
     elif mode=='portrait':portrait()
+    elif mode=='rictus_vfx':
+        bpy.ops.wm.open_mainfile(filepath=str(ROOT/'art/blender/characters/rictus.blend'))
+        s=ui.studio('m3_sprites');palette();clear();arc();burst()
+        print('RICTUS_VFX_PASS',flush=True)
     else:sprites()

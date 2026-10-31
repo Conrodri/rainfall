@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cs8grc1bc0aj2"
-path.bptc="res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.bptc.ctex"
-path.astc="res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.astc.ctex"
+path.s3tc="res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.s3tc.ctex"
+path.etc2="res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/bourbe/bog_zone/bog_zone_0.png"
-dest_files=["res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.bptc.ctex", "res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.astc.ctex"]
+dest_files=["res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.s3tc.ctex", "res://.godot/imported/bog_zone_0.png-5c7c4feec285a5032a6b68dde0bdafc5.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
