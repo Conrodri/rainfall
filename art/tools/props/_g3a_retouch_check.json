@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "props": [
+    {
+      "name": "stump",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        12,
+        32,
+        113,
+        119
+      ],
+      "foot": [
+        64,
+        94
+      ],
+      "shadow_alpha": 140,
+      "emission": false
+    },
+    {
+      "name": "mushrooms",
+      "size": [
+        128,
+        128
+      ],
+      "bbox": [
+        15,
+        13,
+        109,
+        109
+      ],
+      "foot": [
+        64,
+        94
+      ],
+      "shadow_alpha": 140,
+      "emission": true
+    },
+    {
+      "name": "standing_stone",
+      "size": [
+        192,
+        192
+      ],
+      "bbox": [
+        50,
+        49,
+        140,
+        187
+      ],
+      "foot": [
+        96,
+        166
+      ],
+      "shadow_alpha": 140,
+      "emission": false
+    },
+    {
+      "name": "root_arch_a",
+      "size": [
+        256,
+        256
+      ],
+      "bbox": [
+        24,
+        100,
+        238,
+        230
+      ],
+      "foot": [
+        128,
+        224
+      ],
+      "shadow_alpha": 140,
+      "emission": false
+    }
+  ]
+}
