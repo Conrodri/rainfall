@@ -109,6 +109,10 @@ func _apply_frames(path: String) -> void:
 
 func _physics_process(delta: float) -> void:
 	var motion := direction * speed * delta
+	var map := _stage_map()
+	if map != null and map.is_projectile_wall_at(global_position + motion): # mur plein : s'arrête avant de le franchir
+		_rest()
+		return
 	if stop_on_walls and is_inside_tree():
 		var q := PhysicsRayQueryParameters2D.create(global_position, global_position + motion, WALL_MASK)
 		var col := get_world_2d().direct_space_state.intersect_ray(q)
@@ -120,6 +124,16 @@ func _physics_process(delta: float) -> void:
 	life_left -= delta
 	if life_left <= 0.0:
 		_rest()
+
+
+var _map: StageMap = null
+
+
+## Carte d'étage courante (mise en cache), null sans carte (tests, arène plate sans grille).
+func _stage_map() -> StageMap:
+	if not is_instance_valid(_map):
+		_map = get_tree().get_first_node_in_group(&"stage_map") as StageMap if is_inside_tree() else null
+	return _map
 
 
 func _rest() -> void:

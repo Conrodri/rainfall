@@ -541,11 +541,24 @@ func effects_parent() -> Node:
 	return _container
 
 
+## Monstre le plus proche dont la ligne avec le joueur ne traverse pas de mur plein : on retire le meilleur
+## s'il est caché et on recommence (4 essais au plus, ligne testée seulement pour le candidat retenu).
 func _nearest_enemy(max_dist: float) -> Node2D:
+	var map := player.get_tree().get_first_node_in_group(&"stage_map") as StageMap
+	var skip: Array = []
+	for _try in 4:
+		var e := _nearest_enemy_raw(max_dist, skip)
+		if e == null or map == null or not map.is_projectile_blocked(player.global_position, e.global_position):
+			return e
+		skip.append(e)
+	return null
+
+
+func _nearest_enemy_raw(max_dist: float, skip: Array) -> Node2D:
 	var best: Node2D = null
 	var best_d := max_dist
 	for e in player.get_tree().get_nodes_in_group("enemies"):
-		if not (e is Node2D) or not is_instance_valid(e):
+		if not (e is Node2D) or not is_instance_valid(e) or e in skip:
 			continue
 		var d: float = e.global_position.distance_to(player.global_position)
 		if d > max_dist:

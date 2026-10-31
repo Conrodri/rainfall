@@ -1187,6 +1187,32 @@ func get_bounds() -> Rect2:
 	return map_xform() * get_map_rect()
 
 
+## Murs pleins « # » (portes scellées fermées comprises) : bloquent les projectiles. Le vide, l'eau
+## (profonde ou non) et le sol ne les bloquent pas. `gp` en repère global ; hors grille = mur. Un seul accès
+## à la grille visuelle par appel (pas de physique), donc utilisable à chaque frame par projectile.
+func is_projectile_wall_at(gp: Vector2) -> bool:
+	if _vis_grid.is_empty():
+		return false
+	var m := to_map(to_local(gp)) + (get_meta(&"size_u", Vector2.ZERO) as Vector2) * UNIT_PX * 0.5
+	var cx := int(floorf(m.x / OUTLINE_CELL_PX))
+	var cy := int(floorf(m.y / OUTLINE_CELL_PX))
+	if cy < 0 or cy >= _vis_grid.size() or cx < 0:
+		return true
+	var row: String = _vis_grid[cy]
+	return cx >= row.length() or row.unicode_at(cx) == 35
+
+
+## Vrai si un mur plein coupe le segment a-b (repère global), échantillonné tous les 48 px.
+func is_projectile_blocked(a: Vector2, b: Vector2) -> bool:
+	if _vis_grid.is_empty():
+		return false
+	var n := maxi(1, ceili(a.distance_to(b) / 48.0))
+	for i in range(1, n + 1):
+		if is_projectile_wall_at(a.lerp(b, float(i) / float(n))):
+			return true
+	return false
+
+
 ## Position locale (à la carte) d'un marqueur.
 func local_pos(m: Node2D) -> Vector2:
 	return to_local(m.global_position)
