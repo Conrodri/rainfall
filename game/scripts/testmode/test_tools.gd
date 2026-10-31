@@ -310,13 +310,22 @@ static func add_item(tree: SceneTree, id: StringName) -> void:
 static func remove_item(tree: SceneTree, id: StringName) -> bool:
 	var ok := RunState.remove_item(id)
 	if ok:
+		if str(ItemDB.get_item(id).get("special", "")) == str(ItemEffects.ID_PHENIX):
+			_reset_phenix()
 		apply_items(tree)
 	return ok
 
 
 static func clear_items(tree: SceneTree) -> void:
 	RunState.clear_items()
+	_reset_phenix()
 	apply_items(tree)
+
+
+## Mode test : retirer un Phénix de poche rend ses charges aux exemplaires restants (et à ceux rajoutés ensuite),
+## pour rejouer la résurrection sans empiler des exemplaires. En run normale, l'usage reste compté pour la run.
+static func _reset_phenix() -> void:
+	RunState.counters.erase(ItemEffects.COUNTER_PHENIX)
 
 
 ## Recalcule les stats du joueur depuis RunState.items (ItemStats.compute -> Player.apply_stats -> ItemEffects.refresh).

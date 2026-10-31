@@ -97,6 +97,11 @@ func _run() -> void:
 		absf(_player.hp - _player.max_hp * 0.5) < 0.01 and int(RunState.counters.get("phenix_used", 0)) == 1)
 	_lethal()
 	_check("mode test sans charge : « KO » du mode test (PV pleins, pas de mort)", not _player.dead and _player.hp == _player.max_hp)
+	TestTools.remove_item(get_tree(), &"phenix_de_poche")
+	TestTools.add_item(get_tree(), &"phenix_de_poche")
+	_check("mode test : retirer puis rajouter le phénix rend la charge", _player.item_fx.revives_left() == 1)
+	_lethal()
+	_check("mode test : nouvelle résurrection après rajout", absf(_player.hp - _player.max_hp * 0.5) < 0.01)
 	TestMode.active = was_active
 	TestMode.god = was_god
 	_check("aucune mort annoncée en mode test", deaths[0] == 1)
