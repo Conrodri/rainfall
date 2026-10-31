@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bqdg4yhavjdnh"
-path.bptc="res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.bptc.ctex"
-path.astc="res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.astc.ctex"
+path.s3tc="res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.s3tc.ctex"
+path.etc2="res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/ardent_brasier/default_0_e.png"
-dest_files=["res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.bptc.ctex", "res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.astc.ctex"]
+dest_files=["res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.s3tc.ctex", "res://.godot/imported/default_0_e.png-01fce0b99789613a107fcec1264cced5.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

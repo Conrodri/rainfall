@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://vqyb68pt5kba"
-path.bptc="res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.bptc.ctex"
-path.astc="res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.astc.ctex"
+path.s3tc="res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.s3tc.ctex"
+path.etc2="res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/rust_city/crate_se_shadow.png"
-dest_files=["res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.bptc.ctex", "res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.astc.ctex"]
+dest_files=["res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.s3tc.ctex", "res://.godot/imported/crate_se_shadow.png-99d2db364f5de5c23eb8364814412105.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

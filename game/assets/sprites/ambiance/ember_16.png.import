@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dvvnl7gmnq00w"
-path.bptc="res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.bptc.ctex"
-path.astc="res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.astc.ctex"
+path.s3tc="res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.s3tc.ctex"
+path.etc2="res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/ember_16.png"
-dest_files=["res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.bptc.ctex", "res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.astc.ctex"]
+dest_files=["res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.s3tc.ctex", "res://.godot/imported/ember_16.png-4e9c51e2e76ff37b9ff5689c6586ba19.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://kahpyic2q2i5"
-path.bptc="res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.bptc.ctex"
-path.astc="res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.astc.ctex"
+path.s3tc="res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.s3tc.ctex"
+path.etc2="res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/vigie_cel/draw_e.png"
-dest_files=["res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.bptc.ctex", "res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.astc.ctex"]
+dest_files=["res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.s3tc.ctex", "res://.godot/imported/draw_e.png-633e28cc963fd32fcb11d03a6057b1fe.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

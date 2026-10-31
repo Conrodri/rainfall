@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bymjw0o6s41wl"
-path.bptc="res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.bptc.ctex"
-path.astc="res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.astc.ctex"
+path.s3tc="res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.s3tc.ctex"
+path.etc2="res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/salt_king/salt_crust_e.png"
-dest_files=["res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.bptc.ctex", "res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.astc.ctex"]
+dest_files=["res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.s3tc.ctex", "res://.godot/imported/salt_crust_e.png-f8d01342c9d8ed960c4e09b9d3fa7f51.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

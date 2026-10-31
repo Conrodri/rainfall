@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3k2g67co5vg2"
-path.bptc="res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.bptc.ctex"
-path.astc="res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.astc.ctex"
+path.s3tc="res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.s3tc.ctex"
+path.etc2="res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/crawl_l.png"
-dest_files=["res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.bptc.ctex", "res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.astc.ctex"]
+dest_files=["res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.s3tc.ctex", "res://.godot/imported/crawl_l.png-edc1746f0981908412174a688f270465.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

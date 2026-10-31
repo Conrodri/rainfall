@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://hrtdn2v6qqbp"
-path.bptc="res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.bptc.ctex"
-path.astc="res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.astc.ctex"
+path.s3tc="res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.s3tc.ctex"
+path.etc2="res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/rainette/skins/rainette_skin1/portrait.png"
-dest_files=["res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.bptc.ctex", "res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.astc.ctex"]
+dest_files=["res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.s3tc.ctex", "res://.godot/imported/portrait.png-b0c96e9b5d7404edd1a439c6f1a0d9e5.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

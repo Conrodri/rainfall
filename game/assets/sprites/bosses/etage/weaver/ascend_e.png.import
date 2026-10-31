@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://u5w43dqgftjt"
-path.bptc="res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.bptc.ctex"
-path.astc="res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.astc.ctex"
+path.s3tc="res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.s3tc.ctex"
+path.etc2="res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/weaver/ascend_e.png"
-dest_files=["res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.bptc.ctex", "res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.astc.ctex"]
+dest_files=["res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.s3tc.ctex", "res://.godot/imported/ascend_e.png-a22c76b8e278a2a64b1c897abd02542c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

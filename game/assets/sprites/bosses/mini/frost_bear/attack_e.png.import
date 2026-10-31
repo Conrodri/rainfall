@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://do5b0oamern6o"
-path.bptc="res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.bptc.ctex"
-path.astc="res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.astc.ctex"
+path.s3tc="res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.s3tc.ctex"
+path.etc2="res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/frost_bear/attack_e.png"
-dest_files=["res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.bptc.ctex", "res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.astc.ctex"]
+dest_files=["res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.s3tc.ctex", "res://.godot/imported/attack_e.png-9f6f44208e2cb5079a9a0b2db2eb1f5f.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

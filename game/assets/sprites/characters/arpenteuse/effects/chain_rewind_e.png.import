@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://r2dwib7cxplv"
-path.bptc="res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.bptc.ctex"
-path.astc="res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.astc.ctex"
+path.s3tc="res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.s3tc.ctex"
+path.etc2="res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/arpenteuse/effects/chain_rewind_e.png"
-dest_files=["res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.bptc.ctex", "res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.astc.ctex"]
+dest_files=["res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.s3tc.ctex", "res://.godot/imported/chain_rewind_e.png-bfafec76d5eb451655a6bff22943f7bc.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjhhqhmjxvlpi"
-path.bptc="res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.bptc.ctex"
-path.astc="res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.astc.ctex"
+path.s3tc="res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.s3tc.ctex"
+path.etc2="res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/flood_gunner/pylon_cracked.png"
-dest_files=["res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.bptc.ctex", "res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.astc.ctex"]
+dest_files=["res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.s3tc.ctex", "res://.godot/imported/pylon_cracked.png-7cfce48745bc28053a2cd7c85d053606.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cp4l60gvgxt46"
-path.bptc="res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.bptc.ctex"
-path.astc="res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/shooter_tier2_rust/death.png"
-dest_files=["res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.bptc.ctex", "res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.s3tc.ctex", "res://.godot/imported/death.png-e12f0daecf20e69c59c797ab78c5f26b.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

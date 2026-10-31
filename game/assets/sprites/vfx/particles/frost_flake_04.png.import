@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://boa2p2d14x8lt"
-path.bptc="res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.bptc.ctex"
-path.astc="res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.astc.ctex"
+path.s3tc="res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.s3tc.ctex"
+path.etc2="res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/particles/frost_flake_04.png"
-dest_files=["res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.bptc.ctex", "res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.astc.ctex"]
+dest_files=["res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.s3tc.ctex", "res://.godot/imported/frost_flake_04.png-3ffabede0a5ff8b52d5a521ef8e78dd2.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

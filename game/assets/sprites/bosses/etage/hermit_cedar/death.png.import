@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cgv3t7cidn3st"
-path.bptc="res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.bptc.ctex"
-path.astc="res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/hermit_cedar/death.png"
-dest_files=["res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.bptc.ctex", "res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.s3tc.ctex", "res://.godot/imported/death.png-9c3432b05b01cabaa53391d0946eb12d.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

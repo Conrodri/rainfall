@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://g7gam655ggur"
-path.bptc="res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.bptc.ctex"
-path.astc="res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.astc.ctex"
+path.s3tc="res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.s3tc.ctex"
+path.etc2="res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/handwalk.png"
-dest_files=["res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.bptc.ctex", "res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.astc.ctex"]
+dest_files=["res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.s3tc.ctex", "res://.godot/imported/handwalk.png-514c7847e6ed7adf523734a40ce1cf4b.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

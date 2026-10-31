@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtrqvolwe1p8t"
-path.bptc="res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.bptc.ctex"
-path.astc="res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.astc.ctex"
+path.s3tc="res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.s3tc.ctex"
+path.etc2="res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/raid/weak_point_break.png"
-dest_files=["res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.bptc.ctex", "res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.astc.ctex"]
+dest_files=["res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.s3tc.ctex", "res://.godot/imported/weak_point_break.png-0d2c49e51a26ac674bf2a750e03cb321.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

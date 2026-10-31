@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ubjpanijophy"
-path.bptc="res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.bptc.ctex"
-path.astc="res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.astc.ctex"
+path.s3tc="res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.s3tc.ctex"
+path.etc2="res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/frost_bear/ice_block.png"
-dest_files=["res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.bptc.ctex", "res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.astc.ctex"]
+dest_files=["res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.s3tc.ctex", "res://.godot/imported/ice_block.png-147ced490e236f6da86c3e5e68abe88c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

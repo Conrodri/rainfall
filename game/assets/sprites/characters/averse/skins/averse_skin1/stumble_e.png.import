@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bigmy5dlf2asm"
-path.bptc="res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.bptc.ctex"
-path.astc="res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.astc.ctex"
+path.s3tc="res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.s3tc.ctex"
+path.etc2="res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/averse/skins/averse_skin1/stumble_e.png"
-dest_files=["res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.bptc.ctex", "res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.astc.ctex"]
+dest_files=["res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.s3tc.ctex", "res://.godot/imported/stumble_e.png-b4bfae723b2dedde33e122769e316731.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

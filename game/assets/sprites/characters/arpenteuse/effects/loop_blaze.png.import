@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bby8mgvysaey5"
-path.bptc="res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.bptc.ctex"
-path.astc="res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.astc.ctex"
+path.s3tc="res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.s3tc.ctex"
+path.etc2="res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/arpenteuse/effects/loop_blaze.png"
-dest_files=["res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.bptc.ctex", "res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.astc.ctex"]
+dest_files=["res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.s3tc.ctex", "res://.godot/imported/loop_blaze.png-a3bfe60b03c47766671bbca5f4738508.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

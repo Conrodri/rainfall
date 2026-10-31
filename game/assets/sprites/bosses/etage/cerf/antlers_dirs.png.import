@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4iqg1xv04wu4"
-path.bptc="res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.bptc.ctex"
-path.astc="res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.astc.ctex"
+path.s3tc="res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.s3tc.ctex"
+path.etc2="res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/cerf/antlers_dirs.png"
-dest_files=["res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.bptc.ctex", "res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.astc.ctex"]
+dest_files=["res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.s3tc.ctex", "res://.godot/imported/antlers_dirs.png-51d1ab613a9351ab77e87f45fb7a7d32.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

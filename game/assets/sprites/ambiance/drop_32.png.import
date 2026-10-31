@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://6n0hxlrea4k1"
-path.bptc="res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.bptc.ctex"
-path.astc="res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.astc.ctex"
+path.s3tc="res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.s3tc.ctex"
+path.etc2="res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/drop_32.png"
-dest_files=["res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.bptc.ctex", "res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.astc.ctex"]
+dest_files=["res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.s3tc.ctex", "res://.godot/imported/drop_32.png-e17fd3f22ddd55b99ccba24bf8e219d9.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

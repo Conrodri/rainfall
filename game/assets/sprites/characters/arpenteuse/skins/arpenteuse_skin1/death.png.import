@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2b4h1gb5jers"
-path.bptc="res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.bptc.ctex"
-path.astc="res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/arpenteuse/skins/arpenteuse_skin1/death.png"
-dest_files=["res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.bptc.ctex", "res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.s3tc.ctex", "res://.godot/imported/death.png-2f15eb660577fd08eeb3ded3bf20c239.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

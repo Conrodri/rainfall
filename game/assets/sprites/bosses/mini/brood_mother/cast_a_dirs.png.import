@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://o6gnyu5wyb58"
-path.bptc="res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.bptc.ctex"
-path.astc="res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.astc.ctex"
+path.s3tc="res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/brood_mother/cast_a_dirs.png"
-dest_files=["res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.bptc.ctex", "res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.astc.ctex"]
+dest_files=["res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.s3tc.ctex", "res://.godot/imported/cast_a_dirs.png-9ca4899974742a0fb0ec51f6e9b0c807.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

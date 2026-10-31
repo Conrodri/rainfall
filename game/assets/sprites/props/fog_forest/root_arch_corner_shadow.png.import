@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dda8iauuj2n75"
-path.bptc="res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.bptc.ctex"
-path.astc="res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.astc.ctex"
+path.s3tc="res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.s3tc.ctex"
+path.etc2="res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/fog_forest/root_arch_corner_shadow.png"
-dest_files=["res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.bptc.ctex", "res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.astc.ctex"]
+dest_files=["res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.s3tc.ctex", "res://.godot/imported/root_arch_corner_shadow.png-4e276665031368b3fbaf923ccd4b4ba6.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

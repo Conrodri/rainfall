@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjfp6q4dxol54"
-path.bptc="res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.bptc.ctex"
-path.astc="res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.astc.ctex"
+path.s3tc="res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/frost_bear/cast_b.png"
-dest_files=["res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.bptc.ctex", "res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.astc.ctex"]
+dest_files=["res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.s3tc.ctex", "res://.godot/imported/cast_b.png-3e45a8bb316f685d3450f0cd8c21050a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

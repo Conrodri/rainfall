@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d4h266fgb6sx5"
-path.bptc="res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.bptc.ctex"
-path.astc="res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.astc.ctex"
+path.s3tc="res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.s3tc.ctex"
+path.etc2="res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/brood_mother/run.png"
-dest_files=["res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.bptc.ctex", "res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.astc.ctex"]
+dest_files=["res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.s3tc.ctex", "res://.godot/imported/run.png-3943fed46159893d2badf62914d80b05.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

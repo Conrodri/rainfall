@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://525myagxdi0k"
-path.bptc="res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.bptc.ctex"
-path.astc="res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.astc.ctex"
+path.s3tc="res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.s3tc.ctex"
+path.etc2="res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/ardent_ashes/end.png"
-dest_files=["res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.bptc.ctex", "res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.astc.ctex"]
+dest_files=["res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.s3tc.ctex", "res://.godot/imported/end.png-903e3b6ccd3985771a882b88c6ccf304.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

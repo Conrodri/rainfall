@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7o7asli6aken"
-path.bptc="res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.bptc.ctex"
-path.astc="res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.astc.ctex"
+path.s3tc="res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.s3tc.ctex"
+path.etc2="res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/telegraph_cone/default.png"
-dest_files=["res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.bptc.ctex", "res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.astc.ctex"]
+dest_files=["res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.s3tc.ctex", "res://.godot/imported/default.png-9894c48b0e335bc6cc3f0a089b19cfb8.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

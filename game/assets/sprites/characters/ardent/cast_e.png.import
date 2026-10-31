@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xou46yv253w0"
-path.bptc="res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.bptc.ctex"
-path.astc="res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.astc.ctex"
+path.s3tc="res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/ardent/cast_e.png"
-dest_files=["res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.bptc.ctex", "res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.astc.ctex"]
+dest_files=["res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.s3tc.ctex", "res://.godot/imported/cast_e.png-1e97656a420d46cf4eb52e8d5709a738.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

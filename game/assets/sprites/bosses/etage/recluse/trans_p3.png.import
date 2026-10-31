@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dd0mnp4l8a1ef"
-path.bptc="res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.bptc.ctex"
-path.astc="res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.astc.ctex"
+path.s3tc="res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.s3tc.ctex"
+path.etc2="res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/recluse/trans_p3.png"
-dest_files=["res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.bptc.ctex", "res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.astc.ctex"]
+dest_files=["res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.s3tc.ctex", "res://.godot/imported/trans_p3.png-161f088734d412f6da7e5ec105a05baa.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

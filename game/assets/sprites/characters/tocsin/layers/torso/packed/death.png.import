@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7l0ujnox53gd"
-path.bptc="res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.bptc.ctex"
-path.astc="res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/torso/packed/death.png"
-dest_files=["res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.bptc.ctex", "res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.s3tc.ctex", "res://.godot/imported/death.png-68a631220b3b84b0d0cb533126388f10.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

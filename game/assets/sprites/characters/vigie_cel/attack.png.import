@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cklxlinshw3ue"
-path.bptc="res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.bptc.ctex"
-path.astc="res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.astc.ctex"
+path.s3tc="res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.s3tc.ctex"
+path.etc2="res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/vigie_cel/attack.png"
-dest_files=["res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.bptc.ctex", "res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.astc.ctex"]
+dest_files=["res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.s3tc.ctex", "res://.godot/imported/attack.png-fb1b7d156488f3bc3bcf00213a56f0bd.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

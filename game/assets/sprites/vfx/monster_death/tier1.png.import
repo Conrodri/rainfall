@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7mej2t1uaeoa"
-path.bptc="res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.bptc.ctex"
-path.astc="res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.astc.ctex"
+path.s3tc="res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.s3tc.ctex"
+path.etc2="res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/monster_death/tier1.png"
-dest_files=["res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.bptc.ctex", "res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.astc.ctex"]
+dest_files=["res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.s3tc.ctex", "res://.godot/imported/tier1.png-7aaa4f2b2fc1d9beed6659f519d43343.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

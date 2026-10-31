@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bo5ktt6xjv44o"
-path.bptc="res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.bptc.ctex"
-path.astc="res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.astc.ctex"
+path.s3tc="res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.s3tc.ctex"
+path.etc2="res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/flood_gunner/stoker_idle_s.png"
-dest_files=["res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.bptc.ctex", "res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.astc.ctex"]
+dest_files=["res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.s3tc.ctex", "res://.godot/imported/stoker_idle_s.png-7c2b0075d78e670f177c0da969fd528b.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

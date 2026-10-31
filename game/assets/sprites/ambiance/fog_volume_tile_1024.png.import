@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ce5om056r2hjn"
-path.bptc="res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.bptc.ctex"
-path.astc="res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.astc.ctex"
+path.s3tc="res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.s3tc.ctex"
+path.etc2="res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/fog_volume_tile_1024.png"
-dest_files=["res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.bptc.ctex", "res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.astc.ctex"]
+dest_files=["res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.s3tc.ctex", "res://.godot/imported/fog_volume_tile_1024.png-0ef28484e1732cad0a5ffd700423babc.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdgnq4bp7x3qn"
-path.bptc="res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.bptc.ctex"
-path.astc="res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.astc.ctex"
+path.s3tc="res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.s3tc.ctex"
+path.etc2="res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/head/packed/hop_l.png"
-dest_files=["res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.bptc.ctex", "res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.astc.ctex"]
+dest_files=["res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.s3tc.ctex", "res://.godot/imported/hop_l.png-9daeef3f95efb3c675de9dd957c93283.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

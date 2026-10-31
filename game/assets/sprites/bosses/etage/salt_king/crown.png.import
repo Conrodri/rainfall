@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4lmutsp1ktl0"
-path.bptc="res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.bptc.ctex"
-path.astc="res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.astc.ctex"
+path.s3tc="res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.s3tc.ctex"
+path.etc2="res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/salt_king/crown.png"
-dest_files=["res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.bptc.ctex", "res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.astc.ctex"]
+dest_files=["res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.s3tc.ctex", "res://.godot/imported/crown.png-d3e8210eb62f69f82ed728088b5d8d13.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

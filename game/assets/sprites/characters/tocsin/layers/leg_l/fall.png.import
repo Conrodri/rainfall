@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dploc5r67usgv"
-path.bptc="res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.bptc.ctex"
-path.astc="res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.astc.ctex"
+path.s3tc="res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.s3tc.ctex"
+path.etc2="res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/leg_l/fall.png"
-dest_files=["res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.bptc.ctex", "res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.astc.ctex"]
+dest_files=["res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.s3tc.ctex", "res://.godot/imported/fall.png-4e0d5c833181341e85dfdf267722132e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

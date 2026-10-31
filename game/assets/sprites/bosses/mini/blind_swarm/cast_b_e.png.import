@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxu5wsmhx8mid"
-path.bptc="res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.bptc.ctex"
-path.astc="res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.astc.ctex"
+path.s3tc="res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/blind_swarm/cast_b_e.png"
-dest_files=["res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.bptc.ctex", "res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.astc.ctex"]
+dest_files=["res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.s3tc.ctex", "res://.godot/imported/cast_b_e.png-f388dd77a32f7cb550ca3d113b2f9194.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

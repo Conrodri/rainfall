@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyaq2phltd0no"
-path.bptc="res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.bptc.ctex"
-path.astc="res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.astc.ctex"
+path.s3tc="res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.s3tc.ctex"
+path.etc2="res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/phoenix/default.png"
-dest_files=["res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.bptc.ctex", "res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.astc.ctex"]
+dest_files=["res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.s3tc.ctex", "res://.godot/imported/default.png-3d015e6e8319f8dac586a2baee30bb94.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

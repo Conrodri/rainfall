@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dn1q6fs3asd3w"
-path.bptc="res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.bptc.ctex"
-path.astc="res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.astc.ctex"
+path.s3tc="res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.s3tc.ctex"
+path.etc2="res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/crypts/sarcophagus_lid.png"
-dest_files=["res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.bptc.ctex", "res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.astc.ctex"]
+dest_files=["res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.s3tc.ctex", "res://.godot/imported/sarcophagus_lid.png-4982c41cd9f7ede750c360e6f11e08bd.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

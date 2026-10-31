@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://br4h5wlsr1v8j"
-path.bptc="res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.bptc.ctex"
-path.astc="res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.astc.ctex"
+path.s3tc="res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.s3tc.ctex"
+path.etc2="res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/rain_sheet_512.png"
-dest_files=["res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.bptc.ctex", "res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.astc.ctex"]
+dest_files=["res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.s3tc.ctex", "res://.godot/imported/rain_sheet_512.png-f2bb6fa8e5276dec8e01db8ed14aee0c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

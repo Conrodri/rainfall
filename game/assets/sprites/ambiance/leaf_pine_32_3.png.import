@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b6hguq7au80em"
-path.bptc="res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.bptc.ctex"
-path.astc="res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.astc.ctex"
+path.s3tc="res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.s3tc.ctex"
+path.etc2="res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/leaf_pine_32_3.png"
-dest_files=["res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.bptc.ctex", "res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.astc.ctex"]
+dest_files=["res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.s3tc.ctex", "res://.godot/imported/leaf_pine_32_3.png-aacf4db21f53b6a8161148133208ba10.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

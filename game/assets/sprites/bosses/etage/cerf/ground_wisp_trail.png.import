@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://2vpqg5ipmbkg"
-path.bptc="res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.bptc.ctex"
-path.astc="res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.astc.ctex"
+path.s3tc="res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.s3tc.ctex"
+path.etc2="res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/cerf/ground_wisp_trail.png"
-dest_files=["res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.bptc.ctex", "res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.astc.ctex"]
+dest_files=["res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.s3tc.ctex", "res://.godot/imported/ground_wisp_trail.png-323660b0dc6204968039118f07cb94d0.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

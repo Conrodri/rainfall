@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bislvp7ssdmbw"
-path.bptc="res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.bptc.ctex"
-path.astc="res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.astc.ctex"
+path.s3tc="res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.s3tc.ctex"
+path.etc2="res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/lightcone_256x512_2.png"
-dest_files=["res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.bptc.ctex", "res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.astc.ctex"]
+dest_files=["res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.s3tc.ctex", "res://.godot/imported/lightcone_256x512_2.png-b6d9791f25c0d322f1e3bd5706e45502.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

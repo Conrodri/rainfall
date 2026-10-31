@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsq54gvf7eg6n"
-path.bptc="res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.bptc.ctex"
-path.astc="res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.astc.ctex"
+path.s3tc="res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/bramble_queen/cast_b.png"
-dest_files=["res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.bptc.ctex", "res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.astc.ctex"]
+dest_files=["res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.s3tc.ctex", "res://.godot/imported/cast_b.png-e0e0787493f8133232e86514d83ee54c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

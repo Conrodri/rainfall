@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpgu5hw1o8haj"
-path.bptc="res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.bptc.ctex"
-path.astc="res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.astc.ctex"
+path.s3tc="res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/rust_archon/cast_b_dirs_e.png"
-dest_files=["res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.bptc.ctex", "res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.astc.ctex"]
+dest_files=["res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.s3tc.ctex", "res://.godot/imported/cast_b_dirs_e.png-abb633a2b338b92bc9c5bfa69abc7dfc.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

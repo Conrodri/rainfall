@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b3y70t13rydti"
-path.bptc="res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.bptc.ctex"
-path.astc="res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.astc.ctex"
+path.s3tc="res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.s3tc.ctex"
+path.etc2="res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/pillar_impact.png"
-dest_files=["res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.bptc.ctex", "res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.astc.ctex"]
+dest_files=["res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.s3tc.ctex", "res://.godot/imported/pillar_impact.png-0b54f30030e6c6ef765a7def6f77d22d.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

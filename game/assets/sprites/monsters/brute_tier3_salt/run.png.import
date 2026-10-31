@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dpcs6tgv5fknw"
-path.bptc="res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.bptc.ctex"
-path.astc="res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.astc.ctex"
+path.s3tc="res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.s3tc.ctex"
+path.etc2="res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/brute_tier3_salt/run.png"
-dest_files=["res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.bptc.ctex", "res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.astc.ctex"]
+dest_files=["res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.s3tc.ctex", "res://.godot/imported/run.png-decb02e25476af021b3b1e2466d14dea.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

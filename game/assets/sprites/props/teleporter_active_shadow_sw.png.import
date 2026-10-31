@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkxt4x412ivat"
-path.bptc="res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.bptc.ctex"
-path.astc="res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.astc.ctex"
+path.s3tc="res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.s3tc.ctex"
+path.etc2="res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/teleporter_active_shadow_sw.png"
-dest_files=["res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.bptc.ctex", "res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.astc.ctex"]
+dest_files=["res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.s3tc.ctex", "res://.godot/imported/teleporter_active_shadow_sw.png-7bfe6b5e5a02de3e53a9e3705388b149.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

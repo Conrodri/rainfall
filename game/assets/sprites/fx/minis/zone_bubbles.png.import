@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxnhuo726ek8a"
-path.bptc="res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.bptc.ctex"
-path.astc="res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.astc.ctex"
+path.s3tc="res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.s3tc.ctex"
+path.etc2="res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/fx/minis/zone_bubbles.png"
-dest_files=["res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.bptc.ctex", "res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.astc.ctex"]
+dest_files=["res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.s3tc.ctex", "res://.godot/imported/zone_bubbles.png-048aa989ed3fb5e69eb5e45c665b7811.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

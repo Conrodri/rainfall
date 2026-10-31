@@ -20,6 +20,7 @@ Sans --apply-policy, rien n'est modifié (mesure seulement).
 """
 from __future__ import annotations
 
+import fnmatch
 import json
 import os
 import re
@@ -139,6 +140,8 @@ def expected_params(rel: str, budget: dict) -> dict:
     pol = budget.get("import_policy", {})
     lossless = any(rel.startswith(d) for d in pol.get("lossless_dirs", []))
     params = dict(pol.get("lossless" if lossless else "default", {}))
+    if not lossless and any(fnmatch.fnmatchcase(rel, g) for g in pol.get("lowq_globs", [])):
+        params.update(pol.get("lowq", {}))  # ETC2 (high_quality faux, mieux deflaté que l'ASTC) : tout sauf terrain, UI, icônes
     params.setdefault("process/size_limit", 0)
     params.update(pol.get("overrides", {}).get(rel, {}))
     return params

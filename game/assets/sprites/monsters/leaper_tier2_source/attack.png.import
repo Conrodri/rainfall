@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://eabnoek48gpx"
-path.bptc="res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.bptc.ctex"
-path.astc="res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.astc.ctex"
+path.s3tc="res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.s3tc.ctex"
+path.etc2="res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/leaper_tier2_source/attack.png"
-dest_files=["res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.bptc.ctex", "res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.astc.ctex"]
+dest_files=["res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.s3tc.ctex", "res://.godot/imported/attack.png-5ee5a6a687e49963e8c751c2544b980b.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

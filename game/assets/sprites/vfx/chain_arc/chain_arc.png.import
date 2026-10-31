@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbh5tk0el70a4"
-path.bptc="res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.bptc.ctex"
-path.astc="res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.astc.ctex"
+path.s3tc="res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.s3tc.ctex"
+path.etc2="res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/chain_arc/chain_arc.png"
-dest_files=["res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.bptc.ctex", "res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.astc.ctex"]
+dest_files=["res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.s3tc.ctex", "res://.godot/imported/chain_arc.png-d97fd3e80720a741f0ebb6f5b49affe4.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

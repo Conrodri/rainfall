@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkyrexdpf32l2"
-path.bptc="res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.bptc.ctex"
-path.astc="res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.astc.ctex"
+path.s3tc="res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.s3tc.ctex"
+path.etc2="res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/weaver/spell_a.png"
-dest_files=["res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.bptc.ctex", "res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.astc.ctex"]
+dest_files=["res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.s3tc.ctex", "res://.godot/imported/spell_a.png-accbaca8fba4efdb3e9e4b45407f235b.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

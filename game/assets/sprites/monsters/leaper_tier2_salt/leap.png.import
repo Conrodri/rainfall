@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://fko4t4ur872u"
-path.bptc="res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.bptc.ctex"
-path.astc="res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.astc.ctex"
+path.s3tc="res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.s3tc.ctex"
+path.etc2="res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/leaper_tier2_salt/leap.png"
-dest_files=["res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.bptc.ctex", "res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.astc.ctex"]
+dest_files=["res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.s3tc.ctex", "res://.godot/imported/leap.png-a4177ad9cb1ec6e2b3b1e63993958428.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

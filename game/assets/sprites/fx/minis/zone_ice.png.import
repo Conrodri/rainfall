@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bls1irbcafvke"
-path.bptc="res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.bptc.ctex"
-path.astc="res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.astc.ctex"
+path.s3tc="res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.s3tc.ctex"
+path.etc2="res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/fx/minis/zone_ice.png"
-dest_files=["res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.bptc.ctex", "res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.astc.ctex"]
+dest_files=["res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.s3tc.ctex", "res://.godot/imported/zone_ice.png-d81f1e09b2f8c51d6bafe2f5f1611dcd.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

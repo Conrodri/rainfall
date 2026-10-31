@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://6tw0h3xewav8"
-path.bptc="res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.bptc.ctex"
-path.astc="res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.astc.ctex"
+path.s3tc="res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.s3tc.ctex"
+path.etc2="res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/particles/arc_fragment_01_e.png"
-dest_files=["res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.bptc.ctex", "res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.astc.ctex"]
+dest_files=["res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.s3tc.ctex", "res://.godot/imported/arc_fragment_01_e.png-ea5b576df4ba951161e95b63a612261e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

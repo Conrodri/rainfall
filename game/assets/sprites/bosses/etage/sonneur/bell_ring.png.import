@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cqtbw75p7vdub"
-path.bptc="res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.bptc.ctex"
-path.astc="res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.astc.ctex"
+path.s3tc="res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.s3tc.ctex"
+path.etc2="res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/sonneur/bell_ring.png"
-dest_files=["res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.bptc.ctex", "res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.astc.ctex"]
+dest_files=["res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.s3tc.ctex", "res://.godot/imported/bell_ring.png-b42156ae2877ea75be2586f3ee0ea759.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

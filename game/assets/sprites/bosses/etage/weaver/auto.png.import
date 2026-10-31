@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bjxi5fklu7f6y"
-path.bptc="res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.bptc.ctex"
-path.astc="res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.astc.ctex"
+path.s3tc="res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.s3tc.ctex"
+path.etc2="res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/weaver/auto.png"
-dest_files=["res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.bptc.ctex", "res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.astc.ctex"]
+dest_files=["res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.s3tc.ctex", "res://.godot/imported/auto.png-1d27c207b9ecbb278644b3c65f28ee5e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

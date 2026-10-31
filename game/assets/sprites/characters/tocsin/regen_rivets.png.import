@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyesnipo7nyvr"
-path.bptc="res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.bptc.ctex"
-path.astc="res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.astc.ctex"
+path.s3tc="res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.s3tc.ctex"
+path.etc2="res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/regen_rivets.png"
-dest_files=["res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.bptc.ctex", "res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.astc.ctex"]
+dest_files=["res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.s3tc.ctex", "res://.godot/imported/regen_rivets.png-7493536b22c5e53a62f1b75f9a94fe6e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

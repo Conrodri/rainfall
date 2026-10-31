@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyu0kk3tp5d4a"
-path.bptc="res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.bptc.ctex"
-path.astc="res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.astc.ctex"
+path.s3tc="res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.s3tc.ctex"
+path.etc2="res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/leg_r/attack.png"
-dest_files=["res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.bptc.ctex", "res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.astc.ctex"]
+dest_files=["res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.s3tc.ctex", "res://.godot/imported/attack.png-2d7b44be0406d9631222011d57b9237e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dsab1vuycx4xg"
-path.bptc="res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.bptc.ctex"
-path.astc="res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.astc.ctex"
+path.s3tc="res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.s3tc.ctex"
+path.etc2="res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/raid/shield_burst.png"
-dest_files=["res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.bptc.ctex", "res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.astc.ctex"]
+dest_files=["res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.s3tc.ctex", "res://.godot/imported/shield_burst.png-124831e8b9e508f4abf6e0a6c07c2686.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

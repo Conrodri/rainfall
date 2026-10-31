@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xp68xf8nh6em"
-path.bptc="res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.bptc.ctex"
-path.astc="res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.astc.ctex"
+path.s3tc="res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.s3tc.ctex"
+path.etc2="res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/deep_eel/discharge_ring.png"
-dest_files=["res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.bptc.ctex", "res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.astc.ctex"]
+dest_files=["res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.s3tc.ctex", "res://.godot/imported/discharge_ring.png-69c8f05ce7263212ff2d206d015d0d9f.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

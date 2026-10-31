@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpgtp1l2cleea"
-path.bptc="res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.bptc.ctex"
-path.astc="res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.astc.ctex"
+path.s3tc="res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.s3tc.ctex"
+path.etc2="res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/salt_king/edict_ring_2.png"
-dest_files=["res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.bptc.ctex", "res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.astc.ctex"]
+dest_files=["res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.s3tc.ctex", "res://.godot/imported/edict_ring_2.png-f98463a5673effdabf2b2d10508539d2.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

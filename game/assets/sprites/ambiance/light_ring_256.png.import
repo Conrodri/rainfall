@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ddjoy6sstjgxs"
-path.bptc="res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.bptc.ctex"
-path.astc="res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.astc.ctex"
+path.s3tc="res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.s3tc.ctex"
+path.etc2="res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/light_ring_256.png"
-dest_files=["res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.bptc.ctex", "res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.astc.ctex"]
+dest_files=["res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.s3tc.ctex", "res://.godot/imported/light_ring_256.png-9ab2de5f2508ca7cf1745ab38f17822f.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

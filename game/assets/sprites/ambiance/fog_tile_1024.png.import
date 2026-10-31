@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b1rmxbr2pvbgo"
-path.bptc="res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.bptc.ctex"
-path.astc="res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.astc.ctex"
+path.s3tc="res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.s3tc.ctex"
+path.etc2="res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/fog_tile_1024.png"
-dest_files=["res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.bptc.ctex", "res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.astc.ctex"]
+dest_files=["res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.s3tc.ctex", "res://.godot/imported/fog_tile_1024.png-90b31b49418fe55e5da4789de2848f60.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://eb7muviaswm6"
-path.bptc="res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.bptc.ctex"
-path.astc="res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.astc.ctex"
+path.s3tc="res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.s3tc.ctex"
+path.etc2="res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/vigie/net_arrow/default.png"
-dest_files=["res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.bptc.ctex", "res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.astc.ctex"]
+dest_files=["res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.s3tc.ctex", "res://.godot/imported/default.png-7385c149c3d0043a8b8ce9565aa06baa.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

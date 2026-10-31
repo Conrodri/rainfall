@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wq5dujw4m07i"
-path.bptc="res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.bptc.ctex"
-path.astc="res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.astc.ctex"
+path.s3tc="res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.s3tc.ctex"
+path.etc2="res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/rain/drop_03.png"
-dest_files=["res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.bptc.ctex", "res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.astc.ctex"]
+dest_files=["res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.s3tc.ctex", "res://.godot/imported/drop_03.png-df9545727ab5794b81575d7ea2878bbf.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

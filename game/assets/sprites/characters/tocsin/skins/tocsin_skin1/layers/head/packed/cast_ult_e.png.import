@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btw6kwkc6ylgl"
-path.bptc="res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.bptc.ctex"
-path.astc="res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.astc.ctex"
+path.s3tc="res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/head/packed/cast_ult_e.png"
-dest_files=["res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.bptc.ctex", "res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.astc.ctex"]
+dest_files=["res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.s3tc.ctex", "res://.godot/imported/cast_ult_e.png-22e181f8dc40d33259be6fd9bded93ed.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

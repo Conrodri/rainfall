@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsc8hpt7droba"
-path.bptc="res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.bptc.ctex"
-path.astc="res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.astc.ctex"
+path.s3tc="res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.s3tc.ctex"
+path.etc2="res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/steam_puff_64.png"
-dest_files=["res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.bptc.ctex", "res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.astc.ctex"]
+dest_files=["res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.s3tc.ctex", "res://.godot/imported/steam_puff_64.png-0ad5b2b2830519681621d1599322cbb8.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bu3rwuj14evcq"
-path.bptc="res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.bptc.ctex"
-path.astc="res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.astc.ctex"
+path.s3tc="res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.s3tc.ctex"
+path.etc2="res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/rain_sower/rain_column.png"
-dest_files=["res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.bptc.ctex", "res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.astc.ctex"]
+dest_files=["res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.s3tc.ctex", "res://.godot/imported/rain_column.png-14a86fe107ff192f18a1f149a1d70ebb.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

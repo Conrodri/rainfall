@@ -80,6 +80,21 @@ func _describe(p: Node) -> Dictionary:
 	}
 
 
+## Pose au sol des nœuds comme les kits le font (doublure de Rictus, gluant de Rainette, motte de Bourbe, nœud étiqueté).
+func _drop_world_kit_nodes() -> Array:
+	var world := _player.get_parent()
+	var out: Array = []
+	var d := Decoy.new()
+	var g := RainetteGoo.new()
+	var m := BourbeMotte.new()
+	var tagged := Node2D.new()
+	tagged.add_to_group(&"kit_world_nodes")
+	for n: Node in [d, g, m, tagged]:
+		world.add_child(n)
+		out.append(n)
+	return out
+
+
 func _compare(label: String, cur: Dictionary, ref: Dictionary) -> void:
 	if _skip_frames: # frames illisibles : on ne compare que les nœuds hors sprites d'animation / émission
 		for d: Dictionary in [cur, ref]:
@@ -145,9 +160,17 @@ func _run() -> void:
 				skin = skins[0]
 			TestMode.set_skin(cid, skin)
 			_skip_frames = not _frames_loadable(cid)
+			var dropped := _drop_world_kit_nodes()
+			var plain := Node2D.new() # témoin : un nœud du monde qui n'est pas au kit doit survivre
+			plain.name = "TemoinMonde"
+			_player.get_parent().add_child(plain)
 			var ok := TestTools.switch_character(get_tree(), cid, {})
 			_check("switch %s" % cid, ok)
 			await _frames(3)
+			var left := dropped.filter(func(n) -> bool: return is_instance_valid(n) and n.is_inside_tree())
+			_check("#%d %s : plus aucun nœud de kit dans le monde" % [step, cid], left.is_empty(), str(left))
+			_check("#%d %s : nœud étranger au kit conservé" % [step, cid], is_instance_valid(plain) and plain.is_inside_tree())
+			plain.queue_free()
 			var label := "#%d %s skin=%s" % [step, cid, skin]
 			var cur := _describe(_player)
 			var ref: Dictionary = await _fresh_signature(cid, {})

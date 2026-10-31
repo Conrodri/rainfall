@@ -451,6 +451,25 @@ func _purge_kit_nodes() -> void:
 		spr.set(k, _scene_visual_state[k])
 
 
+## Retire du monde (frère du joueur) ce que l'ancien kit y a posé et qui persiste : doublures, flaques, mottes, gluant, bulles,
+## pièges, fusées... Critère : nœud du groupe `kit_world_nodes` (pour un nœud sans script) ou script de
+## res://scripts/spells/. Les monstres, pickups et décors n'ont pas ces scripts.
+func _purge_world_kit_nodes() -> void:
+	var world := get_parent()
+	if world == null:
+		return
+	for c in world.get_children():
+		if c == self:
+			continue
+		var from_kit := c.is_in_group(&"kit_world_nodes")
+		if not from_kit:
+			var sc := c.get_script() as Script
+			from_kit = sc != null and sc.resource_path.begins_with("res://scripts/spells/")
+		if from_kit:
+			world.remove_child(c)
+			c.queue_free()
+
+
 ## Changement de personnage en place (mode test) : garde objets, niveau et position ; refait les sorts, le kit, l'apparence,
 ## la hitbox et les lumières du nouveau personnage (CharacterData.for_id). `spell_loadout` : variantes de sorts {slot: id}.
 ## Les statuts et la recharge de l'ancien kit sont perdus. Retourne faux si l'id est inconnu.
@@ -466,6 +485,7 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 		remove_child(kit)
 		kit.queue_free()
 		kit = null
+	_purge_world_kit_nodes()
 	spells.teardown()
 	remove_child(spells)
 	spells.queue_free()

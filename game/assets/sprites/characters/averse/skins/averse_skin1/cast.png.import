@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://decbm70e67k48"
-path.bptc="res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.bptc.ctex"
-path.astc="res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.astc.ctex"
+path.s3tc="res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.s3tc.ctex"
+path.etc2="res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/averse/skins/averse_skin1/cast.png"
-dest_files=["res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.bptc.ctex", "res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.astc.ctex"]
+dest_files=["res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.s3tc.ctex", "res://.godot/imported/cast.png-47dd8e812c27720b275135ad85da6c32.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

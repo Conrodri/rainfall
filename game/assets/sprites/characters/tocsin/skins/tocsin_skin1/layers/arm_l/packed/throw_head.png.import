@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtnae3tvlh1c8"
-path.bptc="res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.bptc.ctex"
-path.astc="res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.astc.ctex"
+path.s3tc="res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.s3tc.ctex"
+path.etc2="res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/arm_l/packed/throw_head.png"
-dest_files=["res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.bptc.ctex", "res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.astc.ctex"]
+dest_files=["res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.s3tc.ctex", "res://.godot/imported/throw_head.png-5188f78ab79782c6e1a52afa4549d357.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

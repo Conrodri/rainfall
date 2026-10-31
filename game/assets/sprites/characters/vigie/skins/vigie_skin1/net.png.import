@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qepexofhfw1u"
-path.bptc="res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.bptc.ctex"
-path.astc="res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.astc.ctex"
+path.s3tc="res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.s3tc.ctex"
+path.etc2="res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/vigie/skins/vigie_skin1/net.png"
-dest_files=["res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.bptc.ctex", "res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.astc.ctex"]
+dest_files=["res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.s3tc.ctex", "res://.godot/imported/net.png-92051d223f997d6d3a1ef0c36f90d804.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

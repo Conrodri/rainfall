@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b82nljj03v1lf"
-path.bptc="res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.bptc.ctex"
-path.astc="res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.astc.ctex"
+path.s3tc="res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.s3tc.ctex"
+path.etc2="res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/fx/minis/zone_poison.png"
-dest_files=["res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.bptc.ctex", "res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.astc.ctex"]
+dest_files=["res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.s3tc.ctex", "res://.godot/imported/zone_poison.png-b0b948ac43dd541de8e95e6df99a8d7a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpt13wppg4sau"
-path.bptc="res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.bptc.ctex"
-path.astc="res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.astc.ctex"
+path.s3tc="res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.s3tc.ctex"
+path.etc2="res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/leaper_tier2/leap.png"
-dest_files=["res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.bptc.ctex", "res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.astc.ctex"]
+dest_files=["res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.s3tc.ctex", "res://.godot/imported/leap.png-78047d363d2aaafb5ec5ee24a227025e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

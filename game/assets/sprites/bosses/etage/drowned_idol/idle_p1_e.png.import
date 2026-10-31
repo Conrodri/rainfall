@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://m0mw5tk0cmeo"
-path.bptc="res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.bptc.ctex"
-path.astc="res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.astc.ctex"
+path.s3tc="res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.s3tc.ctex"
+path.etc2="res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/drowned_idol/idle_p1_e.png"
-dest_files=["res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.bptc.ctex", "res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.astc.ctex"]
+dest_files=["res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.s3tc.ctex", "res://.godot/imported/idle_p1_e.png-4262206b359fbd013085fbe8b05d2e84.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

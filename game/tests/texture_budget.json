@@ -29,6 +29,23 @@
    "compress/mode": 0,
    "mipmaps/generate": false
   },
+  "lowq_globs": [
+   "assets/sprites/bosses/*",
+   "assets/sprites/vfx/*",
+   "assets/sprites/characters/*",
+   "assets/sprites/monsters/*",
+   "assets/sprites/props/*",
+   "assets/sprites/ambiance/*",
+   "assets/sprites/fx/*",
+   "assets/sprites/characters/tocsin/head_*",
+   "assets/sprites/characters/tocsin/arm_*",
+   "assets/sprites/characters/tocsin/leg_*",
+   "assets/sprites/characters/*/effects/*",
+   "assets/sprites/characters/*/variants/*"
+  ],
+  "lowq": {
+   "compress/high_quality": false
+  },
   "overrides": {
    "assets/sprites/ambiance/cloud_shadow_2048.png": {
     "process/size_limit": 1024

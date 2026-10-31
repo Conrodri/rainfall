@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dsir2vl3nin73"
-path.bptc="res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.bptc.ctex"
-path.astc="res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.astc.ctex"
+path.s3tc="res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.s3tc.ctex"
+path.etc2="res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/eclusier/ground_water_e.png"
-dest_files=["res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.bptc.ctex", "res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.astc.ctex"]
+dest_files=["res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.s3tc.ctex", "res://.godot/imported/ground_water_e.png-4355ef808b9e9bdfcb338375ff7b3e73.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

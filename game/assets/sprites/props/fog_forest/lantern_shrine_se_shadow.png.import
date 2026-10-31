@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4nlb7yem4pi"
-path.bptc="res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.bptc.ctex"
-path.astc="res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.astc.ctex"
+path.s3tc="res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.s3tc.ctex"
+path.etc2="res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/fog_forest/lantern_shrine_se_shadow.png"
-dest_files=["res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.bptc.ctex", "res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.astc.ctex"]
+dest_files=["res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.s3tc.ctex", "res://.godot/imported/lantern_shrine_se_shadow.png-ee013a8f75ed59ce9d171b0590782767.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

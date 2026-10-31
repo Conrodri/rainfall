@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjta8i6y13o0q"
-path.bptc="res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.bptc.ctex"
-path.astc="res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/leaper_tier2_source/death.png"
-dest_files=["res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.bptc.ctex", "res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.s3tc.ctex", "res://.godot/imported/death.png-41124a3e5c990c3bd5f2dbdadfb9f72a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bj3ahq3v5md4i"
-path.bptc="res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.bptc.ctex"
-path.astc="res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.astc.ctex"
+path.s3tc="res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.s3tc.ctex"
+path.etc2="res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/vfx/raid/soak_burst.png"
-dest_files=["res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.bptc.ctex", "res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.astc.ctex"]
+dest_files=["res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.s3tc.ctex", "res://.godot/imported/soak_burst.png-7dd131789007bf4ba8277f7b467336af.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

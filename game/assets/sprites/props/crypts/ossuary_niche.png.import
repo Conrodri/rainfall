@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dm402qk674s6e"
-path.bptc="res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.bptc.ctex"
-path.astc="res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.astc.ctex"
+path.s3tc="res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.s3tc.ctex"
+path.etc2="res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/crypts/ossuary_niche.png"
-dest_files=["res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.bptc.ctex", "res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.astc.ctex"]
+dest_files=["res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.s3tc.ctex", "res://.godot/imported/ossuary_niche.png-3365ef13cc156a87b0bad84a11a1531c.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

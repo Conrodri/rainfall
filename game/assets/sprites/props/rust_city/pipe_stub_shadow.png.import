@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://im66eijdtu34"
-path.bptc="res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.bptc.ctex"
-path.astc="res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.astc.ctex"
+path.s3tc="res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.s3tc.ctex"
+path.etc2="res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/rust_city/pipe_stub_shadow.png"
-dest_files=["res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.bptc.ctex", "res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.astc.ctex"]
+dest_files=["res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.s3tc.ctex", "res://.godot/imported/pipe_stub_shadow.png-990d3802485714b2c15724e9ce67e998.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

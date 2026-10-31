@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://6l83i6bcplal"
-path.bptc="res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.bptc.ctex"
-path.astc="res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.astc.ctex"
+path.s3tc="res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.s3tc.ctex"
+path.etc2="res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/teleporter_idle_shadow_sw.png"
-dest_files=["res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.bptc.ctex", "res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.astc.ctex"]
+dest_files=["res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.s3tc.ctex", "res://.godot/imported/teleporter_idle_shadow_sw.png-76367557c19c8d53f157359a715c6b11.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

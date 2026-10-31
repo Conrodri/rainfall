@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ccj8jv71s56rc"
-path.bptc="res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.bptc.ctex"
-path.astc="res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.astc.ctex"
+path.s3tc="res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.s3tc.ctex"
+path.etc2="res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/crypts/crystal_lantern_e.png"
-dest_files=["res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.bptc.ctex", "res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.astc.ctex"]
+dest_files=["res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.s3tc.ctex", "res://.godot/imported/crystal_lantern_e.png-1412a95497f1b91810ce714c4266edff.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

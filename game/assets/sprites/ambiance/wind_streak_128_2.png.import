@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cdd8f8jqnm3vr"
-path.bptc="res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.bptc.ctex"
-path.astc="res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.astc.ctex"
+path.s3tc="res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.s3tc.ctex"
+path.etc2="res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/wind_streak_128_2.png"
-dest_files=["res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.bptc.ctex", "res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.astc.ctex"]
+dest_files=["res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.s3tc.ctex", "res://.godot/imported/wind_streak_128_2.png-bf1beef5f707cca7ed62ca5330f6b5bc.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

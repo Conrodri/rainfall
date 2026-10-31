@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://p3lc0jxatchq"
-path.bptc="res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.bptc.ctex"
-path.astc="res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.astc.ctex"
+path.s3tc="res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.s3tc.ctex"
+path.etc2="res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/source/mother_rod_off.png"
-dest_files=["res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.bptc.ctex", "res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.astc.ctex"]
+dest_files=["res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.s3tc.ctex", "res://.godot/imported/mother_rod_off.png-66b9b7f3460fd8d152a473b89f2459e8.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

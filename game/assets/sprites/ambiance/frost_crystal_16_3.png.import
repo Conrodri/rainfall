@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7qlp4qnbef51"
-path.bptc="res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.bptc.ctex"
-path.astc="res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.astc.ctex"
+path.s3tc="res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.s3tc.ctex"
+path.etc2="res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/frost_crystal_16_3.png"
-dest_files=["res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.bptc.ctex", "res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.astc.ctex"]
+dest_files=["res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.s3tc.ctex", "res://.godot/imported/frost_crystal_16_3.png-a806b755abba851a58477045971d015a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

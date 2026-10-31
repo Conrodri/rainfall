@@ -86,6 +86,7 @@ func _spawn_ring() -> void:
 		return
 	ring = AnimatedSprite2D.new()
 	ring.name = "HeadRing"
+	ring.add_to_group(&"kit_world_nodes") # purgé au changement de personnage (mode test)
 	ring.z_index = -1
 	ring.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	parent.add_child(ring)

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8up62y4c1dkb"
-path.bptc="res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.bptc.ctex"
-path.astc="res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.astc.ctex"
+path.s3tc="res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.s3tc.ctex"
+path.etc2="res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/crystal_mother/trans_p3_e.png"
-dest_files=["res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.bptc.ctex", "res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.astc.ctex"]
+dest_files=["res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.s3tc.ctex", "res://.godot/imported/trans_p3_e.png-fd5c71aa7cb8b2f2d8f930c43ff3d0ff.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

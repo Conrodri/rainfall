@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ce5icwv8tdnb6"
-path.bptc="res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.bptc.ctex"
-path.astc="res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.astc.ctex"
+path.s3tc="res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.s3tc.ctex"
+path.etc2="res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/head_blast_top.png"
-dest_files=["res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.bptc.ctex", "res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.astc.ctex"]
+dest_files=["res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.s3tc.ctex", "res://.godot/imported/head_blast_top.png-8e48f85e6b7e881b85e9b75f8b50dd9a.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

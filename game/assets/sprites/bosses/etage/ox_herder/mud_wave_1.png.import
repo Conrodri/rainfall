@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1d5k1vp1qlde"
-path.bptc="res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.bptc.ctex"
-path.astc="res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.astc.ctex"
+path.s3tc="res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.s3tc.ctex"
+path.etc2="res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/ox_herder/mud_wave_1.png"
-dest_files=["res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.bptc.ctex", "res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.astc.ctex"]
+dest_files=["res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.s3tc.ctex", "res://.godot/imported/mud_wave_1.png-a0a5b5925e2bce3e297fcbe6ae752b71.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

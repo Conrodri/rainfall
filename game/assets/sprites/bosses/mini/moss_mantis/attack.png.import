@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bltf1ghjvl36e"
-path.bptc="res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.bptc.ctex"
-path.astc="res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.astc.ctex"
+path.s3tc="res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.s3tc.ctex"
+path.etc2="res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/moss_mantis/attack.png"
-dest_files=["res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.bptc.ctex", "res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.astc.ctex"]
+dest_files=["res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.s3tc.ctex", "res://.godot/imported/attack.png-bfb881f3b630ae2a977fc9e559039fac.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

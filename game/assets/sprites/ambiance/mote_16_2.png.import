@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3tx8y4l5l6lb"
-path.bptc="res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.bptc.ctex"
-path.astc="res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.astc.ctex"
+path.s3tc="res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.s3tc.ctex"
+path.etc2="res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/mote_16_2.png"
-dest_files=["res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.bptc.ctex", "res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.astc.ctex"]
+dest_files=["res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.s3tc.ctex", "res://.godot/imported/mote_16_2.png-f4c449c86a0643a26f6490662287ea69.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

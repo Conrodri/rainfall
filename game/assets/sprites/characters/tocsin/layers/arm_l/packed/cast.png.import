@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://o4oiw1emjq34"
-path.bptc="res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.bptc.ctex"
-path.astc="res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.astc.ctex"
+path.s3tc="res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.s3tc.ctex"
+path.etc2="res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/arm_l/packed/cast.png"
-dest_files=["res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.bptc.ctex", "res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.astc.ctex"]
+dest_files=["res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.s3tc.ctex", "res://.godot/imported/cast.png-aaaabfbdb837bfb06d6a3cd576d29ceb.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

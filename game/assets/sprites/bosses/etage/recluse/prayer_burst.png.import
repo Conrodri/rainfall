@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://2o01mmol1dxy"
-path.bptc="res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.bptc.ctex"
-path.astc="res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.astc.ctex"
+path.s3tc="res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.s3tc.ctex"
+path.etc2="res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/recluse/prayer_burst.png"
-dest_files=["res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.bptc.ctex", "res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.astc.ctex"]
+dest_files=["res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.s3tc.ctex", "res://.godot/imported/prayer_burst.png-acf2c7e6e09bef0098f06a185c6c934e.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

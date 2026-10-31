@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b036v1iprwbf2"
-path.bptc="res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.bptc.ctex"
-path.astc="res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.astc.ctex"
+path.s3tc="res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.s3tc.ctex"
+path.etc2="res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/rust_city/ticket_booth.png"
-dest_files=["res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.bptc.ctex", "res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.astc.ctex"]
+dest_files=["res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.s3tc.ctex", "res://.godot/imported/ticket_booth.png-d9131120f3fbd441b41d51f0aa0df320.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

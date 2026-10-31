@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c3a61dp43crmn"
-path.bptc="res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.bptc.ctex"
-path.astc="res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.astc.ctex"
+path.s3tc="res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.s3tc.ctex"
+path.etc2="res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/crystal_mother/orbit_shard_e.png"
-dest_files=["res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.bptc.ctex", "res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.astc.ctex"]
+dest_files=["res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.s3tc.ctex", "res://.godot/imported/orbit_shard_e.png-b603c8c5c32aceb5cba6cea4d521a075.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

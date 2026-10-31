@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj3s6dwy5n56b"
-path.bptc="res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.bptc.ctex"
-path.astc="res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.astc.ctex"
+path.s3tc="res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.s3tc.ctex"
+path.etc2="res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/averse_cel/effects/crue_ring/crue_ring_1.png"
-dest_files=["res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.bptc.ctex", "res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.astc.ctex"]
+dest_files=["res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.s3tc.ctex", "res://.godot/imported/crue_ring_1.png-3956c1bd9f862bfd2d064c8238c329aa.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

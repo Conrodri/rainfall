@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbmm2dsqk7lq6"
-path.bptc="res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.bptc.ctex"
-path.astc="res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.astc.ctex"
+path.s3tc="res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.s3tc.ctex"
+path.etc2="res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/leg_r/hop_r.png"
-dest_files=["res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.bptc.ctex", "res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.astc.ctex"]
+dest_files=["res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.s3tc.ctex", "res://.godot/imported/hop_r.png-425d770df37c7e554c7a0a343896fe88.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

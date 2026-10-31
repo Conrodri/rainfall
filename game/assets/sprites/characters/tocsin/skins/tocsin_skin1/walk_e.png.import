@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7lipao8muge7"
-path.bptc="res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.bptc.ctex"
-path.astc="res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.astc.ctex"
+path.s3tc="res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.s3tc.ctex"
+path.etc2="res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/walk_e.png"
-dest_files=["res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.bptc.ctex", "res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.astc.ctex"]
+dest_files=["res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.s3tc.ctex", "res://.godot/imported/walk_e.png-b04b1225c1b40289c30e55256cf6f6de.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

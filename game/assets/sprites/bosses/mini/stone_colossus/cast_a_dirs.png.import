@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btvsi0je1ky0b"
-path.bptc="res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.bptc.ctex"
-path.astc="res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.astc.ctex"
+path.s3tc="res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.s3tc.ctex"
+path.etc2="res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/mini/stone_colossus/cast_a_dirs.png"
-dest_files=["res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.bptc.ctex", "res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.astc.ctex"]
+dest_files=["res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.s3tc.ctex", "res://.godot/imported/cast_a_dirs.png-e3b68d6833138d5d68b03f55f455ffed.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

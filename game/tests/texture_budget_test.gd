@@ -136,6 +136,10 @@ func _expected_params(rel: String, policy: Dictionary) -> Dictionary:
 		if rel.begins_with(d):
 			lossless = true
 	var out: Dictionary = (policy.get("lossless" if lossless else "default", {}) as Dictionary).duplicate()
+	for g: String in policy.get("lowq_globs", []): ## ETC2 (high_quality faux, mieux deflaté que l'ASTC) : boss, VFX, personnages, monstres, props, ambiance
+		if not lossless and ("res://" + rel).matchn("res://" + g):
+			out.merge(policy.get("lowq", {}), true)
+			break
 	if not out.has("process/size_limit"):
 		out["process/size_limit"] = 0
 	out.merge(policy.get("overrides", {}).get(rel, {}), true)

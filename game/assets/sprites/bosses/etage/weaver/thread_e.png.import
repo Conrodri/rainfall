@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cm7x3qrbehqu2"
-path.bptc="res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.bptc.ctex"
-path.astc="res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.astc.ctex"
+path.s3tc="res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.s3tc.ctex"
+path.etc2="res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/weaver/thread_e.png"
-dest_files=["res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.bptc.ctex", "res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.astc.ctex"]
+dest_files=["res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.s3tc.ctex", "res://.godot/imported/thread_e.png-e170a9a3a7c9132dd9c088c180411b43.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

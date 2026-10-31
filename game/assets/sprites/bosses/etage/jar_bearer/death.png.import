@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cswgom8nrdl08"
-path.bptc="res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.bptc.ctex"
-path.astc="res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.astc.ctex"
+path.s3tc="res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.s3tc.ctex"
+path.etc2="res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/jar_bearer/death.png"
-dest_files=["res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.bptc.ctex", "res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.astc.ctex"]
+dest_files=["res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.s3tc.ctex", "res://.godot/imported/death.png-ee49375c3bea750c3d240b08a41e6f2d.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

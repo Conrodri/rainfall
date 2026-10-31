@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bol7i86bb3tcn"
-path.bptc="res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.bptc.ctex"
-path.astc="res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.astc.ctex"
+path.s3tc="res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.s3tc.ctex"
+path.etc2="res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/characters/tocsin/layers/arm_r/throw_arm_r.png"
-dest_files=["res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.bptc.ctex", "res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.astc.ctex"]
+dest_files=["res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.s3tc.ctex", "res://.godot/imported/throw_arm_r.png-9d21d9ca8a9bc3d1703b9ecfd9cd6771.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://djoya1gexi245"
-path.bptc="res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.bptc.ctex"
-path.astc="res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.astc.ctex"
+path.s3tc="res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.s3tc.ctex"
+path.etc2="res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,13 +13,13 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/monsters/leaper_tier2_moss/death_e.png"
-dest_files=["res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.bptc.ctex", "res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.astc.ctex"]
+dest_files=["res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.s3tc.ctex", "res://.godot/imported/death_e.png-6579fc7642be76a49938d0e07422eacd.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
-compress/lossy_quality=0.7
+compress/high_quality=false
+compress/lossy_quality=0.8
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

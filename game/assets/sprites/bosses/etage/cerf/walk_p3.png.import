@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b7t4bc41hin6y"
-path.bptc="res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.bptc.ctex"
-path.astc="res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.astc.ctex"
+path.s3tc="res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.s3tc.ctex"
+path.etc2="res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,12 +13,12 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/bosses/etage/cerf/walk_p3.png"
-dest_files=["res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.bptc.ctex", "res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.astc.ctex"]
+dest_files=["res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.s3tc.ctex", "res://.godot/imported/walk_p3.png-2e8533915d7435eb8c6c80e2e14e5ea5.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
