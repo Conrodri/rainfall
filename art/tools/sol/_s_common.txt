@@ -1,0 +1,5 @@
+ÉCHEC DU LOT PRÉCÉDENT (modèle léger) : bases en dégradé vertical (lumière) et non raccordables. CORRECTIONS OBLIGATOIRES :
+1. Matériau de la base en EMISSION pure (couleur calculée par nœuds), AUCUNE lampe : pas de dégradé d'éclairage. Le relief/AO s'obtient en mélangeant la couleur par un champ de hauteur (bruit + Voronoi à 2 échelles, Color Ramp), pas par des lampes.
+2. Rendre un brut 1024x1024 (plan couvrant 8 m, ortho top) puis raccorder avec art/tools/sol/sol_tools.py : make_seamless(brut, sortie, size=512) ; vérifier avec verify() : seam_ratio doit être < 2.5 ; écart-type 'std' entre 8 et 28 (contraste modéré, pas de dégradé global). Regarde la planche sheet3x3 : aucune bande, aucune ligne verticale, aucune grille.
+3. Pierre irrégulière = Voronoi (distance F2-F1 ou cellules à randomness 1) déformé par un bruit (Vector Warp), tailles variées ; jamais de Brick Texture.
+4. Décalques : chacun peint par matériau Blender sur un plan à alpha (rendu 128 px par cellule, ou 512 puis réduit), objets distincts à des positions différentes dans la cellule, 16 DIFFÉRENTS visibles, pas de copie d'une même cellule.
