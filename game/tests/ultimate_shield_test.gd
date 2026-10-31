@@ -1,12 +1,12 @@
 extends Node
 ## Bouclier ULTIMATE_HIT du Roi de sel : l'ultime (slot 4, base ET variantes) de CHAQUE personnage doit le briser, quelle que
-## soit la façon dont le kit inflige ses dégâts (marquage commun SpellCaster.last_hit_ult). Rictus exclu (kit en réécriture).
+## soit la façon dont le kit inflige ses dégâts (marquage commun SpellCaster.last_hit_ult). Rictus : doublures détonées par la Saccade > 2 s après la pose (counts_as_ultimate).
 ## godot --headless --path game res://tests/ultimate_shield_test.tscn  -> RESULT: OK
 
 const U := 64.0
 const DT := 1.0 / 60.0
 const ARENA := 2400.0
-const SKIP := [&"rictus"]
+const SKIP := []
 const CASE_MAX_S := 6.0
 
 var _fails := 0
@@ -159,11 +159,32 @@ func _case(cid: StringName, vid: StringName) -> void:
 	_player.spells.aim_override = _boss.global_position
 	await _prep_ult()
 	var ok: bool = _player.spells.cast(4)
+	if cid == &"rictus":
+		# Rictus : l'ultime pose des doublures ; la Saccade les détone plus de 2 s après (hors fenêtre ULT_MARK_S)
+		await _frames_run(0.6)
+		_player.spells._ult_left = 0.0
+		for d in Decoy.live:
+			d.life_s = 30.0
+		await _frames_run(2.2)
+		_player.spells._ult_left = 0.0
+		_check(tag + " : doublures posées", not Decoy.live.is_empty())
+		_player.spells._remaining[1] = 99.0
+		_player.kit.set(&"kstate", 1)
+		if vid == &"":
+			_check(tag + " : détonation par la Saccade", _player.kit._detonate_decoys(false) > 0)
+		else:
+			for d in Decoy.live.duplicate():
+				d.explode(d.explode_spell)
 	if not ok:
 		_check(tag + " : ultime lancé", false, "cast refusé")
 		return
 	var broke := await _until(func(): return _b.shield.state == BossShield.State.BREAKING or _b.shield.state == BossShield.State.EXPOSED, CASE_MAX_S)
 	_check(tag + " : l'ultime brise la croûte", broke and not _b.shield.by_backstop, "état %s" % str(_b.shield.state))
+
+
+func _frames_run(sec: float) -> void:
+	for i in int(sec / DT):
+		await _frame()
 
 
 ## Une seule croûte par transition : après rupture (ou garde-fou), pas de nouvel arm tant que le seuil suivant n'est pas franchi.

@@ -951,6 +951,12 @@ func combo_hit(s: SpellData, _enemy: Node) -> bool:
 	return s != null and s.has_meta(&"combo")
 
 
+## Marquage « coup d'ultime » (bouclier ULTIMATE_HIT) : les doublures sont souvent détonées par la Saccade bien après la
+## pose (> ULT_MARK_S) ; leurs sorts d'explosion, de mort et de vol (copies du sort 4, base ou Rideau) comptent donc toujours.
+func counts_as_ultimate(s: SpellData) -> bool:
+	return s != null and s.slot == 4
+
+
 ## Fenêtre de combo du slot (HUD, sondé par SpellCaster toutes les 0,1 s). Saccade : pulse tant qu'un monstre est
 ## ficelé ou que des doublures attendent. Variantes : l'Éventail pulse tant qu'une doublure attend sa charge, la Toupie
 ## tant qu'une doublure chargée attend d'être expédiée.
