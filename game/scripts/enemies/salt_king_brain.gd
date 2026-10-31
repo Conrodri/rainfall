@@ -535,6 +535,10 @@ func _tick_shield(delta: float) -> Vector2:
 
 func _cancel_attacks() -> void:
 	pace.cancel()
+	# Teinte d'armement / éclat d'impact du sprite : sans ce nettoyage (Enemy._cancel_windup le fait pour les monstres), un coup
+	# coupé par une transition ou un bouclier laisse le roi surexposé (modulate.a jusqu'à 2) et fuit un emplacement de FX global.
+	if vis != null and is_instance_valid(vis):
+		vis.clear_charge()
 	e.telegraph.hide_telegraph()
 	e.telegraph.modulate = Color.WHITE
 	for t in _teles:

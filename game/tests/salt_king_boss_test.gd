@@ -94,6 +94,7 @@ func _run() -> void:
 	_crown()
 	_backstop()
 	_phase3()
+	_light_restore()
 	_death()
 
 	print("RESULT: %s" % ("OK" if _fails == 0 else "FAIL (%d)" % _fails))
@@ -372,6 +373,65 @@ func _shield_ultimate() -> void:
 
 
 # --- 5. Couronne -----------------------------------------------------------------------------------
+
+# --- Luminosité : rien ne reste allumé après un sort -----------------------------------------
+
+func _light_base_ok() -> bool:
+	var pi := _b.phase - 1
+	var lh = _boss.get("_light")
+	if lh == null:
+		return true
+	return is_equal_approx(lh.energy_mult, [2.4, 3.2, 3.8][pi]) and is_equal_approx(lh.radius_mult, [1.1, 1.3, 1.5][pi])
+
+
+func _sprite_base_ok() -> bool:
+	var sp: AnimatedSprite2D = _b.vis.body_sprite()
+	return sp == null or (sp.modulate.is_equal_approx(Color.WHITE) and sp.self_modulate.is_equal_approx(SaltKingBrain.BODY_GAIN))
+
+
+func _light_restore() -> void:
+	print("Luminosité après les sorts")
+	var fx_live0: int = EnemyVisual._fx_live
+	# 1. coup coupé en plein armement par la transition de phase (bouclier) : teinte d'armement retirée
+	_new_boss()
+	_reset_player(Vector2(3.5 * U, 0))
+	_b._proc_cd = 99.0
+	_b._stele_cd = 99.0
+	_b._auto_cd = 0.0
+	_step(1)
+	_check("sceptre armé (BossPace planté)", _b.pace.planted())
+	_boss.hp = _boss.max_hp * 0.69
+	_step(1)
+	_check("transition en plein armement : teinte retirée", _b.vis._charge_level == 0 and _sprite_base_ok(), "charge %d" % _b.vis._charge_level)
+	_check("transition : lumière du roi = valeurs de phase", _light_base_ok())
+	_check("transition : aucun emplacement de FX d'armement perdu", EnemyVisual._fx_live <= fx_live0, str(EnemyVisual._fx_live))
+	_b.shield.force_break(true)
+	_secs(8.0)
+	# 2. plusieurs lancers de chaque sort (sceptre, Procession, Stèles, Édit) puis repos : lumière et teinte de base
+	_new_boss()
+	_reset_player(Vector2(3.5 * U, 0))
+	_b._proc_cd = 0.0
+	_b._stele_cd = 0.0
+	_b._edict_cd = 0.0
+	_b._auto_cd = 0.0
+	var worst_e := 0.0
+	var worst_r := 0.0
+	for i in 40:
+		_secs(0.5)
+		var lh = _boss.get("_light")
+		if lh != null:
+			worst_e = maxf(worst_e, absf(lh.energy_mult - 2.4))
+			worst_r = maxf(worst_r, absf(lh.radius_mult - 1.1))
+	_check("après N lancers : énergie et rayon de la lumière inchangés", worst_e < 0.001 and worst_r < 0.001, "%.3f %.3f" % [worst_e, worst_r])
+	_b._proc_cd = 99.0
+	_b._stele_cd = 99.0
+	_b._edict_cd = 99.0
+	_b._auto_cd = 99.0
+	_until(func(): return not _b.pace.planted() and _b.vis._charge_level == 0, 6.0)
+	_secs(1.0)
+	_check("après N lancers : teinte du sprite = base", _b.vis._charge_level == 0 and _sprite_base_ok(), "charge %d" % _b.vis._charge_level)
+	_check("après N lancers : aucun FX d'armement fuité", EnemyVisual._fx_live <= fx_live0 + 1, str(EnemyVisual._fx_live))
+
 
 func _crown() -> void:
 	print("Couronne (point faible dans le dos)")

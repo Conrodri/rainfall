@@ -435,7 +435,8 @@ func _on_spell_hit(s: Object, enemy: Node, amount: float) -> void:
 	if enemy != boss:
 		return
 	var slot: int = int(s.get(&"slot")) if s != null and s.get(&"slot") != null else -1
-	if slot == ArdentKit.ULTIMATE_SLOT:
+	var from_ult: bool = slot == ArdentKit.ULTIMATE_SLOT or (_caster != null and bool(_caster.get(&"last_hit_ult")))
+	if from_ult:
 		note_ultimate_hit()
 	elif heavy:
 		note_heavy_hit()

@@ -15,6 +15,13 @@ signal spell_cast(spell: SpellData)
 ## Coup de sort porté (chemin commun deal_damage, kits compris ; pas la foudre en chaîne des items) : `amount` = dégât
 ## infligé, critique compris. Pour des compteurs exacts (déblocage des variantes). Sans abonné, l'émission ne coûte presque rien.
 signal spell_hit(spell: SpellData, enemy: Node, amount: float)
+## Marquage commun « coup d'ultime » (docs/Design_Boss_Raid.md, bouclier ULTIMATE_HIT) : posé UNE fois dans deal_damage, lu
+## par BossShield juste après spell_hit. Vrai si le sort touchant est du slot 4, ou si le coup tombe dans la fenêtre ouverte
+## par le lancer d'un sort 4 (ULT_MARK_S : zones / dégâts différés d'un ultime dont le SpellData n'est pas du slot 4), ou si
+## le kit déclare le coup comme effet de son ultime (`kit.counts_as_ultimate(s) -> bool`, ex. lames jumelles de Taliant).
+var last_hit_ult := false
+const ULT_MARK_S := 2.0
+var _ult_left := 0.0
 
 ## Visée manuelle des sorts 2-4 (souris / stick droit). Le sort 1 reste toujours automatique.
 var manual_aim_enabled := true
@@ -247,6 +254,7 @@ func set_cooldown(slot: int, remaining: float, total: float) -> bool:
 
 
 func tick(delta: float) -> void:
+	_ult_left = maxf(_ult_left - delta, 0.0)
 	# Appui qui a servi à l'UI : ticks sautés (jeu en pause : coffre, choix d'item, menu) -> l'appui qui a
 	# fermé l'UI et relancé le jeu ne lance pas de sort ; clic souris sur un contrôle d'UI non plus.
 	var frame := Engine.get_physics_frames()
@@ -423,6 +431,8 @@ func _cast(slot: int) -> bool:
 		return false
 	_totals[slot] = _cooldown_of(s)
 	_remaining[slot] = 0.0 if (TestMode.cdr_full and not s.is_auto) else _totals[slot] # mode test : recharge nulle, sauf le sort auto (slot 1)
+	if slot == ArdentKit.ULTIMATE_SLOT:
+		_ult_left = ULT_MARK_S
 	spell_cast.emit(s)
 	if not effect.is_valid():
 		player.on_cast(s, aim_dir)
@@ -725,7 +735,9 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	_roll_procs(enemy, amount, s.proc_coef)
 	if k != null and k.has_method(&"on_spell_hit"):
 		k.on_spell_hit(s, enemy, amount)
+	last_hit_ult = s.slot == ArdentKit.ULTIMATE_SLOT or _ult_left > 0.0 			or (k != null and k.has_method(&"counts_as_ultimate") and bool(k.counts_as_ultimate(s)))
 	spell_hit.emit(s, enemy, amount)
+	last_hit_ult = false
 	return amount
 
 

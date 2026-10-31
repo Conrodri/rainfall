@@ -401,6 +401,12 @@ func is_tempered() -> bool:
 	return temper_left > 0.0
 
 
+## Marquage « coup d'ultime » (SpellCaster.last_hit_ult) : l'ultime de Taliant est un état (lames jumelles / trempe), pas un
+## coup de slot 4 ; tout geste de lame porté pendant cet état compte comme coup d'ultime (bouclier ULTIMATE_HIT des boss).
+func counts_as_ultimate(_s: SpellData) -> bool:
+	return is_twin() or is_tempered()
+
+
 ## Id du sort actif d'un emplacement (base ou variante), &"" sans personnage.
 func _slot_id(slot: int) -> StringName:
 	if player == null or player.character == null:
