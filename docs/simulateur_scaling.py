@@ -49,6 +49,22 @@ ACHAT_DELAI = 6           # temps de trajet/interaction entre deux achats (s)
 
 # boss : PV = base x D^1.15
 BOSS_BASE = {"mini": 1300, "etage": 2200}
+
+# --- Boss : formules alignées sur game/scripts/core/balance.gd (Balance.boss_hp), audit 31/10/2026 ---
+# (le modèle v3 ci-dessus reste en D^BOSS_EXPO pour l'historique ; utiliser boss_hp_jeu pour le jeu réel)
+BOSS_BASE_HP_JEU = {"mini": 1000.0, "etage": 3300.0}
+BOSS_FOCUS_HP_MULT = {"mini": 0.55, "etage": 0.5}   # part du DPS qui touche le boss (adds, zones, procs)
+BOSS_STAGE_K = 1.0                                  # était 1,20
+FINAL_BOSS_HP_MULT = 1.35                           # était 1,55
+LEVEL_HP_GROWTH = 0.30
+
+def monster_level(D):
+    return 1 + int((D - 1.0) // 0.33)
+
+def boss_hp_jeu(kind, D, stage=1):
+    """Identique à Balance.boss_hp(kind, D, stage)."""
+    return (BOSS_BASE_HP_JEU[kind] * BOSS_FOCUS_HP_MULT.get(kind, 1.0)
+            * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1)) * D ** 0.5 * BOSS_STAGE_K ** (stage - 1))
 BOUNTY_OR = {"mini": 100, "etage": 250}        # en équivalents de kills tier 1 : x D^1.25
 BOUNTY_XP = {"mini": 40, "etage": 100}         # en équivalents de kills tier 1 : x XP_BASE x D^0.8
 

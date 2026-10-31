@@ -430,7 +430,7 @@ Hors périmètre (migration isométrique, docs/Design_Isometrique.md) : vitesses
 | Crédits du director | 0,894 × (1 + 0,4 coeff) ; zone de mini-boss ×1,5, charge du téléporteur ×2,33 | 4 + 2,5 D, zone ×1,5 |
 | Coût moyen visé | 1 + 0,4 (coeff - 1) (rythme de kills décroissant, comme RoR2) | pente 1,0 |
 | Prime d'un kill | or = 2 × coeff × coût × 0,235 ; XP = coeff × coût × 0,235 (RoR2 : R = 0,2) | D^1,25 × reward + réserve d'or par étage (supprimée) |
-| Boss | PV = base (mini 1000, étage 3000 ; étaient 1300/4300 avant le retour joueur du 21/10) × (1 + 0,3 (niv-1)) × √coeff × 0,95^(étage-1) ; dégâts 20/28 × (1 + 0,2 (niv-1)) ; enrage après 90 s | 1300/2200 × D^1,6 ; 25/35 ; enrage 60 s |
+| Boss | PV = base (mini 1000, étage 3300) × facteur de focus (mini 0,55, étage 0,5) × (1 + 0,3 (niv-1)) × √coeff × BOSS_STAGE_K^(étage-1) avec BOSS_STAGE_K = 1,0 (était 0,95, puis 1,20) ; boss final = PV du boss d'étage 5 × 1,35 (était 1,55) ; Idole noyée × 0,7 (était 0,9) ;  dégâts 20/28 × (1 + 0,2 (niv-1)) ; enrage après 90 s | 1300/2200 × D^1,6 ; 25/35 ; enrage 60 s |
 | Prime de boss | or = 2 × coeff × valeur (mini 25, étage 60) × 0,235 ; XP = ½ or | 100/250 kills × 0,25 × D^1,25 ; XP 40/100 kills |
 | Coffres | base × coeff^1,25 × 1,04^(étage-1) ; 50 / 100 / 400 (légendaire ×8, arbitrage joueur) | × (1 + 0,3 (D-1)) en plus, 1,05/étage |
 | Capsules | 20 × coeff^1,25 chacune (10 = 200 or à coeff 1) | 0,4 × petit coffre |
@@ -439,6 +439,9 @@ Hors périmètre (migration isométrique, docs/Design_Isometrique.md) : vitesses
 | Joueur | PV 100 + 30/niv, dégâts 12 + 2,4/niv, régén 1 + 0,2/niv (déjà RoR2, inchangés) | — |
 
 Résultats visés (simulation, Moyen) : reliquat de fin d'étage 1 ≈ +30 or, niveau ≈ 7,5, boss d'étage 65-75 s, mini-boss 21-30 s, kills 1,2/s → 0,66/s sur 5 étages. `economy_test` (modèle simplifié, sans plafond de vivants) : reliquat +13, niveau 7.
+
+### 14.0 Facteur de focus des boss (audit du 31/10/2026)
+Les PV de base des boss (mini 1000, étage 3300) visaient 65-75 s de combat en supposant que 100 % des dégâts du joueur touchent le boss. Les runs complètes simulées (docs/Audit_Runs_Completes_2026-10-31.md) montrent qu'en jeu seuls 36 à 50 % des dégâts l'atteignent : les monstres de la charge, plus proches, absorbent la visée automatique et les zones et procs se dispersent. Le facteur de focus `BOSS_FOCUS_HP_MULT` (mini 0,55, étage 0,5) corrige ce biais dans `Balance.boss_hp` pour retrouver les durées visées : mini-boss 21-30 s, boss d'étage 65-75 s, boss final 120-150 s (médiane de six personnages, rencontres ciblées). Réglages liés : `BOSS_STAGE_K` 1,20 → 1,0 (le rapport PV / DPS ne dérive plus aux étages 4-5), `FINAL_BOSS_HP_MULT` 1,55 → 1,35, `BOSS_HP_MULT` de l'Idole noyée 0,9 → 0,7, et `BOSS_AIM_PRIORITY` 2,0 (la visée automatique préfère les boss, ce qui réduit le TTK de 10 à 25 %). Formule : `PV = base × focus × (1 + 0,30 (niv-1)) × √D × BOSS_STAGE_K^(étage-1)`.
 
 ### 14.1 Items (alignement RoR2)
 Sources : [Item Stacking](https://riskofrain2.wiki.gg/wiki/Item_Stacking), [Proc Coefficient](https://riskofrain2.wiki.gg/wiki/Proc_Coefficient), [Items](https://riskofrain2.wiki.gg/wiki/Items) et pages par objet (Tri-Tip Dagger, Tougher Times, Alien Head, Ukulele, Ignition Tank, Razorwire, Bison Steak…). Valeurs par objet : `game/data/items.json` ; code : `game/scripts/items/item_stats.gd`, `spell_caster.gd` (`_roll_procs`), `enemy.gd` (`apply_status`), `player.gd`.

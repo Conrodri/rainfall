@@ -2,7 +2,7 @@
 
 > Généré à partir du même modèle que `Items_Catalog.xlsx` (onglets Audit et Modèle). Les valeurs sont des points de départ à calibrer en playtest.
 
-> **Valeurs de référence (décision du joueur, 26/10/2026)** : en cas d'écart entre ce catalogue et `game/data/items.json`, **le JSON du jeu fait foi** (ex. Pièce porte-bonheur +10 % d'or, Dé pipé +1 Chance, Moisson +60 %). Ce catalogue reste une source d'idées et de calibrage initial.
+> **Valeurs de référence (décision du joueur, 26/10/2026)** : en cas d'écart entre ce catalogue et `game/data/items.json`, **le JSON du jeu fait foi** (ex. Pièce porte-bonheur +10 % d'or, Trèfle à 5 feuilles +1 Chance, Faux +60 %). Ce catalogue reste une source d'idées et de calibrage initial.
 
 > **Audit des objets du 28/10/2026** (`docs/Audit_Items_2026-10-28.md`, appliqué) : la recharge passe à la **hâte additive** : chaque objet de recharge donne une hâte (clé `cooldown_haste`), les hâtes de tous les objets s'additionnent (H) et la recharge vaut base × max(1 / (1 + H), 0,35). Sablier 0,10, Horloge 0,15, Chronomètre [0,35, 0,20] ; remise du Chronomètre 0,5 s + 0,25 s par exemplaire supplémentaire. Cœur de glace [0,35, 0,15] plafonné à +95 %, Œil du prédateur +8 % de critique et [0,40, 0,25] plafonné à +150 %, Bouclier réactif jamais sous 1,2 s, Rafale d'acier +15 % et tous les 5 tirs, Venin +150 % par exemplaire supplémentaire, Danseur [0,35, 0,20]. Les lignes concernées ci-dessous sont marquées « JSON 28/10/2026 » ; leurs colonnes de valeur et de ratio datent de l'audit v3 et ne sont pas recalculées.
 
@@ -53,7 +53,7 @@ Chaque effet est converti en **points de puissance effective** (1 point = +1 % d
 | Étincelle, Cristal de feu, Fiole verte, Venin | Brûlure et poison valaient 1 à 5 points | Brûlure 100 % du coup sur 3 s, poison 20 %/s par cumul ; procs 18 % / 40 % |
 | Couronne d'écho | 50 % de répétition = 21 points pour un Légendaire | 3 répétitions à 100 % (130 points) |
 | Cœur du chronomancien | Sans délai interne, il se déclenchait en boucle | Délai interne de 2 s (104 points) |
-| Moisson | Plafond +60 % atteint en 40 s | +0,2 % par kill jusqu'à +120 % |
+| Faux | Plafond +60 % atteint en 40 s | +0,2 % par kill jusqu'à +120 % |
 | Bourse du pillard | Dépendait du nombre d'élites (valeur ×3,6 entre 2:30 et 7:30) | Remplacée par **Morsure vorace** (soin par kill) |
 | Aimant d'âme | Dépendait des élites (×2,5) | Déclenché tous les 25 kills |
 | Armure du colosse | Malus de vitesse : interdit | -10 % de dégâts infligés |
@@ -115,7 +115,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 5 | Venin concentré | Proc 10 % : poison de 300 % du coup sur 4 s, +150 % par exemplaire supplémentaire (JSON 28/10/2026) | L (dégâts) | Poison | 22 / 22 / 22 | 1,02 |
 | 6 | Cape de brume | 18 % d'esquive | H | Survie | 22 / 22 / 22 | 1,00 |
 | 7 | Épines | Chaque coup subi déclenche une riposte à 70 % des dégâts du sort 1 sur l'attaquant (1 riposte max par 0,5 s) | L | Survie | 20 / 24 / 25 | 1,10 |
-| 8 | Éclair en bouteille | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire, jusqu'à 8), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
+| 8 | Ukulele | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire, jusqu'à 8), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
 | 9 | Rune de portée | Zone des sorts +20 % (plafond +100 %) et dégâts des sorts de zone à recharge +15 %, par exemplaire (JSON 28/10/2026) | L | Zone | 22 / 22 / 22 | 1,01 |
 | 10 | Morsure vorace | Chaque monstre tué rend 0,2 % des PV max | L | Survie | 23 / 23 / 23 | 1,03 |
 | 11 | Tonique vital | +15 % de PV max et +0,3 % des PV max par seconde | L | Survie | 22 / 22 / 22 | 0,99 |
@@ -149,8 +149,8 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 2 | Couronne d'écho | Le sort 1 se répète 3 fois à 100 % des dégâts | E (+1 répétition par exemplaire supplémentaire) | Auto | 130 / 130 / 130 | 1,08 |
 | 3 | Nova infinie | Toutes les 4 s, nova de 400 % du dégât de base par exemplaire (portée 6 u) qui brûle (240 % du dégât de base, × (1 + bonus de brûlure)), ralentit et empoisonne (JSON 28/10/2026) | L (dégâts) | Feu, Givre, Poison, Zone | 111 / 111 / 111 | 0,93 |
 | 4 | Armure du colosse | +60 % de PV max, -25 % de dégâts reçus, -10 % de dégâts infligés | E | Survie | 103 / 103 / 103 | 0,86 |
-| 5 | Moisson | Chaque kill donne +0,2 % de dégâts, cumulable jusqu'à +120 % (conservé dans la run) | L (plafond) | Dégâts | 120 / 120 / 120 | 1,00 |
-| 6 | Dé pipé | +1 de Chance (relance du d100, on garde le meilleur) et le premier petit coffre de chaque étage est au moins Peu commun (JSON 28/10/2026) | L | Chance | 126 / 126 / 126 | 1,05 |
+| 5 | Faux | Chaque kill donne +0,2 % de dégâts, cumulable jusqu'à +60 % (+30 % de plafond par exemplaire), conservé dans la run | L (plafond) | Dégâts | 120 / 120 / 120 | 1,00 |
+| 6 | Trèfle à 5 feuilles | +1 de Chance par exemplaire (relance du d100, on garde le meilleur) ; plus d'effet sur le premier coffre | L | Chance | 126 / 126 / 126 | 1,05 |
 
 ---
 
@@ -163,7 +163,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 - **Recharge** : Sablier fêlé -> Horloge arcanique -> Chronomètre brisé -> Cœur du chronomancien.
 - **Tir rapide (sort 1)** : Sifflet de chasse -> Plume d'empenne -> Carquois affûté -> Rafale d'acier, avec Pointe perforante pour les foules et Épines pour la riposte.
 - **Survie** : Bague de vigueur -> Tonique vital -> Morsure vorace -> Armure du colosse -> Phénix de poche ; Antidote contre les élites à brûlure et poison.
-- **Chance et or** : Pièce porte-bonheur -> Faveur du marchand -> Dé pipé (plus de Rares et plus de relances).
+- **Chance et or** : Pièce porte-bonheur -> Faveur du marchand -> Trèfle à 5 feuilles (plus de Rares et plus de relances).
 
 ## 8. Objets à débloquer
 
@@ -172,7 +172,7 @@ Onze objets sont verrouillés au départ (champ `"unlock"` de `data/items.json`,
 | Objet | Qualité | Condition |
 |---|---|---|
 | Orbe de veille | Peu commun | Tuer 300 monstres au total |
-| Éclair en bouteille | Peu commun | Terminer 3 runs |
+| Ukulele | Peu commun | Terminer 3 runs |
 | Marque du chasseur | Peu commun | Vaincre un boss d'étage |
 | Venin concentré | Peu commun | Ouvrir 10 coffres au total |
 | Tempête de braises | Rare | Tuer 1 500 monstres au total |
@@ -181,9 +181,9 @@ Onze objets sont verrouillés au départ (champ `"unlock"` de `data/items.json`,
 | Faveur du marchand | Rare | Ramasser 5 000 pièces d'or au total |
 | Armure du colosse | Légendaire | Gagner une run |
 | Nova infinie | Légendaire | Atteindre l'étage 5 |
-| Moisson | Légendaire | Tuer 6 000 monstres au total |
+| Faux | Légendaire | Tuer 6 000 monstres au total |
 
-Restent libres dès le départ : tous les communs, les autres Peu communs et Rares, Couronne d'écho, Dé pipé et Cœur du chronomancien (pool légendaire de départ = 3 objets, pour que les relances restent variées). Compteurs de run : `gold_collected` et `chests_opened` (scripts/game/main.gd) ; `kills`, `runs` et `play_time_s` viennent des stats du profil.
+Restent libres dès le départ : tous les communs, les autres Peu communs et Rares, Couronne d'écho, Trèfle à 5 feuilles et Cœur du chronomancien (pool légendaire de départ = 3 objets, pour que les relances restent variées). Compteurs de run : `gold_collected` et `chests_opened` (scripts/game/main.gd) ; `kills`, `runs` et `play_time_s` viennent des stats du profil.
 
 ## 9. Hypothèses à valider en playtest
 
