@@ -150,6 +150,10 @@ var _burn_stack_left := PackedFloat32Array()
 var _burn_dps := PackedFloat32Array()
 var _burn_tick := 0.0
 var _poison_left := PackedFloat32Array()
+## Vrai pendant le DERNIER tick d'une brûlure / d'un poison : le cumul est déjà retiré, mais un monstre tué par ce tick
+## meurt bien « en brûlant » / « empoisonné » (Tempête de braises, Peste vivante lisent is_burning / is_poisoned).
+var _dot_last_tick := false
+var _poison_last_tick := false
 var _poison_dps := PackedFloat32Array()
 var _poison_tick := 0.0
 var _slow_left := 0.0
@@ -410,11 +414,11 @@ func set_body_radius(px: float) -> void:
 
 
 func is_burning() -> bool:
-	return _burn_left > 0.0
+	return _burn_left > 0.0 or _dot_last_tick
 
 
 func is_poisoned() -> bool:
-	return not _poison_left.is_empty()
+	return not _poison_left.is_empty() or _poison_last_tick
 
 
 # --- Pool (appelé par le Director)
@@ -1102,7 +1106,9 @@ func _update_statuses(delta: float) -> void:
 		_burn_tick -= delta
 		if _burn_tick <= 0.001:
 			_burn_tick += DOT_TICK
+			_dot_last_tick = _burn_stack_left.is_empty() # dernier tick : encore « en feu » pour ce coup (Tempête de braises)
 			take_damage(burn_dps * DOT_TICK, false, &"burn")
+			_dot_last_tick = false
 			if not active:
 				return
 	if not _poison_left.is_empty():
@@ -1110,7 +1116,9 @@ func _update_statuses(delta: float) -> void:
 		_poison_tick -= delta
 		if _poison_tick <= 0.001:
 			_poison_tick += DOT_TICK
+			_poison_last_tick = _poison_left.is_empty() # dernier tick : encore « empoisonné » pour ce coup (Peste vivante)
 			take_damage(dps * DOT_TICK, false, &"poison")
+			_poison_last_tick = false
 
 
 # --- Barres de PV (lecture seule ; BossBars, EnemyHealthBars ; CONTRACTS.md « Barres de PV »)

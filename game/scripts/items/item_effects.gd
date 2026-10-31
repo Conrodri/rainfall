@@ -5,7 +5,7 @@ extends Node
 ## tick() appelé par Player.tick, refresh() par Player.apply_stats (acquisition d'un item ET reprise de sauvegarde
 ## passent par apply_stats). Branché sur les signaux Events (enemy_killed, player_damaged, pickup_collected) et sur
 ## SpellCaster.spell_cast : fonctionne pour Ardent comme pour tous les kits. Aucune recherche de groupe à l'image.
-##  - Légendaires : Cœur du chronomancien, Couronne d'écho, Nova infinie, Moisson (Armure du colosse : stats ;
+##  - Légendaires : Cœur du chronomancien, Couronne d'écho, Nova infinie, Faux (id `moisson`) (Armure du colosse : stats ;
 ##    Dé pipé : ChestSession).
 ##  - Autres : Pièce porte-bonheur (soin), Épines (riposte), Morsure vorace, Orbe de veille, Chronomètre brisé,
 ##    Tempête de braises, Peste vivante, Bouclier réactif, Phénix de poche, Rafale d'acier ; Faveur du marchand
@@ -317,14 +317,15 @@ func _on_pickup_collected(kind: StringName, amount: float) -> void:
 
 
 ## Coup subi (Events.player_damaged, émis après le bouclier) : Orbe de veille (le délai repart) et Épines (riposte).
-func _on_player_damaged(_amount: float, source: Node) -> void:
+func _on_player_damaged(_amount: float, _source: Node) -> void:
 	if player == null:
 		return
 	_orb_quiet = 0.0
 	_orb = minf(_orb, float(player.shield))
 	var n := stacks(ID_RIPOSTE)
-	if n > 0 and _riposte_cd <= 0.0 and not bool(player.get("dead")) and source != null and is_instance_valid(source) \
-			and source.has_method("take_damage"):
+	# Tout coup direct déclenche la riposte (monstres, projectiles, mais aussi dangers de boss et de terrain :
+	# scories, tempête, pièges, dont la source n'a pas take_damage). Les DoT n'émettent pas player_damaged.
+	if n > 0 and _riposte_cd <= 0.0 and not bool(player.get("dead")):
 		_riposte(n)
 
 
@@ -431,6 +432,8 @@ func try_revive() -> bool:
 	player.hp = float(player.max_hp) * float(d.get("hp_pct", 0.5))
 	player.hp_changed.emit(player.hp, player.max_hp)
 	player.grant_invulnerability(float(d.get("invuln_s", 2.0)))
+	if player.has_method(&"on_revived"):
+		player.call(&"on_revived") # DoT et ralentissements purgés, flash doré, vibration
 	LightRig.flash(player.global_position, &"phoenix", 0.8)
 	return true
 

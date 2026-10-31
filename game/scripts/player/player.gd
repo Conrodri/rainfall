@@ -84,6 +84,8 @@ var _dodge: DodgeMove = null
 ## Events.player_damaged), son `player.hurt` (AudioManager, même signal), traîne blanche de la barre
 ## de vie (HpTrail). Gros coup (>= HURT_BIG_HIT_FRAC des PV max) : secousse de caméra et court hitstop.
 const HURT_FLASH_S := 0.12
+const REVIVE_FLASH_S := 0.8 ## retour doré du corps après une résurrection (Phénix de poche)
+const REVIVE_FLASH_COLOR := Color(1.6, 1.25, 0.55)
 const HURT_FLASH_COLOR := Color(2.4, 0.35, 0.3) ## modulate HDR : rouge franc, lisible sur l'Ardent
 const HURT_FLASH_COLOR_SOFT := Color(1.6, 0.55, 0.5) ## option « secousses et flashs » à 0 : teinte douce
 const HURT_BIG_HIT_FRAC := 0.10
@@ -360,6 +362,20 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Résurrection (Phénix de poche, ItemEffects.try_revive) : brûlure et poison purgés (sinon ils grignotent les PV
+## rendus pendant le répit, que les DoT ne respectent pas), ralentissements purgés, flash doré du corps et vibration.
+func on_revived() -> void:
+	_burn_left = 0.0
+	_burn_dps = 0.0
+	_poison.clear()
+	clear_slow()
+	velocity = Vector2.ZERO
+	Haptics.pulse(Haptics.Kind.LEVEL_UP)
+	if _visual != null and is_inside_tree():
+		_visual.self_modulate = REVIVE_FLASH_COLOR
+		create_tween().tween_property(_visual, "self_modulate", Color.WHITE, REVIVE_FLASH_S)
+
+
 ## Purge le ralentissement en cours (début de la Toupie de Rictus).
 func clear_slow() -> void:
 	_slow_left = 0.0
@@ -610,12 +626,14 @@ func _damage_hp(amount: float) -> void:
 		return # mode test : PV illimités (le coup a déjà été annoncé : chiffre, flash, son)
 	hp = maxf(hp - amount, 0.0)
 	hp_changed.emit(hp, max_hp)
-	if hp <= 0.0 and TestMode.active:
-		hp = max_hp # mode test : « KO » sans fin de run, PV rendus
-		hp_changed.emit(hp, max_hp)
-		return
 	if hp <= 0.0 and not dead:
-		if item_fx != null and item_fx.try_revive(): # Phénix de poche
+		# Résurrection d'objet (Phénix de poche) AVANT le « KO » du mode test : sinon le mode test rendait les PV
+		# sans jamais consommer l'objet, et la résurrection n'était jamais visible en test (bug du 31/10/2026).
+		if item_fx != null and item_fx.try_revive():
+			return
+		if TestMode.active:
+			hp = max_hp # mode test : « KO » sans fin de run, PV rendus
+			hp_changed.emit(hp, max_hp)
 			return
 		dead = true
 		velocity = Vector2.ZERO

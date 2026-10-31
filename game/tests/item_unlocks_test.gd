@@ -46,7 +46,7 @@ func _ready() -> void:
 	var r3: Array = p.add_run_result({"victory": true, "mode": "moyen", "character": "rictus", "active_time_s": 100.0, "kills": 0,
 		"rubies": 0, "stage": 5, "counters": {}, "bosses_killed": []})
 	_check(r3.has(&"item:armure_du_colosse") and r3.has(&"item:nova_infinie"), "victoire étage 5 : Armure, Nova")
-	_check(r3.has(&"item:eclair_en_bouteille"), "3e run -> Éclair en bouteille")
+	_check(r3.has(&"item:eclair_en_bouteille"), "3e run -> Ukulele")
 	var d: Dictionary = p.to_dict()
 	_check(d["unlocked_items"].has("moisson") == p.unlocked_items.has(&"moisson") and d["unlocked_items"].size() == p.unlocked_items.size(), "sérialisation du profil")
 	p.free()
@@ -98,7 +98,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_check(scr.find_child("NewItems", true, false) != null and scr.find_child("NewItem_moisson", true, false) != null, "récap : bloc « Nouveaux objets débloqués »")
-	_check(EndRunScreen.unlock_text(&"item:moisson") == "Nouvel objet : Moisson !", "texte d'objet débloqué")
+	_check(EndRunScreen.unlock_text(&"item:moisson") == "Nouvel objet : Faux !", "texte d'objet débloqué")
 	_check(_no_frame_over_icon(scr.find_child("NewItem_moisson", true, false)), "récap : fond de qualité derrière l'icône, aucun cadre par-dessus")
 	scr.queue_free()
 
