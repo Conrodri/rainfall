@@ -230,7 +230,7 @@ func blocked(id := "") -> bool:
 
 
 func _player() -> Node2D:
-	return get_tree().get_first_node_in_group(&"player") as Node2D
+	return Players.local()
 
 
 func _process(delta: float) -> void:

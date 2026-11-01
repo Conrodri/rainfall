@@ -8,7 +8,9 @@ extends RunScreens
 ## Usage : var s := EndRunScreen.create(info); add_child(s); s.continue_pressed / s.replay_pressed.
 ## info : {victory, reason, character_name, mode, stage, active_time_s, level, pillars, kills,
 ##         items, gold, rubies, unlocks: Array[StringName], next_objective (optionnel : {title, text, progress},
-##         sinon calculé depuis le Profil en lecture seule)}
+##         sinon calculé depuis le Profil en lecture seule),
+##         coop (optionnels) : party_n (joueurs), participation (0-1, part des rubis), players (PartyRecap.summary() :
+##         [{slot, character, level, items, damage_share, spectating}]) -> tableau d'équipe sous les tuiles}
 
 signal continue_pressed
 signal replay_pressed
@@ -177,6 +179,7 @@ func _build() -> void:
 		_add(dl)
 
 	_add_items_strip()
+	_add_party_table()
 	# déblocages sous les stats et les objets de la run (demande du joueur, 27/10/2026)
 	if not (info.get("unlocks", []) as Array).is_empty():
 		_content.add_child(HSeparator.new())
@@ -494,16 +497,17 @@ static func variant_info(key: StringName) -> Dictionary:
 	return {"name": _humanize(id), "character": "", "slot": 0, "icon": null, "placeholder": true}
 
 
-## Objets ramassés : icône dans son cadre de rareté + nombre d'exemplaires (RunState.items à la fin de la run).
+## Objets ramassés : icône dans son cadre de rareté + nombre d'exemplaires (objets du joueur local à la fin de la run).
 func _add_items_strip() -> void:
-	if RunState.items.is_empty():
+	var my_items: Dictionary = LocalState.state().items
+	if my_items.is_empty():
 		return
 	var flow := HFlowContainer.new()
 	flow.alignment = FlowContainer.ALIGNMENT_CENTER
 	flow.custom_minimum_size.x = 900.0
 	flow.set_meta(&"sep", 10)
 	_content.add_child(flow)
-	for id in RunState.items:
+	for id in my_items:
 		var it := ItemDB.get_item(String(id))
 		var cell := Control.new()
 		cell.custom_minimum_size = Vector2(76, 76)
@@ -520,7 +524,7 @@ func _add_items_strip() -> void:
 				tr.set_anchors_preset(Control.PRESET_FULL_RECT)
 				tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				cell.add_child(tr)
-		var n := int(RunState.items[id])
+		var n := int(my_items[id])
 		if n > 1:
 			var cl := Label.new()
 			cl.text = "×%d" % n
@@ -533,6 +537,36 @@ func _add_items_strip() -> void:
 			cl.grow_vertical = Control.GROW_DIRECTION_BEGIN
 			cl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			cell.add_child(cl)
+
+
+## Coop : une ligne par joueur (numéro et teinte d'équipe, personnage, niveau, objets, part des dégâts). Rien en solo.
+func _add_party_table() -> void:
+	var rows: Array = info.get("players", [])
+	if rows.size() <= 1:
+		return
+	_content.add_child(HSeparator.new())
+	var box := VBoxContainer.new()
+	box.name = "PartyTable"
+	box.set_meta(&"sep", 6)
+	_content.add_child(box)
+	for r in rows:
+		var d: Dictionary = r
+		var slot := int(d.get("slot", 0))
+		var tint := Palette.team_color(slot)
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.set_meta(&"sep", 20)
+		box.add_child(row)
+		var g := _label(Palette.team_glyph(slot), 40, tint)
+		_labels.append(g)
+		row.add_child(g)
+		var txt := "%s  ·  niv. %d  ·  %d objets  ·  %d %% des dégâts" % [RunSave.character_name(str(d.get("character", ""))),
+			int(d.get("level", 1)), int(d.get("items", 0)), roundi(float(d.get("damage_share", 0.0)) * 100.0)]
+		if bool(d.get("spectating", false)):
+			txt += "  ·  tombé"
+		var l := _label(txt, 32, COL_TEXT)
+		_labels.append(l)
+		row.add_child(l)
 
 
 func _add(l: Label) -> void:
@@ -641,12 +675,17 @@ static func ruby_breakdown(d: Dictionary) -> String:
 		parts.append("Piliers +%d" % p)
 	if bool(d.get("victory", false)):
 		parts.append("Victoire +25")
-	var g := mini(int(float(d.get("gold", 0)) / 500.0), 20)
+	var n := int(d.get("party_n", 1))
+	var gold_div := 500.0 if n <= 1 else 500.0 * pow(Balance.party_factor(n), 1.25) # prix des coffres suivent pf(n)
+	var g := mini(int(float(d.get("gold", 0)) / gold_div), 20)
 	if g > 0:
 		parts.append("Or +%d" % g)
 	var om := int(d.get("omen_rubies", 0))
 	if om > 0:
 		parts.append("Présages +%d" % om)
+	var part := float(d.get("participation", 1.0))
+	if part < 1.0: # coop : part des rubis selon les dégâts infligés
+		parts.append("Participation ×%s" % String.num(part, 2).replace(".", ","))
 	return " · ".join(parts)
 
 

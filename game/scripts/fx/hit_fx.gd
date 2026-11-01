@@ -30,6 +30,7 @@ const Z := 30 ## au-dessus des monstres, sous les chiffres de dégâts (100)
 const HDR := Color(1.5, 1.35, 1.2, 1.0) ## modulation additive (glow HDR)
 
 static var _inst: HitFx = null
+static var _alpha_mult := 1.0 ## atténuation de l'impact en cours de création (alliés), 1,0 sinon
 static var _frame := -1
 static var _budget := 0
 static var _dot_budget := 0
@@ -91,12 +92,15 @@ static func _take_budget(is_dot: bool) -> bool:
 
 ## Coup direct : gerbe d'étincelles orientée selon `dir` (sens du coup), braises selon l'élément.
 ## f : force relative [0, 1] (Balance.hit_force) ; le nombre de particules la suit.
-static func impact(pos: Vector2, dir: Vector2, element: StringName, f: float, is_crit: bool = false, anim: bool = false) -> void:
+## `owner_slot` (coop) : joueur dont le sort touche ; l'impact d'un allié est atténué (AllyFx.alpha_for). -1 = inconnu.
+static func impact(pos: Vector2, dir: Vector2, element: StringName, f: float, is_crit: bool = false, anim: bool = false, owner_slot: int = -1) -> void:
 	var fx := instance()
 	if fx == null or not _take_budget(false):
 		return
 	stat_impacts += 1
+	_alpha_mult = AllyFx.alpha_for(owner_slot)
 	fx._impact(pos, dir, element, f, is_crit, anim)
+	_alpha_mult = 1.0
 
 
 ## Tic de DoT : une particule discrète (flammèche, bulle).
@@ -238,6 +242,7 @@ func _spawn(kind: int, pos: Vector2, v: Vector2, life: float, drag: float, grav:
 	s.rotation = v.angle() if follow else _rng.randf() * TAU
 	s.scale = Vector2(s0, s0)
 	var c := HDR if additive else Color.WHITE
+	a0 *= _alpha_mult
 	c.a = a0
 	s.modulate = c
 	s.visible = true

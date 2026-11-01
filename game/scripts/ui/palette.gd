@@ -108,3 +108,38 @@ static func telegraph_tint(m: int = -1) -> Color:
 static func telegraph(c: Color) -> Color:
 	var t := telegraph_tint()
 	return Color(t.r, t.g, t.b, c.a)
+
+
+# --- Teinte d'équipe (coop 1-4, docs/multi/Design_Coop.md §4.1) -------------------------------------------------
+## UNE seule source pour la couleur d'un joueur : HUD (plaques, barres alliées), minimap, flèches hors écran, pings,
+## récap. Quatre teintes lisibles entre elles et distinctes du rouge-orangé des boss, du crème des télégraphes et de
+## l'ambre des élites (COL_ELITE). La couleur ne porte jamais seule le sens : team_glyph() donne le numéro 1-4 à
+## écrire à côté (mode daltonien : les tables RG / TRI sont des teintes de la palette Okabe-Ito, ΔE élevé entre elles).
+const TEAM_NONE: Array[Color] = [Color("#F4F1E6"), Color("#FFB224"), Color("#38D6E6"), Color("#F25AA5")] ## ivoire, ambre, cyan, rose
+const TEAM_RG: Array[Color] = [Color("#F4F1E6"), Color("#E69F00"), Color("#56B4E9"), Color("#CC79A7")] ## Okabe-Ito
+const TEAM_TRI: Array[Color] = [Color("#F4F1E6"), Color("#FF7F2A"), Color("#2FD69A"), Color("#E0409A")]
+
+
+## Couleur de l'emplacement `slot` (0-3 ; hors bornes : bornée) dans le mode daltonien `m` (-1 = courant).
+static func team_color(slot: int, m: int = -1) -> Color:
+	var mm := mode() if m < 0 else m
+	var tab: Array[Color] = TEAM_NONE
+	if mm == CvdPalette.DEUTAN or mm == CvdPalette.PROTAN:
+		tab = TEAM_RG
+	elif mm == CvdPalette.TRITAN:
+		tab = TEAM_TRI
+	return tab[clampi(slot, 0, tab.size() - 1)]
+
+
+## Marque non colorée du joueur : « 1 » à « 4 » (redondance pour le daltonisme, repère des plaques et des flèches).
+static func team_glyph(slot: int) -> String:
+	return str(clampi(slot, 0, Balance.MULTI_MAX_PLAYERS - 1) + 1)
+
+
+## Opacité des VFX d'un allié (docs/multi/Design_Coop.md §4.2) : 1 pour soi, 0,55 pour un allié, 0,35 en qualité Basse.
+const ALLY_VFX_ALPHA := 0.55
+const ALLY_VFX_ALPHA_LOW := 0.35
+
+
+static func ally_vfx_alpha(low_quality: bool) -> float:
+	return ALLY_VFX_ALPHA_LOW if low_quality else ALLY_VFX_ALPHA

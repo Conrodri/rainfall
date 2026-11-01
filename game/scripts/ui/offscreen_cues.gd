@@ -9,6 +9,7 @@ extends Control
 ## Chargé par preload (pas de class_name) : `preload("res://scripts/ui/offscreen_cues.gd").new()` puis bind(hud).
 
 const MAX_CUES := 6
+const COOP_MAX_CUES := 8 ## coop : deux flèches de plus pour les alliés (docs/multi/Design_Coop.md §4.4)
 const CUE_PX := 48.0
 const CUE_PX_MOBILE := 64.0 ## téléphone : même taille physique lisible que les pictos du HUD tactile
 const MARGIN_PX := 12.0 ## retrait depuis le bord de l'écran (en plus de la demi-taille de la flèche)
@@ -20,7 +21,10 @@ const COL_BOSS := Color(1.0, 0.32, 0.22, 1.0)
 const COL_TELE := Color(1.0, 0.886, 0.784, 1.0) ## même liseré clair que les télégraphes (#FFE2C8)
 const COL_ELITE := Color(1.0, 0.78, 0.30, 1.0)
 
-enum Kind { BOSS, TELEGRAPH, ELITE }
+## Coop : ALLY (allié vivant hors écran, chevron à sa teinte d'équipe + numéro), ALLY_DOWN (allié qui vient de tomber,
+## chevron qui pulse, priorité AU-DESSUS du boss), ALLY_SPECTATOR (allié mort, spectateur : chevron creux, discret).
+## Les alliés n'ont pas de texture Codex : formes en code, la teinte vient de Palette.team_color(slot).
+enum Kind { BOSS, TELEGRAPH, ELITE, ALLY, ALLY_DOWN, ALLY_SPECTATOR }
 
 const TEX_DIR := "res://assets/sprites/ui/cues/"
 const TEX_NAMES := {Kind.BOSS: "cue_boss.png", Kind.TELEGRAPH: "cue_telegraph.png", Kind.ELITE: "cue_elite.png"}
@@ -71,6 +75,7 @@ func _process(delta: float) -> void:
 func refresh() -> void:
 	var screen := Rect2(Vector2.ZERO, size if size.x > 1.0 else get_viewport_rect().size)
 	var targets := collect_targets(get_tree(), screen)
+	var max_cues := COOP_MAX_CUES if Players.count() > 1 else MAX_CUES
 	var reserved: Array = []
 	if hud != null and is_instance_valid(hud) and hud.has_method(&"reserved_rects"):
 		reserved = hud.call(&"reserved_rects")
@@ -78,11 +83,11 @@ func refresh() -> void:
 	cues.clear()
 	var placed: Array[Rect2] = []
 	for t: Dictionary in targets:
-		if cues.size() >= MAX_CUES:
+		if cues.size() >= max_cues:
 			break
 		var p := place(screen, t["pos"], px, reserved, placed)
 		var c := screen.get_center()
-		cues.append({"pos": p, "angle": (t["pos"] - c).angle(), "kind": t["kind"]})
+		cues.append({"pos": p, "angle": (t["pos"] - c).angle(), "kind": t["kind"], "slot": int(t.get("slot", -1))})
 		placed.append(Rect2(p - Vector2(px, px) * 0.5, Vector2(px, px)))
 	queue_redraw()
 
@@ -117,6 +122,7 @@ static func collect_targets(tree: SceneTree, screen: Rect2) -> Array[Dictionary]
 		if screen.has_point(sp3):
 			continue
 		out.append({"pos": sp3, "kind": Kind.TELEGRAPH, "d": sp3.distance_squared_to(c)})
+	_collect_allies(out, screen)
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var pa := _priority(a["kind"])
 		var pb := _priority(b["kind"])
@@ -124,13 +130,39 @@ static func collect_targets(tree: SceneTree, screen: Rect2) -> Array[Dictionary]
 	return out
 
 
+## Alliés hors écran (coop) : jamais le joueur local ; un allié sans nœud valide est ignoré.
+static func _collect_allies(out: Array[Dictionary], screen: Rect2) -> void:
+	if Players.count() <= 1:
+		return
+	var c := screen.get_center()
+	var lid := Players.local_id()
+	for e in Players.entries():
+		if e.id == lid or not is_instance_valid(e.node) or not e.node.is_inside_tree():
+			continue
+		var sp := e.node.get_global_transform_with_canvas().origin
+		if screen.has_point(sp):
+			continue
+		var kind := Kind.ALLY
+		if e.state.spectating:
+			kind = Kind.ALLY_SPECTATOR
+		elif e.node.get(&"dead") == true:
+			kind = Kind.ALLY_DOWN
+		out.append({"pos": sp, "kind": kind, "slot": e.id, "d": sp.distance_squared_to(c)})
+
+
 static func _priority(kind: int) -> int:
 	match kind:
+		Kind.ALLY_DOWN:
+			return 0 # au-dessus du boss
 		Kind.BOSS:
-			return 0
-		Kind.TELEGRAPH:
 			return 1
-	return 2
+		Kind.TELEGRAPH:
+			return 2
+		Kind.ALLY:
+			return 3
+		Kind.ELITE:
+			return 4
+	return 5
 
 
 ## Position de la flèche : intersection centre -> cible avec le cadre intérieur, puis glissement le long du bord
@@ -175,13 +207,18 @@ static func _free(p: Vector2, px: float, reserved: Array, placed: Array) -> bool
 
 func _draw() -> void:
 	var px := cue_px()
+	var t := Time.get_ticks_msec() * 0.001
 	for cue: Dictionary in cues:
-		draw_cue(self, cue["pos"], cue["angle"], cue["kind"], px)
+		draw_cue(self, cue["pos"], cue["angle"], cue["kind"], px, int(cue.get("slot", -1)), t)
 
 
 ## Flèche placeholder (pointe vers la cible). Contour sombre + remplissage clair : >= 3:1 sur tout fond.
 ## Télégraphe : pastille rouge à double liseré (même grammaire que la zone au sol) + pointe claire vers la cible.
-static func draw_cue(ci: CanvasItem, pos: Vector2, angle: float, kind: int, px: float) -> void:
+## `slot` (0-3) et `t` (s) ne servent qu'aux flèches d'alliés : teinte d'équipe, numéro et pulsation.
+static func draw_cue(ci: CanvasItem, pos: Vector2, angle: float, kind: int, px: float, slot: int = -1, t: float = 0.0) -> void:
+	if kind == Kind.ALLY or kind == Kind.ALLY_DOWN or kind == Kind.ALLY_SPECTATOR:
+		_draw_ally(ci, pos, angle, kind, px, slot, t)
+		return
 	var tex := cue_texture(kind)
 	if tex != null: # asset Codex livré (cue_<sens>.png, orienté vers +X)
 		ci.draw_set_transform(pos, angle, Vector2.ONE)
@@ -213,3 +250,34 @@ static func _chevron(ci: CanvasItem, xf: Transform2D, h: float, off: float, k: f
 	closed.append(poly[0])
 	ci.draw_colored_polygon(poly, col)
 	ci.draw_polyline(closed, EDGE_DARK, lw)
+
+
+## Flèche d'allié : chevron à la teinte d'équipe + numéro (la couleur ne porte jamais seule le sens). Tombé : le chevron
+## pulse (échelle et opacité) ; spectateur : contour seul.
+static func _draw_ally(ci: CanvasItem, pos: Vector2, angle: float, kind: int, px: float, slot: int, t: float) -> void:
+	var tint := Palette.team_color(maxi(slot, 0))
+	var h := px * 0.5
+	var lw := maxf(2.0, px / 16.0)
+	var k := 1.0
+	var a := 1.0
+	if kind == Kind.ALLY_DOWN:
+		var w := 0.5 + 0.5 * sin(t * TAU * 2.0)
+		k = 1.0 + 0.18 * w
+		a = 0.65 + 0.35 * w
+	var xf := Transform2D(angle, pos)
+	var pts := PackedVector2Array([Vector2(h * k, 0.0), Vector2(-h * 0.35 * k, -h * 0.85 * k),
+		Vector2(-h * 0.05 * k, 0.0), Vector2(-h * 0.35 * k, h * 0.85 * k)])
+	var poly := xf * pts
+	var closed := poly.duplicate()
+	closed.append(poly[0])
+	if kind == Kind.ALLY_SPECTATOR:
+		ci.draw_polyline(closed, Color(EDGE_DARK, 0.9), lw * 2.5)
+		ci.draw_polyline(closed, Color(tint, 0.85), lw)
+	else:
+		ci.draw_colored_polygon(poly, Color(tint, a))
+		ci.draw_polyline(closed, EDGE_DARK, lw)
+	var fs := maxi(int(px * 0.34), 11)
+	var font := ThemeDB.fallback_font
+	var gp := pos + Vector2(-fs * 0.3, fs * 0.35) - Vector2(cos(angle), sin(angle)) * h * 0.9
+	ci.draw_string_outline(font, gp, Palette.team_glyph(slot), HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 4, Color(0, 0, 0, 0.9))
+	ci.draw_string(font, gp, Palette.team_glyph(slot), HORIZONTAL_ALIGNMENT_LEFT, -1, fs, tint)

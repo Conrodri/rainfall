@@ -73,6 +73,7 @@ var _tick := 0.0
 var _player_pos := Vector2.ZERO ## positions déjà converties en 0..1 dans la carte
 var _player_dir := Vector2.DOWN
 var _has_player := false
+var _allies: Array = [] ## coop : [[Vector2 uv, int slot, bool spectateur]] des joueurs autres que le local
 var _chests: Array = [] ## [Vector2 uv, Color]
 var _pillars: Array = []
 var _bosses: PackedVector2Array = PackedVector2Array()
@@ -179,7 +180,7 @@ func _process(delta: float) -> void:
 		size = get_viewport_rect().size
 	_refresh_markers(sm)
 	# redessin seulement si un marqueur, la taille ou l'état a changé (pas de redraw inutile à l'arrêt)
-	var sig := hash([_has_player, _player_pos, _player_dir, _chests, _pillars, _bosses, _teleporter, _gold, expanded, size, _jam_seed if jam_left > 0.0 else -1])
+	var sig := hash([_has_player, _player_pos, _player_dir, _allies, _chests, _pillars, _bosses, _teleporter, _gold, expanded, size, _jam_seed if jam_left > 0.0 else -1])
 	if sig != _sig:
 		_sig = sig
 		queue_redraw()
@@ -314,13 +315,19 @@ func _uv(global_pos: Vector2) -> Vector2:
 
 
 func _refresh_markers(sm: Node) -> void:
-	var p := get_tree().get_first_node_in_group(&"player") as Node2D
+	var p := Players.local()
 	_has_player = p != null
 	if p != null:
 		_player_pos = _uv(p.global_position)
 		var f: Variant = p.get(&"facing")
 		if f is Vector2 and (f as Vector2).length_squared() > 0.0:
 			_player_dir = f
+	_allies.clear()
+	if Players.count() > 1:
+		var lid := Players.local_id()
+		for en in Players.entries():
+			if en.id != lid and is_instance_valid(en.node) and en.node.is_inside_tree():
+				_allies.append([_uv(en.node.global_position), en.id, en.state.spectating or en.node.get(&"dead") == true])
 	_chests.clear()
 	for c in sm.get(&"chests"):
 		if is_instance_valid(c) and c.is_inside_tree():
@@ -489,6 +496,18 @@ func _draw() -> void:
 		if not _draw_icon("boss", q, u * 3.0):
 			draw_circle(q, u * 1.3, Color(0, 0, 0, 0.85))
 			draw_circle(q, u, COL_BOSS)
+	for al in ([] if jammed else _allies): # coop : point à la teinte d'équipe + numéro (la couleur ne porte jamais seule le sens)
+		var aq := xf * (al[0] as Vector2)
+		var ac := Palette.team_color(int(al[1]))
+		if bool(al[2]): # spectateur : anneau creux
+			draw_arc(aq, u * 1.2, 0.0, TAU, 16, Color(0, 0, 0, 0.85), 3.0)
+			draw_arc(aq, u * 1.2, 0.0, TAU, 16, ac, 1.5)
+		else:
+			draw_circle(aq, u * 1.6, Color(0, 0, 0, 0.85))
+			draw_circle(aq, u * 1.2, ac)
+		var gfs := maxi(int(u * 2.6), 9)
+		draw_string_outline(ThemeDB.fallback_font, aq + Vector2(u * 1.6, u * 0.9), Palette.team_glyph(int(al[1])), HORIZONTAL_ALIGNMENT_LEFT, -1, gfs, 3, Color(0, 0, 0, 0.9))
+		draw_string(ThemeDB.fallback_font, aq + Vector2(u * 1.6, u * 0.9), Palette.team_glyph(int(al[1])), HORIZONTAL_ALIGNMENT_LEFT, -1, gfs, ac)
 	if _has_player:
 		var q := xf * _player_pos
 		var dir := player_screen_dir()

@@ -962,7 +962,7 @@ func _push_body(p: Dictionary, delta: float) -> void:
 	_push_shadows(p)
 	_push_grade(p, view)
 	var player_pos := view.get_center()
-	var pl := get_tree().get_first_node_in_group(&"player") as Node2D
+	var pl := Players.local() # coop : l'ambiance suit la caméra, donc le joueur local
 	if pl != null:
 		player_pos = pl.global_position
 	water.update_water(view, p, delta)

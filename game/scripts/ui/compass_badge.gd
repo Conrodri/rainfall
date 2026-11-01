@@ -56,10 +56,11 @@ func set_ui_scale(s: float) -> void:
 	(_icon.get_parent() as HBoxContainer).add_theme_constant_override("separation", int(10 * s))
 
 
-## Relit RunState.compass ; renvoie vrai si l'affichage a changé (le HUD replace alors la colonne).
+## Relit la Boussole du joueur local (PlayerState.compass) ; renvoie vrai si l'affichage a changé (le HUD replace alors la colonne).
 func refresh() -> bool:
-	var t := String(RunState.compass.get("tag", ""))
-	var c := int(RunState.compass.get("charges", 0))
+	var cp: Dictionary = LocalState.state().compass
+	var t := String(cp.get("tag", ""))
+	var c := int(cp.get("charges", 0))
 	if c <= 0 or t == "":
 		t = ""
 		c = 0

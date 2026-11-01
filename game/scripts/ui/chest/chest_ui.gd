@@ -12,6 +12,12 @@ extends CanvasLayer
 ## Usage : var ui = preload("res://scenes/ui/chest/chest_ui.tscn").instantiate(); parent.add_child(ui)
 ##         ui.open(kind, stage, price, chest_node)   # price = 0 pour le coffre boss
 ## Met l'arbre en pause pendant l'écran (process ALWAYS) puis restaure l'état précédent.
+## COOP (lot 4, « sacoche » : docs/multi/Design_Coop.md §2.4) : dès que ChestSession.is_blocking() est faux, l'écran devient
+## un overlay NON BLOQUANT : aucune pause, fond transparent, colonne de droite (zone du pouce), le joueur continue de
+## bouger (OverlayMode.is_open() vrai : sorts 2-4 en ciblage automatique). Il s'ouvre replié (pastille « Choix en
+## attente ») s'il y a un monstre à moins de SATCHEL_SAFE_RADIUS_U, et se déplie après SATCHEL_AUTO_OPEN_S de calme ou
+## sur un appui ; il se replie après un coup d'au moins SATCHEL_HIT_FRAC des PV. Jamais de choix à la place du joueur.
+## Objet, or et relances sont ceux du propriétaire de la session (session.state), pas du joueur 1.
 
 signal finished
 
@@ -51,6 +57,7 @@ const CARD_RATIO := 384.0 / 560.0
 const BUTTON_H := 128.0 ## hauteur minimale des boutons de relance (px logiques, paysage 1080 comme portrait)
 const BUTTON_H_PORTRAIT := 144.0
 const BUTTON_GAP := 48 ## écart entre les deux boutons de relance
+const OVERLAY_LEFT := 0.62 ## coop : bord gauche de l'overlay (fraction de la largeur d'écran)
 const FOCUS_PX := 6 ## épaisseur du contour de focus (cartes et boutons)
 const PROMPT_H := 44.0 ## hauteur des invites de touches
 const GOLD_COL := Color(1.0, 0.82, 0.3) ## bouton qui dépense de l'or
@@ -91,6 +98,21 @@ const SKIP_LOCK_MS := 220 ## après un skip : aucun choix avant ce délai ni ava
 const SKIP_RELEASE_MAX_MS := 1500 ## filet : relâcher manqué
 
 var session: ChestSession
+const SATCHEL_SAFE_RADIUS_U := 8.0 ## rayon sans monstre pour déplier l'overlay tout seul
+const SATCHEL_AUTO_OPEN_S := 2.0 ## calme requis avant le dépliage automatique
+const SATCHEL_HIT_FRAC := 0.10 ## coup (fraction des PV max) qui replie l'overlay
+const SATCHEL_RECALM_S := 3.0 ## calme requis pour déplier après un repli sur coup
+var non_blocking := false ## overlay sans pause (coop) ; posé par open()/resume() d'après ChestSession.is_blocking()
+var force_blocking := false ## tests : garde l'ancien comportement (pause) même en coop
+var collapsed := false ## overlay replié en pastille
+var _dim: ColorRect
+var _margin: MarginContainer
+var _panel: Control
+var _pill: Button
+var _overlay_counted := false
+var _calm_t := 0.0
+var _poll_t := 0.0
+var _last_hp := -1.0
 var skipped := false ## l'animation en cours / dernière a été passée (tests)
 var _chest: Node
 var _was_paused := false
@@ -168,6 +190,9 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if _overlay_counted:
+		_overlay_counted = false
+		OverlayMode.leave()
 	if Platform.input_mode_changed.is_connected(_on_input_mode_changed):
 		Platform.input_mode_changed.disconnect(_on_input_mode_changed)
 
@@ -276,10 +301,10 @@ func open(kind: StringName, stage: int, price: float, chest: Node = null) -> voi
 	if not is_node_ready():
 		await ready
 	_was_paused = get_tree().paused
-	get_tree().paused = true
-	session = ChestSession.new(kind, stage, price)
+	session = ChestSession.new(kind, stage, price) # propriétaire : ChestSession.pending_state (Chest.try_open) ou le joueur 1
+	_enter_mode()
 	session.start()
-	Events.chest_opened.emit(chest, session.quality, session.offered)
+	Events.emit_chest_opened(chest, session.quality, session.offered, _owner().slot)
 	_title.text = String(KIND_NAMES.get(kind, "Coffre")).to_upper()
 	if session.compass_note() != "": # Boussole de rouille : la carte A porte le tag choisi (ou la charge est gardée)
 		_title.text += "  ·  " + session.compass_note()
@@ -310,7 +335,7 @@ func resume(s: ChestSession) -> void:
 		await ready
 	session = s
 	_was_paused = false
-	get_tree().paused = true
+	_enter_mode()
 	_title.text = String(KIND_NAMES.get(s.kind, "Coffre")).to_upper()
 	var fp: String = CHEST_FRAMES.get(s.kind, CHEST_FRAMES[&"petit"])
 	_chest_frames = load(fp) as SpriteFrames if ResourceLoader.exists(fp) else null
@@ -421,12 +446,14 @@ func _button(text: String, action: StringName, gold := false) -> Button:
 
 func _build() -> void:
 	var dim := ColorRect.new()
+	_dim = dim
 	dim.color = Color(0, 0, 0, 0.8)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(dim)
 
 	var margin := MarginContainer.new()
+	_margin = margin
 	margin.theme = UiTheme.theme() # thème DA commun (boutons, panneaux)
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
@@ -440,6 +467,7 @@ func _build() -> void:
 	var big := PanelContainer.new() # grand panneau DA derrière l'écran
 	big.mouse_filter = Control.MOUSE_FILTER_PASS
 	margin.add_child(big)
+	_panel = big
 	big.add_child(_main)
 
 	var header := VBoxContainer.new()
@@ -631,6 +659,8 @@ func _build() -> void:
 ## S'adapte au ratio : paysage = en-tête à gauche / corps à droite ; cartes côte à côte sauf écran étroit.
 func _relayout() -> void:
 	var size := get_viewport().get_visible_rect().size
+	if non_blocking:
+		size.x *= 1.0 - OVERLAY_LEFT # colonne de droite : disposition « portrait » (en-tête au-dessus, cartes dessous)
 	var landscape := size.x > size.y
 	_main.vertical = not landscape
 	_cards_box.vertical = (size.x < 640.0) if not landscape else (size.x < 1100.0)
@@ -806,6 +836,8 @@ func _skip_locked() -> bool:
 
 func _input(event: InputEvent) -> void:
 	if session == null and not _animating:
+		return
+	if non_blocking and not _overlay_wants(event):
 		return
 	if items_open(): # consultation des objets par-dessus : le coffre ne lit rien (Retour / Échap / B : menu pause)
 		if event.is_action_pressed(&"chest_items"):
@@ -1125,6 +1157,8 @@ func _instant_reveal(with_rarity: bool) -> void:
 
 
 func _process(delta: float) -> void:
+	if non_blocking and session != null:
+		_tick_overlay(delta)
 	if not _animating or session == null:
 		return
 	_anim_t += delta
@@ -1348,7 +1382,7 @@ func _fill_card(i: int) -> void:
 		tag_texts.append("[%s]" % str(t))
 	f.get_child(3).text = "  ".join(tag_texts)
 	f.get_child(3).add_theme_color_override("font_color", Color(0.6, 0.8, 1.0))
-	var owned := RunState.stacks(StringName(id))
+	var owned := _owner().stacks(StringName(id))
 	f.get_child(4).text = stack_line(id, owned) if owned > 0 else "Nouveau"
 	f.get_child(4).add_theme_color_override("font_color", Color(1, 0.85, 0.4) if owned > 0 else Color(0.5, 1, 0.6))
 	var sb := _front_sb[i]
@@ -1404,7 +1438,7 @@ func _refresh_items_button() -> void:
 	if _items_btn == null:
 		return
 	_items_btn.visible = _pause_menu() != null
-	_items_btn.text = "Objets (%d)" % RunState.items.size()
+	_items_btn.text = "Objets (%d)" % _owner().items.size()
 	_items_btn.disabled = _busy
 
 
@@ -1503,7 +1537,8 @@ func _on_choose(i: int) -> void:
 		return
 	_busy = true
 	session.choose(get_tree(), i)
-	get_tree().paused = _was_paused
+	if not non_blocking:
+		get_tree().paused = _was_paused
 	finished.emit()
 	queue_free()
 
@@ -1531,3 +1566,117 @@ func _on_gold_reroll() -> void:
 	_busy = true
 	_update_buttons()
 	_do_reroll(session.do_gold_reroll())
+
+
+# ---------------------------------------------------------------- coop : overlay non bloquant (« sacoche »)
+
+## PlayerState du propriétaire de la session (payeur / bénéficiaire du coffre) ; joueur local à défaut.
+func _owner() -> PlayerState:
+	if session != null and session.state != null:
+		return session.state
+	return LocalState.state()
+
+
+## Décide du mode d'après ChestSession.is_blocking() : solo = pause comme avant ; coop = overlay sans pause.
+func _enter_mode() -> void:
+	non_blocking = not force_blocking and not ChestSession.is_blocking()
+	if not non_blocking:
+		get_tree().paused = true
+		return
+	_apply_overlay_layout()
+	if not _overlay_counted:
+		_overlay_counted = true
+		OverlayMode.enter()
+	_last_hp = -1.0
+	_calm_t = 0.0
+	set_collapsed(_enemy_near())
+	_relayout()
+
+
+func _apply_overlay_layout() -> void:
+	_dim.color = Color(0.0, 0.0, 0.0, 0.0)
+	_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_margin.anchor_left = OVERLAY_LEFT
+	_margin.offset_left = 0.0
+	for side in ["left", "right", "top", "bottom"]:
+		_margin.add_theme_constant_override("margin_" + side, 12)
+	if _pill == null:
+		_pill = Button.new()
+		_pill.name = "SatchelPill"
+		_pill.text = "Choix en attente"
+		_pill.focus_mode = Control.FOCUS_NONE
+		_pill.add_theme_font_size_override("font_size", 30)
+		_pill.theme = UiTheme.theme()
+		_pill.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
+		_pill.custom_minimum_size = Vector2(340.0, 96.0)
+		_pill.offset_left = -360.0
+		_pill.offset_right = -16.0
+		_pill.pressed.connect(func() -> void: set_collapsed(false))
+		_pill.visible = false
+		add_child(_pill)
+
+
+## Replie l'overlay en pastille (le joueur joue tranquille) ou le déplie.
+func set_collapsed(on: bool) -> void:
+	if not non_blocking:
+		return
+	collapsed = on
+	_calm_t = 0.0
+	if _margin != null:
+		_margin.visible = not on
+	if _pill != null:
+		_pill.visible = on
+
+
+## Un monstre actif à moins de SATCHEL_SAFE_RADIUS_U du propriétaire.
+func _enemy_near() -> bool:
+	var p := Players.by_id(_owner().slot)
+	if p == null:
+		return false
+	var r2 := pow(SATCHEL_SAFE_RADIUS_U * Balance.UNIT_PX, 2.0)
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		var n := e as Node2D
+		if n != null and n.visible and n.get(&"active") != false and n.global_position.distance_squared_to(p.global_position) <= r2:
+			return true
+	return false
+
+
+func _tick_overlay(delta: float) -> void:
+	var p := Players.by_id(_owner().slot)
+	if p != null and p.get(&"max_hp") != null:
+		var hp := float(p.get(&"hp"))
+		var mx := maxf(float(p.get(&"max_hp")), 1.0)
+		if _last_hp >= 0.0 and _last_hp - hp >= SATCHEL_HIT_FRAC * mx and not collapsed:
+			set_collapsed(true)
+		_last_hp = hp
+	if not collapsed:
+		return
+	_poll_t -= delta
+	if _poll_t > 0.0:
+		return
+	_poll_t = 0.2
+	if _enemy_near():
+		_calm_t = 0.0
+	else:
+		_calm_t += 0.2
+		if _calm_t >= SATCHEL_AUTO_OPEN_S:
+			set_collapsed(false)
+
+
+## Quels évènements l'overlay lit : seulement les siens (cartes, boutons, actions du coffre). Déplacement, esquive et
+## sorts du joueur ne sont jamais avalés ; replié, une touche de choix ou d'objets le déplie.
+func _overlay_wants(event: InputEvent) -> bool:
+	if collapsed:
+		if event.is_action_pressed(&"chest_pick_1") or event.is_action_pressed(&"chest_pick_2") or event.is_action_pressed(&"chest_items"):
+			set_collapsed(false)
+			get_viewport().set_input_as_handled()
+		return false
+	if event is InputEventMouseMotion:
+		return false
+	if event is InputEventMouseButton or event is InputEventScreenTouch:
+		var pos: Vector2 = (event as InputEventMouseButton).position if event is InputEventMouseButton else (event as InputEventScreenTouch).position
+		return _panel != null and _panel.get_global_rect().has_point(pos)
+	for a in [&"chest_pick_1", &"chest_pick_2", &"chest_reroll_free", &"chest_reroll_gold", &"chest_items"]:
+		if event.is_action(a):
+			return true
+	return false

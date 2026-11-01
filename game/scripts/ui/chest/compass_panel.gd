@@ -11,6 +11,7 @@ const INPUT_LOCK_S := 0.3
 
 var tags: Array = []
 var _was_paused := false
+var _paused_by_me := true ## faux en coop : l'arbre n'a pas été mis en pause
 var _lock := true
 var _closed := false
 var _buttons: Array[Button] = []
@@ -23,7 +24,11 @@ func _init() -> void:
 
 func _ready() -> void:
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	_paused_by_me = ChestSession.is_blocking() # coop : jamais de pause (l'écran reste modal pour son joueur seulement)
+	if _paused_by_me:
+		get_tree().paused = true
+	else:
+		OverlayMode.enter()
 	get_tree().create_timer(INPUT_LOCK_S, true, false, true).timeout.connect(func() -> void: _lock = false)
 
 
@@ -101,7 +106,10 @@ func _close() -> void:
 	if _closed:
 		return
 	_closed = true
-	get_tree().paused = _was_paused
+	if _paused_by_me:
+		get_tree().paused = _was_paused
+	else:
+		OverlayMode.leave()
 	finished.emit()
 	queue_free()
 

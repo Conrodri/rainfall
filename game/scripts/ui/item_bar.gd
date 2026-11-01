@@ -2,7 +2,7 @@ class_name ItemBar
 extends ScrollContainer
 ## Inventaire compact du HUD : une icône par item possédé (assets/sprites/icons/items/<id>.png sur
 ## un fond de sa couleur de qualité), badge « ×N » au-delà d'un exemplaire.
-## Mis à jour sur RunState.item_added (ordre d'obtention).
+## Mis à jour sur PlayerState.item_added du joueur local (LocalState) (ordre d'obtention).
 ## Deux dispositions : `wrap` (PC : plusieurs lignes sous les PV, MAX_ROWS lignes puis défilement)
 ## ou rangée unique défilante (tactile). Infobulle (nom, effet, exemplaires) au survol de la souris,
 ## ou par appui long en mode tactile.
@@ -139,6 +139,9 @@ class ItemSlot extends Control:
 		bar._slot_input(self, event)
 
 
+var _state: PlayerState ## PlayerState du joueur local dont la barre montre les objets
+
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	clip_contents = true
@@ -147,17 +150,37 @@ func _ready() -> void:
 	add_child(_content)
 	_build_tooltip()
 	_build_more()
-	RunState.item_added.connect(_on_item_added)
-	RunState.items_changed.connect(refresh) # retrait d'objets (mode test)
+	_bind_state()
+	Events.party_changed.connect(func(_n: int) -> void: _bind_state()) # inscription des joueurs après la barre
 	refresh()
+
+
+## Écoute les objets du joueur LOCAL (PlayerState via LocalState), jamais ceux d'un allié.
+func _bind_state() -> void:
+	var st := LocalState.state()
+	if st == _state:
+		return
+	_unbind_state()
+	_state = st
+	_state.item_added.connect(_on_item_added)
+	_state.items_changed.connect(refresh) # retrait d'objets (mode test)
+	if is_node_ready():
+		refresh()
+
+
+func _unbind_state() -> void:
+	if _state == null:
+		return
+	if _state.item_added.is_connected(_on_item_added):
+		_state.item_added.disconnect(_on_item_added)
+	if _state.items_changed.is_connected(refresh):
+		_state.items_changed.disconnect(refresh)
+	_state = null
 
 
 func _exit_tree() -> void:
 	SpellTooltip.set_user_bubble(&"item_tip", false)
-	if RunState.item_added.is_connected(_on_item_added):
-		RunState.item_added.disconnect(_on_item_added)
-	if RunState.items_changed.is_connected(refresh):
-		RunState.items_changed.disconnect(refresh)
+	_unbind_state()
 
 
 func _build_tooltip() -> void:
@@ -193,14 +216,15 @@ func _build_tooltip() -> void:
 	add_child(tooltip)
 
 
-## Reconstruit toutes les cases depuis RunState.items (début de run, restauration).
+## Reconstruit toutes les cases depuis les objets du joueur local (début de run, restauration).
 func refresh() -> void:
 	for id in _order:
 		(_slots[id] as Node).queue_free()
 	_slots.clear()
 	_order.clear()
-	for id in RunState.items:
-		_add_or_update(StringName(id), int(RunState.items[id]))
+	var items: Dictionary = (_state if _state != null else LocalState.state()).items
+	for id in items:
+		_add_or_update(StringName(id), int(items[id]))
 	relayout()
 
 

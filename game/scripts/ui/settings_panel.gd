@@ -502,7 +502,7 @@ func sync() -> void:
 	_reticle.index = 1 if GameSettings.reticle_scale() > 1.25 else 0
 	_set_toggle(_fullscreen, GameSettings.fullscreen())
 	_set_toggle(_show_fps, GameSettings.show_fps())
-	var p := get_tree().get_first_node_in_group(&"player") if is_inside_tree() else null
+	var p := Players.local() if is_inside_tree() else null
 	_set_toggle(_autocast, bool(p.get(&"auto_cast_spells")) if p != null and "auto_cast_spells" in p else GameSettings.auto_cast())
 	_set_toggle(_haptics, GameSettings.haptics())
 	_set_toggle(_long_press, GameSettings.pause_long_press())

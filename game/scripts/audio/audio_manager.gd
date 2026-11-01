@@ -8,6 +8,7 @@ const VoicePool := preload("res://scripts/audio/voice_pool.gd")
 const AudioDirector := preload("res://scripts/audio/audio_director.gd")
 const SynthFallback := preload("res://scripts/audio/synth_fallback.gd")
 
+const ALLY_STEP_DB := -6.0 ## coop : pas et cris de douleur des alliés
 const SETTINGS_PATH := "user://settings.cfg"
 const SETTINGS_SECTION := "audio"
 const DEFAULT_VOLUMES := {"master": 1.0, "music": 0.8, "sfx": 1.0, "ambience": 0.8, "ui": 1.0}
@@ -69,8 +70,10 @@ var _chest_gen_landed := 0
 var _coin_last_ms := -100000
 
 var _step_timer := 0.0
-var _player_prev := NO_POS
+var _player_prev := NO_POS ## pas du joueur local
 var _player_acc := 0.0
+var _ally_steps := {} ## coop : id du joueur allié -> {prev: Vector2, acc: float} (pas des alliés, -6 dB)
+var _lvl_state: PlayerState ## PlayerState du joueur local dont le niveau déclenche le son « niveau gagné »
 var _enemy_track: Dictionary = {} ## instance_id -> [Vector2 pos, float acc]
 
 var _map_grid: Array = []
@@ -268,7 +271,7 @@ func listener_pos() -> Vector2:
 	if cam != null:
 		_listener_cache = cam.get_screen_center_position()
 	else:
-		var pl := get_tree().get_first_node_in_group(&"player") as Node2D
+		var pl := Players.local()
 		_listener_cache = pl.global_position if pl != null else Vector2.ZERO
 	return _listener_cache
 
@@ -439,7 +442,7 @@ func flush_hits() -> void:
 
 
 func _play_hit_now(e: Dictionary) -> bool:
-	var base := Balance.player_base_damage(RunState.level)
+	var base := Balance.player_base_damage(LocalState.state().level)
 	var h := classify_hit(float(e["dmg"]), base, bool(e["crit"]), bank.config.get("hit_power", {}))
 	var nm: String = h["name"]
 	var spell := String(e["spell"])
@@ -572,6 +575,33 @@ func footstep(actor_kind: StringName, pos: Vector2, surface: StringName = &"", v
 			1.0 + _rng.randf_range(-pv, pv))
 
 
+## Coop : pas des alliés (même cadence que le joueur local, 6 dB plus bas, coupés au-delà de la portée habituelle par
+## footstep). Aucun appel en solo.
+func _ally_step_tick(dt: float, cfg: Dictionary, local_node: Node2D) -> void:
+	if Players.count() <= 1:
+		if not _ally_steps.is_empty():
+			_ally_steps.clear()
+		return
+	var stride := float(cfg.get("player_stride", 105.0))
+	for e in Players.entries():
+		if e.node == local_node or not is_instance_valid(e.node) or e.state.spectating:
+			continue
+		var st: Dictionary = _ally_steps.get(e.id, {"prev": NO_POS, "acc": 0.0})
+		var p: Vector2 = e.node.global_position
+		var prev: Vector2 = st["prev"]
+		if is_finite(prev.x):
+			var dist := p.distance_to(prev)
+			if dist < 400.0 and dist / dt > float(cfg.get("min_speed", 30.0)):
+				st["acc"] = float(st["acc"]) + dist
+				if float(st["acc"]) >= stride:
+					st["acc"] = fmod(float(st["acc"]), stride)
+					footstep(&"player", p, &"", ALLY_STEP_DB)
+			else:
+				st["acc"] = minf(float(st["acc"]), stride * 0.5)
+		st["prev"] = p
+		_ally_steps[e.id] = st
+
+
 func surface_at(pos: Vector2) -> StringName:
 	var fallback := StringName(_surfaces.get(".", "stone"))
 	if _map_grid.is_empty():
@@ -605,7 +635,8 @@ func _load_map_surfaces(id: String) -> void:
 ## Pilote les pas du joueur (cadence = distance parcourue / foulée) et des monstres proches.
 func _step_tick(dt: float) -> void:
 	var cfg: Dictionary = bank.config.get("steps", {})
-	var pl := get_tree().get_first_node_in_group(&"player") as Node2D
+	var pl := Players.local()
+	_ally_step_tick(dt, cfg, pl)
 	if pl != null:
 		var p := pl.global_position
 		var stride := float(cfg.get("player_stride", 105.0))
@@ -819,12 +850,16 @@ func _connect_events() -> void:
 	Events.floor_cleared.connect(func(_s: int) -> void: play_ui(&"stage.cleared"))
 	Events.boss_spawned.connect(_on_boss_spawned)
 	Events.boss_killed.connect(_on_boss_killed)
-	Events.player_damaged.connect(func(_a: float, _s: Node) -> void: play(&"player.hurt"))
+	Events.player_damaged.connect(func(_a: float, _s: Node) -> void:
+		if not LocalState.is_coop():
+			play(&"player.hurt"))
+	Events.player_damaged_by.connect(func(pid: int, _a: float, _s: Node) -> void: # coop : le sien plein volume, un allié -6 dB
+		if LocalState.is_coop():
+			play(&"player.hurt", NO_POS, 0.0 if pid == Players.local_id() else ALLY_STEP_DB))
 	Events.player_died.connect(_on_player_died)
 	Events.item_chosen.connect(func(_i: StringName) -> void: play_ui(&"ui.item_pick"))
-	RunState.level_up.connect(func(_l: int) -> void:
-		play_ui(&"ui.level_up")
-		duck(5.0, 0.6))
+	_bind_level_sound()
+	Events.party_changed.connect(func(_n: int) -> void: _bind_level_sound())
 	RunState.difficulty_changed.connect(_on_difficulty)
 	# Le tonnerre suit AmbianceManager.thunder (délai calculé par l'orage) : la scène de jeu le
 	# branche sur thunder_after(). Events.lightning_struck ne sert qu'au grondement de secours.
@@ -834,6 +869,22 @@ func _on_enemy_damaged(enemy: Node2D, amount: float, is_crit: bool, element: Str
 	if not is_instance_valid(enemy):
 		return
 	_queue_hit(&"", amount, is_crit, enemy.global_position, element)
+
+
+## Son « niveau gagné » : celui du joueur local (PlayerState via LocalState), rebranché si la partie change.
+func _bind_level_sound() -> void:
+	var st := LocalState.state()
+	if st == _lvl_state:
+		return
+	if _lvl_state != null and _lvl_state.level_up.is_connected(_on_local_level_up):
+		_lvl_state.level_up.disconnect(_on_local_level_up)
+	_lvl_state = st
+	_lvl_state.level_up.connect(_on_local_level_up)
+
+
+func _on_local_level_up(_l: int) -> void:
+	play_ui(&"ui.level_up")
+	duck(5.0, 0.6)
 
 
 func _on_difficulty(_d: float, tier_name: StringName) -> void:

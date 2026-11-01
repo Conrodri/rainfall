@@ -82,7 +82,7 @@ static func spawn_point(center: Vector2) -> Vector2:
 static func spawn(tree: SceneTree, entry: Dictionary, count: int, elite: bool, center: Variant = null) -> Array[Node2D]:
 	var out: Array[Node2D] = []
 	var director := tree.get_first_node_in_group(&"director")
-	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var player := TestTools.player_of(tree) as Node2D
 	if director == null or player == null or entry.is_empty():
 		return out
 	var c: Vector2 = center if center is Vector2 else player.global_position
@@ -145,7 +145,7 @@ const POUTCH_RING_U := Vector2(4.0, 6.0)
 ## (Enemy.test_dummy). Retourne son compteur (TestPoutch), null si l'apparition échoue.
 static func spawn_poutch(tree: SceneTree, poutch_type: StringName, center: Variant = null) -> TestPoutch:
 	var director := tree.get_first_node_in_group(&"director")
-	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var player := TestTools.player_of(tree) as Node2D
 	if director == null or player == null:
 		return null
 	var c: Vector2 = center if center is Vector2 else player.global_position
@@ -222,7 +222,7 @@ static func chest_catalog() -> Array[Dictionary]:
 
 ## Fait apparaître un coffre `chest_kind` près du joueur (ou de `center`) ; vrai flux (prix au D courant, ChestUI, tirage).
 static func spawn_chest(tree: SceneTree, chest_kind: StringName, center: Variant = null) -> Node2D:
-	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var player := TestTools.player_of(tree) as Node2D
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if player == null or sm == null or sm.get(&"map") == null or not ResourceLoader.exists(CHEST_SCENE):
 		return null
@@ -262,7 +262,7 @@ static func station_catalog() -> Array[Dictionary]:
 ## Fait apparaître l'atelier `id` près du joueur (ou de `center`) ; vrai flux (prix au D courant, usages complets, Matrice
 ## tirée au hasard : objet et qualité varient à chaque appel). Retourne le nœud, null sans carte ni joueur.
 static func spawn_station(tree: SceneTree, id: StringName, center: Variant = null) -> Station:
-	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var player := TestTools.player_of(tree) as Node2D
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if player == null or sm == null or sm.get(&"map") == null or not STATION_ORDER.has(id):
 		return null
@@ -342,17 +342,20 @@ static func item_catalog() -> Array[Dictionary]:
 	return out
 
 
-## +1 exemplaire (chemin officiel : RunState.add_item puis recalcul des stats et des effets du joueur).
+## +1 exemplaire (chemin officiel : PlayerState.add_item puis recalcul des stats et des effets du joueur).
 static func add_item(tree: SceneTree, id: StringName) -> void:
 	if not ItemDB.has_item(id):
 		return
-	RunState.add_item(id)
+	for st in target_states():
+		st.add_item(id)
 	apply_items(tree)
 
 
-## −1 exemplaire. Retourne faux s'il n'y en avait pas.
+## −1 exemplaire. Retourne faux s'il n'y en avait pas (pour le joueur 1 ; « tous les joueurs » : au moins un).
 static func remove_item(tree: SceneTree, id: StringName) -> bool:
-	var ok := RunState.remove_item(id)
+	var ok := false
+	for st in target_states():
+		ok = st.remove_item(id) or ok
 	if ok:
 		if str(ItemDB.get_item(id).get("special", "")) == str(ItemEffects.ID_PHENIX):
 			_reset_phenix()
@@ -361,7 +364,8 @@ static func remove_item(tree: SceneTree, id: StringName) -> bool:
 
 
 static func clear_items(tree: SceneTree) -> void:
-	RunState.clear_items()
+	for st in target_states():
+		st.clear_items()
 	_reset_phenix()
 	apply_items(tree)
 
@@ -369,14 +373,49 @@ static func clear_items(tree: SceneTree) -> void:
 ## Mode test : retirer un Phénix de poche rend ses charges aux exemplaires restants (et à ceux rajoutés ensuite),
 ## pour rejouer la résurrection sans empiler des exemplaires. En run normale, l'usage reste compté pour la run.
 static func _reset_phenix() -> void:
-	RunState.counters.erase(ItemEffects.COUNTER_PHENIX)
+	for st in target_states():
+		st.counters.erase(ItemEffects.COUNTER_PHENIX)
 
 
-## Recalcule les stats du joueur depuis RunState.items (ItemStats.compute -> Player.apply_stats -> ItemEffects.refresh).
+## Recalcule les stats des joueurs ciblés depuis leurs objets (ItemStats.compute -> Player.apply_stats -> ItemEffects.refresh).
 static func apply_items(tree: SceneTree) -> void:
-	var player := tree.get_first_node_in_group(&"player")
-	if player != null and player.has_method(&"apply_stats"):
-		player.call(&"apply_stats", ItemStats.compute(RunState.items))
+	for id in target_ids():
+		var player := Players.by_id(id)
+		var st := Players.state_of(id)
+		if player != null and st != null and player.has_method(&"apply_stats"):
+			player.call(&"apply_stats", ItemStats.compute(st.items))
+
+
+# --- Cible (coop) --------------------------------------------------------------------
+
+## Mode test en coop : « tous les joueurs » applique objets, personnage, niveau et soins à chacun. Par défaut (faux) et
+## en solo : le joueur 1 seulement (comportement historique). Réglé par la case de l'onglet Triches.
+static var all_players := false
+
+
+## Emplacements ciblés : [0] ou, avec all_players en coop, tous les joueurs inscrits.
+static func target_ids() -> Array[int]:
+	var out: Array[int] = []
+	if all_players and Players.count() > 1:
+		for e in Players.entries():
+			out.append(e.id)
+	else:
+		out.append(0)
+	return out
+
+
+static func target_states() -> Array[PlayerState]:
+	var out: Array[PlayerState] = []
+	for id in target_ids():
+		var st := Players.state_of(id)
+		out.append(st if st != null else RunState.local())
+	return out
+
+
+## Joueur 1 (cible de repère des invocations, du curseur et du panneau) ; repli sur le joueur local.
+static func player_of(_tree: SceneTree = null) -> Node2D:
+	var p := Players.by_id(0)
+	return p if p != null else Players.local()
 
 
 # --- Personnage, skin, niveau -------------------------------------------------------
@@ -392,8 +431,12 @@ static func characters() -> Array[Dictionary]:
 
 ## Le personnage change sur place (Player.switch_character) avec ses variantes de sorts `loadout` {slot: id}.
 static func switch_character(tree: SceneTree, cid: StringName, loadout: Dictionary = {}) -> bool:
-	var player := tree.get_first_node_in_group(&"player")
-	return player != null and bool(player.call(&"switch_character", cid, loadout))
+	var ok := false
+	for id in target_ids():
+		var player := Players.by_id(id)
+		if player != null and bool(player.call(&"switch_character", cid, loadout)):
+			ok = true
+	return ok
 
 
 ## Apparence d'un personnage ("" = défaut, sinon id de skin), appliquée tout de suite si c'est le personnage joué.
@@ -410,20 +453,22 @@ static func set_skin(tree: SceneTree, cid: StringName, skin_id: String, loadout:
 ## Niveau du joueur (1..MAX_LEVEL) : XP remise à zéro, PV max et dégâts de base recalculés (signal level_up).
 static func set_level(n: int) -> int:
 	var lv := clampi(n, 1, MAX_LEVEL)
-	RunState.level = lv
-	RunState.xp = 0.0
-	RunState.xp_changed.emit(0.0, Balance.xp_required(lv))
-	RunState.level_up.emit(lv)
+	for st in target_states(): # les signaux du PlayerState sont relayés par RunState pour le joueur 1
+		st.level = lv
+		st.xp = 0.0
+		st.xp_changed.emit(0.0, Balance.xp_required(lv))
+		st.level_up.emit(lv)
 	return lv
 
 
 ## Soigne le joueur et rend toutes les recharges de sorts.
-static func restore_player(tree: SceneTree) -> void:
-	var player := tree.get_first_node_in_group(&"player")
-	if player == null:
-		return
-	player.call(&"heal", float(player.get(&"max_hp")))
-	var sp: Variant = player.get(&"spells")
-	if sp is SpellCaster:
-		for c: Dictionary in (sp as SpellCaster).get_spell_cooldowns():
-			(sp as SpellCaster).set_cooldown(int(c["slot"]), 0.0, float(c["total"]))
+static func restore_player(_tree: SceneTree) -> void:
+	for id in target_ids():
+		var player := Players.by_id(id)
+		if player == null:
+			continue
+		player.call(&"heal", float(player.get(&"max_hp")))
+		var sp: Variant = player.get(&"spells")
+		if sp is SpellCaster:
+			for c: Dictionary in (sp as SpellCaster).get_spell_cooldowns():
+				(sp as SpellCaster).set_cooldown(int(c["slot"]), 0.0, float(c["total"]))

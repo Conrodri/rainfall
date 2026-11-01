@@ -158,9 +158,11 @@ static func set_auto_cast(tree: SceneTree, on: bool) -> void:
 
 
 static func apply_auto_cast(tree: SceneTree, on: bool) -> void:
-	var p := tree.get_first_node_in_group(&"player") if tree != null else null
-	if p != null and "auto_cast_spells" in p:
-		p.set(&"auto_cast_spells", on)
+	if tree == null:
+		return
+	for p in Players.all(): # tous les joueurs locaux (le réglage est celui de l'appareil)
+		if "auto_cast_spells" in p:
+			p.set(&"auto_cast_spells", on)
 
 
 static func _apply_quality(q: Node, choice: int) -> void:

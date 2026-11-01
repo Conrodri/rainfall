@@ -24,6 +24,7 @@ var offered: Array = []
 var sold: Array[bool] = [] ## SHOP : achat fait
 var price_fn: Callable = Callable() ## SHOP : Callable(quality: StringName) -> float, relu à chaque image
 var _was_paused := false
+var _paused_by_me := true ## faux en coop : l'arbre n'a pas été mis en pause
 var _lock := true
 var _closed := false
 var _cards: Array[PanelContainer] = []
@@ -75,7 +76,11 @@ func open_shop(entries: Array, fn: Callable, title: String = "MARCHAND") -> void
 
 func _ready() -> void:
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	_paused_by_me = ChestSession.is_blocking() # coop : jamais de pause
+	if _paused_by_me:
+		get_tree().paused = true
+	else:
+		OverlayMode.enter()
 	get_tree().create_timer(INPUT_LOCK_S, true, false, true).timeout.connect(func() -> void:
 		_lock = false
 		if not _buttons.is_empty() and is_instance_valid(_buttons[0]):
@@ -188,7 +193,7 @@ func _make_card(i: int) -> PanelContainer:
 	var tl := _label(24, Color(0.6, 0.8, 1.0))
 	tl.text = "  ".join(tags)
 	v.add_child(tl)
-	var owned := RunState.stacks(StringName(id))
+	var owned := _owner().stacks(StringName(id))
 	var ol := _label(26, Color(1, 0.85, 0.4) if owned > 0 else Color(0.5, 1, 0.6), true)
 	ol.text = ChestUI.stack_line(id, owned) if owned > 0 else "Nouveau"
 	v.add_child(ol)
@@ -226,7 +231,7 @@ func price_of(i: int) -> float:
 
 func _refresh() -> void:
 	if _gold_label != null:
-		_gold_label.text = "Or : %d" % int(RunState.gold)
+		_gold_label.text = "Or : %d" % int(_owner().gold)
 	for i in _cards.size():
 		var b := _buttons[i]
 		var pl := _price_labels[i]
@@ -241,7 +246,7 @@ func _refresh() -> void:
 			b.disabled = true
 			continue
 		var p := price_of(i)
-		var missing := maxi(int(ceil(p - RunState.gold)), 0)
+		var missing := maxi(int(ceil(p - _owner().gold)), 0)
 		pl.text = "%d or" % int(ceil(p)) if missing <= 0 else "%d or (il manque %d)" % [int(ceil(p)), missing]
 		pl.modulate = Color(1, 0.9, 0.4) if missing <= 0 else Color(1, 0.45, 0.4)
 		b.text = "Acheter"
@@ -271,19 +276,32 @@ func buy(i: int) -> bool:
 	if mode != Mode.SHOP or _closed or i < 0 or i >= offered.size() or bool(sold[i]):
 		return false
 	var p := price_of(i)
-	if not RunState.spend_gold(p):
+	var st := _owner()
+	if not st.spend_gold(p):
 		_refuse(i)
 		return false
 	sold[i] = true
 	var id := StringName(offered[i])
-	RunState.add_item(id)
-	Events.item_chosen.emit(id)
-	var player := get_tree().get_first_node_in_group("player") if is_inside_tree() else null
+	st.add_item(id)
+	Events.emit_item_chosen(id, st.slot)
+	var player := Players.by_id(st.slot) if is_inside_tree() else null
 	if player != null and player.has_method("apply_stats"):
-		player.apply_stats(ItemStats.compute(RunState.items))
+		player.apply_stats(ItemStats.compute(st.items))
 	item_taken.emit(i, id)
 	_refresh()
 	return true
+
+
+## PlayerState du propriétaire de l'écran (acheteur du marchand / bénéficiaire de la vitrine) : session.state, sinon la méta
+## `owner_slot` posée par Chest.try_open / le marchand, sinon le joueur local.
+func _owner() -> PlayerState:
+	if session != null and session.state != null:
+		return session.state
+	if has_meta(&"owner_slot"):
+		var st := Players.state_of(int(get_meta(&"owner_slot")))
+		if st != null:
+			return st
+	return LocalState.state()
 
 
 func _refuse(i: int) -> void:
@@ -304,7 +322,10 @@ func _close() -> void:
 	if _closed:
 		return
 	_closed = true
-	get_tree().paused = _was_paused
+	if _paused_by_me:
+		get_tree().paused = _was_paused
+	else:
+		OverlayMode.leave()
 	finished.emit()
 	queue_free()
 

@@ -174,7 +174,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_open() or panel.armed_entry.is_empty():
 		return
 	if event is InputEventMouseButton and event.pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
-		var player := get_tree().get_first_node_in_group(&"player") as Node2D
+		var player := TestTools.player_of(get_tree()) as Node2D
 		if player == null:
 			return
 		panel.spawn_entry(panel.armed_entry, player.get_global_mouse_position())

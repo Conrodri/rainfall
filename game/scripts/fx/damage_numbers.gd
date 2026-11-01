@@ -126,9 +126,36 @@ func _ready() -> void:
 		_combo.append(0)
 	Events.enemy_damaged.connect(_on_damaged)
 	Events.player_damaged.connect(_on_player_damaged)
+	Events.player_damaged_by.connect(_on_player_damaged_by)
+	if Events.has_signal(&"enemy_damaged_by"): # jumeau avec identité du tireur (lot joueur/sorts) : branché dès qu'il existe
+		Events.connect(&"enemy_damaged_by", _on_damaged_by)
+
+
+## Coop : chiffres de dégâts des ALLIÉS (infligés ou subis) masqués par défaut ; les siens inchangés
+## (docs/multi/Design_Coop.md §4.2, réglage gameplay/coop_ally_damage_numbers). Solo : sans effet.
+static func ally_numbers_enabled() -> bool:
+	return bool(GameSettings.get_value("gameplay", "coop_ally_damage_numbers", false))
+
+
+## Faux si le chiffre est celui d'un allié et que le réglage les masque.
+static func shows_for(player_id: int) -> bool:
+	if player_id == Events.NO_PLAYER or not LocalState.is_coop() or player_id == Players.local_id():
+		return true
+	return ally_numbers_enabled()
 
 
 func _on_damaged(enemy: Node2D, amount: float, is_crit: bool, element: StringName) -> void:
+	if LocalState.is_coop() and Events.has_signal(&"enemy_damaged_by"):
+		return # la version avec tireur prend le relais (filtre des alliés)
+	_show_enemy_hit(enemy, amount, is_crit, element)
+
+
+func _on_damaged_by(player_id: int, enemy: Node2D, amount: float, is_crit: bool, element: StringName) -> void:
+	if LocalState.is_coop() and shows_for(player_id):
+		_show_enemy_hit(enemy, amount, is_crit, element)
+
+
+func _show_enemy_hit(enemy: Node2D, amount: float, is_crit: bool, element: StringName) -> void:
 	if enemy == null or not is_instance_valid(enemy):
 		return
 	var col: Color = CRIT_COLOR if is_crit else CvdPalette.element(element)
@@ -140,10 +167,19 @@ func _on_damaged(enemy: Node2D, amount: float, is_crit: bool, element: StringNam
 
 
 func _on_player_damaged(amount: float, _source: Node) -> void:
-	if amount <= 0.0 or not is_inside_tree():
+	if LocalState.is_coop():
+		return # coop : _on_player_damaged_by (identité de la victime)
+	_show_hurt(Players.local(), amount)
+
+
+func _on_player_damaged_by(player_id: int, amount: float, _source: Node) -> void:
+	if not LocalState.is_coop() or not shows_for(player_id):
 		return
-	var p := get_tree().get_first_node_in_group(&"player") as Node2D
-	if p == null:
+	_show_hurt(Players.by_id(player_id), amount)
+
+
+func _show_hurt(p: Node2D, amount: float) -> void:
+	if amount <= 0.0 or not is_inside_tree() or p == null:
 		return
 	var gp := p.global_position
 	show_number(Vector2(gp.x, gp.y / Iso.UNSQUASH.y - PLAYER_HEAD_PX), amount, PLAYER_HURT_COLOR)

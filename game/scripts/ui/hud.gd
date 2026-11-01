@@ -24,6 +24,7 @@ const PASSIVE_BADGE := preload("res://scripts/ui/passive_badge.gd") ## icône du
 const KEY_HINTS_POLL_S := 0.5 ## relecture du réglage (changé dans les paramètres en cours de partie)
 
 var player: Node
+var _state: PlayerState ## PlayerState du joueur local (LocalState), source de l'or, de l'XP, du niveau et du personnage
 var joystick: FloatingJoystick
 var pause_menu: PauseMenu
 var spell_buttons: Array[SpellButton] = [] ## boutons tactiles (sorts 2-4)
@@ -84,6 +85,7 @@ var compass_badge: CompassBadge ## charges restantes et tag de la Boussole de ro
 var omen_badge: OmenBadge ## rappel du présage d'étage actif (icône + nom, détail au survol / toucher), sous la difficulté
 var spell_hint: SpellHint ## description d'un sort : survol (souris) / appui long (tactile)
 var _overlay_tick := 0.0
+var ally_bars: AllyBars ## PV des alliés au-dessus de leur tête (coop, teinte d'équipe)
 var overhead: OverheadBars ## PV + ressource au-dessus de la tête du personnage (réglage GameSettings.overhead_bars)
 var _diff_box: DifficultyBanner ## bandeau de difficulté défilant (un rectangle nommé par palier) : sous la minimap, colonne de droite
 var _hp_regen: Label ## « +X/s » (Player.regen_per_s) dans la barre de PV
@@ -123,19 +125,14 @@ func _ready() -> void:
 	spell_hint.bind(self)
 	add_child(spell_hint)
 	_apply_mode()
-	RunState.gold_changed.connect(_on_gold)
-	RunState.scrap_changed.connect(_place_gold) # une pastille de plus ou de moins change la largeur de la rangée d'or
-	RunState.xp_changed.connect(_on_xp)
-	RunState.level_up.connect(_on_level)
+	_bind_state()
+	Events.party_changed.connect(func(_n: int) -> void: _bind_state()) # inscription des joueurs après le HUD
 	RunState.difficulty_changed.connect(_on_difficulty)
 	Events.gold_converted.connect(_on_gold_converted)
 	Events.boss_shield_changed.connect(_on_boss_shield_changed)
 	Events.omen_changed.connect(_on_omen_changed)
 	omen_badge.refresh() # reprise de sauvegarde : présage déjà actif
 	compass_badge.refresh() # reprise de sauvegarde : charges de Boussole restantes
-	_on_gold(RunState.gold)
-	_on_xp(RunState.xp, Balance.xp_required(RunState.level))
-	_on_level(RunState.level)
 	_on_difficulty(RunState.difficulty(), Balance.difficulty_tier_name(RunState.difficulty()))
 	_find_player()
 	_place_boss_bars()
@@ -158,9 +155,29 @@ func bind_player(p: Node) -> void:
 
 
 func _find_player() -> void:
-	var p := get_tree().get_first_node_in_group("player")
+	var p := Players.local()
 	if p != null:
 		bind_player(p)
+
+
+## Branche or, XP, niveau et scories sur le PlayerState du joueur LOCAL (LocalState : RunState.local() en solo).
+## Appelé au démarrage et à chaque changement de composition de la partie ; re-lit aussitôt les valeurs.
+func _bind_state() -> void:
+	var st := LocalState.state()
+	if st != _state:
+		if _state != null:
+			_state.gold_changed.disconnect(_on_gold)
+			_state.scrap_changed.disconnect(_place_gold)
+			_state.xp_changed.disconnect(_on_xp)
+			_state.level_up.disconnect(_on_level)
+		_state = st
+		_state.gold_changed.connect(_on_gold)
+		_state.scrap_changed.connect(_place_gold) # une pastille de plus ou de moins change la largeur de la rangée d'or
+		_state.xp_changed.connect(_on_xp)
+		_state.level_up.connect(_on_level)
+	_on_gold(_state.gold)
+	_on_xp(_state.xp, Balance.xp_required(_state.level))
+	_on_level(_state.level)
 
 
 func _process(delta: float) -> void:
@@ -234,6 +251,7 @@ func _update_key_hints(delta: float) -> void:
 		_hints_poll = KEY_HINTS_POLL_S
 		key_hints_always = GameSettings.key_hints()
 		overhead.enabled = GameSettings.overhead_bars()
+		ally_bars.enabled = overhead.enabled
 	var a := 1.0
 	if not key_hints_always:
 		a = clampf(1.0 - (_hints_t - KEY_HINTS_SHOW_S) / KEY_HINTS_FADE_S, 0.0, 1.0)
@@ -330,6 +348,8 @@ func _build() -> void:
 	overhead = OverheadBars.new() # sous tous les contrôles du HUD
 	overhead.name = "OverheadBars"
 	root.add_child(overhead)
+	ally_bars = AllyBars.new() # coop : PV des alliés (teinte d'équipe), vide en solo
+	root.add_child(ally_bars)
 
 	# Couche tactile (joystick, boutons de sorts, Interagir) : visible seulement en mode tactile.
 	touch_layer = Control.new()
@@ -372,7 +392,7 @@ func _build() -> void:
 	prow.add_theme_constant_override("separation", 12)
 	plate.add_child(prow)
 	# même recherche que les menus (ui/portraits/<id>.png puis characters/<id>/portrait.png) ; buste seulement
-	var pinfo := CharacterCard.portrait_info({"id": String(RunState.character)})
+	var pinfo := CharacterCard.portrait_info({"id": String(LocalState.state().character)})
 	var ptex: Texture2D = pinfo.tex if pinfo.bust else null
 	if ptex != null: # portrait livré (Blender) : avant le médaillon ; sinon rien (pas de repli sur le sprite)
 		_portrait = TextureRect.new()
@@ -635,6 +655,7 @@ func _apply_layout() -> void:
 	_hp_label.offset_left = 10.0 * s
 	_hp_regen.offset_right = -10.0 * s
 	overhead.ui_scale = s
+	ally_bars.ui_scale = s
 	_left_col.add_theme_constant_override("separation", int(8 * s))
 	_prompt_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.PROMPT, s, mobile))
 	var bar_size := HudMetrics.BAR_SPELL_PX * s
@@ -891,7 +912,7 @@ func _place_bar_gauge() -> void:
 ## Icône du passif : suit le personnage joué, posée à gauche de la jauge de ressource (ou de la barre de sorts si le
 ## personnage n'a pas de jauge). Tactile : à gauche de la jauge de la grappe.
 func _update_passive_badge() -> void:
-	var cid: StringName = RunState.character
+	var cid: StringName = LocalState.state().character
 	var c: Variant = player.get(&"character") if player != null else null
 	if c is CharacterData:
 		cid = (c as CharacterData).id
@@ -951,12 +972,12 @@ func _accent() -> Color:
 
 ## Cartouche (nom, portrait) à jour si le personnage change en cours de partie (mode test : TestTools.switch_character).
 func _refresh_character_card() -> void:
-	if _card_char == RunState.character:
+	if _card_char == LocalState.state().character:
 		return
-	_card_char = RunState.character
+	_card_char = LocalState.state().character
 	if _name_label != null:
 		_name_label.text = _character_name()
-	var pinfo := CharacterCard.portrait_info({"id": String(RunState.character)})
+	var pinfo := CharacterCard.portrait_info({"id": String(LocalState.state().character)})
 	var ptex: Texture2D = pinfo.tex if pinfo.bust else null
 	if _portrait != null:
 		_portrait.texture = ptex
@@ -980,9 +1001,9 @@ func _character_name() -> String:
 	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/characters.json"))
 	if d is Array:
 		for c in d:
-			if c is Dictionary and StringName(c.get("id", "")) == RunState.character:
+			if c is Dictionary and StringName(c.get("id", "")) == LocalState.state().character:
 				return String(c.get("name", "")).to_upper()
-	return String(RunState.character).to_upper()
+	return String(LocalState.state().character).to_upper()
 
 
 func _bar_label(bar: ProgressBar) -> Label:

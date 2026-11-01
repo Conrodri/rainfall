@@ -972,7 +972,7 @@ func _choose_variant(cid: StringName, slot: int, variant_id: String, is_base: bo
 func _refresh_level() -> void:
 	if _level_label == null:
 		return
-	var p := get_tree().get_first_node_in_group(&"player")
+	var p := TestTools.player_of(get_tree())
 	var hp := ""
 	if p != null:
 		hp = " · PV max %d · dégâts de base %.1f" % [int(p.get(&"max_hp")), Balance.player_base_damage(RunState.level)]
@@ -988,6 +988,13 @@ func _build_cheats() -> void:
 	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", _ti("range", ICON_RANGE))
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
 	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
+	if Players.count() > 1: # coop locale : objets, personnage, niveau et soins du panneau visent le joueur 1 ou tous
+		var al := _check("Cibler tous les joueurs", TestTools.all_players, func(on: bool) -> void:
+			TestTools.all_players = on
+			say("Cible du panneau : %s." % ("tous les joueurs" if on else "joueur 1")))
+		al.name = "Check_all_players"
+		_body.add_child(al)
+		_body.add_child(_note("Objets, personnage, niveau et soins s'appliquent au joueur 1 seulement, ou à tous."))
 	_build_omens()
 	_body.add_child(_heading("Partie"))
 	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", _ti("timer_stop", ICON_TIMER))

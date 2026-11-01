@@ -509,7 +509,8 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 		var k := String(mode)
 		if not best.has(k) or t < float(best[k]):
 			best[k] = t
-		_record_best_run(r, mode, t)
+		if int(r.get("party_n", 1)) <= 1: # coop : PV de boss et difficulté propres au nombre de joueurs, pas de record comparable
+			_record_best_run(r, mode, t)
 		if UNLOCK_ON_VICTORY.has(mode):
 			var key := StringName("mode:" + String(UNLOCK_ON_VICTORY[mode]))
 			if not is_unlocked(key):
@@ -582,6 +583,8 @@ func _record_history(r: Dictionary, mode: StringName, t: float, unlocks: Array) 
 	var omens := _clean_omens(r.get("omens"))
 	if not omens.is_empty():
 		entry["omens"] = omens
+	if int(r.get("party_n", 1)) > 1: # run coop : nombre de joueurs (champ absent en solo, historique inchangé)
+		entry["party"] = int(r.get("party_n", 1))
 	history.append(entry)
 	while history.size() > HISTORY_MAX:
 		history.remove_at(0)

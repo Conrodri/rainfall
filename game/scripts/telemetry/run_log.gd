@@ -27,7 +27,12 @@ extends Node
 ##              alive {avg, max} (monstres vivants, échantillonnés toutes les ALIVE_SAMPLE_S s),
 ##              credits {avg, max} (crédits reportés du director : flux continu + vagues)}],
 ##    end {result (victory | death | abandon), cause, stage, minute, active_s, level, kills, gold_earned,
-##         gold_spent, items {id: n}} | null (run en cours ou quittée sans reprise)}
+##         gold_spent, items {id: n}} | null (run en cours ou quittée sans reprise),
+##    n (joueurs de la partie, PartyRecap.n(), 1 en solo),
+##    players [{slot, character, skin, loadout {slot: id}, level, items {id: n}, gold, damage (dégâts infligés,
+##              PlayerState.damage_dealt), damage_share (0-1 de l'équipe), participation (0-1, Balance.ruby_participation),
+##              kills (tueur identifié par Events.enemy_killed_by), dmg_taken, deaths, spectating}]
+##              (coop 1-4, ajouté à la sortie du schéma 1 : clés additives, un journal solo a un seul joueur)}
 ## Sources de dégâts reçus : "boss:<id>", "t1", "t2_tir", "t2_saut", "t3" (+ "_elite"), "env:<script>", "inconnu".
 ## « other » = dégâts infligés hors coups de sort directs (brûlure / poison, objets, foudre en chaîne…).
 
@@ -51,7 +56,8 @@ var _file := ""
 var _floor: Dictionary = {}
 var _fights: Dictionary = {} ## instance_id du boss -> fiche de combat ouverte
 var _shield_since: Dictionary = {} ## instance_id du boss -> temps actif de la levée du bouclier
-var _caster: Object = null
+var _casters: Dictionary = {} ## emplacement du joueur -> SpellCaster (dégâts et lancers par sort, tous joueurs)
+var _pstats: Dictionary = {} ## emplacement -> {kills, taken, deaths} (jumeaux Events *_by)
 var _last_gold := 0.0
 var _gold_earned := 0.0
 var _gold_spent := 0.0
@@ -88,6 +94,9 @@ func _ready() -> void:
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.player_damaged.connect(_on_player_damaged)
 	Events.player_died.connect(_on_player_died)
+	Events.enemy_killed_by.connect(_on_enemy_killed_by)
+	Events.player_damaged_by.connect(_on_player_damaged_by)
+	Events.player_died_by.connect(_on_player_died_by)
 	Events.boss_spawned.connect(_on_boss_spawned)
 	Events.boss_killed.connect(_on_boss_killed)
 	Events.boss_shield_changed.connect(_on_boss_shield)
@@ -197,6 +206,8 @@ func _on_run_finished(victory: bool, reason: StringName) -> void:
 	_close_floor()
 	_flush_minute()
 	_log["ended_at"] = int(Time.get_unix_time_from_system())
+	_log["n"] = PartyRecap.n()
+	_log["players"] = _players_array()
 	var items := {}
 	for k in RunState.items:
 		items[String(k)] = int(RunState.items[k])
@@ -218,12 +229,15 @@ func _stop() -> void:
 	_shield_since.clear()
 	_floor = {}
 	_pending_chest = {}
-	if _caster != null and is_instance_valid(_caster):
-		if _caster.is_connected(&"spell_hit", _on_spell_hit):
-			_caster.disconnect(&"spell_hit", _on_spell_hit)
-		if _caster.is_connected(&"spell_cast", _on_spell_cast):
-			_caster.disconnect(&"spell_cast", _on_spell_cast)
-	_caster = null
+	for slot in _casters:
+		var c: Object = _casters[slot]
+		if c != null and is_instance_valid(c):
+			if c.is_connected(&"spell_hit", _on_spell_hit.bind(slot)):
+				c.disconnect(&"spell_hit", _on_spell_hit.bind(slot))
+			if c.is_connected(&"spell_cast", _on_spell_cast.bind(slot)):
+				c.disconnect(&"spell_cast", _on_spell_cast.bind(slot))
+	_casters.clear()
+	_pstats.clear()
 
 
 ## Garde les MAX_LOGS journaux les plus récents (noms horodatés : l'ordre alphabétique est chronologique).
@@ -314,15 +328,16 @@ func _plan() -> Array:
 	return out
 
 
-## SpellCaster du joueur (Player.spells) : dégâts et lancers par sort.
+## SpellCaster de CHAQUE joueur (Player.spells) : dégâts et lancers par sort (cumulés sur l'équipe).
 func _bind_caster() -> void:
-	var p := get_tree().get_first_node_in_group(&"player")
-	var c: Variant = p.get(&"spells") if p != null else null
-	if c == null or c == _caster or not (c as Object).has_signal(&"spell_hit"):
-		return
-	_caster = c
-	_caster.connect(&"spell_hit", _on_spell_hit)
-	_caster.connect(&"spell_cast", _on_spell_cast)
+	for p in Players.all():
+		var slot := Players.id_of(p)
+		var c: Variant = p.get(&"spells")
+		if c == null or _casters.get(slot) == c or not (c as Object).has_signal(&"spell_hit"):
+			continue
+		_casters[slot] = c
+		(c as Object).connect(&"spell_hit", _on_spell_hit.bind(slot))
+		(c as Object).connect(&"spell_cast", _on_spell_cast.bind(slot))
 
 
 # --- Minutes --------------------------------------------------------------------------------------
@@ -402,18 +417,19 @@ func _item_count() -> int:
 
 # --- Combat ---------------------------------------------------------------------------------------
 
-func _on_spell_hit(spell: Resource, _enemy: Node, amount: float) -> void:
+func _on_spell_hit(spell: Resource, _enemy: Node, amount: float, _slot: int = 0) -> void:
 	if recording:
 		var id: StringName = spell.get(&"id")
 		_m_dmg[id] = float(_m_dmg.get(id, 0.0)) + amount
 
 
-func _on_spell_cast(spell: Resource) -> void:
+func _on_spell_cast(spell: Resource, player_slot: int = 0) -> void:
 	if not recording:
 		return
 	var id: StringName = spell.get(&"id")
 	_m_casts[id] = int(_m_casts.get(id, 0)) + 1
-	var totals: Variant = _caster.get(&"_totals") if _caster != null else null
+	var caster: Object = _casters.get(player_slot)
+	var totals: Variant = caster.get(&"_totals") if caster != null and is_instance_valid(caster) else null
 	if totals is Dictionary:
 		_m_cd[id] = float(_m_cd.get(id, 0.0)) + float((totals as Dictionary).get(spell.get(&"slot"), 0.0))
 
@@ -453,6 +469,64 @@ func _on_player_damaged(amount: float, source: Node) -> void:
 		f["dmg_taken"] = float(f["dmg_taken"]) + amount
 		if source != null and is_instance_valid(source) and source.get_instance_id() == iid:
 			f["dmg_from_boss"] = float(f["dmg_from_boss"]) + amount
+
+
+func _pstat(slot: int) -> Dictionary:
+	if not _pstats.has(slot):
+		_pstats[slot] = {"kills": 0, "taken": 0.0, "deaths": 0}
+	return _pstats[slot]
+
+
+func _on_enemy_killed_by(player_id: int, _enemy: Node2D, _pos: Vector2, _tier: int, _is_elite: bool) -> void:
+	if recording and player_id != Events.NO_PLAYER:
+		var st := _pstat(player_id)
+		st["kills"] = int(st["kills"]) + 1
+
+
+func _on_player_damaged_by(player_id: int, amount: float, _source: Node) -> void:
+	if recording:
+		var st := _pstat(player_id)
+		st["taken"] = float(st["taken"]) + amount
+
+
+func _on_player_died_by(player_id: int) -> void:
+	if recording:
+		var st := _pstat(player_id)
+		st["deaths"] = int(st["deaths"]) + 1
+
+
+## Tableau `players` du journal : un joueur en solo, jusqu'à 4 en coop. Les compteurs viennent des jumeaux *_by ; en
+## solo, les compteurs absents (émetteurs historiques sans identité) retombent sur les totaux de la run.
+func _players_array() -> Array:
+	var out: Array = []
+	var summary := PartyRecap.summary()
+	for row: Dictionary in summary:
+		var slot := int(row["slot"])
+		var st := Players.state_of(slot)
+		var ps: Dictionary = _pstats.get(slot, {})
+		var lo := {}
+		var items := {}
+		if st != null:
+			for k in st.loadout:
+				lo[str(k)] = String(st.loadout[k])
+			for k in st.items:
+				items[String(k)] = int(st.items[k])
+		var kills := int(ps.get("kills", 0))
+		if kills == 0 and summary.size() == 1:
+			kills = RunState.kills
+		out.append({
+			"slot": slot, "character": row["character"], "skin": _skin_of(StringName(row["character"])), "loadout": lo,
+			"level": row["level"], "items": items, "gold": row["gold"], "damage": roundi(float(row["damage"])),
+			"damage_share": snappedf(float(row["damage_share"]), 0.001), "participation": snappedf(float(row["participation"]), 0.001),
+			"kills": kills, "dmg_taken": roundi(float(ps.get("taken", 0.0))), "deaths": int(ps.get("deaths", 0)),
+			"spectating": row["spectating"],
+		})
+	return out
+
+
+func _skin_of(character: StringName) -> String:
+	var s: Variant = Skins.equipped(character)
+	return str(s) if s != null else ""
 
 
 func _on_player_died() -> void:
@@ -652,6 +726,8 @@ func _write(in_progress: bool) -> void:
 	if in_progress:
 		out = _log.duplicate() # surface : la minute partielle et les cumuls de reprise n'entrent pas dans _log
 		out["partial_minute"] = _minute_dict()
+		out["n"] = PartyRecap.n()
+		out["players"] = _players_array()
 		out["_gold_earned"] = _gold_earned
 		out["_gold_spent"] = _gold_spent
 	var f := FileAccess.open(log_dir.path_join(_file), FileAccess.WRITE)

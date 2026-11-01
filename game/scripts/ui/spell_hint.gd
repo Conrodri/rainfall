@@ -190,7 +190,7 @@ func damage_text(sd: SpellData) -> String:
 	if caster == null:
 		return ""
 	var dmg := caster.preview_damage(sd)
-	var lvl := RunState.level
+	var lvl := LocalState.state().level
 	var base := Balance.player_base_damage(lvl)
 	var kit: Variant = hud.player.get(&"kit")
 	var kit_mult := 1.0
@@ -224,7 +224,7 @@ func _char_id() -> StringName:
 	var c: Variant = hud.player.get(&"character") if hud != null and hud.player != null and is_instance_valid(hud.player) else null
 	if c is CharacterData:
 		return (c as CharacterData).id
-	return RunState.character
+	return LocalState.state().character
 
 
 func _spell_data(sid: StringName) -> SpellData:

@@ -21,7 +21,6 @@ var count := 0 ## ombres dessinées à la dernière image (mesure)
 ## 1, 2, 4, 6 de chaque instance) restent nuls, seuls l'échelle et l'origine sont réécrites.
 var _buf := PackedFloat32Array()
 var _mat: ShaderMaterial
-var _player: Node2D = null
 var _director: Director = null
 
 
@@ -58,10 +57,9 @@ func _process(_delta: float) -> void:
 		return
 	var n := 0
 	var tree := get_tree()
-	if not is_instance_valid(_player) or not _player.is_inside_tree():
-		_player = tree.get_first_node_in_group(&"player") as Node2D
-	if _player != null:
-		n = _push(n, _player, PLAYER_RADIUS_PX)
+	# Coop : une ombre de contact par joueur (au plus 4), prélevée sur le même plafond MAX_INSTANCES que les monstres.
+	for pl in Players.all():
+		n = _push(n, pl, PLAYER_RADIUS_PX)
 	if not is_instance_valid(_director) or not _director.is_inside_tree():
 		_director = tree.get_first_node_in_group(&"director") as Director
 	if _director != null:

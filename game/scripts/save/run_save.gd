@@ -31,8 +31,16 @@ static func _canonical(data: Variant) -> String:
 	return JSON.stringify(data, "", true, true)
 
 
-## Écrit `data` (Dictionary sérialisable JSON). true si le fichier final est en place.
+## Sauvegarde de run permise : solo seulement (aucune sauvegarde en coop, docs/Design_Multijoueur.md §3 : une run
+## coop ne se reprend pas ; une interruption se convertit en rubis).
+static func allowed() -> bool:
+	return Players.count() <= 1
+
+
+## Écrit `data` (Dictionary sérialisable JSON). true si le fichier final est en place. Faux sans écrire en coop.
 static func save(data: Dictionary, path := "") -> bool:
+	if not allowed():
+		return false
 	var p := _p(path)
 	var canon: Variant = JSON.parse_string(_canonical(data)) # normalise (StringName -> String, etc.)
 	if not (canon is Dictionary):

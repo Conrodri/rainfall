@@ -214,7 +214,8 @@ func _fill_items() -> void:
 	_items_box.columns = _item_cols(_layout())
 	_items_box.add_theme_constant_override("h_separation", int(ITEM_GAP_PX * s))
 	_items_box.add_theme_constant_override("v_separation", int(ITEM_GAP_PX * s))
-	if RunState.items.is_empty():
+	var my_items: Dictionary = LocalState.state().items # objets du joueur LOCAL
+	if my_items.is_empty():
 		_item_texts.append("Aucun objet pour l'instant.")
 		_items_box.columns = 1
 		var l := Label.new()
@@ -225,10 +226,10 @@ func _fill_items() -> void:
 		_items_box.add_child(l)
 		_detail_name.text = ""
 		_detail_effect.text = ""
-	var ids: Array = RunState.items.keys()
+	var ids: Array = my_items.keys()
 	for id in ids:
 		var it := ItemDB.get_item(id)
-		var stacks := int(RunState.items[id])
+		var stacks := int(my_items[id])
 		_item_texts.append("%s | %s" % [str(it.get("name", id)) + ("  ×%d" % stacks if stacks > 1 else ""), str(it.get("effect_text", ""))])
 	var sorted: Array = ids.duplicate()
 	sorted.sort_custom(func(a: Variant, b: Variant) -> bool:
@@ -238,13 +239,13 @@ func _fill_items() -> void:
 			return ra < rb
 		return ids.find(a) < ids.find(b))
 	for id in sorted:
-		var cell := _make_item_cell(id, int(RunState.items[id]), s)
+		var cell := _make_item_cell(id, int(my_items[id]), s)
 		_items_box.add_child(cell)
 		_item_cells.append(cell)
 	_wire_item_focus()
 	if not sorted.is_empty():
 		_show_item_detail(sorted[0])
-	_items_button.text = "Objets (%d)" % RunState.items.size()
+	_items_button.text = "Objets (%d)" % my_items.size()
 
 
 func _quality_rank(id: Variant) -> int:
@@ -315,7 +316,7 @@ func _make_item_cell(id: Variant, stacks: int, s: float) -> Button:
 func _show_item_detail(id: Variant) -> void:
 	var it := ItemDB.get_item(id)
 	var q := StringName(str(it.get("quality", "commun")))
-	var stacks := int(RunState.items.get(id, 0))
+	var stacks := int(LocalState.state().items.get(id, 0))
 	_detail_name.text = "%s%s  ·  %s" % [str(it.get("name", id)), "  ×%d" % stacks if stacks > 1 else "", QUALITY_WORDS.get(q, "Commun")]
 	_detail_name.add_theme_color_override("font_color", Palette.rarity(q))
 	_detail_effect.text = str(it.get("effect_text", ""))
@@ -541,10 +542,10 @@ func open() -> void:
 	_count_label.visible = false
 	_root.visible = true
 	_show_only(_panel_main)
-	_items_button.text = "Objets (%d)" % RunState.items.size()
+	_items_button.text = "Objets (%d)" % LocalState.state().items.size()
 	var t := int(RunState.active_time_s)
 	_info.text = "%02d:%02d  ·  Étage %d" % [t / 60, t % 60, RunState.stage]
-	var regen := Hud.regen_summary(get_tree().get_first_node_in_group(&"player")) # taux PV / ressource (vague 3)
+	var regen := Hud.regen_summary(Players.local()) # taux PV / ressource (vague 3)
 	if regen != "":
 		_info.text += "\n" + regen
 	_apply_layout()
@@ -601,25 +602,30 @@ func resume_duration() -> float:
 ## ennemi actif à moins de RESUME_DANGER_PROJECTILE_U. Pas de joueur (menu hors partie) : pas de danger.
 func danger_near() -> bool:
 	var tree := get_tree()
-	var player := tree.get_first_node_in_group(&"player") as Node2D
-	if player == null or not is_instance_valid(player):
-		return false
+	var party: Array[Node2D] = Players.alive().duplicate() # coop local : danger pour n'importe quel joueur vivant
+	if party.is_empty():
+		var lp := Players.local()
+		if lp == null or not is_instance_valid(lp):
+			return false
+		party.append(lp)
 	if not tree.get_nodes_in_group(&"bosses").is_empty():
 		return true # le groupe ne contient que des boss vivants (retirés à la mort)
-	var pp := player.global_position
 	var mon_r2 := pow(Balance.RESUME_DANGER_MONSTER_U * Balance.UNIT_PX, 2.0)
-	for e in tree.get_nodes_in_group(&"enemies"):
-		var n := e as Node2D
-		if n != null and n.is_inside_tree() and n.global_position.distance_squared_to(pp) < mon_r2:
-			return true
+	var enemies := tree.get_nodes_in_group(&"enemies")
 	var scene := tree.current_scene
 	var pool := scene.find_child("EnemyProjectiles", true, false) if scene != null else null
-	if pool != null:
-		var pr2 := pow(Balance.RESUME_DANGER_PROJECTILE_U * Balance.UNIT_PX, 2.0)
-		for c in pool.get_children():
-			var p := c as Node2D
-			if p != null and p.get(&"active") == true and p.global_position.distance_squared_to(pp) < pr2:
+	var pr2 := pow(Balance.RESUME_DANGER_PROJECTILE_U * Balance.UNIT_PX, 2.0)
+	for pl in party:
+		var pp := pl.global_position
+		for e in enemies:
+			var n := e as Node2D
+			if n != null and n.is_inside_tree() and n.global_position.distance_squared_to(pp) < mon_r2:
 				return true
+		if pool != null:
+			for c in pool.get_children():
+				var p := c as Node2D
+				if p != null and p.get(&"active") == true and p.global_position.distance_squared_to(pp) < pr2:
+					return true
 	return false
 
 

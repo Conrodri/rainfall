@@ -11,7 +11,7 @@ static var _rng := RandomNumberGenerator.new()
 
 
 static func _context(tree: SceneTree) -> Dictionary:
-	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var player := TestTools.player_of(tree) as Node2D
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if player == null or sm == null or sm.get(&"map") == null:
 		return {}
