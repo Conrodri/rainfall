@@ -14,6 +14,7 @@ const CREDITS_SCENE := preload("res://scenes/menu/credits.tscn")
 const NEW_RUN_SCENE := preload("res://scenes/menu/new_run.tscn")
 const SETTINGS_SCENE := preload("res://scenes/menu/settings.tscn")
 const ACHIEVEMENTS_SCENE := preload("res://scenes/menu/achievements.tscn")
+const HISTORY_SCENE := preload("res://scenes/menu/history.tscn")
 const DAILY_SCENE := preload("res://scenes/menu/daily.tscn")
 const BG_SCENE := preload("res://scenes/menu/menu_background.tscn")
 const UI_LAYER := 10
@@ -50,7 +51,7 @@ func _ready() -> void:
 
 # --- API ---------------------------------------------------------------------
 
-## Affiche un écran de menu : &"title" | &"new_run" | &"settings" | &"credits" | &"achievements" | &"daily".
+## Affiche un écran de menu : &"title" | &"new_run" | &"settings" | &"credits" | &"achievements" | &"history" | &"daily".
 func show(screen: StringName, toast := "") -> void:
 	await _transition(func() -> void: _build_screen(screen, toast))
 
@@ -141,6 +142,7 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.settings_requested.connect(func() -> void: show(&"settings"))
 			t.credits_requested.connect(func() -> void: show(&"credits"))
 			t.achievements_requested.connect(func() -> void: show(&"achievements"))
+			t.history_requested.connect(func() -> void: show(&"history"))
 			t.daily_requested.connect(func() -> void: show(&"daily"))
 			t.test_mode_requested.connect(start_test_mode) # À RETIRER OU MASQUER AVANT LA SORTIE
 			t.quit_requested.connect(_on_quit)
@@ -162,6 +164,10 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			var ac := ACHIEVEMENTS_SCENE.instantiate() as AchievementsScreen
 			ac.back_requested.connect(return_to_title)
 			current = _wrap_control(ac)
+		&"history":
+			var hi := HISTORY_SCENE.instantiate() as HistoryScreen
+			hi.back_requested.connect(return_to_title)
+			current = _wrap_control(hi)
 		&"daily":
 			var dl := DAILY_SCENE.instantiate() as DailyScreen
 			dl.start_requested.connect(start_run) # config du jour : personnage, Moyen, graine imposée

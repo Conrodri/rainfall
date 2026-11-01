@@ -200,7 +200,7 @@ func _ready() -> void:
 	Profile.reset()
 	Profile._apply_dict(snap)
 	_check(Profile.is_achievement_unlocked("first_blood") and int(Profile.boss_kills["cerf"]) == 1 and int(Profile.daily["streak"]) == 2
-		and bool(Profile.daily["days"]["20261028"]["best"]["victory"]) and int(snap["version"]) == 3, "aller-retour JSON v3")
+		and bool(Profile.daily["days"]["20261028"]["best"]["victory"]) and int(snap["version"]) == Profile.VERSION, "aller-retour JSON (version courante)")
 
 	# --- écrans ---
 	Profile.reset()

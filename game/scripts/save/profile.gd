@@ -15,7 +15,11 @@ const PATH := "user://profile.json"
 ## Version 2 (26/10) : + unlocked_skins, selected_skin, best_runs. Un fichier v1 se charge tel quel (champs absents = défauts).
 ## Version 3 (28/10) : + achievements, daily, boss_kills, tutorial_replay (méta hors ligne, scripts/meta/). Un fichier v1/v2 se
 ## charge tel quel : les champs absents prennent leur défaut, rien n'est perdu.
-const VERSION := 3
+## Version 4 (01/11) : + history (historique compact des runs terminées, plafonné à HISTORY_MAX). Un fichier v1-v3 se charge
+## tel quel (history = []).
+const VERSION := 4
+## Nombre maximal de runs gardées dans `history` (les plus anciennes sont supprimées).
+const HISTORY_MAX := 200
 const DEFAULT_MODES: Array = [&"facile", &"moyen"]
 const DEFAULT_CHARACTERS: Array = [&"ardent"]
 ## Mode débloqué par une victoire dans un mode donné.
@@ -64,6 +68,10 @@ var selected_skin := {}
 ## Meilleure run (victoire la plus courte) par personnage et par mode :
 ## id perso -> mode -> {time_s, date (ISO, locale), level, kills, items {id: stacks}, variants {slot: id}, stage}.
 var best_runs := {}
+## Historique des runs terminées, de la plus ancienne à la plus récente (plafond HISTORY_MAX). Entrée : {date, character, skin,
+## mode, victory, reason, stage, time_s, final_boss_killed, win_time_s (temps d'abattage du boss de l'étage 5, 0 sinon), kills,
+## level, gold, rubies, difficulty, items {id: stacks}, n_items, unlocks [clés]}. Rien n'est écrit en mode test.
+var history: Array = []
 ## Succès locaux (data/achievements.json) : id -> date ISO du déblocage (scripts/meta/achievements.gd).
 var achievements := {}
 ## Boss d'étage tués au total : id du boss -> nombre (succès « tuer chaque boss »).
@@ -104,6 +112,7 @@ func reset() -> void:
 	unlocked_skins = []
 	selected_skin = {}
 	best_runs = {}
+	history = []
 	last_mode = &"moyen"
 	last_character = &"ardent"
 	stats = _default_stats()
@@ -183,6 +192,7 @@ func _apply_dict(d: Dictionary) -> void:
 		for cid in sk:
 			selected_skin[str(cid)] = str(sk[cid])
 	best_runs = _clean_best_runs(d.get("best_runs", {}))
+	history = _clean_history(d.get("history", []))
 	achievements = {}
 	var ac: Variant = d.get("achievements", {})
 	if ac is Dictionary:
@@ -254,6 +264,38 @@ static func _clean_best_runs(src: Variant) -> Dictionary:
 	return out
 
 
+## Normalise `history` lu du disque (types sûrs, entrées illisibles ignorées, plafond appliqué).
+static func _clean_history(src: Variant) -> Array:
+	var out: Array = []
+	if not (src is Array):
+		return out
+	for e in src:
+		if not (e is Dictionary) or not (e.get("time_s") is float or e.get("time_s") is int):
+			continue
+		var items := {}
+		if e.get("items") is Dictionary:
+			for iid in e["items"]:
+				items[str(iid)] = int(e["items"][iid])
+		var unlocks: Array = []
+		if e.get("unlocks") is Array:
+			for u in e["unlocks"]:
+				unlocks.append(str(u))
+		var n_items := 0
+		for k in items:
+			n_items += int(items[k])
+		out.append({
+			"date": str(e.get("date", "")), "character": str(e.get("character", "")), "skin": str(e.get("skin", "")),
+			"mode": str(e.get("mode", "moyen")), "victory": bool(e.get("victory", false)), "reason": str(e.get("reason", "")),
+			"stage": int(e.get("stage", 1)), "time_s": float(e["time_s"]), "final_boss_killed": bool(e.get("final_boss_killed", false)),
+			"win_time_s": float(e.get("win_time_s", 0.0)), "kills": int(e.get("kills", 0)), "level": int(e.get("level", 0)),
+			"gold": int(e.get("gold", 0)), "rubies": int(e.get("rubies", 0)), "difficulty": float(e.get("difficulty", 0.0)),
+			"items": items, "n_items": n_items, "unlocks": unlocks,
+		})
+	while out.size() > HISTORY_MAX:
+		out.remove_at(0)
+	return out
+
+
 func _names(src: Variant, defaults: Array) -> Array:
 	var out: Array = defaults.duplicate()
 	if src is Array:
@@ -275,7 +317,7 @@ func to_dict() -> Dictionary:
 		"last_mode": String(last_mode), "last_character": String(last_character),
 		"stats": stats, "objectives": objectives, "last_floor_boss": last_floor_boss,
 		"seen_hints": seen_hints, "loadout": loadout, "selected_skin": selected_skin, "best_runs": best_runs,
-		"achievements": achievements, "boss_kills": boss_kills, "daily": daily, "tutorial_replay": tutorial_replay,
+		"history": history, "achievements": achievements, "boss_kills": boss_kills, "daily": daily, "tutorial_replay": tutorial_replay,
 	}
 
 
@@ -477,9 +519,36 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 		if not unlocked_items.has(iid):
 			unlocked_items.append(iid)
 			out.append(ikey)
+	_record_history(r, mode, t, out)
 	_loading = false
 	_touch()
 	return out
+
+
+## Ajoute la run terminée à `history` (plafonné). Rien en mode test (bac à sable). Appelé avec les déblocages de la run.
+func _record_history(r: Dictionary, mode: StringName, t: float, unlocks: Array) -> void:
+	if sandbox:
+		return
+	var cid := str(r.get("character", ""))
+	var items := {}
+	var n_items := 0
+	var src: Variant = r.get("items", {})
+	if src is Dictionary:
+		for iid in src:
+			items[str(iid)] = int(src[iid])
+			n_items += int(src[iid])
+	var victory := bool(r.get("victory", false))
+	var win_t := float(r.get("final_boss_time_s", r.get("boss_time_s", 0.0)))
+	history.append({
+		"date": Time.get_datetime_string_from_system(false, true), "character": cid, "skin": Skins.equipped(cid) if cid != "" else "",
+		"mode": String(mode), "victory": victory, "reason": str(r.get("reason", "victory" if victory else "death")),
+		"stage": int(r.get("stage", 1)), "time_s": t, "final_boss_killed": win_t > 0.0, "win_time_s": maxf(win_t, 0.0),
+		"kills": int(r.get("kills", 0)), "level": int(r.get("level", 0)), "gold": int(r.get("gold", 0)),
+		"rubies": int(r.get("rubies", 0)), "difficulty": float(r.get("difficulty", 0.0)), "items": items, "n_items": n_items,
+		"unlocks": unlocks.map(func(u): return String(u)),
+	})
+	while history.size() > HISTORY_MAX:
+		history.remove_at(0)
 
 
 ## Meilleure run (victoire la plus courte) du personnage dans ce mode ; {} si aucune victoire.

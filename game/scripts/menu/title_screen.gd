@@ -15,6 +15,7 @@ signal credits_requested
 ## Méta hors ligne (scripts/meta/) : écran du défi du jour (graine = date locale) et écran des succès.
 signal daily_requested
 signal achievements_requested
+signal history_requested
 ## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : arène d'invocation, triches ; rien n'est écrit au profil.
 signal test_mode_requested
 signal quit_requested
@@ -62,6 +63,7 @@ var settings_button: Button
 var credits_button: Button
 var daily_button: Button
 var achievements_button: Button
+var history_button: Button ## « Historique » : parties passées, records, objets, skins
 var quit_button: Button
 var ruby_label: Label
 var toast_label: Label
@@ -298,7 +300,10 @@ func _rebuild_column() -> void:
 		new_run_button.name = "NewRun"
 	daily_button = _add_sub("Défi du jour", _on_daily_pressed)
 	daily_button.name = "Daily"
-	achievements_button = _add_sub("Succès", func(): achievements_requested.emit())
+	var hs := _add_pair("Historique", func(): history_requested.emit(), "Succès", func(): achievements_requested.emit())
+	history_button = hs[0]
+	history_button.name = "History"
+	achievements_button = hs[1]
 	achievements_button.name = "Achievements"
 	var sc := _add_pair("Réglages", func(): settings_requested.emit(), "Crédits", func(): credits_requested.emit())
 	settings_button = sc[0]

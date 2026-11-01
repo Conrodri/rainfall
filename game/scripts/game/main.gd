@@ -387,6 +387,8 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 		"stage": RunState.stage, "counters": RunState.counters.duplicate(), "bosses_killed": RunState.bosses_killed.duplicate(true),
 		"level": RunState.level, "items": RunState.items.duplicate(), "loadout": RunState.loadout.duplicate(),
 		"boss_time_s": _final_boss_time_s if victory else 0.0,
+		"final_boss_time_s": _final_boss_time_s, "reason": String(reason), "gold": int(RunState.gold),
+		"difficulty": RunState.difficulty(),
 	})
 	end_screen = EndRunScreen.create(end_info(victory, reason))
 	add_child(end_screen)
