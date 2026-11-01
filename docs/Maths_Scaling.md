@@ -457,7 +457,7 @@ Sources : [Item Stacking](https://riskofrain2.wiki.gg/wiki/Item_Stacking), [Proc
 | Brûlure | cumulable (Tri-Tip) : total = 240 % du dégât de base × PC (Étincelle) ou 50 % du coup (Cristal), × (1 + 100 % par Cristal) (Ignition Tank), sur 3 s | non cumulable, 100 % du coup |
 | Poison | cumulable, total = 180 % du coup (Fiole), 300 % × n (Venin), sur 4 s ; 10 cumuls max par monstre | 20 % du coup/s, 5 cumuls |
 | Ralentissement | Flocon H 0,15 × PC, −30 % 1,5 s ; Givre à chaque coup, −40 % 2 s (+2 s/exemplaire) | clés `slow_fraction` ignorées (bug) |
-| Foudre | Ukulele : 25 % × PC, 80 % du coup sur 3 + 2(n − 1) cibles | 3 cibles × 50 % |
+| Foudre | Éclair en bouteille : 25 % × PC, 80 % du coup sur 3 + 2(n − 1) cibles | 3 cibles × 50 % |
 | Épines | Razorwire : 160 % du dégât de base sur 5 + 2(n − 1) ennemis à 6 u, 1 fois / 0,5 s | 70 % du sort 1 sur l'attaquant |
 | PV / régén | PV plats (Bague +25, Tonique +40) ; régén plate × (1 + 0,2 (niv − 1)) (Cœur de mousse +1, Tonique +1,6) | % des PV max |
 | Plafonds | déplacement +35 %, vitesse d'attaque +200 %, projectile +100 %, zone +100 %, XP +100 %, portée +50 %, ramassage +200 %, traversées 5, blocage 75 % | déplacement +10 %, pas d'autres plafonds |

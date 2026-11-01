@@ -115,7 +115,7 @@ Répartition attendue d'une run de 3 étages, mode Moyen (28 items : 19 petits c
 | 5 | Venin concentré | Proc 10 % : poison de 300 % du coup sur 4 s, +150 % par exemplaire supplémentaire (JSON 28/10/2026) | L (dégâts) | Poison | 22 / 22 / 22 | 1,02 |
 | 6 | Cape de brume | 18 % d'esquive | H | Survie | 22 / 22 / 22 | 1,00 |
 | 7 | Épines | Chaque coup subi déclenche une riposte à 70 % des dégâts du sort 1 sur l'attaquant (1 riposte max par 0,5 s) | L | Survie | 20 / 24 / 25 | 1,10 |
-| 8 | Ukulele | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire, jusqu'à 8), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
+| 8 | Éclair en bouteille | Proc 25 % par coup : foudre en chaîne sur 3 ennemis (+2 par exemplaire, jusqu'à 8), 80 % du coup chacun, saut 5 u (+0,5 u par exemplaire) | L (proba) | Zone | 22 / 22 / 22 | 1,02 |
 | 9 | Rune de portée | Zone des sorts +20 % (plafond +100 %) et dégâts des sorts de zone à recharge +15 %, par exemplaire (JSON 28/10/2026) | L | Zone | 22 / 22 / 22 | 1,01 |
 | 10 | Morsure vorace | Chaque monstre tué rend 0,2 % des PV max | L | Survie | 23 / 23 / 23 | 1,03 |
 | 11 | Tonique vital | +15 % de PV max et +0,3 % des PV max par seconde | L | Survie | 22 / 22 / 22 | 0,99 |
@@ -172,7 +172,7 @@ Onze objets sont verrouillés au départ (champ `"unlock"` de `data/items.json`,
 | Objet | Qualité | Condition |
 |---|---|---|
 | Orbe de veille | Peu commun | Tuer 300 monstres au total |
-| Ukulele | Peu commun | Terminer 3 runs |
+| Éclair en bouteille | Peu commun | Terminer 3 runs |
 | Marque du chasseur | Peu commun | Vaincre un boss d'étage |
 | Venin concentré | Peu commun | Ouvrir 10 coffres au total |
 | Tempête de braises | Rare | Tuer 1 500 monstres au total |
