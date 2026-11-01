@@ -420,6 +420,48 @@ def write_music(path, x, items, usage, loop=True, gain=0):
 STEM_RMS = dict(base=-23, tension=-25.5, drive=-25, climax=-24)
 
 
+def cave_layer(n, duration, layer, boss=False):
+    """G11: circular cave material; fixed duration independent of boss tempo."""
+    rng = np.random.default_rng(711 + ['base', 'tension', 'drive', 'climax'].index(layer))
+    st = np.zeros((n, 2))
+    beat = 60 / (110 if boss else 64)
+    def put(at, x, gain, pan=0):
+        sl.put(st, round(at * SR), x, gain, pan)
+    if layer == 'base':
+        t = np.arange(n) / SR
+        for f, g in ((41.203, .35), (61.735, .18), (82.407, .12)):
+            f = round(f * duration) / duration
+            drone = np.sin(2*np.pi*f*t) * (1 + .12*np.sin(2*np.pi*3*t/duration))
+            put(0, drone, g)
+        for i, at in enumerate(np.arange(0, duration, beat * 8)):
+            f = M([52, 55, 59, 54, 52, 57, 55, 50][i % 8])
+            put(at, sl.lp(sl.flute(f, beat*2.7, .6, rng), 1600), .48, .18*np.sin(i))
+    if layer == 'tension' or boss and layer == 'base':
+        for i, at in enumerate(np.arange(beat, duration, beat*1.5)):
+            f = [330, 440, 494, 370][i % 4]
+            x = sl.bell(f, .22, rng=rng, tau=.045, ratios=[(1,1,1),(1.47,.35,.5),(2.09,.15,.3)])
+            put(at, x, .4, (-1)**i*.5)
+    if layer == 'drive':
+        for i, at in enumerate(np.arange(0, duration, beat)):
+            put(at, sl.lp(sl.taiko(.8, rng, 43, 1.3), 650), .65 if i%4==0 else .4)
+    if layer == 'climax':
+        for i, at in enumerate(np.arange(0, duration, beat*8)):
+            length = round(beat*9*SR)
+            air = sl.bp(rng.normal(size=length), 220, 1700)
+            air *= np.sin(np.pi*np.arange(length)/length)**2
+            voiced = sl.choir([M(40), M(47), M(54)], beat*8, rel=beat, rng=rng)
+            put(at, air*.12, .7, .25)
+            put(at, voiced, .25, -.25)
+    if boss and layer == 'tension':
+        for at in np.arange(0, duration, beat*4):
+            put(at, sl.lp(sl.bell(164.8, 3, rng=rng, tau=.7,
+                ratios=[(1,1,1),(1.48,.6,.7),(2.13,.25,.4)]), 2200), .65)
+    if layer == 'tension':
+        return st + np.roll(st, round(.09*SR), axis=0)*.16
+    rev = sl.Reverb(rng, rt60=6.5, brightness=.12)
+    return st*.75 + rev.circular(st)*.65
+
+
 def render_map(carte, items, seed):
     c = CFG[carte]
     song = Song(c)

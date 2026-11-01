@@ -241,6 +241,44 @@ def drip_event(rng, f=None, tau=.25, metallic=False):
     return s
 
 
+def cave_ambience(n, wind=False):
+    """G11: underground river, dry echoes, mineral cracks, abyss gusts."""
+    rng = np.random.default_rng(719 + wind)
+    duration = n / SR
+    t = np.arange(n)/SR
+    shape = (lambda f: np.exp(-((f-100)/100)**2)) if wind else (lambda f: np.exp(-((f-450)/420)**2))
+    x = np.column_stack([sl.loop_noise(n, rng, shape) for _ in range(2)])
+    x *= .25 / (np.std(x)+1e-9)
+    if wind:
+        env = np.zeros(n)
+        at = 0.
+        while at < duration:
+            d = rng.uniform(4, 8)
+            length = round(d*SR)
+            indices = (round(at*SR)+np.arange(length)) % n
+            env[indices] += np.sin(np.pi*np.arange(length)/length)**2
+            at += d + rng.uniform(.3, 1.5)
+        x *= env[:,None]
+        whistle = sl.loop_noise(n, rng, lambda f: np.exp(-((f-780)/45)**2))
+        whistle *= .008/(np.std(whistle)+1e-9)
+        x += whistle[:,None]*env[:,None]
+    else:
+        for i in range(round(duration*1.7)):
+            at = rng.integers(n)
+            drop = drip_event(rng, f=rng.uniform(600,1800), tau=.035)
+            gain = rng.uniform(.08,.3)
+            pan = rng.uniform(-.8,.8)
+            sl.put(x, at, drop, gain, pan)
+            # Short echo train ends at 0.9 seconds.
+            for delay, g in ((.18,.25),(.43,.11),(.9,.035)):
+                sl.put(x, at+round(delay*SR), drop, gain*g, -pan)
+        for i in range(16):
+            length=round(.035*SR)
+            crack = sl.bp(rng.normal(size=length), 900, 4500)*np.exp(-np.arange(length)/(SR*.006))
+            sl.put(x, rng.integers(n), crack, .12, rng.uniform(-.8,.8))
+    return x
+
+
 def gen_decor(carte, seed0):
     rng = np.random.default_rng({'terrasses_noyees': 21, 'foret_brume': 22, 'cite_rouille': 23}[carte] + seed0 * 100)
     dry = np.zeros((N, 2))

@@ -162,7 +162,11 @@ func _ready() -> void:
 	_check(FileAccess.file_exists(A.SETTINGS_PATH) == real_existed and (not real_existed or FileAccess.get_modified_time(A.SETTINGS_PATH) == real_mtime), "headless : settings.cfg du joueur inchangé")
 
 	# 9) ducking (laisse retomber celui du coffre légendaire de la section 2)
-	await _wait(3.5)
+	# Images headless lentes : attendre le retour réel à 0 dB plutôt qu'un délai fixe.
+	var t_end := Time.get_ticks_msec() + 15000
+	await _wait(0.25)
+	while (absf(A.current_duck_db()) > 0.01 or A._duck_hold > 0.0) and Time.get_ticks_msec() < t_end:
+		await _wait(0.25)
 	A.duck(9.0, 0.15, 0.03, 0.2)
 	await _wait(0.12)
 	_check(A.current_duck_db() < -3.0, "ducking appliqué (%.1f dB)" % A.current_duck_db())
