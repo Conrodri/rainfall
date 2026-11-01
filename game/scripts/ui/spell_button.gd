@@ -315,7 +315,7 @@ func _draw() -> void:
 	var cooling := not is_auto and remaining > 0.0 and total > 0.0
 	var broke := not is_auto and not affordable and not cooling ## ressource du kit insuffisante
 	var font := ThemeDB.fallback_font
-	var frame := _tex(FRAME_COOLDOWN if cooling or broke else (FRAME_PRESSED if _held else FRAME_READY))
+	var frame := _tex(UiTheme.ui_texture_path(FRAME_COOLDOWN if cooling or broke else (FRAME_PRESSED if _held else FRAME_READY))) # Parement : même nom, autre matière
 	draw_circle(c, r * (0.8 if frame != null else 1.0), Color(0.08, 0.09, 0.13, 0.85 if not _held else 0.95))
 	# sous-couche claire derrière l'icône ou l'initiale (contraste >= 3:1)
 	if not (broke and lack_text != ""):

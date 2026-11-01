@@ -19,8 +19,11 @@ static func data() -> Dictionary:
 	return parsed if parsed is Dictionary else {}
 
 
-## Prix en rubis du skin (>= 1).
+## Prix en rubis du skin (>= 1). Une Panoplie (data/cosmetics.json) a son prix dans le catalogue cosmétique ; les skins
+## trophée (characters.json) gardent le leur ici (data/shop.json) : un seul prix par skin, jamais deux sources.
 static func price_of(skin_id: Variant) -> int:
+	if Cosmetics.is_item(skin_id):
+		return Cosmetics.price_of(skin_id)
 	var d := data()
 	var table: Variant = d.get("skin_prices", {})
 	if table is Dictionary and (table as Dictionary).has(str(skin_id)):

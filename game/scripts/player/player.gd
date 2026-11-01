@@ -50,6 +50,7 @@ const CLOSE_KILL_U := 2.0
 var _base_hitbox_px := 0.0
 var _hit_radius_px := PlayerHitbox.BASE_PX ## rayon de DÉGÂTS (PlayerHitbox), suit set_hitbox_u
 var _hitbox_ring: HitboxRing = null ## anneau de hitbox au sol (réglage « Afficher la hitbox »)
+var _cosmetic_trail: CosmeticTrail = null ## Sillage (boutique cosmétique), gardé au changement de personnage
 
 var _invuln := 0.0
 var _burn_left := 0.0
@@ -190,6 +191,7 @@ func _ready() -> void:
 	if character.light_core_color.a > 0.0:
 		_light_core.set_color(character.light_core_color)
 	hp_changed.connect(_on_hp_changed_light)
+	_cosmetic_trail = CosmeticTrail.attach(self) # Sillage équipé (boutique cosmétique) : purement visuel, inactif sans article
 	_recompute(true)
 
 
@@ -447,6 +449,8 @@ func _purge_kit_nodes() -> void:
 		keep.append(_hitbox_ring)
 	if item_fx != null:
 		keep.append(item_fx)
+	if _cosmetic_trail != null:
+		keep.append(_cosmetic_trail)
 	var holders: Array[Node] = [self]
 	if _visual != null:
 		holders.append(_visual)

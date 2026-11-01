@@ -734,6 +734,7 @@ func _build_character() -> void:
 	if cdata.is_empty():
 		return
 	_build_skins(cdata)
+	_build_cosmetics()
 	_build_spell_variants(cdata)
 	_body.add_child(_heading("Niveau"))
 	_level_label = _label("", FS_BODY)
@@ -785,7 +786,7 @@ func _reselect_keep_scroll() -> void:
 
 func _build_skins(c: Dictionary) -> void:
 	var cid := StringName(str(c.get("id", "")))
-	var skins: Array = c.get("skins", []) if c.get("skins") is Array else []
+	var skins: Array = Skins.skins_of_dict(c) # trophées puis Panoplies de la boutique (sans achat en mode test)
 	_body.add_child(_heading("Apparence"))
 	var grid := _grid(_cols(190.0))
 	_body.add_child(grid)
@@ -809,6 +810,63 @@ func _build_skins(c: Dictionary) -> void:
 			b.add_theme_stylebox_override(&"hover", _current_style())
 			b.add_theme_stylebox_override(&"disabled", _current_style())
 		grid.add_child(b)
+
+
+## Boutique cosmétique : équipe n'importe quel Ciel / Sillage / Parement / Veillée sans l'acheter (Cosmetics.test_override,
+## rien n'est écrit au profil, tout est oublié à la sortie du mode test). Appliqué tout de suite quand c'est visible ici.
+func _build_cosmetics() -> void:
+	_body.add_child(_heading("Cosmétiques (sans achat)"))
+	_body.add_child(_note("Ciel : rechargé sur la carte s'il est du biome courant. Veillée : visible à l'écran titre seulement (oubliée en quittant le mode test). « non livré » : assets pas encore rendus, rien ne change."))
+	for fam in Cosmetics.families():
+		if fam == &"panoplie":
+			continue # les Panoplies sont dans « Apparence » ci-dessus
+		var items := Cosmetics.items_of(fam)
+		if items.is_empty():
+			continue
+		var slots: Array[String] = []
+		for it in items:
+			if not slots.has(Cosmetics.slot_of(it)):
+				slots.append(Cosmetics.slot_of(it))
+		for sk in slots:
+			var tgt := sk.substr(sk.find(":") + 1)
+			_body.add_child(_label("%s%s" % [Cosmetics.family_name(fam), "" if tgt == Cosmetics.GLOBAL_TARGET else " · " + tgt], FS_SMALL + 2, UiTheme.COL_TEXT))
+			var grid := _grid(_cols(230.0))
+			_body.add_child(grid)
+			var cur := Cosmetics.equipped_id(sk)
+			var entries: Array = [{"id": "", "name": "Défaut"}]
+			for it in items:
+				if Cosmetics.slot_of(it) == sk:
+					entries.append(it)
+			for it in entries:
+				var id := str(it.get("id", ""))
+				var delivered := id == "" or Cosmetics.has_assets(it)
+				var pp := Cosmetics.preview_path(it) if id != "" else ""
+				var slot_key := sk
+				var b := _card(load(pp) as Texture2D if pp != "" else null, str(it.get("name", id)), "" if delivered else "non livré", 72.0, true, func() -> void:
+					Cosmetics.set_test_override(slot_key, id)
+					_apply_cosmetic(fam)
+					say("%s : %s." % [Cosmetics.family_name(fam), str(it.get("name", id)) if id != "" else "défaut"])
+					_reselect_keep_scroll())
+				b.name = "Cosm_%s" % (id if id != "" else sk.replace(":", "_") + "_default")
+				b.custom_minimum_size = Vector2(0, 96)
+				if cur == id:
+					b.add_theme_stylebox_override(&"normal", _current_style())
+					b.add_theme_stylebox_override(&"hover", _current_style())
+				grid.add_child(b)
+
+
+## Applique sur place un cosmétique forcé : Ciel (carte rebranchée), Sillage (émetteur relu), Parement (thème refait).
+func _apply_cosmetic(fam: StringName) -> void:
+	match fam:
+		&"ciel":
+			var am := AmbianceManager.find(get_tree())
+			if am != null and am.map != null:
+				am.bind_map(am.map)
+		&"sillage":
+			for n in get_tree().get_nodes_in_group(&"cosmetic_trail"):
+				n.call(&"refresh")
+		&"parement":
+			UiTheme.refresh_parement()
 
 
 func _build_spell_variants(c: Dictionary) -> void:

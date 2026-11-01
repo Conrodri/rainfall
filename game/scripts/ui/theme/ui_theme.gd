@@ -26,6 +26,10 @@ const PAD_MIN := 4.0 ## marge verticale mini texte / cadre (px)
 const PAD_RATIO := 0.15 ## ... ou 15 % de la taille de police
 
 static var _theme: Theme = null
+## Parement équipé (boutique cosmétique) : dossier de ses textures ("" = kit DA par défaut, null = à relire).
+static var _parement_dir: Variant = null
+## Cache chemin par défaut -> chemin effectif (Parement), vidé par refresh_parement / reset_cache.
+static var _ui_path_cache := {}
 ## Journal des sons joués par hook_sounds (ids), pour les tests. Borné à 64.
 static var sound_log: Array[StringName] = []
 
@@ -106,6 +110,44 @@ static func refresh_text_scale() -> void:
 static func reset_cache() -> void:
 	_theme = null
 	_body_font = null
+	_parement_dir = null
+	_ui_path_cache.clear()
+
+
+# --- Parements (boutique cosmétique, scripts/save/cosmetics.gd) ------------------------------------------------------
+## Un Parement remplace la TEXTURE des cadres, boutons, panneaux et cadres de sorts par celle de même nom de son dossier
+## (`assets.dir` du catalogue). Les marges 9-slices restent celles du kit DA (<nom>.json de ui/da/), les polices et
+## tailles ne changent pas, les remplissages (`bar_fill_*`), icônes et chiffres jamais. Fichier absent : kit par défaut.
+
+## Dossier du Parement équipé et livré ("" = aucun).
+static func parement_dir() -> String:
+	if _parement_dir == null:
+		var it := Cosmetics.equipped_item(&"parement")
+		var a: Variant = it.get("assets", {})
+		_parement_dir = str((a as Dictionary).get("dir", "")) if a is Dictionary else ""
+	return str(_parement_dir)
+
+
+## Chemin effectif d'une texture d'UI : celle du Parement équipé (même nom de fichier) si elle existe, sinon `default_path`.
+static func ui_texture_path(default_path: String) -> String:
+	if _ui_path_cache.has(default_path):
+		return _ui_path_cache[default_path]
+	var out := default_path
+	var file := default_path.get_file()
+	var d := parement_dir()
+	if d != "" and not file.begins_with("bar_fill") and ResourceLoader.exists(d + file):
+		out = d + file
+	_ui_path_cache[default_path] = out
+	return out
+
+
+## Le Parement équipé a changé : relit son dossier et reconstruit le thème partagé EN PLACE (tous les écrans ouverts le
+## voient ; le HUD le prend à sa prochaine construction).
+static func refresh_parement() -> void:
+	_parement_dir = null
+	_ui_path_cache.clear()
+	if _theme != null:
+		_theme.merge_with(_build())
 
 
 ## Pose le thème sur `root` et impose la taille tactile minimale (88 px) aux boutons et curseurs.
@@ -247,7 +289,7 @@ static func da_box(file: String, content_scale := 1.0, font_size := -1) -> Style
 	if not ResourceLoader.exists(path):
 		return null
 	var sb := StyleBoxTexture.new()
-	sb.texture = load(path)
+	sb.texture = load(ui_texture_path(path)) # Parement équipé : même nom, autre matière ; marges lues ci-dessous (kit DA)
 	var ns := {"left": 24, "top": 24, "right": 24, "bottom": 24}
 	var ci := {"left": 24, "top": 16, "right": 24, "bottom": 16}
 	var jp := DA_DIR + file + ".json"
@@ -416,7 +458,7 @@ static func _build() -> Theme:
 	var dv := ResourceLoader.exists(DA_DIR + "divider.png")
 	if dv:
 		var ds := StyleBoxTexture.new()
-		ds.texture = load(DA_DIR + "divider.png")
+		ds.texture = load(ui_texture_path(DA_DIR + "divider.png"))
 		ds.texture_margin_left = 40.0
 		ds.texture_margin_right = 40.0
 		ds.content_margin_top = 12.0

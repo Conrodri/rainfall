@@ -1,5 +1,5 @@
 {
-  "_doc": "Boutique de skins (cosmétique uniquement, payée en rubis, jamais en argent réel). Prix PROVISOIRES : à remplacer par ceux de docs/Boutique_Rubis.md. 'skin_default_price' s'applique à tout skin sans entrée dans 'skin_prices' ({id du skin: prix en rubis}). Repère : une run rapporte ~15-45 rubis en défaite, ~90-150 en victoire selon les piliers (Balance.run_rubies).",
+  "_doc": "Prix des skins trophée de characters.json (cosmétique uniquement, payés en rubis, jamais en argent réel). Les autres articles (Panoplies, Ciels, Sillages, Parements, Veillées) ont leur prix dans data/cosmetics.json (SkinShop.price_of lit celui-là en priorité). Prix PROVISOIRES : à remplacer par ceux de docs/Boutique_Rubis.md. 'skin_default_price' s'applique à tout skin sans entrée dans 'skin_prices' ({id du skin: prix en rubis}). Repère : une run rapporte ~15-45 rubis en défaite, ~90-150 en victoire selon les piliers (Balance.run_rubies).",
   "skin_default_price": 250,
   "skin_prices": {}
 }

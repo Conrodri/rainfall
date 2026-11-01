@@ -4,7 +4,8 @@ extends Control
 ## reprise de l'ancien écran Progression.
 ##  - records : un bouton par personnage (meilleur temps par mode) ; clic = signal `character_chosen` (le parent ouvre BestRunsPanel).
 ##  - items   : tous les objets (items.json), débloqués en couleur, verrouillés en silhouette avec condition et avancement.
-##  - skins   : un skin par personnage jouable, équipable (ou retirable) s'il est débloqué (`Profile.set_selected_skin`).
+##  - skins   : tous les skins de chaque personnage jouable (Skins.all_skins : trophées puis Panoplies de la boutique), une
+##              cellule chacun, équipable (ou retirable) s'il est possédé (`Profile.set_selected_skin`).
 ## Le parent fixe `position` / `size` ; la vue règle ses colonnes selon sa largeur.
 
 signal character_chosen(c: Dictionary)

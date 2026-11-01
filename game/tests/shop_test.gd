@@ -55,7 +55,7 @@ func _ready() -> void:
 
 	# --- Prix ---
 	var all := Skins.all_skins()
-	var prices_ok := all.size() == 10
+	var prices_ok := all.filter(func(e): return not bool(e.shop)).size() == 10 # 10 trophées (+ Panoplies de cosmetics.json)
 	for e in all:
 		prices_ok = prices_ok and SkinShop.price_of(e.id) >= 1
 	_check(prices_ok, "10 skins, prix >= 1 rubis (défaut %d)" % SkinShop.price_of("ardent_skin1"))
@@ -168,7 +168,7 @@ func _ready() -> void:
 	scr.confirm_override = _confirm
 	add_child(scr)
 	await _frames(3)
-	_check(scr.cells.size() == 10, "écran : un carton par skin (%d)" % scr.cells.size())
+	_check(scr.cells.size() == Skins.all_skins(CharacterCard.load_characters()).size() and scr.cells.size() >= 10, "écran (onglet Panoplies) : un carton par skin, trophées et Panoplies (%d)" % scr.cells.size())
 	_check(scr.ruby_label.text == ShopScreen.format_int(price + 30), "écran : solde de rubis affiché (%s)" % scr.ruby_label.text)
 	var ca := _cell(scr, "ardent_skin1")
 	_check(ca != null and ca.get_meta(&"state") == ShopScreen.State.BUYABLE and ca.find_child("PriceText", true, false) != null, "carton achetable : prix affiché")

@@ -17,7 +17,10 @@ const PATH := "user://profile.json"
 ## charge tel quel : les champs absents prennent leur défaut, rien n'est perdu.
 ## Version 4 (01/11) : + history (historique compact des runs terminées, plafonné à HISTORY_MAX). Un fichier v1-v3 se charge
 ## tel quel (history = []).
-const VERSION := 4
+## Version 5 (01/11) : + owned_cosmetics, equipped (boutique cosmétique, scripts/save/cosmetics.gd). Un fichier v1-v4 se
+## charge tel quel (aucun cosmétique possédé ni équipé) ; les skins déjà achetés (unlocked_skins) et le skin équipé
+## (selected_skin) sont conservés à l'identique.
+const VERSION := 5
 ## Nombre maximal de runs gardées dans `history` (les plus anciennes sont supprimées).
 const HISTORY_MAX := 200
 const DEFAULT_MODES: Array = [&"facile", &"moyen"]
@@ -63,8 +66,13 @@ var last_floor_boss := {}
 var seen_hints: Array = []
 ## Sorts choisis par personnage (fiche Nouvelle run) : id perso (texte) -> {"<slot>": "<id du sort>"} (base ou variante).
 var loadout := {}
-## Skin équipé par personnage : id perso (texte) -> id du skin ("" ou absent = apparence par défaut).
+## Skin équipé par personnage : id perso (texte) -> id du skin ("" ou absent = apparence par défaut). Trophée ou Panoplie.
 var selected_skin := {}
+## Boutique cosmétique (v5) : ids des articles achetés (data/cosmetics.json), Panoplies comprises.
+var owned_cosmetics: Array = [] ## StringName
+## Boutique cosmétique (v5) : emplacement « famille:cible » -> id équipé (ex. "ciel:terrasses", "sillage:all").
+## Les Panoplies n'y sont pas : elles passent par selected_skin (un seul point de vérité par apparence).
+var equipped := {}
 ## Meilleure run (victoire la plus courte) par personnage et par mode :
 ## id perso -> mode -> {time_s, date (ISO, locale), level, kills, items {id: stacks}, variants {slot: id}, stage}.
 var best_runs := {}
@@ -111,6 +119,8 @@ func reset() -> void:
 	unlocked_items = []
 	unlocked_skins = []
 	selected_skin = {}
+	owned_cosmetics = []
+	equipped = {}
 	best_runs = {}
 	history = []
 	last_mode = &"moyen"
@@ -191,6 +201,13 @@ func _apply_dict(d: Dictionary) -> void:
 	if sk is Dictionary:
 		for cid in sk:
 			selected_skin[str(cid)] = str(sk[cid])
+	owned_cosmetics = _names(d.get("owned_cosmetics", []), [])
+	equipped = {}
+	var eq: Variant = d.get("equipped", {})
+	if eq is Dictionary:
+		for k in eq:
+			if str(k).contains(":") and str(eq[k]) != "":
+				equipped[str(k)] = str(eq[k])
 	best_runs = _clean_best_runs(d.get("best_runs", {}))
 	history = _clean_history(d.get("history", []))
 	achievements = {}
@@ -331,6 +348,7 @@ func to_dict() -> Dictionary:
 		"last_mode": String(last_mode), "last_character": String(last_character),
 		"stats": stats, "objectives": objectives, "last_floor_boss": last_floor_boss,
 		"seen_hints": seen_hints, "loadout": loadout, "selected_skin": selected_skin, "best_runs": best_runs,
+		"owned_cosmetics": owned_cosmetics.map(func(v): return String(v)), "equipped": equipped,
 		"history": history, "achievements": achievements, "boss_kills": boss_kills, "daily": daily, "tutorial_replay": tutorial_replay,
 	}
 
@@ -623,17 +641,27 @@ func _variants_used(cid: StringName, lo: Variant) -> Dictionary:
 	return out
 
 
-func _skin_id_of(cid: StringName) -> String:
+## Le personnage a-t-il ce skin : trophée (roster) ou Panoplie (cosmetics.json, cible = personnage) ?
+func _has_skin(cid: StringName, skin_id: String) -> bool:
 	for c in _roster():
 		if c is Dictionary and str(c.get("id", "")) == String(cid):
-			return str(Skins.skin_of_dict(c).get("id", ""))
-	return ""
+			for s in Skins.skins_of_dict(c):
+				if str(s.get("id", "")) == skin_id:
+					return true
+			return false
+	var it := Cosmetics.item(skin_id)
+	return Cosmetics.family_of(it) == &"panoplie" and Cosmetics.target_of(it) == String(cid)
 
 
-## Équipe un skin (id valide et débloqué) ou "" pour l'apparence par défaut. true si appliqué.
+## Skin possédé : trophée débloqué ou acheté (unlocked_skins) ou Panoplie achetée (owned_cosmetics).
+func _owns_skin(skin_id: String) -> bool:
+	return is_unlocked(StringName("skin:" + skin_id)) or owned_cosmetics.has(StringName(skin_id))
+
+
+## Équipe un skin (id valide et possédé) ou "" pour l'apparence par défaut. true si appliqué.
 func set_selected_skin(cid: StringName, skin_id: String) -> bool:
 	if skin_id != "":
-		if _skin_id_of(cid) != skin_id or not is_unlocked(StringName("skin:" + skin_id)):
+		if not _has_skin(cid, skin_id) or not _owns_skin(skin_id):
 			return false
 	if str(selected_skin.get(String(cid), "")) == skin_id:
 		return true
@@ -650,7 +678,10 @@ func set_selected_skin(cid: StringName, skin_id: String) -> bool:
 ## &"poor" (rubis insuffisants : rien n'est débité) | &"no_art" (rendu pas encore livré : non vendu). N'équipe pas le skin.
 ## Un seul enregistrement disque (rubis + possession + compteur `stats.rubies_spent`) ; en bac à sable (mode test) tout reste en
 ## mémoire et disparaît à end_sandbox(). Pas de nouvelle version de fichier : `unlocked_skins` et `rubies` existent déjà.
+## Une Panoplie (cosmetics.json) passe par buy_cosmetic : même résultat, possession dans owned_cosmetics.
 func buy_skin(skin_id: String) -> StringName:
+	if Cosmetics.family_of(Cosmetics.item(skin_id)) == &"panoplie":
+		return buy_cosmetic(skin_id)
 	var cid := ""
 	for e in Skins.all_skins(_roster()):
 		if str(e.id) == skin_id:
@@ -665,12 +696,84 @@ func buy_skin(skin_id: String) -> StringName:
 	if rubies < price:
 		return &"poor"
 	_loading = true
-	rubies -= price
+	_spend(price)
 	unlocked_skins.append(StringName(skin_id))
-	stats["rubies_spent"] = float(stats.get("rubies_spent", 0.0)) + float(price)
 	_loading = false
 	_touch()
 	return &"ok"
+
+
+# --- Boutique cosmétique (v5, scripts/save/cosmetics.gd) ----------------------------------------------------------
+
+## Débit générique de rubis : refusé (false, rien débité) si le solde est insuffisant ou n <= 0 ; sinon débite, ajoute n au
+## compteur stats.rubies_spent et écrit le profil (une écriture). Seul chemin de dépense de rubis du jeu.
+func spend_rubies(n: int) -> bool:
+	if n <= 0 or rubies < n:
+		return false
+	_loading = true
+	_spend(n)
+	_loading = false
+	_touch()
+	return true
+
+
+## Débit sans écriture (appelant : _loading déjà levé, une seule écriture à la fin).
+func _spend(n: int) -> void:
+	rubies -= n
+	stats["rubies_spent"] = float(stats.get("rubies_spent", 0.0)) + float(n)
+
+
+func is_cosmetic_owned(id: String) -> bool:
+	return owned_cosmetics.has(StringName(id))
+
+
+## Achète l'article `id` de data/cosmetics.json. Renvoie &"ok" | &"unknown" (id absent du catalogue) | &"owned" (déjà
+## possédé : rien débité) | &"no_art" (assets pas encore livrés : visible en boutique, non vendu) | &"poor" (rubis
+## insuffisants : rien débité). N'équipe pas. Une seule écriture (rubis + possession + rubies_spent) ; en bac à sable
+## (mode test) tout reste en mémoire et disparaît à end_sandbox().
+func buy_cosmetic(id: String) -> StringName:
+	var it := Cosmetics.item(id)
+	if it.is_empty():
+		return &"unknown"
+	if owned_cosmetics.has(StringName(id)):
+		return &"owned"
+	if not Cosmetics.has_assets(it):
+		return &"no_art"
+	var price := Cosmetics.price_of(id)
+	if rubies < price:
+		return &"poor"
+	_loading = true
+	_spend(price)
+	owned_cosmetics.append(StringName(id))
+	_loading = false
+	_touch()
+	return &"ok"
+
+
+## Id équipé dans l'emplacement « famille:cible » ("" = défaut). Panoplie : selected_skin du personnage.
+func equipped_cosmetic(slot_key: String) -> String:
+	if slot_key.begins_with("panoplie:"):
+		return str(selected_skin.get(slot_key.substr(9), ""))
+	return str(equipped.get(slot_key, ""))
+
+
+## Équipe l'article `id` (possédé, et dont l'emplacement est `slot_key`) ou "" pour revenir au défaut. true si appliqué.
+## Panoplie : délègue à set_selected_skin (selected_skin reste le seul enregistrement de l'apparence).
+func equip_cosmetic(slot_key: String, id: String) -> bool:
+	if slot_key.begins_with("panoplie:"):
+		return set_selected_skin(StringName(slot_key.substr(9)), id)
+	if id != "":
+		var it := Cosmetics.item(id)
+		if it.is_empty() or Cosmetics.slot_of(it) != slot_key or not owned_cosmetics.has(StringName(id)):
+			return false
+	if str(equipped.get(slot_key, "")) == id:
+		return true
+	if id == "":
+		equipped.erase(slot_key)
+	else:
+		equipped[slot_key] = id
+	_touch()
+	return true
 
 
 # --- Compteurs et variantes de sorts ------------------------------------------------------

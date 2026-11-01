@@ -80,6 +80,10 @@ const GUST_FLICKER := Vector2(0.08, 2.0) ## (amplitude, Hz) du mycélium pendant
 @export var auto_bind := true ## se branche seul sur Events.floor_started / RunState
 
 var profile: AmbianceProfile = null
+## Lit le Ciel équipé (boutique cosmétique) à chaque bind_map. Faux pour le fond des menus (MenuBackground).
+var cosmetic_sky := true
+## Id du Ciel appliqué à la carte courante ("" = profil de la carte).
+var sky_id := ""
 var map: Node2D = null
 var difficulty := 1.0
 var tier_name: StringName = &"Calme"
@@ -156,6 +160,53 @@ static func load_profile(map_id: StringName) -> AmbianceProfile:
 	if not ResourceLoader.exists(path):
 		return null
 	return load(path) as AmbianceProfile
+
+
+## Ciel équipé et livré pour ce biome ({} = aucun). Jamais à l'étage 5 ni dans La Source (mise en scène fixe).
+static func equipped_ciel(biome: String, floor_n: int, profile_obj: Object = null) -> Dictionary:
+	if biome == "" or biome == "source" or floor_n == 5:
+		return {}
+	return Cosmetics.equipped_item(&"ciel", biome, profile_obj)
+
+
+## Profil d'ambiance d'un Ciel pour une carte : data/ambiance/<map_id>_<ciel>.tres s'il est livré (liste `profiles` du
+## catalogue), sinon le premier profil livré de la liste ; "" si aucun.
+static func ciel_profile_path(it: Dictionary, map_id: String) -> String:
+	if it.is_empty():
+		return ""
+	var a: Variant = it.get("assets", {})
+	var list: Array = []
+	if a is Dictionary:
+		var pr: Variant = (a as Dictionary).get("profiles", (a as Dictionary).get("profile", []))
+		list = pr if pr is Array else [pr]
+	var want := PROFILES_DIR + map_id + "_" + str(it.get("id", "")) + ".tres"
+	if list.has(want) and ResourceLoader.exists(want):
+		return want
+	for p in list:
+		if str(p) != "" and ResourceLoader.exists(str(p)):
+			return str(p)
+	return ""
+
+
+## Garde-fou des Ciels (docs/Boutique_Rubis.md §2.2) : à chaque pivot de D, Haut (directionnelle rendue) et Bas, la
+## luminance effective reçue par les entités après les garde-fous du rendu (guard_ambient, guard_fill) atteint
+## AmbianceProfile.MIN_EFFECTIVE_LUMINANCE (0,42). Un Ciel qui échoue n'est pas appliqué (profil de la carte gardé).
+static func ciel_readable(p: AmbianceProfile) -> bool:
+	if p == null:
+		return false
+	for d in AmbianceProfile.PIVOTS_D:
+		var e: Dictionary = p.evaluate(d)
+		for sun_on in [true, false]:
+			var amb: Color = e.get(&"ambient_color", Color.BLACK) if sun_on else e.get(&"ambient_low", Color.BLACK)
+			var sun_c: Color = e.get(&"sun_color", Color.BLACK)
+			var sun_e := float(e.get(&"sun_energy", 0.0))
+			amb = AmbianceProfile.guard_ambient(amb, sun_c, sun_e, sun_on)
+			var fill_c: Color = e.get(&"fill_color", Color.BLACK)
+			var fill_e := float(e.get(&"fill_energy", 0.0) if sun_on else e.get(&"fill_energy_low", 0.0))
+			fill_e = AmbianceProfile.guard_fill(amb, sun_c, sun_e, sun_on, fill_c, fill_e)
+			if AmbianceProfile.entity_luminance(amb, sun_c, sun_e, sun_on, fill_c, fill_e) < AmbianceProfile.MIN_EFFECTIVE_LUMINANCE - 0.001:
+				return false
+	return true
 
 
 # --- Construction -------------------------------------------------------------
@@ -333,7 +384,23 @@ func bind_map(m: Node2D, instant: bool = true) -> bool:
 			_mask_ground(vis)
 	# méta `ambiance_id` : profil d'une autre carte (arène du mode test, qui emprunte celui des terrasses)
 	var id := StringName(m.get_meta(&"ambiance_id", m.get_meta(&"map_id", &""))) if m != null else &""
-	var ok := apply_profile(id, instant)
+	# Ciel équipé (boutique cosmétique) : profil alternatif du biome, lu au chargement de l'étage, jamais à l'étage 5.
+	sky_id = ""
+	var sky: AmbianceProfile = null
+	if cosmetic_sky and m != null:
+		var biome := String((m as StageMap).biome()) if m is StageMap else ""
+		var rs := get_node_or_null(^"/root/RunState")
+		var floor_n := FloorPlan.floor_of_stage(int(rs.get(&"stage"))) if rs != null else 1
+		var it := equipped_ciel(biome, floor_n)
+		var sp := ciel_profile_path(it, String(id))
+		if sp != "":
+			sky = load(sp) as AmbianceProfile
+			if sky != null and not ciel_readable(sky):
+				push_warning("AmbianceManager : Ciel « %s » trop sombre (luminance < %.2f), profil de la carte gardé" % [str(it.get("id", "")), AmbianceProfile.MIN_EFFECTIVE_LUMINANCE])
+				sky = null
+			if sky != null:
+				sky_id = str(it.get("id", ""))
+	var ok := apply_profile_resource(sky, id, instant) if sky != null else apply_profile(id, instant)
 	_rebuild_map_dependent()
 	if not _measured:
 		_measured = true
@@ -360,6 +427,13 @@ func apply_profile(map_id: StringName, instant: bool = true) -> bool:
 	var p := load_profile(map_id)
 	if p == null:
 		push_warning("AmbianceManager : pas de profil pour la carte « %s »" % map_id)
+		return false
+	return apply_profile_resource(p, map_id, instant)
+
+
+## Applique un profil déjà chargé (Ciel de la boutique cosmétique, ou profil de la carte).
+func apply_profile_resource(p: AmbianceProfile, map_id: StringName, instant: bool = true) -> bool:
+	if p == null:
 		return false
 	profile = p
 	_target = p.evaluate(difficulty)

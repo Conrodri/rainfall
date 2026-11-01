@@ -53,7 +53,7 @@ func _ready() -> void:
 			all_ok = false
 			print("   skin incomplet : ", s)
 	_check(all_ok and ids.size() == 10, "un skin par personnage, champs et règle win_with/Difficile complets")
-	_check(Skins.all_skins().size() == 10, "Skins.all_skins : 10 entrées")
+	_check(Skins.all_skins().filter(func(e): return not bool(e.shop)).size() == 10, "Skins.all_skins : 10 trophées (+ %d Panoplies)" % Skins.all_skins().filter(func(e): return bool(e.shop)).size())
 
 	# --- Déblocage ---
 	var p := _fresh()

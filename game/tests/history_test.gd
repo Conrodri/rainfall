@@ -74,7 +74,7 @@ func _ready() -> void:
 
 	# --- sérialisation, migration ---
 	var d: Dictionary = JSON.parse_string(JSON.stringify(p.to_dict()))
-	_check(int(d.version) == 4 and d.history is Array and d.history.size() == 5, "sauvegarde v4 avec historique")
+	_check(int(d.version) >= 4 and d.history is Array and d.history.size() == 5, "sauvegarde v%d avec historique" % int(d.version))
 	var q := _fresh()
 	q._apply_dict(d)
 	_check(q.history.size() == 5 and q.history[1].items == {"moisson": 9} and q.history[4].final_boss_killed, "rechargement identique")

@@ -1,8 +1,11 @@
 class_name Skins
 extends RefCounted
-## Skins de personnage : UN skin par personnage (data/characters.json, clé `skins`), débloqué par une règle de
-## VariantUnlocks (type `win_with` : gagner une run en Difficile avec le personnage). Clé de déblocage « skin:<id> »
-## (Profile.unlocked_skins). Choix du joueur : Profile.selected_skin {perso: skin_id}.
+## Skins de personnage : une LISTE par personnage (skins_of). D'abord les trophées de data/characters.json (clé `skins`),
+## débloqués par une règle de VariantUnlocks (type `win_with` : gagner une run en Difficile avec le personnage) ou achetés
+## (Profile.buy_skin, prix data/shop.json) ; clé « skin:<id> » (Profile.unlocked_skins). Puis les Panoplies de la boutique
+## cosmétique (data/cosmetics.json, famille `panoplie`, cible = id du personnage), achetées en rubis seulement
+## (Profile.buy_cosmetic, possession Profile.owned_cosmetics). Choix du joueur : Profile.selected_skin {perso: skin_id}
+## (inchangé : une seule apparence par personnage, trophée ou Panoplie).
 ##
 ## Contrat d'assets (game/CONTRACTS.md « Skins de personnage ») : `<dossier du perso>/skins/<skin_id>/` contient les
 ## MÊMES fichiers que le dossier par défaut (mêmes noms, tailles, frames, masques _e, portrait.png) plus
@@ -32,20 +35,38 @@ static func character(cid: Variant) -> Dictionary:
 	return {}
 
 
-## Le skin (unique) d'un personnage : {} si aucun.
+## Le skin trophée (le premier de characters.json) d'un personnage : {} si aucun.
 static func skin_of(cid: Variant) -> Dictionary:
 	return skin_of_dict(character(cid))
 
 
-## Tous les skins : [{character (dict), skin (dict), id, key «skin:<id>», rule}].
+## Tous les skins d'un personnage : trophées puis Panoplies (boutique cosmétique).
+static func skins_of(cid: Variant) -> Array:
+	var c := character(cid)
+	if c.is_empty():
+		c = {"id": str(cid)}
+	return skins_of_dict(c)
+
+
+## Le personnage a-t-il ce skin (trophée ou Panoplie) ?
+static func has_skin(cid: Variant, skin_id: Variant) -> bool:
+	if str(skin_id) == "":
+		return false
+	for s in skins_of(cid):
+		if str(s.get("id", "")) == str(skin_id):
+			return true
+	return false
+
+
+## Tous les skins : [{character (dict), skin (dict), id, key «skin:<id>», rule, shop (vrai = Panoplie)}].
 static func all_skins(characters: Variant = null) -> Array:
 	var out: Array = []
 	for c in (characters if characters is Array else roster()):
 		if not (c is Dictionary) or not bool(c.get("playable", true)):
 			continue
-		var s := skin_of_dict(c)
-		if not s.is_empty():
-			out.append({"character": c, "skin": s, "id": str(s.id), "key": key_of(s), "rule": rule_of(c, s)})
+		for s in skins_of_dict(c):
+			var shop := is_panoplie(s)
+			out.append({"character": c, "skin": s, "id": str(s.id), "key": key_of(s), "rule": {} if shop else rule_of(c, s), "shop": shop})
 	return out
 
 
@@ -56,6 +77,31 @@ static func skin_of_dict(c: Dictionary) -> Dictionary:
 			if s is Dictionary and str(s.get("id", "")) != "":
 				return s
 	return {}
+
+
+## Trophées (characters.json) puis Panoplies (cosmetics.json, cible = id du personnage), sans doublon d'id.
+static func skins_of_dict(c: Dictionary) -> Array:
+	var out: Array = []
+	var seen := {}
+	var arr: Variant = c.get("skins", [])
+	if arr is Array:
+		for s in arr:
+			if s is Dictionary and str(s.get("id", "")) != "" and not seen.has(str(s.id)):
+				seen[str(s.id)] = true
+				out.append(s)
+	for it in Cosmetics.items_of(&"panoplie", str(c.get("id", ""))):
+		var sid := str(it.get("id", ""))
+		if sid == "" or seen.has(sid):
+			continue
+		seen[sid] = true
+		out.append({"id": sid, "name": str(it.get("name", sid)), "desc": str(it.get("desc", "")), "family": "panoplie",
+			"price": Cosmetics.price_of(sid), "unlock_key": "skin:" + sid})
+	return out
+
+
+## Vrai pour une Panoplie (achetable en boutique cosmétique seulement, jamais par condition de jeu).
+static func is_panoplie(skin: Dictionary) -> bool:
+	return str(skin.get("family", "")) == "panoplie"
 
 
 static func key_of(skin: Dictionary) -> StringName:
@@ -72,6 +118,8 @@ static func rule_of(c: Dictionary, skin: Dictionary) -> Dictionary:
 
 
 static func quest_text(c: Dictionary, skin: Dictionary) -> String:
+	if is_panoplie(skin):
+		return "En boutique : %d rubis." % int(skin.get("price", Cosmetics.price_of(skin.get("id", ""))))
 	var t := str(skin.get("unlock_text", ""))
 	return t if t != "" else "Gagner une run en Difficile avec %s." % str(c.get("name", "ce personnage"))
 
@@ -81,6 +129,8 @@ static func evaluate(profile: Object, characters: Array, result: Dictionary) -> 
 	var out: Array[StringName] = []
 	var owned: Array = profile.get("unlocked_skins") if profile != null and "unlocked_skins" in profile else []
 	for e in all_skins(characters):
+		if bool(e.shop): # Panoplie : boutique seulement
+			continue
 		var key: StringName = e.key
 		if owned.has(StringName(String(key).substr(5))) or out.has(key):
 			continue
@@ -95,7 +145,9 @@ static func is_unlocked(profile: Object, skin_id: Variant) -> bool:
 	if "unlock_all_variants" in profile and bool(profile.get("unlock_all_variants")):
 		return true
 	var owned: Variant = profile.get("unlocked_skins") if "unlocked_skins" in profile else null
-	return owned is Array and (owned as Array).has(StringName(str(skin_id)))
+	if owned is Array and (owned as Array).has(StringName(str(skin_id))):
+		return true
+	return Cosmetics.is_owned(profile, skin_id) # Panoplie achetée
 
 
 ## Skin équipé et valide pour ce personnage ("" = défaut). `profile` null = autoload Profile.
@@ -107,7 +159,7 @@ static func equipped(cid: Variant, profile: Object = null) -> String:
 		return ""
 	var sel: Variant = p.get("selected_skin")
 	var id := str((sel as Dictionary).get(str(cid), "")) if sel is Dictionary else ""
-	if id == "" or str(skin_of(cid).get("id", "")) != id or not is_unlocked(p, id):
+	if id == "" or not has_skin(cid, id) or not is_unlocked(p, id):
 		return ""
 	return id
 
@@ -122,18 +174,37 @@ static func base_dir(cid: Variant) -> String:
 	return CHAR_SPRITE_DIR + str(cid) + "/"
 
 
-## Dossier des assets d'un skin : <dossier perso>/skins/<skin_id>/ (qu'il existe ou non).
+## Dossier des assets d'un skin : <dossier perso>/skins/<skin_id>/ (qu'il existe ou non). Une Panoplie peut déclarer
+## un autre `assets.frames` dans cosmetics.json : son dossier est alors celui de ce fichier.
 static func skin_dir(cid: Variant, skin_id: Variant) -> String:
+	var decl := _declared_frames(skin_id)
+	if decl != "":
+		return decl.get_base_dir() + "/"
 	return "%s%s/%s/" % [base_dir(cid), SKIN_SUBDIR, str(skin_id)]
 
 
 static func skin_frames_path(cid: Variant, skin_id: Variant) -> String:
-	return skin_dir(cid, skin_id) + str(skin_id) + ".tres"
+	var decl := _declared_frames(skin_id)
+	return decl if decl != "" else skin_dir(cid, skin_id) + str(skin_id) + ".tres"
 
 
-## Le skin a-t-il ses SpriteFrames livrés ?
+## `assets.frames` (ou `sprite_frames`) d'une Panoplie (texte brut, qu'il existe ou non) ; "" sinon.
+static func _declared_frames(skin_id: Variant) -> String:
+	var it := Cosmetics.item(skin_id)
+	if it.is_empty():
+		return ""
+	var a: Variant = it.get("assets", {})
+	if not (a is Dictionary):
+		return ""
+	return str((a as Dictionary).get("frames", (a as Dictionary).get("sprite_frames", "")))
+
+
+## Le skin a-t-il ses SpriteFrames livrés ? (Panoplie : tous ses assets déclarés aussi, Cosmetics.has_assets.)
 static func has_assets(cid: Variant, skin_id: Variant) -> bool:
-	return str(skin_id) != "" and ResourceLoader.exists(skin_frames_path(cid, skin_id))
+	if str(skin_id) == "" or not ResourceLoader.exists(skin_frames_path(cid, skin_id)):
+		return false
+	var it := Cosmetics.item(skin_id)
+	return it.is_empty() or Cosmetics.has_assets(it)
 
 
 ## UN point d'entrée pour le SpriteFrames du joueur : `default_path` (celui du kit, "" = Ardent / scène) remplacé par

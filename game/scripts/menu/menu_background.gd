@@ -36,6 +36,11 @@ var _sparks: CPUParticles2D = null
 var _halo: Sprite2D = null
 var _flicker_t := 0.0
 var _fill: DirectionalLight2D = null
+## Veillée équipée ({} = « Feu de camp » par défaut) et ses nœuds (props, ombres, feu animé).
+var veillee: Dictionary = {}
+var veillee_nodes: Array[Node2D] = []
+## Carte demandée par l'écran titre (avant la substitution par la Veillée), pour reconstruire après un changement.
+var requested_map_id := ""
 
 
 ## Carte du jour (rotation quotidienne sur 3 cartes).
@@ -48,10 +53,17 @@ static func daily_map_id() -> String:
 
 func setup(p_map_id: String) -> void:
 	_teardown()
+	requested_map_id = p_map_id
+	# Veillée équipée (boutique cosmétique) : sa carte remplace celle du jour, ses props entourent le feu.
+	veillee = Cosmetics.equipped_item(&"veillee")
+	var vmap := _veillee_asset_str("map")
+	if vmap != "" and ResourceLoader.exists(MAPS_DIR + vmap + ".tscn"):
+		p_map_id = vmap
 	map_id = p_map_id if ResourceLoader.exists(MAPS_DIR + p_map_id + ".tscn") else DAILY_MAPS[0]
 	if ambiance == null:
 		ambiance = (load(AMBIANCE) as PackedScene).instantiate() as AmbianceManager
 		ambiance.auto_bind = false
+		ambiance.cosmetic_sky = false # le titre garde l'ambiance de sa carte (les Ciels sont pour les étages)
 		add_child(ambiance)
 		ambiance.set_difficulty(MENU_DIFFICULTY, &"Calme")
 	map = (load(MAPS_DIR + map_id + ".tscn") as PackedScene).instantiate() as Node2D
@@ -62,6 +74,10 @@ func setup(p_map_id: String) -> void:
 	_build_camera()
 	_build_fill()
 	_build_campfire()
+	_build_veillee()
+	var prof := get_node_or_null(^"/root/Profile")
+	if prof != null and prof.has_signal(&"changed") and not prof.is_connected(&"changed", _on_profile_changed):
+		prof.connect(&"changed", _on_profile_changed)
 	if not Quality.quality_changed.is_connected(_on_quality):
 		Quality.quality_changed.connect(_on_quality)
 	_t = 0.0
@@ -71,6 +87,7 @@ func setup(p_map_id: String) -> void:
 
 func _teardown() -> void:
 	_release_fire()
+	_clear_veillee()
 	if map != null:
 		map.queue_free()
 		map = null
@@ -81,6 +98,9 @@ func _teardown() -> void:
 
 func _exit_tree() -> void:
 	_release_fire()
+	var prof := get_node_or_null(^"/root/Profile")
+	if prof != null and prof.is_connected(&"changed", _on_profile_changed):
+		prof.disconnect(&"changed", _on_profile_changed)
 	if Quality.quality_changed.is_connected(_on_quality):
 		Quality.quality_changed.disconnect(_on_quality)
 
@@ -106,6 +126,9 @@ func set_paused_visuals(on: bool) -> void:
 		_set_particles_speed(ambiance, 0.0 if on else 1.0)
 	if _sparks != null:
 		_sparks.speed_scale = 0.0 if on else 1.0
+	for n in veillee_nodes:
+		if n is AnimatedSprite2D and is_instance_valid(n):
+			(n as AnimatedSprite2D).speed_scale = 0.0 if on else 1.0
 
 
 static func _set_particles_speed(n: Node, s: float) -> void:
@@ -264,3 +287,110 @@ func _process(delta: float) -> void:
 	if _halo != null:
 		var k := 0.9 + 0.1 * sin(_flicker_t * TAU * 7.0) * sin(_flicker_t * 2.3)
 		_halo.modulate.a = 0.55 * k
+
+
+# --- Veillée (boutique cosmétique) ------------------------------------------------
+
+## Disposition par défaut des props d'une Veillée autour du feu (u logiques), dans l'ordre de la liste `props` du
+## catalogue (fichiers `_shadow` et `_e` exclus : ils suivent leur prop). Remplaçable par <dir>/layout.json :
+## {"<prop sans .png>": {"offset_u": [x, y], "z": n}}.
+const VEILLEE_RING_U: Array[Vector2] = [Vector2(-2.2, -0.8), Vector2(2.0, -1.2), Vector2(-1.6, 1.6), Vector2(1.9, 1.3), Vector2(0.2, -2.6), Vector2(-3.0, 0.6)]
+const VEILLEE_SHADOW_Z := -15 ## au-dessus du sol (-20) et de l'eau (-18), sous les entités
+const VEILLEE_PROP_Z := 1
+
+
+## Le profil a changé (boutique) : si la Veillée équipée n'est plus la même, le fond est reconstruit.
+func _on_profile_changed() -> void:
+	if map == null:
+		return
+	var now := Cosmetics.equipped_item(&"veillee")
+	if str(now.get("id", "")) != str(veillee.get("id", "")):
+		setup(requested_map_id)
+
+
+func _veillee_asset_str(key: String) -> String:
+	var a: Variant = veillee.get("assets", {})
+	return str((a as Dictionary).get(key, "")) if a is Dictionary else ""
+
+
+func _clear_veillee() -> void:
+	for n in veillee_nodes:
+		if is_instance_valid(n):
+			n.queue_free()
+	veillee_nodes.clear()
+
+
+## Props de la Veillée (sprites rendus par Codex, échelle billboard iso), ombres cuites dessous, masques _e en additif,
+## feu animé (`fire`, SpriteFrames) au point du feu de camp. Rien n'est dessiné en code : un asset manquant est sauté.
+func _build_veillee() -> void:
+	_clear_veillee()
+	if veillee.is_empty():
+		return
+	var dir := _veillee_asset_str("dir")
+	var layout := {}
+	if dir != "" and FileAccess.file_exists(dir + "layout.json"):
+		var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(dir + "layout.json"))
+		if d is Dictionary:
+			layout = d
+	var a: Variant = veillee.get("assets", {})
+	var props: Array = (a as Dictionary).get("props", []) if a is Dictionary and (a as Dictionary).get("props") is Array else []
+	var i := 0
+	for f in props:
+		var file := str(f)
+		var stem := file.get_basename()
+		if stem.ends_with("_shadow") or stem.ends_with("_e"):
+			continue
+		var path := file if file.begins_with("res://") else dir + file
+		if not ResourceLoader.exists(path):
+			continue
+		var conf: Dictionary = layout.get(stem, {}) if layout.get(stem) is Dictionary else {}
+		var off := VEILLEE_RING_U[i % VEILLEE_RING_U.size()]
+		if conf.get("offset_u") is Array and (conf["offset_u"] as Array).size() >= 2:
+			off = Vector2(float(conf["offset_u"][0]), float(conf["offset_u"][1]))
+		i += 1
+		var pos := _campfire_pos + off * U
+		var sh := path.get_basename() + "_shadow.png"
+		if ResourceLoader.exists(sh):
+			var s := _veillee_sprite(sh, pos, VEILLEE_SHADOW_Z, false)
+			s.name = "VeilleeShadow_" + stem
+		var spr := _veillee_sprite(path, pos, int(conf.get("z", VEILLEE_PROP_Z)), true)
+		spr.name = "VeilleeProp_" + stem
+		var em := path.get_basename() + "_e.png"
+		if ResourceLoader.exists(em):
+			var e := _veillee_sprite(em, pos, int(conf.get("z", VEILLEE_PROP_Z)) + 1, true)
+			e.name = "VeilleeGlow_" + stem
+			var mat := CanvasItemMaterial.new()
+			mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+			mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+			e.material = mat
+	var fire := _veillee_asset_str("fire")
+	if fire != "" and ResourceLoader.exists(fire):
+		var sf := load(fire) as SpriteFrames
+		if sf != null and not sf.get_animation_names().is_empty():
+			var an := AnimatedSprite2D.new()
+			an.name = "VeilleeFire"
+			an.sprite_frames = sf
+			an.scale = Iso.UNSQUASH * Iso.SPRITE_K
+			an.global_position = _campfire_pos
+			an.z_index = VEILLEE_PROP_Z
+			an.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			var tex := sf.get_frame_texture(sf.get_animation_names()[0], 0)
+			if tex != null:
+				an.offset = Vector2(0.0, -tex.get_height() * 0.5)
+			add_child(an)
+			an.play(sf.get_animation_names()[0])
+			veillee_nodes.append(an)
+
+
+func _veillee_sprite(path: String, pos: Vector2, z: int, standing: bool) -> Sprite2D:
+	var s := Sprite2D.new()
+	s.texture = load(path) as Texture2D
+	s.scale = Iso.UNSQUASH * Iso.SPRITE_K
+	s.global_position = pos
+	s.z_index = z
+	s.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	if standing and s.texture != null:
+		s.offset = Vector2(0.0, -s.texture.get_height() * 0.5) # pied du prop sur le point
+	add_child(s)
+	veillee_nodes.append(s)
+	return s
