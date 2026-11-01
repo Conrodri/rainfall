@@ -113,8 +113,8 @@ const AUTO_DECOYS_S := 1.5 ## Saccade auto : doublures posées depuis >= 1,5 s e
 const COUNTER_CLOSE := "rictus.close_kills" ## monstres tués à moins de CLOSE_KILL_U (déblocage Toupie)
 const CLOSE_KILL_U := 2.0
 ## Sons de repli (rien de dédié livré) : Saccade ~ claquement d'un sort existant, plantage ~ grelot grave.
-const SND_SACCADE := &"spell.detacher.cast_light" ## à remplacer par `rictus_saccade` (Codex)
-const SND_PLANT := &"pickup.coin" ## à remplacer par `rictus_knife_plant` (Codex)
+const SND_SACCADE := &"rictus_saccade" ## variantes `spell.rictus_saccade.cast_light|medium|heavy` (Audio.play_cast)
+const SND_PLANT := &"rictus_knife_plant"
 ## Combo « L'étoile armée » (variantes Éventail + Toupie ; docs/Design_Combos.md §5.1) : Doublures -> Éventail (les couteaux
 ## chargent les doublures traversées) -> Toupie (les chargées expédiées font FLIGHT_CHARGED_COEF en vol et DECOY_CHARGE_ADD de plus).
 const DECOY_CHARGE_ADD := 0.7 ## coef ajouté à l'explosion d'une doublure chargée
@@ -674,7 +674,7 @@ func _on_knife_planted(e: Node2D) -> void:
 	_poll_t = FICELE_POLL_S
 	_planted_age = 0.0
 	tours = 0
-	Audio.play(SND_PLANT, e.global_position, -8.0, 0.7)
+	Audio.play(SND_PLANT, e.global_position, -3.0, 1.0)
 	LightRig.flash(e.global_position, &"spell_steel", 0.15)
 
 
@@ -842,7 +842,7 @@ func _cast_saccade(s: SpellData) -> bool:
 		return false
 	if strings != null:
 		strings.vibrate(STRING_VIBRATE_S)
-	Audio.play(SND_SACCADE, player.global_position, -2.0, 1.6)
+	Audio.play_cast(SND_SACCADE, player.global_position, c.cast_power(s))
 	return true
 
 

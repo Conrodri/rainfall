@@ -66,10 +66,8 @@ const ICON_DIR := "res://assets/sprites/icons/spells/"
 const ICON_NAMES := {
 	&"roaming_embers": "braises_errantes", &"flame_pillar": "pilier_de_flamme",
 	&"meteor_rain": "pluie_de_meteores", &"phoenix": "phenix",
-	# Rictus v2 : icônes existantes réutilisées par référence (docs/Design_Rictus_v2.md §7.1) ; `rictus_saccade` : en attendant
-	# l'icône dédiée (lot Codex RICV2), l'ancienne icône de la Pirouette.
+	# Rictus v2 : icônes existantes réutilisées par référence (docs/Design_Rictus_v2.md §7.1) ; `rictus_saccade` a sa propre icône (rictus_saccade.png).
 	&"couteau_ficele": "rictus_lame_pendule", &"rictus_eventail": "eventail", &"rictus_toupie": "toupie",
-	&"rictus_saccade": "rictus_pirouette",
 }
 
 

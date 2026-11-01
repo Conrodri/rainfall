@@ -1,0 +1,52 @@
+[
+  {
+    "path": "spells/spell_rictus_saccade_cast_light_01.ogg",
+    "duration_s": 0.204989,
+    "loop": false,
+    "level": "light",
+    "usage": "snap of taut cord, returning blade whistle, and wood handle slap",
+    "gain_db": 0,
+    "peak_dbfs": -3.276,
+    "rms_dbfs": -17.992
+  },
+  {
+    "path": "spells/spell_rictus_saccade_cast_medium_01.ogg",
+    "duration_s": 0.301995,
+    "loop": false,
+    "level": "medium",
+    "usage": "snapping cord, blade whistle, and resonant wooden handle",
+    "gain_db": 0,
+    "peak_dbfs": -1.698,
+    "rms_dbfs": -17.792
+  },
+  {
+    "path": "spells/spell_rictus_saccade_cast_heavy_01.ogg",
+    "duration_s": 0.424989,
+    "loop": false,
+    "level": "heavy",
+    "usage": "heavy cord snap, descending blade whistle, and low impact",
+    "gain_db": 0,
+    "peak_dbfs": -1.763,
+    "rms_dbfs": -17.74
+  },
+  {
+    "path": "impacts/impact_rictus_knife_plant_01.ogg",
+    "duration_s": 0.218005,
+    "loop": false,
+    "level": "impact",
+    "usage": "dry knife plant and short metallic vibration",
+    "gain_db": 0,
+    "peak_dbfs": -1.773,
+    "rms_dbfs": -18.064
+  },
+  {
+    "path": "impacts/impact_rictus_knife_plant_02.ogg",
+    "duration_s": 0.267007,
+    "loop": false,
+    "level": "impact",
+    "usage": "stone knife plant and short metallic vibration",
+    "gain_db": 0,
+    "peak_dbfs": -2.04,
+    "rms_dbfs": -19.473
+  }
+]

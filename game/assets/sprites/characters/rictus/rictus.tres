@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=423 format=3]
+[gd_resource type="SpriteFrames" load_steps=436 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/idle.png" id="1"]
 
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/death.png" id="17"]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/throw_ult.png" id="19"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/rictus/catch.png" id="catch_atlas"]
 
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1")
@@ -1588,6 +1589,135 @@ region = Rect2(768, 1344, 192, 192)
 atlas = ExtResource("19")
 region = Rect2(960, 1344, 192, 192)
 
+
+[sub_resource type="AtlasTexture" id="a393"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a394"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a395"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a396"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a397"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a398"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a399"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a400"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a401"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a402"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a403"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a404"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a405"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a406"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a407"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a408"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a409"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a410"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a411"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a412"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a413"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a414"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a415"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a416"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 960, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a417"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a418"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a419"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a420"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 1152, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a421"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(0, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a422"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(192, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a423"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(384, 1344, 192, 192)
+
+[sub_resource type="AtlasTexture" id="a424"]
+atlas = ExtResource("catch_atlas")
+region = Rect2(576, 1344, 192, 192)
+
 [resource]
 animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}], "loop": true, "name": &"idle_e", "speed": 8.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}, {"duration": 1.0, "texture": SubResource("a13")}, {"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}], "loop": true, "name": &"idle_se", "speed": 8.0},
@@ -1661,4 +1791,12 @@ animations = [{"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"dur
 {"frames": [{"duration": 1.0, "texture": SubResource("a369")}, {"duration": 1.0, "texture": SubResource("a370")}, {"duration": 1.0, "texture": SubResource("a371")}, {"duration": 1.0, "texture": SubResource("a372")}, {"duration": 1.0, "texture": SubResource("a373")}, {"duration": 1.0, "texture": SubResource("a374")}], "loop": false, "name": &"throw_ult_w", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a375")}, {"duration": 1.0, "texture": SubResource("a376")}, {"duration": 1.0, "texture": SubResource("a377")}, {"duration": 1.0, "texture": SubResource("a378")}, {"duration": 1.0, "texture": SubResource("a379")}, {"duration": 1.0, "texture": SubResource("a380")}], "loop": false, "name": &"throw_ult_nw", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a381")}, {"duration": 1.0, "texture": SubResource("a382")}, {"duration": 1.0, "texture": SubResource("a383")}, {"duration": 1.0, "texture": SubResource("a384")}, {"duration": 1.0, "texture": SubResource("a385")}, {"duration": 1.0, "texture": SubResource("a386")}], "loop": false, "name": &"throw_ult_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a387")}, {"duration": 1.0, "texture": SubResource("a388")}, {"duration": 1.0, "texture": SubResource("a389")}, {"duration": 1.0, "texture": SubResource("a390")}, {"duration": 1.0, "texture": SubResource("a391")}, {"duration": 1.0, "texture": SubResource("a392")}], "loop": false, "name": &"throw_ult_ne", "speed": 12.0}]
+{"frames": [{"duration": 1.0, "texture": SubResource("a387")}, {"duration": 1.0, "texture": SubResource("a388")}, {"duration": 1.0, "texture": SubResource("a389")}, {"duration": 1.0, "texture": SubResource("a390")}, {"duration": 1.0, "texture": SubResource("a391")}, {"duration": 1.0, "texture": SubResource("a392")}], "loop": false, "name": &"throw_ult_ne", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a393")}, {"duration": 0.8, "texture": SubResource("a394")}, {"duration": 0.6, "texture": SubResource("a395")}, {"duration": 1.0, "texture": SubResource("a396")}], "loop": false, "name": &"catch_e", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a397")}, {"duration": 0.8, "texture": SubResource("a398")}, {"duration": 0.6, "texture": SubResource("a399")}, {"duration": 1.0, "texture": SubResource("a400")}], "loop": false, "name": &"catch_se", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a401")}, {"duration": 0.8, "texture": SubResource("a402")}, {"duration": 0.6, "texture": SubResource("a403")}, {"duration": 1.0, "texture": SubResource("a404")}], "loop": false, "name": &"catch_s", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a405")}, {"duration": 0.8, "texture": SubResource("a406")}, {"duration": 0.6, "texture": SubResource("a407")}, {"duration": 1.0, "texture": SubResource("a408")}], "loop": false, "name": &"catch_sw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a409")}, {"duration": 0.8, "texture": SubResource("a410")}, {"duration": 0.6, "texture": SubResource("a411")}, {"duration": 1.0, "texture": SubResource("a412")}], "loop": false, "name": &"catch_w", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a413")}, {"duration": 0.8, "texture": SubResource("a414")}, {"duration": 0.6, "texture": SubResource("a415")}, {"duration": 1.0, "texture": SubResource("a416")}], "loop": false, "name": &"catch_nw", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a417")}, {"duration": 0.8, "texture": SubResource("a418")}, {"duration": 0.6, "texture": SubResource("a419")}, {"duration": 1.0, "texture": SubResource("a420")}], "loop": false, "name": &"catch_n", "speed": 12.0},
+{"frames": [{"duration": 1.0, "texture": SubResource("a421")}, {"duration": 0.8, "texture": SubResource("a422")}, {"duration": 0.6, "texture": SubResource("a423")}, {"duration": 1.0, "texture": SubResource("a424")}], "loop": false, "name": &"catch_ne", "speed": 12.0}]
