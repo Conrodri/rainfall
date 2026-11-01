@@ -160,3 +160,35 @@ func _run() -> void:
 	for c in _showcases(mgr):
 		after_save.append(c.offer)
 	_check("vitrines identiques après sauvegarde", before_save.size() == 2 and before_save == after_save)
+
+	# --- Reprise de sauvegarde en pleine vitrine (Main : pending_chest « showcase », même offre, pas de nouveau paiement)
+	mgr.queue_free()
+	RunState.start_run(&"moyen", 78)
+	var main: Node = load("res://scenes/main.tscn").instantiate()
+	main.set(&"run_seed", 78)
+	add_child(main)
+	await main.game_ready
+	await get_tree().physics_frame
+	var sui := ShowcaseUI.new()
+	main.add_child(sui)
+	var offer := [&"sifflet_de_chasse", &"cristal_de_feu", &"flocon"]
+	sui.open_pick(RunState.stage, 60.0, offer, &"commun")
+	var gold_before := RunState.gold
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(main.build_save_data()))
+	var pc: Variant = saved.get("pending_chest")
+	_check("vitrine ouverte : pending_chest sauvegardé en mode showcase", pc is Dictionary and bool((pc as Dictionary).get("showcase", false)) and (pc as Dictionary)["offered"] == offer.map(func(v): return str(v)))
+	sui._close()
+	await get_tree().process_frame
+	_check("vitrine fermée : plus de pending_chest", main.build_save_data().get("pending_chest") == null)
+	if pc is Dictionary:
+		main._reopen_chest(pc)
+		var back: ShowcaseUI = main._find_showcase_ui()
+		_check("reprise : écran vitrine rouvert avec la même offre", back != null and back.mode == ShowcaseUI.Mode.PICK and back.offered == (pc as Dictionary)["offered"])
+		_check("reprise : or inchangé (déjà payé)", is_equal_approx(RunState.gold, gold_before))
+		if back != null:
+			var pid := StringName(back.offered[0])
+			var b0 := RunState.stacks(pid)
+			back._lock = false
+			back.take(0)
+			_check("reprise : choix possible, objet ajouté", RunState.stacks(pid) == b0 + 1)
+	main.queue_free()

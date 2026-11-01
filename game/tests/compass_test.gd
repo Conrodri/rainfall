@@ -167,6 +167,21 @@ func _run() -> void:
 	RunState.start_run(&"moyen", 6)
 	_check(RunState.compass == {"tag": "", "charges": 0}, "nouvelle run : Boussole vide")
 
+	# --- Indicateur HUD (charges restantes et tag)
+	var cb := CompassBadge.new()
+	add_child(cb)
+	_check(not cb.refresh() and not cb.visible, "indicateur : caché sans charge")
+	RunState.compass_set("Feu")
+	_check(cb.refresh() and cb.visible and cb.text() == "Boussole : Feu ×2", "indicateur : tag et 2 charges (%s)" % cb.text())
+	_check(not cb.refresh(), "indicateur : inchangé = pas de rafraîchissement")
+	_check(CompassBadge.icon_for_tag("Feu") != null, "indicateur : icône d'objet existante pour le tag")
+	RunState.compass_consume()
+	_check(cb.refresh() and cb.text() == "Boussole : Feu ×1", "indicateur : 1 charge")
+	RunState.compass_consume()
+	_check(cb.refresh() and not cb.visible, "indicateur : caché sans charge restante")
+	cb.queue_free()
+	RunState.start_run(&"moyen", 6)
+
 	# --- Panneau
 	var pnl := CompassPanel.new()
 	add_child(pnl)

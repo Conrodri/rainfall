@@ -296,6 +296,10 @@ func _refuse(i: int) -> void:
 	tw.tween_property(card, "modulate", Color.WHITE, 0.2)
 
 
+func is_closed() -> bool:
+	return _closed
+
+
 func _close() -> void:
 	if _closed:
 		return

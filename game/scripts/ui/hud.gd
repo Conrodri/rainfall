@@ -80,6 +80,7 @@ var minimap: Minimap
 var item_bar: ItemBar
 var boss_bars: BossBars
 var objectives: ObjectivesPanel ## objectifs d'étage (boss, charge, téléporteur), sous la minimap
+var compass_badge: CompassBadge ## charges restantes et tag de la Boussole de rouille, sous le rappel du présage
 var omen_badge: OmenBadge ## rappel du présage d'étage actif (icône + nom, détail au survol / toucher), sous la difficulté
 var spell_hint: SpellHint ## description d'un sort : survol (souris) / appui long (tactile)
 var _overlay_tick := 0.0
@@ -131,6 +132,7 @@ func _ready() -> void:
 	Events.boss_shield_changed.connect(_on_boss_shield_changed)
 	Events.omen_changed.connect(_on_omen_changed)
 	omen_badge.refresh() # reprise de sauvegarde : présage déjà actif
+	compass_badge.refresh() # reprise de sauvegarde : charges de Boussole restantes
 	_on_gold(RunState.gold)
 	_on_xp(RunState.xp, Balance.xp_required(RunState.level))
 	_on_level(RunState.level)
@@ -171,7 +173,8 @@ func _process(delta: float) -> void:
 	if _overlay_tick <= 0.0:
 		_overlay_tick = 0.1
 		_place_difficulty() # suit le losange de la minimap (carte liée après le HUD)
-		if boss_bars.visible or objectives.visible or omen_badge.visible:
+		compass_badge.refresh()
+		if boss_bars.visible or objectives.visible or omen_badge.visible or compass_badge.visible:
 			_place_boss_bars()
 			_place_objectives()
 	if player == null or not is_instance_valid(player):
@@ -471,6 +474,8 @@ func _build() -> void:
 	boss_bars.visibility_changed.connect(_place_boss_bars) # début / fin de combat : le chrono change de place
 	omen_badge = OmenBadge.new()
 	root.add_child(omen_badge)
+	compass_badge = CompassBadge.new()
+	root.add_child(compass_badge)
 	objectives = ObjectivesPanel.new()
 	root.add_child(objectives) # avant la minimap : la minimap plein écran passe dessus
 	minimap = Minimap.new()
@@ -740,6 +745,7 @@ func _apply_layout() -> void:
 	_place_boss_bars()
 	objectives.set_ui_scale(s * text_k)
 	omen_badge.set_ui_scale(s * text_k)
+	compass_badge.set_ui_scale(s * text_k)
 	_place_objectives()
 
 
@@ -1099,6 +1105,9 @@ func _place_objectives() -> void:
 	if omen_badge != null and omen_badge.visible: # rappel du présage : entre la difficulté et les objectifs
 		omen_badge.place(Vector2(right, top), maxf(right - float(safe["left"]), 200.0 * s))
 		top = omen_badge.position.y + omen_badge.size.y + 8.0 * s
+	if compass_badge != null and compass_badge.visible: # charges de la Boussole : sous le présage
+		compass_badge.place(Vector2(right, top), maxf(right - float(safe["left"]), 200.0 * s))
+		top = compass_badge.position.y + compass_badge.size.y + 8.0 * s
 	# pas plus large que l'espace à droite des barres de boss quand elles sont affichées
 	var max_w := right - float(safe["left"])
 	if boss_bars.visible:

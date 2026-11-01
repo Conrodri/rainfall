@@ -534,7 +534,8 @@ const CHEST_PRICE_STAGE := 1.04 ## calibré (remplace 1,05)
 ## du prix d'un petit coffre).
 ## 10 -> 4 (joueur, 01/11/2026) : moins de « tour de map » obligatoire ; or par étage -1,5 P environ (docs/Boucle_Etage_Design.md §6).
 const CAPSULES_PER_STAGE := 4
-const CAPSULE_GOLD := 20.0
+## 20 -> 40 (01/11/2026) : l'intention était de réduire le ramassage obligatoire, pas l'or total (4 × 40 = 8 × 20 anciennes).
+const CAPSULE_GOLD := 40.0
 
 # --- Boucle d'étage : Boussole de rouille, Paratonnerre dévié, coffres à vitrine, marchand de l'étage 3 ---
 ## Sources : docs/Ateliers_Chiffres.md §7-8 (Boussole, Paratonnerre), docs/Boucle_Etage_Design.md §2.5 (vitrine),
@@ -914,7 +915,7 @@ func chest_price(kind: StringName, D: float, stage: int) -> float:
 	return CHEST_BASE[kind] * pow(D, 1.25) * pow(CHEST_PRICE_STAGE, stage - 1)
 
 
-## Or d'une capsule d'argent : CAPSULE_GOLD × coeff^1,25 (10 capsules = 200 or à coeff 1). `stage` ignoré
+## Or d'une capsule d'argent : CAPSULE_GOLD × coeff^1,25 (4 capsules = 160 or à coeff 1). `stage` ignoré
 ## (remplace 0,4 × prix d'un petit coffre, dérive d'étage comprise) ; gardé pour la signature.
 func capsule_gold(D: float, _stage: int = 1) -> float:
 	return CAPSULE_GOLD * pow(D, 1.25)

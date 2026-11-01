@@ -86,7 +86,9 @@ func _ready() -> void:
 		leaper.set(&"_spell_cd", 0.0)
 		await _frames(2)
 		_check(leaper.telegraph.get_parent() == layer, "télégraphe sous la couche des télégraphes")
-		_check(leaper.telegraph.visible and leaper.telegraph.get(&"_shape") == EnemyTelegraph.Shape.LINE, "charge télégraphiée (ligne)")
+		# coup léger (52aa02bb) : pas de zone au sol, lu par l'anticipation du corps ; ligne seulement en mode renforcé
+		_check(leaper.get(&"_windup") == Enemy.Windup.LEAP, "charge armée (anticipation)")
+		_check(leaper.telegraph.visible == EnemyTelegraph.strong() and (not EnemyTelegraph.strong() or leaper.telegraph.get(&"_shape") == EnemyTelegraph.Shape.LINE), "charge télégraphiée (ligne si renforcé, sinon aucune zone)")
 		var p0 := leaper.position
 		await _frames(int(Enemy.LEAP_WINDUP * 60.0) + 20)
 		_check(leaper.position.distance_to(p0) > 2.0 * Balance.UNIT_PX or not leaper.active, "course de charge (%.0f px)" % leaper.position.distance_to(p0))

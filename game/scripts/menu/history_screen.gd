@@ -529,6 +529,28 @@ func open_detail(e: Dictionary) -> void:
 			row.add_child(ic)
 		row.add_child(CharacterCard.make_label(EndRunScreen.unlock_text(StringName(str(u))), 28, COL_WIN, 4))
 		body.add_child(row)
+	var omens: Dictionary = e.get("omens", {}) if e.get("omens") is Dictionary else {}
+	if not omens.is_empty(): # champ optionnel : absent des runs d'avant les présages
+		body.add_child(CharacterCard.make_label("Présages", 28, CharacterCard.COL_FOCUS, 4))
+		var stages: Array = omens.keys()
+		stages.sort_custom(func(a: Variant, b: Variant) -> bool: return int(str(a)) < int(str(b)))
+		for st in stages:
+			var oid := StringName(str(omens[st]))
+			var orow := HBoxContainer.new()
+			orow.name = "Omen_%s" % str(st)
+			orow.add_theme_constant_override(&"separation", 12)
+			var otex: Texture2D = Omens.icon_of(oid)
+			if otex != null:
+				var oic := TextureRect.new()
+				oic.texture = otex
+				oic.custom_minimum_size = Vector2(56, 56)
+				oic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				oic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				oic.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+				orow.add_child(oic)
+			var oname := Omens.omen_name(oid)
+			orow.add_child(CharacterCard.make_label("Étage %d : %s" % [int(str(st)), oname if oname != "" else str(oid)], 28, COL_BODY, 4))
+			body.add_child(orow)
 	body.add_child(CharacterCard.make_label("Objets (%d)" % int(e.get("n_items", 0)), 28, CharacterCard.COL_FOCUS, 4))
 	var flow := HFlowContainer.new()
 	flow.name = "Items"

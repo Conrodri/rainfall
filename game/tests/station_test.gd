@@ -308,6 +308,9 @@ func _test_enclume() -> void:
 	_give(&"sifflet_de_chasse")
 	var plain := StationState.make(&"enclume", 3).enclume_price(&"sifflet_de_chasse")
 	_check("price_mult = Faveur x présage", is_equal_approx(StationState.price_mult(), ItemEffects.chest_price_mult() * Omens.chest_price_mult()) and plain > 0.0)
+	RunState.set_omen(&"marche_noir", false)
+	_check("Marché noir : Enclume ×1,3, Fondoir inchangé", is_equal_approx(StationState.make(&"enclume", 3).enclume_price(&"sifflet_de_chasse"), plain * 1.3) and is_equal_approx(StationState.refund_gold(&"rare"), Balance.fondoir_refund(&"rare", 2.78, 3)))
+	RunState.set_omen(&"", false)
 	# or infini du mode test : l'achat passe sans solde
 	_reset(3, 2.78)
 	_give(&"sifflet_de_chasse")

@@ -48,7 +48,7 @@ func _run() -> void:
 	_check("CAPSULES_PER_STAGE = 4 (joueur, 01/11/2026)", Balance.CAPSULES_PER_STAGE == 4)
 	for D in [1.0, 2.5, 6.0]:
 		var ratio := Balance.capsule_gold(D) / Balance.chest_price(&"petit", D, 1)
-		_check("capsule_gold ~ 0,4 x petit coffre (D=%s)" % D, absf(ratio - 0.4) < 0.001)
+		_check("capsule_gold ~ 0,8 x petit coffre (D=%s)" % D, absf(ratio - 0.8) < 0.001)
 	_check("capsule_gold croît avec D", Balance.capsule_gold(3.0) > Balance.capsule_gold(1.5))
 
 	# --- Placement sur les 3 cartes réelles, plusieurs seeds

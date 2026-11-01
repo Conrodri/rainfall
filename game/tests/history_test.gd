@@ -116,7 +116,7 @@ func _ready() -> void:
 	# --- écran ---
 	var fake := _fresh()
 	for r in [_run("ardent", 1500.0, {"victory": true, "stage": 5, "final_boss_time_s": 1400.0, "boss_time_s": 1400.0, "reason": "victory"}),
-			_run("rictus", 800.0), _run("ardent", 400.0, {"reason": "abandon"})]:
+			_run("rictus", 800.0), _run("ardent", 400.0, {"reason": "abandon", "omens": {"3": "marche_noir", "2": "usure"}})]:
 		fake.add_run_result(r)
 	var scr: HistoryScreen = load("res://scenes/menu/history.tscn").instantiate()
 	scr.profile = fake
@@ -135,9 +135,20 @@ func _ready() -> void:
 	_check(scr.character_filter == "" and scr.cards.size() == 3, "écran : filtre bouclé sur Tous")
 	scr.cards[0].pressed.emit()
 	await _frames(2)
-	_check(scr.detail != null and scr.detail.get_node_or_null("Sheet") != null and scr.detail.find_child("Item_moisson", true, false) != null, "écran : détail avec icônes d'objets")
+	_check(scr.detail != null and scr.detail.get_node_or_null("Sheet") != null and scr.detail.find_child("Item_moisson", true, false) != null and scr.detail.find_child("Omen_2", true, false) == null, "écran : détail avec icônes d'objets, sans section présages")
+	var omen_card: Button = null
+	for cd in scr.cards:
+		if (cd.get_meta(&"entry") as Dictionary).has("omens"):
+			omen_card = cd
+	_check(omen_card != null, "historique : présages conservés dans l'entrée")
 	scr.close_detail()
 	await _frames(2)
+	if omen_card != null:
+		omen_card.pressed.emit()
+		await _frames(2)
+		_check(scr.detail != null and scr.detail.find_child("Omen_2", true, false) != null and scr.detail.find_child("Omen_3", true, false) != null, "écran : détail avec les présages par étage")
+		scr.close_detail()
+		await _frames(2)
 	_check(scr.detail == null, "écran : détail fermé")
 	var got := []
 	scr.back_requested.connect(func(): got.append(1))

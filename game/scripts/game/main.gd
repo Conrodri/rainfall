@@ -543,6 +543,14 @@ func _player_dict() -> Dictionary:
 
 ## Écran de coffre ouvert et pas encore choisi (GDD §4 : même choix à la reprise), sinon null.
 func _pending_chest_dict() -> Variant:
+	var sh := _find_showcase_ui()
+	if sh != null: # coffre à vitrine ouvert (or déjà payé) : même offre à la reprise
+		var ss := sh.session
+		return {
+			"kind": String(ss.kind), "stage": ss.stage, "price": ss.price, "quality": String(ss.quality),
+			"die": ss.die, "offered": ss.offered.duplicate(), "shown": ss.shown.duplicate(),
+			"gold_rerolls": ss.gold_rerolls, "ad_rerolls": ss.ad_rerolls, "showcase": true,
+		}
 	var ui := _find_chest_ui()
 	if ui == null or ui.session == null or ui.session.offered.is_empty():
 		return null
@@ -552,6 +560,18 @@ func _pending_chest_dict() -> Variant:
 		"die": s.die, "offered": s.offered.duplicate(),
 		"shown": s.shown.duplicate(), "gold_rerolls": s.gold_rerolls, "ad_rerolls": s.ad_rerolls,
 	}
+
+
+## Écran de coffre à vitrine (mode PICK) ouvert et pas encore choisi, sinon null.
+func _find_showcase_ui() -> ShowcaseUI:
+	var hosts: Array[Node] = [self, get_tree().root]
+	if get_tree().current_scene != null:
+		hosts.append(get_tree().current_scene)
+	for h in hosts:
+		for c in h.get_children():
+			if c is ShowcaseUI and not c.is_queued_for_deletion() and c.mode == ShowcaseUI.Mode.PICK and c.session != null and not c.session.offered.is_empty() and not c.is_closed():
+				return c
+	return null
 
 
 func _find_chest_ui() -> ChestUI:
@@ -609,6 +629,11 @@ func _reopen_chest(pc: Dictionary) -> void:
 	s.gold_rerolls = int(pc.get("gold_rerolls", 0))
 	s.ad_rerolls = int(pc.get("ad_rerolls", 0))
 	if s.offered.is_empty():
+		return
+	if bool(pc.get("showcase", false)): # coffre à vitrine : reprise dans l'écran vitrine, sans nouveau tirage ni paiement
+		var sui := ShowcaseUI.new()
+		add_child(sui)
+		sui.resume_pick(s)
 		return
 	var ui := load(CHEST_UI).instantiate() as ChestUI
 	add_child(ui)
