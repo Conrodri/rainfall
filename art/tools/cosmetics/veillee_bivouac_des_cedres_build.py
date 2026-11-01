@@ -81,7 +81,7 @@ def setup_rig(size):
 def fire_scene():
     s=setup_rig(SIZE);random.seed(617)
     ash=mat('Cedar ash',(.12,.105,.085));stone=mat('Rain-dark slate',(.14,.15,.14));wood=mat('Wet cedar',(.19,.135,.075));end=mat('Split cedar',(.27,.20,.12))
-    tarp=mat('Ocher waxed canvas',(.18,.15,.085));seam=mat('Worn tarp seams',(.30,.25,.14));ember=mat('Coal',(.7,.16,.025),1.1);flame=mat('Low amber flame',(1,.30,.045),2);core=mat('Fire heart',(1,.65,.19),2.4)
+    ember=mat('Coal',(.7,.16,.025),1.1);flame=mat('Low amber flame',(1,.30,.045),2);core=mat('Fire heart',(1,.65,.19),2.4)
     ico('Ash bed',(0,-.1,.02),(.62,.44,.04),ash)
     for i in range(9):
       a=i*math.tau/9;ico('Hearth stone',(.56*math.cos(a),-.1+.38*math.sin(a),.07),(.12,.1,.08),stone)
@@ -89,11 +89,6 @@ def fire_scene():
       a=i*math.pi/4;p=Vector((-.38*math.cos(a),-.12-.3*math.sin(a),.12));q=Vector((.38*math.cos(a),-.12+.3*math.sin(a),.14));C.rod('Cedar log',p,q,.07,wood);ico('Log end',q,(.06,.05,.045),end)
     for i in range(11):
       a=i*math.tau/11;ico('Coal',(.3*math.cos(a),-.12+.21*math.sin(a),.08),(.035,.03,.02),ember)
-    # Lean-to tarp overhead, open toward viewer.
-    for x,z in [(-.9,1.45),(.86,1.63)]:C.rod('Tarp fork',(x,.45,0),(x,.45,z),.035,wood);C.rod('Guy line',(x,.45,z), (x*1.2,-.5,.02),.012,seam)
-    v=[(-.95,.42,1.45),(0,.42,1.52),(.9,.42,1.64),(-.96,1.1,.76),(0,1.1,.69),(.9,1.1,.83)]
-    mesh('Rain tarp',v,[(0,1,4,3),(1,2,5,4)],tarp)
-    for a,b in [(0,1),(1,2),(0,3),(3,4),(4,5),(2,5)]:C.rod('Tarp hem',v[a],v[b],.014,seam)
     light=bpy.context.object if False else None
     bpy.ops.object.light_add(type='POINT',location=(0,-.12,.45));light=bpy.context.object;light.data.color=(1,.3,.07);light.data.energy=32;light.data.shadow_soft_size=.3
     tongues=[]
@@ -120,7 +115,7 @@ def fire_scene():
     cel.uninstall()
 
 def prop_scene(name,size):
-    s=setup_rig(size);z=mat('Cedar dark waxed cloth',(.22,.18,.10));mid=mat('Ochre canvas',(.34,.27,.14));edge=mat('Worn seams',(.12,.11,.075));copper=mat('Old copper',(.33,.19,.095),.2);gold=mat('Lanternglass glow',(0.62,.31,.07),1.4);rope=mat('Wet rope',(.28,.22,.12))
+    s=setup_rig(size);s.camera.data.ortho_scale=4.25 if name=='lantern_hanging' else 3.45;z=mat('Cedar dark waxed cloth',(.22,.18,.10));mid=mat('Ochre canvas',(.34,.27,.14));edge=mat('Worn seams',(.12,.11,.075));copper=mat('Old copper',(.33,.19,.095),.2);gold=mat('Lanternglass glow',(0.62,.31,.07),1.4);rope=mat('Wet rope',(.28,.22,.12))
     if name=='tent':
       mesh('Wax canvas tent',[(-.92,-.2,0),(.92,-.2,0),(0,.62,1.28)],[(0,1,2)],mid);mesh('Tent side',[(0,.62,1.28),(.92,-.2,0),(.88,.48,0)],[(0,1,2)],z)
       C.rod('Tent ridge',(-.96,-.2,.02),(0,.62,1.3),.035,rope);C.rod('Tent seam',(0,.62,1.3),(.96,-.2,.02),.026,edge)
@@ -147,26 +142,45 @@ def prop_scene(name,size):
     from PIL import ImageDraw,ImageFilter
     with Image.open(OUT/(name+'.png')) as im: alpha=im.getchannel('A')
     sh=Image.new('RGBA',size,(0,0,0,0)); mask=Image.new('L',size,0); mask.paste(alpha,(max(2,size[0]//12),max(2,size[1]//10)))
+    bbox=mask.getbbox()
+    if bbox:
+      bw,bh=bbox[2]-bbox[0],bbox[3]-bbox[1];limit_w,limit_h=size[0]-8,size[1]-8
+      if bw>limit_w or bh>limit_h:
+        scale=min(limit_w/bw,limit_h/bh);mask=mask.resize((max(1,round(size[0]*scale)),max(1,round(size[1]*scale))),Image.Resampling.LANCZOS)
+        canvas=Image.new('L',size,0);canvas.paste(mask,((size[0]-mask.width)//2,(size[1]-mask.height)//2));mask=canvas
     mask=mask.filter(ImageFilter.GaussianBlur(max(2,size[0]//40)));sh.putalpha(mask.point(lambda a:int(a*.42)));sh.save(OUT/(name+'_shadow.png'),optimize=True)
     cel.uninstall()
 
 def preview():
-    from PIL import Image,ImageDraw
-    ground=Image.open(ROOT/'game/assets/sprites/terrain/terraces/iso/ground_a.png').convert('RGBA').resize((256,256))
-    board=Image.new('RGBA',(256,256),(25,29,32,255));board.alpha_composite(ground)
-    for fname,pos in [('tent.png',(18,38)),('pack.png',(150,126)),('lantern_hanging.png',(92,30)),('fire.png',(0,0))]:
-      with Image.open(OUT/fname) as im:
-        if fname=='fire.png':im=im.crop((0,0,256,256))
-        im.thumbnail((110,100));board.alpha_composite(im,pos)
-    board.convert('RGB').save(ROOT/'game/assets/sprites/cosmetics/previews/bivouac_des_cedres.png')
+    # True cel render: build a single composed camp scene, with every prop in frame.
+    s=setup_rig((256,256));s.camera.data.ortho_scale=5.2;floor=mat('Forest floor',(.12,.16,.11));bark=mat('Cedar trunk',(.16,.12,.075));leaf=mat('Cedar canopy',(.10,.17,.105))
+    C.box('Forest ground',(0,0,-.08),(4.5,3.2,.12),floor)
+    for x,y,h in [(-1.75,.65,2.2),(1.8,.85,2.4),(-2.0,-.9,1.7),(2.1,-.85,1.8)]:
+      C.rod('Cedar trunk',(x,y,0),(x,y,h),.095,bark);ico('Cedar bough',(x,y,h),(.42,.38,.4),leaf)
+    # Place actual props in one coordinated rig; use compact geometry sized to fit the view.
+    tentmat=mat('Preview canvas',(.34,.27,.14));tentdark=mat('Preview tent shade',(.22,.18,.10));rope=mat('Preview rope',(.28,.22,.12));metal=mat('Preview copper',(.33,.19,.095));glow=mat('Preview lantern glow',(.95,.43,.10),1.7)
+    mesh('Preview tent',[(-1.35,.25,.03),(-.35,.25,.03),(-.85,.78,.83)],[(0,1,2)],tentmat)
+    mesh('Preview tent side',[(-.85,.78,.83),(-.35,.25,.03),(-.38,.68,.03)],[(0,1,2)],tentdark)
+    C.rod('Preview tent ridge',(-1.37,.25,.04),(-.85,.78,.85),.025,rope)
+    # fire ring and animated flame, centered forward
+    ash=mat('Preview ash',(.12,.105,.085));stone=mat('Preview slate',(.2,.2,.17));wood=mat('Preview cedar',(.25,.16,.08));ember=mat('Preview coal',(.8,.17,.025),1.0);fire=mat('Preview flame',(1,.30,.045),2.0);heart=mat('Preview fire heart',(1,.65,.19),2.4)
+    ico('Preview ash bed',(0,-.78,.025),(.48,.34,.035),ash)
+    for i in range(9):
+      a=i*math.tau/9;ico('Preview hearth stone',(.43*math.cos(a),-.78+.32*math.sin(a),.065),(.09,.075,.06),stone)
+    for i in range(2):C.rod('Preview log',(-.26,-.78+i*.15,.105),(.26,-.78-i*.15,.12),.06,wood)
+    for i in range(7):
+      a=i*math.tau/7;ico('Preview coal',(.23*math.cos(a),-.78+.17*math.sin(a),.09),(.027,.025,.02),ember)
+    cone('Preview flame',(0,-.78,.32),.09,.006,.4,fire,7);cone('Preview heart',(0,-.79,.29),.06,.005,.27,heart,7)
+    # Pack at right; lantern hangs visibly from a fine branch above the fire.
+    C.box('Preview pack',(1.15,-.5,.32),(.34,.26,.48),tentdark,bevel=.05);C.box('Preview pack flap',(1.15,-.68,.61),(.27,.05,.12),tentmat,bevel=.03)
+    C.rod('Preview branch',(-.35,.5,1.48),(.68,.5,1.48),.035,bark);C.rod('Preview chain',(.2,.48,1.46),(.2,.48,1.2),.012,rope)
+    C.box('Preview lantern',(.2,.46,1.02),(.20,.17,.23),metal,bevel=.025);C.box('Preview lantern roof',(.2,.46,1.17),(.25,.2,.07),metal,bevel=.02);C.box('Preview lantern base',(.2,.46,.87),(.22,.18,.055),metal,bevel=.015)
+    cone('Preview lantern flame',(.2,.35,1.02),.04,.004,.14,glow,6)
+    cel.install('prop',normals=False);render(ROOT/'game/assets/sprites/cosmetics/previews/bivouac_des_cedres.png',(256,256),'prop');cel.uninstall()
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
-    fire_scene()
-    (OUT/'layout.json').write_text('{"tent":{"offset_u":[-2.5,-1.0],"z":-1},"lantern_hanging":{"offset_u":[-1.6,-1.4],"z":1},"pack":{"offset_u":[1.4,0.6],"z":-1}}',encoding='utf-8')
     for n,sz in [('tent',(256,256)),('lantern_hanging',(128,128)),('pack',(128,128))]:prop_scene(n,sz)
-    preview()
-    bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art/blender/cel/cosmetics/veillee_bivouac_des_cedres.blend'))
-    print('BIVOUAC_BUILD_OK fire=3072x256 frames=12 props=3 preview=256')
+    print('BIVOUAC_PROPS_OK props=3')
 
 if __name__=='__main__':main()

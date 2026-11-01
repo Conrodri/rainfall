@@ -1,0 +1,200 @@
+[gd_resource type="Resource" script_class="AmbianceProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/ambiance/ambiance_profile.gd" id="1_xmh61"]
+
+[resource]
+script = ExtResource("1_xmh61")
+map_id = &"terrasses_noyees"
+display_name = "Terrasses noyées"
+mood = "Nuit claire (23 h) : lanternes de rizière allumées, lucioles, lanternes qui montent, pluie fine ; la lune dans les flaques et le canal. Quand D monte, la pluie et les nuages reviennent, la lune se voile."
+ambient_color = Color(0.36, 0.4, 0.54, 1)
+ambient_low = Color(0.36, 0.4, 0.54, 1)
+sun_color = Color(0.55, 0.62, 0.85, 1)
+sun_energy = 0.6
+sun_rotation_deg = 310.0
+sun_height = 0.15
+sun_shadow_color = Color(0.03, 0.06, 0.14, 0.7)
+sun_shadow_length_u = 2.24
+lift_color = Color(0.05, 0.08, 0.18, 1)
+lift_amount = 0.28
+gain_color = Color(0.92, 0.96, 1, 1)
+gain_amount = 0.18
+saturation = 1.05
+contrast = 1.12
+vignette_strength = 0.3
+vignette_radius = 0.74
+vignette_softness = 0.45
+vignette_color = Color(0.02, 0.04, 0.09, 1)
+fill_color = Color(0.55, 0.62, 0.8, 1)
+fill_energy = 0.45
+fill_energy_low = 0.55
+sun_shadow_smooth = 0.8
+contrast_pivot = 0.4
+lights_energy = 1.5
+rain_intensity = 0.15
+rain_tint = Color(0.7, 0.8, 1, 1)
+drops_amount = 70.0
+fog_low_color = Color(0.55, 0.65, 0.85, 1)
+fog_low_opacity = 0.25
+fog_low_speed = Vector2(0.17677669, 0.17677669)
+fog2_color = Color(0.6, 0.7, 0.88, 1)
+fog2_speed = Vector2(0.08485281, 0.08485281)
+fog_high_color = Color(0.7, 0.78, 0.92, 1)
+fog_high_speed = Vector2(0.28284273, 0.28284273)
+cloud_opacity = 0.14
+cloud_speed_u = Vector2(0.061283555, 0.051423006)
+rays_count = 0.0
+rays_opacity = 0.0
+rays_color = Color(0.7, 0.8, 1, 1)
+sky_texture = &"sky_nuit_de_lanternes_256x64"
+sky_reflect = 0.5
+puddle_reflect = 0.7
+water_reflect = 0.7
+particle_defs = Array[Dictionary]([{
+"additive": true,
+"alpha": 0.85,
+"behavior": &"firefly",
+"color": Color(0.8, 1, 0.55, 1),
+"lifetime": 6.0,
+"name": "lucioles",
+"size_u": Vector2(0.08, 0.12),
+"speed_u": 0.25,
+"texture": &"firefly_16"
+}, {
+"additive": true,
+"alpha": 0.5,
+"behavior": &"rise",
+"color": Color(1, 1, 1, 1),
+"lifetime": 10.0,
+"name": "lanternes flottantes",
+"size_u": Vector2(0.5, 0.75),
+"speed_u": 0.18,
+"texture": &"lantern_glow_64"
+}])
+p1_amount = 24.0
+p2_amount = 8.0
+light_rules = Array[Dictionary]([{
+"char": "~",
+"edge": false,
+"max": 8,
+"max_tier": &"Tendu",
+"preset": &"sun_glint",
+"spacing_u": 10.0
+}, {
+"char": "#",
+"edge": true,
+"max": 12,
+"preset": &"merchant_boat",
+"spacing_u": 11.0
+}])
+tier_overrides = {
+&"Cataclysme": {
+&"lights_energy": 1.7,
+&"fill_energy_low": 0.68,
+&"fill_energy": 0.6,
+&"fill_color": Color(0.55, 0.62, 0.8, 1),
+&"ambient_color": Color(0.3, 0.34, 0.46, 1),
+&"ambient_low": Color(0.3, 0.34, 0.46, 1),
+&"cloud_cover": 1.0,
+&"cloud_opacity": 0.25,
+&"cloud_speed_u": Vector2(0.38302222, 0.3213938),
+&"contrast": 1.26,
+&"lightning_double_chance": 0.3,
+&"lightning_flash": 1.0,
+&"lightning_interval_max": 14.0,
+&"lightning_interval_min": 6.0,
+&"player_light_scale": 1.15,
+&"rain_angle_deg": 20.0,
+&"rain_intensity": 0.8,
+&"rain_layers": 2.0,
+&"rain_opacity": 0.12,
+&"rain_tint": Color(0.55, 0.65, 0.85, 1),
+&"saturation": 0.97,
+&"splash_rate": 180.0,
+&"sun_color": Color(0.42, 0.48, 0.68, 1),
+&"sun_energy": 0.28,
+&"sun_shadow_length_u": 1.2,
+&"vignette_strength": 0.4,
+&"wind_mult": 3.2
+},
+&"Furieux": {
+&"lights_energy": 1.65,
+&"fill_energy_low": 0.62,
+&"fill_energy": 0.55,
+&"fill_color": Color(0.55, 0.62, 0.8, 1),
+&"ambient_color": Color(0.31, 0.35, 0.48, 1),
+&"ambient_low": Color(0.31, 0.35, 0.48, 1),
+&"cloud_cover": 0.9,
+&"cloud_opacity": 0.22,
+&"cloud_speed_u": Vector2(0.26811555, 0.22497565),
+&"contrast": 1.22,
+&"lightning_flash": 0.7,
+&"lightning_interval_max": 25.0,
+&"lightning_interval_min": 12.0,
+&"map_lights_energy": 1.29,
+&"player_light_scale": 1.1,
+&"rain_angle_deg": 17.0,
+&"rain_intensity": 0.65,
+&"rain_opacity": 0.11,
+&"rain_tint": Color(0.58, 0.68, 0.88, 1),
+&"saturation": 1.0,
+&"splash_rate": 144.0,
+&"sun_color": Color(0.45, 0.51, 0.72, 1),
+&"sun_energy": 0.34,
+&"sun_shadow_length_u": 1.6,
+&"vignette_strength": 0.37,
+&"wind_mult": 2.5
+},
+&"Hostile": {
+&"lights_energy": 1.6,
+&"fill_energy_low": 0.6,
+&"fill_energy": 0.52,
+&"fill_color": Color(0.55, 0.62, 0.8, 1),
+&"ambient_color": Color(0.32, 0.36, 0.5, 1),
+&"ambient_low": Color(0.32, 0.36, 0.5, 1),
+&"cloud_cover": 0.7,
+&"cloud_opacity": 0.19,
+&"cloud_speed_u": Vector2(0.1532089, 0.12855752),
+&"contrast": 1.18,
+&"p2_amount": 4.0,
+&"player_light_scale": 1.05,
+&"rain_angle_deg": 14.0,
+&"rain_intensity": 0.5,
+&"rain_length_u": 0.35,
+&"rain_opacity": 0.09,
+&"rain_tint": Color(0.6, 0.7, 0.9, 1),
+&"rays_count": 0.0,
+&"rays_opacity": 0.0,
+&"saturation": 1.03,
+&"splash_rate": 114.0,
+&"sun_color": Color(0.48, 0.54, 0.76, 1),
+&"sun_energy": 0.42,
+&"sun_shadow_length_u": 2.2,
+&"vignette_strength": 0.34,
+&"wind_mult": 1.8
+},
+&"Tendu": {
+&"fill_energy_low": 0.58,
+&"fill_energy": 0.5,
+&"fill_color": Color(0.55, 0.62, 0.8, 1),
+&"ambient_color": Color(0.34, 0.38, 0.52, 1),
+&"ambient_low": Color(0.34, 0.38, 0.52, 1),
+&"cloud_cover": 0.5,
+&"cloud_opacity": 0.15,
+&"cloud_speed_u": Vector2(0.09192533, 0.077134505),
+&"contrast": 1.14,
+&"rain_angle_deg": 12.0,
+&"rain_intensity": 0.35,
+&"rain_opacity": 0.07,
+&"rain_tint": Color(0.65, 0.75, 0.95, 1),
+&"rays_count": 0.0,
+&"rays_opacity": 0.0,
+&"saturation": 1.05,
+&"splash_rate": 84.0,
+&"sun_color": Color(0.52, 0.58, 0.8, 1),
+&"sun_energy": 0.5,
+&"sun_shadow_length_u": 2.8,
+&"vignette_strength": 0.32,
+&"wind_mult": 1.3
+}
+}

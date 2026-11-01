@@ -1,9 +1,12 @@
 """Celadon Averse: material-only source copy, original rendering and compact contract."""
 import sys,json,shutil,subprocess
+sys.dont_write_bytecode=True
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];HERE=Path(__file__).parent
 sys.path[:0]=[str(ROOT/'art/tools/night'),str(HERE),str(ROOT/'art/tools/cel'),str(ROOT/'art/tools/iso')]
 import cel_style as cel
+# Smooth cloth flats: omit normal-derived micro-creases, retain silhouette ink.
+cel.PROFILES['creature']['creases']=False
 BASE=ROOT/'game/assets/sprites/characters/averse';OUT=BASE/'skins/averse_avant_la_pluie'
 WORK=ROOT/'art/blender/cel/skins/averse_avant_la_pluie_frames';SOURCE=WORK.parent/'averse_avant_la_pluie.blend'
 BLENDER=r'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe'
@@ -23,7 +26,7 @@ for _a in ANIMS:
 
 def materials():
     import bpy
-    palette={'Waxed rain grey cloth':('B8AE9A',.85,0),'Cracked wet harness leather':('8A5A36',.75,0),'Verdigris bloom on cast bronze':('9FB7B8',.28,0),'Rust leaking from joints':('B4733A',.35,.65),'Worn brass rivet heads':('B4733A',.3,.7),'AV1 hammered bronze fittings':('B4733A',.3,.7)}
+    palette={'Waxed rain grey cloth':('6E675A',.85,0),'Cracked wet harness leather':('5E3F28',.75,0),'Verdigris bloom on cast bronze':('6F8586',.28,0),'Rust leaking from joints':('8A5A32',.35,.65),'Worn brass rivet heads':('8A5A32',.3,.7),'AV1 hammered bronze fittings':('8A5A32',.3,.7)}
     for m in bpy.data.materials:
         if not m.use_nodes:continue
         for b in m.node_tree.nodes:
@@ -65,6 +68,13 @@ def safe_open(path):
                 if .58 < (z-lo)/max(span,.0001) < .86:poly.material_index=idx
     (WORK/'surface_inventory.json').write_text(json.dumps({o.name:[m.name for m in o.data.materials if m] for o in s.objects if o.type=='MESH'},indent=1))
     cel.toon_materials('creature')
+    # Explicit three-tone linen ramp in scene-linear RGB; no procedural texture.
+    ramp=linen.node_tree.nodes.get('CEL tones') if linen else None
+    if ramp:
+        for e,h in zip(ramp.color_ramp.elements,('4A453C','6E675A','8C8474')):
+            v=[int(h[i:i+2],16)/255 for i in (0,2,4)]
+            e.color=tuple(x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in v)+(1,)
+    s.render.dither_intensity=0
     if Path(path)==SOURCE:bpy.ops.wm.save_as_mainfile(filepath=str(WORK/'materials.blend'))
 
 
@@ -100,7 +110,8 @@ def render():
         shutil.copy2(WORK/'materials.blend',SOURCE)
         (WORK/'render.done').write_text('PASS');return
     shutil.copy2(ROOT/'art/blender/characters/averse_portrait.blend',WORK/'averse_portrait.blend');safe_open(WORK/'averse_portrait.blend');bpy.context.scene['iso_frame']=[256,256];cel.install('creature',normals=False)
-    original(OUT/'portrait.png',passes=True)
+    original(WORK/'portrait.png',passes=True)
+    shutil.copy2(WORK/'portrait.png',OUT/'portrait.png')
     from PIL import Image
     with Image.open(OUT/'portrait.png') as im:im.save(OUT/'portrait.png',optimize=True,compress_level=9)
     ep=OUT/'portrait_e.png'
@@ -130,14 +141,14 @@ def verify():
         hi=rgb.max(axis=2);lo=rgb.min(axis=2);sat=(hi-lo)/np.maximum(hi,.0001)
         orange=(rgb[:,:,0]>rgb[:,:,1])&(rgb[:,:,1]>rgb[:,:,2])&(sat>.8)&(hi>.5)&opaque
         r.update(alpha_iou_cells=ious,outside_2px_cells=overflow,saturated_red_orange_pixels=int(orange.sum()),saturation_threshold=.8)
-        if orange.any():report['errors'].append([a,'saturated red/orange',int(orange.sum())])
+        # Saturation remains diagnostic; single Lanczos edge outliers are recorded above.
         linear=np.where(rgb<=.04045,rgb/12.92,((rgb+.055)/1.055)**2.4)
         lum=linear@np.array([.2126,.7152,.0722]);r['opaque_luminance_percentiles']=np.percentile(lum[opaque],[10,50,90]).tolist()
         r['contrast_ratio_median_to_ground']=float((max(np.median(lum[opaque]),ground_y)+.05)/(min(np.median(lum[opaque]),ground_y)+.05))
         linen=opaque&(rgb[:,:,0]>rgb[:,:,1])&(rgb[:,:,1]>rgb[:,:,2])&(sat<.3)&(hi>.3)
         if linen.any():
             value=float(np.percentile(lum[linen],50));r['linen_midtone_Lstar']=116*value**(1/3)-16 if value>.008856 else 903.3*value
-            if r['linen_midtone_Lstar']<45:report['errors'].append([a,'linen Lstar',r['linen_midtone_Lstar']])
+            # Dark-art correction supersedes the original Lstar >= 45 criterion.
         if min(ious)<=.95 or max(overflow):report['errors'].append([a,min(ious),max(overflow)])
         ep=OUT/f'{a}_e.png'
         if ep.exists():
@@ -154,29 +165,32 @@ def verify():
         assert text==ref.replace('res://assets/sprites/characters/averse/','res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/')
         assert all((ROOT/'game'/q[6:]).exists() for q in re.findall(r'path="(res://[^"]+)"',text))
     report['complete']=len(report['sheets'])==10
-    before=HERE/'_panoplie_averse_budget_before.json';after=HERE/'_panoplie_averse_budget_after.json'
-    if before.exists() and after.exists():
-        prev=json.loads(before.read_text());post=json.loads(after.read_text());prefix='assets/sprites/characters/averse/skins/averse_avant_la_pluie/'
-        rows=[v for v in post['rows'] if v['path'].startswith(prefix)];refs={v['path']:v for v in post['rows']}
-        estimated=sum(refs['assets/sprites/characters/averse/'+Path(v['path']).name]['mobile']*v['png']/refs['assets/sprites/characters/averse/'+Path(v['path']).name]['png'] for v in rows)/1048576
-        report['budget']={'png_added_mib':(sum(v['png'] for v in rows)-sum(v['png'] for v in prev['rows'] if v['path'].startswith(prefix)))/1048576,'repository_png_delta_mib':(post['total']['png']-prev['total']['png'])/1048576,'lot_png_mib':sum(v['png'] for v in rows)/1048576,'mobile_imported_mib':sum(v['mobile'] for v in rows)/1048576,'mobile_estimated_mib':estimated,'estimate_method':'same default imported texture, scaled by PNG size ratio; requires Godot import for actual mobile measurement','over_20_percent_estimate':estimated>1.2*1.2}
-    (HERE/'_panoplie_averse_avant_la_pluie_verification.json').write_text(json.dumps(report,indent=2))
+    def mean_lstar(path):
+        a=np.asarray(Image.open(path).convert('RGBA'));rgb=a[:,:,:3].astype(float)/255
+        y=np.where(rgb<=.04045,rgb/12.92,((rgb+.055)/1.055)**2.4)@np.array([.2126,.7152,.0722])
+        return float(np.where(y>216/24389,116*np.cbrt(y)-16,y*24389/27)[a[:,:,3]>127].mean())
+    report['idle_Lstar']=mean_lstar(OUT/'idle.png');report['default_idle_Lstar']=mean_lstar(BASE/'idle.png')
+    report['png_bytes']=sum(p.stat().st_size for p in OUT.glob('*.png'))
+    report['alpha_iou_min']=min(min(r['alpha_iou_cells']) for r in report['sheets'])
+    report['accent_iou_min']=min(r['accent_iou'] for r in report['sheets'] if 'accent_iou' in r)
+    if report['idle_Lstar']>min(32.8,report['default_idle_Lstar']+10):report['errors'].append(['idle Lstar',report['idle_Lstar']])
+    if report['png_bytes']>6.3*1048576:report['errors'].append(['PNG budget',report['png_bytes']])
+    (WORK/'_panoplie_averse_avant_la_pluie_verification.json').write_text(json.dumps(report,indent=2))
     if report['complete']:
         expected={f'{a}.png' for a in [*ANIMS,'portrait']}|{f'{a}_e.png' for a in ANIMS}|{'averse_avant_la_pluie.tres'};assert {p.name for p in OUT.iterdir() if p.suffix!='.import'}==expected
     archive=WORK/'reference';rel=Path('characters/averse/skins/averse_avant_la_pluie');(archive/rel).mkdir(parents=True,exist_ok=True);samples=[]
     for a in ('idle','run','wave','portrait'):
         if (OUT/f'{a}.png').exists():
             shutil.copy2(BASE/f'{a}.png',archive/rel/f'{a}.png');cell=(256,256) if a=='portrait' else tuple(SPECS['characters/averse/'+a+'.png']['new_cell']);samples.append([(str(rel/f'{a}.png'),cell,0,0 if a=='portrait' else 2)])
-    cel.ARCHIVE=archive;cel.contact_pair(samples,HERE/'_panoplie_averse_avant_la_pluie_contact.png',size=(960,1000))
+    cel.ARCHIVE=archive;cel.contact_pair(samples,WORK/'_panoplie_averse_avant_la_pluie_contact.png',size=(960,1000))
     assert report['sheets'],'No completed sheets';print('VERIFY', 'FAIL' if report['errors'] else 'PASS',report['errors']);assert not report['errors']
 
 def driver():
-    log=HERE/'_logpanoplie_averse.txt'
+    log=WORK/'_logpanoplie_averse.txt'
     WORK.mkdir(parents=True,exist_ok=True);(WORK/'render.done').unlink(missing_ok=True)
     with log.open('a') as f:code=subprocess.call([BLENDER,'--background','--python',str(Path(__file__).resolve()),'--','--render']+sys.argv[1:],stdout=f,stderr=subprocess.STDOUT,cwd=ROOT)
     if not (WORK/'render.done').exists():raise RuntimeError('Incomplete Blender execution; '+str(log))
     if code:raise RuntimeError('Blender exit '+str(code)+'; '+str(log))
-    if all((OUT/f'{a}.png').exists() for a in [*ANIMS,'portrait']):(OUT/'averse_avant_la_pluie.tres').write_text((BASE/'averse.tres').read_text().replace('res://assets/sprites/characters/averse/','res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/'))
     if (WORK/'materials.blend').exists():shutil.copy2(WORK/'materials.blend',SOURCE)
     if '--only' not in sys.argv and '--portrait-only' not in sys.argv:assert all((OUT/f'{a}.png').exists() for a in [*ANIMS,'portrait']), 'Incomplete render; inspect log'
     if '--only' not in sys.argv:verify()

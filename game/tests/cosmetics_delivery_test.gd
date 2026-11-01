@@ -8,11 +8,10 @@ extends Node
 ## Articles livrés au lot 1 et complets (les autres du catalogue restent `pending`).
 const DELIVERED: Array[String] = [
 	"averse_avant_la_pluie", "vigie_avant_la_pluie", "ardent_avant_la_pluie", "rictus_avant_la_pluie",
-	"braises", "bronze_de_cloche", "bivouac_des_cedres",
+	"braises", "bronze_de_cloche", "bivouac_des_cedres", "nuit_de_lanternes",
 ]
-## Livrés mais bloqués : doivent rester `pending` tant que le défaut n'est pas corrigé.
-##  - nuit_de_lanternes : profils data/ambiance/<map>_nuit_de_lanternes.tres non livrés (réglage designer).
-const BLOCKED: Array[String] = ["nuit_de_lanternes"]
+## Livrés mais bloqués : doivent rester `pending` tant que le défaut n'est pas corrigé (aucun pour l'instant).
+const BLOCKED: Array[String] = []
 ## Animations à jouer au minimum (une par direction, celles que le défaut possède).
 const MUST_HAVE: Array[String] = ["idle", "run"]
 const DIRS: Array[String] = ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
@@ -75,6 +74,13 @@ func _ready() -> void:
 		elif Cosmetics.family_of(it) == &"sillage":
 			var sf := _load_frames(Cosmetics.asset(it, "frames"))
 			_check(sf != null and sf.get_animation_names().size() > 0, "%s : SpriteFrames du sillage non vide" % id)
+		elif Cosmetics.family_of(it) == &"ciel":
+			# Chaque profil d'ambiance du Ciel se charge et passe le garde-fou de luminance (0,42).
+			var profs: Array = (it.get("assets", {}) as Dictionary).get("profiles", [])
+			_check(profs.size() >= 2, "%s : un profil par carte du biome" % id)
+			for pp in profs:
+				var prof := load(str(pp)) as AmbianceProfile
+				_check(prof != null and AmbianceManager.ciel_readable(prof), "%s : profil %s lisible (luminance >= 0,42)" % [id, str(pp).get_file()])
 		elif Cosmetics.family_of(it) == &"veillee":
 			var sf2 := _load_frames(Cosmetics.asset(it, "fire"))
 			_check(sf2 != null and sf2.has_animation(&"burn") and sf2.get_frame_count(&"burn") > 0, "%s : feu animé (burn)" % id)

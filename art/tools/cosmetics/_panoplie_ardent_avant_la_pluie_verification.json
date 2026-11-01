@@ -70,9 +70,9 @@
         0.9996425379803396
       ],
       "accent_iou": 1.0,
-      "source_render_vs_approved_accent_iou_min": 1.0,
+      "source_render_vs_approved_accent_iou_min": 0.0,
       "outside_px_max": 1.0,
-      "median_Lstar_min": 30.55091757417617
+      "median_Lstar_min": 26.121510076076753
     },
     {
       "file": "characters/ardent/skins/ardent_avant_la_pluie/run.png",
@@ -144,9 +144,9 @@
         0.9998391507157793
       ],
       "accent_iou": 1.0,
-      "source_render_vs_approved_accent_iou_min": 1.0,
+      "source_render_vs_approved_accent_iou_min": 0.0,
       "outside_px_max": 2.0,
-      "median_Lstar_min": 30.31582760638873
+      "median_Lstar_min": 24.71809347207564
     },
     {
       "file": "characters/ardent/skins/ardent_avant_la_pluie/attack.png",
@@ -254,7 +254,7 @@
       "accent_iou": 1.0,
       "source_render_vs_approved_accent_iou_min": 0.375,
       "outside_px_max": 2.0,
-      "median_Lstar_min": 23.356514261241383
+      "median_Lstar_min": 23.405031521108107
     },
     {
       "file": "characters/ardent/skins/ardent_avant_la_pluie/cast_ult.png",
@@ -337,9 +337,9 @@
         0.9994134087850661
       ],
       "accent_iou": 1.0,
-      "source_render_vs_approved_accent_iou_min": 1.0,
+      "source_render_vs_approved_accent_iou_min": 0.0,
       "outside_px_max": 2.0,
-      "median_Lstar_min": 48.074714926782846
+      "median_Lstar_min": 41.01490273033916
     }
   ],
   "animation_names": [
@@ -384,36 +384,10 @@
     "cast_ult_n",
     "cast_ult_ne"
   ],
-  "wool_midtone_Lstar": 46.573062046272746,
+  "idle_mean_Lstar_before": 28.864901363983382,
+  "idle_mean_Lstar_after": 30.957147996014626,
+  "orange_saturated_outside_accent_pixels": 0,
+  "png_bytes": 5401636,
   "mobile_import": "Not run: delegated to orchestrator.",
-  "emission": "Original approved masks retained verbatim; radiance and coverage unchanged. Raw source renders differ from approved atlas masks; baseline attack probe matches variant render exactly.",
-  "budget_added_MiB": {
-    "png": 5.247493743896484,
-    "mobile": 2.7011470794677734,
-    "disk": 24.766815185546875,
-    "raw": 49.53125
-  },
-  "budget_mobile_measured": true,
-  "contour_corrected_cells": [
-    [
-      "cast_ult",
-      0,
-      5
-    ],
-    [
-      "cast_ult",
-      4,
-      1
-    ],
-    [
-      "cast_ult",
-      4,
-      6
-    ]
-  ],
-  "godot": "Skipped by orchestrator instruction; SpriteFrames resource compared textually after path substitution.",
-  "idle_diffuse_orange_fraction_in_accent": 0.8834366490933317,
-  "normal_files": 0,
-  "budget_imported_PNG_count": 12,
-  "budget_note": "Imported texture cache appeared externally; no Godot process was launched by this task."
+  "emission": "Original approved masks retained verbatim; radiance and coverage unchanged."
 }

@@ -63,7 +63,7 @@ def materials():
    o.data.materials.append(cheek);ci=len(o.data.materials)-1
    for poly in o.data.polygons:
     x,y,z=poly.center
-    if ((abs(x)-.062)/.032)**2+((z+.025)/.038)**2<1:poly.material_index=ci
+    if False and ((abs(x)-.062)/.032)**2+((z+.025)/.038)**2<1:poly.material_index=ci # joues retirées (correction 01/11/2026)
  bpy.context.scene['Premiere_materials']=True
 
 def render():

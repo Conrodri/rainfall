@@ -11,12 +11,12 @@ import cel_style as cel
 
 OUT = ROOT / 'game/assets/sprites/cosmetics/sillages/braises'
 PREVIEW = ROOT / 'game/assets/sprites/cosmetics/previews/braises.png'
-# Mandatory muted interpretation: supplied amber hues with saturation capped below .5.
-INK = fx.hexc('4A3C29')
-MID = fx.hexc('80684A')
-AMBER = fx.hexc('B89364')
-WORK = ROOT / 'build/sillage_braises'
-FADE = [.20, .65, 1, .90, .80, .65, .48, .30, .16, .055, .045, .035, .025, .018, .012, .008]
+# Bright amber embers, fading through orange to coal.
+INK = fx.hexc('5A3418')
+MID = fx.hexc('C8782E')
+AMBER = fx.hexc('FFC878')
+WORK = ROOT / 'art/renders/sillage_braises'
+FADE = [1, .96, .92, .88, .82, .80, .68, .55, .38, .15, .10, .06, .03, .015, .008, .006]
 
 
 def setup(w, h, ppu=64):
@@ -50,9 +50,8 @@ def p_ember(f, n):
     t = f / (n - 1)
     rise = .09375 * min(f, 9) / 9  # exactly six pixels, then extinction
     size = .125 * (1 - .28*t)
-    pigment = AMBER if f < 5 else MID if f < 10 else INK
-    muted_sprite('glow', 0, rise, size, size*1.12, INK, .38*FADE[f], d=-.01)
-    muted_sprite('spark', 0, rise, size*.85, size*.56, pigment, .4*FADE[f], rot=1.15)
+    pigment = AMBER if f < 4 else MID if f < 9 else INK
+    muted_sprite('spark', 0, rise, size*.9, size*.62, pigment, FADE[f], rot=1.15)
 
 
 def render_pixels(s, name):
@@ -85,12 +84,12 @@ def build_particle():
         s = setup(32, 32)
         p_ember(i, 16)
         w, h, data = render_pixels(s, 'frame_%02d'%i)
-        ox, oy = (i%4)*32, (3-i//4)*32  # Blender rows are bottom-up
+        ox, oy = (i%4)*32, (3-i//4)*32  # Blender image pixels are bottom-up
         for y in range(32):
             for x in range(32):
                 src = (y*32+x)*4; dst = ((oy+y)*128+ox+x)*4
                 rgba = data[src:src+4]
-                rgba[3] = min(.4, rgba[3])
+                rgba[3] = min(1.0, rgba[3])
                 if rgba[3] < .5/255: rgba = [0,0,0,0]
                 pix[dst:dst+4] = rgba
     save_pixels('particle_32.png',128,128,pix)
@@ -98,10 +97,10 @@ def build_particle():
 
 def build_step():
     s = setup(64,64)
-    muted_sprite('disc',0,0,.19,.14,INK,.24)
-    muted_sprite('disc',-.018,.005,.11,.075,MID,.09,d=.01)
+    muted_sprite('disc',0,0,.19,.14,MID,.68)
+    muted_sprite('disc',-.018,.005,.11,.075,AMBER,.50,d=.01)
     w,h,data = render_pixels(s,'step')
-    for j in range(3,len(data),4): data[j] = min(.4,data[j])
+    for j in range(3,len(data),4): data[j] = min(1.0,data[j])
     save_pixels('step_64.png',64,64,data)
 
 
