@@ -1,0 +1,229 @@
+{
+  "method": "Blender Eevee creature cel; material overrides; original accent mask tinted; original cel shading modulation retained; chroma +10%",
+  "assets": {
+    "bramble_queen": {
+      "png": 20,
+      "body_L_median": 66.41115753787199,
+      "body_L_p10": 41.72013155977694,
+      "green_pixels": 0,
+      "alpha_iou": 1.0,
+      "emission_iou": 1.0,
+      "distinct": [
+        [
+          "attack",
+          6,
+          6
+        ],
+        [
+          "attack_dirs",
+          17,
+          17
+        ],
+        [
+          "cast_a",
+          8,
+          8
+        ],
+        [
+          "cast_a_dirs",
+          24,
+          24
+        ],
+        [
+          "cast_b",
+          8,
+          8
+        ],
+        [
+          "cast_b_dirs",
+          24,
+          24
+        ],
+        [
+          "death",
+          10,
+          10
+        ],
+        [
+          "idle",
+          6,
+          6
+        ],
+        [
+          "phase2",
+          8,
+          8
+        ],
+        [
+          "run",
+          32,
+          32
+        ]
+      ],
+      "archive_alpha_iou_min": 0.9970581142994936,
+      "archive_emission_iou_min": 1.0
+    },
+    "mist_wolf": {
+      "png": 20,
+      "body_L_median": 75.94100702926681,
+      "body_L_p10": 47.443289414076204,
+      "green_pixels": 0,
+      "alpha_iou": 1.0,
+      "emission_iou": 1.0,
+      "distinct": [
+        [
+          "attack",
+          6,
+          6
+        ],
+        [
+          "attack_dirs",
+          18,
+          18
+        ],
+        [
+          "cast_a",
+          8,
+          8
+        ],
+        [
+          "cast_a_dirs",
+          24,
+          24
+        ],
+        [
+          "cast_b",
+          8,
+          8
+        ],
+        [
+          "cast_b_dirs",
+          24,
+          24
+        ],
+        [
+          "death",
+          10,
+          10
+        ],
+        [
+          "idle",
+          3,
+          3
+        ],
+        [
+          "phase2",
+          8,
+          8
+        ],
+        [
+          "run",
+          28,
+          28
+        ]
+      ],
+      "archive_alpha_iou_min": 0.997776926025297,
+      "archive_emission_iou_min": 1.0
+    },
+    "mist_wolf_cub": {
+      "png": 10,
+      "body_L_median": 65.40674164054577,
+      "body_L_p10": 38.88216912285712,
+      "green_pixels": 0,
+      "alpha_iou": 1.0,
+      "emission_iou": 1.0,
+      "distinct": [
+        [
+          "attack",
+          6,
+          6
+        ],
+        [
+          "attack_dirs",
+          18,
+          18
+        ],
+        [
+          "death",
+          10,
+          10
+        ],
+        [
+          "idle",
+          3,
+          3
+        ],
+        [
+          "run",
+          28,
+          28
+        ]
+      ],
+      "archive_alpha_iou_min": 0.9966214432772,
+      "archive_emission_iou_min": 1.0
+    },
+    "moss_mantis": {
+      "png": 20,
+      "body_L_median": 64.74505834595149,
+      "body_L_p10": 34.254390350825986,
+      "green_pixels": 0,
+      "alpha_iou": 1.0,
+      "emission_iou": 1.0,
+      "distinct": [
+        [
+          "attack",
+          6,
+          6
+        ],
+        [
+          "attack_dirs",
+          18,
+          18
+        ],
+        [
+          "cast_a",
+          8,
+          8
+        ],
+        [
+          "cast_a_dirs",
+          24,
+          24
+        ],
+        [
+          "cast_b",
+          8,
+          8
+        ],
+        [
+          "cast_b_dirs",
+          24,
+          24
+        ],
+        [
+          "death",
+          10,
+          10
+        ],
+        [
+          "idle",
+          3,
+          3
+        ],
+        [
+          "phase2",
+          8,
+          8
+        ],
+        [
+          "run",
+          28,
+          28
+        ]
+      ],
+      "archive_alpha_iou_min": 0.9968723936613845,
+      "archive_emission_iou_min": 1.0
+    }
+  },
+  "ground_L": 26.706165085402347
+}
