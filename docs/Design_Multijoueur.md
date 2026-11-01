@@ -89,7 +89,18 @@ Statut : **étude, rien n'est codé**. Les points marqués « À trancher » att
   - les procs d'objets sont attribués au propriétaire.
 - **Gel des boss respecté** : aucun nouveau boss.
 
-## 4. À trancher par le joueur
+## 4. Décisions du joueur (01/11/2026)
+
+- **Périmètre** : coop locale sur PC d'abord, puis en ligne.
+- **PV des boss** : × (1 + 0,4 (n−1)) pour les boss d'étage ; × (1 + 0,3 (n−1)) pour les mini-boss ; × (1 + 0,35 (n−1)) pour le boss final.
+- **Or** : partagé à parts égales entre tous les joueurs, comme dans RoR2. Les joueurs morts touchent aussi leur part.
+- **Réanimation** : comme dans RoR2. Un joueur mort devient spectateur et ressuscite au début de l'étage suivant. Si tous les joueurs sont morts, la run est perdue. Pas de relevé au sol.
+- **Restent ouverts** :
+  - coffres +50 % ou +75 % par joueur en plus (défaut : +50 %) ;
+  - plafond de monstres vivants quand un mobile héberge ;
+  - compte développeur Epic pour EOS (étape 9).
+
+## 4 bis. Points posés avant décision
 
 1. **Périmètre** : local PC puis en ligne (recommandé), en ligne seul, ou local seul.
 2. **PV des boss** : × (1 + 0,4 (n−1)) (recommandé) ou × n comme RoR2.
