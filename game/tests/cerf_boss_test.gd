@@ -81,6 +81,14 @@ func _brain() -> CerfBrain:
 	return _boss.brain if _boss != null else null
 
 
+var _hitch_ms := -100000 ## dernier accroc d'image (delta rendu > 70 ms)
+
+
+func _process(delta: float) -> void:
+	if delta > 0.07:
+		_hitch_ms = Time.get_ticks_msec()
+
+
 func _physics_process(delta: float) -> void:
 	if _step < 0 or _step == 99:
 		return
@@ -268,7 +276,10 @@ func _scan() -> void:
 			var f := int(ev["frame"])
 			var k := int(ev["expect"])
 			var lag := float(ev.get("lag", 0.0))
-			if f < k - 1 or f > k or lag < -0.001 or lag > 0.05:
+			# Un accroc d'image (> 70 ms, machine chargée) fait sauter des frames à l'AnimatedSprite2D, qui
+			# avance au rythme du rendu : le coup est alors lu sur la frame visible, plus tard que l'attendue.
+			var hitch := Time.get_ticks_msec() - _hitch_ms < 800
+			if f < k - 1 or (f > k and not hitch) or lag < -0.001 or lag > 0.05:
 				_sync_bad += 1
 				print("  %s : %s frame %d (attendu %d), décalage %.3f s" % [kind, ev["anim"], f, k, lag])
 		if kind == &"charge":
