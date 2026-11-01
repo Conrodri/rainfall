@@ -1,0 +1,445 @@
+{
+  "_doc": "Catalogue cosmétique de la boutique de rubis (docs/Boutique_Rubis.md, briefs art/briefs/cosmetics/). Schéma stable : families {id: {name, desc, scope, asset_root}} ; items [{id, family, name, desc, price, target, assets}]. `target` = id dans la portée de la famille (scope character → id de personnage ; scope biome → préfixe de map_id ; scope global → \"\"). Clés optionnelles : preview (image 256×256 de la fiche), pending (true tant que les assets ne sont pas livrés : repli silencieux sur le défaut), theme (panoplies), version (lot de livraison). Interdit : effects, stats, mult, bonus, unlock_rule. Tout est purement cosmétique. Décision du joueur (01/11/2026) : Panoplies en v1 limitée, un seul thème (avant_la_pluie), 4 personnages, sans pack .pck ; les thèmes garde_de_crue et cortege_des_cryptes sont documentés dans Boutique_Rubis.md §3.1 et n'ont aucun article ici.",
+  "version": 1,
+  "families": {
+    "panoplie": {
+      "name": "Panoplies",
+      "desc": "Tenues complètes d'un personnage, par thème : coiffe, armure, arme et cape changent, la silhouette et l'accent lumineux restent.",
+      "scope": "character",
+      "asset_root": "res://assets/sprites/characters/<target>/skins/<id>/",
+      "themes": {
+        "avant_la_pluie": {
+          "name": "Avant la pluie",
+          "desc": "Ce qu'ils portaient dans la Cité avant la crue : lin, laine, cuivre brillant, verre intact."
+        }
+      },
+      "contract": "Même contrat que docs/Skins.md : le dossier contient exactement les mêmes planches que le dossier par défaut du personnage (noms, tailles, grilles, frames, directions, pivots, _e demi-résolution), portrait.png 256×256 (+ portrait_e.png 128×128 si le défaut en a un) et <id>.tres (SpriteFrames à chemins substitués). Skins.skin_dir(perso, id) résout le dossier."
+    },
+    "ciel": {
+      "name": "Ciels",
+      "desc": "Une autre heure ou saison pour un biome : lumière, brume, pluie, ciel reflété et particules. La carte, les monstres et les coffres ne changent pas.",
+      "scope": "biome",
+      "asset_root": "res://data/ambiance/<map_id>_<id>.tres"
+    },
+    "sillage": {
+      "name": "Sillages",
+      "desc": "Une trace discrète sous les pas du joueur, ou une traînée d'esquive. Sous les créatures, sans lumière ni émission.",
+      "scope": "global",
+      "asset_root": "res://assets/sprites/cosmetics/sillages/<id>/"
+    },
+    "parement": {
+      "name": "Parements",
+      "desc": "Cadres, boutons et fonds de l'interface dans une autre matière. Les remplissages des barres, les icônes et les chiffres ne changent pas.",
+      "scope": "global",
+      "asset_root": "res://assets/sprites/ui/parements/<id>/"
+    },
+    "veillee": {
+      "name": "Veillées",
+      "desc": "La scène de l'écran titre : une autre carte, un autre feu, d'autres objets autour.",
+      "scope": "global",
+      "asset_root": "res://assets/sprites/props/menu/<id>/"
+    }
+  },
+  "items": [
+    {
+      "id": "averse_avant_la_pluie",
+      "family": "panoplie",
+      "theme": "avant_la_pluie",
+      "name": "Porteuse d'eau",
+      "desc": "La robe de lin écru des porteuses d'eau de la Cité, l'amphore de verre soufflé cerclée de cuivre neuf : l'eau se voyait déjà par la même fenêtre.",
+      "price": 1000,
+      "target": "averse",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/portrait.png",
+      "assets": {
+        "dir": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/",
+        "frames": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/averse_avant_la_pluie.tres",
+        "portrait": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/portrait.png"
+      }
+    },
+    {
+      "id": "vigie_avant_la_pluie",
+      "family": "panoplie",
+      "theme": "avant_la_pluie",
+      "name": "Guetteuse de beau temps",
+      "desc": "La tenue de parade des guetteuses de la digue avant la crue : vareuse de laine bleu nuit à boutons de cuivre, béret, arc d'if verni, carquois de cuir neuf. Les fusées rouges, déjà à la hanche.",
+      "price": 1000,
+      "target": "vigie",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/portrait.png",
+      "assets": {
+        "dir": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/",
+        "frames": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/vigie_avant_la_pluie.tres",
+        "portrait": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/portrait.png"
+      }
+    },
+    {
+      "id": "ardent_avant_la_pluie",
+      "family": "panoplie",
+      "theme": "avant_la_pluie",
+      "name": "Allumeur de réverbères",
+      "desc": "Avant d'être un mage de feu, il allumait les lampes de la Cité : redingote de laine grise, casquette de cuir, perche de cuivre poli au bout de laquelle la même braise veille.",
+      "price": 1000,
+      "target": "ardent",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/portrait.png",
+      "assets": {
+        "dir": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/",
+        "frames": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/ardent_avant_la_pluie.tres",
+        "portrait": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/portrait.png"
+      }
+    },
+    {
+      "id": "rictus_avant_la_pluie",
+      "family": "panoplie",
+      "theme": "avant_la_pluie",
+      "name": "Première",
+      "desc": "Le pantin tel qu'il sortit de l'atelier pour sa première : porcelaine intacte, habit de velours vert bouteille, jabot de lin, couteaux à manche de nacre. Le sourire n'a pas encore fêlé.",
+      "price": 1000,
+      "target": "rictus",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/portrait.png",
+      "assets": {
+        "dir": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/",
+        "frames": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/rictus_avant_la_pluie.tres",
+        "portrait": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/portrait.png"
+      }
+    },
+    {
+      "id": "nuit_de_lanternes",
+      "family": "ciel",
+      "name": "Nuit de lanternes",
+      "desc": "Les Terrasses à onze heures du soir : lanternes de rizière allumées, lucioles, pluie fine, la lune dans les flaques.",
+      "price": 600,
+      "target": "terrasses",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/nuit_de_lanternes.png",
+      "assets": {
+        "profiles": [
+          "res://data/ambiance/terrasses_noyees_nuit_de_lanternes.tres",
+          "res://data/ambiance/terrasses_rizieres_hautes_nuit_de_lanternes.tres"
+        ],
+        "sky": "res://assets/sprites/ambiance/sky_nuit_de_lanternes_256x64.png",
+        "particles": ["res://assets/sprites/ambiance/firefly_16.png", "res://assets/sprites/ambiance/lantern_glow_64.png"]
+      }
+    },
+    {
+      "id": "apres_midi_d_orage",
+      "family": "ciel",
+      "name": "Après-midi d'orage",
+      "desc": "La Forêt-brume sous un orage d'été : rayons chauds entre les cèdres, feuilles qui tombent, tonnerre au loin.",
+      "price": 600,
+      "target": "foret",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/apres_midi_d_orage.png",
+      "assets": {
+        "profiles": [
+          "res://data/ambiance/foret_brume_apres_midi_d_orage.tres",
+          "res://data/ambiance/foret_mangrove_lanternes_apres_midi_d_orage.tres"
+        ],
+        "sky": "res://assets/sprites/ambiance/sky_apres_midi_d_orage_256x64.png",
+        "particles": ["res://assets/sprites/ambiance/leaf_cedar_32.png"]
+      }
+    },
+    {
+      "id": "canicule_de_cendres",
+      "family": "ciel",
+      "name": "Canicule de cendres",
+      "desc": "La Cité à midi, sans pluie : ciel ocre, brume de chaleur, cendres qui montent des fonderies. La pluie revient quand le danger monte.",
+      "price": 600,
+      "target": "cite",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/canicule_de_cendres.png",
+      "assets": {
+        "profiles": [
+          "res://data/ambiance/cite_rouille_canicule_de_cendres.tres",
+          "res://data/ambiance/cite_fonderie_canal_canicule_de_cendres.tres"
+        ],
+        "sky": "res://assets/sprites/ambiance/sky_canicule_de_cendres_256x64.png",
+        "particles": ["res://assets/sprites/ambiance/ash_16.png", "res://assets/sprites/ambiance/heat_haze_tile_512.png"]
+      }
+    },
+    {
+      "id": "maree_haute",
+      "family": "ciel",
+      "name": "Marée haute",
+      "desc": "Les Cryptes quand l'eau monte : reflets plus hauts, bulles qui remontent, lumière verte filtrée par la marée.",
+      "price": 600,
+      "target": "cryptes",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/maree_haute.png",
+      "assets": {
+        "profiles": [
+          "res://data/ambiance/cryptes_noyees_maree_haute.tres",
+          "res://data/ambiance/cryptes_ossuaire_pluies_maree_haute.tres"
+        ],
+        "sky": "res://assets/sprites/ambiance/sky_maree_haute_256x64.png",
+        "particles": ["res://assets/sprites/ambiance/bubble_16.png"]
+      }
+    },
+    {
+      "id": "braises",
+      "family": "sillage",
+      "name": "Braises",
+      "desc": "Des étincelles d'ambre sombre s'échappent de chaque pas et s'éteignent en une demi-seconde.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/braises.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/braises/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/braises/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/braises/braises.tres"
+      }
+    },
+    {
+      "id": "petales",
+      "family": "sillage",
+      "name": "Pétales",
+      "desc": "Des pétales de cerisier des Terrasses tombent dans les pas et se posent sur l'eau.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/petales.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/petales/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/petales/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/petales/petales.tres"
+      }
+    },
+    {
+      "id": "givre",
+      "family": "sillage",
+      "name": "Givre",
+      "desc": "Chaque empreinte gèle en blanc, puis fond.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/givre.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/givre/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/givre/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/givre/givre.tres"
+      }
+    },
+    {
+      "id": "feu_follet",
+      "family": "sillage",
+      "name": "Feu follet",
+      "desc": "Des spores vertes et pâles de la Mangrove flottent un instant derrière le joueur.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/feu_follet.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/feu_follet/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/feu_follet/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/feu_follet/feu_follet.tres"
+      }
+    },
+    {
+      "id": "encre",
+      "family": "sillage",
+      "name": "Encre",
+      "desc": "Des taches d'encre sombre se diluent dans l'eau à chaque pas.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/encre.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/encre/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/encre/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/encre/encre.tres"
+      }
+    },
+    {
+      "id": "rouille",
+      "family": "sillage",
+      "name": "Rouille",
+      "desc": "Des paillettes de rouille de la Cité se détachent des pas et coulent dans les flaques.",
+      "price": 250,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/rouille.png",
+      "assets": {
+        "particle": "res://assets/sprites/cosmetics/sillages/rouille/particle_32.png",
+        "step": "res://assets/sprites/cosmetics/sillages/rouille/step_64.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/rouille/rouille.tres"
+      }
+    },
+    {
+      "id": "esquive_fumee",
+      "family": "sillage",
+      "name": "Esquive : fumée",
+      "desc": "La glissade laisse une volute de fumée grise qui se dissipe en un tiers de seconde.",
+      "price": 200,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/esquive_fumee.png",
+      "assets": {
+        "wake": "res://assets/sprites/cosmetics/sillages/esquive_fumee/wake.png",
+        "burst": "res://assets/sprites/cosmetics/sillages/esquive_fumee/burst.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/esquive_fumee/esquive_fumee.tres"
+      }
+    },
+    {
+      "id": "esquive_gouttelettes",
+      "family": "sillage",
+      "name": "Esquive : gouttelettes",
+      "desc": "La glissade projette une gerbe de gouttelettes claires.",
+      "price": 200,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/esquive_gouttelettes.png",
+      "assets": {
+        "wake": "res://assets/sprites/cosmetics/sillages/esquive_gouttelettes/wake.png",
+        "burst": "res://assets/sprites/cosmetics/sillages/esquive_gouttelettes/burst.png",
+        "frames": "res://assets/sprites/cosmetics/sillages/esquive_gouttelettes/esquive_gouttelettes.tres"
+      }
+    },
+    {
+      "id": "bronze_de_cloche",
+      "family": "parement",
+      "name": "Bronze de cloche",
+      "desc": "Cadres et boutons refondus dans le bronze des cloches de la ville noyée, cerclés de cuivre rouge.",
+      "price": 400,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/bronze_de_cloche.png",
+      "assets": {
+        "dir": "res://assets/sprites/ui/parements/bronze_de_cloche/",
+        "files": ["bar_frame_hp.png", "bar_frame_xp.png", "bar_frame_boss.png", "button_normal.png", "button_hover.png", "button_pressed.png", "button_disabled.png", "button_danger.png", "button_primary.png", "button_primary_hover.png", "button_primary_pressed.png", "panel_9slice.png", "panel_small_9slice.png", "header_banner.png", "divider.png", "timer_plate.png", "spell_frame.png", "spell_frame_pressed.png", "spell_frame_cooldown.png"]
+      }
+    },
+    {
+      "id": "celadon",
+      "family": "parement",
+      "name": "Céladon",
+      "desc": "Porcelaine céladon craquelée, cerclée d'argent : l'interface des porteuses d'eau.",
+      "price": 400,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/celadon.png",
+      "assets": {
+        "dir": "res://assets/sprites/ui/parements/celadon/",
+        "files": ["bar_frame_hp.png", "bar_frame_xp.png", "bar_frame_boss.png", "button_normal.png", "button_hover.png", "button_pressed.png", "button_disabled.png", "button_danger.png", "button_primary.png", "button_primary_hover.png", "button_primary_pressed.png", "panel_9slice.png", "panel_small_9slice.png", "header_banner.png", "divider.png", "timer_plate.png", "spell_frame.png", "spell_frame_pressed.png", "spell_frame_cooldown.png"]
+      }
+    },
+    {
+      "id": "laque_noire",
+      "family": "parement",
+      "name": "Laque noire et or",
+      "desc": "Laque noire du théâtre de la barge, filets d'or et nacre recollée.",
+      "price": 400,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/laque_noire.png",
+      "assets": {
+        "dir": "res://assets/sprites/ui/parements/laque_noire/",
+        "files": ["bar_frame_hp.png", "bar_frame_xp.png", "bar_frame_boss.png", "button_normal.png", "button_hover.png", "button_pressed.png", "button_disabled.png", "button_danger.png", "button_primary.png", "button_primary_hover.png", "button_primary_pressed.png", "panel_9slice.png", "panel_small_9slice.png", "header_banner.png", "divider.png", "timer_plate.png", "spell_frame.png", "spell_frame_pressed.png", "spell_frame_cooldown.png"]
+      }
+    },
+    {
+      "id": "argent_noirci",
+      "family": "parement",
+      "name": "Argent noirci",
+      "desc": "Argent noirci et plumes gravées : l'interface des guetteuses de la digue.",
+      "price": 400,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/argent_noirci.png",
+      "assets": {
+        "dir": "res://assets/sprites/ui/parements/argent_noirci/",
+        "files": ["bar_frame_hp.png", "bar_frame_xp.png", "bar_frame_boss.png", "button_normal.png", "button_hover.png", "button_pressed.png", "button_disabled.png", "button_danger.png", "button_primary.png", "button_primary_hover.png", "button_primary_pressed.png", "panel_9slice.png", "panel_small_9slice.png", "header_banner.png", "divider.png", "timer_plate.png", "spell_frame.png", "spell_frame_pressed.png", "spell_frame_cooldown.png"]
+      }
+    },
+    {
+      "id": "bivouac_des_cedres",
+      "family": "veillee",
+      "name": "Bivouac des cèdres",
+      "desc": "L'écran titre sous les cèdres de la Forêt-brume : une tente de toile cirée, une lanterne pendue, le feu sous la pluie.",
+      "price": 500,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/bivouac_des_cedres.png",
+      "assets": {
+        "map": "foret_brume",
+        "dir": "res://assets/sprites/props/menu/bivouac_des_cedres/",
+        "fire": "res://assets/sprites/props/menu/bivouac_des_cedres/fire.tres",
+        "props": ["tent.png", "tent_shadow.png", "lantern_hanging.png", "lantern_hanging_e.png", "pack.png", "pack_shadow.png"]
+      }
+    },
+    {
+      "id": "quai_de_la_cite",
+      "family": "veillee",
+      "name": "Quai de la Cité",
+      "desc": "Un brasero dans un bidon sur le quai rouillé, un chat de gouttière qui se chauffe, le canal qui clapote.",
+      "price": 500,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/quai_de_la_cite.png",
+      "assets": {
+        "map": "cite_rouille",
+        "dir": "res://assets/sprites/props/menu/quai_de_la_cite/",
+        "fire": "res://assets/sprites/props/menu/quai_de_la_cite/fire.tres",
+        "props": ["barrel.png", "barrel_shadow.png", "cat.png", "crate.png", "crate_shadow.png"]
+      }
+    },
+    {
+      "id": "crypte_veilleuse",
+      "family": "veillee",
+      "name": "Crypte veilleuse",
+      "desc": "Des cierges sur une dalle des Cryptes, l'eau noire qui reflète leurs flammes, une couronne de fleurs de papier.",
+      "price": 500,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/crypte_veilleuse.png",
+      "assets": {
+        "map": "cryptes_noyees",
+        "dir": "res://assets/sprites/props/menu/crypte_veilleuse/",
+        "fire": "res://assets/sprites/props/menu/crypte_veilleuse/fire.tres",
+        "props": ["candles.png", "candles_e.png", "wreath.png", "wreath_shadow.png"]
+      }
+    },
+    {
+      "id": "lanternes_de_riziere",
+      "family": "veillee",
+      "name": "Lanternes de rizière",
+      "desc": "Les rizières hautes la nuit : un rang de lanternes de papier, une barque tirée au sec, le feu dans un vieux seau.",
+      "price": 500,
+      "target": "",
+      "version": "v1",
+      "pending": true,
+      "preview": "res://assets/sprites/cosmetics/previews/lanternes_de_riziere.png",
+      "assets": {
+        "map": "terrasses_rizieres_hautes",
+        "dir": "res://assets/sprites/props/menu/lanternes_de_riziere/",
+        "fire": "res://assets/sprites/props/menu/lanternes_de_riziere/fire.tres",
+        "props": ["lantern_post.png", "lantern_post_e.png", "lantern_post_shadow.png", "boat.png", "boat_shadow.png"]
+      }
+    }
+  ]
+}

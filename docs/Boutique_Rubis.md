@@ -8,9 +8,9 @@
 - **Une seule monnaie, les rubis**, gagnés uniquement en jouant. Aucun pack, aucun hasard, aucune rotation, aucun chrono, aucune remise : le catalogue entier est visible et au même prix pour tout le monde, pour toujours.
 - **Tout est cosmétique.** Rien dans `cosmetics.json` ne peut porter un champ d'effet ; un test headless le garantit. Les skins « trophée » existants (`<perso>_skin1`, victoire en Difficile) restent des trophées : ils ne s'achètent pas.
 - **Gain réel mesuré dans le code** : ≈ 40-75 rubis par run perdue aux étages 2-3, ≈ 165-170 rubis par victoire en Moyen au rythme visé (19 min), ≈ 185-195 au rythme actuel des simulations (33-40 min). Soit **300 à 550 rubis par heure** selon le niveau du joueur. Les piliers pèsent 60 % du gain.
-- **Catalogue v1 recommandé (sans Tenues ni Suivants) ≈ 27 500 rubis (55-90 h selon le joueur), v1 complète ≈ 32 500, v1 + v2 ≈ 50 500 (≈ 100-125 h)**. Paliers de prix : 60-150 (un achat toutes les 2-3 parties au début), 250-400, 500-800, 1 000.
-- **14 familles** : Tenues et Teintes de personnages, Ciels des biomes (heures et saisons), Veillées (thèmes de l'écran titre), Parements d'interface, Sillages (pas et traînées), Rites (effets de mort et de victoire), Stèles, Partitions (musiques alternatives), Réticules, Saluts (poses de fin de run), Parures du téléporteur, Herbier des pluies (carnet illustré), Chambre claire (mode photo), Suivants (compagnons muets, v2).
-- **Top 5 à produire d'abord** : Teintes de personnages, Ciels, Sillages, Parements d'interface, Veillées.
+- **Catalogue v1 ≈ 25 500 rubis (≈ 50-85 h selon le joueur), v1 + v2 ≈ 61 500 (≈ 110-200 h, longue traîne des Panoplies)**. Paliers de prix : 60-150 (un achat toutes les 2-3 parties au début), 250-400, 500-800, 1 000.
+- **13 familles** : Panoplies (tenues thématiques des personnages), Ciels des biomes (heures et saisons), Veillées (thèmes de l'écran titre), Parements d'interface, Sillages (pas et traînées), Rites (effets de mort et de victoire), Stèles, Partitions (musiques alternatives), Réticules, Saluts (poses de fin de run), Parures du téléporteur, Herbier des pluies (carnet illustré), Chambre claire (mode photo), Suivants (compagnons muets, v2).
+- **Top 5 à produire d'abord (décision du joueur, 01/11/2026)** : Panoplies, Ciels, Sillages, Parements d'interface, Veillées : **11 900 rubis en v1** (catalogue `game/data/cosmetics.json`, briefs `art/briefs/cosmetics/`, consignes `art/tools/cosmetics/`). Le joueur refuse les Teintes (simples recolorations) : les skins achetables sont de **vrais équipements à thème** (§3.1).
 
 ---
 
@@ -85,7 +85,7 @@ Base de calibrage retenue : **400 rubis par heure** (joueur régulier moyen). 60
 
 ### 2.3 Test headless à écrire (`game/tests/cosmetics_test.tscn`)
 
-- Chaque entrée de `data/cosmetics.json` a `id`, `family`, `name`, `desc`, `price` (entier > 0, dans la liste des paliers), `preview` ; **aucune** clé parmi `effects`, `stats`, `mult`, `bonus`, `unlock_rule` ; `assets` listés existent ou l'entrée est marquée `"pending": true`.
+- Chaque entrée de `data/cosmetics.json` a `id`, `family` (clé de `families`), `name`, `desc`, `price` (entier > 0, dans la liste des paliers), `target` (id de personnage, préfixe de biome ou `""`), `assets`, `preview` ; **aucune** clé parmi `effects`, `stats`, `mult`, `bonus`, `unlock_rule` ; les fichiers d'`assets` existent ou l'entrée est marquée `"pending": true`.
 - Somme des prix par famille et totale conforme au §4 à ± 10 %.
 - Équiper puis déséquiper chaque article avec un `RunState` et un `Balance` de référence : empreinte des valeurs identique avant et après (aucune lecture de cosmétique dans `scripts/core/`).
 - `Profile.buy_cosmetic(id)` : refuse si `rubies < price` ou déjà possédé ; une seule écriture ; mode test : refuse d'écrire.
@@ -96,21 +96,98 @@ Base de calibrage retenue : **400 rubis par heure** (joueur régulier moyen). 60
 
 Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M ≈ 2-3 jours, L ≈ 1 semaine ; assets Codex : lots et poids mobile estimé), perf mobile, prix, risque et garde-fou. Les noms sont des propositions dans le vocabulaire du jeu (pluie, Source, biomes), sans emprunt à Risk of Rain ni Vampire Survivors.
 
-### 3.1 Tenues (skins complets de personnages)
+### 3.1 Panoplies (tenues thématiques des personnages)
 
-- **Quoi** : un second skin par personnage (`<perso>_skin2`), même contrat que `docs/Skins.md` (même silhouette IoU > 0,95, accent émissif conservé, mêmes planches, `.tres` substitué). Le skin 1 reste le trophée du Difficile ; la Tenue achetable raconte autre chose : **« ce qu'il était avant la pluie »** (tenues civiles, neuves, de la Cité avant la rouille : lin, laine, cuivre brillant, verre intact), contraste exact du trophée (après la Source).
-- **Production** : code **S** (la plomberie `Skins` existe ; passer de « un skin par personnage » à une liste : `Skins.skin_of` → `skins_of`, `selected_skin` inchangé ; `collection_view` affiche n cellules par personnage). Assets Codex : **un lot par personnage**, copie du `.blend` du héros, matériaux et accessoires seulement, rendu `iso_rig`, même procédé que les lots 47-51 ; Tocsin reste le plus lourd (membres détachés).
-- **Perf** : **+2 à 8 Mo mobile par Tenue** (36 Mo pour 10 skins, mesure de `Skins.md`). Avec un budget textures déjà dépassé (219 Mo pour 180), **les Tenues imposent le pack optionnel** : fichier `.pck` cosmétique téléchargé à la demande (Play Asset Delivery `on-demand` sur Android, On-Demand Resources sur iOS, `ProjectSettings.load_resource_pack`), PC l'embarque. Contrat orchestrateur (§5). Sans pack : 5 Tenues au plus en v1.
-- **Prix** : **1 000 rubis** chacune (palier 4). 10 Tenues = 10 000.
-- **Risque** : nul sur la puissance ; lisibilité tenue par le contrat IoU (le joueur et les monstres lisent le personnage comme avant). Garde-fou : aucun accessoire au-delà de 2 px hors silhouette, accent émissif identique (teinte et zones).
+> **Décision du joueur (01/11/2026)** : pas de Teintes (recolorations) ; les skins achetables sont de **vrais équipements à thème**. **v1 limitée, sans pack `.pck`** : un seul thème (« Avant la pluie ») et le nombre de personnages qui tient dans le budget textures, soit **4 personnages (Averse, Vigie, Ardent, Rictus, 8,4 Mo mobile)**. Les deux autres thèmes restent documentés ici pour plus tard et n'ont aucun article dans `cosmetics.json`.
 
-### 3.2 Teintes (recolorations de personnages)
+- **Quoi** : une tenue complète par personnage et par thème (`<perso>_<theme>`), même contrat que `docs/Skins.md` : **même ossature, mêmes animations, mêmes planches** (copie du `.blend` du héros, seuls les matériaux et les accessoires de surface changent, `.tres` à chemins substitués), silhouette IoU > 0,95, **accent émissif conservé** (teinte et zones, IoU > 0,90), aucun accessoire à plus de 2 px hors de la silhouette d'origine. Ce qui change vraiment : **coiffe, armure ou vêtement, arme ou outil, cape ou dos, matières**. Le skin 1 reste le trophée du Difficile (« après la Source ») ; les Panoplies racontent trois autres moments du monde.
+- **Prix** : **1 000 rubis** (palier 4) par Panoplie. v1 : 4 × 1 000 = 4 000. Catalogue complet : 3 thèmes × 10 personnages = 30 000.
+- **Production** : code **S** (§5 : `Skins.skins_of`, `equipped` lit `owned_cosmetics`). Assets Codex : **un lot par personnage et par thème**, procédé des lots 47-51 (`art/tools/night/skin_<perso>_build.py` repris en paramètres : matériaux, accessoires, chemins de sortie). Brief : `art/briefs/cosmetics/panoplies.md` ; consignes v1 : `art/tools/cosmetics/_panoplie_<perso>_avant_la_pluie.txt`.
+- **Risque** : nul sur la puissance. Lisibilité : contrat IoU ; **L\* du ton moyen ≥ 45** sur le sol du biome (une Panoplie noire, « Cortège », est relevée par ses voiles gris et sa cire, jamais un corps noir) ; **aucune couleur de la palette des télégraphes** (rouge/orange saturé) sur un vêtement ; rien ne change dans `effects/`, `variants/`, VFX ni invocations (la chaîne d'Arpenteuse, les mottes de Bourbe, le Montreur restent partagés).
 
-- **Quoi** : 2 à 3 variantes de palette par personnage (tenue par défaut **ou** Tenue possédée), par exemple pour Ardent « Suie » (noir et gris, braise inchangée) et « Argile » (ocre et terre cuite). L'accent émissif ne change jamais.
-- **Production** : code **M** : un shader de **table de correspondance** (gradient map) appliqué au sprite du joueur, qui lit une bande `lut_<teinte>.png` (256×8, rendue par Codex dans Blender comme une texture d'étalonnage, à la manière des `sky_*_256x64`) et **exclut les zones du masque `_e`** (émission intacte). C'est un shader d'étalonnage (famille autorisée par `CLAUDE.md` : « les systèmes sont du code Godot, toutes leurs textures sont rendues dans Blender »), pas un asset dessiné en code. **À valider par le joueur** : si la règle « tout visuel par Codex » est lue strictement, la solution de repli est le re-rendu Codex par Teinte (même coût Mo qu'une Tenue, 2-8 Mo chacune, ce qui tue la famille sur mobile). Rendu de contrôle : Codex livre pour chaque Teinte un portrait 256×256 rendu avec les vrais matériaux pour servir d'aperçu et de référence de couleur ; le shader doit rester à ΔE < 8 de ce portrait sur les trois tons du cel.
-- **Perf** : **≈ 0 Mo** par Teinte (une bande de 2 Ko + un portrait 256). Un `ShaderMaterial` de plus sur un seul sprite : négligeable.
-- **Prix** : **300 rubis** (palier 2). 10 personnages × 2 Teintes = 6 000 ; 3e Teinte en v2 (+3 000).
-- **Risque** : une Teinte trop sombre perdrait le joueur dans la foule : garde-fou L\* du ton moyen ≥ 45 (même borne que les monstres sombres, direction lumière §1.1), vérifié par le test sur le portrait de référence. Les Teintes ne s'appliquent pas aux skins trophée (le trophée reste reconnaissable).
+#### 3.1.1 Les trois thèmes
+
+| Thème (id) | Récit | Matières (cel 3 tons, DA sombre) | Statut |
+|---|---|---|---|
+| **Avant la pluie** (`avant_la_pluie`) | Ce qu'ils portaient dans la Cité avant la crue : des métiers, des parades, des premières. Rien de rouillé, rien de trempé, mais la même palette éteinte ; le contraste exact du trophée (après la Source). | lin écru #B8AE9A, laine grise #5A5B5E et bleu nuit #2F3A4C, cuivre poli #B4733A, laiton #A8946E, verre clair #9FB7B8, cuir fauve #8A5A36, velours vert bouteille #2E4A3A | **v1** (4 persos), reste en v2 |
+| **Garde de crue** (`garde_de_crue`) | La nuit où la digue a cédé : l'équipement de ceux qui l'ont tenue. Cirés goudronnés, cordages, lanternes de cuivre, brassards, sacs de sable, sifflets. Tout trempé, tout fonctionnel. | ciré noir #23262B, toile cirée ocre #6E5A32, chanvre #8C7B57, cuivre de lanterne #9B6A3A, liège #A58B5C, fonte #3A3B3D | v2 |
+| **Cortège des cryptes** (`cortege_des_cryptes`) | Le cortège qui a enterré la ville noyée : deuil, cire, os poli, fleurs de papier. Le thème le plus sombre ; la lisibilité vient des voiles gris et de la cire claire. | crêpe noir #1E1D21 (relevé au plancher cel), voile gris #6A6670, cire #C9B88A, os #B7AC95, argent noirci #5A5D63, papier #CFC8BA ; aucun rouge | v2 |
+
+#### 3.1.2 Fiches « Avant la pluie » (v1 en gras)
+
+| Personnage | Nom | Coiffe | Corps / armure | Arme / outil | Cape / dos | Accent conservé |
+|---|---|---|---|---|---|---|
+| **Averse** | **Porteuse d'eau** | foulard de lin noué, mèches sorties | robe de lin écru à manches retroussées, corselet de cuir fauve lacé, sandales | amphore de verre soufflé clair cerclée de cuivre neuf (même volume, **même fenêtre d'eau**) | bretelles de cuir, bâton de portage dans le dos | eau #5FD4E8 |
+| **Vigie** | **Guetteuse de beau temps** | béret de laine bleu nuit à insigne de cuivre | vareuse de laine bleu nuit à boutons de cuivre, pantalon de toile, guêtres | arc d'if verni clair, corde neuve ; carquois de cuir fauve | pèlerine courte de laine grise | rouge de fusée #FF3A4F (fusées à la hanche, mêmes zones) |
+| **Ardent** | **Allumeur de réverbères** | casquette de cuir fauve à visière courte (remplace la capuche, même hauteur) | redingote de laine grise à double boutonnage de cuivre, gilet de lin, bottines | perche d'allumeur en cuivre poli, lanterne de verre à la pointe (même longueur que le bâton) | pèlerine de laine, bidon d'huile de cuivre à la ceinture | braise #FF8C33 (dans la lanterne, mêmes zones) |
+| **Rictus** | **Première** | cheveux de crin peignés, ruban de velours ; porcelaine intacte, joues peintes | habit de velours vert bouteille à boutons de nacre, jabot de lin, culotte de satin gris | couteaux à manche de nacre, lames polies | fils de marionnette neufs (chanvre clair) | argent spectral #9FC8C0 |
+| Tocsin | Automate d'horloge | cloche de bronze poli, sans fêlure, cadran de laiton sur le front | cuivre rouge poli, rivets de laiton, émaux bleu nuit sur le plastron | bras-piliers en cuivre neuf (membres détachés inclus) | aucun | orange foyer #FF7A1F |
+| Arpenteuse | Élève géomètre | bonnet de toile claire | blouse de lin écru sur jupe de laine ardoise, tablier de cuir fauve | trépied de bois verni, touret neuf | sacoche de cuir, rouleaux de plans | cuivre #FF7A1F (chaîne partagée, inchangée) |
+| Rainette | Garde des rizières | bandeau de lin | peau vert mousse #5E7A4A (pas encore de nuit), plastron de cuir fauve lacé | lance de bambou à fer poli | cape de feuilles de lotus tressées | sac vocal #8DBBA8 |
+| Avare | Prêteur sur gages | calotte de velours, lorgnon de laiton | redingote de drap vert foncé, gilet de soie à chaîne de montre | coffre de bois verni à ferrures de cuivre (même gabarit) | aucun | or #F2C14E (mêmes jointures) |
+| Bourbe | Terre crue | aucune | argile fraîche lissée #8F6B4E, empreintes de doigts, bandes de lin | mottes inchangées (asset partagé) | jarre de terre cuite dans le dos | feu follet #8DDBA8 |
+| Taliant | Jeune pousse | chapeau de paille neuf | écorce verte et lisse, kimono de lin indigo, dō de cuir fauve | katana de bois clair poli, fourreau laqué | aucun | fil de sève #CDEB6E |
+
+#### 3.1.3 Fiches « Garde de crue » (v2)
+
+| Personnage | Nom | Coiffe | Corps / armure | Arme / outil | Cape / dos | Accent conservé |
+|---|---|---|---|---|---|---|
+| Ardent | Fanalier | suroît de ciré noir | vareuse de ciré goudronné, brassard de toile ocre, bottes | perche à fanal de cuivre (la braise dans le fanal) | sac de sable à l'épaule | braise #FF8C33 |
+| Rictus | Pantin de sauvetage | bonnet de laine trempé | gilet de liège à sangles sur habit de ciré | couteaux de marin à manche de corde | fils remplacés par du cordage de chanvre | argent spectral #9FC8C0 |
+| Tocsin | Pompe de crue | cloche d'alarme cerclée de cordage | plastron de ciré riveté, lanterne de cuivre au cou | bras-piliers lestés en fonte | aucun | orange foyer #FF7A1F |
+| Averse | Écopeuse | capuche de ciré ocre | vareuse de ciré à sangles, bottes | seau de cuivre cerclé à la place de l'amphore (même volume, fenêtre d'eau au bord) | corde lovée | eau #5FD4E8 |
+| Arpenteuse | Jaugeuse | casquette de ciré | ciré long à brassard | trépied à jauge de crue graduée | sacoche de toile cirée | cuivre #FF7A1F (chaîne partagée) |
+| Rainette | Nageuse de sauvetage | aucune | peau luisante vert-gris, harnais de cordage, bouée de liège | gaffe ferrée (même longueur que la lance) | corde de rappel | sac vocal #8DBBA8 |
+| Avare | Collecteur de la digue | chapeau de ciré | ciré noir sur gilet de laine, sacs de sable à la ceinture | coffre cerclé de cordage, scellé de plomb (même gabarit) | aucun | or #F2C14E |
+| Bourbe | Digue vive | aucune | vase chargée de sacs de sable, bandes de toile cirée | mottes inchangées | pieux de bois plantés dans le dos | feu follet #8DDBA8 |
+| Vigie | Guetteuse de crue | suroît | pèlerine de ciré, bottes | arc gainé de toile, carquois étanche de cuivre | lanterne au carquois | rouge de fusée #FF3A4F |
+| Taliant | Rōnin de barrage | chapeau de jonc ciré | mino (manteau de paille) sur hakama trempé | katana à fourreau de toile cirée | lanterne à la ceinture | fil de sève #CDEB6E |
+
+#### 3.1.4 Fiches « Cortège des cryptes » (v2)
+
+| Personnage | Nom | Coiffe | Corps / armure | Arme / outil | Cape / dos | Accent conservé |
+|---|---|---|---|---|---|---|
+| Ardent | Porte-cierge | capuche de crêpe | aube de lin gris sous manteau noir | cierge de procession (cire ; la flamme = braise) | aucun | braise #FF8C33 |
+| Rictus | Pleureuse | voile de deuil sur la porcelaine | habit noir à galons d'argent | couteaux d'argent noirci | fils de soie noire | argent spectral #9FC8C0 |
+| Tocsin | Glas | cloche de deuil drapée de crêpe | plastron d'argent noirci gravé d'épitaphes | bras-piliers en os et fer | aucun | orange foyer #FF7A1F |
+| Averse | Lacrymatoire | voile gris | robe de crêpe, ceinture d'argent | lacrymatoire de verre fumé cerclé d'argent à la place de l'amphore (fenêtre d'eau conservée) | aucun | eau #5FD4E8 |
+| Arpenteuse | Arpenteuse des tombes | capote noire | redingote de crêpe | trépied d'os | rouleaux de registres | cuivre #FF7A1F (chaîne partagée) |
+| Rainette | Rainette des ossuaires | voile de deuil | peau gris pâle, cuirasse d'os poli | lance d'argent noirci | aucun | sac vocal #8DBBA8 |
+| Avare | Exécuteur testamentaire | calotte de crêpe | redingote noire, gants gris | coffre-reliquaire d'argent noirci et d'os (même gabarit) | aucun | or #F2C14E |
+| Bourbe | Terre de cimetière | aucune | vase noire, bandes de crêpe | mottes inchangées | fleurs de papier blanc plantées dans le dos | feu follet #8DDBA8 |
+| Vigie | Veilleuse de cortège | voile noir | pèlerine de crêpe | arc d'os et d'argent, carquois de cierges | aucun | rouge de fusée #FF3A4F (fusées) |
+| Taliant | Rōnin en deuil | chapeau de jonc voilé | kimono blanc de deuil sous haori noir | katana à fourreau d'os | aucun | fil de sève #CDEB6E |
+
+#### 3.1.5 Budget textures : options et décision
+
+Mesure de `docs/Skins.md` (une tenue duplique les planches de corps de son personnage ; budget mobile déjà à **219 Mo pour 180**) :
+
+| Personnage | Mo mobile par tenue | Rang |
+|---|---|---|
+| Averse | 1,2 | 1 |
+| Rictus | 2,2 | 2 |
+| Vigie | 2,3 | 3 |
+| Arpenteuse | 2,4 | 4 |
+| Ardent | 2,7 | 5 |
+| Rainette | 2,8 | 6 |
+| Avare | 3,4 | 7 |
+| Bourbe | 4,1 | 8 |
+| Taliant | 6,8 | 9 |
+| Tocsin | 8,2 | 10 |
+| **10 personnages** | **36** | |
+
+| Option | Contenu | Mo mobile ajoutés | Rubis | Lecture |
+|---|---|---|---|---|
+| **A (retenue, 01/11/2026)** | 1 thème × 4 persos : **Averse, Vigie, Ardent, Rictus** | **8,4** (+3,8 % du total actuel) | 4 000 | les trois personnages de départ les plus joués (Ardent et Vigie en difficulté 1, Averse) + le moins cher au Mo après Averse ; aucun pack, aucun code de plus |
+| A' (minimum) | 1 thème × 3 persos : Averse, Vigie, Ardent | 6,2 | 3 000 | sans Rictus (personnage caché avant la sortie : moins d'acheteurs au lancement) |
+| A'' | 1 thème × 5 persos : A + Arpenteuse | 10,8 | 5 000 | un personnage de difficulté 3 de plus ; au-delà, chaque perso coûte 2,8-8,2 Mo |
+| B | 1 thème × 10 persos | 36 | 10 000 | rejetée sans pack |
+| C | 3 thèmes × 10 persos dans `cosmetics.pck` | 0 embarqués, 108 à la demande | 30 000 | contrat `PlatformServices` (§5), plus tard |
+| Palier 2 | re-rendu des dossiers par défaut à la taille d'affichage (`art/tools/night/ANDROID.md`) | divise toutes les lignes ci-dessus d'autant | — | les Panoplies suivent le défaut du moment (contrat « mêmes tailles ») : à faire avant les 26 restantes |
+
+Chaque consigne Codex demande la mesure avant/après (`python art/tools/texture_budget.py`) et rapporte les Mo réellement ajoutés ; si une Panoplie dépasse de plus de 20 % l'estimation, l'orchestrateur arbitre avant le lot suivant.
+
+### 3.2 Teintes : supprimées (décision du joueur, 01/11/2026, voir §3.15)
 
 ### 3.3 Ciels (heures et saisons des biomes)
 
@@ -221,7 +298,8 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 
 | Idée | Pourquoi non |
 |---|---|
-| Couleurs de sorts du joueur | l'accent émissif est la couleur de lecture des sorts et de la lumière du joueur (`LightRig`, `Skins.md`) ; changer la couleur des projectiles change la lecture ami/ennemi. Les Teintes gardent l'accent. |
+| Couleurs de sorts du joueur | l'accent émissif est la couleur de lecture des sorts et de la lumière du joueur (`LightRig`, `Skins.md`) ; changer la couleur des projectiles change la lecture ami/ennemi. Les Panoplies gardent l'accent. |
+| Teintes (recolorations de personnages par table de correspondance) | **refusées par le joueur (01/11/2026)** : une recoloration n'est pas un équipement ; la famille est remplacée par les Panoplies (§3.1). L'ancienne proposition (shader `lut_<teinte>.png` 256×8, portrait de référence, ΔE < 8) reste dans l'historique git si un jour une variante de palette gratuite est voulue pour l'accessibilité. |
 | Skins de monstres ou de boss | la silhouette et la palette des monstres sont de la lisibilité pure (250 monstres, L\* 55) : rien à vendre. |
 | Couleurs de télégraphes, taille du réticule, barres de PV | réglages d'accessibilité, gratuits dans Réglages, jamais en boutique. |
 | Décor qui change le sol (tuiles, props de combat) | un prop de plus au sol cache un télégraphe ou une capsule ; les Ciels ne touchent que la lumière, la brume et les particules hautes. |
@@ -237,16 +315,15 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 | Palier | Prix | Familles | Temps de jeu pour un article (400 rubis/h) |
 |---|---|---|---|
 | 1 | **60-150** | planches de l'Herbier (60-120), Réticules (120), Saluts universels (150), filtres et cadres photo (100) | 10-25 min : **un achat toutes les 2-3 parties** pour un débutant (40-75 rubis/run) |
-| 2 | **250-400** | Sillages (200-250), Saluts de personnage (250), Teintes (300), Rites de mort (300), Parements (400), Rites de victoire (400), Partition de menu (400) | 40-60 min |
+| 2 | **250-400** | Sillages (200-250), Saluts de personnage (250), Rites de mort (300), Parements (400), Rites de victoire (400), Partition de menu (400) | 40-60 min |
 | 3 | **500-800** | Veillées (500), Parures du téléporteur (500), Ciels (600), Suivants (700), Partitions de biome (800) | 1 h 15 - 2 h |
-| 4 | **1 000** | Tenues | 2 h 30 |
+| 4 | **1 000** | Panoplies | 2 h 30 |
 
 ### 4.2 Totaux du catalogue
 
 | Famille | v1 (articles × prix) | v1 (rubis) | v2 (rubis) |
 |---|---|---|---|
-| Teintes | 20 × 300 | 6 000 | +3 000 (3e Teinte) |
-| Tenues | 5 × 1 000 (pack optionnel ou 5 persos) | 5 000 | +5 000 (5 restantes) |
+| Panoplies | 4 × 1 000 (thème « Avant la pluie », Averse, Vigie, Ardent, Rictus) | 4 000 | +26 000 (6 persos restants du thème 1, puis 2 thèmes × 10) |
 | Ciels | 4 × 600 | 2 400 | +2 400 |
 | Veillées | 4 × 500 | 2 000 | — |
 | Parements | 4 × 400 | 1 600 | — |
@@ -260,21 +337,21 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 | Chambre claire | 3 filtres + 4 cadres × 100 | 700 | — |
 | Suivants | — | — | +2 800 |
 | Stèles (§4.4, option) | — | — | +1 250 |
-| **Total** | | **≈ 32 500** | **≈ 50 500** |
+| **Total** | | **≈ 25 500** | **≈ 61 500** |
 
-Lecture en temps de jeu : à 400 rubis/h, **v1 ≈ 80 h**, un joueur régulier (500-550/h) la vide en **≈ 60 h**, un débutant (300/h) en ≈ 110 h ; **v1 + v2 ≈ 100-125 h**. Pour viser strictement « 60-100 h » dès la v1, retirer les Tenues de la v1 (elles dépendent du pack optionnel) : v1 sans Tenues ≈ 27 500 rubis = **55-90 h**. C'est la recommandation : **v1 = tout sauf Tenues et Suivants**, Tenues dès que le pack optionnel existe.
+Lecture en temps de jeu : à 400 rubis/h, **v1 ≈ 64 h**, un joueur régulier (500-550/h) la vide en **≈ 50 h**, un débutant (300/h) en ≈ 85 h ; le **top 5 seul (11 900) ≈ 30 h**. **v1 + v2 ≈ 155 h** : la longue traîne vient des 26 Panoplies restantes (26 000 rubis), achetées en pratique pour un ou deux personnages favoris (3 Panoplies d'un même personnage = 3 000 rubis ≈ 7 h 30), jamais toutes. Si le joueur veut resserrer, le prix de Panoplie à 800 ramène v1 + v2 à ≈ 55 500 (≈ 140 h) ; ce document garde 1 000 (palier 4, l'article le plus visible du catalogue).
 
 ### 4.3 Cadence vécue par un joueur régulier
 
 | Parties jouées | Rubis cumulés (profil intermédiaire → régulier) | Achats possibles |
 |---|---|---|
 | 1-3 (découverte, morts aux étages 2-3) | 120-200 | 1 Réticule ou 2 planches, puis 1 Salut : **un article toutes les 2-3 parties** |
-| 4-8 | 450-700 | 1 Sillage + 1 Teinte, ou 1 Parement |
-| 9-15 (premières victoires) | 1 200-1 800 | 1 Ciel + 1 Teinte + planches, ou 1 Veillée + 1 Rite |
+| 4-8 | 450-700 | 1 Sillage + 1 Rite, ou 1 Parement |
+| 9-15 (premières victoires) | 1 200-1 800 | 1 Ciel + 1 Sillage + planches, ou 1 Veillée + 1 Rite, ou **la première Panoplie** de son personnage |
 | 16-30 | 3 000-4 200 | 1 Partition, 2 Ciels, Parure du téléporteur : **un article de palier 3 toutes les 5-6 parties** |
-| 31-60 | 7 000-9 000 | Tenues (pack), le reste des Ciels et Partitions |
+| 31-60 | 7 000-9 000 | Panoplies des autres personnages, le reste des Ciels et Partitions |
 | 61-100 | 13 000-16 000 | Partitions, Parures, derniers Ciels |
-| 101-190 | 16 000-29 000 | **fin de la v1 recommandée (27 500) vers 170-190 parties, ≈ 60 h** pour un régulier à 3 parties par heure |
+| 101-170 | 16 000-25 500 | **fin de la v1 (25 500) vers 160-170 parties, ≈ 55 h** pour un régulier à 3 parties par heure |
 
 Ce rythme vient du gain réel ; si le systems-designer recalibre `run_rubies` (par exemple pour que Difficile rapporte vraiment +30 %), les prix suivent proportionnellement : garder le ratio « palier 1 ≈ 2-3 parties de débutant, palier 4 ≈ 6 victoires ».
 
@@ -286,12 +363,13 @@ Famille retenue en option v2, proposée par le joueur : un marqueur **sans colli
 
 ## 5. Contrats à prévoir (pour l'orchestrateur, hors de ce document)
 
-- **Données** : `game/data/cosmetics.json` : liste d'entrées `{id, family, name, desc, price, preview, assets: [...], per_character: bool, biome: "", pending: bool}`. Familles (clés) : `tenue`, `teinte`, `ciel`, `veillee`, `parement`, `sillage`, `rite_mort`, `rite_victoire`, `partition`, `reticule`, `salut`, `parure`, `herbier`, `filtre_photo`, `cadre_photo`, `suivant`, `stele`.
-- **Profil** (`profile.gd`) : `owned_cosmetics: Array[StringName]`, `equipped_cosmetics: Dictionary` (`family[:scope]` → id, par exemple `"ciel:foret_brume"`, `"teinte:ardent"`, `"salut:tocsin"`), `spend_rubies(n) -> bool`, `buy_cosmetic(id) -> bool` (une écriture), `equip_cosmetic(family_scope, id)`. Migration de version : champs absents = vides. Rien en mode test (`begin_sandbox`).
+- **Données** : `game/data/cosmetics.json` (**écrit le 01/11/2026**, schéma stable) : `{"families": {id: {name, desc, scope, asset_root}}, "items": [{id, family, name, desc, price, target, assets, preview?, pending?, theme?, version?}]}`. `scope` : `character` (target = id de personnage), `biome` (target = préfixe de map_id : `terrasses`, `foret`, `cite`, `cryptes`), `global` (target `""`). Familles présentes : `panoplie`, `ciel`, `sillage`, `parement`, `veillee` ; à ajouter plus tard : `rite_mort`, `rite_victoire`, `partition`, `reticule`, `salut`, `parure`, `herbier`, `filtre_photo`, `cadre_photo`, `suivant`, `stele`.
+- **Profil** (`profile.gd`) : `owned_cosmetics: Array[StringName]`, `equipped_cosmetics: Dictionary` (`family[:scope]` → id, par exemple `"ciel:terrasses"`, `"panoplie:ardent"`, `"salut:tocsin"`), `spend_rubies(n) -> bool`, `buy_cosmetic(id) -> bool` (une écriture), `equip_cosmetic(family_scope, id)`. Migration de version : champs absents = vides. Rien en mode test (`begin_sandbox`).
+- **Panoplies et `Skins`** : une Panoplie possédée et équipée est un skin au sens de `skins.gd` (`Skins.skin_dir(perso, id)`, `resolve_frames`, `asset_dir`, `portrait_info` inchangés). À coder : `Skins.skin_of_dict` (un seul skin) devient `skins_of` (liste : trophée de `characters.json` + Panoplies de `cosmetics.json` dont `target` = perso) ; `Skins.equipped` accepte un id possédé via `owned_cosmetics` en plus de `unlocked_skins` ; `selected_skin` inchangé.
 - **Autoload de lecture** : `Cosmetics` (`scripts/core/cosmetics.gd`, orchestrateur) : `equipped(family, scope) -> Dictionary`, `path(family, scope, asset) -> String` avec repli sur le défaut si l'asset manque (même logique que `Skins.has_assets`). Aucun autre script de `scripts/core/` ne lit les cosmétiques.
 - **Écran** : bouton **« Collection »** sur le titre (remplace les boutons « Personnalisations » et « Boutique » du GDD §3, fusionnés : il n'y a rien à vendre en argent réel), rubis en haut à droite, un onglet par famille, grille `CollectionView` réutilisée (aperçu, prix, « Acheter » → `ConfirmDialog` « Dépenser 300 rubis pour Suie ? », puis « Équiper » / « Équipé »). Articles verrouillés par manque de rubis : affichés en couleur avec le prix, jamais grisés comme un cadenas (ce n'est pas un objectif, c'est un prix). L'onglet Skins actuel de l'Historique devient l'onglet « Tenues » de la Collection ; les trophées y restent avec leur condition.
-- **Pack optionnel** (Tenues, Partitions) : `cosmetics.pck` chargé par `ProjectSettings.load_resource_pack` au lancement s'il est présent ; sur Android via Play Asset Delivery `on-demand`, sur iOS via On-Demand Resources, bouton « Télécharger (36 Mo) » sur l'article ; PC embarque tout. Contrat de la couche `PlatformServices`.
-- **Assets** : `game/assets/sprites/cosmetics/<famille>/<id>/` pour les nouvelles familles ; les Tenues restent dans `characters/<perso>/skins/<id>/` (contrat `Skins.md`) ; les Ciels dans `data/ambiance/<biome>_<ciel>.tres` + `assets/sprites/ambiance/sky_<ciel>_256x64.png` ; les Partitions dans `assets/audio/music/music_<biome>_<partition>_<couche>.ogg`. Consignes Codex : `art/tools/cosmetics/_c<n>_<famille>.txt` sur le gabarit `art/tools/_consigne_gabarit.txt`, profil `eco-mini`, un lot par article ou par famille légère.
+- **Pack optionnel** (Panoplies au-delà de la v1, Partitions) : **pas en v1 (décision du joueur, 01/11/2026)**. Plus tard : `cosmetics.pck` chargé par `ProjectSettings.load_resource_pack` au lancement s'il est présent ; sur Android via Play Asset Delivery `on-demand`, sur iOS via On-Demand Resources, bouton « Télécharger (n Mo) » sur l'article ; PC embarque tout. Contrat de la couche `PlatformServices`.
+- **Assets** (détail par famille : `art/briefs/cosmetics/<famille>.md`) : Panoplies dans `characters/<perso>/skins/<perso>_<theme>/` (contrat `Skins.md`) ; Ciels dans `data/ambiance/<map_id>_<ciel>.tres` (une par variante A/B du biome) + `assets/sprites/ambiance/sky_<ciel>_256x64.png` ; Sillages dans `assets/sprites/cosmetics/sillages/<id>/` ; Parements dans `assets/sprites/ui/parements/<id>/` (mêmes noms et tailles que `ui/da/` et `ui/spell_frame*.png`) ; Veillées dans `assets/sprites/props/menu/<id>/` ; aperçus de fiche dans `assets/sprites/cosmetics/previews/<id>.png` (256×256) ; les Partitions dans `assets/audio/music/music_<biome>_<partition>_<couche>.ogg`. Consignes Codex : `art/tools/cosmetics/_<famille>_<id>.txt` sur le gabarit `art/tools/_consigne_gabarit.txt`, profil `eco-mini`, un lot par article (un lot par personnage pour les Panoplies).
 - **Tests** : `tests/cosmetics_test.tscn` (§2.3) ; capture de validation par Ciel et par Parement (protocole de la direction lumière, PV à 20 %).
 - **Docs à corriger quand c'est codé** : `balance.gd` ligne 1062, `Maths_Scaling.md` (rubis), `Design_Menus.md` (le titre gagne « Collection »), `GDD.md` §3 et §10 (plus de Boutique en argent réel : jeu payant).
 
@@ -301,14 +379,14 @@ Famille retenue en option v2, proposée par le joueur : un marqueur **sans colli
 
 | Ordre | Famille | Pourquoi d'abord | Coût |
 |---|---|---|---|
-| 1 | **Teintes** | la famille « skins » la moins chère en Mo (≈ 0), 20 articles d'un coup, visible toute la run | code M + 20 bandes LUT et 20 portraits Codex |
+| 1 | **Panoplies** (v1 : « Avant la pluie » × Averse, Vigie, Ardent, Rictus) | l'article le plus désiré (le personnage, visible toute la run) ; la plomberie `Skins` existe ; 4 lots Codex sur le procédé des skins trophée | code S + 4 lots (8,4 Mo mobile) |
 | 2 | **Ciels** | la demande explicite « diversifier le décor », assets quasi nuls (profils `.tres` + 4 ciels 256×64), fort effet | code S + réglages GD + 4 petits lots |
 | 3 | **Sillages** | premier achat de palier 2 plaisant, met en place le budget de particules partagé par Rites et Suivants | code M + 8 micro-lots |
 | 4 | **Parements d'interface** | visibles dans tous les menus et le HUD, 4 lots simples de 9-slices | code M + 4 lots |
 | 5 | **Veillées** | l'écran titre est vu à chaque session ; valorise les cartes existantes | code S + 4 lots de props |
 | 6-9 | Réticules, Saluts, Rites, Herbier | paliers 1-2, remplissent la cadence « un achat toutes les 2-3 parties » | code S/M, lots légers |
 | 10-11 | Parures du téléporteur, Partitions | palier 3, Partitions liées au pack optionnel | code S + lots moyens, audio |
-| 12 | Tenues | dépendent du pack optionnel et du palier 2 du budget textures | code S + 10 lots lourds |
-| v2 | Suivants, Stèles, piliers, 3e Teinte, Ciels 2, Partitions 2 | après mesure du comportement d'achat (journal de run : `RunLog` note déjà `skin`) | — |
+| 12 | Panoplies restantes (6 persos du thème 1, puis « Garde de crue » et « Cortège des cryptes ») | dépendent du palier 2 du budget textures (re-rendu à la taille d'affichage) ou du pack optionnel | code 0 + 26 lots (≈ 100 Mo mobile avant palier 2) |
+| v2 | Suivants, Stèles, piliers, Ciels 2, Partitions 2 | après mesure du comportement d'achat (journal de run : `RunLog` note déjà `skin`) | — |
 
 Mesure après sortie : `RunLog` ajoute les articles équipés par run (`cosmetics: {family: id}`) et le profil le solde de rubis en fin de run ; `tools/analyse_runs.py` sort « rubis gagnés par heure réelle » et « premier achat à la partie n » pour vérifier la cadence 2-3 parties.
