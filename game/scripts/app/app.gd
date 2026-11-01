@@ -16,6 +16,7 @@ const SETTINGS_SCENE := preload("res://scenes/menu/settings.tscn")
 const ACHIEVEMENTS_SCENE := preload("res://scenes/menu/achievements.tscn")
 const HISTORY_SCENE := preload("res://scenes/menu/history.tscn")
 const DAILY_SCENE := preload("res://scenes/menu/daily.tscn")
+const SHOP_SCENE := preload("res://scenes/menu/shop.tscn")
 const BG_SCENE := preload("res://scenes/menu/menu_background.tscn")
 const UI_LAYER := 10
 const FADE_S := 0.18
@@ -51,7 +52,7 @@ func _ready() -> void:
 
 # --- API ---------------------------------------------------------------------
 
-## Affiche un écran de menu : &"title" | &"new_run" | &"settings" | &"credits" | &"achievements" | &"history" | &"daily".
+## Affiche un écran de menu : &"title" | &"new_run" | &"settings" | &"credits" | &"achievements" | &"history" | &"daily" | &"shop".
 func show(screen: StringName, toast := "") -> void:
 	await _transition(func() -> void: _build_screen(screen, toast))
 
@@ -144,6 +145,7 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.achievements_requested.connect(func() -> void: show(&"achievements"))
 			t.history_requested.connect(func() -> void: show(&"history"))
 			t.daily_requested.connect(func() -> void: show(&"daily"))
+			t.shop_requested.connect(func() -> void: show(&"shop"))
 			t.test_mode_requested.connect(start_test_mode) # À RETIRER OU MASQUER AVANT LA SORTIE
 			t.quit_requested.connect(_on_quit)
 			add_child(t)
@@ -168,6 +170,10 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			var hi := HISTORY_SCENE.instantiate() as HistoryScreen
 			hi.back_requested.connect(return_to_title)
 			current = _wrap_control(hi)
+		&"shop":
+			var sh := SHOP_SCENE.instantiate() as ShopScreen
+			sh.back_requested.connect(return_to_title)
+			current = _wrap_control(sh)
 		&"daily":
 			var dl := DAILY_SCENE.instantiate() as DailyScreen
 			dl.start_requested.connect(start_run) # config du jour : personnage, Moyen, graine imposée

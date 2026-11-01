@@ -16,6 +16,7 @@ signal credits_requested
 signal daily_requested
 signal achievements_requested
 signal history_requested
+signal shop_requested ## Boutique de skins (rubis)
 ## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : arène d'invocation, triches ; rien n'est écrit au profil.
 signal test_mode_requested
 signal quit_requested
@@ -64,6 +65,7 @@ var credits_button: Button
 var daily_button: Button
 var achievements_button: Button
 var history_button: Button ## « Historique » : parties passées, records, objets, skins
+var shop_button: Button ## « Boutique » : skins payés en rubis
 var quit_button: Button
 var ruby_label: Label
 var toast_label: Label
@@ -298,8 +300,11 @@ func _rebuild_column() -> void:
 	if has_save:
 		new_run_button = _add_sub("Nouvelle run", _on_new_run_pressed)
 		new_run_button.name = "NewRun"
-	daily_button = _add_sub("Défi du jour", _on_daily_pressed)
+	var dsh := _add_pair("Défi du jour", _on_daily_pressed, "Boutique", func(): shop_requested.emit())
+	daily_button = dsh[0]
 	daily_button.name = "Daily"
+	shop_button = dsh[1]
+	shop_button.name = "Shop"
 	var hs := _add_pair("Historique", func(): history_requested.emit(), "Succès", func(): achievements_requested.emit())
 	history_button = hs[0]
 	history_button.name = "History"

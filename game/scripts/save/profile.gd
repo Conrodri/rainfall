@@ -645,6 +645,34 @@ func set_selected_skin(cid: StringName, skin_id: String) -> bool:
 	return true
 
 
+## Boutique de skins : achète le skin `skin_id` en rubis (prix : SkinShop.price_of). Cosmétique seulement, jamais d'argent réel.
+## Renvoie &"ok" | &"unknown" (aucun skin de cet id) | &"owned" (déjà possédé, par achat ou par condition : rien n'est débité) |
+## &"poor" (rubis insuffisants : rien n'est débité) | &"no_art" (rendu pas encore livré : non vendu). N'équipe pas le skin.
+## Un seul enregistrement disque (rubis + possession + compteur `stats.rubies_spent`) ; en bac à sable (mode test) tout reste en
+## mémoire et disparaît à end_sandbox(). Pas de nouvelle version de fichier : `unlocked_skins` et `rubies` existent déjà.
+func buy_skin(skin_id: String) -> StringName:
+	var cid := ""
+	for e in Skins.all_skins(_roster()):
+		if str(e.id) == skin_id:
+			cid = str(e.character.get("id", ""))
+	if cid == "":
+		return &"unknown"
+	if is_unlocked(StringName("skin:" + skin_id)):
+		return &"owned"
+	if not Skins.has_assets(cid, skin_id):
+		return &"no_art"
+	var price := SkinShop.price_of(skin_id)
+	if rubies < price:
+		return &"poor"
+	_loading = true
+	rubies -= price
+	unlocked_skins.append(StringName(skin_id))
+	stats["rubies_spent"] = float(stats.get("rubies_spent", 0.0)) + float(price)
+	_loading = false
+	_touch()
+	return &"ok"
+
+
 # --- Compteurs et variantes de sorts ------------------------------------------------------
 
 ## Ajoute `n` au compteur générique `stats[key]` (créé à 0). Écrit le profil (sauf pendant add_run_result).
