@@ -68,15 +68,6 @@ func _menus(sz: String) -> void:
 	await _f(20)
 	_save("%s_options" % sz)
 	st.queue_free()
-	var pr := (load("res://scenes/menu/progress.tscn") as PackedScene).instantiate()
-	pr.set("profile", FakeProfile.new())
-	add_child(pr)
-	await _f(25)
-	_save("%s_progression" % sz)
-	pr.tab_skins.pressed.emit()
-	await _f(8)
-	_save("%s_progression_skins" % sz)
-	pr.queue_free()
 	var e := EndRunScreen.create({"victory": false, "reason": "death", "character_name": "Averse", "mode": "moyen",
 		"stage": 3, "active_time_s": 642.0, "level": 17, "pillars": 4, "kills": 1204, "items": 9, "gold": 230,
 		"rubies": 87, "unlocks": [&"character:rictus", &"spell:roaming_embers", &"mode:difficile"]})

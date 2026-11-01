@@ -119,23 +119,6 @@ func _menus(tag: String) -> void:
 		await _frames(10)
 		_scan(st, "%s options/commandes" % tag)
 		st.queue_free()
-		var pr := (load("res://scenes/menu/progress.tscn") as PackedScene).instantiate()
-		pr.set("profile", FakeProfile.new())
-		add_child(pr)
-		await _frames(20)
-		_scan(pr, "%s progression" % tag)
-		pr.tab_skins.pressed.emit()
-		await _frames(6)
-		_scan(pr, "%s progression/skins" % tag)
-		pr.tab_chars.pressed.emit()
-		await _frames(3)
-		for ch in pr.characters:
-			if str(ch.get("id", "")) == "averse":
-				pr.open_best_runs(ch)
-		await _frames(6)
-		_scan(pr, "%s progression/meilleures runs" % tag)
-		pr.queue_free()
-		await _frames(2)
 	if _wants("endrun"):
 		for v in [false, true]:
 			var e := EndRunScreen.create({"victory": v, "reason": "death", "character_name": "Averse", "mode": "moyen",

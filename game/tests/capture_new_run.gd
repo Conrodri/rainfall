@@ -52,12 +52,6 @@ func _process(delta: float) -> void:
 		else:
 			b.grab_focus()
 	elif _step == 2 and _t > 3.2:
-		_step = 3
-		_screen.queue_free()
-		_screen = load("res://scenes/menu/progress.tscn").instantiate()
-		_screen.set("profile", FakeProfile.new())
-		add_child(_screen)
-	elif _step == 3 and _t > 4.3:
 		_step = 4
 		_screen.queue_free()
 		_screen = load("res://scenes/menu/new_run.tscn").instantiate()

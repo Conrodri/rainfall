@@ -65,7 +65,7 @@ func _ready() -> void:
 	q.path = TEST_PATH
 	q.load_profile()
 	_check(q.best_run(&"ardent", &"difficile") == p.best_run(&"ardent", &"difficile") and q.best_run(&"rictus", &"difficile").size() == 7, "aller-retour disque identique")
-	_check(int(q.to_dict().version) == 2, "version 2")
+	_check(int(q.to_dict().version) == Profile.VERSION, "version courante")
 	p.write_enabled = false
 
 	# --- Migration : ancienne sauvegarde v1 (sans best_runs / skins) ---
@@ -140,31 +140,6 @@ func _ready() -> void:
 	await _frames(2)
 	_check(closed2[0], "bouton Fermer")
 	host.free()
-
-	# --- Depuis l'écran Progression ---
-	var host2 := Control.new()
-	host2.size = Vector2(1920, 1080)
-	add_child(host2)
-	var ps := ProgressScreen.new()
-	ps.profile = p
-	host2.add_child(ps)
-	ps.size = host2.size
-	await _frames(4)
-	var card: CharacterCard = ps.char_cards[0]
-	_check(card.focus_mode == Control.FOCUS_ALL and card.mouse_filter == Control.MOUSE_FILTER_STOP, "carte de personnage focusable et cliquable")
-	var ard_card: CharacterCard = null
-	for cc in ps.char_cards:
-		if str(cc.data.get("id", "")) == "ardent":
-			ard_card = cc
-	ard_card.pressed.emit()
-	await _frames(3)
-	_check(ps.best_panel != null and is_instance_valid(ps.best_panel), "clic sur une carte : panneau ouvert")
-	_check(ps.best_panel != null and ps.best_panel.columns[2].find_child("Time", true, false) != null, "carte d'Ardent : sa victoire en Difficile")
-	ps._unhandled_input(ev) # ui_cancel avec le panneau ouvert : le panneau seul se ferme, l'écran reste
-	ps.best_panel.close()
-	await _frames(3)
-	_check(ps.best_panel == null, "fermé : référence libérée")
-	host2.free()
 	p.free()
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)

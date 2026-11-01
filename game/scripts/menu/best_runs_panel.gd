@@ -162,13 +162,13 @@ func _mode_column(m: StringName) -> Control:
 		none.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		v.add_child(none)
 		return p
-	var tl := CharacterCard.make_label(ProgressScreen.time_text(float(r.get("time_s", 0.0))), 56, COL_TIME, 7)
+	var tl := CharacterCard.make_label(time_text(float(r.get("time_s", 0.0))), 56, COL_TIME, 7)
 	tl.name = "Time"
 	v.add_child(tl)
 	var dt := date_text(str(r.get("date", "")))
 	var dl := _wrap("Date", dt if dt != "" else "Date inconnue", 24, COL_DIM, 1)
 	v.add_child(dl)
-	var st := _wrap("Stats", "Niveau %d · %s monstres tués" % [int(r.get("level", 0)), ProgressScreen.group_thousands(int(r.get("kills", 0)))], 26, COL_BODY, 2)
+	var st := _wrap("Stats", "Niveau %d · %s monstres tués" % [int(r.get("level", 0)), group_thousands(int(r.get("kills", 0)))], 26, COL_BODY, 2)
 	v.add_child(st)
 	v.add_child(_wrap("ItemsTitle", "Objets", 26, CharacterCard.COL_FOCUS, 1))
 	v.add_child(_items_block(r.get("items", {})))
@@ -291,3 +291,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	if is_visible_in_tree() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		close()
+
+
+static func group_thousands(n: int) -> String:
+	var s := str(absi(n))
+	var out := ""
+	while s.length() > 3:
+		out = " " + s.substr(s.length() - 3) + out
+		s = s.substr(0, s.length() - 3)
+	return ("-" if n < 0 else "") + s + out
+
+
+static func time_text(sec: float) -> String:
+	var t := int(sec)
+	return "%02d:%02d" % [t / 60, t % 60]

@@ -3,7 +3,6 @@ extends Node
 ## godot --headless --path game res://tests/new_run_test.tscn  → « RESULT: OK »
 
 const NEW_RUN := preload("res://scenes/menu/new_run.tscn")
-const PROGRESS := preload("res://scenes/menu/progress.tscn")
 
 
 ## Profil factice (aucune écriture disque) ; le vrai `Profile` n'est pas touché.
@@ -44,7 +43,6 @@ func _ready() -> void:
 	await _test_sheet_and_variants()
 	await _test_mb_lisible()
 	await _test_touch_long_press()
-	await _test_progress()
 	await _test_ratios()
 	await _test_preview_framing()
 	if _fails.is_empty():
@@ -444,40 +442,6 @@ func _test_preview_framing() -> void:
 	_check(framed >= 1, "aucun aperçu cadré (Ardent attendu)")
 	print("cadrage aperçu : %d personnage(s) vérifié(s)" % framed)
 	s.queue_free()
-	await _frames(2)
-
-
-func _test_progress() -> void:
-	var p: ProgressScreen = PROGRESS.instantiate()
-	p.profile = FakeProfile.new()
-	add_child(p)
-	await _frames(3)
-	_check(p.char_cards.size() == _json.size(), "Progression : %d cartes (obtenu %d)" % [_json.size(), p.char_cards.size()])
-	var vr := p.get_viewport_rect()
-	for c in p.char_cards:
-		_check(c.focus_mode == Control.FOCUS_ALL, "Progression : carte %s focusable (clic = meilleures runs)" % c.name)
-		_check(vr.encloses(c.get_global_rect()), "Progression : carte %s visible sans défilement" % c.name)
-	_check(p.rubies_label.text == "1 234", "Progression : rubis '%s'" % p.rubies_label.text)
-	_check(p.stats_label.text.contains("Monstres tués : 8 412") and p.stats_label.text.contains("1 h 52"), "Progression : stats '%s'" % p.stats_label.text)
-	_check(_focus() == p.back_button, "Progression : focus sur Retour")
-	var back := [0]
-	p.back_requested.connect(func() -> void: back[0] += 1)
-	await _action(&"ui_cancel")
-	_check(back[0] == 1, "Progression : ui_cancel → back_requested")
-	p.queue_free()
-	await _frames(2)
-	# Personnage verrouillé à objectif visible : barre de progression de l'objectif sur sa carte.
-	var chars: Array = _json.duplicate(true)
-	chars.append(TEST_LOCKED.duplicate(true))
-	p = PROGRESS.instantiate()
-	p.profile = FakeProfile.new()
-	p.characters = chars
-	add_child(p)
-	await _frames(3)
-	var lc: Control = p.char_cards.back()
-	_check(lc.get_node_or_null("Objective") is ProgressBar, "Progression : barre d'objectif sur le perso verrouillé")
-	_check(p.char_cards[0].get_node_or_null("Objective") == null, "Progression : pas de barre sur un perso ouvert")
-	p.queue_free()
 	await _frames(2)
 
 

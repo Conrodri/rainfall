@@ -12,7 +12,6 @@ const MAIN_SCENE := "res://scenes/main.tscn"
 const TITLE_SCENE := preload("res://scenes/menu/title.tscn")
 const CREDITS_SCENE := preload("res://scenes/menu/credits.tscn")
 const NEW_RUN_SCENE := preload("res://scenes/menu/new_run.tscn")
-const PROGRESS_SCENE := preload("res://scenes/menu/progress.tscn")
 const SETTINGS_SCENE := preload("res://scenes/menu/settings.tscn")
 const ACHIEVEMENTS_SCENE := preload("res://scenes/menu/achievements.tscn")
 const DAILY_SCENE := preload("res://scenes/menu/daily.tscn")
@@ -51,7 +50,7 @@ func _ready() -> void:
 
 # --- API ---------------------------------------------------------------------
 
-## Affiche un écran de menu : &"title" | &"new_run" | &"progress" | &"settings" | &"credits" | &"achievements" | &"daily".
+## Affiche un écran de menu : &"title" | &"new_run" | &"settings" | &"credits" | &"achievements" | &"daily".
 func show(screen: StringName, toast := "") -> void:
 	await _transition(func() -> void: _build_screen(screen, toast))
 
@@ -159,10 +158,6 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			n.start_requested.connect(start_run)
 			n.back_requested.connect(return_to_title)
 			current = _wrap_control(n)
-		&"progress":
-			var p := PROGRESS_SCENE.instantiate() as ProgressScreen
-			p.back_requested.connect(return_to_title)
-			current = _wrap_control(p)
 		&"achievements":
 			var ac := ACHIEVEMENTS_SCENE.instantiate() as AchievementsScreen
 			ac.back_requested.connect(return_to_title)

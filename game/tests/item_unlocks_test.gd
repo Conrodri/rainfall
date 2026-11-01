@@ -102,45 +102,6 @@ func _ready() -> void:
 	_check(_no_frame_over_icon(scr.find_child("NewItem_moisson", true, false)), "récap : fond de qualité derrière l'icône, aucun cadre par-dessus")
 	scr.queue_free()
 
-	# --- Écran Progression : onglet Objets ---
-	var pp := _fresh()
-	pp.stats["kills"] = 340
-	pp.unlocked_items.append(&"moisson")
-	var host := Control.new()
-	host.size = Vector2(1920, 1080)
-	add_child(host)
-	var ps := ProgressScreen.new()
-	ps.profile = pp
-	host.add_child(ps)
-	ps.size = host.size
-	for i in 4:
-		await get_tree().process_frame
-	_check(ps.item_cells.size() == ItemDB.all_ids().size(), "une cellule par objet (%d)" % ps.item_cells.size())
-	var open := 0
-	for id in ItemDB.all_ids():
-		if ItemUnlocks.is_unlocked(id, pp):
-			open += 1
-	_check(ps.items_count_label.text == "%d/%d objets débloqués" % [open, ItemDB.all_ids().size()], "compteur : " + ps.items_count_label.text)
-	_check(not ps.items_scroll.visible and ps._chars_scroll.visible, "onglet Personnages par défaut")
-	ps.tab_items.pressed.emit()
-	await get_tree().process_frame
-	ps._layout()
-	_check(ps.items_scroll.visible and not ps._chars_scroll.visible, "onglet Objets affiché")
-	var locked_cell := ps.find_child("Item_tempete_de_braises", true, false)
-	_check(locked_cell != null and locked_cell.find_child("Condition", true, false) != null, "objet verrouillé : condition affichée")
-	var prog: Node = locked_cell.find_child("Progress", true, false) if locked_cell != null else null
-	_check(prog != null and (prog as ProgressBar).value == 340.0 and (prog as ProgressBar).max_value == 1500.0, "barre d'avancement 340/1500")
-	var open_cell := ps.find_child("Item_moisson", true, false)
-	var icon_box: Node = open_cell.find_child("QualityBack", true, false).get_parent() if open_cell != null and open_cell.find_child("QualityBack", true, false) != null else null
-	_check(icon_box != null and _no_frame_over_icon(icon_box), "onglet Objets : fond de qualité derrière l'icône, aucun cadre par-dessus")
-	_check(open_cell != null and open_cell.find_child("Condition", true, false) == null, "objet débloqué : pas de condition")
-	var sr := Rect2(ps.items_scroll.global_position, ps.items_scroll.size)
-	var back := Rect2(ps.back_button.global_position, ps.back_button.size)
-	_check(not sr.intersects(back) and Rect2(Vector2.ZERO, host.size).encloses(sr), "zone d'objets sans chevauchement ni débordement")
-	for c in ps.item_cells:
-		_check_cell_text(c)
-	ps.queue_free()
-	pp.free()
 
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)

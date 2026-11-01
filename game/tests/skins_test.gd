@@ -146,50 +146,6 @@ func _ready() -> void:
 	_check(found, "récap : « Nouveau skin débloqué » affiché")
 	scr.queue_free()
 
-	# --- Onglet Skins de l'écran Progression ---
-	var host := Control.new()
-	host.size = Vector2(1920, 1080)
-	add_child(host)
-	var ps := ProgressScreen.new()
-	ps.profile = p
-	host.add_child(ps)
-	ps.size = host.size
-	await _frames(4)
-	_check(ps.skin_cells.size() == 10 and not ps.skins_scroll.visible, "10 cellules, onglet Skins masqué par défaut")
-	ps.tab_skins.pressed.emit()
-	await _frames(2)
-	ps._layout()
-	_check(ps.skins_scroll.visible and not ps._chars_scroll.visible and not ps.items_scroll.visible, "onglet Skins affiché")
-	var open := 0
-	for e in Skins.all_skins():
-		if Skins.is_unlocked(p, e.id):
-			open += 1
-	_check(ps.skins_count_label.text == "%d/10 skins débloqués" % open, "compteur : " + ps.skins_count_label.text)
-	var lockedc := ps.find_child("Skin_vigie_skin1", true, false)
-	_check(lockedc != null and lockedc.find_child("Condition", true, false) != null and (lockedc.find_child("Condition", true, false) as Label).text.contains("Difficile"), "skin verrouillé : condition affichée")
-	var unl := ps.find_child("Skin_rictus_skin1", true, false) as Button
-	_check(unl != null and unl.find_child("Condition", true, false) == null and unl.find_child("Pending", true, false) != null, "skin débloqué : pas de condition, « Rendu à venir »")
-	_check((unl.find_child("State", true, false) as Label).text == "Équiper", "bouton « Équiper »")
-	unl.pressed.emit()
-	await _frames(2)
-	_check(Skins.equipped("rictus", p) == "rictus_skin1", "appui : skin équipé dans le profil")
-	var unl2 := ps.find_child("Skin_rictus_skin1", true, false) as Button
-	_check((unl2.find_child("State", true, false) as Label).text.begins_with("Équipé"), "état « Équipé » après rafraîchissement")
-	unl2.pressed.emit()
-	await _frames(2)
-	_check(Skins.equipped("rictus", p) == "", "second appui : skin retiré")
-	(ps.find_child("Skin_vigie_skin1", true, false) as Button).pressed.emit()
-	await _frames(2)
-	_check(Skins.equipped("vigie", p) == "", "skin verrouillé : non équipable")
-	var sr := Rect2(ps.skins_scroll.global_position, ps.skins_scroll.size)
-	_check(not sr.intersects(Rect2(ps.back_button.global_position, ps.back_button.size)) and Rect2(Vector2.ZERO, host.size).encloses(sr), "zone de skins sans chevauchement ni débordement")
-	for cell in ps.skin_cells:
-		for n in ["Name", "Condition", "State", "Pending"]:
-			var l := cell.find_child(n, true, false) as Label
-			if l == null:
-				continue
-			_check(l.clip_text or l.max_lines_visible > 0 or l.text_overrun_behavior != TextServer.OVERRUN_NO_TRIMMING, "%s/%s : texte borné" % [cell.name, n])
-	host.free()
 	p.free()
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)
