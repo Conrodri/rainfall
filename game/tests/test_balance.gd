@@ -57,10 +57,10 @@ func _init() -> void:
 	_near("hâte Chronomètre x3 (0,75)", B.haste_cooldown_mult(0.75), 0.5714, 0.0001)
 	_near("hâte cumul communs (1,20)", B.haste_cooldown_mult(1.20), 0.4545, 0.0001)
 	_near("hâte au plancher", B.haste_cooldown_mult(5.0), B.COOLDOWN_FLOOR, 0.0001)
-	# Économie : coffres coeff^1,25 × 1,04^(étage-1), capsules 20 × coeff^1,25, pas de réserve d'étage
+	# Économie : coffres coeff^1,25 × 1,04^(étage-1), capsules CAPSULE_GOLD (40) × coeff^1,25, pas de réserve d'étage
 	_near("petit coffre (coeff 2, étage 3)", B.chest_price(&"petit", 2.0, 3), 128.62, 0.05)
 	_near("légendaire = 8 petits", B.chest_price(&"legendaire", 1.3, 2) / B.chest_price(&"petit", 1.3, 2), 8.0, 0.0001)
-	_near("capsule (coeff 1)", B.capsule_gold(1.0), 20.0, 0.0001)
+	_near("capsule (coeff 1)", B.capsule_gold(1.0), B.CAPSULE_GOLD, 0.0001)
 	# Changement d'étage : or restant -> XP (0,5 × ½ = 0,25 XP par or)
 	_near("or->XP 470 or", B.gold_to_xp(470.0, 2.09), 117.5, 0.01)
 	_near("or->XP 0 or", B.gold_to_xp(0.0, 1.5), 0.0, 0.0001)
