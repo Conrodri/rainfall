@@ -50,7 +50,7 @@
       "price": 1000,
       "target": "averse",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/portrait.png",
       "assets": {
         "dir": "res://assets/sprites/characters/averse/skins/averse_avant_la_pluie/",
@@ -67,7 +67,7 @@
       "price": 1000,
       "target": "vigie",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/portrait.png",
       "assets": {
         "dir": "res://assets/sprites/characters/vigie/skins/vigie_avant_la_pluie/",
@@ -84,7 +84,7 @@
       "price": 1000,
       "target": "ardent",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/portrait.png",
       "assets": {
         "dir": "res://assets/sprites/characters/ardent/skins/ardent_avant_la_pluie/",
@@ -101,7 +101,7 @@
       "price": 1000,
       "target": "rictus",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/portrait.png",
       "assets": {
         "dir": "res://assets/sprites/characters/rictus/skins/rictus_avant_la_pluie/",
@@ -193,7 +193,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/braises.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/braises/particle_32.png",
@@ -321,7 +321,7 @@
       "price": 400,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/bronze_de_cloche.png",
       "assets": {
         "dir": "res://assets/sprites/ui/parements/bronze_de_cloche/",
@@ -381,7 +381,7 @@
       "price": 500,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/bivouac_des_cedres.png",
       "assets": {
         "map": "foret_brume",

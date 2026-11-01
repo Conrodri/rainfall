@@ -1,0 +1,25 @@
+{
+  "name": "panel_small_9slice",
+  "size": [
+    192,
+    192
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse"
+  ],
+  "normal": "none: face-on UI",
+  "emission": false,
+  "nine_slice": {
+    "left": 24,
+    "top": 24,
+    "right": 24,
+    "bottom": 24
+  },
+  "content_insets": {
+    "left": 24,
+    "top": 24,
+    "right": 24,
+    "bottom": 24
+  }
+}
