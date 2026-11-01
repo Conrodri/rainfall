@@ -54,16 +54,16 @@ func _fake_catalogue() -> Dictionary:
 				"assets": {"frames": "res://assets/sprites/characters/ardent/ardent.tres"}},
 			{"id": "t_ciel", "family": "ciel", "name": "Ciel", "desc": "d", "price": 600, "target": "terrasses",
 				"assets": {"profiles": ["res://data/ambiance/terrasses_noyees.tres"]}},
-			{"id": "t_pas", "family": "sillage", "name": "Pas", "desc": "d", "price": 250, "target": "",
+			{"id": "t_pas", "family": "sillage", "name": "Pas", "desc": "d", "price": 250, "target": "pas",
 				"assets": {"particle": DA + "icon_ruby.png", "step": DA + "icon_gold.png"}},
-			{"id": "t_esq", "family": "sillage", "name": "Esquive", "desc": "d", "price": 200, "target": "",
+			{"id": "t_esq", "family": "sillage", "name": "Esquive", "desc": "d", "price": 200, "target": "esquive",
 				"assets": {"wake": DA + "icon_gold.png", "burst": DA + "icon_ruby.png"}},
 			{"id": "t_par", "family": "parement", "name": "Parement", "desc": "d", "price": 400, "target": "",
 				"assets": {"dir": ALT_UI, "files": ["button_normal.png"]}},
 			{"id": "t_vei", "family": "veillee", "name": "Veillée", "desc": "d", "price": 500, "target": "",
 				"assets": {"map": "terrasses_noyees", "dir": "res://assets/sprites/ui/hud/", "props": ["icon_gold.png", "icon_ruby.png"],
 					"fire": "res://assets/sprites/characters/ardent/ardent.tres"}},
-			{"id": "t_wait", "family": "sillage", "name": "Attente", "desc": "d", "price": 250, "target": "", "pending": true,
+			{"id": "t_wait", "family": "sillage", "name": "Attente", "desc": "d", "price": 250, "target": "pas", "pending": true,
 				"assets": {"particle": DA + "icon_ruby.png"}},
 			{"id": "t_missing", "family": "parement", "name": "Absent", "desc": "d", "price": 400, "target": "",
 				"assets": {"dir": "res://assets/sprites/ui/parements/nope/", "files": ["button_normal.png"]}},
@@ -97,6 +97,12 @@ func _ready() -> void:
 	for f in [&"panoplie", &"ciel", &"sillage", &"parement", &"veillee"]:
 		fam_ok = fam_ok and not Cosmetics.items_of(f).is_empty()
 	_check(fam_ok, "catalogue : les 5 familles ont des articles")
+	var sillage_ok := true
+	for it in Cosmetics.items_of(&"sillage"):
+		var tg := str(it.get("target", ""))
+		var a: Dictionary = it.get("assets", {})
+		sillage_ok = sillage_ok and ((tg == "pas" and (a.has("step") or a.has("particle"))) or (tg == "esquive" and (a.has("wake") or a.has("burst"))))
+	_check(sillage_ok, "catalogue : chaque Sillage déclare target pas|esquive, cohérent avec ses assets")
 	var pend := _fresh(99999)
 	var all_safe := true
 	for it in real:
@@ -112,6 +118,10 @@ func _ready() -> void:
 	Cosmetics.data_override = _fake_catalogue()
 	_check(Cosmetics.slot_of(Cosmetics.item("t_ciel")) == "ciel:terrasses" and Cosmetics.slot_of(Cosmetics.item("t_par")) == "parement:all", "emplacements « famille:cible »")
 	_check(Cosmetics.slot_of(Cosmetics.item("t_pas")) == "sillage:pas" and Cosmetics.slot_of(Cosmetics.item("t_esq")) == "sillage:esquive", "Sillages : pas et esquive séparés")
+	# L'emplacement vient du catalogue (target), pas des assets : un article « wake » déclaré « pas » reste « pas », sans cible = « pas ».
+	var odd := {"id": "t_odd", "family": "sillage", "target": "pas", "assets": {"wake": "x"}}
+	_check(Cosmetics.slot_of(odd) == "sillage:pas" and Cosmetics.slot_of({"family": "sillage", "assets": {"wake": "x"}}) == "sillage:pas", "Sillages : emplacement lu du catalogue, non déduit des assets")
+	_check(Cosmetics.slot_of({"family": "sillage", "target": "esquive"}) == "sillage:esquive", "Sillages : target « esquive » respectée")
 	_check(Cosmetics.has_assets(Cosmetics.item("t_par")) and Cosmetics.has_assets(Cosmetics.item("t_vei")), "assets dir+files / map+props résolus")
 	_check(not Cosmetics.has_assets(Cosmetics.item("t_wait")) and not Cosmetics.has_assets(Cosmetics.item("t_missing")), "pending ou fichier absent : non livré")
 

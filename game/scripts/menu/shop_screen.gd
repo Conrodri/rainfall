@@ -10,13 +10,14 @@ extends Control
 ## Onglet Panoplies : les skins de chaque personnage (Skins.all_skins : trophées de Difficile, achetables aussi au prix de
 ## data/shop.json, puis Panoplies du catalogue). Aperçu : `preview` du catalogue ou portrait du skin ; sinon un cadre vide
 ## au nom de la famille (placeholder, jamais un asset dessiné).
-## Entrées : tactile et souris (onglets et cartons), manette / clavier (focus ; LB / RB ou Q / E changent d'onglet ; B /
-## Échap = retour). Aucune position codée en dur : marges de la zone sûre, colonnes selon la largeur (1 ou 2).
+## Entrées : tactile et souris (onglets et cartons), manette / clavier (focus ; LB / RB ou les touches d'emplacement
+## physique Q / E, libellées selon la disposition (A / E en AZERTY), changent d'onglet ; B / Échap = retour). Aucune position codée en dur : marges de la zone sûre, colonnes selon la largeur (1 ou 2).
 
 signal back_requested
 
 enum State { EQUIPPED, OWNED, BUYABLE, POOR, NO_ART }
 
+const InputLabels := preload("res://scripts/ui/input_labels.gd")
 const CELL_H := 224.0
 const GAP := 16.0
 const PORTRAIT := 168.0
@@ -241,7 +242,7 @@ func refresh() -> void:
 	for i in tab_buttons.size():
 		tab_buttons[i].set_pressed_no_signal(_families[i] == family)
 	var desc := Cosmetics.family_desc(family)
-	_hint.text = (desc + " " if desc != "" else "") + "Cosmétique, payé en rubis : aucun avantage en jeu."
+	_hint.text = tab_keys_hint() + (desc + " " if desc != "" else "") + "Cosmétique, payé en rubis : aucun avantage en jeu."
 	if family == &"panoplie":
 		for e in Skins.all_skins(_chars):
 			var cell := _skin_cell(e)
@@ -614,14 +615,49 @@ func _layout() -> void:
 	_wire_focus()
 
 
+## Touches clavier de changement d'onglet : emplacements physiques (les deux touches à gauche et à droite de la rangée
+## du haut, QWERTY Q / E), donc indépendantes de la disposition ; seul le libellé suit la disposition (AZERTY : A / E).
+const TAB_KEY_PREV: Key = KEY_Q
+const TAB_KEY_NEXT: Key = KEY_E
+
+
+## Libellés des deux touches d'onglet précédent / suivant selon la disposition courante (Q / E en QWERTY, A / E en AZERTY).
+static func tab_key_labels() -> Array[String]:
+	var out: Array[String] = []
+	for code in [TAB_KEY_PREV, TAB_KEY_NEXT]:
+		var ev := InputEventKey.new()
+		ev.physical_keycode = code
+		out.append(InputLabels.key_label(ev))
+	return out
+
+
+## Début du texte d'aide : touches d'onglet selon le mode d'entrée courant (rien en tactile).
+static func tab_keys_hint() -> String:
+	if Platform.is_touch_mode():
+		return ""
+	if Platform.is_gamepad_mode():
+		return "%s / %s : onglets. " % [InputLabels.pad_button_label(JOY_BUTTON_LEFT_SHOULDER), InputLabels.pad_button_label(JOY_BUTTON_RIGHT_SHOULDER)]
+	var k := tab_key_labels()
+	return "%s / %s : onglets. " % [k[0], k[1]]
+
+
+## Sens du changement d'onglet demandé par l'événement : -1, +1 ou 0 (manette LB / RB, clavier par emplacement physique).
+static func tab_step_of(event: InputEvent) -> int:
+	if event is InputEventJoypadButton and event.pressed and event.button_index in [JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_RIGHT_SHOULDER]:
+		return -1 if event.button_index == JOY_BUTTON_LEFT_SHOULDER else 1
+	if event is InputEventKey and event.pressed and not event.echo:
+		var code: Key = event.physical_keycode if event.physical_keycode != KEY_NONE else event.keycode
+		if code == TAB_KEY_PREV:
+			return -1
+		if code == TAB_KEY_NEXT:
+			return 1
+	return 0
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or dialog != null:
 		return
-	var step := 0
-	if event is InputEventJoypadButton and event.pressed and event.button_index in [JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_RIGHT_SHOULDER]:
-		step = -1 if event.button_index == JOY_BUTTON_LEFT_SHOULDER else 1
-	elif event is InputEventKey and event.pressed and not event.echo and (event.physical_keycode == KEY_Q or event.physical_keycode == KEY_E):
-		step = -1 if event.physical_keycode == KEY_Q else 1
+	var step := tab_step_of(event)
 	if step != 0 and not _families.is_empty():
 		get_viewport().set_input_as_handled()
 		CharacterCard.play_ui(&"ui.click", -6.0, 1.0)

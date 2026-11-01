@@ -15,7 +15,7 @@ const EXPECT := {
 	&"rainette": [&"roll", 3.5, 3.5 / 12.0, 3.0, 1], # 3,5 u à 12 u/s : 0,29 s (inchangé)
 	&"avare": [&"roll", 2.5, 0.25, 3.0, 1],
 	&"bourbe": [&"roll", 3.0, 0.30, 3.0, 1],
-	&"vigie": [&"roll", 1.0, 1.0 / 12.0, 1.0, 3],
+	&"vigie": [&"roll", VigieKit.DODGE_U, VigieKit.DODGE_U / 12.0, 1.0, 3], # 1,6 u par repli à 12 u/s (cba5f675 : 1,0 -> 1,6) ; distance lue du kit, mesurée en jeu
 	&"morfil": [&"roll", 3.0, 0.25, 3.0, 1],
 }
 
@@ -127,7 +127,8 @@ func _run() -> void:
 	for i in 3:
 		_check("dash %d lancé" % (i + 1), _player.dodge(Vector2.RIGHT))
 		_play()
-	_check("3 u en tout (recul)", _near((_player.global_position.x - x0) / U, -3.0, 0.1), str((_player.global_position.x - x0) / U))
+	var total_u: float = VigieKit.DODGE_U * VigieKit.DODGE_CHARGES
+	_check("%.1f u en tout (recul)" % total_u, _near((_player.global_position.x - x0) / U, -total_u, 0.15), str((_player.global_position.x - x0) / U))
 	_check("4e refusé (0 charge)", not _player.dodge(Vector2.RIGHT))
 	_check("+0,24 de Tension (plus la Tension gagnée en marchant)", vk.tension >= 3.0 * VigieKit.DODGE_TENSION_GAIN - 0.001 and vk.tension < 3.0 * VigieKit.DODGE_TENSION_GAIN + 0.2, str(vk.tension))
 	_player.tick(1.05)

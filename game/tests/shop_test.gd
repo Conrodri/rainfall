@@ -223,6 +223,26 @@ func _ready() -> void:
 	t.queue_free()
 	await _frames(2)
 
+	# Onglets au clavier : emplacement physique, indépendant de la disposition (AZERTY : keycode A sur l'emplacement physique Q).
+	var kq := InputEventKey.new()
+	kq.pressed = true
+	kq.physical_keycode = KEY_Q
+	kq.keycode = KEY_A
+	var ke := InputEventKey.new()
+	ke.pressed = true
+	ke.physical_keycode = KEY_E
+	ke.keycode = KEY_E
+	var kz := InputEventKey.new()
+	kz.pressed = true
+	kz.physical_keycode = KEY_A
+	kz.keycode = KEY_Q # AZERTY : la lettre Q est sur l'emplacement physique A, sans effet sur les onglets
+	var jb := InputEventJoypadButton.new()
+	jb.pressed = true
+	jb.button_index = JOY_BUTTON_RIGHT_SHOULDER
+	_check(ShopScreen.tab_step_of(kq) == -1 and ShopScreen.tab_step_of(ke) == 1 and ShopScreen.tab_step_of(kz) == 0 and ShopScreen.tab_step_of(jb) == 1,
+		"onglets : emplacements physiques Q/E (AZERTY A/E) + LB/RB, indépendants de la disposition")
+	_check(ShopScreen.tab_key_labels().size() == 2 and ShopScreen.tab_key_labels()[0] != "" and ShopScreen.tab_key_labels()[1] != "", "onglets : libellés des touches lus de la disposition")
+
 	p.free()
 	q.free()
 	w.free()

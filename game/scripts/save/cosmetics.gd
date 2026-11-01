@@ -85,16 +85,16 @@ static func family_of(it: Dictionary) -> StringName:
 
 
 ## Cible d'un article : personnage / biome, « all » pour une famille globale. Sillages : deux emplacements distincts,
-## « sillage:pas » (traces de pas : assets particle/step) et « sillage:esquive » (traînée d'esquive : assets wake/burst),
-## pour qu'une traînée d'esquive n'efface pas les traces de pas (catalogue v1 : target "" pour les deux).
+## lus du catalogue (`target`) et jamais déduits des assets : « sillage:pas » (traces de pas : assets particle/step) et
+## « sillage:esquive » (traînée d'esquive : assets wake/burst), pour qu'une traînée d'esquive n'efface pas les traces
+## de pas. Un Sillage sans cible (ou avec une cible inconnue) vaut « pas ».
 static func target_of(it: Dictionary) -> String:
 	var t := str(it.get("target", ""))
 	var fam := family_of(it)
 	if TARGETED.has(fam):
 		return t
-	if t == "" and fam == &"sillage":
-		var a: Variant = it.get("assets", {})
-		return SILLAGE_DODGE if a is Dictionary and ((a as Dictionary).has("wake") or (a as Dictionary).has("burst")) else SILLAGE_STEPS
+	if fam == &"sillage":
+		return SILLAGE_DODGE if t == SILLAGE_DODGE else SILLAGE_STEPS
 	return t if t != "" else GLOBAL_TARGET
 
 

@@ -6,7 +6,7 @@
 ## 0. Résumé
 
 - **Une seule monnaie, les rubis**, gagnés uniquement en jouant. Aucun pack, aucun hasard, aucune rotation, aucun chrono, aucune remise : le catalogue entier est visible et au même prix pour tout le monde, pour toujours.
-- **Tout est cosmétique.** Rien dans `cosmetics.json` ne peut porter un champ d'effet ; un test headless le garantit. Les skins « trophée » existants (`<perso>_skin1`, victoire en Difficile) restent des trophées : ils ne s'achètent pas.
+- **Tout est cosmétique.** Rien dans `cosmetics.json` ne peut porter un champ d'effet ; un test headless le garantit. Les skins « trophée » existants (`<perso>_skin1`, victoire en Difficile) se gagnent par leur condition **ou s'achètent en rubis** (décision antérieure du joueur, boutique de skins) : prix dans `game/data/shop.json` (`SkinShop.price_of`, 250 par défaut, provisoire), un seul prix par skin ; les deux voies coexistent, la première qui aboutit le débloque (`Profile.unlocked_skins`).
 - **Gain réel mesuré dans le code** : ≈ 40-75 rubis par run perdue aux étages 2-3, ≈ 165-170 rubis par victoire en Moyen au rythme visé (19 min), ≈ 185-195 au rythme actuel des simulations (33-40 min). Soit **300 à 550 rubis par heure** selon le niveau du joueur. Les piliers pèsent 60 % du gain.
 - **Catalogue v1 ≈ 25 500 rubis (≈ 50-85 h selon le joueur), v1 + v2 ≈ 61 500 (≈ 110-200 h, longue traîne des Panoplies)**. Paliers de prix : 60-150 (un achat toutes les 2-3 parties au début), 250-400, 500-800, 1 000.
 - **13 familles** : Panoplies (tenues thématiques des personnages), Ciels des biomes (heures et saisons), Veillées (thèmes de l'écran titre), Parements d'interface, Sillages (pas et traînées), Rites (effets de mort et de victoire), Stèles, Partitions (musiques alternatives), Réticules, Saluts (poses de fin de run), Parures du téléporteur, Herbier des pluies (carnet illustré), Chambre claire (mode photo), Suivants (compagnons muets, v2).
@@ -71,7 +71,7 @@ Base de calibrage retenue : **400 rubis par heure** (joueur régulier moyen). 60
 1. **Prix fixes, visibles, définitifs.** Pas de rotation, pas d'offre limitée, pas de remise, pas de bundle, pas de « nouveauté » mise en avant par un chrono. Un article ajouté par une mise à jour arrive au prix de son palier, c'est tout.
 2. **Aucune seconde monnaie, aucun achat en argent réel, aucun hasard.** Pas de coffres cosmétiques, pas de tirage.
 3. **Rien ne se perd.** Les rubis dépensés ne sont pas remboursables (confirmation obligatoire), mais un article acheté reste acquis dans le profil (`owned_cosmetics`) même si son asset manque (repli silencieux sur le défaut, comme `Skins.has_assets`).
-4. **Aucun article n'est gardé derrière un succès**, sauf les trophées existants (skins Difficile) qui ne sont pas dans la boutique. Le catalogue entier est achetable dès la première partie ; le joueur choisit l'ordre.
+4. **Aucun article n'est gardé derrière un succès.** Les trophées existants (skins Difficile) se gagnent par leur condition mais sont aussi vendus en rubis dans l'onglet Panoplies de la boutique (`SkinShop`, `data/shop.json`) : la condition reste un raccourci, jamais un verrou. Le catalogue entier est achetable dès la première partie ; le joueur choisit l'ordre.
 5. **Le mode test voit tout** (`TestMode` : aperçu de n'importe quel article sans écriture au profil), comme pour les skins.
 
 ### 2.2 Règles de lisibilité (toute famille)
