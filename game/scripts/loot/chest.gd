@@ -7,6 +7,9 @@ signal opened(chest: Chest)
 signal refused(chest: Chest) ## or insuffisant (hook pour le son)
 
 const UI_SCENE := preload("res://scenes/ui/chest/chest_ui.tscn")
+const SHOWCASE_ICON_PX := 51.2 ## 0,8 u
+const SHOWCASE_SPACING_PX := 68.0
+const SHOWCASE_Y := -330.0 ## au-dessus de l'étiquette de prix (repère local, avant l'étirement iso)
 const COLORS := {
 	&"petit": Color(0.69, 0.54, 0.35),
 	&"large": Color(0.29, 0.56, 0.89),
@@ -25,6 +28,11 @@ const SPRITES := {
 }
 
 var kind: StringName = &"petit"
+## Variante : &"showcase" = coffre à vitrine (3 objets visibles, on en choisit 1, prix x CHEST_SHOWCASE_PRICE_P) ; &"" = normal.
+var variant: StringName = &""
+var offer: Array = [] ## vitrine : ids des objets visibles, tirés à l'apparition (graine propre, voir StageManager)
+var offer_quality: StringName = &"commun"
+var _showcase_root: Node2D = null
 var _frames_src: SpriteFrames = null
 var stage := 1
 var price := 0.0
@@ -41,13 +49,22 @@ var _label_home := Vector2.ZERO ## position d'origine de l'étiquette de prix (s
 @onready var _label: Label = $PriceLabel
 
 
-func setup(p_kind: StringName, p_stage: int) -> void:
+## `p_extra` : entrée de disposition du coffre (StageManager) : {"special": "showcase", "offer": [ids], "quality": q}.
+func setup(p_kind: StringName, p_stage: int, p_extra: Dictionary = {}) -> void:
 	kind = p_kind
 	stage = p_stage
 	_price_d = RunState.difficulty()
+	variant = &""
+	offer = []
+	if StringName(String(p_extra.get("special", ""))) == &"showcase" and p_kind == &"petit":
+		offer = (p_extra.get("offer", []) as Array).map(func(v): return str(v))
+		offer_quality = StringName(String(p_extra.get("quality", "commun")))
+		if not offer.is_empty():
+			variant = &"showcase"
 	if is_node_ready():
 		_refresh_visual()
 		_update_light()
+		_refresh_showcase()
 
 
 func _ready() -> void:
@@ -58,6 +75,37 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	_refresh_visual()
 	_update_light()
+	_refresh_showcase()
+
+
+func is_showcase() -> bool:
+	return variant == &"showcase" and not offer.is_empty()
+
+
+## Vitrine : les objets flottent au-dessus du coffre (icônes d'objets existantes, 0,8 u, en éventail sans recouvrement).
+func _refresh_showcase() -> void:
+	if _showcase_root != null:
+		_showcase_root.queue_free()
+		_showcase_root = null
+	if not is_showcase():
+		return
+	_showcase_root = Node2D.new()
+	_showcase_root.name = &"Showcase"
+	add_child(_showcase_root)
+	var n := offer.size()
+	for i in n:
+		var id: String = offer[i]
+		var tex := load(ChestUI.ITEM_ICON % id) as Texture2D if ResourceLoader.exists(ChestUI.ITEM_ICON % id) else null
+		if tex == null:
+			continue
+		var s := Sprite2D.new()
+		s.texture = tex
+		var k: float = SHOWCASE_ICON_PX / float(tex.get_width())
+		s.scale = Iso.UNSQUASH * k # billboard : l'icône reste carrée à l'écran
+		var t := float(i) - float(n - 1) * 0.5
+		s.position = Vector2(t * SHOWCASE_SPACING_PX, SHOWCASE_Y - absf(t) * 14.0)
+		_showcase_root.add_child(s)
+	_visual.modulate = Color(0.8, 0.95, 1.0) # vitre : teinte froide sur le sprite du petit coffre
 
 
 ## Lumière du coffre selon sa rareté (preset chest_<kind>), libérée à l'ouverture.
@@ -78,7 +126,13 @@ func is_free() -> bool:
 func current_price() -> float:
 	if is_free():
 		return 0.0
-	return Balance.chest_price(kind, _price_d, stage) * ItemEffects.chest_price_mult() # Faveur du marchand
+	return price_of(kind, _price_d, stage) * (Balance.CHEST_SHOWCASE_PRICE_P if is_showcase() else 1.0)
+
+
+## Prix d'un coffre ordinaire : base du type, D et étage, Faveur du marchand et Présages (Marché noir / Usure) compris.
+## Source unique du « prix d'un coffre » (marchand de l'étage 3 et ateliers s'y réfèrent : y brancher les remises).
+static func price_of(p_kind: StringName, d: float, p_stage: int) -> float:
+	return Balance.chest_price(p_kind, d, p_stage) * ItemEffects.chest_price_mult() * Omens.chest_price_mult()
 
 
 func _process(delta: float) -> void:
@@ -157,8 +211,15 @@ func try_open() -> bool:
 	_show_state(&"open")
 	set_process(false)
 	monitoring = false
-	var ui := UI_SCENE.instantiate()
 	var host: Node = get_tree().current_scene if get_tree().current_scene != null else get_tree().root
+	if is_showcase():
+		var sui := ShowcaseUI.new()
+		host.add_child(sui)
+		sui.finished.connect(_on_ui_finished)
+		sui.open_pick(stage, price, offer, offer_quality, self)
+		opened.emit(self)
+		return true
+	var ui := UI_SCENE.instantiate()
 	host.add_child(ui)
 	ui.finished.connect(_on_ui_finished)
 	ui.open(kind, stage, price, self)
@@ -191,7 +252,7 @@ func can_interact() -> bool:
 func interact_label() -> String:
 	if is_free():
 		return "Ouvrir"
-	return "Ouvrir — %d or" % int(ceil(current_price()))
+	return ("Vitrine — %d or" if is_showcase() else "Ouvrir — %d or") % int(ceil(current_price()))
 
 
 ## Contrat « Interaction » : l'unique répartiteur (HUD) appelle interact() sur la cible affichée par l'invite.

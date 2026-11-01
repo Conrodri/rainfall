@@ -12,6 +12,8 @@ signal run_saved
 signal boss_spawned(boss: Node2D, is_floor_boss: bool)
 signal boss_killed(boss: Node2D, is_floor_boss: bool)
 signal pillar_state_changed(pillar: Node, state: StringName)
+## Paratonnerre dévié : le joueur a dévié le gros pilier (boss d'étage affixé, 2 coffres de boss) ; `affix` = burn | slow | poison.
+signal pillar_deviated(pillar: Node, affix: StringName)
 signal floor_started(stage: int)
 signal floor_cleared(stage: int)
 ## Changement d'étage : l'or restant (bourse + sol) a été converti en XP (RunState.convert_gold_to_xp).
@@ -39,3 +41,11 @@ signal run_started(resumed: bool)
 ## Run terminée (Main.end_run) : victoire, mort ou abandon (reason : &"victory" | &"death" | &"abandon").
 ## Émis avant le récap ; aussi en mode test (fin sans récap).
 signal run_finished(victory: bool, reason: StringName)
+## --- Ateliers (docs/Ateliers_Chiffres.md) : un usage d'atelier vient d'être fait. id : &"fondoir" | &"matrice" |
+## &"alambic" | &"enclume" ; kind : verbe (&"fondre", &"forger", &"distiller") ; given / received : ids d'objets ou
+## &"scorie_<qualité>" ; gold : or reçu (> 0) ou dépensé (< 0).
+signal station_used(id: StringName, kind: StringName, given: Array, received: Array, gold: float)
+## --- Présages d'étage (scripts/omens/, docs/Ateliers_Chiffres.md §9) ---
+## Présage actif changé : choisi à l'arrivée, retiré au téléporteur (id vide) ou imposé par le mode test.
+## id = &"ciel_clair" quand le joueur refuse tout présage. `stage` : étage concerné.
+signal omen_changed(id: StringName, stage: int)

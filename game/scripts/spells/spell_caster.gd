@@ -789,6 +789,8 @@ func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
 	var mult: float = player.stat(&"damage_mult")
 	if mult <= 0.0:
 		mult = 1.0
+	if enemy != null and (enemy.get("is_elite") == true or enemy.is_in_group("bosses")):
+		mult *= Omens.elite_boss_damage_mult() # Présage Éveil des élites
 	var coef := s.coef
 	var cmult := 1.0
 	if kit != null and enemy != null: # bonus de combo du kit (docs/Design_Combos.md) : coef additif, puis multiplicateur

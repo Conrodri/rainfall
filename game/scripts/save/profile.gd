@@ -283,16 +283,30 @@ static func _clean_history(src: Variant) -> Array:
 		var n_items := 0
 		for k in items:
 			n_items += int(items[k])
-		out.append({
+		var omens := _clean_omens(e.get("omens"))
+		var entry := {
 			"date": str(e.get("date", "")), "character": str(e.get("character", "")), "skin": str(e.get("skin", "")),
 			"mode": str(e.get("mode", "moyen")), "victory": bool(e.get("victory", false)), "reason": str(e.get("reason", "")),
 			"stage": int(e.get("stage", 1)), "time_s": float(e["time_s"]), "final_boss_killed": bool(e.get("final_boss_killed", false)),
 			"win_time_s": float(e.get("win_time_s", 0.0)), "kills": int(e.get("kills", 0)), "level": int(e.get("level", 0)),
 			"gold": int(e.get("gold", 0)), "rubies": int(e.get("rubies", 0)), "difficulty": float(e.get("difficulty", 0.0)),
 			"items": items, "n_items": n_items, "unlocks": unlocks,
-		})
+		}
+		if not omens.is_empty(): # champ optionnel (01/11) : présage choisi par étage {"2": "fievre", ...}, absent avant les présages
+			entry["omens"] = omens
+		out.append(entry)
 	while out.size() > HISTORY_MAX:
 		out.remove_at(0)
+	return out
+
+
+## Présages d'une entrée d'historique : {"étage": "id"} en texte, {} si absent ou illisible.
+static func _clean_omens(src: Variant) -> Dictionary:
+	var out := {}
+	if src is Dictionary:
+		for k in src:
+			if str(src[k]) != "":
+				out[str(k)] = str(src[k])
 	return out
 
 
@@ -539,14 +553,18 @@ func _record_history(r: Dictionary, mode: StringName, t: float, unlocks: Array) 
 			n_items += int(src[iid])
 	var victory := bool(r.get("victory", false))
 	var win_t := float(r.get("final_boss_time_s", r.get("boss_time_s", 0.0)))
-	history.append({
+	var entry := {
 		"date": Time.get_datetime_string_from_system(false, true), "character": cid, "skin": Skins.equipped(cid) if cid != "" else "",
 		"mode": String(mode), "victory": victory, "reason": str(r.get("reason", "victory" if victory else "death")),
 		"stage": int(r.get("stage", 1)), "time_s": t, "final_boss_killed": win_t > 0.0, "win_time_s": maxf(win_t, 0.0),
 		"kills": int(r.get("kills", 0)), "level": int(r.get("level", 0)), "gold": int(r.get("gold", 0)),
 		"rubies": int(r.get("rubies", 0)), "difficulty": float(r.get("difficulty", 0.0)), "items": items, "n_items": n_items,
 		"unlocks": unlocks.map(func(u): return String(u)),
-	})
+	}
+	var omens := _clean_omens(r.get("omens"))
+	if not omens.is_empty():
+		entry["omens"] = omens
+	history.append(entry)
 	while history.size() > HISTORY_MAX:
 		history.remove_at(0)
 

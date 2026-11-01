@@ -12,6 +12,8 @@ signal difficulty_changed(D: float, tier_name: StringName)
 ## Or réellement débité par spend_gold (coffres, relances, kits) ; jamais émis en or infini (mode test).
 ## Écouté par le journal de run (or dépensé par étage).
 signal gold_spent(amount: float)
+## Scories des ateliers (Fondoir -> Matrice) : pastilles du HUD.
+signal scrap_changed
 
 var mode: StringName = &"moyen"
 var stage := 1
@@ -34,6 +36,17 @@ var kills := 0
 var run_seed := 0
 var _last_tier: StringName = &""
 var floor_start_d := 1.0 ## D au début de l'étage (prix des coffres)
+## Présage d'étage (scripts/omens/omens.gd) : id du présage actif (&"" = aucun, Balance.OMEN_CLEAR_ID = refusé), vrai tant
+## que le joueur n'a pas choisi à l'arrivée, et choix par étage {étage (int) -> id (texte)} (rubis, historique, sauvegarde).
+var omen: StringName = &""
+var omen_pending := false
+var omens_taken := {}
+## Boussole de rouille (docs/Ateliers_Chiffres.md §7) : {tag, charges}. Une charge garantit un objet du tag sur la carte A
+## du prochain petit ou grand coffre (1er tirage) ; survit au changement d'étage ; sauvegardée.
+var compass := {"tag": "", "charges": 0}
+## Scories des ateliers (docs/Ateliers_Chiffres.md §3) : qualité (commun | peu_commun | rare) -> nombre, au plus
+## Balance.SCRAP_CAP au total. Survivent au changement d'étage ; sauvegardées.
+var scrap := {}
 ## Remplacé (Alignement RoR2) : monster_gold_budget, réserve d'or des monstres par étage (supprimée).
 
 
@@ -49,6 +62,11 @@ func start_run(new_mode: StringName = &"moyen", run_seed: int = 0) -> void:
 	kills = 0
 	counters = {}
 	bosses_killed = []
+	omen = &""
+	omen_pending = false
+	omens_taken = {}
+	compass = {"tag": "", "charges": 0}
+	scrap = {}
 	self.run_seed = run_seed if run_seed != 0 else randi()
 	rng.seed = self.run_seed
 	_last_tier = &""
@@ -56,9 +74,53 @@ func start_run(new_mode: StringName = &"moyen", run_seed: int = 0) -> void:
 	begin_floor()
 
 
-## Début d'étage : fige le D de l'étage (prix des coffres).
+## Début d'étage : fige le D de l'étage (prix des coffres) ; le présage de l'étage d'avant cesse, celui du nouvel étage
+## attend le choix du joueur (étages 2 à 5, jamais en mode test : le panneau de test le règle).
 func begin_floor() -> void:
 	floor_start_d = difficulty()
+	var had := omen != &""
+	omen = &""
+	omen_pending = Omens.floor_has_omen(stage) and not TestMode.active
+	if had:
+		Events.omen_changed.emit(&"", stage)
+
+
+## Pose le présage actif (choix du joueur, ou mode test avec record = false). &"" le retire.
+func set_omen(id: StringName, record := true) -> void:
+	omen = id
+	omen_pending = false
+	if record and id != &"":
+		omens_taken[stage] = String(id)
+	Events.omen_changed.emit(id, stage)
+
+
+## Présages acceptés dans la run (hors « Ciel clair »).
+func omens_accepted() -> int:
+	return Omens.accepted_count(omens_taken)
+
+
+## Choix par étage en clés texte (historique du profil) : {"2": "fievre", ...}.
+func omens_taken_text() -> Dictionary:
+	var out := {}
+	for k in omens_taken:
+		out[str(k)] = str(omens_taken[k])
+	return out
+
+
+## Boussole de rouille : choisit le tag et recharge (remplace l'ancien tag et ses charges restantes).
+func compass_set(tag: String, charges: int = -1) -> void:
+	compass = {"tag": tag, "charges": Balance.BOUSSOLE_CHARGES if charges < 0 else charges}
+
+
+## Vrai si une charge est disponible pour un coffre de ce type (`Balance.BOUSSOLE_CHEST_KINDS`).
+func compass_ready_for(kind: StringName) -> bool:
+	return int(compass.get("charges", 0)) > 0 and String(compass.get("tag", "")) != "" and kind in Balance.BOUSSOLE_CHEST_KINDS
+
+
+func compass_consume() -> void:
+	compass["charges"] = maxi(int(compass.get("charges", 0)) - 1, 0)
+	if int(compass["charges"]) == 0:
+		compass["tag"] = ""
 
 
 func _ready() -> void:
@@ -193,6 +255,38 @@ func stacks(item_id: StringName) -> int:
 	return items.get(item_id, 0)
 
 
+# --- Scories (ateliers) ---------------------------------------------------------------
+func scrap_of(quality: StringName) -> int:
+	return int(scrap.get(quality, 0))
+
+
+func scrap_total() -> int:
+	var n := 0
+	for q in scrap:
+		n += int(scrap[q])
+	return n
+
+
+## +1 scorie de la qualité ; faux si le plafond Balance.SCRAP_CAP est atteint (rien n'est ajouté).
+func add_scrap(quality: StringName) -> bool:
+	if scrap_total() >= Balance.SCRAP_CAP:
+		return false
+	scrap[quality] = scrap_of(quality) + 1
+	scrap_changed.emit()
+	return true
+
+
+## Dépense 1 scorie de la qualité ; faux s'il n'y en a pas.
+func spend_scrap(quality: StringName) -> bool:
+	if scrap_of(quality) <= 0:
+		return false
+	scrap[quality] = scrap_of(quality) - 1
+	if scrap_of(quality) <= 0:
+		scrap.erase(quality)
+	scrap_changed.emit()
+	return true
+
+
 ## Sauvegarde de run (docs/Design_Menus.md §6.1) : état sérialisable en JSON.
 func to_dict() -> Dictionary:
 	var it := {}
@@ -204,7 +298,18 @@ func to_dict() -> Dictionary:
 		"seed": run_seed, "rng_state": str(rng.state),
 		"floor_start_d": floor_start_d,
 		"loadout": _loadout_dict(), "counters": counters.duplicate(), "bosses_killed": bosses_killed.duplicate(true),
+		"omen": String(omen), "omen_pending": omen_pending, "omens_taken": omens_taken_text(),
+		"compass": compass.duplicate(),
+		"scrap": _scrap_dict(),
 	}
+
+
+func _scrap_dict() -> Dictionary:
+	var out := {}
+	for q in scrap:
+		if int(scrap[q]) > 0:
+			out[String(q)] = int(scrap[q])
+	return out
 
 
 func _loadout_dict() -> Dictionary:
@@ -237,6 +342,22 @@ func from_dict(d: Dictionary) -> void:
 	loadout = normalize_loadout(d.get("loadout", {})) # absente (ancienne sauvegarde) = sorts de base
 	counters = (d.get("counters", {}) as Dictionary).duplicate() if d.get("counters") is Dictionary else {}
 	bosses_killed = (d.get("bosses_killed", []) as Array).duplicate(true) if d.get("bosses_killed") is Array else []
+	var cp: Variant = d.get("compass")
+	compass = {"tag": String((cp as Dictionary).get("tag", "")), "charges": int((cp as Dictionary).get("charges", 0))} if cp is Dictionary else {"tag": "", "charges": 0}
+	scrap = {}
+	var sd: Variant = d.get("scrap", {}) # absente (ancienne sauvegarde) = aucune scorie
+	if sd is Dictionary:
+		for q in sd:
+			if int(sd[q]) > 0:
+				scrap[StringName(q)] = int(sd[q])
+	scrap_changed.emit()
+	omen = StringName(str(d.get("omen", ""))) # absent des anciennes sauvegardes : aucun présage
+	omen_pending = bool(d.get("omen_pending", false))
+	omens_taken = {}
+	var ot: Variant = d.get("omens_taken", {})
+	if ot is Dictionary:
+		for k in ot:
+			omens_taken[int(str(k))] = str(ot[k])
 	running = true
 	gold_changed.emit(gold)
 	xp_changed.emit(xp, Balance.xp_required(level))

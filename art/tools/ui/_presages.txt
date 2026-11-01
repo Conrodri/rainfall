@@ -1,0 +1,16 @@
+LOT PRESAGES : 8 icones de presage d'etage (ecran d'arrivee a 2 cartes + rappel de HUD a 48 px). Ciel clair (carte neutre) en bonus : 9e icone.
+Style : gabarit des icones de sorts et de passifs (art/tools/ui/_passive_icons.txt, reference game/assets/sprites/icons/spells/nova_ardente.png : medaillon disque de fer noirci, couronne de chevrons bronze, un seul emblème central, accent emissif), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map. Groupe COMBAT = accent rouge-orange, groupe BUTIN = accent or ; Ciel clair = accent bleu pale, medaillon plus clair.
+Format : PNG RGBA 128x128, fond transparent, symbole centre lisible a 48 px, aucun texte. Masque d'emission <id>_e.png seulement si utile.
+Sortie : game/assets/sprites/icons/omens/<id>.png (Omens.icon_of charge ce chemin s'il existe, sinon l'icone d'objet empruntee ; aucun .gd a toucher). Ne pas lire docs/ ni CLAUDE.md.
+Ids et symboles (textes exacts : game/data/omens.json) :
+- pluie_de_cendres (combat) : nuage sombre qui laisse tomber des cendres incandescentes, accent braise.
+- carapaces (combat) : carapace segmentee de scarabee, plaques epaisses, accent rouge sourd.
+- fievre (combat) : thermometre / sablier fendu ou la chaleur monte, flammeches autour, accent rouge vif.
+- eveil_des_elites (combat) : oeil fendu s'ouvrant dans un halo, couronne d'epines, accent orange.
+- marche_noir (butin) : etal sombre drape ou luit une piece barree, accent or terni.
+- offrande (butin) : reliquaire ouvert et bol de pieces, accent or chaud.
+- usure (butin) : bouclier fendu aux rivets rouilles, accent cuivre.
+- maree (butin) : vague qui monte et charrie des pieces, accent bleu-or.
+- ciel_clair (neutre) : ciel degage, disque pale entre deux nuages dechires, accent bleu pale.
+RAPPORT (6 lignes max, ultracave) : fichiers produits, verif dimensions/alpha/lisibilite 48 px, problemes restants.
+Lancer : sh art/tools/run_codex.sh art/tools/ui/_presages.txt art/tools/ui/_logpresages.txt

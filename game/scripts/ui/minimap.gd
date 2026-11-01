@@ -42,6 +42,7 @@ const PILLAR_COLORS := {
 	&"active": Color(1.0, 0.45, 0.1),
 	&"done": Color(0.35, 0.9, 0.45),
 }
+const STATION_COLOR := Color(0.35, 0.9, 0.95) ## ateliers : losange cyan (≠ coffres)
 const CHEST_COLORS := { # même code couleur que Chest.COLORS (rareté)
 	&"petit": Color(0.78, 0.6, 0.38),
 	&"large": Color(0.29, 0.56, 0.89),
@@ -326,6 +327,9 @@ func _refresh_markers(sm: Node) -> void:
 			if c.has_method(&"is_opened") and c.is_opened(): # ouverture commencée (Chest)
 				continue
 			_chests.append([_uv(c.global_position), CHEST_COLORS.get(c.get(&"kind"), Color.WHITE), c.get(&"kind")])
+	for st in get_tree().get_nodes_in_group(&"stations"): # ateliers (scripts/stations/) : losange cyan, éteint une fois épuisé
+		if st is Station and is_instance_valid(st) and st.is_inside_tree() and not (st as Station).state.exhausted():
+			_chests.append([_uv((st as Station).global_position), STATION_COLOR, &"station"])
 	_pillars.clear()
 	for pl in sm.get(&"pillars"):
 		if is_instance_valid(pl) and pl.is_inside_tree():
@@ -451,6 +455,13 @@ func _draw() -> void:
 	for c in ([] if jammed else _chests):
 		var q := xf * (c[0] as Vector2)
 		var ck: StringName = c[2] if c.size() > 2 else &"petit"
+		if ck == &"station":
+			var sd := u * 1.2
+			var spoly := PackedVector2Array([q + Vector2(0, -sd), q + Vector2(sd, 0), q + Vector2(0, sd), q + Vector2(-sd, 0)])
+			draw_colored_polygon(spoly, c[1])
+			spoly.append(spoly[0])
+			draw_polyline(spoly, Color(0, 0, 0, 0.85), 1.0)
+			continue
 		var cname := "chest_legendary" if (ck == &"legendaire" or ck == &"boss") else ("chest_large" if (ck == &"large" or ck == &"guardian") else "chest")
 		if not _draw_icon(cname, q, u * 2.6):
 			draw_rect(Rect2(q - Vector2(u, u) * 0.6, Vector2(u, u) * 1.2), c[1])

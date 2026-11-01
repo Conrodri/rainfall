@@ -16,6 +16,10 @@ var shown: Array = [] ## tous les ids déjà montrés pour ce coffre
 var gold_rerolls := 0
 var ad_rerolls := 0
 var rng: RandomNumberGenerator
+## Boussole de rouille (docs/Ateliers_Chiffres.md §7) : tag garanti sur la carte A du premier tirage ("" = aucun) ;
+## `compass_missed` = tag demandé mais absent de cette qualité (charge conservée, la carte l'écrit).
+var compass_tag := ""
+var compass_missed := ""
 
 
 func _init(p_kind: StringName, p_stage: int, p_price: float, p_rng: RandomNumberGenerator = null) -> void:
@@ -49,7 +53,34 @@ func start() -> void:
 	quality = res["quality"]
 	die = res["die"]
 	rolls = res.get("rolls", [die])
+	_draw_first()
+
+
+## Premier tirage : garantie de la Boussole si une charge attend (petit ou grand coffre), sinon tirage normal.
+## Les relances (`_draw`) tirent toujours normalement.
+func _draw_first() -> void:
+	if RunState.compass_ready_for(kind):
+		var tag := String(RunState.compass.get("tag", ""))
+		var pair := LootRoller.pick_pair_tagged(quality, RunState.items, shown, rng, tag)
+		if not pair.is_empty():
+			offered = pair
+			compass_tag = tag
+			RunState.compass_consume()
+			for id in offered:
+				if not (id in shown):
+					shown.append(id)
+			return
+		compass_missed = tag
 	_draw()
+
+
+## Ligne de la Boussole pour l'écran de coffre ("" si elle n'a pas joué).
+func compass_note() -> String:
+	if compass_tag != "":
+		return "Boussole : %s" % compass_tag
+	if compass_missed != "":
+		return "Boussole : pas de %s ici (charge gardée)" % compass_missed
+	return ""
 
 
 ## Rareté de chaque jet (une roue par jet).

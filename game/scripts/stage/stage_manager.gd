@@ -36,6 +36,7 @@ const RELAXED_TRIES := 10 ## puis sans la règle de sol praticable
 const CAPSULE_OBSTACLE_DIST_U := 4.0 ## distance mini aux coffres, piliers, téléporteur et départ joueur
 const CAPSULE_SPACING_U := 6.0 ## distance mini entre deux capsules
 const CAPSULE_SPACING_RELAXED_U := [4.0, 2.0] ## repli si la carte est trop étroite pour 10 capsules
+const MERCHANT_ATELIER_DIST_U := 6.0 ## le marchand reste à cette distance des cases d'atelier `E`
 const CAPSULE_WALK_RADIUS := 48.0 ## px : repli sans grille, disque entièrement praticable
 const DEFAULT_RULES := {
 	"small_chests": 8, "large_chests": 2, "legendary_chance": 0.25,
@@ -64,6 +65,10 @@ var pillars: Array[Pillar] = []
 var chests: Array[Node2D] = []
 var capsules: Array[Node2D] = [] ## capsules d'argent de l'étage (Balance.CAPSULES_PER_STAGE)
 var teleporter: ExitTeleporter = null
+var merchant: Merchant = null ## marchand de l'étage 3 (une fois par run ; Balance.MERCHANT_*)
+var compass_station: CompassStation = null ## Boussole de rouille posée par place_compass() (tirage des ateliers : StationPlan)
+const BOSS_CHEST_SPREAD_PX := 200.0 ## écart de deux coffres de boss (Paratonnerre dévié)
+var stations: Array[Station] = [] ## ateliers de l'étage (scripts/stations/, un par étage 1-4, l'Enclume à l'étage 5)
 var secrets: Array[SecretRoom] = [] ## portes scellées de la carte (cartes B : scène à marqueurs `secret_spawn`)
 var map_order: Array = [] ## obsolète (ancienne rotation) : toujours vide, gardé pour les anciennes sauvegardes
 var floor_plan: Array = [] ## FloorPlan.build(RunState.run_seed) : étages 1..FINAL_STAGE
@@ -74,6 +79,46 @@ var _catalog: Array = []
 var _own_nav: NavField = null ## zone accessible sans Director (tests) : grille construite ici
 var _own_nav_map: Node = null
 var _layout := {} ## {"chests": [{kind, marker}], "pillars": [{kind, marker}]}
+var omen_chest: Node2D = null ## coffre gratuit d'arrivée du présage Offrande (sauvegardé tant qu'il est fermé)
+const OMEN_CHEST_OFFSET := Vector2(260.0, 40.0) ## px, repère carte : à côté du joueur à l'arrivée
+
+
+func _ready() -> void:
+	Events.omen_changed.connect(_on_omen_changed)
+
+
+## Présage choisi (Offrande : reliquaire gratuit posé près du joueur) ou retiré : le coffre d'un ancien présage est libéré.
+func _on_omen_changed(id: StringName, _stage: int) -> void:
+	if is_instance_valid(omen_chest) and not (omen_chest.has_method(&"is_opened") and omen_chest.call(&"is_opened")):
+		chests.erase(omen_chest)
+		omen_chest.queue_free()
+	omen_chest = null
+	if id == &"" or map == null:
+		return
+	var kind := Omens.arrival_chest()
+	if kind != &"":
+		place_omen_chest(kind)
+
+
+## Pose le coffre gratuit d'arrivée (`kind` : table, &"guardian") près du joueur, ou en `local_pos` (reprise de sauvegarde).
+func place_omen_chest(kind: StringName, local_pos: Variant = null) -> Node2D:
+	var chest := _make_chest()
+	if chest == null or map == null:
+		return null
+	var pos: Vector2
+	if local_pos is Vector2:
+		pos = local_pos
+	else:
+		var player := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
+		var base := map.to_local(player.global_position) if player != null else map.get_player_start()
+		pos = reachable_local(base + OMEN_CHEST_OFFSET)
+	chest.position = pos
+	map.add_child(chest)
+	if chest.has_method(&"setup"):
+		chest.call(&"setup", kind, RunState.stage)
+	chests.append(chest)
+	omen_chest = chest
+	return chest
 
 
 func reset_run() -> void:
@@ -124,6 +169,8 @@ func start_stage(layout: Dictionary = {}) -> void:
 		layout = _roll_layout(chest_markers, pillar_markers)
 	if not layout.has("capsules"): # tirage après coffres et piliers : ne change pas leur seed
 		layout["capsules"] = _roll_capsules(layout, chest_markers, pillar_markers)
+	if not layout.has("merchant"): # graine propre (jamais RunState.rng) ; {} = pas de marchand à cet étage
+		layout["merchant"] = _roll_merchant(layout, chest_markers, pillar_markers)
 	_layout = layout
 	var stage := RunState.stage
 
@@ -138,7 +185,10 @@ func start_stage(layout: Dictionary = {}) -> void:
 		chest.position = reachable_local(map.local_pos(chest_markers[int(c["marker"])]))
 		map.add_child(chest)
 		if chest.has_method(&"setup"):
-			chest.call(&"setup", StringName(c["kind"]), stage)
+			if c.has("special") and _setup_arg_count(chest) >= 3: # coffre à vitrine : objets visibles tirés à l'apparition (voir _assign_showcases)
+				chest.call(&"setup", StringName(c["kind"]), stage, c)
+			else:
+				chest.call(&"setup", StringName(c["kind"]), stage)
 		chests.append(chest)
 
 	var zone_id := 1
@@ -186,6 +236,11 @@ func start_stage(layout: Dictionary = {}) -> void:
 		if capsule.has_method(&"setup"):
 			capsule.call(&"setup", stage)
 		capsules.append(capsule)
+
+	# Ateliers (tirage propre, jamais RunState.rng) : posés après coffres, piliers et capsules ; `layout["stations"]` =
+	# états sauvegardés (clé absente : tirage neuf)
+	stations = StationSpawner.spawn(self, layout["stations"] if layout.has("stations") else null)
+	_setup_merchant(layout["merchant"] if layout.get("merchant") is Dictionary else {})
 
 	var player := get_tree().get_first_node_in_group(&"player") as Node2D
 	if player != null:
@@ -344,7 +399,45 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 	for i in kinds.size():
 		out_chests.append({"kind": kinds[i], "marker": order[i]})
 
-	return {"chests": out_chests, "pillars": _roll_pillars(pillar_markers, start, rng)}
+	var pillars_roll := _roll_pillars(pillar_markers, start, rng)
+	_assign_showcases(out_chests)
+	return {"chests": out_chests, "pillars": pillars_roll}
+
+
+## Coffres à vitrine (docs/Boucle_Etage_Design.md §2.5) : Balance.CHEST_SHOWCASE_PER_STAGE petits coffres deviennent des
+## vitrines : 3 objets visibles (qualité tirée une fois, table `petit`, Chance comprise), on en choisit 1, prix x1,2. Le tirage
+## se fait ICI, avant l'achat, avec une graine propre (run_seed + "showcase" + étage) : RunState.rng et les emplacements
+## sont inchangés. Plafond de coffres spéciaux par étage : Balance.CHEST_SPECIAL_MAX_PER_STAGE (toute entrée `special`
+## compte). Cartes imposées par un test (map_scene) : aucune vitrine. Écrit `special`, `offer`, `quality` dans l'entrée.
+func _assign_showcases(entries: Array) -> void:
+	if map_scene != null or bare_arena:
+		return
+	var special := 0
+	for c in entries:
+		if String((c as Dictionary).get("special", "")) != "":
+			special += 1
+	var budget := mini(Balance.CHEST_SHOWCASE_PER_STAGE, Balance.CHEST_SPECIAL_MAX_PER_STAGE - special)
+	if budget <= 0:
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([RunState.run_seed, "showcase", RunState.stage])
+	var smalls: Array = []
+	for i in entries.size():
+		if String((entries[i] as Dictionary)["kind"]) == "petit" and String((entries[i] as Dictionary).get("special", "")) == "":
+			smalls.append(i)
+	smalls = _shuffled_array(smalls, rng)
+	var luck := roundi(float(ItemStats.compute(RunState.items).get("luck", 0.0)))
+	var taken: Array = []
+	for k in mini(budget, smalls.size()):
+		var q: StringName = LootRoller.roll_quality(&"petit", rng, luck)["quality"]
+		var ids: Array = LootRoller.pick_n(q, RunState.items, taken, rng, Balance.CHEST_SHOWCASE_COUNT)
+		if ids.size() < Balance.CHEST_SHOWCASE_COUNT:
+			continue
+		taken.append_array(ids)
+		var e: Dictionary = entries[int(smalls[k])]
+		e["special"] = "showcase"
+		e["offer"] = ids
+		e["quality"] = String(q)
 
 
 func _roll_pillars(markers: Array[Marker2D], start: Vector2, rng: RandomNumberGenerator) -> Array:
@@ -486,6 +579,97 @@ func _roll_capsules(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	return out
 
 
+## Nombre d'arguments du `setup` d'un coffre (les doublures de test n'en prennent que 2 : pas d'extra, pas de vitrine).
+static func _setup_arg_count(chest: Node) -> int:
+	for m in chest.get_method_list():
+		if m["name"] == "setup":
+			return (m["args"] as Array).size()
+	return 0
+
+
+## Marchand de l'étage 3 (une fois par run, cartes A et B) : point libre (case « . ») à Balance.MERCHANT_MIN_START_DIST_U du
+## départ et des piliers (assoupli 20 -> 14 -> 8 -> 4 u si la carte est étroite), à 4 u des coffres, capsules et téléporteur et
+## à 6 u des cases d'atelier `E` (jamais sur la même case qu'un atelier). Graine propre (run_seed + "merchant").
+## Retourne {x, y, stock: [{id, quality, sold}]} en repère local de la carte, ou {} (autre étage, sans fin, carte de test).
+func _roll_merchant(layout: Dictionary, chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D]) -> Dictionary:
+	if bare_arena or map_scene != null or endless or RunState.stage != Balance.MERCHANT_STAGE:
+		return {}
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([RunState.run_seed, "merchant"])
+	var far: Array[Vector2] = [map.get_player_start()]
+	var near: Array[Vector2] = []
+	for c: Dictionary in layout["chests"]:
+		near.append(map.local_pos(chest_markers[int(c["marker"])]))
+	for xy in layout.get("capsules", []):
+		near.append(Vector2(float(xy[0]), float(xy[1])))
+	for p: Dictionary in layout["pillars"]:
+		var pp := map.local_pos(pillar_markers[int(p["marker"])])
+		far.append(pp)
+		if int(p["kind"]) == Pillar.Kind.BIG:
+			near.append(teleporter_local(pp))
+	var ateliers: Array[Vector2] = []
+	for m in map.get_event_markers():
+		ateliers.append(map.local_pos(m))
+	var cands := _capsule_candidates(rng)
+	var picked := Vector2.ZERO
+	var found := false
+	for dist_u in [Balance.MERCHANT_MIN_START_DIST_U, 14.0, 8.0, 4.0]:
+		var ok_list: Array[Vector2] = []
+		for pos in cands:
+			var ok := true
+			for a in far:
+				if pos.distance_to(a) < float(dist_u) * UNIT:
+					ok = false
+					break
+			if ok:
+				for a in near:
+					if pos.distance_to(a) < CAPSULE_OBSTACLE_DIST_U * UNIT:
+						ok = false
+						break
+			if ok:
+				for a in ateliers:
+					if pos.distance_to(a) < MERCHANT_ATELIER_DIST_U * UNIT:
+						ok = false
+						break
+			if ok:
+				ok_list.append(pos)
+		if not ok_list.is_empty():
+			picked = ok_list[rng.randi_range(0, ok_list.size() - 1)]
+			found = true
+			break
+	if not found:
+		push_warning("StageManager : aucun point libre pour le marchand sur %s." % map_id)
+		return {}
+	return {"x": picked.x, "y": picked.y, "stock": Merchant.roll_stock(rng)}
+
+
+func _setup_merchant(d: Dictionary) -> void:
+	merchant = null
+	if d.is_empty() or map == null:
+		return
+	var m := Merchant.new()
+	m.position = Vector2(float(d["x"]), float(d["y"]))
+	map.add_child(m)
+	m.setup(d.get("stock", []), RunState.stage)
+	merchant = m
+
+
+## Boussole de rouille (atelier gratuit, docs/Ateliers_Chiffres.md §7) : pose la station en `pos` (repère local de la carte,
+## rabattu en zone accessible). Appelée par l'apparition des ateliers (StationSpawner.make_other) ; `saved` = état d'une
+## sauvegarde (CompassStation.to_dict). L'état se sauve sous la clé `compass_station` de to_dict().
+func place_compass(pos: Vector2, saved: Dictionary = {}) -> CompassStation:
+	if map == null:
+		return null
+	var c := CompassStation.new()
+	c.biome = map.biome()
+	c.position = reachable_local(pos)
+	map.add_child(c)
+	if not saved.is_empty():
+		c.from_dict(saved)
+	compass_station = c
+	return c
+
+
 ## Points praticables de la carte (espace local logique) : centres des cases « . » de la grille JSON
 ## (repère carte, ramenés en logique par StageMap.from_map),
 ## sinon (cartes de test sans grille) points tirés au hasard hors des collisions.
@@ -609,17 +793,30 @@ func _on_pillar_finished(pillar: Pillar) -> void:
 				p.unlock()
 		return
 	# Gros pilier terminé : coffre du boss gratuit, étage terminé, sortie ouverte.
-	var chest := _make_chest()
-	if chest != null:
-		chest.position = pillar.position
-		map.add_child(chest)
-		if chest.has_method(&"setup"):
-			chest.call(&"setup", &"boss", RunState.stage)
-		chests.append(chest)
+	spawn_boss_chests(pillar)
 	floor_cleared = true
 	teleporter.position = teleporter_local(pillar.position)
 	teleporter.set_active(true)
 	Events.floor_cleared.emit(RunState.stage)
+
+
+## Coffres de boss à la mort du boss d'étage : Présage Usure = pas de coffre de base ; Paratonnerre dévié = +1 coffre
+## (Balance.boss_chest_count : 2 en jeu normal). Retourne les coffres posés. Public : le mode test l'appelle pour son pilier.
+func spawn_boss_chests(pillar: Pillar) -> Array[Node2D]:
+	var out: Array[Node2D] = []
+	var n_boss := Balance.boss_chest_count(1 if Omens.boss_chest_enabled() else 0, pillar.deviated)
+	for bi in n_boss:
+		var chest := _make_chest()
+		if chest == null:
+			continue
+		var spread := (float(bi) - float(n_boss - 1) * 0.5) * BOSS_CHEST_SPREAD_PX
+		chest.position = pillar.position if n_boss == 1 else reachable_local(pillar.position + Vector2(spread, 0.0))
+		map.add_child(chest)
+		if chest.has_method(&"setup"):
+			chest.call(&"setup", &"boss", RunState.stage)
+		chests.append(chest)
+		out.append(chest)
+	return out
 
 
 ## Sortie utilisée : choix de fin à l'étage final, sinon étage suivant.
@@ -692,8 +889,11 @@ func _clear_stage() -> void:
 	pillars.clear()
 	chests.clear()
 	capsules.clear() # libérées avec la carte
+	stations.clear()
 	secrets.clear()
 	teleporter = null
+	merchant = null
+	compass_station = null
 
 
 # --- Sauvegarde
@@ -707,12 +907,18 @@ func to_dict() -> Dictionary:
 	for c in capsules:
 		if is_instance_valid(c) and not (c.has_method(&"is_opened") and c.call(&"is_opened")):
 			caps.append([c.position.x, c.position.y])
-	return {
+	var out := {
 		"stage": RunState.stage, "endless": endless, "floor_cleared": floor_cleared,
 		"map_order": map_order, "floor_plan": floor_plan, "chests": _chests_state(), "pillars": ps, "capsules": caps,
 		"projection": String(map.get_meta(&"projection", "flat")) if map != null else "flat",
-		"secrets": _secrets_state(),
+		"secrets": _secrets_state(), "stations": StationSpawner.to_dict(stations),
 	}
+	out["merchant"] = merchant.to_dict() if is_instance_valid(merchant) else (_layout.get("merchant", {}) if _layout.get("merchant") is Dictionary else {})
+	if is_instance_valid(compass_station):
+		out["compass_station"] = compass_station.to_dict()
+	if is_instance_valid(omen_chest) and not (omen_chest.has_method(&"is_opened") and omen_chest.call(&"is_opened")):
+		out["omen_chest"] = [omen_chest.position.x, omen_chest.position.y] # reliquaire d'Offrande encore fermé
+	return out
 
 
 func _secrets_state() -> Array:
@@ -760,7 +966,17 @@ func from_dict(d: Dictionary) -> void:
 	var layout := {"chests": d["chests"], "pillars": lp}
 	if d.has("capsules"): # anciennes sauvegardes : tirage neuf
 		layout["capsules"] = d["capsules"]
+	if d.has("stations"): # anciennes sauvegardes : atelier tiré à neuf
+		layout["stations"] = d["stations"]
+	if d.get("merchant") is Dictionary: # absent (ancienne sauvegarde) : tirage neuf ; {} = pas de marchand
+		layout["merchant"] = d["merchant"]
 	start_stage(layout)
+	var csd: Variant = d.get("compass_station") # Boussole de rouille : état d'usage (la station est reposée par place_compass)
+	if csd is Dictionary:
+		if is_instance_valid(compass_station):
+			compass_station.from_dict(csd)
+		else:
+			place_compass(Vector2(float((csd as Dictionary).get("x", 0.0)), float((csd as Dictionary).get("y", 0.0))), csd)
 	# Carte passée en iso depuis la sauvegarde (foret_brume, 22/10/2026) : les positions sauvegardées
 	# (capsules, joueur) sont en repère carte = logique de l'ancienne carte plate -> ramenées par from_map.
 	# Sauvegardes sans `projection` : seule terrasses_noyees était iso à l'époque.
@@ -776,6 +992,9 @@ func from_dict(d: Dictionary) -> void:
 			for r in secrets:
 				if String(r.secret_id) == String(sd.get("id", "")):
 					r.from_dict(sd)
+	var oc: Variant = d.get("omen_chest") # absent : pas de reliquaire d'Offrande (ou déjà ouvert)
+	if oc is Array and (oc as Array).size() == 2 and Omens.arrival_chest() != &"":
+		place_omen_chest(Omens.arrival_chest(), Vector2(float(oc[0]), float(oc[1])))
 	if bool(d.get("floor_cleared", false)):
 		floor_cleared = true
 		teleporter.position = teleporter_local(pillars[pillars.size() - 1].position)

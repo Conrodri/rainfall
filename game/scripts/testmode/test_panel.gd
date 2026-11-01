@@ -538,8 +538,79 @@ func _build_chests() -> void:
 	_body.add_child(_note("Le coffre apparaît près du joueur (ou au clic si « Clic dans l'arène » est coché, onglet Monstres). Ouverture : interagir, comme en jeu. Pour l'ouvrir sans payer : triche « Or infini »."))
 
 
+## Boucle d'étage : Boussole de rouille, coffre à vitrine, marchand de l'étage 3, Paratonnerre dévié (TestLoopTools).
+func _build_loop() -> void:
+	_body.add_child(_heading("Boucle d'étage"))
+	var grid := _grid(2)
+	_body.add_child(grid)
+	var items := [
+		["Coffre à vitrine", "Showcase", func() -> void: say("Coffre à vitrine posé (3 objets visibles, prix ×%s)." % str(Balance.CHEST_SHOWCASE_PRICE_P).replace(".", ",") if TestLoopTools.spawn_showcase(get_tree()) != null else "Impossible ici.")],
+		["Marchand (étage 3)", "Merchant", func() -> void: say("Marchand posé (1 objet par rareté)." if TestLoopTools.spawn_merchant(get_tree()) != null else "Impossible ici.")],
+		["Boussole de rouille", "Compass", func() -> void: say("Boussole posée : interagir pour choisir un tag." if TestLoopTools.spawn_compass(get_tree()) != null else "Impossible ici.")],
+		["Gros pilier (dévier)", "Pillar", func() -> void: say("Gros pilier posé : « Dévier » sous lui, « Activer » au contact." if TestLoopTools.spawn_pillar(get_tree()) != null else "Impossible ici.")],
+	]
+	for it in items:
+		var b := _btn(String(it[0]), it[2])
+		b.name = "Loop_%s" % String(it[1])
+		grid.add_child(_expand(b))
+	var tags := _grid(4)
+	_body.add_child(tags)
+	for t in ["Feu", "Givre", "Poison", "Survie"]:
+		var tag: String = t
+		var tb := _btn("Boussole : %s" % tag, func() -> void:
+			TestLoopTools.give_compass(tag)
+			say("Boussole : %s, %d charges." % [tag, Balance.BOUSSOLE_CHARGES]))
+		tb.name = "Compass_%s" % tag
+		tags.add_child(_expand(tb))
+	var dev := _check("Boss d'étage invoqués : déviés", TestMode.deviate_boss, func(on: bool) -> void:
+		TestMode.set_flag(&"deviate_boss", on)
+		say("Boss d'étage déviés : %s (affixe au hasard, PV et enrage décalés)." % ("oui" if on else "non")))
+	dev.name = "DeviateBoss"
+	_body.add_child(dev)
+	var rm := _btn("Retirer marchand et piliers", func() -> void:
+		say("%d marchand(s), %d pilier(s) retirés." % [TestLoopTools.remove_merchants(get_tree()), TestLoopTools.clear_pillars(get_tree())]))
+	rm.name = "ClearLoop"
+	_body.add_child(rm)
+	_body.add_child(_note("Pilier de test : mêmes règles qu'en jeu (affixe annoncé, PV, enrage, 2 coffres de boss), étages 2-4 non exigés. Pour acheter sans or : triche « Or infini »."))
+
+
+func _build_stations() -> void:
+	_body.add_child(_heading("Ateliers"))
+	var grid := _grid(_cols(190.0))
+	_body.add_child(grid)
+	for e in TestTools.station_catalog():
+		var entry: Dictionary = e
+		var b := _btn(String(entry.label), func() -> void:
+			var st := TestTools.spawn_station(get_tree(), StringName(entry.id))
+			say("%s posé." % entry.label if st != null else "Atelier impossible ici."))
+		b.name = "Station_%s" % entry.id
+		grid.add_child(b)
+	var scraps := _grid(3)
+	_body.add_child(scraps)
+	for q in [&"commun", &"peu_commun", &"rare"]:
+		var qq: StringName = q
+		var sb := _btn("+1 scorie %s" % StationState.SCRAP_NAMES[qq], func() -> void:
+			say("Scorie ajoutée." if RunState.add_scrap(qq) else "Scories pleines (%d/%d)." % [RunState.scrap_total(), Balance.SCRAP_CAP]))
+		sb.name = "Scrap_%s" % qq
+		scraps.add_child(sb)
+	var row := _grid(2)
+	_body.add_child(row)
+	var clr := _btn("Vider les scories", func() -> void:
+		RunState.scrap = {}
+		RunState.scrap_changed.emit()
+		say("Scories vidées."))
+	clr.name = "ClearScrap"
+	row.add_child(clr)
+	var rm := _btn("Retirer les ateliers", func() -> void: say("%d atelier(s) retiré(s)." % TestTools.clear_stations(get_tree())))
+	rm.name = "ClearStations"
+	row.add_child(rm)
+	_body.add_child(_note("L'atelier apparaît près du joueur, usages complets. Interaction : interagir, comme en jeu. L'Enclume demande de l'or (triche « Or infini »)."))
+
+
 func _build_items() -> void:
 	_build_chests()
+	_build_stations()
+	_build_loop()
 	_body.add_child(_heading("Objets"))
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override(&"separation", 8)
@@ -843,6 +914,7 @@ func _build_cheats() -> void:
 	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", _ti("range", ICON_RANGE))
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
 	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
+	_build_omens()
 	_body.add_child(_heading("Partie"))
 	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", _ti("timer_stop", ICON_TIMER))
 	var pz := _check("Pause à l'ouverture", TestMode.pause_on_open, func(on: bool) -> void:
@@ -866,6 +938,30 @@ func _build_cheats() -> void:
 	_set_btn_icon(gold, ICON_GOLD)
 	gold.name = "GoldPlus"
 	acts.add_child(_expand(gold))
+
+
+## Présage d'étage actif (scripts/omens/) : aucun en mode test sauf si on le force ici. Les effets suivent aussitôt
+## (dégâts, recharges, PV max, prix, crédits du director, reliquaire d'Offrande). N'écrit rien au profil ni à l'historique.
+func _build_omens() -> void:
+	_body.add_child(_heading("Présage d'étage"))
+	var grid := _grid(2)
+	_body.add_child(grid)
+	var none := _btn("Aucun%s" % (" (actif)" if RunState.omen == &"" else ""), func() -> void: _force_omen(&""))
+	none.name = "Omen_none"
+	grid.add_child(_expand(none))
+	for e in Omens.all():
+		var id := StringName(str(e["id"]))
+		var b := _btn("%s%s" % [e["name"], " (actif)" if RunState.omen == id else ""], func() -> void: _force_omen(id))
+		b.name = "Omen_%s" % id
+		grid.add_child(_expand(b))
+	var cur := Omens.get_omen(RunState.omen)
+	_body.add_child(_note(str(cur["text"]) if not cur.is_empty() else "Un seul présage à la fois. L'effet est immédiat et reste jusqu'à ce que vous en choisissiez un autre ou « Aucun »."))
+
+
+func _force_omen(id: StringName) -> void:
+	RunState.set_omen(id, false)
+	say("Présage : %s." % (Omens.omen_name(id) if id != &"" else "aucun"))
+	_reselect_keep_scroll()
 
 
 ## Icône à gauche du texte d'un bouton (assets existants, 52 px) ; chemin absent : bouton sans icône.

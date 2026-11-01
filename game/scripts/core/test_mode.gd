@@ -33,6 +33,7 @@ var full_resource := false ## jauge propre au kit toujours au maximum (voir Spel
 ## Monstres.
 var freeze_ai := false ## IA figée : les monstres ne bougent ni n'attaquent (les DoT et les coups reçus continuent)
 var spawns := false ## le director fait apparaître ses vagues
+var deviate_boss := false ## Paratonnerre dévié : les boss d'étage invoqués (hors raids et final) sont déviés (affixe, PV, enrage décalé)
 var freeze_time := true ## la minuterie de run est arrêtée (la difficulté vient du réglage D)
 ## Panneau.
 var pause_on_open := true ## le jeu est mis en pause tant que le panneau est ouvert
@@ -74,6 +75,7 @@ func _reset_flags() -> void:
 	full_resource = false
 	freeze_ai = false
 	spawns = false
+	deviate_boss = false
 	freeze_time = true
 	pause_on_open = true
 	d_value = D_MIN

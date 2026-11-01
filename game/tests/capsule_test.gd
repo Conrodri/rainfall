@@ -45,7 +45,7 @@ func _run() -> void:
 	add_child(mgr)
 
 	# --- Équilibrage
-	_check("CAPSULES_PER_STAGE = 10", Balance.CAPSULES_PER_STAGE == 10)
+	_check("CAPSULES_PER_STAGE = 4 (joueur, 01/11/2026)", Balance.CAPSULES_PER_STAGE == 4)
 	for D in [1.0, 2.5, 6.0]:
 		var ratio := Balance.capsule_gold(D) / Balance.chest_price(&"petit", D, 1)
 		_check("capsule_gold ~ 0,4 x petit coffre (D=%s)" % D, absf(ratio - 0.4) < 0.001)
@@ -61,7 +61,7 @@ func _run() -> void:
 			mgr.start_stage()
 			ids[mgr.map_id] = true
 			var caps := mgr.capsules
-			_check("10 capsules (%s)" % mgr.map_id, caps.size() == 10)
+			_check("4 capsules (%s)" % mgr.map_id, caps.size() == Balance.CAPSULES_PER_STAGE and caps.size() == 4)
 			var start := mgr.map.get_player_start()
 			var avoid: Array[Vector2] = [start]
 			for c in mgr.chests:
@@ -78,7 +78,7 @@ func _run() -> void:
 					_check(">= 4 u des coffres/piliers/téléporteur/départ", c.position.distance_to(a) >= 4.0 * UNIT - 0.1)
 				for j in range(i + 1, caps.size()):
 					_check(">= 6 u entre capsules", c.position.distance_to(caps[j].position) >= 6.0 * UNIT - 0.1)
-	_check("3 cartes testées", ids.size() == 3)
+	_check("au moins les 3 cartes A testées (variantes B comprises : %d)" % ids.size(), ids.size() >= 3)
 
 	# --- Déterminisme
 	RunState.rng.seed = 7
@@ -142,12 +142,12 @@ func _run() -> void:
 		if is_instance_valid(c):
 			freed = false
 	_check("capsules de l'ancien étage libérées", freed)
-	_check("10 nouvelles capsules", mgr.capsules.size() == 10)
+	_check("4 nouvelles capsules", mgr.capsules.size() == 4)
 
 	# --- Sauvegarde : seules les capsules fermées reviennent
 	mgr.capsules[0].open()
 	var saved := mgr.to_dict()
-	_check("sauvegarde : 9 capsules fermées", (saved["capsules"] as Array).size() == 9)
+	_check("sauvegarde : 3 capsules fermées", (saved["capsules"] as Array).size() == 3)
 	var json: Dictionary = JSON.parse_string(JSON.stringify(saved))
 	mgr.from_dict(json)
-	_check("restauration : 9 capsules", mgr.capsules.size() == 9)
+	_check("restauration : 3 capsules", mgr.capsules.size() == 3)

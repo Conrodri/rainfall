@@ -1160,6 +1160,11 @@ func get_pillar_markers() -> Array[Marker2D]:
 	return _markers(&"pillar_spawn")
 
 
+## Cases `E` (marqueurs `event_spawn`, 3 par carte aux étages 1-4, 2 à la Source) : emplacement des ateliers.
+func get_event_markers() -> Array[Marker2D]:
+	return _markers(&"event_spawn")
+
+
 ## Marqueurs de ce sous-arbre uniquement, triés par chemin (ordre stable pour la seed).
 func _markers(group: StringName) -> Array[Marker2D]:
 	var out: Array[Marker2D] = []

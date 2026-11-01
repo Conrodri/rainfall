@@ -644,6 +644,9 @@ static func ruby_breakdown(d: Dictionary) -> String:
 	var g := mini(int(float(d.get("gold", 0)) / 500.0), 20)
 	if g > 0:
 		parts.append("Or +%d" % g)
+	var om := int(d.get("omen_rubies", 0))
+	if om > 0:
+		parts.append("Présages +%d" % om)
 	return " · ".join(parts)
 
 

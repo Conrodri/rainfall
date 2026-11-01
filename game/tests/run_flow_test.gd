@@ -62,6 +62,7 @@ func _play_floor(stage: StageManager, player: Node2D, floor_n: int) -> void:
 	_check("étage %d : biome %s" % [floor_n, plan.get("biome")], EnemyVisual.current_biome() == StringName(plan.get("biome", "")), str(EnemyVisual.current_biome()))
 	var amb: AmbianceManager = _main.get(&"ambiance")
 	_check("étage %d : ambiance" % floor_n, amb.profile != null and String(amb.profile.map_id) == stage.map_id)
+	await _resolve_omen()
 	RunState.active_time_s += FLOOR_TIME_S
 	# quelques secondes de jeu : le Director fait apparaître des monstres
 	var director: Director = _main.get(&"director")
@@ -81,6 +82,22 @@ func _play_floor(stage: StageManager, player: Node2D, floor_n: int) -> void:
 	_check("étage %d : gros pilier déverrouillé" % floor_n, big.state == Pillar.STATE_READY)
 	await _clear_pillar(big, player, director, floor_n)
 	_check("étage %d : terminé, sortie ouverte" % floor_n, stage.floor_cleared and stage.teleporter.active)
+
+
+## Présages (étages 2-5) : passe le carton d'étage, choisit la première carte et rend la main au jeu.
+func _resolve_omen() -> void:
+	if not RunState.omen_pending:
+		return
+	var guard := 0
+	while _main.omen_screen == null and guard < 900:
+		if is_instance_valid(_main.floor_card):
+			_main.floor_card.skip()
+		await _frames(1)
+		guard += 1
+	_check("étage %d : écran de présage" % RunState.stage, _main.omen_screen != null)
+	if _main.omen_screen != null:
+		_main.omen_screen.choose(0)
+	await _frames(2)
 
 
 func _clear_pillar(p: Pillar, player: Node2D, director: Director, floor_n: int) -> void:

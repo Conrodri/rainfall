@@ -74,6 +74,7 @@ var end_screen: RunScreens = null ## EndRunScreen (hérite de RunScreens)
 var victory_screen: RunScreens = null
 var autosave_timer: Timer
 var floor_card: FloorCard = null ## carton de transition d'étage en cours
+var omen_screen: OmenScreen = null ## écran de choix du présage d'étage (étages 2 à 5), jeu en pause tant qu'il est ouvert
 
 var _loading: RunScreens
 var _dying := false
@@ -112,6 +113,8 @@ func _ready() -> void:
 	var pc: Variant = resume_data.get("pending_chest")
 	if pc is Dictionary and not (pc as Dictionary).is_empty():
 		_reopen_chest(pc)
+	elif not resume_data.is_empty() and RunState.omen_pending:
+		_show_omen_screen() # sauvegarde faite avant le choix du présage
 
 
 func _build() -> void:
@@ -236,6 +239,10 @@ func _on_stage_started(n: int) -> void:
 		player.clear_statuses()
 	if n > 1 and is_ready and not run_over: # pas à la reprise de sauvegarde ni au 1er étage
 		_show_floor_card(n)
+		if RunState.omen_pending and is_instance_valid(floor_card): # présage : après le carton, avant la reprise du jeu
+			floor_card.finished.connect(_show_omen_screen, CONNECT_ONE_SHOT)
+		elif RunState.omen_pending:
+			_show_omen_screen.call_deferred()
 
 
 ## Carton de transition (FloorCard, docs/ux/Audit_Menus.md §3.3) : un seul à la fois.
@@ -244,6 +251,30 @@ func _show_floor_card(n: int) -> void:
 		floor_card.queue_free()
 	floor_card = FloorCard.create(n, player)
 	add_child(floor_card)
+
+
+## Écran de choix du présage (Omens.offer : combat + butin, + « Ciel clair » hors Difficile). Jeu en pause jusqu'au choix.
+func _show_omen_screen() -> void:
+	if run_over or omen_screen != null or not RunState.omen_pending or TestMode.active:
+		return
+	var cards := Omens.offer(RunState.stage, RunState.run_seed, RunState.mode)
+	if cards.is_empty():
+		RunState.omen_pending = false
+		return
+	get_tree().paused = true
+	omen_screen = OmenScreen.create(RunState.stage, cards, Balance.omen_mandatory(RunState.mode))
+	add_child(omen_screen)
+	omen_screen.chosen.connect(_on_omen_chosen)
+
+
+func _on_omen_chosen(id: StringName) -> void:
+	if omen_screen != null:
+		omen_screen.queue_free()
+		omen_screen = null
+	RunState.set_omen(id) # Events.omen_changed : joueur, HUD, étage (reliquaire d'Offrande)
+	if not is_instance_valid(floor_card) and not run_over:
+		get_tree().paused = false
+	autosave.call_deferred()
 
 
 ## « +N XP (or converti) » vient après stage_started : affiché sur le carton, le toast du HUD est masqué.
@@ -377,6 +408,7 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 	if autosave_timer != null:
 		autosave_timer.stop()
 	last_rubies = Balance.run_rubies(RunState.active_time_s / 60.0, RunState.mode, pillars_done, victory, RunState.gold)
+	last_rubies += Balance.omen_rubies(RunState.omens_accepted()) # Présages acceptés (hors « Ciel clair »)
 	get_tree().paused = true
 	if _saves_enabled():
 		RunSave.delete(save_path)
@@ -388,7 +420,7 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 		"level": RunState.level, "items": RunState.items.duplicate(), "loadout": RunState.loadout.duplicate(),
 		"boss_time_s": _final_boss_time_s if victory else 0.0,
 		"final_boss_time_s": _final_boss_time_s, "reason": String(reason), "gold": int(RunState.gold),
-		"difficulty": RunState.difficulty(),
+		"difficulty": RunState.difficulty(), "omens": RunState.omens_taken_text(),
 	})
 	end_screen = EndRunScreen.create(end_info(victory, reason))
 	add_child(end_screen)
@@ -407,7 +439,7 @@ func end_info(victory: bool, reason: StringName) -> Dictionary:
 		"character_name": RunSave.character_name(String(RunState.character)), "mode": RunState.mode,
 		"stage": RunState.stage, "active_time_s": RunState.active_time_s, "level": RunState.level,
 		"pillars": pillars_done, "kills": RunState.kills, "items": n_items, "gold": int(RunState.gold),
-		"rubies": last_rubies, "unlocks": last_unlocks,
+		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()),
 	}
 
 

@@ -65,7 +65,7 @@ func expected_gold() -> float:
 	var mult := 1.0
 	if player != null and player.has_method(&"gold_mult"):
 		mult = maxf(float(player.call(&"gold_mult")), 0.0)
-	return gold * mult
+	return gold * mult * Omens.capsule_gold_mult() # Présage Marché noir : capsules ×2
 
 
 ## Ouvre la capsule (une seule fois). Retourne false si déjà ouverte.
@@ -94,7 +94,7 @@ func _drop_gold() -> void:
 	var pm := get_tree().get_first_node_in_group(&"pickups")
 	if pm != null and pm.has_method(&"drop"):
 		# Les pièces portent l'or ; gold_mult est appliqué à leur ramassage par le PickupManager.
-		var coin := gold / COIN_COUNT
+		var coin := gold * Omens.capsule_gold_mult() / COIN_COUNT
 		var origin := global_position + Vector2(0.0, -30.0)
 		for i in COIN_COUNT:
 			var a := (float(i) + RunState.rng.randf()) / COIN_COUNT * TAU

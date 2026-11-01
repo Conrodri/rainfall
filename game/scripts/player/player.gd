@@ -38,6 +38,7 @@ var dead := false
 var is_moving := false
 var facing := Vector2.DOWN
 var stats: Dictionary = {}
+var _item_stats: Dictionary = {} ## sortie brute d'ItemStats.compute (sans présage), pour recalculer `stats` quand le présage change
 var procs: Array = []
 var specials: Dictionary = {}
 var spells: SpellCaster
@@ -176,6 +177,7 @@ func _ready() -> void:
 	_dodge = DodgeMove.make(self, kit, character)
 	RunState.level_up.connect(_on_level_up)
 	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.omen_changed.connect(_on_omen_changed)
 	item_fx = ItemEffects.new()
 	add_child(item_fx)
 	item_fx.setup(self)
@@ -202,6 +204,8 @@ func _exit_tree() -> void:
 		RunState.level_up.disconnect(_on_level_up)
 	if Events.enemy_killed.is_connected(_on_enemy_killed):
 		Events.enemy_killed.disconnect(_on_enemy_killed)
+	if Events.omen_changed.is_connected(_on_omen_changed):
+		Events.omen_changed.disconnect(_on_omen_changed)
 	if _hitstop_active: # jamais de jeu ralenti qui survive au joueur
 		_hitstop_active = false
 		Engine.time_scale = 1.0
@@ -239,12 +243,19 @@ func special_stacks(id: StringName) -> int:
 
 
 func apply_stats(new_stats: Dictionary) -> void:
+	_item_stats = new_stats
 	stats = new_stats.duplicate(true)
+	Omens.adjust_player_stats(stats) # Présages Pluie de cendres (dégâts), Fièvre (recharges)
 	procs = (stats.get("procs", []) as Array).duplicate(true)
 	specials = (stats.get("specials", {}) as Dictionary).duplicate(true)
 	if item_fx != null:
 		item_fx.refresh()
 	_recompute(false)
+
+
+## Présage choisi ou retiré : dégâts, recharges et PV max sont recalculés (Omens.adjust_player_stats, _recompute).
+func _on_omen_changed(_id: StringName, _stage: int) -> void:
+	apply_stats(_item_stats)
 
 
 ## Montée de niveau (façon Risk of Rain, retour joueur) : le gain de PV max est soigné (_recompute),
@@ -279,6 +290,7 @@ func _recompute(full_heal: bool) -> void:
 	var base := character.max_hp_at(RunState.level) if character != null else Balance.player_max_hp(RunState.level)
 	var old_max := max_hp
 	max_hp = base * (1.0 + stat(&"max_hp_pct")) + stat(&"max_hp_flat")
+	max_hp *= Omens.player_max_hp_mult() # Présage Carapaces
 	if kit != null and kit.has_method(&"max_hp_mult"): # kit : PV max réduits (masse détachée de Bourbe)
 		max_hp *= kit.max_hp_mult()
 	if full_heal:
@@ -619,6 +631,7 @@ func take_damage(amount: float, source: Node = null) -> void:
 	var frac := Balance.MAX_HIT_FRACTION
 	if source != null and source.is_in_group("bosses"):
 		frac = Balance.MAX_HIT_FRACTION_BOSS
+	amount *= Omens.damage_taken_total_mult() # Présages Pluie de cendres, Fièvre : avant le plafond de coup
 	amount = minf(amount, max_hp * frac)
 	if randf() < clampf(stat(&"dodge"), 0.0, DODGE_CAP):
 		return

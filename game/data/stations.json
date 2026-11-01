@@ -1,0 +1,9 @@
+{
+  "_doc": "Poids de tirage des ateliers par étage (docs/Ateliers_Chiffres.md §2.2). Somme 100 par étage ; l'étage 5 reçoit toujours Balance.STATION_FINAL. `boussole` est tiré mais posé par un autre lot (scripts/stations/station_factory.gd).",
+  "weights": {
+    "1": {"enclume": 50, "boussole": 50},
+    "2": {"fondoir_matrice": 50, "alambic": 25, "enclume": 15, "boussole": 10},
+    "3": {"fondoir_matrice": 45, "matrice": 5, "alambic": 30, "enclume": 15, "boussole": 5},
+    "4": {"fondoir_matrice": 35, "matrice": 5, "alambic": 25, "enclume": 30, "boussole": 5}
+  }
+}

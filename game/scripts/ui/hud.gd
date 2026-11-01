@@ -53,6 +53,7 @@ var _frames: Array = [] ## [barre, NinePatchRect, Vector4 marges] : cadres DA po
 var _hp_label: Label
 var _xp_bar: ProgressBar
 var _gold_label: Label
+var scrap_pips: ScrapPips ## pastilles de scorie (ateliers), dans la rangée d'or
 var _time_label: Label
 var _diff_caption: Label ## titre « Difficulté » au-dessus du bandeau (le repère seul resterait muet pour un nouveau joueur)
 var _find_timer := 0.0
@@ -79,6 +80,7 @@ var minimap: Minimap
 var item_bar: ItemBar
 var boss_bars: BossBars
 var objectives: ObjectivesPanel ## objectifs d'étage (boss, charge, téléporteur), sous la minimap
+var omen_badge: OmenBadge ## rappel du présage d'étage actif (icône + nom, détail au survol / toucher), sous la difficulté
 var spell_hint: SpellHint ## description d'un sort : survol (souris) / appui long (tactile)
 var _overlay_tick := 0.0
 var overhead: OverheadBars ## PV + ressource au-dessus de la tête du personnage (réglage GameSettings.overhead_bars)
@@ -121,11 +123,14 @@ func _ready() -> void:
 	add_child(spell_hint)
 	_apply_mode()
 	RunState.gold_changed.connect(_on_gold)
+	RunState.scrap_changed.connect(_place_gold) # une pastille de plus ou de moins change la largeur de la rangée d'or
 	RunState.xp_changed.connect(_on_xp)
 	RunState.level_up.connect(_on_level)
 	RunState.difficulty_changed.connect(_on_difficulty)
 	Events.gold_converted.connect(_on_gold_converted)
 	Events.boss_shield_changed.connect(_on_boss_shield_changed)
+	Events.omen_changed.connect(_on_omen_changed)
+	omen_badge.refresh() # reprise de sauvegarde : présage déjà actif
 	_on_gold(RunState.gold)
 	_on_xp(RunState.xp, Balance.xp_required(RunState.level))
 	_on_level(RunState.level)
@@ -166,7 +171,7 @@ func _process(delta: float) -> void:
 	if _overlay_tick <= 0.0:
 		_overlay_tick = 0.1
 		_place_difficulty() # suit le losange de la minimap (carte liée après le HUD)
-		if boss_bars.visible or objectives.visible:
+		if boss_bars.visible or objectives.visible or omen_badge.visible:
 			_place_boss_bars()
 			_place_objectives()
 	if player == null or not is_instance_valid(player):
@@ -449,6 +454,8 @@ func _build() -> void:
 	_gold_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_gold_box.add_theme_constant_override("separation", 8)
 	root.add_child(_gold_box)
+	scrap_pips = ScrapPips.new() # scories des ateliers : pastilles à gauche de l'or, discrètes
+	_gold_box.add_child(scrap_pips)
 	var gi := TextureRect.new()
 	gi.name = &"GoldIcon"
 	gi.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -462,6 +469,8 @@ func _build() -> void:
 	boss_bars = BossBars.new()
 	root.add_child(boss_bars)
 	boss_bars.visibility_changed.connect(_place_boss_bars) # début / fin de combat : le chrono change de place
+	omen_badge = OmenBadge.new()
+	root.add_child(omen_badge)
 	objectives = ObjectivesPanel.new()
 	root.add_child(objectives) # avant la minimap : la minimap plein écran passe dessus
 	minimap = Minimap.new()
@@ -634,6 +643,7 @@ func _apply_layout() -> void:
 	touch_gauge.apply_scale(s)
 	passive_badge.apply_scale(s)
 	passive_badge.sync_input_mode()
+	omen_badge.sync_input_mode()
 	touch_gauge.mouse_filter = Control.MOUSE_FILTER_STOP if Platform.input_mode == Platform.InputMode.TOUCH else Control.MOUSE_FILTER_IGNORE
 	bar_dodge_key.set_height(56.0 * s)
 	bar_dodge_key.custom_minimum_size.x = bar_size + 24.0 * s
@@ -719,6 +729,7 @@ func _apply_layout() -> void:
 	var gi := _gold_box.get_node(^"GoldIcon") as Control
 	var gold_px: float = HudMetrics.pick(HudMetrics.GOLD_ICON_PX, mobile)
 	gi.custom_minimum_size = Vector2(gold_px, gold_px) * s
+	scrap_pips.set_ui_scale(s)
 	_place_gold()
 	# tactile : plus petite (boutons de sorts et Interagir à droite), 300 px au lieu de 274 (audit § 4.2)
 	var mm: float = (float(HudMetrics.MINIMAP_PX[1]) if touch_mode else Minimap.compact_px()) * s
@@ -728,6 +739,13 @@ func _apply_layout() -> void:
 	boss_bars.set_ui_scale(s * (1.25 if mobile else 1.0)) # nom 26 -> 32 px, barre plus haute sur mobile
 	_place_boss_bars()
 	objectives.set_ui_scale(s * text_k)
+	omen_badge.set_ui_scale(s * text_k)
+	_place_objectives()
+
+
+## Présage choisi ou retiré : le rappel du HUD se met à jour (déplié quelques secondes juste après le choix).
+func _on_omen_changed(_id: StringName, _stage: int) -> void:
+	omen_badge.refresh(true)
 	_place_objectives()
 
 
@@ -1078,6 +1096,9 @@ func _place_objectives() -> void:
 	var top := maxf(mm.end.y + 14.0 * s, float(safe["top"]))
 	if _diff_box != null and _diff_box.visible: # sous la difficulté (elle-même sous le losange de la minimap)
 		top = maxf(top, _diff_box.get_global_rect().end.y + 8.0 * s)
+	if omen_badge != null and omen_badge.visible: # rappel du présage : entre la difficulté et les objectifs
+		omen_badge.place(Vector2(right, top), maxf(right - float(safe["left"]), 200.0 * s))
+		top = omen_badge.position.y + omen_badge.size.y + 8.0 * s
 	# pas plus large que l'espace à droite des barres de boss quand elles sont affichées
 	var max_w := right - float(safe["left"])
 	if boss_bars.visible:

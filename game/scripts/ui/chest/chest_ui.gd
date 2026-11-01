@@ -281,6 +281,8 @@ func open(kind: StringName, stage: int, price: float, chest: Node = null) -> voi
 	session.start()
 	Events.chest_opened.emit(chest, session.quality, session.offered)
 	_title.text = String(KIND_NAMES.get(kind, "Coffre")).to_upper()
+	if session.compass_note() != "": # Boussole de rouille : la carte A porte le tag choisi (ou la charge est gardée)
+		_title.text += "  ·  " + session.compass_note()
 	var fp: String = CHEST_FRAMES.get(kind, CHEST_FRAMES[&"petit"])
 	_chest_frames = load(fp) as SpriteFrames if ResourceLoader.exists(fp) else null
 	_set_chest_state(&"closed", Color.WHITE)

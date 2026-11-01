@@ -102,13 +102,18 @@ static func available_ids(quality: StringName, profile: Object = null) -> Array:
 ## 2 items de la qualité. `exclude` = ids déjà montrés pour ce coffre. Distincts si possible ;
 ## si la table privée de `exclude` a moins de 2 items, on complète avec les exclus, puis doublons si table < 2.
 static func pick_pair(quality: StringName, owned: Dictionary, exclude: Array, rng: RandomNumberGenerator) -> Array:
+	return pick_n(quality, owned, exclude, rng, 2)
+
+
+## Comme pick_pair pour `n` objets (coffre à vitrine : n = 3). Pour n = 2, même suite de nombres aléatoires que pick_pair.
+static func pick_n(quality: StringName, owned: Dictionary, exclude: Array, rng: RandomNumberGenerator, n: int) -> Array:
 	var table: Array = available_ids(quality)
 	if table.is_empty():
 		return []
 	var tags := build_tags(owned)
 	var pool: Array = table.filter(func(i): return not (i in exclude))
 	var out: Array = []
-	for slot in 2:
+	for slot in n:
 		if pool.is_empty():
 			pool = table.filter(func(i): return not (i in out))
 			if pool.is_empty():
@@ -117,3 +122,28 @@ static func pick_pair(quality: StringName, owned: Dictionary, exclude: Array, rn
 		out.append(pick)
 		pool.erase(pick)
 	return out
+
+
+## Vrai si au moins un objet de la table de cette qualité porte le tag et n'est pas dans `exclude`.
+static func tag_available(quality: StringName, tag: String, exclude: Array = []) -> bool:
+	for id in available_ids(quality):
+		if not (id in exclude) and tag in ItemDB.get_item(id).get("tags", []):
+			return true
+	return false
+
+
+## Boussole de rouille : 2 objets dont le premier (carte A) porte `tag`. [] si aucun objet de la table n'a ce tag
+## (l'appelant ne consomme alors pas la charge et tire normalement).
+static func pick_pair_tagged(quality: StringName, owned: Dictionary, exclude: Array, rng: RandomNumberGenerator, tag: String) -> Array:
+	var table: Array = available_ids(quality)
+	var tagged: Array = table.filter(func(i): return not (i in exclude) and tag in ItemDB.get_item(i).get("tags", []))
+	if tagged.is_empty():
+		return []
+	var tags := build_tags(owned)
+	var first := _weighted_pick(tagged, owned, tags, rng)
+	var pool: Array = table.filter(func(i): return i != first and not (i in exclude))
+	if pool.is_empty():
+		pool = table.filter(func(i): return i != first)
+	if pool.is_empty():
+		pool = table.duplicate()
+	return [first, _weighted_pick(pool, owned, tags, rng)]

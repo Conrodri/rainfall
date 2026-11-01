@@ -2,8 +2,10 @@ extends Node
 ## Économie de l'étage 1 (5 min, Moyen) après l'Alignement RoR2 (docs/Maths_Scaling.md §14) :
 ## director réel (Balance : crédits 0,894 × (1 + 0,4 coeff), rampe de début, zones mini ×1,5 / étage ×2,33)
 ## -> kills (crédits / coût moyen) -> or 2 × coeff × coût × R et XP coeff × coût × R, + capsules et primes de boss.
-## Vérifie : pas de réserve d'or d'étage, reliquat après les 10 coffres (8 petits + 2 grands) entre 0 et 300,
-## niveau 6 à 9 en fin d'étage, rythme de kills décroissant.
+## Vérifie : pas de réserve d'or d'étage, or total de l'étage entre 7,5 et 10,5 P (P = petit coffre ; doc Ateliers_Chiffres
+## §1.1 : 8,0-8,8 P mesurés à l'étage 1), niveau 6 à 9 en fin d'étage, rythme de kills décroissant.
+## Capsules 10 -> 4 (joueur, 01/11/2026) : le reliquat après les 10 coffres n'est plus positif (on n'ouvre plus tout :
+## ≈ 7-8 coffres sur 10 au lieu de 10) ; il doit rester entre -200 et +300 or. Avant : 0 à 300 et 613 or de total.
 ## Remplacé : vérification du budget d'or d'étage (RunState.take_monster_gold, supprimé).
 ## godot --headless --path game res://tests/economy_test.tscn
 
@@ -70,9 +72,11 @@ func _ready() -> void:
 	var surplus := total - chests
 	print("capsules %.0f, primes %.0f, kills %.0f -> total %.0f ; 10 coffres %.0f -> reliquat %.0f ; niveau %d (+%.0f XP)" % [
 		caps, bounties, kill_gold, total, chests, surplus, RunState.level, RunState.xp])
-	_check(surplus >= 0.0 and surplus <= 300.0, "reliquat après les 10 coffres dans [0, 300] (%.0f)" % surplus)
+	var p_small := Balance.chest_price(&"petit", RunState.floor_start_d, 1)
+	_check(total >= 7.5 * p_small and total <= 10.5 * p_small, "or total de l'étage dans [7,5 ; 10,5] P (%.1f P)" % (total / p_small))
+	_check(surplus >= -200.0 and surplus <= 300.0, "reliquat après les 10 coffres dans [-200, 300] (%.0f)" % surplus)
 	_check(RunState.level >= 6 and RunState.level <= 9, "niveau fin d'étage 1 dans [6, 9] (%d)" % RunState.level)
 	_check(chests == 600.0, "coffres de l'étage 1 : 8 × 50 + 2 × 100 (%.0f)" % chests)
-	_check(caps == 200.0, "capsules : 10 × 20 à coeff 1 (%.0f)" % caps)
+	_check(caps == 80.0, "capsules : 4 × 20 à coeff 1 (%.0f)" % caps)
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(1 if _fails > 0 else 0)

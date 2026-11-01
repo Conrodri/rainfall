@@ -1,0 +1,31 @@
+{
+  "_doc": "Présages d'étage (docs/Ateliers_Chiffres.md §9). effects_by_floor surcharge effects pour un étage. Clés d'effets : voir §9.4 (scripts/omens/omens.gd les lit). icon = icône empruntée à un objet proche en attendant les 8 icônes Codex (art/tools/ui/_presages.txt) : res://assets/sprites/icons/omens/<id>.png prime si elle existe.",
+  "omens": [
+    {"id": "pluie_de_cendres", "name": "Pluie de cendres", "group": "combat", "floors": [2, 3, 4, 5],
+     "text": "Les monstres frappent 25 % plus fort. Vous aussi.", "icon": "tempete_de_braises",
+     "effects": {"monster_damage_mult": 1.25, "player_damage_mult": 1.25}},
+    {"id": "carapaces", "name": "Carapaces", "group": "combat", "floors": [2, 3, 4, 5],
+     "text": "Tireurs, bondisseurs, brutes et élites : +35 % de PV. Vos PV max : +15 %.", "icon": "armure_du_colosse",
+     "effects": {"monster_hp_mult": 1.35, "monster_hp_tiers": [2, 3], "monster_hp_elites": true, "player_max_hp_mult": 1.15}},
+    {"id": "fievre", "name": "Fièvre", "group": "combat", "floors": [2, 3, 4, 5],
+     "text": "Vous subissez 20 % de dégâts en plus. Vos recharges sont 23 % plus courtes.", "icon": "chronometre_brise",
+     "effects": {"player_damage_taken_mult": 1.2, "cooldown_mult": 0.77}},
+    {"id": "eveil_des_elites", "name": "Éveil des élites", "group": "combat", "floors": [2, 3, 4],
+     "text": "Deux fois plus d'élites. +15 % de dégâts contre les élites et les boss.", "icon": "oeil_du_predateur",
+     "effects": {"elite_chance_mult": 2.0, "elite_boss_damage_mult": 1.15}},
+    {"id": "marche_noir", "name": "Marché noir", "group": "butin", "floors": [2, 3, 4, 5],
+     "text": "Coffres et forge 30 % plus chers. Les capsules d'argent valent double.", "icon": "faveur_du_marchand",
+     "effects": {"chest_price_mult": 1.3, "capsule_gold_mult": 2.0}},
+    {"id": "offrande", "name": "Offrande", "group": "butin", "floors": [2, 3, 4, 5],
+     "text": "Les monstres rapportent 35 % d'or en moins. Un reliquaire vous attend à l'arrivée.", "icon": "piece_porte_bonheur",
+     "effects": {"kill_gold_mult": 0.65, "arrival_chest": "guardian"}},
+    {"id": "usure", "name": "Usure", "group": "butin", "floors": [2, 3, 4],
+     "text": "Pas de coffre de boss à cet étage. Coffres et forge 20 % moins chers.", "icon": "pavois_fele",
+     "effects": {"boss_chest": false, "chest_price_mult": 0.8}},
+    {"id": "maree", "name": "Marée", "group": "butin", "floors": [2, 3, 4],
+     "text": "Plus de monstres, donc plus d'or et d'XP.", "icon": "cape_de_brume",
+     "effects": {"director_credit_mult": 1.25},
+     "effects_by_floor": {"2": {"director_credit_mult": 1.15}}}
+  ],
+  "clear": {"id": "ciel_clair", "name": "Ciel clair", "text": "Aucun présage à cet étage.", "icon": "orbe_de_veille"}
+}

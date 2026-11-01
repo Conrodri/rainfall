@@ -532,8 +532,38 @@ const CHEST_BASE := {&"petit": 50.0, &"large": 100.0, &"legendaire": 400.0}
 const CHEST_PRICE_STAGE := 1.04 ## calibré (remplace 1,05)
 ## Capsules d'argent gratuites : nombre par étage et or par capsule à coeff 1 (remplace CAPSULE_GOLD_SHARE 0,4
 ## du prix d'un petit coffre).
-const CAPSULES_PER_STAGE := 10
+## 10 -> 4 (joueur, 01/11/2026) : moins de « tour de map » obligatoire ; or par étage -1,5 P environ (docs/Boucle_Etage_Design.md §6).
+const CAPSULES_PER_STAGE := 4
 const CAPSULE_GOLD := 20.0
+
+# --- Boucle d'étage : Boussole de rouille, Paratonnerre dévié, coffres à vitrine, marchand de l'étage 3 ---
+## Sources : docs/Ateliers_Chiffres.md §7-8 (Boussole, Paratonnerre), docs/Boucle_Etage_Design.md §2.5 (vitrine),
+## demande du joueur du 01/11/2026 (marchand). Les ateliers eux-mêmes (STATION_*) sont dans leur propre bloc.
+## Boussole de rouille : gratuite (elle occupe la case d'atelier de l'étage), 2 charges, petits et grands coffres, 1er tirage.
+const BOUSSOLE_PRICE_P := 0.0
+const BOUSSOLE_CHARGES := 2
+const BOUSSOLE_TAGS_SHOWN := 6 ## 4 tags les plus présents du build + 2 tirés parmi les autres
+const BOUSSOLE_TAGS_BUILD := 4
+const BOUSSOLE_CHEST_KINDS: Array[StringName] = [&"petit", &"large"] ## jamais légendaire, boss, guardian
+## Paratonnerre dévié : option du gros pilier, étages 2-4 seulement (étage de la boucle : 6-8 en sans fin aussi).
+const PILLAR_DEVIATED_MIN_FLOOR := 2
+const PILLAR_DEVIATED_MAX_FLOOR := 4
+const PILLAR_DEVIATED_BOSS_HP_MULT := {2: 1.4, 3: 1.4, 4: 1.3}
+## L'enrage est décalé du même facteur que les PV (sinon un boss 40 % plus long passerait 60 s enragé).
+const PILLAR_DEVIATED_ENRAGE_DELAY_MULT := {2: 1.4, 3: 1.4, 4: 1.3}
+const PILLAR_DEVIATED_AFFIXES: Array[StringName] = [&"burn", &"slow", &"poison"]
+const PILLAR_DEVIATED_CHESTS := 2 ## coffres de boss au total ; un Présage « pas de coffre de boss » ne retire que le coffre de base
+const PILLAR_DEVIATED_EXCLUDED: Array[StringName] = [&"drowned_idol", &"flood_gunner", &"salt_king", &"rain_sower"] ## raids et boss final
+## Coffres à vitrine : 2 par étage parmi les petits coffres, 3 objets visibles (qualité tirée une fois, table `petit`),
+## on en choisit 1, prix x1,2 d'un petit coffre. Plafond de coffres spéciaux par étage (vitrine, gardés, crue…).
+const CHEST_SHOWCASE_PER_STAGE := 2
+const CHEST_SHOWCASE_COUNT := 3
+const CHEST_SHOWCASE_PRICE_P := 1.2
+const CHEST_SPECIAL_MAX_PER_STAGE := 2
+## Marchand de l'étage 3 (une fois par run) : 1 objet par rareté, prix = petit coffre de l'étage x multiplicateur.
+const MERCHANT_STAGE := 3
+const MERCHANT_PRICE_MULT := {&"commun": 1.5, &"peu_commun": 2.0, &"rare": 2.5, &"legendaire": 4.0}
+const MERCHANT_MIN_START_DIST_U := 20.0 ## distance mini au départ et aux piliers (assouplie en repli, voir StageManager)
 ## d100 de qualité, aligné RoR2 (blanc 79 / vert 20 / rouge 1 ; grand coffre vert 80 / rouge 20 ; boss = vert,
 ## 15 % d'objet de boss). Le légendaire ne sort que des grands coffres et du coffre légendaire. Pas de pity
 ## (RoR2 n'en a pas) : la Chance (relances du d100) est le seul levier. Remplace 60/32/7/1 + pity, 80/20, 90/10.
@@ -663,8 +693,24 @@ func boss_damage(kind: StringName, D: float) -> float:
 	return BOSS_BASE_DMG[kind] * (1.0 + LEVEL_DMG_GROWTH * (monster_level(D) - 1))
 
 
-func boss_enrage_mult(fight_time_s: float) -> float:
-	return 1.0 + BOSS_ENRAGE_PER_S * maxf(0.0, fight_time_s - BOSS_ENRAGE_AFTER_S)
+## `delay_mult` > 1 : enrage décalé (boss dévié par le Paratonnerre : PILLAR_DEVIATED_ENRAGE_DELAY_MULT), même pente.
+func boss_enrage_mult(fight_time_s: float, delay_mult: float = 1.0) -> float:
+	return 1.0 + BOSS_ENRAGE_PER_S * maxf(0.0, fight_time_s - BOSS_ENRAGE_AFTER_S * maxf(delay_mult, 1.0))
+
+
+## Paratonnerre dévié : étage de la boucle (1-5) -> multiplicateur de PV du boss (1.0 hors étages 2-4).
+func pillar_deviated_hp_mult(floor_n: int) -> float:
+	return float(PILLAR_DEVIATED_BOSS_HP_MULT.get(floor_n, 1.0))
+
+
+func pillar_deviated_enrage_delay(floor_n: int) -> float:
+	return float(PILLAR_DEVIATED_ENRAGE_DELAY_MULT.get(floor_n, 1.0))
+
+
+## Coffres de boss à poser à la mort du gros pilier : `base` (1, ou 0 avec un Présage « pas de coffre de boss ») + le
+## coffre supplémentaire du Paratonnerre dévié (PILLAR_DEVIATED_CHESTS - 1) = 2 au total en jeu normal.
+func boss_chest_count(base: int, deviated: bool) -> int:
+	return maxi(base, 0) + (PILLAR_DEVIATED_CHESTS - 1 if deviated else 0)
 
 
 # --- Tisseuse : fils et toile ---------------------------------------------------------
@@ -939,6 +985,57 @@ func run_rubies(active_minutes: float, mode: StringName, pillars_done: int, vict
 
 
 
+# --- Ateliers (docs/Ateliers_Chiffres.md fait foi : Fondoir, Matrice, Alambic, Enclume de bronze) ---
+## Tous les prix sont des multiples de P = prix d'un petit coffre de l'étage (D figé au début de l'étage) ; voir
+## station_price_p(). Les poids de tirage par étage sont dans data/stations.json (somme 100 par étage).
+const STATION_PER_STAGE := 1 ## ateliers par étage 1-4
+const STATION_FINAL := &"enclume" ## atelier fixe de l'étage 5
+const STATION_REPEAT_WEIGHT := 0.25 ## poids d'une famille d'atelier déjà sortie dans la run
+const STATION_FAMILY := {&"fondoir_matrice": &"matrice", &"matrice": &"matrice", &"alambic": &"alambic", &"enclume": &"enclume", &"boussole": &"boussole"}
+const STATION_COPY_EXCLUDED: Array[StringName] = [&"phenix_de_poche"] ## jamais copié par la Matrice ni l'Enclume (vies empilées)
+const STATION_MIN_START_DIST_U := 20.0 ## repli sans case `E` : point libre à au moins 20 u du départ et des piliers
+const FONDOIR_USES := 2
+const FONDOIR_REFUND_P := {&"commun": 0.3, &"peu_commun": 0.6, &"rare": 1.2} ## remboursement de fonte en P (prix brut)
+const SCRAP_CAP := 3 ## scories portées au total, toutes qualités confondues
+const MATRICE_USES := 3
+## Qualité de l'objet affiché selon l'étage (poids) ; l'étage 1 lit la ligne 2, l'étage 5 la ligne 4. Jamais légendaire.
+const MATRICE_QUALITY_TABLE := {
+	2: {&"commun": 70, &"peu_commun": 30},
+	3: {&"commun": 55, &"peu_commun": 40, &"rare": 5},
+	4: {&"commun": 45, &"peu_commun": 45, &"rare": 10},
+}
+const MATRICE_MAX_OWNED := 5 ## jamais un objet dont le joueur a déjà >= 5 exemplaires
+const MATRICE_TAG_WEIGHT := 1.3 ## = LootRoller.BUILD_TAG_WEIGHT
+const ALAMBIC_INPUT := 3
+const ALAMBIC_USES := 2
+const ALAMBIC_TAG_GUIDED := true
+const ALAMBIC_ALLOW_LEGENDARY := false
+const ENCLUME_PRICE_P := {&"commun": 1.25, &"peu_commun": 2.75, &"rare": 6.0}
+const ENCLUME_PRICE_GROWTH := 1.4 ## prix x1,4 par usage déjà fait
+const ENCLUME_USES := 3
+const ENCLUME_TAG_PRICE_MULT := {&"Or": 1.5} ## surcoût d'un objet portant ce tag (copier la Faveur n'est pas une rente)
+
+
+## P : prix d'un petit coffre de l'étage, D figé au début de l'étage, sans la Faveur du marchand.
+func station_price_p(floor_start_d: float, stage: int) -> float:
+	return chest_price(&"petit", floor_start_d, stage)
+
+
+## Remboursement en or d'une fonte (0 si la qualité n'est pas fondable : légendaire). Prix brut : ni Faveur du
+## marchand ni présage ne le modifient.
+func fondoir_refund(quality: StringName, floor_start_d: float, stage: int) -> float:
+	return float(FONDOIR_REFUND_P.get(quality, 0.0)) * station_price_p(floor_start_d, stage)
+
+
+## Prix de l'exemplaire forgé par l'Enclume : ENCLUME_PRICE_P[q] x 1,4^k x P x `price_mult` (Faveur du marchand x
+## présage) x surcoût de tag. `uses_done` = usages déjà faits sur cette enclume ; `tags` = tags de l'objet copié.
+func enclume_price(quality: StringName, uses_done: int, floor_start_d: float, stage: int, price_mult: float = 1.0, tags: Array = []) -> float:
+	var tag_mult := 1.0
+	for t in tags:
+		tag_mult = maxf(tag_mult, float(ENCLUME_TAG_PRICE_MULT.get(StringName(str(t)), 1.0)))
+	return float(ENCLUME_PRICE_P.get(quality, 0.0)) * pow(ENCLUME_PRICE_GROWTH, uses_done) * station_price_p(floor_start_d, stage) * price_mult * tag_mult
+
+
 # --- UX (docs/ux/Audit_Menus.md §3.3 : transition d étage) ---
 const FLOOR_CARD_S := 2.2 ## durée du carton d étage (RunState.running = false, joueur invulnérable)
 const FLOOR_FADE_OUT_S := 0.35 ## fondu au noir à l arrivée sur le carton
@@ -973,3 +1070,26 @@ const DAILY_MIN_ABANDON_S := 60.0
 func daily_rubies(streak: int, victory: bool) -> int:
 	var s := clampi(streak, 1, DAILY_RUBIES_STREAK_CAP)
 	return DAILY_RUBIES_BASE + DAILY_RUBIES_STREAK_STEP * (s - 1) + (DAILY_RUBIES_WIN if victory else 0)
+
+
+# --- Présages (docs/Ateliers_Chiffres.md §9, docs/Propositions_Boucle_Interactions.md §3.1) ---
+## Mutateur d'étage choisi à l'arrivée, étages 2 à 5 : une contrainte + une compensation, actif jusqu'au téléporteur.
+## Les valeurs de chaque présage vivent dans data/omens.json (contrat du doc) ; ici, les règles communes.
+const OMEN_FROM_FLOOR := 2 ## premier étage avec présage
+const OMEN_LAST_FLOOR := 5 ## dernier étage avec présage (la Source comprise ; pas de présage en sans fin)
+const OMEN_CHOICES := 2 ## cartes proposées : un présage de combat + un présage de butin (+ « Ciel clair » hors Difficile)
+const OMEN_MANDATORY_MODES: Array[StringName] = [&"difficile"] ## choix obligatoire (pas de « Ciel clair »)
+const OMEN_RUBIES := 2 ## rubis par présage accepté (plage 0-3 ; à trancher, §13 point 2 du doc)
+const OMEN_BUDGET_TOLERANCE := 5.0 ## contrôle de test : valeur nette d'un présage dans 0 ± 5 points d'étage
+const OMEN_ELITE_CHANCE_CAP := 0.40 ## plafond de la chance d'élite avec « Éveil des élites » (ELITE_CHANCE_MAX hors présage)
+const OMEN_CLEAR_ID := &"ciel_clair" ## carte « aucun présage » (Facile et Moyen)
+
+
+## Vrai si le choix d'un présage est obligatoire dans ce mode (pas de carte « Ciel clair »).
+func omen_mandatory(mode: StringName) -> bool:
+	return OMEN_MANDATORY_MODES.has(mode)
+
+
+## Rubis des présages acceptés (hors « Ciel clair »).
+func omen_rubies(accepted: int) -> int:
+	return OMEN_RUBIES * maxi(accepted, 0)

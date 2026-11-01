@@ -41,6 +41,14 @@ var _zone_vis: PillarZone = null ## zone dessinée sur la couche des télégraph
 var final_boss := false
 var final_hp_mult := 1.0
 var _zone_radius_px := 0.0 ## > 0 : remplace BIG_ZONE_RADIUS / SMALL_ZONE_RADIUS
+## --- Paratonnerre dévié (docs/Ateliers_Chiffres.md §8, étages 2-4) : option du gros pilier AVANT l'activation. Le boss
+## d'étage apparaît avec un affixe d'élite annoncé (Brûlure, Ralentissement ou Poison), PV x PILLAR_DEVIATED_BOSS_HP_MULT,
+## enrage décalé du même facteur ; à sa mort, 2 coffres de boss au total (StageManager). Raids et boss final exclus.
+var deviated := false
+var deviated_affix: StringName = &""
+const AFFIX_NAMES := {&"burn": "Brûlure", &"slow": "Ralentissement", &"poison": "Poison"}
+const DEFLECT_OFFSET := Vector2(0.0, 150.0) ## chaîne à tirer : 2,3 u sous le pilier (repère local)
+const DEFLECT_RANGE_PX := 104.0
 
 
 func _init() -> void:
@@ -59,6 +67,11 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	Events.boss_killed.connect(_on_boss_killed)
+	if kind == Kind.BIG and not final_boss:
+		var chain := Deflector.new() # action distincte « Dévier » (invisible tant que la déviation n'est pas proposée)
+		chain.pillar = self
+		chain.position = DEFLECT_OFFSET
+		add_child(chain)
 	_light = LightRig.attach(self, StringName("pillar_%s" % state))
 	_attach_zone_visual.call_deferred()
 	_update_sprite()
@@ -114,6 +127,61 @@ func unlock() -> void:
 		_set_state(STATE_READY)
 
 
+## Déviation proposée : gros pilier prêt (petits finis), étage 2-4 de la boucle, boss d'étage hors raids, pas déjà dévié.
+func can_deviate() -> bool:
+	if kind != Kind.BIG or final_boss or state != STATE_READY or deviated:
+		return false
+	var f := FloorPlan.floor_of_stage(RunState.stage)
+	if f < Balance.PILLAR_DEVIATED_MIN_FLOOR or f > Balance.PILLAR_DEVIATED_MAX_FLOOR:
+		if not TestMode.active: # mode test : la déviation reste proposée hors des étages 2-4 (table de l'étage le plus proche)
+			return false
+	return not (boss_id in Balance.PILLAR_DEVIATED_EXCLUDED)
+
+
+## Étage de la boucle dont la table de déviation s'applique (borné aux étages 2-4 en mode test).
+func deviation_floor() -> int:
+	var f := FloorPlan.floor_of_stage(RunState.stage)
+	return clampi(f, Balance.PILLAR_DEVIATED_MIN_FLOOR, Balance.PILLAR_DEVIATED_MAX_FLOOR) if TestMode.active else f
+
+
+## Affixe annoncé sur le pilier : tirage seedé (graine de run + étage), stable d'une sauvegarde à l'autre et indépendant de RunState.rng.
+func announced_affix() -> StringName:
+	if deviated_affix != &"":
+		return deviated_affix
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([RunState.run_seed, "deviated", RunState.stage])
+	return Balance.PILLAR_DEVIATED_AFFIXES[rng.randi_range(0, Balance.PILLAR_DEVIATED_AFFIXES.size() - 1)]
+
+
+## Dévie la foudre puis active le pilier (une seule action). Retourne true si la déviation a eu lieu.
+func deviate() -> bool:
+	if not can_deviate():
+		return false
+	deviated = true
+	deviated_affix = announced_affix()
+	Events.pillar_deviated.emit(self, deviated_affix)
+	return activate()
+
+
+## Applique la déviation à un boss déjà apparu : PV x `hp_mult`, enrage décalé de `enrage_delay`, affixe d'élite `affix`
+## (aura comprise). Partagé avec le mode test (TestTools.spawn_boss).
+static func apply_deviation(boss: Node2D, affix: StringName, hp_mult: float, enrage_delay: float) -> void:
+	if boss == null:
+		return
+	if &"max_hp" in boss and hp_mult != 1.0:
+		boss.set(&"max_hp", float(boss.get(&"max_hp")) * hp_mult)
+		boss.set(&"hp", float(boss.get(&"max_hp")))
+	if &"enrage_delay_mult" in boss:
+		boss.set(&"enrage_delay_mult", enrage_delay)
+	if &"affixes" in boss and affix != &"":
+		var a: Array[StringName] = [affix]
+		boss.set(&"affixes", a)
+		var aura: Variant = boss.get(&"aura")
+		if aura is Object and (aura as Object).has_method(&"set_affixes"):
+			(aura as Object).call(&"set_affixes", a, float(boss.get(&"radius_px")))
+	boss.set_meta(&"deviated", true)
+
+
 ## Active le pilier (contact ou interact). Retourne true si l'activation a eu lieu.
 func activate() -> bool:
 	if state != STATE_READY:
@@ -139,6 +207,9 @@ func activate() -> bool:
 		if _boss != null and hp_mult != 1.0 and &"max_hp" in _boss:
 			_boss.set(&"max_hp", float(_boss.get(&"max_hp")) * hp_mult)
 			_boss.set(&"hp", float(_boss.get(&"max_hp")))
+		if _boss != null and deviated:
+			var fl := deviation_floor()
+			apply_deviation(_boss, deviated_affix, Balance.pillar_deviated_hp_mult(fl), Balance.pillar_deviated_enrage_delay(fl))
 	else:
 		push_warning("Pillar : aucun Director (groupe `director`), pas de boss.")
 	_update_zone(true)
@@ -283,7 +354,7 @@ func _exit_tree() -> void:
 func to_dict() -> Dictionary:
 	return {
 		"kind": int(kind), "zone_id": zone_id, "state": String(state),
-		"charge": charge, "boss_dead": boss_dead,
+		"charge": charge, "boss_dead": boss_dead, "deviated": deviated, "deviated_affix": String(deviated_affix),
 		"x": global_position.x, "y": global_position.y,
 	}
 
@@ -295,6 +366,8 @@ func from_dict(d: Dictionary) -> void:
 	zone_id = int(d.get("zone_id", 0))
 	charge = float(d.get("charge", 0.0))
 	boss_dead = bool(d.get("boss_dead", false))
+	deviated = bool(d.get("deviated", false))
+	deviated_affix = StringName(String(d.get("deviated_affix", "")))
 	var s := StringName(d.get("state", "ready"))
 	if s == STATE_ACTIVE and not boss_dead:
 		s = STATE_READY
@@ -395,6 +468,46 @@ class PillarZone extends Node2D:
 		draw_arc(Vector2.ZERO, zr, 0.0, TAU, 96, Color(0.81, 0.91, 1.0, 0.55), 3.0)
 		if pillar.kind == Pillar.Kind.BIG:
 			draw_arc(Vector2.ZERO, zr - 14.0, -PI * 0.5, -PI * 0.5 + TAU * pillar.charge_ratio(), 96, Color(0.4, 0.9, 1.0, 0.85), 10.0)
+
+
+## Chaîne de déviation (Paratonnerre dévié) : second « interagissable » du gros pilier, posé sous lui. Visible seulement
+## tant que la déviation est proposée (Pillar.can_deviate) ; le libellé annonce l'affixe et la récompense. Aucun visuel
+## propre (la chaîne de bronze est une consigne Codex, art/tools/props/_boussole_vitrine.txt) : un anneau de repère.
+class Deflector extends Node2D:
+	var pillar: Pillar = null
+
+	func _ready() -> void:
+		add_to_group(&"interactable")
+
+	func _near() -> bool:
+		var p := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
+		return p != null and p.global_position.distance_to(global_position) <= Pillar.DEFLECT_RANGE_PX
+
+	func can_interact() -> bool:
+		return pillar != null and is_instance_valid(pillar) and pillar.can_deviate() and _near()
+
+	func interact_label() -> String:
+		var aff := pillar.announced_affix()
+		return "Dévier : boss %s, %d coffres" % [Pillar.AFFIX_NAMES.get(aff, String(aff)), Balance.PILLAR_DEVIATED_CHESTS]
+
+	func interact_state() -> Dictionary:
+		return {"visible": can_interact(), "enabled": true, "label": interact_label() if pillar != null and is_instance_valid(pillar) else "", "hold_s": 0.0}
+
+	func interact_priority() -> int:
+		return 2 # « Dévier » avant « Activer » quand les deux sont à portée
+
+	func interact() -> bool:
+		return can_interact() and pillar.deviate()
+
+	func _process(_delta: float) -> void:
+		var show_ring := pillar != null and is_instance_valid(pillar) and pillar.can_deviate()
+		if show_ring != visible:
+			visible = show_ring
+			queue_redraw()
+
+	func _draw() -> void:
+		draw_arc(Vector2.ZERO, 22.0, 0.0, TAU, 24, Color(1.0, 0.72, 0.3, 0.85), 4.0)
+		draw_circle(Vector2.ZERO, 8.0, Color(1.0, 0.72, 0.3, 0.55))
 
 
 # --- Interaction (contrat « Interaction mobile »)

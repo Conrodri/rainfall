@@ -119,6 +119,7 @@ var radius_px := 20.0
 var speed_px := 100.0
 var pack_bonus := false ## mis à jour par le Director (Meute)
 var fight_time := 0.0 ## boss : temps de combat (enrage)
+var enrage_delay_mult := 1.0 ## boss dévié (Paratonnerre) : enrage décalé de ce facteur, remis à 1 à chaque activate_boss
 ## Priorité de ciblage automatique (Design_Boss_Raid §1.9) : SpellCaster divise la distance par cette valeur
 ## (adds prioritaires des boss façon raid : 2). Remise à 1 à chaque activation (pool).
 var aim_priority := 1.0
@@ -430,7 +431,7 @@ func activate(p_tier: int, pos: Vector2, D: float, elite: bool, p_affixes: Array
 	_boss_sprite_id = &""
 	is_elite = elite
 	var st: Dictionary = Balance.TIER_STATS[tier]
-	max_hp = Balance.monster_hp(st["hp"], D, tier) * (Balance.ELITE_HP if elite else 1.0)
+	max_hp = Balance.monster_hp(st["hp"], D, tier) * (Balance.ELITE_HP if elite else 1.0) * Omens.monster_hp_mult(tier, elite) # Présage Carapaces
 	damage = Balance.monster_damage(st["dmg"], D) * (Balance.ELITE_DMG if elite else 1.0)
 	speed_px = Balance.monster_speed(st["speed"], D) * U
 	radius_px = RADIUS_U[tier] * U
@@ -469,6 +470,7 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 	radius_px = BOSS_RADIUS_U.get(kind, 1.1) * U
 	affixes = [] as Array[StringName]
 	fight_time = 0.0
+	enrage_delay_mult = 1.0
 	_attack_cd = 1.5
 	_spell_cd = 3.0
 	_common_activate(pos)
@@ -1069,13 +1071,13 @@ func _dash_step(delta: float, player: Node2D, player_pos: Vector2) -> void:
 
 ## Dégâts courants (enrage inclus pour un boss).
 func current_damage() -> float:
-	return damage * (Balance.boss_enrage_mult(fight_time) if is_boss else 1.0)
+	return damage * (Balance.boss_enrage_mult(fight_time, enrage_delay_mult) if is_boss else 1.0)
 
 
 func _hit_player(player: Node2D, amount: float) -> void:
 	if player == null:
 		return
-	var dmg := amount * (Balance.boss_enrage_mult(fight_time) if is_boss else 1.0)
+	var dmg := amount * (Balance.boss_enrage_mult(fight_time, enrage_delay_mult) if is_boss else 1.0)
 	if player.has_method(&"take_damage"):
 		player.take_damage(dmg, self)
 	apply_affixes_to(player, dmg)

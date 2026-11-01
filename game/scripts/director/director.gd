@@ -420,7 +420,7 @@ func _update_spawning(delta: float, ppos: Vector2) -> void:
 	var zone_kind: StringName = zone["kind"] if zone != null else &""
 	var t := RunState.active_time_s
 	var ramp := Balance.director_ramp(t) if spawn_ramp else 1.0
-	var income := Balance.director_credits_per_s(D, zone_kind) * ramp * delta
+	var income := Balance.director_credits_per_s(D, zone_kind) * ramp * delta * Omens.director_credit_mult() # Présage Marée
 	var share := Balance.WAVE_STREAM_SHARE if waves_enabled else 1.0
 	credits = minf(credits + income * share, CREDIT_BANK_MAX)
 	var alive_cap := mini(Balance.director_alive_cap(t), Balance.MAX_ENEMIES) if spawn_ramp else Balance.MAX_ENEMIES
@@ -431,7 +431,7 @@ func _update_spawning(delta: float, ppos: Vector2) -> void:
 	while spawned < MAX_SPAWNS_PER_FRAME and _active.size() < alive_cap and not _free.is_empty():
 		if _next_tier == 0:
 			_next_tier = _pick_tier(D)
-			_next_elite = _rng.randf() < Balance.elite_chance(D)
+			_next_elite = _rng.randf() < Omens.elite_chance(D) # Présage Éveil des élites : chance ×2 (plafonnée)
 		var cost: float = Balance.TIER_COST[_next_tier] * (Balance.ELITE_COST_MULT if _next_elite else 1.0)
 		if credits < cost:
 			break # on économise pour ce tirage (permet aux tiers chers d'apparaître)
@@ -483,7 +483,7 @@ func _launch_wave(ppos: Vector2, D: float, alive_cap: int) -> bool:
 	var same := _rng.randf() < Balance.WAVE_SAME_TYPE_CHANCE
 	var bank := wave_credits
 	var members: Array[Dictionary] = []
-	if _rng.randf() < Balance.wave_leader_chance(D):
+	if _rng.randf() < Omens.wave_leader_chance(D):
 		var lc: float = Balance.TIER_COST[tier] * Balance.ELITE_COST_MULT
 		if bank - lc >= Balance.TIER_COST[tier] * (Balance.WAVE_MIN_COUNT - 1):
 			members.append({"tier": tier, "elite": true, "variant": variant, "cost": lc})
@@ -491,7 +491,7 @@ func _launch_wave(ppos: Vector2, D: float, alive_cap: int) -> bool:
 	while members.size() < room:
 		var mt := tier if same else _pick_tier(D)
 		var mv := variant if same else -1
-		var el := _rng.randf() < Balance.elite_chance(D)
+		var el := _rng.randf() < Omens.elite_chance(D)
 		var c: float = Balance.TIER_COST[mt] * (Balance.ELITE_COST_MULT if el else 1.0)
 		if c > bank and el:
 			el = false

@@ -121,6 +121,8 @@ static func spawn_boss(tree: SceneTree, boss_id: StringName, kind: StringName, p
 	(b as Node2D).set_meta(&"boss_id", boss_id)
 	if kind == &"final":
 		(b as Node2D).set_meta(&"final_boss", true)
+	if TestMode.deviate_boss and not mini and kind != &"final" and not (boss_id in Balance.PILLAR_DEVIATED_EXCLUDED):
+		TestLoopTools.deviate(b as Node2D) # Paratonnerre dévié (case du panneau « Boucle d'étage »)
 	# comme Pillar.activate : × boss final (le facteur de mode est dans Enemy.activate_boss)
 	var mult := final_hp_mult() if kind == &"final" else 1.0
 	if mult != 1.0:
@@ -241,6 +243,48 @@ static func clear_chests(tree: SceneTree) -> int:
 		if c is Chest and not (c as Chest).is_opened():
 			c.queue_free()
 			n += 1
+	return n
+
+
+## Ateliers invocables (scripts/stations/) : Fondoir, Matrice, Alambic, Enclume.
+const STATION_ORDER: Array[StringName] = [&"fondoir", &"matrice", &"alambic", &"enclume"]
+const STATION_RING_U := Vector2(2.5, 4.0) ## distance d'apparition d'un atelier autour du joueur (u) : à portée d'interaction
+
+
+## Ateliers du catalogue : {id, label}.
+static func station_catalog() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for id in STATION_ORDER:
+		out.append({"id": id, "label": String(Station.NAMES.get(id, id))})
+	return out
+
+
+## Fait apparaître l'atelier `id` près du joueur (ou de `center`) ; vrai flux (prix au D courant, usages complets, Matrice
+## tirée au hasard : objet et qualité varient à chaque appel). Retourne le nœud, null sans carte ni joueur.
+static func spawn_station(tree: SceneTree, id: StringName, center: Variant = null) -> Station:
+	var player := tree.get_first_node_in_group(&"player") as Node2D
+	var sm := tree.get_first_node_in_group(&"stage_manager")
+	if player == null or sm == null or sm.get(&"map") == null or not STATION_ORDER.has(id):
+		return null
+	var c: Vector2 = center if center is Vector2 else player.global_position
+	var st := StationState.make(id, maxi(RunState.stage, 2))
+	if id == &"matrice":
+		st.draw_matrice(_rng.randi() | 1)
+	var node := Station.new()
+	node.setup(st)
+	(sm.get(&"map") as Node).add_child(node)
+	var a := _rng.randf() * TAU
+	var r := _rng.randf_range(STATION_RING_U.x, STATION_RING_U.y) * Balance.UNIT_PX
+	node.global_position = c if center is Vector2 else c + Vector2.from_angle(a) * r
+	return node
+
+
+## Retire tous les ateliers de la carte. Retourne leur nombre.
+static func clear_stations(tree: SceneTree) -> int:
+	var n := 0
+	for s in tree.get_nodes_in_group(&"stations"):
+		s.queue_free()
+		n += 1
 	return n
 
 
