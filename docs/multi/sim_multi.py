@@ -11,13 +11,18 @@ Principe
 - Le DPS solo est CALIBRÉ par étage pour retrouver les TTK visés en solo (mini 25 s, boss d'étage 70 s,
   boss final 135 s) : il encode « les objets moyens réalistes » mesurés en jeu. Le multijoueur modifie
   ensuite ce DPS par le niveau (dégât de base 12 + 2,4/niv) et par les points d'objets du joueur.
-- Or des kills = 2 × D × crédits dépensés × R, partagé à parts égales ; XP = D × crédits × R, entière
-  pour chaque joueur (RoR2). Coffres achetés dans l'ordre petit puis grand, limités par l'or du joueur et
-  par sa part des coffres posés. Coffre de boss : un par joueur.
+- Or des kills = 2 × D × crédits dépensés × R ; XP = D × crédits × R, entière pour chaque joueur (RoR2).
+  Variantes historiques (ror2 … reco) : or partagé à parts égales (÷ n). Variantes reco2* (règle du joueur,
+  01/11/2026, docs/Design_Multijoueur.md §4) : chaque gain d'or (kills, capsules, primes, notes) est crédité
+  EN ENTIER à chaque joueur, × coop_gold_mult(n), bourses individuelles. Coffres achetés dans l'ordre petit
+  puis grand, limités par l'or du joueur et par sa part des coffres posés. Coffre de boss : un par joueur.
 - Pression : rho = PV de monstres apparus par seconde / capacité de nettoyage de l'équipe. Gravité d'un
   coup = dégât de contact d'un essaim / PV max du joueur. Les deux sont rapportés au solo.
 
-Usage : python docs/multi/sim_multi.py [variante]   (ror2, boss_demi, boss_demi_pf02, boss_04, reco, sens ; défaut : toutes + sens)
+Usage : python docs/multi/sim_multi.py [variante]
+  ror2, boss_demi, boss_demi_pf02, boss_04, reco, sens : étude initiale (or partagé ÷ n)
+  reco2 : or crédité à chacun × coop_gold_mult(n), coffres f(n), options A-D et sensibilité (Scaling_Multi §2.9)
+  reco2_brut, reco2_plus, reco2_ror2 : une seule option ; défaut : toutes
 """
 import math
 import sys
@@ -50,6 +55,9 @@ AOE_FACTOR = 2.0            # DPS de nettoyage de foule / DPS mono-cible (Maths 
 DPS_SHARE = 0.6             # part des points d'objets qui va au DPS (le reste : survie)
 PTS = {"petit": 13.2, "large": 29.0, "boss": 26.2, "legendaire": 120.0}  # Items_Catalog §1
 KILL_FRAC_SOLO = 0.95
+# Recalage de l'or des kills sur les journaux réels (docs/Ateliers_Chiffres.md §1.1 : 8,0-10,5 P par étage,
+# 40-42 objets par run ; sans recalage le modèle donne 6,8-7,1 P et 36,8 objets). Variantes reco2* seulement.
+KILL_GOLD_CAL_LOGS = 1.4
 TTK_TARGET = {"mini": 25.0, "etage": 70.0, "final": 135.0}
 OVERHEAD_1_4 = 15 + 30 + 25 + 30  # exploration, trajets, sortie (hors combats)
 SWARM_DMG = 5.0             # dégât de contact d'un essaim (TIER_STATS[1].dmg)
@@ -129,6 +137,36 @@ VARIANTS = {
 }
 
 
+def _roundi(x):
+    """roundi de Godot (demi arrondi loin de zéro), valeurs positives."""
+    return int(math.floor(x + 0.5))
+
+
+def _chest_count(slope):
+    """Coffres posés : roundi(base × (1 + slope (n - 1))), petits et grands (Balance.party_interactable_count)."""
+    return lambda n, bs, bl: (_roundi(bs * (1 + slope * (n - 1))), _roundi(bl * (1 + slope * (n - 1))))
+
+
+def _reco2(gold_slope, chest_slope):
+    """Règle « or crédité à chacun » : coop_gold_mult(n) = 1 / (1 + gold_slope (n - 1)). Lit KILL_GOLD_CAL_LOGS."""
+    return variant(**{**VARIANTS["reco"], "gold_full": True, "kill_gold_cal": KILL_GOLD_CAL_LOGS,
+                      "gold_mult": lambda n: 1.0 / (1 + gold_slope * (n - 1)),
+                      "chest_count": _chest_count(chest_slope), "stage5_six": True})
+
+
+def make_variants2():
+    return {
+        # A : règle brute = état actuel du code (COOP_GOLD_MULT 1,0 ; PLAYER_INTERACTABLE_SLOPE 0,5)
+        "reco2_brut": _reco2(0.0, 0.5),
+        # B : coop_gold_mult = 1 / (1 + 0,4 (n-1)), coffres +75 % par joueur en plus
+        "reco2_plus": _reco2(0.4, 0.75),
+        # C (recommandée) : coop_gold_mult = 2 / (n + 1) = 1 / party_credit_mult(n), coffres +60 % par joueur en plus
+        "reco2": _reco2(0.5, 0.6),
+        # D : dilution type RoR2 : coop_gold_mult = 1 / (1 + 0,7 (n-1)), coffres +50 %
+        "reco2_ror2": _reco2(0.7, 0.5),
+    }
+
+
 def difficulty(t_s, stage, n, v):
     return (v["player_factor"](n) + t_s / 60.0 * TIME_SLOPE * DIFF * TIME_COMPRESSION * v["time_mult"](n)) * K_STAGE ** (stage - 1)
 
@@ -159,10 +197,14 @@ class Phase:
         self.name, self.dur, self.zone, self.boss = name, dur, zone, boss
 
 
-def run(n, v, calib=None, active=None):
+def run(n, v, calib=None, active=None, boss_absent=0, extra_farm_s=0.0):
     """Une run. `calib` = DPS mono solo de référence par (étage, combat) ; None = mode calibration solo.
     `active` = joueurs qui jouent vraiment (les autres sont comptés dans le scaling mais ne font rien : AFK)."""
     act = n if active is None else active
+    full = v.get("gold_full", False)
+    # facteur appliqué aux pots d'or : 1/n (partage) ou coop_gold_mult(n) (montant crédité à chacun)
+    gk = v["gold_mult"](n) if full else 1.0 / n
+    go = v.get("gold_mult_other", v.get("gold_mult"))(n) if full else 1.0 / n
     t = 0.0
     # niveau de départ (option « niveau ambiant de départ ») : XP cumulée jusqu'à ce niveau
     L0 = v.get("start_level", lambda k: 1)(n)
@@ -172,11 +214,17 @@ def run(n, v, calib=None, active=None):
     out = {"floors": [], "calib": {}}
     for s in range(1, 6):
         gold = 0.0           # or d'UN joueur (bourse individuelle)
+        earned = 0.0
         D0 = difficulty(t, s, n, v)
         P = CHEST_BASE["petit"] * D0 ** 1.25 * CHEST_STAGE ** (s - 1)
         cm = v["chest_mult"](n)
-        avail_small = 8 * cm / n
-        avail_large = 2 * cm / n
+        base_small = 6 if (s == 5 and v.get("stage5_six")) else 8
+        if "chest_count" in v:
+            n_small_map, n_large_map = v["chest_count"](n, base_small, 2)
+        else:
+            n_small_map, n_large_map = base_small * cm, 2 * cm
+        avail_small = n_small_map / n
+        avail_large = n_large_map / n
         bought = {"petit": 0.0, "large": 0.0}
         floor_t0 = t
         fights = ["mini", "mini", "etage"] if s < 5 else ["final"]
@@ -184,11 +232,12 @@ def run(n, v, calib=None, active=None):
         rho_acc = sev_acc = dur_acc = alive_max = 0.0
         swarm_hits = []
         # capsules au début de l'étage (D figé), part de l'équipe
-        gold += CAPSULES * v["capsule_mult"](n) * CAPSULE_GOLD * D0 ** 1.25 / n
+        cap = CAPSULES * CAPSULE_GOLD * D0 ** 1.25 * (go if full else v["capsule_mult"](n) / n)
+        gold += cap; earned += cap
         seq = []
         if s < 5:
             seq = [("explo", 15, ""), ("mini", None, "mini"), ("trajet", 30, ""), ("mini", None, "mini"),
-                   ("trajet", 25, ""), ("etage", None, "etage"), ("sortie", 30, "")]
+                   ("trajet", 25, ""), ("etage", None, "etage"), ("sortie", 30 + extra_farm_s, "")]
         else:
             seq = [("explo", 45, ""), ("final", None, "etage")]
         fi = 0
@@ -208,15 +257,16 @@ def run(n, v, calib=None, active=None):
                 else:
                     ref_dps, ref_pow = calib[key]
                     dps_mono = ref_dps * base_dmg(L) * dmg_mult / ref_pow
-                    ttk = hp / (act * dps_mono)
+                    ttk = hp / (max(act - (boss_absent if name != "mini" else 0), 0.5) * dps_mono)
                 fight_ttk[name + str(fi)] = ttk
                 fi += 1
                 dur = max(ttk, v["charge_s"](n)) if name == "etage" else ttk
                 # prime du boss (partagée), XP entière
                 bkind = "mini" if name == "mini" else "etage"
-                bgold = 2 * D_mid * BOSS_VALUE[bkind] * REWARD * v["bounty_mult"](n)
-                gold += bgold / n
-                xp += 0.5 * bgold / v["bounty_mult"](n)
+                b0 = 2 * D_mid * BOSS_VALUE[bkind] * REWARD
+                bg = b0 * go if full else b0 * v["bounty_mult"](n) / n
+                gold += bg; earned += bg
+                xp += 0.5 * b0
             else:
                 # DPS mono hors combat : celui du dernier combat calibré, à défaut le premier
                 key = (s, 0)
@@ -241,7 +291,8 @@ def run(n, v, calib=None, active=None):
                 # vivants estimés : apparitions/s × durée de vie (8 s au rho de référence 1)
                 alive = credits / mean_cost(D) * 8.0 * max(rho, 0.3)
                 alive_max = max(alive_max, min(alive, alive_cap(t, n, v)) / n)
-                gold += 2 * D * credits * REWARD * kill_frac * dt / n
+                kg = 2 * D * credits * REWARD * kill_frac * dt * gk * v.get("kill_gold_cal", 1.0)
+                gold += kg; earned += kg
                 xp += D * credits * REWARD * kill_frac * dt
                 L = player_level(xp)
                 sev = SWARM_DMG * (1 + LEVEL_DMG_GROWTH * (monster_level(D) - 1)) / (max_hp(L) * ehp_mult)
@@ -264,13 +315,15 @@ def run(n, v, calib=None, active=None):
                 items_pts += PTS["boss"]; items_cnt += 1  # un coffre de boss par joueur
         # fin d'étage : or restant -> XP (part du joueur)
         left_P = gold / P
+        chests_left = n_small_map + n_large_map - n * (bought["petit"] + bought["large"])
         if s < 5:
             xp += GOLD_TO_XP * gold
         L = player_level(xp)
         out["floors"].append({
             "stage": s, "dur": t - floor_t0, "D_in": D0, "D_out": difficulty(t, s, n, v), "P": P,
             "ttk": fight_ttk, "items": items_cnt, "pts": items_pts, "level": L,
-            "bought": bought["petit"] + bought["large"], "left_P": left_P,
+            "bought": bought["petit"] + bought["large"], "left_P": left_P, "earned_P": earned / P, "earned": earned,
+            "chests_map": (n_small_map, n_large_map), "chests_left": chests_left,
             "rho": rho_acc / dur_acc, "sev": sev_acc / dur_acc, "alive_pp": alive_max,
             "swarm_hits": sum(swarm_hits) / len(swarm_hits),
         })
@@ -333,11 +386,83 @@ def sensitivity():
         globals()[name] = old
 
 
+def table2(vname):
+    """Or crédité à chacun : or par joueur et par étage, coffres posés et restants, objets, boss."""
+    v = make_variants2()[vname]
+    calib = run(1, v)["calib"]
+    res = {n: run(n, v, calib) for n in range(1, 5)}
+    solo = res[1]["floors"][-1]["items"]
+    print(f"\n=== Variante {vname} (or crédité à chacun × coop_gold_mult(n)) ===")
+    print("n | m(n) | run (min) | niv. fin | objets/j (÷ solo) | TTK mini é1/é3 | TTK boss é1-é4 | final | "
+          "or/j/étage é1-é5 (P) | or/j/étage (or) | coffres posés é1-4 ; é5 | restants é1-é5 | reste/j max (P)")
+    for n, r in res.items():
+        f = r["floors"]
+        m = v["gold_mult"](n)
+        earned_p = "/".join(f"{x['earned_P']:.1f}" for x in f)
+        earned_or = "/".join(str(round(x["earned"])) for x in f)
+        left = "/".join(f"{x['chests_left']:.1f}" for x in f)
+        boss = "/".join(str(round(f[i]["ttk"]["etage2"])) for i in range(4))
+        print(f"{n} | {m:.3f} | {r['run_s'] / 60:.1f} | {f[-1]['level']:.1f} | {f[-1]['items']:.1f} ({f[-1]['items'] / solo:.2f}) | "
+              f"{f[0]['ttk']['mini0']:.0f}/{f[2]['ttk']['mini0']:.0f} | {boss} | {f[4]['ttk']['final0']:.0f} | "
+              f"{earned_p} | {earned_or} | {f[0]['chests_map'][0]}+{f[0]['chests_map'][1]} ; "
+              f"{f[4]['chests_map'][0]}+{f[4]['chests_map'][1]} | {left} | {max(x['left_P'] for x in f):.1f}")
+    print("Objets par joueur et par étage (coffre de boss compris) ; P par étage")
+    for n, r in res.items():
+        f = r["floors"]
+        per = [f[i]["items"] - (f[i - 1]["items"] if i else 0) for i in range(5)]
+        print(f"  n={n}: objets " + "/".join(f"{x:.1f}" for x in per) + " ; P " + "/".join(f"{x['P']:.0f}" for x in f))
+    return res
+
+
+def sensitivity2():
+    """Robustesse de reco2 (estimé, non mesuré en jeu) : farm, joueur absent, recalage de l'or des kills."""
+    global KILL_GOLD_CAL_LOGS
+    v = make_variants2()["reco2"]
+    calib = run(1, v)["calib"]
+    solo_items = run(1, v, calib)["floors"][-1]["items"]
+
+    def line(r):
+        f = r["floors"]
+        boss = "/".join(str(round(f[i]["ttk"]["etage2"])) for i in range(4))
+        left = "/".join(f"{x['chests_left']:.1f}" for x in f)
+        return (f"run {r['run_s'] / 60:.1f} min | objets/j {f[-1]['items']:.1f} ({f[-1]['items'] / solo_items:.2f}) | "
+                f"boss {boss} s | final {f[4]['ttk']['final0']:.0f} s | coffres restants {left} | "
+                f"reste/j max {max(x['left_P'] for x in f):.1f} P")
+    print("\n=== Sensibilité (variante reco2) ===")
+    for n in (2, 3, 4):
+        print(f"n={n} un joueur farme pendant chaque boss d'étage : " + line(run(n, v, calib, boss_absent=1)))
+    for extra in (60, 180):
+        for n in (1, 4):
+            print(f"n={n} +{extra} s de farm en fin d'étage (tous) : " + line(run(n, v, calib, extra_farm_s=extra)))
+    for n in (2, 4):
+        print(f"n={n} un joueur absent compté dans n : " + line(run(n, v, calib, active=n - 1)))
+    old = KILL_GOLD_CAL_LOGS
+    for cal in (1.0, 1.8):
+        KILL_GOLD_CAL_LOGS = cal
+        vv = make_variants2()["reco2"]
+        c = run(1, vv)["calib"]
+        s1 = run(1, vv, c)["floors"][-1]["items"]
+        parts = []
+        for n in (2, 3, 4):
+            f = run(n, vv, c)["floors"]
+            parts.append(f"n={n} objets ÷ solo {f[-1]['items'] / s1:.2f}, coffres restants min {min(x['chests_left'] for x in f):.1f}")
+        print(f"recalage de l'or des kills {cal} (solo {s1:.1f} objets) : " + " ; ".join(parts))
+    KILL_GOLD_CAL_LOGS = old
+
+
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "toutes"
     if which == "sens":
         sensitivity()
+    elif which.startswith("reco2"):
+        for name in (make_variants2() if which == "reco2" else [which]):
+            table2(name)
+        sensitivity2()
     else:
         for name in (VARIANTS if which == "toutes" else [which]):
             table(name)
         sensitivity()
+        if which == "toutes":
+            for name in make_variants2():
+                table2(name)
+            sensitivity2()

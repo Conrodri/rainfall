@@ -1208,13 +1208,12 @@ const MULTI_MAX_PLAYERS := 4
 const PLAYER_FACTOR_SLOPE := 0.3 ## pf(n) = 1 + 0,3 (n - 1) : départ de D (RoR2)
 const PLAYER_TIME_EXP := 0.2 ## pente de temps de D × n^0,2 (RoR2)
 const PLAYER_CREDIT_SLOPE := 0.5 ## crédits du director × (1 + 0,5 (n - 1)) = (n + 1) / 2 (RoR2)
-## Coffres posés par étage : +50 % de la base par joueur en plus (coop_chest_count, provisoire ; +75 % possible).
-## Recalibrage en cours (systems-designer) : constante à remplacer ici, avec COOP_GOLD_MULT.
-const PLAYER_INTERACTABLE_SLOPE := 0.5
-## Or (décision du joueur, 01/11/2026) : chaque gain est crédité EN ENTIER à chaque joueur (morts compris), × ce
-## multiplicateur selon n ; aucune division, aucun transfert. 1,0 partout pour l'instant, à calibrer (objets par
-## joueur proches de la simulation docs/multi/Scaling_Multi.md §3). Index = n (0 inutilisé).
-const COOP_GOLD_MULT: Array[float] = [1.0, 1.0, 1.0, 1.0, 1.0]
+## Calibré par systems-designer (docs/multi/Scaling_Multi.md §2.13, 01/11/2026) : +60 % de coffres par joueur en plus (plage sûre 0,55-0,7).
+const PLAYER_INTERACTABLE_SLOPE := 0.6
+## Or (décision du joueur, 01/11/2026) : chaque gain crédite le même montant à chaque joueur (morts compris), bourses
+## individuelles, aucun transfert ; × 2 / (n + 1) pour compenser les crédits du director × (n + 1) / 2 : l'or des kills
+## par joueur reste celui du solo (Scaling_Multi.md §2.8). Index = n (0 inutilisé).
+const COOP_GOLD_MULT: Array[float] = [1.0, 1.0, 2.0 / 3.0, 0.5, 0.4]
 const PLAYER_ALIVE_SLOPE := 0.2 ## plafond de vivants × (1 + 0,2 (n - 1)) ; 0 en qualité Basse
 ## PV des boss × (1 + pente (n_alive - 1)) (décision du joueur, 01/11/2026).
 const BOSS_HP_PLAYER_SLOPE := {&"mini": 0.3, &"etage": 0.4, &"final": 0.35}
@@ -1252,13 +1251,12 @@ func interactable_mult(n: int) -> float:
 	return 1.0 + PLAYER_INTERACTABLE_SLOPE * (_party_n(n) - 1)
 
 
-## Coffres posés par étage pour `base` en solo (provisoire, demande du joueur 01/11/2026, recalibrage en cours dans
-## docs/multi/Scaling_Multi.md) : base + ceil(PLAYER_INTERACTABLE_SLOPE × base × (n - 1)), soit +50 % par joueur en
-## plus (8 petits -> 8/12/16/20, 2 grands -> 2/3/4/5). n = 1 : base.
+## Coffres posés par étage pour `base` en solo : roundi(base × interactable_mult(n)), soit +60 % par joueur en plus
+## (8 petits -> 8/13/18/22, 2 grands -> 2/3/4/6). n = 1 : base. Les ateliers et les 4 capsules ne sont pas multipliés.
 func coop_chest_count(base: int, n: int) -> int:
 	if n <= 1 or base <= 0:
 		return base
-	return base + ceili(PLAYER_INTERACTABLE_SLOPE * base * (_party_n(n) - 1))
+	return roundi(base * interactable_mult(n))
 
 
 ## Chance (0-1) multipliée par interactable_mult(n), plafonnée à 1 (coffre légendaire : 25 % -> 62,5 % à 4).

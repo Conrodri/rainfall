@@ -4,15 +4,17 @@
 >
 > Lu avant d'écrire : `CLAUDE.md` (Décisions), `docs/Maths_Scaling.md` (§14 en priorité), `docs/GDD.md`, `game/scripts/core/balance.gd`, `game/scripts/core/run_state.gd`, `game/scripts/director/director.gd`, `docs/simulateur_scaling.py`, `game/data/items.json`, `floors.json`, `maps/terrasses_noyees.json` (`draw_rules`), `docs/Ateliers_Chiffres.md`, `docs/Boucle_Etage_Refonte.md`, `docs/Boutique_Rubis.md`.
 >
+> **Révision du 01/11/2026 (or crédité à chacun)** : le joueur a changé la règle de l'or (`docs/Design_Multijoueur.md` §4) : chaque gain d'or crédite **le même montant à chaque joueur** (morts compris), bourses individuelles, coffre au payeur, aucun transfert ; il a aussi demandé d'ajuster le nombre de coffres par étage au nombre de joueurs. Les §0, §2.1, §2.8-2.10, §2.13, §3.4, §4 et §5 sont réécrits en conséquence ; l'ancienne règle « or partagé à parts égales » (variantes `ror2` … `reco` du simulateur) ne sert plus que de comparaison. Décisions du joueur reprises ici : PV des boss × (1 + 0,4 (n − 1)), mini-boss 0,3, final 0,35 ; crédits du director × (n + 1)/2 ; mort = spectateur jusqu'au début de l'étage suivant.
+>
 > Hors périmètre : réseau (hôte, latence, reconnexion), caméra et écran partagé, interface (ux-designer), cartes (level-designer). Ce document dit **ce qui scale et de combien**.
 
 ## 0. Résumé
 
-- **On reprend la structure RoR2 telle quelle** pour la difficulté (facteur joueur 1 + 0,3 (n − 1), pente de temps × n^0,2), les crédits du director (× (n + 1)/2), les coffres (+50 % par joueur en plus), l'or des kills partagé à parts égales, l'XP entière pour chacun, un coffre de boss par joueur, la charge du gros pilier au prorata des joueurs présents et la réanimation à l'étage suivant.
+- **On reprend la structure RoR2 telle quelle** pour la difficulté (facteur joueur 1 + 0,3 (n − 1), pente de temps × n^0,2), les crédits du director (× (n + 1)/2), l'XP entière pour chacun, un coffre de boss par joueur, la charge du gros pilier au prorata des joueurs présents et la réanimation à l'étage suivant. L'or et les coffres s'en écartent depuis la décision du 01/11/2026 (or crédité à chacun, voir ci-dessous).
 - **Une seule valeur RoR2 est corrigée : les PV des boss.** RoR2 les multiplie par le nombre de joueurs vivants. Transposé tel quel à Rainfall (boss d'étage calés à 65-75 s, enrage à 90 s), la simulation donne à 4 joueurs des boss d'étage de 119-194 s, un boss final de 400 s et une run de 33 min au lieu de 18 : c'est impossible, à cause de l'enrage et d'une boucle (combats longs, donc D plus haut, donc combats plus longs). Recommandé : PV × (1 + 0,4 (n − 1)) pour les boss d'étage, × (1 + 0,3 (n − 1)) pour les mini-boss, × (1 + 0,35 (n − 1)) pour le boss final.
 - **Deux ajouts propres à Rainfall** : les joueurs commencent au niveau ambiant du départ (1 / 1 / 2 / 3), pour garder « l'essaim tombe en 1-2 coups » dès la première seconde ; et un joueur inactif (AFK) sort du compte des joueurs pour le director et les boss, sinon la run devient deux à trois fois plus longue.
-- **Résultat (estimé, non mesuré en jeu)** à 4 joueurs : run 18,0 min (solo 17,7), boss d'étage 70-81 s (solo 70), boss final 139 s (cible 120-150), mini-boss 23-24 s, chaque joueur finit avec ≈ 24 objets (solo 37) mais 3 niveaux de plus. Ni trivial ni impossible : la pression de foule est plus forte pour l'équipe (+32 %), la menace par joueur est voisine du solo.
-- **Économie** : bourses individuelles, coffre à celui qui le paie, pas de transfert d'or ni d'objet. Les rubis restent ceux du solo par joueur (même rythme par heure), avec un garde-fou de participation : le multijoueur ne doit pas devenir une ferme à rubis.
+- **Résultat (estimé, non mesuré en jeu)** à 4 joueurs, règle d'or du 01/11 (§3.4, `reco2`) : run 17,9 min (solo 17,7), boss d'étage 72-79 s (solo 70), boss final 132 s (cible 120-150), mini-boss 24 s, chaque joueur finit avec ≈ 30 objets (solo 42) mais 3 niveaux de plus (l'étude initiale, or partagé, donnait 18,0 min, 70-81 s, 139 s et 24 objets sur 37). Ni trivial ni impossible : la pression de foule est plus forte pour l'équipe (+32 %), la menace par joueur est voisine du solo.
+- **Économie (révisée le 01/11/2026)** : chaque gain d'or est crédité à chaque joueur, multiplié par `coop_gold_mult(n) = 2 / (n + 1)` (1 / 0,667 / 0,5 / 0,4) : l'or des kills **par joueur** reste celui du solo (il y a (n + 1)/2 fois plus de monstres), les gains fixes (capsules, primes, notes) sont dilués comme les crédits du director. Coffres posés × (1 + 0,6 (n − 1)) : 10 / 16 / 22 / 28 par étage (petits + grands). Résultat estimé : **83 / 76 / 72 % des objets du solo par joueur** (35 / 32 / 30 objets contre 42), coffres jamais épuisés (2,6 à 8,3 restent fermés pour l'équipe), boss d'étage 63-79 s, boss final 121-132 s, run 16,8-17,9 min (§2.9, §3.4). Le code actuel (`COOP_GOLD_MULT` 1,0, coffres +50 %) donne des coffres épuisés dès 2 joueurs et un boss final de 90 s : à corriger. Les rubis restent ceux du solo par joueur (même rythme par heure), avec un garde-fou de participation : le multijoueur ne doit pas devenir une ferme à rubis.
 
 ---
 
@@ -48,12 +50,12 @@ Lecture : RoR2 ne gonfle **jamais** les PV d'un monstre ordinaire par joueur. Il
 
 | Question | Choix recommandé | Alternative écartée | Pourquoi |
 |---|---|---|---|
-| Or | **bourse individuelle** ; l'or des kills, des capsules et des primes va à un pot d'équipe aussitôt **divisé à parts égales** entre tous les joueurs de la partie, morts compris | pot commun dépensé par tous | Comme RoR2. Pas de vol de kill, pas de « qui a ramassé ». Un pot commun crée des disputes et laisse un joueur vider la caisse. Les morts touchent leur part : aucune spirale de mort, et aucun intérêt à « laisser mourir » un coéquipier. |
-| Objets | **le coffre va à celui qui le paie** (son écran de choix, son objet) ; coffre de boss, reliquaire et coffre du Paratonnerre : **un par joueur**, morts compris | objets au sol à ramasser (RoR2) | Le choix entre 2 objets est le cœur de Rainfall : il reste personnel. Les coffres posés suivent RoR2 (+50 % par joueur) et restent « premier arrivé, premier servi ». |
+| Or (**décision du joueur, 01/11/2026**) | **bourse individuelle** ; chaque gain d'or (kill, capsule, prime de boss, note d'épreuve, gardien) crédite **le même montant à chaque joueur** de la partie, morts compris : `montant × coop_gold_mult(n)` (§2.9) | partage à parts égales (RoR2, étude initiale) ; pot commun dépensé par tous | Pas de vol de kill, pas de « qui a ramassé ». Le multiplicateur remplace la division : sans lui, chaque joueur toucherait jusqu'à 1,9 fois l'or du solo à 4 joueurs (§3.4, option A). Les morts touchent leur montant : aucune spirale de mort, aucun intérêt à « laisser mourir » un coéquipier. |
+| Objets | **le coffre va à celui qui le paie** (son écran de choix, son objet) ; coffre de boss, reliquaire et coffre du Paratonnerre : **un par joueur**, morts compris | objets au sol à ramasser (RoR2) | Le choix entre 2 objets est le cœur de Rainfall : il reste personnel. Les coffres posés suivent `1 + 0,6 (n − 1)` (§2.9, RoR2 : 0,5) et restent « premier arrivé, premier servi ». |
 | Transfert d'or ou d'objets | **aucun** (v1) | « donner » un objet | Sans transfert, on ne peut pas tout verser à un seul joueur (piles de Phénix, de Trèfle) : voir §4. |
 | XP | **entière pour chaque joueur** (XP d'un kill et d'un boss inchangées) ; niveaux individuels (l'Éclat d'expérience reste personnel) | niveau d'équipe | Comme RoR2 pour la quantité ; le niveau individuel garde la valeur des objets d'XP. |
-| Or restant en fin d'étage | converti en XP **pour son propriétaire seulement** (0,25 XP par or, inchangé) | XP donnée à tous (RoR2) | Écart de 0-2 P par étage (Ateliers_Chiffres §1.3) : négligeable ; le garder individuel évite qu'un joueur thésaurise pour les autres. |
-| Mort | **spectateur**, puis **réanimé à la fin du prochain pilier terminé** par l'équipe (petit ou gros), à 50 % des PV max avec 2 s d'invulnérabilité, au pied du pilier ; à défaut, au début de l'étage suivant ; toute l'équipe morte = fin de run | RoR2 pur (attendre l'étage suivant, jusqu'à 4 min) ; réanimation par un coéquipier (maintenir « interagir ») | Un étage dure 3,5-4 min : attendre l'étage suivant, c'est jusqu'à 4 min de spectateur sur mobile. Les piliers (3 par étage) donnent une attente de 60-90 s et une raison de plus de finir les piliers. La réanimation manuelle est une option v2 (risque de boucle de réanimation au contact du boss). |
+| Or restant en fin d'étage | converti en XP **pour son propriétaire seulement** (0,25 XP par or, inchangé), **spectateurs compris** : la bourse d'un mort est convertie comme les autres, rien n'est reporté à l'étage suivant | XP donnée à tous (RoR2) ; report de la bourse du mort | Écart de 0-2 P par étage (Ateliers_Chiffres §1.3) : négligeable ; le garder individuel évite qu'un joueur thésaurise pour les autres. Un spectateur ne peut donc pas accumuler d'or d'un étage à l'autre (§4). |
+| Mort (**décision du joueur, 01/11/2026**) | **spectateur**, puis ressuscité **au début de l'étage suivant** (comme RoR2) ; toute l'équipe morte = fin de run ; pas de relevé au sol | réanimation au prochain pilier terminé (proposée par l'étude initiale) ; relevé par un coéquipier | Tranché par le joueur. Le spectateur continue de recevoir l'or de l'équipe ; sa bourse est convertie en XP à la fin de l'étage (ligne précédente). |
 | Phénix de poche | **personnel** (ne relève que son porteur) | relever un coéquipier | Sinon il devient l'objet obligatoire de l'équipe. |
 | Présages | **un présage pour l'équipe**, au vote (majorité ; égalité : tirage seedé) ; rubis du présage pour chacun | un présage par joueur | Les présages touchent le director, les prix et les boss : ils ne peuvent pas être individuels. |
 | Défi du jour | **solo seulement** | défi en équipe | La comparabilité vient de la graine commune ; une équipe de 4 fausse le classement. |
@@ -168,62 +170,96 @@ Exemple : boss d'étage, étage 3, D = 5,16 (niveau 13), 4 joueurs vivants : 3 3
 | Épreuves (prototype `--epreuves`) | Escorte : la barque avance si **un** joueur est à moins de `ESCORT_LEASH_U` ; PV de la barque = `ESCORT_HP_MINI_SHARE` × PV du mini-boss **multi** (ils suivent n) | `ESCORT_HP_MINI_SHARE` | 0,3 (inchangé) |
 | | Rituel et Poursuite, qui se partagent à plusieurs (3 relais fermés en parallèle) : seuil « parfait » plus court | `EPREUVE_TARGET_PLAYER_SLOPE` (à créer) | 0,08 : cible × (1 − 0,08 (n − 1)), soit × 0,76 à 4 ; plage 0,05-0,12 |
 | | Veine, Tenue, Escorte : rien (un seul objet à suivre ou défendre) | - | - |
-| | Or de la note : pot d'équipe `EPREUVE_GOLD_P × P × g(n)`, divisé entre les joueurs | `EPREUVE_GOLD_P` | inchangé |
+| | Or de la note : `EPREUVE_GOLD_P × P × coop_gold_mult(n)` crédité à chaque joueur (révision du 01/11/2026) | `EPREUVE_GOLD_P` | inchangé |
 
-### 2.9 Coffres, capsules, primes : nombre, prix, or par joueur
+### 2.9 Or, coffres, capsules, primes : règle « crédité à chacun » (révision du 01/11/2026)
 
-**Prix** : `chest_price(kind, D, stage)` **inchangé**. Il monte de lui-même avec pf(n) : P de l'étage 1 = 50 / 69 / 90 / 112 or pour 1 / 2 / 3 / 4 joueurs. Relance à l'or (`gold_reroll_price`), Enclume, Marchand : inchangés (multiples de P). Relances gratuites (1 par coffre, 3 par run) : **par joueur**.
+**Règle du joueur** : chaque gain d'or crédite le même montant à chaque joueur de la partie, morts compris ; bourses individuelles ; chacun dépense comme il veut ; le coffre va à celui qui paie ; aucun transfert. Sans correction, l'or par joueur grimpe avec n parce que le director pose (n + 1)/2 fois plus de monstres (et à plus haut D) : 1,2-1,3 / 1,3-1,6 / 1,5-1,9 fois l'or du solo par étage pour 2 / 3 / 4 joueurs, exprimé en prix de petit coffre (§3.4, option A). Deux leviers le ramènent dans une fourchette saine : le **multiplicateur d'or** et le **nombre de coffres posés**.
 
-**Nombre de coffres posés** (`draw_rules` des cartes, multipliés par `interactable_mult(n) = 1 + PLAYER_INTERACTABLE_SLOPE (n − 1)`, à créer, 0,5) :
+#### Multiplicateur d'or : `coop_gold_mult(n)`
 
-| n | petits | grands | chance de légendaire | dont vitrines | part d'un joueur |
-|---|---|---|---|---|---|
-| 1 | 8 | 2 | 25 % | 2 | 100 % |
-| 2 | 12 | 3 | 37,5 % | 3 | 75 % |
-| 3 | 16 | 4 | 50 % | 4 | 67 % |
-| 4 | 20 | 5 | 62,5 % | 5 | 62,5 % |
+`coop_gold_mult(n) = 1 / (1 + COOP_GOLD_SLOPE × (n − 1))`, avec `COOP_GOLD_SLOPE` = 0,5, soit `2 / (n + 1) = 1 / party_credit_mult(n)`.
 
-Arrondi : `roundi(base × mult)` ; chance de légendaire `min(1, 0,25 × mult)` ; `CHEST_SPECIAL_MAX_PER_STAGE` 2 → `roundi(2 × mult)`. Les cartes doivent offrir assez de points `C` (20 petits + 5 grands à 4 joueurs) : à vérifier par level-designer ; à défaut, tirer les surplus parmi les cases `.`.
+| Variable | Type | Plage | Sens |
+|---|---|---|---|
+| n | entier | 1-4 | joueurs actifs de la partie, figé au début de l'étage (comme pf(n) et les coffres posés) |
+| `COOP_GOLD_SLOPE` | réel | 0,4-0,6 (sûr) | dilution de l'or par joueur en plus ; 0,5 = même pente que les crédits du director |
+| sortie | réel | 0,4-1,0 | multiplie **chaque** gain d'or crédité à chaque joueur |
 
-**Or** (tous les flux d'équipe, divisés par n joueurs de la partie, morts compris) :
+Sortie bornée : 1,0 (solo, n = 1, valeur solo exacte) à 0,4 (n = 4) ; jamais nulle ni négative (n ≥ 1). Exemple : kill d'un tireur (coût 5) à D = 3,0 (4 joueurs) : `monster_gold` = 2 × 3,0 × 5 × 0,235 = 7,05 or ; chaque joueur reçoit 7,05 × 0,4 = **2,82 or**. Capsule à D = 3,0 : 40 × 3,0^1,25 = 158 or, chaque joueur reçoit **63 or**.
 
-| Source | Pot d'équipe | Reçu par chaque joueur |
+Lecture : avec 2 / (n + 1), **l'or des kills par joueur reste celui du solo** (× (n + 1)/2 monstres × 2/(n + 1)), un peu plus en P parce que D est plus haut ; les gains fixes (4 capsules, primes de mini-boss et de boss, notes d'épreuve) sont dilués comme les crédits. Le code a déjà le tableau `COOP_GOLD_MULT` (index n) : valeurs proposées `[1.0, 1.0, 0.667, 0.5, 0.4]` (ou la formule ci-dessus).
+
+| Source | Montant crédité à **chaque** joueur | Fonction existante |
 |---|---|---|
-| Kill | `monster_gold(D, coût)` (inchangé) | ÷ n |
-| Capsule d'argent | `capsule_gold(D) × interactable_mult(n)` ; **nombre inchangé** (4, décision du 01/11 contre le « tour de map ») | ÷ n |
-| Prime de mini-boss / boss | `boss_gold(kind, D) × interactable_mult(n)` | ÷ n |
-| Note d'épreuve | `EPREUVE_GOLD_P × P × interactable_mult(n)` | ÷ n |
-| Gardien de salle secrète | `guardian_bonus_gold` (inchangé : il suit D) | ÷ n |
+| Kill | `monster_gold(D, coût) × m(n)` | `monster_gold` |
+| Capsule d'argent (4 par étage, **nombre inchangé** : décision du 01/11 contre le « tour de map ») | `capsule_gold(D) × m(n)`, quel que soit le joueur qui la ramasse | `capsule_gold` |
+| Prime de mini-boss / boss | `boss_gold(kind, D) × m(n)` (la prime ne suit pas le multiplicateur de PV) | `boss_gold` |
+| Note d'épreuve | `EPREUVE_GOLD_P × P × m(n)` | `epreuve_gold` |
+| Gardien de salle secrète | `guardian_bonus_gold(D, tier) × m(n)` | `guardian_bonus_gold` |
+| Objets d'or (`gold_mult`, Faveur…) | appliqués au montant **de leur porteur** seulement, après m(n) | - |
 
-Exemple : capsule à D = 5,16, 4 joueurs : 40 × 5,16^1,25 × 2,5 = 782 or, soit **195 or par joueur** (solo à D = 3,33 : 180). Les bonus d'or des objets (Pièce porte-bonheur `gold_mult`) s'appliquent à **la part** de leur porteur.
+Tout passe par `RunState.add_party_gold(amount)`, qui applique déjà `coop_gold_mult(n)` à chaque bourse.
 
-**XP** : chaque joueur reçoit `monster_xp(D, coût)` et `boss_xp(kind, D)` en entier, sans le facteur `interactable_mult` (XP d'un boss inchangée). Multiplicateurs d'XP des objets : personnels.
+#### Nombre de coffres posés : `party_interactable_count(base, n)`
 
-**Coffres de boss, reliquaires, Paratonnerre** : un par joueur, morts compris (l'objet attend le joueur mort et s'ouvre à sa réanimation). Coffre du Paratonnerre dévié : un de plus par joueur. Reliquaires de salle secrète : un par joueur.
+`coffres(base, n) = roundi(base × (1 + PLAYER_INTERACTABLE_SLOPE × (n − 1)))`, avec `PLAYER_INTERACTABLE_SLOPE` **0,5 → 0,6** ; s'applique aux `small_chests` et `large_chests` des `draw_rules`, à `CHEST_SHOWCASE_PER_STAGE` et `CHEST_SPECIAL_MAX_PER_STAGE` ; chance de coffre légendaire `min(1, chance × (1 + 0,6 (n − 1)))` (`party_chance`).
 
-Bilan par joueur (estimé, Moyen, tableau §3.2) : ≈ 8 / 6,1 / 5,5 / 5,2 objets par étage pour 1 / 2 / 3 / 4 joueurs, soit 37 / 28 / 26 / 24 objets par run. C'est la dilution voulue par RoR2 : le pouvoir passe du sac d'objets à l'équipe et aux niveaux (+1,2 / +2,3 / +3,1).
+| n | multiplicateur | petits (é1-4) | grands | coffres é1-4 | chance de légendaire é1-4 | vitrines et plafond de spéciaux | étage 5 (La Source) | coffres achetés par l'équipe (estimé) | restent fermés (estimé) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 1,0 | 8 | 2 | 10 | 25 % | 2 | 6 + 2 + 1 légendaire | 7,9-8,1 | 1,9-2,1 (journaux : 2-3) |
+| 2 | 1,6 | 13 | 3 | 16 | 40 % | 3 | 10 + 3 + 1 légendaire | 12,3-13,4 | 2,6-3,7 |
+| 3 | 2,2 | 18 | 4 | 22 | 55 % | 4 | 13 + 4 + 1 légendaire | 16,1-18,6 | 3,4-5,9 |
+| 4 | 2,8 | 22 | 6 | 28 | 70 % | 6 | 17 + 6 + 1 légendaire | 19,7-23,4 | 4,6-8,3 |
+
+Pourquoi 0,6 et pas 0,5 (RoR2) : avec 0,5 (20 + 5 à 4 joueurs), l'équipe veut acheter jusqu'à 23,4 coffres par étage pour 25 posés ; un tirage spatial défavorable ou une course suffit à priver le dernier joueur. Avec 0,6, il reste 1,2 à 2,1 coffres fermés **par joueur**, comme en solo (1,9-2,1). À 0,7 (25 + 6), il en resterait 6,2 à 11,3 à 4 joueurs : « des dizaines » sur une run, et des cartes surchargées.
+
+Chance de légendaire de l'étage 5 : 1,0 en solo, donc toujours **un seul** coffre légendaire quel que soit n (plafond de `party_chance`) : voulu, aucun joueur ne peut se l'offrir avant le boss final (≈ 4-6 P par joueur contre 8 P).
+
+Cartes : 17-20 cases `C` aux étages 1-4 et 12 sur La Source ; il en faut 22 à 3 joueurs et 28 à 4 (23 à l'étage 5). Les surplus se tirent parmi les cases `.` (règle déjà prévue) ; à vérifier par level-designer (densité, distance au départ).
+
+#### Prix
+
+`chest_price(kind, D, stage)` **inchangé** : il suit D, donc pf(n). P par étage (Moyen, variante `reco2`) : 1 joueur 50 / 108 / 195 / 324 / 509 ; 2 joueurs 69 / 140 / 243 / 396 / 613 ; 3 joueurs 90 / 173 / 298 / 479 / 733 ; 4 joueurs 112 / 208 / 353 / 562 / 856. Relance à l'or (`gold_reroll_price`), Fondoir, Matrice, Alambic, Enclume, Marchand : inchangés (multiples de P), payés par le joueur qui les utilise. Relances gratuites (1 par coffre, 3 par run) : **par joueur**.
+
+#### Or et objets par joueur (estimé, Moyen, variante `reco2`, non mesuré en jeu)
+
+| n | m(n) | or par joueur et par étage é1 / é2 / é3 / é4 / é5 (P) | idem (or) | objets par joueur par étage (coffre de boss compris) | objets par joueur par run | ÷ solo |
+|---|---|---|---|---|---|---|
+| 1 | 1,0 | 7,9 / 8,3 / 8,1 / 8,1 / 5,9 | 397 / 893 / 1 580 / 2 623 / 2 996 | 8,9 / 9,1 / 9,0 / 9,0 / 5,9 | 42,1 | 100 % |
+| 2 | 0,667 | 6,2 / 6,7 / 6,8 / 6,9 / 4,8 | 429 / 938 / 1 662 / 2 749 / 2 953 | 7,2 / 7,6 / 7,7 / 7,7 / 4,8 | 35,0 | 83 % |
+| 3 | 0,5 | 5,4 / 6,2 / 6,3 / 6,4 / 4,3 | 482 / 1 073 / 1 868 / 3 060 / 3 168 | 6,4 / 7,1 / 7,1 / 7,2 / 4,3 | 32,1 | 76 % |
+| 4 | 0,4 | 4,9 / 5,8 / 6,0 / 6,2 / 4,0 | 550 / 1 214 / 2 117 / 3 483 / 3 437 | 5,9 / 6,7 / 6,7 / 6,9 / 4,0 | 30,2 | 72 % |
+
+Le solo de ce tableau est recalé sur les journaux réels (or des kills × 1,4 : 7,9-8,3 P par étage et 42 objets, journaux 8,0-10,5 P et 40-42 objets ; le modèle non recalé donnait 6,8-7,1 P et 36,8 objets). L'or en monnaie monte avec n (les prix aussi) ; en P, il baisse doucement. C'est la dilution voulue, plus douce que RoR2 (75 / 67 / 62,5 %) : le pouvoir passe un peu du sac d'objets à l'équipe et aux niveaux (+1,2 / +2,3 / +3,1). L'étage 1 est le plus maigre à 4 joueurs (5,9 objets contre 8,9) parce que les capsules y pèsent plus ; le niveau de départ 3 (§2.4) compense en puissance (boss d'étage 1 : 72 s).
+
+**XP** : inchangée : chaque joueur reçoit `monster_xp(D, coût)` et `boss_xp(kind, D)` en entier, sans m(n). Multiplicateurs d'XP des objets : personnels.
+
+**Coffres de boss, reliquaires, Paratonnerre** : un par joueur, morts compris (l'objet attend le joueur mort et s'ouvre à sa résurrection, au début de l'étage suivant). Coffre du Paratonnerre dévié : un de plus par joueur. Reliquaires de salle secrète : un par joueur.
+
+**Spectateurs** : un joueur mort reçoit chaque gain comme les autres ; il ne peut rien acheter ; sa bourse est convertie en XP à la fin de l'étage (0,25 XP par or). Exemple, 4 joueurs, mort au milieu de l'étage 3 : il manque ≈ 2,9 objets achetés et reçoit ≈ 1 060 or, soit 265 XP (≈ 0,2 niveau au niveau 13, `xp_required(13)` = 1 392). Mourir ne rapporte jamais plus que jouer ; aucun report d'or n'est possible.
 
 ### 2.10 Ateliers, marchand, Boussole, présages
 
 | Élément | Règle multi | Pourquoi |
 |---|---|---|
-| Fondoir, Matrice, Alambic, Enclume | **un atelier pour tous, usages par joueur** (Fondoir 2, Matrice 3, Alambic 2, Enclume 3 chacun) ; prix en P inchangés ; `ENCLUME_PRICE_GROWTH` compté par joueur | L'atelier convertit les objets **de celui qui l'utilise** : des usages partagés créent une course. Les prix en P suivent déjà pf(n). |
+| Fondoir, Matrice, Alambic, Enclume | **un atelier pour tous, usages par joueur** (Fondoir 2, Matrice 3, Alambic 2, Enclume 3 chacun) ; prix en P inchangés ; `ENCLUME_PRICE_GROWTH` compté par joueur ; nombre d'ateliers par étage inchangé (1) | L'atelier convertit les objets **de celui qui l'utilise** : des usages partagés créent une course. Les prix en P suivent déjà pf(n). Avec 4,9-6,2 P par joueur et par étage à 4 joueurs (8 P en solo), un atelier payant coûte un peu plus cher en « coffres auxquels on renonce » : acceptable, pas de remise multi. |
 | Scories (`SCRAP_CAP` 3) | par joueur | inventaire personnel |
 | Boussole de rouille | 2 charges par joueur, tag choisi par chacun | idem |
-| Marchand de l'étage 3 | **un étal par joueur** (1 objet par rareté chacun, prix `MERCHANT_PRICE_MULT` × P) | sinon le premier arrivé prend le légendaire ; le marchand est un puits d'or limité par la bourse, il ne dilue pas l'économie (or par joueur déjà ÷ n) |
+| Marchand de l'étage 3 | **un étal par joueur** (1 objet par rareté chacun, prix `MERCHANT_PRICE_MULT` × P) | sinon le premier arrivé prend le légendaire ; le marchand est un puits d'or limité par la bourse, il ne dilue pas l'économie (or par joueur déjà × m(n), §2.9) |
 | Présages | un pour l'équipe, au vote ; `OMEN_RUBIES` pour chacun ; Offrande : un reliquaire par joueur ; Usure : retire le coffre de boss de **chacun** et baisse tous les prix ; Marée : × 1,15-1,25 par-dessus g(n) | les effets portent sur le director et les prix communs |
 | Paratonnerre dévié | décidé par le joueur qui active le gros pilier (comme en solo), affiché à toute l'équipe ; PV × table × multiplicateur joueurs | une seule activation par pilier |
 
-### 2.11 Réanimation (constantes à créer)
+### 2.11 Résurrection (décision du joueur, 01/11/2026 ; constantes déjà dans `balance.gd`)
 
 | Constante | Valeur | Plage sûre | Sens |
 |---|---|---|---|
-| `MULTI_REVIVE_ON_PILLAR` | true | - | un pilier terminé (petit ou gros) relève tous les joueurs morts |
-| `MULTI_REVIVE_HP_PCT` | 0,5 | 0,3-0,5 | PV à la réanimation (= Phénix) |
-| `MULTI_REVIVE_INVULN_S` | 2,0 | 1,5-3 | invulnérabilité (Phénix 2 s, Dio 3 s) |
+| `MULTI_RESURRECT_ON_FLOOR_START` | true | - | les morts reviennent au début de l'étage suivant (RoR2) ; plus de réanimation au pilier |
+| `MULTI_RESURRECT_HP_PCT` | 1,0 | 0,5-1,0 | PV au retour |
+| `MULTI_RESURRECT_INVULN_S` | 2,0 | 1,5-3 | invulnérabilité au retour |
 | `MULTI_AFK_S` | 45 | 30-60 | sans entrée ni dégât infligé pendant ce temps : joueur « absent », retiré de n au prochain recalcul (début d'étage) et de n_v à la prochaine apparition de boss |
 
-Attente moyenne d'un mort (estimé) : 60-90 s (un pilier toutes les ≈ 70 s), au pire ≈ 2 min si l'équipe meurt pendant la charge du gros pilier puis réanime au pilier suivant… qui est à l'étage suivant.
+Attente d'un mort : jusqu'à la fin de l'étage (3,5-4 min au pire). L'or qu'il reçoit pendant ce temps est converti en XP à la fin de l'étage (§2.9).
 
 ### 2.12 Rubis de fin de run (économie cosmétique)
 
@@ -241,34 +277,41 @@ La run multi dure le même temps (17-18 min) et termine les mêmes 13 piliers : 
 
 ### 2.13 Tableau des constantes et fonctions (récapitulatif)
 
-| Constante / fonction (`Balance`, à créer sauf mention) | Actuel | Proposé | Plage sûre |
-|---|---|---|---|
-| `MULTI_MAX_PLAYERS` | - | 4 | 4 |
-| `PLAYER_FACTOR_SLOPE` | (solo : 0) | 0,3 | 0,2-0,3 |
-| `PLAYER_TIME_EXP` | (solo : 0) | 0,2 | 0-0,2 |
-| `PLAYER_CREDIT_SLOPE` | - | 0,5 | 0,4-0,5 |
-| `PLAYER_INTERACTABLE_SLOPE` | - | 0,5 | 0,5-0,75 |
-| `PLAYER_ALIVE_SLOPE` | - | 0,2 (0 en qualité Basse) | 0-0,25 |
-| `BOSS_HP_PLAYER_SLOPE` | - | `{mini: 0.3, etage: 0.4, final: 0.35}` | mini 0,25-0,4 ; étage 0,35-0,5 ; final 0,3-0,45 |
-| `EPREUVE_TARGET_PLAYER_SLOPE` | - | 0,08 | 0,05-0,12 |
-| `MULTI_REVIVE_HP_PCT` / `MULTI_REVIVE_INVULN_S` | - | 0,5 / 2,0 | 0,3-0,5 / 1,5-3 |
-| `MULTI_AFK_S` | - | 45 | 30-60 |
-| `MULTI_RUBY_PARTICIPATION_MIN` | - | 0,25 | 0,15-0,35 |
-| `difficulty(t_s, stage, d, n := 1)` | sans n | `pf(n)` et `n^PLAYER_TIME_EXP` | - |
-| `director_credits_per_s(D, zone, n := 1)` | sans n | × `1 + PLAYER_CREDIT_SLOPE (n − 1)` | - |
-| `director_alive_cap(t_s, n := 1)` | sans n | × `1 + PLAYER_ALIVE_SLOPE (n − 1)`, ≤ `MAX_ENEMIES` | - |
-| `boss_hp(kind, D, stage, n_alive := 1)` | sans n | × `1 + BOSS_HP_PLAYER_SLOPE[kind] (n_alive − 1)` | - |
-| `interactable_mult(n)` | - | `1 + PLAYER_INTERACTABLE_SLOPE (n − 1)` | - |
-| `player_start_level(n)` | - | `monster_level(pf(n))` | 1 à `monster_level(pf(n))` |
-| `run_rubies(..., n := 1, participation := 1.0)` | sans n | §2.12 | - |
+« Actuel » = `game/scripts/core/balance.gd` au 01/11/2026 (le bloc multijoueur y est déjà) ; seules les lignes en gras changent.
 
-Avec n = 1, chaque fonction rend exactement la valeur solo actuelle : les tests existants (`test_balance.gd`, `economy_test`) ne bougent pas. Côté `RunState` (à créer, contrat à signaler) : `player_count` (n, recalculé au début d'étage), `players_alive()`, bourse et XP **par joueur** (aujourd'hui un seul `gold` / `xp` / `items`) ; c'est le plus gros chantier, hors de ce document.
+| Constante / fonction (`Balance`) | Actuel | Proposé | Plage sûre |
+|---|---|---|---|
+| `MULTI_MAX_PLAYERS` | 4 | 4 | 4 |
+| `PLAYER_FACTOR_SLOPE` | 0,3 | 0,3 | 0,2-0,3 |
+| `PLAYER_TIME_EXP` | 0,2 | 0,2 | 0-0,2 |
+| `PLAYER_CREDIT_SLOPE` | 0,5 | 0,5 (décision) | 0,4-0,5 |
+| **`PLAYER_INTERACTABLE_SLOPE`** | 0,5 | **0,6** (coffres 10 / 16 / 22 / 28 par étage) | 0,55-0,7 |
+| **`COOP_GOLD_MULT`** (index n) | `[1.0, 1.0, 1.0, 1.0, 1.0]` | **`[1.0, 1.0, 0.667, 0.5, 0.4]`** = 2 / (n + 1) | n = 2 : 0,6-0,72 ; n = 3 : 0,45-0,56 ; n = 4 : 0,36-0,46 |
+| ou `COOP_GOLD_SLOPE` (à créer, remplace le tableau) | - | 0,5 : `coop_gold_mult(n) = 1 / (1 + 0,5 (n − 1))` | 0,4-0,6 |
+| `PLAYER_ALIVE_SLOPE` | 0,2 | 0,2 (0 en qualité Basse) | 0-0,25 |
+| `BOSS_HP_PLAYER_SLOPE` | `{mini: 0.3, etage: 0.4, final: 0.35}` | inchangé (décision) | mini 0,25-0,4 ; étage 0,35-0,5 ; final 0,3-0,45 |
+| `EPREUVE_TARGET_PLAYER_SLOPE` | 0,08 | 0,08 | 0,05-0,12 |
+| `MULTI_RESURRECT_HP_PCT` / `MULTI_RESURRECT_INVULN_S` | 1,0 / 2,0 | inchangés | 0,5-1,0 / 1,5-3 |
+| `MULTI_AFK_S` | 45 | 45 | 30-60 |
+| `MULTI_RUBY_PARTICIPATION_MIN` | 0,25 | 0,25 | 0,15-0,35 |
+| `difficulty(t_s, stage, d, n := 1)` | `pf(n)` et `n^PLAYER_TIME_EXP` | inchangé | - |
+| `director_credits_per_s(D, zone, n := 1)` | × `party_credit_mult(n)` | inchangé | - |
+| `director_alive_cap(t_s, n := 1)` | × `1 + PLAYER_ALIVE_SLOPE (n − 1)`, ≤ `MAX_ENEMIES` | inchangé | - |
+| `boss_party_hp_mult(kind, n_alive)` | `1 + BOSS_HP_PLAYER_SLOPE[kind] (n_alive − 1)` | inchangé | - |
+| `interactable_mult(n)` | `1 + PLAYER_INTERACTABLE_SLOPE (n − 1)` | 1 / 1,6 / 2,2 / 2,8 | - |
+| `party_interactable_count(base, n)` | `roundi(base × interactable_mult(n))` | appliquer à `small_chests`, `large_chests`, `CHEST_SHOWCASE_PER_STAGE`, `CHEST_SPECIAL_MAX_PER_STAGE` ; **pas** à `CAPSULES_PER_STAGE` ni au nombre d'ateliers | - |
+| `party_chance(p, n)` | `min(1, p × interactable_mult(n))` | `legendary_chance` des cartes (25 % → 40 / 55 / 70 %) | - |
+| `coop_gold_mult(n)` | `COOP_GOLD_MULT[n]` | 1 / 0,667 / 0,5 / 0,4 ; appliqué par `RunState.add_party_gold` à **tous** les gains (kills, capsules, primes, notes, gardiens) | - |
+| `player_start_level(n)` | `monster_level(pf(n))` | inchangé | 1 à `monster_level(pf(n))` |
+| `run_rubies(..., n := 1, participation := 1.0)` | §2.12 | inchangé | - |
+
+Avec n = 1, chaque fonction rend exactement la valeur solo actuelle (`coop_gold_mult(1)` = 1,0 ; `party_interactable_count(base, 1)` = base ; `party_chance(p, 1)` = p) : les tests existants (`test_balance.gd`, `economy_test`) ne bougent pas.
 
 ---
 
 ## 3. Simulation (estimée, non mesurée en jeu)
 
-Script : `docs/multi/sim_multi.py` (`python docs/multi/sim_multi.py [ror2|boss_demi|boss_demi_pf02|boss_04|reco|sens]`). Il ne touche pas `docs/simulateur_scaling.py` (modèle v3 historique, dont les constantes divergent de `balance.gd` : pente 0,30, coffres à 150 or, crédits 4 + 2,5 D ; il n'a pas servi).
+Script : `docs/multi/sim_multi.py` (`python docs/multi/sim_multi.py [ror2|boss_demi|boss_demi_pf02|boss_04|reco|sens|reco2|reco2_brut|reco2_plus|reco2_ror2]`). Les variantes `ror2` … `reco` gardent l'or partagé ÷ n de l'étude initiale (§3.2, comparaison) ; `reco2` applique la règle du 01/11/2026 (§3.4). Il ne touche pas `docs/simulateur_scaling.py` (modèle v3 historique, dont les constantes divergent de `balance.gd` : pente 0,30, coffres à 150 or, crédits 4 + 2,5 D ; il n'a pas servi).
 
 ### 3.1 Modèle
 
@@ -307,6 +350,47 @@ Coups pour tuer un essaim, par étage (4 joueurs, `reco` avec niveau de départ 
 - **Robustesse** (`sim_multi.py sens`, 4 joueurs) : part de zone du DPS 1,5-2,5 → boss 77-78 s ; part de DPS des objets 45-75 % → boss 75-79 s, final 136-147 s. Les modes : Facile 4 joueurs → boss × 1,17 du solo, Difficile × 1,04 (le facteur joueur pèse plus quand la pente de temps est faible). Levier si le Facile multi est jugé dur : `BOSS_HP_PLAYER_SLOPE` par mode (0,35 en Facile).
 - **Coffres plus généreux** (`PLAYER_INTERACTABLE_SLOPE` 0,75, part par joueur 81 % à 4) : boss 71 s, final 127 s, rho 1,18, 27,7 objets par joueur. Possible si le joueur trouve la dilution frustrante ; à 1,0 (100 % par joueur), boss 66 s et final 113 s : trop facile.
 
+### 3.4 Or crédité à chacun : options et résultats (révision du 01/11/2026)
+
+Modèle : celui du §3.1, avec trois changements. (1) Chaque gain d'or est crédité à chaque joueur × m(n), sans division. (2) Coffres posés `roundi(base × (1 + pente (n − 1)))`, base 8 + 2 aux étages 1-4 et 6 + 2 à l'étage 5 ; chaque joueur peut acheter au plus sa part (partage parfait, pas de course). (3) Or des kills recalé × 1,4 sur les journaux (`KILL_GOLD_CAL_LOGS`) : le solo passe à 42,1 objets (journaux 40-42) et 7,9-8,3 P par étage. Commande : `python docs/multi/sim_multi.py reco2`. Estimé, non mesuré en jeu.
+
+| Option | m(n) (n = 2 / 3 / 4) | Pente coffres | n | Run (min) | Niv. fin | Objets / joueur (÷ solo) | TTK boss é1-é4 (s) | Final (s) | Coffres restants é1-é5 (équipe) | Or inutilisé max / joueur |
+|---|---|---|---|---|---|---|---|---|---|---|
+| (solo) | 1 | - | 1 | 17,7 | 12,4 | 42,1 (100 %) | 70 / 70 / 70 / 70 | 135 | 2,1 / 1,9 / 2,0 / 2,0 / 2,1 | 0 |
+| A `reco2_brut` = code actuel | 1 / 1 / 1 | 0,5 | 2 | 15,4 | 13,8 | 39,8 (95 %) | 59 / 52 / 53 / 50 | 90 | 0 / 0 / 0 / 0 / 0,3 | 1,7 P |
+| | | | 4 | 15,3 | 16,0 | 34,0 (81 %) | 59 / 57 / 55 / 52 | 92 | **0 partout** | 8,1 P |
+| B `reco2_plus` | 0,714 / 0,556 / 0,455 | 0,75 | 2 | 16,4 | 13,6 | 37,2 (88 %) | 64 / 61 / 65 / 61 | 116 | 4,8 / 3,8 / 3,7 / 3,7 / 4,6 | 0 |
+| | | | 3 | 16,8 | 14,6 | 35,2 (84 %) | 66 / 70 / 68 / 65 | 116 | 7,2 / 4,7 / 4,6 / 4,4 / 5,5 | 0 |
+| | | | 4 | 17,3 | 15,5 | 34,2 (81 %) | 71 / 73 / 74 / 69 | 123 | 10,7 / 6,8 / 6,4 / 6,1 / 8,4 | 0 |
+| **C `reco2` (recommandée)** | **0,667 / 0,5 / 0,4** | **0,6** | 2 | 16,8 | 13,6 | 35,0 (83 %) | 65 / 63 / 67 / 68 | 121 | 3,7 / 2,8 / 2,7 / 2,6 / 3,4 | 0 |
+| | | | 3 | 17,2 | 14,7 | 32,1 (76 %) | 68 / 73 / 72 / 70 | 124 | 5,9 / 3,7 / 3,6 / 3,4 / 4,0 | 0 |
+| | | | 4 | 17,9 | 15,5 | 30,2 (72 %) | 72 / 76 / 79 / 77 | 132 | 8,3 / 5,3 / 5,0 / 4,6 / 6,9 | 0 |
+| D `reco2_ror2` | 0,588 / 0,417 / 0,323 | 0,5 | 2 | 17,5 | 13,7 | 31,8 (76 %) | 67 / 67 / 72 / 73 | 137 | 4,1 / 3,2 / 3,0 / 2,8 / 3,4 | 0 |
+| | | | 4 | 19,0 | 15,6 | 25,7 (61 %) | 75 / 82 / 87 / 87 | 157 | 9,0 / 6,1 / 5,5 / 5,0 / 7,4 | 0 |
+
+Lecture :
+
+- **A (règle brute, état actuel du code)** : chaque joueur touche 1,5 à 1,9 fois l'or du solo ; les coffres sont **épuisés** à chaque étage dès 3 joueurs (et presque à 2), jusqu'à 8 P par joueur finissent en XP, et c'est la course qui décide qui a ses objets. Boss d'étage 50-59 s, final 90 s (cible 120-150) : trop facile. À écarter.
+- **B** : 81-88 % des objets, mais boss final 116 s à 2 et 3 joueurs, sous la cible, et boss d'étage à 61 s, au seuil de télémétrie (< 60 s → relever la pente des boss). À garder si le joueur veut plus d'objets, au prix de boss plus courts.
+- **C (recommandée)** : 83 / 76 / 72 % des objets du solo, plus près du solo que RoR2 (75 / 67 / 62,5 %) ; boss d'étage 63-79 s, final 121-132 s, mini-boss 23-25 s ; run 16,8-17,9 min ; 1,2 à 2,1 coffres restent fermés **par joueur**, comme en solo. Formule lisible : l'or des kills par joueur est celui du solo.
+- **D** : dilution RoR2 ; final 157 s à 4 joueurs (au-dessus de la cible) et boss d'étage 87 s, à 3 s de l'enrage. Trop dur à 4.
+
+Sensibilité de C (`sim_multi.py reco2`, estimé) :
+
+| Scénario | n | Run (min) | Objets / joueur (÷ solo) | TTK boss é1-é4 (s) | Final (s) | Coffres restants |
+|---|---|---|---|---|---|---|
+| un joueur farme pendant chaque boss d'étage | 2 | 24,3 | 39,7 (94 %) | 130 / 133 / 145 / 146 | 272 | 0,8-1,6 |
+| | 4 | 20,4 | 32,0 (76 %) | 97 / 99 / 102 / 105 | 184 | 3,4-6,0 |
+| +60 s de farm en fin d'étage (tous) | 1 | 22,4 | 45,8 (109 %) | 70-79 | 151 | 1,0-2,0 |
+| | 4 | 21,9 | 34,3 (81 %) | 72-77 | 137 | 0,6-6,4 |
+| +180 s de farm en fin d'étage (tous) | 1 | 31,6 | 50,1 (119 %) | 70-89 | 182 | 0 (é1-4) |
+| | 4 | 31,1 | 36,1 (86 %) | 72-89 | 172 | 0 (é1-4), 4,3 P par joueur en XP |
+| un joueur absent compté dans n | 4 | 22,9 | 30,1 (72 %) | 95 / 113 / 115 / 118 | 217 | 5,1-8,3 |
+| or des kills recalé × 1,0 (modèle brut) | 2 / 3 / 4 | - | 82 / 73 / 69 % | - | - | min 4,7 / 6,4 / 8,7 |
+| or des kills recalé × 1,8 | 2 / 3 / 4 | - | 84 / 78 / 74 % | - | - | min 1,2 / 1,4 / 1,9 |
+
+La part d'objets par joueur bouge de ± 3 points selon le recalage de l'or des kills : la recommandation tient. Le seul cas serré est un or des kills plus fort qu'estimé (× 1,8) à 2 joueurs : 1,2 coffre restant ; la télémétrie le dira (§6).
+
 ---
 
 ## 4. Stratégies dégénérées et garde-fous
@@ -317,9 +401,12 @@ Coups pour tuer un essaim, par étage (4 joueurs, `reco` avec niveau de départ 
 | **Ferme à rubis à plusieurs appareils** (un humain, 3 appareils inactifs) | 4 profils payés pour une run | participation ≥ 25 % de la moyenne des dégâts ; pas de bonus multi | une personne qui joue vraiment 4 appareils à la fois : rubis/heure du solo par appareil, sans intérêt |
 | **Se laisser mourir avant le boss** pour baisser ses PV | PV × 1,4 au lieu de 2,2 si 2 morts sur 4 | n_v à l'apparition, mais les morts ne reviennent qu'au pilier **terminé** : l'équipe se prive de la moitié de son DPS pour tout le combat ; perte nette | aucun |
 | **Réanimer en plein combat** | DPS plein contre des PV comptés pour n_v réduit | réanimation seulement à la fin d'un pilier (jamais pendant le combat qui le termine) | aucun |
-| **Course aux coffres** (un joueur rapide achète tout) | les autres perdent leur part ; leur or devient de l'XP à 0,25 par or (moitié moins rentable) | règle sociale (RoR2) ; option v2 : un coffre se réserve 3 s au premier qui interagit, et « coffres marqués » au ping | inégalité possible, pas d'abus de puissance (l'équipe ne gagne rien) |
+| **Course aux coffres** (un joueur rapide achète tout) | un joueur ne peut acheter que ce que permet **sa** bourse (≈ 1/n du pouvoir d'achat de l'équipe) ; avec la pente 0,6, il reste 4,6-8,3 coffres fermés à 4 joueurs ; avec le code actuel (pente 0,5, m = 1), les coffres sont épuisés et la course décide | pente 0,6 et m(n) (§2.9) ; ping de coffre ; option v2 : un coffre se réserve 3 s au premier qui interagit | inégalité spatiale possible (coffres proches du départ), pas d'abus de puissance |
+| **Un joueur farme pendant que les autres font le boss** | aucun gain privé : l'or qu'il génère est crédité à tous ; le boss garde ses PV pour n_v (le farmeur est vivant), donc 97-105 s à 4 (enrage 90 s), 130-146 s à 2 ; gain : +1,8 objet par joueur à 4, au prix d'un boss enragé (sim `reco2`) | aucun nouveau : n_v compté à l'apparition, zone `etage` × 2,33 (on farme mieux **près** du boss), coffres finis | voulu : choix risqué de l'équipe, qui se punit seul |
+| **Spectateur qui accumule de l'or** | un mort reçoit chaque gain ; s'il gardait sa bourse à l'étage suivant, il reviendrait avec jusqu'à 6 P d'avance | bourse convertie en XP à la fin de l'étage, spectateurs compris (0,25 XP par or) ; aucun report | aucun : mourir coûte ≈ 3 objets contre ≈ 0,2 niveau (§2.9) |
+| **Joueur absent ou appareil fantôme qui « touche » l'or** | l'or est crédité à tous, il n'enlève rien aux autres (plus de division) ; il gonfle n donc baisse m(n) et alourdit les boss jusqu'au début d'étage | `MULTI_AFK_S` 45 s, retiré de n (donc de m(n) et des coffres) au début d'étage suivant | boss 95-118 s pendant au plus un étage |
 | **Tout donner à un porteur** (Phénix ×8, Trèfle ×8) | invulnérabilité de fait | aucun transfert d'or ni d'objet ; Phénix personnel ; Matrice et Enclume excluent déjà le Phénix | aucun |
-| **Farm prolongé à 4** | or par minute plus haut en absolu | prix ∝ D^1,25 avec le même pf(n) ; pente de temps × n^0,2 (le multi vieillit plus vite que le solo : +32 % de D par minute à 4) | aucun gain relatif au solo |
+| **Farm prolongé à 4** | or par minute plus haut en absolu ; +180 s par étage : 36,1 objets par joueur (86 %) contre 50,1 en solo (119 %) | coffres en nombre fini (épuisés à +180 s, l'excédent devient de l'XP à 0,25 par or) ; prix ∝ D^1,25 ; pente de temps × n^0,2 (+32 % de D par minute à 4) | le farm rapporte relativement **moins** qu'en solo |
 | **Charger le gros pilier seul** pendant que les autres achètent | charge à 1/n de vitesse | prorata RoR2 | voulu : choix de l'équipe |
 | **Deux mini-boss en parallèle** | étage plus court de ≈ 25 s | déjà permis en solo ; zones distinctes | voulu (coordination) |
 | **Rituel à plusieurs** | « parfait » trivial (3 relais en parallèle) | `EPREUVE_TARGET_PLAYER_SLOPE` 0,08 | à mesurer au prototype |
@@ -335,7 +422,7 @@ Boucles de rétroaction : la boucle renforçante « combat long → D plus haut 
 
 1. **Boss : × n (RoR2 pur) ou × (1 + 0,4 (n − 1)) (recommandé)**. Le premier est fidèle mais injouable avec l'enrage à 90 s ; le second garde les TTK du solo.
 2. **Réanimation** : à la fin d'un pilier (recommandé) ou RoR2 pur (étage suivant).
-3. **Coffres** : +50 % par joueur (RoR2, 62,5 % par joueur à 4) ou +75 % (81 %), si la dilution déplaît.
+3. **Or et coffres (règle « crédité à chacun »)** : option C recommandée (`coop_gold_mult` = 2 / (n + 1), coffres +60 % par joueur : 83 / 76 / 72 % des objets du solo) ; option B si le joueur veut plus d'objets (81-88 %), au prix d'un boss final à 116 s à 2-3 joueurs ; jamais l'option A (code actuel).
 4. **Écran de coffre en multi** : le temps ne peut plus s'arrêter pour un seul joueur. Proposition : le monde continue (pas d'invulnérabilité, sinon le menu devient une esquive), révélation « instant » par défaut (`CHEST_REVEAL_MODES`), et le temps actif de la run avance (D monte un peu plus vite qu'en solo : ≈ +2-3 % de D en fin de run, estimé, non simulé). À voir avec ux-designer.
 5. **Plafond de vivants sur mobile** : 240 à 4 joueurs (PC) contre 150 en qualité Basse.
 6. Hors économie, signalé au passage : l'objet `eclair_en_bouteille` porte le nom affiché « Ukulele » dans `game/data/items.json`, nom d'un objet de Risk of Rain 2, contraire à la règle « aucune reprise de noms ».
@@ -343,6 +430,6 @@ Boucles de rétroaction : la boucle renforçante « combat long → D plus haut 
 ## 6. Tests à prévoir (pour les agents dev)
 
 - `test_balance.gd` : chaque fonction avec n = 1 rend la valeur solo actuelle au centième ; tableaux §2.3, §2.7, §2.9 recalculés.
-- `economy_test` multi : or par joueur et par étage dans la bande `sim_multi.py reco` ± 15 % pour n = 2 et 4.
+- `economy_test` multi : `coop_gold_mult(1..4)` = 1 / 0,667 / 0,5 / 0,4 ; `party_interactable_count(8, n)` = 8 / 13 / 18 / 22 et `(2, n)` = 2 / 3 / 4 / 6 ; `party_chance(0.25, 4)` = 0,7 et `party_chance(1.0, 4)` = 1,0 ; or par joueur et par étage dans la bande `sim_multi.py reco2` ± 15 % pour n = 2 et 4 (en P : 6,2-6,9 et 4,9-6,2) ; chaque bourse reçoit le même montant, morts compris.
 - `boss_pace_test` : PV × table §2.7 ; n_v figé à l'apparition.
-- Télémétrie `RunLog` (par joueur) : n, morts et attente avant réanimation, part des dégâts, objets par étage, TTK des boss par n. Seuils : boss d'étage > 85 s à 4 joueurs → `BOSS_HP_PLAYER_SLOPE[&"etage"]` 0,4 → 0,35 ; < 60 s → 0,45.
+- Télémétrie `RunLog` (par joueur) : n, morts et attente avant résurrection, part des dégâts, or gagné et dépensé par étage (en P), objets par étage, coffres restés fermés, TTK des boss par n. Seuils : boss d'étage > 85 s à 4 joueurs → `BOSS_HP_PLAYER_SLOPE[&"etage"]` 0,4 → 0,35 ; < 60 s → 0,45. Objets par joueur hors de 70-88 % du solo, ou moins d'un coffre fermé par étage pour l'équipe → ajuster `COOP_GOLD_MULT[n]` (± 0,05) puis `PLAYER_INTERACTABLE_SLOPE` (± 0,1).

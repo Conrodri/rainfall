@@ -123,15 +123,15 @@ func _multi(B) -> void:
 	_near("boss final 4 joueurs × 2,05", B.boss_party_hp_mult(&"final", 4), 2.05, 0.0001)
 	_near("exemple §2.7 : 37 900 PV", B.boss_hp(&"etage", 5.16, 3, 4), 37900.0, 150.0)
 	# Coffres +50 % par joueur en plus (provisoire) : 8 petits -> 12 / 16 / 20 ; 2 grands -> 3 / 4 / 5
-	_near("petits coffres 2 joueurs", B.coop_chest_count(8, 2), 12.0, 0.0)
-	_near("petits coffres 4 joueurs", B.coop_chest_count(8, 4), 20.0, 0.0)
+	_near("petits coffres 2 joueurs", B.coop_chest_count(8, 2), 13.0, 0.0)
+	_near("petits coffres 4 joueurs", B.coop_chest_count(8, 4), 22.0, 0.0)
 	_near("grands coffres 3 joueurs", B.coop_chest_count(2, 3), 4.0, 0.0)
-	_near("grands coffres 4 joueurs", B.coop_chest_count(2, 4), 5.0, 0.0)
-	_near("1 coffre 2 joueurs (arrondi au-dessus)", B.coop_chest_count(1, 2), 2.0, 0.0)
-	_near("chance de légendaire 4 joueurs", B.party_chance(0.25, 4), 0.625, 0.0001)
-	# Or : montant entier à chacun × coop_gold_mult (1,0 tant que non calibré)
+	_near("grands coffres 4 joueurs", B.coop_chest_count(2, 4), 6.0, 0.0)
+	_near("1 coffre 2 joueurs (arrondi)", B.coop_chest_count(1, 2), 2.0, 0.0)
+	_near("chance de légendaire 4 joueurs", B.party_chance(0.25, 4), 0.7, 0.0001)
+	# Or : même montant crédité à chacun × coop_gold_mult = 2 / (n + 1) (or des kills par joueur = solo)
 	for n in range(1, 5):
-		_near("or × %d joueurs" % n, B.coop_gold_mult(n), 1.0, 0.0)
+		_near("or × %d joueurs" % n, B.coop_gold_mult(n), 2.0 / (n + 1.0), 0.0001)
 	# Rubis (§2.12) : exemple 152 à 4 joueurs ; participation
 	_near("rubis 4 joueurs exemple §2.12", B.run_rubies(18.0, &"moyen", 13, true, 3000.0, 4, 1.0), 152.0, 0.0)
 	_near("participation 25 % de la moyenne = 1", B.ruby_participation(250.0, 4000.0, 4), 1.0, 0.0001)
