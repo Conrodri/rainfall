@@ -93,7 +93,7 @@ Statut : **étude, rien n'est codé**. Les points marqués « À trancher » att
 
 - **Périmètre** : coop locale sur PC d'abord, puis en ligne.
 - **PV des boss** : × (1 + 0,4 (n−1)) pour les boss d'étage ; × (1 + 0,3 (n−1)) pour les mini-boss ; × (1 + 0,35 (n−1)) pour le boss final.
-- **Or** : partagé à parts égales entre tous les joueurs, comme dans RoR2. Les joueurs morts touchent aussi leur part.
+- **Or** (précisé par le joueur) : chaque gain d'or crédite le même montant à chaque joueur, morts compris, dans sa bourse individuelle ; chacun dépense comme il veut (le coffre va à celui qui paie, aucun transfert). Un multiplicateur `Balance.coop_gold_mult(n)` (1,0 au départ) sera calibré pour que le nombre d'objets par joueur reste proche de la simulation.
 - **Réanimation** : comme dans RoR2. Un joueur mort devient spectateur et ressuscite au début de l'étage suivant. Si tous les joueurs sont morts, la run est perdue. Pas de relevé au sol.
 - **Restent ouverts** :
   - coffres +50 % ou +75 % par joueur en plus (défaut : +50 %) ;
