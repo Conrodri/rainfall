@@ -173,10 +173,10 @@ func _test_session() -> void:
 	_check("session : 2 items", sess.offered.size() == 2)
 	var before := sess.offered.duplicate()
 	var q := sess.quality
-	_check("pub : relance ok", sess.do_ad_reroll())
-	_check("pub : 2e relance sur le même coffre refusée", not sess.do_ad_reroll())
+	_check("relance gratuite : ok", sess.do_free_reroll())
+	_check("relance gratuite : 2e sur le même coffre refusée", not sess.do_free_reroll())
 	for id in sess.offered:
-		_check("relance pub : item nouveau", not (id in before))
+		_check("relance gratuite : item nouveau", not (id in before))
 	_check("relance : même qualité", ItemDB.get_item(sess.offered[0])["quality"] == str(q))
 	_check("or : pas assez", not sess.do_gold_reroll())
 	RunState.add_gold(10000.0)
@@ -192,8 +192,8 @@ func _test_session() -> void:
 	for i in 4:
 		var s2 := ChestSession.new(&"petit", 1, 150.0)
 		s2.start()
-		if s2.do_ad_reroll():
+		if s2.do_free_reroll():
 			done += 1
-	_check("plafond 3 pubs / run", done == 3, str(done))
+	_check("plafond 3 relances gratuites / run", done == 3, str(done))
 	sess.choose(get_tree(), 0)
 	_check("choix -> RunState.add_item", RunState.stacks(StringName(sess.offered[0])) >= 1)

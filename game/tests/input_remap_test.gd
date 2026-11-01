@@ -54,7 +54,7 @@ func _run() -> void:
 	wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN
 	wheel.pressed = true
 	_check(InputMap.event_is_action(mid, "spell_4") and not InputMap.event_is_action(wheel, "spell_4"), "E-02 : clic molette seul")
-	for a in [&"chest_pick_1", &"chest_pick_2", &"chest_reroll_ad", &"chest_reroll_gold", &"chest_items"]:
+	for a in [&"chest_pick_1", &"chest_pick_2", &"chest_reroll_free", &"chest_reroll_gold", &"chest_items"]:
 		_check(InputMap.has_action(a) and InputSetup.is_remappable(a), "action de coffre remappable : %s" % a)
 	_check(InputMap.event_is_action(_key(KEY_1), "chest_pick_1"), "1 -> coffre objet 1 (groupe distinct du sort 2)")
 	_check(not InputSetup.is_bindable(_key(KEY_ESCAPE), "kbm") and not InputSetup.is_bindable(_jb(JOY_BUTTON_START), "pad"), "Échap / Start réservés")

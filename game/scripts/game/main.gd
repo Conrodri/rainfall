@@ -549,7 +549,7 @@ func _pending_chest_dict() -> Variant:
 		return {
 			"kind": String(ss.kind), "stage": ss.stage, "price": ss.price, "quality": String(ss.quality),
 			"die": ss.die, "offered": ss.offered.duplicate(), "shown": ss.shown.duplicate(),
-			"gold_rerolls": ss.gold_rerolls, "ad_rerolls": ss.ad_rerolls, "showcase": true,
+			"gold_rerolls": ss.gold_rerolls, "free_rerolls": ss.free_rerolls, "showcase": true,
 		}
 	var ui := _find_chest_ui()
 	if ui == null or ui.session == null or ui.session.offered.is_empty():
@@ -558,7 +558,7 @@ func _pending_chest_dict() -> Variant:
 	return {
 		"kind": String(s.kind), "stage": s.stage, "price": s.price, "quality": String(s.quality),
 		"die": s.die, "offered": s.offered.duplicate(),
-		"shown": s.shown.duplicate(), "gold_rerolls": s.gold_rerolls, "ad_rerolls": s.ad_rerolls,
+		"shown": s.shown.duplicate(), "gold_rerolls": s.gold_rerolls, "free_rerolls": s.free_rerolls,
 	}
 
 
@@ -627,7 +627,7 @@ func _reopen_chest(pc: Dictionary) -> void:
 	s.offered = (pc.get("offered", []) as Array).map(func(v): return str(RunState.migrate_item_id(StringName(str(v))))) # items retirés -> remplaçant
 	s.shown = (pc.get("shown", []) as Array).map(func(v): return str(RunState.migrate_item_id(StringName(str(v)))))
 	s.gold_rerolls = int(pc.get("gold_rerolls", 0))
-	s.ad_rerolls = int(pc.get("ad_rerolls", 0))
+	s.free_rerolls = int(pc.get("free_rerolls", 0))
 	if s.offered.is_empty():
 		return
 	if bool(pc.get("showcase", false)): # coffre à vitrine : reprise dans l'écran vitrine, sans nouveau tirage ni paiement

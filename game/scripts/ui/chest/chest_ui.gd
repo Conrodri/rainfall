@@ -8,7 +8,7 @@ extends CanvasLayer
 ## immédiat ; cet appui ne choisit jamais de carte (verrou jusqu'au relâcher, SKIP_LOCK_MS minimum).
 ## Choix d'une carte au RELÂCHER (clic, toucher, Entrée / A) ; glisser hors de la carte annule. Invites de touches
 ## (KeyPrompt) sous les cartes et sur les boutons de relance, selon le mode d'entrée ; actions chest_pick_1/2 et
-## chest_reroll_ad/gold (remappables). Contour de focus de 6 px sur les cartes et boutons ; rareté écrite sur la carte.
+## chest_reroll_free/gold (remappables). Contour de focus de 6 px sur les cartes et boutons ; rareté écrite sur la carte.
 ## Usage : var ui = preload("res://scenes/ui/chest/chest_ui.tscn").instantiate(); parent.add_child(ui)
 ##         ui.open(kind, stage, price, chest_node)   # price = 0 pour le coffre boss
 ## Met l'arbre en pause pendant l'écran (process ALWAYS) puis restaure l'état précédent.
@@ -58,7 +58,7 @@ const GOLD_COL := Color(1.0, 0.82, 0.3) ## bouton qui dépense de l'or
 const ACTION_DEFAULTS := {
 	&"chest_pick_1": {"keys": [KEY_1, KEY_KP_1], "pad": [JOY_BUTTON_LEFT_SHOULDER]},
 	&"chest_pick_2": {"keys": [KEY_2, KEY_KP_2], "pad": [JOY_BUTTON_RIGHT_SHOULDER]},
-	&"chest_reroll_ad": {"keys": [KEY_R], "pad": [JOY_BUTTON_Y]}, ## relance pub / gratuite (sinon à l'or)
+	&"chest_reroll_free": {"keys": [KEY_R], "pad": [JOY_BUTTON_Y]}, ## relance gratuite (sinon à l'or)
 	&"chest_reroll_gold": {"keys": [KEY_G], "pad": [JOY_BUTTON_X]},
 	&"chest_items": {"keys": [KEY_TAB], "pad": [JOY_BUTTON_BACK]}, ## consulter ses objets (Audit_Choix P10, lot L6)
 }
@@ -126,10 +126,10 @@ var fit_report: Array = [{}, {}] ## par carte : zones et dimensions mesurées du
 var _card_back: Array[Label] = []
 var _card_icons: Array[TextureRect] = []
 var _card_rarity: Array[TextureRect] = []
-var _ad_btn: Button
+var _free_btn: Button
 var _gold_btn: Button
 var _btn_row: HBoxContainer
-var _ad_key: KeyPrompt
+var _free_key: KeyPrompt
 var _gold_key: KeyPrompt
 var _pick_keys: Array[KeyPrompt] = [] ## invite de touche sous chaque carte
 var _items_btn: Button ## « Objets (N) » : liste des objets possédés par-dessus le coffre (lot L6)
@@ -196,8 +196,8 @@ func _on_input_mode_changed(_mode: int) -> void:
 func _refresh_prompts() -> void:
 	for k in _pick_keys:
 		k.refresh()
-	if _ad_key != null:
-		_ad_key.refresh()
+	if _free_key != null:
+		_free_key.refresh()
 		_gold_key.refresh()
 	if _items_key != null:
 		_items_key.refresh()
@@ -415,7 +415,7 @@ func _button(text: String, action: StringName, gold := false) -> Button:
 	if gold:
 		_gold_key = kp
 	else:
-		_ad_key = kp
+		_free_key = kp
 	return b
 
 
@@ -484,7 +484,7 @@ func _build() -> void:
 	_quality.custom_minimum_size = Vector2(0, 76)
 	_quality.clip_text = true # largeur minimale 0 : la taille de police s'ajuste (_fit_quality), jamais de débordement
 	header.add_child(_quality)
-	_build_items_button(header) # lot L6 : avant la rangée de relances (_button réaffecte ensuite _ad_key)
+	_build_items_button(header) # lot L6 : avant la rangée de relances (_button réaffecte ensuite _free_key)
 
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 18)
@@ -611,9 +611,9 @@ func _build() -> void:
 	_btn_row = HBoxContainer.new() # relances côte à côte
 	_btn_row.add_theme_constant_override("separation", BUTTON_GAP)
 	body.add_child(_btn_row)
-	_ad_btn = _button("Relancer (pub)", &"chest_reroll_ad")
-	_ad_btn.pressed.connect(_on_ad_reroll)
-	_btn_row.add_child(_ad_btn)
+	_free_btn = _button("Relancer (gratuit)", &"chest_reroll_free")
+	_free_btn.pressed.connect(_on_free_reroll)
+	_btn_row.add_child(_free_btn)
 	_gold_btn = _button("Relancer (or)", &"chest_reroll_gold", true)
 	_gold_btn.pressed.connect(_on_gold_reroll)
 	_btn_row.add_child(_gold_btn)
@@ -635,7 +635,7 @@ func _relayout() -> void:
 	_main.vertical = not landscape
 	_cards_box.vertical = (size.x < 640.0) if not landscape else (size.x < 1100.0)
 	var bh := BUTTON_H_PORTRAIT if size.y >= 1400.0 else BUTTON_H
-	for b in [_ad_btn, _gold_btn]:
+	for b in [_free_btn, _gold_btn]:
 		b.custom_minimum_size.y = bh
 		b.add_theme_font_size_override("font_size", 34 if size.x >= 900.0 else 26)
 
@@ -840,10 +840,10 @@ func _input(event: InputEvent) -> void:
 		idx = 0
 	elif event.is_action_pressed(&"chest_pick_2"):
 		idx = 1
-	elif event.is_action_pressed(&"chest_reroll_ad"):
+	elif event.is_action_pressed(&"chest_reroll_free"):
 		get_viewport().set_input_as_handled()
-		if session.can_ad_reroll() and AdHook.is_available():
-			_on_ad_reroll()
+		if session.can_free_reroll():
+			_on_free_reroll()
 		elif session.can_gold_reroll():
 			_on_gold_reroll()
 		return
@@ -1368,18 +1368,15 @@ static func gold_button_text(price: float) -> String:
 
 func _update_buttons() -> void:
 	if session == null:
-		_ad_btn.disabled = true
+		_free_btn.disabled = true
 		_gold_btn.disabled = true
 		return
-	_ad_btn.visible = AdHook.is_available()
-	var left := ChestSession.MAX_AD_REROLLS_PER_RUN - ChestSession.run_ad_rerolls()
-	if not session.can_ad_reroll():
-		_ad_btn.text = "Relancer (pub)\nlimite atteinte"
-	elif AdHook.is_free():
-		_ad_btn.text = "Relancer (gratuit)\n%d/%d" % [left, ChestSession.MAX_AD_REROLLS_PER_RUN]
+	var left := ChestSession.MAX_FREE_REROLLS_PER_RUN - ChestSession.run_free_rerolls()
+	if not session.can_free_reroll():
+		_free_btn.text = "Relancer (gratuit)\nlimite atteinte"
 	else:
-		_ad_btn.text = "Relancer (pub)\n%d/%d" % [left, ChestSession.MAX_AD_REROLLS_PER_RUN]
-	_ad_btn.disabled = _busy or not session.can_ad_reroll()
+		_free_btn.text = "Relancer (gratuit)\n%d/%d" % [left, ChestSession.MAX_FREE_REROLLS_PER_RUN]
+	_free_btn.disabled = _busy or not session.can_free_reroll()
 	_gold_btn.text = gold_button_text(session.gold_reroll_price())
 	_gold_btn.disabled = _busy or not session.can_gold_reroll()
 	_refresh_items_button()
@@ -1394,7 +1391,7 @@ func _update_buttons() -> void:
 ## clavier : Tab). Ouvre PauseMenu.open_items() en consultation seule ; masqué s'il n'y a pas de menu pause.
 func _build_items_button(parent: Control) -> void:
 	_items_btn = _button("Objets", &"chest_items")
-	_items_key = _ad_key # _button() range l'invite dans _ad_key ; la vraie relance pub la réaffecte ensuite
+	_items_key = _free_key # _button() range l'invite dans _free_key ; la vraie relance gratuite la réaffecte ensuite
 	_items_btn.name = "ItemsButton"
 	_items_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_items_btn.custom_minimum_size = Vector2(380, BUTTON_H)
@@ -1520,12 +1517,12 @@ func _do_reroll(ok: bool) -> void:
 	_start_reveal(false)
 
 
-func _on_ad_reroll() -> void:
+func _on_free_reroll() -> void:
 	if _busy:
 		return
 	_busy = true
 	_update_buttons()
-	_do_reroll(session.do_ad_reroll())
+	_do_reroll(session.do_free_reroll())
 
 
 func _on_gold_reroll() -> void:

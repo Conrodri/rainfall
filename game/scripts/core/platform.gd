@@ -1,6 +1,6 @@
 extends Node
 ## Autoload Platform : détection de plateforme, mode d'entrée courant et couche abstraite
-## (pubs, achats, quitter) pour que le reste du jeu ne teste jamais OS.has_feature directement.
+## (quitter, zone sûre) pour que le reste du jeu ne teste jamais OS.has_feature directement.
 ##
 ## Mode d'entrée : bascule au dernier périphérique utilisé (toucher / clavier+souris / manette) et émet
 ## input_mode_changed. L'UI s'en sert pour afficher ou masquer les contrôles tactiles et les invites.
@@ -35,10 +35,6 @@ var safe_override: Dictionary = {}
 var _safe_last: Dictionary = {}
 var _safe_t := 0.0
 var _synthetic_back := false ## vrai pendant l'injection d'Échap par handle_back() (ne change pas le mode d'entrée)
-
-## Backends futurs (SDK de pubs, boutique). null = indisponible.
-var ads_backend: Object = null
-var purchases_backend: Object = null
 
 
 func _ready() -> void:
@@ -290,33 +286,6 @@ func interact_prompt(label: String) -> String:
 	if input_mode == InputMode.TOUCH:
 		return label
 	return "[%s] %s" % [interact_key_label(), label]
-
-
-# --- Pubs / achats (stubs) ----------------------------------------------------
-
-## Pubs : jamais sur PC ; sur mobile seulement si un backend est branché.
-func ads_available() -> bool:
-	return is_mobile() and ads_backend != null
-
-
-## Demande une pub récompensée. callback(rewarded: bool). Sans backend : échec immédiat.
-func show_rewarded_ad(callback: Callable) -> void:
-	if ads_available() and ads_backend.has_method("show_rewarded"):
-		ads_backend.show_rewarded(callback)
-	elif callback.is_valid():
-		callback.call(false)
-
-
-func purchases_available() -> bool:
-	return purchases_backend != null
-
-
-## Lance un achat intégré. callback(success: bool). Sans backend : échec immédiat.
-func purchase(sku: String, callback: Callable) -> void:
-	if purchases_available() and purchases_backend.has_method("purchase"):
-		purchases_backend.purchase(sku, callback)
-	elif callback.is_valid():
-		callback.call(false)
 
 
 ## Marges de zone sûre en px logiques (base 1080 de haut) : max(encoche, 48) côtés, max(encoche, 32) haut/bas.

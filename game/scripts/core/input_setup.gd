@@ -81,7 +81,7 @@ const REMAP_ACTIONS := [
 	[&"interact", "Interagir", "jeu", true],
 	[&"chest_pick_1", "Coffre : objet 1", "coffre", true],
 	[&"chest_pick_2", "Coffre : objet 2", "coffre", true],
-	[&"chest_reroll_ad", "Coffre : relance gratuite", "coffre", true],
+	[&"chest_reroll_free", "Coffre : relance gratuite", "coffre", true],
 	[&"chest_reroll_gold", "Coffre : relance à l'or", "coffre", true],
 	[&"chest_items", "Coffre : mes objets", "coffre", true],
 ]

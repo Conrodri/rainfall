@@ -76,18 +76,18 @@ func _ready() -> void:
 	# --- 2. écran ouvert au clavier-souris
 	var ui := await _open()
 	_check(not ui._busy and ui._card_front[0].visible and ui._card_front[1].visible, "écran prêt")
-	for b in [ui._ad_btn, ui._gold_btn]:
+	for b in [ui._free_btn, ui._gold_btn]:
 		_check(b.get_global_rect().size.y >= 128.0, "bouton de relance >= 128 px (%.0f)" % b.get_global_rect().size.y)
 		_check(b.theme_type_variation != &"PrimaryButton", "bouton de relance en style secondaire")
-	var ar := ui._ad_btn.get_global_rect()
+	var ar := ui._free_btn.get_global_rect()
 	var gr := ui._gold_btn.get_global_rect()
 	_check(absf(ar.position.y - gr.position.y) < 2.0 and gr.position.x >= ar.end.x + 40.0, "boutons côte à côte, écart >= 40 px")
-	_check(ui._gold_btn.has_theme_stylebox_override("normal") and not ui._ad_btn.has_theme_stylebox_override("normal"), "bouton d'or au style distinct")
+	_check(ui._gold_btn.has_theme_stylebox_override("normal") and not ui._free_btn.has_theme_stylebox_override("normal"), "bouton d'or au style distinct")
 	for i in 2:
 		var rl := ui._card_front[i].get_child(5) as Label
 		var qn := String(ChestUI.QUALITY_NAMES[ui.session.quality]).to_upper()
 		_check(rl.text == qn and rl.size.x > 20.0, "rareté écrite sur la carte %d (« %s »)" % [i, rl.text])
-	_check(ui._pick_keys[0].text() != "" and ui._ad_key.text() != "" and ui._gold_key.text() != "", "invites présentes au clavier-souris (%s / %s)" % [ui._pick_keys[0].text(), ui._gold_key.text()])
+	_check(ui._pick_keys[0].text() != "" and ui._free_key.text() != "" and ui._gold_key.text() != "", "invites présentes au clavier-souris (%s / %s)" % [ui._pick_keys[0].text(), ui._gold_key.text()])
 
 	# --- 3. choix au relâcher
 	var chosen := [false]

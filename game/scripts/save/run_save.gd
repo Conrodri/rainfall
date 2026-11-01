@@ -7,7 +7,7 @@ extends RefCounted
 ##
 ## `data` (construit par main.gd) : character, mode, seed, rng_state, map_id, run (RunState.to_dict()
 ## + pillars_done), stage (StageManager.to_dict()), player {pos, hp, cooldowns, statuses},
-## pending_chest {kind, stage, price, quality, die, offered, shown, gold_rerolls, ad_rerolls} | null.
+## pending_chest {kind, stage, price, quality, die, offered, shown, gold_rerolls, free_rerolls} | null.
 ##
 ## Lecture invalide (version ou empreinte) : `load()` renvoie {ok=false, reason, rubies} où rubies =
 ## Balance.run_rubies(..., victory=false) de la run perdue ; ces rubis sont crédités au Profil et le

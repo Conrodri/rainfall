@@ -2,8 +2,8 @@ class_name ChestSession
 extends RefCounted
 ## Logique d'une ouverture de coffre (sans UI) : dé, items, relances, choix. RNG = RunState.rng.
 
-const MAX_AD_REROLLS_PER_CHEST := 1
-const MAX_AD_REROLLS_PER_RUN := 3
+const MAX_FREE_REROLLS_PER_CHEST := 1
+const MAX_FREE_REROLLS_PER_RUN := 3
 
 var kind: StringName
 var stage: int
@@ -14,7 +14,7 @@ var rolls: Array = [] ## dés de tous les tirages de rareté (1 + Chance) ; `die
 var offered: Array = [] ## 2 ids (String)
 var shown: Array = [] ## tous les ids déjà montrés pour ce coffre
 var gold_rerolls := 0
-var ad_rerolls := 0
+var free_rerolls := 0
 var rng: RandomNumberGenerator
 ## Boussole de rouille (docs/Ateliers_Chiffres.md §7) : tag garanti sur la carte A du premier tirage ("" = aucun) ;
 ## `compass_missed` = tag demandé mais absent de cette qualité (charge conservée, la carte l'écrit).
@@ -30,20 +30,20 @@ func _init(p_kind: StringName, p_stage: int, p_price: float, p_rng: RandomNumber
 	price = p_price if p_price > 0.0 else Balance.chest_price(&"large", RunState.difficulty(), p_stage)
 
 
-## Compteur de relances pub de la run (méta sur RunState, remis à zéro quand la graine change).
-static func run_ad_rerolls() -> int:
-	var m: Variant = RunState.get_meta("loot_ad_rerolls") if RunState.has_meta("loot_ad_rerolls") else null
+## Compteur de relances gratuites de la run (méta sur RunState, remis à zéro quand la graine change).
+static func run_free_rerolls() -> int:
+	var m: Variant = RunState.get_meta("loot_free_rerolls") if RunState.has_meta("loot_free_rerolls") else null
 	if typeof(m) == TYPE_DICTIONARY and m.get("seed", 0) == RunState.rng.seed:
 		return int(m.get("n", 0))
 	return 0
 
 
-static func _set_run_ad_rerolls(n: int) -> void:
-	RunState.set_meta("loot_ad_rerolls", {"seed": RunState.rng.seed, "n": n})
+static func _set_run_free_rerolls(n: int) -> void:
+	RunState.set_meta("loot_free_rerolls", {"seed": RunState.rng.seed, "n": n})
 
 
 static func reset_run_counters() -> void:
-	_set_run_ad_rerolls(0)
+	_set_run_free_rerolls(0)
 
 
 ## Lance le d100 (Chance = stat `luck` des items possédés) puis tire les 2 items.
@@ -118,23 +118,16 @@ func do_gold_reroll() -> bool:
 	return true
 
 
-func can_ad_reroll() -> bool:
-	return ad_rerolls < MAX_AD_REROLLS_PER_CHEST and run_ad_rerolls() < MAX_AD_REROLLS_PER_RUN and AdHook.is_available()
+func can_free_reroll() -> bool:
+	return free_rerolls < MAX_FREE_REROLLS_PER_CHEST and run_free_rerolls() < MAX_FREE_REROLLS_PER_RUN
 
 
-## true si la relance a eu lieu (pub affichée sauf relance gratuite : AdHook.is_free()).
-func do_ad_reroll() -> bool:
-	if not can_ad_reroll():
+## Relance gratuite (1 par coffre, 3 par run). true si elle a eu lieu.
+func do_free_reroll() -> bool:
+	if not can_free_reroll():
 		return false
-	var ok := true
-	if not AdHook.is_free():
-		var res := {"ok": false}
-		AdHook.show_rewarded(func(success: bool): res["ok"] = success)
-		ok = res["ok"]
-	if not ok:
-		return false
-	ad_rerolls += 1
-	_set_run_ad_rerolls(run_ad_rerolls() + 1)
+	free_rerolls += 1
+	_set_run_free_rerolls(run_free_rerolls() + 1)
 	_draw()
 	return true
 

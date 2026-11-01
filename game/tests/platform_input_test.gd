@@ -20,7 +20,6 @@ func _run() -> void:
 	Platform.input_mode_changed.connect(func(m: int) -> void: _changes.append(m))
 	_check(Platform.is_pc() and not Platform.is_mobile(), "headless Windows = PC")
 	_check(not Platform.is_ios(), "pas iOS")
-	_check(not Platform.ads_available(), "pas de pubs sur PC")
 	_check(Platform.can_quit(), "Quitter autorisé hors iOS")
 	_check(Platform.input_mode == Platform.InputMode.KBM, "mode initial PC = kbm")
 	_check(InputSetup.pointer_bound(), "liaisons souris actives en kbm")
@@ -136,11 +135,6 @@ func _run() -> void:
 	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
 	wheel.pressed = true
 	_check(not InputMap.event_is_action(wheel, "spell_4"), "rotation de la molette non liée par défaut (E-02)")
-
-	# stubs pubs / achats
-	var got := [null]
-	Platform.show_rewarded_ad(func(ok: bool) -> void: got[0] = ok)
-	_check(got[0] == false, "pub récompensée sans backend = échec")
 
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)
