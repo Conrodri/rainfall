@@ -15,6 +15,7 @@ var _pulse_t := 0.0 ## s avant le prochain anneau
 var _tele_t := 0.0 ## s restantes du télégraphe (> 0 : anneau annoncé)
 var _wave_r := -1.0 ## rayon de l'onde (px), < 0 : aucune
 var _wave_hit := false
+var _wave_hit_ids: Array = [] ## coop : joueurs déjà touchés par l'onde courante (un coup par joueur et par onde)
 
 
 ## Rituel de cœur `heart` et de relais `relay_pts` (repère local de la carte).
@@ -66,6 +67,7 @@ func _run(delta: float) -> void:
 			_tele_t = 0.0
 			_wave_r = 0.0
 			_wave_hit = false
+			_wave_hit_ids.clear()
 			pulses += 1
 	else:
 		_pulse_t -= delta
@@ -76,16 +78,19 @@ func _run(delta: float) -> void:
 func _step_wave(delta: float) -> void:
 	var step := Balance.RITUAL_WAVE_SPEED_U * Balance.UNIT_PX * delta
 	_wave_r += step
-	var pl := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	if pl != null and not _wave_hit:
-		var d := pl.global_position.distance_to(global_position)
-		var half := Balance.RITUAL_WAVE_HALF_U * Balance.UNIT_PX
-		if absf(d - _wave_r) <= half + step * 0.5:
-			_wave_hit = true
-			ring_hits += 1
-			clean = false
-			if pl.has_method(&"take_damage"):
-				pl.call(&"take_damage", Balance.ritual_ring_damage(RunState.difficulty()), self)
+	var half := Balance.RITUAL_WAVE_HALF_U * Balance.UNIT_PX
+	if is_inside_tree():
+		for pl: Node2D in Players.alive().duplicate():
+			if _wave_hit_ids.has(pl.get_instance_id()):
+				continue
+			var d := pl.global_position.distance_to(global_position)
+			if absf(d - _wave_r) <= half + step * 0.5:
+				_wave_hit_ids.append(pl.get_instance_id())
+				_wave_hit = true
+				ring_hits += 1
+				clean = false
+				if pl.has_method(&"take_damage"):
+					pl.call(&"take_damage", Balance.ritual_ring_damage(RunState.difficulty()), self)
 	if _wave_r > Balance.RITUAL_WAVE_MAX_U * Balance.UNIT_PX:
 		_wave_r = -1.0
 		_pulse_t = Balance.ritual_pulse_s(closed)

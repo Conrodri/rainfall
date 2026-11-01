@@ -18,10 +18,13 @@ const RANGE_U := 2.4
 const QUALITY_ORDER: Array[StringName] = [&"commun", &"peu_commun", &"rare", &"legendaire"]
 
 var stage := 3
-var stock: Array = [] ## [{id: String, quality: String, sold: bool}], ordre des raretés
+## [{id: String, quality: String, sold: bool, sold_by: Array[int]}], ordre des raretés. Coop : l'étal est PAR JOUEUR (même
+## stock tiré par la graine, chacun achète le sien) : `sold_by` liste les emplacements qui ont acheté l'objet, `sold` ne vaut
+## vrai qu'en solo (ou quand tous les joueurs de la partie l'ont acheté).
+var stock: Array = []
 var _ui: ShowcaseUI = null
 var _sprite: Sprite2D = null
-var _player: Node2D = null
+var _buyer: PlayerState = null ## joueur dont l'écran est ouvert
 
 
 func setup(p_stock: Array, p_stage: int) -> void:
@@ -29,7 +32,13 @@ func setup(p_stock: Array, p_stage: int) -> void:
 	stock = []
 	for e in p_stock:
 		var d := e as Dictionary
-		stock.append({"id": String(d.get("id", "")), "quality": String(d.get("quality", "commun")), "sold": bool(d.get("sold", false))})
+		var entry := {"id": String(d.get("id", "")), "quality": String(d.get("quality", "commun")), "sold": bool(d.get("sold", false))}
+		if d.get("sold_by") is Array:
+			var by: Array = []
+			for sl in d["sold_by"]:
+				by.append(int(sl))
+			entry["sold_by"] = by
+		stock.append(entry)
 
 
 func _ready() -> void:
@@ -78,23 +87,37 @@ func _build_visual() -> void:
 	add_child(_sprite)
 
 
-func _player_node() -> Node2D:
-	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	return _player
+func _near_player() -> Node2D:
+	return CoopRules.nearest_within(global_position, RANGE_U * Balance.UNIT_PX) if is_inside_tree() else null
 
 
 func player_near() -> bool:
-	var p := _player_node()
-	return p != null and p.global_position.distance_to(global_position) <= RANGE_U * Balance.UNIT_PX
+	return _near_player() != null
 
 
-func unsold_count() -> int:
+## Objets encore à vendre à ce joueur (null : le plus proche dans la portée, sinon le joueur local).
+func unsold_count(st: PlayerState = null) -> int:
+	var slot := (st if st != null else CoopRules.state_of(_near_player())).slot
 	var n := 0
 	for e: Dictionary in stock:
-		if not bool(e["sold"]):
+		if not is_sold_to(e, slot):
 			n += 1
 	return n
+
+
+## L'objet `e` est vendu pour le joueur d'emplacement `slot` (coop : sold_by ; solo : sold).
+static func is_sold_to(e: Dictionary, slot: int) -> bool:
+	if bool(e.get("sold", false)) and not e.has("sold_by"):
+		return true
+	return (e.get("sold_by", []) as Array).has(slot)
+
+
+## Étal vu par ce joueur : même stock, `sold` propre à lui (c'est ce que lit l'écran ShowcaseUI en mode SHOP).
+func stock_view(st: PlayerState) -> Array:
+	var out: Array = []
+	for e: Dictionary in stock:
+		out.append({"id": e["id"], "quality": e["quality"], "sold": is_sold_to(e, st.slot)})
+	return out
 
 
 func is_open() -> bool:
@@ -118,19 +141,24 @@ func interact_priority() -> int:
 
 
 ## Ouvre l'écran du marchand. Faux s'il est déjà ouvert ou hors de portée.
-func interact() -> bool:
+func interact(who: Node = null) -> bool:
 	if not can_interact():
 		return false
-	return open_shop()
+	return open_shop(who)
 
 
-func open_shop() -> bool:
+## Ouvre l'étal pour `who` (null = joueur le plus proche, sinon le local). Un seul écran à la fois.
+## Contrat UI : `ShowcaseUI` doit débiter et créditer le joueur de méta `buyer_slot` (Players.state_of), pas le joueur 1.
+func open_shop(who: Node = null) -> bool:
 	if is_open() or stock.is_empty():
 		return false
+	var actor: Node = who if who != null else _near_player()
+	_buyer = CoopRules.state_of(actor)
 	var host: Node = get_tree().current_scene if get_tree().current_scene != null else get_tree().root
 	_ui = ShowcaseUI.new()
+	_ui.set_meta(&"buyer_slot", _buyer.slot)
 	host.add_child(_ui)
-	_ui.open_shop(stock, price_for, "MARCHAND")
+	_ui.open_shop(stock_view(_buyer), price_for, "MARCHAND")
 	_ui.item_taken.connect(_on_item_taken)
 	_ui.finished.connect(func() -> void: closed.emit())
 	return true
@@ -138,8 +166,14 @@ func open_shop() -> bool:
 
 func _on_item_taken(index: int, _id: StringName) -> void:
 	if index >= 0 and index < stock.size():
-		(stock[index] as Dictionary)["sold"] = true
-		RunState.add_counter("merchant.buys")
+		var e: Dictionary = stock[index]
+		var buyer := _buyer if _buyer != null else RunState.local()
+		var by: Array = e.get("sold_by", [])
+		if not by.has(buyer.slot):
+			by.append(buyer.slot)
+		e["sold_by"] = by
+		e["sold"] = by.size() >= maxi(Players.count(), 1) # solo : vendu dès le premier achat
+		buyer.add_counter("merchant.buys")
 
 
 func to_dict() -> Dictionary:

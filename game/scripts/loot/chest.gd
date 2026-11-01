@@ -37,9 +37,14 @@ var _showcase_root: Node2D = null
 var _frames_src: SpriteFrames = null
 var stage := 1
 var price := 0.0
+## Coop : coffre réservé à un joueur (coffres de boss et reliquaires, un par joueur). -1 = coffre ordinaire (ouvert par qui
+## paie). Le propriétaire est seul à pouvoir l'ouvrir tant qu'il est vivant ; s'il est spectateur, un allié l'ouvre pour lui
+## et l'objet va au propriétaire.
+var reserved_slot := -1
 ## Difficulté figée à l'apparition (début d'étage) : le prix ne monte plus avec le temps, seulement d'un étage à l'autre.
 var _price_d := 1.0
 var _player_inside := false
+var _inside: Array = [] ## joueurs dans la zone (coop) ; _player_inside en est le reflet
 var _opening := false
 var _refresh := 0.0
 var _light: LightRig.Handle = null
@@ -57,6 +62,7 @@ func setup(p_kind: StringName, p_stage: int, p_extra: Dictionary = {}) -> void:
 	_price_d = RunState.difficulty()
 	variant = &""
 	offer = []
+	reserved_slot = int(p_extra.get("reserved_slot", reserved_slot))
 	if StringName(String(p_extra.get("special", ""))) == &"showcase" and p_kind == &"petit":
 		offer = (p_extra.get("offer", []) as Array).map(func(v): return str(v))
 		offer_quality = StringName(String(p_extra.get("quality", "commun")))
@@ -185,24 +191,62 @@ func _refresh_price() -> void:
 
 
 func _on_body_entered(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = true
+	CoopRules.track_enter(_inside, b)
+	_player_inside = not _inside.is_empty()
 
 
 func _on_body_exited(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = false
+	CoopRules.track_exit(_inside, b)
+	_player_inside = not _inside.is_empty()
 
 
-## Dépense l'or (sauf boss) puis lance l'UI. Retourne false si fonds insuffisants.
-func try_open() -> bool:
+## Joueur qui agit : `who` si fourni (répartiteur d'interaction par joueur), sinon le plus proche dans la zone.
+func _actor(who: Node = null) -> Node2D:
+	if who is Node2D and is_instance_valid(who):
+		return who as Node2D
+	var n := CoopRules.nearest_in(_inside, global_position)
+	return n if n != null else CoopRules.actor_for(null, global_position)
+
+
+## Bourse qui paie (celle de l'acteur).
+func _payer_state(who: Node = null) -> PlayerState:
+	return CoopRules.state_of(_actor(who))
+
+
+## Joueur à qui l'objet est destiné : le propriétaire d'un coffre réservé, sinon celui qui paie.
+func _beneficiary_state(who: Node = null) -> PlayerState:
+	if reserved_slot >= 0:
+		var st := Players.state_of(reserved_slot)
+		if st != null:
+			return st
+	return _payer_state(who)
+
+
+## Faux si ce coffre réservé revient à un autre joueur encore vivant (il ne peut pas l'ouvrir à sa place).
+func _may_open(actor: Node) -> bool:
+	if reserved_slot < 0:
+		return true
+	if Players.id_of(actor) == reserved_slot:
+		return true
+	return not Players.is_alive(reserved_slot) # propriétaire spectateur : un allié l'ouvre pour lui
+
+
+## Dépense l'or (sauf boss) puis lance l'UI. Retourne false si fonds insuffisants ou coffre d'un autre joueur.
+## `who` : joueur qui ouvre (null = le plus proche dans la zone, le joueur local en solo).
+func try_open(who: Node = null) -> bool:
 	if _opening:
 		return false
-	price = current_price()
-	if not is_free() and not RunState.spend_gold(price):
+	var actor := _actor(who)
+	if not _may_open(actor):
 		_shake_label()
 		refused.emit(self)
 		return false
+	price = current_price()
+	if not is_free() and not _payer_state(actor).spend_gold(price):
+		_shake_label()
+		refused.emit(self)
+		return false
+	ChestSession.pending_state = _beneficiary_state(actor) # lu par ChestSession._init (ChestUI / ShowcaseUI)
 	_opening = true
 	if _light != null:
 		_light.release()
@@ -220,13 +264,17 @@ func try_open() -> bool:
 		var sui := ShowcaseUI.new()
 		host.add_child(sui)
 		sui.finished.connect(_on_ui_finished)
+		sui.set_meta(&"owner_slot", _beneficiary_state(actor).slot)
 		sui.open_pick(stage, price, offer, offer_quality, self)
+		ChestSession.pending_state = null
 		opened.emit(self)
 		return true
 	var ui := UI_SCENE.instantiate()
 	host.add_child(ui)
 	ui.finished.connect(_on_ui_finished)
+	ui.set_meta(&"owner_slot", _beneficiary_state(actor).slot) # coop : joueur à qui revient l'objet (pour l'overlay UI)
 	ui.open(kind, stage, price, self)
+	ChestSession.pending_state = null
 	opened.emit(self)
 	return true
 
@@ -255,20 +303,23 @@ func can_interact() -> bool:
 
 func interact_label() -> String:
 	if is_free():
+		if reserved_slot >= 0 and Players.count() > 1:
+			return "Ouvrir (coffre du joueur %d)" % (reserved_slot + 1)
 		return "Ouvrir"
 	return ("Vitrine — %d or" if is_showcase() else "Ouvrir — %d or") % int(ceil(current_price()))
 
 
 ## Contrat « Interaction » : l'unique répartiteur (HUD) appelle interact() sur la cible affichée par l'invite.
-func interact() -> bool:
-	return try_open()
+## `who` : joueur qui interagit (répartiteur par joueur de la coop locale) ; null = le plus proche dans la zone.
+func interact(who: Node = null) -> bool:
+	return try_open(who)
 
 
-## Or manquant (0 si le coffre est gratuit ou payable).
-func missing_gold() -> int:
+## Or manquant (0 si le coffre est gratuit ou payable) pour `who` (null = joueur le plus proche dans la zone).
+func missing_gold(who: Node = null) -> int:
 	if is_free():
 		return 0
-	return maxi(int(ceil(current_price() - RunState.gold)), 0)
+	return maxi(int(ceil(current_price() - _payer_state(who).gold)), 0)
 
 
 ## Etat de l'invite : refus d'achat écrit en toutes lettres (pas seulement une couleur). Reste « enabled » :
@@ -276,7 +327,11 @@ func missing_gold() -> int:
 func interact_state() -> Dictionary:
 	var missing := missing_gold()
 	var txt := interact_label() if missing <= 0 else "Il manque %d or" % missing
-	return {"visible": can_interact(), "enabled": true, "label": txt, "hold_s": 0.0}
+	var enabled := true
+	if reserved_slot >= 0 and not _may_open(_actor()):
+		txt = "Coffre du joueur %d" % (reserved_slot + 1)
+		enabled = false
+	return {"visible": can_interact(), "enabled": enabled, "label": txt, "hold_s": 0.0}
 
 
 func interact_priority() -> int:

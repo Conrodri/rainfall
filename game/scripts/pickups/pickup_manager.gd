@@ -22,7 +22,8 @@ const SCATTER := 36.0
 const HOVER_PX := 10.0 ## hauteur du centre du pickup au-dessus du sol (px billboard)
 
 var active_count := 0
-var gold_carry := 0.0 ## fraction d'or de prime reportée (< 1), voir drop_bounty
+var gold_carry := 0.0 ## fraction d'or de prime reportée (< 1), voir drop_bounty (joueur 1)
+var _carry_coop := {} ## coop : fraction reportée des joueurs 2 à 4 (id -> fraction)
 var _pos := PackedVector2Array()
 var _vel := PackedVector2Array()
 var _val := PackedFloat32Array()
@@ -94,12 +95,33 @@ func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 func _credit_xp(at: Vector2, value: float, big: int) -> void:
 	if value <= 0.0:
 		return
+	if Players.count() > 1:
+		_credit_xp_party(at, value, big)
+		return
 	var amount := value * _mult(&"xp_mult")
 	if amount <= 0.0:
 		return
-	RunState.add_xp(amount)
+	RunState.add_party_xp(amount) # solo : joueur 1 (identique à add_xp)
 	Events.pickup_collected.emit(&"xp", amount)
 	_add(at, KIND_XP, amount, 1 if (big == 1 or amount >= 6.0) else 0)
+
+
+## Coop : l'XP est ENTIÈRE pour chaque joueur (docs/multi/Scaling_Multi.md §2.1), × xp_mult() de son propriétaire. Une
+## seule gemme visuelle (celle de la valeur la plus haute) ; signal historique pour le joueur local, jumeau pour chacun.
+func _credit_xp_party(at: Vector2, value: float, big: int) -> void:
+	var shown := 0.0
+	var local_id := Players.local_id()
+	for e in Players.entries():
+		var amount := value * CoopRules.mult_of(e.node, &"xp_mult")
+		if amount <= 0.0:
+			continue
+		e.state.add_xp(amount)
+		shown = maxf(shown, amount)
+		Events.pickup_collected_by.emit(e.id, &"xp", amount)
+		if e.id == local_id:
+			Events.pickup_collected.emit(&"xp", amount)
+	if shown > 0.0:
+		_add(at, KIND_XP, shown, 1 if (big == 1 or shown >= 6.0) else 0)
 
 
 ## Or d'une prime (monstre, boss, Rançon, capsule) : crédité TOUT DE SUITE (× gold_mult, portée infinie), en
@@ -110,16 +132,56 @@ func _credit_xp(at: Vector2, value: float, big: int) -> void:
 func drop_bounty(at: Vector2, value: float) -> void:
 	if value <= 0.0:
 		return
+	if Players.count() > 1:
+		_drop_bounty_party(at, value)
+		return
 	gold_carry += value * _mult(&"gold_mult")
 	var whole := floorf(gold_carry + 0.0001)
 	if whole < 1.0:
 		return
 	gold_carry = maxf(gold_carry - whole, 0.0)
-	RunState.add_gold(whole)
+	RunState.add_party_gold(whole) # solo : bourse du joueur 1 (identique à add_gold)
 	Events.pickup_collected.emit(&"gold", whole)
 	if not Audio.auto_gold_event: # sinon Audio joue la pièce sur Events.pickup_collected (pas de doublon)
 		Audio.play_coin()
 	_spawn_gold(at, whole)
+
+
+## Coop : le même gain d'or est crédité à CHAQUE joueur, morts compris (bourses individuelles, décision du joueur
+## 01/11/2026), × Balance.coop_gold_mult(n) × gold_mult() de son propriétaire, en ors entiers avec une fraction reportée
+## par joueur (`_carry_coop`, `gold_carry` reste celle du joueur 1). Pièces visibles : celles du plus gros versement.
+func _drop_bounty_party(at: Vector2, value: float) -> void:
+	var k := Balance.coop_gold_mult(Players.count())
+	var local_id := Players.local_id()
+	var shown := 0.0
+	for e in Players.entries():
+		var carry := _carry_of(e.id) + value * k * CoopRules.mult_of(e.node, &"gold_mult")
+		var whole := floorf(carry + 0.0001)
+		if whole < 1.0:
+			_set_carry(e.id, carry)
+			continue
+		_set_carry(e.id, maxf(carry - whole, 0.0))
+		e.state.add_gold(whole)
+		shown = maxf(shown, whole)
+		Events.pickup_collected_by.emit(e.id, &"gold", whole)
+		if e.id == local_id:
+			Events.pickup_collected.emit(&"gold", whole)
+	if shown <= 0.0:
+		return
+	if not Audio.auto_gold_event:
+		Audio.play_coin()
+	_spawn_gold(at, shown)
+
+
+func _carry_of(id: int) -> float:
+	return gold_carry if id == 0 else float(_carry_coop.get(id, 0.0))
+
+
+func _set_carry(id: int, v: float) -> void:
+	if id == 0:
+		gold_carry = v
+	else:
+		_carry_coop[id] = v
 
 
 ## Effet visuel : n pièces (ou un sac à partir de GOLD_BAG_COUNT) qui volent vers le joueur.
@@ -157,10 +219,15 @@ func _add(at: Vector2, kind: int, value: float, big: int) -> int:
 
 
 ## Changement d'étage : efface les effets visuels et renvoie l'or/XP pas encore crédités {gold, xp} :
-## seulement la fraction d'or reportée (`gold_carry`), tout le reste a été crédité au dépôt.
+## seulement la fraction d'or reportée (`gold_carry`, joueur 1), tout le reste a été crédité au dépôt.
+## Coop : `gold_by` = fraction reportée de chaque joueur (id -> or), à convertir dans sa propre bourse.
 func sweep() -> Dictionary:
-	var out := {"gold": gold_carry, "xp": 0.0}
+	var by := {0: gold_carry}
+	for id in _carry_coop:
+		by[id] = float(_carry_coop[id])
+	var out := {"gold": gold_carry, "xp": 0.0, "gold_by": by}
 	gold_carry = 0.0
+	_carry_coop = {}
 	for i in _alive.size():
 		if _alive[i] == 1:
 			_release(i)
@@ -181,7 +248,7 @@ func _process(delta: float) -> void:
 	if active_count == 0:
 		return
 	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group("player") as Node2D
+		_player = Players.local() if Players.count() > 1 else get_tree().get_first_node_in_group("player") as Node2D
 	if _player != null:
 		_update_pickups(delta)
 	else: # pas de joueur : rien à rejoindre, l'or/XP est déjà crédité
@@ -193,11 +260,19 @@ func _process(delta: float) -> void:
 
 ## Effets visuels seulement (or et XP deja credites) : chaque piece / gemme jaillit puis rejoint le joueur
 ## en FLY_TIME au plus (il bouge : la cible est relue a chaque image ; jamais d'orbite ni d'esquive).
+## Coop : chaque pièce / gemme rejoint le joueur VIVANT le plus proche de sa position courante (aimant par proximité).
 func _update_pickups(delta: float) -> void:
 	var pp := _player.global_position
+	var coop := Players.count() > 1
 	for i in MAX_PICKUPS:
 		if _alive[i] == 0:
 			continue
+		if coop:
+			var t := Players.nearest(_pos[i], true)
+			if t == null: # tous morts : rien à rejoindre
+				_release(i)
+				continue
+			pp = t.global_position
 		_age[i] += delta
 		var left := FLY_TIME - _age[i]
 		if left <= delta or _pos[i].distance_squared_to(pp) < COLLECT_DIST * COLLECT_DIST:

@@ -20,11 +20,13 @@ const RANGE_U := 2.2
 const TINT := Color(1.0, 0.85, 0.6)
 
 var biome: StringName = DEFAULT_BIOME ## à fixer avant add_child
-var is_used := false
+var is_used := false ## station éteinte : tous les joueurs de la partie l'ont utilisée (solo : le joueur 1)
 var chosen_tag := ""
+## Coop : un usage PAR JOUEUR (docs/multi/Design_Coop.md §1.3) ; emplacements ayant déjà orienté leur boussole.
+var used_slots: Array[int] = []
 var _sprite: Sprite2D = null
 var _panel: Node = null
-var _player: Node2D = null
+var _panel_state: PlayerState = null ## joueur dont le panneau est ouvert
 
 
 func _ready() -> void:
@@ -78,19 +80,25 @@ static func catalog_tags() -> Array:
 
 # --- Interaction ---------------------------------------------------------------------------------
 
-func _player_node() -> Node2D:
-	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	return _player
+## Joueur vivant le plus proche dans la portée (null si personne).
+func _near_player() -> Node2D:
+	return CoopRules.nearest_within(global_position, RANGE_U * Balance.UNIT_PX) if is_inside_tree() else null
 
 
 func player_near() -> bool:
-	var p := _player_node()
-	return p != null and p.global_position.distance_to(global_position) <= RANGE_U * Balance.UNIT_PX
+	return _near_player() != null
+
+
+## Ce joueur a déjà orienté sa boussole sur cette station.
+func used_by(st: PlayerState) -> bool:
+	return st != null and used_slots.has(st.slot)
 
 
 func can_interact() -> bool:
-	return not is_used and not is_open() and player_near()
+	if is_used or is_open():
+		return false
+	var p := _near_player()
+	return p != null and not used_by(CoopRules.state_of(p))
 
 
 func is_open() -> bool:
@@ -109,33 +117,50 @@ func interact_priority() -> int:
 	return 2
 
 
-func interact() -> bool:
-	if not can_interact():
-		return false
-	return open_panel()
-
-
-func open_panel() -> bool:
+## `who` : joueur qui oriente (null = le plus proche dans la portée, sinon le joueur local).
+func interact(who: Node = null) -> bool:
 	if is_used or is_open():
 		return false
+	var actor := who as Node2D
+	if actor == null:
+		actor = _near_player()
+	if actor == null or used_by(CoopRules.state_of(actor)):
+		return false
+	return open_panel(actor)
+
+
+func open_panel(who: Node = null) -> bool:
+	if is_used or is_open():
+		return false
+	var st := CoopRules.state_of(who if who != null else _near_player())
+	if used_by(st):
+		return false
+	_panel_state = st
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([RunState.run_seed, "boussole", RunState.stage])
 	var host: Node = get_tree().current_scene if get_tree().current_scene != null else get_tree().root
 	_panel = CompassPanel.new()
+	_panel.set_meta(&"owner_slot", st.slot) # coop : joueur à qui s'applique le choix (overlay sans pause du lot UI)
 	host.add_child(_panel)
-	_panel.open(tags_shown(RunState.items, rng), RunState.compass)
-	_panel.chosen.connect(choose)
+	_panel.open(tags_shown(st.items, rng), st.compass)
+	_panel.chosen.connect(func(tag: String) -> void: choose(tag, _panel_state))
 	return true
 
 
-## Fixe le tag (RunState.compass, BOUSSOLE_CHARGES charges) et épuise la station. Faux si déjà utilisée.
-func choose(tag: String) -> bool:
-	if is_used or tag == "":
+## Fixe le tag (Boussole du joueur, BOUSSOLE_CHARGES charges) pour le joueur `who` (PlayerState ou nœud ; null = le plus proche) et
+## marque son usage. La station s'éteint quand tous les joueurs de la partie l'ont utilisée. Faux si ce joueur l'a déjà utilisée.
+func choose(tag: String, who: Variant = null) -> bool:
+	var st: PlayerState = who as PlayerState
+	if st == null:
+		st = CoopRules.state_of(who as Node if who is Node else _near_player())
+	if is_used or tag == "" or used_by(st):
 		return false
-	is_used = true
+	used_slots.append(st.slot)
 	chosen_tag = tag
-	RunState.compass_set(tag)
-	remove_from_group(&"interactable")
+	st.compass_set(tag)
+	if used_slots.size() >= maxi(Players.count(), 1):
+		is_used = true
+		remove_from_group(&"interactable")
 	_refresh_sprite()
 	Audio.play(&"chest.lock", global_position)
 	Events.station_used.emit(&"boussole", &"orienter", [], [tag], 0.0)
@@ -146,13 +171,21 @@ func choose(tag: String) -> bool:
 # --- Sauvegarde ----------------------------------------------------------------------------------
 
 func to_dict() -> Dictionary:
-	return {"x": position.x, "y": position.y, "used": is_used, "tag": chosen_tag}
+	var d := {"x": position.x, "y": position.y, "used": is_used, "tag": chosen_tag}
+	if used_slots.size() > 1 or (not is_used and not used_slots.is_empty()):
+		d["used_slots"] = used_slots.duplicate()
+	return d
 
 
 ## Restauration (après add_child) : une station déjà utilisée reste éteinte, sans signal ni son.
 func from_dict(d: Dictionary) -> void:
+	if d.get("used_slots") is Array:
+		for sl in d["used_slots"]:
+			used_slots.append(int(sl))
 	if bool(d.get("used", false)):
 		is_used = true
+		if used_slots.is_empty():
+			used_slots.append(0)
 		chosen_tag = String(d.get("tag", ""))
 		remove_from_group(&"interactable")
 		_refresh_sprite()

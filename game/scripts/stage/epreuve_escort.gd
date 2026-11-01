@@ -108,8 +108,8 @@ func _begin() -> void:
 
 
 func _run(delta: float) -> void:
-	var pl := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	leash_blocked = pl == null or pl.global_position.distance_to(global_position) > Balance.ESCORT_LEASH_U * Balance.UNIT_PX
+	# coop : la corde tient tant qu'AU MOINS UN joueur vivant est à portée
+	leash_blocked = not (is_inside_tree() and CoopRules.any_within(global_position, Balance.ESCORT_LEASH_U * Balance.UNIT_PX, true))
 	if stall_left > 0.0:
 		stall_left -= delta
 		if stall_left <= 0.0:
@@ -200,7 +200,7 @@ func draw_overlay(c: Node2D) -> void:
 	if not is_running():
 		return
 	# corde et PV
-	var pl := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
+	var pl := Players.nearest(global_position, true) if is_inside_tree() else null # corde vers le joueur vivant le plus proche
 	if pl != null:
 		var tp := c.to_local(pl.global_position)
 		var k := clampf(pl.global_position.distance_to(global_position) / (Balance.ESCORT_LEASH_U * Balance.UNIT_PX), 0.0, 1.0)

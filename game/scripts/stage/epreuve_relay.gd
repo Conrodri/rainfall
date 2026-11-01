@@ -19,7 +19,7 @@ func interact_state() -> Dictionary:
 	return {"visible": can_interact(), "enabled": true, "label": interact_label(), "hold_s": Balance.RITUAL_HOLD_S}
 
 
-func interact() -> bool:
+func interact(_who: Node = null) -> bool:
 	if not can_interact():
 		return false
 	pull(false)

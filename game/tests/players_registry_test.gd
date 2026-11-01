@@ -178,7 +178,7 @@ func _registry_four() -> void:
 	for i in 4:
 		all_gold = all_gold and is_equal_approx(Players.state_of(i).gold, each)
 	_check("or d'équipe : montant entier à chacun", all_gold and is_equal_approx(RunState.gold, each))
-	_check("dépense individuelle", Players.state_of(2).spend_gold(30.0) and is_equal_approx(Players.state_of(2).gold, each - 30.0) and is_equal_approx(Players.state_of(1).gold, each))
+	_check("dépense individuelle", Players.state_of(2).spend_gold(10.0) and is_equal_approx(Players.state_of(2).gold, each - 10.0) and is_equal_approx(Players.state_of(1).gold, each))
 	RunState.add_party_xp(Balance.xp_required(3) + 0.1)
 	_check("XP d'équipe : entière à chacun", Players.state_of(0).level == 4 and Players.state_of(3).level == 4)
 	Players.state_of(1).add_item(&"trefle")

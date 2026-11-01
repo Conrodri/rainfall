@@ -19,6 +19,7 @@ var stage := 1
 var gold := 0.0 ## or de base (avant gold_mult)
 var _price_d := 1.0
 var _player_inside := false
+var _inside: Array = [] ## joueurs dans la zone (coop)
 var _opened := false
 var _light: LightRig.Handle = null
 
@@ -50,26 +51,28 @@ func _show_state(state: StringName) -> void:
 
 
 func _on_body_entered(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = true
+	CoopRules.track_enter(_inside, b)
+	_player_inside = not _inside.is_empty()
 
 
 func _on_body_exited(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = false
+	CoopRules.track_exit(_inside, b)
+	_player_inside = not _inside.is_empty()
 
 
-## Or réellement crédité à l'ouverture (× gold_mult du joueur).
+## Or réellement crédité à l'ouverture (× gold_mult du joueur le plus proche ; en coop chaque joueur reçoit le sien).
 func expected_gold() -> float:
-	var player := get_tree().get_first_node_in_group(&"player") if is_inside_tree() else null
-	var mult := 1.0
-	if player != null and player.has_method(&"gold_mult"):
-		mult = maxf(float(player.call(&"gold_mult")), 0.0)
-	return gold * mult * Omens.capsule_gold_mult() # Présage Marché noir : capsules ×2
+	var player: Node = null
+	if is_inside_tree():
+		player = CoopRules.nearest_in(_inside, global_position)
+		if player == null:
+			player = Players.nearest(global_position)
+	return gold * CoopRules.mult_of(player, &"gold_mult") * Omens.capsule_gold_mult() # Présage Marché noir : capsules ×2
 
 
-## Ouvre la capsule (une seule fois). Retourne false si déjà ouverte.
-func open() -> bool:
+## Ouvre la capsule (une seule fois). Retourne false si déjà ouverte. L'or va à TOUS les joueurs (PickupManager.drop,
+## puis bourses individuelles) : n'importe qui peut l'ouvrir, personne n'est lésé.
+func open(_who: Node = null) -> bool:
 	if _opened:
 		return false
 	_opened = true
@@ -100,7 +103,7 @@ func _drop_gold() -> void:
 			var a := (float(i) + RunState.rng.randf()) / COIN_COUNT * TAU
 			pm.call(&"drop", origin + Vector2.from_angle(a) * RunState.rng.randf_range(BURST_MIN, BURST_MAX), 1, coin)
 	else:
-		RunState.add_gold(expected_gold())
+		CoopRules.credit_party_gold(gold * Omens.capsule_gold_mult()) # sans PickupManager (tests) : bourses de tous les joueurs
 
 
 ## Contrat « Interaction » : joueur à portée et capsule pas encore ouverte.
@@ -117,8 +120,8 @@ func interact_label() -> String:
 
 
 ## Appelé par le répartiteur unique du HUD (la capsule ne lit plus l'entrée).
-func interact() -> bool:
-	return open()
+func interact(who: Node = null) -> bool:
+	return open(who)
 
 
 func interact_state() -> Dictionary:

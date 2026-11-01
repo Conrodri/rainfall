@@ -68,6 +68,8 @@ var teleporter: ExitTeleporter = null
 var merchant: Merchant = null ## marchand de l'étage 3 (une fois par run ; Balance.MERCHANT_*)
 var compass_station: CompassStation = null ## Boussole de rouille posée par place_compass() (tirage des ateliers : StationPlan)
 const BOSS_CHEST_SPREAD_PX := 200.0 ## écart de deux coffres de boss (Paratonnerre dévié)
+const BOSS_CHEST_COLS := 4 ## coffres de boss par rangée (coop : un par joueur)
+const PLAYER_RING_U := 1.0 ## coop : rayon (u) de l'anneau de départ des joueurs
 var stations: Array[Station] = [] ## ateliers de l'étage (scripts/stations/, un par étage 1-4, l'Enclume à l'étage 5)
 var secrets: Array[SecretRoom] = [] ## portes scellées de la carte (cartes B : scène à marqueurs `secret_spawn`)
 var map_order: Array = [] ## obsolète (ancienne rotation) : toujours vide, gardé pour les anciennes sauvegardes
@@ -147,6 +149,9 @@ func get_bounds() -> Rect2:
 func start_stage(layout: Dictionary = {}) -> void:
 	_clear_stage()
 	floor_cleared = false
+	# Début d'étage : les spectateurs reviennent (coop, décision du joueur 01/11/2026). Les PV sont rendus par les joueurs
+	# eux-mêmes (Events.player_resurrected, Balance.MULTI_RESURRECT_HP_PCT). Sans effet en solo.
+	Players.resurrect_all()
 	var entry := _entry_for_stage(RunState.stage)
 	rules = DEFAULT_RULES.duplicate(true)
 	rules.merge(entry["rules"], true)
@@ -161,9 +166,7 @@ func start_stage(layout: Dictionary = {}) -> void:
 		director.bind_map(map)
 	if bare_arena:
 		_layout = {}
-		var tp := get_tree().get_first_node_in_group(&"player") as Node2D
-		if tp != null:
-			tp.global_position = map.to_global(map.get_player_start())
+		_place_players()
 		Events.floor_started.emit(RunState.stage)
 		stage_started.emit(RunState.stage)
 		return
@@ -192,7 +195,7 @@ func start_stage(layout: Dictionary = {}) -> void:
 		if chest == null:
 			continue
 		chest.set_meta(&"layout_index", ci)
-		chest.position = reachable_local(map.local_pos(chest_markers[int(c["marker"])]))
+		chest.position = reachable_local(_chest_layout_pos(c, chest_markers))
 		map.add_child(chest)
 		if chest.has_method(&"setup"):
 			if c.has("special") and _setup_arg_count(chest) >= 3: # coffre à vitrine : objets visibles tirés à l'apparition (voir _assign_showcases)
@@ -254,11 +257,25 @@ func start_stage(layout: Dictionary = {}) -> void:
 	stations = StationSpawner.spawn(self, layout["stations"] if layout.has("stations") else null)
 	_setup_merchant(layout["merchant"] if layout.get("merchant") is Dictionary else {})
 
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	if player != null:
-		player.global_position = map.to_global(map.get_player_start())
+	_place_players()
 	Events.floor_started.emit(stage)
 	stage_started.emit(stage)
+
+
+## Pose les joueurs au départ de la carte : un seul joueur exactement sur le départ (solo inchangé) ; en coop, en anneau de
+## PLAYER_RING_U autour du départ (points accessibles).
+func _place_players() -> void:
+	var list: Array[Node2D] = []
+	list.assign(Players.all()) # copie : Players.all() est un tampon partagé
+	if list.is_empty() or map == null:
+		return
+	var start := map.get_player_start()
+	if list.size() == 1:
+		list[0].global_position = map.to_global(start)
+		return
+	for i in list.size():
+		var off := Vector2.from_angle(TAU * float(i) / float(list.size()) + PI * 0.25) * PLAYER_RING_U * UNIT
+		list[i].global_position = map.to_global(reachable_local(start + off))
 
 
 # --- Secrets (docs/Design_Zones_Secretes.md §3, scripts/stage/secret_room.gd)
@@ -288,15 +305,28 @@ func _setup_secrets() -> void:
 
 ## Reliquaire d'un gardien : coffre gratuit (kind `guardian`, Balance.CHEST_QUALITY_TABLE) posé en zone accessible.
 func _make_relic(pos: Vector2) -> Node2D:
-	var chest := _make_chest()
-	if chest == null:
-		return null
-	chest.position = reachable_local(pos)
-	map.add_child(chest)
-	if chest.has_method(&"setup"):
-		chest.call(&"setup", &"guardian", RunState.stage)
-	chests.append(chest)
-	return chest
+	var slots: Array[int] = []
+	if Players.count() > 1: # coop : un reliquaire par joueur, réservé à son propriétaire
+		for e in Players.entries():
+			slots.append(e.id)
+	else:
+		slots.append(-1)
+	var first: Node2D = null
+	for k in slots.size():
+		var chest := _make_chest()
+		if chest == null:
+			return first
+		var spread := Vector2.ZERO if slots.size() == 1 else Vector2.from_angle(TAU * float(k) / float(slots.size())) * 1.2 * UNIT
+		chest.position = reachable_local(pos + spread)
+		map.add_child(chest)
+		if chest.has_method(&"setup"):
+			chest.call(&"setup", &"guardian", RunState.stage)
+		if slots[k] >= 0 and &"reserved_slot" in chest:
+			chest.set(&"reserved_slot", slots[k])
+		chests.append(chest)
+		if first == null:
+			first = chest
+	return first
 
 
 ## État des secrets de l'étage (ligne OBJECTIFS optionnelle, tests) : un dictionnaire par SecretRoom.
@@ -380,13 +410,24 @@ func _load_catalog() -> Array:
 func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D]) -> Dictionary:
 	var rng := RunState.rng
 	var start := map.get_player_start()
-	var legendary := rng.randf() < float(rules["legendary_chance"])
+	# Coop : la chance du légendaire monte avec n (Balance.party_chance), le coffre reste unique ; petits et grands coffres
+	# suivent Balance.coop_chest_count (n = 1 : valeurs de la carte, tirage identique au solo).
+	var n_party := CoopRules.party_n()
+	var legendary := rng.randf() < Balance.party_chance(float(rules["legendary_chance"]), n_party)
 	var kinds: Array[String] = []
 	for i in int(rules["small_chests"]):
 		kinds.append("petit")
 	for i in int(rules["large_chests"]):
 		kinds.append("large")
 	assert(chest_markers.size() >= kinds.size() + 1, "Carte : pas assez de chest_spawn")
+	var kinds_wanted := kinds.size()
+	if n_party > 1:
+		kinds = []
+		for i in Balance.coop_chest_count(int(rules["small_chests"]), n_party):
+			kinds.append("petit")
+		for i in Balance.coop_chest_count(int(rules["large_chests"]), n_party):
+			kinds.append("large")
+		kinds_wanted = kinds.size()
 
 	var order := _shuffled_indices(chest_markers.size(), rng)
 	# repères hors de la zone accessible (poche fermée) écartés APRÈS le mélange : seed inchangée quand tout
@@ -412,6 +453,13 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 			order.remove_at(pick)
 		else:
 			push_warning("StageManager : aucun coffre légendaire à >= %.0f u du départ, ignoré." % (min_d / UNIT))
+	# Débordement coop : plus de coffres demandés que de cases `C` libres. Les grands prennent les cases d'abord ; les petits
+	# en trop sont posés sur des points de repli après le tirage des piliers (_place_overflow_chests).
+	var overflow: Array[String] = []
+	if kinds.size() > order.size():
+		kinds.sort_custom(func(a: String, b: String) -> bool: return a == "large" and b != "large")
+		overflow.assign(kinds.slice(order.size()))
+		kinds = kinds.slice(0, order.size())
 	for i in kinds.size():
 		out_chests.append({"kind": kinds[i], "marker": order[i]})
 
@@ -419,8 +467,101 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 		pillars_roll = _epreuve_entries() + pillars_roll
 	else:
 		pillars_roll = _roll_pillars(pillar_markers, start, rng)
+	var placed_overflow := 0
+	if not overflow.is_empty():
+		placed_overflow = _place_overflow_chests(out_chests, overflow, pillars_roll, pillar_markers, chest_markers)
+	if n_party > 1:
+		chest_report = {"n": n_party, "wanted": kinds_wanted + (1 if legendary else 0), "markers": kinds.size(), "overflow_wanted": overflow.size(),
+			"overflow_placed": placed_overflow, "placed": out_chests.size()}
+		print("StageManager : coffres posés %d/%d (coop n=%d, %d sur cases C, %d en repli sur %d demandés) sur %s." % [
+			out_chests.size(), chest_report["wanted"], n_party, kinds.size(), placed_overflow, overflow.size(), map_id])
 	_assign_showcases(out_chests)
 	return {"chests": out_chests, "pillars": pillars_roll}
+
+
+## Rapport du dernier tirage de coffres en coop : {n, wanted, markers, overflow_wanted, overflow_placed, placed} (vide en solo).
+var chest_report := {}
+
+## Distances (u) des points de repli des coffres en trop, par palier d'assouplissement : [entre coffres, aux piliers /
+## téléporteur / épreuves, au départ, aux ateliers `E`, aux marqueurs de secret, dégagement de mur (rayon, 0 = aucun)].
+const OVERFLOW_LEVELS: Array = [[4.0, 4.0, 4.0, 4.0, 10.0, 1.5], [3.0, 3.5, 3.0, 3.0, 8.0, 1.0], [2.5, 3.0, 2.5, 2.5, 6.0, 0.0]]
+
+
+## Pose les coffres qui n'ont pas de case `C` : points praticables de la carte (cases « . » accessibles), loin des murs, des
+## piliers, du téléporteur futur, du départ, des ateliers, des zones secrètes et des autres coffres, sans jamais empiler
+## deux coffres (graine propre : jamais RunState.rng). Ajoute des entrées {kind, pos: [x, y]} à `out_chests` (repère local de
+## la carte) et retourne le nombre posé ; ce qui ne tient pas est abandonné (avertissement), jamais empilé.
+func _place_overflow_chests(out_chests: Array, kinds: Array[String], pillars_roll: Array, pillar_markers: Array[Marker2D],
+		chest_markers: Array[Marker2D]) -> int:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([RunState.run_seed, "chest_overflow", RunState.stage])
+	var chests_at: Array[Vector2] = []
+	for c in out_chests:
+		chests_at.append(_chest_layout_pos(c, chest_markers))
+	var fixed_at: Array[Vector2] = []
+	for p in pillars_roll:
+		var pp := _pillar_layout_pos(p, pillar_markers)
+		fixed_at.append(pp)
+		if int((p as Dictionary)["kind"]) == int(Pillar.Kind.BIG):
+			fixed_at.append(teleporter_local(pp))
+	var start := map.get_player_start()
+	var stations_at: Array[Vector2] = []
+	for m in map.get_event_markers():
+		stations_at.append(map.local_pos(m))
+	var secrets_at: Array[Vector2] = []
+	for m in map.get_secret_markers():
+		secrets_at.append(map.local_pos(m))
+	var cands := _capsule_candidates(rng)
+	var order := _shuffled_indices(cands.size(), rng)
+	var todo: Array[String] = kinds.duplicate()
+	var placed := 0
+	for lv in OVERFLOW_LEVELS:
+		if todo.is_empty():
+			break
+		for i in order:
+			if todo.is_empty():
+				break
+			var pos: Vector2 = cands[i]
+			if not _overflow_point_ok(pos, lv, chests_at, fixed_at, start, stations_at, secrets_at):
+				continue
+			out_chests.append({"kind": todo[0], "pos": [pos.x, pos.y]})
+			chests_at.append(pos)
+			todo.remove_at(0)
+			placed += 1
+	if not todo.is_empty():
+		push_warning("StageManager : %d coffre(s) sans place sur %s (%d en repli posés sur %d), abandonnés." % [todo.size(), map_id, placed, kinds.size()])
+	return placed
+
+
+func _overflow_point_ok(pos: Vector2, lv: Array, chests_at: Array[Vector2], fixed_at: Array[Vector2], start: Vector2,
+		stations_at: Array[Vector2], secrets_at: Array[Vector2]) -> bool:
+	if pos.distance_to(start) < float(lv[2]) * UNIT:
+		return false
+	for a in chests_at:
+		if pos.distance_to(a) < float(lv[0]) * UNIT:
+			return false
+	for a in fixed_at:
+		if pos.distance_to(a) < float(lv[1]) * UNIT:
+			return false
+	for a in stations_at:
+		if pos.distance_to(a) < float(lv[3]) * UNIT:
+			return false
+	for a in secrets_at:
+		if pos.distance_to(a) < float(lv[4]) * UNIT:
+			return false
+	if epreuves_on:
+		var r := float(lv[1]) * UNIT
+		if _dist_to_escort(pos) < r or _dist_to_ritual(pos) < r:
+			return false
+	var clear_r := float(lv[5]) * UNIT
+	return clear_r <= 0.0 or map.get_walkable_ratio(pos, clear_r) >= 0.999
+
+
+## Position (repère local de la carte) d'une entrée de disposition de coffre : case `C` (marker) ou point de repli (pos).
+func _chest_layout_pos(c: Dictionary, chest_markers: Array[Marker2D]) -> Vector2:
+	if c.has("pos"):
+		return Vector2(float(c["pos"][0]), float(c["pos"][1]))
+	return map.local_pos(chest_markers[int(c["marker"])])
 
 
 ## Coffres à vitrine (docs/Boucle_Etage_Design.md §2.5) : Balance.CHEST_SHOWCASE_PER_STAGE petits coffres deviennent des
@@ -435,7 +576,8 @@ func _assign_showcases(entries: Array) -> void:
 	for c in entries:
 		if String((c as Dictionary).get("special", "")) != "":
 			special += 1
-	var budget := mini(Balance.CHEST_SHOWCASE_PER_STAGE, Balance.CHEST_SPECIAL_MAX_PER_STAGE - special)
+	var n_party := CoopRules.party_n()
+	var budget := mini(Balance.coop_chest_count(Balance.CHEST_SHOWCASE_PER_STAGE, n_party), Balance.coop_chest_count(Balance.CHEST_SPECIAL_MAX_PER_STAGE, n_party) - special)
 	if budget <= 0:
 		return
 	var rng := RandomNumberGenerator.new()
@@ -555,7 +697,7 @@ func _roll_capsules(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	var rng := RunState.rng
 	var avoid: Array[Vector2] = [map.get_player_start()]
 	for c: Dictionary in layout["chests"]:
-		avoid.append(map.local_pos(chest_markers[int(c["marker"])]))
+		avoid.append(_chest_layout_pos(c, chest_markers))
 	for p: Dictionary in layout["pillars"]:
 		var pp := _pillar_layout_pos(p, pillar_markers)
 		avoid.append(pp)
@@ -622,7 +764,7 @@ func _roll_merchant(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	var far: Array[Vector2] = [map.get_player_start()]
 	var near: Array[Vector2] = []
 	for c: Dictionary in layout["chests"]:
-		near.append(map.local_pos(chest_markers[int(c["marker"])]))
+		near.append(_chest_layout_pos(c, chest_markers))
 	for xy in layout.get("capsules", []):
 		near.append(Vector2(float(xy[0]), float(xy[1])))
 	for p: Dictionary in layout["pillars"]:
@@ -971,16 +1113,29 @@ func _on_pillar_finished(pillar: Pillar) -> void:
 ## (Balance.boss_chest_count : 2 en jeu normal). Retourne les coffres posés. Public : le mode test l'appelle pour son pilier.
 func spawn_boss_chests(pillar: Pillar) -> Array[Node2D]:
 	var out: Array[Node2D] = []
-	var n_boss := Balance.boss_chest_count(1 if Omens.boss_chest_enabled() else 0, pillar.deviated)
+	var n_base := Balance.boss_chest_count(1 if Omens.boss_chest_enabled() else 0, pillar.deviated)
+	# Coop : un coffre de boss par joueur et par coffre de base, y compris les joueurs à terre (leur coffre est ouvert par un
+	# allié pour eux). Chaque coffre est réservé à son joueur (Chest.reserved_slot).
+	var slots: Array[int] = []
+	if Players.count() > 1 and n_base > 0:
+		for k in n_base:
+			for e in Players.entries():
+				slots.append(e.id)
+	var n_boss := slots.size() if not slots.is_empty() else n_base
+	var cols := mini(n_boss, BOSS_CHEST_COLS)
 	for bi in n_boss:
 		var chest := _make_chest()
 		if chest == null:
 			continue
-		var spread := (float(bi) - float(n_boss - 1) * 0.5) * BOSS_CHEST_SPREAD_PX
-		chest.position = pillar.position if n_boss == 1 else reachable_local(pillar.position + Vector2(spread, 0.0))
+		var col := bi % BOSS_CHEST_COLS
+		var row := bi / BOSS_CHEST_COLS
+		var spread := (float(col) - float(cols - 1) * 0.5) * BOSS_CHEST_SPREAD_PX
+		chest.position = pillar.position if n_boss == 1 else reachable_local(pillar.position + Vector2(spread, float(row) * BOSS_CHEST_SPREAD_PX * 0.75))
 		map.add_child(chest)
 		if chest.has_method(&"setup"):
 			chest.call(&"setup", &"boss", RunState.stage)
+		if not slots.is_empty() and &"reserved_slot" in chest:
+			chest.set(&"reserved_slot", slots[bi])
 		chests.append(chest)
 		out.append(chest)
 	return out
@@ -1008,34 +1163,59 @@ func continue_endless() -> void:
 func next_stage() -> void:
 	# Comme Risk of Rain : l'or restant (bourse + pièces au sol) devient de l'XP, au D de l'étage qui finit,
 	# avant le changement d'étage (une sauvegarde faite au démarrage du nouvel étage voit déjà or = 0).
+	# Coop : la conversion se fait dans la bourse de CHAQUE joueur (or restant -> XP à son propre niveau) ; le signal
+	# gold_converted (HUD) décrit le joueur local. Solo : un seul participant, comportement inchangé.
 	var ground := _sweep_ground_pickups()
-	var ground_gold: float = ground["gold"]
 	var ground_xp: float = ground["xp"]
-	var gold_before := RunState.gold + ground_gold
-	if ground_xp > 0.0: # gemmes non ramassées : acquises (la carte qui les portait disparaît)
-		RunState.add_xp(ground_xp)
-	# hook de kit : part de la bourse gardée hors conversion (Avare : l'or est sa puissance)
-	var kept := _kit_kept_gold()
-	if kept > 0.0:
-		RunState.spend_gold(kept)
-	var xp_gained := RunState.convert_gold_to_xp(ground_gold)
+	var carry_by: Dictionary = ground.get("gold_by", {0: ground["gold"]})
+	var parts: Array = [] # [{state, node, carry, kept, before}]
+	if Players.count() > 1:
+		for e in Players.entries():
+			parts.append({"state": e.state, "node": e.node, "id": e.id, "carry": float(carry_by.get(e.id, 0.0))})
+	else:
+		parts.append({"state": RunState.local(), "node": get_tree().get_first_node_in_group(&"player") if is_inside_tree() else null,
+			"id": 0, "carry": float(ground["gold"])})
+	var d_end := RunState.difficulty()
+	var local_id := Players.local_id() if Players.count() > 1 else 0
+	var gold_before := 0.0
+	var xp_gained := 0.0
+	for pt in parts:
+		var st: PlayerState = pt["state"]
+		pt["before"] = st.gold + float(pt["carry"])
+		if ground_xp > 0.0: # gemmes non ramassées : acquises (la carte qui les portait disparaît)
+			st.add_xp(ground_xp)
+		# hook de kit : part de la bourse gardée hors conversion (Avare : l'or est sa puissance)
+		var kept := _kit_kept_gold(pt["node"], st)
+		pt["kept"] = kept
+		if kept > 0.0:
+			st.spend_gold(kept)
+		var gained := st.convert_gold_to_xp(float(pt["carry"]), d_end)
+		if int(pt["id"]) == local_id:
+			xp_gained = gained
 	RunState.stage += 1
 	RunState.begin_floor()
-	if kept > 0.0:
-		RunState.add_gold(kept) # avant start_stage : la sauvegarde de début d'étage la voit
-	gold_before -= kept
+	for pt in parts:
+		var kept2: float = pt["kept"]
+		if kept2 > 0.0:
+			(pt["state"] as PlayerState).add_gold(kept2) # avant start_stage : la sauvegarde de début d'étage la voit
+		if int(pt["id"]) == local_id:
+			gold_before = float(pt["before"]) - kept2
 	start_stage()
 	if gold_before > 0.0:
 		Events.gold_converted.emit(gold_before, xp_gained)
 
 
 ## Or de la bourse que le kit du joueur garde au changement d'étage (`floor_gold_kept(or) -> float`), 0 sinon.
-func _kit_kept_gold() -> float:
-	var player := get_tree().get_first_node_in_group(&"player") if is_inside_tree() else null
+## `player` / `st` : le joueur concerné (par défaut le premier du groupe `player` et le joueur 1).
+func _kit_kept_gold(player: Node = null, st: PlayerState = null) -> float:
+	if player == null and is_inside_tree():
+		player = get_tree().get_first_node_in_group(&"player")
+	if st == null:
+		st = RunState.local()
 	var kit: Variant = player.get(&"kit") if player != null and &"kit" in player else null
 	if kit == null or not (kit as Object).has_method(&"floor_gold_kept"):
 		return 0.0
-	return clampf(float(kit.floor_gold_kept(RunState.gold)), 0.0, RunState.gold)
+	return clampf(float(kit.floor_gold_kept(st.gold)), 0.0, st.gold)
 
 
 ## Retire du sol les pickups restants (PickupManager, groupe `pickups`) et renvoie leur valeur {gold, xp}.

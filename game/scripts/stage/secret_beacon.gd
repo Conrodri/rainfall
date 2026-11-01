@@ -13,7 +13,6 @@ const SPRITE_BASE_Y := 0.82
 
 var charge_s := 0.0
 var done := false
-var _player: Node2D = null
 var _sprite: Sprite2D = null
 var _tick := 0.0
 
@@ -34,9 +33,8 @@ func ratio() -> float:
 func _process(delta: float) -> void:
 	if done:
 		return
-	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group(&"player") as Node2D
-	if _player == null or not RunState.running or _player.global_position.distance_to(global_position) > radius_px():
+	# coop : un seul joueur vivant dans le rayon suffit à charger (zone secrète, au plus un secret par run)
+	if not RunState.running or not CoopRules.any_within(global_position, radius_px(), true):
 		return
 	charge_s = minf(charge_s + delta, Balance.SECRET_PILLAR_CHARGE_S)
 	progressed.emit(ratio())

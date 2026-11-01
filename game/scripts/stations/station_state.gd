@@ -17,9 +17,35 @@ const PHENIX_SPECIAL := "phenix"
 var kind: StringName = &"fondoir"
 var stage := 1
 var uses_total := 0
-var uses_done := 0
 var item_id: StringName = &"" ## Matrice : objet affiché (tiré au début de l'étage)
 var quality: StringName = &"" ## Matrice : qualité de l'objet affiché
+## Coop (étape 2, lot 3) : un atelier sert chaque joueur séparément. `actor` = joueur qui l'utilise (posé par Station avant
+## chaque opération ; null = joueur 1) ; ses objets, scories et or sont ceux de CE joueur, et le quota d'usages est
+## PAR JOUEUR (`_uses` : emplacement -> usages faits). En solo : un seul acteur, comportement inchangé.
+var actor: PlayerState = null
+var _uses := {}
+## Usages faits par l'acteur courant (écrire = compter un usage de l'acteur).
+var uses_done: int:
+	get: return int(_uses.get(_slot(), 0))
+	set(v): _uses[_slot()] = v
+
+
+func _slot() -> int:
+	return actor.slot if actor != null else 0
+
+
+## PlayerState de l'acteur (joueur 1 par défaut).
+func _ps() -> PlayerState:
+	return actor if actor != null else RunState.local()
+
+
+## Lie l'atelier au joueur qui l'utilise (PlayerState du registre).
+func bind(st: PlayerState) -> void:
+	actor = st
+
+
+static func _st(st: PlayerState) -> PlayerState:
+	return st if st != null else RunState.local()
 
 
 static func make(p_kind: StringName, p_stage: int) -> StationState:
@@ -48,8 +74,15 @@ func exhausted() -> bool:
 
 
 func to_dict() -> Dictionary:
-	return {"kind": String(kind), "stage": stage, "uses_total": uses_total, "uses_done": uses_done,
+	var d := {"kind": String(kind), "stage": stage, "uses_total": uses_total, "uses_done": int(_uses.get(0, 0)),
 		"item": String(item_id), "quality": String(quality)}
+	var by := {}
+	for k in _uses:
+		if int(k) != 0:
+			by[str(k)] = int(_uses[k])
+	if not by.is_empty():
+		d["uses_by"] = by
+	return d
 
 
 static func from_dict(d: Dictionary) -> StationState:
@@ -57,7 +90,10 @@ static func from_dict(d: Dictionary) -> StationState:
 	s.kind = StringName(str(d.get("kind", "fondoir")))
 	s.stage = int(d.get("stage", 1))
 	s.uses_total = int(d.get("uses_total", 0))
-	s.uses_done = int(d.get("uses_done", 0))
+	s._uses = {0: int(d.get("uses_done", 0))}
+	if d.get("uses_by") is Dictionary:
+		for k in d["uses_by"]:
+			s._uses[int(str(k))] = int((d["uses_by"] as Dictionary)[k])
 	s.item_id = StringName(str(d.get("item", "")))
 	s.quality = StringName(str(d.get("quality", "")))
 	return s
@@ -81,22 +117,23 @@ static func is_phenix(id: StringName) -> bool:
 	return str(ItemDB.get_item(id).get("special", "")) == PHENIX_SPECIAL
 
 
-## Exemplaires donnables / fondables : un Phénix consommé (RunState.counters[phenix_used]) ne compte plus.
-static func spendable_stacks(id: StringName) -> int:
-	var n := RunState.stacks(id)
+## Exemplaires donnables / fondables : un Phénix consommé (compteur phenix_used du joueur) ne compte plus.
+static func spendable_stacks(id: StringName, st: PlayerState = null) -> int:
+	var ps := _st(st)
+	var n := ps.stacks(id)
 	if is_phenix(id):
-		n = mini(n, maxi(RunState.stacks(id) - int(RunState.counters.get(ItemEffects.COUNTER_PHENIX, 0.0)), 0))
+		n = mini(n, maxi(ps.stacks(id) - int(ps.counters.get(ItemEffects.COUNTER_PHENIX, 0.0)), 0))
 	return n
 
 
 ## Vrai si l'objet n'apporterait plus rien (toutes ses stats déjà au plafond de Balance.ITEM_BONUS_CAPS).
-static func is_capped(id: StringName) -> bool:
+static func is_capped(id: StringName, st: PlayerState = null) -> bool:
 	var it := ItemDB.get_item(id)
-	var st: Dictionary = it.get("stats", {})
-	if st.is_empty() or not (it.get("procs", []) as Array).is_empty() or it.get("special") != null:
+	var stats: Dictionary = it.get("stats", {})
+	if stats.is_empty() or not (it.get("procs", []) as Array).is_empty() or it.get("special") != null:
 		return false
-	var cur := ItemStats.compute(RunState.items)
-	for key in st:
+	var cur := ItemStats.compute(_st(st).items)
+	for key in stats:
 		if not Balance.ITEM_BONUS_CAPS.has(key):
 			return false
 		if float(cur.get(key, 0.0)) < float(Balance.ITEM_BONUS_CAPS[key]) - 0.0001:
@@ -113,29 +150,33 @@ static func tag_line(id: StringName) -> String:
 
 
 ## +1 exemplaire (chemin officiel) puis recalcul des stats du joueur.
-static func give_item(tree: SceneTree, id: StringName) -> void:
-	RunState.add_item(id)
-	apply_items(tree)
+static func give_item(tree: SceneTree, id: StringName, st: PlayerState = null) -> void:
+	_st(st).add_item(id)
+	apply_items(tree, st)
 
 
-static func take_item(tree: SceneTree, id: StringName) -> bool:
-	var ok := RunState.remove_item(id)
+static func take_item(tree: SceneTree, id: StringName, st: PlayerState = null) -> bool:
+	var ok := _st(st).remove_item(id)
 	if ok:
-		apply_items(tree)
+		apply_items(tree, st)
 	return ok
 
 
-static func apply_items(tree: SceneTree) -> void:
+## Recalcule les stats du joueur concerné (son nœud du registre, sinon le premier du groupe `player`).
+static func apply_items(tree: SceneTree, st: PlayerState = null) -> void:
 	if tree == null:
 		return
-	var player := tree.get_first_node_in_group(&"player")
+	var ps := _st(st)
+	var player: Node = Players.by_id(ps.slot)
+	if player == null:
+		player = tree.get_first_node_in_group(&"player")
 	if player != null and player.has_method(&"apply_stats"):
-		player.apply_stats(ItemStats.compute(RunState.items))
+		player.apply_stats(ItemStats.compute(ps.items))
 
 
 func _finish(verb: StringName, given: Array, received: Array, gold: float) -> void:
 	uses_done += 1
-	RunState.add_counter("station.%s_uses" % kind)
+	_ps().add_counter("station.%s_uses" % kind)
 	Events.station_used.emit(kind, verb, given, received, gold)
 
 
@@ -149,10 +190,11 @@ static func price_p() -> float:
 
 
 ## Ensemble des objets possédés (id -> exemplaires) triés par qualité puis nom, qualité dans `qualities`.
-static func owned_of(qualities: Array) -> Array[StringName]:
+static func owned_of(qualities: Array, st: PlayerState = null) -> Array[StringName]:
 	var out: Array[StringName] = []
-	for id in RunState.items:
-		if int(RunState.items[id]) > 0 and qualities.has(quality_of(StringName(id))):
+	var items := _st(st).items
+	for id in items:
+		if int(items[id]) > 0 and qualities.has(quality_of(StringName(id))):
 			out.append(StringName(id))
 	out.sort_custom(func(a: StringName, b: StringName) -> bool:
 		var qa := QUALITY_ORDER.find(quality_of(a))
@@ -178,12 +220,12 @@ func melt_reason(id: StringName) -> String:
 	var q := quality_of(id)
 	if not Balance.FONDOIR_REFUND_P.has(q):
 		return "Les légendaires ne fondent pas"
-	if RunState.stacks(id) <= 0:
+	if _ps().stacks(id) <= 0:
 		return "Objet non possédé"
-	if spendable_stacks(id) <= 0:
+	if spendable_stacks(id, _ps()) <= 0:
 		return "Phénix déjà consommé"
-	if RunState.scrap_total() >= Balance.SCRAP_CAP:
-		return "Scories pleines (%d/%d)" % [RunState.scrap_total(), Balance.SCRAP_CAP]
+	if _ps().scrap_total() >= Balance.SCRAP_CAP:
+		return "Scories pleines (%d/%d)" % [_ps().scrap_total(), Balance.SCRAP_CAP]
 	return ""
 
 
@@ -194,9 +236,9 @@ func melt(tree: SceneTree, id: StringName) -> Dictionary:
 		return _fail(why)
 	var q := quality_of(id)
 	var gold := refund_gold(q)
-	take_item(tree, id)
-	RunState.add_scrap(q)
-	RunState.add_gold(gold)
+	take_item(tree, id, _ps())
+	_ps().add_scrap(q)
+	_ps().add_gold(gold)
 	_finish(&"fondre", [id], [StringName("scorie_%s" % q)], gold)
 	return {"ok": true, "reason": "", "gold": gold, "scrap": q}
 
@@ -238,18 +280,18 @@ func draw_matrice(salt: int = 0) -> void:
 
 
 ## Objets admissibles à l'affichage pour la qualité (débloqués, hors copies exclues, sous le plafond de possession).
-static func matrice_pool(q: StringName) -> Array:
+static func matrice_pool(q: StringName, st: PlayerState = null) -> Array:
 	var out: Array = []
 	for id in ItemUnlocks.filter_unlocked(ItemDB.ids_of_quality(q)):
 		var sid := StringName(id)
-		if is_copy_excluded(sid) or RunState.stacks(sid) >= Balance.MATRICE_MAX_OWNED:
+		if is_copy_excluded(sid) or _st(st).stacks(sid) >= Balance.MATRICE_MAX_OWNED:
 			continue
 		out.append(id)
 	return out
 
 
 func _weighted_pick(pool: Array, rng: RandomNumberGenerator) -> StringName:
-	var tags := LootRoller.build_tags(RunState.items)
+	var tags := LootRoller.build_tags(_ps().items)
 	var ws: Array[float] = []
 	var total := 0.0
 	for id in pool:
@@ -270,7 +312,7 @@ func _weighted_pick(pool: Array, rng: RandomNumberGenerator) -> StringName:
 
 ## Note de la carte si l'objet affiché est déjà au plafond de stats du build ("" sinon).
 func matrice_note() -> String:
-	return "plafond atteint" if item_id != &"" and is_capped(item_id) else ""
+	return "plafond atteint" if item_id != &"" and is_capped(item_id, _ps()) else ""
 
 
 func forge_scrap_reason() -> String:
@@ -280,7 +322,7 @@ func forge_scrap_reason() -> String:
 		return "Matrice épuisée"
 	if item_id == &"":
 		return "Aucun objet à forger"
-	if RunState.scrap_of(quality) <= 0:
+	if _ps().scrap_of(quality) <= 0:
 		return "Il faut 1 scorie %s ou 1 objet %s" % [SCRAP_NAMES.get(quality, ""), QUALITY_NAMES.get(quality, "")]
 	return ""
 
@@ -293,11 +335,11 @@ func forge_item_reason(id: StringName) -> String:
 		return "Matrice épuisée"
 	if item_id == &"":
 		return "Aucun objet à forger"
-	if RunState.stacks(id) <= 0:
+	if _ps().stacks(id) <= 0:
 		return "Objet non possédé"
 	if quality_of(id) != quality:
 		return "Il faut un objet %s" % QUALITY_NAMES.get(quality, "")
-	if spendable_stacks(id) <= 0:
+	if spendable_stacks(id, _ps()) <= 0:
 		return "Phénix déjà consommé"
 	return ""
 
@@ -309,16 +351,16 @@ func forge(tree: SceneTree, pay: Dictionary) -> Dictionary:
 		var why := forge_scrap_reason()
 		if why != "":
 			return _fail(why)
-		RunState.spend_scrap(quality)
+		_ps().spend_scrap(quality)
 		given = [StringName("scorie_%s" % quality)]
 	else:
 		var id := StringName(str(pay.get("item", "")))
 		var why2 := forge_item_reason(id)
 		if why2 != "":
 			return _fail(why2)
-		take_item(tree, id)
+		take_item(tree, id, _ps())
 		given = [id]
-	give_item(tree, item_id)
+	give_item(tree, item_id, _ps())
 	_finish(&"forger", given, [item_id], 0.0)
 	return {"ok": true, "reason": "", "item": item_id}
 
@@ -338,8 +380,8 @@ func distill_reason(ids: Array) -> String:
 	for raw in ids:
 		var id := StringName(str(raw))
 		counts[id] = int(counts.get(id, 0)) + 1
-		if int(counts[id]) > spendable_stacks(id):
-			if RunState.stacks(id) <= 0:
+		if int(counts[id]) > spendable_stacks(id, _ps()):
+			if _ps().stacks(id) <= 0:
 				return "Objet non possédé"
 			return "Phénix déjà consommé" if is_phenix(id) else "Pas assez d'exemplaires"
 		var q := quality_of(id)
@@ -352,7 +394,7 @@ func distill_reason(ids: Array) -> String:
 		return "Pas de qualité au-dessus"
 	if up == &"legendaire" and not Balance.ALAMBIC_ALLOW_LEGENDARY:
 		return "Pas de légendaire par l'alambic"
-	if result_pool(ids, up).is_empty():
+	if result_pool(ids, up, _ps()).is_empty():
 		return "Aucun objet possible"
 	return ""
 
@@ -364,10 +406,10 @@ static func next_quality(q: StringName) -> StringName:
 
 ## Objets de la qualité `up` possibles : débloqués, pas déjà plafonnés, guidés par les tags des objets donnés
 ## (au moins un tag en commun) ; sans correspondance, tout le tirage de la qualité.
-static func result_pool(ids: Array, up: StringName) -> Array:
+static func result_pool(ids: Array, up: StringName, st: PlayerState = null) -> Array:
 	var base: Array = []
 	for id in ItemUnlocks.filter_unlocked(ItemDB.ids_of_quality(up)):
-		if not is_capped(StringName(id)):
+		if not is_capped(StringName(id), st):
 			base.append(id)
 	if not Balance.ALAMBIC_TAG_GUIDED:
 		return base
@@ -390,14 +432,14 @@ func distill(tree: SceneTree, ids: Array, rng: RandomNumberGenerator = null) -> 
 		return _fail(why)
 	var r := rng if rng != null else RunState.rng
 	var up := next_quality(quality_of(StringName(str(ids[0]))))
-	var pool := result_pool(ids, up)
+	var pool := result_pool(ids, up, _ps())
 	var out := StringName(str(pool[r.randi_range(0, pool.size() - 1)]))
 	var given: Array = []
 	for raw in ids:
 		var id := StringName(str(raw))
-		take_item(tree, id)
+		take_item(tree, id, _ps())
 		given.append(id)
-	give_item(tree, out)
+	give_item(tree, out, _ps())
 	_finish(&"distiller", given, [out], 0.0)
 	return {"ok": true, "reason": "", "item": out}
 
@@ -419,18 +461,18 @@ func enclume_reason(id: StringName) -> String:
 		return "Pas une Enclume"
 	if exhausted():
 		return "Enclume épuisée"
-	if RunState.stacks(id) <= 0:
+	if _ps().stacks(id) <= 0:
 		return "Objet non possédé"
 	var q := quality_of(id)
 	if not Balance.ENCLUME_PRICE_P.has(q):
 		return "Les légendaires ne se forgent pas"
 	if is_copy_excluded(id):
 		return "Cet objet ne se copie pas"
-	if is_capped(id):
+	if is_capped(id, _ps()):
 		return "Plafond atteint"
 	var price := enclume_price(id)
-	if not TestMode.inf_gold and RunState.gold < price:
-		return "Il manque %d or" % int(ceil(price - RunState.gold))
+	if not TestMode.inf_gold and _ps().gold < price:
+		return "Il manque %d or" % int(ceil(price - _ps().gold))
 	return ""
 
 
@@ -439,8 +481,8 @@ func forge_copy(tree: SceneTree, id: StringName) -> Dictionary:
 	if why != "":
 		return _fail(why)
 	var price := enclume_price(id)
-	if not RunState.spend_gold(price):
-		return _fail("Il manque %d or" % int(ceil(price - RunState.gold)))
-	give_item(tree, id)
+	if not _ps().spend_gold(price):
+		return _fail("Il manque %d or" % int(ceil(price - _ps().gold)))
+	give_item(tree, id, _ps())
 	_finish(&"forger", [], [id], -price)
 	return {"ok": true, "reason": "", "gold": -price}

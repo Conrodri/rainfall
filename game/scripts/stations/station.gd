@@ -24,7 +24,9 @@ const RADIUS := 96.0
 
 var state: StationState
 var _player_inside := false
+var _inside: Array = [] ## joueurs dans la zone (coop) ; _player_inside en est le reflet
 var _busy := false
+var _busy_state: PlayerState = null ## joueur dont un panneau est ouvert (les rappels du panneau agissent pour lui)
 var _visual: EmissiveOverlay
 var _billboard: Node2D
 var _label: Label
@@ -87,6 +89,7 @@ func _ready() -> void:
 	RunState.items_changed.connect(_refresh)
 	RunState.item_added.connect(_on_item_added)
 	RunState.gold_changed.connect(_on_gold_changed)
+	Events.station_used.connect(func(_id, _k, _g, _r, _gold) -> void: _refresh()) # quota d'un autre joueur : libellé à jour
 	_refresh()
 
 
@@ -99,13 +102,33 @@ func _exit_tree() -> void:
 
 
 func _on_body_entered(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = true
+	CoopRules.track_enter(_inside, b)
+	_player_inside = not _inside.is_empty()
 
 
 func _on_body_exited(b: Node) -> void:
-	if b.is_in_group("player"):
-		_player_inside = false
+	CoopRules.track_exit(_inside, b)
+	_player_inside = not _inside.is_empty()
+
+
+## Joueur local (celui dont le libellé flottant décrit les usages restants).
+func _local_state() -> PlayerState:
+	var id := Players.local_id()
+	var st := Players.state_of(id) if id != Events.NO_PLAYER else null
+	return st if st != null else RunState.local()
+
+
+## Lie l'état de l'atelier au joueur le plus proche dans la zone (invite) tant qu'aucun panneau n'est ouvert.
+func _bind_current() -> void:
+	if state == null or _busy:
+		return
+	var n := CoopRules.nearest_in(_inside, global_position)
+	state.bind(CoopRules.state_of(n) if n != null else _local_state())
+
+
+## Bourse / objets / scories du joueur auquel l'atelier est lié en ce moment.
+func _actor_state() -> PlayerState:
+	return state.actor if state != null and state.actor != null else RunState.local()
 
 
 func _on_item_added(_id: StringName, _n: int) -> void:
@@ -117,10 +140,17 @@ func _on_gold_changed(_g: float) -> void:
 		_refresh()
 
 
-## Libellé flottant, icône de l'objet affiché (Matrice), teinte, lumière.
+## Libellé flottant, icône de l'objet affiché (Matrice), teinte, lumière : décrit les usages du joueur local.
 func _refresh() -> void:
 	if state == null or _visual == null:
 		return
+	var prev := state.actor
+	state.bind(_local_state())
+	_refresh_view()
+	state.bind(prev)
+
+
+func _refresh_view() -> void:
 	var tint: Color = TINTS.get(state.kind, Color.WHITE)
 	if state.kind == &"matrice" and state.quality != &"":
 		tint = tint.lerp(StationState.SCRAP_COLORS.get(state.quality, Color.WHITE), 0.5) # la teinte lit la qualité de loin
@@ -168,10 +198,11 @@ func can_interact() -> bool:
 	return _player_inside and not _busy
 
 
-## Invite : verbe de l'atelier (≤ 24 caractères), refus écrit quand l'atelier est épuisé.
+## Invite : verbe de l'atelier (≤ 24 caractères), refus écrit quand l'atelier est épuisé (pour le joueur le plus proche).
 func interact_label() -> String:
 	if state == null:
 		return ""
+	_bind_current()
 	if state.exhausted():
 		return "%s épuisé" % NAMES.get(state.kind, "")
 	match state.kind:
@@ -189,15 +220,25 @@ func interact_label() -> String:
 
 
 func interact_state() -> Dictionary:
-	return {"visible": can_interact(), "enabled": state != null and not state.exhausted(), "label": interact_label(), "hold_s": 0.0}
+	var lbl := interact_label() # lie l'atelier au joueur le plus proche avant de lire ses usages
+	return {"visible": can_interact(), "enabled": state != null and not state.exhausted(), "label": lbl, "hold_s": 0.0}
 
 
 func interact_priority() -> int:
 	return 3
 
 
-func interact() -> bool:
-	if state == null or _busy or state.exhausted():
+## `who` : joueur qui utilise l'atelier (null = le plus proche dans la zone, sinon le joueur local). Quotas, objets, scories
+## et or sont ceux de CE joueur (StationState.bind).
+func interact(who: Node = null) -> bool:
+	if state == null or _busy:
+		return false
+	var actor := who as Node2D
+	if actor == null:
+		actor = CoopRules.nearest_in(_inside, global_position)
+	_busy_state = CoopRules.state_of(actor) if actor != null else _local_state()
+	state.bind(_busy_state)
+	if state.exhausted():
 		return false
 	match state.kind:
 		&"fondoir":
@@ -224,6 +265,7 @@ func _host() -> Node:
 
 func _open(cfg: Dictionary, on_picked: Callable) -> ItemPicker:
 	_busy = true
+	cfg["state"] = _busy_state # ItemPicker : possessions affichées = celles du joueur
 	_picker = ItemPicker.open(_host(), cfg)
 	_picker.picked.connect(on_picked)
 	_picker.closed.connect(func() -> void: _busy = false)
@@ -232,18 +274,19 @@ func _open(cfg: Dictionary, on_picked: Callable) -> ItemPicker:
 
 func _open_melt() -> void:
 	var list: Array = []
-	for id in StationState.owned_of(StationState.QUALITY_ORDER):
+	for id in StationState.owned_of(StationState.QUALITY_ORDER, _actor_state()):
 		var why := state.melt_reason(id)
 		var q := StationState.quality_of(id)
 		list.append({"key": id, "id": id, "enabled": why == "", "reason": why,
 			"line": "Fondre : +%d or, +1 scorie %s" % [int(round(StationState.refund_gold(q))), StationState.SCRAP_NAMES.get(q, "")]})
 	var cfg := {"title": "Fondre un objet",
-		"subtitle": "Scories : %d/%d · usages restants : %d · l'objet est perdu (effet interne perdu)" % [RunState.scrap_total(), Balance.SCRAP_CAP, state.uses_left()],
+		"subtitle": "Scories : %d/%d · usages restants : %d · l'objet est perdu (effet interne perdu)" % [_actor_state().scrap_total(), Balance.SCRAP_CAP, state.uses_left()],
 		"entries": list}
 	_open(cfg, _on_melt_picked)
 
 
 func _on_melt_picked(chosen: Array) -> void:
+	state.bind(_busy_state)
 	_after(state.melt(get_tree(), StringName(chosen[0]["id"])))
 
 
@@ -251,7 +294,7 @@ func _open_forge() -> void:
 	var target := str(ItemDB.get_item(state.item_id).get("name", state.item_id))
 	var qn: String = StationState.QUALITY_NAMES.get(state.quality, "")
 	var list: Array = []
-	for id in StationState.owned_of([state.quality]):
+	for id in StationState.owned_of([state.quality], _actor_state()):
 		var why := state.forge_item_reason(id)
 		list.append({"key": id, "id": id, "enabled": why == "", "reason": why, "line": "Donner contre : %s" % target})
 	var cfg := {"title": "Forger : %s" % target,
@@ -262,22 +305,23 @@ func _open_forge() -> void:
 
 
 func _on_forge_picked(chosen: Array) -> void:
+	state.bind(_busy_state)
 	_after(state.forge(get_tree(), {"item": StringName(chosen[0]["id"])}))
 
 
 func _open_distill() -> void:
 	var list: Array = []
-	for id in StationState.owned_of(StationState.QUALITY_ORDER):
+	for id in StationState.owned_of(StationState.QUALITY_ORDER, _actor_state()):
 		var q := StationState.quality_of(id)
 		var up := StationState.next_quality(q)
 		var ok := up != &"" and (up != &"legendaire" or Balance.ALAMBIC_ALLOW_LEGENDARY)
-		var spend := StationState.spendable_stacks(id)
+		var spend := StationState.spendable_stacks(id, _actor_state())
 		var reason := "" if ok else "Pas de légendaire par l'alambic"
 		if ok and spend <= 0:
 			ok = false
 			reason = "Phénix déjà consommé"
 		for n in mini(maxi(spend, 1), Balance.ALAMBIC_INPUT):
-			list.append({"key": "%s#%d" % [id, n], "id": id, "count": RunState.stacks(id), "enabled": ok, "reason": reason,
+			list.append({"key": "%s#%d" % [id, n], "id": id, "count": _actor_state().stacks(id), "enabled": ok, "reason": reason,
 				"line": "Distiller → un objet %s" % StationState.QUALITY_NAMES.get(up, "")})
 	var cfg := {"title": "Distiller",
 		"subtitle": "Donnez %d objets de même qualité : vous recevez 1 objet de la qualité au-dessus, proche de leurs tags · usages restants : %d" % [Balance.ALAMBIC_INPUT, state.uses_left()],
@@ -290,6 +334,7 @@ func _validate_distill(sel: Array) -> String:
 
 
 func _on_distill_picked(chosen: Array) -> void:
+	state.bind(_busy_state)
 	_after(state.distill(get_tree(), _ids_of(chosen)))
 
 
@@ -302,17 +347,18 @@ static func _ids_of(entries: Array) -> Array:
 
 func _open_enclume() -> void:
 	var list: Array = []
-	for id in StationState.owned_of(StationState.QUALITY_ORDER):
+	for id in StationState.owned_of(StationState.QUALITY_ORDER, _actor_state()):
 		var why := state.enclume_reason(id)
 		list.append({"key": id, "id": id, "enabled": why == "", "reason": why,
 			"line": "Forger : %d or" % int(ceil(state.enclume_price(id)))})
 	var cfg := {"title": "Forger un exemplaire",
-		"subtitle": "Prix x%s à chaque usage · usages restants : %d · or : %d" % [str(Balance.ENCLUME_PRICE_GROWTH).replace(".", ","), state.uses_left(), int(RunState.gold)],
+		"subtitle": "Prix x%s à chaque usage · usages restants : %d · or : %d" % [str(Balance.ENCLUME_PRICE_GROWTH).replace(".", ","), state.uses_left(), int(_actor_state().gold)],
 		"entries": list}
 	_open(cfg, _on_enclume_picked)
 
 
 func _on_enclume_picked(chosen: Array) -> void:
+	state.bind(_busy_state)
 	_after(state.forge_copy(get_tree(), StringName(chosen[0]["id"])))
 
 

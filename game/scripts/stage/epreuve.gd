@@ -135,8 +135,7 @@ func tick(delta: float) -> void:
 
 ## Zone de monstres : suit le centre courant de l'épreuve, active jusqu'à la mort du mini-boss.
 func _tick_zone() -> void:
-	var p := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	player_in_zone = p != null and p.global_position.distance_to(global_position) <= zone_radius()
+	player_in_zone = is_inside_tree() and CoopRules.any_within(global_position, zone_radius(), true)
 	_send_zone(true)
 
 
@@ -166,7 +165,9 @@ func _resolve(g: StringName = &"") -> void:
 	elif g != &"":
 		grade = g
 	else:
-		grade = Balance.epreuve_grade(verb, elapsed, clean)
+		# coop : la cible « parfait » des épreuves partageables (Rituel) baisse de 8 % par joueur en plus (Balance)
+		var t_mult := Balance.epreuve_target_party_mult(CoopRules.party_n()) if verb == &"rituel" else 1.0
+		grade = Balance.epreuve_grade(verb, elapsed / maxf(t_mult, 0.01), clean)
 	gold_paid = _pay()
 	_on_resolved()
 	Events.epreuve_finished.emit(verb, grade, elapsed, gold_paid)
@@ -183,7 +184,7 @@ func _pay() -> float:
 	if pm != null:
 		pm.drop(global_position, PickupManager.KIND_GOLD, amount)
 	else:
-		RunState.add_gold(amount)
+		CoopRules.credit_party_gold(amount, false) # sans PickupManager (tests) : la note est versée à chaque joueur
 	return amount
 
 

@@ -15,7 +15,6 @@ const SPRITE_BASE_Y := 0.80 ## socle à 80 % de la hauteur de frame : posé sur 
 var used := false
 ## Biome (à fixer avant add_child) : choisit la déclinaison de sprites.
 var biome: StringName = DEFAULT_BIOME
-var _player: Node2D = null
 var _sprite: Sprite2D = null
 
 
@@ -25,9 +24,7 @@ func _ready() -> void:
 
 
 func _player_node() -> Node2D:
-	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-	return _player
+	return CoopRules.nearest_within(global_position, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX) if is_inside_tree() else null
 
 
 func player_near() -> bool:
@@ -51,7 +48,7 @@ func interact_priority() -> int:
 	return 2
 
 
-func interact() -> bool:
+func interact(_who: Node = null) -> bool:
 	if used or not player_near():
 		return false
 	pull(false)

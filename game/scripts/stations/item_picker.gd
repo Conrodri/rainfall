@@ -39,6 +39,7 @@ var status_label: Label = null
 var count_label: Label = null
 
 var _was_paused := false
+var _paused_by_me := false ## faux en coop : le panneau ne met JAMAIS le jeu en pause (ChestSession.is_blocking)
 var _closed := false
 var _title: Label
 var _subtitle: Label
@@ -64,7 +65,9 @@ func setup() -> void:
 	entries = cfg.get("entries", [])
 	multi = int(cfg.get("multi", 0))
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	_paused_by_me = ChestSession.is_blocking()
+	if _paused_by_me:
+		get_tree().paused = true
 	_build()
 	get_viewport().size_changed.connect(_relayout)
 	_relayout()
@@ -76,7 +79,7 @@ func setup() -> void:
 
 
 func _exit_tree() -> void:
-	if not _closed:
+	if not _closed and _paused_by_me:
 		get_tree().paused = _was_paused
 	if get_viewport() != null and get_viewport().size_changed.is_connected(_relayout):
 		get_viewport().size_changed.disconnect(_relayout)
@@ -216,7 +219,8 @@ func _make_card(i: int, e: Dictionary) -> Button:
 	tag_l.name = "Tags"
 	tag_l.text = StationState.tag_line(id) + Palette.rank_suffix(q)
 	vb.add_child(tag_l)
-	var own := int(e.get("count", RunState.stacks(id)))
+	var ps: PlayerState = cfg.get("state", RunState.local())
+	var own := int(e.get("count", ps.stacks(id)))
 	var count_l := _card_label(UiTheme.fsz(22), Color(1, 0.85, 0.4))
 	count_l.name = "Count"
 	count_l.text = "×%d" % own if own > 0 else ""
@@ -367,7 +371,8 @@ func _close() -> void:
 	if _closed:
 		return
 	_closed = true
-	get_tree().paused = _was_paused
+	if _paused_by_me:
+		get_tree().paused = _was_paused
 	closed.emit()
 	queue_free()
 

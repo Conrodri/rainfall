@@ -27,6 +27,7 @@ var boss_dead := false
 var player_in_zone := false
 var _boss: Node2D = null
 var _player_touching := false
+var _touching: Array = [] ## joueurs au contact (coop) ; _player_touching en est le reflet
 var _zone_sent := false
 var _light: LightRig.Handle = null ## lumière d'état (pillar_<état>)
 var _charge_light: LightRig.Handle = null ## gros pilier : monte avec la charge
@@ -227,7 +228,7 @@ func tick(delta: float) -> void:
 		return
 	_update_zone(false)
 	if kind == Kind.BIG and player_in_zone and not is_charged():
-		charge = minf(charge + delta, Balance.PILLAR_CHARGE_S)
+		charge = minf(charge + delta * charge_rate(), Balance.PILLAR_CHARGE_S)
 		Events.pillar_charge_progress.emit(self, charge_ratio())
 		_update_charge_light()
 		queue_redraw()
@@ -253,8 +254,21 @@ func _update_zone(force: bool) -> void:
 
 
 func _player_inside() -> bool:
-	var p := get_tree().get_first_node_in_group(&"player") as Node2D
-	return p != null and p.global_position.distance_to(global_position) <= zone_radius()
+	return is_inside_tree() and CoopRules.any_within(global_position, zone_radius(), true)
+
+
+## Vitesse de charge du gros pilier (coop, docs/multi/Design_Coop.md §1.3) : joueurs vivants dans la zone / joueurs vivants,
+## au moins CoopRules.CHARGE_FLOOR (0,25) tant qu'un joueur est dans la zone, 0 sinon. Solo : 1 dans la zone, 0 dehors.
+func charge_rate() -> float:
+	if not is_inside_tree():
+		return 1.0
+	var alive := Players.alive_count()
+	if alive <= 1:
+		return 1.0 if player_in_zone else 0.0
+	var inside := CoopRules.alive_within(global_position, zone_radius())
+	if inside <= 0:
+		return 0.0
+	return maxf(float(inside) / float(alive), CoopRules.CHARGE_FLOOR)
 
 
 func _send_zone(active: bool) -> void:
@@ -329,13 +343,15 @@ func _apply_state_light(old: StringName) -> void:
 func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group(&"player"):
 		return
+	CoopRules.track_enter(_touching, body)
 	_player_touching = true
 	queue_redraw()
 
 
 func _on_body_exited(body: Node) -> void:
 	if body.is_in_group(&"player"):
-		_player_touching = false
+		CoopRules.track_exit(_touching, body)
+		_player_touching = not _touching.is_empty()
 
 
 func _director() -> Node:
@@ -488,8 +504,7 @@ class Deflector extends Node2D:
 			add_child(_ring)
 
 	func _near() -> bool:
-		var p := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
-		return p != null and p.global_position.distance_to(global_position) <= Pillar.DEFLECT_RANGE_PX
+		return is_inside_tree() and CoopRules.any_within(global_position, Pillar.DEFLECT_RANGE_PX, true)
 
 	func can_interact() -> bool:
 		return pillar != null and is_instance_valid(pillar) and pillar.can_deviate() and _near()
@@ -504,7 +519,7 @@ class Deflector extends Node2D:
 	func interact_priority() -> int:
 		return 2 # « Dévier » avant « Activer » quand les deux sont à portée
 
-	func interact() -> bool:
+	func interact(_who: Node = null) -> bool:
 		return can_interact() and pillar.deviate()
 
 	func _process(_delta: float) -> void:
@@ -534,7 +549,7 @@ func interact_label() -> String:
 
 
 ## Appelé par le répartiteur unique du HUD (le pilier ne lit plus l'entrée).
-func interact() -> bool:
+func interact(_who: Node = null) -> bool:
 	if not can_interact():
 		return false
 	return activate()
