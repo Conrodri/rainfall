@@ -66,9 +66,78 @@ func _init() -> void:
 	_near("or->XP 0 or", B.gold_to_xp(0.0, 1.5), 0.0, 0.0001)
 	_near("prime boss d'étage (coeff 2)", B.boss_gold(&"etage", 2.0), 56.4, 0.001)
 	_near("XP boss d'étage = ½ or", B.boss_xp(&"etage", 2.0), 28.2, 0.001)
+	_multi(B)
 	B.free()
 	print("RESULT: %s (%d echec(s))" % ["OK" if _fails == 0 else "FAIL", _fails])
 	quit(1 if _fails else 0)
+
+
+## Coop 1-4 (docs/multi/Scaling_Multi.md §2.13, docs/Design_Multijoueur.md §4) : n = 1 rend exactement le solo.
+func _multi(B) -> void:
+	# n = 1 : égalité stricte avec les appels sans n (tolérance 0).
+	for t in [0.0, 150.0, 600.0]:
+		for st in [1, 3, 5]:
+			for d in [1.0, 2.0, 3.0]:
+				_near("D n=1 identique (t %d, étage %d, d %d)" % [t, st, d], B.difficulty(t, st, d, 1), B.difficulty(t, st, d), 0.0)
+	for D in [1.0, 1.5, 3.33]:
+		for z in [&"", &"mini", &"etage"]:
+			_near("crédits n=1 identiques (D %.2f, %s)" % [D, z], B.director_credits_per_s(D, z, 1), B.director_credits_per_s(D, z), 0.0)
+		for k in [&"mini", &"etage"]:
+			_near("PV boss n=1 identiques (%s, D %.2f)" % [k, D], B.boss_hp(k, D, 3, 1), B.boss_hp(k, D, 3), 0.0)
+	for t in [0.0, 240.0, 480.0, 900.0]:
+		_near("plafond de vivants n=1 identique (t %d)" % t, B.director_alive_cap(t, 1), B.director_alive_cap(t), 0.0)
+	_near("rubis n=1 identiques", B.run_rubies(18.0, &"moyen", 13, true, 1800.0, 1, 1.0), B.run_rubies(18.0, &"moyen", 13, true, 1800.0), 0.0)
+	_near("coffres n=1 = base", B.coop_chest_count(8, 1), 8.0, 0.0)
+	_near("or n=1 × 1", B.coop_gold_mult(1), 1.0, 0.0)
+	_near("niveau de départ n=1", B.player_start_level(1), 1.0, 0.0)
+	_near("participation solo = 1", B.ruby_participation(0.0, 1000.0, 1), 1.0, 0.0)
+	# Facteurs (§2.2)
+	_near("pf(2)", B.party_factor(2), 1.3, 0.0001)
+	_near("pf(4)", B.party_factor(4), 1.9, 0.0001)
+	_near("n^0,2 (4)", B.party_time_mult(4), 1.3195, 0.0001)
+	_near("g(4) = 2,5", B.party_credit_mult(4), 2.5, 0.0)
+	_near("pf borné à 4 joueurs", B.party_factor(9), 1.9, 0.0001)
+	# D (§2.3) : entrée d'étage 1 = 1,3 / 1,6 / 1,9 ; 4 joueurs, Moyen, 10 min, étage 3 = 5,16
+	_near("D départ 2 joueurs", B.difficulty(0.0, 1, 2.0, 2), 1.3, 0.0001)
+	_near("D départ 3 joueurs", B.difficulty(0.0, 1, 2.0, 3), 1.6, 0.0001)
+	_near("D 4 joueurs 10 min étage 3", B.difficulty(600.0, 3, 2.0, 4), 5.16, 0.005)
+	_near("D 1 joueur 10 min étage 3", B.difficulty(600.0, 3, 2.0, 1), 3.33, 0.005)
+	# Niveau de départ (§2.4) : 1 / 1 / 2 / 3
+	_near("niveau de départ 2", B.player_start_level(2), 1.0, 0.0)
+	_near("niveau de départ 3", B.player_start_level(3), 2.0, 0.0)
+	_near("niveau de départ 4", B.player_start_level(4), 3.0, 0.0)
+	_near("XP cumulée niveau 3", B.xp_total_for_level(3), B.xp_required(1) + B.xp_required(2), 0.0001)
+	# Director (§2.5) : 6,85 crédits/s à D 5,16 hors zone à 4 ; plafond 150 -> 240
+	_near("crédits/s 4 joueurs D 5,16", B.director_credits_per_s(5.16, &"", 4), 6.85, 0.01)
+	_near("plafond 2 joueurs (pleine rampe)", B.director_alive_cap(480.0, 2), 180.0, 0.0)
+	_near("plafond 4 joueurs (pleine rampe)", B.director_alive_cap(480.0, 4), 240.0, 0.0)
+	_near("plafond 4 joueurs qualité Basse", B.director_alive_cap(480.0, 4, true), 150.0, 0.0)
+	# Boss (décision du joueur §4) : étage × 1,4 / 2,2 ; mini × 1,3 / 1,9 ; final × 1,35 / 2,05
+	var e1: float = B.boss_hp(&"etage", 2.0, 2)
+	_near("boss d'étage 2 joueurs × 1,4", B.boss_hp(&"etage", 2.0, 2, 2) / e1, 1.4, 0.0001)
+	_near("boss d'étage 4 joueurs × 2,2", B.boss_hp(&"etage", 2.0, 2, 4) / e1, 2.2, 0.0001)
+	var m1: float = B.boss_hp(&"mini", 2.0, 2)
+	_near("mini-boss 2 joueurs × 1,3", B.boss_hp(&"mini", 2.0, 2, 2) / m1, 1.3, 0.0001)
+	_near("mini-boss 4 joueurs × 1,9", B.boss_hp(&"mini", 2.0, 2, 4) / m1, 1.9, 0.0001)
+	_near("boss final 2 joueurs × 1,35", B.boss_hp(&"etage", 2.0, 5, 2, &"final") / B.boss_hp(&"etage", 2.0, 5), 1.35, 0.0001)
+	_near("boss final 4 joueurs × 2,05", B.boss_party_hp_mult(&"final", 4), 2.05, 0.0001)
+	_near("exemple §2.7 : 37 900 PV", B.boss_hp(&"etage", 5.16, 3, 4), 37900.0, 150.0)
+	# Coffres +50 % par joueur en plus (provisoire) : 8 petits -> 12 / 16 / 20 ; 2 grands -> 3 / 4 / 5
+	_near("petits coffres 2 joueurs", B.coop_chest_count(8, 2), 12.0, 0.0)
+	_near("petits coffres 4 joueurs", B.coop_chest_count(8, 4), 20.0, 0.0)
+	_near("grands coffres 3 joueurs", B.coop_chest_count(2, 3), 4.0, 0.0)
+	_near("grands coffres 4 joueurs", B.coop_chest_count(2, 4), 5.0, 0.0)
+	_near("1 coffre 2 joueurs (arrondi au-dessus)", B.coop_chest_count(1, 2), 2.0, 0.0)
+	_near("chance de légendaire 4 joueurs", B.party_chance(0.25, 4), 0.625, 0.0001)
+	# Or : montant entier à chacun × coop_gold_mult (1,0 tant que non calibré)
+	for n in range(1, 5):
+		_near("or × %d joueurs" % n, B.coop_gold_mult(n), 1.0, 0.0)
+	# Rubis (§2.12) : exemple 152 à 4 joueurs ; participation
+	_near("rubis 4 joueurs exemple §2.12", B.run_rubies(18.0, &"moyen", 13, true, 3000.0, 4, 1.0), 152.0, 0.0)
+	_near("participation 25 % de la moyenne = 1", B.ruby_participation(250.0, 4000.0, 4), 1.0, 0.0001)
+	_near("participation 10 % de la moyenne = 0,4", B.ruby_participation(100.0, 4000.0, 4), 0.4, 0.0001)
+	_near("rubis AFK = 0", B.run_rubies(18.0, &"moyen", 13, true, 3000.0, 4, 0.0), 0.0, 0.0)
+	_near("épreuves × 0,76 à 4", B.epreuve_target_party_mult(4), 0.76, 0.0001)
 
 
 func _near(label: String, got: float, want: float, tol: float) -> void:

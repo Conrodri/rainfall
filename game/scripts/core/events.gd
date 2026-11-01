@@ -54,3 +54,57 @@ signal omen_changed(id: StringName, stage: int)
 signal epreuve_started(kind: StringName)
 ## Une épreuve se termine (avant le mini-boss) : note (&"parfait" | &"bien" | &"fait"), durée (s de jeu actif), or versé.
 signal epreuve_finished(kind: StringName, grade: StringName, elapsed_s: float, gold: float)
+
+## --- Coop 1-4 (étape 1 « Contrats », docs/multi/Archi_Reseau.md §3) ---------------------------------------------
+## Identité du joueur, de façon rétrocompatible : les signaux historiques ci-dessus ne changent PAS de signature (un
+## paramètre de plus casserait chaque écouteur, les signaux GDScript n'ayant pas de valeur par défaut). Chaque signal
+## « joueur » a un jumeau suffixé qui porte `player_id` (emplacement 0-3 du registre Players ; NO_PLAYER = inconnu,
+## environnement). Les émetteurs passent par les fonctions emit_* ci-dessous, qui émettent l'ancien ET le nouveau
+## signal : les écouteurs solo existants restent branchés, les nouveaux (kits, HUD par joueur) filtrent sur player_id.
+const NO_PLAYER := -1
+
+## Monstre tué ; `player_id` = le tueur (NO_PLAYER : dégât d'environnement, de zone sans auteur, ou inconnu).
+signal enemy_killed_by(player_id: int, enemy: Node2D, position: Vector2, tier: int, is_elite: bool)
+signal player_damaged_by(player_id: int, amount: float, source: Node)
+signal player_died_by(player_id: int)
+signal pickup_collected_by(player_id: int, kind: StringName, amount: float)
+signal chest_opened_by(player_id: int, chest: Node, quality: StringName, offered_items: Array)
+signal item_chosen_by(player_id: int, item_id: StringName)
+## Mort en coop (décision du joueur, 01/11/2026) : le joueur devient spectateur jusqu'au début de l'étage suivant.
+signal player_spectating(player_id: int)
+## Début d'étage : un spectateur revient en jeu.
+signal player_resurrected(player_id: int)
+## Tous les joueurs de la partie sont morts : défaite (en solo, la mort reste signalée par player_died).
+signal party_wiped
+## Registre Players modifié (inscription, départ) : `count` = joueurs inscrits.
+signal party_changed(count: int)
+
+
+func emit_enemy_killed(enemy: Node2D, position: Vector2, tier: int, is_elite: bool, player_id: int = NO_PLAYER) -> void:
+	enemy_killed.emit(enemy, position, tier, is_elite)
+	enemy_killed_by.emit(player_id, enemy, position, tier, is_elite)
+
+
+func emit_player_damaged(amount: float, source: Node, player_id: int = 0) -> void:
+	player_damaged.emit(amount, source)
+	player_damaged_by.emit(player_id, amount, source)
+
+
+func emit_player_died(player_id: int = 0) -> void:
+	player_died.emit()
+	player_died_by.emit(player_id)
+
+
+func emit_pickup_collected(kind: StringName, amount: float, player_id: int = 0) -> void:
+	pickup_collected.emit(kind, amount)
+	pickup_collected_by.emit(player_id, kind, amount)
+
+
+func emit_chest_opened(chest: Node, quality: StringName, offered_items: Array, player_id: int = 0) -> void:
+	chest_opened.emit(chest, quality, offered_items)
+	chest_opened_by.emit(player_id, chest, quality, offered_items)
+
+
+func emit_item_chosen(item_id: StringName, player_id: int = 0) -> void:
+	item_chosen.emit(item_id)
+	item_chosen_by.emit(player_id, item_id)

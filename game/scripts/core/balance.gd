@@ -580,9 +580,11 @@ const CHEST_QUALITY_TABLE := {
 }
 
 
-## Coefficient de difficulté RoR2 (solo) ; `d` = MODES[mode]. Pas d'accélération « endless » (RoR2 n'en a pas).
-func difficulty(t_s: float, stage: int, d: float = 1.0) -> float:
-	return (1.0 + t_s / 60.0 * TIME_SLOPE * d * TIME_COMPRESSION) * pow(K_STAGE, stage - 1)
+## Coefficient de difficulté RoR2 ; `d` = MODES[mode]. Pas d'accélération « endless » (RoR2 n'en a pas).
+## `n` = joueurs actifs de la partie (docs/multi/Scaling_Multi.md §2.3) : départ party_factor(n), pente × n^0,2.
+## n = 1 : (1 + t/60 × pente × d × 1,5) × 1,15^(étage-1), formule solo inchangée.
+func difficulty(t_s: float, stage: int, d: float = 1.0, n: int = 1) -> float:
+	return (party_factor(n) + t_s / 60.0 * TIME_SLOPE * d * TIME_COMPRESSION * party_time_mult(n)) * pow(K_STAGE, stage - 1)
 
 
 ## Paliers de difficulté (seuils resserrés pour l'échelle RoR2). D atteint ≈ 6,9 à 19,5 min en Moyen (fin d'étage 5) :
@@ -624,8 +626,9 @@ func monster_level(D: float) -> int:
 
 # --- Director
 ## `zone_kind` : &"" hors zone, &"mini" (pilier de mini-boss) ou &"etage" (charge du téléporteur).
-func director_credits_per_s(D: float, zone_kind: StringName = &"") -> float:
-	return CREDIT_K * (1.0 + 0.4 * D) * float(ZONE_SPAWN_MULT.get(zone_kind, 1.0))
+## `n` : joueurs actifs (× party_credit_mult(n) = (n + 1) / 2, RoR2) ; n = 1 inchangé.
+func director_credits_per_s(D: float, zone_kind: StringName = &"", n: int = 1) -> float:
+	return CREDIT_K * (1.0 + 0.4 * D) * float(ZONE_SPAWN_MULT.get(zone_kind, 1.0)) * party_credit_mult(n)
 
 
 ## Multiplicateur de crédits en début de run : RAMP_CREDITS_MIN à 0 s, 1 à RAMP_TIME_S / 2.
@@ -634,8 +637,13 @@ func director_ramp(t_s: float) -> float:
 
 
 ## Monstres vivants autorisés : RAMP_ALIVE_MIN à 0 s, RAMP_ALIVE_MAX à RAMP_TIME_S (MAX_ENEMIES reste la taille du pool).
-func director_alive_cap(t_s: float) -> int:
-	return int(lerpf(RAMP_ALIVE_MIN, RAMP_ALIVE_MAX, clampf(t_s / RAMP_TIME_S, 0.0, 1.0)))
+## Coop (`n` joueurs actifs) : × (1 + PLAYER_ALIVE_SLOPE (n - 1)), au plus MAX_ENEMIES ; `low_quality` (mobile, qualité
+## Basse) garde le plafond solo quel que soit n (docs/multi/Scaling_Multi.md §2.5). n = 1 : valeur solo inchangée.
+func director_alive_cap(t_s: float, n: int = 1, low_quality: bool = false) -> int:
+	var cap := int(lerpf(RAMP_ALIVE_MIN, RAMP_ALIVE_MAX, clampf(t_s / RAMP_TIME_S, 0.0, 1.0)))
+	if n <= 1 or low_quality:
+		return cap
+	return mini(int(cap * (1.0 + PLAYER_ALIVE_SLOPE * (_party_n(n) - 1))), MAX_ENEMIES)
 
 
 const ELITE_CHANCE_SLOPE := 0.06 ## était 0,05 (audit 29/10/2026)
@@ -686,8 +694,14 @@ func monster_gold(D: float, cost: float) -> float:
 
 
 ## `stage` : étage du combat (RunState.stage côté jeu).
-func boss_hp(kind: StringName, D: float, stage: int = 1) -> float:
-	return BOSS_BASE_HP[kind] * float(BOSS_FOCUS_HP_MULT.get(kind, 1.0)) * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1)) * sqrt(D) * pow(BOSS_STAGE_K, stage - 1)
+## `n_alive` : joueurs vivants à l'apparition du boss (figé ensuite) -> × boss_party_hp_mult(party_kind, n_alive) ;
+## `party_kind` vide = `kind` (&"mini" ou &"etage") ; boss final : boss_hp(&"etage", D, s, n, &"final") × FINAL_BOSS_HP_MULT.
+## n_alive = 1 : valeur solo inchangée.
+func boss_hp(kind: StringName, D: float, stage: int = 1, n_alive: int = 1, party_kind: StringName = &"") -> float:
+	var hp: float = BOSS_BASE_HP[kind] * float(BOSS_FOCUS_HP_MULT.get(kind, 1.0)) * (1.0 + LEVEL_HP_GROWTH * (monster_level(D) - 1)) * sqrt(D) * pow(BOSS_STAGE_K, stage - 1)
+	if n_alive <= 1:
+		return hp
+	return hp * boss_party_hp_mult(kind if party_kind == &"" else party_kind, n_alive)
 
 
 func boss_damage(kind: StringName, D: float) -> float:
@@ -980,9 +994,15 @@ func boss_xp(kind: StringName, D: float) -> float:
 ## coeff^1,25 ; le surplus de fin d'étage est tenu par REWARD_MULT et CHEST_PRICE_STAGE (simulation).
 
 
-func run_rubies(active_minutes: float, mode: StringName, pillars_done: int, victory: bool, gold_left: float) -> int:
-	var gold_bonus := mini(int(gold_left / 500.0), 20)
-	return int(floor(1.2 * active_minutes * RUBY_MODE_MULT[mode])) + 8 * pillars_done + (25 if victory else 0) + gold_bonus
+## Coop (docs/multi/Scaling_Multi.md §2.12) : `n` joueurs (bonus d'or ÷ party_factor(n)^1,25, les prix suivant pf(n)) et
+## `participation` 0-1 (ruby_participation) ; n = 1 et participation = 1 : formule solo inchangée.
+func run_rubies(active_minutes: float, mode: StringName, pillars_done: int, victory: bool, gold_left: float, n: int = 1, participation: float = 1.0) -> int:
+	var gold_div := 500.0 if n <= 1 else 500.0 * pow(party_factor(n), 1.25)
+	var gold_bonus := mini(int(gold_left / gold_div), 20)
+	var base := int(floor(1.2 * active_minutes * RUBY_MODE_MULT[mode])) + 8 * pillars_done + (25 if victory else 0) + gold_bonus
+	if participation >= 1.0:
+		return base
+	return int(floor(clampf(participation, 0.0, 1.0) * base))
 
 
 
@@ -1178,3 +1198,104 @@ func ritual_pulse_s(closed: int) -> float:
 ## Dégâts de l'onde du cœur : un coup de mini-boss de coef RITUAL_RING_COEF.
 func ritual_ring_damage(D: float) -> float:
 	return mini_attack_damage(boss_damage(&"mini", D), RITUAL_RING_COEF)
+
+
+# --- Multijoueur coop 1-4 (docs/Design_Multijoueur.md §4, docs/multi/Scaling_Multi.md §2.13) ---------------------
+## Toutes les fonctions rendent exactement la valeur solo à n = 1. n = joueurs ACTIFS de la partie (connectés, non
+## absents), recalculé au début de chaque étage (Players.party_size_for_scaling, RunState.party_size) ; n_alive =
+## joueurs vivants à l'apparition d'un boss.
+const MULTI_MAX_PLAYERS := 4
+const PLAYER_FACTOR_SLOPE := 0.3 ## pf(n) = 1 + 0,3 (n - 1) : départ de D (RoR2)
+const PLAYER_TIME_EXP := 0.2 ## pente de temps de D × n^0,2 (RoR2)
+const PLAYER_CREDIT_SLOPE := 0.5 ## crédits du director × (1 + 0,5 (n - 1)) = (n + 1) / 2 (RoR2)
+## Coffres posés par étage : +50 % de la base par joueur en plus (coop_chest_count, provisoire ; +75 % possible).
+## Recalibrage en cours (systems-designer) : constante à remplacer ici, avec COOP_GOLD_MULT.
+const PLAYER_INTERACTABLE_SLOPE := 0.5
+## Or (décision du joueur, 01/11/2026) : chaque gain est crédité EN ENTIER à chaque joueur (morts compris), × ce
+## multiplicateur selon n ; aucune division, aucun transfert. 1,0 partout pour l'instant, à calibrer (objets par
+## joueur proches de la simulation docs/multi/Scaling_Multi.md §3). Index = n (0 inutilisé).
+const COOP_GOLD_MULT: Array[float] = [1.0, 1.0, 1.0, 1.0, 1.0]
+const PLAYER_ALIVE_SLOPE := 0.2 ## plafond de vivants × (1 + 0,2 (n - 1)) ; 0 en qualité Basse
+## PV des boss × (1 + pente (n_alive - 1)) (décision du joueur, 01/11/2026).
+const BOSS_HP_PLAYER_SLOPE := {&"mini": 0.3, &"etage": 0.4, &"final": 0.35}
+const EPREUVE_TARGET_PLAYER_SLOPE := 0.08 ## épreuves partageables (Rituel, Poursuite) : cible × (1 - 0,08 (n - 1))
+## Mort en coop (décision du joueur, 01/11/2026) : spectateur, ressuscité au début de l'étage suivant ; équipe entière
+## morte = défaite. Pas de relevé au sol, pas de réanimation au pilier.
+const MULTI_RESURRECT_ON_FLOOR_START := true
+const MULTI_RESURRECT_HP_PCT := 1.0 ## PV au retour (début d'étage, comme RoR2)
+const MULTI_RESURRECT_INVULN_S := 2.0
+const MULTI_AFK_S := 45.0 ## sans entrée ni dégât infligé : retiré de n au prochain recalcul (début d'étage)
+const MULTI_RUBY_PARTICIPATION_MIN := 0.25 ## part de la moyenne des dégâts de l'équipe qui vaut participation 1
+
+
+static func _party_n(n: int) -> int:
+	return clampi(n, 1, MULTI_MAX_PLAYERS)
+
+
+## pf(n) = 1 + 0,3 (n - 1) : 1 / 1,3 / 1,6 / 1,9.
+func party_factor(n: int) -> float:
+	return 1.0 + PLAYER_FACTOR_SLOPE * (_party_n(n) - 1)
+
+
+## n^0,2 : 1 / 1,149 / 1,246 / 1,320 (pente de temps de D).
+func party_time_mult(n: int) -> float:
+	return pow(float(_party_n(n)), PLAYER_TIME_EXP)
+
+
+## g(n) = (n + 1) / 2 : crédits du director (1 / 1,5 / 2 / 2,5).
+func party_credit_mult(n: int) -> float:
+	return 1.0 + PLAYER_CREDIT_SLOPE * (_party_n(n) - 1)
+
+
+## Coffres posés (petits, grands, vitrines, plafond de spéciaux) : × (1 + 0,5 (n - 1)).
+func interactable_mult(n: int) -> float:
+	return 1.0 + PLAYER_INTERACTABLE_SLOPE * (_party_n(n) - 1)
+
+
+## Coffres posés par étage pour `base` en solo (provisoire, demande du joueur 01/11/2026, recalibrage en cours dans
+## docs/multi/Scaling_Multi.md) : base + ceil(PLAYER_INTERACTABLE_SLOPE × base × (n - 1)), soit +50 % par joueur en
+## plus (8 petits -> 8/12/16/20, 2 grands -> 2/3/4/5). n = 1 : base.
+func coop_chest_count(base: int, n: int) -> int:
+	if n <= 1 or base <= 0:
+		return base
+	return base + ceili(PLAYER_INTERACTABLE_SLOPE * base * (_party_n(n) - 1))
+
+
+## Chance (0-1) multipliée par interactable_mult(n), plafonnée à 1 (coffre légendaire : 25 % -> 62,5 % à 4).
+func party_chance(p: float, n: int) -> float:
+	return p if n <= 1 else minf(1.0, p * interactable_mult(n))
+
+
+## Multiplicateur de PV d'un boss pour `n_alive` joueurs vivants ; `kind` : &"mini", &"etage" ou &"final".
+func boss_party_hp_mult(kind: StringName, n_alive: int) -> float:
+	return 1.0 + float(BOSS_HP_PLAYER_SLOPE.get(kind, BOSS_HP_PLAYER_SLOPE[&"etage"])) * (_party_n(n_alive) - 1)
+
+
+## Or crédité à CHAQUE joueur pour un gain `amount` (kill, capsule, prime, pilier, note d'épreuve) : amount × mult(n).
+func coop_gold_mult(n: int) -> float:
+	return COOP_GOLD_MULT[_party_n(n)]
+
+
+## Niveau de départ des joueurs : monster_level(pf(n)) = 1 / 1 / 2 / 3 (§2.4).
+func player_start_level(n: int) -> int:
+	return monster_level(party_factor(n))
+
+
+## XP cumulée pour atteindre `level` depuis le niveau 1 (somme des xp_required).
+func xp_total_for_level(level: int) -> float:
+	var total := 0.0
+	for l in range(1, maxi(level, 1)):
+		total += xp_required(l)
+	return total
+
+
+## Cible « parfait » des épreuves partageables (Rituel, Poursuite) : × (1 - 0,08 (n - 1)), soit × 0,76 à 4.
+func epreuve_target_party_mult(n: int) -> float:
+	return 1.0 - EPREUVE_TARGET_PLAYER_SLOPE * (_party_n(n) - 1)
+
+
+## Participation aux rubis (0-1) : dégâts du joueur / (dégâts de l'équipe / n) / 0,25, bornée ; 1 en solo.
+func ruby_participation(player_damage: float, team_damage: float, n: int) -> float:
+	if n <= 1 or team_damage <= 0.0:
+		return 1.0
+	return clampf(player_damage / (team_damage / float(_party_n(n))) / MULTI_RUBY_PARTICIPATION_MIN, 0.0, 1.0)

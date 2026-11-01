@@ -466,7 +466,7 @@ func _test_panel_and_history() -> void:
 	var q: Node = ProfileScript.new()
 	q.write_enabled = false
 	q._apply_dict(d)
-	_check(int(d.version) == 4 and q.history[0].get("omens", {}) == {"2": "fievre", "3": "ciel_clair"} and not q.history[1].has("omens"), "historique : aller-retour, même version de sauvegarde (4)")
+	_check(int(d.version) == 5 and q.history[0].get("omens", {}) == {"2": "fievre", "3": "ciel_clair"} and not q.history[1].has("omens"), "historique : aller-retour, même version de sauvegarde (5)")
 	p.free()
 	q.free()
 	_check(EndRunScreen.ruby_breakdown({"mode": "moyen", "omen_rubies": 4}).contains("Présages +4"), "récap : « Présages +N » dans le détail des rubis")
