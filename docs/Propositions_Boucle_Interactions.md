@@ -15,7 +15,7 @@ Sommaire : 1. Diagnostic de la boucle actuelle · 2. Neuf interactions et objets
 
 | Interaction | État | Source |
 |---|---|---|
-| Coffres payants (8 petits, 2 grands, légendaire 25 %), d100 en roue de rareté, 2 cartes, relance (or ou pub/pass, 1 par coffre) | **codé** | `loot/chest.gd`, `chest_session.gd`, `ui/chest/chest_ui.gd`, `CHEST_QUALITY_TABLE` |
+| Coffres payants (8 petits, 2 grands, légendaire 25 %), d100 en roue de rareté, 2 cartes, relance (gratuite : 1 par coffre, 3 par run ; puis or) | **codé** | `loot/chest.gd`, `chest_session.gd`, `ui/chest/chest_ui.gd`, `CHEST_QUALITY_TABLE` |
 | Coffre de boss gratuit (table `boss`), reliquaires de secret (table `guardian`) | codé | `balance.gd` |
 | Capsules d'argent (10 par étage, 20 or × D^1,25, action interagir) | codé | `loot/gold_capsule.gd` |
 | Petits piliers (mini-boss) et gros pilier (boss + charge 60 s), paratonnerre-mère de la Source | codé | `stage/pillar.gd` |
@@ -141,7 +141,7 @@ Rubis, déblocages de personnages et de variantes, défi du jour, succès : la r
 - **Fonctionnement** : chaque fois que le joueur choisit la carte A d'un coffre, la carte B est **mémorisée** (`ChestSession` connaît déjà les deux). L'Étal expose **3 objets parmi les refusés de l'étage** (les 3 derniers ; s'il y en a moins de 3, il en montre moins) au **prix plein de leur qualité** et vend **un seul** objet. Apparaît toujours à ≥ 20 u du départ (il faut qu'il y ait eu des coffres avant).
 - **Décision créée** : rend le choix A / B **moins définitif sans le vider** (on peut revenir sur un regret, une fois, en payant) ; crée la tension « je prends le Sablier maintenant et, si l'Étal sort, je rachète la Bague ».
 - **Coût / fréquence** : `REBUTS_SHOWN := 3`, `REBUTS_PRICE_P := {commun: 1.0, peu_commun: 1.8, rare: 4.0, legendaire: 8.0}` (en P ; = coût d'un coffre « sûr » de cette qualité, pas de remise : la remise ferait de l'Étal un marchand dominant), `REBUTS_BUYS := 1` ; poids 20 % des étages 1-4.
-- **Interaction avec les objets** : aucune règle spéciale ; la relance à l'or ou par pub remplace les deux cartes, donc les cartes relancées sont aussi mémorisées (jusqu'à 4 rebuts par coffre : seuls les 3 derniers de l'étage sont montrés).
+- **Interaction avec les objets** : aucune règle spéciale ; la relance (gratuite ou à l'or) remplace les deux cartes, donc les cartes relancées sont aussi mémorisées (jusqu'à 4 rebuts par coffre : seuls les 3 derniers de l'étage sont montrés).
 - **Abus et garde-fous** : « ouvrir, regarder, refuser, racheter » n'apporte rien (prix plein, un seul achat) ; un rebut légendaire à 8 P reste exceptionnel (il faut un coffre légendaire puis un Étal).
 - **Lisibilité mobile** : les 3 objets flottent en icônes au-dessus de l'étal (on sait de loin si ça vaut le détour) ; le panneau est l'écran de coffre à 3 cartes sans roue de rareté, prix sur chaque carte.
 - **Coût de production** : code = 0,5 jour (mémoire des refus dans `RunState.refused: Array`, par étage ; variante du panneau de coffre) ; Codex = 1 prop, 1 son de cloche de verre.
@@ -243,7 +243,7 @@ Budget d'objets attendu (à valider par systems-designer sur `simulateur_scaling
 2. **Pas de seconde monnaie persistante** dans la run au-delà de la scorie plafonnée à 3 ; aucun « cristal », aucune monnaie convertible en rubis en cours de run ; rubis jamais dépensés dans la run (ils restent la méta).
 3. **Pas de station qui retire sans rendre** (malédictions, objets « ternis » à purifier, perte d'objet à la mort) : les 50 objets sont tous positifs, l'audit de valeur repose dessus ; une famille d'objets négatifs est un chantier à part (LiveOps).
 4. **Pas plus d'un atelier par étage** et aucun atelier à la Source sauf l'Enclume : un étage de 4 min à 3 ateliers devient un menu, pas un combat.
-5. **Pas de remise ni de pub** sur les ateliers : la relance par pub reste la seule pub de la boucle d'objets (GDD §10), et une remise sur l'Étal ou l'Enclume les rendrait dominants face aux coffres.
+5. **Pas de remise** sur les ateliers : une remise sur l'Étal ou l'Enclume les rendrait dominants face aux coffres.
 6. **Pas de nouveau boss ni de nouveau sort de boss** pour le Paratonnerre dévié : affixe élite existant, PV ×1,4, rien d'autre ; boss de raid exclus tant qu'ils ne sont pas calibrés à la main.
 7. **Pas d'interaction au contact ni de canalisation immobile** (règles des secrets) ; pas de minuteur réel qui court pendant un panneau (le temps actif est figé, comme au coffre).
 8. **Ne pas coder les 4 événements de carte de `Design_Boss_Cartes.md` §4.4 tels quels avant les ateliers** : l'Autel de fortune (d100 contre or) et le Sanctuaire de risque (vague contre or) sont des coffres déguisés ; le Marchand de l'ombre est rendu caduc par l'Étal et l'Enclume ; seul le Coffre piégé garde un intérêt (à fusionner dans le tirage d'atelier à 10 %).

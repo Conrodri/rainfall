@@ -13,7 +13,7 @@
 2. **Builds lisibles** : le joueur comprend pourquoi il est fort.
 3. **Difficulté progressive à la RoR2** : elle monte sans cesse, le joueur doit suivre.
 4. **Sessions courtes et respectueuses** : pause et reprise à tout moment.
-5. **Monétisation saine** : aucune puissance à vendre.
+5. **Monétisation saine** : jeu payant (~5 €), sans pub ni achat intégré, aucune puissance à vendre.
 
 ---
 
@@ -80,7 +80,7 @@ Quatre boutons dans la moitié basse de l'écran (zone du pouce), grands (≥ 48
 
 - **Jouer** : s'il y a une run sauvegardée, l'écran propose **Reprendre (Ardent, 4:12)** en bouton principal et **Nouvelle run** (avec confirmation d'écrasement). Sinon : choix du personnage -> variantes de sorts -> mode (Facile / Moyen / Difficile) -> départ.
 - **Personnalisations** : skins de personnages, effets de sorts, auras, thèmes de carte, choix des variantes favorites. Tout est visualisable en aperçu animé.
-- **Boutique** : « Sans pub », skins, packs de contenu, pass de saison. Pas de pack de rubis, pas de hasard.
+- **Boutique** : cosmétiques achetés en rubis (gagnés en jouant, voir Boutique_Rubis.md). Aucun achat en argent réel, aucun pass, pas de hasard.
 - **Quitter** : confirmation, sauvegarde automatique de la run en cours, puis fermeture. (Sur iOS ce bouton est déconseillé par Apple : à masquer sur cette plateforme.)
 - **Accueil chaleureux** : petite animation, pastille de défi du jour, point de notification quand un objectif est complété, musique douce, aucun pop-up de vente à l'ouverture.
 
@@ -93,10 +93,10 @@ Quatre boutons dans la moitié basse de l'écran (zone du pouce), grands (≥ 48
 - **Pause automatique** : appel entrant, passage en arrière-plan, verrouillage de l'écran, notification système.
 - Menu de pause : **Reprendre**, **Réglages** (son, vibration, secousses, boutons de sorts), **Sauvegarder et quitter**, **Abandonner la run** (avec confirmation, donne les rubis déjà gagnés).
 - À la reprise : compte à rebours de 3 s, puis 1,5 s de protection.
-- Le temps de pause, les écrans de coffre et les pubs **ne comptent pas** dans le temps de jeu actif (difficulté et charge des zones figées).
+- Le temps de pause et les écrans de coffre **ne comptent pas** dans le temps de jeu actif (difficulté et charge des zones figées).
 
 ### Sauvegarde de run (un emplacement)
-Quand sauvegarder : à la pause, quand l'app passe en arrière-plan, **toutes les 15 s** (écriture asynchrone et atomique : fichier temporaire puis renommage), à chaque choix d'item, et **juste avant une pub** (l'app peut être tuée pendant une pub).
+Quand sauvegarder : à la pause, quand l'app passe en arrière-plan, **toutes les 15 s** (écriture asynchrone et atomique : fichier temporaire puis renommage), et à chaque choix d'item.
 
 Contenu sauvegardé : graine aléatoire et **état du générateur** (impossible de relancer un coffre en quittant puis revenant), temps de jeu actif, **carte, graine de l'étage, numéro d'étage et mode**, **état des piliers** (non activé / activé, % de charge, PV du boss, zone), liste des coffres posés (position, type, acheté ou non), joueur (position, PV, niveau, XP, or, items et stacks, recharges, variantes), état des coffres (achetés, qualité, items proposés), compteurs (pity, relances à l'or et par pub), événements actifs, monstres vivants (type, position, PV, affixes, recharge de sort, jusqu'à 250 : ≈ 10-20 Ko). Les projectiles ne sont pas sauvegardés (recréés au prochain tir).
 
@@ -147,7 +147,7 @@ Exemple de kit, **Ardent** :
 
 ---
 
-## 6. Coffres et relance par pub
+## 6. Coffres et relance
 
 ### Déroulé d'une ouverture
 1. Le joueur dépense l'or. Le coffre tremble, particules de la couleur de qualité.
@@ -156,12 +156,11 @@ Exemple de kit, **Ardent** :
 4. Choix : **A**, **B**, ou **Relancer**.
 
 ### Relance
-- **Relancer (pub)** : le joueur regarde une pub récompensée, puis le jeu propose **2 nouveaux items de la même qualité** (le dé de qualité n'est pas relancé, les items déjà montrés sont exclus tant que la table le permet).
-- **Relance à l'or** : alternative sans pub, prix croissant (0,6 × le prix du coffre, ×1,5 à chaque relance).
-- **Plafond : 1 relance par coffre, 3 relances par pub par run.**
-- **Exemple** : « J'ouvre un coffre -> Rare -> 2 items proposés -> je prends l'un des deux, ou je regarde une pub et on me propose 2 autres items Rare. »
-- Joueurs ayant acheté « Sans pub » : la relance reste disponible **sans regarder de pub** (même plafond), pour ne pas les désavantager.
-- **Garde-fous** : si aucune pub n'est disponible, le bouton se transforme en relance à l'or ; on voit la qualité et les probabilités dans l'aide ; la pub ne se déclenche jamais sans appui explicite.
+- **Relancer (gratuit)** : le joueur relance sans rien payer, et le jeu propose **2 nouveaux items de la même qualité** (le dé de qualité n'est pas relancé, les items déjà montrés sont exclus tant que la table le permet).
+- **Relance à l'or** : une fois le plafond gratuit atteint, prix croissant (0,6 × le prix du coffre, ×1,5 à chaque relance).
+- **Plafond gratuit : 1 relance par coffre, 3 relances par run.**
+- **Exemple** : « J'ouvre un coffre -> Rare -> 2 items proposés -> je prends l'un des deux, ou je relance (gratuit) et on me propose 2 autres items Rare. »
+- **Garde-fous** : le bouton affiche son coût (gratuit, puis or) ; on voit la qualité et les probabilités dans l'aide.
 
 ### Coffres sur la carte
 - Les coffres payants sont **visibles dès l'arrivée** sur l'étage, avec leur prix et leur couleur de type (petit, grand, légendaire). Le prix suit `base × D^1,25`, donc il augmente tant que le joueur attend.
@@ -237,25 +236,20 @@ Un boss a une auto + 2 sorts + un passif de phase (extension de la règle des mo
 
 ## 10. Monétisation saine
 
+Jeu **payant, environ 5 €**, achat unique, sur PC, Android et iOS. Aucune publicité, aucun achat intégré, aucun pass, aucun achat en argent réel en jeu.
+
 | Source | Prix | Règle |
 |---|---|---|
-| **Relance de coffre par pub** | gratuit | Opt-in, 1 par coffre, 3 par run max |
-| **Autres pubs récompensées** | gratuit | Seconde chance (1/run), x2 rubis de fin de run |
-| **« Sans pub »** (achat unique) | 3,99 € | Plus aucune pub imposée, relances et bonus offerts sans pub |
-| **Skins** (personnages, effets de sorts, auras) | 0,99-2,99 € | 100 % cosmétique, aperçu en jeu |
-| **Packs de contenu** (personnage + biome + items) | 2,99-4,99 € | Contenu aussi débloquable en jouant |
-| **Pass de saison cosmétique** | 4,99 € | Piste gratuite généreuse |
-| **Pack Fondateur** | 7,99 € | Skin exclusif et crédits |
-
-**Maximum 5 pubs par run** (3 relances + seconde chance + x2 rubis), toutes demandées par le joueur. Aucune pub en plein combat.
+| **Relance de coffre** | gratuit | 1 par coffre, 3 par run ; ensuite à l'or (§6) |
+| **Rubis** | gagnés en jouant | Ne servent qu'à acheter du cosmétique (Boutique_Rubis.md), jamais de puissance |
 
 ### Charte éthique
-- Aucune puissance à vendre, aucun hasard payant, aucun pack de rubis.
+- Aucune puissance à vendre, aucun hasard payant, aucun achat en argent réel en jeu.
 - Pas de faux timers, pas de culpabilisation, prix transparents.
-- Conformité RGPD (consentement pubs personnalisées), décision « Families / moins de 13 ans » dès le départ car elle change les SDK.
+- Aucun SDK publicitaire ni de facturation intégrée : pas de consentement publicitaire à recueillir ; cible 13 ans et plus (Fiche_Play_Store.md §7).
 
-### Ordre de grandeur (hypothèses à valider)
-`ARPDAU pub = pubs vues par DAU × eCPM / 1000` : avec 3,5 pubs par joueur actif et par jour et un eCPM de 10 €, on obtient environ 0,035 € par joueur actif et par jour (à valider avec ton réseau de médiation), auxquels s'ajoutent les achats (« Sans pub », skins). LTV 30 jours visée : 0,50-1,20 €, donc un coût par installation maximal supportable d'environ 0,40 €.
+### Modèle
+Vente unique. Les hypothèses de l'ancien modèle (pubs récompensées, « Sans pub », skins, packs, pass, ARPDAU, LTV) sont retirées depuis le 01/11/2026.
 
 ---
 
@@ -280,9 +274,9 @@ Run courte = beaucoup de runs par jour : les défis et les seeds partagées cré
 | 1 | Prototype | Joueur, sort auto, spawn, XP/or, 1 coffre, 20 monstres, test 250 monstres sur Android bas de gamme |
 | 2 | Cœur du jeu | Director + difficulté D, **1 carte jouable** avec coffres posés, 3 piliers, zones de charge, 6 mini-boss + 1 boss d'étage, d100 + 2 items + relance, 1 personnage complet |
 | 3 | Contenu | **Cartes 2 et 3 dessinées à la main** (points d'apparition), menu, pause et sauvegarde (état des piliers et des coffres), 3 modes, 3 personnages, 30 items, audio/VFX passe 1 |
-| 4 | Monétisation | Pubs récompensées, « Sans pub », skins, défi quotidien, analytics |
+| 4 | Monétisation | Prix de vente (~5 €), boutique cosmétique en rubis, défi quotidien, analytics |
 | 5 | Soft launch (Philippines, Pologne, Canada) | Mesure J1/J7/J30, équilibrage via télémétrie |
-| 6 | Lancement mondial | 8 personnages, 50 items, pass de saison |
+| 6 | Lancement mondial | 8 personnages, 50 items |
 
 Indicateurs go/no-go : rétention J1 ≥ 38 %, J7 ≥ 14 %, J30 ≥ 5 % ; durée médiane de run conforme à la durée retenue ± 10 % ; première run terminée ≥ 50 % ; note ≥ 4,3.
 
@@ -294,9 +288,8 @@ Indicateurs go/no-go : rétention J1 ≥ 38 %, J7 ≥ 14 %, J30 ≥ 5 % ; durée
 |---|---|
 | Marché saturé de clones | Identité : coffres RoR, 2 variantes par sort, objectifs cachés, relance de coffre |
 | 250 monstres sur mobile | Pooling d'objets, rendu par lots, test bas de gamme dès le mois 1 |
-| Sauvegarde corrompue | Écriture atomique, CRC, sauvegarde avant pub, conversion en rubis en cas d'incompatibilité |
-| Abus de la relance par pub | Plafond par coffre et par run, qualité figée |
-| Pubs perçues comme intrusives | Opt-in seulement, « Sans pub » |
+| Sauvegarde corrompue | Écriture atomique, CRC, conversion en rubis en cas d'incompatibilité |
+| Abus de la relance | Plafond par coffre et par run, puis relance à l'or ; qualité figée |
 | Propriété intellectuelle | S'inspirer des mécaniques uniquement, pas des noms, assets ni designs de RoR2 / VS |
 
 ---
@@ -305,5 +298,4 @@ Indicateurs go/no-go : rétention J1 ≥ 38 %, J7 ≥ 14 %, J30 ≥ 5 % ; durée
 
 1. **Durée de run** : retenu petits piliers sans charge + gros pilier 90 s, 3 étages ≈ 10:00 sans farm. À revalider en playtest.
 2. **Confirmé** : la charge n'avance que dans la zone ; un petit pilier est terminé quand sa zone est chargée et son boss mort ; mini-boss = or et XP ; boss d'étage = coffre gratuit Rare+. **Confirmé** : le ralentissement des élites reste à -30 % pendant 1,5 s au lancement. À valider : boss avec auto + 2 sorts + passif.
-3. « Sans pub » : relance de coffre gratuite sans pub (avec le même plafond).
-4. Cible d'âge (changement de SDK de pubs si < 13 ans).
+3. Cible d'âge : 13 ans et plus (Fiche_Play_Store.md §7), à confirmer.

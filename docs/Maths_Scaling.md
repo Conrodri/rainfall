@@ -1,7 +1,7 @@
 # Maths & Scaling v3 : Survivor-like 2D mobile (étages, piliers et zones de charge)
 
 > Tout est calibré avec `simulateur_scaling.py` (modèle « champ moyen »). Ce sont des **points de départ** à valider en playtest.
-> Notation : t = minutes de **jeu actif** (la pause, les écrans de coffre et les pubs ne comptent pas), s = numéro d'étage (1, 2, 3, puis sans fin), d = vitesse de scaling du mode, D = coefficient de difficulté, L = niveau du joueur.
+> Notation : t = minutes de **jeu actif** (la pause et les écrans de coffre ne comptent pas), s = numéro d'étage (1, 2, 3, puis sans fin), d = vitesse de scaling du mode, D = coefficient de difficulté, L = niveau du joueur.
 
 ---
 
@@ -40,7 +40,7 @@ Un étage dure **3:10 à 3:40** : 30 s d'exploration, deux combats de mini-boss 
 > **Remplacé (21/10/2026) par §14 Alignement RoR2** pour les formules de cette section ; le texte ci-dessous est conservé pour l'historique.
 
 ```
-D(t, s) = (1 + 0.30 × d × t) × 1.15^(s-1)        t = minutes de jeu actif (la pause, les écrans de coffre et les pubs ne comptent pas)
+D(t, s) = (1 + 0.30 × d × t) × 1.15^(s-1)        t = minutes de jeu actif (la pause et les écrans de coffre ne comptent pas)
 ```
 
 Le multiplicateur d'étage s'applique **dès l'entrée dans l'étage** (sinon on retrouve des sauts brusques). La difficulté ne s'arrête jamais de monter.
@@ -290,8 +290,8 @@ Le dé de qualité n'est **jamais relancé** : seule la sélection des 2 items c
 Relance = 2 nouveaux items tirés dans Table[qualité déjà obtenue] \ {items déjà montrés pour ce coffre}
 (si la table restante contient moins de 2 items, on autorise les doublons)
 ```
-- **Relance par pub** : 1 par coffre, **3 par run maximum**. Elle est offerte sans pub aux joueurs ayant acheté « Sans pub » (même plafond).
-- **Relance à l'or** : voir section 7 (indépendante du compteur de pubs).
+- **Relance gratuite** : 1 par coffre, **3 par run maximum**.
+- **Relance à l'or** : au-delà du plafond gratuit, voir section 7 (`0.6 × prix × 1.5^n`).
 - Effet : pour un item précis voulu dans une table de 10 (Rare), la probabilité de le voir passe de 20 % (2 cartes) à 40 % (4 cartes).
 
 ### Protection contre la malchance (pity)
@@ -408,7 +408,7 @@ Note : les repères intègrent les sauts ×1.15 d'entrée d'étage (à 3:38 et 6
 
 1. Valider d'abord les **exposants** (D^1.15 / 0.80 / 1.25 / boss 1.6), puis la pente 0.30 et la durée de charge, puis les coefficients de sorts et les tables d'items.
 2. Playtests : temps de survie médian par mode. Cible : **≈ 70 % de victoires en Facile, ≈ 50 % en Moyen, ≈ 25 % en Difficile**.
-3. Télémétrie : étage et pilier de la mort, boss qui tue le plus, taux de farm après boss, items jamais choisis, usage des relances (pub et or), part des joueurs qui continuent en sans fin.
+3. Télémétrie : étage et pilier de la mort, boss qui tue le plus, taux de farm après boss, items jamais choisis, usage des relances (gratuite et or), part des joueurs qui continuent en sans fin.
 4. Test de performance : 250 monstres + 15 projectiles + 2 zones de charge à l'écran sur Android d'entrée de gamme (60 FPS, minimum 40).
 
 ## Points à trancher

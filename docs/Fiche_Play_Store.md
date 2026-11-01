@@ -52,6 +52,7 @@ JOUABLE COMME VOUS VOULEZ
 • Joystick flottant, sorts au toucher ou automatiques (option d'accessibilité).
 • Manette prise en charge.
 • Aucune puissance à vendre.
+• Jeu premium : un achat unique, sans publicité ni achat intégré.
 ```
 
 ## 2. Éléments graphiques à fournir
@@ -84,7 +85,7 @@ Réponses à vérifier au moment de remplir le questionnaire :
 - **Violence** : fantastique, contre des créatures non humaines, sans sang réaliste ni démembrement.
 - **Peur / horreur** : thèmes sombres (cryptes, ossements, créatures), pas de contenu effrayant intense.
 - **Langage grossier, sexualité, drogues, jeux d'argent** : non. Les coffres s'achètent avec l'or gagné en jeu, sans argent réel ni objet payant aléatoire.
-- **Interactions entre utilisateurs, partage de position, achats numériques** : non pour l'instant.
+- **Interactions entre utilisateurs, partage de position, achats numériques** : non.
 - Classification attendue : PEGI 7 à 12.
 
 ## 6. Sécurité des données
@@ -95,13 +96,13 @@ Réponses à vérifier au moment de remplir le questionnaire :
 - **Suppression des données** : la sauvegarde est locale à l'appareil (supprimée avec l'application).
 - **Journal de run** : un journal local des 50 dernières parties (statistiques de jeu, aucune donnée personnelle) sert à l'équilibrage. Il ne quitte l'appareil que si le joueur appuie sur « Exporter les journaux » (Réglages > Jeu) puis choisit lui-même de partager le fichier ; aucune transmission automatique, toujours aucune permission Internet. Rien à déclarer comme « collecte » au sens de Google Play (données qui ne quittent l'appareil que par une action explicite de l'utilisateur, via la feuille de partage du système).
 
-À revoir dès que les publicités (relance de coffre) ou les achats (pass « Sans pub ») seront branchés : il faudra alors déclarer les identifiants publicitaires et les données d'achat, et réactiver la permission Internet.
+Aucune publicité ni achat intégré n'est prévu : aucun identifiant publicitaire ni donnée d'achat à déclarer. Si cela change, revoir cette section et réactiver la permission Internet.
 
 ## 7. Prix et public
 
-- **Prix** : gratuit (mobile). La version PC est payante, hors Play Store.
-- **Contient des annonces** : Non pour l'instant (à passer à Oui avec les pubs).
-- **Achats intégrés** : Non pour l'instant.
+- **Prix** : payant, environ 5 € (achat unique). La version PC est payante, hors Play Store.
+- **Contient des annonces** : Non (aucune publicité dans le jeu).
+- **Achats intégrés** : Non (aucun achat dans le jeu ; le prix de vente est le seul achat).
 - **Public cible** : 13 ans et plus (éviter la tranche « enfants », qui impose le programme Familles).
 - **Pays** : France et pays francophones d'abord ; le jeu n'est qu'en français.
 
