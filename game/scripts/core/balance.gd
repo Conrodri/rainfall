@@ -31,7 +31,7 @@ const RUBY_MODE_MULT := {&"facile": 0.8, &"moyen": 1.0, &"difficile": 1.3}
 ## Crédits/s = CREDIT_K × (1 + 0,4 coeff) × zone (RoR2 : (1 + 0,4 coeff) × multiplicateur du director).
 ## Remplacé : 4 + 2,5 D. Zone d'étage : téléporteur RoR2 (+2,0 aux deux directors à 0,75) = ×2,33.
 const CREDIT_K := 0.894
-const ZONE_SPAWN_MULT := {&"mini": 1.5, &"etage": 2.33}
+const ZONE_SPAWN_MULT := {&"mini": 1.5, &"etage": 2.33, &"epreuve": 1.5} ## &"epreuve" : zone mobile des épreuves (prototype, EPREUVES_ENABLED)
 const MAX_ENEMIES := 250
 ## Mise en route (retour joueur : trop de monstres d'entrée, le doc suppose ~5 kills/s dès 0 s).
 ## Les crédits et le plafond de monstres vivants montent avec le temps actif, plafond plein à RAMP_TIME_S.
@@ -1094,3 +1094,87 @@ func omen_mandatory(mode: StringName) -> bool:
 ## Rubis des présages acceptés (hors « Ciel clair »).
 func omen_rubies(accepted: int) -> int:
 	return OMEN_RUBIES * maxi(accepted, 0)
+
+
+# --- Épreuves (prototype « Les Épreuves », docs/Boucle_Etage_Refonte.md §1.3 et §5.3) ---
+## À l'étage 1 (Terrasses), les deux petits piliers deviennent deux épreuves : une Escorte (barque sur un tracé) et un
+## Rituel (3 relais autour d'un cœur qui pulse). Le mini-boss du plan de run apparaît à la fin de l'épreuve ; le gros
+## pilier et le boss d'étage ne changent pas. DÉSACTIVÉ par défaut : sans drapeau, le jeu est strictement inchangé.
+## Activation : `Balance.EPREUVES_ENABLED = true` (tests) ou l'option de lancement `-- --epreuves` (epreuves_enabled()).
+var EPREUVES_ENABLED := false
+const EPREUVES_ARG := "--epreuves"
+const EPREUVE_STAGE := 1 ## étage de run (prototype : étage 1 seulement, pas de boucle sans fin)
+## Or versé à la fin de l'épreuve selon la note, en P (prix d'un petit coffre au début de l'étage, station_price_p).
+## Calé sur l'or réel (docs/Ateliers_Chiffres.md §1.2, étage 1 : 8,0-8,8 P, bande 8-10,5 P, capsules 4 x 40 déjà
+## comptées) : un petit pilier rapporte aujourd'hui ≈ 1,0 P (prime du mini-boss 0,3 + kills en zone 0,7). Une épreuve
+## rapporte la note + 0,3 P de prime + la moitié des kills en zone (EPREUVE_ZONE_GOLD_MULT) ≈ 0,4 P : « bien »
+## 1,0 + 0,7 = 1,7 P (+0,7 P par épreuve, +1,4 P par étage => 9,8 P), « parfait » 2,2 P, « fait » 1,2 P. Les valeurs du doc
+## (2,0 / 1,4 / 0,8) poussaient l'étage à 10,6-11,6 P, au-dessus de la bande : abaissées au bas des plages sûres.
+const EPREUVE_GOLD_P := {&"parfait": 1.5, &"bien": 1.0, &"fait": 0.5}
+const EPREUVE_ZONE_GOLD_MULT := 0.5 ## or des kills en zone d'épreuve : l'or vient de la note, pas du farm
+## Seuil « parfait » (s) par verbe ; « bien » = seuil x EPREUVE_GOOD_MULT ; « fait » au-delà. Seuls escorte et rituel
+## existent dans le prototype (les autres verbes : docs/Boucle_Etage_Refonte.md §1.1).
+const EPREUVE_TARGET_S := {&"escorte": 40.0, &"rituel": 35.0, &"poursuite": 45.0, &"veine": 40.0, &"tenue": 40.0}
+const EPREUVE_GOOD_MULT := 1.5
+const EPREUVE_BACKSTOP_S := 75.0 ## passé ce délai l'épreuve se termine d'elle-même en « fait » (jamais bloqué)
+const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreuve"] qui suit l'objet mobile
+## Tirage des coffres (§1.1) : 3 près du tracé de l'escorte, 3 près du rituel (<= 8 u), 3 autour du gros pilier, 1 au départ.
+const EPREUVE_CHEST_TRACE_U := 8.0
+const EPREUVE_CHEST_ARENA_U := 12.0
+const EPREUVE_CHEST_START_U := 14.0
+const EPREUVE_CHEST_SPLIT := {&"escorte": 3, &"rituel": 3, &"arene": 3, &"depart": 1}
+const EPREUVE_BIG_AVOID_U := 12.0 ## le gros pilier reste à cette distance du tracé, du cœur et des relais
+## Escorte : la barque suit `escort_path` à ESCORT_SPEED_U ; elle s'arrête si le joueur s'éloigne de plus de
+## ESCORT_LEASH_U ; les monstres au contact (ESCORT_HIT_RADIUS_U) la blessent ; à 0 PV elle s'immobilise ESCORT_STALL_S
+## puis repart pleine (jamais détruite). PV = ESCORT_HP_MINI_SHARE x PV d'un mini-boss.
+const ESCORT_SPEED_U := 2.5
+const ESCORT_LEASH_U := 6.0
+const ESCORT_HP_MINI_SHARE := 0.3
+const ESCORT_STALL_S := 5.0
+const ESCORT_HIT_RADIUS_U := 1.3
+const ESCORT_BOARD_RANGE_U := 2.0 ## portée pour « lancer la barque »
+## Rituel : RITUAL_RELAYS relais à fermer (maintien RITUAL_HOLD_S), le cœur pulse toutes les RITUAL_PULSE_S[relais fermés] s :
+## anneau télégraphié RITUAL_TELEGRAPH_S puis onde qui s'étend à RITUAL_WAVE_SPEED_U (largeur 2 x RITUAL_WAVE_HALF_U) jusqu'à
+## RITUAL_WAVE_MAX_U ; dégâts = coup de mini-boss x RITUAL_RING_COEF (plafond de coup du joueur inchangé), un seul par onde.
+const RITUAL_RELAYS := 3
+const RITUAL_HOLD_S := 1.2
+const RITUAL_PULSE_S: Array[float] = [12.0, 9.0, 7.0]
+const RITUAL_TELEGRAPH_S := 1.0
+const RITUAL_RING_COEF := 1.0
+const RITUAL_WAVE_SPEED_U := 8.0
+const RITUAL_WAVE_MAX_U := 16.0
+const RITUAL_WAVE_HALF_U := 0.75
+const RITUAL_ZONE_RADIUS_U := 15.0 ## zone de monstres du Rituel : couvre les relais (10-14 u du cœur)
+
+
+func epreuves_enabled() -> bool:
+	return EPREUVES_ENABLED or OS.get_cmdline_user_args().has(EPREUVES_ARG)
+
+
+## Note d'une épreuve : « parfait » si `clean` (barque jamais immobilisée, aucun anneau reçu) et durée <= seuil ; « bien »
+## jusqu'à seuil x EPREUVE_GOOD_MULT ; « fait » au-delà.
+func epreuve_grade(verb: StringName, elapsed_s: float, clean: bool) -> StringName:
+	var target: float = float(EPREUVE_TARGET_S.get(verb, 40.0))
+	if clean and elapsed_s <= target:
+		return &"parfait"
+	return &"bien" if elapsed_s <= target * EPREUVE_GOOD_MULT else &"fait"
+
+
+## Or versé pour une note, `price_p` = prix d'un petit coffre au début de l'étage (station_price_p).
+func epreuve_gold(grade: StringName, price_p: float) -> float:
+	return float(EPREUVE_GOLD_P.get(grade, 0.0)) * price_p
+
+
+## PV de la barque d'escorte : ESCORT_HP_MINI_SHARE x PV d'un mini-boss à la difficulté D.
+func escort_hp(D: float, stage: int = 1) -> float:
+	return ESCORT_HP_MINI_SHARE * boss_hp(&"mini", D, stage)
+
+
+## Cadence du cœur (s) quand `closed` relais sont fermés.
+func ritual_pulse_s(closed: int) -> float:
+	return RITUAL_PULSE_S[clampi(closed, 0, RITUAL_PULSE_S.size() - 1)]
+
+
+## Dégâts de l'onde du cœur : un coup de mini-boss de coef RITUAL_RING_COEF.
+func ritual_ring_damage(D: float) -> float:
+	return mini_attack_damage(boss_damage(&"mini", D), RITUAL_RING_COEF)

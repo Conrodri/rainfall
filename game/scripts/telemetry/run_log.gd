@@ -16,7 +16,10 @@ extends Node
 ##    mode, seed, plan [{stage, map, variant, biome, boss, minis}], resumes,
 ##    floors [{stage, map, t_in, t_clear, t_out, d_in, d_out, lvl_in, lvl_out, gold_earned, gold_spent,
 ##             gold_converted, xp_from_gold, kills, dmg_taken, chests [{t, q, offered, taken}],
-##             items [{t, id, src}], pillars [{t, kind, state}]}],
+##             items [{t, id, src}], pillars [{t, kind, state}],
+##             epreuves_on (prototype « Les Épreuves »), epreuves [{kind, t0, t1, grade, s, gold}] (note parfait | bien | fait,
+##             s = durée de l'épreuve, gold = or nominal versé), epreuve_s (somme des durées), post_boss_s (t_out - t_clear :
+##             durée après la mort du boss d'étage), chests_after_boss (coffres ouverts après t_clear)}],
 ##    fights [{id, cat (mini | etage | raid | final), stage, hp_max, t_spawn, t_hit, t_end, ttk, outcome (kill |
 ##             death | unfinished), dmg_dealt, dmg_taken, dmg_from_boss, shield_s, enrage_s, player_died}],
 ##    minutes [{m, dmg {sort: x, other: y}, casts {sort: n}, cd {sort: recharge moyenne s}, taken {source: x},
@@ -91,6 +94,8 @@ func _ready() -> void:
 	Events.chest_opened.connect(_on_chest_opened)
 	Events.item_chosen.connect(_on_item_chosen)
 	Events.pillar_state_changed.connect(_on_pillar)
+	Events.epreuve_started.connect(_on_epreuve_started)
+	Events.epreuve_finished.connect(_on_epreuve_finished)
 	Events.gold_converted.connect(_on_gold_converted)
 	Events.run_saved.connect(_on_run_saved)
 	RunState.gold_changed.connect(_on_gold_changed)
@@ -258,6 +263,7 @@ func _on_floor_started(stage: int) -> void:
 		"t_out": -1.0, "d_in": snappedf(RunState.difficulty(), 0.01), "d_out": 0.0, "lvl_in": RunState.level,
 		"lvl_out": 0, "gold_earned": 0.0, "gold_spent": 0.0, "gold_converted": 0.0, "xp_from_gold": 0.0,
 		"kills": 0, "dmg_taken": 0.0, "chests": [], "items": [], "pillars": [],
+		"epreuves_on": bool(sm.get(&"epreuves_on")) if sm != null else false, "epreuves": [],
 	}
 	(_log["floors"] as Array).append(_floor)
 	_write(true)
@@ -278,6 +284,18 @@ func _close_floor() -> void:
 	# D de fin avec l'étage qui se termine (RunState.stage est déjà incrémenté au changement d'étage)
 	_floor["d_out"] = snappedf(Balance.difficulty(RunState.active_time_s, int(_floor["stage"]), Balance.MODES[RunState.mode]), 0.01)
 	_floor["lvl_out"] = RunState.level
+	var t_clear := float(_floor["t_clear"])
+	if t_clear >= 0.0: # mesures de la boucle d'étage (prototype des Épreuves) : durée après le boss, achats après le boss
+		_floor["post_boss_s"] = snappedf(float(_floor["t_out"]) - t_clear, 0.1)
+		var after := 0
+		for c in _floor["chests"] as Array:
+			if float((c as Dictionary).get("t", 0.0)) >= t_clear:
+				after += 1
+		_floor["chests_after_boss"] = after
+	var ep_s := 0.0
+	for e in _floor.get("epreuves", []) as Array:
+		ep_s += float((e as Dictionary).get("s", 0.0))
+	_floor["epreuve_s"] = snappedf(ep_s, 0.1)
 	for k in ["gold_earned", "gold_spent", "gold_converted", "xp_from_gold", "dmg_taken"]:
 		_floor[k] = roundi(float(_floor[k]))
 	_floor = {}
@@ -596,6 +614,27 @@ func _on_pillar(pillar: Node, state: StringName) -> void:
 		return
 	var kind := "final" if bool(pillar.get(&"final_boss")) else ("gros" if int(pillar.get(&"kind")) == Pillar.Kind.BIG else "petit")
 	(_floor["pillars"] as Array).append({"t": _t(), "kind": kind, "state": String(state)})
+
+
+## Épreuve lancée / terminée (prototype « Les Épreuves ») : note, durée et or versé de chaque épreuve de l'étage.
+func _on_epreuve_started(kind: StringName) -> void:
+	if not recording or _floor.is_empty() or not _floor.has("epreuves"):
+		return
+	(_floor["epreuves"] as Array).append({"kind": String(kind), "t0": _t(), "t1": -1.0, "grade": "", "s": 0.0, "gold": 0})
+
+
+func _on_epreuve_finished(kind: StringName, grade: StringName, elapsed_s: float, gold: float) -> void:
+	if not recording or _floor.is_empty() or not _floor.has("epreuves"):
+		return
+	var list: Array = _floor["epreuves"]
+	for i in range(list.size() - 1, -1, -1):
+		var e: Dictionary = list[i]
+		if e["kind"] == String(kind) and e["grade"] == "":
+			e["t1"] = _t()
+			e["grade"] = String(grade)
+			e["s"] = snappedf(elapsed_s, 0.1)
+			e["gold"] = roundi(gold)
+			return
 
 
 # --- Fichiers -------------------------------------------------------------------------------------

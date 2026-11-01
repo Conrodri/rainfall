@@ -49,3 +49,8 @@ signal station_used(id: StringName, kind: StringName, given: Array, received: Ar
 ## Présage actif changé : choisi à l'arrivée, retiré au téléporteur (id vide) ou imposé par le mode test.
 ## id = &"ciel_clair" quand le joueur refuse tout présage. `stage` : étage concerné.
 signal omen_changed(id: StringName, stage: int)
+## --- Épreuves (prototype « Les Épreuves », scripts/stage/epreuve*.gd, docs/Boucle_Etage_Refonte.md §5.3) ---
+## Une épreuve démarre (&"escorte" | &"rituel").
+signal epreuve_started(kind: StringName)
+## Une épreuve se termine (avant le mini-boss) : note (&"parfait" | &"bien" | &"fait"), durée (s de jeu actif), or versé.
+signal epreuve_finished(kind: StringName, grade: StringName, elapsed_s: float, gold: float)

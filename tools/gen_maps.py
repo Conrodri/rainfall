@@ -22,6 +22,16 @@ for _id, _y, _x, _s in GRID_EDITS:
     assert len(_g[_y]) >= _x + len(_s), (_id, _y, _x)
     _g[_y] = _g[_y][:_x] + _s + _g[_y][_x + len(_s):]
 
+# Épreuves (docs/Boucle_Etage_Refonte.md §5.3, prototype « Les Épreuves », Balance.EPREUVES_ENABLED) : tracé de l'escorte
+# (polyligne, 60-80 u, coordonnées u en repère carte) et rituel (cœur + 3 relais à 10-14 u). Cases praticables vérifiées
+# par tests/epreuve_test.gd ; recopiées telles quelles dans data/maps/<id>.json.
+EPREUVES = {
+ "terrasses_noyees": dict(escort_path=[[15, 33], [45, 33], [45, 37], [15, 37]],
+                          ritual=dict(heart=[35, 15], relays=[[47, 15], [29, 25], [29, 5]])),
+ "terrasses_rizieres_hautes": dict(escort_path=[[19, 59], [53, 59], [53, 65], [21, 65]],
+                                   ritual=dict(heart=[33, 15], relays=[[43, 20], [23, 21], [33, 3]])),
+}
+
 MAPS = [
  dict(id="terrasses_noyees", floor=1, name="Terrasses noyées", biome="terrasses", boss="eclusier",
   boss_name="L'Éclusier",
@@ -767,7 +777,8 @@ def main():
             ambient_event=m["ambient"],
             monster_spawn=dict(margin_u=[2,4], allowed_cells=[".", ","], forbidden_cells=["#","~"," "]),
             **({"hour_shift_min": m["hour_shift_min"]} if "hour_shift_min" in m else {}),
-            **({"secrets": m["secrets"]} if "secrets" in m else {}))
+            **({"secrets": m["secrets"]} if "secrets" in m else {}),
+            **EPREUVES.get(m["id"], {}))
         os.makedirs(f"{G}/data/maps", exist_ok=True)
         # saut de ligne final : fichiers identiques à ceux de l'éditeur (pas de diff parasite)
         open(f'{G}/data/maps/{m["id"]}.json', "w", encoding="utf-8", newline=NL).write(json.dumps(meta, ensure_ascii=False, indent=1) + NL)

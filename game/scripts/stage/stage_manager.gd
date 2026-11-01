@@ -75,6 +75,10 @@ var floor_plan: Array = [] ## FloorPlan.build(RunState.run_seed) : étages 1..FI
 var floor_minis: Array = [] ## mini-boss du plan pour l'étage courant (petit pilier i -> floor_minis[i])
 var is_final_floor := false ## étage de la Source (boss final, gros pilier unique)
 var rules := DEFAULT_RULES.duplicate(true)
+## Prototype « Les Épreuves » (docs/Boucle_Etage_Refonte.md §5.3, Balance.epreuves_enabled) : à l'étage 1, les deux petits
+## piliers sont remplacés par une Escorte et un Rituel (scripts/stage/epreuve*.gd), les coffres se tirent près des tracés.
+var epreuves_on := false
+var _epreuve_geom := {} ## {"escort": PackedVector2Array, "heart": Vector2, "relays": Array} en repère local de la carte
 var _catalog: Array = []
 var _own_nav: NavField = null ## zone accessible sans Director (tests) : grille construite ici
 var _own_nav_map: Node = null
@@ -163,6 +167,12 @@ func start_stage(layout: Dictionary = {}) -> void:
 		Events.floor_started.emit(RunState.stage)
 		stage_started.emit(RunState.stage)
 		return
+	epreuves_on = _epreuves_applicable(layout)
+	_epreuve_geom = _load_epreuve_geom() if epreuves_on else {}
+	if _epreuve_geom.is_empty():
+		epreuves_on = false # carte sans tracé : étage classique
+	if epreuves_on:
+		rules["small_pillars"] = 0 # les petits piliers sont remplacés par les deux épreuves (le gros pilier reste tiré)
 	var chest_markers := map.get_chest_markers()
 	var pillar_markers := map.get_pillar_markers()
 	if layout.is_empty():
@@ -198,8 +208,10 @@ func start_stage(layout: Dictionary = {}) -> void:
 			n_small += 1
 	var small_i := 0
 	for p: Dictionary in layout["pillars"]:
-		var pillar := Pillar.new()
-		pillar.position = reachable_local(map.local_pos(pillar_markers[int(p["marker"])]))
+		var pillar: Pillar = _make_epreuve(String(p["epreuve"])) if p.has("epreuve") else null
+		if pillar == null:
+			pillar = Pillar.new()
+			pillar.position = reachable_local(map.local_pos(pillar_markers[int(p["marker"])])) if p.has("marker") else map.get_player_start()
 		var is_big := int(p["kind"]) == Pillar.Kind.BIG
 		pillar.setup(Pillar.Kind.BIG if is_big else Pillar.Kind.SMALL, zone_id, is_big and n_small > 0)
 		if is_big:
@@ -383,6 +395,10 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 	if not shut.is_empty():
 		push_warning("StageManager : %d repère(s) de coffre hors zone accessible sur %s." % [shut.size(), map_id])
 		order = order.filter(func(i: int) -> bool: return not shut.has(i)) + shut
+	var pillars_roll: Array = []
+	if epreuves_on: # le gros pilier est tiré d'abord : les coffres se répartissent entre tracés, arène et départ
+		pillars_roll = _roll_pillars(pillar_markers, start, rng)
+		order = _epreuve_chest_order(order, chest_markers, _big_layout_pos(pillars_roll, pillar_markers, start), rng)
 	var out_chests: Array = []
 	if legendary:
 		var min_d := float(rules["legendary_chest_min_spawn_distance_u"]) * UNIT
@@ -399,7 +415,10 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 	for i in kinds.size():
 		out_chests.append({"kind": kinds[i], "marker": order[i]})
 
-	var pillars_roll := _roll_pillars(pillar_markers, start, rng)
+	if epreuves_on:
+		pillars_roll = _epreuve_entries() + pillars_roll
+	else:
+		pillars_roll = _roll_pillars(pillar_markers, start, rng)
 	_assign_showcases(out_chests)
 	return {"chests": out_chests, "pillars": pillars_roll}
 
@@ -491,6 +510,8 @@ func _try_pillars(smalls: Array, bigs: Array, pos: Array[Vector2], start: Vector
 	for i in _shuffled_array(bigs, rng):
 		if level < 2 and pos[i].distance_to(start) < big_min:
 			continue
+		if level < 2 and not _big_clear_of_epreuves(pos[i]):
+			continue
 		if level == 0 and map.get_walkable_ratio(pos[i], float(radii["big"]) * UNIT) < walk_min:
 			continue
 		if not clear.call(pos[i]):
@@ -536,12 +557,14 @@ func _roll_capsules(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	for c: Dictionary in layout["chests"]:
 		avoid.append(map.local_pos(chest_markers[int(c["marker"])]))
 	for p: Dictionary in layout["pillars"]:
-		var pp := map.local_pos(pillar_markers[int(p["marker"])])
+		var pp := _pillar_layout_pos(p, pillar_markers)
 		avoid.append(pp)
 		if int(p["kind"]) == Pillar.Kind.BIG:
 			avoid.append(teleporter_local(pp))
 	var cands := _capsule_candidates(rng)
 	var order := _shuffled_indices(cands.size(), rng)
+	if epreuves_on:
+		order = _epreuve_capsule_order(cands, order)
 	var wanted := Balance.CAPSULES_PER_STAGE
 	var picked: Array[Vector2] = []
 	var spacings: Array = [CAPSULE_SPACING_U]
@@ -699,6 +722,150 @@ func _capsule_candidates(rng: RandomNumberGenerator) -> Array[Vector2]:
 		if map.get_walkable_ratio(pos, CAPSULE_WALK_RADIUS) >= 0.999 and is_reachable_local(pos):
 			out.append(pos)
 	return out
+
+
+# --- Épreuves (prototype, docs/Boucle_Etage_Refonte.md §5.3)
+## Les épreuves s'appliquent à cet étage : une reprise de sauvegarde suit ce qui a été tiré, sinon drapeau
+## Balance.epreuves_enabled(), étage 1 (Balance.EPREUVE_STAGE), carte du plan, pas de boucle sans fin.
+func _epreuves_applicable(layout: Dictionary) -> bool:
+	for p in layout.get("pillars", []):
+		if p is Dictionary and p.has("epreuve"):
+			return true
+	if not layout.is_empty():
+		return false # sauvegarde d'un étage sans épreuves
+	return Balance.epreuves_enabled() and map_scene == null and not endless and not is_final_floor and RunState.stage == Balance.EPREUVE_STAGE
+
+
+## Tracé de l'escorte et rituel de la carte (`escort_path` et `ritual` du JSON, coordonnées u en repère carte) convertis en
+## repère local de la carte ; {} si la carte n'en porte pas.
+func _load_epreuve_geom() -> Dictionary:
+	var path := "%s/%s.json" % [MAPS_DIR, String(map.get_meta(&"map_id", map_id))]
+	if not FileAccess.file_exists(path):
+		return {}
+	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not (data is Dictionary) or not data.has("escort_path") or not (data.get("ritual") is Dictionary) or not data.has("size_px"):
+		return {}
+	var half := Vector2(float(data["size_px"][0]), float(data["size_px"][1])) * 0.5
+	var pts := PackedVector2Array()
+	for u in data["escort_path"]:
+		pts.append(map.from_map(Vector2(float(u[0]), float(u[1])) * UNIT - half))
+	var rit: Dictionary = data["ritual"]
+	var relays: Array = []
+	for u in rit.get("relays", []):
+		relays.append(map.from_map(Vector2(float(u[0]), float(u[1])) * UNIT - half))
+	if pts.size() < 2 or not rit.has("heart") or relays.size() != Balance.RITUAL_RELAYS:
+		return {}
+	var hu: Array = rit["heart"]
+	return {"escort": pts, "heart": map.from_map(Vector2(float(hu[0]), float(hu[1])) * UNIT - half), "relays": relays}
+
+
+## Entrées de disposition des deux épreuves (à la place des petits piliers) : pas de marqueur, positions dans la carte.
+func _epreuve_entries() -> Array:
+	return [{"kind": int(Pillar.Kind.SMALL), "epreuve": "escorte"}, {"kind": int(Pillar.Kind.SMALL), "epreuve": "rituel"}]
+
+
+func _make_epreuve(verb: String) -> Pillar:
+	if _epreuve_geom.is_empty():
+		return null
+	match verb:
+		"escorte":
+			return EpreuveEscort.make(_epreuve_geom["escort"])
+		"rituel":
+			return EpreuveRitual.make(_epreuve_geom["heart"], _epreuve_geom["relays"])
+	return null
+
+
+## Position (repère local) d'une entrée de disposition de pilier : marqueur, ou point d'épreuve (départ du tracé / cœur).
+func _pillar_layout_pos(p: Dictionary, pillar_markers: Array[Marker2D]) -> Vector2:
+	if p.has("epreuve"):
+		if String(p["epreuve"]) == "escorte":
+			return (_epreuve_geom["escort"] as PackedVector2Array)[0]
+		return _epreuve_geom["heart"]
+	return map.local_pos(pillar_markers[int(p["marker"])])
+
+
+func _big_layout_pos(roll: Array, pillar_markers: Array[Marker2D], fallback: Vector2) -> Vector2:
+	for e in roll:
+		if int((e as Dictionary)["kind"]) == int(Pillar.Kind.BIG):
+			return map.local_pos(pillar_markers[int((e as Dictionary)["marker"])])
+	return fallback
+
+
+## Distance (px) de `p` au tracé de l'escorte.
+func _dist_to_escort(p: Vector2) -> float:
+	var pts: PackedVector2Array = _epreuve_geom["escort"]
+	var best := INF
+	for i in range(pts.size() - 1):
+		var c := Geometry2D.get_closest_point_to_segment(p, pts[i], pts[i + 1])
+		best = minf(best, p.distance_to(c))
+	return best
+
+
+## Distance (px) de `p` au cœur du Rituel ou à l'un de ses relais.
+func _dist_to_ritual(p: Vector2) -> float:
+	var best: float = p.distance_to(_epreuve_geom["heart"])
+	for r in _epreuve_geom["relays"]:
+		best = minf(best, p.distance_to(r))
+	return best
+
+
+## Le gros pilier reste à Balance.EPREUVE_BIG_AVOID_U du tracé, du cœur et des relais (vrai sans épreuves).
+func _big_clear_of_epreuves(p: Vector2) -> bool:
+	if not epreuves_on:
+		return true
+	var r := Balance.EPREUVE_BIG_AVOID_U * UNIT
+	return _dist_to_escort(p) >= r and _dist_to_ritual(p) >= r
+
+
+## Ordre des repères de coffre avec épreuves (docs §1.1) : Balance.EPREUVE_CHEST_SPLIT = 3 à <= 8 u du tracé de l'escorte, 3 du
+## rituel, 3 autour du gros pilier, 1 au départ, puis le reste. Les repères retenus sont mélangés (tirage seedé) pour que les
+## deux grands coffres ne tombent pas toujours au départ ou à l'arène ; `order` est l'ordre déjà mélangé de tous les repères.
+func _epreuve_chest_order(order: Array, chest_markers: Array[Marker2D], big_pos: Vector2, rng: RandomNumberGenerator) -> Array:
+	var start := map.get_player_start()
+	var trace_r := Balance.EPREUVE_CHEST_TRACE_U * UNIT
+	var groups := {&"depart": [], &"arene": [], &"rituel": [], &"escorte": []}
+	for i in order:
+		var p := map.local_pos(chest_markers[i])
+		if p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT:
+			groups[&"depart"].append(i)
+		if p.distance_to(big_pos) <= Balance.EPREUVE_CHEST_ARENA_U * UNIT:
+			groups[&"arene"].append(i)
+		if _dist_to_ritual(p) <= trace_r:
+			groups[&"rituel"].append(i)
+		if _dist_to_escort(p) <= trace_r:
+			groups[&"escorte"].append(i)
+	var picked: Array = []
+	for g in [&"depart", &"arene", &"rituel", &"escorte"]: # groupes les plus rares d'abord
+		var want := int(Balance.EPREUVE_CHEST_SPLIT[g])
+		for i in groups[g]:
+			if want <= 0:
+				break
+			if not picked.has(i):
+				picked.append(i)
+				want -= 1
+	var rest: Array = order.filter(func(i: int) -> bool: return not picked.has(i))
+	return _shuffled_array(picked, rng) + rest
+
+
+## Ordre des capsules avec épreuves (docs §6) : une près du départ, les autres sur les tracés (<= 8 u), puis le reste.
+func _epreuve_capsule_order(cands: Array[Vector2], order: Array) -> Array:
+	var start := map.get_player_start()
+	var trace_r := Balance.EPREUVE_CHEST_TRACE_U * UNIT
+	var first := -1
+	var traced: Array = []
+	var rest: Array = []
+	for i in order:
+		var p := cands[i]
+		if first < 0 and p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT:
+			first = i
+		elif _dist_to_escort(p) <= trace_r or _dist_to_ritual(p) <= trace_r:
+			traced.append(i)
+		else:
+			rest.append(i)
+	var out: Array = []
+	if first >= 0:
+		out.append(first)
+	return out + traced + rest
 
 
 # --- Zone accessible (NavField.compute_reachable, depuis le départ du joueur, une fois par carte)
@@ -894,6 +1061,8 @@ func _clear_stage() -> void:
 	teleporter = null
 	merchant = null
 	compass_station = null
+	epreuves_on = false
+	_epreuve_geom = {}
 
 
 # --- Sauvegarde
@@ -901,7 +1070,7 @@ func to_dict() -> Dictionary:
 	var ps: Array = []
 	for i in pillars.size():
 		var d := pillars[i].to_dict()
-		d["marker"] = _layout["pillars"][i]["marker"]
+		d["marker"] = (_layout["pillars"][i] as Dictionary).get("marker", -1) # -1 : épreuve (positions dans la carte)
 		ps.append(d)
 	var caps: Array = [] # seules les capsules encore fermées sont sauvegardées
 	for c in capsules:
@@ -962,7 +1131,10 @@ func from_dict(d: Dictionary) -> void:
 			FloorPlan.mark_secret(floor_plan, RunState.run_seed)
 	var lp: Array = []
 	for p: Dictionary in d["pillars"]:
-		lp.append({"kind": int(p["kind"]), "marker": int(p["marker"])})
+		var le := {"kind": int(p["kind"]), "marker": int(p.get("marker", -1))}
+		if p.get("epreuve") is Dictionary: # épreuve : Escorte ou Rituel à la place d'un petit pilier
+			le["epreuve"] = String((p["epreuve"] as Dictionary).get("verb", ""))
+		lp.append(le)
 	var layout := {"chests": d["chests"], "pillars": lp}
 	if d.has("capsules"): # anciennes sauvegardes : tirage neuf
 		layout["capsules"] = d["capsules"]

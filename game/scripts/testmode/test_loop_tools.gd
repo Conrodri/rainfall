@@ -109,3 +109,50 @@ static func deviate(boss: Node2D) -> void:
 	var affixes: Array[StringName] = Balance.PILLAR_DEVIATED_AFFIXES
 	var affix := affixes[_rng.randi_range(0, affixes.size() - 1)]
 	Pillar.apply_deviation(boss, affix, Balance.pillar_deviated_hp_mult(f), Balance.pillar_deviated_enrage_delay(f))
+
+
+## Épreuve du prototype « Les Épreuves » près du joueur : `verb` = &"escorte" (tracé en Z de ~55 u dans l'arène, barque au
+## ponton de départ à quelques pas) ou &"rituel" (cœur à 4 u, trois relais à 12 u). Même code qu'en jeu : « interagir » sur la
+## barque ou le cœur lance l'épreuve ; le mini-boss est tiré au hasard (pas de plan de run en arène).
+static func spawn_epreuve(tree: SceneTree, verb: StringName) -> Epreuve:
+	var ctx := _context(tree)
+	if ctx.is_empty() or not (ctx["map"] is StageMap):
+		return null
+	var map := ctx["map"] as StageMap
+	var player: Node2D = ctx["player"]
+	var pm := map.to_map(map.to_local(player.global_position)) # joueur en repère carte (axes de la grille)
+	var u := Balance.UNIT_PX
+	var e: Epreuve
+	if verb == &"escorte":
+		var pts := PackedVector2Array()
+		for off: Vector2 in [Vector2(-3, -4), Vector2(21, -4), Vector2(21, 3), Vector2(-3, 3)]:
+			pts.append(map.from_map(pm + off * u))
+		e = EpreuveEscort.make(pts)
+	else:
+		var heart := pm + Vector2(0.0, -4.0) * u
+		var relays: Array = []
+		for k in Balance.RITUAL_RELAYS:
+			relays.append(map.from_map(heart + Vector2.from_angle(PI * 0.5 + TAU * float(k) / float(Balance.RITUAL_RELAYS)) * 12.0 * u))
+		e = EpreuveRitual.make(map.from_map(heart), relays)
+	e.setup(Pillar.Kind.SMALL, 90 + tree.get_nodes_in_group(&"epreuves").size(), false)
+	map.add_child(e)
+	return e
+
+
+## Termine les épreuves en cours (note `grade` ou calculée si vide) : or versé, mini-boss invoqué. Retourne leur nombre.
+static func finish_epreuves(tree: SceneTree, grade: StringName = &"") -> int:
+	var n := 0
+	for e in tree.get_nodes_in_group(&"epreuves"):
+		if e is Epreuve and (e as Epreuve).is_running():
+			(e as Epreuve).finish_now(grade)
+			n += 1
+	return n
+
+
+## Retire les épreuves (et leurs relais, enfants du cœur).
+static func clear_epreuves(tree: SceneTree) -> int:
+	var n := 0
+	for e in tree.get_nodes_in_group(&"epreuves"):
+		e.queue_free()
+		n += 1
+	return n

@@ -548,6 +548,8 @@ func _build_loop() -> void:
 		["Marchand (étage 3)", "Merchant", func() -> void: say("Marchand posé (1 objet par rareté)." if TestLoopTools.spawn_merchant(get_tree()) != null else "Impossible ici.")],
 		["Boussole de rouille", "Compass", func() -> void: say("Boussole posée : interagir pour choisir un tag." if TestLoopTools.spawn_compass(get_tree()) != null else "Impossible ici.")],
 		["Gros pilier (dévier)", "Pillar", func() -> void: say("Gros pilier posé : « Dévier » sous lui, « Activer » au contact." if TestLoopTools.spawn_pillar(get_tree()) != null else "Impossible ici.")],
+		["Épreuve : escorte", "EpreuveEscort", func() -> void: say("Barque posée à quelques pas : « Lancer la barque », la suivre à moins de %d u, arrivée = mini-boss." % int(Balance.ESCORT_LEASH_U) if TestLoopTools.spawn_epreuve(get_tree(), &"escorte") != null else "Impossible ici.")],
+		["Épreuve : rituel", "EpreuveRitual", func() -> void: say("Cœur posé à 4 u, relais à 12 u : « Réveiller l'écluse », puis maintenir « interagir » %s s sur chaque relais." % str(Balance.RITUAL_HOLD_S).replace(".", ",") if TestLoopTools.spawn_epreuve(get_tree(), &"rituel") != null else "Impossible ici.")],
 	]
 	for it in items:
 		var b := _btn(String(it[0]), it[2])
@@ -567,8 +569,22 @@ func _build_loop() -> void:
 		say("Boss d'étage déviés : %s (affixe au hasard, PV et enrage décalés)." % ("oui" if on else "non")))
 	dev.name = "DeviateBoss"
 	_body.add_child(dev)
+	var grades := _grid(4)
+	_body.add_child(grades)
+	for gd in [[&"", "Note : calculée"], [&"parfait", "Note : parfait"], [&"bien", "Note : bien"], [&"fait", "Note : fait"]]:
+		var g: StringName = gd[0]
+		var gb := _btn(String(gd[1]), func() -> void:
+			Epreuve.forced_grade = g
+			say("Note des épreuves : %s." % ("calculée (durée, fautes)" if g == &"" else String(g))))
+		gb.name = "EpreuveGrade_%s" % (String(g) if g != &"" else "auto")
+		grades.add_child(_expand(gb))
+	var fin := _btn("Terminer l'épreuve en cours", func() -> void:
+		say("%d épreuve(s) terminée(s) : or versé, mini-boss invoqué." % TestLoopTools.finish_epreuves(get_tree(), Epreuve.forced_grade)))
+	fin.name = "EpreuveFinish"
+	_body.add_child(fin)
 	var rm := _btn("Retirer marchand et piliers", func() -> void:
-		say("%d marchand(s), %d pilier(s) retirés." % [TestLoopTools.remove_merchants(get_tree()), TestLoopTools.clear_pillars(get_tree())]))
+		say("%d marchand(s), %d pilier(s) retirés." % [TestLoopTools.remove_merchants(get_tree()), TestLoopTools.clear_pillars(get_tree())])
+		TestLoopTools.clear_epreuves(get_tree()))
 	rm.name = "ClearLoop"
 	_body.add_child(rm)
 	_body.add_child(_note("Pilier de test : mêmes règles qu'en jeu (affixe annoncé, PV, enrage, 2 coffres de boss), étages 2-4 non exigés. Pour acheter sans or : triche « Or infini »."))

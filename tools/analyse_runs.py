@@ -351,6 +351,50 @@ def section_economy(logs):
     return "\n".join(lines)
 
 
+def section_epreuves(logs):
+    """Prototype « Les Épreuves » (docs/Boucle_Etage_Refonte.md §5.3) : étage 1 avec / sans épreuves (floors[].epreuves_on)."""
+    lines = ["## Étage 1 : épreuves ou piliers", "",
+             "Durée = entrée -> boss d'étage mort (t_clear) ; après-boss = mort du boss -> téléporteur (cible <= 25 s) ; "
+             "part en épreuve = somme des durées d'épreuve / durée de l'étage (cible >= 35 %) ; or de l'étage en or brut.", ""]
+    groups = {True: defaultdict(list), False: defaultdict(list)}
+    grades = Counter()
+    for d in logs:
+        for f in d.get("floors", []):
+            if f.get("stage") != 1 or f.get("t_clear", -1) < 0:
+                continue
+            g = groups[bool(f.get("epreuves_on", False))]
+            dur = f["t_clear"] - f["t_in"]
+            g["dur"].append(dur)
+            if f.get("t_out", -1) > 0:
+                g["post"].append(float(f.get("post_boss_s", f["t_out"] - f["t_clear"])))
+            g["gold"].append(f.get("gold_earned", 0))
+            g["chests"].append(len(f.get("chests", [])))
+            g["after"].append(f.get("chests_after_boss", 0))
+            if f.get("epreuves_on"):
+                g["share"].append(f.get("epreuve_s", 0) / dur if dur > 0 else 0)
+            for e in f.get("epreuves", []):
+                if e.get("grade"):
+                    grades[(e["kind"], e["grade"])] += 1
+    if not groups[True]["dur"] and not groups[False]["dur"]:
+        return "\n".join(lines + ["_Aucun étage 1 terminé._"])
+    rows = []
+    for on, label in ((False, "piliers"), (True, "épreuves")):
+        g = groups[on]
+        if not g["dur"]:
+            continue
+        rows.append([label, len(g["dur"]), fmt(quantile(g["dur"], 0.5) / 60, 2), fmt(quantile(g["post"], 0.5)) if g["post"] else "-",
+                     pct(quantile(g["share"], 0.5)) if g["share"] else "-", fmt(quantile(g["gold"], 0.5)),
+                     fmt(quantile(g["chests"], 0.5), 1), fmt(quantile(g["after"], 0.5), 1)])
+    lines.append(table(["Étage 1", "n", "Durée (min)", "Après-boss (s)", "Part en épreuve", "Or gagné", "Coffres", "Coffres après le boss"], rows))
+    if grades:
+        tot = defaultdict(int)
+        for (k, _g), n in grades.items():
+            tot[k] += n
+        rows = [[k, g, n, pct(n / tot[k])] for (k, g), n in sorted(grades.items())]
+        lines += ["", "### Notes", "", table(["Épreuve", "Note", "n", "Part"], rows)]
+    return "\n".join(lines)
+
+
 def section_taken(logs):
     src = Counter()
     for d in logs:
@@ -373,7 +417,7 @@ def report(logs, skipped, min_n):
         parts.append("Aucun journal lisible.")
         return "\n".join(parts)
     for sec in (section_summary(logs), section_ttk(logs, min_n), section_dps(logs, min_n), section_items(logs, min_n),
-                section_deaths(logs), section_economy(logs), section_taken(logs)):
+                section_deaths(logs), section_economy(logs), section_epreuves(logs), section_taken(logs)):
         parts += [sec, ""]
     return "\n".join(parts)
 

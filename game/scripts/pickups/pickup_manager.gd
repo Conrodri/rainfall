@@ -73,6 +73,8 @@ func _on_enemy_killed(_enemy: Node2D, position: Vector2, tier: int, is_elite: bo
 	var cost: float = Balance.monster_cost(tier, is_elite)
 	var xp: float = Balance.monster_xp(D, cost)
 	var gold: float = Balance.monster_gold(D, cost) * Omens.kill_gold_mult() # Présage Offrande : primes des monstres réduites
+	if gold > 0.0 and is_inside_tree(): # épreuves : l'or vient de la note, pas du farm de la zone (Balance.EPREUVE_ZONE_GOLD_MULT)
+		gold *= Epreuve.zone_gold_mult(get_tree(), position)
 	if xp > 0.0:
 		_credit_xp(position, xp, 1 if (tier >= 3 or is_elite) else 0)
 	if gold > 0.0:
