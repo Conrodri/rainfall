@@ -472,12 +472,20 @@ class PillarZone extends Node2D:
 
 ## Chaîne de déviation (Paratonnerre dévié) : second « interagissable » du gros pilier, posé sous lui. Visible seulement
 ## tant que la déviation est proposée (Pillar.can_deviate) ; le libellé annonce l'affixe et la récompense. Aucun visuel
-## propre (la chaîne de bronze est une consigne Codex, art/tools/props/_boussole_vitrine.txt) : un anneau de repère.
+## propre : décalque au sol livré par Codex (art/tools/props/_deflecteur.txt), sinon un anneau de repère dessiné.
 class Deflector extends Node2D:
+	const RING_PATH := "res://assets/sprites/props/pillar_deflect/pillar_deflect_ring.png" ## 192x96, ellipse iso à 90,51 px/u
 	var pillar: Pillar = null
+	var _ring: Sprite2D = null
 
 	func _ready() -> void:
 		add_to_group(&"interactable")
+		if ResourceLoader.exists(RING_PATH):
+			_ring = Sprite2D.new()
+			_ring.name = &"Ring"
+			_ring.texture = load(RING_PATH) as Texture2D
+			_ring.scale = Iso.UNSQUASH * Iso.SPRITE_K # billboard : l'ellipse rendue s'affiche telle quelle à l'écran
+			add_child(_ring)
 
 	func _near() -> bool:
 		var p := get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
@@ -504,8 +512,12 @@ class Deflector extends Node2D:
 		if show_ring != visible:
 			visible = show_ring
 			queue_redraw()
+		if _ring != null and visible:
+			_ring.modulate.a = 0.78 + 0.22 * sin(Time.get_ticks_msec() * 0.005) # pulsation douce
 
 	func _draw() -> void:
+		if _ring != null:
+			return
 		draw_arc(Vector2.ZERO, 22.0, 0.0, TAU, 24, Color(1.0, 0.72, 0.3, 0.85), 4.0)
 		draw_circle(Vector2.ZERO, 8.0, Color(1.0, 0.72, 0.3, 0.55))
 

@@ -2,6 +2,9 @@ LOT PRESAGES : 8 icones de presage d'etage (ecran d'arrivee a 2 cartes + rappel 
 Style : gabarit des icones de sorts et de passifs (art/tools/ui/_passive_icons.txt, reference game/assets/sprites/icons/spells/nova_ardente.png : medaillon disque de fer noirci, couronne de chevrons bronze, un seul emblème central, accent emissif), cel-shade (art/briefs/STYLE_cel.md), DA sombre desaturee, un accent emissif. Pas de normal map. Groupe COMBAT = accent rouge-orange, groupe BUTIN = accent or ; Ciel clair = accent bleu pale, medaillon plus clair.
 Format : PNG RGBA 128x128, fond transparent, symbole centre lisible a 48 px, aucun texte. Masque d'emission <id>_e.png seulement si utile.
 Sortie : game/assets/sprites/icons/omens/<id>.png (Omens.icon_of charge ce chemin s'il existe, sinon l'icone d'objet empruntee ; aucun .gd a toucher). Ne pas lire docs/ ni CLAUDE.md.
+Blender --background seulement, un script art/tools/ui/presages_build.py, sources art/blender/ui/presages.blend (nouveau), journal art/tools/ui/_logpresages*.txt, planche de controle art/tools/ui/_presages_contact.png (<= 1024 px).
+TOUCHER (seulement, ecrire ailleurs interdit) : game/assets/sprites/icons/omens/ et les fichiers art/ ci-dessus. Aucun .gd/.tscn, aucune autre icone.
+Aucune normal map (<id>_n.png interdit). PNG optimises, polycount utile.
 Ids et symboles (textes exacts : game/data/omens.json) :
 - pluie_de_cendres (combat) : nuage sombre qui laisse tomber des cendres incandescentes, accent braise.
 - carapaces (combat) : carapace segmentee de scarabee, plaques epaisses, accent rouge sourd.
@@ -13,4 +16,5 @@ Ids et symboles (textes exacts : game/data/omens.json) :
 - maree (butin) : vague qui monte et charrie des pieces, accent bleu-or.
 - ciel_clair (neutre) : ciel degage, disque pale entre deux nuages dechires, accent bleu pale.
 RAPPORT (6 lignes max, ultracave) : fichiers produits, verif dimensions/alpha/lisibilite 48 px, problemes restants.
-Lancer : sh art/tools/run_codex.sh art/tools/ui/_presages.txt art/tools/ui/_logpresages.txt
+
+CORRECTIF (2e passage ; la première livraison est ENTIEREMENT TRANSPARENTE, les 9 PNG ont alpha 0, caméra hors champ ; la planche ne montrait que les libellés) : reprendre presages_build.py, cadrer une caméra orthographique de face sur le médaillon (le disque remplit ~118 px sur 128, marge 5 px), emblème central lisible à 48 px. Contrôler par script avant le rapport : alpha max 255, >= 55 % de pixels opaques dans le disque, 9 icônes toutes différentes. Regarder la planche (<= 1024 px) pour vérifier que les symboles apparaissent. Mêmes chemins, mêmes interdits.

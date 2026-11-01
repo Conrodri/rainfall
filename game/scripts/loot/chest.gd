@@ -10,6 +10,7 @@ const UI_SCENE := preload("res://scenes/ui/chest/chest_ui.tscn")
 const SHOWCASE_ICON_PX := 51.2 ## 0,8 u
 const SHOWCASE_SPACING_PX := 68.0
 const SHOWCASE_Y := -330.0 ## au-dessus de l'étiquette de prix (repère local, avant l'étirement iso)
+const SHOWCASE_FRAMES := "res://assets/sprites/chests/chest_small_vitrine/chest_small_vitrine.tres" ## vitrine : même socle que le petit coffre
 const COLORS := {
 	&"petit": Color(0.69, 0.54, 0.35),
 	&"large": Color(0.29, 0.56, 0.89),
@@ -148,7 +149,10 @@ func _process(delta: float) -> void:
 
 func _refresh_visual() -> void:
 	var cfg: Dictionary = SPRITES.get(kind, SPRITES[&"petit"])
-	var frames := load(cfg["path"]) as SpriteFrames
+	var frames_path: String = cfg["path"]
+	if variant == &"showcase" and ResourceLoader.exists(SHOWCASE_FRAMES): # dôme de verre fêlé (lot Codex), sinon petit coffre
+		frames_path = SHOWCASE_FRAMES
+	var frames := load(frames_path) as SpriteFrames
 	if frames != _frames_src:
 		_frames_src = frames
 		_visual.set_frames(frames)

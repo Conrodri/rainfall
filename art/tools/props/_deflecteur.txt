@@ -1,0 +1,10 @@
+LOT DEFLECTEUR (consigne Codex courte, 1 décalque ; lancé par run_codex.sh, profil eco-mini).
+OBJECTIF : anneau de déviation du Paratonnerre dévié, décalque posé AU SOL sous le gros pilier (aujourd'hui un anneau dessiné en code, provisoire). Visible seulement quand la déviation est proposée.
+PROP : cercle rituel gravé dans le sol : anneau de bronze noirci incrusté dans la pierre, 4 chevrons et quelques maillons de chaîne cassés tout autour, légèrement usé. UN accent émissif : arc électrique bleu pâle qui court dans la rainure de l'anneau (blanc neutre dans `_e`, teinté en code). Décalque plat (aucun volume vertical, pas d'ombre cuite), alpha doux sur le bord.
+FORMAT : vue iso MAP 35° (art/tools/iso/iso_rig.py) d'un cercle au sol de diamètre 2,1 u (échelle 90,51 px/u), donc ellipse 2:1. Image 192x96, ellipse centrée (96, 48), remplissant ~190 px de large. Cel-shadé (art/tools/cel/cel_style.py, profil 'prop', normals=False), AUCUN `_n`. Éclairage haut-gauche. Fichiers : pillar_deflect_ring.png (192x96 RGBA) et pillar_deflect_ring_e.png (masque d'émission 96x48). PNG optimisés.
+DA OBLIGATOIRE : art/briefs/STYLE.md (en tête), STYLE_boss_da.md, STYLE_cel.md. Blender --background seulement. Pas de Godot.
+TOUCHER (seulement, écrire ailleurs interdit) : game/assets/sprites/props/pillar_deflect/ (les 2 PNG) ; art/blender/props/pillar_deflect_ring.blend ; art/tools/props/pillar_deflect_build.py ; art/tools/props/_log_deflecteur*.txt. Aucun .gd/.tscn.
+NE PAS LIRE : docs/, CLAUDE.md, autres lots, dossiers entiers.
+VÉRIF : dimensions 192x96 et 96x48, alpha propre (bords transparents), _e non vide ; pas de planche, pas de test Godot.
+RAPPORT (6 lignes max, ultracave) : fichiers touchés, résultat de la vérif, problèmes restants.
+PRÉCISION : NOUVEL asset, aucun fichier provisoire à remplacer et art/tools/props/pillar_deflect_build.py N'EXISTE PAS ENCORE : tu le CRÉES (modèle : art/tools/props/secret_lever_build.py ou f3p_build.py pour le rig iso/cel). Ne t'arrête pas parce qu'il manque.

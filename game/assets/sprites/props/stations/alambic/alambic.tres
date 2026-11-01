@@ -1,0 +1,70 @@
+[gd_resource type="SpriteFrames" load_steps=23 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/closed.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_0.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_1.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_2.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_3.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_4.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_5.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_6.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/work_7.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stations/alambic/open.png" id="10"]
+
+[sub_resource type="AtlasTexture" id="t0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t1"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t2"]
+atlas = ExtResource("3")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t3"]
+atlas = ExtResource("4")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t4"]
+atlas = ExtResource("5")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t5"]
+atlas = ExtResource("6")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t6"]
+atlas = ExtResource("7")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t7"]
+atlas = ExtResource("8")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t8"]
+atlas = ExtResource("9")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="t9"]
+atlas = ExtResource("10")
+region = Rect2(0, 0, 192, 192)
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": SubResource("t0")}],
+"loop": false,
+"name": &"closed",
+"speed": 1.0
+}, {
+"frames": [{"duration": 0.0833333333, "texture": SubResource("t1")},{"duration": 0.0833333333, "texture": SubResource("t2")},{"duration": 0.0833333333, "texture": SubResource("t3")},{"duration": 0.0833333333, "texture": SubResource("t4")},{"duration": 0.0833333333, "texture": SubResource("t5")},{"duration": 0.0833333333, "texture": SubResource("t6")},{"duration": 0.0833333333, "texture": SubResource("t7")},{"duration": 0.0833333333, "texture": SubResource("t8")}],
+"loop": false,
+"name": &"work",
+"speed": 12.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("t9")}],
+"loop": false,
+"name": &"open",
+"speed": 1.0
+}]
