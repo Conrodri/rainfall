@@ -55,13 +55,13 @@ func _physics_process(delta: float) -> void:
 		_free()
 		return
 	_update_fx(delta)
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	if player == null:
+	Enemy.fill_hit_targets(_targets)
+	if _targets.is_empty():
 		return
 	_t += delta
 	if not _pending and _t >= STORM_EVERY - SonneurBrain.LIGHTNING_WINDUP:
 		_pending = true
-		_pos = player.global_position
+		_pos = _targets[strikes % _targets.size()].global_position # coop : les éclairs visent les vivants à tour de rôle
 		_tele.show_circle(_pos, SonneurBrain.LIGHTNING_R_U * SonneurBrain.U, EnemyTelegraph.Weight.DEADLY)
 	if _pending:
 		_tele.set_progress((_t - (STORM_EVERY - SonneurBrain.LIGHTNING_WINDUP)) / SonneurBrain.LIGHTNING_WINDUP)
@@ -72,8 +72,13 @@ func _physics_process(delta: float) -> void:
 			strikes += 1
 			SonneurBrain.strike_fx(get_parent(), _frames, _pos, _fx)
 			Audio.play(&"amb.thunder_close", _pos)
-			if player.global_position.distance_to(_pos) <= SonneurBrain.LIGHTNING_R_U * SonneurBrain.U + SonneurBrain.PLAYER_R and player.has_method(&"take_damage"):
-				player.take_damage(damage, self)
+			for player in _targets:
+				if is_instance_valid(player) and player.global_position.distance_to(_pos) <= SonneurBrain.LIGHTNING_R_U * SonneurBrain.U + SonneurBrain.PLAYER_R and player.has_method(&"take_damage"):
+					player.take_damage(damage, self)
+
+
+## Joueurs touchés (Enemy.fill_hit_targets : solo = le joueur, coop = les vivants), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 func _update_fx(delta: float) -> void:

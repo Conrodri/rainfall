@@ -244,6 +244,8 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 				LightRig.flash(e.global_position, &"boss_cerf", 0.35)
 				if player != null and _leap_to.distance_to(ppos) <= LEAP_R_U * U + PLAYER_R:
 					e._hit_player(player, e.damage * Balance.boss_attack_coef(&"cerf", &"leap"))
+				if Enemy.coop: # coop : les autres joueurs vivants sous l'atterrissage
+					e.coop_hit_circle(_leap_to, LEAP_R_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(&"cerf", &"leap"), player)
 				_log(&"leap", &"reappear", REAPPEAR_IMPACT_FRAME)
 				pace.strike(&"charge", phase) # réception : arrêt net, récupération immobile
 				state = S.CHASE
@@ -356,6 +358,8 @@ func _resolve_gore(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= GORE_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= GORE_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(&"cerf", &"gore"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), GORE_RANGE_U * U + PLAYER_R, GORE_HALF + 0.15, e.damage * Balance.boss_attack_coef(&"cerf", &"gore"), player)
 	_log(&"gore", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

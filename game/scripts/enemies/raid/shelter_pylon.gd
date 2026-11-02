@@ -38,6 +38,8 @@ var _counts := PackedInt32Array()
 var _standing := PackedVector2Array()
 var _index: PackedInt32Array = PackedInt32Array() ## index de pylône de chaque centre (pylônes debout)
 var _shadows_shown := false
+## Coop : joueurs touchés (RaidKit.players_of), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 static func create(p_boss: Node2D, p_life_s := 14.0) -> ShelterPylon:
@@ -236,9 +238,10 @@ func _land(c: Dictionary, check_player: bool) -> void:
 	if nav != null:
 		nav.add_circle_obstacle(body.get_instance_id(), p, RADIUS_U * RaidKit.U)
 	if check_player:
-		var pl := RaidKit.player_of(self)
-		if pl != null and pl.global_position.distance_to(p) <= FALL_R_U * RaidKit.U:
-			RaidKit.boss_hit(boss, pl, Balance.RAID_PYLON_FALL_COEF)
+		RaidKit.players_of(self, _targets) # coop : chaque vivant sous la chute
+		for pl in _targets:
+			if is_instance_valid(pl) and pl.global_position.distance_to(p) <= FALL_R_U * RaidKit.U:
+				RaidKit.boss_hit(boss, pl, Balance.RAID_PYLON_FALL_COEF)
 	RaidFx.sfx(&"enemy.raid_pylon_land.heavy", p)
 	if shadow_origin != Vector2.INF:
 		_sync_shadows()

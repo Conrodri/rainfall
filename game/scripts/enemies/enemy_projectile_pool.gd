@@ -99,6 +99,46 @@ func update(delta: float, player: Node2D, player_pos: Vector2, nav: NavField = n
 		i -= 1
 
 
+## Coop (Director en mode multi) : comme update(), mais un projectile touche le PREMIER joueur vivant de `players`
+## (les `count` premières entrées, spectateurs déjà exclus ; `positions` = leurs positions de l'image) dont la hitbox
+## le recouvre. count <= 1 : update() tel quel. Coût : au plus 4 tests de distance par projectile et par image.
+func update_party(delta: float, players: Array[Node2D], positions: PackedVector2Array, count: int, nav: NavField = null) -> void:
+	if count <= 1:
+		update(delta, players[0] if count == 1 else null, positions[0] if count == 1 else Vector2.ZERO, nav)
+		return
+	var hit_r := RADIUS_PX + PlayerHitbox.radius_px
+	var hit_r2 := hit_r * hit_r
+	_flip = not _flip
+	var fl := int(_flip)
+	var decoys := not Decoy.live.is_empty()
+	var i := _active.size() - 1
+	while i >= 0:
+		var p := _active[i]
+		p.life -= delta
+		var pos := p.position + p.velocity * delta
+		p.position = pos
+		var victim: Node2D = null
+		for k in count:
+			if pos.distance_squared_to(positions[k]) <= hit_r2:
+				victim = players[k]
+				break
+		if victim != null and is_instance_valid(victim):
+			var src: Node2D = p.source if is_instance_valid(p.source) else null
+			if victim.has_method(&"note_hit_from"):
+				victim.note_hit_from(pos)
+			if victim.has_method(&"take_damage"):
+				victim.take_damage(p.damage, src)
+			if src is Enemy:
+				(src as Enemy).apply_affixes_to(victim, p.damage)
+			_release_at(i)
+		elif decoys and Decoy.hit_by(pos, RADIUS_PX) != null:
+			Decoy.hit_by(pos, RADIUS_PX).take_damage(p.damage, p.source if is_instance_valid(p.source) else null)
+			_release_at(i)
+		elif p.life <= 0.0 or (nav and (i & 1) == fl and nav.is_blocked_at(pos)):
+			_release_at(i)
+		i -= 1
+
+
 ## API publique (boss, mini-boss, sorts) : détruit tout projectile ennemi dont le disque (RADIUS_PX) touche le
 ## cercle (center, radius) en px logiques (blocs de la Mère-Cristal, boucliers…). Retourne le nombre arrêté.
 func kill_in_circle(center: Vector2, radius: float) -> int:

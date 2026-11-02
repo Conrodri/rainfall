@@ -785,19 +785,32 @@ func hurt(coef: float, kind: StringName, status := "", extra := {}) -> bool:
 	return true
 
 
+## Coop : même coup porté à un AUTRE joueur vivant `pl` (dégâts, statut ; sans brouillage ni second journal).
+## Appelé par MiniPatterns.coop_hurt_* après le coup solo sur la cible.
+func coop_hurt(pl: Node2D, coef: float, status := "") -> void:
+	if pl == null or not is_instance_valid(pl) or pl == player:
+		return
+	e._hit_player(pl, Balance.mini_attack_damage(e.damage, coef) * damage_out_mult())
+	_status_on(pl, status, e.damage * coef)
+
+
 ## Statut transmis au joueur (coups, zones, projectiles) : burn | poison | slow (contrat Player.apply_status),
 ## frost = gel (ralentissement fort et court par Player.apply_slow, repli : slow).
 func apply_player_status(status: String, hit: float) -> void:
-	if status == "" or player == null:
+	_status_on(player, status, hit)
+
+
+func _status_on(pl: Node2D, status: String, hit: float) -> void:
+	if status == "" or pl == null:
 		return
 	if status == "frost":
 		var fr: Dictionary = cfg.get("frost", {})
-		if player.has_method(&"apply_slow"):
-			player.apply_slow(float(fr.get("mult", FROST_MULT)), float(fr.get("s", FROST_S)), &"mini_frost")
+		if pl.has_method(&"apply_slow"):
+			pl.apply_slow(float(fr.get("mult", FROST_MULT)), float(fr.get("s", FROST_S)), &"mini_frost")
 			return
 		status = "slow"
-	if player.has_method(&"apply_status"):
-		player.apply_status(StringName(status), {"hit": hit, "source": e})
+	if pl.has_method(&"apply_status"):
+		pl.apply_status(StringName(status), {"hit": hit, "source": e})
 
 
 ## Projectile spécial (MiniHazards) reçu par le joueur.
@@ -1083,6 +1096,14 @@ func _zone_fx(kind: MiniFx.Kind, col: Color) -> MiniFx:
 	return f
 
 
+func _zone_tick_on(z: Dictionary, pl: Node2D) -> void:
+	if float(z["coef"]) > 0.0:
+		e._hit_player(pl, Balance.mini_attack_damage(e.damage, float(z["coef"])) * damage_out_mult())
+	_status_on(pl, String(z["status"]), e.damage * maxf(float(z["coef"]), 0.3))
+	if float(z.get("slow_mult", 0.0)) > 0.0 and pl.has_method(&"apply_slow"): # eau, boue : ralenti paramétré
+		pl.apply_slow(float(z["slow_mult"]), float(z["tick_s"]) + 0.15, &"mini_zone")
+
+
 func _update_zones(delta: float) -> void:
 	for i in range(_zones.size() - 1, -1, -1):
 		var z: Dictionary = _zones[i]
@@ -1091,11 +1112,12 @@ func _update_zones(delta: float) -> void:
 		if float(z["tick"]) <= 0.0:
 			z["tick"] = float(z["tick_s"])
 			if player != null and MiniPatterns.zone_contains(z, ppos):
-				if float(z["coef"]) > 0.0:
-					e._hit_player(player, Balance.mini_attack_damage(e.damage, float(z["coef"])) * damage_out_mult())
-				apply_player_status(String(z["status"]), e.damage * maxf(float(z["coef"]), 0.3))
-				if float(z.get("slow_mult", 0.0)) > 0.0 and player.has_method(&"apply_slow"): # eau, boue : ralenti paramétré
-					player.apply_slow(float(z["slow_mult"]), float(z["tick_s"]) + 0.15, &"mini_zone")
+				_zone_tick_on(z, player)
+			if Enemy.coop: # coop : chaque autre joueur vivant dans la zone, au même pas
+				for k in Enemy.coop_count:
+					var o := Enemy.coop_party[k]
+					if o != null and o != player and is_instance_valid(o) and MiniPatterns.zone_contains(z, o.global_position):
+						_zone_tick_on(z, o)
 		if z.has("shock"): # flaque électrisée : la lueur retombe
 			z["shock"] = float(z["shock"]) - delta
 			if is_instance_valid(z.get("node")) and z["node"] is MiniFx:

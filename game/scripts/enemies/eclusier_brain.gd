@@ -356,6 +356,8 @@ func _resolve_gate(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= GATE_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= GATE_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"gate"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), GATE_RANGE_U * U + PLAYER_R, GATE_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"gate"), player)
 	_log(&"gate", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

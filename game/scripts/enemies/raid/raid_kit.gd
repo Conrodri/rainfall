@@ -82,10 +82,26 @@ static func in_shallow(from: Node, gpos: Vector2) -> bool:
 	return grid[y][x] == ","
 
 
+## Joueur concerné par une mécanique placée en `n` : solo = le joueur du groupe `player` (comportement historique) ;
+## coop = le joueur VIVANT le plus proche de `n` (spectateurs ignorés), null si personne.
 static func player_of(n: Node) -> Node2D:
 	if n == null or not n.is_inside_tree():
 		return null
-	return n.get_tree().get_first_node_in_group(&"player") as Node2D
+	if Players.count() <= 1:
+		return n.get_tree().get_first_node_in_group(&"player") as Node2D
+	return Players.nearest((n as Node2D).global_position if n is Node2D else Vector2.ZERO)
+
+
+## Joueurs touchés par une mécanique de zone (secteurs, chutes, éclats, points faibles) : solo = [player_of] ;
+## coop = tous les vivants. Remplit `buf` (tableau propre à l'appelant, réutilisé).
+static func players_of(n: Node, buf: Array[Node2D]) -> void:
+	if Players.count() <= 1:
+		buf.clear()
+		var p := player_of(n)
+		if p != null:
+			buf.append(p)
+		return
+	Enemy.fill_hit_targets(buf)
 
 
 ## Pool de projectiles ennemis du Director du boss (ou du premier Director de l'arbre).

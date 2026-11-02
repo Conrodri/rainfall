@@ -377,6 +377,8 @@ func _resolve_hook(player: Node2D, ppos: Vector2) -> void:
 	e._sfx(&"enemy.brute_cone.heavy")
 	if player != null and _in_line(ppos, e.position, aim, HOOK_LEN_U * U, HOOK_W_U * U):
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"hook"))
+	if Enemy.coop: # coop : les autres joueurs vivants sur la ligne du crochet
+		e.coop_hit_band(e.position, aim, 0.0, HOOK_LEN_U * U + PLAYER_R, HOOK_W_U * U * 0.5 + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"hook"), player)
 	_log(&"hook", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

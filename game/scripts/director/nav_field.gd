@@ -74,6 +74,24 @@ var _static_blocked := PackedByteArray()
 var _cell_dyn := {} ## cellule -> Array d'ids (index de résolution, rayon INDEX_GROW)
 var _dirty := false ## obstacles changés : champ à relancer au prochain créneau (MIN_RECOMPUTE_S)
 
+# --- Coop 1-4 (docs/multi/Archi_Reseau.md §1.2 ligne 7) : BFS MULTI-SOURCES, une source par joueur vivant.
+# Une seule passe pour toutes les sources (même coût qu'en solo) ; chaque cellule retient la source qui l'a atteinte
+# la première (`_root`) : la direction mène au joueur le plus proche À PIED, la ligne de vue se teste vers lui, et
+# root_id_at() dit au Director quel joueur un monstre poursuit. Solo (une source) : chemin et résultats identiques,
+# aucun tableau de racines écrit.
+const MAX_SOURCES := 4
+var source_cells := PackedInt32Array() ## cellules sources du champ courant (1 en solo)
+var source_ids := PackedInt32Array() ## id de joueur (registre Players) de chaque source du champ courant
+var _multi := false ## champ courant à plusieurs sources (_root valide)
+## Source qui a atteint chaque cellule (champ courant, si _multi), codée cellule × 4 + indice de la source dans
+## source_cells / source_ids (au plus 4) : cellule = v >> 2, joueur = source_ids[v & 3] sans recherche. -1 : aucune.
+var _root := PackedInt32Array()
+var _back_root := PackedInt32Array()
+var _job_multi := false
+var _job_cells := PackedInt32Array()
+var _job_ids := PackedInt32Array()
+var _want_cells := PackedInt32Array() ## tampon réutilisé (update_multi)
+
 
 ## Construit la grille à partir des StaticBody2D (couche 1) sous `map` (déjà dans l'arbre).
 func build_from_map(map: Node) -> void:
@@ -155,6 +173,12 @@ func build_from_map(map: Node) -> void:
 	version = 0
 	target_cell = -1
 	_job_active = false
+	_multi = false
+	_job_multi = false
+	source_cells.clear()
+	source_ids.clear()
+	_root = PackedInt32Array()
+	_back_root = PackedInt32Array()
 	# zone accessible : une fois par carte, depuis le départ du joueur (StageMap) ; sans départ connu, l'appelant
 	# peut lancer compute_reachable(p) lui-même (sinon toute cellule libre compte comme accessible)
 	_reach = PackedByteArray()
@@ -212,7 +236,8 @@ func _center_m(c: int) -> Vector2:
 # --- Champ (BFS incrémental)
 ## À appeler chaque frame : lance un recalcul si le joueur a changé de cellule, et avance le
 ## calcul en cours d'au plus BUDGET_PER_FRAME cellules.
-func update(player_pos: Vector2, delta: float = 1.0 / 60.0) -> void:
+## `player_id` : id du joueur source (registre Players ; 0 en solo), rendu par root_id_at().
+func update(player_pos: Vector2, delta: float = 1.0 / 60.0, player_id: int = 0) -> void:
 	if w == 0:
 		return
 	_since_start += delta
@@ -221,30 +246,111 @@ func update(player_pos: Vector2, delta: float = 1.0 / 60.0) -> void:
 		var pc := _cell_m(pm)
 		if pc < 0:
 			pc = _cell_m(_clamp_m(pm, 1.0))
-		if pc >= 0 and (pc != target_cell or _dirty):
+		if pc >= 0 and (pc != target_cell or _dirty or _multi or (version > 0 and source_ids.size() == 1 and source_ids[0] != player_id)):
 			_dirty = false
-			_start(pc)
+			_start(pc, player_id)
+	if _job_active:
+		_step(BUDGET_PER_FRAME)
+
+
+## Coop : comme update() avec plusieurs sources (positions logiques des joueurs vivants, `count` premières entrées
+## de `positions`, `ids` = leur id dans le registre Players). Relance quand l'ensemble des cellules sources change.
+## count = 1 : strictement update() (solo inchangé). count = 0 : le champ courant est gardé.
+func update_multi(positions: PackedVector2Array, ids: PackedInt32Array, count: int, delta: float = 1.0 / 60.0) -> void:
+	if w == 0 or count <= 0:
+		return
+	if count == 1:
+		update(positions[0], delta, ids[0])
+		return
+	_since_start += delta
+	if not _job_active and _since_start >= MIN_RECOMPUTE_S:
+		count = mini(count, MAX_SOURCES)
+		_want_cells.resize(count)
+		var changed := _dirty or not _multi or source_cells.size() != count
+		for k in count:
+			var pm := to_map(positions[k])
+			var pc := _cell_m(pm)
+			if pc < 0:
+				pc = _cell_m(_clamp_m(pm, 1.0))
+			_want_cells[k] = pc
+			if not changed and (pc != source_cells[k] or ids[k] != source_ids[k]):
+				changed = true
+		if changed:
+			_dirty = false
+			_start_multi(_want_cells, ids, count)
 	if _job_active:
 		_step(BUDGET_PER_FRAME)
 
 
 ## Calcule tout le champ immédiatement (liaison de carte, tests).
-func compute_now(player_pos: Vector2) -> void:
+func compute_now(player_pos: Vector2, player_id: int = 0) -> void:
 	var pc := _cell_m(_clamp_m(to_map(player_pos), 1.0))
 	if pc < 0:
 		return
 	_dirty = false
-	_start(pc)
+	_start(pc, player_id)
 	_step(1 << 30)
 
 
-func _start(pc: int) -> void:
+## compute_now à plusieurs sources (liaison de carte en coop, tests).
+func compute_now_multi(positions: PackedVector2Array, ids: PackedInt32Array, count: int) -> void:
+	if w == 0 or count <= 0:
+		return
+	if count == 1:
+		compute_now(positions[0], ids[0])
+		return
+	count = mini(count, MAX_SOURCES)
+	_want_cells.resize(count)
+	for k in count:
+		_want_cells[k] = _cell_m(_clamp_m(to_map(positions[k]), 1.0))
+	_dirty = false
+	_start_multi(_want_cells, ids, count)
+	_step(1 << 30)
+
+
+func _start(pc: int, player_id: int = 0) -> void:
 	_back.fill(UNREACHED)
 	_back[pc] = 0 # la source peut être bloquée (joueur collé à un mur) : on en sort quand même
 	_queue[0] = pc
 	_q_head = 0
 	_q_tail = 1
 	_job_target = pc
+	_job_multi = false
+	_job_cells.resize(1)
+	_job_cells[0] = pc
+	_job_ids.resize(1)
+	_job_ids[0] = player_id
+	_job_active = true
+	_since_start = 0.0
+
+
+func _start_multi(cells: PackedInt32Array, ids: PackedInt32Array, count: int) -> void:
+	if _back_root.size() != w * h:
+		_back_root.resize(w * h)
+		_root.resize(w * h)
+		_root.fill(-1)
+	_back.fill(UNREACHED)
+	_back_root.fill(-1)
+	_job_cells.resize(0)
+	_job_ids.resize(0)
+	_q_head = 0
+	_q_tail = 0
+	for k in count:
+		var pc := cells[k]
+		if pc < 0:
+			continue
+		_job_cells.append(pc)
+		_job_ids.append(ids[k])
+		if _back[pc] == 0:
+			continue # deux joueurs dans la même cellule : une seule source (la première)
+		_back[pc] = 0
+		_back_root[pc] = pc * 4 + (_job_cells.size() - 1)
+		_queue[_q_tail] = pc
+		_q_tail += 1
+	if _q_tail == 0:
+		return
+	_job_target = _job_cells[0]
+	_job_multi = true
 	_job_active = true
 	_since_start = 0.0
 
@@ -254,6 +360,7 @@ func _step(budget: int) -> void:
 	var off := _off
 	var offx := _offx
 	var offy := _offy
+	var multi := _job_multi
 	while _q_head < _q_tail and done < budget:
 		var c := _queue[_q_head]
 		_q_head += 1
@@ -266,15 +373,46 @@ func _step(budget: int) -> void:
 			if k >= 4 and (blocked[c + offx[k]] != 0 or blocked[c + offy[k]] != 0):
 				continue # pas de coupe de coin
 			_back[nc] = nd
+			if multi:
+				_back_root[nc] = _back_root[c]
 			_queue[_q_tail] = nc
 			_q_tail += 1
 	if _q_head >= _q_tail:
 		var tmp := _dist
 		_dist = _back
 		_back = tmp
+		if multi:
+			var tr := _root
+			_root = _back_root
+			_back_root = tr
+		_multi = multi
+		source_cells.resize(_job_cells.size()) # copie sans allocation (au plus 4 entrées)
+		source_ids.resize(_job_ids.size())
+		for k in _job_cells.size():
+			source_cells[k] = _job_cells[k]
+			source_ids[k] = _job_ids[k]
 		target_cell = _job_target
 		version += 1
 		_job_active = false
+
+
+## Id du joueur (registre Players) que le champ courant mène vers `pos` : la source la plus proche à pied.
+## Solo : l'id de l'unique source. -1 sans champ, hors grille ou cellule non atteinte. O(1) + au plus 4 comparaisons.
+func root_id_at(pos: Vector2) -> int:
+	if version == 0 or source_ids.is_empty():
+		return -1
+	if not _multi:
+		return source_ids[0]
+	var c := cell_of(pos)
+	if c < 0 or _dist[c] == UNREACHED:
+		return -1
+	var rc := _root[c]
+	return source_ids[rc & 3] if rc >= 0 else -1
+
+
+## Nombre de sources du champ courant (0 sans champ).
+func source_count() -> int:
+	return source_cells.size() if version > 0 else 0
 
 
 ## Direction de déplacement (unitaire) vers le joueur pour un corps en `pos`.
@@ -357,13 +495,47 @@ func steer_walls_many(pos: PackedVector2Array, out: PackedVector2Array, walls: P
 			out[i] = _aim[c] if _flat else _m2l.basis_xform(_aim[c])
 
 
+## Coop : steer_walls_many + racines, en une passe. roots[i] (TOUS les i < n) = id du joueur (registre Players) que
+## le champ rejoint depuis pos[i], -1 si cellule non atteinte, hors grille ou champ à une seule source (le Director
+## n'en a alors pas besoin). Même coût que steer_walls_many à une lecture de tableau près par monstre.
+func steer_walls_roots_many(pos: PackedVector2Array, out: PackedVector2Array, walls: PackedByteArray, roots: PackedInt32Array, start: int, n: int) -> void:
+	if w == 0 or not _multi or version == 0:
+		roots.fill(-1)
+		steer_walls_many(pos, out, walls, start, n)
+		return
+	var ox := _origin.x
+	var oy := _origin.y
+	var fw := float(w)
+	var fh := float(h)
+	for i in n:
+		var p := pos[i] if _flat else _l2m * pos[i]
+		var fx := (p.x - ox) * INV_CELL
+		var fy := (p.y - oy) * INV_CELL
+		var mine := (i & 1) == start
+		if fx < 0.0 or fy < 0.0 or fx >= fw or fy >= fh:
+			walls[i] = 1
+			roots[i] = -1
+			if mine:
+				out[i] = Vector2.ZERO
+			continue
+		var c := int(fy) * w + int(fx)
+		walls[i] = _near[c]
+		var rc := _root[c] if _dist[c] != UNREACHED else -1
+		roots[i] = source_ids[rc & 3] if rc >= 0 else -1
+		if mine:
+			if _stamp[c] != version:
+				_fill(c)
+			out[i] = _aim[c] if _flat else _m2l.basis_xform(_aim[c])
+
+
 func _fill(c: int) -> void:
 	_stamp[c] = version
 	var best := -1
 	var best_d := _dist[c]
+	# source(s) du champ : distance 0 (une source peut être bloquée : joueur collé à un mur). Solo : target_cell.
 	for k in 8:
 		var nc := c + _off[k]
-		if blocked[nc] != 0 and nc != target_cell:
+		if blocked[nc] != 0 and _dist[nc] != 0:
 			continue
 		if k >= 4 and (blocked[c + _offx[k]] != 0 or blocked[c + _offy[k]] != 0):
 			continue
@@ -371,12 +543,15 @@ func _fill(c: int) -> void:
 			best_d = _dist[nc]
 			best = nc
 	_next[c] = best
-	_los[c] = 1 if _line_clear(c, target_cell) else 0
+	var src := target_cell
+	if _multi and _dist[c] != UNREACHED:
+		src = _root[c] >> 2 # ligne de vue vers le joueur que ce chemin rejoint
+	_los[c] = 1 if _line_clear(c, src) else 0
 	_aim[c] = Vector2.ZERO
-	if c == target_cell or _dist[c] == UNREACHED or _los[c] != 0 or best < 0:
+	if _dist[c] == 0 or _dist[c] == UNREACHED or _los[c] != 0 or best < 0:
 		return
 	var aim := best # vise 2 cellules plus loin sur le chemin : trajectoire plus lisse
-	if best != target_cell:
+	if _dist[best] != 0:
 		if _stamp[best] != version:
 			_fill(best)
 		if _next[best] >= 0:

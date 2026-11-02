@@ -376,6 +376,8 @@ func _resolve_staff(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= STAFF_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= STAFF_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"staff"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), STAFF_RANGE_U * U + PLAYER_R, STAFF_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"staff"), player)
 	_log(&"staff", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

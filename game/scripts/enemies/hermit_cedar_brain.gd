@@ -368,6 +368,8 @@ func _resolve_branch(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= BRANCH_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= BRANCH_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"branch"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), BRANCH_RANGE_U * U + PLAYER_R, BRANCH_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"branch"), player)
 	_log(&"branch", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE
@@ -562,6 +564,8 @@ func _release_spores(player: Node2D, ppos: Vector2) -> void:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"spores"))
 		_poison(player)
 		events.append({"kind": &"spores_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants dans le nuage
+		e.coop_hit_circle(_spore_at, SPORE_R_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"spores"), player)
 	pace.strike(&"spell", phase)
 	state = S.CHASE
 

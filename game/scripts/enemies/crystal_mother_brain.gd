@@ -859,6 +859,8 @@ func _emerge(player: Node2D, ppos: Vector2) -> void:
 	if player != null and v.length() <= REFLECT_R_U * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"reflect"))
 		events.append({"kind": &"reflect_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants dans l'éclat
+		e.coop_hit_circle(bp, REFLECT_R_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"reflect"), player)
 	events.append({"kind": &"reflect", "phase": phase, "to_block": true})
 	_attack_cd = maxf(_attack_cd, 0.5)
 	_emerged = true # reste en S.REFLECT un pas : la récupération commence au pas suivant (BossPace)

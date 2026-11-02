@@ -129,6 +129,26 @@ var walk_target: Node2D = null
 var variant := VARIANT_SHOOTER ## tier 2 : tireur ou bondisseur
 
 var pool_index := -1 ## index dans la liste active du Director (gestion interne)
+
+# --- Coop 1-4 (docs/multi/Archi_Reseau.md §1.2 lignes 6-8) ---------------------------------------------------------
+## Attribution des kills : id (registre Players) du dernier joueur qui a touché ce monstre, lu dans `hit["by"]`
+## (SpellCaster.deal_damage, foudre en chaîne : contrat du lot joueur/sorts) ou `data["by"]` d'apply_status ; les
+## ticks de brûlure et de poison gardent ce dernier attaquant connu. Events.NO_PLAYER (-1) = inconnu (solo sans
+## attribution, environnement). Transmis par Events.emit_enemy_killed ; lisible sur un boss à Events.boss_killed.
+var last_hit_by := -1
+## Cible (coop, posée par le Director) : id du joueur poursuivi, image du dernier changement (inertie), temps avant
+## le prochain choix de cible d'un boss. Ignorés en solo (target_id reste -1).
+var target_id := -1
+var target_since := 0
+var retarget_left := 0.0
+## Joueurs vivants à l'apparition du boss (PV × Balance.boss_party_hp_mult, figés ensuite) ; 1 en solo.
+var party_n_at_spawn := 1
+## Coop : joueurs vivants de l'image (tableau du Director, lecture seule), `coop_count` premières entrées valides.
+## Solo : coop = faux, les attaques de zone ne touchent que leur cible (comportement historique).
+static var coop := false
+static var coop_party: Array[Node2D] = []
+static var coop_count := 0
+var _dash_victims: Array[Node2D] = [null, null, null, null] ## coop : joueurs déjà touchés par la course en cours
 var director: Node = null
 var nav: NavField = null ## champ de flux de la carte (null = poursuite directe)
 
@@ -206,6 +226,9 @@ func _ready() -> void:
 func take_damage(amount: float, is_crit: bool = false, element: StringName = &"", hit: Dictionary = {}) -> void:
 	if not active or amount <= 0.0:
 		return
+	var by: int = hit.get("by", -1) if not hit.is_empty() else -1
+	if by >= 0:
+		last_hit_by = by
 	if brain != null and brain.has_method(&"damage_taken_mult"): # boss à IA propre (Sonneur P3 : +25 %)
 		amount *= brain.damage_taken_mult()
 	if _dmg_mod != 1.0: # modificateurs externes (lampes de la Mère-Cristal…)
@@ -343,6 +366,9 @@ func _end_imprison() -> void:
 func apply_status(status: StringName, data: Dictionary) -> void:
 	if not active:
 		return
+	var by: int = data.get("by", -1)
+	if by >= 0:
+		last_hit_by = by # DoT et statuts : le poseur devient le dernier attaquant connu (attribution du kill)
 	var total: float = data.get("total", 0.0)
 	match status:
 		&"burn":
@@ -464,7 +490,12 @@ func activate_boss(kind: StringName, pos: Vector2, D: float) -> void:
 		brain = null
 	_boss_sprite_id = EnemyVisual.resolve_boss_id(get_tree() if is_inside_tree() else null, kind, director)
 	is_elite = false
-	max_hp = Balance.boss_hp(kind, D, RunState.stage) * Balance.boss_hp_mult(_boss_sprite_id) * Balance.boss_hp_mode_mult(kind, RunState.mode) # facteur de mode appliqué ICI, une seule fois (pas par Pillar ni TestTools)
+	# coop : PV × (1 + pente (n - 1)) avec n = joueurs vivants à l'apparition, figé (Scaling_Multi §2.7) ; solo : n = 1
+	party_n_at_spawn = maxi(Players.alive_count(), 1) if Players.count() > 1 else 1
+	var party_kind := &""
+	if party_n_at_spawn > 1 and kind == &"etage" and FloorPlan.is_final_stage(RunState.stage):
+		party_kind = &"final" # boss final : pente 0,35 (FINAL_BOSS_HP_MULT reste appliqué par Pillar)
+	max_hp = Balance.boss_hp(kind, D, RunState.stage, party_n_at_spawn, party_kind) * Balance.boss_hp_mult(_boss_sprite_id) * Balance.boss_hp_mode_mult(kind, RunState.mode) # facteur de mode appliqué ICI, une seule fois (pas par Pillar ni TestTools)
 	damage = Balance.boss_damage(kind, D)
 	speed_px = Balance.monster_speed(BOSS_SPEED_U, D) * U
 	radius_px = BOSS_RADIUS_U.get(kind, 1.1) * U
@@ -542,6 +573,10 @@ func _sfx(id: StringName, vol_db := 0.0, important := false) -> void:
 
 func _common_activate(pos: Vector2) -> void:
 	test_dummy = false
+	last_hit_by = -1
+	target_id = -1
+	target_since = 0
+	retarget_left = 0.0
 	hp = max_hp
 	aim_priority = 1.0
 	walk_target = null
@@ -610,7 +645,7 @@ func _die() -> void:
 	if is_boss:
 		Events.boss_killed.emit(self, boss_kind == &"etage")
 	else:
-		Events.enemy_killed.emit(self, position, tier, is_elite)
+		Events.emit_enemy_killed(self, position, tier, is_elite, last_hit_by) # + enemy_killed_by(tueur)
 		if director != null and director.corpses != null: # anim death du sprite v2 : cadavre au sol (sinon disparition immédiate)
 			visual.leave_corpse(director.corpses, position)
 	if director:
@@ -1012,6 +1047,8 @@ func _resolve_windup(player: Node2D, player_pos: Vector2) -> void:
 			_dash_dir = Vector2.from_angle(_facing)
 			_dash_left = LEAP_LENGTH_U / LEAP_SPEED_U
 			_dash_hit = false
+			if coop:
+				_dash_victims.fill(null)
 		Windup.CONE:
 			visual.set_charge(0)
 			_sfx(&"enemy.brute_cone.heavy")
@@ -1019,12 +1056,16 @@ func _resolve_windup(player: Node2D, player_pos: Vector2) -> void:
 			var reach := CONE_RANGE_U * U + PLAYER_RADIUS_PX
 			if v.length() <= reach and absf(angle_difference(_facing, v.angle())) <= CONE_HALF_ANGLE + 0.15:
 				_hit_player(player, damage)
+			if coop:
+				coop_hit_cone(_target, _facing, reach, CONE_HALF_ANGLE + 0.15, damage, player)
 			_start_windup(Windup.RECOVER, _BAL.BRUTE_RECOVERY_S, position)
 		Windup.SHOCK:
 			visual.set_charge(0)
 			_sfx(&"enemy.shockwave.heavy")
 			if _target.distance_to(player_pos) <= SHOCK_RADIUS_U * U + PLAYER_RADIUS_PX:
 				_hit_player(player, damage * SHOCK_DMG_MULT)
+			if coop:
+				coop_hit_circle(_target, SHOCK_RADIUS_U * U + PLAYER_RADIUS_PX, damage * SHOCK_DMG_MULT, player)
 			_start_windup(Windup.RECOVER, _BAL.BRUTE_RECOVERY_S, position)
 		Windup.SHOT, Windup.SALVO: # visée verrouillée (_facing) : un pas de côté pendant l'éclat esquive
 			_release_token()
@@ -1043,9 +1084,13 @@ func _resolve_windup(player: Node2D, player_pos: Vector2) -> void:
 			_sfx(&"enemy.shockwave.heavy", 2.0, true)
 			if _target.distance_to(player_pos) <= BOSS_SLAM_RADIUS_U * U + PLAYER_RADIUS_PX:
 				_hit_player(player, damage * BOSS_SPELL_DMG_MULT)
+			if coop:
+				coop_hit_circle(_target, BOSS_SLAM_RADIUS_U * U + PLAYER_RADIUS_PX, damage * BOSS_SPELL_DMG_MULT, player)
 		Windup.STRIKE:
 			if _target.distance_to(player_pos) <= BOSS_STRIKE_RADIUS_U * U + PLAYER_RADIUS_PX:
 				_hit_player(player, damage * BOSS_SPELL_DMG_MULT)
+			if coop:
+				coop_hit_circle(_target, BOSS_STRIKE_RADIUS_U * U + PLAYER_RADIUS_PX, damage * BOSS_SPELL_DMG_MULT, player)
 		Windup.AUTO: # frame d'impact : le tir part vers la position actuelle du joueur
 			var to := player_pos - position
 			_shoot(to.normalized() if to.length_squared() > 0.01 else Vector2.from_angle(_facing))
@@ -1062,6 +1107,8 @@ func _dash_step(delta: float, player: Node2D, player_pos: Vector2) -> void:
 		_dash_hit = true
 		visual.set_action(&"attack", true) # le coup se voit (le dégât est déjà appliqué au contact)
 		_hit_player(player, damage * LEAP_DMG_MULT)
+	if coop: # coop : la course touche aussi, une fois chacun, les autres joueurs vivants sur son passage
+		_coop_dash_hits(player)
 	if _dash_left <= 0.0 or blocked:
 		_dash_left = 0.0
 		if not _dash_hit:
@@ -1081,6 +1128,84 @@ func _hit_player(player: Node2D, amount: float) -> void:
 	if player.has_method(&"take_damage"):
 		player.take_damage(dmg, self)
 	apply_affixes_to(player, dmg)
+
+
+## --- Coop : attaques de zone sur les AUTRES joueurs vivants -------------------------------------------------------
+## Contrat pour les cerveaux de boss (résolution d'une attaque en un coup) : le code solo teste et frappe sa cible
+## `primary` comme avant, puis appelle `if Enemy.coop: e.coop_hit_<forme>(..., primary)` avec la même géométrie (portées
+## déjà élargies de la hitbox). Chaque autre joueur vivant dans la forme reçoit le même coup (_hit_player : enrage,
+## affixes). Aucune allocation ; sans effet en solo. Ne pas appeler pour un danger qui touche à chaque image (zones,
+## projectiles suivis) : ceux-là bouclent eux-mêmes sur Enemy.coop_party avec leur propre délai par joueur.
+## Cercle : distance au centre <= reach.
+func coop_hit_circle(center: Vector2, reach: float, amount: float, primary: Node2D) -> void:
+	for k in coop_count:
+		var pl := coop_party[k]
+		if pl == null or pl == primary or not is_instance_valid(pl):
+			continue
+		if center.distance_to(pl.global_position) <= reach:
+			_hit_player(pl, amount)
+
+
+## Cône : distance à l'origine <= reach et écart angulaire à `facing` (rad) <= half.
+func coop_hit_cone(origin: Vector2, facing: float, reach: float, half: float, amount: float, primary: Node2D) -> void:
+	for k in coop_count:
+		var pl := coop_party[k]
+		if pl == null or pl == primary or not is_instance_valid(pl):
+			continue
+		var v := pl.global_position - origin
+		if v.length() <= reach and absf(angle_difference(facing, v.angle())) <= half:
+			_hit_player(pl, amount)
+
+
+## Anneau : r_min <= distance au centre <= r_max.
+func coop_hit_ring(center: Vector2, r_min: float, r_max: float, amount: float, primary: Node2D) -> void:
+	for k in coop_count:
+		var pl := coop_party[k]
+		if pl == null or pl == primary or not is_instance_valid(pl):
+			continue
+		var d := center.distance_to(pl.global_position)
+		if d >= r_min and d <= r_max:
+			_hit_player(pl, amount)
+
+
+## Bande : projection sur `dir` (unitaire) depuis `origin` dans [along_min, along_max] et écart latéral <= half_w.
+func coop_hit_band(origin: Vector2, dir: Vector2, along_min: float, along_max: float, half_w: float, amount: float, primary: Node2D) -> void:
+	for k in coop_count:
+		var pl := coop_party[k]
+		if pl == null or pl == primary or not is_instance_valid(pl):
+			continue
+		var v := pl.global_position - origin
+		var along := v.dot(dir)
+		if along >= along_min and along <= along_max and absf(v.cross(dir)) <= half_w:
+			_hit_player(pl, amount)
+
+
+## Coop : contact de la course du bondisseur avec les autres joueurs vivants (une fois par joueur et par course).
+func _coop_dash_hits(primary: Node2D) -> void:
+	var reach := radius_px + PLAYER_RADIUS_PX
+	for k in coop_count:
+		var pl := coop_party[k]
+		if pl == null or pl == primary or not is_instance_valid(pl) or _dash_victims.has(pl):
+			continue
+		if position.distance_to(pl.global_position) <= reach:
+			var slot := _dash_victims.find(null)
+			if slot >= 0:
+				_dash_victims[slot] = pl
+			_hit_player(pl, damage * LEAP_DMG_MULT)
+
+
+## Joueurs que touchent les dangers persistants (zones, flaques, éclairs, fils...) : solo = le joueur du groupe
+## `player` (mort ou vif, comportement historique) ; coop = les joueurs vivants (spectateurs ignorés). Remplit `buf`
+## (tableau propre à l'appelant, réutilisé).
+static func fill_hit_targets(buf: Array[Node2D]) -> void:
+	buf.clear()
+	if Players.count() <= 1:
+		var p := Players.local()
+		if p != null:
+			buf.append(p)
+		return
+	for p in Players.alive():
+		buf.append(p)
 
 
 ## Applique les affixes d'élite au joueur touché (aussi utilisé par les projectiles).

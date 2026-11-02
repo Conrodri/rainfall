@@ -61,8 +61,12 @@ func _physics_process(delta: float) -> void:
 
 
 func player_inside() -> bool:
-	var pl := RaidKit.player_of(self)
+	var pl := RaidKit.player_of(self) # coop : le vivant le plus proche du repère
 	return pl != null and pl.global_position.distance_to(point) <= radius_u * RaidKit.U
+
+
+## Coop : joueurs touchés (RaidKit.players_of), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 func step(delta: float) -> void:
@@ -79,12 +83,15 @@ func step(delta: float) -> void:
 		_tick_t -= tick_s
 		fired.emit(self)
 		var pl := RaidKit.player_of(self)
-		if pl != null:
+		if mode == &"avoid": # coop : chaque vivant dans la zone marquée est touché
+			RaidKit.players_of(self, _targets)
+			for p in _targets:
+				if is_instance_valid(p) and p.global_position.distance_to(point) <= radius_u * RaidKit.U:
+					hits += 1
+					RaidKit.boss_hit(boss, p, coef)
+		elif pl != null:
 			var inside := player_inside()
-			if mode == &"avoid" and inside:
-				hits += 1
-				RaidKit.boss_hit(boss, pl, coef)
-			elif mode == &"return" and not inside:
+			if mode == &"return" and not inside:
 				hits += 1
 				RaidKit.penalty_hit(boss, pl, coef, &"fixate")
 	if t >= lock_s + duration_s:

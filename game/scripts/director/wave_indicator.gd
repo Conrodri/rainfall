@@ -54,7 +54,7 @@ func _place() -> void:
 	if cam != null:
 		center = cam.get_screen_center_position()
 	elif is_instance_valid(_director):
-		var pl := get_tree().get_first_node_in_group(&"player") as Node2D
+		var pl := Players.local() # joueur local (coop : celui de cet écran)
 		center = pl.global_position if pl else Vector2.ZERO
 	var half: Vector2 = _director._spawn_half_extent() if is_instance_valid(_director) else Vector2(960, 540)
 	var tangent := Vector2(-side.y, side.x)

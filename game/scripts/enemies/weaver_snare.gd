@@ -251,10 +251,11 @@ func _physics_process(delta: float) -> void:
 		if _life > MAX_S or not is_instance_valid(p) or p.state != Pillar.STATE_ACTIVE:
 			release()
 			return
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	var ppos := player.global_position if player != null else Vector2.INF
+	Enemy.fill_hit_targets(_targets) # solo : le joueur ; coop : les vivants
 	_touch_cd -= delta
 	_strand_cd -= delta
+	_strand_fire = _strand_cd <= 0.0 # un tic de brin par pas, pour chaque joueur au contact (une fois chacun)
+	_strand_victims.clear()
 	var segs := PackedVector2Array()
 	# fils
 	var i := _threads.size() - 1
@@ -275,10 +276,11 @@ func _physics_process(delta: float) -> void:
 			n.modulate = Color(1.0 + 0.6 * float(t["glow"]), 1.0 + 0.8 * float(t["glow"]), 1.0 + 0.7 * float(t["glow"]), a)
 		segs.append(t["a"])
 		segs.append(t["b"])
-		if player != null and _seg_dist(ppos, t["a"], t["b"]) <= float(t["w"]) * 0.5 + PLAYER_R:
-			t["glow"] = 1.0
-			_slow(player)
-			_strand_damage(player)
+		for player in _targets:
+			if is_instance_valid(player) and _seg_dist(player.global_position, t["a"], t["b"]) <= float(t["w"]) * 0.5 + PLAYER_R:
+				t["glow"] = 1.0
+				_slow(player)
+				_strand_damage(player)
 		i -= 1
 	# toile
 	if not _web.is_empty():
@@ -291,7 +293,12 @@ func _physics_process(delta: float) -> void:
 			(wn as CanvasItem).modulate = Color(1.0 + 0.6 * g, 1.0 + 0.8 * g, 1.0 + 0.7 * g)
 		var ws: PackedVector2Array = _web["segs"]
 		segs.append_array(ws)
-		if player != null and absf(ppos.distance_to(_web["center"]) - float(_web["r"])) <= float(_web["w"]) * 0.5 + PLAYER_R:
+		for player in _targets:
+			if not is_instance_valid(player):
+				continue
+			var ppos := player.global_position
+			if absf(ppos.distance_to(_web["center"]) - float(_web["r"])) > float(_web["w"]) * 0.5 + PLAYER_R:
+				continue
 			var k := 0
 			while k + 1 < ws.size():
 				if _seg_dist(ppos, ws[k], ws[k + 1]) <= float(_web["w"]) * 0.5 + PLAYER_R:
@@ -332,10 +339,18 @@ func _physics_process(delta: float) -> void:
 		i -= 1
 
 
+## Joueurs touchés (Enemy.fill_hit_targets), tic de brin ouvert cette image, joueurs déjà frappés à ce tic.
+var _targets: Array[Node2D] = []
+var _strand_fire := false
+var _strand_victims: Array[Node2D] = []
+
+
 ## Tic de dégâts au contact d'un brin (fil ou toile) : coef × dégâts du boss, puis immunité aux brins.
+## Coop : chaque joueur au contact reçoit le tic (une fois par tic).
 func _strand_damage(player: Node2D) -> void:
-	if _strand_cd > 0.0 or not boss_alive or not is_instance_valid(strand_owner):
+	if not _strand_fire or not boss_alive or not is_instance_valid(strand_owner) or _strand_victims.has(player):
 		return
+	_strand_victims.append(player)
 	_strand_cd = Balance.WEAVER_STRAND_TIC_S
 	strand_hits += 1
 	strand_owner._hit_player(player, strand_owner.damage * Balance.WEAVER_STRAND_COEF)

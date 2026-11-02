@@ -235,12 +235,25 @@ static func _step_cone(b: MiniBossBrain, p: Dictionary) -> bool:
 	b.e._sfx(&"enemy.brute_cone.heavy")
 	if in_cone(b.e.position, b.aim.angle(), r, half, b.ppos) and not covered(b, p):
 		b.hurt(float(p.get("coef", 1.0)), &"impact", String(p.get("status", "")))
+	if Enemy.coop and not bool(p.get("cover", false)): # coop : les autres vivants dans le cône (sans abri possible)
+		for k in Enemy.coop_count:
+			var o := Enemy.coop_party[k]
+			if o != null and o != b.player and is_instance_valid(o) and in_cone(b.e.position, b.aim.angle(), r, half, o.global_position):
+				b.coop_hurt(o, float(p.get("coef", 1.0)), String(p.get("status", "")))
 	else:
 		b.log_event(&"impact", false, {"covered": covered(b, p)})
 	return not _repeat(b, p)
 
 
 ## Le joueur est-il à couvert derrière un obstacle (motifs `cover` : souffle de l'Ours) ?
+## Coop : coup circulaire sur chaque autre joueur vivant (MiniBossBrain.coop_hurt), après le coup solo sur la cible.
+static func coop_hurt_circle(b: MiniBossBrain, c: Vector2, reach: float, coef: float, status: String) -> void:
+	for k in Enemy.coop_count:
+		var o := Enemy.coop_party[k]
+		if o != null and o != b.player and is_instance_valid(o) and c.distance_to(o.global_position) <= reach:
+			b.coop_hurt(o, coef, status)
+
+
 static func covered(b: MiniBossBrain, p: Dictionary) -> bool:
 	return bool(p.get("cover", false)) and is_instance_valid(b.hazards) and b.hazards.blocks_segment(b.e.position, b.ppos)
 
@@ -664,6 +677,8 @@ static func _step_circles(b: MiniBossBrain, p: Dictionary) -> bool:
 		LightRig.flash(c, StringName(b.cfg.get("light", {}).get("preset", "boss")), 0.25)
 		if c.distance_to(b.ppos) <= r + PR:
 			b.hurt(float(p.get("coef", 1.0)), &"impact", String(p.get("status", "")), {"circle": i})
+		if Enemy.coop: # coop : les autres joueurs vivants dans ce cercle
+			coop_hurt_circle(b, c, r + PR, float(p.get("coef", 1.0)), String(p.get("status", "")))
 		else:
 			b.log_event(&"impact", false, {"circle": i})
 		var zc: Dictionary = p.get("zone", {})
@@ -820,6 +835,8 @@ static func _step_burrow(b: MiniBossBrain, p: Dictionary, delta: float) -> bool:
 			e._sfx(&"enemy.shockwave.heavy", 2.0, true)
 			if e.position.distance_to(b.ppos) <= r + PR:
 				b.hurt(float(p.get("coef", 1.4)), &"emerge", String(p.get("status", "")))
+			if Enemy.coop: # coop : les autres joueurs vivants au point d'émergence
+				coop_hurt_circle(b, e.position, r + PR, float(p.get("coef", 1.4)), String(p.get("status", "")))
 			else:
 				b.log_event(&"emerge", false)
 			p["_moving"] = false

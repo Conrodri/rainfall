@@ -348,6 +348,8 @@ func _resolve_ladle(player: Node2D, ppos: Vector2) -> void:
 		var dmg := e.damage * Balance.boss_attack_coef(ID, &"ladle")
 		e._hit_player(player, dmg)
 		_burn(player, dmg)
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône (sans la brûlure, propre à la cible)
+		e.coop_hit_cone(e.position, aim.angle(), LADLE_RANGE_U * U + PLAYER_R, LADLE_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"ladle"), player)
 	_splash(e.position + aim * LADLE_RANGE_U * 0.6 * U, 0.9)
 	_log(&"ladle", &"attack")
 	pace.strike(&"auto", phase)

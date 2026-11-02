@@ -369,6 +369,8 @@ func _resolve_bite(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= BITE_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= BITE_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"bite"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), BITE_RANGE_U * U + PLAYER_R, BITE_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"bite"), player)
 	_log(&"bite", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE
@@ -483,6 +485,8 @@ func _land(player: Node2D, ppos: Vector2) -> void:
 	if player != null and drop_at.distance_to(ppos) <= DROP_R_U * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"drop"))
 		events.append({"kind": &"drop_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants sous la chute
+		e.coop_hit_circle(drop_at, DROP_R_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"drop"), player)
 	_log(&"drop", &"", -1)
 	if is_instance_valid(_snare):
 		_snare.pulse_web(1.0)

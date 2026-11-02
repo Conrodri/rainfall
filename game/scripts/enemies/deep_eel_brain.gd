@@ -661,6 +661,8 @@ func _resolve_bite(player: Node2D, ppos: Vector2) -> void:
 	if player != null and v.length() <= BITE_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= BITE_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"bite"))
 		events.append({"kind": &"bite_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), BITE_RANGE_U * U + PLAYER_R, BITE_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"bite"), player)
 	_log(&"bite", &"attack")
 	pace.strike(&"auto", phase)
 	if phase >= 3:
@@ -739,6 +741,8 @@ func _release_emergence(player: Node2D, ppos: Vector2) -> void:
 	if player != null and v.dot(aim) >= -PLAYER_R and v.dot(aim) <= _emerge_len + PLAYER_R and absf(v.cross(aim)) <= EMERGE_W_U * 0.5 * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"emergence"))
 		events.append({"kind": &"emergence_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants sur la trajectoire
+		e.coop_hit_band(_origin, aim, -PLAYER_R, _emerge_len + PLAYER_R, EMERGE_W_U * 0.5 * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"emergence"), player)
 	if e._light != null:
 		e._light.set_energy(LIGHT_ENERGY[phase - 1])
 	pace.impact(&"charge")
@@ -797,6 +801,8 @@ func _release_discharge(player: Node2D, ppos: Vector2) -> void:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"discharge"))
 		_slow(player)
 		events.append({"kind": &"discharge_hit", "phase": phase})
+	if Enemy.coop: # coop : les autres joueurs vivants dans l'anneau
+		e.coop_hit_ring(e.position, DISCHARGE_R0_U * U - PLAYER_R * 0.5, DISCHARGE_R1_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"discharge"), player)
 	# la décharge projette des flaques d'eau noire hors du lac
 	var a0 := _rng.randf() * TAU
 	for k in PUDDLES_PER:

@@ -27,6 +27,8 @@ var _tick_t := 0.0
 var _vis: Node2D = null
 var _arrow: Node2D = null
 var _done := false
+## Coop : joueurs touchés (RaidKit.players_of), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 static func spawn(p_boss: Node2D, center: Vector2, opts: Dictionary = {}) -> SafeSector:
@@ -86,12 +88,13 @@ func step(delta: float) -> void:
 	_tick_t += delta
 	if _tick_t >= tick_s:
 		_tick_t -= tick_s
-		var pl := RaidKit.player_of(self)
-		if pl != null and not in_safe(pl.global_position):
-			ticks_hit += 1
-			RaidKit.penalty_hit(boss, pl, Balance.RAID_SECTOR_TICK_COEF, &"sector")
-			if pl.has_method(&"apply_slow"):
-				pl.apply_slow(1.0 - Balance.RAID_SECTOR_SLOW_PCT, tick_s + 0.1, &"raid_sector")
+		RaidKit.players_of(self, _targets) # coop : chaque vivant hors du secteur sûr
+		for pl in _targets:
+			if is_instance_valid(pl) and not in_safe(pl.global_position):
+				ticks_hit += 1
+				RaidKit.penalty_hit(boss, pl, Balance.RAID_SECTOR_TICK_COEF, &"sector")
+				if pl.has_method(&"apply_slow"):
+					pl.apply_slow(1.0 - Balance.RAID_SECTOR_SLOW_PCT, tick_s + 0.1, &"raid_sector")
 	if live_t >= duration_s:
 		_done = true
 		finished.emit(self)

@@ -201,6 +201,10 @@ func release() -> void:
 	queue_free()
 
 
+## Joueurs touchés (Enemy.fill_hit_targets : solo = le joueur, coop = les vivants), tableau réutilisé.
+var _targets: Array[Node2D] = []
+
+
 func _physics_process(delta: float) -> void:
 	if _keep:
 		_keep_t += delta
@@ -209,12 +213,14 @@ func _physics_process(delta: float) -> void:
 			release()
 			return
 		_tick -= delta
-		var player := get_tree().get_first_node_in_group(&"player") as Node2D
-		if _tick <= 0.0 and player != null and in_metal(player.global_position) and player.has_method(&"take_damage"):
-			_tick = TICK
-			player.take_damage(_damage, self)
-			if player.has_method(&"apply_status"):
-				player.apply_status(&"burn", {"hit": _damage, "source": self})
+		if _tick <= 0.0:
+			Enemy.fill_hit_targets(_targets)
+			for player in _targets: # coop : chaque joueur vivant dans le métal, au même pas
+				if is_instance_valid(player) and in_metal(player.global_position) and player.has_method(&"take_damage"):
+					_tick = TICK
+					player.take_damage(_damage, self)
+					if player.has_method(&"apply_status"):
+						player.apply_status(&"burn", {"hit": _damage, "source": self})
 		return # trace : le métal ne refroidit pas tant que la charge dure
 	var i := pools.size() - 1
 	while i >= 0:

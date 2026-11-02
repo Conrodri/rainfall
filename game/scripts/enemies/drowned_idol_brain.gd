@@ -518,6 +518,8 @@ func _resolve_palm(player: Node2D, ppos: Vector2) -> void:
 	if player != null and v.length() <= palm_range_u() * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= palm_half() + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"palm"))
 		events.append({"kind": &"palm_hit", "phase": phase, "anim": &"", "frame": -1, "expect": -1, "lag": 0.0})
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), palm_range_u() * U + PLAYER_R, palm_half() + 0.15, e.damage * Balance.boss_attack_coef(ID, &"palm"), player)
 	_log(&"palm", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE
@@ -738,6 +740,8 @@ func _fire_circle(c: Dictionary, player: Node2D, ppos: Vector2) -> void:
 	if player != null and pos.distance_to(ppos) <= chaplet_r_u() * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"chaplet"))
 		events.append({"kind": &"chaplet_hit", "phase": phase, "anim": &"", "frame": -1, "expect": -1, "lag": 0.0})
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cercle
+		e.coop_hit_circle(pos, chaplet_r_u() * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"chaplet"), player)
 
 
 # --- Digues ----------------------------------------------------------------------------------

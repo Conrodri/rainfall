@@ -59,8 +59,12 @@ func _physics_process(delta: float) -> void:
 
 
 func player_inside() -> bool:
-	var pl := RaidKit.player_of(self)
+	var pl := RaidKit.player_of(self) # coop : le vivant le plus proche (un seul suffit à absorber)
 	return pl != null and pl.global_position.distance_to(global_position) <= r_u * RaidKit.U
+
+
+## Coop : joueurs touchés par l'éclat (RaidKit.players_of), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 func step(delta: float) -> void:
@@ -115,14 +119,13 @@ func _step_burst(delta: float) -> void:
 	if _burst_t < burst_tele_s:
 		return
 	_burst_t = -1.0
-	var pl := RaidKit.player_of(self)
+	RaidKit.players_of(self, _targets) # coop : chaque vivant dans le premier anneau
 	var hit := false
-	if pl != null:
-		var d := pl.global_position.distance_to(global_position)
-		hit = d <= BURST_R1_U * RaidKit.U
-	if hit:
-		RaidKit.penalty_hit(boss, pl, Balance.RAID_SOAK_FAIL_COEF, &"soak")
-	else:
+	for pl in _targets:
+		if is_instance_valid(pl) and pl.global_position.distance_to(global_position) <= BURST_R1_U * RaidKit.U:
+			hit = true
+			RaidKit.penalty_hit(boss, pl, Balance.RAID_SOAK_FAIL_COEF, &"soak")
+	if not hit:
 		Events.raid_mechanic_failed.emit(boss, &"soak")
 	RaidFx.sfx(&"enemy.raid_soak_burst.heavy", global_position)
 	_fade_out()

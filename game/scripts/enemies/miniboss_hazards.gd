@@ -52,15 +52,16 @@ func add_obstacle(pos: Vector2, r_u: float, life: float, style: StringName) -> V
 	var nav := _nav()
 	if nav != null:
 		pos = nav.resolve(pos, r)
-	# jamais sur le joueur : un corps statique qui le chevauche le dégagerait au hasard (au travers d'un mur fin)
+	# jamais sur un joueur : un corps statique qui le chevauche le dégagerait au hasard (au travers d'un mur fin) ;
+	# solo : la cible du cerveau ; coop : chaque joueur vivant (au plus 4, ponctuel)
 	var pl: Node2D = brain.player if brain != null and is_instance_valid(brain.player) else null
 	if pl != null:
-		var away := pos - pl.global_position
-		var clear_r := r + MiniBossBrain.PLAYER_R + 4.0
-		if away.length() < clear_r:
-			pos = pl.global_position + (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * clear_r
-			if nav != null:
-				pos = nav.resolve(pos, r)
+		pos = _clear_of(pl, pos, r, nav)
+	if Enemy.coop:
+		for k in Enemy.coop_count:
+			var o := Enemy.coop_party[k]
+			if o != null and o != pl and is_instance_valid(o):
+				pos = _clear_of(o, pos, r, nav)
 	_seq += 1
 	var id := StringName("mini_ob_%d_%d" % [get_instance_id(), _seq])
 	var body := StaticBody2D.new()
@@ -157,9 +158,12 @@ func shot_count() -> int:
 	return shots.size()
 
 
-func _update_shots(delta: float, player: Node2D) -> void:
+## Joueurs visés par les tirs spéciaux (Enemy.fill_hit_targets : solo = le joueur, coop = les vivants), réutilisé.
+var _targets: Array[Node2D] = []
+
+
+func _update_shots(delta: float) -> void:
 	var nav := _nav()
-	var ppos := player.global_position if player != null else Vector2.INF
 	var i := shots.size() - 1
 	while i >= 0:
 		var s: Dictionary = shots[i]
@@ -192,9 +196,14 @@ func _update_shots(delta: float, player: Node2D) -> void:
 			kill = true
 			shots_blocked += 1
 		s["pos"] = np
-		if not kill and player != null:
+		if not kill and not _targets.is_empty():
 			var hr := float(s["r"]) + PLAYER_HIT_R
-			if np.distance_squared_to(ppos) <= hr * hr:
+			var player: Node2D = null # premier joueur touché (coop : n'importe quel vivant)
+			for pl in _targets:
+				if is_instance_valid(pl) and np.distance_squared_to(pl.global_position) <= hr * hr:
+					player = pl
+					break
+			if player != null:
 				kill = true
 				shots_hit += 1
 				if brain != null and is_instance_valid(brain.e):
@@ -214,11 +223,21 @@ func _update_shots(delta: float, player: Node2D) -> void:
 		i -= 1
 
 
+func _clear_of(pl: Node2D, pos: Vector2, r: float, nav: NavField) -> Vector2:
+	var away := pos - pl.global_position
+	var clear_r := r + MiniBossBrain.PLAYER_R + 4.0
+	if away.length() < clear_r:
+		pos = pl.global_position + (away.normalized() if away.length_squared() > 1.0 else Vector2.RIGHT) * clear_r
+		if nav != null:
+			pos = nav.resolve(pos, r)
+	return pos
+
+
 # --- Vie -----------------------------------------------------------------------------------------
 
 func _physics_process(delta: float) -> void:
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	_update_shots(delta, player)
+	Enemy.fill_hit_targets(_targets)
+	_update_shots(delta)
 	var pool := _pool()
 	var i := obstacles.size() - 1
 	while i >= 0:

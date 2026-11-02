@@ -28,6 +28,8 @@ var slowed := 0 ## ralentissements infligés (tests)
 var _pillar: Node = null
 var _life := 0.0
 var _fx: Array[Dictionary] = []
+## Joueurs touchés (Enemy.fill_hit_targets : solo = le joueur, coop = les vivants), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 
 static func create(e: Enemy, p_frames: SpriteFrames, p_prefix: String) -> Floor1Hazards:
@@ -127,8 +129,7 @@ func _physics_process(delta: float) -> void:
 	elif boss != null and (not is_instance_valid(boss) or not boss.active):
 		boss = null
 	_update_fx(delta)
-	var player := get_tree().get_first_node_in_group(&"player") as Node2D
-	var ppos := player.global_position if player != null else Vector2(INF, INF)
+	Enemy.fill_hit_targets(_targets)
 	var i := zones.size() - 1
 	while i >= 0:
 		var z: Dictionary = zones[i]
@@ -143,34 +144,42 @@ func _physics_process(delta: float) -> void:
 				continue
 			if is_instance_valid(n):
 				n.modulate.a = clampf((life - float(z["age"])) / FADE_S, 0.0, 1.0) * float(z.get("alpha", 1.0))
-		if player != null:
-			_apply(z, player, ppos, delta)
+		if not _targets.is_empty():
+			_apply(z, delta)
 		i -= 1
 
 
-func _apply(z: Dictionary, player: Node2D, ppos: Vector2, delta: float) -> void:
+## Zone sur les joueurs de `_targets` (un seul en solo). Coop : le pas de dégâts de la zone avance une fois par image
+## (si au moins un joueur est dedans) et frappe tous ceux qui sont dedans à cet instant.
+func _apply(z: Dictionary, delta: float) -> void:
 	if float(z["pulse"]) > 0.0:
-		_pulse(z, player, ppos, delta)
+		_pulse(z, delta)
 		return
-	if not inside(z, ppos, PLAYER_R * 0.5):
+	var any := false
+	for player in _targets:
+		if not is_instance_valid(player) or not inside(z, player.global_position, PLAYER_R * 0.5):
+			continue
+		any = true
+		if z["slow"] and player.has_method(&"apply_status"):
+			if not (player.has_method(&"is_slowed") and player.is_slowed()):
+				slowed += 1
+			if float(z.get("slow_mult", 0.0)) > 0.0 and player.has_method(&"apply_slow"):
+				player.apply_slow(float(z["slow_mult"]), SLOW_LINGER_S, self)
+			else:
+				player.apply_status(&"slow", {"hit": 0.0, "source": self})
+	if not any or float(z["dmg"]) <= 0.0:
 		return
-	if z["slow"] and player.has_method(&"apply_status"):
-		if not (player.has_method(&"is_slowed") and player.is_slowed()):
-			slowed += 1
-		if float(z.get("slow_mult", 0.0)) > 0.0 and player.has_method(&"apply_slow"):
-			player.apply_slow(float(z["slow_mult"]), SLOW_LINGER_S, self)
-		else:
-			player.apply_status(&"slow", {"hit": 0.0, "source": self})
-	if float(z["dmg"]) > 0.0:
-		z["tick_cd"] = float(z["tick_cd"]) - delta
-		if float(z["tick_cd"]) <= 0.0:
-			z["tick_cd"] = float(z["tick"])
-			_hurt(player, float(z["dmg"]))
-			z["hits"] = int(z["hits"]) + 1
+	z["tick_cd"] = float(z["tick_cd"]) - delta
+	if float(z["tick_cd"]) <= 0.0:
+		z["tick_cd"] = float(z["tick"])
+		for player in _targets:
+			if is_instance_valid(player) and inside(z, player.global_position, PLAYER_R * 0.5):
+				_hurt(player, float(z["dmg"]))
+				z["hits"] = int(z["hits"]) + 1
 
 
 ## Jaillissement périodique : télégraphe `wind` s avant chaque fin de période, puis éclat + dégâts.
-func _pulse(z: Dictionary, player: Node2D, ppos: Vector2, delta: float) -> void:
+func _pulse(z: Dictionary, delta: float) -> void:
 	var period := float(z["pulse"])
 	var wind := float(z["wind"])
 	z["pulse_t"] = float(z["pulse_t"]) + delta
@@ -192,9 +201,10 @@ func _pulse(z: Dictionary, player: Node2D, ppos: Vector2, delta: float) -> void:
 		pulses += 1
 		burst_fx(z["pos"], float(z["r"]), z["burst"], float(z["burst_px"]))
 		Audio.play(&"enemy.shockwave.heavy", z["pos"], -4.0)
-		if inside(z, ppos):
-			_hurt(player, float(z["dmg"]))
-			z["hits"] = int(z["hits"]) + 1
+		for player in _targets:
+			if is_instance_valid(player) and inside(z, player.global_position):
+				_hurt(player, float(z["dmg"]))
+				z["hits"] = int(z["hits"]) + 1
 
 
 func _hurt(player: Node2D, amount: float) -> void:

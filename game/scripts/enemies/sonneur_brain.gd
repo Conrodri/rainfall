@@ -399,6 +399,8 @@ func _resolve_hammer(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= HAMMER_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= HAMMER_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"hammer"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), HAMMER_RANGE_U * U + PLAYER_R, HAMMER_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"hammer"), player)
 	_log(&"hammer", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

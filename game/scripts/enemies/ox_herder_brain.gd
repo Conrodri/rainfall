@@ -350,6 +350,8 @@ func _resolve_horns(player: Node2D, ppos: Vector2) -> void:
 	var v := ppos - e.position
 	if player != null and v.length() <= HORNS_RANGE_U * U + PLAYER_R and absf(angle_difference(aim.angle(), v.angle())) <= HORNS_HALF + 0.15:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"horns"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le cône
+		e.coop_hit_cone(e.position, aim.angle(), HORNS_RANGE_U * U + PLAYER_R, HORNS_HALF + 0.15, e.damage * Balance.boss_attack_coef(ID, &"horns"), player)
 	_log(&"horns", &"attack")
 	if state == S.HORNS:
 		pace.strike(&"auto", phase)
@@ -516,6 +518,8 @@ func _resolve_stomp(player: Node2D, ppos: Vector2) -> void:
 	if player != null and d >= STOMP_R0_U * U - PLAYER_R * 0.5 and d <= STOMP_R1_U * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"tear" if _tear else &"stomp"))
 		events.append({"kind": &"stomp_hit", "phase": phase, "anim": &"", "frame": -1, "expect": -1, "lag": 0.0})
+	if Enemy.coop: # coop : les autres joueurs vivants dans l'anneau
+		e.coop_hit_ring(e.position, STOMP_R0_U * U - PLAYER_R * 0.5, STOMP_R1_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"tear" if _tear else &"stomp"), player)
 	if _tear: # arraché de la boue : charge aussitôt (planté le temps de son armement)
 		_tear = false
 		_chain_left = 0

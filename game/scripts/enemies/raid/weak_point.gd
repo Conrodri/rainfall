@@ -20,6 +20,8 @@ var facing_angle := NAN
 var on_broken: Callable = Callable()
 var exposed := false
 var broken := false
+## Coop : joueurs touchés (RaidKit.players_of), tableau réutilisé.
+var _targets: Array[Node2D] = []
 
 # --- duck typing Enemy
 var is_boss := false
@@ -80,11 +82,13 @@ func step(_delta: float) -> void:
 		a = float(boss.get(&"_facing")) if boss.get(&"_facing") != null else 0.0
 	var dir := offset_u.rotated(a)
 	global_position = boss.global_position + dir * RaidKit.U
-	var pl := RaidKit.player_of(self)
+	RaidKit.players_of(self, _targets) # coop : exposé si un des vivants est dans l'arc
 	var on := false
-	if pl != null and dir.length_squared() > 0.0001:
-		var to_p := pl.global_position - boss.global_position
-		on = absf(dir.angle_to(to_p)) <= deg_to_rad(exposed_arc_deg) * 0.5
+	if dir.length_squared() > 0.0001:
+		for pl in _targets:
+			if is_instance_valid(pl) and absf(dir.angle_to(pl.global_position - boss.global_position)) <= deg_to_rad(exposed_arc_deg) * 0.5:
+				on = true
+				break
 	if on != exposed:
 		_set_exposed(on)
 

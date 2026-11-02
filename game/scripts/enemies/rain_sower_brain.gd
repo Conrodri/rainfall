@@ -532,6 +532,8 @@ func _resolve_lash(player: Node2D, ppos: Vector2) -> void:
 	var along := v.dot(aim)
 	if player != null and along >= -PLAYER_R and along <= LASH_LEN_U * U + PLAYER_R and absf(v.cross(aim)) <= LASH_W_U * 0.5 * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"lash"))
+	if Enemy.coop: # coop : les autres joueurs vivants sur la ligne du fouet
+		e.coop_hit_band(e.position, aim, -PLAYER_R, LASH_LEN_U * U + PLAYER_R, LASH_W_U * 0.5 * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"lash"), player)
 	_log(&"lash", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE
@@ -557,6 +559,8 @@ func _resolve_whirl(player: Node2D, ppos: Vector2) -> void:
 	_ring_fx(e.position, WHIRL_R_U * U, 0.35, BRONZE.lightened(0.5))
 	if player != null and ppos.distance_to(e.position) <= WHIRL_R_U * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"whirl"))
+	if Enemy.coop: # coop : les autres joueurs vivants dans le tourbillon
+		e.coop_hit_circle(e.position, WHIRL_R_U * U + PLAYER_R, e.damage * Balance.boss_attack_coef(ID, &"whirl"), player)
 	_log(&"whirl", &"attack")
 	pace.strike(&"auto", phase)
 	state = S.CHASE

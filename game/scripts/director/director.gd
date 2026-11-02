@@ -102,6 +102,37 @@ var _head := PackedInt32Array()
 var _steer := PackedVector2Array() ## direction de champ par index du snapshot (1/2 recalculée par frame)
 var _walls := PackedByteArray() ## 1 = mur à portée de résolution (NavField.walls_many), 0 = resolve épargné
 
+# --- Coop 1-4 (docs/multi/Archi_Reseau.md §1.2 lignes 7-8, Scaling_Multi.md §2.5) ---------------------------------
+# Solo (Players.count() <= 1) : chemin historique strictement identique (le joueur du groupe, mort ou vif, aucun tirage
+# d'aléa en plus). Coop : joueurs VIVANTS seulement (spectateurs ignorés) ; chaque monstre poursuit un joueur
+# (Enemy.target_id) : celui que le champ de flux multi-sources rejoint (le plus proche à pied), sinon le plus proche à
+# vol d'oiseau, avec inertie ; boss : nouvelle cible toutes les COOP_BOSS_RETARGET_S, menace du dernier frappeur.
+# Spawn autour d'un joueur vivant tiré au hasard, jamais dans le champ de vision d'un autre ; LOD et recyclage au
+# joueur poursuivi (≈ le plus proche) ; plafond global Balance.MAX_ENEMIES inchangé.
+## Boss et mini-boss : changement de cible au plus toutes les 6 s (docs/multi/Design_Coop.md §5.2, anti « tank parking »).
+## À reprendre dans Balance (COOP_BOSS_RETARGET_S) par l'orchestrateur ; valeur locale en attendant.
+const COOP_BOSS_RETARGET_S := 6.0
+## Menace : pour le choix de cible d'un boss, la distance au dernier joueur qui l'a frappé compte × ce facteur.
+const COOP_BOSS_THREAT_DIST_MULT := 0.7
+## Inertie des monstres ordinaires : une cible gardée au moins ce nombre d'images (pas de va-et-vient entre deux joueurs)…
+const RETARGET_HOLD_FRAMES := 60
+## … et, sans champ de flux, remplacée seulement par un joueur nettement plus proche (distance < 0,8 × l'actuelle).
+const RETARGET_RATIO := 0.8
+const RETARGET_SLICES := 8 ## cible réévaluée pour 1/8 des monstres par image (puissance de 2)
+## Monstre engagé : à moins de 5 u de sa cible vivante, il la garde (pas de bascule au bord de deux joueurs).
+const RETARGET_ENGAGED_PX := 320.0
+const SPAWN_ANCHOR_TRIES := 3 ## coop : points tirés autour de l'ancre avant d'abandonner (visibles d'un autre joueur)
+
+var multi := false ## coop active cette image (au moins deux joueurs inscrits)
+var _plist: Array[Node2D] = [] ## coop : joueurs vivants (tableau propre, réutilisé)
+var _pids := PackedInt32Array() ## id (registre Players) de chaque entrée de _plist
+var _ppos_list := PackedVector2Array() ## position de chaque entrée de _plist
+var _np := 0
+var _node_by_id: Array[Node2D] = [null, null, null, null] ## coop : joueur vivant par id, null sinon
+var _pos_by_id := PackedVector2Array([Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO])
+var _wave_anchor := -1 ## coop : id du joueur autour duquel la vague en cours apparaît
+var _roots := PackedInt32Array() ## coop : joueur que le champ rejoint depuis chaque monstre du snapshot (-1 : aucun)
+
 
 func _ready() -> void:
 	add_to_group(&"director")
@@ -168,8 +199,12 @@ func bind_map(map: Node2D) -> void:
 		nf.build_from_map(map)
 		if nf.is_valid():
 			nav = nf
-			var pl := get_tree().get_first_node_in_group(&"player") as Node2D
-			nf.compute_now(pl.global_position if pl else nf.from_map(nf.bounds.get_center()))
+			_gather_players()
+			if multi and _np > 1:
+				nf.compute_now_multi(_ppos_list, _pids, _np)
+			else:
+				var pl := (_plist[0] if multi and _np == 1 else Players.local())
+				nf.compute_now(pl.global_position if pl else nf.from_map(nf.bounds.get_center()), _pids[0] if multi and _np == 1 else 0)
 	for list: Array[Enemy] in [_free, _active, _free_bosses, _bosses]:
 		for e in list:
 			e.nav = nav
@@ -339,8 +374,12 @@ func fill_contact_shadows(buf: PackedFloat32Array, n: int, max_n: int, w_per_r: 
 func _physics_process(delta: float) -> void:
 	var t0 := Time.get_ticks_usec()
 	_frame += 1
+	_gather_players()
+	if multi:
+		_physics_multi(delta, t0)
+		return
 	if not is_instance_valid(_player) or not _player.is_inside_tree():
-		_player = get_tree().get_first_node_in_group(&"player") as Node2D
+		_player = Players.local() # solo : premier joueur du groupe `player` (mort ou vif), comme avant
 	var has_player := _player != null
 	var ppos := _player.global_position if has_player else Vector2.ZERO
 	if _detect_now or (_frame % 30 == 0 and not _map_alive()):
@@ -416,14 +455,15 @@ func _physics_process(delta: float) -> void:
 # --- Spawn
 func _update_spawning(delta: float, ppos: Vector2) -> void:
 	var D := RunState.difficulty()
-	var zone = _player_zone(ppos)
+	var zone = _party_zone(ppos) # coop : zone active si au moins un joueur vivant est dedans (Scaling_Multi §2.10)
 	var zone_kind: StringName = zone["kind"] if zone != null else &""
 	var t := RunState.active_time_s
+	var n := RunState.party_size # joueurs actifs figés au début de l'étage (1 en solo : valeurs inchangées)
 	var ramp := Balance.director_ramp(t) if spawn_ramp else 1.0
-	var income := Balance.director_credits_per_s(D, zone_kind) * ramp * delta * Omens.director_credit_mult() # Présage Marée
+	var income := Balance.director_credits_per_s(D, zone_kind, n) * ramp * delta * Omens.director_credit_mult() # Présage Marée
 	var share := Balance.WAVE_STREAM_SHARE if waves_enabled else 1.0
 	credits = minf(credits + income * share, CREDIT_BANK_MAX)
-	var alive_cap := mini(Balance.director_alive_cap(t), Balance.MAX_ENEMIES) if spawn_ramp else Balance.MAX_ENEMIES
+	var alive_cap := mini(Balance.director_alive_cap(t, n), Balance.MAX_ENEMIES) if spawn_ramp else Balance.MAX_ENEMIES
 	if waves_enabled:
 		wave_credits = minf(wave_credits + income * (1.0 - share), CREDIT_BANK_MAX)
 		_update_waves(delta, ppos, D, alive_cap)
@@ -435,7 +475,7 @@ func _update_spawning(delta: float, ppos: Vector2) -> void:
 		var cost: float = Balance.TIER_COST[_next_tier] * (Balance.ELITE_COST_MULT if _next_elite else 1.0)
 		if credits < cost:
 			break # on économise pour ce tirage (permet aux tiers chers d'apparaître)
-		var sp := _spawn_point(ppos)
+		var sp := _spawn_point_party(ppos) if multi else _spawn_point(ppos)
 		if sp == Vector2.INF:
 			break # aucun point valide cette frame : crédits conservés
 		credits -= cost
@@ -459,8 +499,13 @@ func _update_waves(delta: float, ppos: Vector2, D: float, alive_cap: int) -> voi
 ## Lance une vague tout de suite si les crédits et la place le permettent (tests, scripts d'étage).
 func trigger_wave() -> bool:
 	var t := RunState.active_time_s
-	var cap := mini(Balance.director_alive_cap(t), Balance.MAX_ENEMIES) if spawn_ramp else Balance.MAX_ENEMIES
-	var pl := _player if is_instance_valid(_player) else get_tree().get_first_node_in_group(&"player") as Node2D
+	var cap := mini(Balance.director_alive_cap(t, RunState.party_size), Balance.MAX_ENEMIES) if spawn_ramp else Balance.MAX_ENEMIES
+	_gather_players()
+	var pl: Node2D
+	if multi:
+		pl = _plist[0] if _np > 0 else null
+	else:
+		pl = _player if is_instance_valid(_player) else Players.local()
 	if pl == null or not _wave_queue.is_empty():
 		return false
 	return _launch_wave(pl.global_position, RunState.difficulty(), cap)
@@ -506,6 +551,10 @@ func _launch_wave(ppos: Vector2, D: float, alive_cap: int) -> bool:
 		members.append({"tier": mt, "elite": el, "variant": mv, "cost": c})
 	if members.size() < Balance.WAVE_MIN_COUNT:
 		return false
+	if multi and _np > 0: # coop : la vague vise un joueur vivant tiré au hasard (ancre gardée jusqu'à la fin de la file)
+		var k := _rng.randi_range(0, _np - 1) if _np > 1 else 0
+		_wave_anchor = _pids[k]
+		ppos = _ppos_list[k]
 	# bord d'écran : tirage, puis les suivants si aucun point valide de ce côté (carte, murs)
 	var first := _rng.randi_range(0, 3)
 	var side := Vector2.ZERO
@@ -536,6 +585,12 @@ func _launch_wave(ppos: Vector2, D: float, alive_cap: int) -> bool:
 ## Fait apparaître la file de la vague (WAVE_SPAWNS_PER_FRAME par frame), du côté choisi.
 ## Plus de place (plafond) ou plus de point valide : les crédits non dépensés passent au flux continu.
 func _spawn_wave_queue(ppos: Vector2, alive_cap: int) -> void:
+	if multi and not _wave_queue.is_empty(): # coop : autour de l'ancre de la vague (ou d'un joueur vivant si elle est tombée)
+		if _wave_anchor >= 0 and _wave_anchor < 4 and _node_by_id[_wave_anchor] != null:
+			ppos = _pos_by_id[_wave_anchor]
+		elif _np > 0:
+			_wave_anchor = _pids[0]
+			ppos = _ppos_list[0]
 	var n := 0
 	while n < WAVE_SPAWNS_PER_FRAME and not _wave_queue.is_empty():
 		var m: Dictionary = _wave_queue.pop_front()
@@ -543,6 +598,8 @@ func _spawn_wave_queue(ppos: Vector2, alive_cap: int) -> void:
 			credits = minf(credits + float(m["cost"]), CREDIT_BANK_MAX)
 			continue
 		var sp := _side_point(ppos, last_wave_side, _wave_along)
+		if multi and sp != Vector2.INF and _seen_by_other(sp, ppos):
+			sp = Vector2.INF
 		if sp == Vector2.INF:
 			credits = minf(credits + float(m["cost"]), CREDIT_BANK_MAX)
 			continue
@@ -708,6 +765,255 @@ func _player_zone(ppos: Vector2):
 		if z["active"] and ppos.distance_to(z["center"]) <= z["radius"]:
 			return z
 	return null
+
+
+# --- Coop 1-4 -----------------------------------------------------------------------------------------------------
+## Relit le registre Players : `multi` (au moins deux joueurs inscrits) et, en coop, les joueurs VIVANTS (positions,
+## ids). Aucune allocation : tableaux de 4 cases réutilisés. Partagé avec Enemy (attaques de zone, Enemy.coop_*).
+func _gather_players() -> void:
+	multi = Players.count() > 1
+	Enemy.coop = multi
+	if not multi:
+		_np = 0
+		Enemy.coop_count = 0
+		return
+	if _plist.size() != Balance.MULTI_MAX_PLAYERS:
+		_plist.resize(Balance.MULTI_MAX_PLAYERS)
+		_pids.resize(Balance.MULTI_MAX_PLAYERS)
+		_ppos_list.resize(Balance.MULTI_MAX_PLAYERS)
+	Enemy.coop_party = _plist
+	_np = 0
+	for k in _node_by_id.size():
+		_node_by_id[k] = null
+	for en in Players.entries():
+		if _np >= _plist.size():
+			break
+		var id: int = en.id
+		if not Players.is_alive(id):
+			continue
+		var nd: Node2D = en.node
+		var pos := nd.global_position
+		_plist[_np] = nd
+		_pids[_np] = id
+		_ppos_list[_np] = pos
+		if id >= 0 and id < _node_by_id.size():
+			_node_by_id[id] = nd
+			_pos_by_id[id] = pos
+		_np += 1
+	for k in range(_np, _plist.size()):
+		_plist[k] = null
+	Enemy.coop_count = _np
+
+
+## Boucle de la frame physique en coop (pendant de la boucle solo de _physics_process, mêmes étapes et mêmes coûts
+## mesurés ; voir l'en-tête « Coop 1-4 »).
+func _physics_multi(delta: float, t0: int) -> void:
+	var has_player := _np > 0
+	if _detect_now or (_frame % 30 == 0 and not _map_alive()):
+		_auto_detect_map()
+	var tn := Time.get_ticks_usec()
+	if nav and has_player:
+		nav.update_multi(_ppos_list, _pids, _np, delta)
+	stat_breakdown_usec[5] = Time.get_ticks_usec() - tn
+	if spawning_enabled and has_player:
+		_update_spawning(delta, _ppos_list[0]) # zone, ancres de spawn et de vague : choisies parmi les vivants
+
+	var t1 := Time.get_ticks_usec()
+	_build_grid(_party_center())
+	var ta := Time.get_ticks_usec()
+	_update_pack(_frame % PACK_SLICES)
+	var tb := Time.get_ticks_usec()
+	_compute_separation(_frame % SEP_PHASES)
+	var t2 := Time.get_ticks_usec()
+	stat_breakdown_usec[3] = ta - t1
+	stat_breakdown_usec[4] = tb - ta
+
+	var half_diag := _spawn_half_extent().length()
+	var recycle_r2 := half_diag * RECYCLE_FACTOR * half_diag * RECYCLE_FACTOR
+	var lod_r2 := (half_diag + LOD_MARGIN_PX) * (half_diag + LOD_MARGIN_PX)
+	var odd := _frame & 1
+	var n := _snap.size()
+	var field := false
+	if nav == null:
+		_steer.fill(Vector2.ZERO)
+	else:
+		if _walls.size() != n:
+			_walls.resize(n)
+		if _roots.size() != n:
+			_roots.resize(n)
+		nav.steer_walls_roots_many(_pos, _steer, _walls, _roots, odd, n) # direction, murs et joueur rejoint, une passe
+		field = nav.source_count() > 1
+	if has_player:
+		var delta2 := delta * 2.0
+		var phase := _frame & (RETARGET_SLICES - 1)
+		for i in n:
+			var e := _snap[i]
+			if not e.active:
+				continue
+			var p := _pos[i]
+			var root := _roots[i] if field else -1
+			var tid := e.target_id
+			# cible réévaluée sur 1/RETARGET_SLICES des monstres par image (tout de suite si elle n'est plus vivante)
+			if (i & (RETARGET_SLICES - 1)) == phase or tid < 0 or _node_by_id[tid] == null:
+				tid = _pick_target(e, p, tid, root)
+			var tp := _pos_by_id[tid]
+			# le champ mène au joueur `root` : suivi seulement s'il mène à la cible (sinon poursuite directe)
+			var st := _steer[i] if root < 0 or root == tid else Vector2.ZERO
+			var d2 := p.distance_squared_to(tp)
+			if d2 <= lod_r2:
+				e.tick(delta, _node_by_id[tid], tp, _sep[i], st, nav == null or _walls[i] != 0)
+			elif (i & 1) == odd:
+				if d2 > recycle_r2 and _far_from_all(p, recycle_r2):
+					var rp := _spawn_point_party(p) # loin de tous : replacé hors écran près d'un joueur vivant
+					if rp != Vector2.INF:
+						e.position = rp
+						e.target_id = -1
+					continue
+				e.tick(delta2, _node_by_id[tid], tp, _sep[i], st, nav == null or _walls[i] != 0)
+	else: # équipe entière morte (spectateurs) : plus personne à poursuivre
+		for i in n:
+			var e := _snap[i]
+			if e.active:
+				e.tick(delta, null, e.position, Vector2.ZERO)
+	if not _bosses.is_empty():
+		for b in _bosses.duplicate():
+			if not b.active:
+				continue
+			var bt := _pick_boss_target(b, delta)
+			if bt < 0:
+				b.tick(delta, null, b.position, Vector2.ZERO, Vector2.ZERO)
+				continue
+			var bst := Vector2.ZERO
+			if nav != null and (nav.source_count() <= 1 or nav.root_id_at(b.position) == bt):
+				bst = nav.steer(b.position) # le champ mène à sa cible (sinon poursuite directe)
+			b.tick(delta, _node_by_id[bt], _pos_by_id[bt], Vector2.ZERO, bst)
+
+	var t3 := Time.get_ticks_usec()
+	_projectiles.update_party(delta, _plist, _ppos_list, _np, nav)
+	var t4 := Time.get_ticks_usec()
+	stat_tick_usec = t4 - t0
+	stat_breakdown_usec[0] = t2 - t1
+	stat_breakdown_usec[1] = t3 - t2
+	stat_breakdown_usec[2] = t4 - t3
+
+
+## Cible d'un monstre ordinaire (coop) : `root`, le joueur que le champ de flux rejoint depuis sa cellule (le plus
+## proche à pied) ; sans champ multi-sources (root < 0), le plus proche à vol d'oiseau s'il est nettement plus proche
+## que la cible actuelle (RETARGET_RATIO). Inertie : une cible vivante est gardée RETARGET_HOLD_FRAMES images au moins,
+## et tant que le monstre en est à moins de RETARGET_ENGAGED_PX (engagé).
+func _pick_target(e: Enemy, p: Vector2, cur: int, root: int) -> int:
+	var valid := cur >= 0 and _node_by_id[cur] != null
+	if _np == 1:
+		if cur != _pids[0]:
+			e.target_id = _pids[0]
+			e.target_since = _frame
+		return _pids[0]
+	if valid and (_frame - e.target_since < RETARGET_HOLD_FRAMES or p.distance_squared_to(_pos_by_id[cur]) < RETARGET_ENGAGED_PX * RETARGET_ENGAGED_PX):
+		return cur
+	var cand := root if root >= 0 and _node_by_id[root] != null else -1
+	if cand < 0:
+		cand = _nearest_id(p)
+		if valid and cand != cur and p.distance_squared_to(_pos_by_id[cand]) > p.distance_squared_to(_pos_by_id[cur]) * RETARGET_RATIO * RETARGET_RATIO:
+			cand = cur
+	if cand != cur:
+		e.target_id = cand
+		e.target_since = _frame
+	return cand
+
+
+## Cible d'un boss ou mini-boss (coop) : gardée COOP_BOSS_RETARGET_S, puis le joueur vivant le plus proche, la
+## distance au dernier joueur qui l'a frappé comptant × COOP_BOSS_THREAT_DIST_MULT (anti « tank parking »,
+## Design_Coop §5.2). Cible morte ou spectatrice : remplacée tout de suite. -1 si personne n'est vivant.
+func _pick_boss_target(b: Enemy, delta: float) -> int:
+	if _np == 0:
+		return -1
+	var cur := b.target_id
+	var valid := cur >= 0 and cur < 4 and _node_by_id[cur] != null
+	b.retarget_left -= delta
+	if valid and b.retarget_left > 0.0:
+		return cur
+	b.retarget_left = COOP_BOSS_RETARGET_S
+	var bp := b.position
+	var best := -1
+	var best_d := INF
+	for k in _np:
+		var id := _pids[k]
+		var d := bp.distance_squared_to(_ppos_list[k])
+		if id == b.last_hit_by:
+			d *= COOP_BOSS_THREAT_DIST_MULT * COOP_BOSS_THREAT_DIST_MULT
+		if d < best_d:
+			best_d = d
+			best = id
+	b.target_id = best
+	return best
+
+
+func _nearest_id(p: Vector2) -> int:
+	var best := _pids[0]
+	var best_d := INF
+	for k in _np:
+		var d := p.distance_squared_to(_ppos_list[k])
+		if d < best_d:
+			best_d = d
+			best = _pids[k]
+	return best
+
+
+func _far_from_all(p: Vector2, r2: float) -> bool:
+	for k in _np:
+		if p.distance_squared_to(_ppos_list[k]) <= r2:
+			return false
+	return true
+
+
+## Centre de la grille de séparation : barycentre des joueurs vivants (la fenêtre de GRID_DIM cellules, ≈ 4600 px,
+## couvre l'écran partagé de la coop locale ; un joueur très éloigné du groupe perd la séparation de ses monstres).
+func _party_center() -> Vector2:
+	if _np == 0:
+		return Vector2.ZERO
+	var c := Vector2.ZERO
+	for k in _np:
+		c += _ppos_list[k]
+	return c / float(_np)
+
+
+## Zone de spawn active (mini, etage, epreuve) : solo = celle du joueur ; coop = la première où se tient un vivant.
+func _party_zone(ppos: Vector2):
+	if not multi:
+		return _player_zone(ppos)
+	for k in _np:
+		var z = _player_zone(_ppos_list[k])
+		if z != null:
+			return z
+	return null
+
+
+## Point d'apparition en coop : autour d'un joueur vivant tiré au hasard (RoR2 ; un joueur isolé reçoit ≈ 1/n des
+## monstres), refusé s'il tombe dans le champ de vision d'un autre joueur. Vector2.INF si rien de valide.
+func _spawn_point_party(_ppos: Vector2) -> Vector2:
+	if _np == 0:
+		return Vector2.INF
+	for t in SPAWN_ANCHOR_TRIES:
+		var k := _rng.randi_range(0, _np - 1) if _np > 1 else 0
+		var a := _ppos_list[k]
+		var sp := _spawn_point(a)
+		if sp != Vector2.INF and not _seen_by_other(sp, a):
+			return sp
+	return Vector2.INF
+
+
+## Vrai si `p` est dans le rectangle d'apparition (vue + marge) d'un joueur vivant autre que celui en `anchor`.
+func _seen_by_other(p: Vector2, anchor: Vector2) -> bool:
+	if _np <= 1:
+		return false
+	var box := _spawn_box()
+	for k in _np:
+		var q := _ppos_list[k]
+		if q == anchor:
+			continue
+		if box.has_point(p - q):
+			return true
+	return false
 
 
 # --- Séparation et Meute

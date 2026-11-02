@@ -419,6 +419,13 @@ func _cleanup() -> void:
 
 
 func _bind_caster() -> void:
+	if Players.count() > 1: # coop : les coups de chaque joueur comptent (un SpellCaster par joueur)
+		for p in Players.all():
+			var c: Object = p.get(&"spells") if is_instance_valid(p) else null
+			if c != null and c.has_signal(&"spell_hit") and not c.is_connected(&"spell_hit", _on_spell_hit):
+				c.connect(&"spell_hit", _on_spell_hit)
+				_caster = c
+		return
 	if _caster != null and is_instance_valid(_caster):
 		return
 	var pl := RaidKit.player_of(boss)
