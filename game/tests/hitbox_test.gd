@@ -53,15 +53,24 @@ func _ready_to_hit() -> void:
 	_player.refresh_max_hp(true)
 
 
-## Monstre de base réel à `gap` px au-delà de son propre rayon, dans la direction `dir` : une passe de tick.
+## Monstre de base réel à `gap` px au-delà de son propre rayon PLUS l'allonge de morsure (Enemy.BITE_REACH_PX),
+## dans la direction `dir`. La morsure de l'essaim est armée (commit 69f93c51) : le monstre arme s'il est à
+## contact + allonge (contact = son rayon + rayon de DÉGÂTS du joueur), puis mord SWARM_BITE_WINDUP_S plus tard.
+## On tique donc image par image jusqu'au coup ou à la fin de la récupération. Ainsi `gap` reste comparé au rayon
+## de dégâts du joueur : gap < rayon -> armement puis coup ; gap > rayon -> jamais armé, jamais touché.
 func _contact_hits(gap: float, dir := Vector2.RIGHT) -> bool:
 	_ready_to_hit()
 	var e: Enemy = _director.spawn_enemy(1, Vector2(-40 * U, -40 * U))
-	e.global_position = _player.global_position + dir.normalized() * (e.radius_px + gap)
+	e.global_position = _player.global_position + dir.normalized() * (e.radius_px + gap + Enemy.BITE_REACH_PX)
 	e._attack_cd = 0.0
 	var n := _damaged
-	e.tick(0.0001, _player, _player.global_position, Vector2.ZERO, Vector2.ZERO, false)
-	e.global_position = Vector2(-60 * U, -60 * U) # hors jeu (Director arrêté)
+	var dt := 1.0 / 60.0
+	e.tick(0.0001, _player, _player.global_position, Vector2.ZERO, Vector2.ZERO, false) # armement (ou rien hors allonge)
+	var frames := 0
+	while _damaged == n and e._attack_cd > Enemy.BITE_PAUSE_GATE and frames < 120:
+		e.tick(dt, _player, _player.global_position, Vector2.ZERO, Vector2.ZERO, false)
+		frames += 1
+	_director.release_enemy(e)
 	return _damaged > n
 
 

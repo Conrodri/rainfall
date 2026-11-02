@@ -1225,6 +1225,18 @@ const MULTI_RESURRECT_HP_PCT := 1.0 ## PV au retour (début d'étage, comme RoR2
 const MULTI_RESURRECT_INVULN_S := 2.0
 const MULTI_AFK_S := 45.0 ## sans entrée ni dégât infligé : retiré de n au prochain recalcul (début d'étage)
 const MULTI_RUBY_PARTICIPATION_MIN := 0.25 ## part de la moyenne des dégâts de l'équipe qui vaut participation 1
+## Charge d'un gros pilier en coop : au prorata des joueurs vivants dans la zone, jamais sous ce plancher tant qu'au
+## moins un joueur y est (docs/multi/Design_Coop.md §1.3 ; ex-CoopRules.CHARGE_FLOOR).
+const COOP_CHARGE_FLOOR := 0.25
+## Téléporteur de sortie en coop : compte à rebours (s) après le premier « interagir », visible de tous
+## (Design_Coop §1.4 ; ex-CoopRules.TELEPORT_COUNTDOWN_S).
+const COOP_TELEPORT_COUNTDOWN_S := 15.0
+## Boss et mini-boss en coop : changement de cible au plus toutes les N s (Design_Coop §5.2, anti « tank parking » ;
+## ex-Director.COOP_BOSS_RETARGET_S).
+const COOP_BOSS_RETARGET_S := 6.0
+## Menace : pour le choix de cible d'un boss, la distance au dernier joueur qui l'a frappé compte × ce facteur
+## (ex-Director.COOP_BOSS_THREAT_DIST_MULT).
+const COOP_BOSS_THREAT_DIST_MULT := 0.7
 
 
 static func _party_n(n: int) -> int:

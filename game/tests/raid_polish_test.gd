@@ -79,9 +79,20 @@ func _run() -> void:
 		_check("compte de boucles = 1", Audio.active_loops() == 1)
 		Audio.stop_loop(h)
 		_check("stop_loop libère", Audio.active_loops() == 0)
-		await get_tree().create_timer(0.4).timeout # intervalle minimum du son
+		# Intervalle minimum du son : attendu sur l'horloge du pool de voix elle-même (et non un SceneTreeTimer,
+		# qui suit les deltas d'images), avec un plafond d'images pour ne jamais bloquer.
+		var gap := maxi(int(Audio.bank.get_def(real).get("min_interval_ms", 0)), 0) + 50
+		var t0: int = Audio.game_pool.now_ms()
+		var waited := 0
+		while Audio.game_pool.now_ms() - t0 < gap and waited < 600:
+			await get_tree().process_frame
+			waited += 1
+		var st: Dictionary = Audio.game_pool.stats
+		var dropped0 := int(st.dropped)
 		var h2 := Audio.play_loop(real, host)
-		_check("2e boucle démarrée", not h2.is_empty())
+		_check("2e boucle démarrée", not h2.is_empty(), "attente %d ms / %d images, voix actives %d, famille %s : %d, refusées +%d" % [
+				Audio.game_pool.now_ms() - t0, waited, Audio.game_pool.active_total(), Audio.bank.get_def(real).get("family", "?"),
+				Audio.game_pool.active_in_family(String(Audio.bank.get_def(real).get("family", ""))), int(st.dropped) - dropped0])
 		host.queue_free()
 		await get_tree().process_frame
 		await get_tree().process_frame

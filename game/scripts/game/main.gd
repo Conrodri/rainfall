@@ -20,6 +20,13 @@ extends Node2D
 ## Fin de run (victoire / mort / abandon) : sauvegarde supprimée, Profile.add_run_result, récap
 ## EndRunScreen (§3.10) → « Continuer » (title_requested) ou « Rejouer » (replay_requested).
 ## Reprise après pause : 1,5 s de protection.
+##
+## Joueurs (coop 1-4, docs/Design_Multijoueur.md, game/CONTRACTS.md « Coop ») : `party_setup` (posé avant l'ajout à
+## l'arbre ; vide = solo) décrit les joueurs ; ils sont inscrits dans `Players` AVANT RunState.start_run (niveau de
+## départ et n de l'étage 1), puis leurs nœuds sont créés dans _build (joueur 1 = `player`, caméra et HUD ; les autres
+## sans caméra). Solo : le joueur 1 est inscrit avec la source globale, chemin identique au joueur implicite.
+## Mort : solo = Events.player_died ; coop = spectateur jusqu'à l'étage suivant, Events.party_wiped = fin de run.
+## Coop : pas de pause globale pour les écrans du présage et de fin d'étage (la pause du menu reste locale au canapé).
 
 signal game_ready ## préchauffe terminée, étage lancé
 signal run_ended(victory: bool, rubies: int)
@@ -69,6 +76,12 @@ var run_over := false
 var pillars_done := 0
 var last_rubies := 0
 var last_unlocks: Array[StringName] = []
+## Coop locale (l'écran de jonction de l'étape 4 le remplira) : un dictionnaire par joueur, dans l'ordre des
+## emplacements, voir party_entry(). Vide = solo (joueur 1, source globale).
+## Ignoré à la reprise d'une sauvegarde (aucune sauvegarde de run coop en v1).
+var party_setup: Array[Dictionary] = []
+## Nœuds des joueurs de la partie, index = emplacement (players[0] == player).
+var players: Array[Node2D] = []
 var _final_boss_time_s := 0.0 ## temps actif à l'abattage du boss final (étage final nettoyé) ; 0 = pas encore
 var end_screen: RunScreens = null ## EndRunScreen (hérite de RunScreens)
 var victory_screen: RunScreens = null
@@ -85,10 +98,18 @@ var _shake_total := 0.0
 var _shake_t := 0.0
 
 
+## Entrée de `party_setup` : source d'entrée du joueur (null = source globale), personnage (vide = celui déjà choisi
+## pour cet emplacement, RunState.character pour le joueur 1) et variantes de sorts (vide = gardées).
+static func party_entry(input: InputSource = null, character: StringName = &"", loadout: Dictionary = {}) -> Dictionary:
+	return {"input": input, "character": character, "loadout": loadout}
+
+
 func _ready() -> void:
 	LightRig.clear_all() # demandes statiques d'une run précédente (relance)
+	_register_party() # avant start_run : n fixe le niveau de départ et le D de l'étage 1
 	if resume_data.is_empty():
 		RunState.start_run(run_mode, run_seed)
+		_apply_party_characters()
 	else:
 		RunState.from_dict(resume_data.get("run", {}))
 		run_mode = RunState.mode
@@ -166,6 +187,7 @@ func _build() -> void:
 	camera = player.get_node_or_null(^"Camera2D") as Camera2D
 	if "auto_cast_spells" in player:
 		player.set(&"auto_cast_spells", GameSettings.auto_cast())
+	_spawn_party()
 
 	hud = load(HUD).instantiate()
 	add_child(hud)
@@ -183,6 +205,7 @@ func _build() -> void:
 		pm.opened.connect(func() -> void: autosave())
 
 	Events.player_died.connect(_on_player_died)
+	Events.party_wiped.connect(_on_player_died) # coop : plus personne de vivant = défaite
 	Events.pillar_state_changed.connect(_on_pillar_state)
 	Events.item_chosen.connect(_on_item_chosen)
 	Events.pickup_collected.connect(_on_pickup_counter)
@@ -203,6 +226,8 @@ func _exit_tree() -> void:
 		RunState.difficulty_changed.disconnect(ambiance.set_difficulty)
 	if Events.player_died.is_connected(_on_player_died):
 		Events.player_died.disconnect(_on_player_died)
+	if Events.party_wiped.is_connected(_on_player_died):
+		Events.party_wiped.disconnect(_on_player_died)
 	if Events.pillar_state_changed.is_connected(_on_pillar_state):
 		Events.pillar_state_changed.disconnect(_on_pillar_state)
 	if Events.pickup_collected.is_connected(_on_pickup_counter):
@@ -215,6 +240,56 @@ func _exit_tree() -> void:
 		Events.gold_converted.disconnect(_on_gold_converted)
 	Audio.auto_start_map = true
 	Audio.thunder_driven = false
+	Players.clear() # fin de la scène de jeu : le registre retombe sur le joueur implicite (menus, aperçus de sorts)
+
+
+# --- Joueurs de la partie (coop 1-4) ---------------------------------------------
+
+func is_coop() -> bool:
+	return Players.count() > 1
+
+
+## Inscrit les joueurs (nœuds posés plus tard par _spawn_party). Solo : joueur 1, source globale.
+func _register_party() -> void:
+	Players.clear()
+	var n := 1
+	if resume_data.is_empty():
+		n = clampi(party_setup.size(), 1, Balance.MULTI_MAX_PLAYERS)
+	for i in n:
+		var cfg: Dictionary = party_setup[i] if i < party_setup.size() else {}
+		Players.register(null, cfg.get("input") as InputSource, i)
+
+
+## Personnage et variantes de chaque emplacement (après start_run, qui garde personnage et sorts).
+func _apply_party_characters() -> void:
+	for i in mini(party_setup.size(), Players.count()):
+		var cfg: Dictionary = party_setup[i]
+		var st := RunState.player_state(i)
+		if StringName(cfg.get("character", &"")) != &"":
+			st.character = StringName(cfg["character"])
+		var lo: Variant = cfg.get("loadout", {})
+		if lo is Dictionary and not (lo as Dictionary).is_empty():
+			st.loadout = RunState.normalize_loadout(lo)
+
+
+## Nœud du joueur 1 inscrit, puis un nœud par joueur supplémentaire (sans caméra : celle du joueur 1 suit la partie).
+func _spawn_party() -> void:
+	players.clear()
+	players.append(player)
+	Players.set_node(0, player)
+	for e in Players.entries():
+		if e.id == 0:
+			continue
+		var p := load(PLAYER).instantiate() as Node2D
+		p.set(&"player_id", e.id)
+		var cam := p.get_node_or_null(^"Camera2D") as Camera2D
+		if cam != null:
+			cam.enabled = false
+		if "auto_cast_spells" in p:
+			p.set(&"auto_cast_spells", GameSettings.auto_cast())
+		world.add_child(p)
+		Players.set_node(e.id, p)
+		players.append(p)
 
 
 # --- Compteurs de déblocage d'objets (ItemUnlocks) --------------------------
@@ -235,8 +310,9 @@ func _on_stage_started(n: int) -> void:
 	ambiance.bind_map(stage.map)
 	Audio.start_map(stage.map_id)
 	_apply_camera_limits()
-	if player != null and player.has_method(&"clear_statuses"):
-		player.clear_statuses()
+	for p in players:
+		if is_instance_valid(p) and p.has_method(&"clear_statuses"):
+			p.clear_statuses()
 	if n > 1 and is_ready and not run_over: # pas à la reprise de sauvegarde ni au 1er étage
 		_show_floor_card(n)
 		if RunState.omen_pending and is_instance_valid(floor_card): # présage : après le carton, avant la reprise du jeu
@@ -261,7 +337,8 @@ func _show_omen_screen() -> void:
 	if cards.is_empty():
 		RunState.omen_pending = false
 		return
-	get_tree().paused = true
+	if not is_coop(): # coop : l'équipe continue de jouer pendant le choix (vote à venir ; ici n'importe quel joueur)
+		get_tree().paused = true
 	omen_screen = OmenScreen.create(RunState.stage, cards, Balance.omen_mandatory(RunState.mode))
 	add_child(omen_screen)
 	omen_screen.chosen.connect(_on_omen_chosen)
@@ -272,7 +349,7 @@ func _on_omen_chosen(id: StringName) -> void:
 		omen_screen.queue_free()
 		omen_screen = null
 	RunState.set_omen(id) # Events.omen_changed : joueur, HUD, étage (reliquaire d'Offrande)
-	if not is_instance_valid(floor_card) and not run_over:
+	if not is_instance_valid(floor_card) and not run_over and not is_coop():
 		get_tree().paused = false
 	autosave.call_deferred()
 
@@ -345,8 +422,9 @@ func _process(delta: float) -> void:
 # --- Pause, fin de run --------------------------------------------------------
 
 func _on_resumed() -> void:
-	if player != null and player.has_method(&"grant_invulnerability"):
-		player.grant_invulnerability(RESUME_PROTECTION_S)
+	for p in players:
+		if is_instance_valid(p) and p.has_method(&"grant_invulnerability"):
+			p.grant_invulnerability(RESUME_PROTECTION_S)
 
 
 ## Étage final nettoyé (boss final abattu) : note le temps pour le record « meilleure run » (Profile).
@@ -358,7 +436,8 @@ func _on_floor_cleared_record(stage_n: int) -> void:
 func _on_victory_choice(_n: int) -> void:
 	if run_over or victory_screen != null:
 		return
-	get_tree().paused = true
+	if not is_coop(): # coop : jamais de pause globale
+		get_tree().paused = true
 	var final := FloorPlan.is_final_stage(RunState.stage)
 	victory_screen = RunScreens.dialog("La Source est tarie" if final else "Étage %d terminé" % RunState.stage,
 		["Le Semeur de pluie est vaincu. Vous pouvez repartir en mode sans fin (étages 6-10, mêmes biomes, autre variante)." if final
@@ -385,8 +464,9 @@ func _close_victory() -> void:
 		victory_screen = null
 
 
+## Solo : Events.player_died ; coop : Events.party_wiped (le dernier joueur vivant tombe).
 func _on_player_died() -> void:
-	if run_over:
+	if run_over or _dying:
 		return
 	_dying = true
 	get_tree().create_timer(DEATH_SCREEN_DELAY_S, true).timeout.connect(func() -> void: end_run(false, &"death"))
@@ -407,7 +487,8 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 	RunState.running = false
 	if autosave_timer != null:
 		autosave_timer.stop()
-	last_rubies = Balance.run_rubies(RunState.active_time_s / 60.0, RunState.mode, pillars_done, victory, RunState.gold)
+	# rubis du joueur local : n de la partie et participation (solo : identique à Balance.run_rubies)
+	last_rubies = PartyRecap.rubies(RunState.active_time_s / 60.0, RunState.mode, pillars_done, victory, LocalState.state().gold)
 	last_rubies += Balance.omen_rubies(RunState.omens_accepted()) # Présages acceptés (hors « Ciel clair »)
 	get_tree().paused = true
 	if _saves_enabled():
@@ -420,7 +501,7 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 		"level": RunState.level, "items": RunState.items.duplicate(), "loadout": RunState.loadout.duplicate(),
 		"boss_time_s": _final_boss_time_s if victory else 0.0,
 		"final_boss_time_s": _final_boss_time_s, "reason": String(reason), "gold": int(RunState.gold),
-		"difficulty": RunState.difficulty(), "omens": RunState.omens_taken_text(),
+		"difficulty": RunState.difficulty(), "omens": RunState.omens_taken_text(), "party_n": PartyRecap.n(),
 	})
 	end_screen = EndRunScreen.create(end_info(victory, reason))
 	add_child(end_screen)
@@ -438,8 +519,9 @@ func end_info(victory: bool, reason: StringName) -> Dictionary:
 		"victory": victory, "reason": reason,
 		"character_name": RunSave.character_name(String(RunState.character)), "mode": RunState.mode,
 		"stage": RunState.stage, "active_time_s": RunState.active_time_s, "level": RunState.level,
-		"pillars": pillars_done, "kills": RunState.kills, "items": n_items, "gold": int(RunState.gold),
+		"pillars": pillars_done, "kills": RunState.kills, "items": n_items, "gold": int(LocalState.state().gold),
 		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()),
+		"players": PartyRecap.summary(), "party_n": PartyRecap.n(), "participation": PartyRecap.participation(),
 	}
 
 

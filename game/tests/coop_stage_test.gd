@@ -279,7 +279,7 @@ func _test_teleporter() -> void:
 	var c_s := func(s: float) -> void: started[0] = s
 	tp.used.connect(c_u)
 	tp.countdown_started.connect(c_s)
-	_check("coop : le premier interagir lance le compte", tp.use() and is_equal_approx(tp.countdown_left, CoopRules.TELEPORT_COUNTDOWN_S) and started[0] == 15.0)
+	_check("coop : le premier interagir lance le compte", tp.use() and is_equal_approx(tp.countdown_left, Balance.COOP_TELEPORT_COUNTDOWN_S) and started[0] == 15.0)
 	_check("coop : pas de départ immédiat", used[0] == 0)
 	_check("coop : deuxième interagir sans effet", not tp.use())
 	tp.tick(14.0)

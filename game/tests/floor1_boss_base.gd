@@ -156,6 +156,7 @@ func _physics_process(delta: float) -> void:
 
 var _trans_seen := false
 var _trans_anim_seen := false
+var _trans_anims := {} ## anims vues pendant la transition (détail en cas d'échec)
 
 
 func _watch_trans(p: int) -> void:
@@ -165,16 +166,19 @@ func _watch_trans(p: int) -> void:
 	# coups plantés (BossPace), il ne suffit plus à reconnaître la transition
 	if brain().phase == p and _boss.phase_transitioning():
 		_trans_seen = true
-		if String(_boss.visual.call(&"current_anim")) == "trans_p%d_s" % p:
+		var cur := String(_boss.visual.call(&"current_anim"))
+		_trans_anims[cur] = true
+		if cur == "trans_p%d_s" % p:
 			_trans_anim_seen = true
 
 
 func _check_trans(p: int) -> void:
 	_check("phase %d sous %d %% : transition (boss figé) dans les 2,5 s" % [p, 70 if p == 2 else 35], _trans_seen and brain().phase == p, str(brain().phase))
 	if _has_art:
-		_check("phase %d : anim de transition trans_p%d" % [p, p], _trans_anim_seen)
+		_check("phase %d : anim de transition trans_p%d" % [p, p], _trans_anim_seen, str(_trans_anims.keys()))
 	_trans_seen = false
 	_trans_anim_seen = false
+	_trans_anims = {}
 
 
 # --- Points d'extension -------------------------------------------------------------

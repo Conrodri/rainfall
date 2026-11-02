@@ -271,7 +271,7 @@ func _boss_hp_frozen() -> void:
 	await get_tree().physics_frame
 	_check("boss coop : PV figés après une mort", b4.max_hp == hp1 * ratio)
 	RunState.player_state(2).spectating = false
-	# cible de boss : gardée COOP_BOSS_RETARGET_S, remplacée tout de suite si elle meurt
+	# cible de boss : gardée Balance.COOP_BOSS_RETARGET_S, remplacée tout de suite si elle meurt
 	await get_tree().physics_frame
 	var t0 := b4.target_id
 	_check("boss coop : une cible vivante", t0 >= 0 and t0 < 4)

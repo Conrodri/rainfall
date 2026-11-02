@@ -301,6 +301,7 @@ func _enter_phase(ph: int) -> void:
 	state = S.STAGGER
 	_t = 0.0
 	_dur = 8.0 / ANIM_FPS + 0.25 # trans_pN : 8 frames
+	vis.play_transition() # transition différée (ruée / vol) : l'anim lancée au franchissement des PV a pu être écrasée
 	_spell_cd = maxf(_spell_cd, _dur + 1.2)
 	_attack_cd = maxf(_attack_cd, _dur + 0.4)
 	_cycle = 0

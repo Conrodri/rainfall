@@ -106,14 +106,11 @@ var _walls := PackedByteArray() ## 1 = mur à portée de résolution (NavField.w
 # Solo (Players.count() <= 1) : chemin historique strictement identique (le joueur du groupe, mort ou vif, aucun tirage
 # d'aléa en plus). Coop : joueurs VIVANTS seulement (spectateurs ignorés) ; chaque monstre poursuit un joueur
 # (Enemy.target_id) : celui que le champ de flux multi-sources rejoint (le plus proche à pied), sinon le plus proche à
-# vol d'oiseau, avec inertie ; boss : nouvelle cible toutes les COOP_BOSS_RETARGET_S, menace du dernier frappeur.
+# vol d'oiseau, avec inertie ; boss : nouvelle cible toutes les Balance.COOP_BOSS_RETARGET_S, menace du dernier frappeur.
 # Spawn autour d'un joueur vivant tiré au hasard, jamais dans le champ de vision d'un autre ; LOD et recyclage au
 # joueur poursuivi (≈ le plus proche) ; plafond global Balance.MAX_ENEMIES inchangé.
-## Boss et mini-boss : changement de cible au plus toutes les 6 s (docs/multi/Design_Coop.md §5.2, anti « tank parking »).
-## À reprendre dans Balance (COOP_BOSS_RETARGET_S) par l'orchestrateur ; valeur locale en attendant.
-const COOP_BOSS_RETARGET_S := 6.0
-## Menace : pour le choix de cible d'un boss, la distance au dernier joueur qui l'a frappé compte × ce facteur.
-const COOP_BOSS_THREAT_DIST_MULT := 0.7
+## Boss et mini-boss : Balance.COOP_BOSS_RETARGET_S (changement de cible au plus toutes les 6 s, Design_Coop §5.2) et
+## Balance.COOP_BOSS_THREAT_DIST_MULT (menace du dernier frappeur).
 ## Inertie des monstres ordinaires : une cible gardée au moins ce nombre d'images (pas de va-et-vient entre deux joueurs)…
 const RETARGET_HOLD_FRAMES := 60
 ## … et, sans champ de flux, remplacée seulement par un joueur nettement plus proche (distance < 0,8 × l'actuelle).
@@ -921,8 +918,8 @@ func _pick_target(e: Enemy, p: Vector2, cur: int, root: int) -> int:
 	return cand
 
 
-## Cible d'un boss ou mini-boss (coop) : gardée COOP_BOSS_RETARGET_S, puis le joueur vivant le plus proche, la
-## distance au dernier joueur qui l'a frappé comptant × COOP_BOSS_THREAT_DIST_MULT (anti « tank parking »,
+## Cible d'un boss ou mini-boss (coop) : gardée Balance.COOP_BOSS_RETARGET_S, puis le joueur vivant le plus proche, la
+## distance au dernier joueur qui l'a frappé comptant × Balance.COOP_BOSS_THREAT_DIST_MULT (anti « tank parking »,
 ## Design_Coop §5.2). Cible morte ou spectatrice : remplacée tout de suite. -1 si personne n'est vivant.
 func _pick_boss_target(b: Enemy, delta: float) -> int:
 	if _np == 0:
@@ -932,7 +929,7 @@ func _pick_boss_target(b: Enemy, delta: float) -> int:
 	b.retarget_left -= delta
 	if valid and b.retarget_left > 0.0:
 		return cur
-	b.retarget_left = COOP_BOSS_RETARGET_S
+	b.retarget_left = Balance.COOP_BOSS_RETARGET_S
 	var bp := b.position
 	var best := -1
 	var best_d := INF
@@ -940,7 +937,7 @@ func _pick_boss_target(b: Enemy, delta: float) -> int:
 		var id := _pids[k]
 		var d := bp.distance_squared_to(_ppos_list[k])
 		if id == b.last_hit_by:
-			d *= COOP_BOSS_THREAT_DIST_MULT * COOP_BOSS_THREAT_DIST_MULT
+			d *= Balance.COOP_BOSS_THREAT_DIST_MULT * Balance.COOP_BOSS_THREAT_DIST_MULT
 		if d < best_d:
 			best_d = d
 			best = id

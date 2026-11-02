@@ -12,7 +12,7 @@ const MEASURE_FRAMES := 360 # 6 s simulées à 60 Hz
 const BUDGET_MS := 1.3 # médiane par frame (robuste aux pics des autres processus) ; cible ~1 ms sur PC de dev ; Android bas de gamme ≈ ×5-8
 const MAP := "res://scenes/stage/maps/foret_brume.tscn"
 var _map_path := MAP ## `-- --map=cite_fonderie_canal` : autre carte de scenes/stage/maps (comparaison A / B)
-const BARS_BUDGET_MS := 0.35 ## 250 barres affichées (pire cas)
+const BARS_BUDGET_MS := 0.35 ## 250 barres affichées (pire cas), médiane par frame (comme le budget du Director)
 const HIT_EVERY := 30 ## phase C : chaque monstre reprend un coup toutes les 30 frames (< 3 s)
 
 var _director: Node2D
@@ -21,6 +21,7 @@ var _fails := 0
 var _bars: EnemyHealthBars
 var _hit_all := false
 var _bars_usec := 0
+var _bars_frames := PackedInt64Array() ## coût des barres par frame (médiane : robuste aux pics des autres processus)
 var _bars_max := 0
 var _picto_max := 0 ## pictogrammes de statut dessinés (lot A11y-L1) : tous les monstres portent un gel léger en phase C
 
@@ -38,6 +39,9 @@ func _ready() -> void:
 
 
 func _run() -> void:
+	if not "--fixed-fps" in OS.get_cmdline_args():
+		# Sans --fixed-fps, le processeur se repose entre deux images (60 Hz réels) : coûts mesurés ~10-25 % plus hauts.
+		print("ATTENTION : lancer avec --fixed-fps 60 (voir l'en-tête), sinon les budgets sont faussés par la gestion d'énergie")
 	await get_tree().physics_frame
 	var nodes0 := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
 	var a := await _phase("A terrain vide", Vector2.ZERO, null)
@@ -55,9 +59,12 @@ func _run() -> void:
 	_director.despawn_all()
 	_hit_all = true
 	var c := await _phase("C carte + 250 barres de vie", map.get_player_start(), _director.nav)
-	var bars_ms := _bars_usec / (float(MEASURE_FRAMES) * 1000.0)
-	print("  Barres de vie : %.3f ms/frame (jusqu'à %d barres)" % [bars_ms, _bars_max])
-	_check("barres de vie : %d affichées, %.3f ms < %.2f ms" % [_bars_max, bars_ms, BARS_BUDGET_MS], _bars_max == N and bars_ms < BARS_BUDGET_MS)
+	var bars_mean := _bars_usec / (float(MEASURE_FRAMES) * 1000.0)
+	_bars_frames.sort()
+	var bars_ms := _bars_frames[_bars_frames.size() / 2] / 1000.0
+	print("  Barres de vie : médiane %.3f ms, moyenne %.3f ms, p90 %.3f ms /frame (jusqu'à %d barres)" % [
+		bars_ms, bars_mean, _bars_frames[_bars_frames.size() * 9 / 10] / 1000.0, _bars_max])
+	_check("barres de vie : %d affichées, médiane %.3f ms < %.2f ms" % [_bars_max, bars_ms, BARS_BUDGET_MS], _bars_max == N and bars_ms < BARS_BUDGET_MS)
 	_check("pictogrammes de statut dessinés en lot sur les barres de base (max %d)" % _picto_max, _picto_max > 0)
 	_check("Director avec barres (C %.3f) ≈ sans (B %.3f)" % [c, b], c < b * 1.25 + 0.05)
 	_check("aucune instanciation pendant les phases (%d -> %d)" % [nodes1, nodes2], nodes1 == nodes2 and nodes0 > 0)
@@ -107,6 +114,7 @@ func _phase(label: String, center: Vector2, nav: NavField) -> float:
 			min_active = mini(min_active, _director.active_count())
 			if _hit_all:
 				_bars_usec += _bars.stat_usec
+				_bars_frames.append(_bars.stat_usec)
 				_bars_max = maxi(_bars_max, _bars.visible_count())
 				_picto_max = maxi(_picto_max, _bars.picto_count())
 		last = now

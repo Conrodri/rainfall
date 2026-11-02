@@ -653,6 +653,19 @@ func _on_sprite_anim_finished() -> void:
 		_boss_play(false)
 
 
+## (Re)lance l'anim de transition de la phase courante (trans_p<N>_s, ou phase2_s hors boss d'étage), depuis le début.
+## Pour un cerveau qui diffère sa transition (ruée en cours) : la montée vue par set_phase au franchissement des PV a
+## pu être écrasée par la ruée, et le boss resterait figé au repos pendant sa transition. Sans effet si elle joue déjà.
+func play_transition() -> void:
+	if not _boss_sprite or (_boss_oneshot == &"trans" and _sprite.is_playing()):
+		return
+	_strike_t = -1.0
+	position = Vector2.ZERO
+	_boss_oneshot = &"trans"
+	_sprite.stop()
+	_boss_play(false)
+
+
 ## Anim spéciale d'un boss d'étage, sans fente ni coup armé (cerf : &"vanish" tenu disparu jusqu'à
 ## &"reappear", qui rend la main au repos à sa fin). Retourne sa durée (s), 0 si l'anim manque.
 func play_special(name: StringName) -> float:

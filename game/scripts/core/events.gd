@@ -65,6 +65,9 @@ const NO_PLAYER := -1
 
 ## Monstre tué ; `player_id` = le tueur (NO_PLAYER : dégât d'environnement, de zone sans auteur, ou inconnu).
 signal enemy_killed_by(player_id: int, enemy: Node2D, position: Vector2, tier: int, is_elite: bool)
+## Dégât infligé à un monstre ; `player_id` = le tireur (hit["by"] ; NO_PLAYER : environnement ou inconnu). Émis une
+## fois par coup par Enemy.take_damage, juste après enemy_damaged (chiffres de dégâts filtrés en coop).
+signal enemy_damaged_by(player_id: int, enemy: Node2D, amount: float, is_crit: bool, element: StringName)
 signal player_damaged_by(player_id: int, amount: float, source: Node)
 signal player_died_by(player_id: int)
 signal pickup_collected_by(player_id: int, kind: StringName, amount: float)
@@ -83,6 +86,11 @@ signal party_changed(count: int)
 func emit_enemy_killed(enemy: Node2D, position: Vector2, tier: int, is_elite: bool, player_id: int = NO_PLAYER) -> void:
 	enemy_killed.emit(enemy, position, tier, is_elite)
 	enemy_killed_by.emit(player_id, enemy, position, tier, is_elite)
+
+
+func emit_enemy_damaged(enemy: Node2D, amount: float, is_crit: bool, element: StringName, player_id: int = NO_PLAYER) -> void:
+	enemy_damaged.emit(enemy, amount, is_crit, element)
+	enemy_damaged_by.emit(player_id, enemy, amount, is_crit, element)
 
 
 func emit_player_damaged(amount: float, source: Node, player_id: int = 0) -> void:

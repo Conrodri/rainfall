@@ -236,7 +236,7 @@ func take_damage(amount: float, is_crit: bool = false, element: StringName = &""
 	hp -= amount
 	if is_boss and hp > 0.0 and not test_dummy:
 		visual.set_phase(boss_phase())
-	Events.enemy_damaged.emit(self, amount, is_crit, element)
+	Events.emit_enemy_damaged(self, amount, is_crit, element, by) # + jumeau enemy_damaged_by (tireur, coop)
 	var center := position + Vector2(0.0, -radius_px * 0.8 * Iso.UNSQUASH.y) # corps (pieds à l'origine ; hauteur en y logique = billboard × 2)
 	if hit.get("is_dot", element == &"burn" or element == &"poison"):
 		HitFx.dot(center, element)

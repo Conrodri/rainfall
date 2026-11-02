@@ -857,6 +857,7 @@ func _connect_events() -> void:
 		if LocalState.is_coop():
 			play(&"player.hurt", NO_POS, 0.0 if pid == Players.local_id() else ALLY_STEP_DB))
 	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by) # coop : la mort d'un joueur n'émet que le jumeau
 	Events.item_chosen.connect(func(_i: StringName) -> void: play_ui(&"ui.item_pick"))
 	_bind_level_sound()
 	Events.party_changed.connect(func(_n: int) -> void: _bind_level_sound())
@@ -945,6 +946,17 @@ func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 func _on_player_died() -> void:
 	play_ui(&"player.death")
 	duck(12.0, 3.0, 0.3, 2.0)
+
+
+## Coop : un joueur meurt (spectateur) ; l'ancien player_died n'est pas émis. Le sien : son plein et baisse du mixage
+## comme en solo ; un allié : son à -6 dB sans baisse. Solo : rien ici (player_died s'en charge, pas de doublon).
+func _on_player_died_by(pid: int) -> void:
+	if not LocalState.is_coop():
+		return
+	if pid == Players.local_id():
+		_on_player_died()
+	else:
+		play_ui(&"player.death", ALLY_STEP_DB)
 
 
 # ---------------------------------------------------------------------------------- boucle

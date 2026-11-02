@@ -258,7 +258,7 @@ func _player_inside() -> bool:
 
 
 ## Vitesse de charge du gros pilier (coop, docs/multi/Design_Coop.md §1.3) : joueurs vivants dans la zone / joueurs vivants,
-## au moins CoopRules.CHARGE_FLOOR (0,25) tant qu'un joueur est dans la zone, 0 sinon. Solo : 1 dans la zone, 0 dehors.
+## au moins Balance.COOP_CHARGE_FLOOR (0,25) tant qu'un joueur est dans la zone, 0 sinon. Solo : 1 dans la zone, 0 dehors.
 func charge_rate() -> float:
 	if not is_inside_tree():
 		return 1.0
@@ -268,7 +268,7 @@ func charge_rate() -> float:
 	var inside := CoopRules.alive_within(global_position, zone_radius())
 	if inside <= 0:
 		return 0.0
-	return maxf(float(inside) / float(alive), CoopRules.CHARGE_FLOOR)
+	return maxf(float(inside) / float(alive), Balance.COOP_CHARGE_FLOOR)
 
 
 func _send_zone(active: bool) -> void:

@@ -493,6 +493,8 @@ func _on_player_died_by(player_id: int) -> void:
 	if recording:
 		var st := _pstat(player_id)
 		st["deaths"] = int(st["deaths"]) + 1
+		if Players.count() > 1: # coop : seul le jumeau est émis ; combats de boss en cours marqués player_died
+			_on_player_died()
 
 
 ## Tableau `players` du journal : un joueur en solo, jusqu'à 4 en coop. Les compteurs viennent des jumeaux *_by ; en

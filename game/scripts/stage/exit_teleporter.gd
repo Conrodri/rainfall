@@ -4,7 +4,7 @@ extends Area2D
 ## par le HUD) joueur dessus, jamais au contact : le joueur peut rester farmer sans être téléporté.
 ##
 ## Coop (plusieurs joueurs) : N'IMPORTE QUEL joueur vivant peut l'activer ; le premier « interagir » lance un compte à rebours
-## de CoopRules.TELEPORT_COUNTDOWN_S (15 s, visible de tous : `countdown_left`, signaux `countdown_started` /
+## de Balance.COOP_TELEPORT_COUNTDOWN_S (15 s, visible de tous : `countdown_left`, signaux `countdown_started` /
 ## `countdown_cancelled`) ; `used` n'est émis qu'à zéro, où que soient les joueurs (le sauvetage des spectateurs se fait au
 ## début de l'étage suivant, Players.resurrect_all). Solo : `used` immédiat, comme avant.
 
@@ -63,7 +63,7 @@ func use() -> bool:
 	if CoopRules.is_coop():
 		if countdown_left > 0.0:
 			return false # déjà lancé : le compte court pour tout le monde
-		countdown_left = CoopRules.TELEPORT_COUNTDOWN_S
+		countdown_left = Balance.COOP_TELEPORT_COUNTDOWN_S
 		set_physics_process(true)
 		countdown_started.emit(countdown_left)
 		return true

@@ -52,14 +52,18 @@ func _telegraphs() -> void:
 	EnemyTelegraph.strong_override = -1
 	EnemyTelegraph.refresh_strong()
 	_check("défaut : normal", not EnemyTelegraph.strong())
-	_check("normal : liseré 6/2, remplissage 0,28", EnemyTelegraph.outer_px() == EnemyTelegraph.EDGE_OUTER_PX
-		and EnemyTelegraph.inner_px() == EnemyTelegraph.EDGE_INNER_PX and is_equal_approx(EnemyTelegraph.fill_color().a, 0.28))
+	# Bord du mode normal = télégraphe allégé (passe du 29/10/2026, commit 52aa02bb) : valeurs lues dans Balance.
+	_check("normal : bord fin Balance.TELEGRAPH_LITE_* (%.1f/%.1f), remplissage 0,28" % [Balance.TELEGRAPH_LITE_OUTER_PX, Balance.TELEGRAPH_LITE_INNER_PX],
+		is_equal_approx(EnemyTelegraph.outer_px(), Balance.TELEGRAPH_LITE_OUTER_PX)
+		and is_equal_approx(EnemyTelegraph.inner_px(), Balance.TELEGRAPH_LITE_INNER_PX)
+		and EnemyTelegraph.outer_px() > EnemyTelegraph.inner_px() and is_equal_approx(EnemyTelegraph.fill_color().a, 0.28),
+		"%.2f/%.2f" % [EnemyTelegraph.outer_px(), EnemyTelegraph.inner_px()])
 	GameSettings.set_value("accessibility", "strong_telegraphs", true)
 	_check("lu en cache (pas de relecture immédiate)", not EnemyTelegraph.strong())
 	EnemyTelegraph.refresh_strong()
 	_check("réglage lu : renforcé", EnemyTelegraph.strong())
-	_check("renforcé : liseré plus épais", EnemyTelegraph.outer_px() > EnemyTelegraph.EDGE_OUTER_PX
-		and EnemyTelegraph.inner_px() > EnemyTelegraph.EDGE_INNER_PX
+	_check("renforcé : liseré plus épais", EnemyTelegraph.outer_px() > maxf(EnemyTelegraph.EDGE_OUTER_PX, Balance.TELEGRAPH_LITE_OUTER_PX)
+		and EnemyTelegraph.inner_px() > maxf(EnemyTelegraph.EDGE_INNER_PX, Balance.TELEGRAPH_LITE_INNER_PX)
 		and EnemyTelegraph.outer_px() >= EnemyTelegraph.inner_px() + 4.0)
 	_check("renforcé : remplissage plus opaque", EnemyTelegraph.fill_color().a > EnemyTelegraph.FILL.a
 		and EnemyTelegraph.progress_color().a > EnemyTelegraph.PROGRESS.a)

@@ -67,6 +67,7 @@ func _run() -> void:
 	Enemy.reset_shot_tokens()
 
 	await _test_shot()
+	await _test_shot_strong_line()
 	await _test_aim_lock()
 	await _test_salvo()
 	await _test_tokens()
@@ -74,6 +75,7 @@ func _run() -> void:
 	await _test_leaper()
 	await _test_swarm()
 
+	EnemyTelegraph.strong_override = -1
 	_player.queue_free()
 	_director.queue_free()
 	await get_tree().process_frame
@@ -86,12 +88,15 @@ func _test_shot() -> void:
 	var e := _spawn(2, Enemy.VARIANT_SHOOTER, Vector2(7.0, 0.0)) # au-delà de la distance préférée : avancerait
 	e._attack_cd = 0.0
 	var p0 := e.position
+	EnemyTelegraph.strong_override = 0 # télégraphes normaux, indépendamment du réglage du joueur
 	await _step(e)
 	_check("armement lancé (SHOT)", e._windup == Enemy.Windup.SHOT, str(e._windup))
 	_check("pose d'attaque jouée", String(e.visual.current_anim()).begins_with("attack_") or e.visual.current_anim() == &"", String(e.visual.current_anim()))
 	_check("anim calée : impact frame 4 en SHOOTER_WINDUP_S (vitesse %.2f)" % e.visual._sprite.speed_scale, e.visual._timed_frame == 4 and absf(e.visual._sprite.speed_scale * Balance.SHOOTER_WINDUP_S - 4.0 / 12.0) < 0.02)
 	_check("teinte d'armement", e.visual._charge_mod != Color.WHITE)
-	_check("ligne de visée affichée", e.telegraph.visible)
+	# Passe télégraphes du 29/10/2026 (commit 52aa02bb) : le tir simple est un coup LÉGER, lu par l'anticipation
+	# du corps (pose, teinte) ; pas de ligne au sol en mode normal. Le mode renforcé est vérifié à part.
+	_check("coup léger : pas de ligne au sol en mode normal", not e.telegraph.visible)
 	var frames := 1
 	var moved := false
 	while _pool.active_count() == 0 and frames < 200:
@@ -117,6 +122,22 @@ func _test_shot() -> void:
 	_check("pas de nouveau tir avant l'intervalle", _pool.active_count() == 1)
 	_pool.clear_all()
 	_park(e)
+
+
+## Réglage « Télégraphes renforcés » : la ligne de visée du tir simple réapparaît (tout est rendu, comme avant la
+## passe du 29/10/2026).
+func _test_shot_strong_line() -> void:
+	print("Tireur : ligne de visée en télégraphes renforcés")
+	var e := _spawn(2, Enemy.VARIANT_SHOOTER, Vector2(7.0, 0.0))
+	e._attack_cd = 0.0
+	EnemyTelegraph.strong_override = 1
+	await _step(e)
+	_check("armement lancé (SHOT)", e._windup == Enemy.Windup.SHOT, str(e._windup))
+	_check("ligne de visée affichée (renforcé)", e.telegraph.visible)
+	EnemyTelegraph.strong_override = 0
+	_park(e)
+	_check("ligne retirée au retrait du monstre", not e.telegraph.visible)
+	_pool.clear_all()
 
 
 func _test_aim_lock() -> void:

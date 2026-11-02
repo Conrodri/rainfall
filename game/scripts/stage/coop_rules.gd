@@ -5,12 +5,8 @@ extends RefCounted
 ## qui interagit, qui est dans une zone, quel PlayerState paie. En solo (un seul joueur) chaque fonction rend ce que
 ## faisaient les anciens appels `get_first_node_in_group(&"player")` / `RunState.*`.
 
-## Plancher de la vitesse de charge d'un gros pilier quand au moins un joueur est dans la zone (Design_Coop §1.3).
-## À migrer dans Balance (COOP_CHARGE_FLOOR) par l'orchestrateur ; ici faute d'accès à scripts/core.
-const CHARGE_FLOOR := 0.25
-## Compte à rebours du téléporteur de sortie en coop (s) après le premier « interagir » (Design_Coop §1.4, option C
-## sans veto). À migrer dans Balance (COOP_TELEPORT_COUNTDOWN_S).
-const TELEPORT_COUNTDOWN_S := 15.0
+## Constantes chiffrées : Balance.COOP_CHARGE_FLOOR (plancher de charge du gros pilier) et
+## Balance.COOP_TELEPORT_COUNTDOWN_S (compte à rebours du téléporteur).
 
 
 ## Vrai si la partie compte plusieurs joueurs (pas de pause, quotas par joueur, etc.).
