@@ -185,7 +185,7 @@ func _run() -> void:
 	_reset(0.0)
 	_advance(1.0)
 	_check("pluie : +2,5/s (sans ambiance : pluie moyenne)", _near(_kit.water, 2.5, 0.05), str(_kit.water))
-	Events.enemy_killed.emit(null, Vector2(9999, 0), 1, false)
+	Events.emit_enemy_killed(null, Vector2(9999, 0), 1, false)
 	_check("+0,9 par monstre tué", _near(_kit.water, 2.5 + AverseKit.KILL_GAIN, 0.05), str(_kit.water))
 	_advance(0.5)
 	_check("taux d'eau exposé (resource_regen_per_s, KitResource regen)", _kit.resource_regen_per_s() > 1.0 and float(KitResource.of(_player).get("regen", -1.0)) == _kit.resource_regen_per_s(), str(_kit.resource_regen_per_s()))
@@ -356,7 +356,7 @@ func _run() -> void:
 	_reset(50.0)
 	_player.spells.aim_override = Vector2(300, 0)
 	_player.spells.cast(3)
-	Events.player_died.emit()
+	Events.emit_player_died()
 	_check("effets en attente annulés", not _kit.has_pending())
 
 	_reset()

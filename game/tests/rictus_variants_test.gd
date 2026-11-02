@@ -271,7 +271,7 @@ func _run() -> void:
 	_check("fin de toupie : vertige", _kit.is_staggered() and not _kit.is_spinning())
 	_check("dégâts reçus par le plus proche", close.total() >= RictusKit.TOUPIE_COEF * BASE * 5.0, str(close.taken))
 	_reset()
-	Events.enemy_killed.emit(null, Vector2(1.0 * U, 0), 1, false)
+	Events.emit_enemy_killed(null, Vector2(1.0 * U, 0), 1, false)
 	_check("rictus.close_kills +1 pour un tué à 1 u", _near(float(RunState.counters.get(RictusKit.COUNTER_CLOSE, 0.0)), 1.0), str(RunState.counters))
 
 	# --- nettoyage --------------------------------------------------------------------------------

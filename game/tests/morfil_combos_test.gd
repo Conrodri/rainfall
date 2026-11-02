@@ -128,22 +128,22 @@ func _run() -> void:
 	_reset()
 	_kit.sharpness = 50.0
 	_kit.guard_left = 0.5
-	Events.player_damaged.emit(5.0, null)
+	Events.emit_player_damaged(5.0, null)
 	_check("coup sous garde : +2 %", _near(_kit.sharpness, 52.0), str(_kit.sharpness))
-	Events.player_damaged.emit(5.0, null)
+	Events.emit_player_damaged(5.0, null)
 	_check("une parade par 0,3 s", _near(_kit.sharpness, 52.0))
 	_advance(0.35)
 	_kit.guard_left = 0.5
-	Events.player_damaged.emit(5.0, null)
+	Events.emit_player_damaged(5.0, null)
 	_check("après 0,3 s : +2 % de nouveau", _near(_kit.sharpness, 54.0), str(_kit.sharpness))
 	_kit.guard_left = 0.0
 	_advance(0.35)
-	Events.player_damaged.emit(5.0, null)
+	Events.emit_player_damaged(5.0, null)
 	_check("hors garde : rien", _near(_kit.sharpness, 54.0))
 	_kit.sharpness = 99.0
 	_kit.guard_left = 0.5
 	_kit._parry_cd = 0.0
-	Events.player_damaged.emit(5.0, null)
+	Events.emit_player_damaged(5.0, null)
 	_check("plafonné à 100 %", _near(_kit.sharpness, 100.0))
 
 	print("Esquive : aucun dégât direct hors Iaï")

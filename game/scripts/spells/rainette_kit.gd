@@ -353,7 +353,7 @@ func setup(p: CharacterBody2D) -> void:
 	p.add_child(_shadow)
 	p.move_child(_shadow, 0) # sous le sprite
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 
@@ -361,8 +361,8 @@ func setup(p: CharacterBody2D) -> void:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
 	clear_transients()
 
 
@@ -511,7 +511,7 @@ func on_dodge_start(dir: Vector2) -> void:
 
 
 func _no_move_input() -> bool:
-	return Input.get_vector("move_left", "move_right", "move_up", "move_down").length_squared() < 0.0001
+	return PlayerRef.input_of(player).move_vector().length_squared() < 0.0001
 
 
 func cast_spell(s: SpellData, aim: Variant) -> bool:
@@ -812,7 +812,7 @@ func _check_swallow(e: Node) -> void:
 	if not dead_now:
 		return
 	swallowed += 1
-	RunState.add_counter(COUNTER_SWALLOWED) # déblocage du Chœur des roseaux
+	PlayerRef.state_of(player).add_counter(COUNTER_SWALLOWED) # déblocage du Chœur des roseaux
 	player.heal(SWALLOW_HEAL_PCT * player.max_hp)
 	Audio.play(&"pickup.xp", player.global_position, -6.0, 0.55)
 
@@ -994,7 +994,7 @@ func _leap_impact(pos: Vector2) -> void:
 			var crushed := _crush_ids.has(e.get_instance_id())
 			e.stun(RIC_STUN_S if ric else (CRUSH_STUN_S if crushed else LEAP_STUN_S))
 			if not ric and e.get(&"is_boss") != true:
-				RunState.add_counter(COUNTER_LEAP_STUNS) # déblocage du Ricochet
+				PlayerRef.state_of(player).add_counter(COUNTER_LEAP_STUNS) # déblocage du Ricochet
 	_crush_ids.clear()
 	if goo != null:
 		goo.burst(_caster(), GOO_BURST_COEF, GOO_BURST_END_SPEED) # la flaque éclate, consommée
@@ -1047,6 +1047,7 @@ func _spawn_goo(s: SpellData, at: Vector2) -> void:
 			_caster().deal_damage(e, s, {"source_pos": at})
 	_spawn_goo_glob(at)
 	var g := RainetteGoo.new()
+	g.owner_id = PlayerRef.id_of(player)
 	g.setup(at, r, s.duration, GOO_SLOW_PCT, _u(GOO_PULL_U_S), s)
 	player.get_parent().add_child(g)
 	g.global_position = at
@@ -1119,6 +1120,7 @@ func _spawn_mini_goo(pos: Vector2) -> void:
 	while minis.size() >= CHOEUR_GOO_MAX:
 		(minis.pop_front() as Node).queue_free()
 	var g := RainetteGoo.new()
+	g.owner_id = PlayerRef.id_of(player)
 	g.mini = true
 	g.count_glued = false
 	g.setup(pos, _u(CHOEUR_GOO_U) * (1.0 + float(player.stat(&"zone_size_add"))), CHOEUR_GOO_S, GOO_SLOW_PCT, 0.0, _mini_goo_spell())
@@ -1181,7 +1183,7 @@ func _tick_spell_buffer(delta: float) -> void:
 	for slot in [2, 3, 4]:
 		if not c.has_slot(slot):
 			continue
-		if Input.is_action_just_pressed("spell_%d" % slot):
+		if PlayerRef.input_of(player).just_pressed(SpellCaster.spell_action(slot)):
 			var rem := c.cooldown_remaining(slot)
 			if rem > 0.0 and rem <= INPUT_BUFFER_S:
 				_spell_buf[slot] = INPUT_BUFFER_S
@@ -1215,6 +1217,12 @@ func clear_transients() -> void:
 
 func _on_floor_started(_n: int) -> void:
 	clear_transients()
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

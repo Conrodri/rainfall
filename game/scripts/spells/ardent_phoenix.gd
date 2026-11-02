@@ -129,7 +129,7 @@ func _strike() -> void:
 	var u := Balance.UNIT_PX
 	var a := _impact - _dir * (LINE_LEN_U * 0.5 * u)
 	var b := _impact + _dir * (LINE_LEN_U * 0.5 * u)
-	var burn_total: float = BURN_COEF * Balance.player_base_damage(RunState.level) * (1.0 + player.stat(&"burn_damage_add"))
+	var burn_total: float = BURN_COEF * Balance.player_base_damage(PlayerRef.state_of(player).level) * (1.0 + player.stat(&"burn_damage_add"))
 	LightRig.flash(_impact, &"flame_pillar", 0.25)
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage") or e.get(&"active") == false:
@@ -141,7 +141,7 @@ func _strike() -> void:
 		strikes_hit += 1
 		caster.deal_damage(e, dive_spell, {"source_pos": global_position})
 		if e.has_method(&"apply_status"):
-			e.apply_status(&"burn", {"duration": BURN_S, "total": burn_total})
+			e.apply_status(&"burn", {"duration": BURN_S, "total": burn_total, "by": PlayerRef.id_of(player)})
 
 
 ## Se consume : explosion (zone du sort `burst_spell`), puis disparition.

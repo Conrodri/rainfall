@@ -232,7 +232,7 @@ func die() -> void:
 		return
 	_land_now() # détruite en plein vol : le plouf part à l'endroit où elle se trouve
 	leave()
-	HitFx.impact(global_position, facing, &"physical", 0.5)
+	HitFx.impact(global_position, facing, &"physical", 0.5, false, false, owner_slot())
 	Audio.play(&"enemy.contact.light", global_position, -6.0, 0.6)
 	if kit != null and is_instance_valid(kit):
 		kit.on_motte_died(self)
@@ -332,7 +332,7 @@ func _step_fly(delta: float) -> void:
 		state = State.FIGHT
 		fight_left = fight_s
 		queue_redraw()
-		HitFx.impact(global_position, facing, &"physical", 0.45)
+		HitFx.impact(global_position, facing, &"physical", 0.45, false, false, owner_slot())
 		Audio.play_cast(&"detacher", global_position, 0.6)
 
 
@@ -414,9 +414,9 @@ func _step_home(delta: float, speed: float, ram: bool) -> void:
 			var er: float = float(e.get(&"radius_px")) if &"radius_px" in e else 0.0
 			if e.global_position.distance_to(global_position) <= BourbeKit.RECALL_WIDTH_U * u + er:
 				_recall_hits.append(e)
-				RunState.add_counter(BourbeKit.COUNTER_RAPPEL_HITS) # déblocage de l'Éclatement
+				caster.player_state().add_counter(BourbeKit.COUNTER_RAPPEL_HITS) # déblocage de l'Éclatement
 				caster.deal_damage(e, recall_spell, {"source_pos": global_position - dir * u})
-				HitFx.impact(e.global_position, dir, &"physical", 0.8)
+				HitFx.impact(e.global_position, dir, &"physical", 0.8, false, false, owner_slot())
 	if global_position.distance_to(bourbe.global_position) <= BourbeKit.ATTACH_U * u:
 		merge()
 

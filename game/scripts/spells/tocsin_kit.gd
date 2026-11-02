@@ -300,7 +300,7 @@ func setup(p: CharacterBody2D) -> void:
 	if ResourceLoader.exists(REGEN_FRAMES):
 		_regen_frames = load(REGEN_FRAMES) as SpriteFrames
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	Events.boss_killed.connect(_on_boss_killed)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
@@ -904,7 +904,7 @@ func on_smoke_start(_l: TocsinLimb, at: Vector2) -> void:
 
 func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 	if is_floor_boss and not has_head():
-		RunState.add_counter(COUNTER_HEADLESS_BOSS)
+		PlayerRef.state_of(player).add_counter(COUNTER_HEADLESS_BOSS)
 
 
 # --- Boucle (Player.tick, avant les sorts) ------------------------------------------------------
@@ -1138,6 +1138,12 @@ func regen_all() -> void:
 
 func _on_floor_started(_n: int) -> void:
 	regen_all()
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 ## Mort : le corps se disloque (anim `death` de tous les calques encore présents).

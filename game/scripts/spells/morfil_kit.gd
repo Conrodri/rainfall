@@ -332,9 +332,9 @@ func setup(p: CharacterBody2D) -> void:
 		_visual.add_child(_twin_blade)
 	_iai_spell = _strike_spell(&"iai", IAI_COEF, IAI_PROC, IAI_KNOCK_U, 0.0, false)
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	Events.boss_killed.connect(_on_boss_killed)
-	Events.player_damaged.connect(_on_player_damaged)
+	Events.player_damaged_by.connect(_on_player_damaged_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 
@@ -342,12 +342,12 @@ func setup(p: CharacterBody2D) -> void:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
 	if Events.boss_killed.is_connected(_on_boss_killed):
 		Events.boss_killed.disconnect(_on_boss_killed)
-	if Events.player_damaged.is_connected(_on_player_damaged):
-		Events.player_damaged.disconnect(_on_player_damaged)
+	if Events.player_damaged_by.is_connected(_on_player_damaged_by):
+		Events.player_damaged_by.disconnect(_on_player_damaged_by)
 	_pending.clear()
 	_delayed.clear()
 
@@ -523,14 +523,14 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 			if sharpness >= SHARP_MAX - 0.001 or is_tempered():
 				return false # déjà au fil (ou lame trempée) : ne gaspille pas la recharge
 			sharpen_left = SHARPEN_LOCK_S
-			RunState.add_counter(COUNTER_SHARPEN)
+			PlayerRef.state_of(player).add_counter(COUNTER_SHARPEN)
 			_queue(&"sharpen", _do_sharpen)
 			return true
 		V_WALK:
 			if is_tempered():
 				return false # la trempe ne s'use pas : pas de sur-fil par-dessus
 			sharpen_left = SHARPEN_LOCK_S
-			RunState.add_counter(COUNTER_SHARPEN)
+			PlayerRef.state_of(player).add_counter(COUNTER_SHARPEN)
 			_queue(&"sharpen", _do_overedge)
 			return true
 		&"lames_jumelles":
@@ -738,7 +738,7 @@ func _crescent(dir: Vector2) -> void:
 	s.spread_deg = CRESCENT_SPREAD_DEG
 	_with_vfx(s, CRESCENT_FRAMES)
 	if _count_in_arc(dir, CRESCENT_RADIUS_U * Balance.UNIT_PX * _zone_k(), deg_to_rad(CRESCENT_SPREAD_DEG) * 0.5) >= CRESCENT_BIG_HITS:
-		RunState.add_counter(COUNTER_CRESCENT_BIG) # déblocage du Fendoir
+		PlayerRef.state_of(player).add_counter(COUNTER_CRESCENT_BIG) # déblocage du Fendoir
 	_swing(s, _crescent_cost(), player.global_position, dir)
 
 
@@ -762,6 +762,12 @@ func combo_hit(s: SpellData, _enemy: Node) -> bool:
 
 
 ## Garde qui rend : un coup encaissé sous garde (ou sous les Lames jumelles) redonne un peu d'aiguisage.
+## Coop : seuls les coups reçus par CE joueur (Events.player_damaged_by).
+func _on_player_damaged_by(id: int, amount: float, source: Node) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_damaged(amount, source)
+
+
 func _on_player_damaged(_amount: float, _source: Node) -> void:
 	if _parry_cd > 0.0 or player == null or player.dead or not (guard_left > 0.0 or is_twin()):
 		return
@@ -1019,7 +1025,13 @@ func _on_floor_started(_n: int) -> void:
 ## Boss d'étage vaincu à l'étage 2 (déblocage de la Trempe).
 func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 	if is_floor_boss and RunState.stage == BOSS_FLOOR:
-		RunState.add_counter(COUNTER_BOSS2)
+		PlayerRef.state_of(player).add_counter(COUNTER_BOSS2)
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

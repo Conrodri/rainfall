@@ -282,7 +282,7 @@ func _test_phoenix() -> void:
 	p.spells.set_cooldown(4, 0.0, 20.0)
 	p.spells.cast(4)
 	var ph3: ArdentPhoenix = p.kit.phoenix
-	Events.player_died.emit()
+	Events.emit_player_died()
 	_check(ph3.exploded, "mort d'Ardent : le phénix se consume")
 	await get_tree().process_frame
 

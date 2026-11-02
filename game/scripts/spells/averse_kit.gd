@@ -450,8 +450,8 @@ func setup(p: CharacterBody2D) -> void:
 	player = p
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
-	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.player_died_by.connect(_on_player_died_by)
+	Events.enemy_killed_by.connect(_on_enemy_killed_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 	_poll_rain()
@@ -613,6 +613,12 @@ func _player_in_puddle() -> bool:
 		if is_instance_valid(z) and player.global_position.distance_to(z.global_position) <= float(z.radius):
 			return true
 	return false
+
+
+## Coop : seuls les monstres tués par CE joueur (Events.enemy_killed_by ; auteur inconnu accepté en solo).
+func _on_enemy_killed_by(id: int, e: Node2D, pos: Vector2, tier: int, elite: bool) -> void:
+	if PlayerRef.owns(player, id):
+		_on_enemy_killed(e, pos, tier, elite)
 
 
 func _on_enemy_killed(_e: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
@@ -1061,7 +1067,7 @@ func _soak(e: Node, duration := SOAK_S, pct := SOAK_PCT) -> void:
 		var until := float(_soaked_until.get(id, -1.0))
 		var fresh := _kit_clock >= until
 		if fresh:
-			RunState.add_counter(COUNTER_SOAKED)
+			PlayerRef.state_of(player).add_counter(COUNTER_SOAKED)
 		var end := _kit_clock + duration
 		if fresh or end >= until:
 			e.apply_status(&"slow", {"pct": pct, "duration": duration})
@@ -1450,7 +1456,7 @@ static func crue_coef(w: float) -> float:
 ## laisse une Flaque-miroir.
 func _crue(s: SpellData, spent: float) -> void:
 	if spent >= FULL_CRUE_WATER:
-		RunState.add_counter(COUNTER_FULL_CRUES)
+		PlayerRef.state_of(player).add_counter(COUNTER_FULL_CRUES)
 	var origin := player.global_position
 	var wave := s.duplicate() as SpellData
 	wave.behavior = SpellData.Behavior.NOVA
@@ -1504,7 +1510,7 @@ func tick(delta: float) -> void:
 	_lock_left = maxf(_lock_left - delta, 0.0)
 	_warn_left = maxf(_warn_left - delta, 0.0)
 	for sl in [2, 3, 4]: # appui refusé faute d'eau : la jauge (info centrale) clignote
-		if not slot_affordable(sl) and Input.is_action_just_pressed("spell_%d" % sl):
+		if not slot_affordable(sl) and PlayerRef.input_of(player).just_pressed(SpellCaster.spell_action(sl)):
 			_warn_left = WARN_S
 	_rain_t -= delta
 	if _rain_t <= 0.0:
@@ -1520,7 +1526,7 @@ func tick(delta: float) -> void:
 		var before := water
 		gain_water(PUDDLE_GAIN_PER_S * delta)
 		if in_puddle and water > before:
-			RunState.add_counter(COUNTER_PUDDLE_WATER, water - before) # déblocage de la Gouttière
+			PlayerRef.state_of(player).add_counter(COUNTER_PUDDLE_WATER, water - before) # déblocage de la Gouttière
 	if monsoon_left > 0.0:
 		monsoon_left = maxf(monsoon_left - delta, 0.0)
 		gain_water(MOUSSON_WATER_PER_S * delta)
@@ -1666,6 +1672,12 @@ func _on_floor_started(_n: int) -> void:
 	clear_transients() # l'eau de l'amphore est gardée d'un étage à l'autre
 	_grid_cache.clear()
 	_rain_t = 0.0
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

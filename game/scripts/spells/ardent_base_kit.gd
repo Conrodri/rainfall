@@ -41,7 +41,7 @@ var _flare_spell: SpellData = null
 
 func setup(new_player: CharacterBody2D) -> void:
 	player = new_player
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	Events.floor_started.connect(_on_floor_started)
 	Events.enemy_killed.connect(_on_enemy_killed)
 	var sp: Variant = player.get(&"spells")
@@ -202,6 +202,12 @@ func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) ->
 
 func _on_floor_started(_stage: int) -> void:
 	marks.clear()
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

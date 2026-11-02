@@ -5,13 +5,15 @@ extends SpellButton
 ##   - bouton tactile (interactive = true) près des sorts : presse l'action `dodge` au toucher et la relâche au
 ##     lever du doigt (esquive au maintien : Glissade d'Averse ; un tap reste vu par is_action_just_pressed) ;
 ##   - barre clavier-souris / manette (interactive = false) : indicateur de recharge seul.
-## Lit elle-même player.get_dodge_cooldown() (groupe `player`) : le HUD n'a qu'à la placer. Libellé et initiale
+## Lit elle-même player.get_dodge_cooldown() (Players.local(), ou le joueur `player_id` en coop) : le HUD n'a qu'à la placer. Libellé et initiale
 ## par personnage (`label` de l'état : Roulade, Éclat, Glissade, Levée, Vapeur, Trait, Bond, Râfle, Coulée, Repli, Iaï).
 ## Icône : assets/sprites/icons/spells/dodge.png (lot G, art/tools/night/_uxhud_icons.txt) ; sans elle, l'initiale.
 
 const DODGE_ICON_ID := &"dodge"
 const CHARGE_COLOR := Color(1.0, 0.23, 0.31) ## pastilles de charges (Repli de Vigie)
 
+## Joueur suivi (coop : emplacement du registre Players) ; -1 = joueur local principal (Players.local()).
+var player_id := -1
 var _player: Node = null
 var _label := ""
 var _press_pf := -1 ## image physique du toucher (relâcher différé si trop tôt pour is_action_just_pressed)
@@ -27,7 +29,9 @@ func setup(_spell_slot: int, size_px: float = 150.0) -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	if _player == null or not is_instance_valid(_player):
-		_player = get_tree().get_first_node_in_group(&"player") if is_inside_tree() else null
+		_player = null
+		if is_inside_tree():
+			_player = Players.local() if player_id < 0 else Players.by_id(player_id)
 		if _player == null:
 			return
 	if _player.has_method(&"get_dodge_cooldown"):

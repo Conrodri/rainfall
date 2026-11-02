@@ -345,8 +345,8 @@ func setup(p: CharacterBody2D) -> void:
 				STRING_WIDTH_SCREEN_PX / Iso.camera_zoom().x, STRING_TEXTURE)
 		_attach_spin_blur()
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
-	Events.enemy_killed.connect(_on_enemy_killed)
+	Events.player_died_by.connect(_on_player_died_by)
+	Events.enemy_killed_by.connect(_on_enemy_killed_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 
@@ -362,10 +362,10 @@ func refresh_equipment() -> void:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
-	if Events.enemy_killed.is_connected(_on_enemy_killed):
-		Events.enemy_killed.disconnect(_on_enemy_killed)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
+	if Events.enemy_killed_by.is_connected(_on_enemy_killed_by):
+		Events.enemy_killed_by.disconnect(_on_enemy_killed_by)
 	clear_transients()
 
 
@@ -581,7 +581,7 @@ func _collect_knife(slot: int, group: Dictionary) -> void:
 	if left <= 0.0 or _caster() == null:
 		return
 	group["refunded"] = float(group.get("refunded", 0.0)) + _caster().reduce_cooldown(slot, minf(KNIFE_REFUND_S, left))
-	RunState.add_counter(COUNTER_KNIVES)
+	PlayerRef.state_of(player).add_counter(COUNTER_KNIVES)
 	Audio.play(&"pickup.coin", player.global_position, -8.0, 1.6)
 
 
@@ -855,7 +855,7 @@ func _pull_ficele(s: SpellData) -> void:
 	var at := e.global_position
 	if StageMap.los(player.get_tree(), player.global_position, at):
 		c.deal_damage(e, sp, {"source_pos": player.global_position})
-	HitFx.impact(at, (at - player.global_position).normalized(), &"physical", 0.8)
+	HitFx.impact(at, (at - player.global_position).normalized(), &"physical", 0.8, false, false, PlayerRef.id_of(player))
 	LightRig.flash(at, &"spell_steel", 0.4)
 	if is_instance_valid(e) and e.get(&"active") != false and e.has_method(&"push") and not e.is_in_group(&"bosses"):
 		var to := player.global_position - e.global_position
@@ -1231,10 +1231,16 @@ func _on_decoy_exploded(token: Dictionary) -> void:
 
 
 ## Monstre tué à moins de CLOSE_KILL_U : compteur de run (déblocage de la variante Toupie).
+## Coop : seuls les monstres tués par CE joueur (Events.enemy_killed_by ; auteur inconnu accepté en solo).
+func _on_enemy_killed_by(id: int, e: Node2D, pos: Vector2, tier: int, elite: bool) -> void:
+	if PlayerRef.owns(player, id):
+		_on_enemy_killed(e, pos, tier, elite)
+
+
 func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
 	if player != null and is_instance_valid(player) and not player.dead \
 			and pos.distance_to(player.global_position) <= CLOSE_KILL_U * Balance.UNIT_PX:
-		RunState.add_counter(COUNTER_CLOSE)
+		PlayerRef.state_of(player).add_counter(COUNTER_CLOSE)
 
 
 # --- Nettoyage (§2.6.5 : étage, mort) ------------------------------------------------------------
@@ -1258,6 +1264,12 @@ func clear_transients() -> void:
 
 func _on_floor_started(_n: int) -> void:
 	clear_transients()
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

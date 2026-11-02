@@ -80,7 +80,7 @@ func step(delta: float) -> void:
 	player.is_moving = true
 	player.velocity = Vector2.ZERO
 	# virage continu vers le joystick ; sans entrée, cap gardé
-	var want := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var want: Vector2 = PlayerRef.input_of(player).move_vector() # joystick de CE joueur (coop)
 	if want.length_squared() > 0.0001:
 		var max_turn := deg_to_rad(SLIDE_TURN_DEG_S) * delta
 		dir = dir.rotated(clampf(dir.angle_to(want.normalized()), -max_turn, max_turn)).normalized()

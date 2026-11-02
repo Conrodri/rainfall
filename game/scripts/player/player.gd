@@ -1,6 +1,6 @@
 extends CharacterBody2D
 ## Joueur (contrat : CONTRACTS.md « Joueur »). Groupe "player", couche 2.
-## Les sorts viennent d'un CharacterData (RunState.character, par défaut Ardent variante A) via SpellCaster.
+## Les sorts viennent d'un CharacterData (player_state().character, RunState.character du joueur 1 en solo ; par défaut Ardent variante A) via SpellCaster.
 ## Un personnage à kit (CharacterData.kit_script, ex. Rictus) ajoute un enfant « Kit » interrogé par hooks :
 ## états (vitesse, inertie, immunité aux ralentissements, roulade permise), sorts suspendus, anims.
 
@@ -23,7 +23,10 @@ const SLOW_IMMUNITY := 2.0
 const SLOW_FLOOR := 0.5 ## on ne descend jamais sous 50 % de la vitesse
 const ZoneEffectScript := preload("res://scripts/spells/zone_effect.gd")
 
-@export var character: CharacterData ## null -> CharacterData.for_id(RunState.character)
+## Coop 1-4 : emplacement du joueur (0 = joueur 1, clé du registre Players). À poser AVANT l'entrée dans l'arbre
+## (ou via bind_player). Son état (or, niveau, objets, personnage) : player_state() ; ses entrées : input_source().
+@export var player_id := 0
+@export var character: CharacterData ## null -> CharacterData.for_id(player_state().character)
 @export var auto_cast_spells := false: ## accessibilité : sorts 2-4 automatiques
 	set(v):
 		auto_cast_spells = v
@@ -44,6 +47,9 @@ var specials: Dictionary = {}
 var spells: SpellCaster
 var item_fx: ItemEffects ## effets des items à logique propre (scripts/items/item_effects.gd)
 var kit: Node = null ## logique propre au personnage (null : Ardent)
+## Interaction (coffres, téléporteur, piliers…) lue sur la source d'entrée de CE joueur (PlayerInteract). Opt-in :
+## `interaction.enabled` est posé par le HUD quand il délègue son répartiteur au joueur.
+var interaction := PlayerInteract.new(self)
 ## Monstres tués à moins de CLOSE_KILL_U (déblocage caché de Rictus, Profile.add_run_result).
 var close_kills := 0
 const CLOSE_KILL_U := 2.0
@@ -62,6 +68,7 @@ var _slows := {} ## clé de source -> Vector2(multiplicateur, s restantes) : ral
 var _slow_param := 1.0 ## multiplicateur le plus fort des ralentissements paramétrés en cours (1 = aucun)
 var _push_vel := Vector2.ZERO ## poussée en cours (px/s), jouée par move_and_collide : jamais à travers un mur
 var _push_left := 0.0
+var _saved_layer := 0 ## couche de collision gardée pendant que le joueur est spectateur (coop)
 var _light: LightRig.Handle = null
 var _light_core: LightRig.Handle = null
 var _low_hp := false
@@ -150,7 +157,8 @@ func _ready() -> void:
 	collision_layer = 2
 	collision_mask = 1
 	if character == null:
-		character = CharacterData.for_id(RunState.character, RunState.loadout) # variantes de sorts choisies
+		var st := player_state()
+		character = CharacterData.for_id(st.character, st.loadout) # variantes de sorts choisies
 	var cam := get_node_or_null(^"Camera2D") as Camera2D
 	if cam != null:
 		cam.zoom = Iso.camera_zoom() # vue isométrique 2:1 (Visual en billboard : échelle (k, 2k))
@@ -176,8 +184,9 @@ func _ready() -> void:
 		add_child(kit)
 		kit.setup(self)
 	_dodge = DodgeMove.make(self, kit, character)
-	RunState.level_up.connect(_on_level_up)
-	Events.enemy_killed.connect(_on_enemy_killed)
+	_bind_state()
+	Events.enemy_killed_by.connect(_on_enemy_killed)
+	Events.player_resurrected.connect(_on_player_resurrected)
 	Events.omen_changed.connect(_on_omen_changed)
 	item_fx = ItemEffects.new()
 	add_child(item_fx)
@@ -202,15 +211,69 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	PlayerHitbox.release(get_instance_id())
-	if RunState.level_up.is_connected(_on_level_up):
-		RunState.level_up.disconnect(_on_level_up)
-	if Events.enemy_killed.is_connected(_on_enemy_killed):
-		Events.enemy_killed.disconnect(_on_enemy_killed)
+	_unbind_state()
+	if Events.enemy_killed_by.is_connected(_on_enemy_killed):
+		Events.enemy_killed_by.disconnect(_on_enemy_killed)
+	if Events.player_resurrected.is_connected(_on_player_resurrected):
+		Events.player_resurrected.disconnect(_on_player_resurrected)
 	if Events.omen_changed.is_connected(_on_omen_changed):
 		Events.omen_changed.disconnect(_on_omen_changed)
 	if _hitstop_active: # jamais de jeu ralenti qui survive au joueur
 		_hitstop_active = false
 		Engine.time_scale = 1.0
+
+
+# --- Identité du joueur (coop 1-4) ------------------------------------------
+
+var _bound_state: PlayerState = null
+
+
+## PlayerState de ce joueur (Players.state_of(player_id) ; RunState.local() pour le joueur 1 en solo). Jamais null.
+func player_state() -> PlayerState:
+	return PlayerRef.state_for_id(player_id)
+
+
+## Source d'entrée de ce joueur (Players.input_of(player_id) ; source globale en solo). Jamais null.
+func input_source() -> InputSource:
+	return PlayerRef.input_of(self)
+
+
+## Change l'emplacement du joueur (inscription tardive dans Players) : montée de niveau rebranchée sur son état.
+func bind_player(id: int) -> void:
+	player_id = id
+	if is_node_ready():
+		_bind_state()
+
+
+func _bind_state() -> void:
+	var st := player_state()
+	if st == _bound_state:
+		return
+	_unbind_state()
+	_bound_state = st
+	st.level_up.connect(_on_level_up)
+
+
+func _unbind_state() -> void:
+	if _bound_state != null and _bound_state.level_up.is_connected(_on_level_up):
+		_bound_state.level_up.disconnect(_on_level_up)
+	_bound_state = null
+
+
+## Coop : vrai pendant que le joueur est spectateur (mort jusqu'à l'étage suivant).
+func is_spectating() -> bool:
+	return player_state().spectating
+
+
+## Interaction attribuée : appelle target.interact(self) (coffre au payeur, atelier, marchand… par joueur), ou
+## target.interact() si la cible ne prend pas d'acteur. Pour le HUD qui garde son répartiteur : il appelle
+## `Players.local().interact_with(cible)`. Retourne le résultat de interact() (faux si la cible est invalide).
+func interact_with(target: Node) -> bool:
+	if target == null or not is_instance_valid(target) or not target.has_method(&"interact") or dead:
+		return false
+	if target.get_method_argument_count(&"interact") >= 1:
+		return bool(target.interact(self))
+	return bool(target.interact())
 
 
 # --- Stats ---------------------------------------------------------------
@@ -289,7 +352,8 @@ func refresh_max_hp(full_heal := false) -> void:
 
 
 func _recompute(full_heal: bool) -> void:
-	var base := character.max_hp_at(RunState.level) if character != null else Balance.player_max_hp(RunState.level)
+	var lv := player_state().level
+	var base := character.max_hp_at(lv) if character != null else Balance.player_max_hp(lv)
 	var old_max := max_hp
 	max_hp = base * (1.0 + stat(&"max_hp_pct")) + stat(&"max_hp_flat")
 	max_hp *= Omens.player_max_hp_mult() # Présage Carapaces
@@ -306,8 +370,9 @@ func _recompute(full_heal: bool) -> void:
 
 func regen_per_s() -> float:
 	# régén plate des items, qui suit le niveau comme la régén de base (RoR2)
-	var base := character.regen_at(RunState.level) if character != null else Balance.player_regen(RunState.level)
-	var r := base + stat(&"regen_flat") * (1.0 + 0.2 * (RunState.level - 1))
+	var lv := player_state().level
+	var base := character.regen_at(lv) if character != null else Balance.player_regen(lv)
+	var r := base + stat(&"regen_flat") * (1.0 + 0.2 * (lv - 1))
 	if not _poison.is_empty():
 		r *= POISON_REGEN_MULT
 	return r
@@ -493,8 +558,9 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 	var new_char := CharacterData.for_id(cid, spell_loadout)
 	if new_char == null or spells == null:
 		return false
-	RunState.character = cid
-	RunState.loadout = spell_loadout.duplicate()
+	var st := player_state()
+	st.character = cid
+	st.loadout = spell_loadout.duplicate()
 	if _dodge != null:
 		_dodge.abort()
 	if kit != null:
@@ -549,27 +615,28 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
+	var src := input_source()
 	if _dodge != null and InputMap.has_action(&"dodge"):
 		if _dodge_buf > 0.0:
 			_dodge_buf -= delta
 			if can_cancel_into(&"dodge") and dodge():
 				_dodge_buf = 0.0
-		if Input.is_action_just_pressed(&"dodge"):
+		if src.just_pressed(&"dodge"):
 			if can_cancel_into(&"dodge"):
 				_dodge_buf = 0.0
 				dodge()
 			else:
 				_dodge_buf = Balance.INPUT_BUFFER_S # buffer : l'esquive part à la première frame permise
-		elif _dodge.active and _dodge.is_hold() and not Input.is_action_pressed(&"dodge"):
+		elif _dodge.active and _dodge.is_hold() and not src.is_pressed(&"dodge"):
 			_dodge.release() # Glissade d'Averse : relâcher = fin
 	if _dodge != null and _dodge.active:
 		_dodge.step(delta)
 	if _dodge != null and _dodge.active and not _dodge.allows_move():
 		pass # esquive qui tient le corps (roulade, dispersion de l'Éclat)
 	elif kit != null and kit.has_method(&"locomote"): # locomotion propre au kit (S11, bonds de Rainette)
-		kit.locomote(Input.get_vector("move_left", "move_right", "move_up", "move_down"), delta)
+		kit.locomote(src.move_vector(), delta)
 	else:
-		var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		var dir := src.move_vector()
 		var want := dir * move_speed()
 		var inertia: float = kit.inertia_s() if kit != null else 0.0
 		if inertia > 0.0: # glisse (Toupie) : la vitesse rejoint la consigne en `inertia` s
@@ -583,6 +650,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 	if _push_left > 0.0:
 		_push_step(delta)
+	interaction.update(delta, src)
 	tick(delta)
 	_update_visual(delta)
 
@@ -650,7 +718,7 @@ func take_damage(amount: float, source: Node = null) -> void:
 		shield -= absorbed
 		amount -= absorbed
 	_invuln = INVULN_AFTER_HIT
-	Events.player_damaged.emit(amount, source)
+	Events.emit_player_damaged(amount, source, player_id)
 	_damage_hp(amount)
 	if not dead:
 		Haptics.hurt(amount, max_hp)
@@ -677,7 +745,47 @@ func _damage_hp(amount: float) -> void:
 		if _dodge != null:
 			_dodge.abort()
 		Haptics.pulse(Haptics.Kind.DEATH)
-		Events.player_died.emit()
+		if PlayerRef.is_coop():
+			# Coop : spectateur jusqu'à l'étage suivant ; seul le jumeau player_died_by est émis (l'ancien
+			# player_died termine la run, c'est party_wiped qui le fait quand plus personne n'est vivant).
+			_become_spectator()
+			Events.player_died_by.emit(player_id)
+			Players.set_spectating(player_id)
+		else:
+			Events.emit_player_died(player_id)
+
+
+## Coop : mort -> spectateur. Corps caché, plus de collision ni de coups reçus (dead = true), sorts arrêtés.
+func _become_spectator() -> void:
+	visible = false
+	interaction.reset()
+	_saved_layer = collision_layer
+	collision_layer = 0
+	_push_left = 0.0
+	_push_vel = Vector2.ZERO
+	clear_statuses()
+
+
+## Résurrection de coop (Players.resurrect_all, début d'étage) : PV Balance.MULTI_RESURRECT_HP_PCT, répit
+## Balance.MULTI_RESURRECT_INVULN_S. Sans effet si ce joueur n'est pas mort.
+func resurrect(hp_pct: float = Balance.MULTI_RESURRECT_HP_PCT) -> void:
+	if not dead:
+		return
+	dead = false
+	visible = true
+	if _saved_layer != 0:
+		collision_layer = _saved_layer
+	_saved_layer = 0
+	velocity = Vector2.ZERO
+	hp = maxf(max_hp * clampf(hp_pct, 0.0, 1.0), 1.0)
+	hp_changed.emit(hp, max_hp)
+	grant_invulnerability(Balance.MULTI_RESURRECT_INVULN_S)
+	on_revived()
+
+
+func _on_player_resurrected(id: int) -> void:
+	if id == player_id:
+		resurrect()
 
 
 ## Retour visuel d'un coup direct (pas des DoT) : voir HURT_*.
@@ -784,13 +892,16 @@ func dodge_duration_s() -> float:
 
 ## Direction par défaut : déplacement en cours, sinon curseur (clavier-souris), sinon l'avant.
 func dodge_direction() -> Vector2:
-	var mv := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var src := input_source()
+	var mv := src.move_vector()
 	if mv.length_squared() > 0.0001:
 		return mv.normalized()
-	if Platform.input_mode == Platform.InputMode.KBM and is_inside_tree():
-		var d := get_global_mouse_position() - global_position
-		if d.length_squared() > 1.0:
-			return d.normalized()
+	if src.mode() == Platform.InputMode.KBM and is_inside_tree():
+		var ptr: Variant = src.pointer_world(self) # curseur de CE joueur (source clavier-souris)
+		if ptr is Vector2:
+			var d: Vector2 = ptr - global_position
+			if d.length_squared() > 1.0:
+				return d.normalized()
 	return facing.normalized() if facing != Vector2.ZERO else Vector2.DOWN
 
 
@@ -1045,7 +1156,9 @@ func keep_walkable() -> void:
 		global_position = p
 
 
-func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
+func _on_enemy_killed(by: int, _e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
+	if not PlayerRef.owns(self, by):
+		return # coop : seuls les monstres tués par ce joueur
 	if not dead and pos.distance_to(global_position) <= CLOSE_KILL_U * Balance.UNIT_PX:
 		close_kills += 1
 

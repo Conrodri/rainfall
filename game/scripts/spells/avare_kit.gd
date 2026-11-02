@@ -1,7 +1,7 @@
 class_name AvareKit
 extends Node
 ## Kit d'Avare, l'usurier des Terrasses (docs/Design_Personnages.md §2.4) : mêlée / tank, ressource = l'or de
-## la run (RunState.gold). Données : character(). Logique : ce nœud, enfant « Kit » du joueur, interrogé par
+## la run (_purse().gold). Données : character(). Logique : ce nœud, enfant « Kit » du joueur, interrogé par
 ## les hooks (blocks_slot, cast_spell, action_for, damage_add, on_cast, rests_on_hit, on_projectile_rest…).
 ## - Puissance de l'or : +15 % de dégâts par P d'or en bourse (P = prix courant d'un petit coffre), plafond +90 %
 ##   (SpellCaster.compute_damage -> damage_add). Lisible en jeu : l'or qui fuit du coffre (masque _e) et la
@@ -365,6 +365,11 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 	return null
 
 
+## Bourse d'Avare = celle de SON joueur (PlayerState : RunState.local() en solo, Players.state_of(id) en coop).
+func _purse() -> PlayerState:
+	return PlayerRef.state_of(player)
+
+
 # --- Mise en place ------------------------------------------------------------------------------
 
 func setup(p: CharacterBody2D) -> void:
@@ -377,8 +382,8 @@ func setup(p: CharacterBody2D) -> void:
 		_bleed_frames = load(GOLD_BLEED_FRAMES) as SpriteFrames
 	_glow = LightRig.attach(p, LIGHT_PRESET, {"energy": GLOW_MIN})
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
-	Events.player_damaged.connect(_on_player_damaged)
+	Events.player_died_by.connect(_on_player_died_by)
+	Events.player_damaged_by.connect(_on_player_damaged_by)
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.boss_killed.connect(_on_boss_killed)
 	if p.has_signal(&"action_impact"):
@@ -411,10 +416,10 @@ func show_tip() -> AvarePurseTip:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
-	if Events.player_damaged.is_connected(_on_player_damaged):
-		Events.player_damaged.disconnect(_on_player_damaged)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
+	if Events.player_damaged_by.is_connected(_on_player_damaged_by):
+		Events.player_damaged_by.disconnect(_on_player_damaged_by)
 	if Events.enemy_killed.is_connected(_on_enemy_killed):
 		Events.enemy_killed.disconnect(_on_enemy_killed)
 	if Events.boss_killed.is_connected(_on_boss_killed):
@@ -442,12 +447,12 @@ static func gold_power_for(gold: float) -> float:
 
 
 func gold_power() -> float:
-	return _power_override if _power_override >= 0.0 else gold_power_for(RunState.gold)
+	return _power_override if _power_override >= 0.0 else gold_power_for(_purse().gold)
 
 
 ## Coût de la Poignée de pièces : 2 % de l'or, au moins 0,1 P.
-static func coins_cost() -> float:
-	return maxf(COINS_COST_FRAC * RunState.gold, COINS_MIN_COST_P * price_unit())
+func coins_cost() -> float:
+	return maxf(COINS_COST_FRAC * _purse().gold, COINS_MIN_COST_P * price_unit())
 
 
 ## Coef de Faillite pour un or dépensé.
@@ -471,7 +476,7 @@ func resource_state() -> Dictionary:
 
 ## Bourse trop maigre pour payer la Poignée : elle part quand même, sans pièces à ramasser.
 func is_broke() -> bool:
-	return RunState.gold + 0.0001 < coins_cost()
+	return _purse().gold + 0.0001 < coins_cost()
 
 
 # --- Hooks du joueur et de SpellCaster ----------------------------------------------------------
@@ -481,7 +486,7 @@ func is_broke() -> bool:
 func floor_gold_kept(gold: float) -> float:
 	var ground := ground_gold()
 	if ground > 0.0:
-		RunState.add_gold(ground)
+		_purse().add_gold(ground)
 		for g in coins.duplicate():
 			if is_instance_valid(g):
 				g.set_meta(&"gold", 0.0)
@@ -643,7 +648,7 @@ func on_cast(s: SpellData) -> void:
 	if s.slot != 2:
 		return
 	var cost := coins_cost()
-	if RunState.spend_gold(cost):
+	if _purse().spend_gold(cost):
 		_salvo_coin_value = cost * COINS_REFUND_FRAC / float(maxi(s.count, 1))
 	else:
 		_salvo_coin_value = 0.0
@@ -718,8 +723,8 @@ func _do_ruin(s: SpellData) -> void:
 		return
 	var pos := player.global_position
 	var power_before := gold_power()
-	var spent := floorf(RunState.gold * RUIN_SPEND_FRAC)
-	if spent > 0.0 and not RunState.spend_gold(spent):
+	var spent := floorf(_purse().gold * RUIN_SPEND_FRAC)
+	if spent > 0.0 and not _purse().spend_gold(spent):
 		spent = 0.0
 	var boom := s.duplicate() as SpellData
 	boom.coef = ruin_coef(spent)
@@ -859,8 +864,8 @@ func _do_buried(s: SpellData) -> AvareMine:
 	if c == null:
 		return null
 	var power_before := gold_power()
-	var buried := floorf(RunState.gold * BURIED_SPEND_FRAC)
-	if buried > 0.0 and not RunState.spend_gold(buried):
+	var buried := floorf(_purse().gold * BURIED_SPEND_FRAC)
+	if buried > 0.0 and not _purse().spend_gold(buried):
 		buried = 0.0
 	var m := AvareMine.new()
 	m.kit = self
@@ -964,8 +969,8 @@ func _enforce_coin_cap() -> void:
 func _collect_coin(g: GroundPickup) -> void:
 	var v := float(g.get_meta(&"gold", 0.0))
 	if v > 0.0:
-		RunState.add_gold(v)
-	RunState.add_counter(COUNTER_COINS, 1.0) # déblocage de la Pièce truquée
+		_purse().add_gold(v)
+	PlayerRef.state_of(player).add_counter(COUNTER_COINS, 1.0) # déblocage de la Pièce truquée
 	if player != null:
 		Audio.play(&"pickup.coin", player.global_position, -6.0, _rng.randf_range(0.95, 1.15))
 
@@ -981,11 +986,17 @@ func ground_gold() -> float:
 
 # --- Malus : chaque coup subi fait tomber 3 % de l'or ----------------------------------------------
 
+## Coop : seuls les coups reçus par CE joueur (Events.player_damaged_by).
+func _on_player_damaged_by(id: int, amount: float, source: Node) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_damaged(amount, source)
+
+
 func _on_player_damaged(_amount: float, _source: Node) -> void:
 	if player == null or player.dead:
 		return
-	var loss := RunState.gold * BLEED_FRAC
-	if loss < BLEED_MIN_GOLD or not RunState.spend_gold(loss):
+	var loss := _purse().gold * BLEED_FRAC
+	if loss < BLEED_MIN_GOLD or not _purse().spend_gold(loss):
 		return
 	var pos := player.global_position
 	var a0 := _rng.randf() * TAU
@@ -1064,7 +1075,7 @@ func _on_enemy_killed(enemy: Node2D, pos: Vector2, tier: int, is_elite: bool) ->
 	var pm := get_tree().get_first_node_in_group(&"pickups") as PickupManager if is_inside_tree() else null
 	if pm != null and bonus > 0.0:
 		pm.drop(pos + Vector2(_rng.randf_range(-10, 10), _rng.randf_range(-10, 10)), PickupManager.KIND_GOLD, bonus)
-		RunState.add_counter(COUNTER_RANSOM_GOLD, bonus) # déblocage de la Saisie
+		PlayerRef.state_of(player).add_counter(COUNTER_RANSOM_GOLD, bonus) # déblocage de la Saisie
 
 
 # --- Boucle (Player.tick) ----------------------------------------------------------------------
@@ -1086,7 +1097,7 @@ func tick(delta: float) -> void:
 
 ## La bourse se lit sur Avare : l'or qui fuit du coffre (masque _e) et sa lueur suivent la puissance.
 func _update_purse_look() -> void:
-	var k := gold_power_for(RunState.gold) / GOLD_POWER_CAP
+	var k := gold_power_for(_purse().gold) / GOLD_POWER_CAP
 	if _visual != null:
 		NormalMaps.set_emission_energy(_visual, lerpf(EMISSION_MIN, EMISSION_MAX, k))
 	if _glow != null:
@@ -1117,7 +1128,7 @@ func _on_floor_started(_n: int) -> void:
 ## Boss d'étage vaincu à l'étage 2 (déblocage du Trésor enterré).
 func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 	if is_floor_boss and RunState.stage == BOSS_FLOOR:
-		RunState.add_counter(COUNTER_BOSS2, 1.0)
+		PlayerRef.state_of(player).add_counter(COUNTER_BOSS2, 1.0)
 
 
 ## Coffres-mines non détonés : l'or enterré revient dans la bourse (aucun or perdu), les coffres disparaissent.
@@ -1125,10 +1136,16 @@ func refund_mines() -> void:
 	for m in mines.duplicate():
 		if is_instance_valid(m):
 			if not m.detonated and m.buried > 0.0:
-				RunState.add_gold(m.buried)
+				_purse().add_gold(m.buried)
 			m.detonated = true
 			m.queue_free()
 	mines.clear()
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

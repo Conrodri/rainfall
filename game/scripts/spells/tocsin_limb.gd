@@ -452,7 +452,7 @@ func vanish() -> void:
 		pickup.queue_free()
 	pickup = null
 	if is_inside_tree() and phase != Phase.DONE and kind != &"head":
-		HitFx.impact(global_position + Vector2(0, -12), Vector2.UP, &"fire", 0.3, false, false)
+		HitFx.impact(global_position + Vector2(0, -12), Vector2.UP, &"fire", 0.3, false, false, caster.player_id() if caster != null and is_instance_valid(caster) else -1)
 	phase = Phase.DONE
 	queue_free()
 

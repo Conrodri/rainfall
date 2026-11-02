@@ -92,7 +92,7 @@ func _finish(n: Node) -> void:
 			match (s as SpellData).id:
 				&"nova_ardente":
 					if _cur == n and _hits.size() >= NOVA_BIG_HITS:
-						RunState.add_counter(COUNTER_NOVA)
+						PlayerRef.state_of(player).add_counter(COUNTER_NOVA)
 				&"cendres":
 					_ash.append(n)
 	if _cur == n:
@@ -115,9 +115,9 @@ func _on_killed(enemy: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
 		if n == 0 and pos.distance_to(z.global_position) <= float(z.get(&"radius")) + er:
 			n = 1 # un monstre ne compte qu'une fois, même dans deux zones
 	if n > 0:
-		RunState.add_counter(COUNTER_ASH)
+		PlayerRef.state_of(player).add_counter(COUNTER_ASH)
 
 
 func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 	if is_floor_boss and RunState.stage == BOSS_FLOOR:
-		RunState.add_counter(COUNTER_BOSS2)
+		PlayerRef.state_of(player).add_counter(COUNTER_BOSS2)

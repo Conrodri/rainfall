@@ -424,7 +424,7 @@ func setup(p: CharacterBody2D) -> void:
 	_spike = make_spike()
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 	_ready_light = LightRig.attach(p, &"vigie_tension")
@@ -634,7 +634,7 @@ func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
 
 
 func _no_move_input() -> bool:
-	return Input.get_vector("move_left", "move_right", "move_up", "move_down").length_squared() < 0.0001
+	return PlayerRef.input_of(player).move_vector().length_squared() < 0.0001
 
 
 func on_cast(_s: SpellData) -> void:
@@ -828,7 +828,7 @@ func open_net(at: Vector2) -> void:
 			e.apply_status(&"slow", {"pct": NET_BOSS_SLOW_PCT, "duration": NET_HOLD_S})
 		else:
 			e.apply_status(&"imprisoned", {"duration": NET_HOLD_S})
-			RunState.add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
+			PlayerRef.state_of(player).add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
 	_net_t = NET_HOLD_S
 	_caster().spawn_zone(_net_burst, at)
 	_net_outline(at, r)
@@ -992,7 +992,7 @@ func _revive_flare(e: Node2D) -> void:
 
 func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
 	if enemy != null and is_instance_valid(enemy) and enemy.has_meta(META_LAST_HIT):
-		RunState.add_counter(COUNTER_GRELE_KILLS)
+		PlayerRef.state_of(player).add_counter(COUNTER_GRELE_KILLS)
 
 
 ## Grêle : la volée part au ciel à la frame d'impact, la pluie tombe HAIL_DELAY_S plus tard.
@@ -1038,7 +1038,7 @@ func _expose_tick() -> void:
 				net_lit = f.netted.has(e.get_instance_id()) and is_netted(e)
 				if f.counts_exposed and not f.seen.has(e.get_instance_id()):
 					f.seen[e.get_instance_id()] = true
-					RunState.add_counter(COUNTER_EXPOSED) # déblocage du Fanal
+					PlayerRef.state_of(player).add_counter(COUNTER_EXPOSED) # déblocage du Fanal
 				break
 		var hailed := false
 		for z in live_h:
@@ -1124,6 +1124,12 @@ func clear_transients() -> void:
 
 func _on_floor_started(_n: int) -> void:
 	clear_transients() # la Tension est gardée d'un étage à l'autre
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

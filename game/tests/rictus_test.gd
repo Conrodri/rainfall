@@ -560,8 +560,8 @@ func _run() -> void:
 	_check("200 cumulés : Rictus débloqué", prof.is_character_unlocked(&"rictus") and u2.has(&"character:rictus"), str(u2))
 	prof.free()
 	_reset()
-	Events.enemy_killed.emit(null, Vector2(1.5 * U, 0), 1, false)
-	Events.enemy_killed.emit(null, Vector2(5.0 * U, 0), 1, false)
+	Events.emit_enemy_killed(null, Vector2(1.5 * U, 0), 1, false)
+	Events.emit_enemy_killed(null, Vector2(5.0 * U, 0), 1, false)
 	_check("compteur rictus.close_kills : un tué à 1,5 u, pas un à 5 u", _near(float(RunState.counters.get("rictus.close_kills", 0.0)), 1.0), str(RunState.counters))
 
 	print("Murs : un monstre derrière un mur plein n'est pas touché (StageMap.los)")

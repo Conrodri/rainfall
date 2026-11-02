@@ -112,6 +112,11 @@ static func clear_all() -> void:
 	live.clear()
 
 
+## Joueur propriétaire (coop : VFX alliés atténués, AllyFx) ; -1 si inconnu.
+func owner_slot() -> int:
+	return caster.player_id() if caster != null and is_instance_valid(caster) else -1
+
+
 ## Charge la doublure (une seule fois). Les sorts d'explosion et de vol sont dupliqués : ceux du kit, partagés par les
 ## six doublures, restent intacts. Retourne false si déjà chargée, explosée ou en l'air.
 func charge(amount := 1.0) -> bool:
@@ -163,7 +168,7 @@ func appear() -> void:
 		var tw := create_tween().set_parallel(true)
 		tw.tween_property(_sprite, "scale", s0, APPEAR_S).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tw.tween_property(_sprite, "modulate", Color.WHITE, APPEAR_S)
-	HitFx.impact(global_position + Vector2(0.0, Iso.lift_logical(APPEAR_FX_HEIGHT_U)), facing, &"physical", 0.6)
+	HitFx.impact(global_position + Vector2(0.0, Iso.lift_logical(APPEAR_FX_HEIGHT_U)), facing, &"physical", 0.6, false, false, owner_slot())
 
 
 static func _desat_material() -> ShaderMaterial:

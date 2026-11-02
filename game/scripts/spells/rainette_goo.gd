@@ -19,6 +19,7 @@ var slow_pct := 0.4
 var pull_px_s := 57.6
 var spell: SpellData = null
 var mini := false ## mini-flaque du Chœur des roseaux (plafonnée par le kit)
+var owner_id := 0 ## joueur qui a posé la flaque (coop : compteurs à son PlayerState)
 var count_glued := true ## compte les monstres pris (déblocage de la Bulle), une fois par flaque
 var glued: Dictionary = {} ## instance_id -> true
 var vfx: AnimatedSprite2D = null
@@ -150,7 +151,7 @@ func _affect(delta: float) -> void:
 			continue
 		if count_glued and not glued.has(e.get_instance_id()):
 			glued[e.get_instance_id()] = true
-			RunState.add_counter("rainette.glued")
+			PlayerRef.state_for_id(owner_id).add_counter("rainette.glued")
 		if e.has_method(&"apply_status"):
 			e.apply_status(&"slow", {"pct": slow_pct, "duration": SLOW_REFRESH_S})
 		if e.has_method(&"push") and d.length_squared() > 4.0:

@@ -30,6 +30,8 @@ const STICK_AIM_MIN := 0.3
 
 var player: Node2D
 var character: CharacterData
+## Actions des slots (aucune chaîne formatée par image).
+const SPELL_ACTIONS: Array[StringName] = [&"spell_0", &"spell_1", &"spell_2", &"spell_3", &"spell_4"]
 var rng := RandomNumberGenerator.new()
 var _remaining := {} ## slot -> s restantes
 var _totals := {} ## slot -> durée totale du dernier cooldown
@@ -127,6 +129,19 @@ func combo_ready(slot: int) -> bool:
 	return bool(_combo_ready.get(slot, false))
 
 
+## Coop : effets d'un ALLIÉ atténués (AllyFx, docs/multi/Design_Coop.md §4.2) : le conteneur des effets de ce joueur
+## (projectiles, zones) prend l'opacité AllyFx.alpha_for(id) ; les bords de zone (ZoneOutline, sur leur propre calque)
+## restent nets. Solo ou joueur local : 1,0. Sondé avec les marques (MARKS_POLL_S), écrit seulement s'il change.
+func _poll_ally_alpha() -> void:
+	if not is_instance_valid(_container):
+		return
+	var a := AllyFx.alpha_for(player_id())
+	if not is_equal_approx(_container.modulate.a, a):
+		var m := _container.modulate
+		m.a = a
+		_container.modulate = m
+
+
 ## Pose / retire l'indicateur de marque (MarkIndicator) sur les monstres que le kit déclare marqués (is_marked).
 func _poll_marks() -> void:
 	var k := _kit()
@@ -175,6 +190,38 @@ func slot_cost_info(slot: int) -> Dictionary:
 
 
 ## Kit du personnage (CharacterData.kit_script), ou null (Ardent).
+## --- Joueur propriétaire (coop 1-4) : id, état et source d'entrée de `player` (PlayerRef ; solo = joueur 1). ---
+func player_id() -> int:
+	return PlayerRef.id_of(player)
+
+
+func player_state() -> PlayerState:
+	return PlayerRef.state_of(player)
+
+
+func input_source() -> InputSource:
+	return PlayerRef.input_of(player)
+
+
+func player_level() -> int:
+	return PlayerRef.state_of(player).level
+
+
+## Action d'entrée du slot (spell_2..4).
+static func spell_action(slot: int) -> StringName:
+	return SPELL_ACTIONS[slot] if slot >= 0 and slot < SPELL_ACTIONS.size() else StringName("spell_%d" % slot)
+
+
+## Dégâts infligés par ce joueur : participation aux rubis en coop (PlayerState.damage_dealt, Balance.ruby_participation)
+## et activité (absence, Players.note_activity). Seul point de comptage : l'agent ennemis ne l'ajoute pas.
+func note_damage_dealt(amount: float) -> void:
+	if amount <= 0.0:
+		return
+	var pid := player_id()
+	PlayerRef.state_for_id(pid).damage_dealt += amount
+	Players.note_activity(pid)
+
+
 func _kit() -> Node:
 	return player.get(&"kit") if player != null and &"kit" in player else null
 
@@ -263,6 +310,7 @@ func tick(delta: float) -> void:
 	if player == null or player.dead:
 		_pending.clear() # mort avant l'impact : l'effet est perdu
 		return
+	var src := input_source()
 	for s in character.spells:
 		_remaining[s.slot] = maxf(_remaining[s.slot] - delta, 0.0)
 		if _input_buf.has(s.slot):
@@ -274,7 +322,7 @@ func tick(delta: float) -> void:
 			# sort 1 : ne coupe jamais un sort 2-4 (différé jusqu'à la fin de sa récupération, jamais perdu)
 			if player.can_cancel_into(kind):
 				cast(s.slot)
-		elif Input.is_action_just_pressed("spell_%d" % s.slot):
+		elif src.just_pressed(spell_action(s.slot)):
 			if not ui_press:
 				if player.can_cancel_into(kind):
 					_input_buf.erase(s.slot)
@@ -298,6 +346,7 @@ func tick(delta: float) -> void:
 	if _marks_poll <= 0.0:
 		_marks_poll = MARKS_POLL_S
 		_poll_marks()
+		_poll_ally_alpha()
 	if TestMode.full_resource:
 		refill_kit_resource()
 
@@ -311,14 +360,18 @@ func refill_kit_resource() -> void:
 	if k.has_method(&"refill_resource"):
 		k.refill_resource()
 	elif k is AvareKit:
-		RunState.gold = maxf(RunState.gold, TestMode.GOLD_FLOOR)
+		var st := player_state()
+		st.gold = maxf(st.gold, TestMode.GOLD_FLOOR)
 
 
 ## Clavier-souris : le pointeur est sur un contrôle d'UI qui capte la souris (bouton, carte, bulle de sort).
 ## Tactile exclu : les boutons de sorts y simulent l'action alors que le doigt est sur un contrôle.
 func _mouse_on_ui() -> bool:
-	if not is_inside_tree() or Platform.input_mode == Platform.InputMode.TOUCH:
+	if not is_inside_tree():
 		return false
+	var src := input_source()
+	if src.kind == InputSource.Kind.PAD or src.mode() == Platform.InputMode.TOUCH:
+		return false # manette de coop : la souris d'un autre joueur ne la concerne pas
 	var c := get_viewport().gui_get_hovered_control()
 	return c != null and c.mouse_filter == Control.MOUSE_FILTER_STOP
 
@@ -340,7 +393,9 @@ func _trigger_px(s: SpellData) -> float:
 ## `from_auto` : lancer de l'auto-cast -> visée sur le monstre le plus proche, jamais le curseur ni le stick droit.
 func cast(slot: int, from_auto := false) -> bool:
 	var prev := _auto_ctx
-	_auto_ctx = from_auto or prev # le rejeu d'un lancer auto (Couronne d'écho) reste auto
+	# le rejeu d'un lancer auto (Couronne d'écho) reste auto ; overlay non bloquant ouvert (coop : sacoche, ateliers) :
+	# la souris sert aux cartes, les sorts 2-4 visent seuls (OverlayMode)
+	_auto_ctx = from_auto or prev or OverlayMode.is_open()
 	var ok := _cast(slot)
 	_auto_ctx = prev
 	return ok
@@ -586,17 +641,18 @@ func _nearest_enemy_raw(max_dist: float, skip: Array) -> Node2D:
 ## Souris (kbm) : le curseur. Manette : direction du stick droit (au repos : null -> ennemi le plus proche).
 ## Tactile : toujours null. `aim_override` (Vector2) force un point (tests, replays).
 func get_manual_aim_point(range_px: float) -> Variant:
-	if _auto_ctx:
-		return null # lancer auto : ciblage automatique (monstre le plus proche), jamais la visée manuelle
+	if _auto_ctx or OverlayMode.is_open():
+		return null # lancer auto (ou overlay coop ouvert) : ciblage automatique, jamais la visée manuelle
 	if aim_override != null:
 		return aim_override
 	if not manual_aim_enabled or player == null:
 		return null
-	match Platform.input_mode:
+	var src := input_source()
+	match src.mode():
 		Platform.InputMode.KBM:
-			return player.get_global_mouse_position()
+			return src.pointer_world(player) # curseur de CE joueur (null : pas de pointeur)
 		Platform.InputMode.GAMEPAD:
-			var v := Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+			var v := src.aim_vector()
 			if v.length() >= STICK_AIM_MIN:
 				return player.global_position + Iso.screen_to_logical_dir(v) * range_px * 0.8
 	return null
@@ -715,6 +771,10 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	if s.hit_force >= 0.0 and not hit.has("force"):
 		hit = hit.duplicate()
 		hit["force"] = s.hit_force
+	if not hit.has("by"): # coop : auteur du coup (Enemy.take_damage -> Events.emit_enemy_killed(..., killer_id))
+		if hit.is_read_only():
+			hit = hit.duplicate()
+		hit["by"] = player_id()
 	var k := _kit() # coup porté (Averse : une élite ou un boss touché rend de l'eau)
 	# coup de combo (docs/Design_Combos.md §6) : le kit le déclare (hit["combo"] ou combo_hit) -> chiffre en accent, son lourd +2 demi-tons
 	var combo: bool = bool(hit.get("combo", false))
@@ -727,6 +787,7 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	else: # cibles factices des tests : signature à 3 arguments
 		enemy.take_damage(amount, is_crit, s.element)
 	DamageNumbers.combo_tint = Color(0, 0, 0, 0)
+	note_damage_dealt(amount)
 	Audio.play_hit(s.id, amount, is_crit, at, s.element)
 	if combo:
 		Audio.play_combo(s.id, at)
@@ -746,7 +807,7 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 func _feel_note(s: SpellData, enemy: Node, amount: float, is_crit: bool, force: float) -> void:
 	if player == null or not player.has_method(&"in_cast_feel_window") or not player.in_cast_feel_window():
 		return
-	var f := force if force >= 0.0 else Balance.hit_force(amount, Balance.player_base_damage(RunState.level), is_crit)
+	var f := force if force >= 0.0 else Balance.hit_force(amount, Balance.player_base_damage(player_level()), is_crit)
 	_feel_hits += 1
 	_feel_f = maxf(_feel_f, f)
 	_feel_crit = _feel_crit or is_crit
@@ -798,7 +859,7 @@ func compute_damage(s: SpellData, enemy: Node, is_crit: bool) -> float:
 			coef += float(kit.combo_coef_add(s, enemy))
 		if kit.has_method(&"combo_mult"):
 			cmult = float(kit.combo_mult(s, enemy))
-	var dmg: float = coef * Balance.player_base_damage(RunState.level) * (1.0 + add) * mult * cmult
+	var dmg: float = coef * Balance.player_base_damage(player_level()) * (1.0 + add) * mult * cmult
 	if is_crit:
 		dmg *= player.crit_mult()
 	return dmg
@@ -829,11 +890,12 @@ func _roll_procs(enemy: Node, hit: float, pc: float = 1.0) -> void:
 				_lightning(enemy, hit, data)
 				continue
 			&"burn":
-				data["total"] = (float(data.get("base_fraction", 0.0)) * Balance.player_base_damage(RunState.level) * pc
+				data["total"] = (float(data.get("base_fraction", 0.0)) * Balance.player_base_damage(player_level()) * pc
 					+ float(data.get("hit_fraction", 0.0)) * hit) * (1.0 + player.stat(&"burn_damage_add"))
 			&"poison":
 				data["total"] = float(data.get("hit_fraction", 0.0)) * hit
 		if enemy.has_method("apply_status"):
+			data["by"] = player_id() # DoT attribuée au joueur (coop : tueur et participation)
 			enemy.apply_status(status, data)
 
 
@@ -855,7 +917,7 @@ func nearest_enemies(origin: Vector2, range_px: float, count: int, exclude: Node
 func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 	var frac := float(data.get("damage_fraction", 0.8))
 	var o := origin as Node2D
-	var n: int = maxi(1, RunState.stacks(&"eclair_en_bouteille"))
+	var n: int = maxi(1, player_state().stacks(&"eclair_en_bouteille"))
 	var reach := (Balance.CHAIN_LIGHTNING_RANGE_U + Balance.CHAIN_LIGHTNING_RANGE_STACK_U * float(n - 1)) * Balance.UNIT_PX
 	var chain := chain_targets(o, mini(int(data.get("targets", 3)), Balance.CHAIN_LIGHTNING_MAX_TARGETS), reach)
 	if chain.is_empty():
@@ -866,11 +928,13 @@ func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 		LightRig.flash(o.global_position, &"spell_lightning", 0.15 if Quality.flashes_level == 2 else 0.06)
 	var pts: Array = [o.global_position]
 	var prev: Node2D = o
+	var pid := player_id()
 	for e in chain:
 		if e is Enemy: # coup venu de la cible précédente (recul à l'opposé)
-			e.take_damage(hit * frac, false, &"lightning", {"source_pos": prev.global_position})
+			e.take_damage(hit * frac, false, &"lightning", {"source_pos": prev.global_position, "by": pid})
 		else:
 			e.take_damage(hit * frac, false, &"lightning")
+		note_damage_dealt(hit * frac)
 		pts.append((e as Node2D).global_position)
 		prev = e
 	ChainLightningFx.chain(pts, player.get_parent())

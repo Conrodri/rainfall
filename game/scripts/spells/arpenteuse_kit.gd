@@ -343,7 +343,7 @@ func setup(p: CharacterBody2D) -> void:
 	_last_head = p.global_position
 	chain = PackedVector2Array([p.global_position])
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
 
@@ -351,8 +351,8 @@ func setup(p: CharacterBody2D) -> void:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
 	clear_transients()
 
 
@@ -857,7 +857,7 @@ func _do_boucle(s: SpellData) -> void:
 		if is_instance_valid(e) and e.has_method(&"push") and not e.is_in_group(&"bosses") and not (held and _spell_id(2) != V_NOEUD):
 			e.push((c - pos).limit_length(BOUCLE_PULL_U * Balance.UNIT_PX))
 	last_loop = {"hits": hits, "length_px": lines_length()}
-	RunState.add_counter("arpenteuse.boucle_hits", float(hits)) # déblocage du Nœud
+	PlayerRef.state_of(player).add_counter("arpenteuse.boucle_hits", float(hits)) # déblocage du Nœud
 	for pts in lines:
 		var smooth: PackedVector2Array = smooth_polyline(pts) if pts == chain_points() else pts
 		_spawn_flare(smooth)
@@ -973,7 +973,7 @@ func _peg_step(delta: float) -> void:
 		_caster().deal_damage(e, s, {"source_pos": c, "combo": true} if crossed else {"source_pos": c}) # balayé : écarté de la ligne
 		if crossed:
 			_cross_t = HEAT_FLASH_S
-		RunState.add_counter("arpenteuse.piquet_hits") # déblocage des Jalons
+		PlayerRef.state_of(player).add_counter("arpenteuse.piquet_hits") # déblocage des Jalons
 		_heat_t = HEAT_FLASH_S
 
 
@@ -1483,6 +1483,12 @@ func _on_floor_started(_n: int) -> void:
 	clear_transients()
 	if player != null:
 		_last_head = player.global_position
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:

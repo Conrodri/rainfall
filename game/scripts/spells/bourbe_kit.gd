@@ -398,7 +398,7 @@ func setup(p: CharacterBody2D) -> void:
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
 	_build_sub_spells()
 	Events.floor_started.connect(_on_floor_started)
-	Events.player_died.connect(_on_player_died)
+	Events.player_died_by.connect(_on_player_died_by)
 	Events.boss_killed.connect(_on_boss_killed)
 	if p.has_signal(&"action_impact"):
 		p.action_impact.connect(_on_action_impact)
@@ -408,8 +408,8 @@ func setup(p: CharacterBody2D) -> void:
 func _exit_tree() -> void:
 	if Events.floor_started.is_connected(_on_floor_started):
 		Events.floor_started.disconnect(_on_floor_started)
-	if Events.player_died.is_connected(_on_player_died):
-		Events.player_died.disconnect(_on_player_died)
+	if Events.player_died_by.is_connected(_on_player_died_by):
+		Events.player_died_by.disconnect(_on_player_died_by)
 	if Events.boss_killed.is_connected(_on_boss_killed):
 		Events.boss_killed.disconnect(_on_boss_killed)
 	clear_transients()
@@ -949,9 +949,9 @@ func on_motte_merged(m: BourbeMotte) -> void:
 	mottes.erase(m)
 	mottes_merged += 1
 	if not _silent_merge:
-		RunState.add_counter(COUNTER_RECALLED) # déblocage de la Bouture
+		PlayerRef.state_of(player).add_counter(COUNTER_RECALLED) # déblocage de la Bouture
 	if player != null and not player.dead:
-		HitFx.impact(player.global_position, -m.facing, &"physical", 0.3)
+		HitFx.impact(player.global_position, -m.facing, &"physical", 0.3, false, false, PlayerRef.id_of(player))
 	var lost: float = m.mass_frac - merge_mass(m)
 	if lost > 0.0005:
 		dead_mass.append([lost, DEAD_MASS_S]) # la part abîmée de la motte revient plus tard (8 s)
@@ -1115,7 +1115,7 @@ func _glob_land(s: SpellData, pos: Vector2) -> void:
 	z.duration = 0.0
 	_caster().spawn_zone(z, pos)
 	_slow_circle(pos, z.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add")), CRACHAT_SLOW_PCT, CRACHAT_SLOW_S)
-	HitFx.impact(pos, Vector2.DOWN, &"physical", 0.4)
+	HitFx.impact(pos, Vector2.DOWN, &"physical", 0.4, false, false, PlayerRef.id_of(player))
 
 
 func _slow_circle(pos: Vector2, r: float, pct: float, secs: float) -> void:
@@ -1283,7 +1283,7 @@ func _on_floor_started(_n: int) -> void:
 	charges = max_charges()
 	for m in mottes:
 		if is_instance_valid(m):
-			RunState.add_counter(COUNTER_RECALLED) # les mottes rentrent à l'étage suivant
+			PlayerRef.state_of(player).add_counter(COUNTER_RECALLED) # les mottes rentrent à l'étage suivant
 	if player != null and is_instance_valid(player) and not player.dead:
 		var back := 0.0
 		for m in mottes:
@@ -1297,7 +1297,13 @@ func _on_floor_started(_n: int) -> void:
 ## Mini-boss tué avec 4 mottes dehors (déblocage de la Marée de vase).
 func _on_boss_killed(_boss: Node2D, is_floor_boss: bool) -> void:
 	if not is_floor_boss and out_count() >= MAX_MOTTES:
-		RunState.add_counter(COUNTER_MINIBOSS4)
+		PlayerRef.state_of(player).add_counter(COUNTER_MINIBOSS4)
+
+
+## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
+func _on_player_died_by(id: int) -> void:
+	if PlayerRef.owns(player, id):
+		_on_player_died()
 
 
 func _on_player_died() -> void:
