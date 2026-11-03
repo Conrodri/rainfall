@@ -1330,6 +1330,8 @@ func _attach_spin_blur() -> void:
 	spin_blur = AnimatedSprite2D.new()
 	spin_blur.name = "SpinBlur"
 	spin_blur.sprite_frames = sf
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_sprite(spin_blur, sf)
 	spin_blur.offset = SPIN_BLUR_OFFSET
 	spin_blur.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	var m := CanvasItemMaterial.new()

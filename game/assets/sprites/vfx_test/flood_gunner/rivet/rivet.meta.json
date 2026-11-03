@@ -1,0 +1,94 @@
+{
+ "source": "projectiles/bullet-tracer",
+ "opts": {
+  "palette": [
+   "#120804",
+   "#241008",
+   "#3c1c0e",
+   "#6a3a1e",
+   "#a0602e",
+   "#a0602e",
+   "#d98038",
+   "#FF9A3C",
+   "#ffc684"
+  ],
+  "smoke": [
+   "#120804",
+   "#3c1c0e",
+   "#a0602e",
+   "#d98038",
+   "#ffc684"
+  ],
+  "light": 0.4
+ },
+ "owner": "flood_gunner",
+ "spell_id": "rivet",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 9,
+ "frame_size": [
+  306,
+  62
+ ],
+ "scale": 2,
+ "offset": [
+  -127.0,
+  3.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "rivet_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF9A3C",
+ "light_curve": [
+  0.999,
+  0.991,
+  0.997,
+  0.995,
+  1.0,
+  0.991,
+  0.99,
+  0.992,
+  0.998
+ ],
+ "light_pos": [
+  [
+   -21.4,
+   1.2
+  ],
+  [
+   -21.4,
+   1.0
+  ],
+  [
+   -21.6,
+   1.0
+  ],
+  [
+   -21.2,
+   1.0
+  ],
+  [
+   -20.6,
+   1.0
+  ],
+  [
+   -21.2,
+   1.2
+  ],
+  [
+   -20.8,
+   1.2
+  ],
+  [
+   -20.8,
+   1.2
+  ],
+  [
+   -21.4,
+   1.2
+  ]
+ ]
+}

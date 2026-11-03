@@ -53,6 +53,8 @@ static func visual(anim: StringName, p_kind: Kind, p_color: Color = CYAN, p_radi
 		var s := AnimatedSprite2D.new()
 		s.name = &"Visual"
 		s.sprite_frames = sf
+		if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+			VfxSwap.on_sprite(s, sf)
 		s.light_mask = 0
 		s.material = EnemyTelegraph.unshaded_material()
 		if anim == &"fixate_link" or anim == &"shelter_shadow": # bandes vers +x : départ à l'origine du nœud

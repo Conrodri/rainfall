@@ -90,6 +90,8 @@ var _quality: OptionStepper
 var _flashes: OptionStepper
 var _damage: OptionStepper
 var _colorblind: OptionStepper
+var _fps_limit: OptionStepper
+var _fps_values: Array = [] ## valeurs de GameSettings.fps_limit_options() dans l'ordre du sélecteur
 var _chest_reveal: OptionStepper ## « Animation des coffres » (GameSettings.chest_reveal)
 var _reticle: OptionStepper ## « Taille du réticule » (PC)
 var _fullscreen: Button
@@ -203,6 +205,12 @@ func _build() -> void:
 	_overhead = _add_toggle("Barres au-dessus du personnage", func(on: bool) -> void: GameSettings.set_overhead_bars(on))
 	_key_hints = _add_toggle("Afficher les touches sous les sorts", func(on: bool) -> void: GameSettings.set_key_hints(on))
 	_show_hitbox = _add_toggle("Cercle de collision du héros", func(on: bool) -> void: GameSettings.set_show_hitbox(get_tree(), on))
+	_fps_values = GameSettings.fps_limit_options()
+	var fps_items: Array = []
+	for v in _fps_values:
+		fps_items.append("Illimitée" if int(v) == 0 else "%d" % int(v))
+	_fps_limit = _add_stepper("Limite d'images par seconde", fps_items, func(i: int) -> void:
+		GameSettings.set_fps_limit(int(_fps_values[clampi(i, 0, _fps_values.size() - 1)])))
 	_show_fps = _add_toggle("Afficher les FPS", func(on: bool) -> void: GameSettings.set_show_fps(on))
 
 	_page(Tab.GAME)
@@ -500,6 +508,8 @@ func sync() -> void:
 	_tooltip_hold.index = GameSettings.tooltip_hold_index()
 	_chest_reveal.index = maxi(Balance.CHEST_REVEAL_MODES.find(StringName(GameSettings.chest_reveal())), 0)
 	_reticle.index = 1 if GameSettings.reticle_scale() > 1.25 else 0
+	var fi := _fps_values.find(GameSettings.fps_limit())
+	_fps_limit.index = fi if fi >= 0 else _fps_values.find(0)
 	_set_toggle(_fullscreen, GameSettings.fullscreen())
 	_set_toggle(_show_fps, GameSettings.show_fps())
 	var p := Players.local() if is_inside_tree() else null

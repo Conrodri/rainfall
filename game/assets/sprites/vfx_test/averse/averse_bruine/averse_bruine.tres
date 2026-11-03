@@ -1,0 +1,43 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx_test/averse/averse_bruine/averse_bruine.png" id="1_0"]
+
+[sub_resource type="AtlasTexture" id="a1"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 0, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a2"]
+atlas = ExtResource("1_0")
+region = Rect2(190, 0, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a3"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 48, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a4"]
+atlas = ExtResource("1_0")
+region = Rect2(190, 48, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a5"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 96, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a6"]
+atlas = ExtResource("1_0")
+region = Rect2(190, 96, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a7"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 144, 190, 48)
+
+[sub_resource type="AtlasTexture" id="a8"]
+atlas = ExtResource("1_0")
+region = Rect2(190, 144, 190, 48)
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}],
+"loop": true,
+"name": &"default",
+"speed": 15.000
+}]

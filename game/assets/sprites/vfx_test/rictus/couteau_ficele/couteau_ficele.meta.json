@@ -1,0 +1,85 @@
+{
+ "source": "projectiles/arrow",
+ "opts": {
+  "palette": [
+   "#0a0d0d",
+   "#141b1b",
+   "#26312f",
+   "#46585a",
+   "#6f8f8a",
+   "#9FC8C0",
+   "#c9e3dd"
+  ],
+  "light": 0.35
+ },
+ "owner": "rictus",
+ "spell_id": "couteau_ficele",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 9,
+ "frame_size": [
+  184,
+  30
+ ],
+ "scale": 2,
+ "offset": [
+  -84.0,
+  -1.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "couteau_ficele_e.tres",
+ "light_k": 1.0,
+ "light_color": "#9FC8C0",
+ "light_curve": [
+  0.363,
+  0.644,
+  0.0,
+  0.0,
+  0.0,
+  1.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   -11.0,
+   -3.0
+  ],
+  [
+   -4.0,
+   -3.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   -7.6,
+   -3.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ]
+}

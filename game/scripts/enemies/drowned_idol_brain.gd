@@ -736,6 +736,8 @@ func _fire_circle(c: Dictionary, player: Node2D, ppos: Vector2) -> void:
 	f.name = &"Idol_chaplet"
 	e.get_parent().add_child(f)
 	f.global_position = pos
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.spawn_at(e.get_parent(), "drowned_idol/chaplet_circle", pos, Vector2.RIGHT, f)
 	_fx.append({"node": f, "life": 0.35, "max": 0.35})
 	if player != null and pos.distance_to(ppos) <= chaplet_r_u() * U + PLAYER_R:
 		e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"chaplet"))
@@ -920,6 +922,8 @@ func _on_noria_locked(_m: FixateMark, entry: Dictionary) -> void:
 	tele.show_line(mark.point, float(entry["a0"]), noria_blade_u() * U, noria_width_u() * U)
 	tele.set_progress(1.0)
 	entry["tele"] = tele
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.spawn_at(e.get_parent(), "drowned_idol/noria_wheel", mark.point, Vector2.from_angle(float(entry["a0"])))
 
 
 func _blade_angle(entry: Dictionary) -> float:

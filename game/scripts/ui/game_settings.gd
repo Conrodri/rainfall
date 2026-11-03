@@ -3,6 +3,7 @@ extends RefCounted
 ## Réglages du joueur persistés dans user://settings.cfg (même fichier que les volumes d'Audio,
 ## section « audio », écrite par Audio lui-même). Sections gérées ici :
 ##   [graphics] quality = -1 (auto) | 0 Bas | 1 Moyen | 2 Haut ; flashes = 0 aucun | 1 réduits | 2 complets
+##   [graphics] fps_limit = 0 (illimité) | 30 | 60 | 120 | 144 | 240 | 360 (absent : comportement historique, voir apply_fps_limit)
 ##   [graphics] fullscreen = bool (PC) ; show_fps = bool ; colorblind = 0 aucun | 1 deutéranopie | 2 protanopie | 3 tritanopie
 ##   [gameplay] auto_cast = bool (sorts 2-4 automatiques, option d'accessibilité) ; haptics = bool ;
 ##   pause_long_press = bool ; damage_text_scale = 0,8 | 1 | 1,3
@@ -135,6 +136,7 @@ static func apply_graphics() -> void:
 	q.call(&"set_flashes_level", int(cf.get_value("graphics", "flashes", 2))) # miroir toujours resynchronisé
 	if cf.has_section_key("graphics", "fullscreen"):
 		apply_fullscreen(bool(cf.get_value("graphics", "fullscreen", false)))
+	apply_fps_limit()
 
 
 static func set_quality(choice: int) -> void:
@@ -222,7 +224,79 @@ static func apply_fullscreen(on: bool) -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if on else DisplayServer.WINDOW_MODE_WINDOWED)
 
 
+## Limite d'images par seconde (Engine.max_fps ; 0 = illimité). Valeurs proposées par plateforme ; 0 en dernier.
+const FPS_OPTIONS_PC := [60, 144, 240, 360, 0]
+const FPS_OPTIONS_MOBILE := [30, 60, 120, 0] ## 120 seulement si l'écran le permet (fps_limit_options)
+const FPS_KNOWN := [0, 30, 60, 120, 144, 240, 360]
+
+
+## Fréquence de l'écran en Hz (60 si inconnue ou en headless).
+static func screen_refresh_rate() -> float:
+	if DisplayServer.get_name() == "headless":
+		return 60.0
+	var r := DisplayServer.screen_get_refresh_rate()
+	return r if r > 0.0 else 60.0
+
+
+## Valeurs affichées dans le sélecteur. PC : toutes (V-Sync suit, voir apply_fps_limit). Mobile : celles qui ne
+## dépassent pas la fréquence de l'écran (jamais plus de 120).
+static func fps_limit_options() -> Array:
+	var pl := _platform()
+	if pl != null and not bool(pl.call(&"is_pc")):
+		var out: Array = []
+		var hz := screen_refresh_rate()
+		for v in FPS_OPTIONS_MOBILE:
+			if int(v) == 0 or float(v) <= hz + 1.0:
+				out.append(v)
+		return out
+	return FPS_OPTIONS_PC.duplicate()
+
+
+## true si le joueur a choisi une limite (sinon : comportement historique, max_fps 0 et V-Sync du projet).
+static func fps_limit_chosen() -> bool:
+	return _cfg().has_section_key("graphics", "fps_limit")
+
+
+static func fps_limit() -> int:
+	var v := int(get_value("graphics", "fps_limit", 0))
+	return v if FPS_KNOWN.has(v) else 0
+
+
+static func set_fps_limit(v: int) -> void:
+	v = v if FPS_KNOWN.has(v) else 0
+	set_value("graphics", "fps_limit", v)
+	apply_fps_limit(v, true)
+
+
+## Applique Engine.max_fps. Sans choix enregistré : 0 + V-Sync activée (défaut du projet, comportement historique).
+## PC, choix explicite : V-Sync coupée quand la limite est illimitée ou dépasse la fréquence de l'écran (sinon la limite
+## serait sans effet), réactivée sinon. Mobile : V-Sync jamais touchée. Fenêtre non touchée en headless.
+## `limit` < 0 : relit le fichier.
+static func apply_fps_limit(limit := -1, explicit := false) -> void:
+	if limit < 0:
+		explicit = fps_limit_chosen()
+		limit = fps_limit() if explicit else 0
+	Engine.max_fps = limit
+	if DisplayServer.get_name() == "headless" or Engine.get_write_movie_path() != "":
+		return
+	var pl := _platform()
+	if pl != null and not bool(pl.call(&"is_pc")):
+		return
+	var vsync_off := explicit and (limit == 0 or float(limit) > screen_refresh_rate() + 1.0)
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED if vsync_off else DisplayServer.VSYNC_ENABLED)
+
+
+static var _show_fps_live := -1 ## -1 : à relire du fichier ; sinon 0/1 (lu par FpsCounter sans toucher au disque)
+
+
+static func show_fps_live() -> bool:
+	if _show_fps_live < 0:
+		_show_fps_live = 1 if show_fps() else 0
+	return _show_fps_live == 1
+
+
 static func set_show_fps(on: bool) -> void:
+	_show_fps_live = 1 if on else 0 # effet immédiat, même si l'écriture est inhibée (headless)
 	set_value("graphics", "show_fps", on)
 
 
@@ -276,9 +350,11 @@ static func reset_all(tree: SceneTree = null) -> void:
 		q.call(&"set_flashes_level", 2)
 	_ts_path = "<unset>" # section accessibility effacée : texte à 100 %
 	_cache_path = cfg_path # section gameplay effacée : valeurs par défaut
+	_show_fps_live = -1 # section graphics effacée : compteur FPS relu (défaut caché)
 	_shake = SHAKE_DEFAULT
 	_reduce = false
 	apply_fullscreen(false)
+	apply_fps_limit() # section graphics effacée : limite et V-Sync d'origine
 	var ml := Engine.get_main_loop() as SceneTree
 	RenderStyle.set_style(RenderStyle.DEFAULT, tree if tree != null else ml, false) # section graphics effacée
 	apply_auto_cast(tree if tree != null else ml, false)

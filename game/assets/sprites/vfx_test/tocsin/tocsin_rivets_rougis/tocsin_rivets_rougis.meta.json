@@ -1,0 +1,85 @@
+{
+ "source": "projectiles/bullet-tracer",
+ "opts": {
+  "palette": [
+   "#0d0704",
+   "#1d1108",
+   "#3b2a1a",
+   "#6a4a2a",
+   "#b05a1a",
+   "#FF7A1F",
+   "#ffb06a"
+  ],
+  "light": 0.4
+ },
+ "owner": "tocsin",
+ "spell_id": "tocsin_rivets_rougis",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 9,
+ "frame_size": [
+  306,
+  58
+ ],
+ "scale": 2,
+ "offset": [
+  -127.0,
+  3.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "tocsin_rivets_rougis_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF7A1F",
+ "light_curve": [
+  0.998,
+  0.987,
+  0.998,
+  0.99,
+  1.0,
+  0.985,
+  0.986,
+  0.989,
+  0.998
+ ],
+ "light_pos": [
+  [
+   -21.2,
+   1.2
+  ],
+  [
+   -21.0,
+   1.0
+  ],
+  [
+   -22.0,
+   1.0
+  ],
+  [
+   -20.6,
+   1.0
+  ],
+  [
+   -20.2,
+   1.0
+  ],
+  [
+   -20.8,
+   1.2
+  ],
+  [
+   -20.2,
+   1.2
+  ],
+  [
+   -20.4,
+   1.2
+  ],
+  [
+   -21.4,
+   1.2
+  ]
+ ]
+}

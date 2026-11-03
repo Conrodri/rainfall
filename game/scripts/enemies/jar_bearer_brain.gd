@@ -545,6 +545,8 @@ func _update_mothers(delta: float, player: Node2D, ppos: Vector2) -> void:
 			LightRig.flash(pos, &"boss_lightning", 0.3, {"color": CYAN, "radius": 1.4})
 			_break_jar(pos, MOTHER_R1_U * 0.4)
 			_ring_fx(pos)
+			if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+				VfxSwap.spawn_at(e.get_parent(), "jar_bearer/mother_jar_blast", pos, Vector2.RIGHT)
 			var d := ppos.distance_to(pos)
 			if player != null and d >= MOTHER_R0_U * U - PLAYER_R * 0.5 and d <= MOTHER_R1_U * U + PLAYER_R:
 				e._hit_player(player, e.damage * Balance.boss_attack_coef(ID, &"mother"))

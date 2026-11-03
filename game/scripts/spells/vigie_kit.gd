@@ -891,6 +891,7 @@ func start_fanal() -> Node2D:
 			flares.erase(f)
 	var c := _caster()
 	var f := VigieFlare.new()
+	f.set_meta(VfxSwap.META_KEY, "vigie/vigie_fanal") # mode test : VFX de test du Fanal (scripts/testmode/vfx_swap.gd)
 	c.effects_parent().add_child(f)
 	f.setup(player.global_position, flare_radius_px(), FANAL_LIFE_S, FLARE_FRAMES, ACCENT)
 	f.follow = player
@@ -948,6 +949,7 @@ func signal_impact(s: SpellData, at: Vector2) -> void:
 	_pre_netted.clear()
 	LightRig.flash(at, &"vigie_hail", 0.5)
 	var f := VigieFlare.new()
+	f.set_meta(VfxSwap.META_KEY, "vigie/vigie_tir_de_signal") # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
 	_caster().effects_parent().add_child(f)
 	f.setup(at, r, SIGNAL_LIGHT_S, FLARE_FRAMES, ACCENT)
 	f.set_visual_scale(SIGNAL_FLARE_SCALE)

@@ -585,6 +585,8 @@ func _resolve_shell(player: Node2D) -> void:
 			(z["tele"] as Node).queue_free()
 	_shell_zones.clear()
 	for sp in spots:
+		if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+			VfxSwap.spawn_at(e.get_parent(), "flood_gunner/shell_crater", sp, Vector2.RIGHT)
 		if player != null and player.global_position.distance_to(sp) <= shell_radius_u() * U + PlayerHitbox.radius_px:
 			e._hit_player(player, e.damage * _coef(&"shell"))
 			events.append({"kind": &"shell_hit", "phase": phase})

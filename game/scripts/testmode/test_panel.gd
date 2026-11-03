@@ -1,11 +1,11 @@
 class_name TestPanel
 extends Control
-## Panneau du mode test (TestOverlay) : cinq onglets Monstres / Objets / Personnage / Triches / Difficulté, posé sur le
+## Panneau du mode test (TestOverlay) : six onglets Monstres / Objets / Personnage / Triches / Difficulté / Galerie VFX, posé sur le
 ## bord droit (la moitié gauche de l'écran reste visible). Souris, clavier, manette (focus) et tactile : tous les boutons
 ## ont la taille tactile minimale (UiTheme.MIN_TOUCH) et la liste défile. Les actions passent par TestTools / TestMode.
 ## À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test.
 
-const TABS: Array = [["Monstres", &"monsters"], ["Objets", &"items"], ["Personnage", &"character"], ["Triches", &"cheats"], ["Difficulté", &"difficulty"]]
+const TABS: Array = [["Monstres", &"monsters"], ["Objets", &"items"], ["Personnage", &"character"], ["Triches", &"cheats"], ["Difficulté", &"difficulty"], ["Galerie VFX", &"vfx"]]
 const QUANTITIES: Array[int] = [1, 2, 3, 5, 10, 15, 25, 50, 100]
 const FS_BODY := 28
 const FS_SMALL := 23
@@ -35,6 +35,7 @@ var overlay: TestOverlay
 var armed_entry: Dictionary = {}
 var tab: StringName = &"monsters"
 
+var vfx_gallery: VfxGallery
 var _frame: PanelContainer
 var _scroll: ScrollContainer
 var _body: VBoxContainer
@@ -70,9 +71,18 @@ func _ready() -> void:
 	add_child(_tip)
 	_catalog = TestTools.monster_catalog()
 	get_viewport().size_changed.connect(_layout)
+	TestMode.changed.connect(_sync_checks)
 	Platform.safe_area_changed.connect(_layout)
 	_layout()
 	_select_tab(tab)
+
+
+## Les bulles de test (ou un test) changent un drapeau pendant que l'onglet Triches est affiché : les cases suivent.
+func _sync_checks() -> void:
+	for flag in _cheat_checks:
+		var c: CheckButton = _cheat_checks[flag]
+		if is_instance_valid(c) and c.button_pressed != bool(TestMode.get(flag)):
+			c.set_pressed_no_signal(bool(TestMode.get(flag)))
 
 
 func open() -> void:
@@ -362,8 +372,19 @@ func _select_tab(t: StringName) -> void:
 		&"character": _build_character()
 		&"cheats": _build_cheats()
 		&"difficulty": _build_difficulty()
+		&"vfx": _build_vfx()
 	_scroll.scroll_vertical = 0
 	UiTheme.hook_sounds(_body)
+
+
+# --- Onglet Galerie VFX ------------------------------------------------------------------
+
+func _build_vfx() -> void:
+	var g := VfxGallery.new()
+	g.name = "VfxGallery"
+	_body.add_child(g)
+	g.build(self)
+	vfx_gallery = g
 
 
 # --- Onglet Monstres ---------------------------------------------------------------------
@@ -995,6 +1016,15 @@ func _build_cheats() -> void:
 		al.name = "Check_all_players"
 		_body.add_child(al)
 		_body.add_child(_note("Objets, personnage, niveau et soins s'appliquent au joueur 1 seulement, ou à tous."))
+	_body.add_child(_heading("Visibilité des sorts"))
+	_cheat("VFX pixelfx sur les sorts", &"vfx_test", "Les vrais sorts jouent les nouveaux VFX de test (pixelfx) à la place des actuels.")
+	_cheat("Masquer le HUD", &"hide_hud", "Cache barres, minimap, objets et boutons de sorts pour voir les VFX (le joystick tactile reste).")
+	var bb := _check("Bulles de test à l'écran", TestBubbles.shown, func(on: bool) -> void:
+		TestBubbles.set_shown(on)
+		say("Bulles de test : %s." % ("affichées" if on else "masquées")))
+	bb.name = "Check_bubbles"
+	_body.add_child(bb)
+	_body.add_child(_note("Colonne de bulles sur le bord de l'écran : VFX, HUD, Poutch, un sort par slot, attaques des boss. Glisser la poignée pour la déplacer, la toucher pour replier. F2 ou clic du stick droit : mode bulles à la manette."))
 	_build_omens()
 	_body.add_child(_heading("Partie"))
 	_cheat("Minuterie arrêtée", &"freeze_time", "La difficulté vient de l'onglet Difficulté ; la minuterie de la partie ne tourne pas.", _ti("timer_stop", ICON_TIMER))

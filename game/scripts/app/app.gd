@@ -39,9 +39,13 @@ var _queued: Array = []
 
 
 func _ready() -> void:
+	GameSettings.apply_fps_limit() # limite d'images enregistrée, dès le titre
 	fade = FadeLayer.new()
 	fade.name = "FadeLayer"
 	add_child(fade)
+	var fps_counter: Node = preload("res://scripts/ui/fps_counter.gd").new() # réglage « Afficher les FPS » : titre, run et mode test
+	fps_counter.name = "FpsCounter"
+	add_child(fps_counter)
 	meta = MetaTracker.new()
 	meta.name = "MetaTracker"
 	add_child(meta)

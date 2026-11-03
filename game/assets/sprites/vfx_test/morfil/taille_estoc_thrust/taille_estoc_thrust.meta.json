@@ -1,0 +1,100 @@
+{
+ "source": "melee/thrust",
+ "opts": {
+  "palette": [
+   "#0d1008",
+   "#1a2010",
+   "#2e3a1c",
+   "#58703a",
+   "#8fb04e",
+   "#CDEB6E",
+   "#E6F7A8"
+  ],
+  "light": 0.4
+ },
+ "owner": "morfil",
+ "spell_id": "taille_estoc_thrust",
+ "fps": 15.0,
+ "loop": false,
+ "frames": 12,
+ "frame_size": [
+  292,
+  108
+ ],
+ "scale": 2,
+ "offset": [
+  130.0,
+  -40.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "taille_estoc_thrust_e.tres",
+ "light_k": 1.0,
+ "light_color": "#CDEB6E",
+ "light_curve": [
+  0.147,
+  0.119,
+  1.0,
+  0.631,
+  0.36,
+  0.122,
+  0.029,
+  0.01,
+  0.005,
+  0.003,
+  0.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   20.8,
+   -41.0
+  ],
+  [
+   82.8,
+   -41.0
+  ],
+  [
+   142.6,
+   -41.2
+  ],
+  [
+   147.0,
+   -41.0
+  ],
+  [
+   155.0,
+   -39.8
+  ],
+  [
+   158.8,
+   -39.0
+  ],
+  [
+   160.6,
+   -37.8
+  ],
+  [
+   162.6,
+   -34.0
+  ],
+  [
+   155.6,
+   -32.6
+  ],
+  [
+   155.6,
+   -33.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ]
+}

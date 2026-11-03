@@ -1,0 +1,79 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx_test/vigie/vigie_tir_de_signal/vigie_tir_de_signal_e.png" id="1_0"]
+
+[sub_resource type="AtlasTexture" id="a1"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 0, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a2"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 0, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a3"]
+atlas = ExtResource("1_0")
+region = Rect2(776, 0, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a4"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 108, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a5"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 108, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a6"]
+atlas = ExtResource("1_0")
+region = Rect2(776, 108, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a7"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 216, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a8"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 216, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a9"]
+atlas = ExtResource("1_0")
+region = Rect2(776, 216, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a10"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 324, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a11"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 324, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a12"]
+atlas = ExtResource("1_0")
+region = Rect2(776, 324, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a13"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 432, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a14"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 432, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a15"]
+atlas = ExtResource("1_0")
+region = Rect2(776, 432, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a16"]
+atlas = ExtResource("1_0")
+region = Rect2(0, 540, 388, 108)
+
+[sub_resource type="AtlasTexture" id="a17"]
+atlas = ExtResource("1_0")
+region = Rect2(388, 540, 388, 108)
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}, {"duration": 1.0, "texture": SubResource("a13")}, {"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}, {"duration": 1.0, "texture": SubResource("a17")}],
+"loop": false,
+"name": &"default",
+"speed": 15.000
+}]

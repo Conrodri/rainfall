@@ -608,6 +608,8 @@ func _start_procession(dir: Vector2) -> void:
 	vis.play_attack(&"cast_a", _dur, Vector2.ZERO)
 	_spawn_sector(false)
 	sector_count += 1
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.spawn_at(e.get_parent(), "salt_king/procession_tide", e.global_position + dir * 3.0 * U, dir)
 	_snd(&"enemy.salt_king_procession_warn.heavy")
 
 
@@ -848,6 +850,8 @@ func _make_wave_fx() -> void:
 		var s := AnimatedSprite2D.new()
 		s.sprite_frames = _frames
 		s.animation = &"edict_ring"
+		if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+			VfxSwap.on_sprite(s, _frames)
 		s.light_mask = 0
 		s.material = EnemyTelegraph.unshaded_material()
 		s.z_index = 5

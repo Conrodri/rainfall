@@ -14,6 +14,7 @@ var main: Node
 var panel: TestPanel
 var launcher: Button
 var hint: Label
+var bubbles: TestBubbles ## bulles de test (VFX, HUD, sorts, boss)
 
 ## Journal des coups reçus (lu par le panneau, onglet Difficulté) : [{amount, source, t}] du plus récent au plus ancien.
 var hits: Array[Dictionary] = []
@@ -49,6 +50,7 @@ func _ready() -> void:
 	_launcher_layer.name = "LauncherLayer"
 	add_child(_launcher_layer)
 	_build_launcher()
+	bubbles = TestBubbles.attach(self)
 	TestMode.panel_requested.connect(toggle)
 	Events.player_damaged.connect(_on_player_damaged)
 	Platform.input_mode_changed.connect(func(_m: int) -> void: _update_launcher())

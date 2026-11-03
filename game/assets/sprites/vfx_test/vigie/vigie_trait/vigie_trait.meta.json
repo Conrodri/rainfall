@@ -1,0 +1,85 @@
+{
+ "source": "projectiles/arrow",
+ "opts": {
+  "palette": [
+   "#0c0507",
+   "#1c0a0e",
+   "#35121a",
+   "#6a1b2a",
+   "#B02438",
+   "#FF3A4F",
+   "#FF8C98"
+  ],
+  "light": 0.4
+ },
+ "owner": "vigie",
+ "spell_id": "vigie_trait",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 9,
+ "frame_size": [
+  184,
+  30
+ ],
+ "scale": 2,
+ "offset": [
+  -84.0,
+  -1.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "vigie_trait_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF3A4F",
+ "light_curve": [
+  0.363,
+  0.644,
+  0.0,
+  0.0,
+  0.0,
+  1.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   -11.0,
+   -3.0
+  ],
+  [
+   -4.0,
+   -3.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   -7.6,
+   -3.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ]
+}

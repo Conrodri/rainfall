@@ -25,6 +25,8 @@ func set_frames(frames: SpriteFrames) -> void:
 static func apply(anim: AnimatedSprite2D, frames: SpriteFrames, energy: float = 2.0) -> void:
 	if anim == null or frames == null:
 		return
+	if VfxSwap.enabled() or anim.has_meta(VfxSwap.META_HIDDEN): # mode test : VFX de test à la place (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_sprite(anim, frames)
 	anim.set_meta(RenderStyle.META_SRC, frames.resource_path) # bascule de style à chaud (RenderStyle.restyle_sprite)
 	anim.set_meta(RenderStyle.META_ENERGY, energy)
 	var ef := NormalMaps.emission_frames(frames)

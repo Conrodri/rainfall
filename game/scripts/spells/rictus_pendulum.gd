@@ -106,6 +106,8 @@ func _ready() -> void:
 			_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 			add_child(_sprite)
 			_sprite.play(&"default")
+			if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+				VfxSwap.on_sprite(_sprite, sf)
 
 
 func _physics_process(delta: float) -> void:

@@ -1,0 +1,80 @@
+{
+ "source": "projectiles/laser-bolt",
+ "opts": {
+  "palette": [
+   "#04090f",
+   "#08141f",
+   "#0f2a38",
+   "#2f6577",
+   "#2a9fb5",
+   "#5FD4E8",
+   "#9fe8f2"
+  ],
+  "light": 0.4
+ },
+ "owner": "averse",
+ "spell_id": "averse_bruine",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 8,
+ "frame_size": [
+  190,
+  48
+ ],
+ "scale": 2,
+ "offset": [
+  -69.0,
+  0.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "averse_bruine_e.tres",
+ "light_k": 1.0,
+ "light_color": "#5FD4E8",
+ "light_curve": [
+  0.933,
+  1.0,
+  0.824,
+  0.774,
+  0.961,
+  0.993,
+  0.806,
+  0.794
+ ],
+ "light_pos": [
+  [
+   -17.8,
+   -0.2
+  ],
+  [
+   -16.4,
+   -0.2
+  ],
+  [
+   -18.8,
+   -0.0
+  ],
+  [
+   -20.4,
+   -0.0
+  ],
+  [
+   -17.4,
+   -0.2
+  ],
+  [
+   -16.6,
+   -0.2
+  ],
+  [
+   -20.4,
+   -0.0
+  ],
+  [
+   -20.6,
+   -0.0
+  ]
+ ]
+}

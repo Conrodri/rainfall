@@ -1,0 +1,81 @@
+{
+ "source": "projectiles/laser-bolt",
+ "opts": {
+  "palette": [
+   "#05100c",
+   "#0b1c16",
+   "#16302a",
+   "#2a5446",
+   "#4a8070",
+   "#6cc8a4",
+   "#9CF0C8",
+   "#d0fae8"
+  ],
+  "light": 0.4
+ },
+ "owner": "weaver",
+ "spell_id": "thread",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 8,
+ "frame_size": [
+  188,
+  46
+ ],
+ "scale": 2,
+ "offset": [
+  -70.0,
+  1.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "thread_e.tres",
+ "light_k": 1.0,
+ "light_color": "#9CF0C8",
+ "light_curve": [
+  0.945,
+  1.0,
+  0.813,
+  0.773,
+  0.97,
+  0.994,
+  0.804,
+  0.794
+ ],
+ "light_pos": [
+  [
+   -15.6,
+   -0.0
+  ],
+  [
+   -14.4,
+   -0.0
+  ],
+  [
+   -16.6,
+   -0.0
+  ],
+  [
+   -18.0,
+   -0.0
+  ],
+  [
+   -15.4,
+   -0.0
+  ],
+  [
+   -14.6,
+   -0.0
+  ],
+  [
+   -18.2,
+   -0.0
+  ],
+  [
+   -18.2,
+   -0.0
+  ]
+ ]
+}

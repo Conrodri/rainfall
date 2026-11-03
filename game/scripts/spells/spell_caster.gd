@@ -489,6 +489,8 @@ func _cast(slot: int) -> bool:
 	if slot == ArdentKit.ULTIMATE_SLOT:
 		_ult_left = ULT_MARK_S
 	spell_cast.emit(s)
+	if VfxSwap.enabled(): # mode test : VFX de test des sorts de kit sans visuel accrochable (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_cast(self, s, aim_dir, fx_pos)
 	if not effect.is_valid():
 		player.on_cast(s, aim_dir)
 		_cast_fx(s, fx_pos)

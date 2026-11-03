@@ -61,6 +61,8 @@ func launch(from: Vector2, dir: Vector2, new_spell: SpellData, new_caster: Objec
 	if _light != null:
 		_light.set_preset(new_spell.light_preset if new_spell != null and new_spell.light_preset != &"" else &"ember")
 	_set_active(true)
+	if VfxSwap.enabled() or _visual.has_meta(VfxSwap.META_HIDDEN): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_projectile(self, _visual)
 
 
 func _set_active(on: bool) -> void:

@@ -49,6 +49,8 @@ func setup(new_caster: Object, new_spell: SpellData, pos: Vector2, radius_px: fl
 	if arc_half < PI:
 		_anim = ARC_ANIM_S
 	_setup_vfx()
+	if VfxSwap.enabled(): # mode test : VFX de test à la place (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_zone(self)
 	_setup_outline()
 	_apply()
 	if duration <= 0.0:

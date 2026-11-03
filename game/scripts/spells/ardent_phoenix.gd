@@ -59,6 +59,8 @@ func _build_visual() -> void:
 			_sprite.position = Vector2(0.0, Iso.lift_logical(HOVER_U))
 			add_child(_sprite)
 			_sprite.play(&"default")
+			if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+				VfxSwap.on_sprite(_sprite, sf)
 	LightRig.attach(self, &"phoenix")
 
 

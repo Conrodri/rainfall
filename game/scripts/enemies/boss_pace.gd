@@ -91,6 +91,8 @@ func act() -> void:
 func strike(k: StringName, phase: int, last := true, recover := -1.0) -> void:
 	kind = k
 	impact(k)
+	if k == &"auto" and VfxSwap.enabled(): # mode test : VFX de test du coup auto (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_boss_auto(e)
 	if not last:
 		stage = P.WIND
 		return

@@ -983,6 +983,8 @@ func _regen(key: StringName) -> void:
 	var fx := AnimatedSprite2D.new()
 	fx.name = "Regen_%s" % key
 	fx.sprite_frames = _regen_frames
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_sprite(fx, _regen_frames)
 	var sock := socket_px(key)
 	fx.position = sock - CELL_PIVOT # repère de la cellule (enfant du Visual : même échelle, même pivot)
 	_visual.add_child(fx)

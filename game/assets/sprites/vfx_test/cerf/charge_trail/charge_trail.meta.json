@@ -1,0 +1,94 @@
+{
+ "source": "projectiles/bullet-tracer",
+ "opts": {
+  "palette": [
+   "#05100c",
+   "#0b1c16",
+   "#16302a",
+   "#2a5446",
+   "#4a8070",
+   "#4a8070",
+   "#6cc8a4",
+   "#9CF0C8",
+   "#d0fae8"
+  ],
+  "smoke": [
+   "#05100c",
+   "#16302a",
+   "#4a8070",
+   "#6cc8a4",
+   "#d0fae8"
+  ],
+  "light": 0.4
+ },
+ "owner": "cerf",
+ "spell_id": "charge_trail",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 9,
+ "frame_size": [
+  306,
+  58
+ ],
+ "scale": 2,
+ "offset": [
+  -127.0,
+  3.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "charge_trail_e.tres",
+ "light_k": 1.0,
+ "light_color": "#9CF0C8",
+ "light_curve": [
+  0.998,
+  0.989,
+  0.996,
+  0.993,
+  1.0,
+  0.989,
+  0.989,
+  0.991,
+  0.997
+ ],
+ "light_pos": [
+  [
+   -21.0,
+   1.2
+  ],
+  [
+   -21.0,
+   1.0
+  ],
+  [
+   -21.4,
+   1.0
+  ],
+  [
+   -20.6,
+   1.0
+  ],
+  [
+   -20.2,
+   1.0
+  ],
+  [
+   -20.8,
+   1.2
+  ],
+  [
+   -20.2,
+   1.2
+  ],
+  [
+   -20.4,
+   1.2
+  ],
+  [
+   -21.2,
+   1.2
+  ]
+ ]
+}

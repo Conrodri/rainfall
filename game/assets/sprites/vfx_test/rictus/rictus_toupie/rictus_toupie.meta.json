@@ -1,0 +1,80 @@
+{
+ "source": "projectiles/energy-disc",
+ "opts": {
+  "palette": [
+   "#0a0d0d",
+   "#141b1b",
+   "#26312f",
+   "#46585a",
+   "#6f8f8a",
+   "#9FC8C0",
+   "#c9e3dd"
+  ],
+  "light": 0.35
+ },
+ "owner": "rictus",
+ "spell_id": "rictus_toupie",
+ "fps": 15.0,
+ "loop": true,
+ "frames": 8,
+ "frame_size": [
+  178,
+  92
+ ],
+ "scale": 2,
+ "offset": [
+  -55.0,
+  0.0
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "version": 2,
+ "node_scale": 1,
+ "emission": "rictus_toupie_e.tres",
+ "light_k": 1.0,
+ "light_color": "#9FC8C0",
+ "light_curve": [
+  0.995,
+  0.976,
+  0.986,
+  0.999,
+  0.98,
+  0.993,
+  1.0,
+  0.988
+ ],
+ "light_pos": [
+  [
+   -6.8,
+   -0.2
+  ],
+  [
+   -9.6,
+   -1.2
+  ],
+  [
+   -9.0,
+   -2.0
+  ],
+  [
+   -7.0,
+   0.6
+  ],
+  [
+   -10.6,
+   -1.2
+  ],
+  [
+   -5.8,
+   -1.6
+  ],
+  [
+   -9.6,
+   -0.8
+  ],
+  [
+   -8.2,
+   -2.2
+  ]
+ ]
+}
