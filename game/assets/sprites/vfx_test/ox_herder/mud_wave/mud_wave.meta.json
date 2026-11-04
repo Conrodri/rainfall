@@ -1,0 +1,139 @@
+{
+ "source": "rainfall/ox_herder-mud-strip",
+ "opts": {
+  "palette": [
+   "#0a0907",
+   "#211910",
+   "#36291b",
+   "#503d28",
+   "#6b553a",
+   "#8a7050",
+   "#5EC8FF",
+   "#A8E6FF"
+  ],
+  "length": 32,
+  "width": 22.4,
+  "mud": 1,
+  "light": 1.0
+ },
+ "owner": "ox_herder",
+ "spell_id": "mud_wave",
+ "scale": 2,
+ "test_asset": true,
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 18,
+ "frame_size": [
+  64,
+  42
+ ],
+ "node_scale": 1,
+ "offset": [
+  32.0,
+  1.0
+ ],
+ "emission": "mud_wave_e.tres",
+ "light_k": 1.0,
+ "light_color": "#5EC8FF",
+ "light_curve": [
+  0.984,
+  0.984,
+  0.971,
+  0.971,
+  1.0,
+  0.984,
+  0.971,
+  0.984,
+  0.971,
+  0.984,
+  0.984,
+  0.971,
+  0.971,
+  0.984,
+  0.984,
+  0.971,
+  0.984,
+  0.987
+ ],
+ "light_pos": [
+  [
+   29.4,
+   -0.4
+  ],
+  [
+   30.0,
+   -0.4
+  ],
+  [
+   30.4,
+   -0.2
+  ],
+  [
+   30.8,
+   -0.4
+  ],
+  [
+   31.6,
+   -0.2
+  ],
+  [
+   30.6,
+   -0.4
+  ],
+  [
+   29.8,
+   -0.2
+  ],
+  [
+   29.4,
+   -0.4
+  ],
+  [
+   30.0,
+   -0.4
+  ],
+  [
+   30.2,
+   -0.4
+  ],
+  [
+   30.8,
+   -0.4
+  ],
+  [
+   31.6,
+   -0.2
+  ],
+  [
+   32.0,
+   -0.4
+  ],
+  [
+   32.4,
+   -0.4
+  ],
+  [
+   33.0,
+   -0.4
+  ],
+  [
+   32.0,
+   -0.2
+  ],
+  [
+   31.2,
+   -0.4
+  ],
+  [
+   30.6,
+   -0.4
+  ]
+ ],
+ "filter": "nearest",
+ "ppu": 16,
+ "usage": "tile_along_line",
+ "segment_u": 2.0,
+ "width_u": 1.4,
+ "usage_note": "Tuile de vague de boue vue de dessus (coulée qui file vers +x), raccordable : répétée du boss au bout de la ligne (11 u) ; largeur 1,4 u."
+}

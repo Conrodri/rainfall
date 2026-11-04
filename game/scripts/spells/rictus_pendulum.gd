@@ -130,6 +130,7 @@ func step(delta: float) -> void:
 			_step_ground(delta)
 		State.RETURNING:
 			_step_returning(delta)
+	if VfxSwap.enabled() and is_inside_tree(): VfxSwap.follow_while(self, "rictus/couteau_ficele" if thread else "rictus/rictus_eventail", state == State.FLYING or state == State.RETURNING, dir, 3.0) # mode test : couteau qui tournoie en vol
 	if _sprite != null:
 		var moving := state == State.FLYING or state == State.RETURNING
 		_sprite.rotation = _spin if moving else _rest_angle

@@ -1,0 +1,136 @@
+{
+ "owner": "recluse",
+ "spell_id": "prayer_glyph",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/recluse-prayer-glyph",
+ "opts": {
+  "palette": [
+   "#06090d",
+   "#0b1219",
+   "#16222c",
+   "#34505e",
+   "#6f98a8",
+   "#8fc8d8",
+   "#BFF4FF",
+   "#dff9ff"
+  ],
+  "radius": 24,
+  "light": 1.0
+ },
+ "ppu": 24,
+ "usage": "ground_zone_loop",
+ "usage_note": "Glyphe de prière au sol vu de dessus, centré sur le pivot, rayon 1 u ; boucle (marque où la colonne frappe).",
+ "radius_u": 1.0,
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 18,
+ "frame_size": [
+  96,
+  96
+ ],
+ "node_scale": 1,
+ "offset": [
+  0.0,
+  0.0
+ ],
+ "emission": "prayer_glyph_e.tres",
+ "light_k": 1.0,
+ "light_color": "#BFF4FF",
+ "light_curve": [
+  0.845,
+  0.898,
+  0.939,
+  0.975,
+  1.0,
+  0.994,
+  0.975,
+  0.934,
+  0.893,
+  0.845,
+  0.796,
+  0.751,
+  0.718,
+  0.705,
+  0.701,
+  0.718,
+  0.747,
+  0.792
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ]
+ ],
+ "filter": "nearest"
+}

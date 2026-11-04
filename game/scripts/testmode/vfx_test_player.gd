@@ -318,6 +318,9 @@ func _setup(k: String, asset_key: String, cls: Dictionary, frames: SpriteFrames,
 	projection = String(opts.get("projection", cls.get("projection", USAGE_PROJECTION.get(usage, "billboard"))))
 	if not ["billboard", "ground", "ground_dir", "projectile"].has(projection):
 		projection = "billboard"
+	# effet couché au sol : sous les personnages (sinon un cône visé vers le haut de l'écran recouvre son lanceur)
+	if projection in ["ground", "ground_dir"] and bool(opts.get("under", true)):
+		z_index = maxi(z_index - 1, RenderingServer.CANVAS_ITEM_Z_MIN)
 	particles_kind = String(cls.get("particles", "burst" if not _loop else "embers"))
 	if not bool(opts.get("particles", true)):
 		particles_kind = "none"
@@ -556,7 +559,8 @@ func _make_particles(cls: Dictionary, opts: Dictionary) -> void:
 # --- Direction, lignes, taille -------------------------------------------------------------
 
 ## Oriente l'effet vers `d` (direction logique au sol) selon sa projection. Projectile : tourné par Iso.screen_angle et
-## raccourci par la perspective (longueur × |(d.x, d.y × SQUASH)|, épaisseur inchangée).
+## raccourci par la perspective (longueur × |(d.x, d.y × SQUASH)|, épaisseur inchangée), sauf meta `"round": true`
+## (tête ronde, volume : braise, goutte, boule) qui garde sa taille dans toutes les directions.
 func set_dir(d: Vector2) -> void:
 	if d.length_squared() > 0.000001:
 		dir = d.normalized()
@@ -565,7 +569,9 @@ func set_dir(d: Vector2) -> void:
 	match projection:
 		"projectile":
 			rot.rotation = Iso.screen_angle(dir)
-			proj_k = Iso.to_screen_dir(dir).length()
+			# meta `round` : tête ronde (un volume, pas un trait couché au sol) -> jamais raccourcie, sinon elle
+			# devient une ellipse plate quand le tir part vers le haut ou le bas de l'écran (flèches, lames : raccourcies)
+			proj_k = 1.0 if bool(meta.get("round", false)) else Iso.to_screen_dir(dir).length()
 			rot.scale.x = proj_k
 		"ground_dir":
 			rot.rotation = dir.angle()

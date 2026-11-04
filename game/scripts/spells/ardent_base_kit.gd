@@ -5,7 +5,7 @@ extends Node
 ## Hooks facultatifs lus par SpellCaster : combo_coef_add / combo_mult / combo_hit / combo_ready / is_marked /
 ## on_spell_hit / auto_cast_ok ; par DodgeMove : on_dodge_end(from, to).
 ## Marque : { instance_id: {"t": fin (s du kit), "ref": WeakRef, "zone": WeakRef|null} }, comme AvareKit.marks.
-## Posée par Cendres (chaque tick), Pluie de météores (chaque impact), Phénix (chaque piqué) et la silhouette de
+## Posée par Cendres (chaque tick), Pluie de météores (chaque impact), Phénix (chaque monstre traversé par son trait) et la silhouette de
 ## braises de l'Éclat (au DÉPART seulement). Un coup d'Éclat de braise ou une orbe des Braises errantes sur un marqué
 ## la prolonge ; la Nova (ou le Pilier de flamme) la consomme (+30 %), le Brasier (ou l'explosion du Phénix) aussi.
 ## Pas de boucle par monstre et par image : tout passe par les coups portés ; seul le nettoyage tourne 2 fois/s.

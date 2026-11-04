@@ -1,5 +1,5 @@
 {
- "source": "projectiles/energy-disc",
+ "source": "rainfall/rictus-toupie",
  "opts": {
   "palette": [
    "#0a0d0d",
@@ -10,71 +10,76 @@
    "#9FC8C0",
    "#c9e3dd"
   ],
-  "light": 0.35
+  "radius": 35,
+  "light": 1.0
  },
  "owner": "rictus",
  "spell_id": "rictus_toupie",
+ "scale": 2,
+ "ppu": 16,
+ "test_asset": true,
+ "usage": "follow_ground_loop",
+ "radius_u": 2.2,
+ "usage_note": "Toupie vue de dessus sous les pieds de Rictus : trois lames qui tournent au rayon 2,2 u ; boucle tant que dure la Toupie.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
  "frames": 8,
  "frame_size": [
-  182,
-  92
+  152,
+  152
  ],
- "scale": 2,
+ "node_scale": 1,
  "offset": [
-  -53.0,
+  0.0,
   0.0
  ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
- "node_scale": 1,
  "emission": "rictus_toupie_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#9FC8C0",
  "light_curve": [
-  0.995,
-  0.976,
-  0.986,
-  0.999,
-  0.98,
+  0.997,
   0.994,
-  1.0,
-  0.988
+  0.998,
+  0.997,
+  0.995,
+  0.995,
+  0.995,
+  1.0
  ],
  "light_pos": [
   [
-   -6.4,
-   -0.2
-  ],
-  [
-   -9.2,
+   -1.0,
    -1.2
   ],
   [
-   -8.6,
-   -2.0
-  ],
-  [
-   -6.6,
-   0.6
-  ],
-  [
-   -10.2,
-   -1.2
-  ],
-  [
-   -5.4,
-   -1.6
-  ],
-  [
-   -9.2,
+   -1.2,
    -0.8
   ],
   [
-   -7.8,
-   -2.2
+   -0.8,
+   -0.6
+  ],
+  [
+   -0.8,
+   -1.0
+  ],
+  [
+   -1.2,
+   -1.2
+  ],
+  [
+   -1.2,
+   -0.8
+  ],
+  [
+   -0.8,
+   -0.8
+  ],
+  [
+   -0.8,
+   -1.2
   ]
- ]
+ ],
+ "filter": "nearest"
 }

@@ -1,20 +1,17 @@
 {
- "source": "rainfall/lash-line",
+ "source": "rainfall/crescent-sweep",
  "opts": {
   "palette": [
-   "#05100c",
-   "#0b1c16",
-   "#16302a",
-   "#2a5446",
-   "#4a8070",
+   "#0b0a07",
+   "#17140e",
+   "#2a2519",
+   "#4a4230",
    "#6cc8a4",
    "#9CF0C8",
    "#d0fae8"
   ],
-  "length": 51,
-  "thick": 8,
-  "tip": 0,
-  "thorns": 1,
+  "radius": 51,
+  "span": 1.571,
   "light": 1.0
  },
  "owner": "hermit_cedar",
@@ -23,12 +20,12 @@
  "loop": false,
  "frames": 9,
  "frame_size": [
-  128,
-  54
+  110,
+  214
  ],
  "scale": 2,
  "offset": [
-  64.0,
+  63.0,
   -1.0
  ],
  "filter": "nearest",
@@ -39,57 +36,56 @@
  "light_k": 1.0,
  "light_color": "#9CF0C8",
  "light_curve": [
-  0.0,
-  0.36,
+  0.509,
   1.0,
-  0.861,
-  0.66,
-  0.331,
-  0.061,
-  0.002,
+  0.776,
+  0.509,
+  0.24,
+  0.062,
+  0.006,
+  0.0,
   0.0
  ],
  "light_pos": [
+  [
+   57.6,
+   -59.4
+  ],
+  [
+   70.0,
+   37.4
+  ],
+  [
+   74.4,
+   37.6
+  ],
+  [
+   75.4,
+   37.2
+  ],
+  [
+   75.0,
+   44.6
+  ],
+  [
+   73.2,
+   53.4
+  ],
+  [
+   67.4,
+   63.6
+  ],
   [
    0.0,
    0.0
   ],
   [
-   60.4,
-   -1.4
-  ],
-  [
-   86.2,
-   -1.2
-  ],
-  [
-   86.0,
-   -2.8
-  ],
-  [
-   80.2,
-   -1.2
-  ],
-  [
-   73.2,
-   -1.2
-  ],
-  [
-   101.8,
-   -1.4
-  ],
-  [
-   113.0,
-   -1.0
-  ],
-  [
-   114.6,
-   4.6
+   0.0,
+   0.0
   ]
  ],
  "ppu": 16,
- "usage": "line_from_pivot",
- "usage_note": "Branche épineuse au sol vue de dessus, du pivot (le boss) vers +x sur 3,2 u, aller-retour.",
- "line_u": 3.2,
- "width_u": 0.5
+ "usage": "ground_dir_oneshot",
+ "radius_u": 3.2,
+ "usage_note": "Coup de branche vu de dessus : arc de 3,2 u de rayon centré sur le pivot (le Cèdre), ±45° autour de la direction."
 }

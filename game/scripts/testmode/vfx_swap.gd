@@ -22,15 +22,21 @@ extends RefCounted
 ##   scripts/spells/projectile.gd         launch()         -> on_projectile (pool : réévalué à chaque lancement)
 ##   scripts/spells/spell_caster.gd       _cast()          -> on_cast (sorts de kit sans visuel accrochable, table CAST)
 ##   scripts/enemies/boss_pace.gd         strike(&"auto")  -> on_boss_auto (table AUTO pour les boss sans "<id>/auto")
-##   affectations directes de sprite_frames -> on_sprite : ardent_phoenix, rictus_kit (spin_blur), rictus_pendulum,
+##   affectations directes de sprite_frames -> on_sprite : ardent_phoenix, rictus_pendulum (couteau d'origine gardé),
 ##   tocsin_kit (regen), salt_king_brain (edict_ring), raid_fx.
+##   accroches de kit (spawn_follow / follow_while) : rictus_kit (Saccade, Toupie, Rideau), rictus_pendulum (couteau en
+##   vol), tocsin_kit (Vapeur), tocsin_limb (Bras-pilier en décharge, Tête-fumigène), ardent_phoenix_bolt (phoenix_bolt :
+##   trait de feu du Phénix qui traverse les monstres ; le phénix se tourne aussi avec son VFX de test).
 ##   apparitions explicites (aucun VFX d'origine) -> spawn_at : jar_bearer (mother_jar_blast), salt_king
-##   (procession_tide), flood_gunner (shell_crater), drowned_idol (chaplet_circle, noria_wheel), smelter (sparks).
+##   (procession_tide), flood_gunner (shell_crater ; shell : posé 0,45 s avant l'impact par un tween du boss), sonneur
+##   (bolt_rain : au début de la chute de chaque boulon), drowned_idol (chaplet_circle, noria_wheel, cring_wave),
+##   ardent_variant_kit (meteor_fall : chute d'un météore pendant son télégraphe ; l'impact reste ardent/meteor_rain).
 ##   meta de clé au point d'appel : vigie_kit (Fanal, Tir de signal : fusée partagée FLARE_FRAMES).
 ##   effets permanents dessinés en code, un VfxTestPlayer par point (track_orbit / track_polyline) :
-##   ardent_ember_ring (roaming_embers : un par orbe), arpenteuse_kit (chaîne, chaîne lestée : répartis le long).
+##   ardent_ember_ring (roaming_embers : un par orbe), arpenteuse_kit (chaîne, chaîne lestée, Tendeur pendant SNAP_S,
+##   bande du Halage sur chaque ligne : tuiles bout à bout).
 ##   projectiles ennemis poolés -> on_enemy_projectile / on_enemy_projectile_end (table ENEMY_PROJ : rivets du
-##   Canonnier, impact rivet_hit) ; flood_gunner (shell : spawn_travel, reload_smoke : follow_while) ;
+##   Canonnier, impact rivet_hit ; étincelles du Fondeur) ; flood_gunner (reload_smoke : follow_while) ;
 ##   hermit_cedar (charge_trail : spawn_follow sur le boss) ; smelter (molten_arc : spawn_at ancré sur la coulée).
 ## Basculer l'interrupteur en cours de partie : seuls les VFX lancés ensuite suivent le drapeau (un projectile du
 ## pool ou un sprite réappliqué est rendu visible) ; les effets de test déjà en vol finissent avec leur hôte.
@@ -48,6 +54,10 @@ const META_POINTS := &"vfx_swap_points" ## sur l'hôte d'un effet multi-points :
 const META_HIDDEN_MOD := &"vfx_swap_hidden_mod" ## sur un visuel caché en entier (modulate) : son modulate.a d'origine
 const META_POOLED := &"vfx_swap_pooled" ## sur un projectile ennemi poolé suivi : clé de son impact de test
 const META_WHILE := &"vfx_swap_while" ## sur l'hôte : {clé: VfxTestPlayer} des effets « tant que » (follow_while)
+## Posées au point d'appel sur un sprite d'origine qui ne porte ni rotation ni rayon (cône d'Averse : anim à 8
+## directions, échelle = longueur) : direction logique exacte et rayon gameplay (u) de l'effet de test.
+const META_DIR := &"vfx_swap_dir"
+const META_RADIUS := &"vfx_swap_radius_u"
 const POINTS_MAX := 8 ## effets de test par hôte multi-points (gerbes, orbes)
 const TILES_MAX := 16 ## tuiles `tile_along_line` par polyligne (chaîne de 14 u, tuiles de 2 u : 7 ; cerceau compris)
 const POINT_SPACING_U := 2.0 ## écart par défaut entre deux effets le long d'une polyligne
@@ -70,9 +80,8 @@ const PATHS := {
 	"res://assets/sprites/characters/rictus/dagger_arc/dagger_arc.tres": "rictus/dagues_demi_lune",
 	"res://assets/sprites/characters/rictus/variants/montreur_hand_slam/montreur_hand_slam.tres": "rictus/rictus_main_du_montreur",
 	"res://assets/sprites/characters/rictus/double_burst/double_burst.tres": "rictus/doublures",
-	"res://assets/sprites/characters/rictus/spin_blur/spin_blur.tres": "rictus/rictus_toupie",
-	"res://assets/sprites/characters/rictus/knife/knife.tres": "rictus/couteau_ficele",
-	"res://assets/sprites/characters/rictus/variants/pendulum_knife/pendulum_knife.tres": "rictus/couteau_ficele",
+	# Toupie et couteaux (lourd, légers rappelés) : accroches de rictus_kit / rictus_pendulum (pas leurs sprites :
+	# la traînée d'origine n'est visible que pendant la Toupie, le couteau planté reste l'objet d'origine).
 	# Tocsin
 	"res://assets/sprites/characters/tocsin/rivet/rivet.tres": "tocsin/tocsin_rivets_rougis",
 	"res://assets/sprites/characters/tocsin/tocsin_blast.tres": "tocsin/tocsin_tete_cloche", # explosion de la tête
@@ -85,7 +94,7 @@ const PATHS := {
 	"res://assets/sprites/characters/averse/variants/geyser/geyser.tres": "averse/averse_geyser",
 	"res://assets/sprites/characters/averse/variants/monsoon_zone/monsoon_zone.tres": "averse/averse_mousson",
 	# Arpenteuse
-	"res://assets/sprites/characters/arpenteuse/effects/loop_blaze.tres": "arpenteuse/arpenteuse_boucle",
+	"res://assets/sprites/characters/arpenteuse/effects/loop_blaze.tres": "arpenteuse/arpenteuse_noeud", # embrasement du Nœud (_spawn_blaze)
 	"res://assets/sprites/characters/arpenteuse/effects/peg_burst.tres": "arpenteuse/arpenteuse_piquet",
 	# Rainette (LAND_RING : 5 sorts ; clé posée au point d'appel ou résolue par le sort de la zone)
 	"res://assets/sprites/characters/rainette/effects/tongue/tongue.tres": "rainette/rainette_langue",
@@ -100,17 +109,17 @@ const PATHS := {
 	# Bourbe (MUD_SPLASH partagé : clé posée au point d'appel)
 	"res://assets/sprites/characters/bourbe/mud_slap/mud_slap.tres": "bourbe/gifle_de_vase",
 	"res://assets/sprites/characters/bourbe/bog_zone/bog_zone.tres": "bourbe/bourbier",
-	"res://assets/sprites/characters/bourbe/variants/mud_glob/mud_glob.tres": "bourbe/bourbe_crachat_de_vase",
+	"res://assets/sprites/characters/bourbe/variants/mud_glob/mud_glob.tres": "bourbe/bourbe_crachat_glob", # motte en vol (l'éclatement au sol = zone bourbe/bourbe_crachat_de_vase)
 	"res://assets/sprites/characters/bourbe/variants/mud_burst/mud_burst.tres": "bourbe/bourbe_eclatement",
 	# Vigie
 	"res://assets/sprites/characters/vigie/arrow/arrow.tres": "vigie/vigie_trait",
 	"res://assets/sprites/characters/vigie/arrow_charged/arrow_charged.tres": "vigie/vigie_trait_charge",
-	"res://assets/sprites/characters/vigie/flare_arrow/flare_arrow.tres": "vigie/vigie_fusee",
-	"res://assets/sprites/characters/vigie/net_arrow/net_arrow.tres": "vigie/vigie_filet",
+	"res://assets/sprites/characters/vigie/flare_arrow/flare_arrow.tres": "vigie/vigie_fleche_fusee", # flèche en vol (le sort porte aussi la clé)
+	"res://assets/sprites/characters/vigie/net_arrow/net_arrow.tres": "vigie/vigie_fleche_lestee", # Filet et Chausse-trapes en vol
 	"res://assets/sprites/characters/vigie/net_burst/net_burst.tres": "vigie/vigie_filet",
 	"res://assets/sprites/characters/vigie/hail_zone/hail_zone.tres": "vigie/vigie_grele",
 	"res://assets/sprites/characters/vigie/caltrop_field/caltrop_field.tres": "vigie/vigie_chausse_trapes",
-	"res://assets/sprites/characters/vigie/flare/flare.tres": "vigie/vigie_fusee",
+	"res://assets/sprites/characters/vigie/flare/flare.tres": "vigie/vigie_fusee", # fusée plantée (Fanal, Tir de signal : clé posée au point d'appel)
 	# Taliant (morfil ; TWIN_DRAW partagé : clé posée au point d'appel)
 	"res://assets/sprites/characters/morfil/cut_circle/cut_circle.tres": "morfil/taille_estoc",
 	"res://assets/sprites/characters/morfil/cut_crescent/cut_crescent.tres": "morfil/fauche_lune",
@@ -127,26 +136,21 @@ const PATHS_FIRST := {
 ## dossier de test sont prises telles quelles, voir _boss_key). "" = jamais remplacé.
 const BOSS_ANIMS := {
 	"cerf/ground_wisp_trail": "cerf/charge_trail",
-	"cerf/wisp": "cerf/wisp_bolt",
-	"crane/container": "crane/container_impact",
+	"crane/container": "", # le conteneur qui tombe reste l'objet d'origine
+	"crane/dust": "crane/container_impact", # poussière de l'impact (CraneBrain._dust, r 1,5 u)
 	"crane/boom_shadow": "crane/sweep",
-	"crystal_mother/orbit_shard": "crystal_mother/shard",
 	"deep_eel/puddle": "deep_eel/black_pool",
 	"drowned_idol/lotus_crack": "drowned_idol/prayer_flood",
 	"eclusier/ground_wave": "eclusier/ground_water",
-	"eclusier/ground_geyser": "eclusier/geyser",
 	"jar_bearer/jar": "jar_bearer/orbit",
-	"ox_herder/mud_wave": "ox_herder/dust_burst",
-	"rain_sower/raindrop": "rain_sower/rain_column",
-	"recluse/prayer_glyph": "recluse/prayer_burst",
 	"salt_king/edict": "salt_king/edict_ring",
 	"smelter/molten_pool": "", # bande de métal 12 × 2 u (5 s) : reste l'originale, la coulée de test (molten_arc) la couvre
 	"smelter/splash": "smelter/molten_pool", # éclaboussure (r 0,9-1,2 u)
-	"smelter/steam_vent": "sonneur/steam_jet",
-	"sonneur/ground_steam": "sonneur/steam_jet",
-	"sonneur/steam_vent": "sonneur/steam_jet",
-	"sonneur/bolt": "sonneur/bolt_rain",
-	"sonneur/ground_lightning": "sonneur/lightning",
+	"smelter/steam_vent": "sonneur/steam_plume", # bouche de vapeur debout (même .tres que la chaudière)
+	"sonneur/ground_steam": "", # décor de vapeur au sol : reste l'original
+	"sonneur/steam_vent": "sonneur/steam_plume",
+	"sonneur/bolt": "", # le boulon d'origine est caché : sonneur/bolt_rain part de SonneurBrain._bolts_step (chute + impact)
+	"sonneur/ground_lightning": "sonneur/strike_ring", # anneau au sol d'un éclair (r 1,5 u ; la colonne garde sonneur/lightning)
 	"weaver/drop": "weaver/drop_dust",
 	"weaver/ground_silk": "weaver/web_ring",
 	"weaver/web": "weaver/web_ring",
@@ -156,11 +160,28 @@ const BOSS_ANIMS := {
 const BOSS_SPRITE_OPTS := {
 	# disque de 448 px de rayon dans sa cellule de 896 (_set_flood_visual) : rayon de l'effet = rayon de la crue
 	"rain_sower/flood_water": {"fit_host_px": 896.0},
+	# eau noire de l'Anguille : lac (cellule de 896 px) et flaques (128 px), rayon = celui de la cellule
+	"deep_eel/black_pool": {"fit_host_px": 896.0},
+	"deep_eel/puddle": {"fit_host_px": 128.0},
 }
 
 ## Sprites de boss dont l'échelle encode le rayon gameplay : rayon (u) = |échelle globale x| × k (éclaboussure du
-## Fondeur : échelle r × UNSQUASH × 0,5, SmelterBrain._splash).
-const HOST_RADIUS_K := {"smelter/splash": 2.0}
+## Fondeur : échelle r × UNSQUASH × 0,5, SmelterBrain._splash). Gerbes Floor1Hazards.burst_fx (échelle
+## Floor1Fx.billboard(2 r, src_px) : k = src_px / 128) et anneaux du Carillon (échelle r / 576 px : k = 9).
+const HOST_RADIUS_K := {
+	"smelter/splash": 2.0,
+	"ox_herder/dust_burst": 1.0, # src 128 px
+	"jar_bearer/jar_shatter": 0.75, # src 96 px
+	"eclusier/geyser": 0.53125, # src 68 px (GEYSER_SRC_PX)
+	"drowned_idol/carillon_ring": 9.0, # DrownedIdolBrain.RING_SRC_R / 64
+	# gerbes de la Mère-cristal et de l'Anguille : échelle UNSQUASH × SPRITE_K × r (k = 1 / SPRITE_K)
+	"crystal_mother/reflect_burst": 1.0 / Iso.SPRITE_K,
+	"deep_eel/emerge_splash": 1.0 / Iso.SPRITE_K,
+	# anneau d'un éclair du Sonneur : échelle 2 × LIGHTNING_R_U × 64 / 102 (SonneurBrain.strike_fx)
+	"sonneur/ground_lightning": 102.0 / 128.0,
+	# brume de l'Averse : 20 taches à l'échelle 1,6 sur l'anneau MIST_R_U + 2 (rayon 3,2 u chacune)
+	"rain_sower/mist_band": 2.0,
+}
 
 ## Lignes d'origine centrées sur leur sprite, grand axe = axe y local (sillage de vague de l'Éclusier : posé au milieu
 ## du trajet, tourné de -90°, len_px de planche = distance parcourue, width_px = largeur du sillage) : l'effet tuilé
@@ -180,10 +201,25 @@ const RADIUS_U := {
 	"salt_king/edict_ring": SaltKingBrain.EDICT_R1_U,
 }
 
+## Sprites de personnage dont l'échelle encode le rayon gameplay : rayon (u) = |échelle globale x| × px / 64 (px = rayon
+## dessiné dans la planche d'origine : embrasement du Nœud, flaques du Gluant et du Chœur).
+const SPRITE_RADIUS_PX := {
+	"arpenteuse/arpenteuse_noeud": ArpenteuseKit.LOOP_BLAZE_RADIUS_PX,
+	"rainette/rainette_gluant_flaque": RainetteKit.GOO_RADIUS_PX,
+}
+
 ## Largeur gameplay (u) perpendiculaire des fronts `follow_front`.
 const WIDTH_U := {
 	"eclusier/wave": EclusierBrain.WAVE_W_U,
 	"rain_sower/wave_front": RainSowerBrain.WAVE_W_U,
+}
+
+## Épaisseur (u) des tuiles posées le long d'une polyligne (track_polyline) : la chaîne d'Arpenteuse ne doit pas être
+## plus grosse que sa chaîne d'origine (maillons ~0,36 u ; demande du joueur : un poil plus épaisse, pas énorme).
+const POINT_WIDTH_U := {
+	"arpenteuse/arpenteuse_chaine": 0.57,
+	"arpenteuse/arpenteuse_tendeur": 0.57,
+	"arpenteuse/arpenteuse_chaine_lestee": 0.76,
 }
 
 ## Lignes dont la longueur locale (px, depuis l'origine du sprite d'origine) n'est pas l'étendue de sa planche.
@@ -198,6 +234,9 @@ const CROSS_SRC := "eclusier/ground_wave"
 const CROSS_KEY := "eclusier/wave"
 const CROSS_CREST_S := 0.5 ## durée du jet d'un bras (EclusierBrain._cross_fx)
 
+## Effets CAST "player" posés au sol sous le personnage : z −1 relatif à lui (sinon la flaque recouvre son corps).
+const UNDER_PLAYER := ["bourbe/bourbe_maree_de_vase"]
+
 ## Coup auto d'un boss sans dossier "<boss>/auto" : clé de remplacement.
 const AUTO := {
 	"salt_king": "salt_king/scepter",
@@ -208,50 +247,44 @@ const AUTO := {
 ## corps du personnage, membres…) : l'effet de test part au lancement. at : "player" (suit le joueur) ou "aim"
 ## (posé au point visé ou sur l'ennemi le plus proche).
 const CAST := {
-	"arpenteuse/arpenteuse_tendeur": "player",
-	"arpenteuse/arpenteuse_noeud": "aim",
-	"arpenteuse/arpenteuse_jalons": "aim",
-	"arpenteuse/arpenteuse_cerceau": "player",
-	"averse/averse_gouttiere": "aim",
-	"avare/avare_coffre_belier": "player",
-	"avare/avare_saisie": "aim",
-	"avare/avare_tresor_enterre": "aim",
-	"bourbe/detacher": "aim",
-	"bourbe/bourbe_bouture": "aim",
+	# Arpenteuse : Tendeur (tuiles qui claquent sur la chaîne, track_polyline), Nœud (PATHS loop_blaze), Jalons
+	# (spawn_at au piquet) ; Avare : Coffre-bélier, Saisie (chaîne : spawn_at ; prise : zone), Trésor enterré (zone de
+	# la détonation), Pièce truquée (suit la pièce) ; Rainette : Bulle (spawn_at) -> accroches dans leurs kits.
+	"arpenteuse/arpenteuse_cerceau": "player", # bande de 3 u sous ses pieds (follow_ground_loop, durée du sort)
+	"bourbe/detacher": "player", # motte arrachée : giclée depuis Bourbe vers la visée
+	"bourbe/bourbe_bouture": "player",
 	"bourbe/rappel": "player",
 	"bourbe/bourbe_maree_de_vase": "player",
+	# Taliant : Lames jumelles et Trempe passent par leur zone de dégainé (on_zone) ; Fendoir : spawn_at au coup (morfil_kit)
 	"morfil/aiguisage": "player",
 	"morfil/morfil_affutage_en_marche": "player",
-	"morfil/morfil_trempe": "player",
-	"morfil/lames_jumelles": "player",
-	"morfil/morfil_fendoir": "player",
-	"rictus/doublures": "player",
+	# Rictus et Tocsin : Doublures (explosions = zones), Saccade (fil vers le couteau), Rideau (fil sur la doublure du
+	# milieu), Toupie, Vapeur, Bras-pilier, Tête-fumigène et Couteau ficelé partent d'accroches dans leur kit
+	# (rictus_kit, rictus_pendulum, tocsin_kit, tocsin_limb : `grep VfxSwap`), au bon moment et à la bonne taille.
 	"tocsin/tocsin_coup_de_tocsin": "player",
-	"avare/avare_piece_truquee": "player",
-	"rainette/rainette_bulle": "aim",
-	"rictus/rictus_saccade": "player",
-	"rictus/rictus_rideau": "player",
-	"tocsin/tocsin_bras_pilier": "aim",
-	"tocsin/tocsin_vapeur": "player",
-	"tocsin/tocsin_tete_fumigene": "aim",
 }
+
+## Zones dont plusieurs effets de test partent dans la même fenêtre DEDUP_S : les six doublures explosent ensemble.
+const NO_DEDUP := ["rictus/doublures"]
 
 ## Écart (u) entre deux effets de test le long d'une polyligne (track_polyline), par clé. Les effets `tile_along_line`
 ## (chaîne) n'y sont pas : leurs tuiles sont posées bout à bout tous les segment_u du meta.
-const POINT_SPACING := {
-	"arpenteuse/arpenteuse_chaine_lestee": 3.5, # gerbe de 3 u : 2 sur 7 u
-}
+const POINT_SPACING := {}
 
 ## Projection forcée des effets multi-points (VfxTestPlayer opts.projection). Une chaîne posée au sol : ses segments
 ## sont couchés dans le plan du sol logique (ground_dir, la caméra les écrase en 2:1 comme la Line2D d'origine).
 const POINT_PROJECTION := {
 	"arpenteuse/arpenteuse_chaine": "ground_dir",
+	"arpenteuse/arpenteuse_chaine_lestee": "ground_dir",
+	"arpenteuse/arpenteuse_tendeur": "ground_dir", # chaîne qui claque (SNAP_S)
+	"arpenteuse/arpenteuse_boucle": "ground_dir", # bande du Halage le long de chaque ligne posée
 }
 
 ## Projectiles ennemis poolés (EnemyProjectilePool) : boss tireur (id du skin) -> [clé du projectile, clé d'impact].
 ## Source = le boss (Culasse) ou son BarrageEmitter (Mitraille, propriété `boss`).
 const ENEMY_PROJ := {
 	"flood_gunner": ["flood_gunner/rivet", "flood_gunner/rivet_hit"],
+	"smelter": ["smelter/sparks", ""], # Étincelles du Fondeur (6 tirs en éventail, sans impact de test)
 }
 
 ## Traces (tests) : chaque remplacement {key, src, host}. Vidées par clear_trace().
@@ -426,6 +459,8 @@ static func spawn_follow(host: Node2D, key: String, dir: Vector2, dedup := false
 static func _dir_of(n: Node2D) -> Vector2:
 	if n == null:
 		return Vector2.RIGHT
+	if n.has_meta(META_DIR):
+		return n.get_meta(META_DIR)
 	var r := n.global_rotation
 	if absf(r) > 0.001:
 		return Vector2.from_angle(r)
@@ -532,6 +567,10 @@ static func _reevaluate(anim: AnimatedSprite2D) -> void:
 		opts["radius_u"] = RADIUS_U[key]
 	if WIDTH_U.has(key):
 		opts["width_u"] = WIDTH_U[key]
+	if SPRITE_RADIUS_PX.has(key):
+		opts["radius_u"] = absf(anim.global_scale.x) * float(SPRITE_RADIUS_PX[key]) / Balance.UNIT_PX
+	if anim.has_meta(META_RADIUS):
+		opts["radius_u"] = float(anim.get_meta(META_RADIUS))
 	spawn_follow(anim, key, dir, boss_id == "", opts)
 
 
@@ -604,7 +643,7 @@ static func on_zone(zone: Node2D) -> void:
 	var r: Variant = zone.get(&"radius")
 	if VfxTestPlayer.usage_of(key) in VfxTestPlayer.RADIUS_USAGES and (r is float or r is int) and float(r) > 0.0:
 		opts["radius_u"] = float(r) / Balance.UNIT_PX # rayon réel de la zone (bonus de taille compris)
-	spawn_follow(zone, key, dir, true, opts)
+	spawn_follow(zone, key, dir, not key in NO_DEDUP, opts)
 
 
 ## Projectile (poolé) : à chaque lancement, l'ancien effet de test est arrêté, le visuel rendu, puis réévalué.
@@ -670,7 +709,8 @@ static func on_cast(caster: Object, spell: SpellData, aim_dir: Vector2, fx_pos: 
 		var max_s := CAST_MAX_S
 		if VfxTestPlayer.usage_of(key) == "follow_ground_loop" and spell.duration > 0.0:
 			max_s = spell.duration # zone au sol qui suit le joueur tant que dure l'état (Marée de vase)
-		spawn_follow(player, key, dir, true, {"src": "cast", "max_s": max_s})
+		# flaque sous les pieds : dessinée sous le personnage (sinon elle le recouvre)
+		spawn_follow(player, key, dir, true, {"src": "cast", "max_s": max_s, "z": -1 if key in UNDER_PLAYER else 0})
 		return
 	var parent: Node = caster.call(&"effects_parent") if caster.has_method(&"effects_parent") else player.get_parent()
 	if parent == null:
@@ -719,6 +759,12 @@ static func on_boss_auto(e: Node2D) -> void:
 	var brain: Variant = e.get(&"brain")
 	if brain is HermitCedarBrain and (brain as HermitCedarBrain).state == HermitCedarBrain.S.TENDRIL:
 		return # vrille du Cèdre (coup auto de phase 2) : sa racine (hermit_cedar/root_spike) est déjà l'effet du coup
+	if brain is CerfBrain and (brain as CerfBrain).state == CerfBrain.S.AUTO:
+		return # tir de follet du Cerf (coup auto de loin) : le follet (cerf/wisp_bolt) est l'effet, pas le coup de bois
+	if brain is RainSowerBrain and (brain as RainSowerBrain).state == RainSowerBrain.S.WHIRL:
+		key = "rain_sower/whirl" # coup auto de phase 3 : tourbillon (disque de WHIRL_R_U autour d'elle), pas le fouet
+		if not available(key):
+			return
 	if brain != null and brain is Object and (brain as Object).get(&"aim") is Vector2:
 		dir = (brain as Object).get(&"aim")
 	spawn_follow(e, key, dir, false, {"src": "boss_auto", "max_s": AUTO_MAX_S})
@@ -927,6 +973,8 @@ static func _feed_point(a: Node2D, key: String, d: Vector2, line_px := 0.0) -> v
 			o["projection"] = POINT_PROJECTION[key]
 		if line_px > 0.0:
 			o["line_px"] = line_px
+		if POINT_WIDTH_U.has(key):
+			o["width_u"] = POINT_WIDTH_U[key]
 		spawn_follow(a, key, dir, false, o)
 		return
 	if line_px > 0.0:

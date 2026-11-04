@@ -32,6 +32,9 @@ func launch(from: Vector2, dir: Vector2, range_px: float) -> void:
 	_dir = dir.normalized()
 	_left_px = range_px
 	z_index = 3
+	if VfxSwap.enabled() and VfxSwap.available("avare/avare_piece_truquee"): # mode test : pièce de test qui suit la pièce (scripts/testmode/vfx_swap.gd)
+		VfxSwap.hide_original(self)
+		VfxSwap.spawn_follow(self, "avare/avare_piece_truquee", _dir, false, {"src": "projectile"})
 
 
 func _physics_process(delta: float) -> void:
@@ -54,6 +57,7 @@ func _physics_process(delta: float) -> void:
 			_strike(_target)
 			return
 		global_position += to.normalized() * step
+		if VfxSwap.follower_of(self) != null: VfxSwap.follower_of(self).set_dir(to) # mode test : traînée dans le sens du rebond
 		queue_redraw()
 		return
 	# vol libre : premier monstre non touché croisé

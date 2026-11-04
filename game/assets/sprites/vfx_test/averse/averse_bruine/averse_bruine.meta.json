@@ -1,5 +1,5 @@
 {
- "source": "projectiles/laser-bolt",
+ "source": "rainfall/averse-water-blade",
  "opts": {
   "palette": [
    "#04090f",
@@ -10,71 +10,68 @@
    "#5FD4E8",
    "#9fe8f2"
   ],
-  "light": 0.4
+  "radius": 7,
+  "tail": 18,
+  "shape": "drop",
+  "seed": 23
  },
  "owner": "averse",
  "spell_id": "averse_bruine",
+ "scale": 2,
+ "ppu": 20,
+ "usage": "projectile",
+ "usage_note": "Goutte vers +x : perle ronde (0,4 u), courte traînée ; trois en éventail (Bruine).",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 8,
+ "frames": 6,
  "frame_size": [
-  192,
-  52
+  52,
+  42
  ],
- "scale": 2,
- "offset": [
-  -68.0,
-  0.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -6.0,
+  -1.0
+ ],
  "emission": "averse_bruine_e.tres",
- "light_k": 2.6,
+ "light_k": 1.0,
  "light_color": "#5FD4E8",
  "light_curve": [
-  0.947,
+  0.892,
   1.0,
-  0.844,
-  0.801,
-  0.971,
   0.994,
-  0.832,
-  0.821
+  0.877,
+  0.801,
+  0.805
  ],
  "light_pos": [
   [
-   -19.4,
-   -0.2
+   -2.6,
+   -1.0
   ],
   [
-   -18.2,
-   -0.2
+   -2.6,
+   -1.2
   ],
   [
-   -20.6,
-   -0.0
+   -2.6,
+   -1.2
   ],
   [
-   -22.0,
-   -0.0
+   -2.4,
+   -1.2
   ],
   [
-   -19.2,
-   -0.2
+   -2.8,
+   -1.0
   ],
   [
-   -18.4,
-   -0.2
-  ],
-  [
-   -22.0,
-   -0.0
-  ],
-  [
-   -22.2,
-   -0.0
+   -2.8,
+   -1.0
   ]
- ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "round": true
 }

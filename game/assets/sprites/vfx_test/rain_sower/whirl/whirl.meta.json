@@ -1,0 +1,115 @@
+{
+ "owner": "rain_sower",
+ "spell_id": "whirl",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/rain_sower-whirl",
+ "opts": {
+  "palette": [
+   "#070D12",
+   "#0D1A22",
+   "#16303F",
+   "#35596C",
+   "#3E86A8",
+   "#5EC8FF",
+   "#A8E6FF"
+  ],
+  "radius": 56,
+  "light": 1.0
+ },
+ "ppu": 16,
+ "usage": "ground_oneshot",
+ "usage_note": "Tourbillon d'eau vu de dessus centré sur le pivot (le semeur), rayon 3,5 u : bras d'écume en spirale, bord qui s'étend, embruns.",
+ "radius_u": 3.5,
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 14,
+ "frame_size": [
+  234,
+  240
+ ],
+ "node_scale": 1,
+ "offset": [
+  -3.0,
+  6.0
+ ],
+ "emission": "whirl_e.tres",
+ "light_k": 1.0,
+ "light_color": "#5EC8FF",
+ "light_curve": [
+  0.389,
+  0.746,
+  0.904,
+  0.961,
+  1.0,
+  0.982,
+  0.948,
+  0.871,
+  0.733,
+  0.543,
+  0.372,
+  0.215,
+  0.081,
+  0.006
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -1.6,
+   -2.4
+  ],
+  [
+   -2.6,
+   -0.2
+  ],
+  [
+   -2.6,
+   -1.4
+  ],
+  [
+   -2.6,
+   1.4
+  ],
+  [
+   -3.2,
+   0.0
+  ],
+  [
+   -2.8,
+   -1.0
+  ],
+  [
+   -2.4,
+   1.2
+  ],
+  [
+   -2.8,
+   0.4
+  ],
+  [
+   -3.2,
+   1.0
+  ],
+  [
+   -2.4,
+   -0.4
+  ],
+  [
+   -3.0,
+   1.2
+  ],
+  [
+   -3.2,
+   0.4
+  ],
+  [
+   -1.0,
+   -1.0
+  ]
+ ],
+ "filter": "nearest"
+}

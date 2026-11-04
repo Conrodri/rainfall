@@ -1,5 +1,5 @@
 {
- "source": "melee/whip-crack",
+ "source": "rainfall/arpenteuse-chain-snap",
  "opts": {
   "palette": [
    "#0b0806",
@@ -10,101 +10,63 @@
    "#FF7A1F",
    "#ffa860"
   ],
-  "light": 0.4
+  "length": 32,
+  "amp": 5,
+  "light": 1.0
  },
  "owner": "arpenteuse",
  "spell_id": "arpenteuse_tendeur",
+ "usage": "tile_along_line",
+ "usage_note": "Tendeur : tuile de chaîne qui claque (secousse, chauffe à blanc, onde de choc de part et d'autre), posée sur toute la chaîne pendant SNAP_S à la place des tuiles de la Chaîne.",
+ "ppu": 16,
+ "scale": 2,
+ "segment_u": 2.0,
+ "width_u": 0.9,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 5,
  "frame_size": [
-  304,
-  132
+  64,
+  60
  ],
- "scale": 2,
- "offset": [
-  158.0,
-  -52.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  32.0,
+  2.0
+ ],
  "emission": "arpenteuse_tendeur_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#FF7A1F",
  "light_curve": [
-  0.058,
-  0.058,
-  0.058,
-  0.058,
+  0.965,
   1.0,
-  0.451,
-  0.15,
-  0.045,
-  0.014,
-  0.008,
-  0.0,
-  0.0,
-  0.0,
-  0.0
+  0.89,
+  0.514,
+  0.229
  ],
  "light_pos": [
   [
-   83.4,
-   -32.4
+   28.8,
+   -0.6
   ],
   [
-   89.0,
-   -32.6
+   29.0,
+   -2.6
   ],
   [
-   117.4,
-   -34.0
+   29.0,
+   -1.4
   ],
   [
-   169.2,
-   -36.6
+   28.4,
+   -2.0
   ],
   [
-   174.4,
-   -45.4
-  ],
-  [
-   177.6,
-   -44.8
-  ],
-  [
-   185.2,
-   -44.4
-  ],
-  [
-   195.6,
-   -45.8
-  ],
-  [
-   184.6,
-   -49.4
-  ],
-  [
-   177.0,
-   -54.6
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   28.6,
+   -1.8
   ]
- ]
+ ],
+ "filter": "nearest",
+ "test_asset": true
 }

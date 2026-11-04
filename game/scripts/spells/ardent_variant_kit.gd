@@ -156,7 +156,8 @@ func _tick_events(delta: float) -> void:
 				player.spells.spawn_zone(s, pos)
 				_pillars.append({"pos": pos, "r": _zone_r_px(s.radius_u), "left": s.duration})
 			&"telegraph":
-				_telegraph(pos, _zone_r_px(s.radius_u), METEOR_TELEGRAPH_S, true)
+				var test_fall := VfxSwap.enabled() and VfxSwap.spawn_at(player.spells.effects_parent(), "ardent/meteor_fall", pos, Vector2.RIGHT) != null # mode test : chute de test (scripts/testmode/vfx_swap.gd)
+				_telegraph(pos, _zone_r_px(s.radius_u), METEOR_TELEGRAPH_S, not test_fall)
 			&"meteor":
 				player.spells.spawn_zone(s, pos) # durée 0 : impact instantané de rayon radius_u
 				LightRig.flash(pos, &"meteor_impact", 0.35)

@@ -1,0 +1,72 @@
+{
+ "owner": "rain_sower",
+ "spell_id": "raindrop",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/rain_sower-drop",
+ "opts": {
+  "palette": [
+   "#070D12",
+   "#0D1A22",
+   "#16303F",
+   "#35596C",
+   "#3E86A8",
+   "#5EC8FF",
+   "#A8E6FF"
+  ],
+  "light": 1.0
+ },
+ "ppu": 16,
+ "usage_note": "Goutte de l'Averse qui tombe (billboard iso), boucle ; le jeu la fait tomber de 9 u.",
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 6,
+ "frame_size": [
+  36,
+  114
+ ],
+ "node_scale": 1,
+ "offset": [
+  0.0,
+  -47.0
+ ],
+ "emission": "raindrop_e.tres",
+ "light_k": 1.0,
+ "light_color": "#5EC8FF",
+ "light_curve": [
+  0.911,
+  1.0,
+  1.0,
+  0.911,
+  0.82,
+  0.82
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -22.6
+  ],
+  [
+   -1.0,
+   -21.4
+  ],
+  [
+   -1.0,
+   -21.4
+  ],
+  [
+   -1.0,
+   -22.6
+  ],
+  [
+   -1.0,
+   -24.0
+  ],
+  [
+   -1.0,
+   -24.0
+  ]
+ ],
+ "filter": "nearest"
+}

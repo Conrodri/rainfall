@@ -1,7 +1,8 @@
 extends Node
 ## Test headless des 4 variantes de sorts d'Ardent (docs/Variantes_Sorts.md §2.1, lot 1).
 ## godot --headless --path game res://tests/ardent_variants_test.tscn  (sortie : RESULT: OK)
-## Simulation déterministe : le temps avance par Player.tick / ZoneEffect.step / ArdentPhoenix.step, sans image rendue.
+## Simulation déterministe : le temps avance par Player.tick / ZoneEffect.step / ArdentPhoenix.step /
+## ArdentPhoenixBolt.step, sans image rendue.
 
 const VariantUnlocks := preload("res://scripts/save/variant_unlocks.gd")
 const ZoneScript := preload("res://scripts/spells/zone_effect.gd")
@@ -99,7 +100,7 @@ func _adv(secs: float) -> void:
 				continue
 			if c.get_script() == ZoneScript:
 				c.step(DT)
-			elif c is ArdentPhoenix:
+			elif c is ArdentPhoenix or c is ArdentPhoenixBolt:
 				c.step(DT)
 
 
@@ -241,43 +242,61 @@ func _test_phoenix() -> void:
 	var p := _new_player({4: &"phoenix"})
 	var pack: Array[FakeEnemy] = []
 	for i in 5:
-		pack.append(_enemy(Vector2(5.0 * U, 0.0) + Vector2(i * 0.4 * U, (i % 2) * 0.3 * U)))
+		pack.append(_enemy(Vector2(5.0 * U, 0.0) + Vector2(i * 0.4 * U, (i % 2) * 0.15 * U)))
+	var aside := _enemy(Vector2(5.4 * U, 1.2 * U)) # hors du couloir du trait (0,6 u)
+	var far := _enemy(Vector2(8.0 * U, 0.0)) # sur la ligne, au-delà de la course du trait (8 u depuis le phénix à -1,4 u)
 	_check(p.spells.cast(4), "phénix invoqué")
 	var ph: ArdentPhoenix = p.kit.phoenix
 	_check(ph != null and is_instance_valid(ph), "un phénix existe")
-	_adv(0.4) # le phénix pique au bout de 0,5 s
-	_adv(2.0)
-	_check(ph.dives >= 1, "il pique (%d)" % ph.dives)
-	var dmg := 0.0
+	var start: Vector2 = ph.global_position
+	_adv(0.4)
+	_check(ph.shots == 0, "pas de trait avant 0,5 s")
+	_adv(0.8) # premier trait à 0,5 s, course de 8 u à 16 u/s (0,5 s) : fini avant le second (2,0 s)
+	_check(ph.shots == 1, "un trait lancé (%d)" % ph.shots)
+	_check(ph.global_position.distance_to(p.global_position) < 2.0 * U, "il reste près d'Ardent, ne fonce plus (%.1f u)" % (ph.global_position.distance_to(p.global_position) / U))
+	_check(start.distance_to(ph.global_position) < 0.5 * U, "pas de piqué : il n'a pas quitté sa place (%.2f u)" % (start.distance_to(ph.global_position) / U))
+	var all_once := true
 	var burned := 0
 	for f in pack:
-		dmg += f.total()
+		all_once = all_once and f.taken.size() == 1
 		for st in f.statuses:
 			if st[0] == &"burn":
 				burned += 1
-	_check(dmg > 0.0, "dégâts de piqué (%.1f)" % dmg)
-	_check(burned > 0, "brûlure 2 s appliquée (%d)" % burned)
-	var first: float = 0.0
-	for f in pack:
-		if not f.taken.is_empty():
-			first = f.taken[0]
-			break
-	_check(absf(first / 12.0 - ArdentKit.PHOENIX_COEF) < 0.01, "coef par piqué %.1f" % ArdentKit.PHOENIX_COEF)
+	_check(all_once, "le trait traverse les 5 monstres du paquet, une touche chacun")
+	_check(ph.bolt_hits == 5, "5 touches comptées (%d)" % ph.bolt_hits)
+	_check(aside.taken.is_empty(), "monstre hors du couloir épargné")
+	_check(far.taken.is_empty(), "monstre au-delà de la portée épargné")
+	_check(burned == 5, "brûlure 2 s sur chaque monstre traversé (%d)" % burned)
+	var first: float = pack[0].taken[0] if not pack[0].taken.is_empty() else 0.0
+	_check(absf(first / 12.0 - ArdentKit.PHOENIX_COEF) < 0.01, "coef par touche %.2f (%.2f)" % [ArdentKit.PHOENIX_COEF, first / 12.0])
+	var burn_total: float = float(pack[0].statuses[0][1].get("total", 0.0)) if not pack[0].statuses.is_empty() else 0.0
+	_check(absf(burn_total / 12.0 - ArdentPhoenix.BURN_PER_COEF * ArdentKit.PHOENIX_COEF) < 0.01, "brûlure = %.1f × coef (%.2f)" % [ArdentPhoenix.BURN_PER_COEF, burn_total / 12.0])
+	_check(_bolts(p) == 0, "le trait s'est éteint au bout de sa course")
+	_adv(1.4) # second trait à 2,0 s, arrivé au paquet avant 2,6 s
+	_check(ph.shots == 2 and pack[0].taken.size() == 2, "un trait toutes les 1,5 s (%d)" % ph.shots)
 	# un seul phénix : relancer consume l'ancien
 	p.spells.set_cooldown(4, 0.0, 20.0)
 	_check(p.spells.cast(4), "relance")
 	_check(ph.exploded, "l'ancien se consume")
 	var ph2: ArdentPhoenix = p.kit.phoenix
 	_check(ph2 != ph and not ph2.exploded, "un nouveau phénix")
-	# explosion à 12 s : zone de 3 u, coef 2,0
-	var victim := _enemy(ph2.global_position + Vector2(U, 0.0))
+	# fin à 12 s : dernier trait vers le paquet le plus dense, explosion à l'arrivée (zone de 3 u, coef PHOENIX_BURST_COEF)
+	_adv(1.2) # dernier trait de l'ancien phénix et premier trait du nouveau : finis
+	_clear_enemies()
+	await get_tree().process_frame
+	var victim := _enemy(p.global_position + Vector2(5.0 * U, 2.0 * U))
+	var near := _enemy(ph2.global_position + Vector2(0.0, 0.5 * U)) # à côté du phénix mais seul : pas le paquet visé
+	var victim2 := _enemy(victim.global_position + Vector2(0.5 * U, 0.0))
 	ph2.life_left = 0.05
-	_adv(0.2)
-	_check(ph2.exploded, "il explose à la fin")
+	_adv(0.1)
+	_check(ph2.exploded, "il se consume à la fin")
+	_check(victim.taken.is_empty() and _bolts(p) == 1, "dernier trait en vol, pas encore d'explosion (%d touches, %d traits)" % [victim.taken.size(), _bolts(p)])
+	_adv(0.5) # ~5,8 u à 24 u/s
 	var burst := 0.0
 	for a in victim.taken:
 		burst = maxf(burst, a)
-	_check(absf(burst / 12.0 - ArdentKit.PHOENIX_BURST_COEF) < 0.01, "explosion coef %.1f (%.1f)" % [ArdentKit.PHOENIX_BURST_COEF, burst / 12.0])
+	_check(absf(burst / 12.0 - ArdentKit.PHOENIX_BURST_COEF) < 0.01, "explosion sur le paquet visé, coef %.1f (%.1f)" % [ArdentKit.PHOENIX_BURST_COEF, burst / 12.0])
+	_check(victim2.taken.size() == 1 and near.taken.is_empty(), "l'explosion est au paquet, pas à la place du phénix (%d, %d)" % [victim2.taken.size(), near.taken.size()])
 	# mort du joueur : il se consume
 	p.spells.set_cooldown(4, 0.0, 20.0)
 	p.spells.cast(4)
@@ -285,6 +304,14 @@ func _test_phoenix() -> void:
 	Events.emit_player_died()
 	_check(ph3.exploded, "mort d'Ardent : le phénix se consume")
 	await get_tree().process_frame
+
+
+func _bolts(p: CharacterBody2D) -> int:
+	var n := 0
+	for c in p.spells.effects_parent().get_children():
+		if c is ArdentPhoenixBolt and not c.is_queued_for_deletion():
+			n += 1
+	return n
 
 
 func _test_counters() -> void:

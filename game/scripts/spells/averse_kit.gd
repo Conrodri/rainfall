@@ -1236,6 +1236,9 @@ func _spawn_wave_vfx(origin: Vector2, dir: Vector2, k: float) -> AnimatedSprite2
 	spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	var parent: Node = _caster().effects_parent() if _caster() != null else player.get_parent()
 	parent.add_child(spr)
+	if VfxSwap.enabled(): # mode test : cône de test orienté sur la visée exacte, à la portée réelle
+		spr.set_meta(VfxSwap.META_DIR, dir)
+		spr.set_meta(VfxSwap.META_RADIUS, k * WAVE_VFX_LENGTH_U)
 	EmissiveOverlay.apply(spr, sf, WAVE_EMISSION)
 	spr.global_position = origin
 	spr.scale = WAVE_SPRITE_SCALE * k
@@ -1416,6 +1419,7 @@ func spawn_rivulet(s: SpellData, origin: Vector2, dir: Vector2) -> Node2D:
 	var rv := AverseRivulet.new()
 	_caster().effects_parent().add_child(rv)
 	rv.setup(_caster(), s, origin, dir, GOUTTIERE_LENGTH_U * Balance.UNIT_PX * k, GOUTTIERE_WIDTH_U * Balance.UNIT_PX * k)
+	if VfxSwap.enabled() and VfxSwap.spawn_follow(rv, "averse/averse_gouttiere", dir, false, {"src": "rivulet", "line_px": rv.length_px, "width_u": GOUTTIERE_WIDTH_U * k}) != null: VfxSwap.hide_original(rv) # mode test
 	rivulets.append(rv)
 	rv.tree_exiting.connect(func() -> void: rivulets.erase(rv))
 	return rv

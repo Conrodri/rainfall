@@ -1,5 +1,9 @@
 {
- "source": "water/water-jet",
+ "owner": "sonneur",
+ "spell_id": "steam_jet",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/sonneur-steam-jet",
  "opts": {
   "palette": [
    "#130c04",
@@ -11,106 +15,94 @@
    "#FFB347",
    "#ffd58c"
   ],
-  "light": 0.4
+  "length": 144,
+  "width": 24,
+  "light": 1.0
  },
- "owner": "sonneur",
- "spell_id": "steam_jet",
+ "ppu": 24,
+ "usage": "line_from_pivot",
+ "usage_note": "Jet de vapeur couché au sol vu de dessus : du pivot (la chaudière) vers +x sur 6 u, 1 u de large ; boucle, suit la rotation.",
+ "line_u": 6.0,
+ "width_u": 1.0,
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 15,
+ "frames": 12,
  "frame_size": [
-  360,
-  118
+  344,
+  96
  ],
- "scale": 2,
- "offset": [
-  156.0,
-  21.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  164.0,
+  -2.0
+ ],
  "emission": "steam_jet_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#FFB347",
  "light_curve": [
-  0.941,
-  0.969,
-  0.916,
+  0.953,
+  0.978,
+  0.981,
+  0.964,
+  0.95,
+  0.951,
+  0.968,
+  0.987,
   1.0,
-  0.927,
-  0.945,
-  0.975,
-  0.911,
-  0.99,
-  0.923,
-  0.955,
-  0.975,
-  0.911,
-  0.985,
-  0.921
+  0.974,
+  0.938,
+  0.932
  ],
  "light_pos": [
   [
-   101.0,
-   4.6
+   113.4,
+   -0.6
   ],
   [
-   99.0,
-   4.6
+   110.6,
+   -0.6
   ],
   [
-   105.2,
-   4.8
+   110.0,
+   -0.6
   ],
   [
-   98.4,
-   4.4
+   112.6,
+   -0.6
   ],
   [
-   104.2,
-   4.8
+   115.4,
+   -0.6
   ],
   [
-   100.6,
-   4.6
+   115.0,
+   -0.8
   ],
   [
-   98.4,
-   4.4
+   113.2,
+   -0.8
   ],
   [
-   105.4,
-   4.8
+   112.0,
+   -0.8
   ],
   [
-   98.0,
-   4.4
+   112.2,
+   -0.8
   ],
   [
-   104.0,
-   4.8
+   115.4,
+   -0.8
   ],
   [
-   101.8,
-   4.6
+   117.8,
+   -0.8
   ],
   [
-   99.2,
-   4.6
-  ],
-  [
-   105.2,
-   4.8
-  ],
-  [
-   97.2,
-   4.4
-  ],
-  [
-   103.4,
-   4.8
+   116.8,
+   -0.8
   ]
- ]
+ ],
+ "filter": "nearest"
 }

@@ -1,5 +1,5 @@
 {
- "source": "projectiles/arrow",
+ "source": "rainfall/rictus-knife-spin",
  "opts": {
   "palette": [
    "#0a0d0d",
@@ -10,76 +10,67 @@
    "#9FC8C0",
    "#c9e3dd"
   ],
-  "light": 0.35
+  "radius": 8,
+  "tail": 30,
+  "light": 1.0
  },
  "owner": "rictus",
  "spell_id": "couteau_ficele",
+ "scale": 2,
+ "ppu": 16,
+ "test_asset": true,
+ "usage": "projectile",
+ "usage_note": "Couteau lourd qui tournoie (disque d'acier rond, lisible dans toutes les directions), vole vers +x ; suit le couteau en vol et au retour.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 9,
+ "frames": 6,
  "frame_size": [
-  186,
-  32
+  102,
+  52
  ],
- "scale": 2,
- "offset": [
-  -83.0,
-  -2.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -21.0,
+  0.0
+ ],
  "emission": "couteau_ficele_e.tres",
- "light_k": 2.6,
+ "light_k": 1.0,
  "light_color": "#9FC8C0",
  "light_curve": [
-  0.361,
-  0.642,
-  0.0,
-  0.0,
-  0.0,
+  0.876,
+  0.996,
+  0.755,
+  0.876,
   1.0,
-  0.0,
-  0.0,
-  0.0
+  0.756
  ],
  "light_pos": [
   [
-   -11.0,
-   -3.0
+   -1.4,
+   -1.0
   ],
   [
-   -4.0,
-   -3.0
+   -1.4,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -1.4,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -1.2,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -1.4,
+   -1.0
   ],
   [
-   -7.4,
-   -3.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   -1.2,
+   -1.0
   ]
- ]
+ ],
+ "filter": "nearest",
+ "round": true
 }

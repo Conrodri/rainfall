@@ -545,6 +545,8 @@ func _bolts_step() -> void:
 			tele.set_progress(k)
 		var spr := b.get("spr") as AnimatedSprite2D
 		if is_instance_valid(spr):
+			if VfxSwap.enabled() and fall > 0.0 and not spr.visible: # mode test : chute + impact de test (scripts/testmode/vfx_swap.gd)
+				VfxSwap.spawn_at(e.get_parent(), "sonneur/bolt_rain", b["pos"], Vector2.RIGHT, spr)
 			spr.visible = fall > 0.0
 			spr.offset = Vector2(0.0, Iso.lift_logical(BOLT_FALL_H_U * (1.0 - fall * fall)) / spr.scale.y)
 

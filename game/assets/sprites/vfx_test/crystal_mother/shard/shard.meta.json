@@ -1,5 +1,9 @@
 {
- "source": "ice/ice-lance",
+ "owner": "crystal_mother",
+ "spell_id": "shard",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/crystal_mother-ice-shard",
  "opts": {
   "palette": [
    "#06090d",
@@ -11,91 +15,62 @@
    "#BFF4FF",
    "#dff9ff"
   ],
-  "light": 0.4
+  "radius": 5,
+  "tail": 22,
+  "light": 1.0
  },
- "owner": "crystal_mother",
- "spell_id": "shard",
+ "ppu": 20,
+ "usage": "projectile",
+ "usage_note": "Éclat de cristal vers +x : cristal compact presque rond (lisible raccourci), courte traînée de givre.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 12,
+ "frames": 6,
  "frame_size": [
-  423,
-  96
+  72,
+  40
  ],
- "scale": 3,
- "offset": [
-  -175.5,
-  6.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -14.0,
+  0.0
+ ],
  "emission": "shard_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#BFF4FF",
  "light_curve": [
-  0.951,
-  0.963,
-  0.937,
-  0.946,
-  0.945,
-  0.982,
-  0.959,
-  0.973,
-  0.977,
-  0.934,
-  0.935,
-  1.0
+  0.892,
+  0.999,
+  0.779,
+  0.894,
+  1.0,
+  0.777
  ],
  "light_pos": [
   [
-   -122.7,
-   -1.2
+   -3.8,
+   -1.0
   ],
   [
-   -124.8,
-   -1.5
+   -3.4,
+   -1.0
   ],
   [
-   -122.4,
-   -1.5
+   -4.2,
+   -1.0
   ],
   [
-   -121.2,
-   -1.5
+   -3.8,
+   -1.0
   ],
   [
-   -119.1,
-   -1.5
+   -3.6,
+   -1.0
   ],
   [
-   -118.2,
-   -1.5
-  ],
-  [
-   -122.4,
-   -0.6
-  ],
-  [
-   -123.3,
-   -1.5
-  ],
-  [
-   -122.4,
-   -1.8
-  ],
-  [
-   -121.5,
-   -1.5
-  ],
-  [
-   -120.0,
-   -1.5
-  ],
-  [
-   -123.3,
-   -2.1
+   -4.2,
+   -1.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

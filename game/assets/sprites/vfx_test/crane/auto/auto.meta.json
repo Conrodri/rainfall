@@ -1,106 +1,95 @@
 {
- "source": "melee/thrust",
+ "owner": "crane",
+ "spell_id": "auto",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/lash-line",
  "opts": {
   "palette": [
    "#120804",
    "#241008",
    "#3c1c0e",
+   "#6a3a1e",
    "#a0602e",
    "#d98038",
    "#FF9A3C",
    "#ffc684"
   ],
-  "sparks": [
-   "#120804",
-   "#3c1c0e",
-   "#d98038",
-   "#ffc684"
-  ],
-  "light": 0.4
+  "length": 72,
+  "thick": 8,
+  "tip": 5,
+  "thorns": 0,
+  "light": 1.0
  },
- "owner": "crane",
- "spell_id": "auto",
+ "ppu": 12,
+ "usage": "line_from_pivot",
+ "usage_note": "Crochet vu de dessus : chaîne lancée du pivot (la grue) vers +x sur 6 u (1 u de large), crochet au bout, puis ramenée.",
+ "line_u": 6.0,
+ "width_u": 1.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 12,
+ "frames": 9,
  "frame_size": [
-  292,
-  114
+  170,
+  54
  ],
- "scale": 2,
- "offset": [
-  130.0,
-  -41.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  85.0,
+  -1.0
+ ],
  "emission": "auto_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#FF9A3C",
  "light_curve": [
-  0.139,
-  0.128,
-  1.0,
-  0.65,
-  0.357,
-  0.119,
-  0.028,
-  0.01,
-  0.005,
-  0.003,
   0.0,
+  0.507,
+  1.0,
+  0.89,
+  0.672,
+  0.287,
+  0.041,
+  0.001,
   0.0
  ],
  "light_pos": [
   [
-   20.8,
-   -41.0
-  ],
-  [
-   83.0,
-   -41.0
-  ],
-  [
-   140.6,
-   -41.2
-  ],
-  [
-   144.8,
-   -41.2
-  ],
-  [
-   152.6,
-   -40.0
-  ],
-  [
-   157.8,
-   -39.4
-  ],
-  [
-   160.6,
-   -38.0
-  ],
-  [
-   163.2,
-   -34.0
-  ],
-  [
-   155.6,
-   -32.4
-  ],
-  [
-   155.6,
-   -33.0
-  ],
-  [
    0.0,
    0.0
   ],
   [
-   0.0,
-   0.0
+   75.0,
+   -3.2
+  ],
+  [
+   106.6,
+   -2.6
+  ],
+  [
+   105.0,
+   -3.4
+  ],
+  [
+   97.2,
+   -2.6
+  ],
+  [
+   86.8,
+   -2.4
+  ],
+  [
+   143.6,
+   -1.4
+  ],
+  [
+   155.4,
+   -4.0
+  ],
+  [
+   154.0,
+   -14.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

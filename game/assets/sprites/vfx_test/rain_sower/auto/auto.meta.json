@@ -1,5 +1,9 @@
 {
- "source": "melee/whip-crack",
+ "owner": "rain_sower",
+ "spell_id": "auto",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/lash-line",
  "opts": {
   "palette": [
    "#070D12",
@@ -10,101 +14,81 @@
    "#5EC8FF",
    "#A8E6FF"
   ],
-  "light": 0.4
+  "length": 77,
+  "thick": 10,
+  "tip": 4,
+  "thorns": 0,
+  "light": 1.0
  },
- "owner": "rain_sower",
- "spell_id": "auto",
+ "ppu": 14,
+ "usage": "line_from_pivot",
+ "usage_note": "Fouet de chaîne vu de dessus : du pivot (le semeur) vers +x sur 5,5 u (1,2 u de large), claque puis revient.",
+ "line_u": 5.5,
+ "width_u": 1.2,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 9,
  "frame_size": [
-  456,
-  198
+  180,
+  54
  ],
- "scale": 3,
- "offset": [
-  237.0,
-  -78.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  90.0,
+  -1.0
+ ],
  "emission": "auto_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#5EC8FF",
  "light_curve": [
-  0.059,
-  0.059,
-  0.059,
-  0.059,
+  0.0,
+  0.592,
   1.0,
-  0.453,
-  0.152,
-  0.046,
-  0.015,
-  0.008,
-  0.0,
-  0.0,
-  0.0,
+  0.955,
+  0.716,
+  0.302,
+  0.037,
+  0.001,
   0.0
  ],
  "light_pos": [
   [
-   125.1,
-   -48.6
-  ],
-  [
-   133.5,
-   -48.9
-  ],
-  [
-   176.1,
-   -51.0
-  ],
-  [
-   253.8,
-   -54.9
-  ],
-  [
-   261.3,
-   -68.1
-  ],
-  [
-   265.5,
-   -67.5
-  ],
-  [
-   277.5,
-   -66.6
-  ],
-  [
-   293.4,
-   -68.7
-  ],
-  [
-   276.9,
-   -74.1
-  ],
-  [
-   265.5,
-   -81.9
-  ],
-  [
    0.0,
    0.0
   ],
   [
-   0.0,
-   0.0
+   77.2,
+   -3.8
   ],
   [
-   0.0,
-   0.0
+   109.4,
+   -3.0
   ],
   [
-   0.0,
-   0.0
+   106.8,
+   -3.8
+  ],
+  [
+   96.6,
+   -3.2
+  ],
+  [
+   84.4,
+   -2.8
+  ],
+  [
+   153.6,
+   -1.4
+  ],
+  [
+   165.4,
+   -4.0
+  ],
+  [
+   164.0,
+   -14.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

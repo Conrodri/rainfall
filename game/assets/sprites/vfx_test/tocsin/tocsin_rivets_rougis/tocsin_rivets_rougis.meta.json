@@ -1,5 +1,5 @@
 {
- "source": "projectiles/bullet-tracer",
+ "source": "rainfall/tocsin-rivet",
  "opts": {
   "palette": [
    "#0d0704",
@@ -10,76 +10,67 @@
    "#FF7A1F",
    "#ffb06a"
   ],
-  "light": 0.4
+  "radius": 4,
+  "tail": 24,
+  "light": 1.0
  },
  "owner": "tocsin",
  "spell_id": "tocsin_rivets_rougis",
+ "scale": 2,
+ "ppu": 16,
+ "test_asset": true,
+ "usage": "projectile",
+ "usage_note": "Rivet chauffé au rouge : tête presque ronde (lisible raccourcie), courte traînée et suie ; vole vers +x.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 9,
+ "frames": 6,
  "frame_size": [
-  306,
-  62
+  78,
+  36
  ],
- "scale": 2,
- "offset": [
-  -127.0,
-  3.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -19.0,
+  0.0
+ ],
  "emission": "tocsin_rivets_rougis_e.tres",
- "light_k": 1.8,
+ "light_k": 1.0,
  "light_color": "#FF7A1F",
  "light_curve": [
+  0.911,
+  0.998,
+  0.817,
+  0.912,
   1.0,
-  0.989,
-  1.0,
-  0.992,
-  0.999,
-  0.987,
-  0.987,
-  0.99,
-  0.999
+  0.823
  ],
  "light_pos": [
   [
-   -21.2,
-   1.2
+   -4.8,
+   -1.0
   ],
   [
-   -21.2,
-   1.0
+   -4.4,
+   -1.0
   ],
   [
-   -22.0,
-   1.0
+   -5.0,
+   -1.0
   ],
   [
-   -20.8,
-   1.0
+   -4.6,
+   -1.0
   ],
   [
-   -20.2,
-   1.0
+   -4.4,
+   -1.0
   ],
   [
-   -20.8,
-   1.2
-  ],
-  [
-   -20.4,
-   1.2
-  ],
-  [
-   -20.6,
-   1.2
-  ],
-  [
-   -21.4,
-   1.2
+   -5.2,
+   -1.0
   ]
- ]
+ ],
+ "filter": "nearest",
+ "round": true
 }

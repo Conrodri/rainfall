@@ -1032,6 +1032,8 @@ func _launch_cring() -> void:
 	f.radius = P3_RING_FROM_U * U
 	e.get_parent().add_child(f)
 	f.global_position = e.position
+	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+		VfxSwap.spawn_at(e.get_parent(), "drowned_idol/cring_wave", e.position, Vector2.RIGHT, f)
 	_cring.append({"r": P3_RING_FROM_U * U, "node": f, "hit": false, "origin": e.position})
 	Audio.play(&"enemy.idol_carillon.heavy", e.global_position)
 

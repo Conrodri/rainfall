@@ -13,7 +13,7 @@ extends Node
 ##    accrochent des VfxTestPlayer sous les sprites d'origine cachés ; libération propre à leur mort.
 ## 6. effets permanents dessinés en code : orbes d'Ardent (Braises errantes, un effet par orbe), chaîne et chaîne
 ##    lestée d'Arpenteuse (effets répartis le long, chaîne cachée) ; interrupteur coupé : rien créé, recoupé : rendus ;
-## 7. Canonnier de crue (rivets poolés suivis + impact, Obus en vol, fumée de rechargement), Cèdre (traînée de
+## 7. Canonnier de crue (rivets poolés suivis + impact, Obus qui retombe, fumée de rechargement), Cèdre (traînée de
 ##    charge), Fondeur (coulée) ; interrupteur coupé : aucun effet sur les projectiles du pool.
 ## 8. caméra iso : visée vers le haut -> projectiles tournés par Iso.screen_angle, traînée / coulée / chaîne couchées
 ##    au sol (ground_dir, angle logique), segments posés en repère logique le long de la ligne ; billboards retournés.
@@ -499,15 +499,17 @@ func _test_enemy_fx() -> void:
 		VfxSwap.clear_trace()
 		pool.clear_all()
 		_check(not _traced("flood_gunner/rivet_hit", "enemy_projectile_hit"), "canonnier : clear_all ne pose aucun impact de rivet")
-		# Obus : vole du canon au cercle pendant l'armement
+		# Obus : retombe sur le cercle les 0,45 dernières secondes de l'armement (tween du boss)
 		var gb: Object = g.brain
 		gb.call(&"_start_shell", (pl.global_position - g.global_position).normalized(), pl.global_position)
+		_check(not _traced("flood_gunner/shell", "spawn_at"), "canonnier : Obus pas encore posé au début de l'armement")
+		await get_tree().create_timer(maxf(float(gb.get(&"_dur")) - 0.45, 0.0) + 0.1).timeout
 		_check(_traced("flood_gunner/shell", "spawn_at"), "canonnier : Obus -> flood_gunner/shell")
 		var shell_fx: VfxTestPlayer = null
 		for v in _players():
 			if v.key == "flood_gunner/shell":
 				shell_fx = v
-		_check(shell_fx != null and shell_fx.projection == "projectile" and shell_fx.follow == null, "canonnier : Obus de test en vol libre")
+		_check(shell_fx != null and shell_fx.projection == "billboard" and shell_fx.follow != null and shell_fx.follow.global_position.distance_to(gb.get(&"_shell_at")) < 2.0, "canonnier : Obus de test qui tombe, posé sur le cercle")
 		# Fumée de rechargement : tant que la Mitraille recharge (follow_while sur le boss)
 		VfxSwap.follow_while(g, "flood_gunner/reload_smoke", true, Vector2.RIGHT, 2.0)
 		var smoke: VfxTestPlayer = null
@@ -789,15 +791,15 @@ func _test_iso_dirs() -> void:
 	var up := Vector2.UP # visée logique vers le haut de l'écran
 	var sa := Iso.screen_angle(up)
 	_check(absf(sa) > 0.1, "iso : angle écran d'une visée vers le haut non nul (%.2f)" % sa)
-	# classe projectile (rivet, Obus, braises) : tournée par Iso.screen_angle dans l'espace billboard
+	# classe projectile (rivet, étincelles, braises) : tournée par Iso.screen_angle dans l'espace billboard
 	var h1 := Node2D.new()
 	root.add_child(h1)
 	var rv := VfxSwap.spawn_follow(h1, "flood_gunner/rivet", up)
 	_check(rv != null and rv.projection == "projectile" and _near_angle(rv.rot.rotation, sa), "iso : rivet vers le haut tourné (%.2f)" % (rv.rot.rotation if rv != null else 0.0))
-	var sh := VfxSwap.spawn_travel(root, "flood_gunner/shell", Vector2.ZERO, Vector2(0.0, -320.0), 1.0)
-	_check(sh != null and sh.projection == "projectile" and _near_angle(sh.rot.rotation, sa), "iso : Obus vers le haut tourné")
+	var sh := VfxSwap.spawn_travel(root, "smelter/sparks", Vector2.ZERO, Vector2(0.0, -320.0), 1.0)
+	_check(sh != null and sh.projection == "projectile" and _near_angle(sh.rot.rotation, sa), "iso : étincelle (spawn_travel) vers le haut tournée")
 	if sh != null:
-		_check(is_equal_approx(sh._range_px, 320.0) and is_equal_approx(sh._speed_px, 320.0), "iso : Obus arrive sur sa cible à l'heure (%.0f px, %.0f px/s)" % [sh._range_px, sh._speed_px])
+		_check(is_equal_approx(sh._range_px, 320.0) and is_equal_approx(sh._speed_px, 320.0), "iso : étincelle arrive sur sa cible à l'heure (%.0f px, %.0f px/s)" % [sh._range_px, sh._speed_px])
 	var orb_owner := Node2D.new()
 	root.add_child(orb_owner)
 	var orbs: Array[Vector2] = [Vector2(100.0, 0.0)] # orbe à droite du centre : tangente vers le bas (sens horaire écran)
@@ -829,7 +831,7 @@ func _test_iso_dirs() -> void:
 		_check(gp.is_equal_approx(Vector2(0.0, -128.0 * i)), "iso : tuile %d posée bout à bout sur la ligne logique (%s)" % [i, gp])
 		_check(f != null and is_equal_approx(f.line_px, 128.0), "iso : tuile de 2 u")
 	# billboards (impact de rivet, fumée, chaîne lestée) : face caméra, retournés vers la gauche
-	_check(rv != null and is_equal_approx(rv.rot.scale.x, 0.5) and is_equal_approx(rv.rot.scale.y, 1.0), "iso : rivet vers le haut raccourci de moitié par la perspective")
+	_check(rv != null and is_equal_approx(rv.rot.scale.x, 1.0) and is_equal_approx(rv.rot.scale.y, 1.0), "iso : rivet (tête ronde) vers le haut jamais aplati")
 	var hit := VfxSwap.spawn_at(root, "flood_gunner/rivet_hit", Vector2.ZERO, Vector2.LEFT)
 	_check(hit != null and hit.projection == "ground" and hit.space.scale == Vector2.ONE, "iso : impact de rivet à plat au sol (vu de dessus)")
 	var h3 := Node2D.new()

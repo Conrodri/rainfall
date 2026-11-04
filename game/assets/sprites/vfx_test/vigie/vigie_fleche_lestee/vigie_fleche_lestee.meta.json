@@ -1,0 +1,74 @@
+{
+ "source": "rainfall/vigie-arrow-kind",
+ "opts": {
+  "palette": [
+   "#0c0507",
+   "#1c0a0e",
+   "#35121a",
+   "#6a1b2a",
+   "#B02438",
+   "#FF3A4F",
+   "#FF8C98"
+  ],
+  "kind": 2,
+  "light": 1.0
+ },
+ "owner": "vigie",
+ "spell_id": "vigie_fleche_lestee",
+ "scale": 2,
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 6,
+ "frame_size": [
+  80,
+  32
+ ],
+ "node_scale": 1,
+ "offset": [
+  -18.0,
+  0.0
+ ],
+ "emission": "vigie_fleche_lestee_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF3A4F",
+ "light_curve": [
+  1.0,
+  1.0,
+  1.0,
+  1.0,
+  1.0,
+  1.0
+ ],
+ "light_pos": [
+  [
+   -3.4,
+   -1.0
+  ],
+  [
+   -3.4,
+   -1.0
+  ],
+  [
+   -3.4,
+   -1.0
+  ],
+  [
+   -3.4,
+   -1.0
+  ],
+  [
+   -3.4,
+   -1.0
+  ],
+  [
+   -3.4,
+   -1.0
+  ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "ppu": 32,
+ "usage": "projectile",
+ "usage_note": "Flèche lestée en vol vers +x (Filet, Chausse-trapes) : ballot de filet et deux plombs ; boucle."
+}

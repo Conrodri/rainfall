@@ -1,0 +1,140 @@
+{
+ "source": "rainfall/drowned_idol-ring-steady",
+ "opts": {
+  "palette": [
+   "#070D12",
+   "#0D1A22",
+   "#16303F",
+   "#2a4a5a",
+   "#35596C",
+   "#3E86A8",
+   "#5EC8FF",
+   "#A8E6FF"
+  ],
+  "r0": 30,
+  "r1": 90,
+  "run": 1.0,
+  "band": 10,
+  "echo": 0.45,
+  "light": 1.0
+ },
+ "owner": "drowned_idol",
+ "spell_id": "cring_wave",
+ "scale": 2,
+ "test_asset": true,
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 18,
+ "frame_size": [
+  364,
+  360
+ ],
+ "node_scale": 1,
+ "offset": [
+  -2.0,
+  0.0
+ ],
+ "emission": "cring_wave_e.tres",
+ "light_k": 1.0,
+ "light_color": "#5EC8FF",
+ "light_curve": [
+  1.0,
+  0.881,
+  0.598,
+  0.345,
+  0.298,
+  0.326,
+  0.354,
+  0.383,
+  0.411,
+  0.437,
+  0.465,
+  0.495,
+  0.52,
+  0.54,
+  0.554,
+  0.577,
+  0.221,
+  0.0
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -0.8
+  ],
+  [
+   -1.0,
+   -0.8
+  ],
+  [
+   -1.0,
+   -0.8
+  ],
+  [
+   -0.6,
+   -0.2
+  ],
+  [
+   -0.4,
+   -0.0
+  ],
+  [
+   -0.8,
+   -0.2
+  ],
+  [
+   -0.8,
+   -0.6
+  ],
+  [
+   -0.4,
+   -0.6
+  ],
+  [
+   -0.4,
+   -0.4
+  ],
+  [
+   -0.6,
+   -0.6
+  ],
+  [
+   -0.4,
+   -0.6
+  ],
+  [
+   -0.6,
+   -0.4
+  ],
+  [
+   -1.2,
+   -0.4
+  ],
+  [
+   -2.0,
+   -0.2
+  ],
+  [
+   -1.6,
+   -1.2
+  ],
+  [
+   -2.4,
+   -0.8
+  ],
+  [
+   -2.6,
+   -0.8
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ],
+ "filter": "nearest",
+ "ppu": 10,
+ "usage": "ground_oneshot",
+ "radius_u": 9.0,
+ "usage_note": "Anneau continu de l'idole vu de dessus : de 3 u à 9 u en 1 s, bande 1 u, centré sur l'idole."
+}

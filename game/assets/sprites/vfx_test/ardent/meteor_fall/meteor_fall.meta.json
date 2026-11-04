@@ -1,0 +1,106 @@
+{
+ "source": "rainfall/ardent-meteor-fall",
+ "opts": {
+  "palette": [
+   "#0d0504",
+   "#1f0b06",
+   "#3a1a10",
+   "#6b3a26",
+   "#a8481a",
+   "#FF7319",
+   "#ffa35a"
+  ]
+ },
+ "owner": "ardent",
+ "spell_id": "meteor_fall",
+ "scale": 2,
+ "test_asset": true,
+ "ppu": 26,
+ "usage_note": "Chute d'un météore (0,8 s, durée du télégraphe) qui arrive sur le pivot à la fin : roche en feu venue du haut à gauche (~6,5 u plus haut), traîne de feu et de fumée, ombre qui grandit au sol ; billboard, posé au point d'impact.",
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 13,
+ "frame_size": [
+  204,
+  408
+ ],
+ "node_scale": 1,
+ "offset": [
+  -68.0,
+  -176.0
+ ],
+ "emission": "meteor_fall_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF7319",
+ "light_curve": [
+  0.0,
+  0.001,
+  0.004,
+  0.012,
+  0.023,
+  0.035,
+  0.049,
+  0.413,
+  0.497,
+  0.63,
+  0.806,
+  1.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   -149.0,
+   -337.0
+  ],
+  [
+   -149.0,
+   -337.0
+  ],
+  [
+   -149.0,
+   -337.0
+  ],
+  [
+   -149.0,
+   -337.0
+  ],
+  [
+   -146.8,
+   -332.0
+  ],
+  [
+   -126.6,
+   -286.2
+  ],
+  [
+   -136.0,
+   -308.2
+  ],
+  [
+   -112.6,
+   -254.4
+  ],
+  [
+   -83.4,
+   -188.4
+  ],
+  [
+   -54.4,
+   -122.2
+  ],
+  [
+   -23.6,
+   -52.6
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ],
+ "filter": "nearest"
+}

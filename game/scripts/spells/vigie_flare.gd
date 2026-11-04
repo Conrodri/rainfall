@@ -24,6 +24,11 @@ var _light: LightRig.Handle = null
 var _outline: ZoneOutline = null
 
 
+## Taille du modèle de la fusée (la planche fait ~2,7 u de haut à l'échelle 1, plus grande que Vigie) : échelle des
+## sprites iso (Iso.SPRITE_K) × 0,6 -> ~1,1 u. N'agit que sur le visuel ; la lumière et le rayon de jeu ne changent pas.
+const VISUAL_K := Iso.SPRITE_K * 0.6
+
+
 func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, accent: Color) -> void:
 	global_position = at
 	radius = radius_px
@@ -35,7 +40,7 @@ func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, ac
 		if frames != null and frames.has_animation(&"default"):
 			var bb := Node2D.new()
 			bb.name = "Billboard"
-			bb.scale = Iso.UNSQUASH
+			bb.scale = Iso.UNSQUASH * VISUAL_K
 			bb.z_index = 1
 			add_child(bb)
 			_bb = bb
@@ -54,7 +59,7 @@ func setup(at: Vector2, radius_px: float, life_s: float, frames_path: String, ac
 ## Agrandit le visuel (Tir de signal : fusée x1,5) ; la lumière et le rayon de jeu restent ceux de setup.
 func set_visual_scale(k: float) -> void:
 	if _bb != null:
-		_bb.scale = Iso.UNSQUASH * k
+		_bb.scale = Iso.UNSQUASH * VISUAL_K * k
 
 
 func is_ending() -> bool:

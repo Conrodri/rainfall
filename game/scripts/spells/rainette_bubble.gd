@@ -53,6 +53,7 @@ static func clear_all() -> void:
 
 ## Gobe les monstres du point d'éclatement (appelé par le kit une fois la bulle posée).
 func capture() -> void:
+	VfxSwap.spawn_at(get_parent(), "rainette/rainette_bulle", global_position, Vector2.RIGHT, self, {"radius_u": catch_px / Balance.UNIT_PX}) # mode test : bulle de test, dessin caché (scripts/testmode/vfx_swap.gd)
 	for e in get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or (e as Node2D).global_position.distance_to(global_position) > catch_px \
 				or not StageMap.los(get_tree(), global_position, (e as Node2D).global_position):

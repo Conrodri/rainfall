@@ -2,62 +2,68 @@
  "ardent/brasier": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 12.0,
+  "size_u": 13.5,
   "light_height_u": 1.0
  },
  "ardent/cendres": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 9.1,
+  "size_u": 4.545,
   "light_height_u": 0.3
  },
  "ardent/eclat_de_braise": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 1.3,
+  "size_u": 2.1,
   "light_height_u": 0.5
  },
  "ardent/flame_pillar": {
   "projection": "billboard",
-  "particles": "burst",
-  "size_u": 2.4,
+  "particles": "embers",
+  "size_u": 4.079,
   "light_height_u": 2.0
  },
  "ardent/meteor_rain": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 4.0,
+  "size_u": 2.346,
   "light_height_u": 1.0
  },
  "ardent/nova_ardente": {
-  "projection": "ground",
+  "projection": "billboard",
   "particles": "burst",
-  "size_u": 7.0,
-  "light_height_u": 0.3
+  "size_u": 8.062,
+  "light_height_u": 0.5
  },
  "ardent/phoenix": {
   "projection": "billboard",
   "particles": "trail",
-  "size_u": 3.2,
+  "size_u": 2.773,
   "light_height_u": 0.8
+ },
+ "ardent/phoenix_bolt": {
+  "projection": "projectile",
+  "particles": "trail",
+  "size_u": 1.94,
+  "light_height_u": 0.6
  },
  "ardent/roaming_embers": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 3.62,
+  "size_u": 1.3,
   "light_height_u": 0.5
  },
  "arpenteuse/arpenteuse_boucle": {
-  "projection": "ground",
-  "particles": "burst",
-  "size_u": 4.5,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.3
  },
  "arpenteuse/arpenteuse_cerceau": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "embers",
-  "size_u": 3.0,
-  "light_height_u": 1.2
+  "size_u": 7.688,
+  "light_height_u": 0.4
  },
  "arpenteuse/arpenteuse_chaine": {
   "projection": "ground_dir",
@@ -66,51 +72,51 @@
   "light_height_u": 0.5
  },
  "arpenteuse/arpenteuse_chaine_lestee": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 3.9,
-  "light_height_u": 0.4
- },
- "arpenteuse/arpenteuse_jalons": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 4.0,
-  "light_height_u": 1.0
- },
- "arpenteuse/arpenteuse_noeud": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 4.0,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.5
  },
- "arpenteuse/arpenteuse_piquet": {
-  "projection": "billboard",
+ "arpenteuse/arpenteuse_jalons": {
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 2.5,
-  "light_height_u": 0.6
+  "size_u": 2.875,
+  "light_height_u": 0.4
+ },
+ "arpenteuse/arpenteuse_noeud": {
+  "projection": "ground",
+  "particles": "burst",
+  "size_u": 4.375,
+  "light_height_u": 0.4
+ },
+ "arpenteuse/arpenteuse_piquet": {
+  "projection": "ground",
+  "particles": "burst",
+  "size_u": 2.875,
+  "light_height_u": 0.4
  },
  "arpenteuse/arpenteuse_tendeur": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 6.0,
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.3
  },
  "avare/avare_coffre_belier": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "burst",
-  "size_u": 4.4,
+  "size_u": 5.062,
   "light_height_u": 0.4
  },
  "avare/avare_coup_de_coffre": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "burst",
-  "size_u": 5.2,
+  "size_u": 3.812,
   "light_height_u": 0.5
  },
  "avare/avare_faillite": {
-  "projection": "ground",
+  "projection": "billboard",
   "particles": "burst",
-  "size_u": 10.0,
+  "size_u": 10.062,
   "light_height_u": 0.6
  },
  "avare/avare_piece_truquee": {
@@ -124,84 +130,84 @@
   "light_height_u": 0.4
  },
  "avare/avare_rancon": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 6.0,
-  "light_height_u": 0.3
+  "projection": "ground",
+  "particles": "burst",
+  "size_u": 6.062,
+  "light_height_u": 0.4
  },
  "avare/avare_saisie": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 5.0,
-  "light_height_u": 0.3
+  "particles": "burst",
+  "size_u": 5.062,
+  "light_height_u": 0.4
  },
  "avare/avare_tresor_enterre": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 10.0,
+  "size_u": 10.062,
   "light_height_u": 0.6
  },
  "averse/averse_bruine": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 1.8,
-  "light_height_u": 0.5
+  "size_u": 1.3,
+  "light_height_u": 0.4
  },
  "averse/averse_geyser": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 4.0,
+  "size_u": 4.312,
   "light_height_u": 1.5
  },
  "averse/averse_gouttiere": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 6.0,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.2
  },
  "averse/averse_mousson": {
   "projection": "billboard",
   "particles": "none",
-  "size_u": 10.0,
+  "size_u": 10.167,
   "light_height_u": 1.0
  },
  "averse/crue": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 11.6,
+  "size_u": 14.833,
   "light_height_u": 0.4
  },
  "averse/flaque_miroir": {
-  "projection": "billboard",
-  "particles": "embers",
+  "projection": "ground",
+  "particles": "none",
   "size_u": 6.0,
   "light_height_u": 0.2
  },
  "averse/goutte_lame": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 2.4,
+  "size_u": 1.7,
   "light_height_u": 0.4
  },
  "averse/vague": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "burst",
-  "size_u": 6.0,
-  "light_height_u": 0.5
+  "size_u": 7.0,
+  "light_height_u": 0.4
  },
  "bourbe/bourbe_bouture": {
   "alias": "bourbe/detacher"
  },
  "bourbe/bourbe_crachat_de_vase": {
-  "projection": "projectile",
-  "particles": "trail",
-  "size_u": 1.3,
-  "light_height_u": 0.5
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 1.68,
+  "light_height_u": 0.4
  },
  "bourbe/bourbe_eclatement": {
   "projection": "billboard",
-  "particles": "burst",
-  "size_u": 3.9,
+  "particles": "none",
+  "size_u": 3.667,
   "light_height_u": 0.6
  },
  "bourbe/bourbe_maree_de_vase": {
@@ -217,21 +223,21 @@
   "light_height_u": 0.3
  },
  "bourbe/detacher": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 5.0,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 2.05,
   "light_height_u": 0.3
  },
  "bourbe/gifle_de_vase": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 5.2,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 4.05,
   "light_height_u": 0.5
  },
  "bourbe/rappel": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 3.2,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 12.25,
   "light_height_u": 0.4
  },
  "cerf/auto": {
@@ -241,10 +247,10 @@
   "light_height_u": 0.5
  },
  "cerf/charge_trail": {
-  "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 7.0,
-  "light_height_u": 0.3
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 1.1,
+  "light_height_u": 0.4
  },
  "cerf/ground_mist": {
   "projection": "ground",
@@ -267,26 +273,26 @@
  "crane/auto": {
   "projection": "ground_dir",
   "particles": "none",
-  "size_u": 6.0,
-  "light_height_u": 0.6
+  "size_u": 7.083,
+  "light_height_u": 0.3
  },
  "crane/container_impact": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 3.8,
+  "size_u": 3.75,
   "light_height_u": 0.4
  },
  "crane/sweep": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 14.0,
+  "particles": "none",
+  "size_u": 14.467,
   "light_height_u": 0.3
  },
  "crystal_mother/lamp_glow": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "embers",
-  "size_u": 1.5,
-  "light_height_u": 1.2
+  "size_u": 5.25,
+  "light_height_u": 0.4
  },
  "crystal_mother/prism_beam": {
   "projection": "ground_dir",
@@ -297,14 +303,14 @@
  "crystal_mother/reflect_burst": {
   "projection": "ground",
   "particles": "burst",
-  "size_u": 4.0,
+  "size_u": 4.15,
   "light_height_u": 0.4
  },
  "crystal_mother/shard": {
   "projection": "projectile",
-  "particles": "trail",
-  "size_u": 2.0,
-  "light_height_u": 0.6
+  "particles": "none",
+  "size_u": 1.8,
+  "light_height_u": 0.5
  },
  "crystal_mother/stalactite": {
   "projection": "billboard",
@@ -313,22 +319,22 @@
   "light_height_u": 1.5
  },
  "deep_eel/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 3.5,
-  "light_height_u": 0.5
+  "size_u": 3.083,
+  "light_height_u": 0.3
  },
  "deep_eel/black_pool": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 7.0,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 12.062,
   "light_height_u": 0.2
  },
  "deep_eel/discharge_ring": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
   "size_u": 12.0,
-  "light_height_u": 0.8
+  "light_height_u": 0.3
  },
  "deep_eel/emerge_splash": {
   "projection": "billboard",
@@ -338,51 +344,51 @@
  },
  "deep_eel/whip": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 7.0,
-  "light_height_u": 0.4
+  "particles": "none",
+  "size_u": 7.375,
+  "light_height_u": 0.3
  },
  "drowned_idol/auto": {
   "projection": "ground_dir",
   "particles": "none",
-  "size_u": 4.5,
-  "light_height_u": 0.6
+  "size_u": 5.75,
+  "light_height_u": 0.5
  },
  "drowned_idol/carillon_ring": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 5.0,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 17.0,
   "light_height_u": 0.4
  },
  "drowned_idol/chaplet_circle": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 2.6,
-  "light_height_u": 1.5
+  "size_u": 3.9,
+  "light_height_u": 1.0
  },
  "drowned_idol/noria_wheel": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 3.8,
-  "light_height_u": 0.3
+  "projection": "ground_dir",
+  "particles": "trail",
+  "size_u": 18.25,
+  "light_height_u": 0.4
  },
  "drowned_idol/prayer_flood": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "embers",
-  "size_u": 18.0,
+  "size_u": 5.188,
   "light_height_u": 0.2
  },
  "eclusier/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 3.8,
-  "light_height_u": 0.5
+  "size_u": 4.25,
+  "light_height_u": 0.4
  },
  "eclusier/geyser": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 2.5,
-  "light_height_u": 1.5
+  "size_u": 3.0,
+  "light_height_u": 1.2
  },
  "eclusier/ground_water": {
   "projection": "ground_dir",
@@ -397,10 +403,10 @@
   "light_height_u": 0.6
  },
  "eclusier/wheel": {
-  "projection": "ground",
-  "particles": "embers",
-  "size_u": 14.0,
-  "light_height_u": 0.2
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 2.544,
+  "light_height_u": 0.3
  },
  "flood_gunner/reload_smoke": {
   "projection": "billboard",
@@ -417,19 +423,19 @@
  "flood_gunner/rivet_hit": {
   "projection": "ground",
   "particles": "none",
-  "size_u": 3.08,
+  "size_u": 1.4,
   "light_height_u": 0.4
  },
  "flood_gunner/shell": {
-  "projection": "projectile",
-  "particles": "trail",
-  "size_u": 1.9,
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 2.458,
   "light_height_u": 0.8
  },
  "flood_gunner/shell_crater": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 7.2,
+  "size_u": 7.75,
   "light_height_u": 0.6
  },
  "flood_gunner/volley_cone": {
@@ -441,13 +447,13 @@
  "hermit_cedar/auto": {
   "projection": "ground_dir",
   "particles": "none",
-  "size_u": 4.0,
+  "size_u": 3.438,
   "light_height_u": 0.5
  },
  "hermit_cedar/charge_trail": {
   "projection": "ground_dir",
   "particles": "trail",
-  "size_u": 12.0,
+  "size_u": 1.922,
   "light_height_u": 0.3
  },
  "hermit_cedar/root_spike": {
@@ -457,21 +463,21 @@
   "light_height_u": 0.4
  },
  "hermit_cedar/spore_cloud": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "embers",
-  "size_u": 5.0,
+  "size_u": 4.25,
   "light_height_u": 0.4
  },
  "jar_bearer/jar_shatter": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 2.4,
-  "light_height_u": 0.5
+  "size_u": 2.25,
+  "light_height_u": 0.6
  },
  "jar_bearer/mother_jar_blast": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 10.0,
+  "size_u": 10.875,
   "light_height_u": 0.4
  },
  "jar_bearer/orbit": {
@@ -481,15 +487,15 @@
   "light_height_u": 0.8
  },
  "jar_bearer/puddle": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 3.2,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.2
  },
  "morfil/aiguisage": {
   "projection": "billboard",
-  "particles": "burst",
-  "size_u": 3.4,
+  "particles": "none",
+  "size_u": 1.833,
   "light_height_u": 0.8
  },
  "morfil/fauche_lune": {
@@ -499,46 +505,46 @@
   "light_height_u": 0.5
  },
  "morfil/lames_jumelles": {
-  "projection": "billboard",
-  "particles": "trail",
-  "size_u": 5.0,
-  "light_height_u": 0.6
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 6.0,
+  "light_height_u": 0.5
  },
  "morfil/morfil_affutage_en_marche": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 2.0,
+  "size_u": 1.917,
   "light_height_u": 0.8
  },
  "morfil/morfil_fendoir": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 5.0,
-  "light_height_u": 0.6
+  "particles": "none",
+  "size_u": 6.25,
+  "light_height_u": 0.4
  },
  "morfil/morfil_taille_lente": {
-  "projection": "billboard",
-  "particles": "burst",
-  "size_u": 3.8,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 3.125,
   "light_height_u": 0.5
  },
  "morfil/morfil_trempe": {
   "projection": "ground",
-  "particles": "embers",
-  "size_u": 2.88,
-  "light_height_u": 0.8
+  "particles": "none",
+  "size_u": 5.875,
+  "light_height_u": 0.5
  },
  "morfil/taille_estoc": {
-  "projection": "billboard",
-  "particles": "trail",
-  "size_u": 5.6,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 6.438,
   "light_height_u": 0.5
  },
  "morfil/taille_estoc_thrust": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 4.7,
-  "light_height_u": 0.6
+  "particles": "none",
+  "size_u": 5.0,
+  "light_height_u": 0.5
  },
  "ox_herder/auto": {
   "projection": "ground_dir",
@@ -547,28 +553,28 @@
   "light_height_u": 0.4
  },
  "ox_herder/dust_burst": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 5.0,
+  "size_u": 4.727,
   "light_height_u": 0.3
  },
  "ox_herder/furrow": {
   "projection": "ground_dir",
-  "particles": "trail",
-  "size_u": 8.0,
+  "particles": "none",
+  "size_u": 2.0,
   "light_height_u": 0.2
  },
  "ox_herder/stomp_ring": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 12.0,
+  "size_u": 12.75,
   "light_height_u": 0.4
  },
  "rain_sower/auto": {
   "projection": "ground_dir",
   "particles": "none",
-  "size_u": 5.5,
-  "light_height_u": 0.5
+  "size_u": 6.429,
+  "light_height_u": 0.3
  },
  "rain_sower/cross_beam": {
   "projection": "ground_dir",
@@ -591,13 +597,13 @@
  "rain_sower/rain_column": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 9.0,
+  "size_u": 3.2,
   "light_height_u": 2.0
  },
  "rain_sower/splash": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 3.2,
+  "projection": "ground",
+  "particles": "burst",
+  "size_u": 3.25,
   "light_height_u": 0.2
  },
  "rain_sower/wave_front": {
@@ -608,44 +614,44 @@
  },
  "rainette/rainette_bulle": {
   "projection": "billboard",
-  "particles": "trail",
-  "size_u": 5.0,
-  "light_height_u": 0.5
+  "particles": "none",
+  "size_u": 5.125,
+  "light_height_u": 1.2
  },
  "rainette/rainette_chant_de_crue": {
   "projection": "billboard",
-  "particles": "embers",
-  "size_u": 6.0,
-  "light_height_u": 0.8
+  "particles": "burst",
+  "size_u": 7.188,
+  "light_height_u": 0.5
  },
  "rainette/rainette_choeur": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 5.0,
-  "light_height_u": 0.3
+  "size_u": 7.75,
+  "light_height_u": 0.4
  },
  "rainette/rainette_croassement": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 5.0,
-  "light_height_u": 0.6
+  "size_u": 6.0,
+  "light_height_u": 0.4
  },
  "rainette/rainette_gluant": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 1.8,
+  "size_u": 1.625,
   "light_height_u": 0.5
  },
  "rainette/rainette_gluant_flaque": {
-  "projection": "billboard",
-  "particles": "embers",
-  "size_u": 5.0,
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 4.438,
   "light_height_u": 0.2
  },
  "rainette/rainette_grand_saut": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 6.0,
+  "size_u": 6.812,
   "light_height_u": 0.4
  },
  "rainette/rainette_langue": {
@@ -657,14 +663,14 @@
  "rainette/rainette_ricochet": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 5.0,
+  "size_u": 7.062,
   "light_height_u": 0.4
  },
  "recluse/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 3.2,
-  "light_height_u": 0.5
+  "size_u": 3.75,
+  "light_height_u": 0.3
  },
  "recluse/bell_wave": {
   "projection": "ground",
@@ -676,7 +682,7 @@
   "projection": "billboard",
   "particles": "burst",
   "size_u": 2.0,
-  "light_height_u": 1.5
+  "light_height_u": 1.0
  },
  "recluse/ray": {
   "projection": "ground_dir",
@@ -685,28 +691,28 @@
   "light_height_u": 0.8
  },
  "recluse/silence_mark": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "none",
-  "size_u": 1.2,
-  "light_height_u": 1.2
+  "size_u": 1.75,
+  "light_height_u": 0.3
  },
  "rictus/couteau_ficele": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 2.0,
+  "size_u": 2.231,
   "light_height_u": 0.5
  },
  "rictus/dagues_demi_lune": {
   "projection": "ground_dir",
   "particles": "trail",
-  "size_u": 7.8,
+  "size_u": 4.25,
   "light_height_u": 0.4
  },
  "rictus/doublures": {
-  "projection": "ground",
+  "projection": "billboard",
   "particles": "burst",
-  "size_u": 4.8,
-  "light_height_u": 0.8
+  "size_u": 5.242,
+  "light_height_u": 0.6
  },
  "rictus/rictus_eventail": {
   "alias": "rictus/couteau_ficele"
@@ -714,55 +720,55 @@
  "rictus/rictus_main_du_montreur": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 3.5,
-  "light_height_u": 0.4
+  "size_u": 3.691,
+  "light_height_u": 0.5
  },
  "rictus/rictus_rideau": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "embers",
-  "size_u": 2.5,
-  "light_height_u": 1.0
+  "size_u": 1.0,
+  "light_height_u": 0.8
  },
  "rictus/rictus_saccade": {
   "projection": "ground_dir",
   "particles": "trail",
-  "size_u": 9.0,
+  "size_u": 6.875,
   "light_height_u": 0.4
  },
  "rictus/rictus_toupie": {
-  "projection": "projectile",
+  "projection": "ground",
   "particles": "trail",
-  "size_u": 3.8,
+  "size_u": 4.777,
   "light_height_u": 0.4
  },
  "salt_king/crust_burst": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 2.5,
+  "size_u": 4.2,
   "light_height_u": 0.6
  },
  "salt_king/edict_ring": {
   "projection": "ground",
   "particles": "burst",
-  "size_u": 17.18,
+  "size_u": 17.182,
   "light_height_u": 0.4
  },
  "salt_king/procession_tide": {
   "projection": "ground_dir",
-  "particles": "burst",
-  "size_u": 10.333,
-  "light_height_u": 0.6
+  "particles": "none",
+  "size_u": 17.833,
+  "light_height_u": 0.4
  },
  "salt_king/scepter": {
   "projection": "ground_dir",
   "particles": "none",
-  "size_u": 5.0,
-  "light_height_u": 0.6
+  "size_u": 4.812,
+  "light_height_u": 0.3
  },
  "smelter/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 3.8,
+  "size_u": 3.292,
   "light_height_u": 0.3
  },
  "smelter/molten_arc": {
@@ -779,21 +785,21 @@
  },
  "smelter/sparks": {
   "projection": "projectile",
-  "particles": "trail",
-  "size_u": 1.3,
-  "light_height_u": 0.5
+  "particles": "none",
+  "size_u": 1.708,
+  "light_height_u": 0.4
  },
  "sonneur/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 3.8,
-  "light_height_u": 0.5
+  "size_u": 3.292,
+  "light_height_u": 0.3
  },
  "sonneur/bolt_rain": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 2.5,
-  "light_height_u": 1.0
+  "size_u": 2.792,
+  "light_height_u": 0.5
  },
  "sonneur/glas_wave": {
   "projection": "ground",
@@ -808,45 +814,45 @@
   "light_height_u": 2.0
  },
  "sonneur/steam_jet": {
-  "projection": "projectile",
-  "particles": "trail",
-  "size_u": 6.0,
-  "light_height_u": 0.5
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 7.167,
+  "light_height_u": 0.3
  },
  "tocsin/tocsin_bras_pilier": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 4.4,
-  "light_height_u": 1.2
+  "size_u": 4.903,
+  "light_height_u": 1.0
  },
  "tocsin/tocsin_coup_de_tocsin": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 6.0,
-  "light_height_u": 0.8
+  "size_u": 6.5,
+  "light_height_u": 0.6
  },
  "tocsin/tocsin_rivets_rougis": {
   "projection": "projectile",
   "particles": "trail",
-  "size_u": 1.9,
+  "size_u": 1.755,
   "light_height_u": 0.5
  },
  "tocsin/tocsin_tete_cloche": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 8.0,
-  "light_height_u": 0.6
+  "size_u": 10.562,
+  "light_height_u": 0.8
  },
  "tocsin/tocsin_tete_fumigene": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 9.2,
+  "size_u": 8.125,
   "light_height_u": 0.4
  },
  "tocsin/tocsin_vapeur": {
-  "projection": "projectile",
+  "projection": "ground_dir",
   "particles": "trail",
-  "size_u": 3.0,
+  "size_u": 4.25,
   "light_height_u": 0.5
  },
  "vigie/vigie_chausse_trapes": {
@@ -858,32 +864,32 @@
  "vigie/vigie_fanal": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 2.5,
-  "light_height_u": 1.5
+  "size_u": 6.125,
+  "light_height_u": 1.0
  },
  "vigie/vigie_filet": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 6.0,
+  "size_u": 6.5,
   "light_height_u": 0.3
  },
  "vigie/vigie_fusee": {
   "projection": "billboard",
   "particles": "embers",
-  "size_u": 3.8,
-  "light_height_u": 1.0
+  "size_u": 6.125,
+  "light_height_u": 0.6
  },
  "vigie/vigie_grele": {
   "projection": "billboard",
-  "particles": "burst",
-  "size_u": 9.0,
-  "light_height_u": 1.5
+  "particles": "embers",
+  "size_u": 9.125,
+  "light_height_u": 1.0
  },
  "vigie/vigie_tir_de_signal": {
   "projection": "billboard",
   "particles": "burst",
-  "size_u": 9.1,
-  "light_height_u": 0.5
+  "size_u": 7.312,
+  "light_height_u": 0.6
  },
  "vigie/vigie_tir_double": {
   "alias": "vigie/vigie_trait"
@@ -901,16 +907,16 @@
   "light_height_u": 0.5
  },
  "weaver/auto": {
-  "projection": "billboard",
+  "projection": "ground_dir",
   "particles": "none",
-  "size_u": 4.2,
+  "size_u": 3.0,
   "light_height_u": 0.5
  },
  "weaver/drop_dust": {
-  "projection": "billboard",
+  "projection": "ground",
   "particles": "burst",
-  "size_u": 3.8,
-  "light_height_u": 0.5
+  "size_u": 3.708,
+  "light_height_u": 0.4
  },
  "weaver/thread": {
   "projection": "ground_dir",
@@ -919,9 +925,9 @@
   "light_height_u": 0.5
  },
  "weaver/web_ring": {
-  "projection": "ground",
-  "particles": "burst",
-  "size_u": 12.0,
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 12.5,
   "light_height_u": 0.4
  },
  "rain_sower/flood_water": {
@@ -929,5 +935,119 @@
   "light_height_u": 0.2,
   "projection": "ground",
   "size_u": 12.06
+ },
+ "vigie/vigie_fleche_fusee": {
+  "projection": "projectile",
+  "particles": "trail",
+  "size_u": 1.438,
+  "light_height_u": 0.5
+ },
+ "vigie/vigie_fleche_lestee": {
+  "projection": "projectile",
+  "particles": "trail",
+  "size_u": 1.25,
+  "light_height_u": 0.4
+ },
+ "vigie/vigie_signal_lueur": {
+  "projection": "billboard",
+  "particles": "embers",
+  "size_u": 7.125,
+  "light_height_u": 0.6
+ },
+ "morfil/morfil_trempe_aura": {
+  "projection": "ground",
+  "particles": "embers",
+  "size_u": 2.875,
+  "light_height_u": 0.8
+ },
+ "ardent/meteor_fall": {
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 3.923,
+  "light_height_u": 3.0
+ },
+ "bourbe/bourbe_crachat_glob": {
+  "projection": "projectile",
+  "particles": "none",
+  "size_u": 1.083,
+  "light_height_u": 0.5
+ },
+ "tocsin/tocsin_vapeur_ring": {
+  "projection": "ground",
+  "particles": "trail",
+  "size_u": 5.312,
+  "light_height_u": 0.5
+ },
+ "eclusier/ground_geyser": {
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 1.958,
+  "light_height_u": 0.2
+ },
+ "ox_herder/mud_wave": {
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 2.0,
+  "light_height_u": 0.2
+ },
+ "drowned_idol/cring_wave": {
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 18.2,
+  "light_height_u": 0.4
+ },
+ "cerf/wisp": {
+  "projection": "billboard",
+  "particles": "trail",
+  "size_u": 1.5,
+  "light_height_u": 0.6
+ },
+ "avare/avare_saisie_chaine": {
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 5.688,
+  "light_height_u": 0.4
+ },
+ "ardent/phoenix_dive": {
+  "projection": "ground_dir",
+  "particles": "none",
+  "size_u": 3.688,
+  "light_height_u": 0.2
+ },
+ "rain_sower/whirl": {
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 7.312,
+  "light_height_u": 0.3
+ },
+ "sonneur/strike_ring": {
+  "projection": "ground",
+  "particles": "burst",
+  "size_u": 4.125,
+  "light_height_u": 0.3
+ },
+ "sonneur/steam_plume": {
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 1.812,
+  "light_height_u": 0.6
+ },
+ "recluse/prayer_glyph": {
+  "projection": "ground",
+  "particles": "none",
+  "size_u": 2.0,
+  "light_height_u": 0.2
+ },
+ "crystal_mother/orbit_shard": {
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 0.9,
+  "light_height_u": 0.8
+ },
+ "rain_sower/raindrop": {
+  "projection": "billboard",
+  "particles": "none",
+  "size_u": 1.125,
+  "light_height_u": 0.5
  }
 }

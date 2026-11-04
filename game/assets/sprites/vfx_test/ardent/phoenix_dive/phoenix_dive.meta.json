@@ -1,0 +1,114 @@
+{
+ "source": "rainfall/ardent-fire-streak",
+ "opts": {
+  "palette": [
+   "#0d0504",
+   "#1f0b06",
+   "#3a1a10",
+   "#6b3a26",
+   "#a8481a",
+   "#FF7319",
+   "#ffa35a"
+  ]
+ },
+ "owner": "ardent",
+ "spell_id": "phoenix_dive",
+ "scale": 2,
+ "test_asset": true,
+ "ppu": 16,
+ "usage": "line_from_pivot",
+ "line_u": 3.0,
+ "width_u": 1.0,
+ "usage_note": "Sillon de feu du piqué du Phénix vu de dessus, du pivot vers +x sur 3 u, 1 u de large : couture chauffée à blanc qui file, fleurs de flammes, puis braises qui refroidissent.",
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 14,
+ "frame_size": [
+  118,
+  72
+ ],
+ "node_scale": 1,
+ "offset": [
+  47.0,
+  2.0
+ ],
+ "emission": "phoenix_dive_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF7319",
+ "light_curve": [
+  0.122,
+  0.764,
+  1.0,
+  0.836,
+  0.494,
+  0.319,
+  0.219,
+  0.148,
+  0.052,
+  0.006,
+  0.001,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   0.2,
+   -1.0
+  ],
+  [
+   48.6,
+   -1.2
+  ],
+  [
+   48.8,
+   -0.6
+  ],
+  [
+   52.8,
+   -0.4
+  ],
+  [
+   53.0,
+   -0.6
+  ],
+  [
+   48.2,
+   -0.4
+  ],
+  [
+   45.6,
+   -0.6
+  ],
+  [
+   45.4,
+   -0.6
+  ],
+  [
+   38.0,
+   -1.0
+  ],
+  [
+   39.8,
+   0.2
+  ],
+  [
+   36.6,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ],
+ "filter": "nearest"
+}

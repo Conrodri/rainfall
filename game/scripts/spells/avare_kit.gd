@@ -788,6 +788,7 @@ func _play_ram_fx(origin: Vector2, dir: Vector2, length: float, half_w: float) -
 	l.add_point(origin + dir.normalized() * length)
 	l.z_index = 2
 	par.add_child(l)
+	VfxSwap.spawn_at(par, "avare/avare_coffre_belier", origin, dir, l, {"line_px": length, "width_u": half_w * 2.0 / Balance.UNIT_PX}) # mode test (scripts/testmode/vfx_swap.gd)
 	var tw := l.create_tween()
 	tw.tween_property(l, "modulate:a", 0.0, 0.22)
 	tw.tween_callback(l.queue_free)
@@ -853,6 +854,7 @@ func _play_chain_fx(a: Vector2, b: Vector2) -> void:
 	g.add_point(a)
 	g.add_point(b)
 	l.add_child(g)
+	if VfxSwap.spawn_at(par, "avare/avare_saisie_chaine", a, b - a, l, {"line_px": a.distance_to(b)}) != null: VfxSwap.hide_original(g) # mode test : chaîne de test (scripts/testmode/vfx_swap.gd)
 	var tw := l.create_tween()
 	tw.tween_property(l, "modulate:a", 0.0, GRAB_CHAIN_S)
 	tw.tween_callback(l.queue_free)

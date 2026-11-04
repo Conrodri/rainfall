@@ -1,0 +1,135 @@
+{
+ "owner": "sonneur",
+ "spell_id": "steam_plume",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/sonneur-steam-plume",
+ "opts": {
+  "palette": [
+   "#0b0a09",
+   "#1a1816",
+   "#2e2b27",
+   "#4f4a43",
+   "#7d776d",
+   "#aaa397",
+   "#d6cfc1",
+   "#f3ead8"
+  ],
+  "radius": 11,
+  "height": 44,
+  "light": 0.6
+ },
+ "ppu": 16,
+ "usage_note": "Panache de vapeur debout (billboard iso) sur une bouche au sol en ellipse 2:1 de rayon ~0,7 u, monte ~3 u ; boucle. Vapeur grise (le Fondeur en pose 4 le long de chaque jet de 7 u).",
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 18,
+ "frame_size": [
+  58,
+  122
+ ],
+ "node_scale": 1,
+ "offset": [
+  1.0,
+  -43.0
+ ],
+ "emission": "steam_plume_e.tres",
+ "light_k": 1.0,
+ "light_color": "#f3ead8",
+ "light_curve": [
+  0.816,
+  0.934,
+  1.0,
+  0.981,
+  0.89,
+  0.755,
+  0.663,
+  0.635,
+  0.7,
+  0.817,
+  0.934,
+  0.994,
+  0.972,
+  0.874,
+  0.75,
+  0.662,
+  0.636,
+  0.693
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -0.8,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -0.8,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ],
+  [
+   -1.0,
+   -5.2
+  ]
+ ],
+ "filter": "nearest"
+}

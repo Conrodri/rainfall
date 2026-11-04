@@ -452,8 +452,6 @@ func _resolve_sparks() -> void:
 		var d := Vector2.from_angle(a)
 		if e.director != null and e.director.has_method(&"fire_projectile"):
 			e.director.fire_projectile(e, e.position + d * e.radius_px, d * SPARK_SPEED_U * U, dmg)
-		if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
-			VfxSwap.spawn_at(e.get_parent(), "smelter/sparks", e.global_position + d * e.radius_px, d)
 	LightRig.flash(e.global_position + aim * e.radius_px, &"boss_lightning", 0.15, {"color": SODIUM, "energy": 0.5, "radius": 0.8})
 	pace.strike(&"spell", phase)
 	state = S.CHASE

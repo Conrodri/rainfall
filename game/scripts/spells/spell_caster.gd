@@ -599,8 +599,10 @@ func fire_at(s: SpellData, target: Node2D, dir0: Vector2) -> bool:
 
 
 ## Tire le projectile `s` dans le sens `dir` (sans cible ni recharge : tirs supplémentaires des items, Rafale d'acier).
-func fire_dir(s: SpellData, dir: Vector2) -> bool:
-	return _fire_projectile_dir(s, dir.normalized())
+## `group` : groupe de salve partagé par plusieurs tirs d'un même lancer (plafonds communs : recharge rendue, doublures
+## chargées ; ex. les 4 éventails de Rictus pendant la Toupie).
+func fire_dir(s: SpellData, dir: Vector2, group: Dictionary = {}) -> bool:
+	return _fire_projectile_dir(s, dir.normalized(), group)
 
 
 ## Parent des projectiles et zones du caster (conteneur monde), ou null avant setup.

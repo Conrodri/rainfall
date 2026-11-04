@@ -71,7 +71,7 @@
           {
             "id": "phoenix",
             "name": "Phénix",
-            "desc": "Un phénix de flammes combat 12 s aux côtés d'Ardent, puis explose en se consumant.",
+            "desc": "Un phénix de flammes veille 12 s aux côtés d'Ardent : toutes les 1,5 s, il lance un trait de feu qui traverse tous les monstres sur 8 u et les embrase ; à la fin, il se jette en un dernier trait sur le paquet le plus dense et y explose.",
             "unlock_text": "Vaincre le boss de l'étage 2 avec Ardent.",
             "unlock_key": "spell:phoenix",
             "unlock_rule": {"type": "counter", "key": "ardent.floor2_boss_kills", "value": 1}
@@ -122,7 +122,7 @@
           {
             "id": "rictus_eventail",
             "name": "Éventail",
-            "desc": "Cinq couteaux légers en éventail à la place du couteau lourd : le multi-cible. Un couteau planté au sol rend 1 s de recharge quand on le ramasse, et la Saccade les rappelle tous en ligne. Ils chargent les doublures qu'ils traversent (3 par salve).",
+            "desc": "Cinq couteaux légers en éventail à la place du couteau lourd : le multi-cible. Un couteau planté au sol rend 1 s de recharge quand on le ramasse, et la Saccade les rappelle tous en ligne. Ils chargent les doublures qu'ils traversent (3 par salve). Lancé pendant la Toupie : quatre éventails tout autour de toi, soit 20 couteaux.",
             "unlock_text": "Ramasser 150 couteaux plantés.",
             "unlock_key": "spell:rictus_eventail",
             "unlock_rule": {"type": "counter", "key": "rictus.knives_picked", "value": 150}
@@ -138,7 +138,7 @@
           {
             "id": "rictus_toupie",
             "name": "Toupie",
-            "desc": "Rictus tourne 2,5 s en glissant, invulnérable, et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche, et le fil scie le monstre ficelé. Percute les doublures en étoile. Pas de roulade pendant, vertige à la fin. Recharge 8 s, sans Saccade.",
+            "desc": "Rictus tourne 2,5 s en glissant, invulnérable, et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche, et le fil scie le monstre ficelé. Percute les doublures en étoile. Pas de roulade pendant, vertige à la fin. Avec l'Éventail : lancé pendant la Toupie, il part en quatre éventails tout autour. Recharge 8 s, sans Saccade.",
             "unlock_text": "Tuer 100 monstres à moins de 2 u.",
             "unlock_key": "spell:rictus_toupie",
             "unlock_rule": {"type": "counter", "key": "rictus.close_kills", "value": 100}
@@ -187,7 +187,7 @@
           {
             "id": "tocsin_vapeur",
             "name": "Vapeur",
-            "desc": "Le foyer crache un cône de vapeur brûlante à 3 u. Sans tête, la vapeur fuit par le cou tout autour.",
+            "desc": "Le foyer crache un cône de vapeur brûlante à 3 u ; l'ennemi visé encaisse le jet (+60 % de dégâts). Sans tête, la vapeur fuit par le cou tout autour, à 2,5 u.",
             "unlock_text": "Gagner une run avec Tocsin.",
             "unlock_key": "spell:tocsin_vapeur",
             "unlock_rule": {"type": "win_with", "character": "tocsin"}

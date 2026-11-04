@@ -289,6 +289,7 @@ static func character() -> CharacterData:
 	s2.rests_on_ground = true
 	s2.light_preset = &"vigie_flare"
 	s2.projectile_frames = _frames_or_fallback(FLARE_ARROW_FRAMES)
+	s2.set_meta(VfxSwap.META_KEY, "vigie/vigie_fleche_fusee") # mode test : la flèche en vol (la fusée plantée : flare.tres, scripts/testmode/vfx_swap.gd)
 
 	var s3 := _spell(&"vigie_filet", "Filet lesté", 3, FILET_COEF, FILET_CD)
 	s3.is_zone = false
@@ -301,6 +302,7 @@ static func character() -> CharacterData:
 	s3.rests_on_ground = true
 	s3.light_preset = &"vigie_net"
 	s3.projectile_frames = _frames_or_fallback(NET_ARROW_FRAMES)
+	s3.set_meta(VfxSwap.META_KEY, "vigie/vigie_fleche_lestee") # mode test : la flèche en vol (le filet : net_burst.tres, scripts/testmode/vfx_swap.gd)
 
 	var s4 := _spell(&"vigie_grele", "Grêle", 4, GRELE_COEF, GRELE_CD)
 	s4.range_u = GRELE_RANGE_U
@@ -395,6 +397,7 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s3.rests_on_ground = true
 			s3.light_preset = &"vigie_net"
 			s3.projectile_frames = _frames_or_fallback(NET_ARROW_FRAMES)
+			s3.set_meta(VfxSwap.META_KEY, "vigie/vigie_fleche_lestee") # mode test : la flèche en vol (le champ : caltrop_field.tres, scripts/testmode/vfx_swap.gd)
 			return s3
 		[4, V_SIGNAL]:
 			var s4 := _spell(V_SIGNAL, "Tir de signal", 4, SIGNAL_COEF, SIGNAL_CD)
@@ -949,7 +952,7 @@ func signal_impact(s: SpellData, at: Vector2) -> void:
 	_pre_netted.clear()
 	LightRig.flash(at, &"vigie_hail", 0.5)
 	var f := VigieFlare.new()
-	f.set_meta(VfxSwap.META_KEY, "vigie/vigie_tir_de_signal") # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
+	f.set_meta(VfxSwap.META_KEY, "vigie/vigie_signal_lueur") # mode test : VFX de test, lumière de 8 s (l'impact : zone vigie/vigie_tir_de_signal, scripts/testmode/vfx_swap.gd)
 	_caster().effects_parent().add_child(f)
 	f.setup(at, r, SIGNAL_LIGHT_S, FLARE_FRAMES, ACCENT)
 	f.set_visual_scale(SIGNAL_FLARE_SCALE)

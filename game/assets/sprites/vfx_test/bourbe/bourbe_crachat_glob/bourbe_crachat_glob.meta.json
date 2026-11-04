@@ -1,0 +1,74 @@
+{
+ "source": "rainfall/bourbe-mud-glob",
+ "opts": {
+  "palette": [
+   "#06100a",
+   "#0f1c14",
+   "#1d3324",
+   "#3a5e42",
+   "#5f9a6c",
+   "#8DDBA8",
+   "#C2F0D2"
+  ],
+  "radius": 7
+ },
+ "owner": "bourbe",
+ "spell_id": "bourbe_crachat_glob",
+ "scale": 2,
+ "ppu": 24,
+ "usage": "projectile",
+ "usage_note": "Motte crachée en vol vers +x : boule de vase ronde (0,6 u), lueur de follet, gouttes ; suit la motte en cloche.",
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 6,
+ "frame_size": [
+  52,
+  34
+ ],
+ "node_scale": 1,
+ "offset": [
+  -10.0,
+  -1.0
+ ],
+ "emission": "bourbe_crachat_glob_e.tres",
+ "light_k": 1.0,
+ "light_color": "#8DDBA8",
+ "light_curve": [
+  0.861,
+  1.0,
+  0.99,
+  0.854,
+  0.739,
+  0.742
+ ],
+ "light_pos": [
+  [
+   -2.8,
+   -2.8
+  ],
+  [
+   -2.8,
+   -2.8
+  ],
+  [
+   -2.8,
+   -2.8
+  ],
+  [
+   -3.0,
+   -2.8
+  ],
+  [
+   -3.2,
+   -3.0
+  ],
+  [
+   -3.0,
+   -3.0
+  ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "round": true
+}

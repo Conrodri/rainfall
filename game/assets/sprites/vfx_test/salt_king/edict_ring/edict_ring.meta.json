@@ -1,4 +1,8 @@
 {
+ "owner": "salt_king",
+ "spell_id": "edict_ring",
+ "test_asset": true,
+ "scale": 2,
  "source": "rainfall/ring-wave",
  "opts": {
   "palette": [
@@ -13,51 +17,50 @@
   ],
   "r0": 11,
   "r1": 88,
-  "run": 1.0,
-  "band": 10,
+  "run": 1.17,
+  "band": 14,
   "echo": 0.4,
   "light": 1.0
  },
- "owner": "salt_king",
- "spell_id": "edict_ring",
+ "ppu": 11,
+ "usage": "ground_oneshot",
+ "usage_note": "Anneau d'édit au sol vu de dessus, centré sur le pivot : de 1 u à 8 u en 1,17 s (6 u/s), bande 1,3 u.",
+ "radius_u": 8.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
  "frames": 19,
  "frame_size": [
   378,
-  354
+  352
  ],
- "scale": 2,
+ "node_scale": 1,
  "offset": [
   -5.0,
-  1.0
+  0.0
  ],
- "filter": "nearest",
- "test_asset": true,
- "node_scale": 1,
- "version": 2,
  "emission": "edict_ring_e.tres",
  "light_k": 1.0,
  "light_color": "#BFF4FF",
  "light_curve": [
-  0.296,
-  0.44,
-  0.511,
-  0.579,
-  0.68,
-  0.773,
-  0.858,
-  0.922,
-  0.972,
-  0.985,
-  0.982,
+  0.233,
+  0.361,
+  0.441,
+  0.513,
+  0.608,
+  0.705,
+  0.784,
+  0.856,
+  0.886,
+  0.908,
+  0.944,
+  0.971,
+  0.987,
   1.0,
-  0.974,
-  0.832,
-  0.626,
-  0.391,
-  0.126,
-  0.035,
+  0.918,
+  0.661,
+  0.341,
+  0.064,
   0.0
  ],
  "light_pos": [
@@ -67,79 +70,76 @@
   ],
   [
    -1.0,
-   -0.6
+   -0.4
   ],
   [
-   -1.2,
+   -0.8,
    -0.2
+  ],
+  [
+   -0.4,
+   -0.4
   ],
   [
    -1.0,
    -0.2
   ],
   [
-   -0.4,
-   -0.4
+   -0.6,
+   -0.2
   ],
   [
    -0.6,
-   -0.2
+   -0.4
   ],
   [
    0.2,
    -0.0
   ],
   [
-   0.4,
-   -0.2
+   0.0,
+   -0.6
   ],
   [
    -0.2,
-   -0.8
-  ],
-  [
-   -0.4,
    -0.4
   ],
   [
    -0.6,
-   -0.8
-  ],
-  [
-   -0.8,
-   -0.6
-  ],
-  [
-   -0.8,
-   -0.6
+   -0.2
   ],
   [
    -1.2,
+   -0.2
+  ],
+  [
+   -1.6,
+   -0.4
+  ],
+  [
+   -1.6,
+   -0.6
+  ],
+  [
+   -1.6,
+   -0.6
+  ],
+  [
+   -2.0,
    -0.4
   ],
   [
    -2.0,
-   -1.4
-  ],
-  [
-   -2.2,
-   -0.8
-  ],
-  [
-   -1.8,
    -0.8
   ],
   [
    -2.2,
-   -0.8
+   -1.2
   ],
   [
    0.0,
    0.0
   ]
  ],
- "ppu": 11,
- "usage": "ground_oneshot",
- "usage_note": "Anneau d'édit au sol vu de dessus, centré sur le pivot : de 1 u à 8 u en ~1 s.",
- "radius_u": 8.0
+ "filter": "nearest"
 }

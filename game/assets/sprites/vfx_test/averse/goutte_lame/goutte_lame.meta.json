@@ -1,5 +1,5 @@
 {
- "source": "water/water-jet",
+ "source": "rainfall/averse-water-blade",
  "opts": {
   "palette": [
    "#04090f",
@@ -10,106 +10,67 @@
    "#5FD4E8",
    "#9fe8f2"
   ],
-  "light": 0.4
+  "radius": 9,
+  "tail": 26,
+  "shape": "blade"
  },
  "owner": "averse",
  "spell_id": "goutte_lame",
+ "scale": 2,
+ "ppu": 20,
+ "usage": "projectile",
+ "usage_note": "Lame d'eau vers +x : croissant d'eau (0,9 u de large) autour d'une perle ronde, lisible raccourcie ; courte traînée d'embruns.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 15,
+ "frames": 6,
  "frame_size": [
-  360,
-  118
+  68,
+  52
  ],
- "scale": 2,
- "offset": [
-  156.0,
-  21.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -10.0,
+  0.0
+ ],
  "emission": "goutte_lame_e.tres",
- "light_k": 1.8,
+ "light_k": 1.0,
  "light_color": "#5FD4E8",
  "light_curve": [
-  0.936,
-  0.966,
-  0.908,
+  0.919,
+  0.995,
   1.0,
-  0.92,
-  0.94,
-  0.972,
-  0.903,
-  0.99,
-  0.916,
-  0.95,
-  0.973,
-  0.902,
-  0.984,
-  0.914
+  0.917,
+  0.847,
+  0.849
  ],
  "light_pos": [
   [
-   98.6,
-   4.6
+   -2.8,
+   -1.2
   ],
   [
-   96.6,
-   4.4
+   -2.6,
+   -1.2
   ],
   [
-   103.2,
-   4.8
+   -2.8,
+   -1.0
   ],
   [
-   96.0,
-   4.4
+   -2.8,
+   -1.2
   ],
   [
-   102.2,
-   4.8
+   -2.8,
+   -1.0
   ],
   [
-   98.4,
-   4.6
-  ],
-  [
-   95.8,
-   4.4
-  ],
-  [
-   103.4,
-   4.8
-  ],
-  [
-   95.6,
-   4.4
-  ],
-  [
-   102.0,
-   4.8
-  ],
-  [
-   99.6,
-   4.6
-  ],
-  [
-   96.8,
-   4.4
-  ],
-  [
-   103.4,
-   4.8
-  ],
-  [
-   94.6,
-   4.4
-  ],
-  [
-   101.2,
-   4.6
+   -3.0,
+   -1.2
   ]
- ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "round": true
 }

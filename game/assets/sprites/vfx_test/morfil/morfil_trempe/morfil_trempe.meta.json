@@ -1,5 +1,5 @@
 {
- "source": "rainfall/aura-ring",
+ "source": "rainfall/morfil-blade-arc",
  "opts": {
   "palette": [
    "#0d1008",
@@ -10,22 +10,24 @@
    "#CDEB6E",
    "#E6F7A8"
   ],
-  "radius": 20,
+  "radius": 40,
+  "span": 6.283185307179586,
+  "steam": 1,
   "light": 1.0
  },
  "owner": "morfil",
  "spell_id": "morfil_trempe",
  "fps": 15.0,
- "loop": true,
- "frames": 24,
+ "loop": false,
+ "frames": 10,
  "frame_size": [
-  92,
-  92
+  188,
+  186
  ],
  "scale": 2,
  "offset": [
-  0.0,
-  0.0
+  -8.0,
+  -5.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -35,131 +37,61 @@
  "light_k": 1.0,
  "light_color": "#CDEB6E",
  "light_curve": [
-  0.962,
-  0.981,
+  0.0,
   1.0,
-  0.998,
-  1.0,
-  0.981,
-  0.962,
-  0.952,
-  0.95,
-  0.94,
-  0.951,
-  0.953,
-  0.962,
-  0.981,
-  1.0,
-  0.997,
-  0.999,
-  0.98,
-  0.96,
-  0.95,
-  0.948,
-  0.939,
-  0.95,
-  0.952
+  0.789,
+  0.58,
+  0.292,
+  0.092,
+  0.011,
+  0.0,
+  0.0,
+  0.0
  ],
  "light_pos": [
   [
-   -1.0,
-   -1.0
+   0.0,
+   0.0
   ],
   [
-   -1.0,
-   -1.0
+   -11.8,
+   14.0
   ],
   [
-   -1.0,
-   -1.0
+   -8.2,
+   15.2
   ],
   [
-   -1.0,
-   -1.0
+   -6.2,
+   18.2
   ],
   [
-   -1.0,
-   -1.0
+   -10.0,
+   34.8
   ],
   [
-   -1.0,
-   -1.0
+   -45.2,
+   42.6
   ],
   [
-   -1.0,
-   -1.0
+   -72.6,
+   12.2
   ],
   [
-   -1.0,
-   -1.0
+   0.0,
+   0.0
   ],
   [
-   -1.0,
-   -1.0
+   0.0,
+   0.0
   ],
   [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
-  ],
-  [
-   -1.0,
-   -1.0
+   0.0,
+   0.0
   ]
  ],
  "ppu": 16,
- "usage": "follow_ground_loop",
- "usage_note": "Aura de trempe au sol vue de dessus, autour des pieds (rayon ~1,3 u), en boucle tant que la Trempe dure.",
- "radius_u": 1.25
+ "usage": "ground_oneshot",
+ "radius_u": 2.5,
+ "usage_note": "Dégainé de la Trempe vu de dessus : une lame tourne autour du pivot, rayon 2,5 u, vapeur de trempe sur l'anneau."
 }

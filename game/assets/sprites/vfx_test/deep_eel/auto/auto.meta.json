@@ -1,5 +1,9 @@
 {
- "source": "melee/claw-swipe",
+ "owner": "deep_eel",
+ "spell_id": "auto",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/sonneur-cone-strike",
  "opts": {
   "palette": [
    "#06090d",
@@ -11,40 +15,39 @@
    "#BFF4FF",
    "#dff9ff"
   ],
-  "light": 0.4
+  "style": 3,
+  "half": 0.7,
+  "radius": 67,
+  "light": 1.0
  },
- "owner": "deep_eel",
- "spell_id": "auto",
+ "ppu": 24,
+ "usage": "ground_dir_oneshot",
+ "usage_note": "Coup en cône vu de dessus depuis le pivot (le boss) vers +x : demi-angle 0.7 rad, portée 2.8 u (Morsure : deux mâchoires qui se referment).",
+ "radius_u": 2.8,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 11,
  "frame_size": [
-  204,
-  168
+  148,
+  172
  ],
- "scale": 3,
- "offset": [
-  90.0,
-  -57.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  66.0,
+  0.0
+ ],
  "emission": "auto_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#BFF4FF",
  "light_curve": [
-  0.0,
-  0.622,
+  0.436,
+  0.857,
+  0.785,
   1.0,
-  0.469,
-  0.163,
-  0.037,
-  0.004,
-  0.0,
-  0.0,
-  0.0,
+  0.596,
+  0.313,
+  0.1,
   0.0,
   0.0,
   0.0,
@@ -52,48 +55,36 @@
  ],
  "light_pos": [
   [
-   0.0,
-   0.0
+   17.2,
+   -1.0
   ],
   [
-   81.0,
-   -53.7
+   65.0,
+   -0.4
   ],
   [
-   103.5,
-   -46.5
+   93.0,
+   -1.6
   ],
   [
-   106.5,
-   -49.5
+   99.4,
+   -1.6
   ],
   [
-   110.4,
-   -55.5
+   94.0,
+   -1.6
   ],
   [
-   115.5,
-   -62.1
+   88.0,
+   -0.8
   ],
   [
-   120.3,
-   -67.8
+   83.2,
+   -1.2
   ],
   [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   114.2,
+   -48.4
   ],
   [
    0.0,
@@ -107,5 +98,6 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

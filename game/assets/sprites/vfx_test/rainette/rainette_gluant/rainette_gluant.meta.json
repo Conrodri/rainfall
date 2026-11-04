@@ -1,5 +1,5 @@
 {
- "source": "projectiles/laser-bolt",
+ "source": "rainfall/rainette-goo-bolt",
  "opts": {
   "palette": [
    "#070b09",
@@ -10,71 +10,82 @@
    "#8DBBA8",
    "#b5d6c6"
   ],
-  "light": 0.4
+  "radius": 6,
+  "tail": 26,
+  "light": 1.0
  },
  "owner": "rainette",
  "spell_id": "rainette_gluant",
+ "usage": "projectile",
+ "usage_note": "Crachat de vase rond vers +x, filaments et gouttes derrière.",
+ "ppu": 16,
+ "scale": 2,
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 8,
+ "frames": 9,
  "frame_size": [
-  192,
-  50
+  52,
+  32
  ],
- "scale": 2,
- "offset": [
-  -68.0,
-  1.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -10.0,
+  0.0
+ ],
  "emission": "rainette_gluant_e.tres",
- "light_k": 2.6,
+ "light_k": 1.0,
  "light_color": "#8DBBA8",
  "light_curve": [
-  0.943,
+  0.984,
+  0.982,
+  0.98,
+  0.987,
+  0.997,
+  0.98,
+  0.992,
   1.0,
-  0.838,
-  0.793,
-  0.968,
-  0.993,
-  0.824,
-  0.814
+  0.988
  ],
  "light_pos": [
   [
-   -18.6,
-   -0.0
+   -2.4,
+   -1.8
   ],
   [
-   -17.4,
-   -0.2
+   -2.6,
+   -2.0
   ],
   [
-   -19.6,
-   -0.0
+   -2.6,
+   -2.0
   ],
   [
-   -21.2,
-   -0.0
+   -2.6,
+   -2.0
   ],
   [
-   -18.2,
-   -0.0
+   -2.4,
+   -2.0
   ],
   [
-   -17.4,
-   -0.0
+   -2.6,
+   -2.0
   ],
   [
-   -21.2,
-   -0.0
+   -2.6,
+   -2.0
   ],
   [
-   -21.2,
-   -0.0
+   -2.8,
+   -2.0
+  ],
+  [
+   -2.8,
+   -1.6
   ]
- ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "round": true
 }

@@ -61,6 +61,7 @@ var _retarget := 0.0
 var _reaggro := 0
 var _recall_hits: Array = []
 var _moving := false
+var _attack_anim_left := 0.0 ## s restantes de l'anim d'attaque en cours (idle/run suspendus)
 var _ring: AnimatedSprite2D = null
 var _base_scale := Vector2.ONE
 var _fallback_look := false ## motte.tres absent : sprite de Bourbe réduit + follet dessiné
@@ -213,6 +214,19 @@ func _play_dir(base: StringName) -> void:
 			return
 
 
+## Anim d'attaque `attack_<dir>` (lot Codex bourbe_motte_attack) : jouée une fois au coup de contact si
+## motte.tres la contient ; absente, rien (le coup part comme avant). idle/run reprennent à la fin.
+func _play_attack() -> void:
+	if _sprite == null or _sprite.sprite_frames == null:
+		return
+	var anim := StringName("attack_" + _dir_name_m())
+	if not _sprite.sprite_frames.has_animation(anim):
+		return
+	_sprite.sprite_frames.set_animation_loop(anim, false)
+	_sprite.play(anim)
+	_attack_anim_left = _anim_len(_sprite.sprite_frames, anim)
+
+
 # --- Contrat « cible » des monstres --------------------------------------------------------------
 
 func take_damage(amount: float, _source: Node = null) -> void:
@@ -316,7 +330,8 @@ func step(delta: float) -> void:
 			_step_home(delta, _speed_px(), false)
 		State.RECALL:
 			_step_home(delta, BourbeKit.RECALL_SPEED_U * _u(), true)
-	if state != State.GONE and state != State.FLY:
+	_attack_anim_left = maxf(_attack_anim_left - delta, 0.0)
+	if state != State.GONE and state != State.FLY and _attack_anim_left <= 0.0:
 		_play_dir(&"run" if _moving else &"idle")
 
 
@@ -369,6 +384,7 @@ func _step_fight(delta: float) -> void:
 			if to.length_squared() > 1.0:
 				facing = to.normalized()
 			hits += 1
+			_play_attack()
 			var cs := contact_spell
 			if fed and kit != null and is_instance_valid(kit) and kit.has_method(&"fed_contact_spell"):
 				cs = kit.fed_contact_spell(self) # ×3 une fois (Gifle transmise)

@@ -1,5 +1,5 @@
 {
- "source": "melee/thrust",
+ "source": "rainfall/morfil-cleave-line",
  "opts": {
   "palette": [
    "#0d1008",
@@ -10,83 +10,75 @@
    "#CDEB6E",
    "#E6F7A8"
   ],
-  "light": 0.4
+  "length": 80,
+  "width": 16,
+  "light": 1.0
  },
  "owner": "morfil",
  "spell_id": "morfil_fendoir",
  "fps": 15.0,
  "loop": false,
- "frames": 12,
+ "frames": 10,
  "frame_size": [
-  292,
-  112
+  200,
+  52
  ],
  "scale": 2,
  "offset": [
-  130.0,
-  -40.0
+  86.0,
+  0.0
  ],
  "filter": "nearest",
  "test_asset": true,
  "version": 2,
  "node_scale": 1,
  "emission": "morfil_fendoir_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#CDEB6E",
  "light_curve": [
-  0.147,
-  0.119,
+  0.092,
+  0.866,
   1.0,
-  0.642,
-  0.365,
-  0.124,
-  0.03,
-  0.01,
-  0.005,
-  0.003,
+  0.777,
+  0.569,
+  0.388,
+  0.243,
+  0.099,
   0.0,
   0.0
  ],
  "light_pos": [
   [
-   20.8,
-   -41.0
+   -0.8,
+   -1.0
   ],
   [
-   83.0,
-   -41.0
+   91.0,
+   -1.2
   ],
   [
-   142.4,
-   -41.2
+   96.4,
+   -1.4
   ],
   [
-   146.8,
-   -41.0
+   87.0,
+   -1.4
   ],
   [
-   154.8,
-   -39.8
+   82.2,
+   -1.4
   ],
   [
-   158.8,
-   -39.2
+   77.0,
+   -1.4
   ],
   [
-   160.8,
-   -37.8
+   76.8,
+   -1.4
   ],
   [
-   162.8,
-   -34.0
-  ],
-  [
-   155.6,
-   -32.4
-  ],
-  [
-   155.6,
-   -33.0
+   76.6,
+   -1.4
   ],
   [
    0.0,
@@ -96,5 +88,10 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "line_from_pivot",
+ "line_u": 5.0,
+ "width_u": 1.0,
+ "usage_note": "Coup vertical vu de dessus : ligne fendue du pivot vers +x sur 5 u, 1 u de large."
 }

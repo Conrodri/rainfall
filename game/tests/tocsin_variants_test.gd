@@ -9,6 +9,7 @@ class FakeEnemy extends Node2D:
 	var statuses: Array = []
 	var pushes: Array = []
 	var held := false
+	var radius_px := 0.0 ## corps (TocsinLimb._radius_of)
 
 	func take_damage(amount: float, _is_crit: bool = false, _element: StringName = &"") -> void:
 		taken.append(amount)
@@ -226,8 +227,10 @@ func _run() -> void:
 	var too_far := _fake(Vector2(3.6 * U, 0)) # au-delà de 3 u
 	var behind := _fake(Vector2(-2.5 * U, 0))
 	_check("vapeur lancée", _player.spells.cast(1))
-	_check("coef 0,55 dans le cône", in_cone.taken.size() == 1 and _near(in_cone.total(), TocsinKit.VAPEUR_COEF * BASE), str(in_cone.taken))
-	_check("bord du cône touché", in_edge.taken.size() == 1)
+	_check("jet : la cible visée prend 0,55 × 1,6", in_cone.taken.size() == 1
+			and _near(in_cone.total(), TocsinKit.VAPEUR_COEF * TocsinKit.VAPEUR_FOCUS_MULT * BASE), str(in_cone.taken))
+	_check("bord du cône touché, coef 0,55", in_edge.taken.size() == 1 and _near(in_edge.total(), TocsinKit.VAPEUR_COEF * BASE),
+			str(in_edge.taken))
 	_check("hors angle / hors portée / derrière : rien", out_angle.taken.is_empty() and too_far.taken.is_empty() and behind.taken.is_empty())
 	_check("ralentissement 20 % 0,6 s", in_cone.statuses.size() == 1 and in_cone.statuses[0][0] == &"slow"
 			and _near(float(in_cone.statuses[0][1]["pct"]), 0.2) and _near(float(in_cone.statuses[0][1]["duration"]), 0.6))
@@ -235,15 +238,24 @@ func _run() -> void:
 	_check("anim d'action attack à l'arrêt", _kit.action_for(s1) == &"attack" or _player.action_base() != &"")
 	_kit.present[&"head"] = false
 	_kit._refresh_state()
-	_check("sans tête : anneau de 2 u", _near(s1.range_u, 2.0), str(s1.range_u))
+	_check("sans tête : anneau de 2,5 u", _near(s1.range_u, 2.5), str(s1.range_u))
 	for e in [in_cone, in_edge, out_angle, too_far, behind]:
 		e.taken.clear()
 	behind.global_position = Vector2(-1.5 * U, 0)
-	out_angle.global_position = Vector2(0, 2.6 * U)
+	out_angle.global_position = Vector2(0, 2.8 * U)
 	_player.spells._remaining[1] = 0.0
 	_check("vapeur sans tête", _player.spells.cast(1))
-	_check("anneau 360° : derrière touché", behind.taken.size() == 1 and _near(behind.total(), TocsinKit.VAPEUR_COEF * BASE))
-	_check("anneau : hors de 2 u rien", out_angle.taken.is_empty() and too_far.taken.is_empty())
+	_check("anneau 360° : derrière touché (le plus proche : jet)", behind.taken.size() == 1
+			and _near(behind.total(), TocsinKit.VAPEUR_COEF * TocsinKit.VAPEUR_FOCUS_MULT * BASE), str(behind.taken))
+	_check("anneau : devant touché au coef 0,55", in_cone.taken.size() == 1 and _near(in_cone.total(), TocsinKit.VAPEUR_COEF * BASE))
+	_check("anneau : hors de 2,5 u rien", out_angle.taken.is_empty() and too_far.taken.is_empty())
+	for e in [in_cone, in_edge, out_angle, too_far, behind]:
+		e.taken.clear()
+		e.global_position = Vector2(20.0 * U, 0)
+	var big := _fake(Vector2(0, -3.0 * U)) # corps de boss d'étage (1,4 u) : centre à 3 u, bord à 1,6 u
+	big.radius_px = 1.4 * U
+	_player.spells._remaining[1] = 0.0
+	_check("anneau : déclenché au bord d'un gros corps", _player.spells.cast(1) and big.taken.size() == 1, str(big.taken))
 	_check("Surchauffe : cadence +12 % (1 membre absent)", _near(Balance.attack_interval(s1.base_cooldown, 0.0), 0.6 / 1.12, 0.002), str(s1.base_cooldown))
 
 	print("Sort 4 : Tête-fumigène")

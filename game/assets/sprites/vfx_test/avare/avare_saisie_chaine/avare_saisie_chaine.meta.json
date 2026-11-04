@@ -1,0 +1,86 @@
+{
+ "source": "rainfall/avare-grab-chain",
+ "opts": {
+  "palette": [
+   "#0e0a04",
+   "#1c1408",
+   "#33260f",
+   "#5c4620",
+   "#8f6e2e",
+   "#F2C14E",
+   "#F8DE92"
+  ],
+  "length": 80,
+  "light": 1.0
+ },
+ "owner": "avare",
+ "spell_id": "avare_saisie_chaine",
+ "usage": "line_from_pivot",
+ "usage_note": "Chaîne de la Saisie vue de dessus, du pivot (Avare) vers +x sur 5 u (étirée à la distance réelle), crochet, aller-retour.",
+ "ppu": 16,
+ "scale": 2,
+ "line_u": 5.0,
+ "width_u": 0.5,
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 8,
+ "frame_size": [
+  182,
+  36
+ ],
+ "node_scale": 1,
+ "offset": [
+  91.0,
+  0.0
+ ],
+ "emission": "avare_saisie_chaine_e.tres",
+ "light_k": 1.0,
+ "light_color": "#F2C14E",
+ "light_curve": [
+  0.0,
+  0.263,
+  1.0,
+  0.689,
+  0.635,
+  0.241,
+  0.171,
+  0.0
+ ],
+ "light_pos": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   114.0,
+   -1.0
+  ],
+  [
+   129.6,
+   -1.0
+  ],
+  [
+   115.0,
+   -1.0
+  ],
+  [
+   108.2,
+   -1.0
+  ],
+  [
+   88.6,
+   -1.0
+  ],
+  [
+   30.6,
+   -1.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ],
+ "filter": "nearest",
+ "test_asset": true
+}

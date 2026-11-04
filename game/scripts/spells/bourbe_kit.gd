@@ -1083,6 +1083,8 @@ func _spit(s: SpellData) -> bool:
 		g.draw_circle(Vector2(0, -1), 3.0, Color(ACCENT.r * 1.6, ACCENT.g * 1.6, ACCENT.b * 1.6, 0.9)))
 	player.get_parent().add_child(g)
 	g.global_position = from
+	if VfxSwap.enabled() and VfxSwap.spawn_follow(g, "bourbe/bourbe_crachat_glob", to - from, false, {"src": "glob"}) != null:
+		VfxSwap.hide_original(g) # mode test : motte de test en vol, elle suit la cloche
 	_globs.append({"node": g, "from": from, "to": to, "t": 0.0, "spell": s})
 	if to != from:
 		player.facing = (to - from).normalized()

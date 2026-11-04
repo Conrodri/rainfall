@@ -1,5 +1,5 @@
 {
- "source": "melee/thrust",
+ "source": "rainfall/morfil-thrust",
  "opts": {
   "palette": [
    "#0d1008",
@@ -10,91 +10,77 @@
    "#CDEB6E",
    "#E6F7A8"
   ],
-  "light": 0.4
+  "reach": 58,
+  "spread": 0.698,
+  "light": 1.0
  },
  "owner": "morfil",
  "spell_id": "taille_estoc_thrust",
  "fps": 15.0,
  "loop": false,
- "frames": 12,
+ "frames": 8,
  "frame_size": [
-  294,
-  114
+  160,
+  80
  ],
  "scale": 2,
  "offset": [
-  131.0,
-  -41.0
+  62.0,
+  0.0
  ],
  "filter": "nearest",
  "test_asset": true,
  "version": 2,
  "node_scale": 1,
  "emission": "taille_estoc_thrust_e.tres",
- "light_k": 1.8,
+ "light_k": 1.0,
  "light_color": "#CDEB6E",
  "light_curve": [
-  0.149,
-  0.121,
+  0.245,
   1.0,
-  0.649,
-  0.366,
-  0.127,
-  0.03,
-  0.01,
-  0.005,
-  0.003,
-  0.0,
-  0.0
+  0.695,
+  0.428,
+  0.217,
+  0.086,
+  0.027,
+  0.006
  ],
  "light_pos": [
   [
-   20.8,
-   -41.0
+   1.8,
+   -1.0
   ],
   [
-   82.8,
-   -41.0
+   92.6,
+   -1.0
   ],
   [
-   142.4,
-   -41.2
+   93.2,
+   -1.0
   ],
   [
-   146.8,
-   -41.2
+   88.6,
+   -1.0
   ],
   [
-   154.8,
-   -40.0
+   86.4,
+   -1.0
   ],
   [
-   159.0,
-   -39.2
+   93.0,
+   -1.0
   ],
   [
-   161.0,
-   -37.8
+   102.8,
+   -1.0
   ],
   [
-   163.0,
-   -34.0
-  ],
-  [
-   155.6,
-   -32.4
-  ],
-  [
-   155.6,
-   -33.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   108.2,
+   -1.0
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "ground_dir_oneshot",
+ "radius_u": 3.6,
+ "usage_note": "Estoc vu de dessus : pointe poussée du pivot vers +x jusqu'à 3,6 u dans un cône de 40°."
 }

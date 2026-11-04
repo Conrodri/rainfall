@@ -149,6 +149,50 @@ func _decoys_east() -> void:
 	_player.spells.manual_aim_enabled = true
 
 
+## Couteaux de l'Éventail en vol (projectiles actifs du sort 2).
+func _fan_knives() -> Array:
+	var out: Array = []
+	for k in _player.spells.effects_parent().get_children():
+		if k.get(&"active") == true and k.get(&"spell") is SpellData and (k.get(&"spell") as SpellData).id == RictusKit.V_EVENTAIL:
+			out.append(k)
+	return out
+
+
+## Angles de vol (degrés entiers, 0-359) des couteaux, triés.
+func _angles_of(ks: Array) -> Array:
+	var out: Array = []
+	for k in ks:
+		out.append(posmod(roundi(rad_to_deg((k.get(&"direction") as Vector2).angle())), 360))
+	out.sort()
+	return out
+
+
+## Angles attendus : `fans` éventails de 5 couteaux sur 60° (pas de 15°), le premier centré sur `aim_deg`, tous les 90°.
+func _fan_angles(aim_deg: float, fans: int) -> Array:
+	var out: Array = []
+	for f in fans:
+		for i in 5:
+			out.append(posmod(roundi(aim_deg + 90.0 * f - 30.0 + 15.0 * i), 360))
+	out.sort()
+	return out
+
+
+## Quatre doublures à 4 u de Rictus (est, sud, ouest, nord), hors de la toupie (2,2 u), posées à la main.
+func _decoys_cardinal() -> void:
+	var s4: SpellData = _player.spells._spell_for(4)
+	for i in 4:
+		var d := Decoy.new()
+		d.caster = _player.spells
+		d.max_hp = 100.0
+		d.hp = 100.0
+		d.life_s = 5.0
+		d.explode_spell = s4.duplicate() as SpellData
+		d.flight_spell = s4.duplicate() as SpellData
+		_player.get_parent().add_child(d)
+		d.global_position = _player.global_position + Vector2.from_angle(TAU * float(i) / 4.0) * 4.0 * U
+		_junk.append(d)
+
+
 func _run() -> void:
 	RunState.level = 1
 	RunState.character = &"rictus"
@@ -304,6 +348,44 @@ func _run() -> void:
 	await _frames(40)
 	_check("doublures expédiées sans charge : vol 1,2", rev_foe.has_value(RictusKit.FLIGHT_COEF * BASE), str(rev_foe.taken))
 	_check("aucun vol à 1,6 (pas chargées)", not rev_foe.has_value(RictusKit.FLIGHT_CHARGED_COEF * BASE))
+
+	print("Toupie d'acier : Éventail pendant la Toupie = 4 éventails à 360° (20 couteaux)")
+	_reset()
+	_player.spells.aim_override = Vector2(500, 0)
+	_check("Éventail hors Toupie lancé", _player.spells.cast(2))
+	_player.spells.aim_override = null
+	var solo := _fan_knives()
+	_check("hors Toupie : 5 couteaux vers la visée", solo.size() == 5 and _angles_of(solo) == _fan_angles(0.0, 1), str(_angles_of(solo)))
+	await _frames(45) # les couteaux retombent (7 u à 14 u/s)
+	_kit.clear_transients()
+	_player.spells._remaining[2] = 0.0
+	_check("Toupie lancée", _player.spells.cast(3) and _kit.spin_left > 0.0)
+	_player.spells.aim_override = Vector2.from_angle(deg_to_rad(20.0)) * 500.0 # visée à 20° : le premier éventail part vers elle
+	_check("Éventail pendant la Toupie lancé", _player.spells.cast(2))
+	_player.spells.aim_override = null
+	var ring := _fan_knives()
+	_check("4 x 5 = 20 couteaux", ring.size() == 4 * 5, str(ring.size()))
+	_check("4 éventails de 60° tournés de 90° en 90° depuis la visée", _angles_of(ring) == _fan_angles(20.0, RictusKit.TOUPIE_FAN_N), str(_angles_of(ring)))
+	await _frames(45)
+	_check("20 couteaux plantés au sol (aucun plafond de couteaux plantés)", _kit.knives.size() == 20, str(_kit.knives.size()))
+	_player.spells._remaining[2] = 99.0
+	for g in _kit.knives.duplicate():
+		if is_instance_valid(g):
+			g.collect()
+	var refunded: float = 99.0 - float(_player.spells._remaining[2])
+	_check("une salve tournoyante = une salve : 20 ramassés rendent 5 s au plus (plafond partagé)", is_equal_approx(refunded, RictusKit.KNIFE_REFUND_CAP_S), str(refunded))
+	_player.spells._remaining[2] = 0.0
+	_check("la Toupie tourne encore", _kit.spin_left > 0.0)
+	_kit.spin_left = 0.0
+	_reset()
+	_decoys_cardinal() # quatre doublures à 4 u (hors de la toupie), une sur l'axe de chaque éventail
+	_check("Toupie lancée (doublures hors de portée de la toupie)", _player.spells.cast(3) and _kit.charged_decoys() == 0)
+	_player.spells.aim_override = Vector2(500, 0)
+	_player.spells.cast(2)
+	_player.spells.aim_override = null
+	await _frames(40)
+	_check("charge des doublures : 3 par salve au plus, même à 20 couteaux (4 traversées)", _kit.charged_decoys() == RictusKit.CHARGE_MAX_PER_SALVE, str(_kit.charged_decoys()))
+	_kit.spin_left = 0.0
 
 	print("Toupie : un tick de scie par tick sur le ficelé")
 	_reset()

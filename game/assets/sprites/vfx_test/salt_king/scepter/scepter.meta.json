@@ -1,5 +1,9 @@
 {
- "source": "melee/thrust",
+ "owner": "salt_king",
+ "spell_id": "scepter",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/lash-line",
  "opts": {
   "palette": [
    "#06090d",
@@ -11,91 +15,81 @@
    "#BFF4FF",
    "#dff9ff"
   ],
-  "light": 0.4
+  "length": 64,
+  "thick": 9,
+  "tip": 4,
+  "thorns": 0,
+  "light": 1.0
  },
- "owner": "salt_king",
- "spell_id": "scepter",
+ "ppu": 16,
+ "usage": "line_from_pivot",
+ "usage_note": "Coup de sceptre vu de dessus : du pivot (le roi) vers +x sur 4 u (1 u de large), frappe droite puis retour.",
+ "line_u": 4.0,
+ "width_u": 1.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 12,
+ "frames": 9,
  "frame_size": [
-  438,
-  171
+  154,
+  54
  ],
- "scale": 3,
- "offset": [
-  195.0,
-  -61.5
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  77.0,
+  -1.0
+ ],
  "emission": "scepter_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#BFF4FF",
  "light_curve": [
-  0.135,
-  0.124,
-  1.0,
-  0.646,
-  0.353,
-  0.116,
-  0.028,
-  0.009,
-  0.005,
-  0.003,
   0.0,
+  0.556,
+  1.0,
+  0.972,
+  0.693,
+  0.301,
+  0.044,
+  0.001,
   0.0
  ],
  "light_pos": [
   [
-   31.2,
-   -61.5
-  ],
-  [
-   124.5,
-   -61.5
-  ],
-  [
-   212.7,
-   -61.8
-  ],
-  [
-   219.3,
-   -61.8
-  ],
-  [
-   231.0,
-   -60.0
-  ],
-  [
-   237.3,
-   -58.8
-  ],
-  [
-   241.2,
-   -57.0
-  ],
-  [
-   244.8,
-   -51.0
-  ],
-  [
-   233.4,
-   -48.6
-  ],
-  [
-   233.4,
-   -49.5
-  ],
-  [
    0.0,
    0.0
   ],
   [
-   0.0,
-   0.0
+   65.4,
+   -3.4
+  ],
+  [
+   98.6,
+   -2.4
+  ],
+  [
+   93.2,
+   -3.6
+  ],
+  [
+   88.2,
+   -2.6
+  ],
+  [
+   79.4,
+   -2.2
+  ],
+  [
+   127.6,
+   -1.4
+  ],
+  [
+   139.4,
+   -4.0
+  ],
+  [
+   138.0,
+   -14.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

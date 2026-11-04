@@ -609,7 +609,7 @@ func _start_procession(dir: Vector2) -> void:
 	_spawn_sector(false)
 	sector_count += 1
 	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
-		VfxSwap.spawn_at(e.get_parent(), "salt_king/procession_tide", e.global_position + dir * 3.0 * U, dir)
+		VfxSwap.spawn_at(e.get_parent(), "salt_king/procession_tide", e.global_position, dir) # disque de 9 u centré sur le roi, nef sèche vers dir
 	_snd(&"enemy.salt_king_procession_warn.heavy")
 
 

@@ -107,10 +107,14 @@ const AUTO_PILLAR_MIN_HITS := 2 ## la Tête automatique attend ce nombre de mons
 const V_VAPEUR := &"tocsin_vapeur" ## slot 1 (remplace Rivets rougis)
 const V_FUMIGENE := &"tocsin_tete_fumigene" ## slot 4 (remplace Tête-cloche)
 const COUNTER_HEADLESS_BOSS := "tocsin.headless_boss_kills" ## boss d'étage tué tête en recharge
-## Vapeur : cône 60° à 3 u, anneau 360° de 2 u sans tête. Coef réglé par balance_sim (±15 % des Rivets).
-const VAPEUR_COEF := 0.55
+## Vapeur : cône 60° à 3 u, anneau 360° de 2,5 u sans tête. Coef réglé par balance_sim (±15 % des Rivets).
+## Rééquilibrage du 05/11/2026 (retour du joueur « Vapeur beaucoup trop faible ») : mesurée à 0,50-0,72 × les Rivets
+## sur élite et boss, et à ~0 sur un boss d'étage sans tête (le centre d'un corps de 1,4-1,8 u ne passait jamais sous
+## les 2 u de l'anneau). Corrections : déclenchement au bord du corps, anneau 2 -> 2,5 u, jet appuyé sur la cible visée.
+const VAPEUR_COEF := 0.55 ## à tout monstre du cône (ou de l'anneau)
+const VAPEUR_FOCUS_MULT := 1.6 ## la cible visée (bord le plus proche) prend le jet : 0,55 × 1,6 = 0,88
 const VAPEUR_RANGE_U := 3.0
-const VAPEUR_RING_U := 2.0
+const VAPEUR_RING_U := 2.5 ## 05/11/2026 : 2,0 -> 2,5
 const VAPEUR_CONE_DEG := 60.0
 const VAPEUR_RANGE_ADD_K := 0.5 ## la portée d'items compte pour moitié
 const VAPEUR_PROC := 0.6
@@ -175,6 +179,8 @@ var _pickup_lock := {2: 0.0, 4: 0.0} ## slot -> secondes de recharge laissées p
 var _probe_t := -10.0
 var _probe_pillar_ok := true
 var _regen_frames: SpriteFrames = null
+var _vapeur_focus: SpellData = null ## copie du sort Vapeur au coef de la cible visée (VAPEUR_FOCUS_MULT)
+var _vapeur_focus_src: SpellData = null
 
 
 # --- Données -------------------------------------------------------------------------------------
@@ -858,16 +864,18 @@ func _shake(px: float) -> void:
 
 # --- Variantes : Vapeur, Tête-fumigène ----------------------------------------------------------------
 
-## Vapeur : cône de 60° vers le monstre le plus proche (portée 3 u, + range_add × 0,5), anneau 360° sans tête.
+## Vapeur : cône de 60° vers le monstre le plus proche (portée 3 u, + range_add × 0,5), anneau 360° de 2,5 u sans tête.
+## La cible visée prend le jet (coef × VAPEUR_FOCUS_MULT), les autres monstres touchés le coef de base.
 ## Rien à portée : pas de lancer (le sort auto ne consomme rien).
 func _cast_vapeur(s: SpellData) -> bool:
 	var c := _caster()
 	if c == null:
 		return false
 	var reach: float = s.range_u * Balance.UNIT_PX * (1.0 + VAPEUR_RANGE_ADD_K * player.stat(&"range_add"))
-	var near := c.nearest_enemy(reach)
+	var near := _vapeur_target(reach)
 	if near == null:
 		return false
+	var focus := _vapeur_focus_spell(s)
 	var origin := player.global_position
 	var d := near.global_position - origin
 	if d.length_squared() > 1.0:
@@ -888,14 +896,45 @@ func _cast_vapeur(s: SpellData) -> bool:
 			var slack := asin(clampf(rad / maxf(dist, 1.0), 0.0, 1.0))
 			if absf(d.angle_to(off)) > half + slack:
 				continue
-		c.deal_damage(e, s, {"source_pos": origin})
+		c.deal_damage(e, focus if e == near else s, {"source_pos": origin})
 		if TocsinLimb._alive(e):
 			e.apply_status(&"slow", {"pct": VAPEUR_SLOW_PCT, "duration": VAPEUR_SLOW_S})
 	player.facing = d
 	TocsinSteamFx.spawn(player.get_parent(), origin, TocsinSteamFx.Mode.RING if ring else TocsinSteamFx.Mode.CONE,
 			reach, d, 0.22)
+	if VfxSwap.enabled(): VfxSwap.spawn_follow(player, "tocsin/tocsin_vapeur_ring" if ring else "tocsin/tocsin_vapeur", d, false, {"src": "cast", "radius_u": reach / Balance.UNIT_PX}) # mode test : cône (ou anneau sans tête) à la portée réelle
 	Audio.play(&"enemy.shot.medium", origin, -12.0, 1.9 - 0.05 * mini(absent_count(), 5)) # « pschhh », plus grave si Surchauffe haute
 	return true
+
+
+## Cible de la Vapeur : monstre vivant, en vue, dont le BORD du corps est le plus proche et à moins de `reach` px
+## (un gros corps de boss compte dès que la vapeur l'atteint, comme pour les dégâts). aim_priority respectée.
+func _vapeur_target(reach: float) -> Node2D:
+	var origin := player.global_position
+	var best: Node2D = null
+	var best_score := INF
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not TocsinLimb._alive(e) or not e.has_method(&"take_damage"):
+			continue
+		var edge := maxf((e as Node2D).global_position.distance_to(origin) - TocsinLimb._radius_of(e), 0.0)
+		if edge > reach:
+			continue
+		var pr: Variant = e.get(&"aim_priority")
+		var score: float = edge / maxf(float(pr), 0.01) if pr != null else edge
+		if score < best_score and StageMap.los(player.get_tree(), origin, (e as Node2D).global_position):
+			best_score = score
+			best = e
+	return best
+
+
+## Copie du sort Vapeur au coef du jet (suit le coef courant : réglages, Couronne d'écho, bancs).
+func _vapeur_focus_spell(s: SpellData) -> SpellData:
+	if _vapeur_focus == null or _vapeur_focus_src != s:
+		_vapeur_focus = s.duplicate() as SpellData
+		_vapeur_focus_src = s
+	_vapeur_focus.coef = s.coef * VAPEUR_FOCUS_MULT
+	_vapeur_focus.proc_coef = s.proc_coef
+	return _vapeur_focus
 
 
 ## Tête-fumigène posée (tintement fini) : lumière, secousse ; la zone et ses ticks sont tenus par le membre.

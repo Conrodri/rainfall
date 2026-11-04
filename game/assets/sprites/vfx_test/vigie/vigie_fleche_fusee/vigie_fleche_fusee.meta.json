@@ -1,0 +1,74 @@
+{
+ "source": "rainfall/vigie-arrow-kind",
+ "opts": {
+  "palette": [
+   "#0c0507",
+   "#1c0a0e",
+   "#35121a",
+   "#6a1b2a",
+   "#B02438",
+   "#FF3A4F",
+   "#FF8C98"
+  ],
+  "kind": 1,
+  "light": 1.0
+ },
+ "owner": "vigie",
+ "spell_id": "vigie_fleche_fusee",
+ "scale": 2,
+ "version": 2,
+ "fps": 15.0,
+ "loop": true,
+ "frames": 6,
+ "frame_size": [
+  92,
+  52
+ ],
+ "node_scale": 1,
+ "offset": [
+  -14.0,
+  0.0
+ ],
+ "emission": "vigie_fleche_fusee_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF3A4F",
+ "light_curve": [
+  1.0,
+  1.0,
+  0.997,
+  0.996,
+  0.994,
+  0.997
+ ],
+ "light_pos": [
+  [
+   -0.6,
+   -1.0
+  ],
+  [
+   -0.6,
+   -1.0
+  ],
+  [
+   -0.6,
+   -1.0
+  ],
+  [
+   -0.6,
+   -1.0
+  ],
+  [
+   -0.6,
+   -1.0
+  ],
+  [
+   -0.6,
+   -1.0
+  ]
+ ],
+ "filter": "nearest",
+ "test_asset": true,
+ "ppu": 32,
+ "usage": "projectile",
+ "usage_note": "Flèche-fusée en vol vers +x : tête de magnésium blanc-rouge, étincelles et fumée derrière ; boucle."
+}

@@ -1,5 +1,9 @@
 {
- "source": "lightning/thunderclap",
+ "owner": "deep_eel",
+ "spell_id": "discharge_ring",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/deep_eel-discharge",
  "opts": {
   "palette": [
    "#06090d",
@@ -11,168 +15,74 @@
    "#BFF4FF",
    "#dff9ff"
   ],
-  "light": 0.4
+  "r0": 32,
+  "r1": 76,
+  "light": 1.0
  },
- "owner": "deep_eel",
- "spell_id": "discharge_ring",
+ "ppu": 12.667,
+ "usage": "ground_oneshot",
+ "usage_note": "Décharge électrique vue de dessus, centrée sur le pivot : bande de 2,5 à 6 u frappée d'un coup, arcs qui courent et la traversent.",
+ "radius_u": 6.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 29,
+ "frames": 10,
  "frame_size": [
-  765,
-  399
+  304,
+  304
  ],
- "scale": 3,
- "offset": [
-  -4.5,
-  -112.5
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  0.0,
+  0.0
+ ],
  "emission": "discharge_ring_e.tres",
  "light_k": 1.0,
  "light_color": "#BFF4FF",
  "light_curve": [
-  0.0,
-  0.002,
   1.0,
-  0.857,
-  0.533,
-  0.173,
-  0.068,
+  0.517,
+  0.366,
+  0.206,
+  0.088,
+  0.062,
   0.034,
-  0.016,
-  0.007,
-  0.004,
-  0.003,
-  0.002,
-  0.001,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
-  0.0,
+  0.012,
   0.0,
   0.0
  ],
  "light_pos": [
   [
-   0.0,
-   0.0
+   -0.8,
+   -1.0
   ],
   [
-   -19.2,
-   -82.5
+   -1.2,
+   -1.2
   ],
   [
-   19.5,
-   -74.1
+   -0.4,
+   -0.6
   ],
   [
-   9.3,
-   -65.7
+   -0.0,
+   -0.4
   ],
   [
-   14.1,
-   -65.7
+   1.0,
+   -2.6
   ],
   [
-   -3.9,
-   -62.1
+   -4.0,
+   0.2
   ],
   [
-   2.4,
-   -55.5
+   -4.0,
+   0.2
   ],
   [
-   0.3,
-   -37.2
-  ],
-  [
-   8.4,
-   -19.2
-  ],
-  [
-   16.8,
-   -27.3
-  ],
-  [
-   3.0,
-   -12.0
-  ],
-  [
-   17.1,
-   -34.8
-  ],
-  [
-   15.6,
-   -46.5
-  ],
-  [
-   12.9,
-   -57.0
-  ],
-  [
-   12.3,
-   -25.8
-  ],
-  [
-   72.0,
-   -1.5
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   -2.4,
+   -0.6
   ],
   [
    0.0,
@@ -182,5 +92,6 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

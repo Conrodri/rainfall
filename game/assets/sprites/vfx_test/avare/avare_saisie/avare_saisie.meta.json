@@ -1,5 +1,5 @@
 {
- "source": "melee/whip-crack",
+ "source": "rainfall/avare-grab-snare",
  "opts": {
   "palette": [
    "#0e0a04",
@@ -10,101 +10,86 @@
    "#F2C14E",
    "#F8DE92"
   ],
-  "light": 0.4
+  "radius": 32,
+  "light": 1.0
  },
  "owner": "avare",
  "spell_id": "avare_saisie",
+ "usage": "ground_dir_oneshot",
+ "usage_note": "Saisie, prise au bout de la chaîne, vue de dessus, centrée sur le point visé (disque de 2 u) : nœud coulant qui se referme puis traînées vers -x (vers Avare).",
+ "ppu": 16,
+ "scale": 2,
+ "radius_u": 2.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 10,
  "frame_size": [
-  304,
-  130
+  162,
+  136
  ],
- "scale": 2,
- "offset": [
-  158.0,
-  -53.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -13.0,
+  0.0
+ ],
  "emission": "avare_saisie_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#F2C14E",
  "light_curve": [
-  0.056,
-  0.056,
-  0.057,
-  0.056,
+  0.63,
+  0.595,
+  0.647,
   1.0,
-  0.45,
-  0.153,
-  0.049,
-  0.015,
-  0.009,
-  0.0,
-  0.0,
-  0.0,
+  0.447,
+  0.372,
+  0.252,
+  0.123,
+  0.034,
   0.0
  ],
  "light_pos": [
   [
-   83.2,
-   -32.4
+   -1.0,
+   -1.0
   ],
   [
-   89.0,
-   -32.6
+   -1.0,
+   -1.0
   ],
   [
-   117.4,
-   -34.0
+   -1.0,
+   -1.0
   ],
   [
-   169.2,
-   -36.6
+   -2.0,
+   -1.0
   ],
   [
-   174.8,
-   -45.4
+   -6.0,
+   -1.0
   ],
   [
-   178.2,
-   -44.8
+   -7.4,
+   -1.0
   ],
   [
-   186.4,
-   -44.2
+   -5.8,
+   -1.0
   ],
   [
-   196.8,
-   -45.8
+   -2.2,
+   -1.0
   ],
   [
-   184.8,
-   -49.4
-  ],
-  [
-   176.6,
-   -54.6
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   -1.0,
+   -1.0
   ],
   [
    0.0,
    0.0
   ]
- ]
+ ],
+ "filter": "nearest",
+ "test_asset": true
 }

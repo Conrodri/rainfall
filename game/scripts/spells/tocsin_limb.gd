@@ -138,6 +138,7 @@ func step(delta: float) -> void:
 		return
 	t += delta
 	_tick_flash = maxf(_tick_flash - delta, 0.0)
+	if VfxSwap.enabled(): VfxSwap.follow_while(self, "tocsin/tocsin_tete_fumigene" if kind == &"head" else "tocsin/tocsin_bras_pilier", phase == Phase.PILLAR or phase == Phase.SMOKE, Vector2.RIGHT, 8.0) # mode test : décharge / fumée tant qu'elle dure
 	match phase:
 		Phase.FLY:
 			_step_fly()

@@ -329,7 +329,7 @@ func _test_variants() -> void:
 	_check(_kit.is_marked(x), "impact de Pluie de météores : marque")
 	_kit.consume_mark(x)
 	_kit.on_spell_hit(s4, x, 1.0)
-	_check(_kit.is_marked(x), "piqué du Phénix : marque")
+	_check(_kit.is_marked(x), "trait du Phénix : marque")
 	var orb: SpellData = _player.character.spells[0]
 	var before := _kit.mark_left(x)
 	_kit.on_spell_hit(orb, x, 1.0)

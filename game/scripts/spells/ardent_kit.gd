@@ -22,7 +22,9 @@ const ACTION_IMPACT_FRAMES := {&"attack": 2, &"cast": 2, &"cast_ult": 4}
 const EMBER_COEF := 0.50 ## par orbe et par touche (immunité 0,4 s par orbe et par monstre)
 const PILLAR_COEF := 0.25 ## par tick de 0,25 s
 const METEOR_COEF := 6.0 ## par impact (5 par lancer)
-const PHOENIX_COEF := 0.4 ## par piqué (toutes les 1,5 s pendant 12 s)
+## Phénix revu le 04/11/2026 (trait de feu perçant au lieu du piqué) : 0,4 -> 0,38 pour garder son DPS à ±10 %
+## (banc ardent_variants_bench --slot=4, DPS de la variante, ancien piqué -> trait : ≈ +4 % à 0,4).
+const PHOENIX_COEF := 0.38 ## par monstre traversé par un trait du phénix (un trait / 1,5 s pendant 12 s) ; brûlure = 2 × coef
 const PHOENIX_BURST_COEF := 1.3 ## explosion finale
 ## Preset LightRig par sort (éclat à l'impact / lumière de zone).
 const SPELL_LIGHTS := {
@@ -149,10 +151,11 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s.hit_force = _force_for(0.5)
 			s.color = Color(1.0, 0.4, 0.1)
 		&"phoenix":
-			# `coef` = un piqué (ArdentPhoenix) ; l'explosion finale est phoenix_burst_spell()
+			# `coef` = une touche du trait de feu (ArdentPhoenix -> ArdentPhoenixBolt, traverse tout sur 8 u) ;
+			# l'explosion finale est phoenix_burst_spell()
 			s = _spell(variant_id, "Phénix", 4, SpellData.Behavior.KIT, PHOENIX_COEF, 20.0)
-			s.range_u = 8.0
-			s.trigger_range_u = 8.0
+			s.range_u = ArdentPhoenix.AIM_RANGE_U
+			s.trigger_range_u = ArdentPhoenix.AIM_RANGE_U
 			s.proc_coef = 0.7
 			s.color = Color(1.0, 0.5, 0.1)
 	if s != null:

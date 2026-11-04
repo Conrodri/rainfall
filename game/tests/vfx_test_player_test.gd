@@ -154,8 +154,15 @@ func _test_usages(host: Node2D) -> void:
 	_check("usage_note : « 1,5 u de large »", is_equal_approx(VfxTestPlayer.note_width_u({"usage_note": "vers +x sur 16 u, 1,5 u de large ; boucle"}), 1.5))
 	_check("usage_note : « (2 u de large) »", is_equal_approx(VfxTestPlayer.note_width_u({"usage_note": "sur 12 u (2 u de large) puis"}), 2.0))
 	_check("usage_note : champ meta width_u prioritaire", is_equal_approx(VfxTestPlayer.note_width_u({"width_u": 0.7, "usage_note": "1 u de large"}), 0.7))
-	# --- projectile : longueur raccourcie par la perspective, épaisseur inchangée
-	var pk := "flood_gunner/rivet"
+	# --- projectile : longueur raccourcie par la perspective, épaisseur inchangée (flèche) ; tête ronde jamais raccourcie
+	var round_k := "flood_gunner/rivet"
+	if VfxTestPlayer.available(round_k):
+		_check("rivet : meta round", bool(VfxTestPlayer.load_meta(round_k).get("round", false)))
+		for d in [Vector2.UP, Vector2(1, 1).normalized()]:
+			var round_p := VfxTestPlayer.spawn(host, round_k, Vector2.ZERO, d, {"always": false}) as VfxTestPlayer
+			_check("projectile rond %s : jamais raccourci" % d, is_equal_approx(round_p.rot.scale.x, 1.0) and is_equal_approx(round_p.rot.rotation, Iso.screen_angle(d)), "%s" % round_p.rot.scale)
+			round_p.stop()
+	var pk := "vigie/vigie_trait"
 	if VfxTestPlayer.available(pk):
 		var exp := {Vector2.RIGHT: 1.0, Vector2.UP: 0.5, Vector2.DOWN: 0.5, Vector2(1, 1).normalized(): Vector2(0.7071068, 0.3535534).length()}
 		for d in exp:

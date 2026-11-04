@@ -84,6 +84,24 @@ caméra isométrique.
 - Règle pour tout nouvel effet : jamais de profil 2D. Un effet au sol se dessine vu du dessus (anneaux, lignes,
   vagues, zones) ; seul ce qui se dresse (colonne, éclair, gerbe) est un billboard. Vérifier dans les 3 directions.
 - Limites connues : nuages bas sans emprise au sol (le télégraphe en code la donne).
+- **Passe « l'effet montre ce que dit le sort » (04/11/2026, retour du joueur)** : chaque effet reprend la forme et
+  la taille de la description (`data/characters.json`) et de la géométrie du kit ou du cerveau : un cône s'ouvre
+  depuis le lanceur à l'angle et à la portée du code (Vague d'Averse, Louche, Marteau, Bâton, Morsure…) ; une zone au
+  point visé est un disque au sol du bon rayon ; seul ce qui tombe vraiment tombe (météores, obus, boulons, grêle).
+  Les effets non directionnels qui ont du volume (nova, brasier, pilier, geyser, explosion) sont des billboards qui
+  dessinent eux-mêmes leur empreinte au sol en ellipse 2:1 sous un volume debout (usage `ground_*` pour recevoir le
+  vrai rayon). Environ 90 effets maison préfixés par propriétaire dans `pixelfx_fx/rainfall/`.
+  Règles du lecteur ajoutées : meta `"round": true` = projectile à tête ronde jamais raccourci par la perspective
+  (braise, goutte, motte, rivet ; flèches, couteaux et éclats restent raccourcis) ; les projections `ground` et
+  `ground_dir` passent sous les personnages (z − 1, le sol de la carte est à −20). VfxSwap : `META_DIR` et
+  `META_RADIUS` posés par un kit sur un sprite d'origine sans rotation ni rayon (Vague) ; `UNDER_PLAYER`,
+  `NO_DEDUP`, `SPRITE_RADIUS_PX`.
+  Vérification en vrai lancer : `game/tests/spell_cast_capture.tscn` (perso, variantes, sorts, directions, instants,
+  `--orig`, `--dummy-dist`, `--prewalk` ; mode boss `--boss= --attack=`), mode d'emploi en tête du `.gd`. Plusieurs
+  agents en parallèle : lancer Godot par `sh art/tools/vfx_test/godot_locked.sh <args>` (verrou commun).
+  Restes connus : Arpenteuse (chaîne), sorts de mêlée courte et rappels validés surtout dans `vfx_capture` ; nef
+  de la procession du Roi de sel fixe (la vraie tourne) ; carillon de l'Idole à épaisseur de bande variable ; bond du
+  Cerf, croix P3 de l'Éclusier, mare du Bouvier et nappe de l'Éclusier sans effet de test.
 - Remplacement sur les vrais sorts (case « VFX pixelfx sur les sorts », drapeau `TestMode.vfx_test`) :
   `game/scripts/testmode/vfx_swap.gd`. L'effet d'origine est caché (il continue de tourner pour garder durées et
   fins de zone) et un VfxTestPlayer le suit. Clé : meta `vfx_key` > `<perso>/<id du sort>` > tables PATHS /

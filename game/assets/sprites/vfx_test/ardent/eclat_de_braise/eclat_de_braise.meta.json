@@ -1,5 +1,5 @@
 {
- "source": "fire/fireball",
+ "source": "rainfall/ember-bolt",
  "opts": {
   "palette": [
    "#0d0504",
@@ -10,121 +10,96 @@
    "#FF7319",
    "#ffa35a"
   ],
-  "light": 0.4
+  "radius": 5,
+  "tail": 46
  },
  "owner": "ardent",
  "spell_id": "eclat_de_braise",
+ "scale": 2,
+ "test_asset": true,
+ "ppu": 30,
+ "usage": "projectile",
+ "usage_note": "Braise compacte (ronde, lisible dans toutes les directions) qui file vers +x, traînée d'étincelles derrière.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
- "frames": 18,
+ "frames": 12,
  "frame_size": [
-  230,
-  100
+  126,
+  48
  ],
- "scale": 2,
+ "node_scale": 1,
  "offset": [
-  -73.0,
+  -37.0,
   0.0
  ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
- "node_scale": 1,
  "emission": "eclat_de_braise_e.tres",
- "light_k": 1.8,
+ "light_k": 1.0,
  "light_color": "#FF7319",
  "light_curve": [
-  0.791,
+  0.873,
+  0.895,
+  0.769,
   0.88,
-  0.963,
   1.0,
-  0.955,
-  0.857,
+  0.881,
+  0.872,
+  0.86,
+  0.749,
   0.868,
-  0.89,
-  0.87,
-  0.843,
-  0.774,
-  0.752,
-  0.829,
-  0.982,
-  0.888,
-  0.83,
-  0.834,
-  0.815
+  0.969,
+  0.848
  ],
  "light_pos": [
   [
-   -19.2,
-   -0.2
-  ],
-  [
-   -18.4,
-   -0.4
-  ],
-  [
-   -18.6,
-   -0.6
-  ],
-  [
-   -19.4,
+   -4.6,
    -0.8
   ],
   [
-   -19.8,
-   -0.8
-  ],
-  [
-   -20.0,
+   -4.6,
    -1.0
   ],
   [
-   -19.8,
+   -5.2,
+   -1.2
+  ],
+  [
+   -4.8,
+   -1.2
+  ],
+  [
+   -4.6,
+   -1.0
+  ],
+  [
+   -5.2,
+   -1.0
+  ],
+  [
+   -4.6,
+   -1.2
+  ],
+  [
+   -4.0,
+   -1.0
+  ],
+  [
+   -4.6,
    -0.8
   ],
   [
-   -20.2,
-   -0.8
+   -4.6,
+   -1.0
   ],
   [
-   -19.2,
-   -0.6
+   -4.2,
+   -1.2
   ],
   [
-   -18.4,
-   -0.8
-  ],
-  [
-   -18.2,
-   -0.8
-  ],
-  [
-   -18.4,
-   -0.8
-  ],
-  [
-   -18.8,
-   -0.6
-  ],
-  [
-   -19.0,
-   -0.6
-  ],
-  [
-   -19.2,
-   -0.0
-  ],
-  [
-   -19.6,
-   -0.6
-  ],
-  [
-   -20.6,
-   -0.4
-  ],
-  [
-   -20.4,
-   -0.4
+   -4.6,
+   -1.0
   ]
- ]
+ ],
+ "filter": "nearest",
+ "round": true
 }

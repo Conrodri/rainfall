@@ -1,0 +1,97 @@
+{
+ "source": "rainfall/tocsin-steam-cone",
+ "opts": {
+  "palette": [
+   "#0d0d0c",
+   "#1e1e1c",
+   "#3a3a37",
+   "#66645e",
+   "#9a968c",
+   "#c9c3b4",
+   "#FF7A1F"
+  ],
+  "radius": 32,
+  "span": 6.28319,
+  "puffs": 56,
+  "light": 1.0
+ },
+ "owner": "tocsin",
+ "spell_id": "tocsin_vapeur_ring",
+ "scale": 2,
+ "ppu": 16,
+ "test_asset": true,
+ "usage": "ground_oneshot",
+ "radius_u": 2.0,
+ "usage_note": "Vapeur sans tête vue de dessus : anneau 360° centré sur le pivot, rayon 2 u.",
+ "version": 2,
+ "fps": 15.0,
+ "loop": false,
+ "frames": 10,
+ "frame_size": [
+  170,
+  164
+ ],
+ "node_scale": 1,
+ "offset": [
+  1.0,
+  -4.0
+ ],
+ "emission": "tocsin_vapeur_ring_e.tres",
+ "light_k": 1.0,
+ "light_color": "#FF7A1F",
+ "light_curve": [
+  0.316,
+  1.0,
+  0.916,
+  0.099,
+  0.002,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0
+ ],
+ "light_pos": [
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   -0.8,
+   -0.0
+  ],
+  [
+   1.4,
+   -0.4
+  ],
+  [
+   6.2,
+   -4.2
+  ],
+  [
+   -4.6,
+   -4.2
+  ],
+  [
+   -4.0,
+   58.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
+  ]
+ ],
+ "filter": "nearest"
+}

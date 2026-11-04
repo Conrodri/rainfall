@@ -1,5 +1,5 @@
 {
- "source": "melee/spin-slash",
+ "source": "rainfall/morfil-blade-arc",
  "opts": {
   "palette": [
    "#0d1008",
@@ -10,21 +10,23 @@
    "#CDEB6E",
    "#E6F7A8"
   ],
-  "light": 0.4
+  "radius": 45,
+  "span": 6.283185307179586,
+  "light": 1.0
  },
  "owner": "morfil",
  "spell_id": "taille_estoc",
  "fps": 15.0,
  "loop": false,
- "frames": 13,
+ "frames": 10,
  "frame_size": [
-  346,
-  160
+  206,
+  204
  ],
  "scale": 2,
  "offset": [
-  25.0,
-  -46.0
+  -9.0,
+  -4.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -34,64 +36,49 @@
  "light_k": 1.0,
  "light_color": "#CDEB6E",
  "light_curve": [
-  0.251,
-  0.117,
-  0.261,
+  0.0,
   1.0,
-  0.552,
-  0.263,
-  0.092,
-  0.038,
-  0.021,
-  0.01,
-  0.003,
+  0.792,
+  0.584,
+  0.296,
+  0.094,
+  0.012,
+  0.0,
   0.0,
   0.0
  ],
  "light_pos": [
   [
-   72.6,
-   -32.8
+   0.0,
+   0.0
   ],
   [
-   -25.8,
-   -43.4
+   -12.4,
+   16.2
   ],
   [
-   17.8,
-   -24.8
+   -8.4,
+   17.4
   ],
   [
-   9.8,
-   -35.8
+   -6.2,
+   20.6
   ],
   [
-   8.2,
-   -35.2
+   -10.6,
+   39.4
   ],
   [
-   5.2,
-   -34.6
+   -50.6,
+   48.2
   ],
   [
-   -2.2,
-   -35.2
+   -81.4,
+   13.6
   ],
   [
-   -4.8,
-   -40.6
-  ],
-  [
-   5.2,
-   -49.6
-  ],
-  [
-   16.8,
-   -53.0
-  ],
-  [
-   -9.0,
-   -57.0
+   0.0,
+   0.0
   ],
   [
    0.0,
@@ -101,5 +88,9 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "ground_oneshot",
+ "radius_u": 2.8,
+ "usage_note": "Coup circulaire vu de dessus : la lame balaie 360° autour du pivot (le lanceur), rayon 2,8 u."
 }

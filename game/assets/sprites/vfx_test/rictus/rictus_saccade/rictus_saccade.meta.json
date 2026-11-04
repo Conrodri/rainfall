@@ -1,5 +1,5 @@
 {
- "source": "melee/whip-crack",
+ "source": "rainfall/rictus-saccade-fil",
  "opts": {
   "palette": [
    "#0a0d0d",
@@ -10,93 +10,77 @@
    "#9FC8C0",
    "#c9e3dd"
   ],
-  "light": 0.35
+  "len": 96,
+  "light": 1.0
  },
  "owner": "rictus",
  "spell_id": "rictus_saccade",
+ "scale": 2,
+ "ppu": 16,
+ "test_asset": true,
+ "usage": "line_from_pivot",
+ "line_u": 6.0,
+ "usage_note": "Fil vu de dessus, du pivot (Rictus) vers +x sur 6 u, étiré à la distance réelle du couteau ; nœud lumineux qui revient du couteau vers la main en 0,32 s.",
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 10,
  "frame_size": [
-  304,
-  128
+  220,
+  40
  ],
- "scale": 2,
- "offset": [
-  158.0,
-  -54.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  98.0,
+  0.0
+ ],
  "emission": "rictus_saccade_e.tres",
  "light_k": 1.0,
  "light_color": "#9FC8C0",
  "light_curve": [
-  0.059,
-  0.059,
-  0.059,
-  0.059,
   1.0,
-  0.449,
-  0.146,
-  0.042,
-  0.013,
-  0.008,
-  0.0,
-  0.0,
+  0.438,
+  0.478,
+  0.575,
+  0.579,
+  0.211,
+  0.133,
+  0.056,
   0.0,
   0.0
  ],
  "light_pos": [
   [
-   83.2,
-   -32.4
+   171.0,
+   -1.0
   ],
   [
-   89.0,
-   -32.6
+   185.4,
+   -1.0
   ],
   [
-   117.4,
-   -34.0
+   175.4,
+   -1.0
   ],
   [
-   169.2,
-   -36.6
+   148.2,
+   -1.0
   ],
   [
-   174.8,
-   -45.6
+   87.0,
+   -0.8
   ],
   [
-   178.0,
-   -44.8
+   0.8,
+   -1.0
   ],
   [
-   187.0,
-   -44.0
+   -0.2,
+   -1.0
   ],
   [
-   199.6,
-   -45.2
-  ],
-  [
-   185.2,
-   -49.2
-  ],
-  [
-   176.0,
-   -55.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   -0.6,
+   -1.0
   ],
   [
    0.0,
@@ -106,5 +90,6 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

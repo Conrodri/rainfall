@@ -1,5 +1,5 @@
 {
- "source": "melee/double-slash",
+ "source": "rainfall/morfil-blade-arc",
  "opts": {
   "palette": [
    "#0d1008",
@@ -10,21 +10,24 @@
    "#CDEB6E",
    "#E6F7A8"
   ],
-  "light": 0.4
+  "radius": 40,
+  "span": 6.283185307179586,
+  "twin": 1,
+  "light": 1.0
  },
  "owner": "morfil",
  "spell_id": "lames_jumelles",
  "fps": 15.0,
  "loop": false,
- "frames": 13,
+ "frames": 10,
  "frame_size": [
-  212,
-  190
+  192,
+  188
  ],
  "scale": 2,
  "offset": [
-  114.0,
-  -69.0
+  -6.0,
+  -2.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -35,16 +38,13 @@
  "light_color": "#CDEB6E",
  "light_curve": [
   0.0,
-  0.337,
-  0.199,
   1.0,
-  0.552,
-  0.28,
-  0.074,
-  0.016,
-  0.009,
-  0.005,
-  0.001,
+  0.944,
+  0.71,
+  0.419,
+  0.164,
+  0.037,
+  0.002,
   0.0,
   0.0
  ],
@@ -54,44 +54,32 @@
    0.0
   ],
   [
-   88.2,
-   -13.6
+   -16.6,
+   12.0
   ],
   [
-   88.8,
-   -15.2
+   0.6,
+   13.0
   ],
   [
-   77.8,
-   -57.4
+   -0.2,
+   15.2
   ],
   [
-   77.8,
-   -59.6
+   -2.0,
+   24.4
   ],
   [
-   77.2,
-   -56.2
+   -7.4,
+   36.6
   ],
   [
-   77.4,
-   -48.4
+   23.8,
+   27.4
   ],
   [
-   91.6,
-   -45.0
-  ],
-  [
-   95.8,
-   -47.8
-  ],
-  [
-   95.8,
-   -46.2
-  ],
-  [
-   103.0,
-   -44.0
+   60.6,
+   4.2
   ],
   [
    0.0,
@@ -101,5 +89,9 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "ground_oneshot",
+ "radius_u": 2.5,
+ "usage_note": "Dégainé jumeau vu de dessus : deux lames tournent en sens contraires autour du pivot, rayon 2,5 u."
 }

@@ -1,5 +1,9 @@
 {
- "source": "lightning/zap-hit",
+ "owner": "sonneur",
+ "spell_id": "bolt_rain",
+ "test_asset": true,
+ "scale": 2,
+ "source": "rainfall/sonneur-sky-drop",
  "opts": {
   "palette": [
    "#130c04",
@@ -11,40 +15,50 @@
    "#FFB347",
    "#ffd58c"
   ],
-  "light": 0.4
+  "wait": 0,
+  "fall": 0.45,
+  "height": 166,
+  "radius": 24,
+  "obj": 0,
+  "hit": 0,
+  "objk": 1.8,
+  "light": 1.0
  },
- "owner": "sonneur",
- "spell_id": "bolt_rain",
+ "ppu": 24,
+ "usage_note": "Boulon qui tombe du ciel (billboard iso) : chute de 8 u en 0,45 s sur son ombre, puis impact au sol en ellipse 2:1 de rayon 1 u (étincelles, anneau, brûlure). Posé à la frame où la chute commence.",
+ "radius_u": 1.0,
+ "version": 2,
  "fps": 15.0,
  "loop": false,
- "frames": 14,
+ "frames": 19,
  "frame_size": [
-  240,
-  184
+  134,
+  394
  ],
- "scale": 2,
- "offset": [
-  -28.0,
-  0.0
- ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
  "node_scale": 1,
+ "offset": [
+  -19.0,
+  -163.0
+ ],
  "emission": "bolt_rain_e.tres",
- "light_k": 1.5,
+ "light_k": 1.0,
  "light_color": "#FFB347",
  "light_curve": [
-  0.059,
+  0.28,
+  0.281,
+  0.283,
+  0.283,
+  0.283,
+  0.283,
+  0.283,
   1.0,
-  0.629,
-  0.435,
-  0.183,
-  0.076,
-  0.044,
-  0.022,
-  0.012,
-  0.001,
+  0.374,
+  0.441,
+  0.363,
+  0.275,
+  0.189,
+  0.104,
+  0.02,
   0.0,
   0.0,
   0.0,
@@ -52,44 +66,52 @@
  ],
  "light_pos": [
   [
-   -131.4,
-   -25.0
+   -60.6,
+   -333.0
   ],
   [
-   -19.4,
-   -6.8
+   -59.2,
+   -325.8
   ],
   [
-   -16.2,
-   -2.6
+   -55.4,
+   -303.8
   ],
   [
-   -22.8,
-   -10.8
+   -49.0,
+   -267.4
   ],
   [
-   -10.6,
-   -8.2
+   -39.8,
+   -216.4
   ],
   [
-   2.8,
-   -5.6
+   -28.0,
+   -150.8
   ],
   [
-   2.8,
-   -6.4
+   -13.6,
+   -70.6
   ],
   [
-   4.6,
-   -8.8
+   -1.0,
+   -8.0
   ],
   [
-   4.8,
-   -9.2
+   -1.0,
+   -1.6
   ],
   [
-   4.2,
-   -11.6
+   -1.0,
+   -1.4
+  ],
+  [
+   -1.0,
+   -1.4
+  ],
+  [
+   -1.0,
+   -1.2
   ],
   [
    -1.0,
@@ -98,6 +120,18 @@
   [
    -1.0,
    -1.0
+  ],
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.0
   ],
   [
    0.0,
@@ -107,5 +141,6 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "filter": "nearest"
 }

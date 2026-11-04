@@ -15,7 +15,7 @@ extends Node
 ##   (+30 % si une cible est ficelée). Grisée tant que le couteau est en main.
 ## - Sort 4 Les Doublures : 6 leurres Decoy (S14) en hexagone autour du ficelé (sinon du point visé, du paquet, de soi).
 ## - Variantes : Éventail (slot 2, l'ancien sort de base), Toupie (slot 3, l'ancien sort de base, étoile comprise),
-##   Main du Montreur (slot 1), Rideau (slot 4).
+##   Main du Montreur (slot 1), Rideau (slot 4). Éventail lancé pendant la Toupie : 4 éventails à 360° (Toupie d'acier).
 ## - Roulade = levée : même dash que la roulade (Balance.DODGE_*), pantin soulevé de LIFT_HEIGHT_U.
 ## - Fils tendus : +2 % PV max à la première explosion de chaque Doublures (et en fin de Toupie).
 ## Rendu : CompanionSprite (le Montreur) + StringRig (5 fils) ; assets M1-M3 absents = repli sur Ardent teinté.
@@ -122,6 +122,11 @@ const FLIGHT_CHARGED_COEF := 1.6 ## coef en vol d'une doublure chargée (1,2 sin
 const CHARGE_MAX_PER_SALVE := 3 ## doublures chargées par salve d'Éventail (2-3 selon la géométrie)
 const FAN_WATCH_S := 0.7 ## durée de surveillance des couteaux après le lancer (portée 7 u à 14 u/s = 0,5 s)
 const KNIFE_CHARGE_PAD_U := 0.2 ## rayon du couteau : marge de passage sur une doublure (une salve de 5 couteaux sur 60° charge 3 doublures)
+## Combo « Toupie d'acier » (variantes Éventail + Toupie, demande du joueur 04/11/2026) : l'Éventail lancé pendant la Toupie
+## part en TOUPIE_FAN_N éventails répartis à 360° (le premier vers la visée, puis tous les 90°), soit 4 × 5 couteaux.
+## Une salve tournoyante reste UNE salve : ses 20 couteaux partagent le plafond de recharge rendue (KNIFE_REFUND_CAP_S)
+## et celui des doublures chargées (CHARGE_MAX_PER_SALVE). Aucun plafond de couteaux plantés (KNIFE_LIFE_S chacun).
+const TOUPIE_FAN_N := 4
 ## Esquive Levée : atterrir à cette distance de doublures en attente les détone tout de suite (aucun dégât en plus).
 const LIFT_DETONATE_U := 2.4
 ## Garde du Montreur : après chaque demi-lune, les fils tirent le pantin hors des coups (−30 % de dégâts subis
@@ -201,6 +206,9 @@ var guard_left := 0.0 ## garde du Montreur après une demi-lune
 var spin_blur: AnimatedSprite2D = null ## traînée additive pendant la toupie (null sans asset)
 var _fan_watch := 0.0 ## s restantes de surveillance des couteaux de l'Éventail (charge des doublures)
 var _salve_charged := 0 ## doublures déjà chargées par la salve en cours
+## Salve tournoyante (Toupie d'acier) qui attend son éventail de base : le premier groupe de couteaux du SpellCaster
+## qui retombe ensuite y est rattaché (plafond de recharge partagé). {} : dernière salve ordinaire.
+var _ring_salve := {}
 
 
 # --- Données -------------------------------------------------------------------------------------
@@ -544,6 +552,8 @@ func on_cast(s: SpellData) -> void:
 	if s.behavior == SpellData.Behavior.FAN and not Decoy.live.is_empty(): # Éventail : les couteaux chargent
 		_fan_watch = FAN_WATCH_S
 		_salve_charged = 0
+	if s.behavior == SpellData.Behavior.FAN and s.slot == 2: # Toupie d'acier : pendant la Toupie, 4 éventails à 360°
+		_ring_salve = _fan_ring(s) if spin_left > 0.0 else {}
 
 
 ## Hook Player.take_damage : garde du Montreur juste après une demi-lune.
@@ -563,6 +573,12 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 func on_projectile_rest(s: SpellData, at: Vector2, group: Dictionary) -> void:
 	if player == null or player.dead or player.get_parent() == null:
 		return
+	if not group.is_empty() and not group.has("ring") and not group.has("salve"):
+		# premier couteau retombé d'une salve de base : rattaché à la salve tournoyante lancée avec lui, s'il y en a une.
+		# Les couteaux d'une salve partent ensemble (0,5 s de vol) et ne se ramassent qu'au sol : la salve précédente a
+		# toujours retombé avant le lancer suivant (sauf recharge nulle du mode test).
+		group["salve"] = _ring_salve
+		_ring_salve = {}
 	var g := GroundPickup.spawn(player.get_parent(), at, player, func(_g: GroundPickup) -> void:
 		_collect_knife(s.slot, group), KNIFE_LIFE_S, KNIFE_CONTACT_U, KNIFE_PLANTED_FRAMES,
 		_knife_facing(at))
@@ -577,10 +593,13 @@ func _knife_facing(at: Vector2) -> Vector2:
 
 
 func _collect_knife(slot: int, group: Dictionary) -> void:
-	var left := KNIFE_REFUND_CAP_S - float(group.get("refunded", 0.0))
+	var salve: Dictionary = group.get("salve", {}) # Toupie d'acier : plafond partagé avec la salve tournoyante
+	if salve.is_empty():
+		salve = group
+	var left := KNIFE_REFUND_CAP_S - float(salve.get("refunded", 0.0))
 	if left <= 0.0 or _caster() == null:
 		return
-	group["refunded"] = float(group.get("refunded", 0.0)) + _caster().reduce_cooldown(slot, minf(KNIFE_REFUND_S, left))
+	salve["refunded"] = float(salve.get("refunded", 0.0)) + _caster().reduce_cooldown(slot, minf(KNIFE_REFUND_S, left))
 	PlayerRef.state_of(player).add_counter(COUNTER_KNIVES)
 	Audio.play(&"pickup.coin", player.global_position, -8.0, 1.6)
 
@@ -830,6 +849,7 @@ func _cast_saccade(s: SpellData) -> bool:
 		ret.hit_force = _force_for(SACCADE_LINE_KNOCK_U)
 		if had_ficele:
 			_pull_ficele(s)
+		if VfxSwap.enabled(): VfxSwap.spawn_follow(player, "rictus/rictus_saccade", knife.global_position - player.global_position, false, {"src": "cast", "line_px": knife.global_position.distance_to(player.global_position)}) # mode test : fil tiré vers le couteau
 		knife.recall(ret)
 		kstate = K.RETURNING
 		ficele = null
@@ -898,6 +918,7 @@ func _recall_fan(s: SpellData) -> bool:
 		if not is_instance_valid(k):
 			continue
 		var at: Vector2 = k.global_position
+		if VfxSwap.enabled(): VfxSwap.spawn_follow(player, "rictus/rictus_saccade", at - player.global_position, false, {"src": "cast", "line_px": at.distance_to(player.global_position)}) # mode test : un fil par couteau rappelé
 		k.queue_free()
 		var r := RictusPendulum.recall_light(c, player, sp, at, spd, KNIFE_FRAMES)
 		r.on_caught = func() -> void: _collect_knife(2, group)
@@ -935,6 +956,26 @@ func _charge_by_knives() -> void:
 					_salve_charged += 1
 					Audio.play(&"pickup.coin", d.global_position, -10.0, 2.0) # grelot de la charge
 					LightRig.flash(d.global_position, &"spell_steel", 0.15)
+
+
+## Toupie d'acier : le SpellCaster a déjà tiré l'éventail de base vers la visée ; on ajoute les TOUPIE_FAN_N - 1 autres,
+## tournés de 90° en 90°, avec les mêmes règles (même sort : dégâts, perforation, portée, couteaux plantés, charge des
+## doublures). Player.play_action vient d'orienter `facing` sur la direction exacte de la visée (SpellCaster, FAN).
+## Retourne la salve tournoyante (groupe de recharge) partagée par les 15 couteaux ajoutés et l'éventail de base.
+func _fan_ring(s: SpellData) -> Dictionary:
+	var c := _caster()
+	if c == null or player == null:
+		return {}
+	var face: Vector2 = player.facing
+	var aim: Vector2 = face.normalized() if face.length_squared() > 0.0001 else Vector2.DOWN
+	var n := maxi(s.count, 1)
+	var salve := {"spell": s, "refunded": 0.0, "ring": true}
+	for f in range(1, TOUPIE_FAN_N):
+		var fdir: Vector2 = aim.rotated(TAU * float(f) / float(TOUPIE_FAN_N))
+		for i in n:
+			var a := 0.0 if n == 1 else deg_to_rad(s.spread_deg) * (float(i) / float(n - 1) - 0.5)
+			c.fire_dir(s, fdir.rotated(a), salve) # même tir que l'éventail de base (groupe de salve en plus)
+	return salve
 
 
 ## Doublures chargées encore en attente (fenêtre de la Toupie).
@@ -1033,6 +1074,7 @@ func _start_spin(s: SpellData) -> bool:
 	_spin_tick_spell = s.duplicate() as SpellData
 	_spin_tick_spell.behavior = SpellData.Behavior.NOVA
 	_spin_tick_spell.duration = 0.0 # chaque tick = coup direct (recul), pas un DoT
+	if VfxSwap.enabled(): _spin_tick_spell.set_meta(VfxSwap.META_KEY, "") # mode test : ticks sans effet propre (la toupie suit Rictus)
 	_spin_focus_spell = _spin_tick_spell.duplicate() as SpellData
 	_spin_focus_spell.coef = TOUPIE_FOCUS_COEF
 	_spin_focus_spell.radius_u = TOUPIE_FOCUS_RADIUS_U
@@ -1046,6 +1088,8 @@ func _start_spin(s: SpellData) -> bool:
 	player.set_hitbox_u(SPIN_HITBOX_U)
 	player.clear_slow()
 	player.grant_invulnerability(s.duration) # retour joueur : invulnérable pendant toute la toupie
+	if spin_blur != null and VfxSwap.is_hidden(spin_blur): VfxSwap.show_original(spin_blur) # mode test (vfx_swap.gd)
+	if VfxSwap.enabled() and VfxSwap.spawn_follow(player, "rictus/rictus_toupie", player.facing, false, {"src": "cast", "max_s": s.duration, "radius_u": spin_radius_px() / Balance.UNIT_PX}) != null: VfxSwap.hide_original(spin_blur) # mode test
 	_spin_tick() # premier tick au lancement : 10 ticks à 0, 0,25 … 2,25 s
 	_push_decoys()
 	return true
@@ -1160,6 +1204,7 @@ func _spawn_decoys(s: SpellData, aim: Variant, center_fallback: Variant = null) 
 	explode.vfx_frames = DOUBLE_BURST_FRAMES # gerbe de copeaux et de fils rompus (M3, vue TOP)
 	explode.vfx_radius_px = DOUBLE_BURST_RADIUS_PX
 	explode.vfx_floor_aspect = 1.0 # rig TOP : jamais pré-écrasé
+	if VfxSwap.enabled(): explode.set_meta(VfxSwap.META_KEY, "rictus/doublures") # mode test : Rideau compris, chaque doublure a son explosion
 	var death := explode.duplicate() as SpellData
 	death.coef = s.coef * DECOY_DEATH_FRAC
 	var flight := explode.duplicate() as SpellData
@@ -1205,6 +1250,7 @@ func _spawn_decoys(s: SpellData, aim: Variant, center_fallback: Variant = null) 
 		d.global_position = pos
 		d.copy_look(_visual)
 		d.appear()
+		if rideau and i == 3 and VfxSwap.enabled(): VfxSwap.spawn_follow(d, "rictus/rictus_rideau", fwd, false, {"src": "cast", "follow_offset": origin + fwd * RIDEAU_AHEAD_U * Balance.UNIT_PX - pos, "max_s": d.life_s}) # mode test : fils du rideau, vit avec la doublure du milieu
 	_decoys_landed_at = _clock
 	if spin_left > 0.0: # ultime pendant la toupie (variante) : percutées à la frame suivante (au plus tard)
 		_push_decoys()
@@ -1330,8 +1376,6 @@ func _attach_spin_blur() -> void:
 	spin_blur = AnimatedSprite2D.new()
 	spin_blur.name = "SpinBlur"
 	spin_blur.sprite_frames = sf
-	if VfxSwap.enabled(): # mode test : VFX de test (scripts/testmode/vfx_swap.gd)
-		VfxSwap.on_sprite(spin_blur, sf)
 	spin_blur.offset = SPIN_BLUR_OFFSET
 	spin_blur.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	var m := CanvasItemMaterial.new()

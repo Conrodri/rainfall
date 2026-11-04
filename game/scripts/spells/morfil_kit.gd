@@ -854,6 +854,7 @@ func _cleave_line(hit: SpellData, origin: Vector2, dir: Vector2) -> int:
 		fx.width_px = half_w * 2.0
 		player.get_parent().add_child(fx)
 		fx.global_position = origin
+		VfxSwap.spawn_at(player.get_parent(), "morfil/morfil_fendoir", origin, dir, fx) # mode test : VFX de test à l'instant du coup (scripts/testmode/vfx_swap.gd)
 	return n
 
 
@@ -897,6 +898,7 @@ func _temper_draw() -> void:
 	var c := _caster()
 	if c != null:
 		c.spawn_zone(_scaled(s, damage_mult()), player.global_position)
+	if VfxSwap.enabled(): VfxSwap.spawn_follow(player, "morfil/morfil_trempe_aura", Vector2.RIGHT, false, {"src": "kit", "max_s": temper_total}) # mode test : aura tant que dure la Trempe
 	LightRig.flash(player.global_position, LIGHT_SPELL, 1.0)
 
 

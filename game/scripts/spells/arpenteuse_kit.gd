@@ -98,6 +98,7 @@ const V_LESTEE := &"arpenteuse_chaine_lestee"
 const V_NOEUD := &"arpenteuse_noeud"
 const V_JALONS := &"arpenteuse_jalons"
 const V_CERCEAU := &"arpenteuse_cerceau"
+const V_TENDEUR_FX := &"arpenteuse_tendeur" ## mode test : effet de test de la chaîne qui claque (VfxSwap.track_polyline)
 const LESTEE_MAX_U := 7.0 ## chaîne de 7 u, deux fois plus lourde
 const LESTEE_COEF := 2.0
 const LESTEE_SLOW_PCT := 0.5
@@ -199,6 +200,7 @@ var _visual: AnimatedSprite2D = null
 var fx_root: Node2D = null
 var line: ArpenteuseChainLine = null
 var peg_line: ArpenteuseChainLine = null
+var _peg_fx: Node2D = null ## mode test : porteur des VFX de test de la ligne du piquet (scripts/testmode/vfx_swap.gd)
 var _lights: Array = []
 ## Compteurs pour les tests : coups de chaîne, ticks, dernière boucle {hits, area_px}.
 var chain_hits := 0
@@ -910,6 +912,9 @@ func _spawn_flare(closed: PackedVector2Array) -> void:
 	fl.u_offset = line.u_offset
 	fl.energy = HEAT_FLASH_ENERGY * 1.3
 	fl.set_line(closed)
+	if VfxSwap.enabled(): # mode test : bande du Halage le long de la ligne, flamme d'origine cachée (scripts/testmode/vfx_swap.gd)
+		VfxSwap.hide_whole(fl.glow)
+		VfxSwap.track_polyline(fl, "arpenteuse/arpenteuse_boucle", closed, fl.base)
 	var tw := fl.create_tween()
 	tw.tween_method(func(t: float) -> void:
 		if is_instance_valid(fl):
@@ -946,6 +951,15 @@ func _do_piquet(s: SpellData, aim: Variant) -> void:
 
 func peg_active() -> bool:
 	return peg_left > 0.0
+
+
+## Mode test : porteur des tuiles de chaîne de test posées sur la ligne du piquet (créé à la première demande).
+func _peg_fx_owner() -> Node2D:
+	if _peg_fx == null or not is_instance_valid(_peg_fx):
+		_peg_fx = Node2D.new()
+		_peg_fx.name = "PegFx"
+		fx_root.add_child(_peg_fx)
+	return _peg_fx
 
 
 func peg_segment() -> PackedVector2Array:
@@ -1323,6 +1337,7 @@ func _make_peg(pos: Vector2) -> Dictionary:
 	fx_root.add_child(node)
 	node.z_index = 1
 	node.global_position = pos
+	VfxSwap.spawn_at(fx_root, "arpenteuse/arpenteuse_jalons", pos, Vector2.RIGHT) # mode test : jalon planté (scripts/testmode/vfx_swap.gd)
 	var sprite: AnimatedSprite2D = null
 	if ResourceLoader.exists(PEG_FRAMES):
 		var holder := Node2D.new()
@@ -1525,7 +1540,7 @@ func _update_visuals(delta: float) -> void:
 	else:
 		line.set_line(_lift_head(smooth_polyline(pts)))
 	if VfxSwap.points_on(fx_root): # mode test : VFX de test répartis le long de la chaîne, chaîne cachée (scripts/testmode/vfx_swap.gd)
-		VfxSwap.track_polyline(fx_root, "arpenteuse/" + String(_spell_id(1)), line.base.points, line)
+		VfxSwap.track_polyline(fx_root, "arpenteuse/" + String(_spell_id(1) if snap_left <= 0.0 else V_TENDEUR_FX), line.base.points, line) # Tendeur : la chaîne claque (SNAP_S)
 	line.advance(delta)
 	if jal_line:
 		var jseg := jal_segment()
@@ -1541,6 +1556,8 @@ func _update_visuals(delta: float) -> void:
 		peg_line.set_line(seg)
 		peg_line.advance(delta)
 		_orient_peg()
+	if VfxSwap.points_on(_peg_fx): # mode test : ligne du piquet / des Jalons en VFX de test, même chaîne que la traîne
+		VfxSwap.track_polyline(_peg_fx_owner(), "arpenteuse/" + String(_spell_id(1)), peg_line.base.points if peg_line.visible else PackedVector2Array(), peg_line)
 	_update_lights(pts)
 
 

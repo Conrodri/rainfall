@@ -10,71 +10,61 @@
    "#FF7319",
    "#ffa35a"
   ],
-  "radius": 7,
-  "light": 1.0
+  "radius": 6,
+  "tail": 22
  },
  "owner": "ardent",
  "spell_id": "roaming_embers",
+ "scale": 2,
+ "test_asset": true,
+ "ppu": 30,
+ "usage": "projectile",
+ "usage_note": "Orbe de braise ronde qui file vers +x (tangente de son orbite), courte traînée d'étincelles.",
+ "version": 2,
  "fps": 15.0,
  "loop": true,
  "frames": 12,
  "frame_size": [
-  116,
-  60
+  78,
+  56
  ],
- "scale": 2,
+ "node_scale": 1,
  "offset": [
-  -26.0,
+  -9.0,
   0.0
  ],
- "filter": "nearest",
- "test_asset": true,
- "version": 2,
- "node_scale": 1,
  "emission": "roaming_embers_e.tres",
  "light_k": 1.0,
  "light_color": "#FF7319",
  "light_curve": [
-  0.879,
-  0.885,
-  0.767,
-  0.885,
+  0.861,
+  0.897,
+  0.773,
+  0.872,
   1.0,
-  0.88,
-  0.873,
-  0.87,
-  0.746,
-  0.859,
-  0.983,
-  0.867
+  0.872,
+  0.856,
+  0.874,
+  0.752,
+  0.852,
+  0.981,
+  0.859
  ],
  "light_pos": [
   [
-   -6.2,
+   -5.4,
    -0.8
   ],
   [
-   -6.0,
+   -5.2,
    -1.0
   ],
   [
-   -6.6,
-   -1.0
-  ],
-  [
-   -6.4,
-   -1.0
-  ],
-  [
-   -6.4,
-   -1.0
-  ],
-  [
-   -6.8,
+   -5.8,
    -1.2
   ],
   [
-   -6.0,
+   -5.6,
    -1.2
   ],
   [
@@ -83,22 +73,33 @@
   ],
   [
    -6.0,
+   -1.2
+  ],
+  [
+   -5.2,
+   -1.2
+  ],
+  [
+   -4.4,
    -1.0
   ],
   [
-   -5.8,
+   -5.2,
+   -0.8
+  ],
+  [
+   -5.2,
    -1.0
   ],
   [
-   -6.0,
+   -5.0,
    -1.0
   ],
   [
-   -6.6,
-   -1.0
+   -5.6,
+   -0.8
   ]
  ],
- "ppu": 16,
- "usage": "projectile",
- "usage_note": "Braise compacte (ronde, lisible dans toutes les directions) qui file vers +x, traînée d'étincelles derrière."
+ "filter": "nearest",
+ "round": true
 }
