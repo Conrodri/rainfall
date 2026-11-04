@@ -60,6 +60,8 @@ func step(delta: float) -> void:
 		if _immune[k] <= 0.0:
 			_immune.erase(k)
 	_recompute()
+	if VfxSwap.points_on(self): # mode test : un VFX de test par orbe, dessin caché (scripts/testmode/vfx_swap.gd)
+		VfxSwap.track_orbit(self, "ardent/roaming_embers", _orbs, player.global_position, Iso.lift_logical(LIFT_U))
 	if player.dead:
 		queue_redraw()
 		return

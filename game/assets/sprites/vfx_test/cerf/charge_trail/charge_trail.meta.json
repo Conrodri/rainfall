@@ -28,7 +28,7 @@
  "frames": 9,
  "frame_size": [
   306,
-  58
+  62
  ],
  "scale": 2,
  "offset": [
@@ -40,18 +40,18 @@
  "version": 2,
  "node_scale": 1,
  "emission": "charge_trail_e.tres",
- "light_k": 1.0,
+ "light_k": 1.5,
  "light_color": "#9CF0C8",
  "light_curve": [
-  0.998,
-  0.989,
-  0.996,
-  0.993,
+  0.999,
+  0.99,
+  0.997,
+  0.994,
   1.0,
-  0.989,
-  0.989,
-  0.991,
-  0.997
+  0.99,
+  0.99,
+  0.992,
+  0.998
  ],
  "light_pos": [
   [

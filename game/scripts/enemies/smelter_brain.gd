@@ -409,6 +409,8 @@ func _resolve_pour(player: Node2D, ppos: Vector2) -> void:
 		if is_instance_valid(_slag):
 			_slag.add_pool(start, a, length, POUR_W_U * U, POOL_LIFE)
 		_splash(start + d * length * 0.5, 1.2)
+		if VfxSwap.enabled(): # mode test : coulée de test couchée au sol le long de la ligne (scripts/testmode/vfx_swap.gd)
+			VfxSwap.spawn_at(e.get_parent(), "smelter/molten_arc", start, d, null, {"anchored": true, "projection": "ground_dir", "max_s": 1.6, "line_px": length})
 		LightRig.flash(start + d * length * 0.5, &"boss_lightning", 0.25, {"color": SODIUM, "energy": 0.6, "radius": 1.2})
 		if not hit and player != null:
 			var v := ppos - start

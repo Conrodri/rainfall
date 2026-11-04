@@ -1524,6 +1524,8 @@ func _update_visuals(delta: float) -> void:
 		line.set_line(ring_points())
 	else:
 		line.set_line(_lift_head(smooth_polyline(pts)))
+	if VfxSwap.points_on(fx_root): # mode test : VFX de test répartis le long de la chaîne, chaîne cachée (scripts/testmode/vfx_swap.gd)
+		VfxSwap.track_polyline(fx_root, "arpenteuse/" + String(_spell_id(1)), line.base.points, line)
 	line.advance(delta)
 	if jal_line:
 		var jseg := jal_segment()

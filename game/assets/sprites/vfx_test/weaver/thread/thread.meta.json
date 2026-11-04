@@ -1,5 +1,5 @@
 {
- "source": "projectiles/laser-bolt",
+ "source": "rainfall/silk-thread",
  "opts": {
   "palette": [
    "#05100c",
@@ -11,21 +11,23 @@
    "#9CF0C8",
    "#d0fae8"
   ],
-  "light": 0.4
+  "length": 32,
+  "width": 13,
+  "light": 1.0
  },
  "owner": "weaver",
  "spell_id": "thread",
  "fps": 15.0,
  "loop": true,
- "frames": 8,
+ "frames": 15,
  "frame_size": [
-  188,
-  46
+  64,
+  20
  ],
  "scale": 2,
  "offset": [
-  -70.0,
-  1.0
+  32.0,
+  0.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -35,47 +37,87 @@
  "light_k": 1.0,
  "light_color": "#9CF0C8",
  "light_curve": [
-  0.945,
+  0.937,
+  0.962,
+  0.987,
+  0.999,
+  0.983,
+  0.949,
+  0.923,
+  0.927,
+  0.953,
+  0.984,
   1.0,
-  0.813,
-  0.773,
-  0.97,
-  0.994,
-  0.804,
-  0.794
+  0.987,
+  0.954,
+  0.927,
+  0.924
  ],
  "light_pos": [
   [
-   -15.6,
-   -0.0
+   30.2,
+   -1.2
   ],
   [
-   -14.4,
-   -0.0
+   24.6,
+   -1.4
   ],
   [
-   -16.6,
-   -0.0
+   22.0,
+   -1.4
   ],
   [
-   -18.0,
-   -0.0
+   22.0,
+   -1.2
   ],
   [
-   -15.4,
-   -0.0
+   23.6,
+   -1.0
   ],
   [
-   -14.6,
-   -0.0
+   25.6,
+   -0.8
   ],
   [
-   -18.2,
-   -0.0
+   27.8,
+   -0.6
   ],
   [
-   -18.2,
-   -0.0
+   29.8,
+   -0.6
+  ],
+  [
+   31.8,
+   -0.6
+  ],
+  [
+   33.6,
+   -0.8
+  ],
+  [
+   35.6,
+   -1.0
+  ],
+  [
+   37.0,
+   -1.2
+  ],
+  [
+   38.2,
+   -1.2
+  ],
+  [
+   38.2,
+   -1.2
+  ],
+  [
+   35.6,
+   -1.2
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "tile_along_line",
+ "usage_note": "Tuile raccordable en x (largeur exacte du segment) et en boucle : répéter de A vers B tous les segment_u, orientée sur la ligne ; largeur 0,8 u.",
+ "segment_u": 2.0,
+ "width_u": 0.8
 }

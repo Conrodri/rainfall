@@ -173,10 +173,25 @@ static func _make_idle(boss: Enemy, br: Object) -> bool:
 	if idle < 0:
 		return false
 	if (s_enum as Dictionary).has("INTRO") and int(br.get("state")) == int((s_enum as Dictionary)["INTRO"]):
-		return false
+		if not skip_intro(br):
+			return false
 	if int(br.get("state")) != idle:
+		# attaque en cours : le nettoyage du cerveau retire ses objets (gouttes, couloirs, télégraphes) avant la suivante
+		if br.has_method(&"_cancel"):
+			br.call(&"_cancel")
+		elif br.has_method(&"_cancel_attacks"):
+			br.call(&"_cancel_attacks")
 		boss.telegraph.hide_telegraph()
 		br.set(&"state", idle)
+	return true
+
+
+## Termine l'intro d'un cerveau qui en a une (rain_sower) : temps écoulé forcé puis dernier pas d'intro. Vrai si fait.
+static func skip_intro(br: Object) -> bool:
+	if not br.has_method(&"_intro_step") or br.get(&"_dur") == null:
+		return false
+	br.set(&"_t", float(br.get(&"_dur")))
+	br.call(&"_intro_step")
 	return true
 
 

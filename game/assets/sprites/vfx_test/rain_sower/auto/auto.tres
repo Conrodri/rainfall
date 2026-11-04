@@ -4,59 +4,59 @@
 
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 0, 456, 192)
+region = Rect2(0, 0, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1_0")
-region = Rect2(456, 0, 456, 192)
+region = Rect2(456, 0, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a3"]
 atlas = ExtResource("1_0")
-region = Rect2(912, 0, 456, 192)
+region = Rect2(912, 0, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a4"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 192, 456, 192)
+region = Rect2(0, 198, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a5"]
 atlas = ExtResource("1_0")
-region = Rect2(456, 192, 456, 192)
+region = Rect2(456, 198, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a6"]
 atlas = ExtResource("1_0")
-region = Rect2(912, 192, 456, 192)
+region = Rect2(912, 198, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a7"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 384, 456, 192)
+region = Rect2(0, 396, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a8"]
 atlas = ExtResource("1_0")
-region = Rect2(456, 384, 456, 192)
+region = Rect2(456, 396, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a9"]
 atlas = ExtResource("1_0")
-region = Rect2(912, 384, 456, 192)
+region = Rect2(912, 396, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a10"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 576, 456, 192)
+region = Rect2(0, 594, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a11"]
 atlas = ExtResource("1_0")
-region = Rect2(456, 576, 456, 192)
+region = Rect2(456, 594, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a12"]
 atlas = ExtResource("1_0")
-region = Rect2(912, 576, 456, 192)
+region = Rect2(912, 594, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a13"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 768, 456, 192)
+region = Rect2(0, 792, 456, 198)
 
 [sub_resource type="AtlasTexture" id="a14"]
 atlas = ExtResource("1_0")
-region = Rect2(456, 768, 456, 192)
+region = Rect2(456, 792, 456, 198)
 
 [resource]
 animations = [{

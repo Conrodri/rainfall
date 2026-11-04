@@ -27,6 +27,11 @@ extends RefCounted
 ##   apparitions explicites (aucun VFX d'origine) -> spawn_at : jar_bearer (mother_jar_blast), salt_king
 ##   (procession_tide), flood_gunner (shell_crater), drowned_idol (chaplet_circle, noria_wheel), smelter (sparks).
 ##   meta de clé au point d'appel : vigie_kit (Fanal, Tir de signal : fusée partagée FLARE_FRAMES).
+##   effets permanents dessinés en code, un VfxTestPlayer par point (track_orbit / track_polyline) :
+##   ardent_ember_ring (roaming_embers : un par orbe), arpenteuse_kit (chaîne, chaîne lestée : répartis le long).
+##   projectiles ennemis poolés -> on_enemy_projectile / on_enemy_projectile_end (table ENEMY_PROJ : rivets du
+##   Canonnier, impact rivet_hit) ; flood_gunner (shell : spawn_travel, reload_smoke : follow_while) ;
+##   hermit_cedar (charge_trail : spawn_follow sur le boss) ; smelter (molten_arc : spawn_at ancré sur la coulée).
 ## Basculer l'interrupteur en cours de partie : seuls les VFX lancés ensuite suivent le drapeau (un projectile du
 ## pool ou un sprite réappliqué est rendu visible) ; les effets de test déjà en vol finissent avec leur hôte.
 
@@ -39,6 +44,13 @@ const META_MANAGED := &"vfx_swap_managed" ## visuel géré par on_zone / on_proj
 const CAST_MAX_S := 2.5 ## effet de test d'un lancer (suit le joueur ou posé au sol) : durée bornée (asset en boucle)
 const AUTO_MAX_S := 1.5 ## coup auto d'un boss : effet de test borné (l'hôte est le boss, qui vit longtemps)
 const DEDUP_S := 0.3 ## même clé, même lanceur : un seul effet de test par fenêtre (pavages, ticks, salves de zones)
+const META_POINTS := &"vfx_swap_points" ## sur l'hôte d'un effet multi-points : {anchors, key, original, whole}
+const META_HIDDEN_MOD := &"vfx_swap_hidden_mod" ## sur un visuel caché en entier (modulate) : son modulate.a d'origine
+const META_POOLED := &"vfx_swap_pooled" ## sur un projectile ennemi poolé suivi : clé de son impact de test
+const META_WHILE := &"vfx_swap_while" ## sur l'hôte : {clé: VfxTestPlayer} des effets « tant que » (follow_while)
+const POINTS_MAX := 8 ## effets de test par hôte multi-points (gerbes, orbes)
+const TILES_MAX := 16 ## tuiles `tile_along_line` par polyligne (chaîne de 14 u, tuiles de 2 u : 7 ; cerceau compris)
+const POINT_SPACING_U := 2.0 ## écart par défaut entre deux effets le long d'une polyligne
 
 const BOSS_DIR := "res://assets/sprites/bosses/etage/"
 const ZONE_SCRIPT := "res://scripts/spells/zone_effect.gd"
@@ -126,10 +138,10 @@ const BOSS_ANIMS := {
 	"jar_bearer/jar": "jar_bearer/orbit",
 	"ox_herder/mud_wave": "ox_herder/dust_burst",
 	"rain_sower/raindrop": "rain_sower/rain_column",
-	"rain_sower/flood_water": "rain_sower/wave_front",
 	"recluse/prayer_glyph": "recluse/prayer_burst",
 	"salt_king/edict": "salt_king/edict_ring",
-	"smelter/splash": "smelter/molten_pool",
+	"smelter/molten_pool": "", # bande de métal 12 × 2 u (5 s) : reste l'originale, la coulée de test (molten_arc) la couvre
+	"smelter/splash": "smelter/molten_pool", # éclaboussure (r 0,9-1,2 u)
 	"smelter/steam_vent": "sonneur/steam_jet",
 	"sonneur/ground_steam": "sonneur/steam_jet",
 	"sonneur/steam_vent": "sonneur/steam_jet",
@@ -139,6 +151,52 @@ const BOSS_ANIMS := {
 	"weaver/ground_silk": "weaver/web_ring",
 	"weaver/web": "weaver/web_ring",
 }
+
+## Sprite d'effet d'un boss, par anim source "<boss>/<anim>" : options du VfxTestPlayer (taille encodée par l'hôte).
+const BOSS_SPRITE_OPTS := {
+	# disque de 448 px de rayon dans sa cellule de 896 (_set_flood_visual) : rayon de l'effet = rayon de la crue
+	"rain_sower/flood_water": {"fit_host_px": 896.0},
+}
+
+## Sprites de boss dont l'échelle encode le rayon gameplay : rayon (u) = |échelle globale x| × k (éclaboussure du
+## Fondeur : échelle r × UNSQUASH × 0,5, SmelterBrain._splash).
+const HOST_RADIUS_K := {"smelter/splash": 2.0}
+
+## Lignes d'origine centrées sur leur sprite, grand axe = axe y local (sillage de vague de l'Éclusier : posé au milieu
+## du trajet, tourné de -90°, len_px de planche = distance parcourue, width_px = largeur du sillage) : l'effet tuilé
+## part de l'origine de la vague et file jusqu'au front, relu à chaque image (VfxTestPlayer follow_axis_y / centered).
+const HOST_LINE := {
+	"eclusier/ground_wave": {"len_px": EclusierBrain.WAVE_SRC_W, "width_px": EclusierBrain.WAVE_SRC_T},
+}
+
+## Lignes dont l'épaisseur gameplay est la hauteur de la planche × l'échelle y du sprite d'origine (racines du Cèdre :
+## échelle (len / tw, w / th)). Les autres rayons encodent leur largeur autrement (W × 64 / 64, ou rien).
+const HOST_WIDTH := ["hermit_cedar/root_spike"]
+
+## Rayon gameplay (u) des effets au sol `ground_oneshot` posés par un sprite de boss (anneaux de 1 à R u).
+const RADIUS_U := {
+	"recluse/bell_wave": RecluseBrain.BELL_R1_U,
+	"sonneur/glas_wave": SonneurBrain.GLAS_R1_U,
+	"salt_king/edict_ring": SaltKingBrain.EDICT_R1_U,
+}
+
+## Largeur gameplay (u) perpendiculaire des fronts `follow_front`.
+const WIDTH_U := {
+	"eclusier/wave": EclusierBrain.WAVE_W_U,
+	"rain_sower/wave_front": RainSowerBrain.WAVE_W_U,
+}
+
+## Lignes dont la longueur locale (px, depuis l'origine du sprite d'origine) n'est pas l'étendue de sa planche.
+const LINE_LOCAL_PX := {
+	"rainette/rainette_langue": RainetteKit.TONGUE_FRAME_LEN_PX, # langue : 405 px de l'origine (bouche) à la pointe
+}
+
+## Croix de l'Éclusier (phase 3) : le sprite `ground_wave` d'un bras (étiré sur CROSS_LEN_U, échelle y > 1) devient une
+## crête (eclusier/wave) qui file du boss au bout du bras en CROSS_CREST_S ; le sillage des vagues (même anim, échelle y
+## quasi nulle à la création) garde sa clé.
+const CROSS_SRC := "eclusier/ground_wave"
+const CROSS_KEY := "eclusier/wave"
+const CROSS_CREST_S := 0.5 ## durée du jet d'un bras (EclusierBrain._cross_fx)
 
 ## Coup auto d'un boss sans dossier "<boss>/auto" : clé de remplacement.
 const AUTO := {
@@ -150,9 +208,6 @@ const AUTO := {
 ## corps du personnage, membres…) : l'effet de test part au lancement. at : "player" (suit le joueur) ou "aim"
 ## (posé au point visé ou sur l'ennemi le plus proche).
 const CAST := {
-	"ardent/roaming_embers": "player",
-	"arpenteuse/arpenteuse_chaine": "player",
-	"arpenteuse/arpenteuse_chaine_lestee": "player",
 	"arpenteuse/arpenteuse_tendeur": "player",
 	"arpenteuse/arpenteuse_noeud": "aim",
 	"arpenteuse/arpenteuse_jalons": "aim",
@@ -181,11 +236,31 @@ const CAST := {
 	"tocsin/tocsin_tete_fumigene": "aim",
 }
 
+## Écart (u) entre deux effets de test le long d'une polyligne (track_polyline), par clé. Les effets `tile_along_line`
+## (chaîne) n'y sont pas : leurs tuiles sont posées bout à bout tous les segment_u du meta.
+const POINT_SPACING := {
+	"arpenteuse/arpenteuse_chaine_lestee": 3.5, # gerbe de 3 u : 2 sur 7 u
+}
+
+## Projection forcée des effets multi-points (VfxTestPlayer opts.projection). Une chaîne posée au sol : ses segments
+## sont couchés dans le plan du sol logique (ground_dir, la caméra les écrase en 2:1 comme la Line2D d'origine).
+const POINT_PROJECTION := {
+	"arpenteuse/arpenteuse_chaine": "ground_dir",
+}
+
+## Projectiles ennemis poolés (EnemyProjectilePool) : boss tireur (id du skin) -> [clé du projectile, clé d'impact].
+## Source = le boss (Culasse) ou son BarrageEmitter (Mitraille, propriété `boss`).
+const ENEMY_PROJ := {
+	"flood_gunner": ["flood_gunner/rivet", "flood_gunner/rivet_hit"],
+}
+
 ## Traces (tests) : chaque remplacement {key, src, host}. Vidées par clear_trace().
 static var trace_on := false
 static var trace: Array[Dictionary] = []
 static var _last := {} ## "clé#lanceur" -> temps (s) du dernier effet de test
 static var _zone_script: Script = null
+static var _tile_cache := {} ## clé -> longueur de tuile (px) ou 0
+static var _bounds := PackedVector2Array() ## track_polyline : bornes des tuiles (tampon réutilisé, pas d'allocation)
 
 
 ## Interrupteur effectif (mode test actif + case « VFX de test »).
@@ -196,6 +271,7 @@ static func enabled() -> bool:
 static func clear_trace() -> void:
 	trace.clear()
 	_last.clear()
+	_tile_cache.clear()
 
 
 static func available(key: String) -> bool:
@@ -244,7 +320,9 @@ static func _boss_key(p: String, anim: String) -> String:
 	var a := _strip_dir(anim)
 	var k := "%s/%s" % [b, a]
 	if BOSS_ANIMS.has(k):
-		return String(BOSS_ANIMS[k])
+		var r := String(BOSS_ANIMS[k]) # "" : sprite d'origine gardé ; sinon l'asset dédié, s'il existe, l'emporte
+		if r == "" or not available(k):
+			return r
 	if a == "auto" or a.begins_with("idle") or a.begins_with("walk") or a.begins_with("spell_") or a.begins_with("trans") or a == "death":
 		return "" # corps du boss (BossPace.strike fournit l'auto)
 	return k
@@ -368,7 +446,7 @@ static func on_sprite(anim: AnimatedSprite2D, frames: SpriteFrames) -> void:
 	if boss_of_path(p) != "" and not anim.has_meta(META_WATCH):
 		# .tres de boss : l'anim est posée APRÈS apply (puis rejouée : wisp -> wisp_explode) ; on écoute ses changements
 		anim.set_meta(META_WATCH, true)
-		anim.animation_changed.connect(_reevaluate.bind(anim))
+		anim.animation_changed.connect(_reevaluate.bind(anim), CONNECT_DEFERRED) # différé : échelle, offset et rotation posés après l'anim
 	# différé (fin de l'image, avant le rendu) : l'émission, l'animation et la meta de clé sont posées après apply
 	_reevaluate.call_deferred(anim)
 
@@ -418,8 +496,78 @@ static func _reevaluate(anim: AnimatedSprite2D) -> void:
 		show_original(anim)
 		return
 	hide_original(anim)
-	var boss := anim.sprite_frames != null and boss_of_path(_norm(anim.sprite_frames.resource_path)) != ""
-	spawn_follow(anim, key, _dir_of(anim), not boss, {"src": "sprite"})
+	var boss_id := boss_of_path(_norm(anim.sprite_frames.resource_path)) if anim.sprite_frames != null else ""
+	var src_anim := "%s/%s" % [boss_id, _strip_dir(String(anim.animation))] if boss_id != "" else ""
+	if src_anim == CROSS_SRC and anim.scale.y > 1.0:
+		_cross_crest(anim)
+		return
+	var opts := {"src": "sprite"}
+	var dir := _dir_of(anim)
+	if boss_id != "":
+		opts["hide_with_host"] = true # sprite de boss masqué puis rendu (brume, crue, rayons) : l'effet le suit
+		if BOSS_SPRITE_OPTS.has(src_anim):
+			opts.merge(BOSS_SPRITE_OPTS[src_anim], true)
+		if HOST_RADIUS_K.has(src_anim):
+			opts["radius_u"] = absf(anim.global_scale.x) * float(HOST_RADIUS_K[src_anim])
+	var usage := VfxTestPlayer.usage_of(key)
+	if HOST_LINE.has(src_anim) and usage in VfxTestPlayer.LINE_USAGES:
+		var hl: Dictionary = HOST_LINE[src_anim]
+		opts["follow_line"] = float(hl["len_px"])
+		opts["follow_axis_y"] = true
+		opts["follow_centered"] = true
+		opts["width_u"] = absf(anim.global_scale.x) * float(hl["width_px"]) / Balance.UNIT_PX
+		dir = anim.global_transform.y
+	elif usage in VfxTestPlayer.LINE_USAGES:
+		# ligne d'origine (fil, racines, langue, rayons) : départ = origine du sprite, direction et longueur relues
+		# sur sa transformation globale (VfxTestPlayer opts.follow_line)
+		var ll := _host_line_local(anim, key)
+		if ll > 0.0:
+			opts["follow_line"] = ll
+			dir = anim.global_transform.x
+		if key in HOST_WIDTH:
+			var th := _host_tex_size(anim).y
+			if th > 0.0:
+				opts["width_u"] = th * absf(anim.global_scale.y) / Balance.UNIT_PX
+	if RADIUS_U.has(key):
+		opts["radius_u"] = RADIUS_U[key]
+	if WIDTH_U.has(key):
+		opts["width_u"] = WIDTH_U[key]
+	spawn_follow(anim, key, dir, boss_id == "", opts)
+
+
+## Longueur locale (px) de la ligne dessinée par un sprite d'origine, mesurée depuis son origine (= le pivot) :
+## fin de la planche (offset compris) ou LINE_LOCAL_PX ; 0 si inconnue.
+static func _host_line_local(anim: AnimatedSprite2D, key: String) -> float:
+	if LINE_LOCAL_PX.has(key):
+		return float(LINE_LOCAL_PX[key])
+	var tw := _host_tex_size(anim).x
+	if tw <= 0.0:
+		return 0.0
+	return maxf(anim.offset.x + (tw * 0.5 if anim.centered else tw), 0.0)
+
+
+## Taille de la planche courante d'un sprite (px, 0 si inconnue).
+static func _host_tex_size(anim: AnimatedSprite2D) -> Vector2:
+	if anim.sprite_frames == null or not anim.sprite_frames.has_animation(anim.animation):
+		return Vector2.ZERO
+	var tex := anim.sprite_frames.get_frame_texture(anim.animation, 0)
+	return tex.get_size() if tex != null else Vector2.ZERO
+
+
+## Bras de la croix de l'Éclusier : une crête par bras, orientée sur le bras, à la largeur du bras, qui file du boss
+## au bout du bras (le sprite d'origine, centré sur le bras, est caché et libéré par son cerveau).
+static func _cross_crest(anim: AnimatedSprite2D) -> void:
+	anim.set_meta(META_CUR, CROSS_KEY)
+	if not available(CROSS_KEY) or anim.get_parent() == null:
+		return
+	var d := Vector2.from_angle(anim.global_rotation + PI * 0.5) # ground_wave : bras le long de l'axe y local
+	var start := anim.global_position - d * EclusierBrain.CROSS_LEN_U * Balance.UNIT_PX * 0.5
+	var v := VfxTestPlayer.spawn(anim.get_parent(), CROSS_KEY, start, d, {
+		"always": false, "z": 0, "width_u": EclusierBrain.CROSS_W_U,
+		"move_speed_u": EclusierBrain.CROSS_LEN_U / CROSS_CREST_S, "move_range_u": EclusierBrain.CROSS_LEN_U,
+	})
+	if v != null and trace_on:
+		trace.append({"key": CROSS_KEY, "host": NodePath(), "src": "cross"})
 
 
 ## Zone (ZoneEffect) : un seul effet de test par zone, suit le nœud de la zone ; vfx et pavage cachés.
@@ -452,7 +600,11 @@ static func on_zone(zone: Node2D) -> void:
 		var d: Vector2 = zone.global_position - (caster.get(&"player") as Node2D).global_position
 		if d.length_squared() > 4.0:
 			dir = d.normalized()
-	spawn_follow(zone, key, dir, true, {"src": "zone"})
+	var opts := {"src": "zone"}
+	var r: Variant = zone.get(&"radius")
+	if VfxTestPlayer.usage_of(key) in VfxTestPlayer.RADIUS_USAGES and (r is float or r is int) and float(r) > 0.0:
+		opts["radius_u"] = float(r) / Balance.UNIT_PX # rayon réel de la zone (bonus de taille compris)
+	spawn_follow(zone, key, dir, true, opts)
 
 
 ## Projectile (poolé) : à chaque lancement, l'ancien effet de test est arrêté, le visuel rendu, puis réévalué.
@@ -515,7 +667,10 @@ static func on_cast(caster: Object, spell: SpellData, aim_dir: Vector2, fx_pos: 
 			trace.append({"key": key, "host": NodePath(), "src": "cast"})
 		return
 	if String(CAST[key]) == "player":
-		spawn_follow(player, key, dir, true, {"src": "cast", "max_s": CAST_MAX_S})
+		var max_s := CAST_MAX_S
+		if VfxTestPlayer.usage_of(key) == "follow_ground_loop" and spell.duration > 0.0:
+			max_s = spell.duration # zone au sol qui suit le joueur tant que dure l'état (Marée de vase)
+		spawn_follow(player, key, dir, true, {"src": "cast", "max_s": max_s})
 		return
 	var parent: Node = caster.call(&"effects_parent") if caster.has_method(&"effects_parent") else player.get_parent()
 	if parent == null:
@@ -535,12 +690,14 @@ static func _dedup_ok(key: String) -> bool:
 
 
 ## Effet posé au sol en `at` : un porteur invisible (Node2D) libéré avec l'effet ; durée bornée à CAST_MAX_S.
-static func _spawn_anchored(parent: Node, key: String, at: Vector2, dir: Vector2, dedup: bool, src: String) -> VfxTestPlayer:
+static func _spawn_anchored(parent: Node, key: String, at: Vector2, dir: Vector2, dedup: bool, src: String, opts := {}) -> VfxTestPlayer:
 	var anchor := Node2D.new()
 	anchor.name = "VfxSwapAnchor"
 	parent.add_child(anchor)
 	anchor.global_position = at
-	var v := spawn_follow(anchor, key, dir, dedup, {"src": src, "max_s": CAST_MAX_S})
+	var o := {"src": src, "max_s": CAST_MAX_S}
+	o.merge(opts, true)
+	var v := spawn_follow(anchor, key, dir, dedup, o)
 	if v == null:
 		anchor.queue_free()
 		return null
@@ -560,6 +717,8 @@ static func on_boss_auto(e: Node2D) -> void:
 		return
 	var dir := Vector2.RIGHT
 	var brain: Variant = e.get(&"brain")
+	if brain is HermitCedarBrain and (brain as HermitCedarBrain).state == HermitCedarBrain.S.TENDRIL:
+		return # vrille du Cèdre (coup auto de phase 2) : sa racine (hermit_cedar/root_spike) est déjà l'effet du coup
 	if brain != null and brain is Object and (brain as Object).get(&"aim") is Vector2:
 		dir = (brain as Object).get(&"aim")
 	spawn_follow(e, key, dir, false, {"src": "boss_auto", "max_s": AUTO_MAX_S})
@@ -567,15 +726,287 @@ static func on_boss_auto(e: Node2D) -> void:
 
 ## Apparition explicite (effets sans VFX d'origine, appelée par un cerveau ou un kit) : effet posé au sol en `pos`
 ## (classe projectile : vole seul depuis `pos` vers `dir`). `placeholder` : visuel provisoire dessiné en code à masquer
-## (self_modulate.a = 0 ; il continue de vivre et de s'effacer comme avant).
-static func spawn_at(parent: Node, key: String, pos: Vector2, dir: Vector2, placeholder: CanvasItem = null) -> VfxTestPlayer:
+## (self_modulate.a = 0 ; il continue de vivre et de s'effacer comme avant). `opts` : options de VfxTestPlayer.spawn
+## (max_s, scale_mult, speed_u, range_u…) ; anchored = true : un effet de classe projectile reste posé en `pos`
+## (orienté vers `dir`, sans déplacement propre : coulée, traînée).
+static func spawn_at(parent: Node, key: String, pos: Vector2, dir: Vector2, placeholder: CanvasItem = null, opts := {}) -> VfxTestPlayer:
 	if not enabled() or parent == null or not available(key):
 		return null
 	if placeholder != null:
 		hide_original(placeholder)
-	if String(VfxTestPlayer.resolve(key).get("projection", "")) == "projectile":
-		var v := VfxTestPlayer.spawn(parent, key, pos, dir, {"always": false, "z": 0})
+	var o := opts.duplicate()
+	var anchored := bool(o.get("anchored", false))
+	o.erase("anchored")
+	if not anchored and String(VfxTestPlayer.resolve(key).get("projection", "")) == "projectile":
+		var po := {"always": false, "z": 0}
+		po.merge(o, true)
+		var v := VfxTestPlayer.spawn(parent, key, pos, dir, po) as VfxTestPlayer
 		if v != null and trace_on:
 			trace.append({"key": key, "host": NodePath(), "src": "spawn_at"})
 		return v
-	return _spawn_anchored(parent, key, pos, dir, false, "spawn_at")
+	return _spawn_anchored(parent, key, pos, dir, false, "spawn_at", o)
+
+
+## Projectile de test qui part de `from` et arrive en `to` en `secs` s (obus en cloche : vitesse et portée ajustées).
+static func spawn_travel(parent: Node, key: String, from: Vector2, to: Vector2, secs: float) -> VfxTestPlayer:
+	var d := to - from
+	var dist_u := d.length() / Balance.UNIT_PX
+	if dist_u < 0.05:
+		return spawn_at(parent, key, to, Vector2.RIGHT)
+	return spawn_at(parent, key, from, d / (dist_u * Balance.UNIT_PX), null,
+		{"speed_u": dist_u / maxf(secs, 0.05), "range_u": dist_u})
+
+
+# --- Effets « tant que » (état d'un cerveau : rechargement…) ------------------------------------------------------
+
+## Tant que `on`, un VfxTestPlayer `key` suit `host` (créé au front montant, arrêté au front descendant). `max_s` borne
+## sa vie : l'interrupteur coupé en cours d'état ne laisse rien derrière. Aucun travail si `on` est faux et rien n'est suivi.
+static func follow_while(host: Node2D, key: String, on: bool, dir := Vector2.RIGHT, max_s := CAST_MAX_S, offset := Vector2.ZERO) -> void:
+	if host == null or not is_instance_valid(host):
+		return
+	if not on and not host.has_meta(META_WHILE):
+		return
+	var cur: Dictionary = host.get_meta(META_WHILE) if host.has_meta(META_WHILE) else {}
+	var v: Variant = cur.get(key, null)
+	var live: bool = v != null and is_instance_valid(v) and not (v as VfxTestPlayer).finished_flag
+	if on and enabled():
+		if live or not available(key):
+			return
+		var o := {"always": false, "follow": host, "follow_offset": offset, "z": 0, "max_s": max_s}
+		var p := VfxTestPlayer.spawn(host, key, Vector2.ZERO, dir, o) as VfxTestPlayer
+		if p == null:
+			return
+		cur[key] = p
+		host.set_meta(META_WHILE, cur)
+		if trace_on:
+			trace.append({"key": key, "host": host.get_path() if host.is_inside_tree() else NodePath(String(host.name)), "src": "while"})
+		return
+	if live:
+		(v as VfxTestPlayer).stop()
+	cur.erase(key)
+	if cur.is_empty():
+		host.remove_meta(META_WHILE)
+
+
+# --- Effets multi-points (permanents, dessinés en code) -------------------------------------------------------------
+
+## Cache tout un visuel (modulate : enfants compris, ex. les deux Line2D d'une chaîne).
+static func hide_whole(ci: CanvasItem) -> void:
+	if ci == null or ci.has_meta(META_HIDDEN_MOD):
+		return
+	ci.set_meta(META_HIDDEN_MOD, ci.modulate.a)
+	ci.modulate.a = 0.0
+
+
+static func show_whole(ci: CanvasItem) -> void:
+	if ci == null or not ci.has_meta(META_HIDDEN_MOD):
+		return
+	ci.modulate.a = float(ci.get_meta(META_HIDDEN_MOD))
+	ci.remove_meta(META_HIDDEN_MOD)
+
+
+## Accroche des effets permanents : vrai si l'hôte doit être tenu à jour (interrupteur allumé, ou effets à rendre).
+static func points_on(owner: Node) -> bool:
+	return enabled() or (owner != null and owner.has_meta(META_POINTS))
+
+
+## Orbes en orbite (Braises errantes) : un effet de test par orbe, orienté sur la tangente (sens de rotation),
+## à `lift` px logiques au-dessus du sol. Le dessin d'origine (`owner`, _draw) est caché (self_modulate).
+static func track_orbit(owner: Node2D, key: String, pts: Array[Vector2], center: Vector2, lift: float) -> void:
+	var anchors := _sync_points(owner, key, pts.size(), owner, false)
+	for i in anchors.size():
+		var a := anchors[i] as Node2D
+		a.global_position = pts[i] + Vector2(0.0, lift)
+		var r := pts[i] - center
+		_feed_point(a, key, Vector2(-r.y, r.x))
+
+
+## Polyligne posée au sol (chaîne) : effets répartis tous les POINT_SPACING[key] u (POINTS_MAX au plus), orientés le
+## long des segments. Effet `tile_along_line` (meta usage, segment_u) : une tuile tous les segment_u, posée bout à bout
+## depuis le début de la polyligne et tournée sur son tronçon, la dernière mise à l'échelle du reste (TILES_MAX au plus).
+## `original` (nœud de la chaîne) est caché en entier (modulate : ses Line2D comprises).
+static func track_polyline(owner: Node2D, key: String, poly: PackedVector2Array, original: CanvasItem) -> void:
+	var total := 0.0
+	for i in range(1, poly.size()):
+		total += poly[i - 1].distance_to(poly[i])
+	var seg_px := _tile_segment_px(key) if enabled() else 0.0
+	var tiled := seg_px > 0.0
+	var lay := Vector2.ZERO
+	var n := 0
+	if tiled:
+		lay = VfxTestPlayer.tile_layout(total, seg_px)
+		n = 0 if poly.size() < 2 or total < 0.25 * Balance.UNIT_PX else mini(int(lay.x), TILES_MAX)
+	else:
+		var spacing := float(POINT_SPACING.get(key, POINT_SPACING_U)) * Balance.UNIT_PX
+		n = 0 if poly.size() < 2 or total < 0.5 * Balance.UNIT_PX else clampi(int(total / spacing), 1, POINTS_MAX)
+	var anchors := _sync_points(owner, key, n, original, true, TILES_MAX if tiled else POINTS_MAX)
+	if anchors.is_empty():
+		return
+	# échantillons le long de la polyligne (un seul passage). Tuiles : bornes à k × segment_u (la dernière au bout de
+	# la chaîne) ; chaque tuile va d'une borne à la suivante (corde : ni trou ni chevauchement dans les virages).
+	var m := anchors.size()
+	var count := m + 1 if tiled else m
+	_bounds.resize(count)
+	var seg := 1
+	var acc := 0.0
+	for k in count:
+		var want := (float(k) + 0.5) * total / float(m)
+		if tiled:
+			want = total if k == m and m == int(lay.x) else minf(seg_px * k, total)
+		while seg < poly.size() - 1 and acc + poly[seg - 1].distance_to(poly[seg]) < want:
+			acc += poly[seg - 1].distance_to(poly[seg])
+			seg += 1
+		var a0 := poly[seg - 1]
+		var a1 := poly[seg]
+		var l := a0.distance_to(a1)
+		var t := clampf((want - acc) / l, 0.0, 1.0) if l > 0.001 else 0.0
+		_bounds[k] = a0.lerp(a1, t)
+		if not tiled:
+			var anc := anchors[k] as Node2D
+			anc.global_position = _bounds[k]
+			_feed_point(anc, key, (a1 - a0) if l > 0.001 else Vector2.RIGHT)
+	if tiled:
+		for k in m:
+			var anc := anchors[k] as Node2D
+			anc.global_position = _bounds[k]
+			var chord := _bounds[k + 1] - _bounds[k]
+			_feed_point(anc, key, chord, maxf(chord.length(), 1.0))
+
+
+## Longueur (px) d'une tuile `tile_along_line` de `key` (segment_u du meta), 0 si l'effet n'est pas tuilé ou absent.
+## Mise en cache : track_polyline est appelé à chaque image.
+static func _tile_segment_px(key: String) -> float:
+	if not _tile_cache.has(key):
+		var seg := 0.0
+		if available(key) and VfxTestPlayer.usage_of(key) == "tile_along_line":
+			var m := VfxTestPlayer.load_meta(String(VfxTestPlayer.resolve(key).get("asset_key", key)))
+			seg = float(m.get("segment_u", 2.0)) * Balance.UNIT_PX
+		_tile_cache[key] = seg
+	return float(_tile_cache[key])
+
+
+## Porteurs (Node2D sous `owner`) au nombre de `n` ; libère tout et rend l'original si l'interrupteur est coupé ou
+## si l'asset manque. Retourne les porteurs à placer (vide = rien à faire).
+static func _sync_points(owner: Node2D, key: String, n: int, original: CanvasItem, whole: bool, cap := POINTS_MAX) -> Array:
+	if owner == null or not is_instance_valid(owner):
+		return []
+	var st: Dictionary = owner.get_meta(META_POINTS) if owner.has_meta(META_POINTS) else {}
+	if not st.is_empty() and String(st.get("key", "")) != key:
+		release_points(owner) # variante changée : on repart de zéro
+		st = {}
+	if not enabled() or not available(key):
+		release_points(owner)
+		return []
+	if st.is_empty():
+		st = {"anchors": [], "key": key, "original": original, "whole": whole}
+		owner.set_meta(META_POINTS, st)
+	if whole:
+		hide_whole(original)
+	else:
+		hide_original(original)
+	var anchors: Array = st["anchors"]
+	n = mini(n, cap)
+	while anchors.size() > n:
+		_free_anchor(anchors.pop_back())
+	while anchors.size() < n:
+		var a := Node2D.new()
+		a.name = "VfxSwapPoint"
+		owner.add_child(a)
+		anchors.append(a)
+	return anchors
+
+
+## Effet de test du porteur (recréé s'il a fini : asset sans boucle, gerbe répétée) et orientation suivant `d`.
+## `line_px` > 0 : tuile `tile_along_line` de cette longueur.
+static func _feed_point(a: Node2D, key: String, d: Vector2, line_px := 0.0) -> void:
+	var dir := d.normalized() if d.length_squared() > 0.0001 else Vector2.RIGHT
+	var f := follower_of(a)
+	if f == null:
+		var o := {"src": "points"}
+		if POINT_PROJECTION.has(key):
+			o["projection"] = POINT_PROJECTION[key]
+		if line_px > 0.0:
+			o["line_px"] = line_px
+		spawn_follow(a, key, dir, false, o)
+		return
+	if line_px > 0.0:
+		if not dir.is_equal_approx(f.dir) or absf(line_px - f.line_px) > 0.5:
+			f.set_line(dir, line_px)
+	else:
+		f.set_dir(dir)
+
+
+static func _free_anchor(a: Variant) -> void:
+	if a == null or not is_instance_valid(a):
+		return
+	var f := follower_of(a as Node)
+	if f != null:
+		f.stop()
+	(a as Node).queue_free()
+
+
+## Libère les effets multi-points de `owner` et rend son visuel d'origine.
+static func release_points(owner: Node) -> void:
+	if owner == null or not owner.has_meta(META_POINTS):
+		return
+	var st: Dictionary = owner.get_meta(META_POINTS)
+	owner.remove_meta(META_POINTS)
+	for a in st.get("anchors", []):
+		_free_anchor(a)
+	var orig: Variant = st.get("original", null)
+	if orig != null and is_instance_valid(orig):
+		if bool(st.get("whole", false)):
+			show_whole(orig as CanvasItem)
+		else:
+			show_original(orig as CanvasItem)
+
+
+# --- Projectiles ennemis poolés (EnemyProjectilePool) ------------------------------------------------------------
+
+## Au tir (pool) : rend le visuel du projectile recyclé, puis, interrupteur allumé et tireur listé dans ENEMY_PROJ,
+## le cache sous un effet de test qui le suit (libéré quand le pool masque le projectile). Hors mode test, le pool
+## n'appelle ceci que pour un projectile encore marqué (META_POOLED).
+static func on_enemy_projectile(p: Node2D, source: Node2D, velocity: Vector2) -> void:
+	if p == null:
+		return
+	var vis := p.get_node_or_null(^"Visual") as CanvasItem
+	if p.has_meta(META_POOLED):
+		p.remove_meta(META_POOLED)
+		_stop_follower(p)
+		show_original(vis)
+	if not enabled():
+		return
+	var keys: Array = ENEMY_PROJ.get(_shooter_id(source), [])
+	if keys.is_empty() or not available(String(keys[0])):
+		return
+	hide_original(vis)
+	p.set_meta(META_POOLED, String(keys[1]) if keys.size() > 1 else "")
+	spawn_follow(p, String(keys[0]), velocity, false, {"src": "enemy_projectile"})
+
+
+## À la libération (pool, interrupteur allumé) : impact de test là où le projectile s'arrête (joueur, doublure, mur,
+## abri), jamais en bout de course (durée de vie écoulée) ni au nettoyage de fin d'étage (clear_all) : `expired`.
+static func on_enemy_projectile_end(p: Node2D, expired: bool) -> void:
+	if p == null or not p.has_meta(META_POOLED):
+		return
+	var hit := String(p.get_meta(META_POOLED))
+	if expired or hit == "" or not available(hit) or p.get_parent() == null:
+		return
+	var vel: Variant = p.get(&"velocity")
+	var dir: Vector2 = (vel as Vector2) if vel is Vector2 and (vel as Vector2).length_squared() > 0.01 else Vector2.RIGHT
+	var v := spawn_at(p.get_parent(), hit, p.global_position, dir) # gerbe orientée dans le sens du tir
+	if v != null and trace_on:
+		trace.append({"key": hit, "host": NodePath(), "src": "enemy_projectile_hit"})
+
+
+## Id du boss tireur : l'ennemi lui-même ou le porteur d'un émetteur (BarrageEmitter.boss).
+static func _shooter_id(source: Node2D) -> String:
+	if source == null or not is_instance_valid(source):
+		return ""
+	var s: Object = source
+	if not (s is Enemy):
+		var b: Variant = source.get(&"boss")
+		if not (b is Enemy) or not is_instance_valid(b):
+			return ""
+		s = b
+	return String(s.get(&"_boss_sprite_id"))

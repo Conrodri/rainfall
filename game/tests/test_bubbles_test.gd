@@ -115,8 +115,22 @@ func _run() -> void:
 	_check("poignée : déplie", not _bubbles.collapsed and _bubbles._content.visible)
 	_bubbles._set_pad_mode(true)
 	_check("mode bulles : focus pris", _btn("Bubble_vfx").focus_mode == Control.FOCUS_ALL and _btn("Bubble_vfx").has_focus())
+	# mode bulles : le joueur ne bouge pas malgré l'action move, à la sortie le mouvement revient
+	var p0 := player.global_position
+	Input.action_press(&"move_right")
+	await _frames(15)
+	_check("mode bulles : joueur immobile malgré move_right", player.global_position.distance_to(p0) < 1.0, str(player.global_position.distance_to(p0)))
+	_check("mode bulles : source muette", player.input_source() is TestMutedInput and player.input_source().move_vector() == Vector2.ZERO)
 	_bubbles._set_pad_mode(false)
 	_check("mode bulles quitté : plus de focus", _btn("Bubble_vfx").focus_mode == Control.FOCUS_NONE)
+	_check("sortie : source d'origine rendue", not (player.input_source() is TestMutedInput))
+	var p1 := player.global_position
+	await _frames(15)
+	Input.action_release(&"move_right")
+	_check("sortie : mouvement rendu", player.global_position.distance_to(p1) > 5.0, str(player.global_position.distance_to(p1)))
+	_bubbles._set_pad_mode(true)
+	_bubbles._set_pad_mode(false)
+	_check("entrer / sortir : source d'origine", not (player.input_source() is TestMutedInput))
 	TestBubbles.set_shown(false)
 	_check("option panneau : bulles masquées", not _bubbles.visible)
 	TestBubbles.set_shown(true)
@@ -146,6 +160,35 @@ func _run() -> void:
 	TestTools.clean(get_tree())
 	await _frames(50)
 	_check("boss retiré : rangée disparue", not grid.visible)
+
+	# --- rain_sower : attaque forcée dès l'apparition (intro passée)
+	var rs: Dictionary = {}
+	for e in cat:
+		if String(e.get("boss_id", "")) == "rain_sower":
+			rs = e
+	_check("rain_sower au catalogue", not rs.is_empty())
+	if not rs.is_empty():
+		var rres := TestTools.spawn(get_tree(), rs, 1, false)
+		await _frames(2)
+		var rb := rres[0] as Enemy
+		var rbr: Object = rb.brain
+		_check("rain_sower en intro à l'apparition", int(rbr.get("state")) == 0, str(rbr.get("state")))
+		var atk: Dictionary = {}
+		for a in TestBossAdapter.attacks(rb):
+			if a.kind == &"method":
+				atk = a
+				break
+		_check("rain_sower : attaque forcée réussie pendant l'intro", not atk.is_empty() and TestBossAdapter.fire(rb, atk, player.global_position))
+		_check("rain_sower : intro passée", int(rbr.get("state")) != 0)
+		await _frames(4)
+		var ok2 := false
+		for a in TestBossAdapter.attacks(rb):
+			if a.kind == &"method" and a.id != atk.id:
+				ok2 = TestBossAdapter.fire(rb, a, player.global_position)
+				break
+		_check("rain_sower : attaque forcée pendant une autre", ok2)
+		TestTools.clean(get_tree())
+		await _frames(2)
 
 	# --- adaptateur : toutes les attaques de tous les boss du catalogue
 	var supported := 0

@@ -140,9 +140,10 @@ func _play(key: String) -> VfxTestPlayer:
 	if player == null or player.get_parent() == null:
 		panel.say("Aucun joueur : lance l'arène du mode test.")
 		return null
-	var v := VfxTestPlayer.spawn(player.get_parent(), key, player.global_position, aim_direction(player), {
-		"scale_mult": opt_scale, "halo": opt_halo, "light": opt_light, "particles": opt_particles, "always": true,
-	}) as VfxTestPlayer
+	var o := {"scale_mult": opt_scale, "halo": opt_halo, "light": opt_light, "particles": opt_particles, "always": true}
+	if VfxTestPlayer.usage_of(key) == "tile_along_line":
+		o["line_px"] = 8.0 * Balance.UNIT_PX # tuile seule illisible : 8 u bout à bout (raccord visible)
+	var v := VfxTestPlayer.spawn(player.get_parent(), key, player.global_position, aim_direction(player), o) as VfxTestPlayer
 	if v == null:
 		panel.say("%s : images manquantes (lot en cours ?)." % key)
 		return null

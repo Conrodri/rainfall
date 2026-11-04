@@ -4,43 +4,31 @@
 
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 0, 184, 30)
+region = Rect2(0, 0, 150, 36)
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1_0")
-region = Rect2(184, 0, 184, 30)
+region = Rect2(150, 0, 150, 36)
 
 [sub_resource type="AtlasTexture" id="a3"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 30, 184, 30)
+region = Rect2(0, 36, 150, 36)
 
 [sub_resource type="AtlasTexture" id="a4"]
 atlas = ExtResource("1_0")
-region = Rect2(184, 30, 184, 30)
+region = Rect2(150, 36, 150, 36)
 
 [sub_resource type="AtlasTexture" id="a5"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 60, 184, 30)
+region = Rect2(0, 72, 150, 36)
 
 [sub_resource type="AtlasTexture" id="a6"]
 atlas = ExtResource("1_0")
-region = Rect2(184, 60, 184, 30)
-
-[sub_resource type="AtlasTexture" id="a7"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 90, 184, 30)
-
-[sub_resource type="AtlasTexture" id="a8"]
-atlas = ExtResource("1_0")
-region = Rect2(184, 90, 184, 30)
-
-[sub_resource type="AtlasTexture" id="a9"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 120, 184, 30)
+region = Rect2(150, 72, 150, 36)
 
 [resource]
 animations = [{
-"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}],
 "loop": true,
 "name": &"default",
 "speed": 15.000

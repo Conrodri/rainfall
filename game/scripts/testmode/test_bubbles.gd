@@ -56,6 +56,8 @@ var _dragging := false
 var _drag_start := Vector2.ZERO
 var _drag_off := Vector2.ZERO
 var _suppress_press := false
+var _muted_input: TestMutedInput = null
+var _muted_id := 0
 
 
 static func attach(parent: Node) -> TestBubbles:
@@ -126,6 +128,8 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if _muted_input != null:
+		_mute_player_input(false)
 	if instance == self:
 		instance = null
 	if TestMode.changed.is_connected(_on_mode_changed):
@@ -497,6 +501,7 @@ func _input(event: InputEvent) -> void:
 
 func _set_pad_mode(on: bool) -> void:
 	pad_mode = on
+	_mute_player_input(on)
 	_set_focusable(on)
 	if on:
 		collapsed = false
@@ -509,6 +514,33 @@ func _set_pad_mode(on: bool) -> void:
 		if f != null and _wrap.is_ancestor_of(f):
 			f.release_focus()
 	_refresh_states()
+
+
+## Pendant le mode bulles, le joueur ne bouge pas et ne lance rien au clavier / à la manette : sa source d'entrée est
+## enveloppée par TestMutedInput (déplacement nul, aucune action). Tactile non touché ; restituée à la sortie.
+func _mute_player_input(on: bool) -> void:
+	var p := TestTools.player_of(get_tree())
+	if p == null:
+		return
+	var pid := PlayerRef.id_of(p)
+	var cur: InputSource = Players.input_of(pid)
+	if on:
+		if _muted_input != null or cur == null or cur.kind == InputSource.Kind.TOUCH:
+			return
+		_muted_input = TestMutedInput.new(cur)
+		_muted_id = pid
+		_set_player_input(pid, _muted_input)
+	elif _muted_input != null:
+		if cur == _muted_input:
+			_set_player_input(_muted_id, _muted_input.inner)
+		_muted_input = null
+
+
+func _set_player_input(pid: int, src: InputSource) -> void:
+	if Players.entry(pid) != null:
+		Players.set_input(pid, src)
+	else:
+		Players.set(&"_implicit_input", src) # solo sans inscription : source implicite
 
 
 func _set_focusable(on: bool) -> void:

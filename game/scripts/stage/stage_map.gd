@@ -231,7 +231,8 @@ func _build_iso(grid: Array, origin: Vector2, size_px: Vector2, dir: String, gro
 				if _block_all_void(grid, x, y): # bloc de 4 u entièrement hors carte : pas de sol
 					continue
 				ground.set_cell(Vector2i(x, y), _variant(Vector2i(x, y), GROUND_VARIANTS.size()), Vector2i.ZERO)
-	_place_billboard_layer(ground, inv_vis, from_map(origin + Vector2(128.0, 128.0)), 512.0 / float(512 - 2 * ov))
+	if not splat: # Ground sans TileSet en sol v2 : rien à placer (map_to_local exige un TileSet)
+		_place_billboard_layer(ground, inv_vis, from_map(origin + Vector2(128.0, 128.0)), 512.0 / float(512 - 2 * ov))
 	ground.self_modulate = _tint.get("ground", Color.WHITE)
 	if not splat: # le GroundSplat découpe lui-même le vide (alpha lissé du masque)
 		_build_void_mask(grid, origin, dir, vis)

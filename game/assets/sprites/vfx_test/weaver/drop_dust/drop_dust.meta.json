@@ -29,26 +29,26 @@
  "frames": 55,
  "frame_size": [
   504,
-  454
+  458
  ],
  "scale": 2,
  "offset": [
   -2.0,
-  -171.0
+  -169.0
  ],
  "filter": "nearest",
  "test_asset": true,
  "version": 2,
  "node_scale": 1,
  "emission": "drop_dust_e.tres",
- "light_k": 1.0,
+ "light_k": 1.5,
  "light_color": "#9CF0C8",
  "light_curve": [
   1.0,
-  0.31,
-  0.09,
-  0.021,
-  0.004,
+  0.318,
+  0.095,
+  0.023,
+  0.005,
   0.0,
   0.0,
   0.0,
@@ -115,11 +115,11 @@
   ],
   [
    2.6,
-   -9.6
+   -9.4
   ],
   [
    1.0,
-   -3.4
+   -3.6
   ],
   [
    0.0,

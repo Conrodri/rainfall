@@ -263,6 +263,8 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 				_stump_acc = STUMP_STEP_U * U * 0.5
 				_charge_stumps.clear()
 				_log(&"charge", &"cast_a")
+				if VfxSwap.enabled(): # mode test : traînée de test qui suit la charge (scripts/testmode/vfx_swap.gd)
+					VfxSwap.spawn_follow(e, "hermit_cedar/charge_trail", aim, false, {"src": "spawn_at", "max_s": CHARGE_LEN_U / CHARGE_SPEED_U + 0.2})
 				e._sfx(&"enemy.shockwave.heavy", 0.0, true)
 			return Vector2.ZERO
 		S.CHARGE_DASH:

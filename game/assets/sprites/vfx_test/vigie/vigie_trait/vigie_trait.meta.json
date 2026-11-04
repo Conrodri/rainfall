@@ -1,5 +1,5 @@
 {
- "source": "projectiles/arrow",
+ "source": "rainfall/arrow-bolt",
  "opts": {
   "palette": [
    "#0c0507",
@@ -10,21 +10,24 @@
    "#FF3A4F",
    "#FF8C98"
   ],
-  "light": 0.4
+  "length": 34,
+  "tail": 36,
+  "charged": 0,
+  "light": 1.0
  },
  "owner": "vigie",
  "spell_id": "vigie_trait",
  "fps": 15.0,
  "loop": true,
- "frames": 9,
+ "frames": 6,
  "frame_size": [
-  184,
-  30
+  150,
+  36
  ],
  "scale": 2,
  "offset": [
-  -84.0,
-  -1.0
+  -45.0,
+  0.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -34,52 +37,40 @@
  "light_k": 1.0,
  "light_color": "#FF3A4F",
  "light_curve": [
-  0.363,
-  0.644,
-  0.0,
-  0.0,
-  0.0,
   1.0,
-  0.0,
-  0.0,
-  0.0
+  0.998,
+  1.0,
+  0.998,
+  0.998,
+  1.0
  ],
  "light_pos": [
   [
-   -11.0,
-   -3.0
+   -29.2,
+   -1.0
   ],
   [
-   -4.0,
-   -3.0
+   -29.0,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -29.2,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -29.0,
+   -1.0
   ],
   [
-   0.0,
-   0.0
+   -29.0,
+   -1.0
   ],
   [
-   -7.6,
-   -3.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
-  ],
-  [
-   0.0,
-   0.0
+   -29.2,
+   -1.0
   ]
- ]
+ ],
+ "ppu": 32,
+ "usage": "projectile",
+ "usage_note": "Flèche qui file vers +x : fût clair, pointe vive, empennage rouge, traînée lumineuse ; boucle tant que le trait vole."
 }

@@ -308,6 +308,9 @@ func setup(p: CharacterBody2D) -> void:
 
 
 func _exit_tree() -> void:
+	if layers != null:
+		layers.detach()
+		layers = null
 	for sig: Signal in [Events.floor_started, Events.player_died, Events.boss_killed]:
 		for cn in sig.get_connections():
 			if cn["callable"].get_object() == self:

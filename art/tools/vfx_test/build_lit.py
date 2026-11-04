@@ -9,6 +9,8 @@ Pour chaque game/assets/sprites/vfx_test/<owner>/<spell>/<spell>.meta.json (sour
     modulé en HDR en jeu pour la lueur), plus dans le meta : light_curve (intensité 0..1 par image),
     light_pos (centre de la lumière par image, px relatifs au pivot), light_color (accent).
   - planche > 4096 px : rendu à l'échelle 1 et "node_scale" pour agrandir le nœud (sans perte).
+  - "center_pivot": true dans le meta : offset et light_pos rapportés au centre de la boîte rognée
+    (offset [0, 0]) au lieu du pivot pixelfx.
 Usage : python build_lit.py [owner|owner/spell ...] [--light 1.0]
 """
 import json
@@ -127,7 +129,12 @@ def build(meta_path: Path, light_k: float) -> str:
     emis[..., 3] = np.where(lmax > LIGHT_EPS, np.clip(lmax.astype(float) * 1.15, 0, 255), 0).astype(np.uint8)
 
     # Courbe et centre de lumière par image (px pixelfx relatifs au pivot).
-    px, py = info["pivot"]
+    # "center_pivot": true dans le meta -> pivot = centre de la boîte rognée (offset [0, 0]) : pour un effet de
+    # bibliothèque dont le pivot pixelfx est au pied (effet debout) mais qu'on pose à plat, centré sur l'hôte.
+    if meta.get("center_pivot"):
+        px, py = (x0 + x1) / 2, (y0 + y1) / 2
+    else:
+        px, py = info["pivot"]
     tot = li.sum(axis=(1, 2))
     curve = (tot / max(1e-6, tot.max())).round(3).tolist()
     gy, gx = np.mgrid[0:li.shape[1], 0:li.shape[2]]

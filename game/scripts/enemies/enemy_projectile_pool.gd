@@ -45,6 +45,8 @@ func fire(source: Node2D, pos: Vector2, velocity: Vector2, damage: float) -> Pro
 	p.source = source
 	_active.append(p)
 	p.sync_layer.call_deferred()
+	if VfxSwap.enabled() or p.has_meta(VfxSwap.META_POOLED): # mode test : VFX de test des tirs de boss (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_enemy_projectile(p, source, velocity)
 	return p
 
 
@@ -65,7 +67,7 @@ static func set_skin(p: Node2D, skin: Node2D) -> void:
 
 func clear_all() -> void:
 	for i in range(_active.size() - 1, -1, -1):
-		_release_at(i)
+		_release_at(i, true)
 
 
 ## nav : champ de la carte (les projectiles s'arrêtent sur les obstacles), null sinon.
@@ -235,8 +237,10 @@ func count_from(source: Node) -> int:
 	return n
 
 
-func _release_at(i: int) -> void:
+func _release_at(i: int, cleared := false) -> void:
 	var p := _active[i]
+	if VfxSwap.enabled(): # mode test : impact de test, jamais sur un nettoyage (scripts/testmode/vfx_swap.gd)
+		VfxSwap.on_enemy_projectile_end(p, p.life <= 0.0 or cleared)
 	_active[i] = _active[_active.size() - 1]
 	_active.pop_back()
 	p.visible = false

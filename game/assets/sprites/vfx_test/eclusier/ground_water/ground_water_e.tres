@@ -4,127 +4,79 @@
 
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 0, 252, 64)
+region = Rect2(0, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 0, 252, 64)
+region = Rect2(64, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a3"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 0, 252, 64)
+region = Rect2(128, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a4"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 64, 252, 64)
+region = Rect2(192, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a5"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 64, 252, 64)
+region = Rect2(256, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a6"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 64, 252, 64)
+region = Rect2(320, 0, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a7"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 128, 252, 64)
+region = Rect2(0, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a8"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 128, 252, 64)
+region = Rect2(64, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a9"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 128, 252, 64)
+region = Rect2(128, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a10"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 192, 252, 64)
+region = Rect2(192, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a11"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 192, 252, 64)
+region = Rect2(256, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a12"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 192, 252, 64)
+region = Rect2(320, 112, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a13"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 256, 252, 64)
+region = Rect2(0, 224, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a14"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 256, 252, 64)
+region = Rect2(64, 224, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a15"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 256, 252, 64)
+region = Rect2(128, 224, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a16"]
 atlas = ExtResource("1_0")
-region = Rect2(0, 320, 252, 64)
+region = Rect2(192, 224, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a17"]
 atlas = ExtResource("1_0")
-region = Rect2(252, 320, 252, 64)
+region = Rect2(256, 224, 64, 112)
 
 [sub_resource type="AtlasTexture" id="a18"]
 atlas = ExtResource("1_0")
-region = Rect2(504, 320, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a19"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 384, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a20"]
-atlas = ExtResource("1_0")
-region = Rect2(252, 384, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a21"]
-atlas = ExtResource("1_0")
-region = Rect2(504, 384, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a22"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 448, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a23"]
-atlas = ExtResource("1_0")
-region = Rect2(252, 448, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a24"]
-atlas = ExtResource("1_0")
-region = Rect2(504, 448, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a25"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 512, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a26"]
-atlas = ExtResource("1_0")
-region = Rect2(252, 512, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a27"]
-atlas = ExtResource("1_0")
-region = Rect2(504, 512, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a28"]
-atlas = ExtResource("1_0")
-region = Rect2(0, 576, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a29"]
-atlas = ExtResource("1_0")
-region = Rect2(252, 576, 252, 64)
-
-[sub_resource type="AtlasTexture" id="a30"]
-atlas = ExtResource("1_0")
-region = Rect2(504, 576, 252, 64)
+region = Rect2(320, 224, 64, 112)
 
 [resource]
 animations = [{
-"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}, {"duration": 1.0, "texture": SubResource("a13")}, {"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}, {"duration": 1.0, "texture": SubResource("a17")}, {"duration": 1.0, "texture": SubResource("a18")}, {"duration": 1.0, "texture": SubResource("a19")}, {"duration": 1.0, "texture": SubResource("a20")}, {"duration": 1.0, "texture": SubResource("a21")}, {"duration": 1.0, "texture": SubResource("a22")}, {"duration": 1.0, "texture": SubResource("a23")}, {"duration": 1.0, "texture": SubResource("a24")}, {"duration": 1.0, "texture": SubResource("a25")}, {"duration": 1.0, "texture": SubResource("a26")}, {"duration": 1.0, "texture": SubResource("a27")}, {"duration": 1.0, "texture": SubResource("a28")}, {"duration": 1.0, "texture": SubResource("a29")}, {"duration": 1.0, "texture": SubResource("a30")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a1")}, {"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}, {"duration": 1.0, "texture": SubResource("a10")}, {"duration": 1.0, "texture": SubResource("a11")}, {"duration": 1.0, "texture": SubResource("a12")}, {"duration": 1.0, "texture": SubResource("a13")}, {"duration": 1.0, "texture": SubResource("a14")}, {"duration": 1.0, "texture": SubResource("a15")}, {"duration": 1.0, "texture": SubResource("a16")}, {"duration": 1.0, "texture": SubResource("a17")}, {"duration": 1.0, "texture": SubResource("a18")}],
 "loop": true,
 "name": &"default",
 "speed": 15.000

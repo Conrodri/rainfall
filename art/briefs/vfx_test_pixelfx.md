@@ -55,13 +55,39 @@ caméra isométrique.
   déjà dessinés en ellipse : billboard, pas ré-écrasés.
 - Lecteur `game/scripts/testmode/vfx_test_player.gd` (halo additif HDR, PointLight2D via LightRig sur la courbe,
   CPUParticles2D) et onglet « Galerie VFX » du panneau de test. Capture de revue : `game/tests/vfx_capture.tscn`.
-- Limites connues : vagues de boss vues de profil (eclusier/wave, rain_sower/wave_front, salt_king/procession_tide),
-  racines et chausse-trapes en rangée de profil, lignes longues (weaver/thread, arpenteuse_chaine) rendues par un
-  trait court, nuages bas sans emprise au sol (le télégraphe en code la donne).
+- Effets pixelfx propres au jeu (04/11/2026) : les sorts qui ne passaient pas en iso (vagues de boss, racines,
+  chausse-trapes, fil, chaîne, fauche, langue) sont redessinés **vus du dessus** dans le repère logique
+  (projection `ground_dir` ou `ground`), la caméra les écrase en 2:1 ; vérifiés vers la droite, le haut et le bas
+  de l'écran (`vfx_capture.tscn -- --dirs=1,0;0,-1;0,1`). Sources : `art/tools/vfx_test/pixelfx_fx/rainfall/`
+  (copie versionnée ; pour les rendre, les copier dans `<pixelfx>/src/fx/rainfall/`). Champs de meta associés :
+  `ppu` (px pixelfx par unité), `usage` (`follow_front`, `ground_dir_oneshot`, `line_from_pivot`,
+  `ground_zone_loop`, `tile_along_line` avec `segment_u`), `usage_note`.
+  Second lot (04/11/2026) : zones (bourbier, brumes), rayons couchés au sol à la portée de jeu (prisme, rayon de
+  la recluse, croix du semeur), coulée du fondeur (tête compacte + traînée), ondes en anneau au sol (cloche, glas,
+  édit, toile), aura de trempe, et les sorts trop discrets (braise, pièce, impact de rivet, coups du bouvier et du
+  cerf). Usages ajoutés : `ground_oneshot` (centré sur le pivot), `follow_ground_loop` (sous les pieds de l'hôte),
+  `projectile` (rond ou tournant, lisible dans toutes les directions).
+  Champ de meta `"center_pivot": true` (lu par `build_lit.py`) : `offset` et `light_pos` sont rapportés au
+  centre de la boîte rognée au lieu du pivot pixelfx, donc `offset` = [0, 0]. À mettre sur un effet de
+  bibliothèque dont le pivot pixelfx est au pied (effet debout) mais que le jeu pose centré sur l'hôte (nova
+  d'Ardent, faillite de l'Avare, doublures de Rictus, boucle de l'Arpenteuse, roue de l'éclusier). Sans ce champ,
+  une reconstruction remettait un décalage vertical et l'effet n'était plus centré.
+  Troisième lot (04/11/2026) : disque de crue dédié du semeur (`rain_sower/flood_water`, ne réutilise plus la
+  flaque du porteur de jarre), flèches de la Vigie (`vigie_trait`, `vigie_trait_charge`) éclaircies avec fût,
+  pointe, empennage et traînée, rivet du canonnier compact (lisible quand le lecteur raccourcit la trajectoire
+  vers le haut de l'écran), sillage de l'éclusier en tuile au sol (`ground_water`), éclaboussure de métal du
+  fondeur vue de dessus (`molten_pool`).
+  Champs de dimensions de jeu dans le meta (unités, lus en priorité par le lecteur) pour les usages
+  `line_from_pivot`, `tile_along_line`, `ground_*` et `follow_ground_loop` : `line_u` (longueur de la ligne depuis
+  le pivot), `radius_u` (rayon d'une zone ou d'un anneau, au maximum de son extension), `width_u` (largeur
+  perpendiculaire d'une ligne ou d'une tuile). Seuls les champs utiles sont présents.
+- Règle pour tout nouvel effet : jamais de profil 2D. Un effet au sol se dessine vu du dessus (anneaux, lignes,
+  vagues, zones) ; seul ce qui se dresse (colonne, éclair, gerbe) est un billboard. Vérifier dans les 3 directions.
+- Limites connues : nuages bas sans emprise au sol (le télégraphe en code la donne).
 - Remplacement sur les vrais sorts (case « VFX pixelfx sur les sorts », drapeau `TestMode.vfx_test`) :
   `game/scripts/testmode/vfx_swap.gd`. L'effet d'origine est caché (il continue de tourner pour garder durées et
   fins de zone) et un VfxTestPlayer le suit. Clé : meta `vfx_key` > `<perso>/<id du sort>` > tables PATHS /
   BOSS_ANIMS > `<boss>/<anim>`. Accroches d'une ligne commentées « mode test » (`grep VfxSwap`) : emissive_overlay,
-  zone_effect, projectile, spell_caster, boss_pace, quelques kits et cerveaux. 143 sorts sur 152 branchés ; non
-  branchés : ardent/roaming_embers, chaînes de l'Arpenteuse, projectiles du Flood Gunner, charges sans anim
-  d'origine. Bulles de test et masquage du HUD : `test_bubbles.gd`, `test_hud_hider.gd`, `test_boss_adapter.gd`.
+  zone_effect, projectile, spell_caster, boss_pace, enemy_projectile_pool, quelques kits et cerveaux. 152 sorts
+  sur 152 branchés (orbes d'Ardent par `track_orbit`, chaînes de l'Arpenteuse par `track_polyline`, rivets du
+  Canonnier par le pool de projectiles ennemis). Bulles de test et masquage du HUD : `test_bubbles.gd`, `test_hud_hider.gd`, `test_boss_adapter.gd`.

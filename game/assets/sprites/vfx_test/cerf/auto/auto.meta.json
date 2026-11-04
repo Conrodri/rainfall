@@ -1,5 +1,5 @@
 {
- "source": "melee/sword-slash",
+ "source": "rainfall/crescent-sweep",
  "opts": {
   "palette": [
    "#05100c",
@@ -10,28 +10,23 @@
    "#9CF0C8",
    "#d0fae8"
   ],
-  "sparks": [
-   "#05100c",
-   "#16302a",
-   "#6cc8a4",
-   "#d0fae8"
-  ],
-  "light": 0.4,
-  "radius": 60
+  "radius": 42,
+  "span": 1.24,
+  "light": 1.0
  },
  "owner": "cerf",
  "spell_id": "auto",
  "fps": 15.0,
  "loop": false,
- "frames": 12,
+ "frames": 9,
  "frame_size": [
-  268,
-  200
+  96,
+  170
  ],
  "scale": 2,
  "offset": [
-  46.0,
-  -84.0
+  58.0,
+  -1.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -41,59 +36,44 @@
  "light_k": 1.0,
  "light_color": "#9CF0C8",
  "light_curve": [
-  0.169,
+  0.612,
   1.0,
-  0.626,
-  0.296,
-  0.075,
-  0.017,
-  0.007,
-  0.003,
-  0.001,
-  0.0,
+  0.775,
+  0.493,
+  0.227,
+  0.053,
+  0.004,
   0.0,
   0.0
  ],
  "light_pos": [
   [
-   -64.2,
-   -53.4
+   53.8,
+   -40.0
   ],
   [
-   89.0,
-   -50.0
+   60.6,
+   27.6
   ],
   [
-   89.6,
-   -54.4
+   64.4,
+   28.0
   ],
   [
-   95.0,
-   -52.8
+   64.8,
+   27.4
   ],
   [
-   97.8,
-   -65.2
+   64.4,
+   31.0
   ],
   [
-   114.8,
-   -110.0
+   65.0,
+   35.6
   ],
   [
-   133.4,
-   -110.2
-  ],
-  [
-   135.4,
-   -111.0
-  ],
-  [
-   126.0,
-   -146.2
-  ],
-  [
-   0.0,
-   0.0
+   63.8,
+   42.8
   ],
   [
    0.0,
@@ -103,5 +83,9 @@
    0.0,
    0.0
   ]
- ]
+ ],
+ "ppu": 16,
+ "usage": "ground_dir_oneshot",
+ "usage_note": "Coup de bois vu de dessus : arc de 2,6 u de rayon centré sur le pivot (le boss), ±35° autour de la direction.",
+ "radius_u": 2.6
 }

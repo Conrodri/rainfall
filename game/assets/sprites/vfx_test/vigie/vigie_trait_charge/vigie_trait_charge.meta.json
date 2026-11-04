@@ -1,5 +1,5 @@
 {
- "source": "projectiles/bullet-tracer",
+ "source": "rainfall/arrow-bolt",
  "opts": {
   "palette": [
    "#0c0507",
@@ -10,21 +10,24 @@
    "#FF3A4F",
    "#FF8C98"
   ],
-  "light": 0.4
+  "length": 40,
+  "tail": 48,
+  "charged": 1,
+  "light": 1.0
  },
  "owner": "vigie",
  "spell_id": "vigie_trait_charge",
  "fps": 15.0,
  "loop": true,
- "frames": 9,
+ "frames": 6,
  "frame_size": [
-  306,
-  58
+  182,
+  52
  ],
  "scale": 2,
  "offset": [
-  -127.0,
-  3.0
+  -53.0,
+  0.0
  ],
  "filter": "nearest",
  "test_asset": true,
@@ -34,52 +37,40 @@
  "light_k": 1.0,
  "light_color": "#FF3A4F",
  "light_curve": [
-  0.998,
-  0.987,
-  0.998,
-  0.99,
+  0.999,
+  0.995,
   1.0,
-  0.985,
-  0.986,
-  0.989,
-  0.998
+  0.995,
+  0.995,
+  1.0
  ],
  "light_pos": [
   [
-   -21.2,
-   1.2
+   -45.6,
+   -1.0
   ],
   [
-   -21.0,
-   1.0
+   -45.2,
+   -1.0
   ],
   [
-   -22.0,
-   1.0
+   -45.6,
+   -1.0
   ],
   [
-   -20.6,
-   1.0
+   -45.2,
+   -1.0
   ],
   [
-   -20.2,
-   1.0
+   -45.2,
+   -1.0
   ],
   [
-   -20.8,
-   1.2
-  ],
-  [
-   -20.2,
-   1.2
-  ],
-  [
-   -20.4,
-   1.2
-  ],
-  [
-   -21.4,
-   1.2
+   -45.6,
+   -1.0
   ]
- ]
+ ],
+ "ppu": 32,
+ "usage": "projectile",
+ "usage_note": "Flèche chargée vers +x : traînée épaisse et spirale d'étincelles autour ; boucle."
 }

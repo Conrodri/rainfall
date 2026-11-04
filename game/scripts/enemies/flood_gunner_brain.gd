@@ -256,6 +256,8 @@ func tick(delta: float, player: Node2D, ppos: Vector2, dir: Vector2, dist: float
 	_t += delta
 	_update_volley()
 	_update_bursts(delta, player)
+	if VfxSwap.enabled(): # mode test : fumée de rechargement de la Mitraille (scripts/testmode/vfx_swap.gd)
+		VfxSwap.follow_while(e, "flood_gunner/reload_smoke", _reloading(), aim, barrage.reload_s + 0.3 if barrage != null else 2.5, Vector2(0.0, Iso.lift_logical(1.0)))
 	match state:
 		S.STAGGER:
 			if _t >= _dur and shield.state != BossShield.State.TRANSITION:
@@ -560,6 +562,8 @@ func _start_shell(dir: Vector2, ppos: Vector2) -> void:
 	vis.play_attack(&"cast_b", _dur, Vector2.ZERO)
 	e.telegraph.modulate = Color.WHITE
 	e.telegraph.show_circle(_shell_at, shell_radius_u() * U)
+	if VfxSwap.enabled(): # mode test : l'Obus vole du canon au cercle pendant l'armement (scripts/testmode/vfx_swap.gd)
+		VfxSwap.spawn_travel(e.get_parent(), "flood_gunner/shell", e.position + Vector2(0.0, Iso.lift_logical(1.0)), _shell_at, _dur)
 	# P3 : un 2e cercle au hasard autour du joueur (deux zones à lire en même temps)
 	for z in _shell_zones:
 		if is_instance_valid(z.get("tele")):

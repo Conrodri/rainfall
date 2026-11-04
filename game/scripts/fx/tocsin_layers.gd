@@ -62,6 +62,17 @@ static func attach(p_visual: AnimatedSprite2D, dir: String) -> TocsinLayers:
 	return t
 
 
+## Coupe la synchro avec le torse (changement de personnage : le kit part, ses calques sont purgés du Visual).
+func detach() -> void:
+	if visual != null and is_instance_valid(visual):
+		if visual.frame_changed.is_connected(sync):
+			visual.frame_changed.disconnect(sync)
+		if visual.animation_changed.is_connected(sync):
+			visual.animation_changed.disconnect(sync)
+	sprites.clear()
+	visual = null
+
+
 func _load_orders(path: String) -> void:
 	if not FileAccess.file_exists(path):
 		return
