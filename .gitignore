@@ -58,3 +58,10 @@ game/Rainfall.icon.png
 game/Rainfall.icon.png.import
 game/Rainfall.apple-touch-icon.png
 game/Rainfall.apple-touch-icon.png.import
+
+# Fichiers de travail des outils d'art (marqueurs de lecture, sorties de lanceurs, sauvegardes horodatées)
+art/tools/**/*.seen
+art/tools/**/_runner_*.txt
+art/tools/vfx_test/_tmp_lit/
+art/blender/cel/**/before/
+art/blender/**/*_17935*.blend

@@ -133,6 +133,8 @@ def reinforce_avare():
     aa2.RAW=WORK/'avare_reinforced_frames'
     aa2.resource=lambda *args:None
     aa2.SPECS={n:s for n,s in aa2.SPECS.items() if n in ('coffre_arc','coin_burst')}
+    import os
+    os.environ['AVARE_VFX_OUTPUT']=str(ROOT/'game/assets/sprites/characters/avare/effects')
     aa2.effects()
     for name in aa2.SPECS:
         path=aa2.OUT/'effects'/name/(name+'_e.png')
@@ -197,7 +199,7 @@ def verify():
         reference=reference.crop((reference.width//2,0,reference.width,reference.height));reference.thumbnail((3072,512))
         canvas.paste(reference,(0,3584));canvas.save(board,optimize=True)
     print('VERIFY',len(results),'PASS;',len(errors),'FAIL',flush=True)
-    if errors:print('\n'.join(errors[:8]));raise SystemExit(1)
+    if errors:print('\\n'.join(errors[:8]));raise SystemExit(1)
 def checks():
     jobs=[('texture_budget',[sys.executable,str(ROOT/'art/tools/texture_budget.py'),'--apply-policy']),('import',[cel.GODOT,'--headless','--path',str(ROOT/'game'),'--import'])]
     jobs += [(n,[cel.GODOT,'--headless','--path',str(ROOT/'game'),'res://tests/'+n+'.tscn']) for n in ['sprites_test','avare_test','rainette_test','player_test','texture_budget_test']]

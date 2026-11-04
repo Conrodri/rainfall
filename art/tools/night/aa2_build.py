@@ -1,4 +1,4 @@
-"""AA2 — Avare: minted gold, ransom seal, weapon sweep and portrait.
+"""AA2 â€” Avare: minted gold, ransom seal, weapon sweep and portrait.
 Background Blender only. --resume / --effects [--only=name] / --portrait / --verify.
 Reuses AA1 geometry and icons; Pillow only assembles/resizes/checks renders.
 """
@@ -103,24 +103,24 @@ def reinforced_geometry(name,f,n):
     if name=='coffre_arc':
         # 58 px footprint at R=90.51. Height gives mass in every direction.
         end=-.25+t*1.1;span=2.65*(1-.70*t);start=end-span
-        h=.22*(1-.7*t)
-        torn_band(root,.35+.13*t,.615,start,end,.055,h,iron,rng)
-        torn_band(root,.40+.11*t,.622,start+.04,end,.07+h*.45,h*.54,metal,rng)
-        torn_band(root,.568,.625,start+.06,end,.08+h*.75,h*.27,hot,rng)
-        for j in range(round(26*(1-.8*t))):
-            a=rng.uniform(start,end);rr=rng.uniform(.37,.55);z=rng.uniform(.12,.34)*(1-.6*t)
-            minted_fragment(root,(rr*math.cos(a),rr*math.sin(a),z),rng.uniform(.044,.075)*(1-.45*t),
+        h=.42*(1-.7*t)
+        torn_band(root,.24+.13*t,.615,start,end,.105,h,iron,rng)
+        torn_band(root,.34+.11*t,.622,start+.04,end,.13+h*.45,h*.64,metal,rng)
+        torn_band(root,.558,.625,start+.06,end,.14+h*.75,h*.34,hot,rng)
+        for j in range(round(44*(1-.8*t))):
+            a=rng.uniform(start,end);rr=rng.uniform(.34,.58);z=rng.uniform(.15,.52)*(1-.6*t)
+            minted_fragment(root,(rr*math.cos(a),rr*math.sin(a),z),rng.uniform(.065,.105)*(1-.45*t),
                             (rng.random()*2,rng.random()*3,a),j%3==0)
-        for j in range(round(23*(1-.85*t))):
-            a=rng.uniform(start,end);rr=rng.uniform(.45,.60);z=rng.uniform(.14,.40)*(1-.7*t)
+        for j in range(round(38*(1-.85*t))):
+            a=rng.uniform(start,end);rr=rng.uniform(.45,.60);z=rng.uniform(.14,.52)*(1-.7*t)
             cd.tube('Torn luminous steel spark',[(rr*math.cos(a-.20),rr*math.sin(a-.20),z*.65),
                     (rr*math.cos(a),rr*math.sin(a),z)],rng.uniform(.009,.018)*(1-.6*t),hot,root)
     else:
         # Peak first: dense flying coins, broad ingot wakes and a raised fractured core.
-        for j in range(round(96*(1-.90*t))):
-            a=j*2.399963+rng.uniform(-.1,.1);rr=rng.uniform(.25,2.08)*(1-.12*t)
-            z=(.18+2.35*(1-rr/2.65)*rng.uniform(.48,1))*(1-.72*t)
-            size=rng.uniform(.085,.15)*(1-.7*t)
+        for j in range(round(144*(1-.90*t))):
+            a=j*2.399963+rng.uniform(-.1,.1);rr=rng.uniform(.25,2.18)*(1-.12*t)
+            z=(.18+3.25*(1-rr/2.65)*rng.uniform(.48,1))*(1-.72*t)
+            size=rng.uniform(.10,.17)*(1-.7*t)
             p=(rr*math.cos(a),rr*math.sin(a),z)
             minted_fragment(root,p,size,(rng.random()*3+t*5,rng.random()*3+t*4,a),j%4==0)
             cd.tube('Molten treasury wake',[(p[0]*.65,p[1]*.65,z*.56),
@@ -200,7 +200,7 @@ def effects():
     for name,(cell,n,rows,rig,loop) in SPECS.items():
         selected=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--only=')),None)
         if selected and name!=selected:continue
-        folder=OUT/'effects'/name;folder.mkdir(parents=True,exist_ok=True)
+        folder=Path(__import__('os').environ.get('AVARE_VFX_OUTPUT',OUT/'effects'))/name;folder.mkdir(parents=True,exist_ok=True)
         if '--resume' in sys.argv and all((folder/(name+s+'.png')).exists() for s in ('','_e')):resource(name);continue
         feet_pivot=name in ('coffre_arc','gold_bleed')
         bpy.context.scene['AA2_effect']=name

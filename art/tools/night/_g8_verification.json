@@ -1,0 +1,346 @@
+{
+  "swarm_tier1_moss": {
+    "body_L_mean": 61.497445534603656,
+    "body_L_p10": 45.46238165814581,
+    "green_pixels": 0,
+    "sheets": [
+      {
+        "sheet": "attack.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "swarm_tier1_moss/attack.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          384,
+          448
+        ],
+        "distinct_min": 6
+      },
+      {
+        "sheet": "death.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "swarm_tier1_moss/death.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          256,
+          224
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "idle.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "swarm_tier1_moss/idle.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          256,
+          448
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "run.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "swarm_tier1_moss/run.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          768,
+          768
+        ],
+        "size": [
+          512,
+          448
+        ],
+        "distinct_min": 8
+      }
+    ]
+  },
+  "shooter_tier2_moss": {
+    "body_L_mean": 63.138606081853105,
+    "body_L_p10": 41.01659350628824,
+    "green_pixels": 0,
+    "sheets": [
+      {
+        "sheet": "attack.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "shooter_tier2_moss/attack.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          896,
+          896
+        ],
+        "size": [
+          704,
+          832
+        ],
+        "distinct_min": 8
+      },
+      {
+        "sheet": "death.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "shooter_tier2_moss/death.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          352,
+          416
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "idle.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "shooter_tier2_moss/idle.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          352,
+          832
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "run.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "shooter_tier2_moss/run.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          896,
+          896
+        ],
+        "size": [
+          704,
+          832
+        ],
+        "distinct_min": 8
+      }
+    ]
+  },
+  "leaper_tier2_moss": {
+    "body_L_mean": 68.61509580927873,
+    "body_L_p10": 45.01788786642853,
+    "green_pixels": 0,
+    "sheets": [
+      {
+        "sheet": "attack.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/attack.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          576,
+          768
+        ],
+        "distinct_min": 6
+      },
+      {
+        "sheet": "charge.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/charge.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          896,
+          896
+        ],
+        "size": [
+          576,
+          768
+        ],
+        "distinct_min": 6
+      },
+      {
+        "sheet": "death.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/death.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          384,
+          384
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "idle.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/idle.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          384,
+          768
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "leap.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/leap.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          384,
+          768
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "run.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "leaper_tier2_moss/run.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          896,
+          896
+        ],
+        "size": [
+          768,
+          768
+        ],
+        "distinct_min": 8
+      }
+    ]
+  },
+  "brute_tier3_moss": {
+    "body_L_mean": 71.61217848032427,
+    "body_L_p10": 49.79041918969759,
+    "green_pixels": 0,
+    "sheets": [
+      {
+        "sheet": "attack.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "brute_tier3_moss/attack.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          1280,
+          1280
+        ],
+        "size": [
+          1024,
+          1088
+        ],
+        "distinct_min": 8
+      },
+      {
+        "sheet": "cast.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "brute_tier3_moss/cast.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          1280,
+          1280
+        ],
+        "size": [
+          1024,
+          1088
+        ],
+        "distinct_min": 8
+      },
+      {
+        "sheet": "death.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "brute_tier3_moss/death.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          768,
+          544
+        ],
+        "distinct_min": 6
+      },
+      {
+        "sheet": "idle.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "brute_tier3_moss/idle.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": null,
+        "size": [
+          512,
+          1088
+        ],
+        "distinct_min": 4
+      },
+      {
+        "sheet": "run.png",
+        "snapshot_iou": 1.0,
+        "cel_check": {
+          "file": "brute_tier3_moss/run.png",
+          "silhouette_iou": 1.0,
+          "e_half": true
+        },
+        "historical_archive_size": [
+          1280,
+          1280
+        ],
+        "size": [
+          1024,
+          1088
+        ],
+        "distinct_min": 8
+      }
+    ]
+  },
+  "ground_L_mean": 27.25588378619024,
+  "ground_L_p10_p90": [
+    25.848597022197772,
+    29.826149422862414
+  ],
+  "body_measure": "Opaque pixels alpha>240, L*>30, violet accents excluded; ink retained separately in diffuse.",
+  "archive_note": "cel.archive_folder preserved historical N2E archive; v2 dimensions differ. Contractual IoU measured against immutable art/blender/cel/g8/before snapshot."
+}

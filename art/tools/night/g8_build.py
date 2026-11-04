@@ -22,8 +22,8 @@ def materials():
             base='8A8478' if grey else ('5A4232' if any(k in mat.name.lower() for k in ('dark','wood','recess')) else '7A5D45')
             h,s,v=colorsys.rgb_to_hsv(*(int(base[i:i+2],16)/255 for i in (0,2,4)))
             # Powdered light surface, three cel values; chroma +10%.
-            for el,value in zip(ramps[0].color_ramp.elements,(.72,.84,.96)):
-                el.color=linear(colorsys.hsv_to_rgb(h,min(1,s*1.1)*.65,value))
+            for el,value in zip(ramps[0].color_ramp.elements,(.90,.95,1.0)):
+                el.color=linear(colorsys.hsv_to_rgb(h,min(1,s*1.1),value))
         else:
             for n in nodes:
                 if n.type=='EMISSION':n.inputs['Color'].default_value=accent
@@ -43,7 +43,29 @@ def render():
     sys.path.insert(0,str(ROOT/'art/tools/monsters/v2'))
     import f1_build as f1, f2_build as f2
     f1.swarm(); f1.shooter(); f2.leaper(); f2.brute()
+    finish_emission()
     print('PASS G8 render')
+def finish_emission():
+    # LANCZOS on transparent emission edges can introduce stray channel values.
+    # Keep the rendered intensity/alpha and enforce the single contractual hue.
+    import numpy as np
+    from PIL import Image
+    for name in NAMES:
+        for p in (SPR/name).glob('*.png'):
+            if p.stem.endswith('_e'):continue
+            a=np.array(Image.open(p).convert('RGBA')); rgb=a[:,:,:3].astype(int)
+            stray=(a[:,:,3]>128)&(rgb[:,:,1]>rgb[:,:,0]+2)&(rgb[:,:,1]>rgb[:,:,2]+2)
+            if stray.any():
+                assert int(stray.sum())<32,(p,'unexpected green surface')
+                a[:,:,0][stray]=a[:,:,1][stray]
+                Image.fromarray(a).save(p,optimize=True)
+        for p in (SPR/name).glob('*_e.png'):
+            a=np.array(Image.open(p).convert('RGBA'))
+            intensity=a[:,:,:3].max(axis=2).astype(float)
+            a[:,:,:3]=np.rint(intensity[:,:,None]*np.array([194,123,255])/255).astype('uint8')
+            assert np.any((a[:,:,:3].max(2)>0)&(a[:,:,3]>0)),p
+            Image.fromarray(a).save(p,optimize=True)
 if __name__=='__main__':
     if '--prepare' in sys.argv:prepare()
     elif '--render' in sys.argv:render()
+    elif '--finish-emission' in sys.argv:finish_emission()

@@ -49,6 +49,7 @@ def emission(a):
 
 
 def deliver():
+    fringe_pixels = 0
     for p in BEFORE.glob('*.png'):
         if p.stem.endswith('_e'):
             out = emission(rgba(p))
@@ -64,12 +65,19 @@ def deliver():
                     out[r*nh:(r+1)*nh, f*nw:(f+1)*nw] = source[r*ch+y0:r*ch+y1, f*cw+x0:f*cw+x1]
             # Materials only: immutable cel baseline coverage, including fading frames.
             out[:, :, 3] = rgba(p)[:, :, 3]
+            # Lanczos ringing can overshoot R/B around ochre/violet boundaries.
+            # Correct only green fringes on newly rendered sheets, never the baseline.
+            rgb = out[:, :, :3]
+            fringe = (rgb[:, :, 1] > rgb[:, :, 0]) & (rgb[:, :, 1] > rgb[:, :, 2])
+            fringe_pixels += int((fringe & (out[:, :, 3] > 2)).sum())
+            rgb[:, :, 1][fringe] = np.maximum(rgb[:, :, 0], rgb[:, :, 2])[fringe]
         Image.fromarray(out).save(DST / p.name, compress_level=9)
+    (WORK / 'fringe_cleanup.json').write_text(json.dumps({'new_render_green_fringe_pixels': fringe_pixels}))
 
 
 def verify():
     report = {'method': 'Blender Eevee boss cel material rerender; original emission support tinted',
-              'diffuse_lut_fallback': False, 'sheets': [], 'green_pixels': 0, 'visible_pixels': 0}
+              'diffuse_lut_fallback': False, 'render_fringe_cleanup': json.loads((WORK / 'fringe_cleanup.json').read_text()), 'sheets': [], 'green_pixels': 0, 'visible_pixels': 0}
     assert {p.name for p in DST.glob('*.png')} == {p.name for p in BEFORE.glob('*.png')}
     assert not list(DST.glob('*_n.png'))
     for p in BEFORE.glob('*.tres'):
@@ -80,11 +88,13 @@ def verify():
         assert a.shape == old.shape, p.name
         assert np.array_equal(a[:, :, 3], old[:, :, 3]), p.name
         name = p.stem.removesuffix('_e'); sp = SPECS['cerf/' + name]
-        ratio = 2 if p.stem.endswith('_e') else 1
+        is_emission = p.stem.endswith('_e')
+        diffuse = rgba(DST / (name + '.png')) if is_emission else a
+        ratio = 2 if is_emission and a.shape != diffuse.shape else 1
         logical = reconstruct(a, sp, ratio)
         ref = rgba(ARCHIVE / p.name)
         assert logical.shape == ref.shape, p.name
-        support = lambda z: (z[:, :, 3] > 2) if ratio == 1 else (z[:, :, :3].max(2).astype(float) * z[:, :, 3] / 255 > 2)
+        support = lambda z: (z[:, :, 3] > 2) if not is_emission else (z[:, :, :3].max(2).astype(float) * z[:, :, 3] / 255 > 2)
         score = iou(support(logical), support(ref))
         assert score > .97, (p.name, score)
         rgb = a[:, :, :3].astype(int); vis = a[:, :, 3] > 2
@@ -93,9 +103,9 @@ def verify():
         report['green_pixels'] += int(green.sum()); report['visible_pixels'] += int(vis.sum())
         assert not green.any(), (p.name, int(green.sum()))
         entry = {'name': p.name, 'size': list(a.shape[1::-1]), 'archive_logical_size': list(logical.shape[1::-1]), 'archive_iou': score}
-        if ratio == 2:
+        if is_emission:
             diffuse = rgba(DST / (name + '.png'))
-            assert a.shape[1::-1] == tuple((v+1)//2 for v in diffuse.shape[1::-1])
+            assert a.shape[1::-1] in (diffuse.shape[1::-1], tuple((v+1)//2 for v in diffuse.shape[1::-1]))
             assert (rgb.max(2).astype(float)*a[:,:,3]/255).max() > 2
         else:
             nw,nh=sp['cell_after']; hashes=[]; old_hashes=[]

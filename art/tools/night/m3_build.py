@@ -206,7 +206,7 @@ def burst():
     for f in range(6):
         clear();t=f/5;rng=random.Random(306)
         # Frame zero carries the full blast; later frames scatter and fade.
-        reach=.68+.32*t
+        reach=.78-.24*t
         for j in range(46):
             a=rng.random()*math.tau;v=rng.uniform(.45,1.88);r=v*reach
             z=max(.025,(1-t)*rng.uniform(.22,.88)+rng.uniform(.02,.16))
@@ -217,7 +217,7 @@ def burst():
         for j in range(13):
             a=j*math.tau/13+.08;r=1.92*reach
             k=rng.uniform(.12,.24)
-            ui.curve([((r-k)*math.cos(a-.08),(r-k)*math.sin(a-.08),.05), (r*math.cos(a),r*math.sin(a),.36+.12*(j%3)),((r+k)*math.cos(a+.07),(r+k)*math.sin(a+.07),.04)],.018,glow)
+            if f<5:ui.curve([((r-k)*math.cos(a-.08),(r-k)*math.sin(a-.08),.05), (r*math.cos(a),r*math.sin(a),.36+.12*(j%3)),((r+k)*math.cos(a+.07),(r+k)*math.sin(a+.07),.04)],.018,glow)
         for j in range(11):
             a=rng.random()*math.tau;rr=rng.uniform(.65,1.82)*reach
             ui.curve([(rr*math.cos(a),rr*math.sin(a),.08),( (rr+.18)*math.cos(a+.07),(rr+.18)*math.sin(a+.07),.27)],.012,silver if j%2 else glow)

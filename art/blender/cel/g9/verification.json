@@ -1,0 +1,679 @@
+{
+  "method": "Blender Eevee boss cel material rerender; original emission support tinted",
+  "diffuse_lut_fallback": false,
+  "render_fringe_cleanup": {
+    "new_render_green_fringe_pixels": 2079
+  },
+  "sheets": [
+    {
+      "name": "antlers.png",
+      "size": [
+        792,
+        44
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 0.9758476544356711,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        167.2244,
+        194.208
+      ]
+    },
+    {
+      "name": "antlers_dirs.png",
+      "size": [
+        1056,
+        344
+      ],
+      "archive_logical_size": [
+        2048,
+        1024
+      ],
+      "archive_iou": 0.9715237111034561,
+      "unique_frames": 32,
+      "luminance_p05_p95": [
+        166.93439999999998,
+        194.208
+      ]
+    },
+    {
+      "name": "antlers_e.png",
+      "size": [
+        396,
+        22
+      ],
+      "archive_logical_size": [
+        768,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "auto.png",
+      "size": [
+        912,
+        180
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 0.9927238753149684,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        19.1312,
+        161.6046
+      ]
+    },
+    {
+      "name": "auto_dirs.png",
+      "size": [
+        1464,
+        612
+      ],
+      "archive_logical_size": [
+        1536,
+        768
+      ],
+      "archive_iou": 0.9933836240766933,
+      "unique_frames": 18,
+      "luminance_p05_p95": [
+        19.1312,
+        137.1782
+      ]
+    },
+    {
+      "name": "auto_dirs_e.png",
+      "size": [
+        732,
+        306
+      ],
+      "archive_logical_size": [
+        768,
+        384
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "auto_e.png",
+      "size": [
+        456,
+        90
+      ],
+      "archive_logical_size": [
+        768,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "charge_dirs.png",
+      "size": [
+        1368,
+        800
+      ],
+      "archive_logical_size": [
+        1536,
+        1024
+      ],
+      "archive_iou": 0.9933988764044944,
+      "unique_frames": 24,
+      "luminance_p05_p95": [
+        19.1312,
+        145.3186
+      ]
+    },
+    {
+      "name": "charge_dirs_e.png",
+      "size": [
+        684,
+        400
+      ],
+      "archive_logical_size": [
+        768,
+        512
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "death.png",
+      "size": [
+        1740,
+        188
+      ],
+      "archive_logical_size": [
+        2560,
+        256
+      ],
+      "archive_iou": 1.0,
+      "unique_frames": 10,
+      "luminance_p05_p95": [
+        20.888520000000025,
+        135.55599999999998
+      ]
+    },
+    {
+      "name": "ground_mist.png",
+      "size": [
+        1368,
+        92
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 1.0,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        39.627,
+        55.7738
+      ]
+    },
+    {
+      "name": "ground_mist_e.png",
+      "size": [
+        684,
+        46
+      ],
+      "archive_logical_size": [
+        768,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "ground_wisp_trail.png",
+      "size": [
+        192,
+        38
+      ],
+      "archive_logical_size": [
+        384,
+        64
+      ],
+      "archive_iou": 0.9849119865884325,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        49.06621,
+        201.28848000000005
+      ]
+    },
+    {
+      "name": "ground_wisp_trail_e.png",
+      "size": [
+        96,
+        19
+      ],
+      "archive_logical_size": [
+        192,
+        32
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "idle_p1.png",
+      "size": [
+        888,
+        160
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 0.9932454515742456,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        18.9186,
+        171.0298
+      ]
+    },
+    {
+      "name": "idle_p1_e.png",
+      "size": [
+        444,
+        80
+      ],
+      "archive_logical_size": [
+        768,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "idle_p2.png",
+      "size": [
+        888,
+        170
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 0.9950529115289479,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        19.1312,
+        159.67680000000001
+      ]
+    },
+    {
+      "name": "idle_p2_e.png",
+      "size": [
+        444,
+        85
+      ],
+      "archive_logical_size": [
+        768,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "idle_p3.png",
+      "size": [
+        888,
+        170
+      ],
+      "archive_logical_size": [
+        1536,
+        256
+      ],
+      "archive_iou": 0.9883636084335036,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        23.0,
+        128.4682
+      ]
+    },
+    {
+      "name": "reappear.png",
+      "size": [
+        1168,
+        170
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 1.0,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        18.030600000000018,
+        138.14495999999966
+      ]
+    },
+    {
+      "name": "spell_a.png",
+      "size": [
+        1248,
+        174
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 0.9916694832693799,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        18.343799999999998,
+        169.8172
+      ]
+    },
+    {
+      "name": "spell_a_dirs.png",
+      "size": [
+        1280,
+        624
+      ],
+      "archive_logical_size": [
+        2048,
+        768
+      ],
+      "archive_iou": 0.9921281928861303,
+      "unique_frames": 24,
+      "luminance_p05_p95": [
+        19.1312,
+        139.6086
+      ]
+    },
+    {
+      "name": "spell_a_dirs_e.png",
+      "size": [
+        640,
+        312
+      ],
+      "archive_logical_size": [
+        1024,
+        384
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "spell_a_e.png",
+      "size": [
+        624,
+        87
+      ],
+      "archive_logical_size": [
+        1024,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "spell_b.png",
+      "size": [
+        1184,
+        174
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 0.9924771413136992,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        18.9186,
+        169.65361999999962
+      ]
+    },
+    {
+      "name": "spell_b_dirs.png",
+      "size": [
+        1312,
+        612
+      ],
+      "archive_logical_size": [
+        2048,
+        768
+      ],
+      "archive_iou": 0.9930786841217915,
+      "unique_frames": 24,
+      "luminance_p05_p95": [
+        19.1312,
+        137.39079999999998
+      ]
+    },
+    {
+      "name": "spell_b_dirs_e.png",
+      "size": [
+        656,
+        306
+      ],
+      "archive_logical_size": [
+        1024,
+        384
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "spell_b_e.png",
+      "size": [
+        592,
+        87
+      ],
+      "archive_logical_size": [
+        1024,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "trans_p2.png",
+      "size": [
+        1184,
+        170
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 0.9936730400346513,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        10.842600000000001,
+        160.8894
+      ]
+    },
+    {
+      "name": "trans_p2_e.png",
+      "size": [
+        592,
+        85
+      ],
+      "archive_logical_size": [
+        1024,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "trans_p3.png",
+      "size": [
+        1184,
+        170
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 0.9921772033501977,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        21.0,
+        135.17971999999992
+      ]
+    },
+    {
+      "name": "trans_p3_e.png",
+      "size": [
+        592,
+        85
+      ],
+      "archive_logical_size": [
+        1024,
+        128
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "vanish.png",
+      "size": [
+        1152,
+        168
+      ],
+      "archive_logical_size": [
+        2048,
+        256
+      ],
+      "archive_iou": 1.0,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        18.071,
+        137.236
+      ]
+    },
+    {
+      "name": "walk_p1.png",
+      "size": [
+        1280,
+        864
+      ],
+      "archive_logical_size": [
+        2048,
+        1024
+      ],
+      "archive_iou": 0.9920453969701576,
+      "unique_frames": 32,
+      "luminance_p05_p95": [
+        19.1312,
+        145.5364
+      ]
+    },
+    {
+      "name": "walk_p1_e.png",
+      "size": [
+        640,
+        432
+      ],
+      "archive_logical_size": [
+        1024,
+        512
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "walk_p2.png",
+      "size": [
+        1280,
+        864
+      ],
+      "archive_logical_size": [
+        2048,
+        1024
+      ],
+      "archive_iou": 0.9939498674764587,
+      "unique_frames": 32,
+      "luminance_p05_p95": [
+        19.3438,
+        130.51855
+      ]
+    },
+    {
+      "name": "walk_p2_e.png",
+      "size": [
+        640,
+        432
+      ],
+      "archive_logical_size": [
+        1024,
+        512
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "walk_p3.png",
+      "size": [
+        1280,
+        864
+      ],
+      "archive_logical_size": [
+        2048,
+        1024
+      ],
+      "archive_iou": 0.9906103605363373,
+      "unique_frames": 32,
+      "luminance_p05_p95": [
+        23.0,
+        116.39999999999999
+      ]
+    },
+    {
+      "name": "wisp.png",
+      "size": [
+        144,
+        38
+      ],
+      "archive_logical_size": [
+        384,
+        64
+      ],
+      "archive_iou": 0.9844961240310077,
+      "unique_frames": 6,
+      "luminance_p05_p95": [
+        46.64062,
+        195.6384
+      ]
+    },
+    {
+      "name": "wisp_bolt.png",
+      "size": [
+        248,
+        24
+      ],
+      "archive_logical_size": [
+        256,
+        32
+      ],
+      "archive_iou": 0.9851742031134173,
+      "unique_frames": 4,
+      "luminance_p05_p95": [
+        10.842600000000001,
+        154.3126
+      ]
+    },
+    {
+      "name": "wisp_bolt_e.png",
+      "size": [
+        248,
+        24
+      ],
+      "archive_logical_size": [
+        256,
+        32
+      ],
+      "archive_iou": 0.9896432681242808
+    },
+    {
+      "name": "wisp_e.png",
+      "size": [
+        72,
+        19
+      ],
+      "archive_logical_size": [
+        192,
+        32
+      ],
+      "archive_iou": 1.0
+    },
+    {
+      "name": "wisp_explode.png",
+      "size": [
+        304,
+        44
+      ],
+      "archive_logical_size": [
+        512,
+        64
+      ],
+      "archive_iou": 0.986784140969163,
+      "unique_frames": 8,
+      "luminance_p05_p95": [
+        66.66745999999999,
+        195.96024000000003
+      ]
+    },
+    {
+      "name": "wisp_explode_e.png",
+      "size": [
+        152,
+        22
+      ],
+      "archive_logical_size": [
+        256,
+        32
+      ],
+      "archive_iou": 1.0
+    }
+  ],
+  "green_pixels": 0,
+  "visible_pixels": 2537500,
+  "green_proportion": 0.0,
+  "godot_checks": {
+    "cerf_boss": {
+      "result_ok": true,
+      "errors": [
+        "Godot_v4.7.2-stable_win64_console.exe : ERROR: Condition \"tile_set.is_null()\" is true. Returning: Vector2()",
+        "    + CategoryInfo          : NotSpecified: (ERROR: Conditio...ning: Vector2():String) [], RemoteException",
+        "ERROR: 23 resources still in use at exit (run with --verbose for details)."
+      ]
+    },
+    "sprites": {
+      "result_ok": true,
+      "errors": []
+    }
+  }
+}

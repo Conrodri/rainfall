@@ -7,7 +7,7 @@ import sys, json, re, subprocess, hashlib, inspect, shutil
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
-WORK = ROOT / 'art/blender/cel/minis_b'
+WORK = ROOT / ('art/blender/cel/g10/minis_b' if '--g10' in sys.argv else 'art/blender/cel/minis_b')
 SPRITES = ROOT / 'game/assets/sprites'
 NAMES = ('mist_wolf', 'mist_wolf_cub', 'lantern_owl', 'moss_mantis', 'ash_lord', 'rust_archon')
 BLENDER = r'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe'
@@ -53,18 +53,22 @@ def render():
     from PIL import Image
     # Original render function; remove ONLY the obsolete normal-file collection.
     code = inspect.getsource(iso_rig.render_frame)
-    assert "for suffix in ('_n','_e'):" in code
+    code = code.replace("for suffix in (('_e',) if not passes else ('_n','_e')):", "for suffix in ('_e',):")
     ns = dict(iso_rig.__dict__)
     exec(code.replace("for suffix in ('_n','_e'):", "for suffix in ('_e',):"), ns)
     draw = ns['render_frame']
     roots = dict(zip(NAMES, ('Mist wolf ground pivot','Mist wolf ground pivot','Lantern owl ground pivot','N2B_MossMantis','AshLord','RustArchon')))
     for name in NAMES:
+        if '--g10' in sys.argv and name not in ('bramble_queen','mist_wolf','mist_wolf_cub','moss_mantis'): continue
         bpy.ops.wm.open_mainfile(filepath=str(source(name)))
         scene = bpy.context.scene
         scene.render.threads_mode='FIXED'; scene.render.threads=8
         scene['iso_frame']=[170,170]
         scene.render.resolution_x=scene.render.resolution_y=340
         scene.render.resolution_percentage=100
+        if '--g10' in sys.argv:
+            from g10_materials import apply
+            apply()
         cel.install('creature', normals=False)
         # Keep empty individual accent cells until the complete atlas is assembled.
         ns['optimize_png'] = lambda *a, **k: None

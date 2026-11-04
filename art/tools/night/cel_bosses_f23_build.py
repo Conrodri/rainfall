@@ -101,7 +101,7 @@ def g9_materials():
                         for j, el in enumerate(els):
                             t = j / max(1, len(els)-1)
                             el.color = (*[(1-t)*a+t*b for a,b in zip(lin(lo),lin(hi))],1)
-        if any(x in mat.name.lower() for x in ('wisp', 'mint', 'brume', 'mist')):
+        if any(x in mat.name.lower() for x in ('wisp', 'mint', 'brume', 'mist', 'follet', '#9cf0c8')):
             tint = 'A28A76' if any(x in mat.name.lower() for x in ('brume','mist')) else 'C27BFF'
             bs.inputs['Base Color'].default_value = (*lin(tint),1)
             bs.inputs['Emission Color'].default_value = (*lin(tint),1)
@@ -198,7 +198,8 @@ def render_sheet(subject, lot, task, root, pose, frames, directions, cell, emiss
     output.mkdir(parents=True, exist_ok=True)
     marker = output / (task + '.json')
     if '--resume' in sys.argv and marker.exists():
-        return
+        if not G9 or json.loads(marker.read_text()).get('g9_palette_revision') == 3:
+            return
     s = bpy.context.scene
     s.render.resolution_x, s.render.resolution_y = cell[0] * 2, cell[1] * 2
     s.render.resolution_percentage = 100
@@ -234,6 +235,8 @@ def render_sheet(subject, lot, task, root, pose, frames, directions, cell, emiss
             path = raw / f'{task}_{d}_{i}.png'
             def animate(t):
                 pose(i, t)
+                if G9:
+                    g9_materials()  # animated source shaders can restore forest emission
                 sync_materials(pairs)
             common.render_still(root, animate, path, i / frames, d)
             with Image.open(path.with_name(path.stem + '_e.png') if emission_only else path) as im:
@@ -243,7 +246,8 @@ def render_sheet(subject, lot, task, root, pose, frames, directions, cell, emiss
                 p.unlink()
     board.save(output / (task + '.png'), compress_level=9)
     dump(marker, {'subject': subject, 'lot': lot, 'task': task, 'cell': cell,
-        'frames': frames, 'directions': directions, 'emission_only': emission_only})
+        'frames': frames, 'directions': directions, 'emission_only': emission_only,
+        'g9_palette_revision': 3 if G9 else None})
     # Restore source slots; next sheet animates the same original rig/materials.
     originals = {p[1]: p[0] for p in pairs}
     for ob in s.objects:
