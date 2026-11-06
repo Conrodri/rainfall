@@ -20,6 +20,8 @@ signal spell_hit(spell: SpellData, enemy: Node, amount: float)
 ## par le lancer d'un sort 4 (ULT_MARK_S : zones / dégâts différés d'un ultime dont le SpellData n'est pas du slot 4), ou si
 ## le kit déclare le coup comme effet de son ultime (`kit.counts_as_ultimate(s) -> bool`, ex. lames jumelles de Taliant).
 var last_hit_ult := false
+## Vrai pendant l'émission de spell_hit si le coup était un critique (objets forgés : Mèche-silex).
+var last_hit_crit := false
 const ULT_MARK_S := 2.0
 var _ult_left := 0.0
 
@@ -289,6 +291,11 @@ func has_slot(slot: int) -> bool:
 ## Recharge restante d'un slot (0 si inconnu).
 func cooldown_remaining(slot: int) -> float:
 	return maxf(float(_remaining.get(slot, 0.0)), 0.0)
+
+
+## Durée totale du dernier cooldown lancé sur ce slot (0 si inconnu).
+func cooldown_total(slot: int) -> float:
+	return maxf(float(_totals.get(slot, 0.0)), 0.0)
 
 
 ## Restaure la recharge d'un slot (reprise de sauvegarde). Retourne faux si le slot est inconnu.
@@ -802,8 +809,10 @@ func deal_damage(enemy: Node, s: SpellData, hit: Dictionary = {}) -> float:
 	if k != null and k.has_method(&"on_spell_hit"):
 		k.on_spell_hit(s, enemy, amount)
 	last_hit_ult = s.slot == ArdentKit.ULTIMATE_SLOT or _ult_left > 0.0 			or (k != null and k.has_method(&"counts_as_ultimate") and bool(k.counts_as_ultimate(s)))
+	last_hit_crit = is_crit
 	spell_hit.emit(s, enemy, amount)
 	last_hit_ult = false
+	last_hit_crit = false
 	return amount
 
 

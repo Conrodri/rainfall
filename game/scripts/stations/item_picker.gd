@@ -58,7 +58,7 @@ static func open(host: Node, p_cfg: Dictionary) -> ItemPicker:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	layer = 60
+	layer = int(cfg.get("layer", 60)) # la Forge ouvre le sélecteur au-dessus du menu pause (couche 100)
 
 
 func setup() -> void:
@@ -71,6 +71,12 @@ func setup() -> void:
 	_build()
 	get_viewport().size_changed.connect(_relayout)
 	_relayout()
+	if multi > 0: # sélection de départ (Forge : objets les moins utiles), par clé d'entrée
+		for k in cfg.get("preselect", []):
+			for i in entries.size():
+				if entries[i].get("key") == k and not selected.has(i) and bool(entries[i].get("enabled", true)):
+					selected.append(i)
+					break
 	_refresh_state()
 	if not buttons.is_empty():
 		buttons[0].call_deferred(&"grab_focus")

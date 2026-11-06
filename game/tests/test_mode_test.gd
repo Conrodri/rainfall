@@ -353,19 +353,19 @@ func _run() -> void:
 			TestTools.switch_character(get_tree(), &"ardent")
 		overlay.close()
 		_check("panneau fermé : pause levée", not get_tree().paused)
-		# TAB ouvre et ferme le panneau ; il ne déplace pas le focus des menus quand le panneau est ouvert
+		# F1 ouvre et ferme le panneau ; il ne déplace pas le focus des menus quand le panneau est ouvert
 		var tab_ev := InputEventKey.new()
-		tab_ev.keycode = KEY_TAB
-		tab_ev.physical_keycode = KEY_TAB
+		tab_ev.keycode = KEY_F1
+		tab_ev.physical_keycode = KEY_F1
 		tab_ev.pressed = true
 		get_viewport().push_input(tab_ev.duplicate())
 		await get_tree().process_frame
-		_check("TAB ouvre le panneau", overlay.is_open())
+		_check("F1 ouvre le panneau", overlay.is_open())
 		var f0 := get_viewport().gui_get_focus_owner()
 		get_viewport().push_input(tab_ev.duplicate())
 		await get_tree().process_frame
-		_check("TAB ferme le panneau (sans déplacer le focus)", not overlay.is_open() and (f0 == null or not f0.is_inside_tree() or f0.has_focus() or true))
-		_check("TAB : seule action liée = chest_items (menu de coffre, absent de l arène)", InputMap.get_actions().filter(func(a): return not String(a).begins_with("ui_") and a != &"chest_items" and InputMap.action_get_events(a).any(func(e): return e is InputEventKey and (e.keycode == KEY_TAB or e.physical_keycode == KEY_TAB))).is_empty())
+		_check("F1 ferme le panneau (sans déplacer le focus)", not overlay.is_open() and (f0 == null or not f0.is_inside_tree() or f0.has_focus() or true))
+		_check("F1 : seule action liée = chest_items (menu de coffre, absent de l arène)", InputMap.get_actions().filter(func(a): return not String(a).begins_with("ui_") and a != &"chest_items" and InputMap.action_get_events(a).any(func(e): return e is InputEventKey and (e.keycode == KEY_F1 or e.physical_keycode == KEY_F1))).is_empty())
 		get_tree().paused = false
 	get_tree().paused = false
 

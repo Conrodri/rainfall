@@ -110,7 +110,7 @@ static func tags_of(id: StringName) -> Array:
 
 
 static func is_copy_excluded(id: StringName) -> bool:
-	return Balance.STATION_COPY_EXCLUDED.has(id)
+	return Balance.STATION_COPY_EXCLUDED.has(id) or ItemDB.is_craft_only(id) # un objet forgé ne se copie pas
 
 
 static func is_phenix(id: StringName) -> bool:
@@ -119,6 +119,8 @@ static func is_phenix(id: StringName) -> bool:
 
 ## Exemplaires donnables / fondables : un Phénix consommé (compteur phenix_used du joueur) ne compte plus.
 static func spendable_stacks(id: StringName, st: PlayerState = null) -> int:
+	if ItemDB.is_craft_only(id):
+		return 0 # objet forgé : ni fondu, ni donné, ni ingrédient
 	var ps := _st(st)
 	var n := ps.stacks(id)
 	if is_phenix(id):
@@ -194,7 +196,7 @@ static func owned_of(qualities: Array, st: PlayerState = null) -> Array[StringNa
 	var out: Array[StringName] = []
 	var items := _st(st).items
 	for id in items:
-		if int(items[id]) > 0 and qualities.has(quality_of(StringName(id))):
+		if int(items[id]) > 0 and qualities.has(quality_of(StringName(id))) and not ItemDB.is_craft_only(id):
 			out.append(StringName(id))
 	out.sort_custom(func(a: StringName, b: StringName) -> bool:
 		var qa := QUALITY_ORDER.find(quality_of(a))

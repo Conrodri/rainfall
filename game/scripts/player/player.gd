@@ -46,6 +46,7 @@ var procs: Array = []
 var specials: Dictionary = {}
 var spells: SpellCaster
 var item_fx: ItemEffects ## effets des items à logique propre (scripts/items/item_effects.gd)
+var craft_fx: CraftEffects ## effets des objets forgés (scripts/items/craft_effects.gd)
 var kit: Node = null ## logique propre au personnage (null : Ardent)
 ## Interaction (coffres, téléporteur, piliers…) lue sur la source d'entrée de CE joueur (PlayerInteract). Opt-in :
 ## `interaction.enabled` est posé par le HUD quand il délègue son répartiteur au joueur.
@@ -192,6 +193,10 @@ func _ready() -> void:
 	add_child(item_fx)
 	item_fx.setup(self)
 	item_fx.refresh() # items déjà possédés (reprise de run, scène rechargée)
+	craft_fx = CraftEffects.new()
+	add_child(craft_fx)
+	craft_fx.setup(self)
+	craft_fx.refresh()
 	Haptics.connect_events()
 	_light = LightRig.attach(self, &"player")
 	_light_core = LightRig.attach(self, &"player_core")
@@ -315,6 +320,8 @@ func apply_stats(new_stats: Dictionary) -> void:
 	specials = (stats.get("specials", {}) as Dictionary).duplicate(true)
 	if item_fx != null:
 		item_fx.refresh()
+	if craft_fx != null:
+		craft_fx.refresh()
 	_recompute(false)
 
 
@@ -665,6 +672,8 @@ func tick(delta: float) -> void:
 	_action_step(delta)
 	if item_fx != null:
 		item_fx.tick(delta)
+	if craft_fx != null:
+		craft_fx.tick(delta)
 	if kit != null:
 		kit.tick(delta)
 	if _slow_left > 0.0:

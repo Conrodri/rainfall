@@ -8,6 +8,7 @@ const QUALITIES: Array[StringName] = [&"commun", &"peu_commun", &"rare", &"legen
 static var _path := DEFAULT_PATH
 static var _items: Dictionary = {} ## id (String) -> Dictionary
 static var _by_quality: Dictionary = {} ## qualité (StringName) -> Array[String]
+static var _craft_ids: Array = [] ## ids des objets `craft_only` (Forge)
 static var _loaded := false
 
 
@@ -28,6 +29,7 @@ static func _ensure() -> void:
 	_loaded = true
 	_items = {}
 	_by_quality = {}
+	_craft_ids = []
 	for q in QUALITIES:
 		_by_quality[q] = []
 	if not FileAccess.file_exists(_path):
@@ -45,6 +47,9 @@ static func _ensure() -> void:
 		var id := str(entry["id"])
 		_items[id] = entry
 		var q := StringName(str(entry.get("quality", "commun")))
+		if bool(entry.get("craft_only", false)):
+			_craft_ids.append(id) # objet forgé : hors de toute table de tirage, d'atelier ou de marchand
+			continue
 		if not _by_quality.has(q):
 			_by_quality[q] = []
 		_by_quality[q].append(id)
@@ -66,7 +71,18 @@ static func all_ids() -> Array:
 	return _items.keys()
 
 
-## Table d'une qualité : Array d'ids (String).
+## Vrai pour un objet exclusif de la Forge (`"craft_only": true`) : jamais tiré, jamais ingrédient, jamais copié.
+static func is_craft_only(id: Variant) -> bool:
+	return bool(get_item(id).get("craft_only", false))
+
+
+## Ids des objets forgeables (ordre de items.json).
+static func craft_ids() -> Array:
+	_ensure()
+	return _craft_ids
+
+
+## Table d'une qualité : Array d'ids (String). Les objets `craft_only` n'y figurent jamais.
 static func ids_of_quality(quality: StringName) -> Array:
 	_ensure()
 	return _by_quality.get(quality, [])

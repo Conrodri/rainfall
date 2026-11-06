@@ -1,0 +1,8 @@
+[
+  {"id": "meche_silex", "result": "meche_silex", "tier": 1, "keys": ["Feu", "Crit"], "hint": "Un objet du feu et un objet de critique, plus un objet commun quelconque."},
+  {"id": "rosee_figee", "result": "rosee_figee", "tier": 1, "keys": ["Survie", "Givre"], "hint": "Un objet de survie et un objet de givre, plus un objet commun quelconque."},
+  {"id": "rouage_traque", "result": "rouage_traque", "tier": 1, "keys": ["Auto", "Recharge"], "hint": "Un objet du sort 1 et un objet de recharge, plus un objet commun quelconque."},
+  {"id": "seve_rampante", "result": "seve_rampante", "tier": 2, "keys": ["Poison", "Zone"], "hint": "Un objet de poison (peu commun ou mieux) et un objet de zone, plus un peu commun et un commun quelconques."},
+  {"id": "ecorce_pluie", "result": "ecorce_pluie", "tier": 2, "keys": ["Survie", ["Survie", "Givre"]], "hint": "Un objet de survie (peu commun ou mieux) et un autre de survie ou de givre, plus un peu commun et un commun quelconques."},
+  {"id": "prisme_grele", "result": "prisme_grele", "tier": 2, "keys": ["Givre", "Zone"], "hint": "Un objet de givre (peu commun ou mieux) et un objet de zone, plus un peu commun et un commun quelconques."}
+]

@@ -323,6 +323,7 @@ func _make_relic(pos: Vector2) -> Node2D:
 		map.add_child(chest)
 		if chest.has_method(&"setup"):
 			chest.call(&"setup", &"guardian", RunState.stage)
+		chest.set_meta(&"secret_relic", true) # reliquaire de secret : donne un noyau d'orage (Chest.try_open)
 		if slots[k] >= 0 and &"reserved_slot" in chest:
 			chest.set(&"reserved_slot", slots[k])
 		chests.append(chest)

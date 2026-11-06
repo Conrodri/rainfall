@@ -23,6 +23,8 @@ signal difficulty_changed(D: float, tier_name: StringName)
 signal gold_spent(amount: float)
 ## Scories des ateliers (Fondoir -> Matrice) : pastilles du HUD.
 signal scrap_changed
+## Noyaux d'orage du joueur 1 (Forge) : pastille du HUD et bouton « Forge possible ».
+signal catalysts_changed(count: int)
 
 var mode: StringName = &"moyen"
 var stage := 1
@@ -86,6 +88,10 @@ var compass: Dictionary:
 var scrap: Dictionary:
 	get: return _p1.scrap
 	set(v): _p1.scrap = v
+## Noyaux d'orage portés par le joueur 1 (Forge, Balance.CRAFT_CATALYST_CAP au plus) ; sauvegardés.
+var catalysts: int:
+	get: return _p1.catalysts
+	set(v): _p1.catalysts = clampi(v, 0, Balance.CRAFT_CATALYST_CAP)
 
 
 func _init() -> void:
@@ -98,6 +104,7 @@ func _init() -> void:
 	_p1.items_changed.connect(items_changed.emit)
 	_p1.gold_spent.connect(gold_spent.emit)
 	_p1.scrap_changed.connect(scrap_changed.emit)
+	_p1.catalysts_changed.connect(catalysts_changed.emit)
 
 
 ## PlayerState du joueur 1 (joueur local en solo et en coop locale) : cible de la façade.
@@ -231,9 +238,23 @@ func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 	if not running or boss == null:
 		return
 	kills += 1 # les boss comptent dans « Monstres tués » (décision du joueur, 26/10/2026)
+	if is_floor_boss:
+		award_floor_boss_catalysts()
 	var bid := String(boss.call(&"boss_id")) if boss.has_method(&"boss_id") else ""
 	if bid != "":
 		bosses_killed.append({"id": bid, "floor_boss": is_floor_boss})
+
+
+## Boss d'étage vaincu (étages 1 à Balance.CRAFT_CATALYST_MAX_FLOOR) : chaque joueur de la partie, spectateurs compris,
+## reçoit Balance.CRAFT_CATALYST_PER_FLOOR_BOSS noyau d'orage (plafond CRAFT_CATALYST_CAP). Retourne les joueurs servis.
+func award_floor_boss_catalysts() -> int:
+	if stage > Balance.CRAFT_CATALYST_MAX_FLOOR:
+		return 0
+	var n := 0
+	for i in party_count():
+		if player_state(i).add_catalyst(Balance.CRAFT_CATALYST_PER_FLOOR_BOSS) > 0:
+			n += 1
+	return n
 
 
 ## loadout normalisé {slot int -> StringName} depuis une config / sauvegarde (clés texte ou entières).
@@ -349,7 +370,7 @@ func to_dict() -> Dictionary:
 		"loadout": _loadout_dict(), "counters": counters.duplicate(), "bosses_killed": bosses_killed.duplicate(true),
 		"omen": String(omen), "omen_pending": omen_pending, "omens_taken": omens_taken_text(),
 		"compass": compass.duplicate(),
-		"scrap": _scrap_dict(),
+		"scrap": _scrap_dict(), "catalysts": catalysts,
 	}
 	if player_states.size() > 1: # coop : joueurs 2 à 4 (PlayerState.to_dict) ; le joueur 1 reste au premier niveau
 		var extra: Array = []
@@ -400,6 +421,7 @@ func from_dict(d: Dictionary) -> void:
 	bosses_killed = (d.get("bosses_killed", []) as Array).duplicate(true) if d.get("bosses_killed") is Array else []
 	var cp: Variant = d.get("compass")
 	compass = {"tag": String((cp as Dictionary).get("tag", "")), "charges": int((cp as Dictionary).get("charges", 0))} if cp is Dictionary else {"tag": "", "charges": 0}
+	catalysts = int(d.get("catalysts", 0)) # absent (ancienne sauvegarde) = aucun noyau
 	scrap = {}
 	var sd: Variant = d.get("scrap", {}) # absente (ancienne sauvegarde) = aucune scorie
 	if sd is Dictionary:

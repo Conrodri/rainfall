@@ -166,8 +166,8 @@ func _run() -> void:
 	for id in ItemDB.all_ids():
 		var it := ItemDB.get_item(id)
 		var sp := str(it.get("special", "")) if it.get("special") != null else ""
-		if sp == "" or sp == "null" or sp == "<null>":
-			continue
+		if sp == "" or sp == "null" or sp == "<null>" or ItemDB.is_craft_only(id):
+			continue # objets forgés : plafond de 2 exemplaires, testés dans forge_test
 		_check("%s : special « %s » branché (%s)" % [id, sp, HANDLED.get(StringName(sp), "?")], HANDLED.has(StringName(sp)))
 		if sp != "pointe_perforante":
 			_check("%s : special_data défini" % id, not ItemEffects.data_of(StringName(sp)).is_empty())
