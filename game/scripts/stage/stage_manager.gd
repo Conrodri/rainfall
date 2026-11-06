@@ -160,6 +160,8 @@ func start_stage(layout: Dictionary = {}) -> void:
 	is_final_floor = bool(entry.get("final", false))
 	map = (entry["scene"] as PackedScene).instantiate() as StageMap
 	map_id = String(entry["id"])
+	# secret non tiré pour cet étage : la salle cachée n'est pas construite (doit être posé avant add_child -> _ready)
+	map.secret_armed = map_scene != null or bare_arena or bool(plan_entry(RunState.stage).get("secret", false))
 	add_child(map)
 	var director := get_tree().get_first_node_in_group(&"director")
 	if director and director.has_method(&"bind_map"):

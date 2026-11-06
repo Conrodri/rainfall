@@ -33,6 +33,9 @@ var _biome := "" ## biome de data/maps/<id>.json
 var _vis_grid: Array = [] ## grille visuelle (D -> #, : -> .), mise à jour à l'ouverture d'une porte scellée
 var _door_cells := {} ## Vector2i -> id du secret (cases « D » de la grille JSON)
 var _doors_open := {} ## id du secret -> true une fois la porte ouverte
+## Faux = secret non tiré pour cet étage (posé par StageManager AVANT add_child) : la salle scellée n'est pas construite,
+## son emplacement est comblé de mur plein (grille visuelle) et d'une collision pleine (NavField, spawns).
+var secret_armed := true
 signal secret_door_opened(secret_id: StringName)
 var iso_dir_used := "" ## dossier des tuiles iso effectivement posées (tests : vraies tuiles ou substitut)
 
@@ -165,6 +168,8 @@ func _build_ground() -> void:
 	var grid: Array = _visual_grid(data)
 	var size_px := Vector2(data["size_px"][0], data["size_px"][1])
 	var origin := -size_px * 0.5
+	if not secret_armed:
+		_seal_unarmed_rooms(data, origin)
 	var iso_dir: String = ISO_TILES.get(biome, "") if is_iso() else ""
 	_tint = {}
 	if is_iso() and not (iso_dir != "" and _has_textures(iso_dir, GROUND_VARIANTS)) and ISO_FALLBACK.has(biome):
@@ -745,9 +750,41 @@ func _visual_grid(data: Dictionary) -> Array:
 		for c in sc.get("door_cells", []):
 			_door_cells[Vector2i(int(c[0]), int(c[1]))] = StringName(sc["id"])
 	for row in data["grid"]:
-		out.append(String(row).replace("D", "#").replace(":", "."))
+		if secret_armed:
+			out.append(String(row).replace("D", "#").replace(":", "."))
+		else: # secret absent : la salle et sa porte deviennent du mur plein (pas de sol caché, pas de porte teintée)
+			out.append(String(row).replace("D", "#").replace(":", "#"))
+	if not secret_armed:
+		_door_cells.clear()
 	_vis_grid = out
 	return out
+
+
+## Secret absent : une collision pleine couvre la salle scellée et sa porte (le NavField la lit comme un bloc de mur,
+## aucun spawn ni cible de monstre dans cet espace). Rectangle englobant des cases `:` / `D` de chaque secret.
+func _seal_unarmed_rooms(data: Dictionary, origin: Vector2) -> void:
+	var walls := get_node_or_null(^"Obstacles/Walls") as StaticBody2D
+	if walls == null:
+		return
+	for sc: Dictionary in data.get("secrets", []):
+		var cells: Array = []
+		cells.append_array(sc.get("door_cells", []))
+		cells.append_array(sc.get("room_cells", []))
+		if cells.is_empty():
+			continue
+		var lo := Vector2i(int(cells[0][0]), int(cells[0][1]))
+		var hi := lo
+		for c in cells:
+			lo = Vector2i(mini(lo.x, int(c[0])), mini(lo.y, int(c[1])))
+			hi = Vector2i(maxi(hi.x, int(c[0])), maxi(hi.y, int(c[1])))
+		var cs := OUTLINE_CELL_PX
+		var shape := RectangleShape2D.new()
+		shape.size = Vector2(hi - lo + Vector2i.ONE) * cs
+		var col := CollisionShape2D.new()
+		col.name = "SealedRoom_%s" % String(sc["id"])
+		col.shape = shape
+		col.position = origin + (Vector2(lo) + Vector2(hi - lo + Vector2i.ONE) * 0.5) * cs
+		walls.add_child(col)
 
 
 ## Sprites de mur des cases de la porte scellée `secret_id` (superposition « mur fissuré », SecretRoom).
