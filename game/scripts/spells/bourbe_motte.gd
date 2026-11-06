@@ -361,7 +361,7 @@ func _land_now() -> void:
 	if _sprite != null:
 		_sprite.position.y = 0.0
 	if caster != null and is_instance_valid(caster) and land_spell != null:
-		caster.spawn_zone(land_spell, global_position)
+		caster.spawn_zone(land_spell, global_position, Vector2.ZERO, &"familiar")
 
 
 func _step_fight(delta: float) -> void:
@@ -391,7 +391,7 @@ func _step_fight(delta: float) -> void:
 				fed = false
 				if _ring != null:
 					_ring.modulate = Color.WHITE
-			caster.deal_damage(target, cs, {"source_pos": global_position})
+			caster.deal_damage(target, cs, {"source_pos": global_position, "via": &"familiar"})
 	else: # sans cible : reste au pied de Bourbe
 		var home := bourbe.global_position - global_position
 		var keep := BourbeKit.MOTTE_FOLLOW_U * u
@@ -431,7 +431,7 @@ func _step_home(delta: float, speed: float, ram: bool) -> void:
 			if e.global_position.distance_to(global_position) <= BourbeKit.RECALL_WIDTH_U * u + er:
 				_recall_hits.append(e)
 				caster.player_state().add_counter(BourbeKit.COUNTER_RAPPEL_HITS) # déblocage de l'Éclatement
-				caster.deal_damage(e, recall_spell, {"source_pos": global_position - dir * u})
+				caster.deal_damage(e, recall_spell, {"source_pos": global_position - dir * u, "via": &"familiar"})
 				HitFx.impact(e.global_position, dir, &"physical", 0.8, false, false, owner_slot())
 	if global_position.distance_to(bourbe.global_position) <= BourbeKit.ATTACH_U * u:
 		merge()

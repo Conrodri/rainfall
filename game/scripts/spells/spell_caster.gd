@@ -708,9 +708,10 @@ func _spawn_zone(s: SpellData, pos: Vector2) -> void:
 
 ## Zone du sort à `pos` (rayon × zone_size_add). arc_dir non nul : seulement le secteur de
 ## s.spread_deg autour de cette direction (ARC). Public : explosions et ticks des kits.
-func spawn_zone(s: SpellData, pos: Vector2, arc_dir := Vector2.ZERO) -> Node2D:
+func spawn_zone(s: SpellData, pos: Vector2, arc_dir := Vector2.ZERO, via: StringName = &"") -> Node2D:
 	var z := Node2D.new()
 	z.set_script(ZoneEffect)
+	z.via = via
 	_container.add_child(z)
 	var r: float = s.radius_u * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
 	if arc_dir != Vector2.ZERO:

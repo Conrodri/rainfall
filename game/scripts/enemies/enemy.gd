@@ -136,6 +136,9 @@ var pool_index := -1 ## index dans la liste active du Director (gestion interne)
 ## ticks de brûlure et de poison gardent ce dernier attaquant connu. Events.NO_PLAYER (-1) = inconnu (solo sans
 ## attribution, environnement). Transmis par Events.emit_enemy_killed ; lisible sur un boss à Events.boss_killed.
 var last_hit_by := -1
+## Origine du dernier coup (hit["via"]) : &"zone" (zone persistante), &"familiar" (motte, doublure) ; &"" sinon. Lu par
+## UnlockTracker à la mort (conditions de déblocage des personnages).
+var last_hit_via: StringName = &""
 ## Cible (coop, posée par le Director) : id du joueur poursuivi, image du dernier changement (inertie), temps avant
 ## le prochain choix de cible d'un boss. Ignorés en solo (target_id reste -1).
 var target_id := -1
@@ -229,6 +232,7 @@ func take_damage(amount: float, is_crit: bool = false, element: StringName = &""
 	var by: int = hit.get("by", -1) if not hit.is_empty() else -1
 	if by >= 0:
 		last_hit_by = by
+	last_hit_via = hit.get("via", &"") if not hit.is_empty() else &""
 	if brain != null and brain.has_method(&"damage_taken_mult"): # boss à IA propre (Sonneur P3 : +25 %)
 		amount *= brain.damage_taken_mult()
 	if _dmg_mod != 1.0: # modificateurs externes (lampes de la Mère-Cristal…)
@@ -574,6 +578,7 @@ func _sfx(id: StringName, vol_db := 0.0, important := false) -> void:
 func _common_activate(pos: Vector2) -> void:
 	test_dummy = false
 	last_hit_by = -1
+	last_hit_via = &""
 	target_id = -1
 	target_since = 0
 	retarget_left = 0.0

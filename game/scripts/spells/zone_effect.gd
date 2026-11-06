@@ -29,6 +29,8 @@ var _anim := 0.35
 ## arc_half >= PI = disque complet (novas, zones).
 var arc_dir := Vector2.RIGHT
 var arc_half := PI
+## Origine du coup pour les déblocages (Enemy.last_hit_via) : &"familiar" posé par l'invocateur, sinon &"zone" si la zone dure.
+var via: StringName = &""
 ## Effet rendu (null = repli dessiné).
 var vfx: AnimatedSprite2D = null
 var outline: ZoneOutline = null ## contour de la zone persistante (null : instantanée, secteur, ou sans couche)
@@ -209,7 +211,12 @@ func _apply() -> void:
 	if caster == null or not is_instance_valid(caster):
 		return
 	# nova (instantanée) = coup direct, recul radial depuis le centre ; zone persistante (Cendres) = DoT
-	var hit := {"is_dot": true} if duration > 0.0 or (spell != null and spell.duration > 0.0) else {"source_pos": global_position}
+	var persistent := duration > 0.0 or (spell != null and spell.duration > 0.0)
+	var hit := {"is_dot": true} if persistent else {"source_pos": global_position}
+	if via != &"":
+		hit["via"] = via
+	elif persistent:
+		hit["via"] = &"zone"
 	for e in get_tree().get_nodes_in_group("enemies"):
 		if e is Node2D and e.has_method("take_damage") and e.global_position.distance_to(global_position) <= radius:
 			if arc_half < PI:

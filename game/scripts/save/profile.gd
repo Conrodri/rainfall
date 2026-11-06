@@ -24,12 +24,29 @@ const VERSION := 5
 ## Nombre maximal de runs gardées dans `history` (les plus anciennes sont supprimées).
 const HISTORY_MAX := 200
 const DEFAULT_MODES: Array = [&"facile", &"moyen"]
-const DEFAULT_CHARACTERS: Array = [&"ardent"]
+const DEFAULT_CHARACTERS: Array = [&"ardent", &"tocsin"] ## Tocsin : disponible dès le départ (Design_Personnages §1)
 ## Mode débloqué par une victoire dans un mode donné.
 const UNLOCK_ON_VICTORY := {&"moyen": &"difficile"}
 ## Objectifs cumulés sur toutes les runs : clé du résultat de run -> [seuil, clé débloquée].
 ## Rictus (caché) : 200 monstres tués à moins de 2 u de soi (Player.close_kills).
-const UNLOCK_ON_OBJECTIVE := {"close_kills": [200.0, &"character:rictus"]}
+## Arpenteuse : 300 monstres tués par une zone persistante ; Bourbe : 3 élites tuées par des familiers (UnlockTracker).
+const UNLOCK_ON_OBJECTIVE := {
+	"close_kills": [200.0, &"character:rictus"],
+	"zone_kills": [300.0, &"character:arpenteuse"],
+	"familiar_elite_kills": [3.0, &"character:bourbe"],
+}
+## Objectifs « en une run » (pas de cumul : la mesure de la run doit atteindre le seuil) : mesure -> [seuil, clé débloquée].
+## Averse 60 s dans l'eau, Vigie 100 tués à plus de 8 u, Rainette un étage sans contact subi (caché), Taliant (id morfil) un
+## boss d'étage vaincu en subissant au plus 3 coups, Avare (caché) une run finie avec plus de AVARE_PURSE_P P d'or.
+const UNLOCK_ON_RUN := {
+	"water_s": [60.0, &"character:averse"],
+	"far_kills": [100.0, &"character:vigie"],
+	"clean_floors": [1.0, &"character:rainette"],
+	"light_boss_kills": [1.0, &"character:morfil"],
+	"purse_over": [1.0, &"character:avare"],
+}
+## Avare : P = prix d'un petit coffre (AvareKit.price_unit) ; la run doit finir avec strictement plus que ce nombre de P.
+const AVARE_PURSE_P := 4.0
 const VariantUnlocks := preload("res://scripts/save/variant_unlocks.gd")
 ## TEMPORAIRE (à retirer avant la sortie) : toutes les variantes de sorts débloquées, sans rien écrire au profil.
 ## Variable d'environnement `RAINFALL_UNLOCK_ALL_VARIANTS=1` ou argument utilisateur `-- --unlock-variants`.
@@ -95,6 +112,8 @@ var unlock_all_variants := _detect_unlock_all_variants()
 var characters_override: Variant = null
 
 var _loading := false
+## Mesures de run des conditions de déblocage (null dans un test qui instancie Profile sans l'ajouter à l'arbre).
+var tracker: UnlockTracker = null
 ## Mode test (TestMode) : bac à sable. Pas d'écriture sur disque ; l'état d'avant est rendu à la sortie.
 var sandbox := false
 var _sandbox_snapshot: Dictionary = {}
@@ -103,6 +122,9 @@ var _sandbox_snapshot: Dictionary = {}
 func _ready() -> void:
 	load_profile()
 	Events.boss_spawned.connect(_on_boss_spawned)
+	tracker = UnlockTracker.new()
+	tracker.name = "UnlockTracker"
+	add_child(tracker)
 
 
 func _default_stats() -> Dictionary:
@@ -516,20 +538,16 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 			if not is_unlocked(key):
 				unlocked_modes.append(UNLOCK_ON_VICTORY[mode])
 				out.append(key)
+	var metrics := _run_metrics(r)
 	for obj: String in UNLOCK_ON_OBJECTIVE:
-		if not r.has(obj):
+		if not metrics.has(obj):
 			continue
-		var v := float(objectives.get(obj, 0.0)) + float(r[obj])
+		var v := float(objectives.get(obj, 0.0)) + float(metrics[obj])
 		objectives[obj] = v
-		var rule: Array = UNLOCK_ON_OBJECTIVE[obj]
-		var ukey := StringName(rule[1])
-		if v >= float(rule[0]) and not is_unlocked(ukey):
-			# Annoncé seulement si c'est nouveau pour le joueur (pas un perso déjà ouvert par characters.json).
-			var us := String(ukey)
-			var known := us.begins_with("character:") and is_character_available(StringName(us.substr(10)))
-			unlock(ukey)
-			if not known:
-				out.append(ukey)
+		_check_objective(UNLOCK_ON_OBJECTIVE[obj], v, out)
+	for obj: String in UNLOCK_ON_RUN:
+		if metrics.has(obj):
+			_check_objective(UNLOCK_ON_RUN[obj], float(metrics[obj]), out)
 	# Compteurs génériques de la run (RunState.counters -> clé "counters") : cumulés dans stats[<clé>].
 	var cn: Variant = r.get("counters", {})
 	if cn is Dictionary:
@@ -556,6 +574,35 @@ func add_run_result(r: Dictionary) -> Array[StringName]:
 	_loading = false
 	_touch()
 	return out
+
+
+## Mesures de la run pour les conditions de déblocage : celles de l'UnlockTracker, surchargées par les clés de `r`
+## (tests), plus la bourse d'Avare calculée depuis l'or et le prix d'un petit coffre de l'étage de fin.
+func _run_metrics(r: Dictionary) -> Dictionary:
+	var m := tracker.metrics() if tracker != null and not sandbox else {}
+	for k in r:
+		if k is String and (UNLOCK_ON_OBJECTIVE.has(k) or UNLOCK_ON_RUN.has(k)):
+			m[k] = r[k]
+	if not m.has("purse_over") and r.has("gold") and str(r.get("reason", "")) != "abandon" and not sandbox:
+		var unit := maxf(Balance.chest_price(&"petit", float(r.get("difficulty", 0.0)), int(r.get("stage", 1))), 1.0)
+		m["purse_over"] = 1.0 if float(r["gold"]) > AVARE_PURSE_P * unit else 0.0
+	return m
+
+
+## Applique une règle [seuil, clé] avec la valeur `v` : débloque, annonce si c'est nouveau, mémorise l'avancée (0..1) pour
+## « Prochain objectif » du récap (objectives[<id du personnage>]).
+func _check_objective(rule: Array, v: float, out: Array[StringName]) -> void:
+	var ukey := StringName(rule[1])
+	var us := String(ukey)
+	if us.begins_with("character:"):
+		var cid := us.substr(10)
+		objectives[cid] = maxf(float(objectives.get(cid, 0.0)), clampf(v / float(rule[0]), 0.0, 1.0))
+	if v >= float(rule[0]) and not is_unlocked(ukey):
+		# Annoncé seulement si c'est nouveau pour le joueur (pas un perso déjà ouvert par characters.json).
+		var known := us.begins_with("character:") and is_character_available(StringName(us.substr(10)))
+		unlock(ukey)
+		if not known:
+			out.append(ukey)
 
 
 ## Ajoute la run terminée à `history` (plafonné). Rien en mode test (bac à sable). Appelé avec les déblocages de la run.
