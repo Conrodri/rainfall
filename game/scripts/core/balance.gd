@@ -1005,6 +1005,25 @@ func run_rubies(active_minutes: float, mode: StringName, pillars_done: int, vict
 	return int(floor(clampf(participation, 0.0, 1.0) * base))
 
 
+# --- Forge (docs/Design_Forge.md) : objets exclusifs forgés avec un noyau d'orage ---
+const CRAFT_CATALYST_PER_FLOOR_BOSS := 1 ## noyaux d'orage par boss d'étage vaincu (étages 1-4), à CHAQUE joueur
+const CRAFT_CATALYST_PER_GUARDIAN := 1 ## noyaux d'orage du reliquaire `guardian` d'une zone secrète
+const CRAFT_CATALYST_CAP := 2 ## noyaux portés au plus (non achetables, non copiables)
+const CRAFT_CATALYST_MAX_FLOOR := 4 ## le boss de l'étage 5 (La Source) n'en donne pas
+const CRAFT_MAX_STACKS := 2 ## exemplaires d'un même objet forgé (le 2e est plus faible)
+const CRAFT_SPREAD_MAX_PER_S := 8 ## propagations par seconde de Sève rampante (perf mobile)
+const BARRIER_CAP_PCT := 0.25 ## barrières forgées : total (bouclier du joueur compris) plafonné à 25 % des PV max
+const BURN_MAX_STACKS := 10 ## cumuls de brûlure par monstre (= Enemy.DOT_MAX_STACKS)
+const POISON_MAX_STACKS := 5 ## cumuls de poison transmis par Sève rampante
+## Rang -> ingrédients : deux ingrédients clés portant un tag (qualité minimale `key_a_q` / `key_b_q`), puis des
+## ingrédients quelconques (`fillers` : qualités minimales). Les légendaires ne sont jamais consommés.
+const CRAFT_TIERS := {
+	1: {"key_a_q": &"commun", "key_b_q": &"commun", "fillers": [&"commun"]},
+	2: {"key_a_q": &"peu_commun", "key_b_q": &"commun", "fillers": [&"peu_commun", &"commun"]},
+}
+## Valeur de l'objet forgé par rapport à la somme des ingrédients (doc et tests, aucune formule en jeu).
+const CRAFT_VALUE_RATIO := {1: 0.87, 2: 0.875}
+
 
 # --- Ateliers (docs/Ateliers_Chiffres.md fait foi : Fondoir, Matrice, Alambic, Enclume de bronze) ---
 ## Tous les prix sont des multiples de P = prix d'un petit coffre de l'étage (D figé au début de l'étage) ; voir

@@ -45,6 +45,9 @@ signal run_finished(victory: bool, reason: StringName)
 ## &"alambic" | &"enclume" ; kind : verbe (&"fondre", &"forger", &"distiller") ; given / received : ids d'objets ou
 ## &"scorie_<qualité>" ; gold : or reçu (> 0) ou dépensé (< 0).
 signal station_used(id: StringName, kind: StringName, given: Array, received: Array, gold: float)
+## --- Forge (docs/Design_Forge.md) : un objet exclusif vient d'être forgé par le joueur `player_id` (emplacement 0-3) ;
+## `ingredients` = ids consommés, `stage` = étage de la run. Écouté par le journal de run (événement « craft »).
+signal item_crafted(player_id: int, item_id: StringName, ingredients: Array, stage: int)
 ## --- Présages d'étage (scripts/omens/, docs/Ateliers_Chiffres.md §9) ---
 ## Présage actif changé : choisi à l'arrivée, retiré au téléporteur (id vide) ou imposé par le mode test.
 ## id = &"ciel_clair" quand le joueur refuse tout présage. `stage` : étage concerné.

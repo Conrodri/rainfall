@@ -1,6 +1,6 @@
 class_name TestOverlay
 extends Node
-## Mode test : ouverture du panneau (TAB, bouton Select / Back de la manette, bouton « TEST » à l'écran en tactile),
+## Mode test : ouverture du panneau (F1, Select / Back maintenu 0,5 s à la manette, bouton « TEST » à l'écran en tactile ; TAB et Select court = inventaire),
 ## pause facultative pendant qu'il est ouvert, journal des dégâts reçus, invocation par clic dans l'arène.
 ## Attaché à Main par Main._build quand TestMode.active. À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test.
 
@@ -22,6 +22,12 @@ var hit_max := 0.0
 var hit_total := 0.0
 var hit_count := 0
 
+## Select maintenu SELECT_HOLD_S ouvre le panneau (l'appui court ouvre l'inventaire, PauseMenu). `select_consumed` : le
+## maintien a déjà servi, le relâchement n'ouvre pas l'inventaire.
+const SELECT_HOLD_S := 0.5
+static var select_consumed := false
+var _select_down := false
+var _select_held := 0.0
 var _paused_by_us := false
 var _launcher_layer: CanvasLayer
 var _panel_layer: CanvasLayer
@@ -83,7 +89,7 @@ func _build_launcher() -> void:
 	_launcher_layer.add_child(launcher)
 	hint = Label.new()
 	hint.name = "TestHint"
-	hint.text = "Mode test : TAB ou Select ouvre le panneau"
+	hint.text = "Mode test : F1 (ou Select maintenu) ouvre le panneau, TAB l'inventaire"
 	hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hint.theme = UiTheme.theme()
 	hint.add_theme_font_size_override(&"font_size", 28)
@@ -157,18 +163,30 @@ func sync_pause() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_TAB:
+	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_F1:
 		toggle()
 		get_viewport().set_input_as_handled()
-	elif event is InputEventJoypadButton and event.pressed and (event as InputEventJoypadButton).button_index == PAD_BUTTON:
-		toggle()
-		get_viewport().set_input_as_handled()
+	elif event is InputEventJoypadButton and (event as InputEventJoypadButton).button_index == PAD_BUTTON and (event as InputEventJoypadButton).pressed:
+		# Select : un appui court ouvre l'inventaire au relâchement (PauseMenu) ; maintenu SELECT_HOLD_S = panneau de test.
+		_select_held = 0.0
+		select_consumed = false
+		_select_down = true
+	elif event is InputEventJoypadButton and (event as InputEventJoypadButton).button_index == PAD_BUTTON:
+		_select_down = false
 	elif event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_BACKSPACE and not TestTools.poutchs(get_tree()).is_empty():
 		TestTools.reset_poutchs(get_tree()) # Retour arrière : compteurs des Poutchs à zéro
 		get_viewport().set_input_as_handled()
 	elif is_open() and (event.is_action_pressed(&"pause") or event.is_action_pressed(&"ui_cancel")):
 		close() # Échap / Start / B ferment le panneau avant le menu pause
 		get_viewport().set_input_as_handled()
+
+
+func _process(delta: float) -> void:
+	if _select_down and not select_consumed:
+		_select_held += delta
+		if _select_held >= SELECT_HOLD_S:
+			select_consumed = true
+			toggle()
 
 
 ## Invocation par clic dans l'arène (option « au curseur » du panneau) : seulement hors du cadre du panneau.

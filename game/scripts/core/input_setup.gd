@@ -83,7 +83,7 @@ const REMAP_ACTIONS := [
 	[&"chest_pick_2", "Coffre : objet 2", "coffre", true],
 	[&"chest_reroll_free", "Coffre : relance gratuite", "coffre", true],
 	[&"chest_reroll_gold", "Coffre : relance à l'or", "coffre", true],
-	[&"chest_items", "Coffre : mes objets", "coffre", true],
+	[&"chest_items", "Inventaire et Forge (coffre : mes objets)", "coffre", true],
 ]
 ## Touches jamais assignables : Échap, P et Start (pause / annulation de l'écoute, toujours actifs).
 const RESERVED_KEYS := [KEY_ESCAPE, KEY_P] ## P = pause (liaison fixe)

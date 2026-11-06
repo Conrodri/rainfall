@@ -102,6 +102,7 @@ func _ready() -> void:
 	Events.boss_shield_changed.connect(_on_boss_shield)
 	Events.chest_opened.connect(_on_chest_opened)
 	Events.item_chosen.connect(_on_item_chosen)
+	Events.item_crafted.connect(_on_item_crafted)
 	Events.pillar_state_changed.connect(_on_pillar)
 	Events.epreuve_started.connect(_on_epreuve_started)
 	Events.epreuve_finished.connect(_on_epreuve_finished)
@@ -683,6 +684,22 @@ func _on_item_chosen(item_id: StringName) -> void:
 	if not _pending_chest.is_empty():
 		_pending_chest["taken"] = String(item_id)
 		_pending_chest = {}
+
+
+## Forge : événement « craft » (id forgé, ingrédients consommés, étage, joueur). RunState.add_item (item_added) précède
+## item_crafted : l'objet noté « autre » vient de la Forge. Rien en mode test (recording faux).
+func _on_item_crafted(player_id: int, item_id: StringName, ingredients: Array, stage: int) -> void:
+	if not recording or _floor.is_empty():
+		return
+	var items: Array = _floor["items"]
+	if not items.is_empty() and items.back()["id"] == String(item_id):
+		items.back()["src"] = "forge"
+	if not _floor.has("crafts"):
+		_floor["crafts"] = []
+	var ing: Array = []
+	for i in ingredients:
+		ing.append(String(i))
+	(_floor["crafts"] as Array).append({"t": _t(), "player": player_id, "id": String(item_id), "ingredients": ing, "stage": stage})
 
 
 func _on_pillar(pillar: Node, state: StringName) -> void:

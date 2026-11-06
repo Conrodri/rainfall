@@ -30,6 +30,10 @@ const RARITY_TRI := {
 	&"legendaire": Color("#FF9A1C"),
 }
 
+## Cadre des objets forgés (Forge) : cuivre chaud, le même dans tous les modes daltoniens (la forme porte le sens :
+## mot « Forgé » écrit partout où la rareté l'est).
+const FORGE_COLOR := Color("#D9803A")
+
 const HP_NONE := Color("#52C45A")
 const HP_LOW_NONE := Color("#D9483A")
 const HP_RG := Color("#3FB4E8") ## PV : bleu clair (le vert devient indiscernable du rouge)
@@ -55,6 +59,8 @@ static func _table(m: int) -> Dictionary:
 
 ## Couleur d'une rareté d'objet (id : commun, peu_commun, rare, legendaire) dans le mode `m` (-1 = courant).
 static func rarity(q: Variant, m: int = -1) -> Color:
+	if StringName(str(q)) == &"forge":
+		return FORGE_COLOR # objets forgés : cuivre, distinct des quatre raretés (PLACEHOLDER : cadre à produire par Codex)
 	var tab := _table(mode() if m < 0 else m)
 	return tab.get(StringName(str(q)), Color.WHITE)
 

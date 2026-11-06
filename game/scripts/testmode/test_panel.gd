@@ -649,6 +649,7 @@ func _build_items() -> void:
 	_build_stations()
 	_build_loop()
 	_body.add_child(_heading("Objets"))
+	_build_catalysts()
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override(&"separation", 8)
 	_body.add_child(top)
@@ -672,6 +673,35 @@ func _build_items() -> void:
 			_body.add_child(h)
 		_body.add_child(_item_row(it))
 	_refresh_items()
+
+
+## Noyaux d'orage (catalyseur de la Forge) : +1 / −1 / plein. L'inventaire (TAB) a l'onglet Forge ; les 6 objets forgés
+## sont listés plus bas, rubrique « Forgés ».
+func _build_catalysts() -> void:
+	var row := HBoxContainer.new()
+	row.name = "Catalysts"
+	row.add_theme_constant_override(&"separation", 8)
+	_body.add_child(row)
+	var l := _label("Noyaux d'orage : %d/%d" % [RunState.catalysts, Balance.CRAFT_CATALYST_CAP], FS_BODY, Palette.FORGE_COLOR)
+	l.name = "CatalystCount"
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(l)
+	_item_counts[&"__catalysts"] = l
+	var minus := _btn("−1", func() -> void:
+		TestTools.add_catalysts(-1)
+		_refresh_items(), 110.0)
+	minus.name = "CatalystMinus"
+	row.add_child(minus)
+	var plus := _btn("+1", func() -> void:
+		TestTools.add_catalysts(1)
+		_refresh_items(), 110.0)
+	plus.name = "CatalystPlus"
+	row.add_child(plus)
+	var full := _btn("Plein", func() -> void:
+		TestTools.add_catalysts(Balance.CRAFT_CATALYST_CAP)
+		_refresh_items(), 150.0)
+	full.name = "CatalystFull"
+	row.add_child(full)
 
 
 func _item_row(it: Dictionary) -> Control:
@@ -719,8 +749,11 @@ func _item_row(it: Dictionary) -> Control:
 
 func _refresh_items() -> void:
 	var total := 0
+	var cl: Label = _item_counts.get(&"__catalysts")
+	if is_instance_valid(cl):
+		cl.text = "Noyaux d'orage : %d/%d" % [RunState.catalysts, Balance.CRAFT_CATALYST_CAP]
 	for id in _item_counts:
-		if id == &"__total":
+		if id == &"__total" or id == &"__catalysts":
 			continue
 		var n := RunState.stacks(id)
 		total += n

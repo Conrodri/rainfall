@@ -72,6 +72,8 @@ static func compute(items: Dictionary) -> Dictionary:
 		var it := ItemDB.get_item(raw_id)
 		if it.is_empty():
 			continue
+		if bool(it.get("craft_only", false)):
+			n = mini(n, Balance.CRAFT_MAX_STACKS) # objet forgé : au plus 2 exemplaires comptent
 		var st := str(it.get("stack", "L"))
 		var overrides: Dictionary = it.get("stat_stack", {})
 		var stats: Dictionary = it.get("stats", {})

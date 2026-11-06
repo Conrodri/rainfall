@@ -18,7 +18,7 @@ const ITEM_COLS_MAX := 8
 const ITEM_COLS_MIN := 3
 const DETAIL_H := 150.0 ## bandeau de détail sous la grille (nom, rareté, effet)
 const QUALITY_ORDER: Array[StringName] = [&"legendaire", &"rare", &"peu_commun", &"commun"]
-const QUALITY_WORDS := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire"}
+const QUALITY_WORDS := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire", &"forge": "Forgé"}
 const PAD_LOST_TEXT := "Manette déconnectée"
 const RELEASE_ACTIONS := ["move_left", "move_right", "move_up", "move_down", "spell_2", "spell_3", "spell_4"]
 
@@ -52,6 +52,13 @@ var _item_cells: Array[Button] = []
 var _item_texts: Array = [] ## « nom ×N | effet » dans l'ordre de RunState.items (tests)
 var _detail_name: Label
 var _detail_effect: Label
+var _tab_row: HBoxContainer
+var _tab_items: Button
+var _tab_forge: Button
+var _forge_panel: ForgePanel ## onglet Forge (scripts/ui/forge_panel.gd)
+var items_tab: StringName = &"items" ## onglet affiché de l'écran Objets : items | forge
+var inventory_mode := false ## écran ouvert par open_inventory (TAB, Select, pastille) : Retour / TAB le referme d'un coup
+var _inv_paused := false ## cet écran a mis le jeu en pause (solo) : il la lève à la fermeture
 var _resume_button: Button ## pleine largeur au-dessus de la grille
 var _abandon_dialog: ConfirmDialog
 var _current: Control ## panneau affiché (null pendant le compte à rebours)
@@ -117,7 +124,8 @@ func _build() -> void:
 	_panel_main.add_child(_grid)
 	_items_button = _add_button(_grid, "Objets", func() -> void:
 		_fill_items()
-		_show_only(_panel_items))
+		_show_only(_panel_items)
+		set_items_tab(&"items"))
 	_add_button(_grid, "Réglages", func() -> void: _show_only(_panel_settings))
 	_add_button(_grid, "Commandes", func() -> void:
 		_controls_from = _panel_main
@@ -148,6 +156,14 @@ func _build() -> void:
 	_panel_controls.back_requested.connect(func() -> void: _show_only(_controls_from if _controls_from != null else _panel_main))
 
 	_panel_items = _make_panel(holder, "OBJETS")
+	# Onglets Objets / Forge (inventaire, docs/Design_Forge.md) ; LB / RB à la manette
+	_tab_row = HBoxContainer.new()
+	_tab_row.name = "TabRow"
+	_tab_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_tab_row.add_theme_constant_override("separation", 12)
+	_panel_items.add_child(_tab_row)
+	_tab_items = _add_tab("Objets", &"items")
+	_tab_forge = _add_tab("Forge", &"forge")
 	_items_scroll = ScrollContainer.new()
 	_items_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_items_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -166,6 +182,9 @@ func _build() -> void:
 	_detail_effect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_effect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_panel_items.add_child(_detail_effect)
+	_forge_panel = ForgePanel.new()
+	_forge_panel.visible = false
+	_panel_items.add_child(_forge_panel)
 	_items_back = _add_button(_panel_items, "Retour", func() -> void:
 		if items_only:
 			close_items()
@@ -515,8 +534,13 @@ func _apply_layout() -> void:
 	var sz: Vector2 = L.size
 	# Objets : titre + grille (défilante) + détail (nom, effet) + Retour, 4 écarts
 	var detail_h := DETAIL_H * s
-	var scroll_h := maxf(sz.y - 2.0 * L.pad - 76.0 * s - detail_h - btn.y - 4.0 * L.sep, 120.0 * s)
+	var tab_h := 72.0 * s
+	var scroll_h := maxf(sz.y - 2.0 * L.pad - 76.0 * s - detail_h - btn.y - tab_h - 5.0 * L.sep, 120.0 * s)
 	_items_scroll.custom_minimum_size = Vector2(sz.x - 2.0 * L.pad, scroll_h)
+	for t in [_tab_items, _tab_forge]:
+		(t as Button).custom_minimum_size = Vector2(minf(260.0 * s, (sz.x - 2.0 * L.pad - 12.0) * 0.5), tab_h)
+		_fit_font(t as Button, int(38 * s), (t as Button).custom_minimum_size.x)
+	_forge_panel.set_ui_scale(s, sz.x - 2.0 * L.pad, scroll_h + detail_h + L.sep)
 	_detail_name.add_theme_font_size_override("font_size", int(32 * s))
 	_detail_effect.add_theme_font_size_override("font_size", int(26 * s))
 	_detail_name.custom_minimum_size = Vector2(sz.x - 2.0 * L.pad, 44.0 * s)
@@ -565,6 +589,7 @@ func open_items() -> void:
 		_apply_layout()
 		_fill_items()
 		_show_only(_panel_items)
+		set_items_tab(&"items")
 		return
 	if not is_open:
 		open()
@@ -572,6 +597,37 @@ func open_items() -> void:
 		return
 	_fill_items()
 	_show_only(_panel_items)
+	set_items_tab(&"items")
+
+
+## Inventaire (TAB, Select / Retour, pastille « +N » ou « Forge » de la barre d'objets) : écran Objets + onglet Forge.
+## Solo : met le jeu en pause (temps actif figé), Retour / TAB / Échap referment et rendent la main tout de suite.
+## Coop : JAMAIS de pause globale (ChestSession.is_blocking), l'écran est un overlay et la partie continue.
+## Sans effet si un autre écran tient déjà la pause (coffre, atelier, menu pause) ou si l'inventaire est déjà ouvert.
+func open_inventory(tab: StringName = &"items") -> void:
+	if is_open:
+		if inventory_mode and not counting_down:
+			set_items_tab(tab)
+		return
+	if get_tree().paused:
+		return
+	inventory_mode = true
+	items_only = true
+	is_open = true
+	counting_down = false
+	for a in RELEASE_ACTIONS:
+		if InputMap.has_action(a):
+			Input.action_release(a)
+	_inv_paused = ChestSession.is_blocking()
+	if _inv_paused:
+		get_tree().paused = true
+	_count_label.visible = false
+	_root.visible = true
+	_apply_layout()
+	_fill_items()
+	items_tab = tab
+	_show_only(_panel_items)
+	set_items_tab(tab)
 
 
 ## Ferme la consultation « Objets seuls » ouverte par open_items() au-dessus d'un écran en pause.
@@ -582,7 +638,46 @@ func close_items() -> void:
 	is_open = false
 	_current = null
 	_root.visible = false
+	if _forge_panel != null and is_instance_valid(_forge_panel.picker):
+		_forge_panel.picker.cancel()
+	if inventory_mode:
+		inventory_mode = false
+		if _inv_paused:
+			_inv_paused = false
+			get_tree().paused = false
 	items_closed.emit()
+
+
+## Onglet de l'écran Objets : &"items" (grille) ou &"forge" (recettes). Sans effet hors de l'écran Objets.
+func set_items_tab(tab: StringName) -> void:
+	items_tab = tab if tab == &"forge" else &"items"
+	var forge := items_tab == &"forge"
+	_items_scroll.visible = not forge
+	_detail_name.visible = not forge
+	_detail_effect.visible = not forge
+	_forge_panel.visible = forge
+	for pair in [[_tab_items, &"items"], [_tab_forge, &"forge"]]:
+		var b: Button = pair[0]
+		var on: bool = pair[1] == items_tab
+		b.modulate = Color.WHITE if on else Color(1, 1, 1, 0.7)
+		b.add_theme_color_override(&"font_color", UiTheme.COL_FOCUS if on else UiTheme.COL_TEXT)
+	if forge:
+		_forge_panel.refresh()
+	if _current == _panel_items and Platform.input_mode != Platform.InputMode.TOUCH:
+		var first: Control = _forge_panel.first_button() if forge else (_item_cells[0] if not _item_cells.is_empty() else _items_back)
+		(first if first != null else _items_back).grab_focus.call_deferred()
+
+
+func _add_tab(text: String, tab: StringName) -> Button:
+	var b := Button.new()
+	b.name = "Tab_%s" % tab
+	b.text = text
+	b.custom_minimum_size = Vector2(260, 72)
+	b.focus_mode = Control.FOCUS_ALL
+	_opaque_style(b)
+	b.pressed.connect(set_items_tab.bind(tab))
+	_tab_row.add_child(b)
+	return b
 
 
 func _on_resume() -> void:
@@ -670,13 +765,22 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _handle_inventory_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	var back := event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel")
 	if not back or event.is_echo():
 		return
 	if _abandon_dialog != null:
 		return # le dialogue gère Échap / B
 	if items_only:
+		if inventory_mode and _forge_panel.visible and _forge_panel.back():
+			get_viewport().set_input_as_handled() # confirmation de forge -> liste des recettes
+			return
 		close_items() # consultation par-dessus le coffre : on revient au coffre
+		get_viewport().set_input_as_handled()
+		return
+	if _current == _panel_items and _forge_panel.visible and _forge_panel.back():
 		get_viewport().set_input_as_handled()
 		return
 	if is_open and not counting_down and _current != _panel_main and _current != null:
@@ -689,6 +793,38 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif not counting_down:
 			_on_resume()
 		get_viewport().set_input_as_handled()
+
+
+## Entrées de l'inventaire : TAB / Select ouvrent (action `chest_items`, déjà liée à Tab et Back ; l'écran de coffre la lit
+## avant nous quand il est ouvert), LB / RB changent d'onglet. En mode test, Select appartient d'abord au panneau de test
+## (maintenu 0,5 s) : l'inventaire s'ouvre alors au RELÂCHEMENT d'un appui court. Retourne vrai si l'événement est consommé.
+func _handle_inventory_input(event: InputEvent) -> bool:
+	if event.is_echo():
+		return false
+	var pad_back := event is InputEventJoypadButton and (event as InputEventJoypadButton).button_index == JOY_BUTTON_BACK
+	var toggle := false
+	if TestMode.active and pad_back:
+		toggle = not (event as InputEventJoypadButton).pressed and not TestOverlay.select_consumed
+	else:
+		toggle = event.is_action_pressed(&"chest_items")
+	if toggle:
+		if inventory_mode and is_open:
+			if not (_forge_panel.visible and is_instance_valid(_forge_panel.picker)):
+				close_items()
+			return true
+		if not is_open and not get_tree().paused and not counting_down:
+			open_inventory(&"items")
+			return true
+		return false
+	if inventory_mode and is_open and _current == _panel_items and event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+		match (event as InputEventJoypadButton).button_index:
+			JOY_BUTTON_LEFT_SHOULDER:
+				set_items_tab(&"items")
+				return true
+			JOY_BUTTON_RIGHT_SHOULDER:
+				set_items_tab(&"forge")
+				return true
+	return false
 
 
 ## Manette débranchée en jouant au pad (audit E-11, lot A11y-L6) : pause (compte à rebours annulé) avec

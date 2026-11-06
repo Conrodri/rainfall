@@ -17,6 +17,7 @@ signal item_added(item_id: StringName, stacks: int)
 signal items_changed
 signal gold_spent(amount: float)
 signal scrap_changed
+signal catalysts_changed(count: int)
 
 ## Emplacement du joueur dans la partie (0 = joueur 1, 1-3 = joueurs 2 à 4). Clé du registre Players.
 var slot := 0
@@ -33,6 +34,8 @@ var counters := {}
 var compass := {"tag": "", "charges": 0}
 ## Scories des ateliers : qualité -> nombre, au plus Balance.SCRAP_CAP au total.
 var scrap := {}
+## Noyaux d'orage portés (catalyseur de la Forge, docs/Design_Forge.md) : au plus Balance.CRAFT_CATALYST_CAP, par joueur.
+var catalysts := 0
 ## Mort en coop : spectateur jusqu'au début de l'étage suivant (Players.set_spectating / resurrect_all).
 var spectating := false
 ## Dégâts infligés pendant la run (participation aux rubis en multi, Balance.ruby_participation).
@@ -52,8 +55,28 @@ func reset(start_level: int = 1) -> void:
 	counters = {}
 	compass = {"tag": "", "charges": 0}
 	scrap = {}
+	catalysts = 0
 	spectating = false
 	damage_dealt = 0.0
+
+
+# --- Noyaux d'orage (Forge) -------------------------------------------------------------
+## +n noyaux, plafonnés à Balance.CRAFT_CATALYST_CAP. Retourne le nombre réellement ajouté.
+func add_catalyst(n: int = 1) -> int:
+	var before := catalysts
+	catalysts = clampi(catalysts + n, 0, Balance.CRAFT_CATALYST_CAP)
+	if catalysts != before:
+		catalysts_changed.emit(catalysts)
+	return catalysts - before
+
+
+## Dépense `n` noyaux ; faux s'il n'y en a pas assez (rien n'est débité).
+func spend_catalyst(n: int = 1) -> bool:
+	if catalysts < n:
+		return false
+	catalysts -= n
+	catalysts_changed.emit(catalysts)
+	return true
 
 
 # --- Or ---------------------------------------------------------------------------------
@@ -189,7 +212,7 @@ func to_dict() -> Dictionary:
 	return {
 		"gold": gold, "xp": xp, "level": level, "items": it, "character": String(character),
 		"loadout": lo, "counters": counters.duplicate(), "compass": compass.duplicate(), "scrap": sc,
-		"spectating": spectating, "damage_dealt": damage_dealt,
+		"spectating": spectating, "damage_dealt": damage_dealt, "catalysts": catalysts,
 	}
 
 
@@ -220,3 +243,4 @@ func from_dict(d: Dictionary, migrate: Callable = Callable()) -> void:
 				scrap[StringName(q)] = int(sd[q])
 	spectating = bool(d.get("spectating", false))
 	damage_dealt = float(d.get("damage_dealt", 0.0))
+	catalysts = clampi(int(d.get("catalysts", 0)), 0, Balance.CRAFT_CATALYST_CAP)

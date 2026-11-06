@@ -8,8 +8,8 @@ const MAX_LEVEL := 100 ## niveau maximal proposé (les dégâts de base montent 
 const SPAWN_RING_U := Vector2(5.0, 8.0) ## distance d'apparition autour du joueur (u)
 const FINAL_BOSS_ID := &"rain_sower"
 const QUALITY_ORDER: Array[StringName] = [&"legendaire", &"rare", &"peu_commun", &"commun"]
-const QUALITY_NAMES := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire"}
-const QUALITY_COLORS := {&"commun": Color("DADDE2"), &"peu_commun": Color("7CD67C"), &"rare": Color("E36A5A"), &"legendaire": Color("F2B84B")}
+const QUALITY_NAMES := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire", &"forge": "Forgés (Forge)"}
+const QUALITY_COLORS := {&"commun": Color("DADDE2"), &"peu_commun": Color("7CD67C"), &"rare": Color("E36A5A"), &"legendaire": Color("F2B84B"), &"forge": Color("D9803A")}
 const TIER_NAMES := {1: "Nuée", 2: "Tireur", 3: "Brute"}
 
 static var _rng := RandomNumberGenerator.new()
@@ -339,7 +339,19 @@ static func item_catalog() -> Array[Dictionary]:
 		for id in ItemDB.ids_of_quality(q):
 			var it := ItemDB.get_item(id)
 			out.append({"id": StringName(id), "name": str(it.get("name", id)), "quality": q, "effect": str(it.get("effect_text", ""))})
+	for id in ItemDB.craft_ids(): # objets forgés (Forge) : hors tirages, ajoutés ici à la main
+		var it := ItemDB.get_item(id)
+		out.append({"id": StringName(id), "name": str(it.get("name", id)), "quality": &"forge", "effect": str(it.get("effect_text", ""))})
 	return out
+
+
+## Noyaux d'orage (Forge) : +n (négatif = retire), plafonné à Balance.CRAFT_CATALYST_CAP, pour les joueurs ciblés.
+static func add_catalysts(n: int) -> void:
+	for st in target_states():
+		if n >= 0:
+			st.add_catalyst(n)
+		else:
+			st.spend_catalyst(mini(-n, st.catalysts))
 
 
 ## +1 exemplaire (chemin officiel : PlayerState.add_item puis recalcul des stats et des effets du joueur).

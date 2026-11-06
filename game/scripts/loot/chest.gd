@@ -247,6 +247,9 @@ func try_open(who: Node = null) -> bool:
 		refused.emit(self)
 		return false
 	ChestSession.pending_state = _beneficiary_state(actor) # lu par ChestSession._init (ChestUI / ShowcaseUI)
+	if kind == &"guardian" and has_meta(&"secret_relic"):
+		# Reliquaire d'une zone secrète : +1 noyau d'orage pour son bénéficiaire (Forge, docs/Design_Forge.md)
+		_beneficiary_state(actor).add_catalyst(Balance.CRAFT_CATALYST_PER_GUARDIAN)
 	_opening = true
 	if _light != null:
 		_light.release()

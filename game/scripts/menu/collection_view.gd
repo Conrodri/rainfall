@@ -24,7 +24,7 @@ const ITEM_QUALITY_COLORS := {
 	&"commun": Color(0.78, 0.78, 0.8), &"peu_commun": Color(0.35, 0.82, 0.4),
 	&"rare": Color(0.33, 0.6, 1.0), &"legendaire": Color(1.0, 0.65, 0.12),
 }
-const ITEM_QUALITY_NAMES := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire"}
+const ITEM_QUALITY_NAMES := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire", &"forge": "Forgé"}
 const MODES: Array[StringName] = [&"facile", &"moyen", &"difficile"]
 const MODE_NAMES := {&"facile": "Facile", &"moyen": "Moyen", &"difficile": "Difficile"}
 

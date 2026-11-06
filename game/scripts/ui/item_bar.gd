@@ -140,6 +140,9 @@ class ItemSlot extends Control:
 
 
 var _state: PlayerState ## PlayerState du joueur local dont la barre montre les objets
+## Pastille « Forge possible » : une recette est réalisable ET un noyau d'orage est porté (docs/Design_Forge.md).
+var forge_ready := false
+var _forge_dot: Panel = null
 
 
 func _ready() -> void:
@@ -164,6 +167,7 @@ func _bind_state() -> void:
 	_state = st
 	_state.item_added.connect(_on_item_added)
 	_state.items_changed.connect(refresh) # retrait d'objets (mode test)
+	_state.catalysts_changed.connect(_on_catalysts_changed)
 	if is_node_ready():
 		refresh()
 
@@ -175,6 +179,8 @@ func _unbind_state() -> void:
 		_state.item_added.disconnect(_on_item_added)
 	if _state.items_changed.is_connected(refresh):
 		_state.items_changed.disconnect(refresh)
+	if _state.catalysts_changed.is_connected(_on_catalysts_changed):
+		_state.catalysts_changed.disconnect(_on_catalysts_changed)
 	_state = null
 
 
@@ -241,6 +247,10 @@ func _on_item_added(item_id: StringName, stacks: int) -> void:
 	relayout()
 
 
+func _on_catalysts_changed(_n: int) -> void:
+	relayout()
+
+
 func _add_or_update(id: StringName, n: int) -> void:
 	var s: ItemSlot = _slots.get(id)
 	if s == null:
@@ -273,6 +283,7 @@ func relayout() -> void:
 	# grille à retour à la ligne dans une zone bornée ; au-delà de max_rows lignes, la dernière case devient « +N »
 	var shown := n
 	overflow_count = 0
+	forge_ready = Forge.forge_ready(_state if _state != null else LocalState.state())
 	if n > cols * max_rows and cols * max_rows >= 2:
 		shown = cols * max_rows - 1
 		overflow_count = n - shown
@@ -281,7 +292,7 @@ func relayout() -> void:
 		sl.apply_size(slot_px, ui_scale)
 		sl.visible = i < shown
 		sl.position = Vector2((i % cols) * step, (i / cols) * step)
-	var cells := shown + (1 if overflow_count > 0 else 0)
+	var cells := shown + (1 if (overflow_count > 0 or forge_ready) else 0)
 	var rows := int(ceil(float(cells) / float(cols)))
 	var content := Vector2(mini(cells, cols) * step - gap, rows * step - gap) if n > 0 else Vector2.ZERO
 	_layout_more(shown, step, cols)
@@ -331,17 +342,42 @@ func _build_more() -> void:
 func _layout_more(shown: int, step: float, cols: int) -> void:
 	if _more == null:
 		return
-	_more.visible = overflow_count > 0
-	if overflow_count <= 0:
+	_more.visible = overflow_count > 0 or forge_ready
+	_set_forge_dot(forge_ready)
+	if not _more.visible:
 		return
-	_more.text = "+%d" % overflow_count
+	_more.text = "+%d" % overflow_count if overflow_count > 0 else "Forge"
 	_more.size = Vector2(slot_px, slot_px)
 	_more.custom_minimum_size = _more.size
 	_more.position = Vector2((shown % cols) * step, (shown / cols) * step)
-	_more.add_theme_font_size_override("font_size", maxi(int(30.0 * ui_scale), HudMetrics.floor_px() + 4)) # plancher 18 PC / 26 mobile
+	var fs := maxi(int(30.0 * ui_scale), HudMetrics.floor_px() + 4) # plancher 18 PC / 26 mobile
+	if overflow_count <= 0:
+		fs = maxi(int(fs * 0.6), HudMetrics.floor_px()) # « Forge » tient dans la case
+	_more.add_theme_font_size_override("font_size", fs)
+	if _forge_dot != null:
+		var d := maxf(slot_px * 0.28, 12.0)
+		_forge_dot.size = Vector2(d, d)
+		_forge_dot.position = Vector2(slot_px - d * 0.8, -d * 0.2)
 
 
-## Ouvre le menu pause (onglet Items) ; appel tolérant : l'ouverture directe de l'onglet dépend du menu.
+## Pastille cuivrée sur le bouton : « Forge possible » (forme + mot « Forge » écrit : la couleur ne porte pas seule le sens).
+func _set_forge_dot(on: bool) -> void:
+	if _forge_dot == null:
+		_forge_dot = Panel.new()
+		_forge_dot.name = "ForgeDot"
+		_forge_dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Palette.FORGE_COLOR
+		sb.border_color = Color(1, 1, 1, 0.9)
+		sb.set_border_width_all(2)
+		sb.set_corner_radius_all(32)
+		_forge_dot.add_theme_stylebox_override("panel", sb)
+		_more.add_child(_forge_dot)
+		_more.clip_contents = false
+	_forge_dot.visible = on
+
+
+## Ouvre l'inventaire (écran Objets + onglet Forge) ; l'onglet Forge si une recette est réalisable.
 func _on_more_pressed() -> void:
 	overflow_pressed.emit()
 	var n: Node = self
@@ -351,7 +387,9 @@ func _on_more_pressed() -> void:
 		return
 	var pm: Variant = (n as Hud).pause_menu
 	if pm != null and is_instance_valid(pm):
-		if pm.has_method("open_items"):
+		if pm.has_method("open_inventory"):
+			pm.call("open_inventory", &"forge" if (forge_ready and overflow_count <= 0) else &"items")
+		elif pm.has_method("open_items"):
 			pm.call("open_items")
 		elif pm.has_method("open"):
 			pm.call("open")

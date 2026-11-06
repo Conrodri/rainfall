@@ -448,6 +448,20 @@ func is_poisoned() -> bool:
 	return not _poison_left.is_empty() or _poison_last_tick
 
 
+## Cumuls de poison actifs : [{left: s restantes, dps}], les plus longs d'abord, au plus `max_n` (Sève rampante).
+func poison_stacks(max_n: int = 99) -> Array:
+	var order: Array = []
+	for i in _poison_left.size():
+		order.append(i)
+	order.sort_custom(func(a: int, b: int) -> bool: return _poison_left[a] > _poison_left[b])
+	var out: Array = []
+	for i in order:
+		if out.size() >= max_n:
+			break
+		out.append({"left": _poison_left[i], "dps": _poison_dps[i]})
+	return out
+
+
 # --- Pool (appelé par le Director)
 func activate(p_tier: int, pos: Vector2, D: float, elite: bool, p_affixes: Array[StringName], p_variant: int = VARIANT_SHOOTER) -> void:
 	tier = p_tier
