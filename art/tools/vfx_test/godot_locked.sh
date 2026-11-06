@@ -12,4 +12,4 @@ until mkdir "$LOCK" 2>/dev/null; do
   sleep 2
 done
 trap 'rmdir "$LOCK" 2>/dev/null' EXIT INT TERM
-cd /c/Users/const/Documents/Rainfall/game && "$GODOT" --path . "$@"
+cd "$(dirname "$0")/../../../game" && "$GODOT" --path . "$@"

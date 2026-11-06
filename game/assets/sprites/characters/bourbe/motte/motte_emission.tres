@@ -1,10 +1,13 @@
 [gd_resource type="SpriteFrames" load_steps=377 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/idle_e.png" id="1"]
-
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/run_e.png" id="3"]
-
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/die_e.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="a1"]
 atlas = ExtResource("1")
@@ -518,7 +521,6 @@ region = Rect2(384, 1344, 192, 192)
 atlas = ExtResource("5")
 region = Rect2(576, 1344, 192, 192)
 
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="bo2_attack_1"]
 atlas = ExtResource("bo2_attack")
@@ -712,7 +714,6 @@ region = Rect2(768, 1344, 192, 192)
 atlas = ExtResource("bo2_attack")
 region = Rect2(960, 1344, 192, 192)
 
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="bo2_attack_1"]
 atlas = ExtResource("bo2_attack")
@@ -906,7 +907,6 @@ region = Rect2(768, 1344, 192, 192)
 atlas = ExtResource("bo2_attack")
 region = Rect2(960, 1344, 192, 192)
 
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="bo2_attack_1"]
 atlas = ExtResource("bo2_attack")
@@ -1100,7 +1100,6 @@ region = Rect2(768, 1344, 192, 192)
 atlas = ExtResource("bo2_attack")
 region = Rect2(960, 1344, 192, 192)
 
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="bo2_attack_1"]
 atlas = ExtResource("bo2_attack")
@@ -1294,7 +1293,6 @@ region = Rect2(768, 1344, 192, 192)
 atlas = ExtResource("bo2_attack")
 region = Rect2(960, 1344, 192, 192)
 
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/bourbe/motte/attack_e.png" id="bo2_attack"]
 
 [sub_resource type="AtlasTexture" id="bo2_attack_1"]
 atlas = ExtResource("bo2_attack")

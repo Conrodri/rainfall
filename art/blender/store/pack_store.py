@@ -6,7 +6,8 @@ WORK=Path(__file__).parent
 OUT=ROOT/'game/assets/store'
 SIZES={'icon_512':(512,512),'icon_192':(192,192),'icon_256':(256,256),'icon_foreground_432':(432,432),'icon_background_432':(432,432),'feature_1024x500':(1024,500),'logo_title':(1600,480)}
 ICON_V2='--icon-v2' in sys.argv
-if ICON_V2:SIZES={k:v for k,v in SIZES.items() if k.startswith('icon_')}
+ICON_V3='--icon-v3' in sys.argv
+if ICON_V2 or ICON_V3:SIZES={k:v for k,v in SIZES.items() if k.startswith('icon_')}
 report={}
 for name,size in SIZES.items():
     src=WORK/('icon_master.png' if name in ('icon_512','icon_192','icon_256') else name+'.png')
@@ -27,24 +28,35 @@ source=ROOT/'art/blender/bosses/rain_sower_iso.blend'
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 assert sha(source)==sha(WORK/'rain_sower_store.blend'),'Source model modified'
 report['source_sha256']=sha(source)
-(WORK/'verification.json').write_text(json.dumps(report,indent=2))
-if ICON_V2:
+(WORK/('verification_v3.json' if ICON_V3 else 'verification.json')).write_text(json.dumps(report,indent=2))
+if ICON_V2 or ICON_V3:
     import numpy as np
     baseline=json.loads((WORK/'icon_v2_baseline.json').read_text())
     for p,digest in baseline.items():assert sha(ROOT/p)==digest,('protected file changed',p)
-    board=Image.new('RGB',(1060,1060),(12,17,23))
-    for col,im in enumerate((Image.open(WORK/'icon_v1_backup.png'),Image.open(OUT/'icon_512.png'))):
+    board=Image.new('RGB',(1024,1360) if ICON_V3 else (1060,1060),(12,17,23))
+    images=(Image.open(WORK/'icon_v1_backup.png'),Image.open(WORK/'icon_v2_backup.png'),Image.open(OUT/'icon_512.png')) if ICON_V3 else (Image.open(WORK/'icon_v1_backup.png'),Image.open(OUT/'icon_512.png'))
+    for col,im in enumerate(images):
+        ox=(col%2)*512 if ICON_V3 else 8+col*532
+        oy=(col//2)*680 if ICON_V3 else 8
         for size,y in ((512,8),(96,532),(48,640)):
             tile=im.convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
-            board.paste(tile,(8+col*532+(512-size)//2,y),tile)
+            board.paste(tile,(ox+(512-size)//2,oy+(0 if size==512 else 520 if size==96 else 618)),tile)
     fg=Image.open(OUT/'icon_foreground_432.png').convert('RGBA')
     bg=Image.open(OUT/'icon_background_432.png').convert('RGBA')
-    combined=Image.alpha_composite(bg,fg).resize((320,320),Image.Resampling.LANCZOS)
-    yy,xx=np.mgrid[:320,:320];x=(xx-159.5)/159.5;y=(yy-159.5)/159.5
+    preview_size=240 if ICON_V3 else 320
+    combined=Image.alpha_composite(bg,fg).resize((preview_size,preview_size),Image.Resampling.LANCZOS)
+    yy,xx=np.mgrid[:preview_size,:preview_size];half=(preview_size-1)/2;x=(xx-half)/half;y=(yy-half)/half
     for col,mask in enumerate((x*x+y*y<=1,abs(x)**4+abs(y)**4<=1)):
         preview=combined.copy();preview.putalpha(Image.fromarray((mask*255).astype('uint8')))
-        board.paste(preview,(104+col*532,718),preview)
-    board.save(ROOT/'art/tools/night/_icon_v2_contact.png',optimize=True)
+        board.paste(preview,(520+col*248,720) if ICON_V3 else (104+col*532,718),preview)
+    if ICON_V3:
+        a=np.asarray(Image.open(OUT/'icon_512.png').convert('RGB'))/255
+        l=a@np.array([.2126,.7152,.0722]);assert np.percentile(l,99)-np.percentile(l,5)>.3,'contrast'
+        assert l[195:300,210:300].max()>.8,'heart brightness'
+        report['luminance_percentiles']=[float(x) for x in np.percentile(l,[5,50,99])]
+        report['safe_circle_radius']=radius
+        (WORK/'verification_v3.json').write_text(json.dumps(report,indent=2))
+    board.save(ROOT/('art/tools/night/_icon_v3_contact.png' if ICON_V3 else 'art/tools/night/_icon_v2_contact.png'),optimize=True)
     print('PASS 5 PNG; sizes; alpha; safe circle <=132 px; protected SHA256; no normals; contact')
     print('FOREGROUND',report['icon_foreground_432']['bbox'],'BYTES',sum(v['bytes'] for v in report.values() if isinstance(v,dict)))
     sys.exit(0)
