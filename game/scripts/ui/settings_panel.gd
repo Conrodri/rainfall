@@ -128,6 +128,8 @@ var _run_log: Button ## « Journal de run » (RunLog.enabled, journal local des 
 var _replay_button: Button ## « Revoir le didacticiel » (OnboardingHints.request_replay)
 var _export_button: Button ## « Exporter les journaux » (RunLogExport)
 var _export_label: Label
+var _advanced_button: Button ## « Avancé » : déplie / replie la ligne d'export des journaux (replié à l'ouverture)
+var _export_row: Control
 var _dialog: ConfirmDialog
 var _reset_button: Button
 var _controls_button: Button
@@ -240,12 +242,18 @@ func _build() -> void:
 	_reticle_row = _rows[_rows.size() - 1]
 	# Journal de run local (équilibrage par les données) : rien ne quitte l'appareil sans l'export volontaire.
 	_run_log = _add_toggle("Journal de run", func(on: bool) -> void: RunLog.set_enabled(on))
+	# Section repliée « Avancé » (06/11/2026) : l'export reste atteignable au clavier, à la souris, à la manette et au tactile.
+	_advanced_button = MenuBtn.new()
+	_advanced_button.custom_minimum_size = Vector2(0, ROW_H)
+	_advanced_button.pressed.connect(func() -> void: set_advanced_open(not _export_row.visible))
+	_add_row("Avancé", _advanced_button)
 	_export_button = MenuBtn.new()
 	_export_button.text = "Exporter les journaux"
 	_export_button.custom_minimum_size = Vector2(0, ROW_H)
 	_export_button.pressed.connect(_export_logs)
-	_add_row("Parties enregistrées", _export_button)
+	_export_row = _add_row("Parties enregistrées", _export_button)
 	_export_label = _labels[_labels.size() - 1]
+	set_advanced_open(false)
 	_replay_button = MenuBtn.new()
 	_replay_button.text = "Revoir le didacticiel"
 	_replay_button.custom_minimum_size = Vector2(0, ROW_H)
@@ -475,6 +483,14 @@ func _link_focus() -> void:
 	for b in [_controls_button, _reset_button, _back_button]:
 		b.focus_neighbor_top = b.get_path_to(last)
 		b.focus_neighbor_bottom = b.get_path_to(tb)
+
+
+## Déplie / replie la section « Avancé » (export des journaux) ; les voisins de focus suivent.
+func set_advanced_open(open: bool) -> void:
+	_export_row.visible = open
+	_advanced_button.text = "Masquer ▴" if open else "Afficher ▾"
+	if _tab_buttons.size() > 0 and _controls_button != null:
+		_link_focus()
 
 
 ## Lignes qui dépendent du matériel : vibrations (mobile ou manette), zone morte (manette ou PC),

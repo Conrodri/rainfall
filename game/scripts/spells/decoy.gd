@@ -251,7 +251,7 @@ func _fly(delta: float) -> void:
 			continue
 		_flight_hits.append(e)
 		if caster != null and flight_spell != null:
-			caster.deal_damage(e, flight_spell, {"source_pos": global_position - facing * u})
+			caster.deal_damage(e, flight_spell, {"source_pos": global_position - facing * u, "via": &"familiar"})
 		if flown_px >= FLIGHT_ARM_U * u or e.is_in_group(&"bosses"):
 			explode(explode_spell)
 			return
@@ -266,7 +266,7 @@ func explode(s: SpellData) -> void:
 	exploded = true
 	flying = false
 	if caster != null and is_instance_valid(caster) and s != null:
-		caster.spawn_zone(s, global_position)
+		caster.spawn_zone(s, global_position, Vector2.ZERO, &"familiar")
 	LightRig.flash(global_position, &"nova", 0.35)
 	Audio.play_cast(s.id if s != null else &"", global_position, s.coef if s != null else 1.0)
 	if on_explode.is_valid():

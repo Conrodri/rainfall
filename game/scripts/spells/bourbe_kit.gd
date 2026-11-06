@@ -979,7 +979,7 @@ func _recall_all() -> void:
 	for m in mottes.duplicate():
 		if m.state != BourbeMotte.State.FLY and player != null and m.global_position.distance_to(player.global_position) <= home:
 			# plouf de garde : la motte contre Bourbe éclate sur place au lieu d'une traversée vide
-			_caster().spawn_zone(_big_land_guard if m.big else _land_guard, m.global_position)
+			_caster().spawn_zone(_big_land_guard if m.big else _land_guard, m.global_position, Vector2.ZERO, &"familiar")
 		m.recall()
 	if player != null:
 		LightRig.flash(player.global_position, LIGHT_SPELL, 0.35)
@@ -998,7 +998,7 @@ func _start_sink(s: SpellData) -> void:
 	# les mottes fusionnent : toute la masse revient tout de suite, masse perdue comprise (règle d'origine)
 	for m in mottes.duplicate():
 		if is_instance_valid(m) and m.state != BourbeMotte.State.FLY: # §5.5 : chaque motte éclate avant de fusionner
-			_caster().spawn_zone(_bog_burst, m.global_position)
+			_caster().spawn_zone(_bog_burst, m.global_position, Vector2.ZERO, &"familiar")
 		m.merge()
 	dead_mass.clear()
 	_recompute_mass()
