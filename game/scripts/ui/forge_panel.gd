@@ -26,6 +26,7 @@ var _s := 1.0
 var _head: Label
 var _core_row: HBoxContainer ## icônes des noyaux d'orage (pleine = porté, estompée = libre)
 const CORE_ICON := "res://assets/sprites/icons/storm_core.png"
+const FRAME_DIR := "res://assets/sprites/ui/forge/" ## lot UX-E : cartes de recette et de gain (9-slice Codex)
 var _list_scroll: ScrollContainer
 var _list: VBoxContainer
 var _detail: Label
@@ -155,7 +156,30 @@ func _make_recipe_button(r: Dictionary, st: PlayerState) -> Button:
 	var fg := Color.WHITE if ok else Color(0.8, 0.8, 0.82)
 	for k in [&"font_color", &"font_hover_color", &"font_pressed_color", &"font_focus_color"]:
 		b.add_theme_color_override(k, fg)
+	var tex_sb := UiTheme.da_box("forge_recipe_9slice" if ok else "forge_recipe_9slice_off", 1.0, 0, FRAME_DIR)
 	for sname in ["normal", "hover", "pressed", "focus", "disabled"]:
+		if tex_sb != null: # carte cuivrée Codex ; le focus garde sa bordure de code (système de focus)
+			if sname == "focus":
+				var fb := StyleBoxFlat.new()
+				fb.draw_center = false
+				fb.border_color = UiTheme.COL_FOCUS
+				fb.set_border_width_all(7)
+				fb.set_corner_radius_all(6)
+				fb.content_margin_left = 16
+				fb.content_margin_right = 16
+				fb.content_margin_top = 12
+				fb.content_margin_bottom = 12
+				b.add_theme_stylebox_override(sname, fb)
+				continue
+			var tb := tex_sb.duplicate() as StyleBoxTexture
+			if sname == "hover" or sname == "pressed":
+				tb.modulate_color = Color(1.18, 1.18, 1.18)
+			tb.content_margin_left = 16
+			tb.content_margin_right = 16
+			tb.content_margin_top = 12
+			tb.content_margin_bottom = 12
+			b.add_theme_stylebox_override(sname, tb)
+			continue
 		var sb := StyleBoxFlat.new()
 		sb.bg_color = Color(0.20, 0.12, 0.07, 0.96) if ok else Color(0.11, 0.10, 0.14, 0.94)
 		if sname == "hover" or sname == "pressed":
@@ -177,6 +201,20 @@ func _make_recipe_button(r: Dictionary, st: PlayerState) -> Button:
 	icon_box.anchor_bottom = 0.5
 	icon_box.modulate = Color.WHITE if ok else Color(1, 1, 1, 0.6)
 	b.add_child(icon_box)
+	var role_tags: Array = []
+	for role in Forge.roles(r):
+		role_tags.append_array(role["tags"])
+	var tag_row := TagIcons.row(role_tags, 36.0, Color(0.85, 0.92, 1.0) if ok else Color(0.65, 0.68, 0.74)) # lot UX-G
+	if tag_row.get_child_count() > 0:
+		tag_row.anchor_left = 1.0
+		tag_row.anchor_right = 1.0
+		tag_row.anchor_top = 0.5
+		tag_row.anchor_bottom = 0.5
+		tag_row.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		tag_row.grow_vertical = Control.GROW_DIRECTION_BOTH
+		b.add_child(tag_row)
+	else:
+		tag_row.free()
 	b.pressed.connect(_on_recipe_pressed.bind(r["id"]))
 	var show := func() -> void:
 		_detail.text = "%s\n%s" % [str(it.get("effect_text", "")), str(r.get("hint", ""))]
@@ -195,10 +233,20 @@ func _fit_recipe_icon(b: Button) -> void:
 	box.offset_right = 14.0 * _s + px
 	box.offset_top = -px * 0.5
 	box.offset_bottom = px * 0.5
+	var tags := b.get_node_or_null("TagIcons") as Control
+	var tags_w := 0.0
+	if tags != null: # pictos d'étiquettes à droite de la ligne (lot UX-G) : marge droite réservée
+		var n := tags.get_child_count()
+		tags_w = (n * 40.0 - 4.0) * _s
+		for c in tags.get_children():
+			(c as Control).custom_minimum_size = Vector2(36.0, 36.0) * _s
+		tags.offset_right = -14.0 * _s
+		tags.offset_left = -14.0 * _s - tags_w
 	for sname in ["normal", "hover", "pressed", "focus", "disabled"]:
 		var sb := b.get_theme_stylebox(sname)
-		if sb is StyleBoxFlat:
-			(sb as StyleBoxFlat).content_margin_left = 28.0 * _s + px
+		if sb is StyleBoxFlat or sb is StyleBoxTexture:
+			sb.content_margin_left = 28.0 * _s + px
+			sb.content_margin_right = 16.0 + (tags_w + 14.0 * _s if tags != null else 0.0)
 
 
 ## Icône d'objet dans son fond (cadre cuivré « forgé » pour un objet forgé, sinon fond de qualité), `px` à l'échelle 1.
@@ -394,13 +442,18 @@ func show_confirm(r: Dictionary, ids: Array[StringName]) -> void:
 func _gain_card(res: Dictionary, id: StringName) -> Control:
 	var p := PanelContainer.new()
 	p.name = "GainCard"
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.20, 0.12, 0.07, 0.96)
-	sb.border_color = COL_COPPER
-	sb.set_border_width_all(6)
-	sb.set_corner_radius_all(14)
-	sb.set_content_margin_all(12)
-	p.add_theme_stylebox_override("panel", sb)
+	var gain_sb: StyleBox = UiTheme.da_box("forge_gain_9slice", 1.0, 0, FRAME_DIR)
+	if gain_sb != null:
+		gain_sb.set_content_margin_all(18)
+	else:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.20, 0.12, 0.07, 0.96)
+		sb.border_color = COL_COPPER
+		sb.set_border_width_all(6)
+		sb.set_corner_radius_all(14)
+		sb.set_content_margin_all(12)
+		gain_sb = sb
+	p.add_theme_stylebox_override("panel", gain_sb)
 	var h := HBoxContainer.new()
 	h.add_theme_constant_override("separation", 14)
 	p.add_child(h)

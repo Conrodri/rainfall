@@ -31,6 +31,7 @@ const CARD_GAP := 24.0
 const SIDE_MARGIN := 60.0
 const CARD_H_FULL := 580.0 ## hauteur d'une carte en rangée de 4 ; en grille 2 x 2 : CARD_H_TWO
 const CARD_H_TWO := 290.0
+const COOP_DIR := "res://assets/sprites/ui/coop/" ## lot UX-D : cadres et anneau de la coop
 const PORTRAIT_H_FULL := 240.0 ## portrait = moitié haute de la carte (il absorbe la place restante)
 const PORTRAIT_H_TWO := 70.0
 const SPELL_ICON_FULL := 56.0
@@ -144,7 +145,9 @@ func _build() -> void:
 		card.custom_minimum_size = Vector2(CARD_W_MAX, CARD_H_FULL)
 		# fond : plaque DA teintée à la couleur du joueur (repli : boîte plate) ; le cadre prêt/inscrit est un
 		# calque transparent par-dessus (_card_styles)
-		var bgbox: StyleBox = UiTheme.da_box("panel_small_9slice", 0.5)
+		var bgbox: StyleBox = UiTheme.da_box("team_card_9slice", 0.5, -1, COOP_DIR) # lot UX-D, repli : plaque DA
+		if bgbox == null:
+			bgbox = UiTheme.da_box("panel_small_9slice", 0.5)
 		if bgbox is StyleBoxTexture:
 			(bgbox as StyleBoxTexture).modulate_color = Palette.team_color(i).lerp(Color.WHITE, 0.45)
 			bgbox.content_margin_left = 18
@@ -180,6 +183,16 @@ func _build() -> void:
 		portrait.custom_minimum_size = Vector2(0, PORTRAIT_H_FULL)
 		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		v.add_child(portrait)
+		if ResourceLoader.exists(COOP_DIR + "portrait_ring.png"): # anneau teintable autour du portrait (lot UX-D)
+			var ring := TextureRect.new()
+			ring.name = "Ring"
+			ring.texture = load(COOP_DIR + "portrait_ring.png")
+			ring.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			ring.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			ring.set_anchors_preset(Control.PRESET_FULL_RECT)
+			ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			ring.modulate = Palette.team_color(i)
+			portrait.add_child(ring)
 		labels["portrait"] = portrait
 		for key in ["title", "device", "char", "skin"]:
 			var l := Label.new()

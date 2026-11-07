@@ -1,0 +1,25 @@
+{
+  "name": "forge_gain_9slice",
+  "size": [
+    192,
+    192
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse"
+  ],
+  "normal": "none: face-on UI",
+  "emission": true,
+  "nine_slice": {
+    "left": 28,
+    "top": 28,
+    "right": 28,
+    "bottom": 28
+  },
+  "content_insets": {
+    "left": 28,
+    "top": 28,
+    "right": 28,
+    "bottom": 28
+  }
+}

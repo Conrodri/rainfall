@@ -1,0 +1,9 @@
+Set-Location "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ac82c5bdbd87eef4e" ; tout ici, jamais dans C:\Users\const\Documents\Rainfall (dépôt principal).
+LOT UX-D coop. Dossier de sortie : game/assets/sprites/ui/coop/ (à créer). Rendu Blender --background (script art/tools/ux/ux_d_build.py, nouveau ; s'inspirer de art/tools/ui/ux_c_build.py et ui_lib.py), PIL seulement pour rogner/assembler. Cel-shade (art/briefs/STYLE_cel.md), DA sombre désaturée fer usé, famille de game/assets/sprites/ui/da/panel_small_9slice.png (le regarder une fois). Pas de normal map. Aucun texte dans les images.
+Fichiers :
+1. team_card_9slice.png 192x192 RGBA + team_card_9slice.json (même format que ui/da/panel_small_9slice.json, nine_slice et content_insets 24). Cadre de carte, fer GRIS CLAIR NEUTRE (aucune teinte : le jeu le teinte par modulate), centre sombre semi-uni, 9-slice propre (coins ornés <= 24 px, bords répétables).
+2. team_pip.png 48x48 : pastille losangée gris clair neutre (teintable), centre vide pour un chiffre.
+3. portrait_ring.png 128x128 : anneau rond gris clair neutre (teintable), intérieur 100 % transparent (diamètre intérieur >= 104 px), extérieur transparent.
+4. status_spectator.png 64x64 + status_spectator_e.png (32x32, accent seul) : oeil-lanterne pâle (spectateur), accent émissif pâle, lisible à 40 px.
+5. icon_coop_local.png 96x96 : deux manettes côte à côte (ou deux silhouettes), claires, lisibles à 48 px, accent chaud discret.
+Vérif par script : dimensions, alpha (fond transparent, intérieur anneau vide), json présent, _e non vide. Une planche de contrôle art/renders/ux/ux_d_sheet.png (<= 1024 px). Puis `C:\Users\const\AppData\Local\Python\bin\python.exe art/tools/texture_budget.py --apply-policy` si utile (ne touche que ces fichiers). Ne dis PASS que si `ls game/assets/sprites/ui/coop` montre tous les fichiers. Rapport 6 lignes ultracave.

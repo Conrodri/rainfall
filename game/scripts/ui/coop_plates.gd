@@ -28,6 +28,8 @@ const COL_TEXT := Color(0.95, 0.93, 0.88)
 const COL_DIM := Color(0.62, 0.6, 0.56)
 const COL_ABSENT := Color(0.55, 0.55, 0.55)
 const COL_GOLD := Color(1.0, 0.82, 0.38)
+const PIP_ICON := "res://assets/sprites/ui/coop/team_pip.png" ## lot UX-D : pastille teintable
+const SPECTATOR_ICON := "res://assets/sprites/ui/coop/status_spectator.png"
 const CORE_ICON := "res://assets/sprites/icons/storm_core.png"
 const COL_VEIL := Color(0.0, 0.0, 0.0, 0.62)
 
@@ -39,6 +41,8 @@ var _font: Font = ThemeDB.fallback_font
 var _icons := {} ## spell id -> Texture2D (ou null)
 var _gold_tex: Texture2D = null
 var _core_tex: Texture2D = null
+var _pip_tex: Texture2D = null
+var _spectator_tex: Texture2D = null
 ## Compteur de noyaux d'orage dessiné par joueur (id -> Rect2) ; absent à 0 noyau (tests).
 var core_rects := {}
 var _acc := 0.0
@@ -58,6 +62,10 @@ func _ready() -> void:
 		_gold_tex = Minimap.ui_texture("icon_gold.png")
 	if ResourceLoader.exists(CORE_ICON):
 		_core_tex = load(CORE_ICON) as Texture2D
+	if ResourceLoader.exists(PIP_ICON):
+		_pip_tex = load(PIP_ICON) as Texture2D
+	if ResourceLoader.exists(SPECTATOR_ICON):
+		_spectator_tex = load(SPECTATOR_ICON) as Texture2D
 
 
 func _process(delta: float) -> void:
@@ -154,7 +162,10 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 	var y := r.position.y + PAD * s
 	# ligne 1 : pastille numérotée, nom, niveau, appareil | or
 	var pill := 28.0 * s
-	draw_rect(Rect2(Vector2(x0, y), Vector2(pill, pill)), Color(tint, a))
+	if _pip_tex != null:
+		draw_texture_rect(_pip_tex, Rect2(Vector2(x0, y), Vector2(pill, pill)), false, Color(tint, a))
+	else:
+		draw_rect(Rect2(Vector2(x0, y), Vector2(pill, pill)), Color(tint, a))
 	var fs_glyph := maxi(int(20 * s), 14)
 	_text(Vector2(x0 + pill * 0.5, y + pill * 0.5), Palette.team_glyph(e.id), fs_glyph, Color(0.05, 0.05, 0.05, a), true)
 	var fs1 := HudMetrics.font(HudMetrics.T4_SMALL, s, false)
@@ -204,7 +215,12 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 			off_x += isz + 6.0 * s
 		_text_clip(Vector2(off_x, y + bar_h * 0.5), "Manette déconnectée", fs1, COL_TEXT, inner_w - (off_x - x0))
 	elif spectator:
-		_text_clip(Vector2(x0, y + bar_h * 0.5), "Spectateur · retour à l'étage suivant", fs1, COL_TEXT, inner_w)
+		var sp_x := x0
+		if _spectator_tex != null: # icône d'état (lot UX-D) ; le texte reste le signal principal, à pleine opacité
+			var ssz := bar_h * 1.3
+			draw_texture_rect(_spectator_tex, Rect2(Vector2(x0, y + bar_h * 0.5 - ssz * 0.5), Vector2(ssz, ssz)), false, Color(1, 1, 1, a))
+			sp_x += ssz + 6.0 * s
+		_text_clip(Vector2(sp_x, y + bar_h * 0.5), "Spectateur · retour à l'étage suivant", fs1, COL_TEXT, inner_w - (sp_x - x0))
 	elif node != null:
 		var hp := float(node.get(&"hp")) if "hp" in node else 0.0
 		var mx := maxf(float(node.get(&"max_hp")) if "max_hp" in node else 1.0, 1.0)

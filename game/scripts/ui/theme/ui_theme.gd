@@ -284,15 +284,15 @@ static func _focus_box() -> StyleBox:
 
 ## StyleBoxTexture 9-slice du kit DA : marges d'étirement et marges de contenu lues dans <nom>.json
 ## (nine_slice / content_insets), marges verticales relevées à trait + ink_pad(font_size). null si la texture manque. Les passes émissives (_e) ne sont pas utilisées.
-static func da_box(file: String, content_scale := 1.0, font_size := -1) -> StyleBoxTexture:
-	var path := DA_DIR + file + ".png"
+static func da_box(file: String, content_scale := 1.0, font_size := -1, dir := DA_DIR) -> StyleBoxTexture:
+	var path := dir + file + ".png"
 	if not ResourceLoader.exists(path):
 		return null
 	var sb := StyleBoxTexture.new()
 	sb.texture = load(ui_texture_path(path)) # Parement équipé : même nom, autre matière ; marges lues ci-dessous (kit DA)
 	var ns := {"left": 24, "top": 24, "right": 24, "bottom": 24}
 	var ci := {"left": 24, "top": 16, "right": 24, "bottom": 16}
-	var jp := DA_DIR + file + ".json"
+	var jp := dir + file + ".json"
 	if FileAccess.file_exists(jp):
 		var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(jp))
 		if d is Dictionary:
