@@ -4,13 +4,13 @@ extends Node
 
 const MAPS := {
 	"terrasses_noyees": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
-	"foret_brume": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
-	"cite_rouille": {"chests": 17, "pillars": 11, "small": 8, "big": 3, "secret": true},
+	"foret_brume": {"chests": 18, "pillars": 9, "small": 6, "big": 3, "secret": true},
+	"cite_rouille": {"chests": 18, "pillars": 11, "small": 8, "big": 3, "secret": true},
 	"cryptes_noyees": {"chests": 20, "pillars": 9, "small": 6, "big": 3, "secret": true},
 	# (secrets des cartes A ajoutés le 29/10/2026) variantes B (docs/Design_Variantes_B.md §1 : mêmes effectifs que la A du biome) ; porte scellée : `secret`
 	"terrasses_rizieres_hautes": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
 	"foret_mangrove_lanternes": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
-	"cite_fonderie_canal": {"chests": 17, "pillars": 11, "small": 8, "big": 3, "secret": true},
+	"cite_fonderie_canal": {"chests": 19, "pillars": 11, "small": 8, "big": 3, "secret": true},
 	"cryptes_ossuaire_pluies": {"chests": 20, "pillars": 9, "small": 6, "big": 3, "secret": true},
 	"la_source": {"chests": 12, "pillars": 1, "small": 0, "big": 1, "final": true}, ## arène du boss final : paratonnerre-mère seul
 }
