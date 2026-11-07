@@ -138,6 +138,55 @@ func _multi(B) -> void:
 	_near("participation 10 % de la moyenne = 0,4", B.ruby_participation(100.0, 4000.0, 4), 0.4, 0.0001)
 	_near("rubis AFK = 0", B.run_rubies(18.0, &"moyen", 13, true, 3000.0, 4, 0.0), 0.0, 0.0)
 	_near("épreuves × 0,76 à 4", B.epreuve_target_party_mult(4), 0.76, 0.0001)
+	_epreuves(B)
+
+
+## Épreuves généralisées (docs/Design_Epreuves.md §8) : constantes, notes, PV de la cloche, dégâts du geyser, rubis.
+func _epreuves(B) -> void:
+	_near("épreuves : 2 par étage", B.EPREUVES_PER_STAGE, 2.0, 0.0)
+	_near("épreuves : sans fin activé", 1.0 if B.EPREUVE_IN_ENDLESS else 0.0, 1.0, 0.0)
+	_near("épreuves : drapeau global encore faux", 1.0 if not B.EPREUVES_ENABLED else 0.0, 1.0, 0.0)
+	_near("épreuves : --no-epreuves coupe le drapeau", 1.0 if B.EPREUVES_OFF_ARG == "--no-epreuves" else 0.0, 1.0, 0.0)
+	_near("épreuves : verbes partageables (rituel, poursuite)", 1.0 if B.EPREUVE_SHARED_VERBS == [&"rituel", &"poursuite"] else 0.0, 1.0, 0.0)
+	for v in [&"escorte", &"rituel", &"poursuite", &"veine", &"tenue"]:
+		_near("épreuves : dégagement du gros pilier [%s] présent" % v, 1.0 if float(B.EPREUVE_BIG_AVOID_U.get(v, 0.0)) > 0.0 else 0.0, 1.0, 0.0)
+		_near("épreuves : cible de durée [%s] présente" % v, 1.0 if float(B.EPREUVE_TARGET_S.get(v, 0.0)) > 0.0 else 0.0, 1.0, 0.0)
+	_near("dégagement gros pilier : veine 10 u", B.EPREUVE_BIG_AVOID_U[&"veine"], 10.0, 0.0)
+	_near("dégagement gros pilier : poursuite 6 u", B.EPREUVE_BIG_AVOID_U[&"poursuite"], 6.0, 0.0)
+	_near("dégagement gros pilier : tenue 12 u", B.EPREUVE_BIG_AVOID_U[&"tenue"], 12.0, 0.0)
+	_near("coffres : 3 par épreuve, 3 arène, 1 départ", B.EPREUVE_CHEST_SPLIT[&"epreuve"] * 100 + B.EPREUVE_CHEST_SPLIT[&"arene"] * 10 + B.EPREUVE_CHEST_SPLIT[&"depart"], 331.0, 0.0)
+	_near("rubis : 1 par parfait", B.EPREUVE_RUBIES_PARFAIT, 1.0, 0.0)
+	_near("rubis : plafond 8", B.EPREUVE_RUBIES_CAP, 8.0, 0.0)
+	_near("rubis : 5 parfaits = 5", B.epreuve_rubies(5), 5.0, 0.0)
+	_near("rubis : 12 parfaits plafonnés à 8", B.epreuve_rubies(12), 8.0, 0.0)
+	_near("rubis : négatif = 0", B.epreuve_rubies(-3), 0.0, 0.0)
+	# Poursuite
+	_near("poursuite : 6 bornes, 5 points", B.CHASE_POSTS * 10 + B.CHASE_POINTS, 65.0, 0.0)
+	_near("poursuite : saut 8 s", B.CHASE_JUMP_S, 8.0, 0.0)
+	_near("poursuite : portée de saut 9-17 u", B.CHASE_JUMP_MIN_U * 100 + B.CHASE_JUMP_MAX_U, 917.0, 0.0)
+	_near("poursuite : borne 2 u, vacillement 1,5 s", B.CHASE_REACH_U * 10 + B.CHASE_WARN_S, 21.5, 0.0001)
+	_near("poursuite : vacillement < saut", 1.0 if B.CHASE_WARN_S < B.CHASE_JUMP_S else 0.0, 1.0, 0.0)
+	# Veine
+	_near("veine : disque 6 u à 1,5 u/s, charge 30 s", B.VEIN_RADIUS_U * 10000 + B.VEIN_SPEED_U * 100 + B.VEIN_CHARGE_S, 60180.0, 0.0001)
+	_near("veine : tracé 40-70 u", B.VEIN_LOOP_MIN_U * 100 + B.VEIN_LOOP_MAX_U, 4070.0, 0.0)
+	_near("veine : geyser toutes les 6 s", B.VEIN_GEYSER_EVERY_S, 6.0, 0.0)
+	_near("veine : télégraphe du geyser >= 0,8 s", 1.0 if B.VEIN_GEYSER_TELEGRAPH_S >= 0.8 else 0.0, 1.0, 0.0)
+	_near("veine : geyser rayon 2 u, 3 u devant", B.VEIN_GEYSER_RADIUS_U * 10 + B.VEIN_GEYSER_AHEAD_U, 23.0, 0.0)
+	_near("veine : dégât du geyser = coup de mini-boss", B.vein_geyser_damage(2.0), B.mini_attack_damage(B.boss_damage(&"mini", 2.0), B.VEIN_GEYSER_COEF), 0.0001)
+	_near("veine : dégât croît avec D", 1.0 if B.vein_geyser_damage(3.0) > B.vein_geyser_damage(2.0) else 0.0, 1.0, 0.0)
+	# Tenue
+	_near("tenue : 40 s, paquet de 4 toutes les 8 s, annonce 2 s", B.HOLD_DURATION_S * 100 + B.HOLD_PACKET * 10 + B.HOLD_WAVE_EVERY_S, 4048.0, 0.0001)
+	_near("tenue : 3 côtés, annonce >= 0,8 s", B.HOLD_SIDES + (1.0 if B.HOLD_ANNOUNCE_S >= 0.8 else 0.0), 4.0, 0.0)
+	_near("tenue : apparition 10 u, leurre rompu à 3 u", B.HOLD_SPAWN_DIST_U * 10 + B.HOLD_LURE_BREAK_U, 103.0, 0.0001)
+	_near("tenue : PV de la cloche = 0,5 x mini-boss", B.hold_hp(2.0, 3), 0.5 * B.boss_hp(&"mini", 2.0, 3), 0.0001)
+	_near("tenue : PV x1,3 à 2 joueurs", B.hold_hp(2.0, 1, 2) / B.hold_hp(2.0, 1, 1), 1.3, 0.0001)
+	_near("tenue : PV x1,6 à 3 joueurs", B.hold_hp(2.0, 1, 3) / B.hold_hp(2.0, 1, 1), 1.6, 0.0001)
+	_near("tenue : PV x1,9 à 4 joueurs", B.hold_hp(2.0, 1, 4) / B.hold_hp(2.0, 1, 1), 1.9, 0.0001)
+	_near("tenue : PV croissants avec D", 1.0 if B.hold_hp(3.0) > B.hold_hp(2.0) else 0.0, 1.0, 0.0)
+	_near("tenue : 100 % des PV = parfait", 1.0 if B.epreuve_grade_hold(1.0) == &"parfait" else 0.0, 1.0, 0.0)
+	_near("tenue : 70 % des PV = parfait", 1.0 if B.epreuve_grade_hold(0.7) == &"parfait" else 0.0, 1.0, 0.0)
+	_near("tenue : 69 % des PV = bien", 1.0 if B.epreuve_grade_hold(0.69) == &"bien" else 0.0, 1.0, 0.0)
+	_near("tenue : cloche éteinte = fait", 1.0 if B.epreuve_grade_hold(0.0) == &"fait" else 0.0, 1.0, 0.0)
 
 
 func _near(label: String, got: float, want: float, tol: float) -> void:

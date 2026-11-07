@@ -11,8 +11,10 @@ func can_interact() -> bool:
 	return not used and epreuve != null and is_instance_valid(epreuve) and epreuve.call(&"is_running") and player_near()
 
 
+## Libellé du biome (data/epreuves.json, clé « relay » du Rituel : vanne, soupape…).
 func interact_label() -> String:
-	return "Fermer la vanne"
+	var b := String(epreuve.get(&"biome")) if epreuve != null and is_instance_valid(epreuve) else ""
+	return EpreuveData.label(b, "rituel", "relay", "Fermer la vanne")
 
 
 func interact_state() -> Dictionary:

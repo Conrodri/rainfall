@@ -1,0 +1,15 @@
+{
+ "_doc": "Épreuves par biome (docs/Design_Epreuves.md §7.2). verbs = les deux épreuves qui remplacent les petits piliers (ordre = épreuve 1, 2 ; le mini-boss minis[i] du plan va à l'épreuve i). enabled=false : le biome garde ses piliers. lever_skin = dossier des sprites lever_<skin> (relais du Rituel). labels : libellés d'interaction (<= 24 caractères). Clés de carte par verbe : escorte = escort_path ; rituel = ritual {heart, relays} ; poursuite = chase_posts ; veine = vein_path + vein_closed ; tenue = hold {pos, sides}.",
+ "names": {"escorte": "Escorte", "rituel": "Rituel", "poursuite": "Poursuite", "veine": "Veine", "tenue": "Tenue"},
+ "biomes": {
+  "terrasses": {"enabled": true, "verbs": ["escorte", "rituel"], "lever_skin": "terraces",
+   "labels": {"escorte": {"start": "Lancer la barque"}, "rituel": {"start": "Réveiller l'écluse", "relay": "Fermer la vanne"}}},
+  "foret": {"enabled": true, "verbs": ["poursuite", "veine"], "lever_skin": "fog_forest",
+   "labels": {"poursuite": {"start": "Réveiller le follet"}, "veine": {"start": "Suivre la veine"}}},
+  "cite": {"enabled": true, "verbs": ["tenue", "rituel"], "lever_skin": "rust_city",
+   "labels": {"tenue": {"start": "Sonner la cloche"}, "rituel": {"start": "Réveiller la pompe", "relay": "Fermer la soupape"}}},
+  "cryptes": {"enabled": true, "verbs": ["veine", "poursuite"], "lever_skin": "crypts",
+   "labels": {"veine": {"start": "Suivre l'eau noire"}, "poursuite": {"start": "Éveiller l'éclat"}}},
+  "source": {"enabled": false, "verbs": []}
+ }
+}

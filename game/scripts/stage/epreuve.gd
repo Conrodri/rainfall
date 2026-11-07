@@ -9,13 +9,26 @@ extends Pillar
 ## mini-boss invoqué -> mort du mini-boss -> DONE (Pillar._check_done). Un délai de sécurité (EPREUVE_BACKSTOP_S) clôt
 ## l'épreuve en « fait » : jamais bloqué. La zone de monstres (Balance.ZONE_SPAWN_MULT[&"epreuve"]) suit l'objet mobile ;
 ## l'or des kills dans cette zone est réduit (Balance.EPREUVE_ZONE_GOLD_MULT, voir zone_gold_mult) : l'or vient de la note.
-## Sous-classes : EpreuveEscort (barque sur un tracé), EpreuveRitual (3 relais autour d'un cœur qui pulse).
+## Sous-classes (docs/Design_Epreuves.md §3) : EpreuveEscort (barque sur un tracé), EpreuveRitual (3 relais autour d'un
+## cœur qui pulse), EpreuveChase (Poursuite), EpreuveVein (Veine), EpreuveHold (Tenue).
+## Contrat d'une sous-classe : `static func make(...)` (géométrie en repère local de la carte) qui fixe `verb` dans
+## `_init()` ; surcharger `_begin()` (démarrage), `_run(delta)` (un pas, appeler `_resolve()` à la réussite ou
+## `_resolve(note)` pour imposer la note), `progress()`, `draw_overlay(c)`, `_extra_dict()` / `_extra_restore(d)` (sauvegarde),
+## éventuellement `zone_radius()` et `_on_resolved()`. Un verbe mobile déplace `global_position` (zone et flèche suivent).
 ## Visuels : placeholders (formes en code) tant que les sprites Codex ne sont pas livrés.
 
 ## Note forcée (mode test, panneau « Boucle d'étage »). &"" : la note se calcule.
 static var forced_grade: StringName = &""
 
-var verb: StringName = &"" ## &"escorte" | &"rituel"
+const GRADE_LABEL_S := 2.0 ## durée (s) d'affichage du libellé de note au-dessus de l'objet
+const GRADE_NAMES := {&"parfait": "Parfait", &"bien": "Bien", &"fait": "Fait"}
+const GRADE_COLORS := {&"parfait": Color(1.0, 0.85, 0.3), &"bien": Color(0.6, 0.95, 0.7), &"fait": Color(0.8, 0.8, 0.85)}
+
+var verb: StringName = &"" ## &"escorte" | &"rituel" | &"poursuite" | &"veine" | &"tenue"
+## Biome de l'étage (clé de floors.json : terrasses, foret, cite, cryptes), fixé par StageManager avant add_child :
+## libellés d'interaction (data/epreuves.json) et skin des relais.
+var biome: StringName = &"terrasses"
+var _grade_show_t := 0.0 ## s restantes d'affichage du libellé de note
 var elapsed := 0.0 ## secondes d'épreuve écoulées (hors combat du mini-boss)
 var resolved := false ## l'épreuve est terminée (note donnée, mini-boss invoqué)
 var grade: StringName = &""
@@ -76,6 +89,16 @@ func draw_overlay(_c: Node2D) -> void:
 	pass
 
 
+## Libellé de note au-dessus de l'objet pendant GRADE_LABEL_S s après la résolution (placeholder lisible sans sprite).
+func draw_grade_label(c: Node2D) -> void:
+	if _grade_show_t <= 0.0 or not resolved or not GRADE_NAMES.has(grade):
+		return
+	var col: Color = GRADE_COLORS[grade]
+	col.a = clampf(_grade_show_t / 0.5, 0.0, 1.0)
+	var font := ThemeDB.fallback_font
+	c.draw_string(font, Vector2(-80.0, -110.0), String(GRADE_NAMES[grade]), HORIZONTAL_ALIGNMENT_CENTER, 160.0, 36, col)
+
+
 func _extra_dict() -> Dictionary:
 	return {}
 
@@ -95,7 +118,12 @@ func is_running() -> bool:
 
 # --- Déroulé
 func interact_label() -> String:
-	return "Lancer l'épreuve"
+	return EpreuveData.label(String(biome), String(verb), "start", "Lancer l'épreuve")
+
+
+## Libellé de la note (« Parfait », « Bien », « Fait »), "" tant que l'épreuve n'est pas résolue.
+func grade_label() -> String:
+	return String(GRADE_NAMES.get(grade, "")) if resolved else ""
 
 
 ## Lance l'épreuve (contact + « interagir », ou directement par les tests et le mode test).
@@ -123,6 +151,7 @@ func activate() -> bool:
 func tick(delta: float) -> void:
 	if state != STATE_ACTIVE:
 		return
+	_grade_show_t = maxf(_grade_show_t - delta, 0.0)
 	if not resolved:
 		elapsed += delta
 		_run(delta)
@@ -165,9 +194,12 @@ func _resolve(g: StringName = &"") -> void:
 	elif g != &"":
 		grade = g
 	else:
-		# coop : la cible « parfait » des épreuves partageables (Rituel) baisse de 8 % par joueur en plus (Balance)
-		var t_mult := Balance.epreuve_target_party_mult(CoopRules.party_n()) if verb == &"rituel" else 1.0
+		# coop : la cible « parfait » des verbes partageables (Rituel, Poursuite) baisse de 8 % par joueur en plus (Balance)
+		var t_mult := Balance.epreuve_target_party_mult(CoopRules.party_n()) if verb in Balance.EPREUVE_SHARED_VERBS else 1.0
 		grade = Balance.epreuve_grade(verb, elapsed / maxf(t_mult, 0.01), clean)
+	_grade_show_t = GRADE_LABEL_S
+	if is_inside_tree():
+		Audio.play(StringName("epreuve_grade_%s" % grade), global_position)
 	gold_paid = _pay()
 	_on_resolved()
 	Events.epreuve_finished.emit(verb, grade, elapsed, gold_paid)
@@ -287,3 +319,4 @@ class EpreuveOverlay extends Node2D:
 	func _draw() -> void:
 		if epreuve != null and is_instance_valid(epreuve) and epreuve.is_inside_tree():
 			epreuve.draw_overlay(self)
+			epreuve.draw_grade_label(self)
