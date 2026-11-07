@@ -31,7 +31,6 @@ var hits := 0 ## geysers reçus
 var out_s := 0.0 ## cumul des secondes passées sans joueur dans le disque (mesure)
 var pulses := 0 ## geysers émis (mesure)
 var vein_skin: StringName = &"" ## &"foret" | &"cryptes" ; vide : lit la méta `biome` si présente, sinon Gouffre
-var start_label := "Suivre la veine" ## libellé d'interaction (E0 : lu dans data/epreuves.json)
 var source: EpreuveVeinSource = null
 var _pts := PackedVector2Array() ## sommets + fermeture éventuelle
 var _seg_len := PackedFloat32Array()
@@ -115,10 +114,6 @@ func zone_radius() -> float:
 
 func disc_radius() -> float:
 	return Balance.VEIN_RADIUS_U * Balance.UNIT_PX
-
-
-func interact_label() -> String:
-	return start_label
 
 
 ## Le pilier lui-même n'est pas interactif (il suit le disque) : c'est la source qui lance l'épreuve.

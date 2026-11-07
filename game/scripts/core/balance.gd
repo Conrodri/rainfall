@@ -1168,6 +1168,7 @@ const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreu
 const EPREUVE_CHEST_TRACE_U := 8.0
 const EPREUVE_CHEST_ARENA_U := 12.0
 const EPREUVE_CHEST_START_U := 14.0
+const EPREUVE_ARENA_MIN_CHESTS := 2 ## repères de coffre minimum à <= EPREUVE_CHEST_ARENA_U d'un gros pilier candidat (sinon écarté du tirage)
 const EPREUVE_CHEST_SPLIT := {&"epreuve": 3, &"arene": 3, &"depart": 1} ## "epreuve" = par épreuve (3 chacune)
 ## Le gros pilier reste à cette distance (u) de l'objet d'épreuve (tracé, cœur et relais, bornes, cloche) selon le verbe.
 const EPREUVE_BIG_AVOID_U := {&"escorte": 12.0, &"rituel": 12.0, &"veine": 10.0, &"tenue": 12.0, &"poursuite": 6.0}

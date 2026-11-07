@@ -15,6 +15,9 @@ GRID_EDITS = [
  ("terrasses_noyees", 20, 16, ".~~."), ("terrasses_noyees", 21, 16, ".~~."),
  ("terrasses_noyees", 22, 16, ".~~."), ("terrasses_noyees", 23, 16, ".~~."),
  ("terrasses_noyees", 24, 16, "#..#"),
+ # 07/11/2026, Épreuves : la Veine du Gouffre n'avait que 2 repères de coffre à <= 8 u de son tracé (le plan en veut 3) :
+ # un repère de plus à l'est de la boucle, (25;29) en u dans la carte mise en forme (grille du guide décalée de 3 cases).
+ ("foret_brume", 11, 9, "C"),
 ]
 _GRID_IDS = ["terrasses_noyees", "foret_brume", "cite_rouille"]
 for _id, _y, _x, _s in GRID_EDITS:

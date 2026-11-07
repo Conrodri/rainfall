@@ -82,6 +82,7 @@ var rules := DEFAULT_RULES.duplicate(true)
 ## tirent près des objets d'épreuve.
 var epreuves_on := false
 var _epreuve_verbs: Array[String] = [] ## verbes des épreuves de l'étage, dans l'ordre (épreuve 1, épreuve 2)
+var _arena_chest_pos: Array[Vector2] = [] ## repères de coffre candidats (tirage des épreuves) : sert à écarter un gros pilier sans arène
 var _epreuve_geom := {} ## {verbe (StringName): géométrie en repère local de la carte} (voir EpreuveGeom)
 var _catalog: Array = []
 var _own_nav: NavField = null ## zone accessible sans Director (tests) : grille construite ici
@@ -448,6 +449,9 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 		order = order.filter(func(i: int) -> bool: return not shut.has(i)) + shut
 	var pillars_roll: Array = []
 	if epreuves_on: # le gros pilier est tiré d'abord : les coffres se répartissent entre tracés, arène et départ
+		_arena_chest_pos.clear() # repères de coffre accessibles : le gros pilier doit avoir de quoi former son arène
+		for i in order:
+			_arena_chest_pos.append(map.local_pos(chest_markers[i]))
 		pillars_roll = _roll_pillars(pillar_markers, start, rng)
 		order = _epreuve_chest_order(order, chest_markers, _big_layout_pos(pillars_roll, pillar_markers, start), rng)
 	var out_chests: Array = []
@@ -665,6 +669,8 @@ func _try_pillars(smalls: Array, bigs: Array, pos: Array[Vector2], start: Vector
 			continue
 		if level < 2 and not _big_clear_of_epreuves(pos[i]):
 			continue
+		if level < 2 and not _big_has_arena_chests(pos[i]):
+			continue
 		if level == 0 and map.get_walkable_ratio(pos[i], float(radii["big"]) * UNIT) < walk_min:
 			continue
 		if not clear.call(pos[i]):
@@ -717,7 +723,7 @@ func _roll_capsules(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	var cands := _capsule_candidates(rng)
 	var order := _shuffled_indices(cands.size(), rng)
 	if epreuves_on:
-		order = _epreuve_capsule_order(cands, order)
+		order = _epreuve_capsule_order(cands, order, avoid)
 	var wanted := Balance.CAPSULES_PER_STAGE
 	var picked: Array[Vector2] = []
 	var spacings: Array = [CAPSULE_SPACING_U]
@@ -1000,6 +1006,18 @@ func _big_clear_of_epreuves(p: Vector2) -> bool:
 	return true
 
 
+## Le gros pilier a au moins Balance.EPREUVE_ARENA_MIN_CHESTS repères de coffre à <= Balance.EPREUVE_CHEST_ARENA_U (vrai sans
+## épreuves) : sinon l'arène du dernier combat serait vide (carte dont un candidat de gros pilier est isolé des coffres).
+func _big_has_arena_chests(p: Vector2) -> bool:
+	if not epreuves_on:
+		return true
+	var n := 0
+	for c in _arena_chest_pos:
+		if c.distance_to(p) <= Balance.EPREUVE_CHEST_ARENA_U * UNIT:
+			n += 1
+	return n >= Balance.EPREUVE_ARENA_MIN_CHESTS
+
+
 ## Ordre des repères de coffre avec épreuves (docs §6.2) : Balance.EPREUVE_CHEST_SPLIT = 3 à <= 8 u de chaque épreuve, 3
 ## autour du gros pilier, 1 au départ, puis le reste. Les repères retenus sont mélangés (tirage seedé) pour que les
 ## deux grands coffres ne tombent pas toujours au départ ou à l'arène ; `order` est l'ordre déjà mélangé de tous les repères.
@@ -1037,15 +1055,16 @@ func _epreuve_chest_order(order: Array, chest_markers: Array[Marker2D], big_pos:
 
 
 ## Ordre des capsules avec épreuves (docs §6) : une près du départ, les autres sur les tracés (<= 8 u), puis le reste.
-func _epreuve_capsule_order(cands: Array[Vector2], order: Array) -> Array:
+func _epreuve_capsule_order(cands: Array[Vector2], order: Array, avoid: Array[Vector2]) -> Array:
 	var start := map.get_player_start()
+	var obstacle := CAPSULE_OBSTACLE_DIST_U * UNIT
 	var trace_r := Balance.EPREUVE_CHEST_TRACE_U * UNIT
 	var first := -1
 	var traced: Array = []
 	var rest: Array = []
 	for i in order:
 		var p := cands[i]
-		if first < 0 and p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT:
+		if first < 0 and p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT and avoid.all(func(a: Vector2) -> bool: return p.distance_to(a) >= obstacle): # une capsule trop près du départ, d'un coffre ou d'un pilier serait refusée au placement
 			first = i
 		elif _dist_to_any_epreuve(p) <= trace_r:
 			traced.append(i)
