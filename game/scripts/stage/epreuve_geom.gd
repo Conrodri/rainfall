@@ -225,6 +225,31 @@ static func dist(verb, g: Dictionary, p: Vector2) -> float:
 	return best
 
 
+## Points interactifs de l'épreuve (repère de la géométrie) : départ de la barque, cœur et relais, bornes, source de la
+## Veine, cloche. Aucun repère de coffre ne doit s'en approcher à moins de Balance.EPREUVE_CHEST_MIN_U.
+static func interact_points(verb, g: Dictionary) -> Array:
+	var out: Array = []
+	match String(verb):
+		"escorte", "veine":
+			out.append((g["path"] as PackedVector2Array)[0])
+		"rituel":
+			out.append(g["heart"])
+			out.append_array(g["relays"])
+		"poursuite":
+			out.append_array(g["posts"])
+		"tenue":
+			out.append(g["pos"])
+	return out
+
+
+## Distance (px) de `p` au point interactif le plus proche de l'épreuve (INF sans point).
+static func dist_interact(verb, g: Dictionary, p: Vector2) -> float:
+	var best := INF
+	for q in interact_points(verb, g):
+		best = minf(best, p.distance_to(q))
+	return best
+
+
 ## Points à contrôler pour la praticabilité (repère local) : tracé échantillonné tous les `step` px, cœur, relais, bornes,
 ## cloche et, pour la Tenue, les points de chaque côté à 6 et 10 u.
 static func sample_points(verb, g: Dictionary, step: float = 32.0) -> PackedVector2Array:

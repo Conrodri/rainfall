@@ -10,7 +10,7 @@ const MAPS := {
 	# (secrets des cartes A ajoutés le 29/10/2026) variantes B (docs/Design_Variantes_B.md §1 : mêmes effectifs que la A du biome) ; porte scellée : `secret`
 	"terrasses_rizieres_hautes": {"chests": 18, "pillars": 10, "small": 7, "big": 3, "secret": true},
 	"foret_mangrove_lanternes": {"chests": 17, "pillars": 9, "small": 6, "big": 3, "secret": true},
-	"cite_fonderie_canal": {"chests": 19, "pillars": 11, "small": 8, "big": 3, "secret": true},
+	"cite_fonderie_canal": {"chests": 20, "pillars": 11, "small": 8, "big": 3, "secret": true},
 	"cryptes_ossuaire_pluies": {"chests": 20, "pillars": 9, "small": 6, "big": 3, "secret": true},
 	"la_source": {"chests": 12, "pillars": 1, "small": 0, "big": 1, "final": true}, ## arène du boss final : paratonnerre-mère seul
 }
@@ -161,8 +161,32 @@ func _test_map(id: String, exp: Dictionary) -> void:
 	_check(far_ok, id + " pas de couple gros/petit pilier >= 18 u")
 	if bool(exp.get("secret", false)):
 		_test_secrets(id, meta, map, rects, start, s_cell, to_cell, half, grid)
+	_test_epreuve_chests(id, meta)
 	print("%s: coffres %d piliers %d (%d/%d) obstacles %d, %d marqueurs atteignables" % [id, chests.size(), pillars.size(), small, big, rects.size(), all.size()])
 	map.free()
+
+
+## Repères de coffre et Épreuves (audit du 07/11/2026) : aucun repère à moins de Balance.EPREUVE_CHEST_MIN_U d'un objet
+## interactif d'épreuve (relais, cœur, cloche, source, bornes, départ de la barque), et au moins 3 repères à <=
+## Balance.EPREUVE_CHEST_TRACE_U de chaque épreuve de la carte. Coordonnées en u de carte (JSON).
+func _test_epreuve_chests(id: String, meta: Dictionary) -> void:
+	var verbs: Array = []
+	for v in ["escorte", "rituel", "poursuite", "veine", "tenue"]:
+		if not EpreuveGeom.parse_u(meta, [v], id).is_empty():
+			verbs.append(v)
+	if verbs.is_empty():
+		return
+	var geoms := EpreuveGeom.parse_u(meta, verbs, id)
+	var chests: Array = []
+	for c in (meta["candidates"] as Dictionary)["chests"]:
+		chests.append(Vector2(float(c[0]), float(c[1])))
+	for v in verbs:
+		var g: Dictionary = geoms[StringName(v)]
+		var near := 0
+		for c: Vector2 in chests:
+			if EpreuveGeom.dist_interact(v, g, c) >= Balance.EPREUVE_CHEST_MIN_U and EpreuveGeom.dist(v, g, c) <= Balance.EPREUVE_CHEST_TRACE_U:
+				near += 1
+		_check(near >= 3, "%s : %d repères de coffre utilisables à <= %.0f u de l'épreuve %s (3 requis)" % [id, near, Balance.EPREUVE_CHEST_TRACE_U, v])
 
 
 ## Porte scellée des cartes B : grille (D / :), collision `Door_<id>`, marqueurs, salle close puis ouverte.

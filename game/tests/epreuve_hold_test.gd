@@ -266,7 +266,7 @@ func _contact_and_dim() -> void:
 	_check("5 paquets au total", h.packets_spawned == 5, str(h.packets_spawned))
 	_check("note « fait » (cloche éteinte)", h.grade == &"fait", String(h.grade))
 	var price := Balance.station_price_p(RunState.floor_start_d, RunState.stage)
-	_check("or « fait » = 0,5 P", is_equal_approx(h.gold_paid, 0.5 * price))
+	_check("or « fait » = 0,2 P", is_equal_approx(h.gold_paid, 0.2 * price))
 	_check("évènement de fin (tenue, fait)", _events.size() == 1 and _events[0][0] == "end" and _events[0][1] == &"tenue" and _events[0][2] == &"fait")
 	_check("or versé au joueur", RunState.gold > gold0)
 	var boss := h.get(&"_boss") as Enemy
@@ -287,7 +287,7 @@ func _contact_and_dim() -> void:
 func _grades() -> void:
 	print("-- notes")
 	var price := Balance.station_price_p(RunState.floor_start_d, RunState.stage)
-	for case in [[1.0, &"parfait", 1.5], [0.7, &"parfait", 1.5], [0.69, &"bien", 1.0], [0.05, &"bien", 1.0]]:
+	for case in [[1.0, &"parfait", 0.8], [0.7, &"parfait", 0.8], [0.69, &"bien", 0.5], [0.05, &"bien", 0.5]]:
 		var h := await _new_hold()
 		_far(h)
 		h.activate()

@@ -4,7 +4,8 @@ extends Epreuve
 ## DISQUE de lumière de rayon Balance.VEIN_RADIUS_U glisse à Balance.VEIN_SPEED_U le long de `vein_path` (boucle continue si `closed`,
 ## aller-retour sinon). La charge (Balance.VEIN_CHARGE_S) n'avance que si un joueur vivant est DANS le disque (coop : au prorata
 ## des vivants dedans, plancher Balance.COOP_CHARGE_FLOOR) et ne retombe jamais. Toutes les Balance.VEIN_GEYSER_EVERY_S, un geyser
-## est annoncé SUR le tracé, Balance.VEIN_GEYSER_AHEAD_U devant le centre du disque (télégraphe >= 0,8 s) : un joueur dedans à
+## est annoncé sous un joueur du disque (tour de rôle ; sans joueur, 3 u devant le centre), décalé de Balance.VEIN_GEYSER_AHEAD_U
+## dans le sens d'avance (télégraphe >= 0,8 s, rester immobile est puni) : un joueur dedans à
 ## l'éruption reçoit un coup de mini-boss (une fois par geyser et par joueur) et la note « parfait » est perdue. Charge
 ## pleine : le disque s'arrête, le mini-boss apparaît (base Epreuve : BOSS_OFFSET du centre, donc dans le disque).
 ## `global_position` = centre du disque (la zone de monstres et la flèche hors écran le suivent) ; la source est un enfant
@@ -40,6 +41,7 @@ var _gey_t := 0.0 ## s restantes de la phase courante
 var _gey_pos := Vector2.ZERO ## repère local de la carte
 var _gey_hit_ids: Array = [] ## joueurs déjà touchés par le geyser courant
 var _inside := false ## au moins un joueur dans le disque (dernier pas)
+var _gey_turn := 0 ## tour de rôle entre les joueurs du disque
 
 
 ## Veine sur le tracé `pts` (au moins 2 points, repère local de la carte). `is_closed` : boucle continue.
@@ -190,6 +192,7 @@ func _begin() -> void:
 	_gey_phase = GEY_NONE
 	_gey_hit_ids.clear()
 	_inside = false
+	_gey_turn = 0
 	_place()
 	if source != null:
 		source.refresh()
@@ -230,7 +233,7 @@ func _step_geyser(delta: float) -> void:
 		GEY_NONE:
 			_geyser_left -= delta
 			if _geyser_left <= 0.0:
-				_gey_pos = point_ahead(Balance.VEIN_GEYSER_AHEAD_U * Balance.UNIT_PX)
+				_gey_pos = _pick_geyser_pos()
 				_gey_phase = GEY_TELEGRAPH
 				_gey_t = Balance.VEIN_GEYSER_TELEGRAPH_S
 		GEY_TELEGRAPH:
@@ -247,6 +250,47 @@ func _step_geyser(delta: float) -> void:
 			if _gey_t <= 0.0:
 				_gey_phase = GEY_NONE
 				_geyser_left = Balance.VEIN_GEYSER_EVERY_S
+
+
+## Point d'impact du prochain geyser (repère local de la carte). Avec Balance.VEIN_GEYSER_ON_PLAYER : sous un joueur vivant
+## du disque, à tour de rôle, décalé de Balance.VEIN_GEYSER_AHEAD_U dans le sens d'avance du disque (rester immobile est
+## puni, s'écarter pendant le télégraphe est récompensé). Un joueur qui a un coffre ouvert n'est jamais visé. Sans joueur
+## éligible : devant le centre, comme avant.
+func _pick_geyser_pos() -> Vector2:
+	var fallback := point_ahead(Balance.VEIN_GEYSER_FALLBACK_AHEAD_U * Balance.UNIT_PX)
+	if not Balance.VEIN_GEYSER_ON_PLAYER or not is_inside_tree():
+		return fallback
+	var m := get_parent() as Node2D
+	if m == null:
+		return fallback
+	var targets: Array[Node2D] = []
+	var rad := disc_radius()
+	for pl: Node2D in Players.alive():
+		if pl.global_position.distance_to(global_position) <= rad and not _has_open_chest(pl):
+			targets.append(pl)
+	if targets.is_empty():
+		return fallback
+	var tgt := targets[_gey_turn % targets.size()]
+	_gey_turn += 1
+	var ahead := point_ahead(Balance.UNIT_PX) - position
+	var off := ahead.normalized() * Balance.VEIN_GEYSER_AHEAD_U * Balance.UNIT_PX if ahead.length() > 0.001 else Vector2.ZERO
+	return m.to_local(tgt.global_position) + off
+
+
+## Vrai si `pl` a une session de coffre ouverte (ChestUI de son PlayerState) : en coop l'écran ne met pas le jeu en pause,
+## le joueur ne doit pas se faire frapper par un geyser pendant qu'il choisit.
+func _has_open_chest(pl: Node2D) -> bool:
+	if not pl.has_method(&"player_state"):
+		return false
+	var st: Variant = pl.call(&"player_state")
+	var hosts: Array[Node] = [get_tree().root]
+	if get_tree().current_scene != null:
+		hosts.append(get_tree().current_scene)
+	for h in hosts:
+		for c in h.get_children():
+			if c is ChestUI and not c.is_queued_for_deletion() and c.session != null and c.session.state == st:
+				return true
+	return false
 
 
 ## Un coup par joueur et par geyser : les joueurs vivants dans le cercle de l'éruption.

@@ -6,8 +6,8 @@ extends Epreuve
 ## Balance.CHASE_WARN_S. Un joueur vivant à <= Balance.CHASE_REACH_U de la borne allumée avant le saut marque 1 point (la borne reste
 ## allumée, « done »). Borne ratée : la lumière saute quand même, `misses` +1, plus de « parfait ». Balance.CHASE_POINTS points :
 ## la lumière se fixe, le mini-boss sort de terre dessous. `global_position` de l'épreuve = borne allumée : la zone de
-## monstres et la flèche hors écran suivent la lumière. Coop : n'importe quel joueur compte, cible « parfait » x
-## Balance.epreuve_target_party_mult(n). Placeholders : losange par borne, disque de lumière et traînée sur l'overlay.
+## monstres et la flèche hors écran suivent la lumière. Coop : n'importe quel joueur compte ; la cible « parfait » ne baisse pas (la
+## durée est fixée par les sauts, audit du 07/11/2026). Placeholders : losange par borne, disque de lumière et traînée sur l'overlay.
 
 # Réglages : Balance.CHASE_* (docs/Design_Epreuves.md §8).
 
@@ -136,12 +136,12 @@ func _check_reach() -> void:
 	_refresh_posts()
 	point_scored.emit(lit, points)
 	if points >= Balance.CHASE_POINTS and is_running():
-		_resolve() # note calculée par la base (cible × coop, Poursuite dans EPREUVE_SHARED_VERBS)
+		_resolve() # note calculée par la base (cible × coop pour les verbes de EPREUVE_SHARED_VERBS ; pas la Poursuite)
 
 
 ## Lecture (tests, HUD) de la note que donnerait la base maintenant (même calcul que Epreuve._resolve).
 func compute_grade() -> StringName:
-	var mult := Balance.epreuve_target_party_mult(CoopRules.party_n())
+	var mult := Balance.epreuve_target_party_mult(CoopRules.party_n()) if verb in Balance.EPREUVE_SHARED_VERBS else 1.0
 	return Balance.epreuve_grade(verb, elapsed / maxf(mult, 0.01), clean)
 
 

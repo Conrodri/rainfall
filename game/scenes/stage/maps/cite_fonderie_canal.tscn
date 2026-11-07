@@ -547,48 +547,51 @@ position = Vector2(576, -1728)
 position = Vector2(-960, -1472)
 
 [node name="Chest04" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1728, -1216)
+position = Vector2(1088, -1344)
 
 [node name="Chest05" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1856, -1216)
+position = Vector2(-1728, -1216)
 
 [node name="Chest06" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(64, -960)
+position = Vector2(1856, -1216)
 
 [node name="Chest07" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-1856, -448)
+position = Vector2(64, -960)
 
 [node name="Chest08" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-320, -320)
+position = Vector2(-1856, -448)
 
 [node name="Chest09" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(320, -320)
+position = Vector2(-320, -320)
 
 [node name="Chest10" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1856, -320)
+position = Vector2(320, -320)
 
 [node name="Chest11" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-960, -64)
+position = Vector2(1856, -320)
 
 [node name="Chest12" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-320, -64)
+position = Vector2(-960, -64)
 
 [node name="Chest13" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(960, 64)
+position = Vector2(-320, -64)
 
 [node name="Chest14" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(320, 320)
+position = Vector2(960, 64)
 
 [node name="Chest15" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(64, 960)
+position = Vector2(320, 320)
 
 [node name="Chest16" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(1216, 1728)
+position = Vector2(64, 960)
 
 [node name="Chest17" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
-position = Vector2(-320, 1856)
+position = Vector2(1216, 1728)
 
 [node name="Chest18" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
+position = Vector2(-320, 1856)
+
+[node name="Chest19" type="Marker2D" parent="Markers" groups=["chest_spawn"]]
 position = Vector2(1088, 1856)
 
 [node name="PillarS00" type="Marker2D" parent="Markers" groups=["pillar_spawn", "pillar_small"]]

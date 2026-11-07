@@ -1146,21 +1146,23 @@ const EPREUVES_OFF_ARG := "--no-epreuves" ## interrupteur de comparaison et de s
 var EPREUVES_PER_STAGE := 2 ## épreuves par étage 1-4 (0-2) ; le reste en petits piliers classiques (docs/Design_Epreuves.md §8)
 const EPREUVE_IN_ENDLESS := true ## épreuves aussi aux étages 6-9 du mode sans fin (joueur, 07/11/2026) ; jamais à la Source
 ## Verbes partageables en coop : la cible « parfait » baisse de EPREUVE_TARGET_PLAYER_SLOPE par joueur en plus.
-const EPREUVE_SHARED_VERBS: Array[StringName] = [&"rituel", &"poursuite"]
+## La Poursuite n'en fait plus partie (audit 07/11/2026) : sa durée est fixée par les sauts (CHASE_POINTS x CHASE_JUMP_S).
+const EPREUVE_SHARED_VERBS: Array[StringName] = [&"rituel"]
 ## Rubis cosmétiques (joueur, 07/11/2026) : 1 rubis par épreuve « parfaite », plafond par run (versé avec run_rubies).
 const EPREUVE_RUBIES_PARFAIT := 1
 const EPREUVE_RUBIES_CAP := 8
 ## Or versé à la fin de l'épreuve selon la note, en P (prix d'un petit coffre au début de l'étage, station_price_p).
 ## Calé sur l'or réel (docs/Ateliers_Chiffres.md §1.2, étage 1 : 8,0-8,8 P, bande 8-10,5 P, capsules 4 x 40 déjà
 ## comptées) : un petit pilier rapporte aujourd'hui ≈ 1,0 P (prime du mini-boss 0,3 + kills en zone 0,7). Une épreuve
-## rapporte la note + 0,3 P de prime + la moitié des kills en zone (EPREUVE_ZONE_GOLD_MULT) ≈ 0,4 P : « bien »
-## 1,0 + 0,7 = 1,7 P (+0,7 P par épreuve, +1,4 P par étage => 9,8 P), « parfait » 2,2 P, « fait » 1,2 P. Les valeurs du doc
-## (2,0 / 1,4 / 0,8) poussaient l'étage à 10,6-11,6 P, au-dessus de la bande : abaissées au bas des plages sûres.
-const EPREUVE_GOLD_P := {&"parfait": 1.5, &"bien": 1.0, &"fait": 0.5}
-const EPREUVE_ZONE_GOLD_MULT := 0.5 ## or des kills en zone d'épreuve : l'or vient de la note, pas du farm
+## rapporte la note + 0,3 P de prime + les kills en zone réduits (EPREUVE_ZONE_GOLD_MULT x 0,7 P = 0,28 P).
+## Audit du 07/11/2026 (le modèle ignorait l'allongement de l'étage par l'épreuve et le farm en zone) : note abaissée à
+## 0,8 / 0,5 / 0,2 P et kills en zone x 0,4. Mix 25/55/20 % : note moyenne 0,515 P, +0,3 + 0,28 = 1,1 P par épreuve, soit
+## ≈ +0,1 P par rapport à un petit pilier : l'étage reste dans la bande 8-10,5 P même avec le farm de la zone.
+const EPREUVE_GOLD_P := {&"parfait": 0.8, &"bien": 0.5, &"fait": 0.2}
+const EPREUVE_ZONE_GOLD_MULT := 0.4 ## or des kills en zone d'épreuve : l'or vient de la note, pas du farm
 ## Seuil « parfait » (s) par verbe ; « bien » = seuil x EPREUVE_GOOD_MULT ; « fait » au-delà. Cinq verbes
 ## (docs/Design_Epreuves.md).
-const EPREUVE_TARGET_S := {&"escorte": 40.0, &"rituel": 35.0, &"poursuite": 45.0, &"veine": 40.0, &"tenue": 40.0}
+const EPREUVE_TARGET_S := {&"escorte": 40.0, &"rituel": 35.0, &"poursuite": 40.0, &"veine": 40.0, &"tenue": 40.0}
 const EPREUVE_GOOD_MULT := 1.5
 const EPREUVE_BACKSTOP_S := 75.0 ## passé ce délai l'épreuve se termine d'elle-même en « fait » (jamais bloqué)
 const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreuve"] qui suit l'objet mobile
@@ -1168,6 +1170,9 @@ const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreu
 const EPREUVE_CHEST_TRACE_U := 8.0
 const EPREUVE_CHEST_ARENA_U := 12.0
 const EPREUVE_CHEST_START_U := 14.0
+## Aucun repère de coffre à moins de EPREUVE_CHEST_MIN_U d'un objet interactif d'épreuve (relais, cœur, cloche, source,
+## autel, bornes, départ de la barque) : un coffre ouvert ne doit pas se trouver sous les pieds de l'interaction.
+const EPREUVE_CHEST_MIN_U := 3.0
 const EPREUVE_ARENA_MIN_CHESTS := 2 ## repères de coffre minimum à <= EPREUVE_CHEST_ARENA_U d'un gros pilier candidat (sinon écarté du tirage)
 const EPREUVE_CHEST_SPLIT := {&"epreuve": 3, &"arene": 3, &"depart": 1} ## "epreuve" = par épreuve (3 chacune)
 ## Le gros pilier reste à cette distance (u) de l'objet d'épreuve (tracé, cœur et relais, bornes, cloche) selon le verbe.
@@ -1204,8 +1209,10 @@ const CHASE_JUMP_MAX_U := 17.0
 const CHASE_REACH_U := 2.0
 const CHASE_WARN_S := 1.5
 ## Veine (§3.4) : un disque de lumière (rayon VEIN_RADIUS_U) glisse à VEIN_SPEED_U le long du tracé ; la charge
-## (VEIN_CHARGE_S s) n'avance que si un joueur est dedans ; un geyser est annoncé toutes les VEIN_GEYSER_EVERY_S s,
-## VEIN_GEYSER_AHEAD_U devant le disque (télégraphe VEIN_GEYSER_TELEGRAPH_S >= 0,8 s, coup de mini-boss x VEIN_GEYSER_COEF).
+## (VEIN_CHARGE_S s) n'avance que si un joueur est dedans ; un geyser est annoncé toutes les VEIN_GEYSER_EVERY_S s. Avec
+## VEIN_GEYSER_ON_PLAYER (audit du 07/11/2026) il se pose sous un joueur vivant du disque (tour de rôle), décalé de
+## VEIN_GEYSER_AHEAD_U dans le sens d'avance du disque ; sans joueur dedans : devant le centre. Télégraphe
+## VEIN_GEYSER_TELEGRAPH_S >= 0,8 s, coup de mini-boss x VEIN_GEYSER_COEF.
 const VEIN_RADIUS_U := 6.0
 const VEIN_SPEED_U := 1.5
 const VEIN_CHARGE_S := 30.0
@@ -1213,9 +1220,11 @@ const VEIN_LOOP_MIN_U := 40.0
 const VEIN_LOOP_MAX_U := 70.0
 const VEIN_GEYSER_EVERY_S := 6.0
 const VEIN_GEYSER_RADIUS_U := 2.0
-const VEIN_GEYSER_TELEGRAPH_S := 1.0
+const VEIN_GEYSER_TELEGRAPH_S := 1.2
 const VEIN_GEYSER_COEF := 1.0
-const VEIN_GEYSER_AHEAD_U := 3.0
+const VEIN_GEYSER_AHEAD_U := 0.75
+const VEIN_GEYSER_ON_PLAYER := true
+const VEIN_GEYSER_FALLBACK_AHEAD_U := 3.0 ## sans joueur éligible dans le disque : ancien placement, devant le centre
 const VEIN_ZONE_RADIUS_U := 7.0 ## zone de monstres = disque + 1 u
 ## Tenue (§3.5) : la cloche (PV = HOLD_HP_MINI_SHARE x PV d'un mini-boss, x pente coop du mini-boss : 1,3 / 1,6 / 1,9) est
 ## attaquée par un paquet de HOLD_PACKET monstres toutes les HOLD_WAVE_EVERY_S s pendant HOLD_DURATION_S s, annoncé
@@ -1308,7 +1317,7 @@ const COOP_GOLD_MULT: Array[float] = [1.0, 1.0, 2.0 / 3.0, 0.5, 0.4]
 const PLAYER_ALIVE_SLOPE := 0.2 ## plafond de vivants × (1 + 0,2 (n - 1)) ; 0 en qualité Basse
 ## PV des boss × (1 + pente (n_alive - 1)) (décision du joueur, 01/11/2026).
 const BOSS_HP_PLAYER_SLOPE := {&"mini": 0.3, &"etage": 0.4, &"final": 0.35}
-const EPREUVE_TARGET_PLAYER_SLOPE := 0.08 ## épreuves partageables (Rituel, Poursuite) : cible × (1 - 0,08 (n - 1))
+const EPREUVE_TARGET_PLAYER_SLOPE := 0.08 ## épreuves partageables (Rituel seul) : cible × (1 - 0,08 (n - 1))
 ## Mort en coop (décision du joueur, 01/11/2026) : spectateur, ressuscité au début de l'étage suivant ; équipe entière
 ## morte = défaite. Pas de relevé au sol, pas de réanimation au pilier.
 const MULTI_RESURRECT_ON_FLOOR_START := true
