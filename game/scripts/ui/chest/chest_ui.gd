@@ -210,6 +210,7 @@ static func ensure_actions() -> void:
 		for b in ACTION_DEFAULTS[a]["pad"]:
 			var jb := InputEventJoypadButton.new()
 			jb.button_index = b
+			jb.device = -1 # toute manette ; le propriétaire est filtré par _from_owner
 			InputMap.action_add_event(a, jb)
 
 

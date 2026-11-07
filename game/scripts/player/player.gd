@@ -486,11 +486,8 @@ func _apply_character_look() -> void:
 		spr.scale = _look_scene_scale
 		spr.self_modulate = _look_scene_modulate
 	# Skin équipé (Skins.resolve_frames) : SpriteFrames du skin s'il est livré, sinon ceux du kit (aucun skin rendu = inchangé).
-	var frames_path := Skins.resolve_frames(character.id, character.sprite_frames_path)
-	if skin_id == "default":
-		frames_path = character.sprite_frames_path # coop : apparence de base imposée pour ce joueur
-	elif skin_id != "" and Skins.has_assets(character.id, skin_id):
-		frames_path = Skins.skin_frames_path(character.id, skin_id) # coop : skin choisi à la jonction
+	# `skin_id` du joueur (coop : « default » = base, id = skin choisi à la jonction, « » = skin du profil) : Skins.effective.
+	var frames_path := Skins.resolve_frames_for(character.id, character.sprite_frames_path, skin_id)
 	if frames_path == "":
 		if _look_scene_frames != null and spr.sprite_frames != _look_scene_frames:
 			EmissiveOverlay.apply(spr, _look_scene_frames)

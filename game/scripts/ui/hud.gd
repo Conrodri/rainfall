@@ -42,6 +42,7 @@ var interact_target: Node
 var root: Control
 var touch_layer: Control ## joystick + boutons de sorts + Interagir (mode tactile seulement)
 var reticle: AimReticle
+var _coop_reticles := {} ## slot -> AimReticle (coop locale)
 var ui_scale := 1.0
 
 var _hp_bar: ProgressBar
@@ -856,7 +857,49 @@ func _apply_mode() -> void:
 		_update_interact()
 
 
+## Coop locale : un réticule par joueur vivant à manette (point visé au stick droit) ou au clavier-souris (curseur),
+## teinté de sa couleur d'équipe. Réticules supplémentaires créés à la demande.
+func _update_coop_reticles() -> void:
+	reticle.hide_reticle()
+	var paused := get_tree().paused
+	for e in Players.entries():
+		var r: AimReticle = _coop_reticles.get(e.id)
+		var p := Players.by_id(e.id)
+		var src: InputSource = e.input
+		var visible_now := false
+		var screen := Vector2.ZERO
+		if not paused and p != null and is_instance_valid(p) and src != null and not (src is InputSourceIdle) and Players.is_alive(e.id):
+			if src.kind == InputSource.Kind.KBM:
+				var mp := get_viewport().get_mouse_position()
+				if get_viewport().get_visible_rect().has_point(mp):
+					screen = mp
+					visible_now = true
+			elif src.kind == InputSource.Kind.PAD:
+				var sp: Variant = p.get("spells")
+				if sp != null and (sp as Object).has_method("get_manual_aim_point"):
+					var pt: Variant = sp.get_manual_aim_point(6.0 * 64.0)
+					if pt != null:
+						screen = get_viewport().get_canvas_transform() * (pt as Vector2)
+						visible_now = true
+		if not visible_now:
+			if r != null:
+				r.hide_reticle()
+			continue
+		if r == null:
+			r = AimReticle.new()
+			root.add_child(r)
+			_coop_reticles[e.id] = r
+		r.tint = Palette.team_color(e.id)
+		r.show_at(screen, ui_scale)
+
+
 func _update_reticle() -> void:
+	if Players.count() > 1 and (_coop_hud or not _coop_reticles.is_empty()):
+		_update_coop_reticles()
+		return
+	for r in _coop_reticles.values():
+		(r as AimReticle).hide_reticle() # retour au solo : plus de réticules d'équipe
+	reticle.tint = Color(1.0, 0.95, 0.8)
 	if get_tree().paused or player == null or not is_instance_valid(player):
 		reticle.hide_reticle()
 		return

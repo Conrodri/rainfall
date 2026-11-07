@@ -242,9 +242,19 @@ func _apply(action: StringName) -> void:
 			continue
 		InputMap.action_add_event(action, ev)
 	for ev in b["pad"]:
-		InputMap.action_add_event(action, ev)
+		InputMap.action_add_event(action, _any_device(ev))
 	for ev in _defaults[action]["fixed"]:
-		InputMap.action_add_event(action, ev)
+		InputMap.action_add_event(action, _any_device(ev))
+
+
+## Liaison manette valable pour N'IMPORTE QUELLE manette. Un événement créé par code a `device` = 0 et l'InputMap ne
+## l'accorderait alors qu'à la manette 0 (cause du bug coop « menus pilotés par la manette 0 seule ») ; les liaisons
+## du projet (ui_accept…) sont déjà à -1. Qui peut agir (joueur propriétaire, manette jointe) est décidé plus haut,
+## par la source d'entrée (InputSource.owns_event) et PauseMenu / ChestUI.
+static func _any_device(ev: InputEvent) -> InputEvent:
+	if ev is InputEventJoypadButton or ev is InputEventJoypadMotion:
+		ev.device = -1
+	return ev
 
 
 ## Active/désactive les liaisons souris des sorts (appelé par Platform selon le mode d'entrée).
