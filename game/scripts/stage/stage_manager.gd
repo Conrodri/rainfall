@@ -77,10 +77,12 @@ var floor_plan: Array = [] ## FloorPlan.build(RunState.run_seed) : étages 1..FI
 var floor_minis: Array = [] ## mini-boss du plan pour l'étage courant (petit pilier i -> floor_minis[i])
 var is_final_floor := false ## étage de la Source (boss final, gros pilier unique)
 var rules := DEFAULT_RULES.duplicate(true)
-## Prototype « Les Épreuves » (docs/Boucle_Etage_Refonte.md §5.3, Balance.epreuves_enabled) : à l'étage 1, les deux petits
-## piliers sont remplacés par une Escorte et un Rituel (scripts/stage/epreuve*.gd), les coffres se tirent près des tracés.
+## Les Épreuves (docs/Design_Epreuves.md, Balance.epreuves_enabled) : aux étages 1-4 (et 6-9 du sans fin), les petits
+## piliers sont remplacés par les deux épreuves du biome (data/epreuves.json ; scripts/stage/epreuve*.gd), les coffres se
+## tirent près des objets d'épreuve.
 var epreuves_on := false
-var _epreuve_geom := {} ## {"escort": PackedVector2Array, "heart": Vector2, "relays": Array} en repère local de la carte
+var _epreuve_verbs: Array[String] = [] ## verbes des épreuves de l'étage, dans l'ordre (épreuve 1, épreuve 2)
+var _epreuve_geom := {} ## {verbe (StringName): géométrie en repère local de la carte} (voir EpreuveGeom)
 var _catalog: Array = []
 var _own_nav: NavField = null ## zone accessible sans Director (tests) : grille construite ici
 var _own_nav_map: Node = null
@@ -173,11 +175,16 @@ func start_stage(layout: Dictionary = {}) -> void:
 		stage_started.emit(RunState.stage)
 		return
 	epreuves_on = _epreuves_applicable(layout)
-	_epreuve_geom = _load_epreuve_geom() if epreuves_on else {}
-	if _epreuve_geom.is_empty():
-		epreuves_on = false # carte sans tracé : étage classique
+	_epreuve_verbs.clear()
 	if epreuves_on:
-		rules["small_pillars"] = 0 # les petits piliers sont remplacés par les deux épreuves (le gros pilier reste tiré)
+		_epreuve_verbs = _epreuve_verbs_for(layout)
+	_epreuve_geom = _load_epreuve_geom() if epreuves_on else {}
+	if _epreuve_geom.is_empty() or not _epreuve_makers_ready():
+		epreuves_on = false # carte sans géométrie valide (ou verbe pas encore branché) : étage classique
+		_epreuve_verbs = []
+		_epreuve_geom = {}
+	if epreuves_on: # les petits piliers sont remplacés par les épreuves (le gros pilier reste tiré)
+		rules["small_pillars"] = maxi(int(rules.get("small_pillars", SMALL_PILLARS)) - _epreuve_verbs.size(), 0)
 	var chest_markers := map.get_chest_markers()
 	var pillar_markers := map.get_pillar_markers()
 	if layout.is_empty():
@@ -554,8 +561,9 @@ func _overflow_point_ok(pos: Vector2, lv: Array, chests_at: Array[Vector2], fixe
 			return false
 	if epreuves_on:
 		var r := float(lv[1]) * UNIT
-		if _dist_to_escort(pos) < r or _dist_to_ritual(pos) < r:
-			return false
+		for i in _epreuve_verbs.size():
+			if _dist_to_epreuve(i, pos) < r:
+				return false
 	var clear_r := float(lv[5]) * UNIT
 	return clear_r <= 0.0 or map.get_walkable_ratio(pos, clear_r) >= 0.999
 
@@ -869,63 +877,95 @@ func _capsule_candidates(rng: RandomNumberGenerator) -> Array[Vector2]:
 	return out
 
 
-# --- Épreuves (prototype, docs/Boucle_Etage_Refonte.md §5.3)
+# --- Épreuves (docs/Design_Epreuves.md §7.3)
 ## Les épreuves s'appliquent à cet étage : une reprise de sauvegarde suit ce qui a été tiré, sinon drapeau
-## Balance.epreuves_enabled(), étage 1 (Balance.EPREUVE_STAGE), carte du plan, pas de boucle sans fin.
+## Balance.epreuves_enabled(), carte du plan, ni la Source ni (sans Balance.EPREUVE_IN_ENDLESS) la boucle sans fin, biome
+## activé dans data/epreuves.json et Balance.EPREUVES_PER_STAGE > 0.
 func _epreuves_applicable(layout: Dictionary) -> bool:
 	for p in layout.get("pillars", []):
 		if p is Dictionary and p.has("epreuve"):
 			return true
 	if not layout.is_empty():
 		return false # sauvegarde d'un étage sans épreuves
-	return Balance.epreuves_enabled() and map_scene == null and not endless and not is_final_floor and RunState.stage == Balance.EPREUVE_STAGE
+	if not Balance.epreuves_enabled() or map_scene != null or is_final_floor or Balance.EPREUVES_PER_STAGE <= 0:
+		return false
+	if endless and not Balance.EPREUVE_IN_ENDLESS:
+		return false
+	return EpreuveData.enabled(_epreuve_biome())
 
 
-## Tracé de l'escorte et rituel de la carte (`escort_path` et `ritual` du JSON, coordonnées u en repère carte) convertis en
-## repère local de la carte ; {} si la carte n'en porte pas.
+## Biome de l'étage (clé de data/epreuves.json) : celui de la carte chargée.
+func _epreuve_biome() -> String:
+	return String(map.biome()) if map != null else ""
+
+
+## Verbes des épreuves : ceux de la disposition sauvegardée, sinon les EPREUVES_PER_STAGE premiers du biome.
+func _epreuve_verbs_for(layout: Dictionary) -> Array[String]:
+	var out: Array[String] = []
+	for p in layout.get("pillars", []):
+		if p is Dictionary and p.has("epreuve"):
+			out.append(String(p["epreuve"]))
+	if out.is_empty():
+		var vs := EpreuveData.verbs(_epreuve_biome())
+		out.assign(vs.slice(0, mini(Balance.EPREUVES_PER_STAGE, vs.size())))
+	return out
+
+
+## Géométries des épreuves de la carte (clés JSON par verbe, coordonnées u en repère carte) converties en repère local de la
+## carte : {verbe: géométrie} (voir EpreuveGeom) ; {} si la carte n'en porte pas ou si une clé est invalide.
 func _load_epreuve_geom() -> Dictionary:
-	var path := "%s/%s.json" % [MAPS_DIR, String(map.get_meta(&"map_id", map_id))]
-	if not FileAccess.file_exists(path):
+	if _epreuve_verbs.is_empty():
 		return {}
-	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
-	if not (data is Dictionary) or not data.has("escort_path") or not (data.get("ritual") is Dictionary) or not data.has("size_px"):
-		return {}
-	var half := Vector2(float(data["size_px"][0]), float(data["size_px"][1])) * 0.5
-	var pts := PackedVector2Array()
-	for u in data["escort_path"]:
-		pts.append(map.from_map(Vector2(float(u[0]), float(u[1])) * UNIT - half))
-	var rit: Dictionary = data["ritual"]
-	var relays: Array = []
-	for u in rit.get("relays", []):
-		relays.append(map.from_map(Vector2(float(u[0]), float(u[1])) * UNIT - half))
-	if pts.size() < 2 or not rit.has("heart") or relays.size() != Balance.RITUAL_RELAYS:
-		return {}
-	var hu: Array = rit["heart"]
-	return {"escort": pts, "heart": map.from_map(Vector2(float(hu[0]), float(hu[1])) * UNIT - half), "relays": relays}
+	return EpreuveGeom.load_for(map, String(map.get_meta(&"map_id", map_id)), _epreuve_verbs)
 
 
-## Entrées de disposition des deux épreuves (à la place des petits piliers) : pas de marqueur, positions dans la carte.
+## Chaque verbe de l'étage sait se construire (un verbe dont la classe n'est pas encore branchée dans _make_epreuve
+## renvoie null : l'étage reste classique plutôt que de poser un pilier ordinaire au départ).
+func _epreuve_makers_ready() -> bool:
+	for v in _epreuve_verbs:
+		var e := _make_epreuve(v)
+		if e == null:
+			return false
+		e.free()
+	return true
+
+
+## Entrées de disposition des épreuves (à la place des petits piliers) : pas de marqueur, positions dans la carte.
 func _epreuve_entries() -> Array:
-	return [{"kind": int(Pillar.Kind.SMALL), "epreuve": "escorte"}, {"kind": int(Pillar.Kind.SMALL), "epreuve": "rituel"}]
+	var out: Array = []
+	for v in _epreuve_verbs:
+		out.append({"kind": int(Pillar.Kind.SMALL), "epreuve": v})
+	return out
 
 
+## Construit l'épreuve du verbe à partir de la géométrie chargée ; null si le verbe n'est pas branché.
 func _make_epreuve(verb: String) -> Pillar:
-	if _epreuve_geom.is_empty():
+	var g: Dictionary = _epreuve_geom.get(StringName(verb), {})
+	if g.is_empty():
 		return null
+	var biome := _epreuve_biome()
+	var e: Epreuve = null
 	match verb:
 		"escorte":
-			return EpreuveEscort.make(_epreuve_geom["escort"])
+			e = EpreuveEscort.make(g["path"])
 		"rituel":
-			return EpreuveRitual.make(_epreuve_geom["heart"], _epreuve_geom["relays"])
-	return null
+			e = EpreuveRitual.make(g["heart"], g["relays"], EpreuveData.lever_skin(biome))
+		"poursuite": # branché à la fusion du lot E1 : e = EpreuveChase.make(g["posts"])
+			pass
+		"veine": # branché à la fusion du lot E2 : e = EpreuveVein.make(g["path"], bool(g["closed"]))
+			pass
+		"tenue": # branché à la fusion du lot E3 : e = EpreuveHold.make(g["pos"], g["sides"])
+			pass
+	if e == null:
+		return null
+	e.biome = StringName(biome)
+	return e
 
 
-## Position (repère local) d'une entrée de disposition de pilier : marqueur, ou point d'épreuve (départ du tracé / cœur).
+## Position (repère local) d'une entrée de disposition de pilier : marqueur, ou point d'ancrage de l'épreuve.
 func _pillar_layout_pos(p: Dictionary, pillar_markers: Array[Marker2D]) -> Vector2:
 	if p.has("epreuve"):
-		if String(p["epreuve"]) == "escorte":
-			return (_epreuve_geom["escort"] as PackedVector2Array)[0]
-		return _epreuve_geom["heart"]
+		return EpreuveGeom.anchor(String(p["epreuve"]), _epreuve_geom[StringName(String(p["epreuve"]))])
 	return map.local_pos(pillar_markers[int(p["marker"])])
 
 
@@ -936,53 +976,57 @@ func _big_layout_pos(roll: Array, pillar_markers: Array[Marker2D], fallback: Vec
 	return fallback
 
 
-## Distance (px) de `p` au tracé de l'escorte.
-func _dist_to_escort(p: Vector2) -> float:
-	var pts: PackedVector2Array = _epreuve_geom["escort"]
+## Distance (px) de `p` à l'objet de l'épreuve d'indice `i` (tracé, cœur et relais, bornes, cloche).
+func _dist_to_epreuve(i: int, p: Vector2) -> float:
+	var verb := _epreuve_verbs[i]
+	return EpreuveGeom.dist(verb, _epreuve_geom[StringName(verb)], p)
+
+
+## Distance (px) de `p` à l'objet d'épreuve le plus proche (INF sans épreuves).
+func _dist_to_any_epreuve(p: Vector2) -> float:
 	var best := INF
-	for i in range(pts.size() - 1):
-		var c := Geometry2D.get_closest_point_to_segment(p, pts[i], pts[i + 1])
-		best = minf(best, p.distance_to(c))
+	for i in _epreuve_verbs.size():
+		best = minf(best, _dist_to_epreuve(i, p))
 	return best
 
 
-## Distance (px) de `p` au cœur du Rituel ou à l'un de ses relais.
-func _dist_to_ritual(p: Vector2) -> float:
-	var best: float = p.distance_to(_epreuve_geom["heart"])
-	for r in _epreuve_geom["relays"]:
-		best = minf(best, p.distance_to(r))
-	return best
-
-
-## Le gros pilier reste à Balance.EPREUVE_BIG_AVOID_U du tracé, du cœur et des relais (vrai sans épreuves).
+## Le gros pilier reste à Balance.EPREUVE_BIG_AVOID_U[verbe] de chaque objet d'épreuve (vrai sans épreuves).
 func _big_clear_of_epreuves(p: Vector2) -> bool:
 	if not epreuves_on:
 		return true
-	var r := Balance.EPREUVE_BIG_AVOID_U * UNIT
-	return _dist_to_escort(p) >= r and _dist_to_ritual(p) >= r
+	for i in _epreuve_verbs.size():
+		if _dist_to_epreuve(i, p) < float(Balance.EPREUVE_BIG_AVOID_U.get(StringName(_epreuve_verbs[i]), 12.0)) * UNIT - 1.0: # 1 px de tolérance : un repère pile à la distance voulue reste valide
+			return false
+	return true
 
 
-## Ordre des repères de coffre avec épreuves (docs §1.1) : Balance.EPREUVE_CHEST_SPLIT = 3 à <= 8 u du tracé de l'escorte, 3 du
-## rituel, 3 autour du gros pilier, 1 au départ, puis le reste. Les repères retenus sont mélangés (tirage seedé) pour que les
+## Ordre des repères de coffre avec épreuves (docs §6.2) : Balance.EPREUVE_CHEST_SPLIT = 3 à <= 8 u de chaque épreuve, 3
+## autour du gros pilier, 1 au départ, puis le reste. Les repères retenus sont mélangés (tirage seedé) pour que les
 ## deux grands coffres ne tombent pas toujours au départ ou à l'arène ; `order` est l'ordre déjà mélangé de tous les repères.
 func _epreuve_chest_order(order: Array, chest_markers: Array[Marker2D], big_pos: Vector2, rng: RandomNumberGenerator) -> Array:
 	var start := map.get_player_start()
 	var trace_r := Balance.EPREUVE_CHEST_TRACE_U * UNIT
-	var groups := {&"depart": [], &"arene": [], &"rituel": [], &"escorte": []}
+	var depart: Array = []
+	var arene: Array = []
+	var near: Array = [] # near[i] = repères à <= 8 u de l'épreuve i
+	for _v in _epreuve_verbs:
+		near.append([])
 	for i in order:
 		var p := map.local_pos(chest_markers[i])
 		if p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT:
-			groups[&"depart"].append(i)
+			depart.append(i)
 		if p.distance_to(big_pos) <= Balance.EPREUVE_CHEST_ARENA_U * UNIT:
-			groups[&"arene"].append(i)
-		if _dist_to_ritual(p) <= trace_r:
-			groups[&"rituel"].append(i)
-		if _dist_to_escort(p) <= trace_r:
-			groups[&"escorte"].append(i)
+			arene.append(i)
+		for k in _epreuve_verbs.size():
+			if _dist_to_epreuve(k, p) <= trace_r:
+				near[k].append(i)
 	var picked: Array = []
-	for g in [&"depart", &"arene", &"rituel", &"escorte"]: # groupes les plus rares d'abord
-		var want := int(Balance.EPREUVE_CHEST_SPLIT[g])
-		for i in groups[g]:
+	var groups: Array = [[depart, int(Balance.EPREUVE_CHEST_SPLIT[&"depart"])], [arene, int(Balance.EPREUVE_CHEST_SPLIT[&"arene"])]]
+	for k in range(_epreuve_verbs.size() - 1, -1, -1): # groupes les plus rares d'abord : départ, arène, puis les épreuves
+		groups.append([near[k], int(Balance.EPREUVE_CHEST_SPLIT[&"epreuve"])])
+	for g in groups:
+		var want: int = g[1]
+		for i in g[0]:
 			if want <= 0:
 				break
 			if not picked.has(i):
@@ -1003,7 +1047,7 @@ func _epreuve_capsule_order(cands: Array[Vector2], order: Array) -> Array:
 		var p := cands[i]
 		if first < 0 and p.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * UNIT:
 			first = i
-		elif _dist_to_escort(p) <= trace_r or _dist_to_ritual(p) <= trace_r:
+		elif _dist_to_any_epreuve(p) <= trace_r:
 			traced.append(i)
 		else:
 			rest.append(i)
@@ -1245,6 +1289,7 @@ func _clear_stage() -> void:
 	merchant = null
 	compass_station = null
 	epreuves_on = false
+	_epreuve_verbs = []
 	_epreuve_geom = {}
 
 
@@ -1315,7 +1360,7 @@ func from_dict(d: Dictionary) -> void:
 	var lp: Array = []
 	for p: Dictionary in d["pillars"]:
 		var le := {"kind": int(p["kind"]), "marker": int(p.get("marker", -1))}
-		if p.get("epreuve") is Dictionary: # épreuve : Escorte ou Rituel à la place d'un petit pilier
+		if p.get("epreuve") is Dictionary: # épreuve (verbe sauvé) à la place d'un petit pilier
 			le["epreuve"] = String((p["epreuve"] as Dictionary).get("verb", ""))
 		lp.append(le)
 	var layout := {"chests": d["chests"], "pillars": lp}

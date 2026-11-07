@@ -1,15 +1,33 @@
 extends Node
-## Prototype « Les Épreuves » (docs/Boucle_Etage_Refonte.md §5.3) : drapeau désactivé = jeu inchangé ; drapeau activé =
-## étage 1 avec une Escorte et un Rituel à la place des petits piliers (tracés, relais, coffres, capsules, gros pilier) ;
-## Escorte (corde, arrêt, PV à 0, arrivée, mini-boss, note) ; Rituel (relais à maintien, cadence 12/9/7 s, anneau, note) ;
-## délai de sécurité ; or versé ; or des kills en zone réduit ; sauvegarde ; mode test.
+## Les Épreuves généralisées (docs/Design_Epreuves.md, lot E0) : drapeau désactivé = jeu inchangé sur les 8 cartes ; drapeau
+## activé = les deux épreuves du biome à la place des petits piliers (géométrie praticable, gros pilier dégagé, coffres et
+## capsules répartis, sauvegarde) sur les 8 cartes des étages 1-4 ; données (data/epreuves.json, EpreuveGeom) ; étage 5 et
+## sans fin ; variantes (biome coupé, une épreuve par étage). Escorte (corde, arrêt, PV à 0, arrivée, mini-boss, note) ;
+## Rituel (relais à maintien, cadence 12/9/7 s, anneau, note) ; délai de sécurité ; or versé ; or des kills en zone réduit ;
+## sauvegarde ; mode test. Les verbes Poursuite, Veine et Tenue (lots E1-E3) ont leurs propres tests ; tant que leur classe
+## n'existe pas, les cartes qui les portent sont contrôlées côté données et retombent en étage classique.
 ## godot --headless --path game res://tests/epreuve_test.tscn  -> RESULT: OK
 
 const KILL_GUARD := 400
+const MAPS := ["terrasses_noyees", "terrasses_rizieres_hautes", "foret_brume", "foret_mangrove_lanternes", "cite_rouille", "cite_fonderie_canal", "cryptes_noyees", "cryptes_ossuaire_pluies"]
+const MAP_BIOME := {
+	"terrasses_noyees": "terrasses", "terrasses_rizieres_hautes": "terrasses", "foret_brume": "foret", "foret_mangrove_lanternes": "foret",
+	"cite_rouille": "cite", "cite_fonderie_canal": "cite", "cryptes_noyees": "cryptes", "cryptes_ossuaire_pluies": "cryptes",
+}
+## Fichier de la classe de chaque verbe : la carte est contrôlée « épreuves actives » seulement quand toutes les classes de
+## son biome existent (sinon étage classique, contrôlé aussi).
+const VERB_FILE := {
+	"escorte": "epreuve_escort.gd", "rituel": "epreuve_ritual.gd", "poursuite": "epreuve_chase.gd", "veine": "epreuve_vein.gd", "tenue": "epreuve_hold.gd",
+}
+
+class FakePlayer extends Node2D:
+	func gold_mult() -> float:
+		return 1.0
 
 var _fails := 0
 var _main: Node
 var _events: Array = []
+var _mgr: StageManager = null
 
 
 func _ready() -> void:
@@ -37,6 +55,20 @@ func _seed_for_map(map_id: String) -> int:
 	return -1
 
 
+## Jusqu'à `n` couples [graine, étage de run] dont le plan tombe sur la carte `map_id`.
+func _locate(map_id: String, n: int) -> Array:
+	var out: Array = []
+	for s in range(1, 400):
+		var plan: Array = FloorPlan.build(s)
+		for i in plan.size():
+			if String((plan[i] as Dictionary).get("map_id", "")) == map_id and out.size() < n:
+				out.append([s, i + 1])
+				break
+		if out.size() >= n:
+			break
+	return out
+
+
 func _new_main(run_seed: int) -> void:
 	if _main != null and is_instance_valid(_main):
 		_main.queue_free()
@@ -53,14 +85,22 @@ func _run() -> void:
 	Events.epreuve_started.connect(func(k: StringName) -> void: _events.append(["start", k]))
 	Events.epreuve_finished.connect(func(k: StringName, g: StringName, s: float, gold: float) -> void: _events.append(["end", k, g, s, gold]))
 	_check_balance()
-	await _flag_off()
-	for map_id in ["terrasses_noyees", "terrasses_rizieres_hautes"]:
-		await _flag_on(map_id)
-	await _sweep()
+	_check_data()
+	_check_geom_rules()
+	_setup_manager()
+	_flag_off()
+	for map_id in MAPS:
+		_flag_on(map_id)
+	_sweep()
+	_variants()
+	_final_and_endless()
+	_teardown_manager()
 	await _mechanics()
 	await _flow()
 	await _test_mode()
 	Balance.EPREUVES_ENABLED = false
+	Balance.EPREUVES_PER_STAGE = 2
+	EpreuveData.reload()
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(1 if _fails > 0 else 0)
 
@@ -69,6 +109,7 @@ func _run() -> void:
 func _check_balance() -> void:
 	print("-- Balance")
 	_check("drapeau par défaut : faux", not Balance.EPREUVES_ENABLED)
+	_check("2 épreuves par étage, sans fin activé", Balance.EPREUVES_PER_STAGE == 2 and Balance.EPREUVE_IN_ENDLESS)
 	_check("ZONE_SPAWN_MULT[epreuve] = 1,5", is_equal_approx(float(Balance.ZONE_SPAWN_MULT[&"epreuve"]), 1.5))
 	_check("cadence du cœur [12, 9, 7]", Balance.RITUAL_PULSE_S == [12.0, 9.0, 7.0] and is_equal_approx(Balance.ritual_pulse_s(0), 12.0) and is_equal_approx(Balance.ritual_pulse_s(1), 9.0) and is_equal_approx(Balance.ritual_pulse_s(2), 7.0))
 	_check("maintien 1,2 s, 3 relais, télégraphe >= 0,8 s", is_equal_approx(Balance.RITUAL_HOLD_S, 1.2) and Balance.RITUAL_RELAYS == 3 and Balance.RITUAL_TELEGRAPH_S >= 0.8)
@@ -78,6 +119,7 @@ func _check_balance() -> void:
 	_check("note : faute = bien", Balance.epreuve_grade(&"escorte", 30.0, false) == &"bien")
 	_check("note : bien jusqu'à 1,5 x seuil", Balance.epreuve_grade(&"escorte", 60.0, true) == &"bien" and Balance.epreuve_grade(&"rituel", 52.5, true) == &"bien")
 	_check("note : fait au-delà", Balance.epreuve_grade(&"escorte", 60.5, true) == &"fait" and Balance.epreuve_grade(&"rituel", 53.0, false) == &"fait")
+	_check("note : poursuite 45 s, veine 40 s", Balance.epreuve_grade(&"poursuite", 45.0, true) == &"parfait" and Balance.epreuve_grade(&"veine", 41.0, true) == &"bien")
 	var p := 50.0
 	_check("or : parfait > bien > fait > 0", Balance.epreuve_gold(&"parfait", p) > Balance.epreuve_gold(&"bien", p) and Balance.epreuve_gold(&"bien", p) > Balance.epreuve_gold(&"fait", p) and Balance.epreuve_gold(&"fait", p) > 0.0)
 	# budget : l'étage 1 reste dans la bande 8-10,5 P de docs/Ateliers_Chiffres.md (étage mesuré 8,0-8,8 P, ≈ 1,0 P par petit pilier)
@@ -87,102 +129,290 @@ func _check_balance() -> void:
 	_check("budget d'or : étage 1 entre 8 et 10,5 P (mix 25/55/20 %%, %.1f P)" % floor_p, floor_p >= 8.0 and floor_p <= 10.5)
 
 
+# --- data/epreuves.json
+func _check_data() -> void:
+	print("-- data/epreuves.json")
+	EpreuveData.reload()
+	var names := EpreuveData.all_verbs()
+	_check("5 verbes nommés", names.size() == 5 and "escorte" in names and "rituel" in names and "poursuite" in names and "veine" in names and "tenue" in names)
+	var pairs: Array = []
+	for biome in ["terrasses", "foret", "cite", "cryptes"]:
+		var vs := EpreuveData.verbs(biome)
+		_check("%s : actif, 2 verbes distincts connus" % biome, EpreuveData.enabled(biome) and vs.size() == 2 and vs[0] != vs[1] and vs[0] in names and vs[1] in names)
+		_check("%s : libellé de départ <= 24 caractères pour chaque verbe" % biome, vs.all(func(v: String) -> bool: var l := EpreuveData.label(biome, v, "start"); return l != "" and l.length() <= 24))
+		_check("%s : skin de levier" % biome, String(EpreuveData.lever_skin(biome)) != "")
+		var key := vs.duplicate()
+		key.sort()
+		pairs.append(key)
+	for i in range(pairs.size() - 1):
+		_check("paire de verbes différente entre les étages %d et %d" % [i + 1, i + 2], pairs[i] != pairs[i + 1])
+	_check("Cryptes = même paire que le Gouffre (décision du joueur)", pairs[1] == pairs[3])
+	_check("la Source : aucune épreuve", not EpreuveData.enabled("source") and EpreuveData.verbs("source").is_empty())
+	_check("biome inconnu : désactivé", not EpreuveData.enabled("nimporte") and EpreuveData.verbs("nimporte").is_empty())
+	_check("libellés Cité du Rituel", EpreuveData.label("cite", "rituel", "start") == "Réveiller la pompe" and EpreuveData.label("cite", "rituel", "relay") == "Fermer la soupape")
+	_check("skins de leviers livrés", EpreuveData.lever_skin("terrasses") == &"terraces" and EpreuveData.lever_skin("foret") == &"fog_forest" and EpreuveData.lever_skin("cite") == &"rust_city" and EpreuveData.lever_skin("cryptes") == &"crypts")
+	# interrupteur par biome
+	(EpreuveData._data["biomes"]["terrasses"] as Dictionary)["enabled"] = false
+	_check("enabled=false coupe le biome", not EpreuveData.enabled("terrasses"))
+	EpreuveData.reload()
+	_check("rechargement : biome réactivé", EpreuveData.enabled("terrasses"))
+
+
+## Règles de structure de EpreuveGeom (refus des tracés invalides, jamais de plantage).
+func _check_geom_rules() -> void:
+	print("-- EpreuveGeom")
+	var base := {"size_px": [100, 100]}
+	var ok := func(verbs: Array, extra: Dictionary) -> bool:
+		var d := base.duplicate()
+		d.merge(extra)
+		return not EpreuveGeom.parse_u(d, verbs, "test").is_empty()
+	var good_posts := [[0, 0], [12, 0], [24, 0], [36, 0], [48, 0], [60, 0]]
+	_check("poursuite : 6 bornes espacées de 12 u acceptées", ok.call(["poursuite"], {"chase_posts": good_posts}))
+	_check("poursuite : 5 bornes refusées", not ok.call(["poursuite"], {"chase_posts": good_posts.slice(0, 5)}))
+	_check("poursuite : borne isolée refusée", not ok.call(["poursuite"], {"chase_posts": [[0, 0], [12, 0], [24, 0], [36, 0], [48, 0], [200, 200]]}))
+	_check("poursuite : clé absente refusée", not ok.call(["poursuite"], {}))
+	_check("veine : boucle de 48 u acceptée", ok.call(["veine"], {"vein_path": [[0, 0], [12, 0], [12, 12], [0, 12]], "vein_closed": true}))
+	_check("veine : même tracé ouvert = 36 u refusé", not ok.call(["veine"], {"vein_path": [[0, 0], [12, 0], [12, 12], [0, 12]], "vein_closed": false}))
+	_check("veine : 80 u refusés", not ok.call(["veine"], {"vein_path": [[0, 0], [80, 0]], "vein_closed": false}))
+	_check("veine : 1 point refusé", not ok.call(["veine"], {"vein_path": [[0, 0]]}))
+	_check("tenue : 3 côtés acceptés", ok.call(["tenue"], {"hold": {"pos": [10, 10], "sides": [[0, -1], [1, 0], [-1, 0]]}}))
+	_check("tenue : 2 côtés refusés", not ok.call(["tenue"], {"hold": {"pos": [10, 10], "sides": [[0, -1], [1, 0]]}}))
+	_check("tenue : côté nul refusé", not ok.call(["tenue"], {"hold": {"pos": [10, 10], "sides": [[0, -1], [1, 0], [0, 0]]}}))
+	_check("rituel : 2 relais refusés", not ok.call(["rituel"], {"ritual": {"heart": [5, 5], "relays": [[1, 1], [2, 2]]}}))
+	_check("escorte : tracé d'un point refusé", not ok.call(["escorte"], {"escort_path": [[1, 1]]}))
+	_check("deux verbes : l'un invalide invalide la carte", not ok.call(["escorte", "veine"], {"escort_path": [[0, 0], [30, 0]], "vein_path": [[0, 0]]}))
+	var g := EpreuveGeom.parse_u({"vein_path": [[0, 0], [12, 0], [12, 12], [0, 12]], "vein_closed": true}, ["veine"])
+	var ge: Dictionary = g[&"veine"]
+	_check("dist : sur le tracé fermé (segment de fermeture)", is_equal_approx(EpreuveGeom.dist("veine", ge, Vector2(0, 6)), 0.0) and is_equal_approx(EpreuveGeom.dist("veine", ge, Vector2(-3, 6)), 3.0))
+	_check("ancre : premier point du tracé", EpreuveGeom.anchor("veine", ge) == Vector2(0, 0))
+	_check("échantillonnage du tracé fermé couvre la fermeture", EpreuveGeom.sample_points("veine", ge, 1.0).size() >= 48)
+
+
+# --- Banc de disposition : un StageManager sans scène principale (comme tests/capsule_test)
+func _setup_manager() -> void:
+	var player := FakePlayer.new()
+	player.add_to_group(&"player")
+	add_child(player)
+	_mgr = StageManager.new()
+	add_child(_mgr)
+
+
+func _teardown_manager() -> void:
+	if _mgr != null and is_instance_valid(_mgr):
+		_mgr.queue_free()
+	for n in get_tree().get_nodes_in_group(&"player"):
+		if n is FakePlayer:
+			n.queue_free()
+	_mgr = null
+
+
+## Démarre l'étage `stage` du run de graine `run_seed` (mode sans fin si `endless`).
+func _start(run_seed: int, stage: int, endless: bool = false) -> void:
+	RunState.start_run(&"moyen", run_seed)
+	_mgr.reset_run()
+	_mgr.endless = endless
+	RunState.stage = stage
+	_mgr.start_stage()
+
+
+func _expect_on(map_id: String) -> bool:
+	for v in EpreuveData.verbs(MAP_BIOME[map_id]):
+		if not ResourceLoader.exists("res://scripts/stage/%s" % VERB_FILE[v]):
+			return false
+	return true
+
+
+## Disposition d'un étage classique : 3 piliers ordinaires, 10-11 coffres, 4 capsules.
+func _classic_ok(stage: StageManager) -> bool:
+	return not stage.epreuves_on and stage.pillars.size() == 3 and stage.pillars.filter(func(p): return p is Epreuve).is_empty() \
+		and stage.chests.size() >= 10 and stage.chests.size() <= 11 and stage.capsules.size() == Balance.CAPSULES_PER_STAGE
+
+
 # --- Drapeau désactivé : jeu inchangé
 func _flag_off() -> void:
 	print("-- drapeau désactivé")
 	Balance.EPREUVES_ENABLED = false
-	await _new_main(_seed_for_map("terrasses_noyees"))
-	var stage: StageManager = _main.stage
-	_check("étage 1 : pas d'épreuves", not stage.epreuves_on)
-	_check("3 piliers dont 2 petits ordinaires", stage.pillars.size() == 3 and stage.pillars.filter(func(p): return p is Epreuve).is_empty())
+	for map_id in MAPS:
+		var loc: Array = _locate(map_id, 1)[0]
+		_start(loc[0], loc[1])
+		_check("%s : étage classique (3 piliers ordinaires, 10-11 coffres, 4 capsules)" % map_id, _mgr.map_id == map_id and _classic_ok(_mgr))
+		_check("%s : piliers tirés sur des marqueurs" % map_id, (_mgr.to_dict()["pillars"] as Array).all(func(d): return int(d["marker"]) >= 0 and not d.has("epreuve")))
 	_check("aucun nœud du groupe epreuves", get_tree().get_nodes_in_group(&"epreuves").is_empty())
-	_check("piliers tirés sur des marqueurs", (stage.to_dict()["pillars"] as Array).all(func(d): return int(d["marker"]) >= 0 and not d.has("epreuve")))
-	_check("coffres : 8 petits + 2 grands (+ légendaire éventuel)", stage.chests.size() >= 10 and stage.chests.size() <= 11)
-	_check("capsules : 4", stage.capsules.size() == Balance.CAPSULES_PER_STAGE)
 	_check("zone : mêmes tarifs mini et étage", is_equal_approx(float(Balance.ZONE_SPAWN_MULT[&"mini"]), 1.5) and is_equal_approx(float(Balance.ZONE_SPAWN_MULT[&"etage"]), 2.33))
 	_check("or des kills non modifié hors épreuve", is_equal_approx(Epreuve.zone_gold_mult(get_tree(), Vector2(1.0e6, 1.0e6)), 1.0))
 	# même graine, même étage, drapeau désactivé deux fois : tirage identique (seed intacte)
-	var d1: Dictionary = stage.to_dict()
-	await _new_main(_seed_for_map("terrasses_noyees"))
-	var d2: Dictionary = (_main.stage as StageManager).to_dict()
+	var loc0: Array = _locate("terrasses_noyees", 1)[0]
+	_start(loc0[0], loc0[1])
+	var d1: Dictionary = _mgr.to_dict()
+	_start(loc0[0], loc0[1])
+	var d2: Dictionary = _mgr.to_dict()
 	_check("tirage déterministe (pilier, coffres, capsules)", JSON.stringify([d1["pillars"], d1["chests"], d1["capsules"]]) == JSON.stringify([d2["pillars"], d2["chests"], d2["capsules"]]))
 
 
-# --- Drapeau activé : disposition de l'étage 1
+# --- Drapeau activé : disposition des étages 1-4, une carte
 func _flag_on(map_id: String) -> void:
 	print("-- drapeau activé, ", map_id)
 	Balance.EPREUVES_ENABLED = true
-	await _new_main(_seed_for_map(map_id))
-	var stage: StageManager = _main.stage
-	var u := Balance.UNIT_PX
-	_check("carte du plan", stage.map_id == map_id, stage.map_id)
-	_check("épreuves actives", stage.epreuves_on)
-	_check("3 piliers : escorte, rituel, gros", stage.pillars.size() == 3 and stage.pillars[0] is EpreuveEscort and stage.pillars[1] is EpreuveRitual and stage.pillars[2].kind == Pillar.Kind.BIG and not (stage.pillars[2] is Epreuve))
-	if stage.pillars.size() != 3 or not (stage.pillars[0] is EpreuveEscort) or not (stage.pillars[1] is EpreuveRitual):
+	var loc: Array = _locate(map_id, 1)[0]
+	_start(loc[0], loc[1])
+	var stage := _mgr
+	var biome: String = MAP_BIOME[map_id]
+	var verbs := EpreuveData.verbs(biome)
+	_check("carte du plan, biome de la carte", stage.map_id == map_id and String(stage.map.biome()) == biome, stage.map_id)
+	var geom := EpreuveGeom.load_for(stage.map, map_id, verbs)
+	_check("clés JSON valides pour %s" % ", ".join(verbs), geom.size() == verbs.size())
+	if geom.size() != verbs.size():
 		return
-	var esc: EpreuveEscort = stage.pillars[0]
-	var rit: EpreuveRitual = stage.pillars[1]
-	var big: Pillar = stage.pillars[2]
-	_check("tracé de l'escorte : 60-80 u", esc.length / u >= 60.0 and esc.length / u <= 80.0, "%.1f u" % (esc.length / u))
-	_check("barque au ponton de départ", esc.position.distance_to(esc.path[0]) < 1.0)
+	_check_geometry(stage, map_id, biome, verbs, geom)
+	if not _expect_on(map_id):
+		_check("verbe non branché (lots E1-E3) : étage classique, jamais de pilier au départ", _classic_ok(stage))
+		return
+	_check_layout(stage, map_id, verbs)
+	Balance.EPREUVES_ENABLED = false
+
+
+## Géométrie de la carte : praticable, loin des secrets et du départ, au moins deux candidats de gros pilier dégagés.
+func _check_geometry(stage: StageManager, map_id: String, biome: String, verbs: Array, geom: Dictionary) -> void:
+	var u := Balance.UNIT_PX
 	var walk_ok := true
 	var n := 0
-	for i in range(esc.path.size() - 1):
-		var steps := int(esc.path[i].distance_to(esc.path[i + 1]) / (0.5 * u))
-		for k in steps + 1:
+	for v in verbs:
+		for p in EpreuveGeom.sample_points(v, geom[StringName(v)], 0.5 * u):
 			n += 1
-			if not stage.is_reachable_local(esc.path[i].lerp(esc.path[i + 1], float(k) / float(maxi(steps, 1)))):
+			if not stage.is_reachable_local(p):
 				walk_ok = false
-	_check("tracé entièrement accessible à pied (%d points)" % n, walk_ok)
-	_check("3 relais, 10-14 u du cœur", rit.relays.size() == 3 and rit.relays.all(func(r): return r.global_position.distance_to(rit.global_position) / u >= 10.0 and r.global_position.distance_to(rit.global_position) / u <= 14.0))
-	_check("cœur et relais accessibles", stage.is_reachable_local(rit.position) and rit.relays.all(func(r): return stage.is_reachable_local(rit.position + r.position)))
-	_check("gros pilier à >= 12 u du tracé, du cœur et des relais", stage._big_clear_of_epreuves(big.position))
+	_check("objets d'épreuve accessibles à pied (%d points)" % n, walk_ok)
+	# en u de carte : distances aux plaques et gardiens de secret, au départ
+	var data = JSON.parse_string(FileAccess.get_file_as_string("res://data/maps/%s.json" % map_id))
+	var raw := EpreuveGeom.parse_u(data, verbs, map_id)
+	var half := Vector2(float(data["size_px"][0]), float(data["size_px"][1])) * 0.5
+	var start_u := (stage.map.to_map(stage.map.get_player_start()) + half) / u
+	var secret_ok := true
+	for sc in data.get("secrets", []):
+		for key in ["plates_u", "guardians_u"]:
+			for pt in sc.get(key, []):
+				for v in verbs:
+					if EpreuveGeom.dist(v, raw[StringName(v)], Vector2(float(pt[0]), float(pt[1]))) < 4.0:
+						secret_ok = false
+	_check("objets d'épreuve à >= 4 u des plaques et gardiens de secret", secret_ok)
+	var start_ok := true
+	for v in verbs:
+		if EpreuveGeom.anchor(v, raw[StringName(v)]).distance_to(start_u) < 6.0:
+			start_ok = false
+	_check("point d'ancrage de chaque épreuve à >= 6 u du départ", start_ok)
+	var clear := 0
+	var bigs := 0
+	for m in stage.map.get_pillar_markers():
+		if not m.is_in_group(&"pillar_big"):
+			continue
+		bigs += 1
+		var p := stage.map.local_pos(m)
+		var ok := true
+		for v in verbs:
+			if EpreuveGeom.dist(v, geom[StringName(v)], p) < float(Balance.EPREUVE_BIG_AVOID_U[StringName(v)]) * u - 1.0:
+				ok = false
+		clear += 1 if ok else 0
+	var need := 1 if biome == "terrasses" else 2 # Terrasses : tracés du prototype (un seul candidat dégagé, à rééquilibrer par le level-designer)
+	_check("au moins %d candidat(s) de gros pilier dégagé(s) (%d sur %d)" % [need, clear, bigs], clear >= need)
+
+
+## Étage tiré avec les épreuves : 3 piliers (deux épreuves du biome + gros), coffres, capsules, sauvegarde.
+func _check_layout(stage: StageManager, map_id: String, verbs: Array) -> void:
+	var u := Balance.UNIT_PX
+	_check("épreuves actives", stage.epreuves_on)
+	if not stage.epreuves_on or stage.pillars.size() != 3:
+		_check("3 piliers : deux épreuves et le gros", false, str(stage.pillars.size()))
+		return
+	var e0 := stage.pillars[0] as Epreuve
+	var e1 := stage.pillars[1] as Epreuve
+	var big: Pillar = stage.pillars[2]
+	_check("3 piliers : épreuves %s, %s, gros" % [verbs[0], verbs[1]], e0 != null and e1 != null and String(e0.verb) == verbs[0] and String(e1.verb) == verbs[1] and big.kind == Pillar.Kind.BIG and not (big is Epreuve))
+	if e0 == null or e1 == null:
+		return
+	_check("biome et libellé de l'épreuve", String(e0.biome) == MAP_BIOME[map_id] and e0.interact_label() == EpreuveData.label(MAP_BIOME[map_id], verbs[0], "start"))
+	_check("rituel : relais du skin du biome", not (e1 is EpreuveRitual) or (e1 as EpreuveRitual).relays.all(func(r): return r.biome == EpreuveData.lever_skin(MAP_BIOME[map_id])))
+	_check("gros pilier dégagé des objets d'épreuve", stage._big_clear_of_epreuves(big.position))
 	_check("petits piliers verrouillent le gros", big.state == Pillar.STATE_LOCKED)
-	_check("mini-boss du plan sur chaque épreuve", esc.boss_id != &"" and rit.boss_id != &"" and esc.boss_id != rit.boss_id)
-	var near_esc := 0
-	var near_rit := 0
+	_check("mini-boss du plan sur chaque épreuve, distincts", e0.boss_id != &"" and e1.boss_id != &"" and e0.boss_id != e1.boss_id)
+	var near := [0, 0]
 	for c in stage.chests:
-		near_esc += 1 if stage._dist_to_escort(c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
-		near_rit += 1 if stage._dist_to_ritual(c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
-	_check("coffres : >= 3 à <= 8 u du tracé (%d)" % near_esc, near_esc >= 3)
-	_check("coffres : >= 3 à <= 8 u du rituel (%d)" % near_rit, near_rit >= 3)
+		for i in 2:
+			near[i] += 1 if stage._dist_to_epreuve(i, c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
+	_check("coffres : >= 3 à <= 8 u de chaque épreuve (%d, %d)" % [near[0], near[1]], near[0] >= 3 and near[1] >= 3)
 	var near_big := stage.chests.filter(func(c): return c.position.distance_to(big.position) <= Balance.EPREUVE_CHEST_ARENA_U * u).size()
 	_check("coffres : >= 2 autour du gros pilier (%d)" % near_big, near_big >= 2)
 	_check("coffres : 10 ou 11 au total", stage.chests.size() >= 10 and stage.chests.size() <= 11, str(stage.chests.size()))
-	_check("capsules : 4, une près du départ", stage.capsules.size() == 4 and stage.capsules.any(func(c): return c.position.distance_to(stage.map.get_player_start()) <= Balance.EPREUVE_CHEST_START_U * u))
-	var caps_trace := stage.capsules.filter(func(c): return stage._dist_to_escort(c.position) <= 8.0 * u or stage._dist_to_ritual(c.position) <= 8.0 * u).size()
+	var start := stage.map.get_player_start()
+	_check("capsules : 4, une près du départ", stage.capsules.size() == 4 and stage.capsules.any(func(c): return c.position.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * u))
+	var caps_trace := stage.capsules.filter(func(c): return stage._dist_to_any_epreuve(c.position) <= 8.0 * u).size()
 	_check("capsules : au moins 3 sur les tracés (%d)" % caps_trace, caps_trace >= 3)
 	_check("sauvegarde : entrées d'épreuve", (stage.to_dict()["pillars"] as Array).filter(func(d): return d.has("epreuve") and int(d["marker"]) == -1).size() == 2)
 	# restauration complète de l'étage depuis la sauvegarde
 	var d: Dictionary = stage.to_dict()
 	var chests_n := stage.chests.size()
 	stage.from_dict(JSON.parse_string(JSON.stringify(d)) as Dictionary)
-	await _frames(2)
-	_check("from_dict : mêmes épreuves, mêmes coffres", stage.pillars.size() == 3 and stage.pillars[0] is EpreuveEscort and stage.pillars[1] is EpreuveRitual and stage.chests.size() == chests_n)
-	# autre graine, même carte : l'étage reste jouable (gros pilier trouvé)
-	Balance.EPREUVES_ENABLED = false
+	_check("from_dict : mêmes épreuves, mêmes coffres", stage.epreuves_on and stage.pillars.size() == 3 and String((stage.pillars[0] as Epreuve).verb) == verbs[0] and String((stage.pillars[1] as Epreuve).verb) == verbs[1] and stage.chests.size() == chests_n)
 
 
-## Plusieurs graines par carte (les mêmes invariants de disposition) : gros pilier hors des tracés, coffres répartis, 4 capsules.
+## Plusieurs graines par carte (mêmes invariants de disposition).
 func _sweep() -> void:
 	print("-- balayage de graines")
 	Balance.EPREUVES_ENABLED = true
 	var u := Balance.UNIT_PX
-	for map_id in ["terrasses_noyees", "terrasses_rizieres_hautes"]:
-		var seeds: Array[int] = []
-		for s in range(1, 400):
-			if String((FloorPlan.build(s)[0] as Dictionary).get("map_id", "")) == map_id and seeds.size() < 5:
-				seeds.append(s)
-		for sd in seeds:
-			await _new_main(sd)
-			var stage: StageManager = _main.stage
+	for map_id in MAPS:
+		var expect := _expect_on(map_id)
+		var bad := 0
+		var tried := 0
+		for loc in _locate(map_id, 5):
+			_start(loc[0], loc[1])
+			tried += 1
+			var stage := _mgr
+			if not expect:
+				bad += 0 if _classic_ok(stage) else 1
+				continue
 			var ok := stage.epreuves_on and stage.pillars.size() == 3 and stage.pillars[2].kind == Pillar.Kind.BIG and stage._big_clear_of_epreuves(stage.pillars[2].position)
-			var ne := 0
-			var nr := 0
+			var near := [0, 0]
 			for c in stage.chests:
-				ne += 1 if stage._dist_to_escort(c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
-				nr += 1 if stage._dist_to_ritual(c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
-			_check("%s graine %d : disposition valide (escorte %d, rituel %d coffres, %d capsules)" % [map_id, sd, ne, nr, stage.capsules.size()], ok and ne >= 3 and nr >= 3 and stage.capsules.size() == 4 and stage.chests.size() >= 10)
+				for i in 2:
+					near[i] += 1 if stage._dist_to_epreuve(i, c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
+			ok = ok and near[0] >= 3 and near[1] >= 3 and stage.capsules.size() == 4 and stage.chests.size() >= 10
+			bad += 0 if ok else 1
+		_check("%s : %d graines, disposition valide%s" % [map_id, tried, "" if expect else " (étage classique : verbe non branché)"], tried > 0 and bad == 0, "%d échec(s)" % bad)
+	Balance.EPREUVES_ENABLED = false
+
+
+## Interrupteurs sans code : biome coupé = piliers classiques ; une épreuve par étage = une épreuve + un petit pilier.
+func _variants() -> void:
+	print("-- variantes")
+	Balance.EPREUVES_ENABLED = true
+	var loc: Array = _locate("terrasses_noyees", 1)[0]
+	(EpreuveData._data["biomes"]["terrasses"] as Dictionary)["enabled"] = false
+	_start(loc[0], loc[1])
+	_check("enabled=false : le biome retrouve ses piliers", _classic_ok(_mgr))
+	EpreuveData.reload()
+	Balance.EPREUVES_PER_STAGE = 1
+	_start(loc[0], loc[1])
+	var ep := _mgr.pillars.filter(func(p): return p is Epreuve)
+	_check("EPREUVES_PER_STAGE = 1 : 3 piliers dont 1 épreuve (escorte) et 1 petit pilier ordinaire", _mgr.epreuves_on and _mgr.pillars.size() == 3 and ep.size() == 1 and (ep[0] as Epreuve).verb == &"escorte" and _mgr.pillars.filter(func(p): return not (p is Epreuve) and p.kind == Pillar.Kind.SMALL).size() == 1)
+	Balance.EPREUVES_PER_STAGE = 0
+	_start(loc[0], loc[1])
+	_check("EPREUVES_PER_STAGE = 0 : étage classique", _classic_ok(_mgr))
+	Balance.EPREUVES_PER_STAGE = 2
+	Balance.EPREUVES_ENABLED = false
+
+
+## Étage 5 : jamais d'épreuve ; sans fin étage 6 : épreuves du biome 1 (EPREUVE_IN_ENDLESS).
+func _final_and_endless() -> void:
+	print("-- étage 5 et sans fin")
+	Balance.EPREUVES_ENABLED = true
+	var loc: Array = _locate("la_source", 1)[0]
+	_start(loc[0], loc[1])
+	_check("la Source : jamais d'épreuve", _mgr.is_final_floor and not _mgr.epreuves_on and _mgr.pillars.filter(func(p): return p is Epreuve).is_empty())
+	_start(loc[0], 6, true)
+	_check("sans fin, étage 6 : épreuves du biome des Terrasses", _mgr.epreuves_on and _mgr.pillars.filter(func(p): return p is Epreuve).size() == 2 and String(_mgr.map.biome()) == "terrasses", "%s %s" % [_mgr.map_id, _mgr.epreuves_on])
+	_start(loc[0], 10, true)
+	_check("sans fin, étage 10 (Source) : aucune épreuve", _mgr.is_final_floor and not _mgr.epreuves_on)
+	_mgr.endless = false
 	Balance.EPREUVES_ENABLED = false
 
 

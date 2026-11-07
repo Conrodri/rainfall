@@ -1142,7 +1142,14 @@ func omen_rubies(accepted: int) -> int:
 ## Activation : `Balance.EPREUVES_ENABLED = true` (tests) ou l'option de lancement `-- --epreuves` (epreuves_enabled()).
 var EPREUVES_ENABLED := false
 const EPREUVES_ARG := "--epreuves"
-const EPREUVE_STAGE := 1 ## étage de run (prototype : étage 1 seulement, pas de boucle sans fin)
+const EPREUVES_OFF_ARG := "--no-epreuves" ## interrupteur de comparaison et de secours (l'emporte sur le drapeau)
+var EPREUVES_PER_STAGE := 2 ## épreuves par étage 1-4 (0-2) ; le reste en petits piliers classiques (docs/Design_Epreuves.md §8)
+const EPREUVE_IN_ENDLESS := true ## épreuves aussi aux étages 6-9 du mode sans fin (joueur, 07/11/2026) ; jamais à la Source
+## Verbes partageables en coop : la cible « parfait » baisse de EPREUVE_TARGET_PLAYER_SLOPE par joueur en plus.
+const EPREUVE_SHARED_VERBS: Array[StringName] = [&"rituel", &"poursuite"]
+## Rubis cosmétiques (joueur, 07/11/2026) : 1 rubis par épreuve « parfaite », plafond par run (versé avec run_rubies).
+const EPREUVE_RUBIES_PARFAIT := 1
+const EPREUVE_RUBIES_CAP := 8
 ## Or versé à la fin de l'épreuve selon la note, en P (prix d'un petit coffre au début de l'étage, station_price_p).
 ## Calé sur l'or réel (docs/Ateliers_Chiffres.md §1.2, étage 1 : 8,0-8,8 P, bande 8-10,5 P, capsules 4 x 40 déjà
 ## comptées) : un petit pilier rapporte aujourd'hui ≈ 1,0 P (prime du mini-boss 0,3 + kills en zone 0,7). Une épreuve
@@ -1151,8 +1158,8 @@ const EPREUVE_STAGE := 1 ## étage de run (prototype : étage 1 seulement, pas d
 ## (2,0 / 1,4 / 0,8) poussaient l'étage à 10,6-11,6 P, au-dessus de la bande : abaissées au bas des plages sûres.
 const EPREUVE_GOLD_P := {&"parfait": 1.5, &"bien": 1.0, &"fait": 0.5}
 const EPREUVE_ZONE_GOLD_MULT := 0.5 ## or des kills en zone d'épreuve : l'or vient de la note, pas du farm
-## Seuil « parfait » (s) par verbe ; « bien » = seuil x EPREUVE_GOOD_MULT ; « fait » au-delà. Seuls escorte et rituel
-## existent dans le prototype (les autres verbes : docs/Boucle_Etage_Refonte.md §1.1).
+## Seuil « parfait » (s) par verbe ; « bien » = seuil x EPREUVE_GOOD_MULT ; « fait » au-delà. Cinq verbes
+## (docs/Design_Epreuves.md).
 const EPREUVE_TARGET_S := {&"escorte": 40.0, &"rituel": 35.0, &"poursuite": 45.0, &"veine": 40.0, &"tenue": 40.0}
 const EPREUVE_GOOD_MULT := 1.5
 const EPREUVE_BACKSTOP_S := 75.0 ## passé ce délai l'épreuve se termine d'elle-même en « fait » (jamais bloqué)
@@ -1161,8 +1168,9 @@ const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreu
 const EPREUVE_CHEST_TRACE_U := 8.0
 const EPREUVE_CHEST_ARENA_U := 12.0
 const EPREUVE_CHEST_START_U := 14.0
-const EPREUVE_CHEST_SPLIT := {&"escorte": 3, &"rituel": 3, &"arene": 3, &"depart": 1}
-const EPREUVE_BIG_AVOID_U := 12.0 ## le gros pilier reste à cette distance du tracé, du cœur et des relais
+const EPREUVE_CHEST_SPLIT := {&"epreuve": 3, &"arene": 3, &"depart": 1} ## "epreuve" = par épreuve (3 chacune)
+## Le gros pilier reste à cette distance (u) de l'objet d'épreuve (tracé, cœur et relais, bornes, cloche) selon le verbe.
+const EPREUVE_BIG_AVOID_U := {&"escorte": 12.0, &"rituel": 12.0, &"veine": 10.0, &"tenue": 12.0, &"poursuite": 6.0}
 ## Escorte : la barque suit `escort_path` à ESCORT_SPEED_U ; elle s'arrête si le joueur s'éloigne de plus de
 ## ESCORT_LEASH_U ; les monstres au contact (ESCORT_HIT_RADIUS_U) la blessent ; à 0 PV elle s'immobilise ESCORT_STALL_S
 ## puis repart pleine (jamais détruite). PV = ESCORT_HP_MINI_SHARE x PV d'un mini-boss.
@@ -1184,10 +1192,50 @@ const RITUAL_WAVE_SPEED_U := 8.0
 const RITUAL_WAVE_MAX_U := 16.0
 const RITUAL_WAVE_HALF_U := 0.75
 const RITUAL_ZONE_RADIUS_U := 15.0 ## zone de monstres du Rituel : couvre les relais (10-14 u du cœur)
+## Poursuite (docs/Design_Epreuves.md §3.3) : une lumière saute toutes les CHASE_JUMP_S s entre CHASE_POSTS bornes, à
+## CHASE_JUMP_MIN_U-CHASE_JUMP_MAX_U de la borne courante, vacille CHASE_WARN_S avant ; un joueur à <= CHASE_REACH_U de la
+## borne avant le saut = 1 point ; CHASE_POINTS points -> le mini-boss sort de terre.
+const CHASE_POSTS := 6
+const CHASE_JUMP_S := 8.0
+const CHASE_POINTS := 5
+const CHASE_JUMP_MIN_U := 9.0
+const CHASE_JUMP_MAX_U := 17.0
+const CHASE_REACH_U := 2.0
+const CHASE_WARN_S := 1.5
+## Veine (§3.4) : un disque de lumière (rayon VEIN_RADIUS_U) glisse à VEIN_SPEED_U le long du tracé ; la charge
+## (VEIN_CHARGE_S s) n'avance que si un joueur est dedans ; un geyser est annoncé toutes les VEIN_GEYSER_EVERY_S s,
+## VEIN_GEYSER_AHEAD_U devant le disque (télégraphe VEIN_GEYSER_TELEGRAPH_S >= 0,8 s, coup de mini-boss x VEIN_GEYSER_COEF).
+const VEIN_RADIUS_U := 6.0
+const VEIN_SPEED_U := 1.5
+const VEIN_CHARGE_S := 30.0
+const VEIN_LOOP_MIN_U := 40.0
+const VEIN_LOOP_MAX_U := 70.0
+const VEIN_GEYSER_EVERY_S := 6.0
+const VEIN_GEYSER_RADIUS_U := 2.0
+const VEIN_GEYSER_TELEGRAPH_S := 1.0
+const VEIN_GEYSER_COEF := 1.0
+const VEIN_GEYSER_AHEAD_U := 3.0
+const VEIN_ZONE_RADIUS_U := 7.0 ## zone de monstres = disque + 1 u
+## Tenue (§3.5) : la cloche (PV = HOLD_HP_MINI_SHARE x PV d'un mini-boss, x pente coop du mini-boss : 1,3 / 1,6 / 1,9) est
+## attaquée par un paquet de HOLD_PACKET monstres toutes les HOLD_WAVE_EVERY_S s pendant HOLD_DURATION_S s, annoncé
+## HOLD_ANNOUNCE_S s à l'avance sur l'un des HOLD_SIDES côtés, à HOLD_SPAWN_DIST_U ; un joueur à <= HOLD_LURE_BREAK_U d'un
+## monstre leurré le délivre ; note « parfait » si PV >= HOLD_PERFECT_HP_PCT.
+const HOLD_HP_MINI_SHARE := 0.5
+const HOLD_DURATION_S := 40.0
+const HOLD_SIDES := 3
+const HOLD_WAVE_EVERY_S := 8.0
+const HOLD_PACKET := 4
+const HOLD_ANNOUNCE_S := 2.0
+const HOLD_SPAWN_DIST_U := 10.0
+const HOLD_LURE_BREAK_U := 3.0
+const HOLD_HIT_RADIUS_U := 1.3
+const HOLD_PERFECT_HP_PCT := 0.7
+const HOLD_ZONE_RADIUS_U := 12.0
 
 
 func epreuves_enabled() -> bool:
-	return EPREUVES_ENABLED or OS.get_cmdline_user_args().has(EPREUVES_ARG)
+	var args := OS.get_cmdline_user_args()
+	return (EPREUVES_ENABLED or args.has(EPREUVES_ARG)) and not args.has(EPREUVES_OFF_ARG)
 
 
 ## Note d'une épreuve : « parfait » si `clean` (barque jamais immobilisée, aucun anneau reçu) et durée <= seuil ; « bien »
@@ -1207,6 +1255,29 @@ func epreuve_gold(grade: StringName, price_p: float) -> float:
 ## PV de la barque d'escorte : ESCORT_HP_MINI_SHARE x PV d'un mini-boss à la difficulté D.
 func escort_hp(D: float, stage: int = 1) -> float:
 	return ESCORT_HP_MINI_SHARE * boss_hp(&"mini", D, stage)
+
+
+## PV de la cloche de la Tenue : HOLD_HP_MINI_SHARE x PV d'un mini-boss à D, x (1 + 0,3 (n_alive - 1)) en coop.
+func hold_hp(D: float, stage: int = 1, n_alive: int = 1) -> float:
+	return HOLD_HP_MINI_SHARE * boss_hp(&"mini", D, stage, n_alive)
+
+
+## Note de la Tenue (durée fixe, notée aux PV restants) : « parfait » si PV >= HOLD_PERFECT_HP_PCT, « bien » si > 0,
+## « fait » si la cloche est éteinte.
+func epreuve_grade_hold(hp_ratio: float) -> StringName:
+	if hp_ratio >= HOLD_PERFECT_HP_PCT:
+		return &"parfait"
+	return &"bien" if hp_ratio > 0.0 else &"fait"
+
+
+## Dégâts d'un geyser de la Veine : un coup de mini-boss de coef VEIN_GEYSER_COEF.
+func vein_geyser_damage(D: float) -> float:
+	return mini_attack_damage(boss_damage(&"mini", D), VEIN_GEYSER_COEF)
+
+
+## Rubis des notes « parfait » d'une run : EPREUVE_RUBIES_PARFAIT par note, plafonné à EPREUVE_RUBIES_CAP.
+func epreuve_rubies(perfect_count: int) -> int:
+	return mini(EPREUVE_RUBIES_PARFAIT * maxi(perfect_count, 0), EPREUVE_RUBIES_CAP)
 
 
 ## Cadence du cœur (s) quand `closed` relais sont fermés.

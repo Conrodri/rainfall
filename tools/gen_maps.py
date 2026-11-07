@@ -22,14 +22,28 @@ for _id, _y, _x, _s in GRID_EDITS:
     assert len(_g[_y]) >= _x + len(_s), (_id, _y, _x)
     _g[_y] = _g[_y][:_x] + _s + _g[_y][_x + len(_s):]
 
-# Épreuves (docs/Boucle_Etage_Refonte.md §5.3, prototype « Les Épreuves », Balance.EPREUVES_ENABLED) : tracé de l'escorte
-# (polyligne, 60-80 u, coordonnées u en repère carte) et rituel (cœur + 3 relais à 10-14 u). Cases praticables vérifiées
-# par tests/epreuve_test.gd ; recopiées telles quelles dans data/maps/<id>.json.
+# Épreuves (docs/Design_Epreuves.md §3-4, Balance.EPREUVES_ENABLED), coordonnées u en repère carte, recopiées telles quelles
+# dans data/maps/<id>.json. Une clé par verbe : escort_path (polyligne 60-80 u), ritual (cœur + 3 relais à 10-14 u),
+# chase_posts (6 bornes, la première = autel), vein_path + vein_closed (40-70 u), hold (cloche + 3 côtés). Cases praticables
+# et distances vérifiées par tests/epreuve_test.gd. Terrasses : Escorte + Rituel ; Gouffre et Cryptes : Poursuite + Veine ;
+# Cité : Tenue + Rituel.
 EPREUVES = {
  "terrasses_noyees": dict(escort_path=[[15, 33], [45, 33], [45, 37], [15, 37]],
                           ritual=dict(heart=[35, 15], relays=[[47, 15], [29, 25], [29, 5]])),
  "terrasses_rizieres_hautes": dict(escort_path=[[19, 59], [53, 59], [53, 65], [21, 65]],
                                    ritual=dict(heart=[33, 15], relays=[[43, 20], [23, 21], [33, 3]])),
+ "foret_brume": dict(chase_posts=[[39, 25], [29, 17], [41, 11], [53, 15], [63, 21], [53, 27]],
+                     vein_path=[[11, 21], [21, 21], [21, 31], [11, 31]], vein_closed=True),
+ "foret_mangrove_lanternes": dict(vein_path=[[51, 23], [63, 23], [63, 37], [51, 37]], vein_closed=True,
+                                  chase_posts=[[67, 45], [55, 51], [41, 45], [29, 49], [43, 55], [75, 33]]),
+ "cite_rouille": dict(hold=dict(pos=[45, 61], sides=[[0, -1], [1, 0], [-1, 0]]),
+                      ritual=dict(heart=[17, 27], relays=[[17, 15], [11, 37], [27, 35]])),
+ "cite_fonderie_canal": dict(hold=dict(pos=[39, 35], sides=[[0, 1], [1, 0], [-1, 0]]),
+                             ritual=dict(heart=[49, 17], relays=[[61, 21], [59, 11], [39, 23]])),
+ "cryptes_noyees": dict(vein_path=[[23, 53], [43, 53], [43, 63], [23, 63]], vein_closed=True,
+                        chase_posts=[[37, 15], [47, 19], [57, 11], [65, 17], [65, 27], [55, 31]]),
+ "cryptes_ossuaire_pluies": dict(vein_path=[[15, 67], [17, 57], [17, 45], [15, 35], [11, 27], [11, 15]], vein_closed=False,
+                                 chase_posts=[[47, 53], [41, 41], [41, 29], [43, 17], [29, 15], [29, 25]]),
 }
 
 MAPS = [
@@ -285,7 +299,7 @@ NEW_MAPS = [
   boss_name="Le Reclus", grid=GRID_OSSUAIRE, hour_shift_min=0,
   ambient=json.loads(r'''{"threshold_difficulty": 2.5, "name": "Pluie du puits", "effect": "visuel : la pluie de la ville tombe par le puits de lumière et le bassin central déborde (cases ',' élargies) ; Furieux : cristaux qui s'éteignent par vagues"}'''),
   event_names=json.loads(r'''{"autel_fortune": "reliquaire de cristal", "sanctuaire_risque": "ossuaire scellé", "marchand_ombre": "passeur du puits", "coffre_piege": "sarcophage entrouvert"}'''),
-  secrets=json.loads(r'''[{"id": "ossuaire_scelle", "kind": "sealed_door", "skin": "dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", "door_cells": [[17, 5], [18, 5]], "room_cells": [[15, 3], [16, 3], [17, 3], [18, 3], [19, 3], [20, 3], [15, 4], [16, 4], [17, 4], [18, 4], [19, 4], [20, 4]], "plates_u": [[15, 51], [41, 33]], "guardians_u": [[35, 13], [37, 15]], "guardian_names": ["Sel", "Suie"], "reward": "2 reliquaires (table gardien)"}]''')),
+  secrets=json.loads(r'''[{"id": "ossuaire_scelle", "kind": "sealed_door", "skin": "dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", "door_cells": [[17, 5], [18, 5]], "room_cells": [[15, 3], [16, 3], [17, 3], [18, 3], [19, 3], [20, 3], [15, 4], [16, 4], [17, 4], [18, 4], [19, 4], [20, 4]], "plates_u": [[7, 57], [41, 33]], "guardians_u": [[35, 13], [37, 15]], "guardian_names": ["Sel", "Suie"], "reward": "2 reliquaires (table gardien)"}]''')),
 ]
 
 def markers(grid, ch):
@@ -566,13 +580,13 @@ def shape_grid(mid, grid):
 # hors chemin principal, ni départ ni arène de boss ; accessibles depuis le départ).
 A_SECRETS = {
  "terrasses_noyees": dict(id="bassin_vanne", skin="dalles de vanne + grille de bassin (habillage Terrasses)", door=(7, 31), dir=(-1, 0),
-                          plates=[(13, 2), (19, 34)], names=["Vase", "Crue"]),
+                          plates=[(16, 3), (19, 34)], names=["Vase", "Crue"]),
  "foret_brume": dict(id="cercle_brume", skin="dalles de calcite à mycélium + coulée fissurée (habillage Gouffre)", door=(5, 4), dir=(-1, 0),
                      plates=[(36, 19), (1, 11)], names=["Lichen", "Silex"]),
  "cite_rouille": dict(id="salle_pompes", skin="plaques de pression rivetées + porte à volant (habillage Cité)", door=(5, 5), dir=(-1, 0),
                       plates=[(20, 1), (4, 37)], names=["Boulon", "Chaudron"]),
  "cryptes_noyees": dict(id="chapelle_basse", skin="dalles d'os à glyphe de sel + grille d'ossuaire (habillage Cryptes)", door=(34, 7), dir=(1, 0),
-                        pad_right=6, plates=[(3, 10), (20, 32)], names=["Algue", "Nef"]),
+                        pad_right=6, plates=[(3, 10), (17, 33)], names=["Algue", "Nef"]),
 }
 
 def add_a_secret(g, sp):

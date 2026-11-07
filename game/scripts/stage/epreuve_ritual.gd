@@ -18,13 +18,15 @@ var _wave_hit := false
 var _wave_hit_ids: Array = [] ## coop : joueurs déjà touchés par l'onde courante (un coup par joueur et par onde)
 
 
-## Rituel de cœur `heart` et de relais `relay_pts` (repère local de la carte).
-static func make(heart: Vector2, relay_pts: Array) -> EpreuveRitual:
+## Rituel de cœur `heart` et de relais `relay_pts` (repère local de la carte). `skin` = déclinaison de sprites des relais
+## (`lever_<skin>_{off,on}` : terraces, fog_forest, rust_city, crypts ; EpreuveData.lever_skin(biome)).
+static func make(heart: Vector2, relay_pts: Array, skin: StringName = SecretLever.DEFAULT_BIOME) -> EpreuveRitual:
 	var r := EpreuveRitual.new()
 	r.position = heart
 	for pt in relay_pts:
 		var rl := EpreuveRelay.new()
 		rl.epreuve = r
+		rl.biome = skin
 		rl.position = (pt as Vector2) - heart
 		rl.activated.connect(r._on_relay_closed.bind(rl))
 		r.relays.append(rl)
@@ -38,10 +40,6 @@ func _init() -> void:
 
 func zone_radius() -> float:
 	return Balance.RITUAL_ZONE_RADIUS_U * Balance.UNIT_PX
-
-
-func interact_label() -> String:
-	return "Réveiller l'écluse"
 
 
 func progress() -> float:
