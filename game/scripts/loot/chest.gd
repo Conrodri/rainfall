@@ -249,7 +249,11 @@ func try_open(who: Node = null) -> bool:
 	ChestSession.pending_state = _beneficiary_state(actor) # lu par ChestSession._init (ChestUI / ShowcaseUI)
 	if kind == &"guardian" and has_meta(&"secret_relic"):
 		# Reliquaire d'une zone secrète : +1 noyau d'orage pour son bénéficiaire (Forge, docs/Design_Forge.md)
-		_beneficiary_state(actor).add_catalyst(Balance.CRAFT_CATALYST_PER_GUARDIAN)
+		# Pickup au sol près du reliquaire (propriétaire = bénéficiaire) ; sans nœud vivant, crédit direct.
+		var ben := _beneficiary_state(actor)
+		var ben_node: Node2D = Players.by_id(ben.slot) if Players.count() > 1 else actor
+		for _k in Balance.CRAFT_CATALYST_PER_GUARDIAN:
+			StormCorePickup.award(get_parent(), global_position + Vector2(0.0, 0.8 * Balance.UNIT_PX), ben, ben_node)
 	_opening = true
 	if _light != null:
 		_light.release()

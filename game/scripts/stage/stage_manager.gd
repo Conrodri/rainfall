@@ -1243,6 +1243,7 @@ func next_stage() -> void:
 	# avant le changement d'étage (une sauvegarde faite au démarrage du nouvel étage voit déjà or = 0).
 	# Coop : la conversion se fait dans la bourse de CHAQUE joueur (or restant -> XP à son propre niveau) ; le signal
 	# gold_converted (HUD) décrit le joueur local. Solo : un seul participant, comportement inchangé.
+	RunState.flush_pending_catalysts() # noyaux d'orage non ramassés : crédités avant de quitter l'étage
 	var ground := _sweep_ground_pickups()
 	var ground_xp: float = ground["xp"]
 	var carry_by: Dictionary = ground.get("gold_by", {0: ground["gold"]})

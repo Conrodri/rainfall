@@ -239,7 +239,7 @@ func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 		return
 	kills += 1 # les boss comptent dans « Monstres tués » (décision du joueur, 26/10/2026)
 	if is_floor_boss:
-		award_floor_boss_catalysts()
+		award_floor_boss_catalysts(boss)
 	var bid := String(boss.call(&"boss_id")) if boss.has_method(&"boss_id") else ""
 	if bid != "":
 		bosses_killed.append({"id": bid, "floor_boss": is_floor_boss})
@@ -247,14 +247,35 @@ func _on_boss_killed(boss: Node2D, is_floor_boss: bool) -> void:
 
 ## Boss d'étage vaincu (étages 1 à Balance.CRAFT_CATALYST_MAX_FLOOR) : chaque joueur de la partie, spectateurs compris,
 ## reçoit Balance.CRAFT_CATALYST_PER_FLOOR_BOSS noyau d'orage (plafond CRAFT_CATALYST_CAP). Retourne les joueurs servis.
-func award_floor_boss_catalysts() -> int:
+## Règle coop (docs/Design_Forge.md : « à chaque joueur ») : un pickup au sol par joueur VIVANT, ramassable seulement
+## par lui (StormCorePickup), posé près du boss ; un spectateur (mort, il peut forger) est crédité directement.
+## Sans boss (ou sans parent) : crédit direct pour tous (tests, mode sans scène).
+func award_floor_boss_catalysts(boss: Node2D = null) -> int:
 	if stage > Balance.CRAFT_CATALYST_MAX_FLOOR:
 		return 0
+	var parent: Node = boss.get_parent() if boss != null and is_instance_valid(boss) and boss.is_inside_tree() else null
+	var at: Vector2 = boss.global_position if parent != null else Vector2.ZERO
+	var reg := get_node_or_null(^"/root/Players")
 	var n := 0
-	for i in party_count():
-		if player_state(i).add_catalyst(Balance.CRAFT_CATALYST_PER_FLOOR_BOSS) > 0:
+	var count := party_count()
+	for i in count:
+		var st := player_state(i)
+		var node: Node2D = null
+		if reg != null:
+			node = reg.call(&"by_id", i) as Node2D
+		var off := Vector2.RIGHT.rotated(TAU * float(i) / float(maxi(count, 1))) * Balance.CRAFT_CATALYST_SCATTER_U * Balance.UNIT_PX * (0.0 if count == 1 else 1.0)
+		var got := 0
+		for k in Balance.CRAFT_CATALYST_PER_FLOOR_BOSS:
+			got += StormCorePickup.award(parent, at + off, st, node) if parent != null else st.add_catalyst(1)
+		if got > 0:
 			n += 1
 	return n
+
+
+## Départ d'étage : les noyaux restés au sol sont crédités à leur propriétaire (rien n'est perdu).
+func flush_pending_catalysts() -> void:
+	for i in party_count():
+		player_state(i).flush_pending_catalysts()
 
 
 ## loadout normalisé {slot int -> StringName} depuis une config / sauvegarde (clés texte ou entières).

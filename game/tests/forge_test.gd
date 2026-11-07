@@ -42,6 +42,7 @@ func _run() -> void:
 	_test_data()
 	_test_recipes()
 	_test_catalysts()
+	_test_core_pickup()
 	_test_exclusions()
 	_test_craft()
 	await _test_effects()
@@ -193,6 +194,82 @@ func _test_catalysts() -> void:
 	_cleanup_chest_uis()
 	relic.queue_free()
 	plain.queue_free()
+
+
+func _cores() -> Array:
+	var out: Array = []
+	for n in get_tree().get_nodes_in_group(GroundPickup.GROUP):
+		if n is StormCorePickup and not n.is_queued_for_deletion():
+			out.append(n)
+	return out
+
+
+func _clear_cores() -> void:
+	for c in _cores():
+		c.free()
+
+
+## Noyau au sol (solo) : pose à la mort du boss, contact, plafond 2, crédit au départ d'étage, mort = crédit direct, sauvegarde.
+func _test_core_pickup() -> void:
+	var st := _reset()
+	var p := _DeadNode.new()
+	p.add_to_group(&"player")
+	add_child(p)
+	var boss := Node2D.new()
+	add_child(boss)
+	boss.global_position = Vector2(500, 300)
+	RunState.stage = 2
+	Events.boss_killed.emit(boss, true)
+	var cs := _cores()
+	_check("noyau : pickup posé à la mort du boss, rien crédité", cs.size() == 1 and st.catalysts == 0 and st.pending_catalysts == 1)
+	_check("noyau : posé là où le boss est mort", cs.size() == 1 and cs[0].global_position.distance_to(boss.global_position) < 1.0)
+	_check("noyau : ground_pickups, pas le groupe pickups du PickupManager", cs.size() == 1 and not cs[0].is_in_group(&"pickups"))
+	var d := st.to_dict()
+	_check("noyau : sauvegarde en cours d'étage garde le noyau au sol", int(d["catalysts"]) == 1)
+	p.global_position = boss.global_position + Vector2(10000, 0)
+	cs[0].step(0.1)
+	_check("noyau : loin du joueur, non ramassé", st.catalysts == 0)
+	p.global_position = boss.global_position + Vector2(Balance.CRAFT_CATALYST_MAGNET_U * Balance.UNIT_PX * 0.9, 0)
+	for i in 120:
+		if cs[0].is_queued_for_deletion():
+			break
+		cs[0].step(0.05)
+	_check("noyau : aimant puis ramassage au contact", st.catalysts == 1 and st.pending_catalysts == 0)
+	# plafond : porte 2 -> aucun pickup
+	_clear_cores()
+	st.catalysts = 2
+	Events.boss_killed.emit(boss, true)
+	_check("noyau : plafond 2, aucun pickup", _cores().is_empty() and st.catalysts == 2 and st.pending_catalysts == 0)
+	# 1 porté + 1 au sol = plafond atteint
+	st.catalysts = 1
+	Events.boss_killed.emit(boss, true)
+	Events.boss_killed.emit(boss, true)
+	_check("noyau : porté + au sol ne dépasse pas 2", _cores().size() == 1 and st.pending_catalysts == 1)
+	RunState.flush_pending_catalysts()
+	_check("noyau : crédité au départ d'étage", st.catalysts == 2 and st.pending_catalysts == 0)
+	_clear_cores()
+	# joueur mort : crédit direct (spectateur)
+	st = _reset()
+	st.catalysts = 0
+	var dead_p := _DeadNode.new()
+	add_child(dead_p)
+	dead_p.dead = true
+	Players.clear()
+	Players.register(dead_p, null, 0)
+	RunState.start_run(&"moyen", 5)
+	st = RunState.player_state(0)
+	st.reset()
+	RunState.stage = 1
+	Events.boss_killed.emit(boss, true)
+	_check("noyau : joueur mort = crédit direct, pas de pickup", st.catalysts == 1 and _cores().is_empty())
+	Players.clear()
+	dead_p.queue_free()
+	p.queue_free()
+	boss.queue_free()
+
+
+class _DeadNode extends Node2D:
+	var dead := false
 
 
 func _cleanup_chest_uis() -> void:
@@ -520,8 +597,8 @@ func _dummy() -> FakeEnemy:
 
 func _test_coop() -> void:
 	var st0 := _reset()
-	var a := Node2D.new()
-	var b := Node2D.new()
+	var a := _DeadNode.new()
+	var b := _DeadNode.new()
 	add_child(a)
 	add_child(b)
 	Players.register(a, null, 0)
@@ -535,10 +612,30 @@ func _test_coop() -> void:
 	var boss := Node2D.new()
 	add_child(boss)
 	Events.boss_killed.emit(boss, true)
-	_check("coop : le boss d'étage donne 1 noyau à CHAQUE joueur", st0.catalysts == 1 and st1.catalysts == 1)
+	_check("coop : boss d'étage = un pickup par joueur vivant, rien crédité d'office", st0.catalysts == 0 and st1.catalysts == 0
+			and st0.pending_catalysts == 1 and st1.pending_catalysts == 1 and _cores().size() == 2)
+	# ramassage réservé : le joueur 1 sur le noyau du joueur 0 ne le prend pas
+	var c0: StormCorePickup = null
+	for c in _cores():
+		if c.state == st0:
+			c0 = c
+	a.global_position = c0.global_position + Vector2(8000, 0)
+	b.global_position = c0.global_position
+	c0.step(0.016)
+	_check("coop : le noyau d'un joueur n'est pas ramassable par l'autre", st0.catalysts == 0 and is_instance_valid(c0) and not c0.is_queued_for_deletion())
+	a.global_position = c0.global_position
+	c0.step(0.016)
+	_check("coop : le propriétaire ramasse son noyau", st0.catalysts == 1 and st0.pending_catalysts == 0)
+	RunState.flush_pending_catalysts() # départ d'étage : le noyau de b, resté au sol, est crédité
+	_check("coop : noyau resté au sol crédité au départ d'étage", st1.catalysts == 1 and st1.pending_catalysts == 0)
+	st0.catalysts = 1
+	st1.catalysts = 1
 	Events.boss_killed.emit(boss, true)
-	Events.boss_killed.emit(boss, true)
+	RunState.flush_pending_catalysts()
 	_check("coop : plafond par joueur", st0.catalysts == 2 and st1.catalysts == 2)
+	_clear_cores()
+	Events.boss_killed.emit(boss, true)
+	_check("coop : plafond atteint = aucun pickup posé", _cores().is_empty() and st0.pending_catalysts == 0)
 	# bourses séparées
 	st0.catalysts = 1
 	_check("coop : noyaux séparés", st0.catalysts == 1 and st1.catalysts == 2)
@@ -620,8 +717,8 @@ func _test_ui() -> void:
 	pm.close_items()
 	_check("fermeture : pause levée", not get_tree().paused and not pm.is_open)
 	# coop : jamais de pause globale
-	var a := Node2D.new()
-	var b := Node2D.new()
+	var a := _DeadNode.new()
+	var b := _DeadNode.new()
 	add_child(a)
 	add_child(b)
 	Players.register(a, null, 0)
