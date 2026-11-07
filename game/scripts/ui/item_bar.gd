@@ -9,6 +9,8 @@ extends ScrollContainer
 ## Badge et infobulle : éléments fonctionnels provisoires (rectangles), à habiller plus tard.
 
 const ITEM_ICON := "res://assets/sprites/icons/items/%s.png"
+const FORGE_FRAME := "res://assets/sprites/icons/frame_forge_128.png"
+const FORGE_READY := "res://assets/sprites/icons/forge_ready.png"
 const RARITY_FRAME := "res://assets/sprites/icons/frame_%s.png"
 const QUALITY_COLORS := {
 	&"commun": Color(0.78, 0.78, 0.8),
@@ -23,6 +25,12 @@ static func quality_backing(q: Variant, radius := 8) -> Panel:
 	var p := Panel.new()
 	p.name = "QualityBack"
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if str(q) == "forge" and ResourceLoader.exists(FORGE_FRAME): # fond cuivré « forgé » (asset Codex)
+		var tb := StyleBoxTexture.new()
+		tb.texture = load(FORGE_FRAME) as Texture2D
+		p.add_theme_stylebox_override("panel", tb)
+		p.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		return p
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(col.r * 0.22, col.g * 0.22, col.b * 0.22, 0.85)
 	sb.border_color = col
@@ -366,12 +374,17 @@ func _set_forge_dot(on: bool) -> void:
 		_forge_dot = Panel.new()
 		_forge_dot.name = "ForgeDot"
 		_forge_dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var sb := StyleBoxFlat.new()
-		sb.bg_color = Palette.FORGE_COLOR
-		sb.border_color = Color(1, 1, 1, 0.9)
-		sb.set_border_width_all(2)
-		sb.set_corner_radius_all(32)
-		_forge_dot.add_theme_stylebox_override("panel", sb)
+		if ResourceLoader.exists(FORGE_READY): # pastille cuivrée (asset Codex)
+			var tb := StyleBoxTexture.new()
+			tb.texture = load(FORGE_READY) as Texture2D
+			_forge_dot.add_theme_stylebox_override("panel", tb)
+		else:
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Palette.FORGE_COLOR
+			sb.border_color = Color(1, 1, 1, 0.9)
+			sb.set_border_width_all(2)
+			sb.set_corner_radius_all(32)
+			_forge_dot.add_theme_stylebox_override("panel", sb)
 		_more.add_child(_forge_dot)
 		_more.clip_contents = false
 	_forge_dot.visible = on

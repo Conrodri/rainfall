@@ -340,8 +340,19 @@ func _gain_card(res: Dictionary, id: StringName) -> Control:
 	var path := ITEM_ICON % id
 	if ResourceLoader.exists(path):
 		icon.texture = load(path) as Texture2D
-	h.add_child(icon)
-	if icon.texture == null: # icône absente (6 icônes 128 px à produire par Codex) : initiales
+	if icon.texture != null and ResourceLoader.exists(ItemBar.FORGE_FRAME): # fond cuivré « forgé » derrière l'icône
+		var back := TextureRect.new()
+		back.name = "ForgeBack"
+		back.texture = load(ItemBar.FORGE_FRAME) as Texture2D
+		back.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		back.stretch_mode = TextureRect.STRETCH_SCALE
+		back.custom_minimum_size = icon.custom_minimum_size
+		back.add_child(icon)
+		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 8)
+		h.add_child(back)
+	else:
+		h.add_child(icon)
+	if icon.texture == null: # icône absente : initiales
 		icon.queue_free()
 		var f := _label(str(res.get("name", id)).left(2), 40, COL_COPPER)
 		f.custom_minimum_size = Vector2(88, 88) * _s
