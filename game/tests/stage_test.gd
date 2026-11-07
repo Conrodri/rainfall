@@ -307,6 +307,8 @@ func _test_real_maps(director: FakeDirector, player: Node2D) -> void:
 				for j in range(i + 1, 3):
 					_check("piliers >= 18 u", all[i].position.distance_to(all[j].position) >= 18.0 * 64.0 - 0.1)
 			for p: Pillar in all:
+				if p is Epreuve:
+					continue # épreuves (actives par défaut) : zone propre, géométrie validée par maps_test / epreuve_test, pas la règle des 70 % de sol
 				var r := 9.0 if p.kind == Pillar.Kind.BIG else 7.0
 				_check("sol >= 70 %% (%s)" % m.map_id, m.map.get_walkable_ratio(p.position, r * 64.0) >= 0.7)
 			for c in m.chests:
