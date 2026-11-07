@@ -359,7 +359,9 @@ func _test_real_maps(director: FakeDirector, player: Node2D) -> void:
 	_check("boss d'étage tirés dans le roster de leur étage " + str(bosses), drawn_ok and bosses.has(&"rain_sower"))
 	RunState.run_seed = saved_seed
 	m.reset_run()
-	# boss_id transmis au Director
+	# boss_id transmis au Director (sans épreuves : les deux petits piliers doivent invoquer leur mini-boss)
+	var saved_ep: bool = Balance.EPREUVES_ENABLED
+	Balance.EPREUVES_ENABLED = false
 	director.spawned.clear()
 	RunState.stage = 1
 	m.start_stage()
@@ -369,6 +371,7 @@ func _test_real_maps(director: FakeDirector, player: Node2D) -> void:
 	_kill(director, 1, false)
 	m.pillars[2].activate()
 	_check("méta boss_id sur le boss", director.spawned[2]["boss"].get_meta(&"boss_id") == m.floor_boss)
+	Balance.EPREUVES_ENABLED = saved_ep
 	# sol praticable : un disque vide vs plein
 	var test_map: StageMap = load("res://scenes/stage/stage_map_test.tscn").instantiate()
 	add_child(test_map)
