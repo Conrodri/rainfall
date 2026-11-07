@@ -190,7 +190,7 @@ func _run() -> void:
 	var gey := var_cd.spells[1]
 	_check("Geyser : coef 3,5, rayon 2 u, portée 6 u, sans recharge", _near(gey.coef, 3.5) and _near(gey.radius_u, 2.0) and _near(gey.range_u, 6.0) and gey.base_cooldown == 0.0)
 	var gou := var_cd.spells[2]
-	_check("Gouttière : recharge 5 s, 6 s, tick 0,5 s", _near(gou.base_cooldown, 5.0) and _near(gou.duration, 6.0) and _near(gou.tick, 0.5))
+	_check("Gouttière : recharge 5 s, 6 s, tick 0,5 s", _near(gou.base_cooldown, AverseKit.GOUTTIERE_CD) and _near(gou.duration, 6.0) and _near(gou.tick, 0.5))
 	var mou := var_cd.spells[3]
 	_check("Mousson : rayon 5 u, 6 s, recharge de la Crue", _near(mou.radius_u, 5.0) and _near(mou.duration, 6.0) and _near(mou.base_cooldown, AverseKit.CRUE_CD))
 
@@ -342,49 +342,109 @@ func _run() -> void:
 	_kit.flush_delayed()
 	_check("point visé limité à 6 u", near6.taken.size() == 1 and far8.taken.is_empty(), "%s %s" % [near6.taken, far8.taken])
 
-	print("Sort 3 : Gouttière")
+	print("Sort 3 : Gouttière-collecteur")
 	_reset(30.0)
 	var on_line := _fake(Vector2(3.0 * U, 0.3 * U))
 	var side_e := _fake(Vector2(3.0 * U, 1.3 * U))
 	var past := _fake(Vector2(7.0 * U, 0))
 	_player.spells.aim_override = Vector2(5.0 * U, 0)
 	_check("gouttière lancée", _player.spells.cast(3))
-	_check("18 d'eau payées", _near(_kit.water, 12.0, 0.01), str(_kit.water))
-	_check("recharge 5 s", _near(_player.spells._remaining[3], AverseKit.PUDDLE_CD, 0.3), str(_player.spells._remaining[3]))
+	_check("18 d'eau payées (GOUTTIERE_COST)", _near(_kit.water, 30.0 - AverseKit.GOUTTIERE_COST, 0.01) and _near(AverseKit.GOUTTIERE_COST, 18.0), str(_kit.water))
+	_check("recharge 5 s (GOUTTIERE_CD)", _near(_player.spells._remaining[3], AverseKit.GOUTTIERE_CD, 0.3) and _near(AverseKit.GOUTTIERE_CD, 5.0), str(_player.spells._remaining[3]))
 	_check("anim d'action cast", _kit.action_for(_player.character.spells[2]) == &"cast")
 	_kit.flush_pending()
 	_check("un ruisseau posé", _kit.rivulets.size() == 1)
 	var rv: AverseRivulet = _kit.rivulets[0]
 	_check("ligne 6 u × 1 u depuis Averse vers le point visé", rv.contains(Vector2(5.9 * U, 0)) and not rv.contains(Vector2(6.5 * U, 0)) and rv.contains(Vector2(2.0 * U, 0.4 * U)) and not rv.contains(Vector2(2.0 * U, 1.2 * U)) and not rv.contains(Vector2(-0.5 * U, 0)))
-	_check("premier tick : coef de la Gouttière sur la ligne seulement", on_line.taken.size() == 1 and _near(on_line.total(), AverseKit.GOUTTIERE_COEF * BASE, 0.05) and side_e.taken.is_empty() and past.taken.is_empty(), str(on_line.taken))
+	_check("premier tick : coef 0,3 sur la ligne seulement", on_line.taken.size() == 1 and _near(AverseKit.GOUTTIERE_COEF, 0.3) and _near(on_line.total(), AverseKit.GOUTTIERE_COEF * BASE, 0.05) and side_e.taken.is_empty() and past.taken.is_empty(), str(on_line.taken))
 	_advance(0.55)
 	_check("DoT toutes les 0,5 s", on_line.taken.size() == 2, str(on_line.taken))
 	_check("trempe sur le ruisseau", on_line.soaked() and not side_e.soaked())
-	_check("Averse sur le ruisseau (in_rivulet)", _kit.in_rivulet)
+	_check("Averse sur le ruisseau (in_rivulet, pour la glisse)", _kit.in_rivulet)
 	var w1: float = _kit.water
 	_advance(1.0)
-	_check("sur le ruisseau : +PUDDLE_GAIN_PER_S d'eau/s", _near(_kit.water - w1, AverseKit.PUDDLE_GAIN_PER_S, 0.15), str(_kit.water - w1))
+	_check("sans pluie : rien ne coule dans l'amphore, même dessus (plus de gain de flaque)", _near(_kit.water - w1, 0.0, 0.01) and _near(rv.collected, 0.0, 0.01), str(_kit.water - w1))
 	_check("la Gouttière ne compte pas pour averse.puddle_water", _counter("averse.puddle_water") == 0.0)
 	_kit.water = 100.0
-	var spd: float = _kit.speed_mult()
-	_check("vitesse ×1,25 sur le ruisseau (3,4 -> 4,25 u/s, amphore pleine)", _near(_player.move_speed(), 3.4 * 1.25 * U, 0.5) and _near(spd, 3.4 / 4.4 * 1.25, 0.001), str(_player.move_speed()))
-	_player.global_position = Vector2(0, 5.0 * U)
-	_advance(0.05)
-	_check("hors du ruisseau : vitesse normale", not _kit.in_rivulet and _near(_player.move_speed(), 3.4 * U, 0.5))
-	_player.global_position = Vector2.ZERO
+	_check("plus de bonus de vitesse sur le ruisseau (3,4 u/s amphore pleine)", _near(_player.move_speed(), 3.4 * U, 0.5) and _near(_kit.speed_mult(), 3.4 / 4.4, 0.001), str(_player.move_speed()))
 	_check("auto-cast : pas de 2e gouttière tant qu'une vit", not _kit.auto_cast_ok(3))
-	_kit.water = 60.0
-	_player.spells._remaining[3] = 0.0
-	_player.spells.aim_override = Vector2(0, 5.0 * U)
-	_check("2e gouttière", _player.spells.cast(3))
+
+	print("Gouttière : collecte")
+	_reset(30.0)
+	_kit._rain_mult = 1.0
+	_player.spells.aim_override = Vector2(5.0 * U, 0)
+	_check("gouttière lancée (collecte)", _player.spells.cast(3))
 	_kit.flush_pending()
+	rv = _kit.rivulets[0]
+	_player.global_position = Vector2(0, 5.0 * U) # hors de la ligne : la collecte ne dépend pas de la position
+	var w_before: float = _kit.water
+	_advance(2.0)
+	_check("hors de la ligne : collecte 1,5/s en pluie normale", not _kit.in_rivulet and _near(rv.collected, 3.0, 0.1), str(rv.collected))
+	_check("l'eau collectée arrive dans l'amphore (+ pluie de base)", _near(_kit.water - w_before, 3.0 + AverseKit.RAIN_GAIN_PER_S * 2.0, 0.2), str(_kit.water - w_before))
+	_kit._rain_mult = 0.5
+	var c0: float = rv.collected
+	_advance(2.0)
+	_check("pluie faible (×0,5) : collecte ×0,5", _near(rv.collected - c0, 1.5, 0.1), str(rv.collected - c0))
+	_kit._rain_mult = 0.0
+	c0 = rv.collected
+	_advance(1.0)
+	_check("à sec (Cryptes noyées) : aucune collecte", _near(rv.collected - c0, 0.0, 0.001))
+	_kit._rain_mult = 1.0
+	var w2: float = _kit.water
+	_kit._on_enemy_killed(null, Vector2(3.0 * U, 0), 1, false)
+	_check("kill sur la bande : KILL_GAIN × 2", _near(_kit.water - w2, AverseKit.KILL_GAIN * 2.0, 0.01), str(_kit.water - w2))
+	_check("kill sur la bande : compté dans collected", _near(rv.collected - c0, AverseKit.KILL_GAIN, 0.01), str(rv.collected - c0))
+	w2 = _kit.water
+	_kit._on_enemy_killed(null, Vector2(3.0 * U, 3.0 * U), 1, false)
+	_check("kill hors bande : KILL_GAIN simple", _near(_kit.water - w2, AverseKit.KILL_GAIN, 0.01), str(_kit.water - w2))
+
+	print("Gouttière : remboursement")
+	_reset(40.0)
+	_kit._rain_mult = 1.0
+	_player.spells.aim_override = Vector2(5.0 * U, 0)
+	_check("gouttière lancée (remboursement)", _player.spells.cast(3))
+	_kit.flush_pending()
+	rv = _kit.rivulets[0]
+	_advance(6.2)
+	_check("pluie normale : ≤ 9 d'eau rendus par lancer (≤ 50 % du coût)", rv.collected <= 9.05 and rv.collected >= 8.9, str(rv.collected))
+	_reset(40.0)
+	_kit._rain_mult = AverseKit.RAIN_MULT_MAX
+	_check("gouttière lancée (pluie forte)", _player.spells.cast(3))
+	_kit.flush_pending()
+	rv = _kit.rivulets[0]
+	_advance(6.2)
+	_check("pluie forte (×1,5) : 13,5 d'eau (75 % du coût, signalé)", _near(rv.collected, 13.5, 0.15), str(rv.collected))
+
+	print("Gouttière : déversement")
+	_check("coef de déversement : 1,5 + 0,1 × eau, plafond 4,0",
+			_near(AverseKit.spill_coef(0.0), 1.5) and _near(AverseKit.spill_coef(10.0), 2.5) and _near(AverseKit.spill_coef(25.0), 4.0) and _near(AverseKit.spill_coef(100.0), 4.0))
+	_reset(60.0)
+	var sp_a := _fake(Vector2(3.0 * U, 0.3 * U))
+	var sp_b := _fake(Vector2(3.0 * U, 1.3 * U))
+	_player.spells.aim_override = Vector2(5.0 * U, 0)
+	_check("gouttière lancée (déversement)", _player.spells.cast(3))
+	_kit.flush_pending()
+	rv = _kit.rivulets[0]
+	rv.collected = 10.0
+	var n_a := sp_a.taken.size()
 	_kit._lock_left = 0.0
 	_player.spells._remaining[3] = 0.0
-	_check("3e gouttière", _player.spells.cast(3))
+	_player.spells.aim_override = Vector2(0, 5.0 * U)
+	var sp_c := _fake(Vector2(0.3 * U, 3.0 * U))
+	_check("relance de la gouttière", _player.spells.cast(3))
 	_kit.flush_pending()
-	_check("2 gouttières au plus (la plus ancienne s'assèche)", _kit.rivulets.size() == 2, str(_kit.rivulets.size()))
-	_advance(6.5)
-	_check("fin à 6 s", _kit.rivulets.is_empty() or _kit.rivulets.all(func(r): return not is_instance_valid(r) or r.is_ending()))
+	_check("la relance déverse l'ancienne : un coup de (1,5 + 0,1 × 10) × base sur la ligne", sp_a.taken.size() == n_a + 1 and _near(sp_a.taken[-1], 2.5 * BASE, 0.1) and sp_b.taken.is_empty(), str(sp_a.taken))
+	_check("déversement : trempe forte 8 s / −40 %", sp_a.statuses.any(func(st): return st[0] == &"slow" and _near(float(st[1]["pct"]), 0.4) and _near(float(st[1]["duration"]), 8.0)))
+	_check("déversement : recul prévu 1,5 u", _near(AverseKit.GOUTTIERE_SPILL_KNOCK_U, 1.5))
+	var live: Array = _kit.rivulets.filter(func(r): return is_instance_valid(r) and not r.is_ending())
+	_check("une seule gouttière vivante (GOUTTIERE_MAX 1)", live.size() == 1 and AverseKit.GOUTTIERE_MAX == 1, str(live.size()))
+	_check("la nouvelle ne touche que sa ligne au 1er tick", sp_c.taken.size() == 1 and _near(sp_c.taken[0], AverseKit.GOUTTIERE_COEF * BASE, 0.05), str(sp_c.taken))
+	_advance(0.4)
+	_check("le flash de l'ancienne disparaît", not is_instance_valid(rv) or rv.is_queued_for_deletion())
+	var cn := sp_c.taken.size()
+	_advance(6.0)
+	_check("expiration : déversement 1,5 × base (rien collecté sans pluie)", sp_c.taken.size() > cn and _near(sp_c.taken[-1], AverseKit.GOUTTIERE_SPILL_COEF * BASE, 0.1), str(sp_c.taken))
+	_check("fin de vie : plus rien", _kit.rivulets.is_empty() or _kit.rivulets.all(func(r): return not is_instance_valid(r) or r.is_ending()))
 
 	print("Compteur : eau gagnée en Flaque-miroir")
 	_reset(20.0)
