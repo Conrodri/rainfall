@@ -1015,6 +1015,15 @@ func _spawn_peg_visual() -> void:
 	_peg_node.z_index = 1 # debout : remonte au niveau des personnages (fx_root est au sol)
 	_peg_node.global_position = peg_pos
 	ZoneOutline.attach_capsule(_peg_node, CHAIN_HALF_WIDTH_U * Balance.UNIT_PX, ZoneOutline.color_for(_spell_of(3), _caster()), peg_left, player)
+	# portée max du piquet (PEG_SNAP_U) : cercle sans voile autour du piquet, au-delà la chaîne est arrachée (joueur, 07/11/2026).
+	# Hôte dédié : ZoneOutline.of(_peg_node) reste la capsule de la chaîne.
+	var range_host := Node2D.new()
+	range_host.name = "PegRange"
+	_peg_node.add_child(range_host)
+	var ring := ZoneOutline.attach(range_host, PEG_SNAP_U * Balance.UNIT_PX, ZoneOutline.color_for(_spell_of(3), _caster()), peg_left)
+	if ring != null:
+		ring.fill_alpha = 0.0
+		ring.halo = true
 	if not ResourceLoader.exists(PEG_FRAMES):
 		return
 	var holder := Node2D.new()
@@ -1557,7 +1566,7 @@ func _update_visuals(delta: float) -> void:
 		peg_line.advance(delta)
 		_orient_peg()
 	if VfxSwap.points_on(_peg_fx): # mode test : ligne du piquet / des Jalons en VFX de test, même chaîne que la traîne
-		VfxSwap.track_polyline(_peg_fx_owner(), "arpenteuse/" + String(_spell_id(1)), peg_line.base.points if peg_line.visible else PackedVector2Array(), peg_line)
+		VfxSwap.track_polyline(_peg_fx_owner(), "arpenteuse/" + String(_spell_id(1) if snap_left <= 0.0 else V_TENDEUR_FX), peg_line.base.points if peg_line.visible else PackedVector2Array(), peg_line)
 	_update_lights(pts)
 
 
