@@ -86,6 +86,9 @@ func _run() -> void:
 		_dmg_by[pid] = int(_dmg_by.get(pid, 0)) + 1)
 
 	_src = [FakeSource.new(90), FakeSource.new(91)]
+	# Ce test déroule les petits piliers à mini-boss ; les épreuves (actives par défaut) les remplacent : étage classique ici,
+	# la coop avec épreuves est couverte par coop_stage_test et epreuve_test.
+	Balance.EPREUVES_ENABLED = false
 	_main = load("res://scenes/main.tscn").instantiate()
 	_main.set(&"save_path", SAVE)
 	_main.set(&"run_seed", 4242)
@@ -237,6 +240,7 @@ func _resolve_omen() -> void:
 
 
 func _finish() -> void:
+	Balance.EPREUVES_ENABLED = true
 	print("RESULT: %s" % ("OK" if _fails == 0 else "FAIL (%d)" % _fails))
 	get_tree().paused = false
 	get_tree().quit(0 if _fails == 0 else 1)

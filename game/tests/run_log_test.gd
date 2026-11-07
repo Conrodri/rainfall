@@ -27,6 +27,9 @@ func _ready() -> void:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(CFG))
 	_check("journal activé par défaut (build de test)", RunLog.enabled() == RunLog.TEST_BUILD)
 
+	# Le combat de mini-boss journalisé vient d'un petit pilier ; les épreuves (actives par défaut) les remplacent :
+	# cette run tourne donc en étage classique (drapeau coupé localement, remis à la fin).
+	Balance.EPREUVES_ENABLED = false
 	_main = load("res://scenes/main.tscn").instantiate()
 	_main.set(&"run_seed", 4242)
 	add_child(_main)
@@ -142,6 +145,7 @@ func _ready() -> void:
 	Events.run_started.emit(false)
 	_check("option coupée : pas de journal", not RunLog.recording)
 	RunLog.set_enabled(true)
+	Balance.EPREUVES_ENABLED = true
 	_finish()
 
 
@@ -153,6 +157,7 @@ func _check_log(log: Dictionary) -> void:
 	_check("plan de run (5 étages)", (log.get("plan", []) as Array).size() >= 5, str((log.get("plan", []) as Array).size()))
 	var floors: Array = log.get("floors", [])
 	_check("étage 1 noté", floors.size() == 1 and int(floors[0]["stage"]) == 1)
+	_check("étage : champs épreuves présents (classique : off, aucune)", floors.size() == 1 and floors[0].has("epreuves_on") and not bool(floors[0]["epreuves_on"]) and (floors[0]["epreuves"] as Array).is_empty())
 	if floors.size() == 1:
 		var fl: Dictionary = floors[0]
 		_check("étage : or gagné ≥ 120", float(fl["gold_earned"]) >= 120.0, str(fl["gold_earned"]))

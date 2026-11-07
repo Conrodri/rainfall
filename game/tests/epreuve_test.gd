@@ -108,7 +108,7 @@ func _run() -> void:
 # --- Constantes et notes
 func _check_balance() -> void:
 	print("-- Balance")
-	_check("drapeau par défaut : faux", not Balance.EPREUVES_ENABLED)
+	_check("drapeau par défaut : vrai (épreuves actives dès la fusion E0-E5)", Balance.EPREUVES_ENABLED)
 	_check("2 épreuves par étage, sans fin activé", Balance.EPREUVES_PER_STAGE == 2 and Balance.EPREUVE_IN_ENDLESS)
 	_check("ZONE_SPAWN_MULT[epreuve] = 1,5", is_equal_approx(float(Balance.ZONE_SPAWN_MULT[&"epreuve"]), 1.5))
 	_check("cadence du cœur [12, 9, 7]", Balance.RITUAL_PULSE_S == [12.0, 9.0, 7.0] and is_equal_approx(Balance.ritual_pulse_s(0), 12.0) and is_equal_approx(Balance.ritual_pulse_s(1), 9.0) and is_equal_approx(Balance.ritual_pulse_s(2), 7.0))
