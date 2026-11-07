@@ -220,6 +220,12 @@ func _pay() -> float:
 	return amount
 
 
+## Position d'apparition du mini-boss (monde) : au pied de l'épreuve par défaut ; la Tenue la surcharge (dernier côté annoncé).
+## La Veine garde le défaut : son pilier suit le disque, donc le mini-boss sort au centre du disque.
+func _mini_spawn_pos() -> Vector2:
+	return global_position + BOSS_OFFSET
+
+
 ## Invoque le mini-boss du plan de run (mêmes gestes que Pillar.activate pour un petit pilier).
 func _spawn_mini() -> void:
 	var d := _director()
@@ -229,7 +235,7 @@ func _spawn_mini() -> void:
 	if boss_id != &"":
 		d.set_meta(&"next_boss_id", boss_id)
 		d.set_meta(&"next_mini_id", boss_id) # EnemyVisual.resolve_boss_id
-	_boss = d.spawn_boss(&"mini", global_position + BOSS_OFFSET)
+	_boss = d.spawn_boss(&"mini", _mini_spawn_pos())
 	if d.has_meta(&"next_mini_id"):
 		d.remove_meta(&"next_mini_id")
 	if _boss != null and boss_id != &"":

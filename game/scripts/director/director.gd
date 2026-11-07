@@ -641,6 +641,11 @@ func _announce_wave(side: Vector2, along: float) -> void:
 		add_child(ind)
 
 
+## Tirage du tier pour un appelant extérieur (Tenue : tier des monstres leurrés), même règle que l'apparition normale.
+func pick_tier(D: float) -> int:
+	return _pick_tier(D)
+
+
 ## Tirage du tier : vise le coût moyen 1 + DIRECTOR_MEAN_COST_SLOPE × (D - 1) parmi les tiers débloqués.
 func _pick_tier(D: float) -> int:
 	var mean := 1.0 + Balance.DIRECTOR_MEAN_COST_SLOPE * (D - 1.0)

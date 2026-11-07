@@ -470,7 +470,8 @@ def _shape_cite(g):
     g = pad(strip_ring(g), left=3, right=3, top=3, bottom=3)
     g = canal(g, 13, 16, 11, 34, 3.0, 24.0)  # le canal serpente entre les quartiers (gués conservés)
     g = edit(g, [(6, 4, "."), (8, 3, "C"), (23, 4, "."), (20, 3, "C"), (6, 41, "."), (15, 41, "C"), (22, 41, "."), (18, 41, "C"),
-                 (8, 39, "."), (9, 36, "P"), (20, 39, "."), (21, 36, "P")])  # piliers du sud sur sol dégagé
+                 (8, 39, "."), (9, 36, "P"), (20, 39, "."), (21, 36, "P"),
+                 (20, 28, "C")])  # piliers du sud sur sol dégagé ; 07/11/2026 (Épreuves) : 3e repère de coffre à <= 8 u de la cloche de la Tenue (45;61)
     m = diff(blob(15, 23, 14.6, 22.6, seed=31, amp=0.11), blob(-1, 24, 4.5, 5, seed=32, amp=0.2), blob(31, 14, 4, 5, seed=33, amp=0.2))
     return carve(g, m, "cite_rouille")
 
@@ -504,7 +505,8 @@ def _shape_fonderie(g):
                  (16, 1, "#####"), (15, 2, "#:::::#"), (15, 3, "#:::::#"), (15, 4, "#:::::#"), (15, 5, "##DD###"),  # chambre forte au nord
                  (4, 4, "."), (23, 3, "C"), (9, 5, "."), (11, 7, "C"), (6, 30, "."), (9, 30, "S"), (31, 31, "."), (29, 30, "P"),
                  (33, 33, "."), (28, 32, "C"),
-                 (8, 8, "."), (9, 9, "G"), (19, 6, "."), (24, 6, "P"), (8, 28, "."), (12, 30, "P")])  # piliers sur sol dégagé
+                 (8, 8, "."), (9, 9, "G"), (19, 6, "."), (24, 6, "P"), (8, 28, "."), (12, 30, "P"),  # piliers sur sol dégagé
+                 (21, 16, "C"), (16, 18, "C")])  # 07/11/2026 (Épreuves) : 3 repères de coffre à <= 8 u de la cloche de la Tenue (39;35)
     m = diff(blob(19, 19, 18.6, 18.4, seed=61, amp=0.07), blob(1, 33, 5, 5, seed=62, amp=0.15))
     return carve(g, m, "cite_fonderie_canal")
 

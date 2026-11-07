@@ -1,7 +1,7 @@
 class_name EpreuveHold
 extends Epreuve
 ## Tenue (docs/Design_Epreuves.md §3.5) : « Sonner la cloche » lance 40 s. Toutes les 8 s (t = 0, 8, 16, 24, 32 : 5 paquets)
-## un côté est ANNONCÉ 2 s à l'avance (chevrons au sol vers ce côté), puis 4 monstres apparaissent à 10 u dans cette
+## un côté est ANNONCÉ 2 s à l'avance (chevrons au sol vers ce côté), puis 4 monstres apparaissent à Balance.HOLD_SPAWN_DIST_U dans cette
 ## direction et marchent droit sur la cloche (`Enemy.walk_target`). Un joueur vivant à <= 3 u d'un monstre leurré lui
 ## retire sa cible (il redevient un monstre ordinaire) : intercepter avant le contact. Au contact (1,3 u, échantillon
 ## 0,25 s, même code que la barque d'Escorte) la cloche perd des PV ; à 0 PV elle s'éteint (`dim`), l'épreuve continue.
@@ -10,18 +10,6 @@ extends Epreuve
 ## Coop : PV de la cloche x 1,3 / 1,6 / 1,9 à 2 / 3 / 4 joueurs vivants au lancement (décision du 07/11/2026), paquets inchangés.
 ## La cloche (EpreuveHoldBell, enfant) est la cible des monstres et l'interactable ; le pilier lui-même n'a pas de sprite.
 
-# TODO E0 : Balance.<NOM> (constantes locales, valeurs du doc §8 ; balance.gd n'est pas modifié par le lot E3)
-const HOLD_HP_MINI_SHARE := 0.5 # TODO E0 : Balance.HOLD_HP_MINI_SHARE
-const HOLD_DURATION_S := 40.0 # TODO E0 : Balance.HOLD_DURATION_S
-const HOLD_SIDES := 3 # TODO E0 : Balance.HOLD_SIDES
-const HOLD_WAVE_EVERY_S := 8.0 # TODO E0 : Balance.HOLD_WAVE_EVERY_S
-const HOLD_PACKET := 4 # TODO E0 : Balance.HOLD_PACKET
-const HOLD_ANNOUNCE_S := 2.0 # TODO E0 : Balance.HOLD_ANNOUNCE_S
-const HOLD_SPAWN_DIST_U := 10.0 # TODO E0 : Balance.HOLD_SPAWN_DIST_U
-const HOLD_LURE_BREAK_U := 3.0 # TODO E0 : Balance.HOLD_LURE_BREAK_U
-const HOLD_HIT_RADIUS_U := 1.3 # TODO E0 : Balance.HOLD_HIT_RADIUS_U
-const HOLD_PERFECT_HP_PCT := 0.7 # TODO E0 : Balance.HOLD_PERFECT_HP_PCT
-const HOLD_ZONE_RADIUS_U := 12.0 # TODO E0 : Balance.HOLD_ZONE_RADIUS_U
 const HOLD_CHEVRON_DIST_U := 4.0 ## chevrons d'annonce à 4 u de la cloche (doc §3.5)
 
 const HIT_SAMPLE_S := 0.25 ## période de relevé des monstres au contact (comme la barque)
@@ -29,7 +17,7 @@ const CONTACT_INTERVAL_S := 1.0 ## un monstre au contact frappe une fois par sec
 const PACKET_SPREAD_U := 0.8 ## écart latéral entre les monstres d'un paquet
 
 var bell: EpreuveHoldBell = null
-var sides: Array[Vector2] = [] ## HOLD_SIDES vecteurs unitaires, repère local de la carte
+var sides: Array[Vector2] = [] ## Balance.HOLD_SIDES vecteurs unitaires, repère local de la carte
 var order: Array[int] = [] ## côté de chaque paquet (indices dans `sides`), tiré au lancement
 var next_i := 0 ## prochain paquet (0..packet_count)
 var last_side := Vector2.DOWN ## dernier côté annoncé : par là arrive le mini-boss
@@ -75,30 +63,14 @@ func set_sides(side_dirs: Array) -> void:
 		last_side = sides[0]
 
 
-# --- PV et note (à reprendre dans Balance à la fusion E0 : hold_hp / epreuve_grade_hold)
-## PV de la cloche : 0,5 x PV d'un mini-boss, x (1 + 0,3 (n - 1)) en coop (= 1,3 / 1,6 / 1,9).
-static func hold_hp(d: float, stage: int, n_alive: int = 1) -> float: # TODO E0 : Balance.hold_hp
-	return HOLD_HP_MINI_SHARE * Balance.boss_hp(&"mini", d, stage, maxi(n_alive, 1))
-
-
-## Note à durée fixe d'après la part de PV restante (cloche éteinte = hp_ratio 0).
-static func grade_for(hp_ratio: float) -> StringName: # TODO E0 : Balance.epreuve_grade_hold
-	if hp_ratio <= 0.0:
-		return &"fait"
-	return &"parfait" if hp_ratio >= HOLD_PERFECT_HP_PCT else &"bien"
-
-
+# --- Paquets
 ## Paquets sur la durée : 40 s / 8 s -> t = 0, 8, 16, 24, 32 = 5.
 static func packet_count() -> int:
-	return int(ceil(HOLD_DURATION_S / HOLD_WAVE_EVERY_S - 0.001))
+	return int(ceil(Balance.HOLD_DURATION_S / Balance.HOLD_WAVE_EVERY_S - 0.001))
 
 
 func zone_radius() -> float:
-	return HOLD_ZONE_RADIUS_U * Balance.UNIT_PX
-
-
-func interact_label() -> String:
-	return "Sonner la cloche"
+	return Balance.HOLD_ZONE_RADIUS_U * Balance.UNIT_PX
 
 
 ## Seule la cloche est interactable (le pilier n'a pas de sprite ; pas de seconde invite).
@@ -107,7 +79,7 @@ func can_interact() -> bool:
 
 
 func progress() -> float:
-	return clampf(elapsed / HOLD_DURATION_S, 0.0, 1.0)
+	return clampf(elapsed / Balance.HOLD_DURATION_S, 0.0, 1.0)
 
 
 func hp_ratio() -> float:
@@ -131,7 +103,7 @@ func _dir_point(dir: Vector2, dist_u: float) -> Vector2:
 
 func _begin() -> void:
 	var n := party_override if party_override > 0 else (Players.alive().size() if is_inside_tree() else 1)
-	bell.arm(hold_hp(RunState.difficulty(), RunState.stage, n))
+	bell.arm(Balance.hold_hp(RunState.difficulty(), RunState.stage, n))
 	next_i = 0
 	packets_spawned = 0
 	monsters_spawned = 0
@@ -182,21 +154,21 @@ func _run(delta: float) -> void:
 			_announcing = false
 			_spawn_packet(order[next_i])
 			next_i += 1
-	if not _announcing and next_i < packet_count() and not sides.is_empty() and elapsed >= float(next_i) * HOLD_WAVE_EVERY_S:
+	if not _announcing and next_i < packet_count() and not sides.is_empty() and elapsed >= float(next_i) * Balance.HOLD_WAVE_EVERY_S:
 		_announcing = true
-		_announce_left = HOLD_ANNOUNCE_S
+		_announce_left = Balance.HOLD_ANNOUNCE_S
 		last_side = sides[order[next_i]]
-	if not resolved and elapsed >= HOLD_DURATION_S:
+	if not resolved and elapsed >= Balance.HOLD_DURATION_S:
 		_resolve()
 
 
 func _resolve(g: StringName = &"") -> void:
 	if resolved:
 		return
-	super._resolve(g if g != &"" else grade_for(hp_ratio()))
+	super._resolve(g if g != &"" else Balance.epreuve_grade_hold(hp_ratio()))
 
 
-## Un paquet de HOLD_PACKET monstres à 10 u du côté `side_idx` (position repliée sur le sol praticable). Le plafond de
+## Un paquet de Balance.HOLD_PACKET monstres à Balance.HOLD_SPAWN_DIST_U du côté `side_idx` (position repliée sur le sol praticable). Le plafond de
 ## vivants du director (pool vide : `spawn_enemy` rend null) donne un paquet plus petit, jamais plus grand.
 func _spawn_packet(side_idx: int) -> int:
 	var d := _director() as Director
@@ -205,10 +177,10 @@ func _spawn_packet(side_idx: int) -> int:
 	var dir := sides[side_idx]
 	var tangent := dir.orthogonal()
 	var made := 0
-	for k in HOLD_PACKET:
-		var off := (float(k) - float(HOLD_PACKET - 1) * 0.5) * PACKET_SPREAD_U
-		var p := _walkable(d, _dir_point(dir, HOLD_SPAWN_DIST_U) + tangent * off * Balance.UNIT_PX)
-		var e := d.spawn_enemy(d._pick_tier(RunState.difficulty()), p)
+	for k in Balance.HOLD_PACKET:
+		var off := (float(k) - float(Balance.HOLD_PACKET - 1) * 0.5) * PACKET_SPREAD_U
+		var p := _walkable(d, _dir_point(dir, Balance.HOLD_SPAWN_DIST_U) + tangent * off * Balance.UNIT_PX)
+		var e := d.spawn_enemy(d.pick_tier(RunState.difficulty()), p)
 		if e == null:
 			break
 		e.walk_target = bell
@@ -229,7 +201,7 @@ func _walkable(d: Director, p: Vector2) -> Vector2:
 func _update_lures() -> void:
 	if _lured.is_empty():
 		return
-	var brk := HOLD_LURE_BREAK_U * Balance.UNIT_PX
+	var brk := Balance.HOLD_LURE_BREAK_U * Balance.UNIT_PX
 	var players: Array[Node2D] = Players.alive() if is_inside_tree() else []
 	var keep: Array[Enemy] = []
 	for e in _lured:
@@ -259,7 +231,7 @@ func _contact_hit(dt: float) -> void:
 
 func _contact_dps() -> float:
 	var total := 0.0
-	var reach := HOLD_HIT_RADIUS_U * Balance.UNIT_PX
+	var reach := Balance.HOLD_HIT_RADIUS_U * Balance.UNIT_PX
 	for n in get_tree().get_nodes_in_group(&"enemies"):
 		var e := n as Enemy
 		if e == null or not e.active or e.is_boss:
@@ -283,21 +255,10 @@ func _on_resolved() -> void:
 		bell.set_state(EpreuveHoldBell.STATE_OFF)
 
 
-## Mini-boss : arrive par le dernier côté annoncé, à 10 u de la cloche, et marche (écart au socle : position imposée).
-func _spawn_mini() -> void:
+## Le mini-boss arrive par le dernier côté annoncé, à Balance.HOLD_SPAWN_DIST_U de la cloche, et marche vers elle.
+func _mini_spawn_pos() -> Vector2:
 	var d := _director() as Director
-	if d == null:
-		push_warning("Epreuve : aucun Director (groupe `director`), pas de mini-boss.")
-		return
-	if boss_id != &"":
-		d.set_meta(&"next_boss_id", boss_id)
-		d.set_meta(&"next_mini_id", boss_id)
-	_boss = d.spawn_boss(&"mini", _walkable(d, _dir_point(last_side, HOLD_SPAWN_DIST_U)))
-	if d.has_meta(&"next_mini_id"):
-		d.remove_meta(&"next_mini_id")
-	if _boss != null and boss_id != &"":
-		_boss.set_meta(&"boss_id", boss_id)
-	_send_zone(true)
+	return _dir_point(last_side, Balance.HOLD_SPAWN_DIST_U) if d == null else _walkable(d, _dir_point(last_side, Balance.HOLD_SPAWN_DIST_U))
 
 
 func _exit_tree() -> void:
@@ -359,13 +320,13 @@ func draw_overlay(c: Node2D) -> void:
 		var col := Color(0.95, 0.75, 0.3, 0.25 if active else 0.12)
 		var k := 0.0
 		if i == announced:
-			k = 1.0 - clampf(_announce_left / HOLD_ANNOUNCE_S, 0.0, 1.0)
+			k = 1.0 - clampf(_announce_left / Balance.HOLD_ANNOUNCE_S, 0.0, 1.0)
 			col = Color(1.0, 0.3, 0.2, 0.45 + 0.5 * k)
 		var perp := dir_px.orthogonal()
 		for j in 3: # 3 chevrons
 			var base := origin + dir_px * (HOLD_CHEVRON_DIST_U + 0.9 * float(j)) * u
 			c.draw_colored_polygon(PackedVector2Array([base + dir_px * 22.0, base - dir_px * 14.0 + perp * 22.0, base - dir_px * 14.0 - perp * 22.0]), col)
 		if i == announced:
-			c.draw_arc(origin + dir_px * HOLD_SPAWN_DIST_U * u, 1.2 * u, 0.0, TAU, 24, Color(1.0, 0.3, 0.2, 0.3 + 0.5 * k), 4.0)
+			c.draw_arc(origin + dir_px * Balance.HOLD_SPAWN_DIST_U * u, 1.2 * u, 0.0, TAU, 24, Color(1.0, 0.3, 0.2, 0.3 + 0.5 * k), 4.0)
 	if active:
 		c.draw_arc(origin, 1.3 * u, -PI * 0.5, -PI * 0.5 + TAU * progress(), 48, Color(0.95, 0.8, 0.4, 0.8), 5.0) # temps écoulé

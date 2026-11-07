@@ -785,7 +785,7 @@ func _roll_merchant(layout: Dictionary, chest_markers: Array[Marker2D], pillar_m
 	for xy in layout.get("capsules", []):
 		near.append(Vector2(float(xy[0]), float(xy[1])))
 	for p: Dictionary in layout["pillars"]:
-		var pp := map.local_pos(pillar_markers[int(p["marker"])])
+		var pp := _pillar_layout_pos(p, pillar_markers)
 		far.append(pp)
 		if int(p["kind"]) == Pillar.Kind.BIG:
 			near.append(teleporter_local(pp))
@@ -960,8 +960,8 @@ func _make_epreuve(verb: String) -> Pillar:
 			e = EpreuveChase.make(g["posts"])
 		"veine":
 			e = EpreuveVein.make(g["path"], bool(g["closed"]))
-		"tenue": # branché à la fusion du lot E3 : e = EpreuveHold.make(g["pos"], g["sides"])
-			pass
+		"tenue":
+			e = EpreuveHold.make(g["pos"], g["sides"])
 	if e == null:
 		return null
 	e.biome = StringName(biome)

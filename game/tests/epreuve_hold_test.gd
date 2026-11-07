@@ -55,15 +55,15 @@ func _check_constants() -> void:
 	print("-- constantes")
 	var d := 2.0
 	var mini := Balance.boss_hp(&"mini", d, 1)
-	_check("PV de la cloche = 0,5 x mini-boss", is_equal_approx(EpreuveHold.hold_hp(d, 1, 1), 0.5 * mini))
-	_check("PV x 1,3 / 1,6 / 1,9 à 2 / 3 / 4 joueurs", is_equal_approx(EpreuveHold.hold_hp(d, 1, 2) / EpreuveHold.hold_hp(d, 1, 1), 1.3) and is_equal_approx(EpreuveHold.hold_hp(d, 1, 3) / EpreuveHold.hold_hp(d, 1, 1), 1.6) and is_equal_approx(EpreuveHold.hold_hp(d, 1, 4) / EpreuveHold.hold_hp(d, 1, 1), 1.9))
-	_check("PV croissants avec D, suivent boss_hp(mini) à l'étage", EpreuveHold.hold_hp(3.0, 1) > EpreuveHold.hold_hp(2.0, 1) and is_equal_approx(EpreuveHold.hold_hp(2.0, 3), 0.5 * Balance.boss_hp(&"mini", 2.0, 3)))
-	_check("note aux PV : 1,0 / 0,7 parfait", EpreuveHold.grade_for(1.0) == &"parfait" and EpreuveHold.grade_for(0.7) == &"parfait")
-	_check("note aux PV : 0,69 / 0,01 bien", EpreuveHold.grade_for(0.69) == &"bien" and EpreuveHold.grade_for(0.01) == &"bien")
-	_check("note aux PV : 0 fait", EpreuveHold.grade_for(0.0) == &"fait")
+	_check("PV de la cloche = 0,5 x mini-boss", is_equal_approx(Balance.hold_hp(d, 1, 1), 0.5 * mini))
+	_check("PV x 1,3 / 1,6 / 1,9 à 2 / 3 / 4 joueurs", is_equal_approx(Balance.hold_hp(d, 1, 2) / Balance.hold_hp(d, 1, 1), 1.3) and is_equal_approx(Balance.hold_hp(d, 1, 3) / Balance.hold_hp(d, 1, 1), 1.6) and is_equal_approx(Balance.hold_hp(d, 1, 4) / Balance.hold_hp(d, 1, 1), 1.9))
+	_check("PV croissants avec D, suivent boss_hp(mini) à l'étage", Balance.hold_hp(3.0, 1) > Balance.hold_hp(2.0, 1) and is_equal_approx(Balance.hold_hp(2.0, 3), 0.5 * Balance.boss_hp(&"mini", 2.0, 3)))
+	_check("note aux PV : 1,0 / 0,7 parfait", Balance.epreuve_grade_hold(1.0) == &"parfait" and Balance.epreuve_grade_hold(0.7) == &"parfait")
+	_check("note aux PV : 0,69 / 0,01 bien", Balance.epreuve_grade_hold(0.69) == &"bien" and Balance.epreuve_grade_hold(0.01) == &"bien")
+	_check("note aux PV : 0 fait", Balance.epreuve_grade_hold(0.0) == &"fait")
 	_check("5 paquets (t = 0, 8, 16, 24, 32)", EpreuveHold.packet_count() == 5)
-	_check("cible de durée tenue = 40 s", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"tenue"]), 40.0) and is_equal_approx(EpreuveHold.HOLD_DURATION_S, 40.0))
-	_check("annonce >= 0,8 s", EpreuveHold.HOLD_ANNOUNCE_S >= 0.8)
+	_check("cible de durée tenue = 40 s", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"tenue"]), 40.0) and is_equal_approx(Balance.HOLD_DURATION_S, 40.0))
+	_check("annonce >= 0,8 s", Balance.HOLD_ANNOUNCE_S >= 0.8)
 
 
 # --- Mise en place
@@ -91,6 +91,7 @@ func _setup_stage() -> void:
 
 func _new_hold(dx := 0.0, dy := -6.0) -> EpreuveHold:
 	var h := EpreuveHold.make(_origin + Vector2(dx, dy) * Balance.UNIT_PX, _sides)
+	h.biome = &"cite" # libellé d'invite lu dans data/epreuves.json
 	_next_id += 1
 	h.setup(Pillar.Kind.SMALL, _next_id, false)
 	_stage.map.add_child(h)
@@ -148,7 +149,7 @@ func _interaction_and_start() -> void:
 	_check("invite : visible, maintien 0", bool(st["visible"]) and is_zero_approx(float(st["hold_s"])))
 	_events.clear()
 	_check("interagir lance l'épreuve", h.bell.interact() and h.is_running() and _events.size() == 1 and _events[0][0] == "start" and _events[0][1] == &"tenue")
-	_check("cloche sonne (ringing), PV pleins = 0,5 x mini-boss", h.bell.state == EpreuveHoldBell.STATE_RINGING and is_equal_approx(h.bell.max_hp, EpreuveHold.hold_hp(RunState.difficulty(), RunState.stage, 1)) and h.bell.hp == h.bell.max_hp and h.bell.max_hp > 0.0)
+	_check("cloche sonne (ringing), PV pleins = 0,5 x mini-boss", h.bell.state == EpreuveHoldBell.STATE_RINGING and is_equal_approx(h.bell.max_hp, Balance.hold_hp(RunState.difficulty(), RunState.stage, 1)) and h.bell.hp == h.bell.max_hp and h.bell.max_hp > 0.0)
 	_check("plus d'invite une fois lancée", not h.bell.can_interact() and not h.bell.interact())
 	_check("ordre : 5 paquets, 3 côtés présents, jamais deux fois le même d'affilée", _order_ok(h))
 	h.free()
@@ -183,7 +184,7 @@ func _packets_and_lures() -> void:
 	_tick(h, 0.75) # t = 2,25
 	_check("t = 2,25 s : paquet de 4 apparu", h.packets_spawned == 1 and h.monsters_spawned == 4 and _packet_foes(h).size() == 4, "%d/%d" % [h.packets_spawned, h.monsters_spawned])
 	var foes := _packet_foes(h)
-	var expected := h.side_point(side0, EpreuveHold.HOLD_SPAWN_DIST_U)
+	var expected := h.side_point(side0, Balance.HOLD_SPAWN_DIST_U)
 	var near_ok := _director.nav == null or _director.nav.is_reachable(expected)
 	var spawn_ok := true
 	var target_ok := true
@@ -201,7 +202,7 @@ func _packets_and_lures() -> void:
 	var consistent := true
 	var freed := 0
 	for e in foes:
-		var close := _player.global_position.distance_to(e.global_position) <= EpreuveHold.HOLD_LURE_BREAK_U * u
+		var close := _player.global_position.distance_to(e.global_position) <= Balance.HOLD_LURE_BREAK_U * u
 		if close:
 			freed += 1
 		if close != (e.walk_target == null):
@@ -271,7 +272,7 @@ func _contact_and_dim() -> void:
 	var boss := h.get(&"_boss") as Enemy
 	_check("mini-boss invoqué", boss != null and boss.active)
 	if boss != null:
-		var exp_pos := h.side_point(h.order[h.order.size() - 1], EpreuveHold.HOLD_SPAWN_DIST_U)
+		var exp_pos := h.side_point(h.order[h.order.size() - 1], Balance.HOLD_SPAWN_DIST_U)
 		var reach := _director.nav == null or _director.nav.is_reachable(exp_pos)
 		_check("mini-boss par le dernier côté annoncé (10 u)", not reach or boss.global_position.distance_to(exp_pos) <= 2.0 * u, "%s vs %s" % [str(boss.global_position), str(exp_pos)])
 	_check("cloche : plus d'invite après la fin, restée éteinte", h.bell.state == EpreuveHoldBell.STATE_DIM and not h.bell.can_interact())
@@ -320,7 +321,7 @@ func _coop() -> void:
 		_far(h)
 		h.party_override = n
 		h.activate()
-		var solo := EpreuveHold.hold_hp(RunState.difficulty(), RunState.stage, 1) # D dérive avec le temps : tolérance
+		var solo := Balance.hold_hp(RunState.difficulty(), RunState.stage, 1) # D dérive avec le temps : tolérance
 		var mult := h.bell.max_hp / solo
 		_check("%d joueur(s) : PV x %.1f" % [n, 1.0 + 0.3 * (n - 1)], absf(mult - (1.0 + 0.3 * (n - 1))) <= 0.02, "x%.3f" % mult)
 		if n == 4:
