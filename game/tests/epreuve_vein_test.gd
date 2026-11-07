@@ -1,7 +1,7 @@
 extends Node
 ## Épreuve « Veine » (docs/Design_Epreuves.md §3.4 et §10) : boucle carrée de 48 u ; lancement par la source ; disque à
 ## 1,5 u/s ; charge seulement avec un joueur dedans et qui ne retombe jamais ; coop (prorata, plancher 0,25) ; geyser toutes
-## les 6 s à 3 u devant le disque (télégraphe >= 0,8 s, un coup par joueur, « parfait » perdu) ; aller-retour sur un tracé
+## les 6 s sous un joueur du disque (décalé de 0,75 u ; sans joueur : 3 u devant ; télégraphe >= 0,8 s, un coup par joueur, « parfait » perdu) ; aller-retour sur un tracé
 ## ouvert ; charge 30 s -> mini-boss dans le disque ; validation de longueur ; délai de sécurité ; sauvegarde.
 ## godot --headless --path game res://tests/epreuve_vein_test.tscn  -> RESULT: OK
 
@@ -77,6 +77,7 @@ func _run() -> void:
 	await _charge()
 	await _coop()
 	await _geysers()
+	await _geyser_on_player()
 	await _open_path()
 	await _full_run()
 	await _backstop()
@@ -94,7 +95,7 @@ func _check_static() -> void:
 	print("-- constantes et longueur")
 	_check("télégraphe du geyser >= 0,8 s", Balance.VEIN_GEYSER_TELEGRAPH_S >= 0.8)
 	_check("rayon 6 u, vitesse 1,5 u/s, charge 30 s", Balance.VEIN_RADIUS_U == 6.0 and Balance.VEIN_SPEED_U == 1.5 and Balance.VEIN_CHARGE_S == 30.0)
-	_check("geyser : 6 s, rayon 2 u, 3 u devant, coef 1,0", Balance.VEIN_GEYSER_EVERY_S == 6.0 and Balance.VEIN_GEYSER_RADIUS_U == 2.0 and Balance.VEIN_GEYSER_AHEAD_U == 3.0 and Balance.VEIN_GEYSER_COEF == 1.0)
+	_check("geyser : 6 s, rayon 2 u, 0,75 u décalé, coef 1,0", Balance.VEIN_GEYSER_EVERY_S == 6.0 and Balance.VEIN_GEYSER_RADIUS_U == 2.0 and Balance.VEIN_GEYSER_AHEAD_U == 0.75 and Balance.VEIN_GEYSER_COEF == 1.0)
 	_check("note : cible 40 s, la veine n'est pas un verbe partagé", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"veine"]), 40.0))
 	var u := Balance.UNIT_PX
 	var sq := _square(Vector2.ZERO, 12.0)
@@ -291,6 +292,81 @@ func _geysers() -> void:
 	await _frames(1)
 
 
+# --- Geyser sous le joueur (audit du 07/11/2026)
+func _geyser_on_player() -> void:
+	print("-- geyser sous le joueur")
+	var stage: StageManager = _main.stage
+	var player: Node2D = _main.player
+	var u := Balance.UNIT_PX
+	_check("VEIN_GEYSER_ON_PLAYER actif, décalage 0,75 u, télégraphe >= 0,8 s", Balance.VEIN_GEYSER_ON_PLAYER and is_equal_approx(Balance.VEIN_GEYSER_AHEAD_U, 0.75) and Balance.VEIN_GEYSER_TELEGRAPH_S >= 0.8)
+	var spots: Array = [Vector2.ZERO, Vector2(4.5 * u, 0.0), Vector2(-4.5 * u, 0.0), Vector2(0.0, 4.5 * u), Vector2(0.0, -4.5 * u), Vector2(3.0 * u, -3.0 * u)]
+	var e := await _spawn(_square(stage.map.get_player_start(), 12.0), true)
+	e.activate()
+	var covered := 0
+	var tele_ok := 0
+	var hit_ok := 0
+	for k in spots.size():
+		# attend l'annonce du geyser en restant au point `k` du disque (le disque avance, le joueur le suit)
+		var guard := 0
+		while e.geyser_phase() != EpreuveVein.GEY_TELEGRAPH and guard < 200:
+			e.vein_charge = 0.0 # la charge ne doit pas se terminer pendant la mesure
+			player.global_position = e.global_position + spots[k]
+			e.tick(0.25)
+			guard += 1
+		var gp: Vector2 = stage.map.to_global(e.geyser_pos())
+		var d: float = player.global_position.distance_to(gp)
+		if e.geyser_phase() == EpreuveVein.GEY_TELEGRAPH and d <= Balance.VEIN_GEYSER_RADIUS_U * u and absf(d / u - Balance.VEIN_GEYSER_AHEAD_U) < 0.1:
+			covered += 1
+		else:
+			print("    spot %d : phase %d, d = %.2f u, joueur %s, disque %s, dist_along %.0f" % [k, e.geyser_phase(), d / u, player.global_position, e.global_position, e.dist_along])
+		# joueur immobile : mesure du télégraphe puis coup à l'éruption
+		var hits0 := e.hits
+		var t := 0.0
+		while e.geyser_phase() == EpreuveVein.GEY_TELEGRAPH and t < 5.0:
+			e.tick(0.05)
+			t += 0.05
+		if t >= 0.8 and absf(t - Balance.VEIN_GEYSER_TELEGRAPH_S) <= 0.06:
+			tele_ok += 1
+		if e.hits == hits0 + 1:
+			hit_ok += 1
+		while e.geyser_phase() != EpreuveVein.GEY_NONE:
+			e.tick(0.05)
+		e.clean = true
+	_check("joueur immobile n'importe où dans le disque : geyser dans son rayon à l'annonce (%d/%d)" % [covered, spots.size()], covered == spots.size())
+	_check("télégraphe mesuré = 1,2 s (>= 0,8 s) (%d/%d)" % [tele_ok, spots.size()], tele_ok == spots.size())
+	_check("joueur immobile : 1 coup à l'éruption (%d/%d)" % [hit_ok, spots.size()], hit_ok == spots.size())
+	# écart de 2,5 u en 0,5 s, à l'opposé du décalage : aucun coup
+	for ang in [0.0, 0.6, -0.6]: # le joueur s'écarte du geyser (à l'opposé du point d'impact, à +-35 degrés près)
+		var guard2 := 0
+		while e.geyser_phase() != EpreuveVein.GEY_TELEGRAPH and guard2 < 200:
+			e.vein_charge = 0.0
+			player.global_position = e.global_position
+			e.tick(0.25)
+			guard2 += 1
+		var p0 := player.global_position
+		var dirv: Vector2 = (p0 - stage.map.to_global(e.geyser_pos())).normalized().rotated(ang)
+		var hits1 := e.hits
+		for i in 2: # 0,5 s, 2,5 u
+			player.global_position = p0 + (dirv as Vector2) * 1.25 * u * float(i + 1)
+			e.tick(0.25)
+		while e.geyser_phase() != EpreuveVein.GEY_NONE:
+			e.tick(0.05)
+		_check("écart de 2,5 u en 0,5 s (angle %.1f) : aucun coup" % ang, e.hits == hits1)
+	# aucun joueur dans le disque : ancien placement, 3 u devant le centre
+	var guard3 := 0
+	while e.geyser_phase() != EpreuveVein.GEY_TELEGRAPH and guard3 < 200:
+		e.vein_charge = 0.0
+		player.global_position = e.global_position + Vector2(0.0, 60.0 * u)
+		e.tick(0.25)
+		guard3 += 1
+	_check("sans joueur dans le disque : 3 u devant le centre", absf(e.geyser_pos().distance_to(e.position) / u - Balance.VEIN_GEYSER_FALLBACK_AHEAD_U) < 0.2)
+	# dégâts bornés : <= 25 % des PV max du joueur
+	var dmg := e.geyser_damage()
+	_check("dégâts du geyser <= 25 %% des PV max (%.1f / %.1f)" % [dmg, (player.get(&"max_hp") as float)], dmg <= 0.25 * (player.get(&"max_hp") as float))
+	e.queue_free()
+	await _frames(1)
+
+
 # --- Tracé ouvert : aller-retour
 func _open_path() -> void:
 	print("-- tracé ouvert")
@@ -329,20 +405,19 @@ func _full_run() -> void:
 	e.activate()
 	var guard := 0
 	while e.is_running() and guard < KILL_GUARD:
-		# le disque porte le joueur vers le geyser : il se tient 2,5 u derrière le centre dès qu'un geyser est annoncé
+		# le geyser se pose sous le joueur : dès qu'il est annoncé, le joueur s'écarte de 2,5 u (reste dans le disque)
 		var at := e.global_position
 		if e.geyser_phase() != EpreuveVein.GEY_NONE:
-			var gdir: Vector2 = (stage.map.to_global(e.geyser_pos()) - e.global_position).normalized()
-			at = e.global_position - gdir * 2.5 * u
+			at = stage.map.to_global(e.geyser_pos()) + Vector2(0.0, 2.5 * u)
 		player.global_position = at
 		e.tick(0.25)
 		guard += 1
 	_check("30 s dedans -> épreuve résolue (%.1f s)" % e.elapsed, e.resolved and guard < KILL_GUARD and absf(e.elapsed - 30.0) <= 0.5)
-	_check("geysers esquivés en restant dans le disque : aucun coup", e.hits == 0 and e.clean and e.pulses >= 4, "hits=%d pulses=%d" % [e.hits, e.pulses])
+	_check("geysers esquivés en restant dans le disque : aucun coup", e.hits == 0 and e.clean and e.pulses >= 3, "hits=%d pulses=%d" % [e.hits, e.pulses])
 	_check("note « parfait »", e.grade == &"parfait", String(e.grade))
 	var expected := Balance.epreuve_gold(&"parfait", Balance.station_price_p(RunState.floor_start_d, RunState.stage))
 	var gm: float = (player.call(&"gold_mult") as float)
-	_check("or : parfait = 1,5 P versé", is_equal_approx(e.gold_paid, expected) and absf((RunState.gold - gold0) - expected * gm) <= 1.0)
+	_check("or : parfait = 0,8 P versé", is_equal_approx(e.gold_paid, expected) and absf((RunState.gold - gold0) - expected * gm) <= 1.0)
 	_check("évènement de fin (veine, parfait)", _events.size() == 2 and _events[1][0] == "end" and _events[1][1] == &"veine" and _events[1][2] == &"parfait")
 	var boss := e.get(&"_boss") as Enemy
 	_check("mini-boss invoqué dans le disque", boss != null and boss.active and boss.global_position.distance_to(e.global_position) <= e.disc_radius())

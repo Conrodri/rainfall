@@ -64,7 +64,7 @@ func _run() -> void:
 
 	print("-- constantes (Balance)")
 	_check("6 bornes, 8 s, 5 points, [9, 17] u, portée 2 u, vacillement 1,5 s", Balance.CHASE_POSTS == 6 and is_equal_approx(Balance.CHASE_JUMP_S, 8.0) and Balance.CHASE_POINTS == 5 and is_equal_approx(Balance.CHASE_JUMP_MIN_U, 9.0) and is_equal_approx(Balance.CHASE_JUMP_MAX_U, 17.0) and is_equal_approx(Balance.CHASE_REACH_U, 2.0) and is_equal_approx(Balance.CHASE_WARN_S, 1.5))
-	_check("cible « parfait » 45 s", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"poursuite"]), 45.0))
+	_check("cible « parfait » 40 s (= CHASE_POINTS x CHASE_JUMP_S)", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"poursuite"]), 40.0) and float(Balance.EPREUVE_TARGET_S[&"poursuite"]) >= float(Balance.CHASE_POINTS) * Balance.CHASE_JUMP_S)
 
 	print("-- lancement et saut raté")
 	var e := await _spawn(stage, pts, 191)
@@ -149,21 +149,46 @@ func _run() -> void:
 		player.global_position = e2.global_position
 		e2.tick(0.25)
 		guard += 1
-	_check("parfait : joueur sur chaque borne (%.1f s)" % e2.elapsed, e2.grade == &"parfait" and e2.clean and e2.misses == 0 and e2.elapsed <= 45.0)
-	_check("parfait = 1,5 P", is_equal_approx(e2.gold_paid, 1.5 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
-	# cible x 0,92 à 2 joueurs : 42 s est parfait en solo, plus à deux (42 / 0,92 = 45,7 s)
-	e2.elapsed = 42.0
+	_check("parfait : joueur sur chaque borne (%.1f s)" % e2.elapsed, e2.grade == &"parfait" and e2.clean and e2.misses == 0 and e2.elapsed <= 40.0)
+	_check("parfait = 0,8 P", is_equal_approx(e2.gold_paid, 0.8 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
+	# audit du 07/11/2026 : la Poursuite n'est plus un verbe partagé, sa cible (40 s = 5 sauts de 8 s) ne baisse pas avec les joueurs
+	e2.elapsed = 40.0
 	e2.clean = true
+	var grades: Array = []
+	for n in [1, 2, 4]:
+		RunState.party_size = n
+		grades.append(e2.compute_grade())
+	e2.elapsed = 41.0
+	RunState.party_size = 4
+	var late := e2.compute_grade()
 	RunState.party_size = 1
-	var solo := e2.compute_grade()
-	RunState.party_size = 2
-	var duo := e2.compute_grade()
-	RunState.party_size = 1
-	_check("coop : 42 s parfait en solo, bien à 2 (cible x 0,92)", solo == &"parfait" and duo == &"bien", "%s / %s" % [solo, duo])
-	_check("coop : multiplicateur 0,92", is_equal_approx(Balance.epreuve_target_party_mult(2), 0.92))
+	_check("coop : 40 s parfait à 1, 2 et 4 joueurs (cible fixe)", grades == [&"parfait", &"parfait", &"parfait"], str(grades))
+	_check("coop : 41 s = bien", late == &"bien", String(late))
 	(e2.get(&"_boss") as Enemy).take_damage(1.0e9)
 	await _frames(2)
 	e2.queue_free()
+
+	print("-- notes selon les bornes ratées, 1 et 4 joueurs")
+	var results := {}
+	for n in [1, 4]:
+		for miss in [0, 2, 3, 4]:
+			RunState.party_size = n
+			var em := await _spawn(stage, pts, 300 + n * 10 + miss)
+			em.activate()
+			guard = 0
+			while em.is_running() and guard < KILL_GUARD:
+				player.global_position = em.global_position if em.misses >= miss else far
+				em.tick(0.25)
+				guard += 1
+			results["%d/%d" % [n, miss]] = "%s (%d ratées, %.0f s)" % [em.grade, em.misses, em.elapsed]
+			_check("%d joueur(s), %d borne(s) ratée(s) : %s" % [n, miss, results["%d/%d" % [n, miss]]],
+				em.resolved and em.misses == miss and em.grade == ({0: &"parfait", 2: &"bien", 3: &"bien", 4: &"fait"}[miss]))
+			var bm: Variant = em.get(&"_boss")
+			if bm is Enemy:
+				(bm as Enemy).take_damage(1.0e9)
+			await _frames(2)
+			em.queue_free()
+	RunState.party_size = 1
 
 	print("-- choix du saut")
 	# anneau de 12 u : voisins à 12 u, bornes à 20,8 et 24 u hors portée

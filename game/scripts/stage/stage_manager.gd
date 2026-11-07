@@ -449,6 +449,9 @@ func _roll_layout(chest_markers: Array[Marker2D], pillar_markers: Array[Marker2D
 		order = order.filter(func(i: int) -> bool: return not shut.has(i)) + shut
 	var pillars_roll: Array = []
 	if epreuves_on: # le gros pilier est tiré d'abord : les coffres se répartissent entre tracés, arène et départ
+		# repères à moins de Balance.EPREUVE_CHEST_MIN_U d'un objet interactif d'épreuve écartés (jamais un coffre sous le relais)
+		var min_px := Balance.EPREUVE_CHEST_MIN_U * UNIT
+		order = order.filter(func(i: int) -> bool: return _dist_to_epreuve_object(map.local_pos(chest_markers[i])) >= min_px)
 		_arena_chest_pos.clear() # repères de coffre accessibles : le gros pilier doit avoir de quoi former son arène
 		for i in order:
 			_arena_chest_pos.append(map.local_pos(chest_markers[i]))
@@ -986,6 +989,15 @@ func _big_layout_pos(roll: Array, pillar_markers: Array[Marker2D], fallback: Vec
 func _dist_to_epreuve(i: int, p: Vector2) -> float:
 	var verb := _epreuve_verbs[i]
 	return EpreuveGeom.dist(verb, _epreuve_geom[StringName(verb)], p)
+
+
+## Distance (px) de `p` au point interactif d'épreuve le plus proche : relais, cœur, cloche, source, bornes, départ de la
+## barque (INF sans épreuves).
+func _dist_to_epreuve_object(p: Vector2) -> float:
+	var best := INF
+	for v in _epreuve_verbs:
+		best = minf(best, EpreuveGeom.dist_interact(v, _epreuve_geom[StringName(v)], p))
+	return best
 
 
 ## Distance (px) de `p` à l'objet d'épreuve le plus proche (INF sans épreuves).

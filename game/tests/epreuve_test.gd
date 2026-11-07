@@ -119,13 +119,19 @@ func _check_balance() -> void:
 	_check("note : faute = bien", Balance.epreuve_grade(&"escorte", 30.0, false) == &"bien")
 	_check("note : bien jusqu'à 1,5 x seuil", Balance.epreuve_grade(&"escorte", 60.0, true) == &"bien" and Balance.epreuve_grade(&"rituel", 52.5, true) == &"bien")
 	_check("note : fait au-delà", Balance.epreuve_grade(&"escorte", 60.5, true) == &"fait" and Balance.epreuve_grade(&"rituel", 53.0, false) == &"fait")
-	_check("note : poursuite 45 s, veine 40 s", Balance.epreuve_grade(&"poursuite", 45.0, true) == &"parfait" and Balance.epreuve_grade(&"veine", 41.0, true) == &"bien")
+	_check("note : poursuite 40 s, veine 40 s", Balance.epreuve_grade(&"poursuite", 40.0, true) == &"parfait" and Balance.epreuve_grade(&"poursuite", 41.0, true) == &"bien" and Balance.epreuve_grade(&"veine", 41.0, true) == &"bien")
 	var p := 50.0
 	_check("or : parfait > bien > fait > 0", Balance.epreuve_gold(&"parfait", p) > Balance.epreuve_gold(&"bien", p) and Balance.epreuve_gold(&"bien", p) > Balance.epreuve_gold(&"fait", p) and Balance.epreuve_gold(&"fait", p) > 0.0)
-	# budget : l'étage 1 reste dans la bande 8-10,5 P de docs/Ateliers_Chiffres.md (étage mesuré 8,0-8,8 P, ≈ 1,0 P par petit pilier)
-	var mix := 0.25 * float(Balance.EPREUVE_GOLD_P[&"parfait"]) + 0.55 * float(Balance.EPREUVE_GOLD_P[&"bien"]) + 0.20 * float(Balance.EPREUVE_GOLD_P[&"fait"])
+	# Bornes simples : le modèle complet de l'audit du 07/11/2026 (allongement de l'étage, farm en zone) n'est pas reproduit ici.
+	# Invariants testés : écarts d'incitation, et mix 25/55/20 % dans la bande 8-10,5 P avec le haut de l'étage mesuré (8,8 P).
+	var g_par := float(Balance.EPREUVE_GOLD_P[&"parfait"])
+	var g_bien := float(Balance.EPREUVE_GOLD_P[&"bien"])
+	var g_fait := float(Balance.EPREUVE_GOLD_P[&"fait"])
+	_check("or : parfait > bien > fait > 0 (P)", g_par > g_bien and g_bien > g_fait and g_fait > 0.0)
+	_check("or : parfait <= 1,0 P et parfait - bien >= 0,2 P", g_par <= 1.0 and g_par - g_bien >= 0.2 - 0.0001)
+	var mix := 0.25 * g_par + 0.55 * g_bien + 0.20 * g_fait
 	var per_epreuve := mix + 0.3 + 0.7 * Balance.EPREUVE_ZONE_GOLD_MULT # note + prime du mini-boss + kills en zone réduits
-	var floor_p := 8.4 - 2.0 * 1.0 + 2.0 * per_epreuve
+	var floor_p := 8.8 - 2.0 * 1.0 + 2.0 * per_epreuve
 	_check("budget d'or : étage 1 entre 8 et 10,5 P (mix 25/55/20 %%, %.1f P)" % floor_p, floor_p >= 8.0 and floor_p <= 10.5)
 
 
@@ -341,6 +347,7 @@ func _check_layout(stage: StageManager, map_id: String, verbs: Array) -> void:
 	_check("coffres : >= 3 à <= 8 u de chaque épreuve (%d, %d)" % [near[0], near[1]], near[0] >= 3 and near[1] >= 3)
 	var near_big := stage.chests.filter(func(c): return c.position.distance_to(big.position) <= Balance.EPREUVE_CHEST_ARENA_U * u).size()
 	_check("coffres : >= 2 autour du gros pilier (%d)" % near_big, near_big >= 2)
+	_check("coffres : aucun à < EPREUVE_CHEST_MIN_U d'un objet d'épreuve", stage.chests.all(func(c): return stage._dist_to_epreuve_object(c.position) >= Balance.EPREUVE_CHEST_MIN_U * u - 1.0))
 	_check("coffres : 10 ou 11 au total", stage.chests.size() >= 10 and stage.chests.size() <= 11, str(stage.chests.size()))
 	var start := stage.map.get_player_start()
 	_check("capsules : 4, une près du départ", stage.capsules.size() == 4 and stage.capsules.any(func(c): return c.position.distance_to(start) <= Balance.EPREUVE_CHEST_START_U * u))
@@ -375,6 +382,7 @@ func _sweep() -> void:
 			for c in stage.chests:
 				for i in 2:
 					near[i] += 1 if stage._dist_to_epreuve(i, c.position) <= Balance.EPREUVE_CHEST_TRACE_U * u else 0
+			ok = ok and stage.chests.all(func(c): return stage._dist_to_epreuve_object(c.position) >= Balance.EPREUVE_CHEST_MIN_U * u - 1.0)
 			ok = ok and near[0] >= 3 and near[1] >= 3 and stage.capsules.size() == 4 and stage.chests.size() >= 10
 			bad += 0 if ok else 1
 		_check("%s : %d graines, disposition valide%s" % [map_id, tried, "" if expect else " (étage classique : verbe non branché)"], tried > 0 and bad == 0, "%d échec(s)" % bad)
@@ -495,7 +503,7 @@ func _mechanics() -> void:
 	_check("escorte : arrivée -> épreuve résolue", e.resolved and e.dist_along >= e.length and guard < KILL_GUARD)
 	_check("escorte : note « bien » (a été immobilisée)", e.grade == &"bien", String(e.grade))
 	var expected := Balance.epreuve_gold(&"bien", Balance.station_price_p(RunState.floor_start_d, RunState.stage))
-	_check("escorte : or nominal = 1,0 P", is_equal_approx(e.gold_paid, expected) and is_equal_approx(e.gold_paid, Balance.EPREUVE_GOLD_P[&"bien"] * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
+	_check("escorte : or nominal = 0,5 P", is_equal_approx(e.gold_paid, expected) and is_equal_approx(e.gold_paid, Balance.EPREUVE_GOLD_P[&"bien"] * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
 	var gm: float = (player.call(&"gold_mult") as float)
 	_check("escorte : or versé au joueur (%.1f)" % (RunState.gold - gold0), absf((RunState.gold - gold0) - expected * gm) <= 1.0, "attendu %.1f" % (expected * gm))
 	_check("escorte : évènement de fin", _events.size() == 2 and _events[1][0] == "end" and _events[1][1] == &"escorte" and _events[1][2] == &"bien" and _events[1][3] >= 0.0 and is_equal_approx(float(_events[1][4]), expected))
@@ -521,7 +529,7 @@ func _mechanics() -> void:
 		e2.tick(0.25)
 		guard += 1
 	_check("escorte : note « parfait » (%.1f s)" % e2.elapsed, e2.grade == &"parfait" and e2.elapsed <= 40.0 and e2.clean)
-	_check("escorte : parfait = 1,5 P", is_equal_approx(e2.gold_paid, 1.5 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
+	_check("escorte : parfait = 0,8 P", is_equal_approx(e2.gold_paid, 0.8 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)))
 	(e2.get(&"_boss") as Enemy).take_damage(1.0e9)
 	await _frames(2)
 	e2.queue_free()
@@ -539,7 +547,7 @@ func _mechanics() -> void:
 		e3.tick(0.5)
 		guard += 1
 	_check("escorte : délai de sécurité 75 s -> « fait »", e3.resolved and e3.grade == &"fait" and absf(e3.elapsed - Balance.EPREUVE_BACKSTOP_S) <= 0.5, "%.1f s %s" % [e3.elapsed, e3.grade])
-	_check("escorte : fait = 0,5 P et mini-boss invoqué", is_equal_approx(e3.gold_paid, 0.5 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)) and e3.get(&"_boss") != null)
+	_check("escorte : fait = 0,2 P et mini-boss invoqué", is_equal_approx(e3.gold_paid, 0.2 * Balance.station_price_p(RunState.floor_start_d, RunState.stage)) and e3.get(&"_boss") != null)
 	(e3.get(&"_boss") as Enemy).take_damage(1.0e9)
 	await _frames(2)
 	e3.queue_free()
@@ -607,7 +615,7 @@ func _mechanics() -> void:
 	_check("rituel : relais 3 fermé -> résolu", r.relays[2].interact() and r.closed == 3 and r.resolved)
 	_check("rituel : note « parfait » (rapide, sans onde)", r.grade == &"parfait" and r.clean and r.ring_hits == 0, "%s %.1f s" % [r.grade, r.elapsed])
 	var rexp := Balance.epreuve_gold(&"parfait", Balance.station_price_p(RunState.floor_start_d, RunState.stage))
-	_check("rituel : or versé (parfait = 1,5 P)", absf((RunState.gold - gold0) - rexp * gm) <= 1.0 and is_equal_approx(r.gold_paid, rexp))
+	_check("rituel : or versé (parfait = 0,8 P)", absf((RunState.gold - gold0) - rexp * gm) <= 1.0 and is_equal_approx(r.gold_paid, rexp))
 	_check("rituel : mini-boss au cœur", r.get(&"_boss") != null and (r.get(&"_boss") as Enemy).active)
 	(r.get(&"_boss") as Enemy).take_damage(1.0e9)
 	await _frames(3)
@@ -683,10 +691,10 @@ func _mechanics() -> void:
 	var g_out := RunState.gold + pm.gold_carry
 	pm._on_enemy_killed(null, out_pos, 3, true)
 	var gain_out := RunState.gold + pm.gold_carry - g_out
-	_check("or d'un kill en zone = moitié (%.2f vs %.2f)" % [gain_in, gain_out], gain_out > 0.0 and absf(gain_in - 0.5 * gain_out) < 0.01)
+	_check("or d'un kill en zone = EPREUVE_ZONE_GOLD_MULT (0,4) (%.2f vs %.2f)" % [gain_in, gain_out], gain_out > 0.0 and absf(gain_in - Balance.EPREUVE_ZONE_GOLD_MULT * gain_out) < 0.01)
 	var hp_scale := RunState.gold
 	e6.finish_now(&"fait")
-	_check("épreuve terminée -> zone encore réduite jusqu'à la mort du mini-boss", is_equal_approx(Epreuve.zone_gold_mult(get_tree(), e6.global_position), 0.5))
+	_check("épreuve terminée -> zone encore réduite jusqu'à la mort du mini-boss", is_equal_approx(Epreuve.zone_gold_mult(get_tree(), e6.global_position), Balance.EPREUVE_ZONE_GOLD_MULT))
 	(e6.get(&"_boss") as Enemy).take_damage(1.0e9)
 	await _frames(3)
 	_check("après la mort du mini-boss : x1", is_equal_approx(Epreuve.zone_gold_mult(get_tree(), e6.global_position), 1.0) and hp_scale >= 0.0)
