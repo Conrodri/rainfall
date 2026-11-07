@@ -1,0 +1,6 @@
+Set-Location "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ac82c5bdbd87eef4e" ; tout ici, jamais dans C:\Users\const\Documents\Rainfall (dépôt principal).
+CORRECTION lot UX-G : les 8 pictos de game/assets/sprites/ui/icons/tags/ (tag_*.png, 48x48) sont gris très sombres (moyenne RGB ~ 47,51,55) et fins (~5 % de pixels opaques) : illisibles sur fond #1A1C20. Corrige art/tools/ux/ux_g_build.py (ne rien réécrire d'autre) et relance en --background :
+- remplissage des formes quasi blanc bleuté (RGB moyen des pixels opaques >= 215), contour/ombre interne sombre fine seulement pour le relief ;
+- formes plus épaisses : traits >= 5 px, silhouette pleine (pas de contour vide), 12 à 30 % de pixels opaques à 48 px ; flamme, étoile, flocon, goutte, ondes, bouclier, flèche circulaire, sablier toujours distincts en niveaux de gris à 32 px ;
+- fond toujours transparent, marge >= 3 px.
+Vérif par script : moyenne RGB des pixels alpha>200 >= 215, part opaque 12-30 %, empreintes distinctes. Planche art/renders/ux/ux_g_sheet.png (fond #1A1C20, 48 et 32 px). Puis `C:\Users\const\AppData\Local\Python\bin\python.exe art/tools/texture_budget.py --apply-policy`. Ne dis PASS que si la vérif chiffrée le confirme sur les 8 fichiers. Rapport 4 lignes ultracave avec les chiffres.

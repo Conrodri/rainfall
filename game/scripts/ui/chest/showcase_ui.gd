@@ -192,6 +192,11 @@ func _make_card(i: int) -> PanelContainer:
 		tags.append("[%s]" % str(tg))
 	var tl := _label(24, Color(0.6, 0.8, 1.0))
 	tl.text = "  ".join(tags)
+	var tag_icons := TagIcons.row(it.get("tags", []), 30.0) # lot UX-G : pictos devant les étiquettes (le texte reste)
+	if tag_icons.get_child_count() > 0:
+		v.add_child(tag_icons)
+	else:
+		tag_icons.free()
 	v.add_child(tl)
 	var owned := _owner().stacks(StringName(id))
 	var ol := _label(26, Color(1, 0.85, 0.4) if owned > 0 else Color(0.5, 1, 0.6), true)

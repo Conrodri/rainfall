@@ -1,0 +1,6 @@
+Set-Location "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ac82c5bdbd87eef4e" ; tout ici, jamais dans C:\Users\const\Documents\Rainfall (dépôt principal).
+CORRECTION 2 lot UX-G : clarté de 3 pictos de game/assets/sprites/ui/icons/tags/ (art/tools/ux/ux_g_build.py, modifier seulement ces trois, relancer en --background, garder couleur/épaisseur actuelles) :
+- tag_feu : aujourd'hui une goutte, identique à tag_poison. Refaire en FLAMME : silhouette asymétrique, pointe haute décalée, deux langues latérales et une encoche, creux sombre interne en forme de petite flamme ; ne doit pas ressembler à une goutte.
+- tag_poison : goutte ronde en bas avec un petit crâne ou deux bulles sombres dedans, base arrondie large (distincte de la flamme).
+- tag_recharge : aujourd'hui un entonnoir. Refaire en SABLIER : barre pleine en haut et en bas, deux triangles pointe contre pointe reliés par un col fin, un peu de sable sombre dans le triangle du bas.
+Vérif par script : mêmes critères (RGB moyen opaque >= 215, 12-30 % opaque, empreintes distinctes) sur les 8. Planche art/renders/ux/ux_g_sheet.png. `C:\Users\const\AppData\Local\Python\bin\python.exe art/tools/texture_budget.py --apply-policy`. Rapport 3 lignes ultracave.
