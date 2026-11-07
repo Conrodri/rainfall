@@ -12,7 +12,8 @@ extends Node
 ##   <= FICELE_RANGE_U (et hors mur). Grisé tant que le couteau n'est pas en main.
 ## - Sort 3 Saccade (3 s) : le couteau s'arrache (1,4 + 0,25 par tour), revient en ligne (0,6 à tout monstre traversé),
 ##   le sort 2 est prêt au rattrapage ; un non-boss ficelé est tiré de 1,5 u ; les Doublures posées explosent
-##   (+30 % si une cible est ficelée). Grisée tant que le couteau est en main.
+##   (+30 % si une cible est ficelée). Grisée tant que le couteau est en main, sauf si des Doublures posées attendent : la
+##   Saccade les fait alors exploser sans toucher au couteau.
 ## - Sort 4 Les Doublures : 6 leurres Decoy (S14) en hexagone autour du ficelé (sinon du point visé, du paquet, de soi).
 ## - Variantes : Éventail (slot 2, l'ancien sort de base), Toupie (slot 3, l'ancien sort de base, étoile comprise),
 ##   Main du Montreur (slot 1), Rideau (slot 4). Éventail lancé pendant la Toupie : 4 éventails à 360° (Toupie d'acier).
@@ -424,12 +425,14 @@ func blocks_slot(slot: int) -> bool:
 	return false
 
 
-## Saccade utilisable : couteau lourd planté (dans un monstre ou au sol) ; avec l'Éventail : couteaux plantés au sol
-## à rappeler ou doublures à détoner.
+## Saccade utilisable : couteau lourd planté (dans un monstre ou au sol) ou, avec l'Éventail, couteaux plantés au sol
+## à rappeler ; dans les deux cas, des Doublures posées à détoner suffisent (couteau encore en main compris).
 func saccade_ready() -> bool:
-	if _heavy:
-		return kstate == K.PLANTED or kstate == K.GROUND
-	return not knives.is_empty() or _decoys_waiting()
+	if _heavy and (kstate == K.PLANTED or kstate == K.GROUND):
+		return true
+	if not _heavy and not knives.is_empty():
+		return true
+	return _decoys_waiting()
 
 
 ## Retour joueur : la levée est permise pendant la Toupie (la toupie continue) ; seul le vertige l'interdit.
@@ -841,9 +844,7 @@ func _cast_saccade(s: SpellData) -> bool:
 		return false
 	var had_ficele := _ficele_valid()
 	var did := false
-	if _heavy:
-		if knife == null or not is_instance_valid(knife):
-			return false
+	if _heavy and (kstate == K.PLANTED or kstate == K.GROUND) and knife != null and is_instance_valid(knife):
 		var ret := s.duplicate() as SpellData
 		ret.coef = SACCADE_LINE_COEF * s.coef / SACCADE_COEF
 		ret.hit_force = _force_for(SACCADE_LINE_KNOCK_U)
@@ -855,8 +856,9 @@ func _cast_saccade(s: SpellData) -> bool:
 		ficele = null
 		tours = 0
 		did = true
-	else: # Éventail : les couteaux plantés reviennent en ligne
+	elif not _heavy: # Éventail : les couteaux plantés reviennent en ligne
 		did = _recall_fan(s)
+	# Couteau ficelé encore en main (ou en vol) : la Saccade ne fait que détoner les Doublures posées.
 	var det := _detonate_decoys(had_ficele)
 	if not did and det == 0:
 		return false

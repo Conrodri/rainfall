@@ -121,8 +121,8 @@ Ce qui est intéressant à jouer, au-delà des chiffres :
 
 | État | Déplacement | Sort 1 | Sort 2 | Sort 3 | Sort 4 | Levée |
 |---|---|---|---|---|---|---|
-| couteau en main | marche 4,2 | oui | **oui** | grisé | oui | oui |
-| couteau en vol (0,6 s) | marche | oui | grisé | grisé | oui | oui |
+| couteau en main | marche 4,2 | oui | **oui** | grisé, sauf Doublures posées : la Saccade les fait exploser (joueur, 07/11/2026) | oui | oui |
+| couteau en vol (0,6 s) | marche | oui | grisé | grisé, sauf Doublures posées (détonation seule) | oui | oui |
 | couteau planté (ficelé ou sol) | marche | oui (tours sur le ficelé) | grisé | **oui** (3 s) | oui | oui |
 | couteau en retour (≤ 0,65 s) | marche | oui | grisé | grisé | oui | oui |
 | couteau perdu (fil cassé, 6 s) | marche | oui | grisé | grisé | oui | oui |

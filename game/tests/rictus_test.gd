@@ -387,7 +387,7 @@ func _run() -> void:
 	for d in Decoy.live:
 		dc += d.global_position
 	_check("sans ficelé : autour du paquet visé", Decoy.live.size() == 6 and (dc / 6.0).distance_to(pack.global_position) < 2.0)
-	_check("Saccade grisée tant que le couteau est en main (même avec des doublures)", _player.spells.is_slot_blocked(3))
+	_check("Saccade dispo couteau en main grâce aux doublures posées (clic droit = détonation)", not _player.spells.is_slot_blocked(3))
 	for d in Decoy.live:
 		d.life_s = 30.0
 	pack.taken.clear()
@@ -395,6 +395,18 @@ func _run() -> void:
 	pack.taken.clear()
 	_player.spells.cast(3)
 	_check("couteau planté APRES les doublures : +30 % (ficelé au moment de la Saccade)", pack.count_of(1.8 * 1.3 * BASE) >= 5, str(pack.taken))
+	# couteau en main + doublures posées : la Saccade détone seulement (pas de +30 %, couteau gardé, sort 2 libre)
+	_reset()
+	_player.spells.manual_aim_enabled = false
+	var pack2 := _fake(Vector2(3.0 * U, 0))
+	_check("doublures posées, couteau en main", _player.spells.cast(4) and _kit.knife_in_hand())
+	_land_decoys()
+	pack2.taken.clear()
+	_check("Saccade couteau en main : détonation", _player.spells.cast(3))
+	_check("toutes les doublures explosent (couteau en main)", Decoy.live.is_empty(), str(Decoy.live.size()))
+	_check("sans ficelé : pas de +30 %", pack2.count_of(1.8 * 1.3 * BASE) == 0 and pack2.count_of(1.8 * BASE) >= 5, str(pack2.taken))
+	_check("couteau toujours en main, sort 2 libre", _kit.knife_in_hand() and not _player.spells.is_slot_blocked(2))
+	_check("Saccade de nouveau grisée (plus de doublures, couteau en main)", _player.spells.is_slot_blocked(3))
 	_reset()
 	var lonely := _fake(Vector2(10.0 * U, 0)) # trop loin du paquet dense : repli sur Rictus
 	_check("doublures sans cible à portée : autour de Rictus", _player.spells.cast(4))
