@@ -28,7 +28,7 @@ const EMISSIVE_SHADER := "res://shaders/emissive.gdshader"
 const EMISSION_NODE := &"Emission"
 
 static var _frames_cache: Dictionary = {} ## "E:" + chemin SpriteFrames -> SpriteFrames d'émission (ou null)
-static var _ratio_cache: Dictionary = {} ## chemin du _e -> Vector2 (taille diffus / taille _e)
+static var _ratio_cache: Dictionary = {} ## "chemin du diffus|chemin du _e" -> Vector2 (taille diffus / taille _e)
 const META_SCALE := &"emission_scale" ## SpriteFrames d'émission : {anim: PackedVector2Array} (absent si tout est à 1) ; Sprite2D Emission : Vector2
 static var _emissive_shader: Shader = null
 
@@ -52,14 +52,33 @@ static func emission_path(diffuse_path: String) -> String:
 	return diffuse_path.get_basename() + "_e." + diffuse_path.get_extension()
 
 
+## Masque `_e` à charger pour un diffus : `<f>_e.png` s'il existe ; sinon, pour une planche de skin
+## (`…/<perso>/skins/<skin>/<f>.png`), le `_e` de même nom du personnage de base (`…/<perso>/<f>_e.png`).
+## Les skins recolorent le diffus sans toucher au foyer émissif : leurs `_e` identiques octet pour octet à
+## ceux du personnage de base sont exclus de l'export Android (budget mobile, tests/texture_budget.json),
+## le repli les remplace par l'original (même taille, même découpage). "" sans masque.
+static func resolve_emission_path(diffuse_path: String) -> String:
+	var ep := emission_path(diffuse_path)
+	if ResourceLoader.exists(ep):
+		return ep
+	var i := diffuse_path.find("/skins/")
+	if i >= 0:
+		var j := diffuse_path.find("/", i + 7)
+		if j > 0:
+			var alt := emission_path(diffuse_path.substr(0, i) + diffuse_path.substr(j))
+			if ResourceLoader.exists(alt):
+				return alt
+	return ""
+
+
 ## Texture d'émission associée (`<f>_e.png`), ou null. Accepte une AtlasTexture : même région, ramenée
 ## à la taille du _e (divisée par `emission_scale(tex)` si le _e est à demi-résolution).
 static func emission_texture(tex: Texture2D) -> Texture2D:
 	var base := _diffuse_of(tex)
 	if base == null or base.resource_path == "":
 		return null
-	var ep := emission_path(base.resource_path)
-	if not ResourceLoader.exists(ep):
+	var ep := resolve_emission_path(base.resource_path)
+	if ep == "":
 		return null
 	var e := load(ep) as Texture2D
 	if e == null:
@@ -82,11 +101,11 @@ static func emission_scale(tex: Texture2D) -> Vector2:
 	var base := _diffuse_of(tex)
 	if base == null or base.resource_path == "":
 		return Vector2.ONE
-	var ep := emission_path(base.resource_path)
-	if _ratio_cache.has(ep):
-		return _ratio_cache[ep]
-	if not ResourceLoader.exists(ep):
+	var ep := resolve_emission_path(base.resource_path)
+	if ep == "":
 		return Vector2.ONE
+	if _ratio_cache.has(base.resource_path + "|" + ep):
+		return _ratio_cache[base.resource_path + "|" + ep]
 	return _ratio_of(base, load(ep) as Texture2D, ep)
 
 
@@ -293,10 +312,11 @@ static func clear_cache() -> void:
 
 
 static func _ratio_of(base: Texture2D, e: Texture2D, ep: String) -> Vector2:
-	if _ratio_cache.has(ep):
-		return _ratio_cache[ep]
+	var key := base.resource_path + "|" + ep # un _e de repli peut servir plusieurs diffus (skins)
+	if _ratio_cache.has(key):
+		return _ratio_cache[key]
 	var r := emission_ratio(base, e)
-	_ratio_cache[ep] = r
+	_ratio_cache[key] = r
 	return r
 
 
