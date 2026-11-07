@@ -1009,6 +1009,10 @@ func run_rubies(active_minutes: float, mode: StringName, pillars_done: int, vict
 const CRAFT_CATALYST_PER_FLOOR_BOSS := 1 ## noyaux d'orage par boss d'étage vaincu (étages 1-4), à CHAQUE joueur
 const CRAFT_CATALYST_PER_GUARDIAN := 1 ## noyaux d'orage du reliquaire `guardian` d'une zone secrète
 const CRAFT_CATALYST_CAP := 2 ## noyaux portés au plus (non achetables, non copiables)
+const CRAFT_CATALYST_CONTACT_U := 0.9 ## rayon de ramassage du noyau d'orage au sol (u)
+const CRAFT_CATALYST_MAGNET_U := 3.0 ## en deçà, le noyau glisse vers son propriétaire (u)
+const CRAFT_CATALYST_MAGNET_SPEED_U := 9.0 ## vitesse de glissement (u/s)
+const CRAFT_CATALYST_SCATTER_U := 0.9 ## écart entre les noyaux d'un même boss en coop (u)
 const CRAFT_CATALYST_MAX_FLOOR := 4 ## le boss de l'étage 5 (La Source) n'en donne pas
 const CRAFT_MAX_STACKS := 2 ## exemplaires d'un même objet forgé (le 2e est plus faible)
 const CRAFT_SPREAD_MAX_PER_S := 8 ## propagations par seconde de Sève rampante (perf mobile)

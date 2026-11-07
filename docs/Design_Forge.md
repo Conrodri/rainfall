@@ -12,6 +12,7 @@ Décisions du 06/11/2026. Code : `game/scripts/items/forge.gd` (logique pure), `
 - 1 par boss d'étage (étages 1 à 4) donné à **chaque** joueur, +1 du reliquaire `guardian` de la zone secrète. Pas de noyau au mini-boss ni au boss final.
 - 2 au plus portés (`Balance.CRAFT_CATALYST_CAP`), compteur par joueur, non achetable, non copiable.
 - Une forge coûte 1 noyau.
+- **Pickup au sol** (`scripts/pickups/storm_core_pickup.gd`, sprite `pickups/storm_core.png`) : le noyau tombe à la mort du boss d'étage et près du reliquaire secret, ramassé au contact (petit aimant). Coop : un pickup par joueur **vivant**, ramassable seulement par lui, teinté de sa couleur d'équipe ; un joueur mort (spectateur) est crédité directement (il peut forger). Pas de pickup si porté + au sol atteint déjà le plafond. Un noyau resté au sol est crédité au départ de l'étage (`PlayerState.pending_catalysts`, aussi compté à la sauvegarde). Toast « Noyau d'orage +1 » au ramassage.
 
 ## Recettes (par tags)
 - Rang I : clé A (tag, commun+) + clé B (tag, commun+) + 1 objet commun quelconque.
@@ -46,6 +47,6 @@ Le panneau (onglet Objets) donne les noyaux (−1 / +1 / Plein) et les 6 objets 
 
 ## Assets à produire par Codex (placeholders de code aujourd'hui)
 - 6 icônes d'objets 128 px (Mèche-silex, Rosée figée, Rouage de traque, Sève rampante, Écorce de pluie, Prisme de grêle).
-- Icône du noyau d'orage pour le HUD et son pickup au sol.
+- Icône du noyau d'orage pour le HUD et son pickup au sol (faits : `icons/storm_core.png`, `pickups/storm_core.png`).
 - Cadre « forgé » cuivré pour les cartes et la barre d'objets.
 - Pastille « Forge possible » (aujourd'hui un point cuivré en code).

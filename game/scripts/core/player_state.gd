@@ -36,6 +36,8 @@ var compass := {"tag": "", "charges": 0}
 var scrap := {}
 ## Noyaux d'orage portés (catalyseur de la Forge, docs/Design_Forge.md) : au plus Balance.CRAFT_CATALYST_CAP, par joueur.
 var catalysts := 0
+## Noyaux posés au sol (StormCorePickup), pas encore ramassés : crédités au départ de l'étage ou à la sauvegarde.
+var pending_catalysts := 0
 ## Mort en coop : spectateur jusqu'au début de l'étage suivant (Players.set_spectating / resurrect_all).
 var spectating := false
 ## Dégâts infligés pendant la run (participation aux rubis en multi, Balance.ruby_participation).
@@ -56,6 +58,7 @@ func reset(start_level: int = 1) -> void:
 	compass = {"tag": "", "charges": 0}
 	scrap = {}
 	catalysts = 0
+	pending_catalysts = 0
 	spectating = false
 	damage_dealt = 0.0
 
@@ -68,6 +71,18 @@ func add_catalyst(n: int = 1) -> int:
 	if catalysts != before:
 		catalysts_changed.emit(catalysts)
 	return catalysts - before
+
+
+## Place restante pour un noyau au sol (porté + déjà au sol sous le plafond).
+func catalyst_room() -> int:
+	return maxi(Balance.CRAFT_CATALYST_CAP - catalysts - pending_catalysts, 0)
+
+
+## Crédite les noyaux restés au sol (départ d'étage) ; retourne le nombre réellement ajouté.
+func flush_pending_catalysts() -> int:
+	var n := pending_catalysts
+	pending_catalysts = 0
+	return add_catalyst(n) if n > 0 else 0
 
 
 ## Dépense `n` noyaux ; faux s'il n'y en a pas assez (rien n'est débité).
@@ -212,7 +227,7 @@ func to_dict() -> Dictionary:
 	return {
 		"gold": gold, "xp": xp, "level": level, "items": it, "character": String(character),
 		"loadout": lo, "counters": counters.duplicate(), "compass": compass.duplicate(), "scrap": sc,
-		"spectating": spectating, "damage_dealt": damage_dealt, "catalysts": catalysts,
+		"spectating": spectating, "damage_dealt": damage_dealt, "catalysts": mini(catalysts + pending_catalysts, Balance.CRAFT_CATALYST_CAP),
 	}
 
 
@@ -244,3 +259,4 @@ func from_dict(d: Dictionary, migrate: Callable = Callable()) -> void:
 	spectating = bool(d.get("spectating", false))
 	damage_dealt = float(d.get("damage_dealt", 0.0))
 	catalysts = clampi(int(d.get("catalysts", 0)), 0, Balance.CRAFT_CATALYST_CAP)
+	pending_catalysts = 0
