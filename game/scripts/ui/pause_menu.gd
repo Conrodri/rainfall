@@ -1,4 +1,4 @@
-class_name PauseMenu
+﻿class_name PauseMenu
 extends CanvasLayer
 ## Menu pause (process ALWAYS). Reprendre (compte a rebours 3 s si danger proche, 1 s sinon : Balance.RESUME_*), Reglages (SettingsPanel unifié,
 ## docs/Design_Menus.md §3.4), Objets (liste complète des items possédés avec leurs effets), Commandes
@@ -54,6 +54,9 @@ var _detail_name: Label
 var _detail_effect: Label
 var _tab_row: HBoxContainer
 var _tab_items: Button
+var _pause_title: Label
+## Coop locale : joueur dont la manette a agi en dernier (a ouvert la pause) ; -1 en solo. Sert à l'en-tête « PAUSE · J2 ».
+var actor_slot := -1
 var _tab_forge: Button
 var _forge_panel: ForgePanel ## onglet Forge (scripts/ui/forge_panel.gd)
 var items_tab: StringName = &"items" ## onglet affiché de l'écran Objets : items | forge
@@ -109,6 +112,7 @@ func _build() -> void:
 	_root.add_child(_wide_center)
 
 	_panel_main = _make_panel(holder, "PAUSE")
+	_pause_title = _titles.back()
 	_info = Label.new()
 	_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_info.add_theme_color_override("font_color", UiTheme.COL_MUTED)
@@ -569,6 +573,7 @@ func open() -> void:
 	_root.visible = true
 	_show_only(_panel_main)
 	_items_button.text = "Objets (%d)" % LocalState.state().items.size()
+	_apply_actor_banner()
 	var t := int(RunState.active_time_s)
 	_info.text = "%02d:%02d  ·  Étage %d" % [t / 60, t % 60, RunState.stage]
 	var regen := Hud.regen_summary(Players.local()) # taux PV / ressource (vague 3)
@@ -671,7 +676,16 @@ func _set_viewer(slot: int) -> void:
 	if _forge_panel != null:
 		_forge_panel.state = Players.state_of(viewer_slot) if viewer_slot >= 0 else null
 	if _tab_items != null:
-		_tab_items.text = "Objets · J%s" % Palette.team_glyph(viewer_slot) if viewer_slot >= 0 and LocalState.is_coop() else "Objets"
+		var who := viewer_slot >= 0 and LocalState.is_coop()
+		_tab_items.text = "Objets · J%s" % Palette.team_glyph(viewer_slot) if who else "Objets"
+		for c in [&"font_color", &"font_hover_color", &"font_pressed_color", &"font_focus_color"]:
+			if who:
+				_tab_items.add_theme_color_override(c, Palette.team_color(viewer_slot)) # couleur de la plaque du propriétaire
+			else:
+				_tab_items.remove_theme_color_override(c)
+	if _pause_title != null and viewer_slot >= 0 and LocalState.is_coop():
+		actor_slot = viewer_slot
+		_apply_actor_banner()
 
 
 ## Emplacement du joueur dont la source d'entrée a produit `event` (coop locale), sinon -1.
@@ -824,6 +838,49 @@ func _process(delta: float) -> void:
 		resumed.emit()
 	else:
 		_count_label.text = str(int(ceil(_count)))
+
+
+## Coop locale : qui peut piloter l'écran ouvert. Pause : n'importe quelle manette JOINTE (les manettes libres passent,
+## CoopLocal s'en sert pour rendre une manette perdue). Écran Objets / Forge d'un joueur : seulement sa manette ; Select
+## (changer de joueur affiché) et Start (pause) restent permis à toute manette jointe. Rend vrai si l'événement est
+## réservé à un autre joueur (à avaler). Solo, clavier, souris, tactile : jamais.
+func _blocked_for_other_player(event: InputEvent) -> bool:
+	if not is_open or Players.count() <= 1 or viewer_slot < 0 or not inventory_mode:
+		return false
+	if not (event is InputEventJoypadButton or event is InputEventJoypadMotion):
+		return false
+	var slot := slot_of_event(event)
+	if slot < 0 or slot == viewer_slot:
+		return false
+	if event is InputEventJoypadButton:
+		var bi := (event as InputEventJoypadButton).button_index
+		if bi == JOY_BUTTON_BACK or bi == JOY_BUTTON_START:
+			return false
+	return true
+
+
+func _input(event: InputEvent) -> void:
+	if _blocked_for_other_player(event):
+		get_viewport().set_input_as_handled()
+		return
+	if Players.count() > 1 and event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+		var slot := slot_of_event(event)
+		if slot >= 0 and slot != actor_slot:
+			actor_slot = slot
+			if is_open:
+				_apply_actor_banner()
+
+
+## Coop locale : l'en-tête dit QUI pilote le menu (« PAUSE · J2 », couleur d'équipe de sa plaque). Solo : « PAUSE » neutre.
+func _apply_actor_banner() -> void:
+	if _pause_title == null:
+		return
+	var coop := Players.count() > 1 and actor_slot >= 0 and LocalState.is_coop()
+	_pause_title.text = "PAUSE · J%s" % Palette.team_glyph(actor_slot) if coop else "PAUSE"
+	if coop:
+		_pause_title.add_theme_color_override("font_color", Palette.team_color(actor_slot))
+	else:
+		_pause_title.remove_theme_color_override("font_color")
 
 
 func _unhandled_input(event: InputEvent) -> void:

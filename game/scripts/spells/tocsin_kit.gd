@@ -166,6 +166,7 @@ var limbs := {} ## clé -> TocsinLimb en jeu (vol, décharge, sol)
 var queue := {2: [], 4: []} ## membres en recharge, dans l'ordre de lancer (le premier se recharge)
 var recharge_left := {2: 0.0, 4: 0.0}
 var layers: TocsinLayers = null
+var skin_dir: String = ASSET_DIR ## dossier d'assets du skin de CE joueur (calques, membres) ; posé par setup()
 var smoke_bonus_spell: SpellData = null ## Tête-fumigène : +50 % sur les étourdis, sans proc
 var _visual: AnimatedSprite2D = null
 var _pending: Array = [] ## lancers en attente de la frame d'impact : {key, spell, dir, aim}
@@ -211,9 +212,9 @@ static func character() -> CharacterData:
 	c.base_speed_u = BASE_SPEED_U
 	c.hitbox_u = HITBOX_U
 	c.kit_script = TocsinKit
-	var adir := Skins.asset_dir(&"tocsin", ASSET_DIR) # dossier du skin équipé s'il est livré (docs/Skins.md)
-	if TocsinLayers.available(adir):
-		c.sprite_frames_path = TocsinLayers.frames_path(adir, &"torso") # le Visual = calque torse
+	# Le skin n'est PAS lu ici (profil) : Player l'applique via Skins.resolve_frames_for (skin du joueur, docs/Skins.md).
+	if TocsinLayers.available(ASSET_DIR):
+		c.sprite_frames_path = TocsinLayers.frames_path(ASSET_DIR, &"torso") # le Visual = calque torse (dossier de base)
 	else:
 		c.sprite_frames_path = COMPOSITE_FRAMES
 	c.placeholder_tint = PLACEHOLDER_TINT
@@ -296,7 +297,8 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 func setup(p: CharacterBody2D) -> void:
 	player = p
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
-	var adir := Skins.asset_dir(&"tocsin", ASSET_DIR)
+	skin_dir = Skins.asset_dir_for(&"tocsin", ASSET_DIR, p.get(&"skin_id")) # skin de CE joueur, pas celui du profil
+	var adir := skin_dir
 	if _visual != null and TocsinLayers.available(adir) and _visual.sprite_frames != null \
 			and _visual.sprite_frames.has_animation(&"walk_s"):
 		layers = TocsinLayers.attach(_visual, adir)

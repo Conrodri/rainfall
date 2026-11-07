@@ -165,15 +165,48 @@ func _in_game() -> void:
 	var main_player: Node2D = main.get(&"player")
 	_check("joueur 2 : skin de base imposé", str((main.get(&"players") as Array)[1].get(&"skin_id")) == "default" and str(main_player.get(&"skin_id")) == "")
 
+	# Réticules : un par joueur à manette, teinté de sa couleur d'équipe
+	var plist: Array = main.get(&"players")
+	for pi in 2:
+		plist[pi].get(&"spells").set(&"aim_override", plist[pi].global_position + Vector2(200 + 100 * pi, 100))
+	await _frames(3)
+	var rets: Dictionary = hud.get(&"_coop_reticles")
+	_check("réticule par joueur à manette", rets.has(0) and rets.has(1) and (rets[0] as AimReticle).visible and (rets[1] as AimReticle).visible)
+	if rets.has(0) and rets.has(1):
+		_check("réticules teintés couleur d'équipe, distincts", (rets[0] as AimReticle).tint == Palette.team_color(0) \
+				and (rets[1] as AimReticle).tint == Palette.team_color(1) and (rets[0] as AimReticle).tint != (rets[1] as AimReticle).tint)
+		_check("réticules à des positions différentes", (rets[0] as AimReticle).current_position() != (rets[1] as AimReticle).current_position())
+	for pi in 2:
+		plist[pi].get(&"spells").set(&"aim_override", null)
+	await _frames(3)
+	_check("sans visée au stick : réticules masqués", not (rets[0] as AimReticle).visible and not (rets[1] as AimReticle).visible)
+
 	var pm := hud.get(&"pause_menu") as PauseMenu
 	Input.parse_input_event(_pad(8, JOY_BUTTON_START))
 	await _frames(2)
 	_check("Start de la manette 8 (joueur 2) : pause", pm.is_open and get_tree().paused)
+	_check("en-tête « PAUSE · J2 » à la couleur de la plaque", pm._pause_title.text == "PAUSE · J2" \
+			and pm._pause_title.get_theme_color("font_color") == Palette.team_color(1), pm._pause_title.text)
 	pm.call(&"_close")
 	await _frames(1)
 	await _tap(8, JOY_BUTTON_BACK)
 	_check("Select manette 8 : inventaire du joueur 2", pm.inventory_mode and pm.viewer_slot == 1 and pm.viewer_state() == RunState.player_state(1))
 	_check("inventaire coop : jeu non figé", not get_tree().paused)
+	# Menus par appareil : liaisons à -1 (toute manette), inventaire de J2 réservé à sa manette
+	var all_any := true
+	for a in [&"pause", &"interact", &"chest_pick_1", &"chest_items", &"dodge", &"spell_2"]:
+		for ev in InputMap.action_get_events(a):
+			if (ev is InputEventJoypadButton or ev is InputEventJoypadMotion) and ev.device != -1:
+				all_any = false
+	_check("liaisons manette de l'InputMap : device -1 (toute manette)", all_any)
+	_check("action « interact » reconnue depuis la manette 8", _pad(8, JOY_BUTTON_A).is_action_pressed(&"interact"))
+	_check("inventaire de J2 : A de la manette 7 (J1) avalé", pm._blocked_for_other_player(_pad(7, JOY_BUTTON_A)))
+	_check("inventaire de J2 : A de la manette 8 (propriétaire) permis", not pm._blocked_for_other_player(_pad(8, JOY_BUTTON_A)))
+	_check("inventaire de J2 : Select / Start de J1 permis", not pm._blocked_for_other_player(_pad(7, JOY_BUTTON_BACK)) and not pm._blocked_for_other_player(_pad(7, JOY_BUTTON_START)))
+	var tab_before: StringName = pm.items_tab
+	Input.parse_input_event(_pad(7, JOY_BUTTON_RIGHT_SHOULDER))
+	await _frames(2)
+	_check("RB de J1 ne change pas l'onglet de l'inventaire de J2", pm.items_tab == tab_before)
 	await _tap(7, JOY_BUTTON_BACK)
 	_check("Select manette 7 : bascule sur le joueur 1", pm.inventory_mode and pm.viewer_slot == 0)
 	await _tap(7, JOY_BUTTON_BACK)

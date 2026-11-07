@@ -13,6 +13,8 @@ var _pos := Vector2.ZERO
 var _scale := 1.0
 var size_mult := 1.0
 var _size_ms := -1000000
+## Teinte (alpha ignoré) : ivoire en solo ; en coop locale, couleur d'équipe du joueur (Palette.team_color).
+var tint := Color(1.0, 0.95, 0.8)
 
 
 func _ready() -> void:
@@ -43,9 +45,9 @@ func current_position() -> Vector2:
 
 func _draw() -> void:
 	var r := 20.0 * _scale
-	var col := Color(1.0, 0.95, 0.8, 0.55)
+	var col := Color(tint.r, tint.g, tint.b, 0.55)
 	draw_arc(_pos, r, 0.0, TAU, 32, col, 2.0 * _scale)
-	draw_circle(_pos, 2.5 * _scale, Color(1.0, 0.95, 0.8, 0.8))
+	draw_circle(_pos, 2.5 * _scale, Color(tint.r, tint.g, tint.b, 0.8))
 	for i in 4:
 		var d := Vector2.from_angle(i * PI * 0.5)
 		draw_line(_pos + d * (r + 3.0 * _scale), _pos + d * (r + 11.0 * _scale), col, 2.0 * _scale)

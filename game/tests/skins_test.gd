@@ -122,7 +122,14 @@ func _ready() -> void:
 	ResourceSaver.save(SpriteFrames.new(), TMP + "foo/skins/foo_skin1/torso.tres")
 	_check(Skins.resolve_frames("foo", TMP + "foo/torso.tres", fp) == TMP + "foo/skins/foo_skin1/torso.tres", "calque présent dans le skin : pris dans le dossier du skin")
 	_check(Skins.asset_dir("foo", TMP + "foo/", fp) == TMP + "foo/skins/foo_skin1/", "asset_dir : dossier du skin équipé")
+	# Skin PAR JOUEUR (coop : Player.skin_id) : jamais celui du profil quand le joueur a son propre choix
+	_check(Skins.effective("foo", "default", fp) == "" and Skins.effective("foo", "", fp) == "foo_skin1", "effective : « default » = base, « » = profil")
+	_check(Skins.asset_dir_for("foo", TMP + "foo/", "default", fp) == TMP + "foo/", "asset_dir_for : J2 « default » garde les calques de base malgré le skin du profil")
+	_check(Skins.asset_dir_for("foo", TMP + "foo/", "", fp) == TMP + "foo/skins/foo_skin1/", "asset_dir_for : « » suit le profil")
+	_check(Skins.resolve_frames_for("foo", TMP + "foo/torso.tres", "default", fp) == TMP + "foo/torso.tres", "resolve_frames_for : « default » inchangé malgré le profil")
 	fp.selected_skin.clear()
+	_check(Skins.asset_dir_for("foo", TMP + "foo/", "foo_skin1", fp) == TMP + "foo/skins/foo_skin1/", "asset_dir_for : skin choisi à la jonction malgré un profil sans skin")
+	_check(Skins.resolve_frames_for("foo", TMP + "foo/torso.tres", "foo_skin1", fp) == TMP + "foo/skins/foo_skin1/torso.tres", "resolve_frames_for : calque du skin choisi")
 	_check(Skins.resolve_frames("foo", TMP + "foo/foo.tres", fp) == TMP + "foo/foo.tres", "skin non équipé : chemin du kit")
 	Skins.roster_override = null
 	fp.free()

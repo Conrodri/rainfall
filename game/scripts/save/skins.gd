@@ -211,8 +211,26 @@ static func has_assets(cid: Variant, skin_id: Variant) -> bool:
 ## celui du skin équipé s'il est livré. Le fichier principal (`sprite_frames` de characters.json) devient `<skin_id>.tres` ;
 ## un autre fichier du dossier (calque de Tocsin) est pris dans le dossier du skin s'il y existe.
 static func resolve_frames(cid: Variant, default_path: String, profile: Object = null) -> String:
+	return resolve_frames_for(cid, default_path, "", profile)
+
+
+## Skin effectif d'UN joueur (coop locale : `Player.skin_id`) : "default" = apparence de base ; un id = ce skin s'il est
+## livré (choisi à la jonction, sans condition de déblocage) ; "" = skin équipé au profil (solo, joueur 1 sans choix).
+## Rend "" pour l'apparence de base. Les kits (Tocsin : calques, membres) lisent ceci, JAMAIS le profil directement :
+## sinon un J2 d'un autre skin aurait les calques du skin du J1.
+static func effective(cid: Variant, player_skin: Variant = "", profile: Object = null) -> String:
+	var ps := str(player_skin) if player_skin != null else ""
+	if ps == "default":
+		return ""
+	if ps != "":
+		return ps if has_assets(cid, ps) else ""
 	var sid := equipped(cid, profile)
-	if sid == "" or not has_assets(cid, sid):
+	return sid if sid != "" and has_assets(cid, sid) else ""
+
+
+static func resolve_frames_for(cid: Variant, default_path: String, player_skin: Variant, profile: Object = null) -> String:
+	var sid := effective(cid, player_skin, profile)
+	if sid == "":
 		return default_path
 	var main := str(character(cid).get("sprite_frames", ""))
 	if default_path == "" or default_path == main:
@@ -228,8 +246,13 @@ static func resolve_frames(cid: Variant, default_path: String, profile: Object =
 ## Dossier d'assets à utiliser pour un kit qui lit plusieurs fichiers du dossier du personnage (Tocsin : calques,
 ## membres détachés) : celui du skin équipé s'il est livré, sinon `default_dir`. Toujours terminé par « / ».
 static func asset_dir(cid: Variant, default_dir: String, profile: Object = null) -> String:
-	var sid := equipped(cid, profile)
-	return skin_dir(cid, sid) if sid != "" and has_assets(cid, sid) else default_dir
+	return asset_dir_for(cid, default_dir, "", profile)
+
+
+## Idem pour le skin d'un joueur précis (`Player.skin_id`, voir effective()).
+static func asset_dir_for(cid: Variant, default_dir: String, player_skin: Variant, profile: Object = null) -> String:
+	var sid := effective(cid, player_skin, profile)
+	return skin_dir(cid, sid) if sid != "" else default_dir
 
 
 ## Portrait d'un skin : {tex, emit, bust, exists}. `exists` faux : portrait par défaut (CharacterCard).
