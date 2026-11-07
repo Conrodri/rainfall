@@ -413,7 +413,8 @@ func _run() -> void:
 	_kit.flush_pending()
 	rv = _kit.rivulets[0]
 	_advance(6.2)
-	_check("pluie forte (×1,5) : 13,5 d'eau (75 % du coût, signalé)", _near(rv.collected, 13.5, 0.15), str(rv.collected))
+	_check("pluie forte (×1,5) : 13,5 collectés pour le déversement", _near(rv.collected, 13.5, 0.15), str(rv.collected))
+	_check("pluie forte : remboursement plafonné à 9 (GOUTTIERE_REFUND_CAP)", _kit.water - (40.0 - AverseKit.GOUTTIERE_COST) <= AverseKit.GOUTTIERE_REFUND_CAP + AverseKit.RAIN_GAIN_PER_S * AverseKit.RAIN_MULT_MAX * 6.3 + 0.1, str(_kit.water))
 
 	print("Gouttière : déversement")
 	_check("coef de déversement : 1,5 + 0,1 × eau, plafond 4,0",

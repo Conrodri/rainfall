@@ -213,6 +213,7 @@ const GOUTTIERE_SPILL_SOAK_S := 8.0
 const GOUTTIERE_SPILL_SOAK_PCT := 0.4
 const GOUTTIERE_KILL_MULT := 2.0 ## gain d'eau d'un kill sur la bande = KILL_GAIN x 2
 const GOUTTIERE_FILL_REF := 9.0 ## eau collectée = bande « pleine » (indicateur seulement)
+const GOUTTIERE_REFUND_CAP := 9.0 ## remboursement max par gouttière (50 % du coût, même sous pluie forte) ; la collecte continue de grossir le déversement
 const GOUTTIERE_RANGE_U := 7.0 ## portée du ciblage du paquet (mobile)
 const GOUTTIERE_LENGTH_U := 6.0
 const GOUTTIERE_WIDTH_U := 1.0
@@ -1574,7 +1575,7 @@ func tick(delta: float) -> void:
 	for r in rivulets: # Gouttière : collecte la pluie où qu'Averse soit
 		if is_instance_valid(r) and not r.is_ending():
 			var got := GOUTTIERE_COLLECT_PER_S * _rain_mult * delta
-			gain_water(got)
+			gain_water(clampf(GOUTTIERE_REFUND_CAP - r.collected, 0.0, got))
 			r.collected += got
 	if in_puddle:
 		var before := water
