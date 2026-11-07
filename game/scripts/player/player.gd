@@ -1255,6 +1255,10 @@ func can_cancel_into(kind: StringName) -> bool:
 	var cur := _action_kind
 	if kind == &"auto":
 		return cur == &"auto" # le sort 1 ne coupe jamais un sort 2-4 : il attend la fin de la récupération
+	if cur == &"auto":
+		# un sort 2-4, l'ultime ou l'esquive ont toujours la priorité sur le sort 1, même avant son impact (joueur,
+		# 07/11/2026 : les sorts de Vigie se perdaient pendant le tir chargé) ; play_action solde l'impact du tir coupé.
+		return true
 	if _since_impact < 0.0:
 		return cur == &"auto" and kind == &"dodge" # l'esquive coupe un sort 1 même avant son impact
 	var key: StringName

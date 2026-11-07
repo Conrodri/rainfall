@@ -169,10 +169,10 @@ func _run() -> void:
 	_check("ultime impact + 6 f : un sort ne coupe pas encore", not _player.can_cancel_into(&"spell"))
 	_player._since_impact = 1.0 / 60.0 * 12.0
 	_check("ultime impact + 12 f : un sort coupe", _player.can_cancel_into(&"spell"))
-	# sort 1 en cours : l'esquive coupe à toute frame, un sort après impact + 1 f
+	# sort 1 en cours : l'esquive, les sorts 2-4 et l'ultime coupent à toute frame (priorité, joueur 07/11/2026)
 	_player._action_kind = &"auto"
 	_player._since_impact = -1.0
-	_check("sort 1 avant impact : l'esquive coupe, pas un sort", _player.can_cancel_into(&"dodge") and not _player.can_cancel_into(&"spell"))
+	_check("sort 1 avant impact : esquive, sort et ultime coupent", _player.can_cancel_into(&"dodge") and _player.can_cancel_into(&"spell") and _player.can_cancel_into(&"ult"))
 	_player._since_impact = 1.0 / 60.0
 	_check("sort 1 impact + 1 f : un sort coupe", _player.can_cancel_into(&"spell"))
 

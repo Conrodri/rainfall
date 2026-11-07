@@ -308,17 +308,14 @@ func _run() -> void:
 	_kit.set_tension(0.8)
 	_check("auto-cast : filet gardé Tension haute", not _kit.auto_cast_ok(3))
 
-	print("Filet : cercle de zone lisible pendant l'emprisonnement")
+	print("Filet : plus de cercle d'emprisonnement (joueur, 07/11/2026)")
 	_reset()
 	_kit.open_net(Vector2(5 * U, 0))
-	var nz: ZoneOutline = null
+	var nz_found := false
 	for o in get_tree().get_nodes_in_group(&"zone_outlines"):
 		if o is ZoneOutline and is_instance_valid(o.host) and o.host.name == "NetZone":
-			nz = o
-	_check("filet : ZoneOutline posé (rayon 3 u, durée = emprisonnement)", nz != null and _near(nz.radius, VigieKit.NET_RADIUS_U * U, 1.0) and _near(nz.life, VigieKit.NET_HOLD_S, 0.001))
-	if nz != null:
-		nz.step(0.5)
-		_check("filet : contour épais, opaque, voile net, liseré sombre", nz.width >= 4.0 and nz.edge_alpha >= 0.9 and nz.fill_alpha >= 0.12 and nz.halo and nz.alpha_now() >= 0.8, str(nz.alpha_now()))
+			nz_found = true
+	_check("filet : aucun ZoneOutline d'emprisonnement", not nz_found)
 	print("Sort 4 : Grêle")
 	_reset()
 	_player.spells.aim_override = Vector2(6 * U, 0)

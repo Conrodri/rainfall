@@ -833,24 +833,10 @@ func open_net(at: Vector2) -> void:
 			e.apply_status(&"imprisoned", {"duration": NET_HOLD_S})
 			PlayerRef.state_of(player).add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
 	_net_t = NET_HOLD_S
-	_caster().spawn_zone(_net_burst, at)
-	_net_outline(at, r)
+	_caster().spawn_zone(_net_burst, at) # plus de cercle d'emprisonnement (joueur, 07/11/2026 : inutile)
 	LightRig.flash(at, &"vigie_net", 0.3)
 	set_tension(1.0)
 	_set_ready_fx(true)
-
-
-## Cercle du filet pendant l'emprisonnement (le burst est instantané : pas de ZoneOutline propre). Hôte jetable.
-func _net_outline(at: Vector2, r: float) -> ZoneOutline:
-	var host := Node2D.new()
-	host.name = "NetZone"
-	_caster().effects_parent().add_child(host)
-	host.global_position = at
-	var o := ZoneOutline.attach(host, r, ZONE_COLOR, NET_HOLD_S)
-	if o != null:
-		o.emphasize()
-	player.get_tree().create_timer(NET_HOLD_S + 0.2).timeout.connect(host.queue_free)
-	return o
 
 
 ## Tir double : deux flèches sur les deux monstres les plus proches ; Tension pleine : volée de trois traits.
