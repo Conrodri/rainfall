@@ -17,8 +17,9 @@ extends Node
 ##    floors [{stage, map, t_in, t_clear, t_out, d_in, d_out, lvl_in, lvl_out, gold_earned, gold_spent,
 ##             gold_converted, xp_from_gold, kills, dmg_taken, chests [{t, q, offered, taken}],
 ##             items [{t, id, src}], pillars [{t, kind, state}],
-##             epreuves_on (prototype « Les Épreuves »), epreuves [{kind, t0, t1, grade, s, gold}] (note parfait | bien | fait,
-##             s = durée de l'épreuve, gold = or nominal versé), epreuve_s (somme des durées), post_boss_s (t_out - t_clear :
+##             epreuves_on (prototype « Les Épreuves »), epreuves [{kind, t0, t1, grade, s, gold, extra}] (note parfait | bien | fait,
+##             s = durée de l'épreuve, gold = or nominal versé, extra = mesures du verbe : escorte {stalls, hp...}, rituel {hits, pulses},
+##             poursuite {points, misses}, veine {hits, out_s, pulses}, tenue {hp, packets, intercepted, hits}), epreuve_s (somme des durées), post_boss_s (t_out - t_clear :
 ##             durée après la mort du boss d'étage), chests_after_boss (coffres ouverts après t_clear)}],
 ##    fights [{id, cat (mini | etage | raid | final), stage, hp_max, t_spawn, t_hit, t_end, ttk, outcome (kill |
 ##             death | unfinished), dmg_dealt, dmg_taken, dmg_from_boss, shield_s, enrage_s, player_died}],
@@ -713,7 +714,7 @@ func _on_pillar(pillar: Node, state: StringName) -> void:
 func _on_epreuve_started(kind: StringName) -> void:
 	if not recording or _floor.is_empty() or not _floor.has("epreuves"):
 		return
-	(_floor["epreuves"] as Array).append({"kind": String(kind), "t0": _t(), "t1": -1.0, "grade": "", "s": 0.0, "gold": 0})
+	(_floor["epreuves"] as Array).append({"kind": String(kind), "t0": _t(), "t1": -1.0, "grade": "", "s": 0.0, "gold": 0, "extra": {}})
 
 
 func _on_epreuve_finished(kind: StringName, grade: StringName, elapsed_s: float, gold: float) -> void:
@@ -727,7 +728,27 @@ func _on_epreuve_finished(kind: StringName, grade: StringName, elapsed_s: float,
 			e["grade"] = String(grade)
 			e["s"] = snappedf(elapsed_s, 0.1)
 			e["gold"] = roundi(gold)
+			e["extra"] = _epreuve_extra(kind, grade)
 			return
+
+
+## Mesures propres au verbe (Epreuve._extra_dict) lues sur l'épreuve qui vient de se résoudre ; seuls les nombres et
+## booléens sont gardés (pas de positions ni de listes de sauvegarde), arrondis à 0,01.
+func _epreuve_extra(kind: StringName, grade: StringName) -> Dictionary:
+	var out := {}
+	for n in get_tree().get_nodes_in_group(&"epreuves"):
+		var ep := n as Epreuve
+		if ep == null or ep.verb != kind or not ep.resolved or ep.grade != grade:
+			continue
+		var d: Dictionary = ep.call(&"_extra_dict")
+		for k in d:
+			var v: Variant = d[k]
+			if v is float:
+				out[String(k)] = snappedf(float(v), 0.01)
+			elif v is int or v is bool:
+				out[String(k)] = v
+		break
+	return out
 
 
 # --- Fichiers -------------------------------------------------------------------------------------

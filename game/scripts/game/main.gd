@@ -210,6 +210,7 @@ func _build() -> void:
 	Events.item_chosen.connect(_on_item_chosen)
 	Events.pickup_collected.connect(_on_pickup_counter)
 	Events.chest_opened.connect(_on_chest_counter)
+	Events.epreuve_finished.connect(_on_epreuve_counter)
 	Events.gold_converted.connect(_on_gold_converted) # après celui du HUD : le toast existe déjà
 
 	if resume_data.is_empty():
@@ -301,6 +302,23 @@ func _on_pickup_counter(kind: StringName, amount: float) -> void:
 
 func _on_chest_counter(_chest: Node, _quality: StringName, _offered: Array) -> void:
 	RunState.add_counter(ItemUnlocks.COUNTER_CHESTS)
+
+
+## Épreuves « parfaites » de la run (compteur sauvegardé avec la run) : 1 rubis chacune à la fin, plafonné
+## (Balance.epreuve_rubies). Rien en mode test (arène de bac à sable : ni profil ni rubis).
+const COUNTER_EPREUVE_PERFECT := "epreuve_perfect"
+
+
+func _on_epreuve_counter(_kind: StringName, grade: StringName, _elapsed_s: float, _gold: float) -> void:
+	if grade == &"parfait" and not TestMode.active:
+		RunState.add_counter(COUNTER_EPREUVE_PERFECT)
+
+
+## Rubis des épreuves parfaites de la run en cours (0 en mode test).
+func epreuve_rubies() -> int:
+	if TestMode.active:
+		return 0
+	return Balance.epreuve_rubies(int(RunState.counters.get(COUNTER_EPREUVE_PERFECT, 0)))
 
 
 # --- Étages -----------------------------------------------------------------
@@ -490,6 +508,7 @@ func end_run(victory: bool, reason: StringName = &"victory") -> void:
 	# rubis du joueur local : n de la partie et participation (solo : identique à Balance.run_rubies)
 	last_rubies = PartyRecap.rubies(RunState.active_time_s / 60.0, RunState.mode, pillars_done, victory, LocalState.state().gold)
 	last_rubies += Balance.omen_rubies(RunState.omens_accepted()) # Présages acceptés (hors « Ciel clair »)
+	last_rubies += epreuve_rubies() # épreuves « parfaites » : 1 rubis chacune, plafond Balance.EPREUVE_RUBIES_CAP
 	get_tree().paused = true
 	if _saves_enabled():
 		RunSave.delete(save_path)
@@ -520,7 +539,7 @@ func end_info(victory: bool, reason: StringName) -> Dictionary:
 		"character_name": RunSave.character_name(String(RunState.character)), "mode": RunState.mode,
 		"stage": RunState.stage, "active_time_s": RunState.active_time_s, "level": RunState.level,
 		"pillars": pillars_done, "kills": RunState.kills, "items": n_items, "gold": int(LocalState.state().gold),
-		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()),
+		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()), "epreuve_rubies": epreuve_rubies(),
 		"players": PartyRecap.summary(), "party_n": PartyRecap.n(), "participation": PartyRecap.participation(),
 	}
 

@@ -100,6 +100,7 @@ var _tg_bottom := 0.0 ## idem, bord bas
 var _tg_size := Vector2.ZERO
 const OFFSCREEN_CUES := preload("res://scripts/ui/offscreen_cues.gd")
 var offscreen_cues: Control ## A11y-L9 (scripts/ui/offscreen_cues.gd)
+var epreuve_hud: EpreuveHud ## barre / note / flèche des épreuves (scripts/ui/epreuve_hud.gd)
 
 
 func _ready() -> void:
@@ -110,6 +111,10 @@ func _ready() -> void:
 	offscreen_cues.call(&"bind", self)
 	root.add_child(offscreen_cues)
 	root.move_child(offscreen_cues, 1)
+	epreuve_hud = EpreuveHud.new() # prototype « Les Épreuves » : barre de progression, libellé de note, flèche hors écran
+	epreuve_hud.bind(self)
+	root.add_child(epreuve_hud)
+	root.move_child(epreuve_hud, 2)
 	_apply_layout()
 	get_viewport().size_changed.connect(_apply_layout)
 	Accessibility.changed.connect(_on_a11y_changed)
@@ -961,6 +966,8 @@ func reserved_rects() -> Array[Rect2]:
 			var r := ctl.get_global_rect()
 			if r.size.x > 1.0 and r.size.y > 1.0:
 				out.append(r)
+	if epreuve_hud != null and is_instance_valid(epreuve_hud) and epreuve_hud.epreuve != null:
+		out.append(epreuve_hud.bar_rect.grow(24.0)) # barre + libellé de l'épreuve en cours
 	return out
 
 

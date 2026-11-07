@@ -76,6 +76,8 @@ var _has_player := false
 var _allies: Array = [] ## coop : [[Vector2 uv, int slot, bool spectateur]] des joueurs autres que le local
 var _chests: Array = [] ## [Vector2 uv, Color]
 var _pillars: Array = []
+## Épreuves (prototype « Les Épreuves ») : [{uv, verb, color, pts (uv des bornes / du tracé), closed}], dessinées par _draw_epreuve.
+var _epreuves: Array = []
 var _bosses: PackedVector2Array = PackedVector2Array()
 var _teleporter := Vector2(-1.0, -1.0)
 var _gold: PackedVector2Array = PackedVector2Array()
@@ -180,7 +182,7 @@ func _process(delta: float) -> void:
 		size = get_viewport_rect().size
 	_refresh_markers(sm)
 	# redessin seulement si un marqueur, la taille ou l'état a changé (pas de redraw inutile à l'arrêt)
-	var sig := hash([_has_player, _player_pos, _player_dir, _allies, _chests, _pillars, _bosses, _teleporter, _gold, expanded, size, _jam_seed if jam_left > 0.0 else -1])
+	var sig := hash([_has_player, _player_pos, _player_dir, _allies, _chests, _pillars, _epreuves, _bosses, _teleporter, _gold, expanded, size, _jam_seed if jam_left > 0.0 else -1])
 	if sig != _sig:
 		_sig = sig
 		queue_redraw()
@@ -338,9 +340,13 @@ func _refresh_markers(sm: Node) -> void:
 		if st is Station and is_instance_valid(st) and st.is_inside_tree() and not (st as Station).state.exhausted():
 			_chests.append([_uv((st as Station).global_position), STATION_COLOR, &"station"])
 	_pillars.clear()
+	_epreuves.clear()
 	for pl in sm.get(&"pillars"):
 		if is_instance_valid(pl) and pl.is_inside_tree():
-			_pillars.append([_uv(pl.global_position), PILLAR_COLORS.get(pl.get(&"state"), Color.WHITE)])
+			if pl is Epreuve:
+				_epreuves.append(_epreuve_marker(pl as Epreuve))
+			else:
+				_pillars.append([_uv(pl.global_position), PILLAR_COLORS.get(pl.get(&"state"), Color.WHITE)])
 	_bosses.clear()
 	for b in get_tree().get_nodes_in_group(&"bosses"):
 		if b is Node2D and bool(b.get(&"active")) and (b as Node2D).is_inside_tree():
@@ -353,6 +359,21 @@ func _refresh_markers(sm: Node) -> void:
 	var tp: Node2D = sm.get(&"teleporter") as Node2D
 	if tp != null and is_instance_valid(tp) and bool(tp.get(&"active")):
 		_teleporter = _uv(tp.global_position)
+
+
+## Marqueur d'une épreuve : position courante (les verbes mobiles bougent), couleur d'état, et selon le verbe les bornes
+## (Poursuite : toutes, la lumière courante est `uv`) ou le tracé (Veine : boucle ou aller-retour) en uv.
+func _epreuve_marker(e: Epreuve) -> Dictionary:
+	var pts := PackedVector2Array()
+	var closed := false
+	if e is EpreuveChase:
+		for p: Vector2 in (e as EpreuveChase).post_pts:
+			pts.append(_uv(_map.to_global(p)))
+	elif e is EpreuveVein:
+		for p: Vector2 in (e as EpreuveVein).path:
+			pts.append(_uv(_map.to_global(p)))
+		closed = (e as EpreuveVein).closed
+	return {"uv": _uv(e.global_position), "verb": e.verb, "color": PILLAR_COLORS.get(e.state, Color.WHITE), "pts": pts, "closed": closed}
 
 
 ## Matrice uv (0..1 dans la grille) -> pixels du contrôle. Carte plate : grille ajustée en conservant
@@ -486,6 +507,8 @@ func _draw() -> void:
 		draw_colored_polygon(poly, pl[1])
 		poly.append(poly[0])
 		draw_polyline(poly, Color(0, 0, 0, 0.8), 1.0)
+	for ep: Dictionary in ([] if jammed else _epreuves):
+		_draw_epreuve(ep, xf, u)
 	if _teleporter.x >= 0.0 and not jammed:
 		var q := xf * _teleporter
 		if not _draw_icon("teleporter", q, u * 3.2):
@@ -525,6 +548,49 @@ func _draw() -> void:
 		draw_colored_polygon(tri, COL_PLAYER)
 		tri.append(tri[0])
 		draw_polyline(tri, Color(0, 0, 0, 0.9), 1.0)
+
+
+## Une épreuve sur la minimap. Un seul point d'échange pour l'art Codex : `minimap_epreuve_<verbe>.png` (dossier UI_DIR) ;
+## sans texture, repli en formes : Escorte = barque (losange allongé), Rituel = anneau + point, Poursuite = bornes reliées
+## par un trait fin et lumière courante pleine, Veine = tracé (polyligne) et disque, Tenue = cloche (carré + pastille).
+func _draw_epreuve(ep: Dictionary, xf: Transform2D, u: float) -> void:
+	var verb: StringName = ep["verb"]
+	var col: Color = ep["color"]
+	var pts: PackedVector2Array = ep["pts"]
+	if pts.size() >= 2: # tracé de la Veine ou bornes de la Poursuite
+		var line := PackedVector2Array()
+		for p in pts:
+			line.append(xf * p)
+		if bool(ep["closed"]):
+			line.append(line[0])
+		draw_polyline(line, Color(0, 0, 0, 0.8), 3.0)
+		draw_polyline(line, Color(col.r, col.g, col.b, 0.75), 1.5)
+	if verb == &"poursuite":
+		for p in pts:
+			var bq := xf * p
+			draw_circle(bq, u * 0.55, Color(0, 0, 0, 0.8))
+			draw_circle(bq, u * 0.35, col)
+	var q: Vector2 = xf * (ep["uv"] as Vector2)
+	if _draw_icon("epreuve_%s" % String(verb), q, u * 2.8):
+		return
+	var d := u * 1.2
+	match verb:
+		&"escorte":
+			var hull := PackedVector2Array([q + Vector2(-d * 1.5, 0), q + Vector2(0, -d * 0.7), q + Vector2(d * 1.5, 0), q + Vector2(0, d * 0.7)])
+			draw_colored_polygon(hull, col)
+			hull.append(hull[0])
+			draw_polyline(hull, Color(0, 0, 0, 0.85), 1.0)
+		&"rituel":
+			draw_arc(q, d * 1.3, 0.0, TAU, 20, Color(0, 0, 0, 0.85), 3.0)
+			draw_arc(q, d * 1.3, 0.0, TAU, 20, col, 1.5)
+			draw_circle(q, d * 0.45, col)
+		&"tenue":
+			draw_rect(Rect2(q - Vector2(d, d) * 0.8, Vector2(d, d) * 1.6), Color(0, 0, 0, 0.85))
+			draw_rect(Rect2(q - Vector2(d, d) * 0.6, Vector2(d, d) * 1.2), col)
+			draw_circle(q + Vector2(0, d * 1.1), d * 0.35, col)
+		_: # poursuite (lumière courante) et veine (disque)
+			draw_circle(q, d * 1.1, Color(0, 0, 0, 0.85))
+			draw_circle(q, d * 0.8, col)
 
 
 ## Brouillage (set_jammed) : voile sombre + neige grise qui grésille + bandes de balayage, dans le repère de la

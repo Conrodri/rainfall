@@ -112,7 +112,8 @@ static func deviate(boss: Node2D) -> void:
 
 
 ## Épreuve du prototype « Les Épreuves » près du joueur : `verb` = &"escorte" (tracé en Z de ~55 u dans l'arène, barque au
-## ponton de départ à quelques pas) ou &"rituel" (cœur à 4 u, trois relais à 12 u). Même code qu'en jeu : « interagir » sur la
+## ponton de départ à quelques pas), &"rituel" (cœur à 4 u, trois relais à 12 u), &"poursuite" (6 bornes en anneau de 12 u),
+## &"veine" (boucle carrée de 48 u) ou &"tenue" (cloche à 4 u, 3 côtés). Retourne null pour un autre verbe. Même code qu'en jeu : « interagir » sur la
 ## barque ou le cœur lance l'épreuve ; le mini-boss est tiré au hasard (pas de plan de run en arène).
 static func spawn_epreuve(tree: SceneTree, verb: StringName) -> Epreuve:
 	var ctx := _context(tree)
@@ -123,17 +124,40 @@ static func spawn_epreuve(tree: SceneTree, verb: StringName) -> Epreuve:
 	var pm := map.to_map(map.to_local(player.global_position)) # joueur en repère carte (axes de la grille)
 	var u := Balance.UNIT_PX
 	var e: Epreuve
-	if verb == &"escorte":
-		var pts := PackedVector2Array()
-		for off: Vector2 in [Vector2(-3, -4), Vector2(21, -4), Vector2(21, 3), Vector2(-3, 3)]:
-			pts.append(map.from_map(pm + off * u))
-		e = EpreuveEscort.make(pts)
-	else:
-		var heart := pm + Vector2(0.0, -4.0) * u
-		var relays: Array = []
-		for k in Balance.RITUAL_RELAYS:
-			relays.append(map.from_map(heart + Vector2.from_angle(PI * 0.5 + TAU * float(k) / float(Balance.RITUAL_RELAYS)) * 12.0 * u))
-		e = EpreuveRitual.make(map.from_map(heart), relays)
+	var biome := &"terrasses"
+	match verb:
+		&"escorte":
+			var pts := PackedVector2Array()
+			for off: Vector2 in [Vector2(-3, -4), Vector2(21, -4), Vector2(21, 3), Vector2(-3, 3)]:
+				pts.append(map.from_map(pm + off * u))
+			e = EpreuveEscort.make(pts)
+		&"rituel":
+			var heart := pm + Vector2(0.0, -4.0) * u
+			var relays: Array = []
+			for k in Balance.RITUAL_RELAYS:
+				relays.append(map.from_map(heart + Vector2.from_angle(PI * 0.5 + TAU * float(k) / float(Balance.RITUAL_RELAYS)) * 12.0 * u))
+			e = EpreuveRitual.make(map.from_map(heart), relays)
+		&"poursuite": # CHASE_POSTS bornes en anneau de 12 u autour du joueur ; la lumière saute de 9 à 17 u
+			var posts: Array = []
+			for k in Balance.CHASE_POSTS:
+				posts.append(map.from_map(pm + Vector2.from_angle(TAU * float(k) / float(Balance.CHASE_POSTS)) * 12.0 * u))
+			e = EpreuveChase.make(posts)
+			biome = &"foret"
+		&"veine": # boucle carrée de 48 u (12 u de côté) autour du joueur, le disque démarre au premier coin
+			var loop := PackedVector2Array()
+			for off: Vector2 in [Vector2(-6, -9), Vector2(6, -9), Vector2(6, 3), Vector2(-6, 3)]:
+				loop.append(map.from_map(pm + off * u))
+			e = EpreuveVein.make(loop, true)
+			biome = &"foret"
+		&"tenue": # cloche à 4 u au nord du joueur, trois côtés à 120 degrés
+			var sides: Array = []
+			for k in Balance.HOLD_SIDES:
+				sides.append(map.map_xform().basis_xform(Vector2.from_angle(-PI * 0.5 + TAU * float(k) / float(Balance.HOLD_SIDES))).normalized())
+			e = EpreuveHold.make(map.from_map(pm + Vector2(0.0, -4.0) * u), sides)
+			biome = &"cite"
+		_:
+			return null
+	e.biome = biome
 	e.setup(Pillar.Kind.SMALL, 90 + tree.get_nodes_in_group(&"epreuves").size(), false)
 	map.add_child(e)
 	return e

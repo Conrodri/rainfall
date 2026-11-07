@@ -571,6 +571,9 @@ func _build_loop() -> void:
 		["Gros pilier (dévier)", "Pillar", func() -> void: say("Gros pilier posé : « Dévier » sous lui, « Activer » au contact." if TestLoopTools.spawn_pillar(get_tree()) != null else "Impossible ici.")],
 		["Épreuve : escorte", "EpreuveEscort", func() -> void: say("Barque posée à quelques pas : « Lancer la barque », la suivre à moins de %d u, arrivée = mini-boss." % int(Balance.ESCORT_LEASH_U) if TestLoopTools.spawn_epreuve(get_tree(), &"escorte") != null else "Impossible ici.")],
 		["Épreuve : rituel", "EpreuveRitual", func() -> void: say("Cœur posé à 4 u, relais à 12 u : « Réveiller l'écluse », puis maintenir « interagir » %s s sur chaque relais." % str(Balance.RITUAL_HOLD_S).replace(".", ",") if TestLoopTools.spawn_epreuve(get_tree(), &"rituel") != null else "Impossible ici.")],
+		["Épreuve : poursuite", "EpreuvePoursuite", func() -> void: say("6 bornes en anneau de 12 u : « Lancer la poursuite », rejoindre la borne allumée à moins de %s u avant son saut (toutes les %d s), 5 points = mini-boss." % [str(Balance.CHASE_REACH_U).replace(".", ","), int(Balance.CHASE_JUMP_S)] if TestLoopTools.spawn_epreuve(get_tree(), &"poursuite") != null else "Impossible ici.")],
+		["Épreuve : veine", "EpreuveVeine", func() -> void: say("Boucle carrée de 48 u autour de vous, source à son premier coin (nord-ouest) : « Suivre la veine », rester dans le disque, éviter les geysers annoncés sur le tracé." if TestLoopTools.spawn_epreuve(get_tree(), &"veine") != null else "Impossible ici.")],
+		["Épreuve : tenue", "EpreuveTenue", func() -> void: say("Cloche à 4 u au nord, trois côtés : intercepter les paquets annoncés avant qu'ils touchent la cloche." if TestLoopTools.spawn_epreuve(get_tree(), &"tenue") != null else "Impossible ici.")],
 	]
 	for it in items:
 		var b := _btn(String(it[0]), it[2])

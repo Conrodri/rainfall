@@ -24,6 +24,8 @@ var picker: ItemPicker = null
 
 var _s := 1.0
 var _head: Label
+var _core_row: HBoxContainer ## icônes des noyaux d'orage (pleine = porté, estompée = libre)
+const CORE_ICON := "res://assets/sprites/icons/storm_core.png"
 var _list_scroll: ScrollContainer
 var _list: VBoxContainer
 var _detail: Label
@@ -45,6 +47,11 @@ func _build() -> void:
 	_head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_head)
+	_core_row = HBoxContainer.new()
+	_core_row.name = "CoreRow"
+	_core_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_core_row.add_theme_constant_override("separation", 8)
+	add_child(_core_row)
 	_list_scroll = ScrollContainer.new()
 	_list_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_list_scroll.follow_focus = true
@@ -99,8 +106,9 @@ func _st() -> PlayerState:
 func refresh() -> void:
 	_show_step(&"list")
 	var st := _st()
-	_head.text = "Noyaux d'orage : %s  (%d/%d)" % ["●".repeat(st.catalysts) + "○".repeat(Balance.CRAFT_CATALYST_CAP - st.catalysts), st.catalysts, Balance.CRAFT_CATALYST_CAP]
+	_head.text = "Noyaux d'orage : %d/%d" % [st.catalysts, Balance.CRAFT_CATALYST_CAP]
 	_head.add_theme_color_override("font_color", COL_COPPER if st.catalysts > 0 else UiTheme.COL_MUTED)
+	_refresh_cores(st.catalysts)
 	for c in _list.get_children():
 		_list.remove_child(c)
 		c.queue_free()
@@ -394,10 +402,35 @@ func do_craft() -> Dictionary:
 	return res
 
 
+## Une icône de noyau par emplacement (Balance.CRAFT_CATALYST_CAP) : pleine si portée, estompée sinon.
+func _refresh_cores(owned: int) -> void:
+	for c in _core_row.get_children():
+		_core_row.remove_child(c)
+		c.queue_free()
+	var tex := load(CORE_ICON) as Texture2D if ResourceLoader.exists(CORE_ICON) else null
+	for i in Balance.CRAFT_CATALYST_CAP:
+		var full := i < owned
+		if tex == null: # repli texte si l'icône manque
+			var l := Label.new()
+			l.text = "●" if full else "○"
+			_core_row.add_child(l)
+			continue
+		var r := TextureRect.new()
+		r.name = "Core%d" % i
+		r.texture = tex
+		r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		r.custom_minimum_size = Vector2.ONE * 48.0 * _s
+		r.modulate = Color.WHITE if full else Color(1, 1, 1, 0.28)
+		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_core_row.add_child(r)
+
+
 func _show_step(s: StringName) -> void:
 	step = s
 	var list_on := s == &"list"
 	_head.visible = list_on
+	_core_row.visible = list_on
 	_list_scroll.visible = list_on
 	_detail.visible = list_on
 	_confirm_box.visible = s == &"confirm"
