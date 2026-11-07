@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbjomh37wry5c"
-path.bptc="res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.bptc.ctex"
-path.astc="res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.astc.ctex"
+path="res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/rosee_figee.png"
-dest_files=["res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.bptc.ctex", "res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.astc.ctex"]
+dest_files=["res://.godot/imported/rosee_figee.png-065446961e607ca627b3deea2ea9577c.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0

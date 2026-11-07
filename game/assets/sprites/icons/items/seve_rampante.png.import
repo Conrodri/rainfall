@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bxon3e4o6xlrd"
-path.bptc="res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.bptc.ctex"
-path.astc="res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.astc.ctex"
+path="res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/seve_rampante.png"
-dest_files=["res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.bptc.ctex", "res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.astc.ctex"]
+dest_files=["res://.godot/imported/seve_rampante.png-5e76ee053fff671024a3e575f632e35f.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0

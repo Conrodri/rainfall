@@ -172,6 +172,8 @@ def apply_policy(budget: dict) -> int:
                 changed += 1
                 continue
             txt = open(ip, encoding="utf-8").read()
+            if re.search(r'^importer="skip"$', txt, re.M):
+                continue  # page d'une police BMFont (lue par l'importeur de la police) : pas une texture
             cur = dict(re.findall(r"^([\w/]+)=(.*)$", txt, re.M))
             if all(cur.get(k) == v for k, v in want.items()):
                 continue

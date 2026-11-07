@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cha170phckxq7"
-path.bptc="res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.bptc.ctex"
-path.astc="res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.astc.ctex"
+path="res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/rouage_traque.png"
-dest_files=["res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.bptc.ctex", "res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.astc.ctex"]
+dest_files=["res://.godot/imported/rouage_traque.png-49c7e76f3100d44e6df42c76d31e0960.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0

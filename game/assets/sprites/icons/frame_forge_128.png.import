@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://buaxnooa7yb6v"
-path.bptc="res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.bptc.ctex"
-path.astc="res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.astc.ctex"
+path="res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/frame_forge_128.png"
-dest_files=["res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.bptc.ctex", "res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.astc.ctex"]
+dest_files=["res://.godot/imported/frame_forge_128.png-835d13aa7d5d71e616d9e2f411dd13ac.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
