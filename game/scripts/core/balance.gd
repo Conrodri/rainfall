@@ -1164,6 +1164,9 @@ const EPREUVE_ZONE_GOLD_MULT := 0.4 ## or des kills en zone d'épreuve : l'or vi
 ## (docs/Design_Epreuves.md).
 const EPREUVE_TARGET_S := {&"escorte": 40.0, &"rituel": 35.0, &"poursuite": 40.0, &"veine": 40.0, &"tenue": 40.0}
 const EPREUVE_GOOD_MULT := 1.5
+## Multiplicateur « bien » propre à un verbe (sinon EPREUVE_GOOD_MULT). Poursuite : 40 x 1,35 = 54 s, donc 0 borne ratée =
+## parfait, 1-2 = bien (~49 s), 3+ = fait (~56 s).
+const EPREUVE_GOOD_MULT_BY_VERB := {&"poursuite": 1.35}
 const EPREUVE_BACKSTOP_S := 75.0 ## passé ce délai l'épreuve se termine d'elle-même en « fait » (jamais bloqué)
 const EPREUVE_ZONE_RADIUS_U := 7.0 ## zone de monstres x ZONE_SPAWN_MULT[&"epreuve"] qui suit l'objet mobile
 ## Tirage des coffres (§1.1) : 3 près du tracé de l'escorte, 3 près du rituel (<= 8 u), 3 autour du gros pilier, 1 au départ.
@@ -1254,7 +1257,8 @@ func epreuve_grade(verb: StringName, elapsed_s: float, clean: bool) -> StringNam
 	var target: float = float(EPREUVE_TARGET_S.get(verb, 40.0))
 	if clean and elapsed_s <= target:
 		return &"parfait"
-	return &"bien" if elapsed_s <= target * EPREUVE_GOOD_MULT else &"fait"
+	var good_mult: float = float(EPREUVE_GOOD_MULT_BY_VERB.get(verb, EPREUVE_GOOD_MULT))
+	return &"bien" if elapsed_s <= target * good_mult else &"fait"
 
 
 ## Or versé pour une note, `price_p` = prix d'un petit coffre au début de l'étage (station_price_p).

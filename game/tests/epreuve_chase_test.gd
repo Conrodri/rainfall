@@ -182,7 +182,7 @@ func _run() -> void:
 				guard += 1
 			results["%d/%d" % [n, miss]] = "%s (%d ratées, %.0f s)" % [em.grade, em.misses, em.elapsed]
 			_check("%d joueur(s), %d borne(s) ratée(s) : %s" % [n, miss, results["%d/%d" % [n, miss]]],
-				em.resolved and em.misses == miss and em.grade == ({0: &"parfait", 2: &"bien", 3: &"bien", 4: &"fait"}[miss]))
+				em.resolved and em.misses == miss and em.grade == ({0: &"parfait", 2: &"bien", 3: &"fait", 4: &"fait"}[miss]))
 			var bm: Variant = em.get(&"_boss")
 			if bm is Enemy:
 				(bm as Enemy).take_damage(1.0e9)

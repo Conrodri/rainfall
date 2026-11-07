@@ -145,7 +145,11 @@ func _multi(B) -> void:
 func _epreuves(B) -> void:
 	_near("épreuves : 2 par étage", B.EPREUVES_PER_STAGE, 2.0, 0.0)
 	_near("épreuves : sans fin activé", 1.0 if B.EPREUVE_IN_ENDLESS else 0.0, 1.0, 0.0)
-	_near("épreuves : drapeau global actif par défaut", 1.0 if B.EPREUVES_ENABLED else 0.0, 1.0, 0.0)
+	_near("épreuves : drapeau global activé (fusion E0-E5)", 1.0 if B.EPREUVES_ENABLED else 0.0, 1.0, 0.0)
+	_near("poursuite : 0 raté = parfait", 1.0 if B.epreuve_grade(&"poursuite", 40.0, true) == &"parfait" else 0.0, 1.0, 0.0)
+	_near("poursuite : 2 ratées (49 s) = bien", 1.0 if B.epreuve_grade(&"poursuite", 49.0, false) == &"bien" else 0.0, 1.0, 0.0)
+	_near("poursuite : 3 ratées (56 s) = fait", 1.0 if B.epreuve_grade(&"poursuite", 56.0, false) == &"fait" else 0.0, 1.0, 0.0)
+	_near("autres verbes : bien jusqu'à 60 s", 1.0 if B.epreuve_grade(&"escorte", 58.0, false) == &"bien" else 0.0, 1.0, 0.0)
 	_near("épreuves : --no-epreuves coupe le drapeau", 1.0 if B.EPREUVES_OFF_ARG == "--no-epreuves" else 0.0, 1.0, 0.0)
 	_near("épreuves : verbe partageable (rituel seul)", 1.0 if B.EPREUVE_SHARED_VERBS == [&"rituel"] else 0.0, 1.0, 0.0)
 	for v in [&"escorte", &"rituel", &"poursuite", &"veine", &"tenue"]:

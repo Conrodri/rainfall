@@ -53,7 +53,7 @@ La vitesse d'attaque ne l'accélère plus, et le Guet **ne change rien à ses ti
 
 ### 1. Trait (automatique)
 Flèche vers l'ennemi le plus proche, toutes les **0,6 s**.
-- Dégâts : **1,0** × dégât de base · portée **9 u** · traverse **1** monstre · proc 1,0
+- Dégâts : **1,1** × dégât de base (0,8 -> 1,0 à la refonte Guet du 07/11/2026, puis 1,1 à l'équilibrage) · portée **9 u** · traverse **1** monstre · proc 1,0
 
 ### 2. Fusée de détresse (clic gauche · recharge 8 s)
 Une flèche-fusée vers le point visé (portée **9 u**). Elle frappe le premier monstre (**1,2**), puis **la fusée de magnésium reste plantée 5 s** et éclaire **3 u** autour d'elle.
