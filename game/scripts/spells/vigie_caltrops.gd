@@ -1,7 +1,7 @@
 class_name VigieCaltrops
 extends Node2D
 ## Champ de pointes des Chausse-trapes de Vigie (variante, VigieKit) : zone persistante sans dégâts périodiques.
-## À l'ENTRÉE d'un monstre (une fois par monstre) : coup VigieKit.CHAUSSE_ENTRY_COEF + Tension +25 % ; tant qu'un monstre
+## À l'ENTRÉE d'un monstre (une fois par monstre) : coup VigieKit.CHAUSSE_ENTRY_COEF + Guet +5 % (VigieKit.CHAUSSE_TENSION) ; tant qu'un monstre
 ## reste dedans il est ralenti (50 %, boss 25 %, rafraîchi). Visuel : `caltrop_field.tres` (TOP, boucle + `end`, brief
 ## art/tools/night/_vigv.txt) ; sans asset : repli dessiné (cercle pointillé + pointes), placeholder.
 

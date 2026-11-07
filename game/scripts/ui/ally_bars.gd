@@ -72,7 +72,9 @@ func _draw() -> void:
 		var w := BAR_W * s
 		var h := BAR_H * s
 		var r := Rect2(Vector2(top.x - w * 0.5, top.y - MARGIN * s - h), Vector2(w, h))
-		var frac := clampf(float(e.node.get(&"hp")) / maxf(float(e.node.get(&"max_hp")), 1.0), 0.0, 1.0)
+		var hp_v: Variant = e.node.get(&"hp")
+		var max_v: Variant = e.node.get(&"max_hp")
+		var frac := clampf((float(hp_v) if hp_v != null else 0.0) / maxf(float(max_v) if max_v != null else 1.0, 1.0), 0.0, 1.0)
 		var tint := Palette.team_color(e.id)
 		draw_rect(r.grow(2.0 * s), COL_BLOCK)
 		draw_rect(r, Color(HpBarStyle.COL_BG, 0.92))

@@ -1138,9 +1138,9 @@ func omen_rubies(accepted: int) -> int:
 # --- Épreuves (prototype « Les Épreuves », docs/Boucle_Etage_Refonte.md §1.3 et §5.3) ---
 ## À l'étage 1 (Terrasses), les deux petits piliers deviennent deux épreuves : une Escorte (barque sur un tracé) et un
 ## Rituel (3 relais autour d'un cœur qui pulse). Le mini-boss du plan de run apparaît à la fin de l'épreuve ; le gros
-## pilier et le boss d'étage ne changent pas. DÉSACTIVÉ par défaut : sans drapeau, le jeu est strictement inchangé.
-## Activation : `Balance.EPREUVES_ENABLED = true` (tests) ou l'option de lancement `-- --epreuves` (epreuves_enabled()).
-var EPREUVES_ENABLED := false
+## pilier et le boss d'étage ne changent pas. ACTIVÉ par défaut depuis la fusion E0-E5 (joueur, 07/11/2026,
+## docs/Design_Epreuves.md §14) ; `-- --no-epreuves` (EPREUVES_OFF_ARG) ou `Balance.EPREUVES_ENABLED = false` les coupe.
+var EPREUVES_ENABLED := true
 const EPREUVES_ARG := "--epreuves"
 const EPREUVES_OFF_ARG := "--no-epreuves" ## interrupteur de comparaison et de secours (l'emporte sur le drapeau)
 var EPREUVES_PER_STAGE := 2 ## épreuves par étage 1-4 (0-2) ; le reste en petits piliers classiques (docs/Design_Epreuves.md §8)
