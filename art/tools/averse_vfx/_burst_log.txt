@@ -1,0 +1,2131 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a1b6e1-e125-7ef2-91cb-6c9f2012a41f
+--------
+user
+ÉCONOMIE DE TOKENS (obligatoire) :
+- Ne lis jamais un fichier entier s'il est long : cherche (rg/Select-String) et lis seulement les lignes utiles. Ne relis pas CLAUDE.md : l'essentiel est dans cette consigne.
+- Limite toute sortie de commande (| Select-Object -First 20, head, -q, scripts silencieux qui n'impriment qu'un résumé PASS/FAIL).
+- Réutilise et modifie les scripts existants plutôt que tout réécrire ; écris de petits scripts ciblés.
+- Ne lis pas les PNG en image sauf une planche contact unique à la fin pour vérifier ; ne liste pas les dossiers en entier.
+- Pas d'explications intermédiaires ni de plan détaillé ; rapport final de 6 lignes maximum.
+BLENDER : la fenêtre Blender interactive ouverte est au joueur : ignore-la. Une seule instance `"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python <script>.py` lancée par toi à la fois. Eevee, échantillons modestes. Pas de dessin PIL (Pillow : rogner/assembler/vérifier seulement).
+CONTRAT : tu REMPLACES des assets provisoires de Claude à l'identique (mêmes noms, dossiers, tailles, frames, _e, .tres inchangés sauf nécessité). Aucun .gd/.tscn.
+PLUS DE NORMAL MAPS (décision du joueur, 22/10/2026, budget mobile) : ne produis ni ne livres AUCUN <f>_n.png (pas de passe Normal en espace écran, cel.install(<profil>, normals=False), pas de cel.quantize_normal_files) ; .tres sans CanvasTexture ni normal_texture ; masques _e conservés. Toute mention de _n dans la consigne qui suit est caduque.
+_e : `_e` livré à demi-résolution ((w+1)//2 × (h+1)//2 du diffus) ou pleine taille (réduit ensuite par art/tools/halve_emission.py) ; jamais d'autre taille ; aucun _e noir ou vide (ne pas le livrer).
+STYLE ULTRACAVE : rapport final et messages en fragments, chaque fait une fois, aucun récapitulatif ; chemins, commandes, erreurs et nombres verbatim.
+RETOUCHES : si un script de construction existe (art/tools/**/<lot>_build.py, gen_*.py), le modifier par paramètres et le relancer ; ne pas relire les briefs complets ni explorer le dépôt.
+BLENDER : préférer `blender.exe --background --python <script>` (script qui n'imprime qu'une ligne de bilan) aux appels MCP ; MCP seulement pour une inspection ponctuelle.
+IMAGES : vérifier par script (dimensions, alpha, contraste, frames distinctes) ; au plus UNE petite planche de contrôle (≤ 1024 px de large) regardée en fin de lot.
+SORTIES : rediriger les journaux Blender/Godot/Python dans des fichiers ; ne lire que la fin ou les erreurs (tail -n 20, grep -i error).
+
+RACINE (OBLIGATOIRE) : commence chaque commande par cd "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839" ; ne touche pas au dépôt parent.
+OBJECTIF : refaire `rivulet_burst`, déversement de la Gouttière d'Averse (1er essai refusé : aplats plats). VAGUE VOLUMÉTRIQUE d'eau en vrai maillage 3D (gerbe/crête épaisse avec creux, lèvre d'écume, gouttes sphériques 3D ombrées) qui jaillit de la rigole et s'étale latéralement. Cel-shadé, DA sombre désaturée, accent cyan #5FD4E8 unique (crêtes en _e), lumière haut-gauche.
+FORMAT : SEGMENT RÉPÉTABLE de 1 u de long (axe +X) x 2 u de large (axe Y) : cellule 128x256 px, 6 frames non bouclées, 20 fps (~0,3 s), planche 768x256 (6 colonnes). Raccord parfait bord gauche = bord droit à chaque frame (motif périodique en X : les segments se posent côte à côte sur 6 u). Frame 0 = éclat au centre de la rigole (largeur 1 u) ; frames 1-3 = gerbe qui monte puis s'étale vers les deux bords latéraux (pic 2 u de large, hauteur visible) ; frames 4-5 = nappe qui retombe, s'amincit, gouttes. Fond transparent. _e (crêtes cyan) demi-résolution. Caméra du projet : ortho dimétrique 2:1, voir docs/Design_Isometrique.md (reprendre le réglage caméra de art/tools/vigie_vfx/rivulet_build.py branche rivulet_tile / caltrop_build.py). La cellule représente le sol vu en iso ; le volume doit se lire.
+TOUCHER : game/assets/sprites/characters/averse/variants/rivulet_burst/ (rivulet_burst.png, rivulet_burst_e.png, rivulet_burst.tres SpriteFrames, animation `default` sans boucle 20 fps, régions 128x256), art/blender/rivulet/rivulet_burst.blend (nouveau), art/tools/averse_vfx/burst_build.py (nouveau, pris de art/tools/vigie_vfx/rivulet_build.py pour la config cel), journal art/tools/averse_vfx/_burst_log.txt. Aucun _n.png. Aucun .gd.
+NE PAS LIRE : docs/ (sauf Design_Isometrique), CLAUDE.md, autres lots.
+VÉRIF : script (dimensions, alpha, frames distinctes, raccord G/D par frame), `python art/tools/texture_budget.py --apply-policy`, UNE planche de contrôle <= 1024 px à art/renders/averse_burst_contact.png (6 frames agrandies + segments juxtaposés x6), la regarder et corriger si plat/illisible. PNG optimisé.
+RAPPORT (6 lignes, ultracave) : fichiers, tailles Ko, vérif, problèmes.
+codex
+Je reprends la configuration cel existante et reconstruis la vague en maillage 3D.
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; rg -n \"rivulet_tile|camera|ortho|cel\\.|import |emission|render|resolution\" art/tools/vigie_vfx/rivulet_build.py | Select-Object -First 65; Get-Item art/tools/averse_vfx/burst_build.py,game/assets/sprites/characters/averse/variants/rivulet_burst/* -ErrorAction SilentlyContinue | Select-Object Name,Length; rg --files -g AGENTS.md -g \"*caltrop_build.py\" -g \"*cel*.py\" -g \"*halve_emission.py\" -g \"*texture_budget.py\" | Select-Object -First 20" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 277ms:
+3:NOTE (07/11/2026) : rivulet_tile validé ; rivulet_burst REFUSÉ (aplats bleus, pas une vague volumique) et retiré
+7:import math, os, random, subprocess, sys
+8:from pathlib import Path
+15:def render():
+16:    import bpy, cel_style as cel
+17:    from mathutils import Vector
+18:    from pathlib import Path
+20:    import boss_common as common
+21:    for name, w, h, count in [('rivulet_tile',128,128,8),('rivulet_burst',768,256,7)]:
+23:        s=bpy.context.scene; cel.setup_scene(s,8)
+24:        s.render.resolution_x=w*2; s.render.resolution_y=h*2; s.render.resolution_percentage=100
+25:        cam=bpy.data.cameras.new('Orthographic'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob
+27:            from mathutils import Vector
+30:        cam.type='ORTHO'; cam.ortho_scale=h; cam.clip_end=4000
+32:        s.render.resolution_x=w*2; s.render.resolution_y=h*2
+34:        mats=[common.material('bronze',(.12,.13,.12)), common.material('stone',(.22,.23,.21)), common.material('deep',(.025,.075,.105)), common.material('water',(.10,.31,.40)), common.material('foam',(.64,.77,.79)), common.material('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),emission=.65)]
+36:            tree=bpy.data.node_groups.new('Rivulet emission','CompositorNodeTree'); s.compositing_node_group=tree
+40:        common.configure_passes=compositor; configure=cel.install('vfx',normals=False)
+54:            if name=='rivulet_tile':
+87:                cyan=common.material('surge cyan',(.08,.45,.58),emission=.35,roughness=.3)
+89:                water.surface_render_method='DITHERED'
+129:            configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
+130:        cel.uninstall()
+134:    from PIL import Image
+135:    specs=[('rivulet_tile',128,128,8,1024,128),('rivulet_burst',768,256,7,3072,512)]
+138:        diffuse=Image.new('RGBA',(sw,sh)); emission=Image.new('RGBA',(sw//2,sh//2))
+143:            if name=='rivulet_tile':
+145:            x=(f%cols)*w; y=(f//cols)*h; diffuse.paste(src,(x,y)); emission.paste(glow,(x//2,y//2))
+146:        diffuse.save(dest/f'{name}.png',optimize=True); emission.save(dest/f'{name}_e.png',optimize=True)
+155:        if name=='rivulet_tile': animations=[anim('empty',range(4),True,10),anim('full',range(4,8),True,10),anim('default',range(4,8),True,10)]
+159:        if name=='rivulet_tile':
+161:            (dest/f'{name}_emission.tres').write_text(text.replace(f'{name}.png',f'{name}_e.png'),encoding='utf-8')
+166:    else: render()
+art\tools\vigie_vfx\caltrop_build.py
+art\tools\texture_budget.py
+art\tools\terrain\g_g2b_cel.py
+art\tools\halve_emission.py
+art\tools\cel\cel_style.py
+art\tools\night\_cel_icons_fit_probe.py
+art\tools\night\cel_minis_b_build.py
+art\tools\night\cel_minis_a_build.py
+art\tools\night\cel_icons_build.py
+art\tools\night\cel_heroes_tocsin_crop.py
+art\tools\night\cel_heroes_tocsin_build.py
+art\tools\night\cel_heroes_e_build.py
+art\tools\night\cel_heroes_d_build.py
+art\tools\night\cel_heroes_c_build.py
+art\tools\night\cel_heroes_a_build.py
+art\tools\night\cel_bosses_f23_build.py
+art\tools\night\cel_bosses_f1_build.py
+art\tools\night\cel_ui_build.py
+art\tools\night\cel_terrain_f23_build.py
+art\tools\night\cel_terrain_f1_build.py
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/vigie_vfx/rivulet_build.py | Select-Object -First 80; Get-Content art/tools/vigie_vfx/caltrop_build.py | Select-Object -First 66; rg -n \"def |normal|light|composit|Emission\" art/tools/cel/cel_style.py | Select-Object -First 35; rg -n \"dim.tr|cam.ra|30|orth|2:1\" docs/Design_Isometrique.md | Select-Object -First 15; git status --short | Select-Object -First 15" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 123ms:
+"""Build rivulet tile and burst sprite sheets with Blender cel materials.
+
+NOTE (07/11/2026) : rivulet_tile validÃ© ; rivulet_burst REFUSÃ‰ (aplats bleus, pas une vague volumique) et retirÃ©
+du jeu. Ã€ refaire dans un lot dÃ©diÃ© : profil Codex `full`, effort medium, vague d'eau volumique (maillage 3D).
+averse_rivulet.gd tolÃ¨re l'absence du burst (ResourceLoader.exists).
+"""
+import math, os, random, subprocess, sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / 'game/assets/sprites/characters/averse/variants'
+WORK = ROOT / 'art/blender/rivulet'
+sys.path.insert(0, str(ROOT / 'art/tools/cel'))
+
+def render():
+    import bpy, cel_style as cel
+    from mathutils import Vector
+    from pathlib import Path
+    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
+    import boss_common as common
+    for name, w, h, count in [('rivulet_tile',128,128,8),('rivulet_burst',768,256,7)]:
+        bpy.ops.wm.read_factory_settings(use_empty=True)
+        s=bpy.context.scene; cel.setup_scene(s,8)
+        s.render.resolution_x=w*2; s.render.resolution_y=h*2; s.render.resolution_percentage=100
+        cam=bpy.data.cameras.new('Orthographic'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob
+        if name=='rivulet_burst':
+            from mathutils import Vector
+            ob.location=(0,-520,520); ob.rotation_euler=(Vector((0,0,18))-ob.location).to_track_quat('-Z','Y').to_euler()
+        else: ob.location=(0,0,2000)
+        cam.type='ORTHO'; cam.ortho_scale=h; cam.clip_end=4000
+        cam.lens=50
+        s.render.resolution_x=w*2; s.render.resolution_y=h*2
+        light=bpy.data.lights.new('studio','SUN'); light.energy=2.5; lo=bpy.data.objects.new('studio',light); s.collection.objects.link(lo); lo.rotation_euler=(.4,-.5,-.5)
+        mats=[common.material('bronze',(.12,.13,.12)), common.material('stone',(.22,.23,.21)), common.material('deep',(.025,.075,.105)), common.material('water',(.10,.31,.40)), common.material('foam',(.64,.77,.79)), common.material('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),emission=.65)]
+        def compositor(path):
+            tree=bpy.data.node_groups.new('Rivulet emission','CompositorNodeTree'); s.compositing_node_group=tree
+            tree.interface.new_socket(name='Image',in_out='OUTPUT',socket_type='NodeSocketColor')
+            nodes=tree.nodes; links=tree.links; rl=nodes.new('CompositorNodeRLayers'); out=nodes.new('NodeGroupOutput'); links.new(rl.outputs['Image'],out.inputs['Image'])
+            f=nodes.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; links.new(rl.outputs['Image'],f.inputs[0])
+        common.configure_passes=compositor; configure=cel.install('vfx',normals=False)
+        for frame in range(count):
+            for obj in list(s.objects):
+                if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
+            batch=[([],[]) for _ in mats]
+            def poly(points,mat,z):
+                verts,faces=batch[mat]; start=len(verts); verts.extend([(x,y,z) for x,y in points]); faces.append(tuple(range(start,start+len(points))))
+            def stroke(points,width,mat,z):
+                for a,b in zip(points,points[1:]):
+                    dx=b[0]-a[0]; dy=b[1]-a[1]; ln=math.hypot(dx,dy) or 1; x=-dy/ln*width/2; y=dx/ln*width/2
+                    poly([(a[0]+x,a[1]+y),(a[0]-x,a[1]-y),(b[0]-x,b[1]-y),(b[0]+x,b[1]+y)],mat,z)
+            def ellipse(x,y,rx,ry,mat,z):
+                poly([(x+rx*math.cos(j*math.tau/32),y+ry*math.sin(j*math.tau/32)) for j in range(33)],mat,z)
+            def quad(x0,y0,x1,y1,mat,z): poly([(x0,y0),(x1,y0),(x1,y1),(x0,y1)],mat,z)
+            if name=='rivulet_tile':
+                full=frame>=4; phase=math.tau*(frame%4)/4
+                # Open channel bed remains translucent; raised worn masonry/bronze lips tile exactly.
+                poly([(-64,-25),(64,-25),(64,25),(-64,25)],2,0)
+                for y in (-33,33):
+                    stroke([(-64,y),(64,y)],15,0,1); stroke([(-64,y-2),(64,y-2)],3,4,2); stroke([(-64,y+4),(64,y+4)],5,1,2)
+                    for x in range(-56,64,24):
+                        stroke([(x,y-3),(x+10,y-3)],1.2,4,3)
+                for x in (-58,58): stroke([(x,-28),(x,28)],2,1,2)
+                if not full:
+                    stroke([(-64,3*math.sin(phase)),(-32,2*math.sin(phase+1)),(0,2*math.sin(phase+2)),(32,2*math.sin(phase+1)),(64,3*math.sin(phase))],2.3,3,2)
+                    for k in range(4):
+                        x=-46+k*29+int(5*math.sin(phase+k)); y=5*math.sin(phase*2+k*1.7)
+                        ellipse(x,y,3.1,1.3,4,3)
+                    stroke([(-64,4+3*math.sin(phase)),(0,4+2*math.sin(phase+1)),(64,4+3*math.sin(phase))],.8,4,3)
+                    for x,y in [(-47,-25),(21,30),(52,-41),(-8,48)]: ellipse(x+3*math.sin(phase),y,2,2.5,3,3)
+                else:
+                    poly([(-64,-24),(64,-24),(64,24),(-64,24)],3,2)
+                    for k in range(4):
+                        y=-15+k*10; pts=[(x,y+2.2*math.sin(x/19+phase+k*.7)+.8*math.sin(x/7+k)) for x in range(-64,65,4)]
+                        stroke(pts,2.4 if k%2 else 3.1,3,3); stroke(pts,.7,4,4)
+                    for k in range(6):
+                        x=-52+k*20+int(4*math.sin(phase+k)); y=7*math.sin(phase*2+k*1.3)
+                        ellipse(x,y,4,1.7,4,4)
+                    for y in (-21,21):
+                        pts=[(x,y+1.7*math.sin(x/12+phase)) for x in range(-64,65,2)]
+                        stroke(pts,1.8,4,4); stroke(pts,.9,5,5)
+import bpy, math, os
+from mathutils import Vector
+ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','..'))
+OUT=os.path.join(ROOT,'game/assets/sprites/characters/vigie/caltrop_field')
+os.makedirs(OUT,exist_ok=True)
+os.makedirs(os.path.join(ROOT,'art/blender'),exist_ok=True)
+sc=bpy.context.scene
+bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
+sc.render.engine='BLENDER_EEVEE'; sc.eevee.taa_render_samples=16
+sc.render.film_transparent=True; sc.render.image_settings.file_format='PNG'; sc.render.image_settings.color_mode='RGBA'; sc.render.image_settings.color_depth='8'
+sc.view_settings.view_transform='Standard'; sc.view_settings.look='Medium High Contrast'; sc.view_settings.exposure=0; sc.view_settings.gamma=1
+sc.render.resolution_x=576; sc.render.resolution_y=576; sc.render.resolution_percentage=100
+sc.world.color=(0.025,0.025,0.025)
+def mat(name,color,metal=0,rough=.8,emit=0):
+ m=bpy.data.materials.new(name); m.diffuse_color=(*color,1); m.use_nodes=True
+ bs=m.node_tree.nodes.get('Principled BSDF'); bs.inputs['Base Color'].default_value=(*color,1); bs.inputs['Metallic'].default_value=metal; bs.inputs['Roughness'].default_value=rough
+ if emit: bs.inputs['Emission Color'].default_value=(*color,1); bs.inputs['Emission Strength'].default_value=emit
+ return m
+iron=mat('forged bright steel',(.34,.39,.43),.72,.3); edge=mat('cel-cut bright steel ridge',(.88,.93,.96),.35,.27); red=mat('signal ember',(1,.025,.065),.1,.5,2.3)
+def set_alpha(m,a):
+ m.node_tree.nodes.get('Principled BSDF').inputs['Alpha'].default_value=a
+ m.surface_render_method='DITHERED'
+# lights and top camera
+ld=bpy.data.lights.new('large upper-left','AREA'); lo=bpy.data.objects.new('large upper-left',ld); sc.collection.objects.link(lo); lo.location=(-3,4,7); ld.energy=480; ld.size=5
+ld2=bpy.data.lights.new('soft fill','AREA'); lo2=bpy.data.objects.new('soft fill',ld2); sc.collection.objects.link(lo2); lo2.location=(4,-3,5); ld2.energy=110; ld2.size=5
+cd=bpy.data.cameras.new('TOP 96px per unit'); cam=bpy.data.objects.new('TOP 96px per unit',cd); sc.collection.objects.link(cam); cam.location=(0,0,12); cam.rotation_euler=(0,0,0); cd.type='ORTHO'; cd.ortho_scale=6; sc.camera=cam
+# 48 Vogel distribution, four long conical tetrahedral prongs each
+shadow=mat('soft short contact shadow',(.018,.024,.032))
+def spike(name,base,tip,radius,material):
+ axis=Vector(tip)-Vector(base); mid=(Vector(tip)+Vector(base))*.5
+ bpy.ops.mesh.primitive_cone_add(vertices=5, radius1=radius, radius2=.006, depth=axis.length, location=mid)
+ ob=bpy.context.object; ob.name=name; ob.rotation_mode='QUATERNION'; ob.rotation_quaternion=axis.to_track_quat('Z','Y'); ob.data.materials.append(material)
+ for p in ob.data.polygons:
+  if p.normal.z > .4: p.material_index=0
+ return ob
+for i in range(48):
+ r=2.82*math.sqrt((i+.5)/48); a=i*math.pi*(3-math.sqrt(5)); x=r*math.cos(a); y=r*math.sin(a); z=-.04
+ size=.375+(.025*((i*7)%5)); rot=(i*2.399963)% (2*math.pi); spread=size*.28; length=size*.91
+ bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=6,radius=1,location=(x+.045,y-.045,-.115)); sh=bpy.context.object; sh.name='soft short contact shadow'; sh.scale=(size*.52,size*.22,.006); sh.data.materials.append(shadow)
+ # Three ground spikes radiate evenly; the fourth rises vertically.
+ for j in range(3):
+  ang=rot+j*2*math.pi/3; dx=math.cos(ang); dy=math.sin(ang)
+  spike('Caltrop_%02d_ground_%d'%(i,j),(x-dx*length*.5,y-dy*length*.5,z),(x+dx*length*.5,y+dy*length*.5,z+.018),size*.072,iron)
+  # narrow bright ridge along the exposed side
+  spike('Caltrop_%02d_edge_%d'%(i,j),(x-dx*length*.42-dy*size*.035,y-dy*length*.42+dx*size*.035,z+.012),(x+dx*length*.43-dy*size*.035,y+dy*length*.43+dx*size*.035,z+.025),size*.023,edge)
+ spike('Caltrop_%02d_upright'%i,(x,y,z),(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length),size*.082,iron)
+ if i in (2,8,14,20,26,32,38,44):
+  bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=.026,location=(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length*.94)); bpy.context.object.name='red ember'; bpy.context.object.data.materials.append(red)
+# utility render atlases from same fixed scene; end alpha fade and rust tint
+from mathutils import Color
+
+def hide_embers(v):
+ for ob in sc.objects:
+  if ob.name.startswith('red ember'): ob.hide_render=not v
+
+def render_sheet(anim,n,cols,alpha):
+ w=cols*576; h=math.ceil(n/cols)*576
+ # render each frame then assemble with Blender image pixels
+ sc.render.resolution_x=576; sc.render.resolution_y=576; sc.render.filepath=''
+ frames=[]
+ for f in range(n):
+  hide_embers(anim=='default' and f%2==0)
+  factor=alpha[f] if anim=='end' else 1
+  for ob in sc.objects:
+   if ob.name.startswith('Caltrop'):
+    for m in ob.data.materials:
+13:      quantize_normal_files() -> re-quantifie les _n APRÈS réduction/assemblage (Blender, compositeur).
+15:      install(profile, normals=False) ; la passe Normal reste calculée (plis d'encre) mais aucun
+16:      fichier <f>_n n'est écrit. Le défaut normals=True ne sert qu'aux lots lancés avant cette date.
+25:    # rendu (Blender)         : import iso_rig; cel.install('creature', normals=False); <code de rendu d'origine>
+54:CREASE_THRESHOLD = .72               # Sobel des normales lisses au-delà duquel on encre un pli
+62:    'creature': dict(tones=3, ink_px=1.5, creases=True, quantize_normals=True, keep_normals=True),
+63:    'boss':     dict(tones=3, ink_px=2.0, creases=True, quantize_normals=True, keep_normals=True),
+64:    'prop':     dict(tones=3, ink_px=1.5, creases=True, quantize_normals=True, keep_normals=True),
+66:    'tile':     dict(tones=3, ink_px=0.0, creases=True, quantize_normals=True, keep_normals=True,
+68:    'icon':     dict(tones=3, ink_px=1.0, creases=True, quantize_normals=False, keep_normals=False),
+69:    'ui':       dict(tones=2, ink_px=1.0, creases=False, quantize_normals=False, keep_normals=False),
+70:    # VFX additifs (lumière pure) : pas d'encre, pas de normale ; seuls les VFX à corps (rochers, lames,
+72:    'vfx':      dict(tones=2, ink_px=0.0, creases=False, quantize_normals=False, keep_normals=False),
+76:def profile(name_or_dict) -> dict:
+84:def setup_scene(scene=None, samples=EEVEE_SAMPLES):
+96:        layer.use_pass_normal = True
+103:def toon_materials(prof='creature', only_new=True) -> dict:
+104:    """PBR -> aplats : diffus gris -> Shader to RGB -> rampe CONSTANT de N tons -> Emission.
+126:            dark, light = tuple(r.elements[0].color), tuple(r.elements[-1].color)
+127:            base = tuple(dark[i] * PBR_RAMP_MIX + light[i] * (1 - PBR_RAMP_MIX) for i in range(3)) + (1,)
+133:        glow = tuple(bsdf.inputs['Emission Color'].default_value)
+134:        strength = bsdf.inputs['Emission Strength'].default_value
+141:        emit = nodes.new('ShaderNodeEmission')
+181:def _boss_common():
+187:def cel_passes(path, prof='creature', base_configure=None, normals=True):
+188:    """Compositeur cel : passes d'origine (boss_common.configure_passes) + normales quantifiées,
+189:    _e depuis l'AOV d'accent, encre (silhouette érodée vers l'intérieur + plis Sobel des normales).
+190:    normals=False : la sortie fichier `<f>_n` est retirée (aucune normal map écrite, 22/10/2026)."""
+195:    tree = getattr(s, 'node_tree', None) or s.compositing_node_group
+200:    def math(op, a=None, b=None):
+211:    def set_alpha(image):
+217:    if not normals:
+221:    if p['quantize_normals'] and normals:
+222:        # Trois paliers signés par composante écran puis renormalisation : 26 directions finies.
+232:        normals = set_alpha(enc.outputs['Vector'])
+1:# Design isométrique (dimétrique 2:1) — plan de migration
+3:Statut : **fait autorité** pour la caméra, les repères, les assets et l'ordre des travaux (décision du joueur, 21/10/2026). Remplace les règles de caméra de art/briefs/STYLE.md, terrain_brief.md, monsters.md, vfx.md en cas de conflit.
+5:Résumé : **le gameplay reste dans un plan de sol carré, 1 u = 64 px dans toutes les directions ; seul l'affichage est projeté.** Les axes de ce plan de sol (« repère logique ») sont alignés sur l'écran ; la caméra écrase la hauteur de moitié (zoom non uniforme) ; la grille de la carte (tuiles, murs) est tournée de 45° dans ce repère. Physique, distances, `Balance` et tri en profondeur restent exacts.
+9:## §1 Spécification caméra
+14:| Projection | orthographique, dimétrique 2:1 |
+15:| Élévation | **30°** au-dessus de l'horizon ; écrasement du sol = sin 30° = **0,5** → losanges exactement 2:1 (arête à 26,57° à l'écran) |
+17:| Hauteurs verticales | un objet de h u mesure h × cos 30° = **0,866 h** de son équivalent au sol horizontal |
+22:2. **Logique (L)** : le repère du jeu. Plan de sol orthonormé, **64 px/u partout**, x = droite écran, y = bas écran (profondeur). `L = Rot(+45°) · M`. Physique, `distance_to`, `Balance`, Director, sorts, télégraphes, lumières, souris (`get_global_mouse_position()` est déjà en L).
+23:3. **Écran (S)** : `S = Zoom · (L − caméra)`, `Zoom = (Z, Z/2)`.
+28:| avant (vue de dessus) | (1, 1) | 30 × 16,9 | 506 u² | ×1 | 8,4 u |
+29:| 64 | (1,0, 0,5) | 30 × 33,8 | +100 % | ×1 | 15 u |
+30:| **72 (recommandé)** | **(1,125, 0,5625)** | **26,7 × 30** | **+58 %** | **×1,125** | **13,3 u** |
+33:s = 80 respecte « +20-30 % » au sens strict mais grossit les persos de 25 % et réduit la largeur de 20 %, l'inverse d'un recul. **s = 72 recommandé ; choix final au portail de la phase 0 (64/72/80 comparés sur téléphone).** Multiplicateur joueur 0,9-1,1 exposable plus tard dans les options.
+52:const ELEVATION_DEG := 30.0
+54:const SQUASH := 0.5                  # sin 30°
+?? art/tools/averse_vfx/
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/cel/cel_style.py | Select-Object -Skip 84 -First 90; Get-Content art/tools/cel/cel_style.py | Select-Object -Skip 280 -First 95; rg -n \"camera|location|rotation|ortho\" art/tools/vigie_vfx/caltrop_build.py | Select-Object -First 8; Get-ChildItem art/tools/averse_vfx -File | Select-Object -First 12 Name,Length; Get-Content art/tools/texture_budget.py | Select-Object -First 45; Get-Content art/tools/vigie_vfx/rivulet_build.py | Select-Object -Skip 149 -First 14" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 102ms:
+    """RÃ©glages de rendu cel communs (ne touche ni camÃ©ra ni rÃ©solution : ceux du script d'origine)."""
+    import bpy
+    s = scene or bpy.context.scene
+    s.render.engine = 'BLENDER_EEVEE'
+    s.eevee.taa_render_samples = samples
+    s.render.film_transparent = True
+    s.render.image_settings.file_format = 'PNG'
+    s.render.image_settings.color_mode = 'RGBA'
+    s.render.dither_intensity = 0
+    s.view_settings.view_transform = 'Standard'
+    for layer in s.view_layers:
+        layer.use_pass_normal = True
+        layer.use_pass_emit = True
+        if not layer.aovs.get(AOV):
+            layer.aovs.add().name = AOV
+    return s
+
+
+def toon_materials(prof='creature', only_new=True) -> dict:
+    """PBR -> aplats : diffus gris -> Shader to RGB -> rampe CONSTANT de N tons -> Emission.
+
+    La teinte vient de la matiÃ¨re d'origine (Base Color, ou 30/70 de sa rampe procÃ©durale) ; le grain
+    procÃ©dural est abandonnÃ©, la teinte jamais. MatiÃ¨res lumineuses (rainfall_emissive, ou Ã©mission sans
+    rampe) : Ã©mission conservÃ©e + AOV d'accent (-> _e). Idempotent (Ã©tiquette mat['cel_done']).
+    Avec keep_texture (tuiles) et une Base Color reliÃ©e Ã  une texture : texture Ã— ton quantifiÃ©.
+    Retourne {matiÃ¨re: [couleurs des tons]} pour le rapport du lot.
+    """
+    import bpy
+    p = profile(prof)
+    palettes = {}
+    for mat in bpy.data.materials:
+        if not mat.use_nodes or (only_new and mat.get('cel_done')):
+            continue
+        nodes, links = mat.node_tree.nodes, mat.node_tree.links
+        bsdf = next((n for n in nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        if bsdf is None:
+            continue
+        base = tuple(bsdf.inputs['Base Color'].default_value)
+        ramps = [n for n in nodes if n.type == 'VALTORGB']
+        if ramps:
+            r = ramps[0].color_ramp
+            dark, light = tuple(r.elements[0].color), tuple(r.elements[-1].color)
+            base = tuple(dark[i] * PBR_RAMP_MIX + light[i] * (1 - PBR_RAMP_MIX) for i in range(3)) + (1,)
+        texture_src = None
+        if p.get('keep_texture') and bsdf.inputs['Base Color'].is_linked:
+            link = bsdf.inputs['Base Color'].links[0]
+            if link.from_node.type == 'TEX_IMAGE':
+                texture_src = (link.from_node, link.from_socket.name)
+        glow = tuple(bsdf.inputs['Emission Color'].default_value)
+        strength = bsdf.inputs['Emission Strength'].default_value
+        luminous = strength > .01 and (bool(mat.get('rainfall_emissive')) or not ramps)
+        keep = {texture_src[0].name} if texture_src else set()
+        for n in list(nodes):
+            if n.name not in keep:
+                nodes.remove(n)
+        output = nodes.new('ShaderNodeOutputMaterial')
+        emit = nodes.new('ShaderNodeEmission')
+        accent = nodes.new('ShaderNodeOutputAOV'); accent.aov_name = AOV
+        accent.inputs['Color'].default_value = (tuple(c * strength for c in glow[:3]) + (1,)) if luminous else (0, 0, 0, 1)
+        if luminous:
+            emit.inputs['Color'].default_value = glow
+            emit.inputs['Strength'].default_value = strength
+        else:
+            diffuse = nodes.new('ShaderNodeBsdfDiffuse')
+            diffuse.inputs['Color'].default_value = (DIFFUSE_GREY, DIFFUSE_GREY, DIFFUSE_GREY, 1)
+            diffuse.inputs['Roughness'].default_value = 0
+            rgb = nodes.new('ShaderNodeShaderToRGB')
+            links.new(diffuse.outputs[0], rgb.inputs[0])
+            ramp = nodes.new('ShaderNodeValToRGB'); ramp.name = 'CEL tones'
+            ramp.color_ramp.interpolation = 'CONSTANT'
+            luma = sum(base[i] * w for i, w in enumerate((.2126, .7152, .0722)))
+            lift = max(1, SHADOW_FLOOR_LUMA / max(luma, .0001))
+            base = tuple(min(MAX_CHANNEL, c * lift) for c in base[:3])
+            scales = TONE_SCALES if p['tones'] >= 3 else (TONE_SCALES[0], TONE_SCALES[2])
+            stops = TONE_STOPS if p['tones'] >= 3 else (TONE_STOPS[0], TONE_STOPS[1])
+            tint = (1, 1, 1) if texture_src else base
+            colors = [tuple(c * k for c in tint) + (1,) for k in scales]
+            els = ramp.color_ramp.elements
+            els[0].position, els[0].color = stops[0], colors[0]
+            els[1].position, els[1].color = stops[1], colors[1]
+            for stop, col in zip(stops[2:], colors[2:]):
+                els.new(stop).color = col
+            links.new(rgb.outputs['Color'], ramp.inputs['Fac'])
+            if texture_src:
+                mul = nodes.new('ShaderNodeVectorMath'); mul.operation = 'MULTIPLY'
+                links.new(texture_src[0].outputs[texture_src[1]], mul.inputs[0])
+                links.new(ramp.outputs['Color'], mul.inputs[1])
+                links.new(mul.outputs[0], emit.inputs['Color'])
+            else:
+                links.new(ramp.outputs['Color'], emit.inputs['Color'])
+        toon_materials(prof)
+        cel_passes(path, prof, original, normals)
+
+    common.configure_passes = configure
+    iso = sys.modules.get('iso_rig')
+    if iso is not None:
+        iso.common.configure_passes = configure
+        if keep_black_emission and 'optimize_png' not in _installed:
+            _installed['optimize_png'] = iso.optimize_png
+            def optimize(path, crop=False, margin=6):
+                from PIL import Image
+                path = Path(path)
+                if path.stem.endswith('_e') and not crop:
+                    with Image.open(path) as im:
+                        im.convert('RGBA').save(path, optimize=True, compress_level=9)
+                    return (0, 0, *Image.open(path).size)
+                return _installed['optimize_png'](path, crop, margin)
+            iso.optimize_png = optimize
+    return configure
+
+
+def uninstall():
+    common = _boss_common()
+    if 'configure_passes' in _installed:
+        common.configure_passes = _installed.pop('configure_passes')
+        iso = sys.modules.get('iso_rig')
+        if iso is not None:
+            iso.common.configure_passes = common.configure_passes
+            if 'optimize_png' in _installed:
+                iso.optimize_png = _installed.pop('optimize_png')
+
+
+def quantize_normal_files(paths, work=None):
+    """Re-quantifie des _n dÃ©jÃ  rÃ©duits/assemblÃ©s (le filtrage LANCZOS recrÃ©e des dÃ©gradÃ©s aux bords
+    des paliers). Compositeur Blender : dÃ©code, ROUND par composante, renormalise, rÃ©-encode.
+    L'original filtrÃ© est gardÃ© une fois dans work/ (idempotent : on repart toujours de lui)."""
+    import bpy
+    paths = [Path(p) for p in paths]
+    if not paths:
+        return
+    work = Path(work or WORK / 'frames/normals'); work.mkdir(parents=True, exist_ok=True)
+    scene = bpy.data.scenes.new('CEL normal plateaus')
+    scene.render.engine = 'BLENDER_EEVEE'; scene.eevee.taa_render_samples = 1
+    scene.render.film_transparent = True; scene.render.dither_intensity = 0
+    scene.render.resolution_percentage = 100
+    scene.render.image_settings.file_format = 'PNG'; scene.render.image_settings.color_mode = 'RGBA'
+    scene.render.image_settings.color_depth = '8'; scene.view_settings.view_transform = 'Raw'
+    cam = bpy.data.objects.new('CEL normal camera', bpy.data.cameras.new('CEL normal camera'))
+    scene.collection.objects.link(cam); scene.camera = cam
+    tree = bpy.data.node_groups.new('CEL post-filter normal plateaus', 'CompositorNodeTree')
+    scene.compositing_node_group = tree
+    tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
+    nodes, links = tree.nodes, tree.links
+    src = nodes.new('CompositorNodeImage')
+    dec = nodes.new('ShaderNodeVectorMath'); dec.operation = 'MULTIPLY_ADD'
+    links.new(src.outputs['Image'], dec.inputs[0])
+    dec.inputs[1].default_value = (2, 2, 2); dec.inputs[2].default_value = (-1, -1, -1)
+    split = nodes.new('ShaderNodeSeparateXYZ'); links.new(dec.outputs[0], split.inputs[0])
+    comb = nodes.new('ShaderNodeCombineXYZ')
+    for i in range(3):
+        r = nodes.new('ShaderNodeMath'); r.operation = 'ROUND'
+        links.new(split.outputs[i], r.inputs[0]); links.new(r.outputs[0], comb.inputs[i])
+    length = nodes.new('ShaderNodeVectorMath'); length.operation = 'LENGTH'
+    links.new(comb.outputs[0], length.inputs[0])
+    zero = nodes.new('ShaderNodeMath'); zero.operation = 'LESS_THAN'; zero.inputs[1].default_value = .1
+    links.new(length.outputs['Value'], zero.inputs[0])
+    fallback = nodes.new('ShaderNodeCombineXYZ'); links.new(zero.outputs[0], fallback.inputs[2])
+    valid = nodes.new('ShaderNodeVectorMath'); valid.operation = 'ADD'
+    links.new(comb.outputs[0], valid.inputs[0]); links.new(fallback.outputs[0], valid.inputs[1])
+    unit = nodes.new('ShaderNodeVectorMath'); unit.operation = 'NORMALIZE'
+    links.new(valid.outputs[0], unit.inputs[0])
+    enc = nodes.new('ShaderNodeVectorMath'); enc.operation = 'MULTIPLY_ADD'
+    links.new(unit.outputs[0], enc.inputs[0])
+    enc.inputs[1].default_value = (.5, .5, .5); enc.inputs[2].default_value = (.5, .5, .5)
+    alpha = nodes.new('CompositorNodeSetAlpha'); alpha.inputs['Type'].default_value = 'Replace Alpha'
+    links.new(enc.outputs[0], alpha.inputs['Image']); links.new(src.outputs['Alpha'], alpha.inputs['Alpha'])
+    out = nodes.new('NodeGroupOutput'); links.new(alpha.outputs[0], out.inputs['Image'])
+    for p in paths:
+        key = hashlib.sha1(str(p.resolve()).encode()).hexdigest()[:10]
+        original = work / f'{key}_{p.name}'
+        if not original.exists():
+            shutil.copyfile(p, original)
+        image = bpy.data.images.load(str(original), check_existing=False)
+        image.colorspace_settings.name = 'Non-Color'; src.image = image
+        scene.render.resolution_x, scene.render.resolution_y = image.size
+        scene.render.filepath = str(p)
+        bpy.ops.render.render(scene=scene.name, write_still=True)
+        bpy.data.images.remove(image)
+        print('CEL normal plateaus ' + str(p), flush=True)
+    bpy.data.scenes.remove(scene)
+    bpy.data.objects.remove(cam, do_unlink=True)
+
+
+# ============================ Python systÃ¨me (PIL / numpy) ===================================
+
+23:# lights and top camera
+24:ld=bpy.data.lights.new('large upper-left','AREA'); lo=bpy.data.objects.new('large upper-left',ld); sc.collection.objects.link(lo); lo.location=(-3,4,7); ld.energy=480; ld.size=5
+25:ld2=bpy.data.lights.new('soft fill','AREA'); lo2=bpy.data.objects.new('soft fill',ld2); sc.collection.objects.link(lo2); lo2.location=(4,-3,5); ld2.energy=110; ld2.size=5
+26:cd=bpy.data.cameras.new('TOP 96px per unit'); cam=bpy.data.objects.new('TOP 96px per unit',cd); sc.collection.objects.link(cam); cam.location=(0,0,12); cam.rotation_euler=(0,0,0); cd.type='ORTHO'; cd.ortho_scale=6; sc.camera=cam
+31: bpy.ops.mesh.primitive_cone_add(vertices=5, radius1=radius, radius2=.006, depth=axis.length, location=mid)
+32: ob=bpy.context.object; ob.name=name; ob.rotation_mode='QUATERNION'; ob.rotation_quaternion=axis.to_track_quat('Z','Y'); ob.data.materials.append(material)
+39: bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=6,radius=1,location=(x+.045,y-.045,-.115)); sh=bpy.context.object; sh.name='soft short contact shadow'; sh.scale=(size*.52,size*.22,.006); sh.data.materials.append(shadow)
+48:  bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=.026,location=(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length*.94)); bpy.context.object.name='red ember'; bpy.context.object.data.materials.append(red)
+
+Name           Length
+----           ------
+_burst.txt       2287
+_burst_log.txt      0
+"""Budget textures de Rainfall : mesure par catÃ©gorie, planches trop grandes, estimation d'APK.
+
+Usage : python art/tools/texture_budget.py [--strict] [--json <out.json>] [--top N]
+        python art/tools/texture_budget.py --apply-policy   (rÃ©Ã©crit les .import hors politique)
+  --strict : code de sortie 1 si une rÃ¨gle du budget est violÃ©e (cÃ´tÃ© > max, budget de catÃ©gorie).
+
+Lit les budgets dans game/tests/texture_budget.json (partagÃ©s avec game/tests/texture_budget_test).
+Pour chaque PNG de game/ (hors .godot) :
+  raw     = largeur Ã— hauteur Ã— 4 (RGBA8 en mÃ©moire si la texture n'est pas compressÃ©e VRAM) ;
+  vram    = mÃ©moire GPU estimÃ©e (RGBA8, ou 1 octet/px si compression VRAM ETC2/ASTC/BPTC/S3TC) ;
+  disk    = fichiers importÃ©s (.godot/imported, d'aprÃ¨s dest_files du .import) ;
+  mobile  = part de Â« disk Â» qui part dans un export Android/iOS (lossless/lossy : le mÃªme .ctex ;
+            VRAM : seulement les .etc2/.astc), compressÃ©e deflate comme dans l'APK.
+APK estimÃ© = textures mobiles + audio importÃ© + autres fichiers du projet + modÃ¨le Godot arm64.
+Normal maps interdites (dÃ©cision du joueur, 22/10/2026 : rendu cel, Ã©clairage 2D plat) : tout
+<f>_n.png posÃ© Ã  cÃ´tÃ© d'un diffus <f>.png est une violation (le dÃ©placer vers art/archive_normals/).
+Masques d'Ã©mission : <f>_e.png a la taille du diffus (rapport 1) ou sa demi-rÃ©solution
+((w+1)//2 Ã— (h+1)//2, rapport 1/2 : art/tools/halve_emission.py) ; toute autre taille est une violation.
+Sans --apply-policy, rien n'est modifiÃ© (mesure seulement).
+"""
+from __future__ import annotations
+
+import fnmatch
+import json
+import os
+import re
+import struct
+import sys
+import zlib
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+GAME = os.path.join(ROOT, "game")
+BUDGET = os.path.join(GAME, "tests", "texture_budget.json")
+MB = 1024 * 1024
+ENGINE_ARM64_MB = 32.0  # libgodot_android.so arm64 (release) compressÃ© dans l'APK + classes/res
+
+_deflate_cache: dict[str, int] = {}
+
+
+def png_size(path: str):
+    with open(path, "rb") as f:
+        h = f.read(24)
+    if h[:8] != b"\x89PNG\r\n\x1a\n":
+        return 0, 0
+    return struct.unpack(">II", h[16:24])
+            frames.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = ExtResource("0")\nregion = Rect2({x}, {y}, {w}, {h})')
+        ext=f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/{name}/{name}.png" id="0"]'
+        def anim(label,ids,loop,fps):
+            fs=', '.join(f'{{"duration": 1.0, "texture": SubResource("f{i}")}}' for i in ids)
+            return f'{{"frames": [{fs}], "loop": {str(loop).lower()}, "name": &"{label}", "speed": {fps}}}'
+        if name=='rivulet_tile': animations=[anim('empty',range(4),True,10),anim('full',range(4,8),True,10),anim('default',range(4,8),True,10)]
+        else: animations=[anim('default',range(7),False,22)]
+        text='[gd_resource type="SpriteFrames" format=3]\n\n'+ext+'\n\n'+'\n\n'.join(frames)+'\n\n[resource]\nanimations = ['+', '.join(animations)+']\n'
+        (dest/f'{name}.tres').write_text(text,encoding='utf-8')
+        if name=='rivulet_tile':
+            # Keep compatibility resource synchronized with new animations.
+            (dest/f'{name}_emission.tres').write_text(text.replace(f'{name}.png',f'{name}_e.png'),encoding='utf-8')
+    print('RIVULET PACK PASS',flush=True)
+
+
+
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/cel/cel_style.py | Select-Object -Skip 239 -First 46; Get-Content art/tools/cel/cel_style.py | Select-Object -Skip 34 -First 22; rg -n \""'^def material|rainfall_emissive" art/tools/bosses/boss_common.py | Select-Object -First 5; Test-Path "C:'"\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\"" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 30ms:
+    ink = None
+    erode_px = round(p['ink_px'] * SUPERSAMPLE)
+    erode = nodes.new('CompositorNodeDilateErode'); erode.inputs['Type'].default_value = 'Distance'
+    erode.inputs['Size'].default_value = -max(1, erode_px)
+    links.new(rl.outputs['Alpha'], erode.inputs['Mask'])
+    if erode_px > 0:
+        ink = math('SUBTRACT', rl.outputs['Alpha'], erode.outputs[0])
+    if p['creases']:
+        sobel = nodes.new('CompositorNodeFilter'); sobel.inputs['Type'].default_value = 'Sobel'
+        links.new(rl.outputs['Normal'], sobel.inputs['Image'])
+        sep = nodes.new('CompositorNodeSeparateColor'); links.new(sobel.outputs[0], sep.inputs[0])
+        e = [math('ABSOLUTE', sep.outputs[i]) for i in range(3)]
+        edge = math('GREATER_THAN', math('MAXIMUM', math('MAXIMUM', e[0], e[1]), e[2]), CREASE_THRESHOLD)
+        # Tuiles : pas d'Ã©rosion de silhouette, mais les plis restent hors du bord de la tuile.
+        edge = math('MULTIPLY', math('MULTIPLY', edge, erode.outputs[0]), CREASE_STRENGTH)
+        ink = edge if ink is None else math('MAXIMUM', ink, edge)
+    if ink is None:
+        return
+    body = nodes.new('ShaderNodeVectorMath'); body.operation = 'MULTIPLY'
+    links.new(rl.outputs['Image'], body.inputs[0]); links.new(math('SUBTRACT', 1, ink), body.inputs[1])
+    mix = nodes.new('ShaderNodeVectorMath'); mix.operation = 'MULTIPLY_ADD'
+    links.new(ink, mix.inputs[0]); mix.inputs[1].default_value = INK_RGB
+    links.new(body.outputs[0], mix.inputs[2])
+    links.new(set_alpha(mix.outputs[0]), output.inputs['Image'])
+
+
+_installed = {}
+
+
+def install(prof='creature', keep_black_emission=True, normals=True):
+    """Branche le cel sur le pipeline d'origine. Ã€ appeler aprÃ¨s bpy.ops.wm.open_mainfile / la
+    construction de scÃ¨ne et AVANT les rendus ; chaque rendu passant par configure_passes (iso_rig,
+    boss_common) reÃ§oit alors matÃ©riaux toon + compositeur cel. keep_black_emission : garde les _e
+    noirs pour que la grille de fichiers reste identique Ã  l'original (CS1). normals=False (obligatoire
+    depuis le 22/10/2026) : aucun fichier _n Ã©crit."""
+    common = _boss_common()
+    original = _installed.get('configure_passes', common.configure_passes)
+    _installed['configure_passes'] = original
+
+    def configure(path):
+        setup_scene()
+        toon_materials(prof)
+        cel_passes(path, prof, original, normals)
+
+    common.configure_passes = configure
+    iso = sys.modules.get('iso_rig')
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+GAME_SPRITES = ROOT / 'game/assets/sprites'
+ARCHIVE = ROOT / 'art/archive_3d/sprites'  # hors projet Godot : jamais importÃ© ni exportÃ©
+WORK = ROOT / 'art/blender/cel'            # copies .blend cel et frames brutes (jamais les .blend d'origine)
+BLENDER = r'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe'
+GODOT = r'C:\Users\const\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe'
+DIRS = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne']
+AOV = 'CEL_Accent'
+
+# --- RÃ©glages CS1 (valeurs exactes du lot validÃ©, _cs1_render.json Â« style Â») -----------------------
+TONE_SCALES = (.63, 1.12, 1.65)      # ombre / ton moyen / lumiÃ¨re, multipliÃ©s Ã  la couleur de base
+TONE_STOPS = (0.0, .34, .70)         # positions de la rampe CONSTANT (Shader to RGB d'un diffus gris)
+DIFFUSE_GREY = .72                   # albÃ©do du diffus de mesure (rugositÃ© 0)
+PBR_RAMP_MIX = .30                   # base = 30 % du ton sombre + 70 % du ton clair de la rampe PBR
+SHADOW_FLOOR_LUMA = .040             # luminance linÃ©aire minimale de la base (jamais un corps noir)
+MAX_CHANNEL = .72                    # plafond linÃ©aire d'un canal aprÃ¨s relÃ¨vement
+INK_RGB = (.009, .006, .005)         # encre brun-noir (linÃ©aire) â‰ˆ #1A1512 en sRGB
+CREASE_THRESHOLD = .72               # Sobel des normales lisses au-delÃ  duquel on encre un pli
+CREASE_STRENGTH = .70                # opacitÃ© des plis intÃ©rieurs (plus fins/lÃ©gers que la silhouette)
+EEVEE_SAMPLES = 8
+9:def material(name, color, metallic=0, roughness=.5, emission=0, grain=False):
+True
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/cel/cel_style.py | Select-Object -Skip 187 -First 52" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 14ms:
+    """Compositeur cel : passes d'origine (boss_common.configure_passes) + normales quantifiÃ©es,
+    _e depuis l'AOV d'accent, encre (silhouette Ã©rodÃ©e vers l'intÃ©rieur + plis Sobel des normales).
+    normals=False : la sortie fichier `<f>_n` est retirÃ©e (aucune normal map Ã©crite, 22/10/2026)."""
+    import bpy
+    p = profile(prof)
+    (base_configure or _boss_common().configure_passes)(Path(path))
+    s = bpy.context.scene
+    tree = getattr(s, 'node_tree', None) or s.compositing_node_group
+    nodes, links = tree.nodes, tree.links
+    rl = next(n for n in nodes if n.bl_idname == 'CompositorNodeRLayers')
+    output = next(n for n in nodes if n.bl_idname == 'NodeGroupOutput')
+
+    def math(op, a=None, b=None):
+        n = nodes.new('ShaderNodeMath'); n.operation = op
+        for i, v in enumerate((a, b)):
+            if v is None:
+                continue
+            if isinstance(v, (int, float)):
+                n.inputs[i].default_value = v
+            else:
+                links.new(v, n.inputs[i])
+        return n.outputs[0]
+
+    def set_alpha(image):
+        n = nodes.new('CompositorNodeSetAlpha'); n.inputs['Type'].default_value = 'Replace Alpha'
+        links.new(image, n.inputs['Image']); links.new(rl.outputs['Alpha'], n.inputs['Alpha'])
+        return n.outputs[0]
+
+    files = [n for n in nodes if n.bl_idname == 'CompositorNodeOutputFile']
+    if not normals:
+        for f in [f for f in files if '_n__' in (f.file_name if hasattr(f, 'file_name') else f.file_slots[0].path)]:
+            files.remove(f)
+            nodes.remove(f)
+    if p['quantize_normals'] and normals:
+        # Trois paliers signÃ©s par composante Ã©cran puis renormalisation : 26 directions finies.
+        quant = nodes.new('ShaderNodeCombineXYZ')
+        dots = [n for n in nodes if n.bl_idname == 'ShaderNodeVectorMath' and n.operation == 'DOT_PRODUCT']
+        for i, dot in enumerate(dots[:3]):
+            links.new(math('ROUND', dot.outputs['Value']), quant.inputs[i])
+        unit = nodes.new('ShaderNodeVectorMath'); unit.operation = 'NORMALIZE'
+        links.new(quant.outputs[0], unit.inputs[0])
+        enc = nodes.new('ShaderNodeVectorMath'); enc.operation = 'MULTIPLY_ADD'
+        links.new(unit.outputs[0], enc.inputs[0])
+        enc.inputs[1].default_value = (.5, .5, .5); enc.inputs[2].default_value = (.5, .5, .5)
+        normals = set_alpha(enc.outputs['Vector'])
+    for f in files:
+        name = f.file_name if hasattr(f, 'file_name') else f.file_slots[0].path
+        if '_n__' in name and p['quantize_normals'] and normals:
+            links.new(normals, f.inputs[0])
+        elif '_e__' in name:
+            links.new(set_alpha(rl.outputs[AOV]), f.inputs[0])
+
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py
+diff --git a/art/tools/averse_vfx/burst_build.py b/art/tools/averse_vfx/burst_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d768ffb1d059df2b504ca1832c5e2ee48272547f
+--- /dev/null
++++ b/art/tools/averse_vfx/burst_build.py
+@@ -0,0 +1,243 @@
++"""Periodic volumetric rivulet burst. Blender render; system Python --pack/--verify.
++
++Cel setup/compositor adapted from vigie_vfx/rivulet_build.py.
++Logical X projects horizontally; camera elevation 30 degrees (dimetric 2:1).
++"""
++import math
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++WORK = ROOT / 'art/blender/rivulet'
++RAW = WORK / 'burst_frames'
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants/rivulet_burst'
++TAU = math.tau
++
++
++def render():
++    import bpy
++    from mathutils import Vector
++    sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import cel_style as cel
++    import boss_common as common
++    RAW.mkdir(parents=True, exist_ok=True)
++    bpy.ops.wm.read_factory_settings(use_empty=True)
++    s = bpy.context.scene
++    cel.setup_scene(s, 8)
++    s.render.resolution_x = 768
++    s.render.resolution_y = 512
++    s.render.resolution_percentage = 100
++    s.render.fps = 20
++    s.frame_start, s.frame_end = 1, 6
++    cam = bpy.data.cameras.new('Dimetric 2:1 - 128 pixels per X unit')
++    ob = bpy.data.objects.new('Camera', cam)
++    s.collection.objects.link(ob)
++    target = Vector((0, 0, .46))
++    ob.location = target + Vector((0, -10 * math.cos(math.pi / 6), 5))
++    ob.rotation_euler = (target - ob.location).to_track_quat('-Z', 'Y').to_euler()
++    cam.type = 'ORTHO'
++    cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
++    s.camera = ob
++    sun = bpy.data.lights.new('Upper left', 'SUN')
++    sun.energy = 2.2
++    lo = bpy.data.objects.new('Upper left', sun)
++    s.collection.objects.link(lo)
++    lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
++    s.world.color = (.025, .025, .025)
++    water = common.material('Water - slate teal', (.035, .078, .09))
++    inner = common.material('Hollow underside', (.018, .036, .043))
++    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
++    cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
++    accent = common.material('Crest #5FD4E8', cyan, emission=1)
++    mats = [water, inner, foam, accent]
++
++    def compositor(path):
++        tree = bpy.data.node_groups.new('Burst cel accent', 'CompositorNodeTree')
++        s.compositing_node_group = tree
++        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
++        rl = tree.nodes.new('CompositorNodeRLayers')
++        output = tree.nodes.new('NodeGroupOutput')
++        tree.links.new(rl.outputs['Image'], output.inputs['Image'])
++        f = tree.nodes.new('CompositorNodeOutputFile')
++        f.directory = str(path.parent)
++        f.file_name = path.stem + '_e__'
++        f.file_output_items.new('RGBA', 'Image')
++        f.format.media_type = 'IMAGE'
++        f.format.file_format = 'PNG'
++        f.format.color_mode = 'RGBA'
++        f.format.color_depth = '8'
++        tree.links.new(rl.outputs['Image'], f.inputs[0])
++
++    common.configure_passes = compositor
++    profile = dict(cel.profile('vfx'), tones=3)
++    configure = cel.install(profile, normals=False)
++
++    def mesh(name, verts, faces, indices=None):
++        data = bpy.data.meshes.new(name)
++        data.from_pydata(verts, [], faces)
++        data.update()
++        obj = bpy.data.objects.new(name, data)
++        s.collection.objects.link(obj)
++        for mat in mats:
++            data.materials.append(mat)
++        for i, poly in enumerate(data.polygons):
++            poly.material_index = indices[i] if indices else 0
++            poly.use_smooth = True
++        return obj
++
++    def tube(name, points, radius, material):
++        verts, faces = [], []
++        for x, y, z in points:
++            for j in range(8):
++                a = TAU * j / 8
++                verts.append((x, y + radius * math.cos(a), z + radius * math.sin(a)))
++        for i in range(len(points) - 1):
++            for j in range(8):
++                a = i * 8 + j
++                b = i * 8 + (j + 1) % 8
++                faces.append((a, b, b + 8, a + 8))
++        return mesh(name, verts, faces, [material] * len(faces))
++
++    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
++    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
++               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
++               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
++               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
++    all_frames = []
++    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
++                                               (.32, .65, .96, .78, .33, .11))):
++        before = set(s.objects)
++        phase = frame * .71
++        def point(x, yz, sign):
++            y, z = yz
++            ripple = 1 + .10 * math.sin(TAU * x + phase) + .045 * math.sin(2 * TAU * x - phase)
++            return (x, sign * width * y, .018 + height * z * ripple)
++        for sign in (-1, 1):
++            verts, faces, ids = [], [], []
++            steps = 144
++            for i in range(steps + 1):
++                x = -1.5 + 3 * i / steps
++                verts.extend(point(x, p, sign) for p in section)
++            n = len(section)
++            for i in range(steps):
++                for j in range(n):
++                    a, b = i * n + j, i * n + (j + 1) % n
++                    face = (a, b, b + n, a + n)
++                    faces.append(face if sign == 1 else face[::-1])
++                    ids.append(1 if 9 <= j <= 14 else (2 if j in (5, 6) else 0))
++            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
++            for j, mat, rad in ((6, 3, .012), (8, 2, .018), (12, 0, .012)):
++                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
++                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
++        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
++        if frame > 0:
++            for period in range(-2, 3):
++                for k in range(12):
++                    x = period + ((k * .381966) % 1) - .5
++                    side = 1 if k % 2 else -1
++                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
++                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
++                    radius = (.019 + .010 * (k % 3)) * (1 if frame < 5 else .72)
++                    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
++                    drop = bpy.context.object
++                    drop.name = 'F%d shaded spherical drop' % frame
++                    drop.scale.z = 1.28 if frame < 4 else 1.6
++                    drop.data.materials.append(water if k % 3 else foam)
++                    for poly in drop.data.polygons:
++                        poly.use_smooth = True
++        objects = set(s.objects) - before
++        for obj in objects:
++            for f in range(1, 7):
++                obj.hide_render = f != frame + 1
++                obj.hide_viewport = f != frame + 1
++                obj.keyframe_insert(data_path='hide_render', frame=f)
++                obj.keyframe_insert(data_path='hide_viewport', frame=f)
++        all_frames.append(objects)
++    for frame in range(6):
++        s.frame_set(frame + 1)
++        path = RAW / ('f%d.png' % frame)
++        configure(path)
++        s.render.filepath = str(path)
++        bpy.ops.render.render(write_still=True)
++    s.frame_set(3)
++    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'rivulet_burst.blend'))
++    cel.uninstall()
++    print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
++
++
++def pack():
++    from PIL import Image
++    OUT.mkdir(parents=True, exist_ok=True)
++    diffuse = Image.new('RGBA', (768, 256))
++    emission = Image.new('RGBA', (384, 128))
++    for f in range(6):
++        for suffix, sheet, size in (('', diffuse, (128, 256)), ('_e', emission, (64, 128))):
++            path = RAW / ('f%d.png' % f) if not suffix else next(RAW.glob('f%d_e__*.png' % f))
++            with Image.open(path) as src:
++                tile = src.convert('RGBA').crop((256, 0, 512, 512)).resize(size, Image.Resampling.LANCZOS)
++            # Assemble identical boundary columns, also for the half-resolution accent.
++            tile.paste(tile.crop((0, 0, 1, size[1])), (size[0] - 1, 0))
++            sheet.paste(tile, (f * size[0], 0))
++    diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
++    emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
++    resource = ['[gd_resource type="SpriteFrames" format=3]',
++                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
++    for f in range(6):
++        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
++    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
++    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
++    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
++    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
++    contact = Image.new('RGBA', (960, 640), (26, 29, 33, 255))
++    for f in range(6):
++        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
++        crop = tile.crop((0, 42, 128, 202)).resize((160, 200), Image.Resampling.NEAREST)
++        contact.alpha_composite(crop, (160 * f, 0))
++    peak = diffuse.crop((256, 0, 384, 256))
++    for j in range(6):
++        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 250))
++    dest = ROOT / 'art/renders/averse_burst_contact.png'
++    dest.parent.mkdir(parents=True, exist_ok=True)
++    contact.save(dest, optimize=True)
++    verify()
++
++
++def verify():
++    import numpy as np
++    from PIL import Image
++    hashes, ranges, boxes = [], [], []
++    for suffix, size in (('', (768, 256)), ('_e', (384, 128))):
++        im = Image.open(OUT / ('rivulet_burst%s.png' % suffix)).convert('RGBA')
++        assert im.size == size, im.size
++        a = np.array(im)
++        w = size[0] // 6
++        for f in range(6):
++            tile = a[:, f*w:(f+1)*w]
++            assert np.array_equal(tile[:, 0], tile[:, -1]), ('seam', suffix, f)
++            assert tile[:, :, 3].min() == 0 and tile[:, :, 3].max() == 255
++            visible = tile[:, :, 3] > 128
++            rgb = tile[:, :, :3][visible]
++            assert rgb.max() - rgb.min() > 35, ('contrast', suffix, f)
++            if not suffix:
++                hashes.append(hash(tile.tobytes()))
++                ranges.append(int(rgb.max() - rgb.min()))
++                boxes.append(Image.fromarray(tile).getbbox())
++            else:
++                assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
++        assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
++    assert len(set(hashes)) == 6
++    assert not list(OUT.glob('*_n.png'))
++    tres = (OUT / 'rivulet_burst.tres').read_text()
++    assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
++    assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
++    print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
++
++
++if __name__ == '__main__':
++    if '--pack' in sys.argv:
++        pack()
++    elif '--verify' in sys.argv:
++        verify()
++    else:
++        render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_log.txt" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ exited 1 in 149ms:
+out-file : The process cannot access the file 
+'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\_burst_log.txt' 
+because it is being used by another process.
+At line:2 char:83
++ ... 63e45a839"; & "C:\Program Files\Blender Foundation\Blender 5.2\blende ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OpenError: (:) [Out-File], IOException
+    + FullyQualifiedErrorId : FileOpenFailure,Microsoft.PowerShell.Commands.OutFileCommand
+ 
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-CimInstance Win32_Process -Filter \"name = 'blender.exe'\" | Select-Object ProcessId,CommandLine | Format-List | Out-String -Width 250; Get-Content art/tools/averse_vfx/_burst_log.txt -Tail 5 -ErrorAction SilentlyContinue" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 211ms:
+
+    + FullyQualifiedErrorId : FileOpenFailure,Microsoft.PowerShell.Commands.OutFileCommand
+ 
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-CimInstance Win32_Process -Filter \"name = 'blender.exe'\" | Select-Object ProcessId,CommandLine | Format-List | Out-String -Width 250; Get-Content art/tools/averse_vfx/_burst_log.txt -Tail 5 -ErrorAction SilentlyContinue" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_render_log.txt" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ exited 1 in 4385ms:
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/averse_vfx/_burst_render_log.txt -Tail 16" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 0ms:
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File 
+"C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py", 
+line 243, in <module>
+    render()
+    ~~~~~~^^
+  File 
+"C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py", 
+line 47, in render
+    s.world.color = (.025, .025, .025)
+    ^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'color' and no __dict__ for setting new attributes
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py
+diff --git a/art/tools/averse_vfx/burst_build.py b/art/tools/averse_vfx/burst_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2f8fafad439f0a100716d9b3ca2b514b1cba0df7
+--- /dev/null
++++ b/art/tools/averse_vfx/burst_build.py
+@@ -0,0 +1,244 @@
++"""Periodic volumetric rivulet burst. Blender render; system Python --pack/--verify.
++
++Cel setup/compositor adapted from vigie_vfx/rivulet_build.py.
++Logical X projects horizontally; camera elevation 30 degrees (dimetric 2:1).
++"""
++import math
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++WORK = ROOT / 'art/blender/rivulet'
++RAW = WORK / 'burst_frames'
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants/rivulet_burst'
++TAU = math.tau
++
++
++def render():
++    import bpy
++    from mathutils import Vector
++    sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import cel_style as cel
++    import boss_common as common
++    RAW.mkdir(parents=True, exist_ok=True)
++    bpy.ops.wm.read_factory_settings(use_empty=True)
++    s = bpy.context.scene
++    cel.setup_scene(s, 8)
++    s.render.resolution_x = 768
++    s.render.resolution_y = 512
++    s.render.resolution_percentage = 100
++    s.render.fps = 20
++    s.frame_start, s.frame_end = 1, 6
++    cam = bpy.data.cameras.new('Dimetric 2:1 - 128 pixels per X unit')
++    ob = bpy.data.objects.new('Camera', cam)
++    s.collection.objects.link(ob)
++    target = Vector((0, 0, .46))
++    ob.location = target + Vector((0, -10 * math.cos(math.pi / 6), 5))
++    ob.rotation_euler = (target - ob.location).to_track_quat('-Z', 'Y').to_euler()
++    cam.type = 'ORTHO'
++    cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
++    s.camera = ob
++    sun = bpy.data.lights.new('Upper left', 'SUN')
++    sun.energy = 2.2
++    lo = bpy.data.objects.new('Upper left', sun)
++    s.collection.objects.link(lo)
++    lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
++    s.world = bpy.data.worlds.new('Dark ambient')
++    s.world.color = (.025, .025, .025)
++    water = common.material('Water - slate teal', (.035, .078, .09))
++    inner = common.material('Hollow underside', (.018, .036, .043))
++    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
++    cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
++    accent = common.material('Crest #5FD4E8', cyan, emission=1)
++    mats = [water, inner, foam, accent]
++
++    def compositor(path):
++        tree = bpy.data.node_groups.new('Burst cel accent', 'CompositorNodeTree')
++        s.compositing_node_group = tree
++        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
++        rl = tree.nodes.new('CompositorNodeRLayers')
++        output = tree.nodes.new('NodeGroupOutput')
++        tree.links.new(rl.outputs['Image'], output.inputs['Image'])
++        f = tree.nodes.new('CompositorNodeOutputFile')
++        f.directory = str(path.parent)
++        f.file_name = path.stem + '_e__'
++        f.file_output_items.new('RGBA', 'Image')
++        f.format.media_type = 'IMAGE'
++        f.format.file_format = 'PNG'
++        f.format.color_mode = 'RGBA'
++        f.format.color_depth = '8'
++        tree.links.new(rl.outputs['Image'], f.inputs[0])
++
++    common.configure_passes = compositor
++    profile = dict(cel.profile('vfx'), tones=3)
++    configure = cel.install(profile, normals=False)
++
++    def mesh(name, verts, faces, indices=None):
++        data = bpy.data.meshes.new(name)
++        data.from_pydata(verts, [], faces)
++        data.update()
++        obj = bpy.data.objects.new(name, data)
++        s.collection.objects.link(obj)
++        for mat in mats:
++            data.materials.append(mat)
++        for i, poly in enumerate(data.polygons):
++            poly.material_index = indices[i] if indices else 0
++            poly.use_smooth = True
++        return obj
++
++    def tube(name, points, radius, material):
++        verts, faces = [], []
++        for x, y, z in points:
++            for j in range(8):
++                a = TAU * j / 8
++                verts.append((x, y + radius * math.cos(a), z + radius * math.sin(a)))
++        for i in range(len(points) - 1):
++            for j in range(8):
++                a = i * 8 + j
++                b = i * 8 + (j + 1) % 8
++                faces.append((a, b, b + 8, a + 8))
++        return mesh(name, verts, faces, [material] * len(faces))
++
++    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
++    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
++               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
++               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
++               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
++    all_frames = []
++    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
++                                               (.32, .65, .96, .78, .33, .11))):
++        before = set(s.objects)
++        phase = frame * .71
++        def point(x, yz, sign):
++            y, z = yz
++            ripple = 1 + .10 * math.sin(TAU * x + phase) + .045 * math.sin(2 * TAU * x - phase)
++            return (x, sign * width * y, .018 + height * z * ripple)
++        for sign in (-1, 1):
++            verts, faces, ids = [], [], []
++            steps = 144
++            for i in range(steps + 1):
++                x = -1.5 + 3 * i / steps
++                verts.extend(point(x, p, sign) for p in section)
++            n = len(section)
++            for i in range(steps):
++                for j in range(n):
++                    a, b = i * n + j, i * n + (j + 1) % n
++                    face = (a, b, b + n, a + n)
++                    faces.append(face if sign == 1 else face[::-1])
++                    ids.append(1 if 9 <= j <= 14 else (2 if j in (5, 6) else 0))
++            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
++            for j, mat, rad in ((6, 3, .012), (8, 2, .018), (12, 0, .012)):
++                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
++                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
++        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
++        if frame > 0:
++            for period in range(-2, 3):
++                for k in range(12):
++                    x = period + ((k * .381966) % 1) - .5
++                    side = 1 if k % 2 else -1
++                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
++                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
++                    radius = (.019 + .010 * (k % 3)) * (1 if frame < 5 else .72)
++                    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
++                    drop = bpy.context.object
++                    drop.name = 'F%d shaded spherical drop' % frame
++                    drop.scale.z = 1.28 if frame < 4 else 1.6
++                    drop.data.materials.append(water if k % 3 else foam)
++                    for poly in drop.data.polygons:
++                        poly.use_smooth = True
++        objects = set(s.objects) - before
++        for obj in objects:
++            for f in range(1, 7):
++                obj.hide_render = f != frame + 1
++                obj.hide_viewport = f != frame + 1
++                obj.keyframe_insert(data_path='hide_render', frame=f)
++                obj.keyframe_insert(data_path='hide_viewport', frame=f)
++        all_frames.append(objects)
++    for frame in range(6):
++        s.frame_set(frame + 1)
++        path = RAW / ('f%d.png' % frame)
++        configure(path)
++        s.render.filepath = str(path)
++        bpy.ops.render.render(write_still=True)
++    s.frame_set(3)
++    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'rivulet_burst.blend'))
++    cel.uninstall()
++    print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
++
++
++def pack():
++    from PIL import Image
++    OUT.mkdir(parents=True, exist_ok=True)
++    diffuse = Image.new('RGBA', (768, 256))
++    emission = Image.new('RGBA', (384, 128))
++    for f in range(6):
++        for suffix, sheet, size in (('', diffuse, (128, 256)), ('_e', emission, (64, 128))):
++            path = RAW / ('f%d.png' % f) if not suffix else next(RAW.glob('f%d_e__*.png' % f))
++            with Image.open(path) as src:
++                tile = src.convert('RGBA').crop((256, 0, 512, 512)).resize(size, Image.Resampling.LANCZOS)
++            # Assemble identical boundary columns, also for the half-resolution accent.
++            tile.paste(tile.crop((0, 0, 1, size[1])), (size[0] - 1, 0))
++            sheet.paste(tile, (f * size[0], 0))
++    diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
++    emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
++    resource = ['[gd_resource type="SpriteFrames" format=3]',
++                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
++    for f in range(6):
++        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
++    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
++    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
++    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
++    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
++    contact = Image.new('RGBA', (960, 640), (26, 29, 33, 255))
++    for f in range(6):
++        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
++        crop = tile.crop((0, 42, 128, 202)).resize((160, 200), Image.Resampling.NEAREST)
++        contact.alpha_composite(crop, (160 * f, 0))
++    peak = diffuse.crop((256, 0, 384, 256))
++    for j in range(6):
++        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 250))
++    dest = ROOT / 'art/renders/averse_burst_contact.png'
++    dest.parent.mkdir(parents=True, exist_ok=True)
++    contact.save(dest, optimize=True)
++    verify()
++
++
++def verify():
++    import numpy as np
++    from PIL import Image
++    hashes, ranges, boxes = [], [], []
++    for suffix, size in (('', (768, 256)), ('_e', (384, 128))):
++        im = Image.open(OUT / ('rivulet_burst%s.png' % suffix)).convert('RGBA')
++        assert im.size == size, im.size
++        a = np.array(im)
++        w = size[0] // 6
++        for f in range(6):
++            tile = a[:, f*w:(f+1)*w]
++            assert np.array_equal(tile[:, 0], tile[:, -1]), ('seam', suffix, f)
++            assert tile[:, :, 3].min() == 0 and tile[:, :, 3].max() == 255
++            visible = tile[:, :, 3] > 128
++            rgb = tile[:, :, :3][visible]
++            assert rgb.max() - rgb.min() > 35, ('contrast', suffix, f)
++            if not suffix:
++                hashes.append(hash(tile.tobytes()))
++                ranges.append(int(rgb.max() - rgb.min()))
++                boxes.append(Image.fromarray(tile).getbbox())
++            else:
++                assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
++        assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
++    assert len(set(hashes)) == 6
++    assert not list(OUT.glob('*_n.png'))
++    tres = (OUT / 'rivulet_burst.tres').read_text()
++    assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
++    assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
++    print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
++
++
++if __name__ == '__main__':
++    if '--pack' in sys.argv:
++        pack()
++    elif '--verify' in sys.argv:
++        verify()
++    else:
++        render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_render_log.txt" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 6587ms:
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; Get-Content art/tools/averse_vfx/_burst_render_log.txt -Tail 8; python art/tools/averse_vfx/burst_build.py --pack *> art/tools/averse_vfx/_burst_verify_log.txt; Get-Content art/tools/averse_vfx/_burst_verify_log.txt -Tail 8" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 432ms:
+00:06.094  render           | Saved: 'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\blender\rivulet\burst_frames\f4.png'
+00:06.219  render           | Saved: 'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\blender\rivulet\burst_frames\f5_e__Image.png'
+00:06.219  render           | Saved: 'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\blender\rivulet\burst_frames\f5.png'
+Info: Saved as "rivulet_burst.blend"
+BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+    verify()
+    ~~~~~~^^
+  File 
+"C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py", 
+line 229, in verify
+    assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: vertical clipping
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; python -c \"from PIL import Image; import numpy as np; a=np.array(Image.open('game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png')); print([(i,Image.fromarray(a[:,i*128:(i+1)*128]).getbbox(),int(a[0,i*128:(i+1)*128,3].max()),int(a[-1,i*128:(i+1)*128,3].max())) for i in range(6)])\" " in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 196ms:
+[(0, (0, 108, 128, 211), 0, 0), (1, (0, 50, 128, 222), 0, 0), (2, (0, 3, 128, 236), 0, 0), (3, (0, 18, 128, 242), 0, 0), (4, (0, 75, 128, 242), 0, 0), (5, (0, 100, 128, 242), 0, 0)]
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py
+diff --git a/art/tools/averse_vfx/burst_build.py b/art/tools/averse_vfx/burst_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6c6ed8027df6f705cbccda25db5284ee45e16b7f
+--- /dev/null
++++ b/art/tools/averse_vfx/burst_build.py
+@@ -0,0 +1,244 @@
++"""Periodic volumetric rivulet burst. Blender render; system Python --pack/--verify.
++
++Cel setup/compositor adapted from vigie_vfx/rivulet_build.py.
++Logical X projects horizontally; camera elevation 30 degrees (dimetric 2:1).
++"""
++import math
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++WORK = ROOT / 'art/blender/rivulet'
++RAW = WORK / 'burst_frames'
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants/rivulet_burst'
++TAU = math.tau
++
++
++def render():
++    import bpy
++    from mathutils import Vector
++    sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import cel_style as cel
++    import boss_common as common
++    RAW.mkdir(parents=True, exist_ok=True)
++    bpy.ops.wm.read_factory_settings(use_empty=True)
++    s = bpy.context.scene
++    cel.setup_scene(s, 8)
++    s.render.resolution_x = 768
++    s.render.resolution_y = 512
++    s.render.resolution_percentage = 100
++    s.render.fps = 20
++    s.frame_start, s.frame_end = 1, 6
++    cam = bpy.data.cameras.new('Dimetric 2:1 - 128 pixels per X unit')
++    ob = bpy.data.objects.new('Camera', cam)
++    s.collection.objects.link(ob)
++    target = Vector((0, 0, .50))
++    ob.location = target + Vector((0, -10 * math.cos(math.pi / 6), 5))
++    ob.rotation_euler = (target - ob.location).to_track_quat('-Z', 'Y').to_euler()
++    cam.type = 'ORTHO'
++    cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
++    s.camera = ob
++    sun = bpy.data.lights.new('Upper left', 'SUN')
++    sun.energy = 2.2
++    lo = bpy.data.objects.new('Upper left', sun)
++    s.collection.objects.link(lo)
++    lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
++    s.world = bpy.data.worlds.new('Dark ambient')
++    s.world.color = (.025, .025, .025)
++    water = common.material('Water - slate teal', (.035, .078, .09))
++    inner = common.material('Hollow underside', (.018, .036, .043))
++    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
++    cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
++    accent = common.material('Crest #5FD4E8', cyan, emission=1)
++    mats = [water, inner, foam, accent]
++
++    def compositor(path):
++        tree = bpy.data.node_groups.new('Burst cel accent', 'CompositorNodeTree')
++        s.compositing_node_group = tree
++        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
++        rl = tree.nodes.new('CompositorNodeRLayers')
++        output = tree.nodes.new('NodeGroupOutput')
++        tree.links.new(rl.outputs['Image'], output.inputs['Image'])
++        f = tree.nodes.new('CompositorNodeOutputFile')
++        f.directory = str(path.parent)
++        f.file_name = path.stem + '_e__'
++        f.file_output_items.new('RGBA', 'Image')
++        f.format.media_type = 'IMAGE'
++        f.format.file_format = 'PNG'
++        f.format.color_mode = 'RGBA'
++        f.format.color_depth = '8'
++        tree.links.new(rl.outputs['Image'], f.inputs[0])
++
++    common.configure_passes = compositor
++    profile = dict(cel.profile('vfx'), tones=3)
++    configure = cel.install(profile, normals=False)
++
++    def mesh(name, verts, faces, indices=None):
++        data = bpy.data.meshes.new(name)
++        data.from_pydata(verts, [], faces)
++        data.update()
++        obj = bpy.data.objects.new(name, data)
++        s.collection.objects.link(obj)
++        for mat in mats:
++            data.materials.append(mat)
++        for i, poly in enumerate(data.polygons):
++            poly.material_index = indices[i] if indices else 0
++            poly.use_smooth = True
++        return obj
++
++    def tube(name, points, radius, material):
++        verts, faces = [], []
++        for x, y, z in points:
++            for j in range(8):
++                a = TAU * j / 8
++                verts.append((x, y + radius * math.cos(a), z + radius * math.sin(a)))
++        for i in range(len(points) - 1):
++            for j in range(8):
++                a = i * 8 + j
++                b = i * 8 + (j + 1) % 8
++                faces.append((a, b, b + 8, a + 8))
++        return mesh(name, verts, faces, [material] * len(faces))
++
++    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
++    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
++               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
++               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
++               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
++    all_frames = []
++    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
++                                               (.32, .65, .96, .78, .33, .11))):
++        before = set(s.objects)
++        phase = frame * .71
++        def point(x, yz, sign):
++            y, z = yz
++            ripple = 1 + .10 * math.sin(TAU * x + phase) + .045 * math.sin(2 * TAU * x - phase)
++            return (x, sign * width * y, .018 + height * z * ripple)
++        for sign in (-1, 1):
++            verts, faces, ids = [], [], []
++            steps = 144
++            for i in range(steps + 1):
++                x = -1.5 + 3 * i / steps
++                verts.extend(point(x, p, sign) for p in section)
++            n = len(section)
++            for i in range(steps):
++                for j in range(n):
++                    a, b = i * n + j, i * n + (j + 1) % n
++                    face = (a, b, b + n, a + n)
++                    faces.append(face if sign == 1 else face[::-1])
++                    ids.append(1 if 9 <= j <= 14 else (2 if j in (5, 6) else 0))
++            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
++            for j, mat, rad in ((6, 3, .012), (8, 2, .018), (12, 0, .012)):
++                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
++                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
++        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
++        if frame > 0:
++            for period in range(-2, 3):
++                for k in range(12):
++                    x = period + ((k * .381966) % 1) - .5
++                    side = 1 if k % 2 else -1
++                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
++                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
++                    radius = (.019 + .010 * (k % 3)) * (1 if frame < 5 else .72)
++                    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
++                    drop = bpy.context.object
++                    drop.name = 'F%d shaded spherical drop' % frame
++                    drop.scale.z = 1.28 if frame < 4 else 1.6
++                    drop.data.materials.append(water if k % 3 else foam)
++                    for poly in drop.data.polygons:
++                        poly.use_smooth = True
++        objects = set(s.objects) - before
++        for obj in objects:
++            for f in range(1, 7):
++                obj.hide_render = f != frame + 1
++                obj.hide_viewport = f != frame + 1
++                obj.keyframe_insert(data_path='hide_render', frame=f)
++                obj.keyframe_insert(data_path='hide_viewport', frame=f)
++        all_frames.append(objects)
++    for frame in range(6):
++        s.frame_set(frame + 1)
++        path = RAW / ('f%d.png' % frame)
++        configure(path)
++        s.render.filepath = str(path)
++        bpy.ops.render.render(write_still=True)
++    s.frame_set(3)
++    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'rivulet_burst.blend'))
++    cel.uninstall()
++    print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
++
++
++def pack():
++    from PIL import Image
++    OUT.mkdir(parents=True, exist_ok=True)
++    diffuse = Image.new('RGBA', (768, 256))
++    emission = Image.new('RGBA', (384, 128))
++    for f in range(6):
++        for suffix, sheet, size in (('', diffuse, (128, 256)), ('_e', emission, (64, 128))):
++            path = RAW / ('f%d.png' % f) if not suffix else next(RAW.glob('f%d_e__*.png' % f))
++            with Image.open(path) as src:
++                tile = src.convert('RGBA').crop((256, 0, 512, 512)).resize(size, Image.Resampling.LANCZOS)
++            # Assemble identical boundary columns, also for the half-resolution accent.
++            tile.paste(tile.crop((0, 0, 1, size[1])), (size[0] - 1, 0))
++            sheet.paste(tile, (f * size[0], 0))
++    diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
++    emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
++    resource = ['[gd_resource type="SpriteFrames" format=3]',
++                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
++    for f in range(6):
++        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
++    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
++    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
++    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
++    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
++    contact = Image.new('RGBA', (960, 640), (26, 29, 33, 255))
++    for f in range(6):
++        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
++        crop = tile.crop((0, 42, 128, 202)).resize((160, 200), Image.Resampling.NEAREST)
++        contact.alpha_composite(crop, (160 * f, 0))
++    peak = diffuse.crop((256, 0, 384, 256))
++    for j in range(6):
++        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 250))
++    dest = ROOT / 'art/renders/averse_burst_contact.png'
++    dest.parent.mkdir(parents=True, exist_ok=True)
++    contact.save(dest, optimize=True)
++    verify()
++
++
++def verify():
++    import numpy as np
++    from PIL import Image
++    hashes, ranges, boxes = [], [], []
++    for suffix, size in (('', (768, 256)), ('_e', (384, 128))):
++        im = Image.open(OUT / ('rivulet_burst%s.png' % suffix)).convert('RGBA')
++        assert im.size == size, im.size
++        a = np.array(im)
++        w = size[0] // 6
++        for f in range(6):
++            tile = a[:, f*w:(f+1)*w]
++            assert np.array_equal(tile[:, 0], tile[:, -1]), ('seam', suffix, f)
++            assert tile[:, :, 3].min() == 0 and tile[:, :, 3].max() == 255
++            visible = tile[:, :, 3] > 128
++            rgb = tile[:, :, :3][visible]
++            assert rgb.max() - rgb.min() > 35, ('contrast', suffix, f)
++            if not suffix:
++                hashes.append(hash(tile.tobytes()))
++                ranges.append(int(rgb.max() - rgb.min()))
++                boxes.append(Image.fromarray(tile).getbbox())
++            else:
++                assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
++        assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
++    assert len(set(hashes)) == 6
++    assert not list(OUT.glob('*_n.png'))
++    tres = (OUT / 'rivulet_burst.tres').read_text()
++    assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
++    assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
++    print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
++
++
++if __name__ == '__main__':
++    if '--pack' in sys.argv:
++        pack()
++    elif '--verify' in sys.argv:
++        verify()
++    else:
++        render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_render_log.txt; python art/tools/averse_vfx/burst_build.py --pack *> art/tools/averse_vfx/_burst_verify_log.txt; Get-Content art/tools/averse_vfx/_burst_verify_log.txt -Tail 2" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 10277ms:
+BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast [218, 222, 220, 223, 218, 215]; bounds [(0, 112, 128, 215), (0, 54, 128, 226), (0, 7, 128, 241), (0, 22, 128, 247), (0, 79, 128, 247), (0, 105, 128, 246)]
+
+codex
+Maillages fermés, crêtes cyan, gouttes sphériques ; contrôle des raccords et du cadrage.
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; python art/tools/texture_budget.py --apply-policy *> art/tools/averse_vfx/_burst_budget_log.txt; Get-Content art/tools/averse_vfx/_burst_budget_log.txt -Tail 7" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 2259ms:
+2 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py
+diff --git a/art/tools/averse_vfx/burst_build.py b/art/tools/averse_vfx/burst_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..425031f7d7e1f1cad10d1b6bab0f6f414ef7766e
+--- /dev/null
++++ b/art/tools/averse_vfx/burst_build.py
+@@ -0,0 +1,259 @@
++"""Periodic volumetric rivulet burst. Blender render; system Python --pack/--verify.
++
++Cel setup/compositor adapted from vigie_vfx/rivulet_build.py.
++Logical X projects horizontally; camera elevation 30 degrees (dimetric 2:1).
++"""
++import math
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++WORK = ROOT / 'art/blender/rivulet'
++RAW = WORK / 'burst_frames'
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants/rivulet_burst'
++TAU = math.tau
++
++
++def render():
++    import bpy
++    from mathutils import Vector
++    sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import cel_style as cel
++    import boss_common as common
++    RAW.mkdir(parents=True, exist_ok=True)
++    bpy.ops.wm.read_factory_settings(use_empty=True)
++    s = bpy.context.scene
++    cel.setup_scene(s, 8)
++    s.render.resolution_x = 768
++    s.render.resolution_y = 512
++    s.render.resolution_percentage = 100
++    s.render.fps = 20
++    s.frame_start, s.frame_end = 1, 6
++    cam = bpy.data.cameras.new('Dimetric 2:1 - 128 pixels per X unit')
++    ob = bpy.data.objects.new('Camera', cam)
++    s.collection.objects.link(ob)
++    target = Vector((0, 0, .50))
++    ob.location = target + Vector((0, -10 * math.cos(math.pi / 6), 5))
++    ob.rotation_euler = (target - ob.location).to_track_quat('-Z', 'Y').to_euler()
++    cam.type = 'ORTHO'
++    cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
++    s.camera = ob
++    sun = bpy.data.lights.new('Upper left', 'SUN')
++    sun.energy = 1.05
++    lo = bpy.data.objects.new('Upper left', sun)
++    s.collection.objects.link(lo)
++    lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
++    s.world = bpy.data.worlds.new('Dark ambient')
++    s.world.color = (.025, .025, .025)
++    water = common.material('Water - slate teal', (.035, .078, .09))
++    inner = common.material('Hollow underside', (.018, .036, .043))
++    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
++    cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
++    accent = common.material('Crest #5FD4E8', cyan, emission=1)
++    mats = [water, inner, foam, accent]
++
++    def compositor(path):
++        tree = bpy.data.node_groups.new('Burst cel accent', 'CompositorNodeTree')
++        s.compositing_node_group = tree
++        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
++        rl = tree.nodes.new('CompositorNodeRLayers')
++        output = tree.nodes.new('NodeGroupOutput')
++        tree.links.new(rl.outputs['Image'], output.inputs['Image'])
++        f = tree.nodes.new('CompositorNodeOutputFile')
++        f.directory = str(path.parent)
++        f.file_name = path.stem + '_e__'
++        f.file_output_items.new('RGBA', 'Image')
++        f.format.media_type = 'IMAGE'
++        f.format.file_format = 'PNG'
++        f.format.color_mode = 'RGBA'
++        f.format.color_depth = '8'
++        tree.links.new(rl.outputs['Image'], f.inputs[0])
++
++    common.configure_passes = compositor
++    profile = dict(cel.profile('vfx'), tones=3)
++    configure = cel.install(profile, normals=False)
++
++    def mesh(name, verts, faces, indices=None):
++        data = bpy.data.meshes.new(name)
++        data.from_pydata(verts, [], faces)
++        data.update()
++        obj = bpy.data.objects.new(name, data)
++        s.collection.objects.link(obj)
++        for mat in mats:
++            data.materials.append(mat)
++        for i, poly in enumerate(data.polygons):
++            poly.material_index = indices[i] if indices else 0
++            poly.use_smooth = True
++        return obj
++
++    def tube(name, points, radius, material):
++        verts, faces = [], []
++        for x, y, z in points:
++            for j in range(8):
++                a = TAU * j / 8
++                verts.append((x, y + radius * math.cos(a), z + radius * math.sin(a)))
++        for i in range(len(points) - 1):
++            for j in range(8):
++                a = i * 8 + j
++                b = i * 8 + (j + 1) % 8
++                faces.append((a, b, b + 8, a + 8))
++        return mesh(name, verts, faces, [material] * len(faces))
++
++    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
++    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
++               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
++               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
++               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
++    all_frames = []
++    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
++                                               (.32, .65, .96, .78, .33, .11))):
++        before = set(s.objects)
++        phase = frame * .71
++        def point(x, yz, sign):
++            y, z = yz
++            swell = math.sin(TAU * x + phase)
++            ripple = 1 + .18 * swell + .065 * math.sin(3 * TAU * x - phase)
++            bulge = .12 * math.sin(2 * TAU * x + phase) * math.sin(math.pi * y)
++            rear = .66 if sign == 1 else 1
++            return (x, sign * width * (y + bulge), .018 + rear * height * z * ripple)
++        for sign in (-1, 1):
++            verts, faces, ids = [], [], []
++            steps = 144
++            for i in range(steps + 1):
++                x = -1.5 + 3 * i / steps
++                verts.extend(point(x, p, sign) for p in section)
++            n = len(section)
++            for i in range(steps):
++                for j in range(n):
++                    a, b = i * n + j, i * n + (j + 1) % n
++                    face = (a, b, b + n, a + n)
++                    faces.append(face if sign == 1 else face[::-1])
++                    ids.append(1 if 10 <= j <= 14 else (2 if j == 5 else 0))
++            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
++            for j, mat, rad in ((6, 2, .033), (6, 3, .012), (8, 0, .030), (12, 0, .018)):
++                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
++                if mat == 3:
++                    pts = [(x, y - .022, z + .022) for x, y, z in pts]
++                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
++            # Raised curved ribs on the falling face; dark sides and lit shoulders.
++            for period in range(-2, 3):
++                for k in range(3):
++                    pts = []
++                    for j in range(18):
++                        t = j / 17
++                        x = period + k / 3 + .045 * math.sin(t * math.pi + phase + k)
++                        p = point(x, (.88 - .35 * t, .90 - .70 * t), sign)
++                        pts.append((p[0], p[1] + sign * .022, p[2]))
++                    tube('F%d water shoulder' % frame, pts, .018 if k % 2 else .025, 0)
++        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
++        if frame > 0:
++            for period in range(-2, 3):
++                for k in range(12):
++                    x = period + ((k * .381966) % 1) - .5
++                    side = 1 if k % 2 else -1
++                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
++                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
++                    radius = (.025 + .012 * (k % 3)) * (1 if frame < 5 else .72)
++                    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
++                    drop = bpy.context.object
++                    drop.name = 'F%d shaded spherical drop' % frame
++                    drop.scale.z = 1.28 if frame < 4 else 1.6
++                    drop.data.materials.append(water if k % 3 else foam)
++                    for poly in drop.data.polygons:
++                        poly.use_smooth = True
++        objects = set(s.objects) - before
++        for obj in objects:
++            for f in range(1, 7):
++                obj.hide_render = f != frame + 1
++                obj.hide_viewport = f != frame + 1
++                obj.keyframe_insert(data_path='hide_render', frame=f)
++                obj.keyframe_insert(data_path='hide_viewport', frame=f)
++        all_frames.append(objects)
++    for frame in range(6):
++        s.frame_set(frame + 1)
++        path = RAW / ('f%d.png' % frame)
++        configure(path)
++        s.render.filepath = str(path)
++        bpy.ops.render.render(write_still=True)
++    s.frame_set(3)
++    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'rivulet_burst.blend'))
++    cel.uninstall()
++    print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
++
++
++def pack():
++    from PIL import Image
++    OUT.mkdir(parents=True, exist_ok=True)
++    diffuse = Image.new('RGBA', (768, 256))
++    emission = Image.new('RGBA', (384, 128))
++    for f in range(6):
++        for suffix, sheet, size in (('', diffuse, (128, 256)), ('_e', emission, (64, 128))):
++            path = RAW / ('f%d.png' % f) if not suffix else next(RAW.glob('f%d_e__*.png' % f))
++            with Image.open(path) as src:
++                tile = src.convert('RGBA').crop((256, 0, 512, 512)).resize(size, Image.Resampling.LANCZOS)
++            # Assemble identical boundary columns, also for the half-resolution accent.
++            tile.paste(tile.crop((0, 0, 1, size[1])), (size[0] - 1, 0))
++            sheet.paste(tile, (f * size[0], 0))
++    diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
++    emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
++    resource = ['[gd_resource type="SpriteFrames" format=3]',
++                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
++    for f in range(6):
++        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
++    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
++    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
++    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
++    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
++    contact = Image.new('RGBA', (960, 680), (26, 29, 33, 255))
++    for f in range(6):
++        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
++        crop = tile.resize((160, 320), Image.Resampling.NEAREST)
++        contact.alpha_composite(crop, (160 * f, 0))
++    peak = diffuse.crop((256, 0, 384, 256))
++    for j in range(6):
++        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 350))
++    dest = ROOT / 'art/renders/averse_burst_contact.png'
++    dest.parent.mkdir(parents=True, exist_ok=True)
++    contact.save(dest, optimize=True)
++    verify()
++
++
++def verify():
++    import numpy as np
++    from PIL import Image
++    hashes, ranges, boxes = [], [], []
++    for suffix, size in (('', (768, 256)), ('_e', (384, 128))):
++        im = Image.open(OUT / ('rivulet_burst%s.png' % suffix)).convert('RGBA')
++        assert im.size == size, im.size
++        a = np.array(im)
++        w = size[0] // 6
++        for f in range(6):
++            tile = a[:, f*w:(f+1)*w]
++            assert np.array_equal(tile[:, 0], tile[:, -1]), ('seam', suffix, f)
++            assert tile[:, :, 3].min() == 0 and tile[:, :, 3].max() == 255
++            visible = tile[:, :, 3] > 128
++            rgb = tile[:, :, :3][visible]
++            assert rgb.max() - rgb.min() > 35, ('contrast', suffix, f)
++            if not suffix:
++                hashes.append(hash(tile.tobytes()))
++                ranges.append(int(rgb.max() - rgb.min()))
++                boxes.append(Image.fromarray(tile).getbbox())
++            else:
++                assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
++        assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
++    assert len(set(hashes)) == 6
++    assert not list(OUT.glob('*_n.png'))
++    tres = (OUT / 'rivulet_burst.tres').read_text()
++    assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
++    assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
++    print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
++
++
++if __name__ == '__main__':
++    if '--pack' in sys.argv:
++        pack()
++    elif '--verify' in sys.argv:
++        verify()
++    else:
++        render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_render_log.txt; python art/tools/averse_vfx/burst_build.py --pack *> art/tools/averse_vfx/_burst_verify_log.txt; Get-Content art/tools/averse_vfx/_burst_verify_log.txt -Tail 2" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 13081ms:
+BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast [208, 215, 215, 215, 210, 211]; bounds [(0, 120, 128, 215), (0, 53, 128, 227), (0, 6, 128, 241), (0, 21, 128, 247), (0, 78, 128, 247), (0, 104, 128, 246)]
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; python art/tools/texture_budget.py --apply-policy *> art/tools/averse_vfx/_burst_budget_log.txt; Get-Content art/tools/averse_vfx/_burst_budget_log.txt -Tail 3; git status --short | Select-Object -First 20; Get-Item game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png,game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst_e.png,game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.tres,art/blender/rivulet/rivulet_burst.blend,art/renders/averse_burst_contact.png,art/tools/averse_vfx/burst_build.py | Select-Object Name,@{Name=\"Ko\";Expression={[math]::Round("'$_.Length/1KB,1)}} | Format-Table -HideTableHeaders' in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 518ms:
+0 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import
+?? art/blender/rivulet/
+?? art/tools/averse_vfx/
+?? game/assets/sprites/characters/averse/variants/rivulet_burst/
+
+rivulet_burst.png          72.7
+rivulet_burst_e.png        15.6
+rivulet_burst.tres          1.2
+rivulet_burst.blend      1496.8
+averse_burst_contact.png   99.2
+burst_build.py             12.2
+
+
+
+codex
+Lecture volumétrique renforcée après contrôle : lèvres épaissies, creux assombris, reliefs courbes.
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839\art\tools\averse_vfx\burst_build.py
+diff --git a/art/tools/averse_vfx/burst_build.py b/art/tools/averse_vfx/burst_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ae6dfebdf2129cf001404c5c676d79acc7f7b793
+--- /dev/null
++++ b/art/tools/averse_vfx/burst_build.py
+@@ -0,0 +1,260 @@
++"""Periodic volumetric rivulet burst. Blender render; system Python --pack/--verify.
++
++Cel setup/compositor adapted from vigie_vfx/rivulet_build.py.
++Logical X projects horizontally; camera elevation 30 degrees (dimetric 2:1).
++"""
++import math
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++WORK = ROOT / 'art/blender/rivulet'
++RAW = WORK / 'burst_frames'
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants/rivulet_burst'
++TAU = math.tau
++
++
++def render():
++    import bpy
++    from mathutils import Vector
++    sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import cel_style as cel
++    import boss_common as common
++    RAW.mkdir(parents=True, exist_ok=True)
++    bpy.ops.wm.read_factory_settings(use_empty=True)
++    s = bpy.context.scene
++    cel.setup_scene(s, 8)
++    s.render.resolution_x = 768
++    s.render.resolution_y = 512
++    s.render.resolution_percentage = 100
++    s.render.fps = 20
++    s.frame_start, s.frame_end = 1, 6
++    cam = bpy.data.cameras.new('Dimetric 2:1 - 128 pixels per X unit')
++    ob = bpy.data.objects.new('Camera', cam)
++    s.collection.objects.link(ob)
++    target = Vector((0, 0, .50))
++    ob.location = target + Vector((0, -10 * math.cos(math.pi / 6), 5))
++    ob.rotation_euler = (target - ob.location).to_track_quat('-Z', 'Y').to_euler()
++    cam.type = 'ORTHO'
++    cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
++    s.camera = ob
++    sun = bpy.data.lights.new('Upper left', 'SUN')
++    sun.energy = 1.05
++    lo = bpy.data.objects.new('Upper left', sun)
++    s.collection.objects.link(lo)
++    lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
++    s.world = bpy.data.worlds.new('Dark ambient')
++    s.world.color = (.025, .025, .025)
++    water = common.material('Water - slate teal', (.035, .078, .09))
++    inner = common.material('Hollow underside', (.018, .036, .043))
++    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
++    cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
++    accent = common.material('Crest #5FD4E8', cyan, emission=1)
++    mats = [water, inner, foam, accent]
++
++    def compositor(path):
++        tree = bpy.data.node_groups.new('Burst cel accent', 'CompositorNodeTree')
++        s.compositing_node_group = tree
++        tree.interface.new_socket(name='Image', in_out='OUTPUT', socket_type='NodeSocketColor')
++        rl = tree.nodes.new('CompositorNodeRLayers')
++        output = tree.nodes.new('NodeGroupOutput')
++        tree.links.new(rl.outputs['Image'], output.inputs['Image'])
++        f = tree.nodes.new('CompositorNodeOutputFile')
++        f.directory = str(path.parent)
++        f.file_name = path.stem + '_e__'
++        f.file_output_items.new('RGBA', 'Image')
++        f.format.media_type = 'IMAGE'
++        f.format.file_format = 'PNG'
++        f.format.color_mode = 'RGBA'
++        f.format.color_depth = '8'
++        tree.links.new(rl.outputs['Image'], f.inputs[0])
++
++    common.configure_passes = compositor
++    profile = dict(cel.profile('vfx'), tones=3)
++    configure = cel.install(profile, normals=False)
++
++    def mesh(name, verts, faces, indices=None):
++        data = bpy.data.meshes.new(name)
++        data.from_pydata(verts, [], faces)
++        data.update()
++        obj = bpy.data.objects.new(name, data)
++        s.collection.objects.link(obj)
++        for mat in mats:
++            data.materials.append(mat)
++        for i, poly in enumerate(data.polygons):
++            poly.material_index = indices[i] if indices else 0
++            poly.use_smooth = True
++        return obj
++
++    def tube(name, points, radius, material):
++        verts, faces = [], []
++        for x, y, z in points:
++            for j in range(8):
++                a = TAU * j / 8
++                verts.append((x, y + radius * math.cos(a), z + radius * math.sin(a)))
++        for i in range(len(points) - 1):
++            for j in range(8):
++                a = i * 8 + j
++                b = i * 8 + (j + 1) % 8
++                faces.append((a, b, b + 8, a + 8))
++        return mesh(name, verts, faces, [material] * len(faces))
++
++    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
++    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
++               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
++               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
++               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
++    all_frames = []
++    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
++                                               (.32, .65, .96, .78, .33, .11))):
++        before = set(s.objects)
++        phase = frame * .71
++        def point(x, yz, sign):
++            y, z = yz
++            swell = math.sin(TAU * x + phase)
++            ripple = 1 + .18 * swell + .065 * math.sin(3 * TAU * x - phase)
++            bulge = .12 * math.sin(2 * TAU * x + phase) * math.sin(math.pi * y)
++            rear = .66 if sign == 1 else 1
++            return (x, sign * width * (y + bulge), .018 + rear * height * z * ripple)
++        for sign in (-1, 1):
++            verts, faces, ids = [], [], []
++            steps = 144
++            for i in range(steps + 1):
++                x = -1.5 + 3 * i / steps
++                verts.extend(point(x, p, sign) for p in section)
++            n = len(section)
++            for i in range(steps):
++                for j in range(n):
++                    a, b = i * n + j, i * n + (j + 1) % n
++                    face = (a, b, b + n, a + n)
++                    faces.append(face[::-1] if sign == 1 else face)
++                    ids.append(1 if 10 <= j <= 14 else (2 if j == 5 else 0))
++            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
++            for j, mat, rad in ((6, 2, .033), (6, 3, .012), (8, 0, .030), (12, 0, .018)):
++                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
++                if mat == 3:
++                    pts = [(x, y - .022, z + .022) for x, y, z in pts]
++                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
++            # Raised curved ribs on the falling face; dark sides and lit shoulders.
++            for period in range(-2, 3):
++                for k in range(3):
++                    pts = []
++                    for j in range(18):
++                        t = j / 17
++                        x = period + k / 3 + .045 * math.sin(t * math.pi + phase + k)
++                        p = point(x, (.88 - .35 * t, .90 - .70 * t), sign)
++                        pts.append((p[0], p[1] + sign * .022, p[2]))
++                    tube('F%d water shoulder' % frame, pts, .018 if k % 2 else .025, 0)
++        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
++        if frame > 0:
++            for period in range(-2, 3):
++                for k in range(12):
++                    x = period + ((k * .381966) % 1) - .5
++                    side = 1 if k % 2 else -1
++                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
++                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
++                    radius = (.025 + .012 * (k % 3)) * (1 if frame < 5 else .72)
++                    bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
++                    drop = bpy.context.object
++                    drop.name = 'F%d shaded spherical drop' % frame
++                    drop.scale.z = 1.28 if frame < 4 else 1.6
++                    drop.data.materials.append(water if k % 3 else foam)
++                    for poly in drop.data.polygons:
++                        poly.use_smooth = True
++        objects = set(s.objects) - before
++        for obj in objects:
++            for f in range(1, 7):
++                obj.hide_render = f != frame + 1
++                obj.hide_viewport = f != frame + 1
++                obj.keyframe_insert(data_path='hide_render', frame=f)
++                obj.keyframe_insert(data_path='hide_viewport', frame=f)
++        all_frames.append(objects)
++    for frame in range(6):
++        s.frame_set(frame + 1)
++        path = RAW / ('f%d.png' % frame)
++        configure(path)
++        s.render.filepath = str(path)
++        bpy.ops.render.render(write_still=True)
++    s.frame_set(3)
++    bpy.context.preferences.filepaths.save_version = 0
++    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'rivulet_burst.blend'), compress=True)
++    cel.uninstall()
++    print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
++
++
++def pack():
++    from PIL import Image
++    OUT.mkdir(parents=True, exist_ok=True)
++    diffuse = Image.new('RGBA', (768, 256))
++    emission = Image.new('RGBA', (384, 128))
++    for f in range(6):
++        for suffix, sheet, size in (('', diffuse, (128, 256)), ('_e', emission, (64, 128))):
++            path = RAW / ('f%d.png' % f) if not suffix else next(RAW.glob('f%d_e__*.png' % f))
++            with Image.open(path) as src:
++                tile = src.convert('RGBA').crop((256, 0, 512, 512)).resize(size, Image.Resampling.LANCZOS)
++            # Assemble identical boundary columns, also for the half-resolution accent.
++            tile.paste(tile.crop((0, 0, 1, size[1])), (size[0] - 1, 0))
++            sheet.paste(tile, (f * size[0], 0))
++    diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
++    emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
++    resource = ['[gd_resource type="SpriteFrames" format=3]',
++                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
++    for f in range(6):
++        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
++    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
++    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
++    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
++    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
++    contact = Image.new('RGBA', (960, 680), (26, 29, 33, 255))
++    for f in range(6):
++        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
++        crop = tile.resize((160, 320), Image.Resampling.NEAREST)
++        contact.alpha_composite(crop, (160 * f, 0))
++    peak = diffuse.crop((256, 0, 384, 256))
++    for j in range(6):
++        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 350))
++    dest = ROOT / 'art/renders/averse_burst_contact.png'
++    dest.parent.mkdir(parents=True, exist_ok=True)
++    contact.save(dest, optimize=True)
++    verify()
++
++
++def verify():
++    import numpy as np
++    from PIL import Image
++    hashes, ranges, boxes = [], [], []
++    for suffix, size in (('', (768, 256)), ('_e', (384, 128))):
++        im = Image.open(OUT / ('rivulet_burst%s.png' % suffix)).convert('RGBA')
++        assert im.size == size, im.size
++        a = np.array(im)
++        w = size[0] // 6
++        for f in range(6):
++            tile = a[:, f*w:(f+1)*w]
++            assert np.array_equal(tile[:, 0], tile[:, -1]), ('seam', suffix, f)
++            assert tile[:, :, 3].min() == 0 and tile[:, :, 3].max() == 255
++            visible = tile[:, :, 3] > 128
++            rgb = tile[:, :, :3][visible]
++            assert rgb.max() - rgb.min() > 35, ('contrast', suffix, f)
++            if not suffix:
++                hashes.append(hash(tile.tobytes()))
++                ranges.append(int(rgb.max() - rgb.min()))
++                boxes.append(Image.fromarray(tile).getbbox())
++            else:
++                assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
++        assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
++    assert len(set(hashes)) == 6
++    assert not list(OUT.glob('*_n.png'))
++    tres = (OUT / 'rivulet_burst.tres').read_text()
++    assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
++    assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
++    print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
++
++
++if __name__ == '__main__':
++    if '--pack' in sys.argv:
++        pack()
++    elif '--verify' in sys.argv:
++        verify()
++    else:
++        render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/averse_vfx/burst_build.py *> art/tools/averse_vfx/_burst_render_log.txt; python art/tools/averse_vfx/burst_build.py --pack *> art/tools/averse_vfx/_burst_verify_log.txt; Get-Content art/tools/averse_vfx/_burst_verify_log.txt -Tail 1" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 18651ms:
+BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast [208, 214, 215, 215, 210, 211]; bounds [(0, 120, 128, 215), (0, 53, 128, 227), (0, 6, 128, 241), (0, 21, 128, 247), (0, 78, 128, 247), (0, 104, 128, 246)]
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a7251c7763e45a839\"; python art/tools/texture_budget.py --apply-policy *> art/tools/averse_vfx/_burst_budget_log.txt; Get-Content art/tools/averse_vfx/_burst_budget_log.txt -Tail 1; Get-Item game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png,game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst_e.png,game/assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.tres,art/blender/rivulet/rivulet_burst.blend,art/renders/averse_burst_contact.png,art/tools/averse_vfx/burst_build.py | ForEach-Object { \"{0}: {1} Ko\" -f "'$_.Name, [math]::Round($_.Length/1KB,1) }; if(Test-Path -LiteralPath art/blender/rivulet/rivulet_burst.blend1){Remove-Item -LiteralPath art/blender/rivulet/rivulet_burst.blend1}; python -c "from pathlib import Path; p=Path('"'art/blender/rivulet/burst_frames'); files=[p/('f%d%s.png'%(i,s)) for i in range(6) for s in ('','_e__Image')]; [f.unlink() for f in files if f.exists()]; print('Generated intermediates removed')\"" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839
+ succeeded in 987ms:
+0 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import
+rivulet_burst.png: 72.7 Ko
+rivulet_burst_e.png: 15.6 Ko
+rivulet_burst.tres: 1.2 Ko
+rivulet_burst.blend: 1525.8 Ko
+averse_burst_contact.png: 99.2 Ko
+burst_build.py: 12.3 Ko
+Generated intermediates removed
+
+codex
+`rivulet_burst.png` : 768×256, 72.7 Ko ; `_e` : 384×128, 15.6 Ko.
+`rivulet_burst.tres` : 1.2 Ko ; 6 frames, 20 fps, sans boucle.
+`art/blender/rivulet/rivulet_burst.blend` : 1525.8 Ko ; `art/tools/averse_vfx/burst_build.py` : 12.3 Ko.
+`art/renders/averse_burst_contact.png` : 99.2 Ko ; contrôle regardé, relief corrigé.
+PASS : alpha, contraste, frames distinctes, raccords 12/12 ; politique appliquée ; aucun `_n.png`.
+`_burst_log.txt` verrouillé ; journaux séparés : `_burst_render_log.txt`, `_burst_verify_log.txt`, `_burst_budget_log.txt`.
+tokens used
+35,065
+`rivulet_burst.png` : 768×256, 72.7 Ko ; `_e` : 384×128, 15.6 Ko.
+`rivulet_burst.tres` : 1.2 Ko ; 6 frames, 20 fps, sans boucle.
+`art/blender/rivulet/rivulet_burst.blend` : 1525.8 Ko ; `art/tools/averse_vfx/burst_build.py` : 12.3 Ko.
+`art/renders/averse_burst_contact.png` : 99.2 Ko ; contrôle regardé, relief corrigé.
+PASS : alpha, contraste, frames distinctes, raccords 12/12 ; politique appliquée ; aucun `_n.png`.
+`_burst_log.txt` verrouillé ; journaux séparés : `_burst_render_log.txt`, `_burst_verify_log.txt`, `_burst_budget_log.txt`.

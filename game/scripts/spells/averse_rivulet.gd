@@ -4,14 +4,15 @@ extends Node2D
 ## sol depuis Averse vers le point visé. Rongé par tick (deal_damage en DoT) ; le kit lit contains() pour tremper et
 ## compter les kills, y verse l'eau collectée (`collected`) et déclenche le déversement (`on_spill`) quand la
 ## gouttière finit (expiration ou relance, finish()). Visuel : tuiles Codex `rivulet_tile` (états `empty` / `full`, le calque plein suit
-## fill_ratio()) ; repli dessiné en code si la tuile manque. Déversement : flash dessiné en code (le sprite
-## `rivulet_burst` a été refusé le 07/11/2026, à refaire en lot Codex dédié).
+## fill_ratio()) ; repli dessiné en code si la tuile manque. Déversement : segments Codex `rivulet_burst` (vague
+## volumétrique, 1 u x 2 u par segment, 6 images à 20 i/s) ; flash dessiné en code seulement si la ressource manque.
 
 const _ZONE := preload("res://scripts/spells/zone_effect.gd")
 const FADE_IN_S := 0.12
 const FADE_OUT_S := 0.4
 const BURST_S := 0.3 ## durée du flash de déversement avant disparition
 const TILE_PATH := "res://assets/sprites/characters/averse/variants/rivulet_tile/rivulet_tile.tres"
+const BURST_PATH := "res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.tres"
 const TILE_PX := 128.0 ## cellule de la tuile : 1 u x 1 u à 128 px/u
 const SLACK_U := 0.25 ## marge latérale pour qu'un monstre dont le centre frôle la bande soit pris
 
@@ -31,6 +32,7 @@ var _ending := false
 var _burst_t := 0.0
 var _full: Array[AnimatedSprite2D] = [] ## calques « plein » des tuiles, opacité = fill_ratio()
 var _has_tiles := false
+var _has_burst := false
 
 
 func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: Vector2, len_px: float, w_px: float) -> void:
@@ -84,6 +86,30 @@ func _build_visual() -> void:
 				_full.append(sp)
 
 
+## Déversement : un AnimatedSprite2D par segment de 1 u, même grille que les tuiles ; repli `_draw()` si la ressource manque.
+func _build_burst() -> void:
+	if not ResourceLoader.exists(BURST_PATH):
+		return
+	var bf := load(BURST_PATH) as SpriteFrames
+	if bf == null or not bf.has_animation(&"default"):
+		return
+	_has_burst = true
+	var n := maxi(1, ceili(length_px / Balance.UNIT_PX))
+	var sx := length_px / float(n) / TILE_PX
+	var sy := width_px / TILE_PX
+	var root := Node2D.new()
+	root.name = "Burst"
+	root.rotation = dir.angle()
+	add_child(root)
+	for i in n:
+		var sp := AnimatedSprite2D.new()
+		sp.sprite_frames = bf
+		sp.scale = Vector2(sx, sy)
+		sp.position = Vector2((float(i) + 0.5) * length_px / float(n), 0.0)
+		root.add_child(sp)
+		sp.play(&"default")
+
+
 func is_ending() -> bool:
 	return _ending
 
@@ -103,6 +129,7 @@ func finish(spill := true) -> void:
 		var tiles := get_node_or_null(^"Tiles")
 		if tiles != null:
 			tiles.visible = false
+		_build_burst()
 	else:
 		queue_free()
 
@@ -144,6 +171,8 @@ func _apply() -> void:
 
 func _draw() -> void:
 	if _has_tiles and not _ending:
+		return
+	if _ending and _has_burst:
 		return
 	var c := spell.color if spell != null else Color("#5FD4E8")
 	var n := Vector2(-dir.y, dir.x) * width_px * 0.5

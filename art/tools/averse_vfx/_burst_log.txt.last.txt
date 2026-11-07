@@ -1,0 +1,6 @@
+`rivulet_burst.png` : 768×256, 72.7 Ko ; `_e` : 384×128, 15.6 Ko.
+`rivulet_burst.tres` : 1.2 Ko ; 6 frames, 20 fps, sans boucle.
+`art/blender/rivulet/rivulet_burst.blend` : 1525.8 Ko ; `art/tools/averse_vfx/burst_build.py` : 12.3 Ko.
+`art/renders/averse_burst_contact.png` : 99.2 Ko ; contrôle regardé, relief corrigé.
+PASS : alpha, contraste, frames distinctes, raccords 12/12 ; politique appliquée ; aucun `_n.png`.
+`_burst_log.txt` verrouillé ; journaux séparés : `_burst_render_log.txt`, `_burst_verify_log.txt`, `_burst_budget_log.txt`.

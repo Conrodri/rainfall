@@ -1,0 +1,6 @@
+RACINE (OBLIGATOIRE) : commence chaque commande par cd "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a7251c7763e45a839" ; ne touche pas au dépôt parent.
+OBJECTIF : retoucher l'icône Forge `seve_rampante` (256 px) : contraste à 48 px trop faible (29,8). Même sujet (racine noueuse sombre, sève qui suinte, vrille qui rampe, accent vert #7FA35B, liseré cuivre #D9803A) et même DA/pipeline que les 5 autres icônes Forge ; silhouette plus lisible : forme plus épaisse et contrastée, racine plus claire sur le bord éclairé (haut-gauche), sève vert vif en goutte bien visible, fond moins sombre autour des arêtes.
+TOUCHER : art/tools/forge/f1_build.py (ne modifier QUE le builder de seve_rampante, ne pas regénérer les 5 autres), art/blender/forge/f1.blend (ne pas écraser : enregistrer sous art/blender/forge/f1_seve.blend si besoin), game/assets/sprites/icons/items/seve_rampante.png seulement. Rendu 512 puis LANCZOS 256, PNG <= 60 Ko, marge >= 12 px, aucun _n/_e.
+NE PAS LIRE : briefs, docs/, CLAUDE.md, autres lots.
+VÉRIF : `C:\Users\const\AppData\Local\Python\bin\python.exe art/tools/forge/f1_check.py` (contrast48 de seve_rampante à comparer à 29,8 ; viser > 38), regarder art/renders/forge/f1_contact.png.
+RAPPORT 6 lignes max, ultracave : contrast48 avant/après, taille Ko.
