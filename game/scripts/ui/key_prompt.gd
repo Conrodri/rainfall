@@ -84,6 +84,38 @@ func refresh() -> void:
 			_add_label("/")
 
 
+## Invite fixe d'un bouton de manette (hors action) : icône `ui/prompts/<icon>.png` + légende ; sans icône livrée
+## (ex. pad_start), le texte `fallback` (sinon la légende) est écrit. Sert aux écrans qui nomment un bouton précis.
+func add_pad_button(icon: String, caption: String, fallback := "") -> void:
+	var tex := _tex(icon)
+	if tex == null:
+		_add_label(fallback if fallback != "" else caption)
+	else:
+		_add_icon(tex, caption, false)
+
+
+## Invite fixe d'une touche de clavier (cadre key_1x1 / key_2x1 selon la longueur de la légende).
+func add_key_button(caption: String) -> void:
+	var tex := _tex("key_1x1" if caption.length() <= 1 else "key_2x1")
+	if tex == null:
+		_add_label(caption)
+	else:
+		_add_icon(tex, caption, true)
+
+
+## Texte simple dans la rangée, à la taille de l'invite.
+func add_text(t: String) -> void:
+	_add_label(t)
+
+
+## Vide la rangée (les invites fixes ne passent pas par refresh()).
+func clear_row() -> void:
+	for c in get_children():
+		remove_child(c)
+		c.queue_free()
+	add_theme_constant_override("separation", int(height * 0.15))
+
+
 func _add_icon(tex: Texture2D, caption: String, dark_text := true) -> void:
 	var r := TextureRect.new()
 	r.texture = tex

@@ -20,6 +20,10 @@ const DETAIL_H := 150.0 ## bandeau de détail sous la grille (nom, rareté, effe
 const QUALITY_ORDER: Array[StringName] = [&"legendaire", &"rare", &"peu_commun", &"commun"]
 const QUALITY_WORDS := {&"commun": "Commun", &"peu_commun": "Peu commun", &"rare": "Rare", &"legendaire": "Légendaire", &"forge": "Forgé"}
 const PAD_LOST_TEXT := "Manette déconnectée"
+const ALERT_TINT := Color(0.46, 0.12, 0.10) ## bandeau « manette perdue » : fond rouge sombre (texte crème, contraste > 7:1)
+const ALERT_TINT_OK := Color(0.12, 0.34, 0.16) ## même bandeau une fois la manette rendue
+const ALERT_TEXT := Color(1.0, 0.95, 0.85)
+const ICON_CHECK := "res://assets/sprites/ui/menu/icon_check.png"
 const RELEASE_ACTIONS := ["move_left", "move_right", "move_up", "move_down", "spell_2", "spell_3", "spell_4"]
 
 var is_open := false
@@ -40,6 +44,13 @@ var _titles: Array[Label] = []
 var _quit_button: Button
 var _bg: Panel ## fond opaque arrondi du panneau (menu principal et Objets)
 var _info: Label ## chrono + étage de la run
+var _alert: PanelContainer ## bandeau « manette déconnectée / reconnectée » en tête du panneau pause
+var _alert_icon: TextureRect ## coche (reconnexion)
+var _alert_title: Label
+var _alert_body: Label
+var _alert_keys: KeyPrompt ## invites des boutons à presser (pad_a, Start)
+var _alert_state := &"" ## &"" | &"lost" | &"restored"
+var _alert_slot := -1 ## joueur concerné (coop), -1 en solo
 var _grid: GridContainer ## boutons du menu principal (1 ou 2 colonnes selon la place)
 var _pads: Array[VBoxContainer] = [] ## panneaux à marge interne
 var _hint: Label
@@ -55,6 +66,8 @@ var _detail_effect: Label
 var _tab_row: HBoxContainer
 var _tab_items: Button
 var _tab_forge: Button
+var _tab_lb: KeyPrompt ## invites LB / RB de part et d'autre des onglets (manette seulement)
+var _tab_rb: KeyPrompt
 var _forge_panel: ForgePanel ## onglet Forge (scripts/ui/forge_panel.gd)
 var items_tab: StringName = &"items" ## onglet affiché de l'écran Objets : items | forge
 var inventory_mode := false ## écran ouvert par open_inventory (TAB, Select, pastille) : Retour / TAB le referme d'un coup
@@ -72,6 +85,7 @@ func _ready() -> void:
 	layer = 100
 	add_to_group(&"pause_menu") # trouvé par l'écran de coffre (bouton Objets)
 	InputSetup.pad_disconnected.connect(on_pad_disconnected) # E-11 (lot A11y-L6)
+	Input.joy_connection_changed.connect(_on_joy_connection_changed)
 	_build()
 	_root.visible = false
 	_apply_layout()
@@ -109,6 +123,7 @@ func _build() -> void:
 	_root.add_child(_wide_center)
 
 	_panel_main = _make_panel(holder, "PAUSE")
+	_build_alert()
 	_info = Label.new()
 	_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_info.add_theme_color_override("font_color", UiTheme.COL_MUTED)
@@ -164,8 +179,10 @@ func _build() -> void:
 	_tab_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	_tab_row.add_theme_constant_override("separation", 12)
 	_panel_items.add_child(_tab_row)
+	_tab_lb = _tab_prompt("pad_lb", "LB")
 	_tab_items = _add_tab("Objets", &"items")
 	_tab_forge = _add_tab("Forge", &"forge")
+	_tab_rb = _tab_prompt("pad_rb", "RB")
 	_items_scroll = ScrollContainer.new()
 	_items_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_items_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -388,8 +405,11 @@ func _layout() -> Dictionary:
 	var bh := 96.0
 	var lines := 1 if _info == null else maxi(1, _info.text.count("\n") + 1)
 	var head := 76.0 + 42.0 * lines ## titre + lignes d'info
+	var alert_on := _alert != null and _alert.visible
+	if alert_on:
+		head += 190.0 ## bandeau de manette perdue (titre, consigne sur 2 lignes, invites)
 	var hint := 40.0 if Platform.input_mode != Platform.InputMode.TOUCH else 0.0
-	var kids := 4 + (1 if hint > 0.0 else 0) ## titre, info, Reprendre, grille, [aide]
+	var kids := 4 + (1 if hint > 0.0 else 0) + (1 if alert_on else 0) ## titre, info, Reprendre, grille, [aide], [bandeau]
 	var cols := 1
 	var need := 0.0
 	# 1 colonne si elle tient à l'échelle réelle, sinon 2 colonnes, puis réduction (min 0,55)
@@ -529,6 +549,11 @@ func _apply_layout() -> void:
 	for t in _titles:
 		t.add_theme_font_size_override("font_size", int(56 * s))
 	_info.add_theme_font_size_override("font_size", int(30 * s))
+	_alert_title.add_theme_font_size_override("font_size", int(38 * s))
+	_alert_body.add_theme_font_size_override("font_size", int(28 * s))
+	_alert_body.custom_minimum_size.x = L.grid_w - 40.0 * s
+	_alert_icon.custom_minimum_size = Vector2(44.0, 44.0) * s
+	_alert_keys.set_height(44.0 * s)
 	_hint.add_theme_font_size_override("font_size", int(26 * s))
 	for p in _pads:
 		p.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, int(L.pad))
@@ -551,6 +576,7 @@ func _apply_layout() -> void:
 		_items_box.columns = _item_cols(L)
 		_wire_item_focus()
 	_count_label.add_theme_font_size_override("font_size", int(220 * s))
+	_refresh_tab_prompts()
 	_holder.custom_minimum_size = sz
 
 
@@ -567,6 +593,7 @@ func open() -> void:
 	get_tree().paused = true
 	_count_label.visible = false
 	_root.visible = true
+	_hide_alert()
 	_show_only(_panel_main)
 	_items_button.text = "Objets (%d)" % LocalState.state().items.size()
 	var t := int(RunState.active_time_s)
@@ -705,9 +732,124 @@ func notify_pad_lost(slot: int) -> void:
 		_show_only(_panel_main)
 	elif not is_open:
 		open()
-	var msg := "Manette du joueur %s déconnectée : rebranchez-la ou appuyez sur A / Start sur une manette libre" % Palette.team_glyph(slot)
-	if is_open and not _info.text.begins_with(msg):
-		_info.text = msg + "\n" + _info.text
+	if is_open:
+		_show_alert(&"lost", slot)
+
+
+## Coop locale : la manette du joueur `slot` est revenue (CoopLocal.pad_restored) : le bandeau passe à « reconnectée »
+## (coche). Le jeu reste en pause, le joueur reprend lui-même. Sans bandeau « perdu » affiché : sans effet.
+func notify_pad_restored(slot: int) -> void:
+	if is_open and _alert_state == &"lost":
+		_show_alert(&"restored", slot)
+
+
+## Solo : la manette revient pendant que le bandeau « déconnectée » est affiché.
+func _on_joy_connection_changed(_device: int, connected: bool) -> void:
+	if connected and is_open and _alert_state == &"lost" and not LocalState.is_coop():
+		_show_alert(&"restored", -1)
+
+
+## Texte du bandeau (tests, lecteurs d'écran) : titre puis consigne ; vide si le bandeau est masqué.
+func alert_text() -> String:
+	if _alert == null or not _alert.visible:
+		return ""
+	return _alert_title.text + "\n" + _alert_body.text
+
+
+func _build_alert() -> void:
+	_alert = PanelContainer.new()
+	_alert.visible = false
+	_alert.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var sb: StyleBox = UiTheme.da_box("panel_small_9slice")
+	if sb is StyleBoxTexture:
+		(sb as StyleBoxTexture).modulate_color = ALERT_TINT
+	elif sb == null:
+		sb = UiTheme._flat(ALERT_TINT, UiTheme.COL_FOCUS, 3, 14)
+	_alert.add_theme_stylebox_override(&"panel", sb)
+	var v := VBoxContainer.new()
+	v.alignment = BoxContainer.ALIGNMENT_CENTER
+	v.add_theme_constant_override("separation", 6)
+	_alert.add_child(v)
+	var head := HBoxContainer.new()
+	head.alignment = BoxContainer.ALIGNMENT_CENTER
+	head.add_theme_constant_override("separation", 12)
+	v.add_child(head)
+	_alert_icon = TextureRect.new()
+	_alert_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_alert_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_alert_icon.visible = false
+	if ResourceLoader.exists(ICON_CHECK):
+		_alert_icon.texture = load(ICON_CHECK) as Texture2D
+	head.add_child(_alert_icon)
+	_alert_title = _alert_label(head, 38)
+	_alert_body = _alert_label(v, 28)
+	_alert_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_alert_keys = KeyPrompt.new()
+	_alert_keys.set_height(44.0)
+	v.add_child(_alert_keys)
+	_panel_main.add_child(_alert)
+
+
+func _alert_label(parent: Control, size: int) -> Label:
+	var l := Label.new()
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_color_override("font_color", ALERT_TEXT)
+	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	l.add_theme_constant_override("outline_size", 4)
+	parent.add_child(l)
+	return l
+
+
+func _hide_alert() -> void:
+	_alert_state = &""
+	_alert_slot = -1
+	if _alert != null:
+		_alert.visible = false
+
+
+## Bandeau dédié (audit UX 07/11, D1/D2/D4) : &"lost" = consigne de reprise avec les invites des boutons ;
+## &"restored" = « reconnectée » + coche. `slot` = joueur de la coop (-1 : solo).
+func _show_alert(state: StringName, slot: int) -> void:
+	_alert_state = state
+	_alert_slot = slot
+	var who := "" if slot < 0 else " du joueur %s" % Palette.team_glyph(slot)
+	_alert_keys.clear_row()
+	var tint := ALERT_TINT
+	if state == &"restored":
+		tint = ALERT_TINT_OK
+		_alert_title.text = "Manette%s reconnectée" % who
+		var still := _first_absent_slot()
+		if still >= 0:
+			_alert_body.text = "Le joueur %s n'a toujours pas de manette." % Palette.team_glyph(still)
+		else:
+			_alert_body.text = "Appuyez sur Reprendre quand tout le monde est prêt."
+		_alert_icon.visible = _alert_icon.texture != null
+	else:
+		_alert_title.text = "Manette%s déconnectée" % who
+		_alert_icon.visible = false
+		if slot < 0:
+			_alert_body.text = "Rebranchez la manette, puis appuyez sur"
+			_alert_keys.add_pad_button("pad_start", "Start", "Start")
+		else:
+			_alert_body.text = "Rebranchez la manette de J%s, ou prenez une manette libre et appuyez sur" % Palette.team_glyph(slot)
+			_alert_keys.add_pad_button("pad_a", "A")
+			_alert_keys.add_text("/")
+			_alert_keys.add_pad_button("pad_start", "Start", "Start")
+	var sb := _alert.get_theme_stylebox(&"panel")
+	if sb is StyleBoxTexture:
+		(sb as StyleBoxTexture).modulate_color = tint
+	elif sb is StyleBoxFlat:
+		(sb as StyleBoxFlat).bg_color = tint
+	_alert.visible = true
+	_apply_layout()
+
+
+func _first_absent_slot() -> int:
+	for e in Players.entries():
+		if e.input is InputSourceIdle:
+			return e.id
+	return -1
 
 
 ## Onglet de l'écran Objets : &"items" (grille) ou &"forge" (recettes). Sans effet hors de l'écran Objets.
@@ -728,6 +870,30 @@ func set_items_tab(tab: StringName) -> void:
 	if _current == _panel_items and Platform.input_mode != Platform.InputMode.TOUCH:
 		var first: Control = _forge_panel.first_button() if forge else (_item_cells[0] if not _item_cells.is_empty() else _items_back)
 		(first if first != null else _items_back).grab_focus.call_deferred()
+
+
+func _tab_prompt(icon: String, caption: String) -> KeyPrompt:
+	var k := KeyPrompt.new()
+	k.set_height(48.0)
+	k.add_pad_button(icon, caption)
+	_tab_row.add_child(k)
+	return k
+
+
+## LB / RB visibles seulement à la manette (audit UX 07/11 F10).
+func _refresh_tab_prompts() -> void:
+	if _tab_lb == null:
+		return
+	var on := Platform.is_gamepad_mode()
+	_tab_lb.visible = on
+	_tab_rb.visible = on
+	var h := 48.0 * _scale()
+	_tab_lb.set_height(h)
+	_tab_rb.set_height(h)
+	_tab_lb.clear_row()
+	_tab_lb.add_pad_button("pad_lb", "LB")
+	_tab_rb.clear_row()
+	_tab_rb.add_pad_button("pad_rb", "RB")
 
 
 func _add_tab(text: String, tab: StringName) -> Button:
@@ -808,6 +974,7 @@ func _on_abandon() -> void:
 
 
 func _close() -> void:
+	_hide_alert()
 	is_open = false
 	counting_down = false
 	_root.visible = false
@@ -910,13 +1077,15 @@ func on_pad_disconnected(_device: int) -> void:
 		_show_only(_panel_main)
 	elif not is_open:
 		open()
-	if is_open and not _info.text.begins_with(PAD_LOST_TEXT):
-		_info.text = PAD_LOST_TEXT + "\n" + _info.text
+	if is_open:
+		_show_alert(&"lost", -1)
 
 
 func _exit_tree() -> void:
 	if InputSetup.pad_disconnected.is_connected(on_pad_disconnected):
 		InputSetup.pad_disconnected.disconnect(on_pad_disconnected)
+	if Input.joy_connection_changed.is_connected(_on_joy_connection_changed):
+		Input.joy_connection_changed.disconnect(_on_joy_connection_changed)
 
 
 func _notification(what: int) -> void:

@@ -1044,7 +1044,7 @@ func _build_cheats() -> void:
 	_cheat("Recharge 0 (sorts 2-4)", &"cdr_full", "Les sorts 2-4 se relancent sans attendre ; le sort automatique (sort 1) garde sa recharge. Les ressources propres aux kits restent limitées.", _ti("cdr", ICON_CDR))
 	_cheat("Portée infinie", &"inf_range", "Portée des sorts et ciblage automatique sans limite (8 000 px).", _ti("range", ICON_RANGE))
 	_cheat("Or infini", &"inf_gold", "Les achats ne coûtent rien.", ICON_GOLD)
-	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, tension, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
+	_cheat("Ressource pleine", &"full_resource", "La jauge propre au kit reste au maximum (eau, Guet, aiguisage, mottes, membres, or d'Avare). Sans effet pour les kits sans jauge.", ICON_GOLD)
 	if Players.count() > 1: # coop locale : objets, personnage, niveau et soins du panneau visent le joueur 1 ou tous
 		var al := _check("Cibler tous les joueurs", TestTools.all_players, func(on: bool) -> void:
 			TestTools.all_players = on

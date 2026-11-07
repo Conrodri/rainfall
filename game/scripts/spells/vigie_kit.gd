@@ -440,7 +440,14 @@ func refill_resource() -> void:
 ## Contrat KitResource : jauge continue, « PLEIN » qui pulse quand le Filet partira chargé.
 func resource_state() -> Dictionary:
 	var txt := "PLEIN" if is_full() else "%d %%" % floori(tension * 100.0)
-	return KitResource.make(&"tension", "Guet", tension, ACCENT, {"text": txt, "boost": is_full()})
+	var opts := {"text": txt, "boost": is_full()}
+	if not is_full():
+		# Taux affiché par la jauge (« +8,3/s » en marche, « +13/s » ancrée) : la règle centrale se voit (audit UX 07/11 V1)
+		opts["regen"] = tension_rate() * 100.0
+		if is_anchored():
+			opts["text"] = "ANCRÉE  " + txt
+	# id interne `tension` gardé (icône ui/icons/passives/tension.png, sauvegarde, contrat) ; libellé visible « Guet ».
+	return KitResource.make(&"tension", "Guet", tension, ACCENT, opts)
 
 
 func save_state() -> Dictionary:

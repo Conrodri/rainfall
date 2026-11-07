@@ -166,7 +166,7 @@ func _run() -> void:
 	_check(not pm.is_open, "pas de pause si l'on joue au clavier")
 	Platform.set_input_mode(Platform.InputMode.GAMEPAD)
 	InputSetup.pad_disconnected.emit(0)
-	_check(pm.is_open and get_tree().paused and pm._info.text.begins_with("Manette déconnectée"), "pause + message")
+	_check(pm.is_open and get_tree().paused and pm.alert_text().begins_with("Manette déconnectée"), "pause + bandeau")
 	pm._close()
 	pm.queue_free()
 	Platform.set_input_mode(Platform.InputMode.KBM)
