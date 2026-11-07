@@ -3,6 +3,8 @@ extends PanelContainer
 ## Panneau d'objectifs du HUD (style Risk of Rain), sous la minimap.
 ## Apparaît à l'activation du gros pilier (boss d'étage + zone de charge, voir Pillar / StageManager) :
 ##   « Tuer le boss »                  coché à la mort du boss d'étage (Pillar.boss_dead) ;
+##   « Épreuves  x/2 »                 AVANT le gros pilier (étages à épreuves) : le but de l'étage et où l'on en est ;
+##                                     remplacée par les deux lignes ci-dessous quand le gros pilier s'active ;
 ##   « Charger le téléporteur  NN % »  suit la charge réelle (Pillar.charge_ratio, n'avance que dans la zone) ;
 ## puis, étage terminé (StageManager.floor_cleared) : « Activer le téléporteur » (action interagir).
 ## Disparaît au démarrage de l'étage suivant. L'état est relu sur le StageManager (groupe `stage_manager`)
@@ -22,6 +24,8 @@ var stage_manager: StageManager = null ## optionnel (tests) ; sinon cherché dan
 var ui_scale := 1.0
 
 var _title: Label
+var _epreuve_row: ObjectiveRow ## « Épreuves x/N » : seulement avant l'activation du gros pilier
+var _ep_mode := false ## la ligne Épreuves remplace Boss / Charge (gros pilier pas encore actif)
 var _boss_row: ObjectiveRow
 var _charge_row: ObjectiveRow
 var _teleport_row: ObjectiveRow
@@ -47,6 +51,9 @@ func _init() -> void:
 	_title = _label(v)
 	_title.text = "OBJECTIFS"
 	_title.add_theme_color_override("font_color", COL_TITLE)
+	_epreuve_row = ObjectiveRow.new("Épreuves")
+	_epreuve_row.visible = false
+	v.add_child(_epreuve_row)
 	_boss_row = ObjectiveRow.new("Tuer le boss")
 	v.add_child(_boss_row)
 	_charge_row = ObjectiveRow.new("Charger le téléporteur")
@@ -69,7 +76,7 @@ func set_ui_scale(s: float) -> void:
 	_style.content_margin_bottom = (8.0 if _compact else 12.0) * s * tk
 	UiTheme.pad_box(_style, maxi(int(26 * s), HudMetrics.floor_px())) # texte à distance du trait du cadre
 	_title.add_theme_font_size_override("font_size", int(22 * s))
-	for r in [_boss_row, _charge_row, _teleport_row, _secret_row]:
+	for r in [_epreuve_row, _boss_row, _charge_row, _teleport_row, _secret_row]:
 		(r as ObjectiveRow).set_ui_scale(s)
 	(_title.get_parent() as VBoxContainer).add_theme_constant_override("separation", int(6 * s))
 
@@ -101,8 +108,9 @@ func height_for(compact: bool) -> float:
 func _apply_rows() -> void:
 	_title.visible = not _compact
 	var hide_done := _compact and _teleport_row.visible
-	_boss_row.visible = not hide_done
-	_charge_row.visible = not hide_done
+	_epreuve_row.visible = _ep_mode
+	_boss_row.visible = not hide_done and not _ep_mode
+	_charge_row.visible = not hide_done and not _ep_mode
 	_secret_row.visible = _secret_row.visible and not _compact # tactile : deux lignes au plus
 
 
@@ -135,9 +143,17 @@ func refresh() -> void:
 	var sec := _secret_line(mgr)
 	if not sec.is_empty():
 		shown = true
+	var ep := _epreuve_progress(mgr)
+	_ep_mode = not ep.is_empty() and not (big != null and (big.state == Pillar.STATE_ACTIVE or big.state == Pillar.STATE_DONE)) \
+		and not (mgr != null and mgr.floor_cleared)
+	if _ep_mode:
+		shown = true
 	visible = shown
 	if not shown:
 		return
+	if _ep_mode:
+		var all_done: bool = int(ep["done"]) >= int(ep["total"])
+		_epreuve_row.set_state(all_done, COL_DONE if all_done else COL_TODO, "%d/%d" % [int(ep["done"]), int(ep["total"])])
 	var done := big == null or big.state == Pillar.STATE_DONE
 	var boss_done := done or big.boss_dead
 	var ratio := 1.0 if (done or big.is_charged()) else big.charge_ratio()
@@ -172,6 +188,25 @@ func _secret_line(mgr: StageManager) -> Dictionary:
 			return {"label": String(st.get("label", "Dalles")), "value": String(st.get("value", "%d/%d" % [int(st["plates"]), int(st["plates_total"])])), "done": false}
 		return {"label": "Gardiens", "value": "%d/%d" % [int(st["guardians_dead"]), int(st["guardians_total"])], "done": false}
 	return out
+
+
+## Épreuves de l'étage ({done, total}) ; {} hors étage à épreuves. Une épreuve compte une fois terminée (mini-boss mort).
+func _epreuve_progress(mgr: StageManager) -> Dictionary:
+	if mgr == null or not mgr.epreuves_on:
+		return {}
+	var total := 0
+	var done := 0
+	for p in mgr.pillars:
+		if is_instance_valid(p) and p is Epreuve:
+			total += 1
+			if p.state == Pillar.STATE_DONE:
+				done += 1
+	return {} if total == 0 else {"done": done, "total": total}
+
+
+## Ligne Épreuves affichée (tests) : « Épreuves 1/2 », vide sinon.
+func epreuve_text() -> String:
+	return "" if not (visible and _epreuve_row.visible) else _epreuve_row.label_text() + " " + _epreuve_row.value_text()
 
 
 func is_secret_shown() -> bool:

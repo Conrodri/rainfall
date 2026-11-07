@@ -677,6 +677,19 @@ func _test_ui() -> void:
 	_check("inventaire solo : ouvert et jeu en pause", pm.is_open and pm.inventory_mode and get_tree().paused)
 	_check("onglet Forge affiché avec les 6 recettes", pm.items_tab == &"forge" and pm._forge_panel.visible and pm._forge_panel.recipe_buttons.size() == 6)
 	_check("recette réalisable en tête", pm._forge_panel._list.get_child(0).name == "Recipe_meche_silex")
+	var all_icons := true
+	for rb in pm._forge_panel.recipe_buttons.values():
+		var ib := (rb as Button).get_node_or_null("RecipeIcon") as Control
+		all_icons = all_icons and ib != null and ib.get_child_count() >= 2 and ib.get_child(1) is TextureRect and (ib.get_child(1) as TextureRect).texture != null
+	_check("chaque ligne de recette porte l'icône de son résultat", all_icons)
+	_check("marge gauche de la ligne réserve la place de l'icône", (pm._forge_panel.recipe_buttons[&"meche_silex"] as Button).get_theme_stylebox("normal").content_margin_left >= 96.0)
+	pm._tab_lb.visible = false
+	Platform.set_input_mode(Platform.InputMode.GAMEPAD)
+	pm._refresh_tab_prompts()
+	_check("manette : LB / RB affichés de part et d'autre des onglets", pm._tab_lb.visible and pm._tab_rb.visible and pm._tab_lb.get_index() < pm._tab_items.get_index() and pm._tab_rb.get_index() > pm._tab_forge.get_index())
+	Platform.set_input_mode(Platform.InputMode.KBM)
+	pm._refresh_tab_prompts()
+	_check("clavier-souris : LB / RB masqués", not pm._tab_lb.visible and not pm._tab_rb.visible)
 	pm.set_items_tab(&"items")
 	_check("onglet Objets : grille visible, Forge masquée", pm._items_scroll.visible and not pm._forge_panel.visible)
 	pm.set_items_tab(&"forge")
@@ -696,6 +709,10 @@ func _test_ui() -> void:
 	_check("« Vous perdez » en rouge et « Vous gagnez » en vert", lose != null and gain != null and lose.get_theme_color("font_color").r > 0.9 and lose.get_theme_color("font_color").g < 0.6
 		and gain.get_theme_color("font_color").g > 0.9 and gain.get_theme_color("font_color").r < 0.7)
 	_check("la confirmation liste le noyau perdu et le gain", panel._confirm_box.get_node_or_null("Lose_core") != null and panel._confirm_box.get_node_or_null("GainCard") != null)
+	var lose_row := panel._confirm_box.get_node_or_null("Lose_etincelle") as HBoxContainer
+	_check("« Vous perdez » : icône d'objet devant chaque ligne", lose_row != null and lose_row.get_child_count() == 2 and lose_row.get_child(0).get_child_count() >= 2)
+	var core_row := panel._confirm_box.get_node_or_null("Lose_core") as HBoxContainer
+	_check("« Vous perdez » : icône du noyau", core_row != null and core_row.get_child(0).get_child_count() == 1 and core_row.get_child(0).get_child(0) is TextureRect)
 	_check("rien n'est encore consommé", st.stacks(&"etincelle") == 1 and st.catalysts == 1)
 	_check("B / retour : revient à la liste", panel.back() and panel.step == &"list" and st.catalysts == 1)
 	panel.open_recipe(&"meche_silex")

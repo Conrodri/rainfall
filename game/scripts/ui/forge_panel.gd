@@ -90,6 +90,7 @@ func set_ui_scale(s: float, width: float, height: float) -> void:
 	for b in recipe_buttons.values():
 		(b as Button).custom_minimum_size.y = 128.0 * s
 		(b as Button).add_theme_font_size_override("font_size", _fs(26))
+		_fit_recipe_icon(b as Button)
 
 
 func _fs(base: int) -> int:
@@ -170,12 +171,77 @@ func _make_recipe_button(r: Dictionary, st: PlayerState) -> Button:
 		sb.content_margin_top = 8
 		sb.content_margin_bottom = 8
 		b.add_theme_stylebox_override(sname, sb)
+	var icon_box := _icon_box(r["result"], 96.0)
+	icon_box.name = "RecipeIcon"
+	icon_box.anchor_top = 0.5
+	icon_box.anchor_bottom = 0.5
+	icon_box.modulate = Color.WHITE if ok else Color(1, 1, 1, 0.6)
+	b.add_child(icon_box)
 	b.pressed.connect(_on_recipe_pressed.bind(r["id"]))
 	var show := func() -> void:
 		_detail.text = "%s\n%s" % [str(it.get("effect_text", "")), str(r.get("hint", ""))]
 	b.focus_entered.connect(show)
 	b.mouse_entered.connect(show)
 	return b
+
+
+## Icône du résultat à gauche de la ligne : place réservée par la marge gauche des styles, taille suivant l'échelle.
+func _fit_recipe_icon(b: Button) -> void:
+	var box := b.get_node_or_null("RecipeIcon") as Control
+	if box == null:
+		return
+	var px := 96.0 * _s
+	box.offset_left = 14.0 * _s
+	box.offset_right = 14.0 * _s + px
+	box.offset_top = -px * 0.5
+	box.offset_bottom = px * 0.5
+	for sname in ["normal", "hover", "pressed", "focus", "disabled"]:
+		var sb := b.get_theme_stylebox(sname)
+		if sb is StyleBoxFlat:
+			(sb as StyleBoxFlat).content_margin_left = 28.0 * _s + px
+
+
+## Icône d'objet dans son fond (cadre cuivré « forgé » pour un objet forgé, sinon fond de qualité), `px` à l'échelle 1.
+## Sans icône livrée : initiales. Le contrôle suit son offset (à placer par l'appelant) et ignore la souris.
+func _icon_box(id: StringName, px: float) -> Control:
+	var it := ItemDB.get_item(id)
+	var holder := Control.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	holder.custom_minimum_size = Vector2.ONE * px * _s
+	holder.add_child(ItemBar.quality_backing(it.get("quality", "commun")))
+	var path := ITEM_ICON % id
+	if ResourceLoader.exists(path):
+		var t := TextureRect.new()
+		t.texture = load(path) as Texture2D
+		t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		t.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 6)
+		holder.add_child(t)
+	else:
+		var f := Label.new()
+		f.text = str(it.get("name", id)).left(2)
+		f.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		f.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		f.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		f.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		f.add_theme_font_size_override("font_size", _fs(int(px * 0.4)))
+		holder.add_child(f)
+	return holder
+
+
+## Ligne « icône + texte » de la liste « Vous perdez ».
+func _lose_row(row_name: String, text: String, icon: Control) -> HBoxContainer:
+	var h := HBoxContainer.new()
+	h.name = row_name
+	h.alignment = BoxContainer.ALIGNMENT_CENTER
+	h.add_theme_constant_override("separation", int(12 * _s))
+	h.add_child(icon)
+	var l := _label(text, 28, COL_LOSE)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	h.add_child(l)
+	return h
 
 
 func _wire_focus() -> void:
@@ -289,12 +355,9 @@ func show_confirm(r: Dictionary, ids: Array[StringName]) -> void:
 	for id in ids:
 		counts[id] = int(counts.get(id, 0)) + 1
 	for id in counts:
-		var l := _label("• %s%s" % [str(ItemDB.get_item(id).get("name", id)), " ×%d" % counts[id] if int(counts[id]) > 1 else ""], 28, COL_LOSE)
-		l.name = "Lose_%s" % id
-		_confirm_box.add_child(l)
-	var core := _label("• 1 noyau d'orage", 28, COL_LOSE)
-	core.name = "Lose_core"
-	_confirm_box.add_child(core)
+		var txt := "%s%s" % [str(ItemDB.get_item(id).get("name", id)), " ×%d" % counts[id] if int(counts[id]) > 1 else ""]
+		_confirm_box.add_child(_lose_row("Lose_%s" % id, txt, _icon_box(id, 64.0)))
+	_confirm_box.add_child(_lose_row("Lose_core", "1 noyau d'orage", _core_icon(64.0)))
 	var gain := _label("Vous gagnez :", 30, COL_GAIN)
 	gain.name = "GainTitle"
 	_confirm_box.add_child(gain)
@@ -400,6 +463,22 @@ func do_craft() -> Dictionary:
 		say(str(res["reason"]))
 		_show_step(&"list")
 	return res
+
+
+## Icône du noyau d'orage (ligne « Vous perdez ») ; initiale si l'asset manque.
+func _core_icon(px: float) -> Control:
+	var holder := Control.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	holder.custom_minimum_size = Vector2.ONE * px * _s
+	if ResourceLoader.exists(CORE_ICON):
+		var t := TextureRect.new()
+		t.texture = load(CORE_ICON) as Texture2D
+		t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		t.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		holder.add_child(t)
+	return holder
 
 
 ## Une icône de noyau par emplacement (Balance.CRAFT_CATALYST_CAP) : pleine si portée, estompée sinon.

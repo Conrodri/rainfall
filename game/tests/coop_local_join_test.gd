@@ -25,6 +25,18 @@ func _check(label: String, cond: bool, detail: String = "") -> void:
 		print("  FAIL ", label, " ", detail)
 
 
+## Rapport de contraste WCAG entre deux couleurs opaques.
+func _contrast(a: Color, b: Color) -> float:
+	var la := _lum(a)
+	var lb := _lum(b)
+	return (maxf(la, lb) + 0.05) / (minf(la, lb) + 0.05)
+
+
+func _lum(c: Color) -> float:
+	var f := func(v: float) -> float: return v / 12.92 if v <= 0.03928 else pow((v + 0.055) / 1.055, 2.4)
+	return 0.2126 * f.call(c.r) + 0.7152 * f.call(c.g) + 0.0722 * f.call(c.b)
+
+
 func _frames(n: int) -> void:
 	for i in n:
 		await get_tree().process_frame
@@ -123,6 +135,11 @@ func _lobby() -> void:
 	_check("config : mode et personnage du joueur 1", cfg.get("mode") == &"moyen" and cfg.get("character") == &"ardent")
 	var setup := App.party_setup_from(party)
 	_check("party_setup_from : sources par appareil", setup.size() == 2 and setup[0]["input"] is InputSourceKbm and setup[1]["input"] is InputSourcePad and (setup[1]["input"] as InputSource).device == 3)
+	_check("lobby : largeur de carte clamp((W-192)/4, 280, 420)", is_equal_approx(CoopLobbyScreen.card_width(1920.0), 420.0) and is_equal_approx(CoopLobbyScreen.card_width(1440.0), 312.0) and is_equal_approx(CoopLobbyScreen.card_width(800.0), 280.0))
+	_check("lobby : 2 x 2 seulement quand 4 cartes de 280 px ne tiennent pas", not CoopLobbyScreen.uses_two_by_two(1920.0) and not CoopLobbyScreen.uses_two_by_two(1440.0) and CoopLobbyScreen.uses_two_by_two(1200.0))
+	_check("lobby : 4 colonnes en 16:9", lob.grid_columns() == 4)
+	var chk := (lob._card_labels[0]["check"] as TextureRect)
+	_check("lobby : état prêt = coche + cadre épais ; non prêt = ni l'un ni l'autre", chk.visible == bool(lob.slots[0]["ready"]) and lob._card_styles[0].border_width_left == (6 if bool(lob.slots[0]["ready"]) else 3))
 	var back := [0]
 	var lob2 := CoopLobbyScreen.new()
 	lob2.characters = lob.characters
@@ -219,7 +236,8 @@ func _in_game() -> void:
 	await _frames(2)
 	_check("manette 8 perdue : joueur 2 absent (source muette)", CoopLocal.is_absent(1) and Players.input_of(1) is InputSourceIdle)
 	_check("absent protégé", bool((main.get(&"players") as Array)[1].call(&"is_invulnerable")))
-	_check("pause avec message", pm.is_open and get_tree().paused)
+	_check("pause avec bandeau dédié (pas dans le chrono)", pm.is_open and get_tree().paused and pm.alert_text().begins_with("Manette du joueur 2 déconnectée") and not pm._info.text.contains("Manette"))
+	_check("bandeau : consigne de reprise lisible, contraste texte/fond >= 4,5:1", pm.alert_text().contains("Rebranchez la manette de J2") and _contrast(PauseMenu.ALERT_TEXT, PauseMenu.ALERT_TINT) >= 4.5, str(_contrast(PauseMenu.ALERT_TEXT, PauseMenu.ALERT_TINT)))
 	plates.queue_redraw()
 	await _frames(1)
 	var absent_shown := false
@@ -227,11 +245,25 @@ func _in_game() -> void:
 		if int(pl["slot"]) == 1 and bool(pl["absent"]):
 			absent_shown = true
 	_check("plaque « Manette déconnectée »", absent_shown)
+	var worst_bg := Color(CoopPlates.COL_BG.r * CoopPlates.COL_BG.a + (1.0 - CoopPlates.COL_BG.a), CoopPlates.COL_BG.g * CoopPlates.COL_BG.a + (1.0 - CoopPlates.COL_BG.a), CoopPlates.COL_BG.b * CoopPlates.COL_BG.a + (1.0 - CoopPlates.COL_BG.a))
+	_check("plaques : texte spectateur / déconnecté à pleine opacité, contraste >= 4,5:1 même sur un sol blanc", _contrast(CoopPlates.COL_TEXT, worst_bg) >= 4.5, str(_contrast(CoopPlates.COL_TEXT, worst_bg)))
+	var p2: Node2D = (main.get(&"players") as Array)[0]
+	var mx := float(p2.get(&"max_hp"))
+	p2.set(&"hp", mx * 0.2)
+	plates.queue_redraw()
+	await _frames(1)
+	var low_flag := false
+	for pl in plates.plates:
+		if int(pl["slot"]) == 0 and bool(pl["low_hp"]):
+			low_flag = true
+	_check("plaque : PV <= 25 % signalés autrement que par la couleur (cadre épais qui pulse, « ! »)", low_flag)
+	p2.set(&"hp", mx)
 	_check("manette 7 occupée : ne reprend pas", not cl.handle_free_pad_press(7))
 	_check("manette libre 12 : reprend le joueur 2", cl.handle_free_pad_press(12) and Players.input_of(1) is InputSourcePad and Players.input_of(1).device == 12)
 	cl._on_joy_connection_changed(12, false)
 	cl._on_joy_connection_changed(8, true)
 	_check("manette rebranchée : rendue à l'absent", Players.input_of(1) is InputSourcePad and Players.input_of(1).device == 8)
+	_check("pad_restored : bandeau « reconnectée » (le jeu reste en pause)", pm.alert_text().begins_with("Manette du joueur 2 reconnectée") and get_tree().paused, pm.alert_text())
 	pm.call(&"_close")
 	await _frames(1)
 

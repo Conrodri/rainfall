@@ -129,10 +129,20 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 	var spectator: bool = (st != null and st.spectating) or (node != null and node.get(&"dead") == true)
 	var absent: bool = e.input is InputSourceIdle
 	var tint: Color = Palette.team_color(e.id)
+	# Spectateur : seuls le cadre, le liseré et les icônes s'atténuent ; fond et texte restent pleins (contraste >= 4,5:1,
+	# audit UX 07/11 P3).
 	var a := 0.6 if spectator else 1.0
-	draw_rect(r, Color(COL_BG, COL_BG.a * a))
+	var low_hp := false
+	if not absent and not spectator and node != null and "hp" in node and "max_hp" in node:
+		low_hp = float(node.get(&"hp")) / maxf(float(node.get(&"max_hp")), 1.0) <= HpBarStyle.LOW_HP_FRAC
+	draw_rect(r, COL_BG)
 	draw_rect(Rect2(r.position, Vector2(STRIPE * s, r.size.y)), Color(tint, a))
-	draw_rect(r, Color(COL_ABSENT if absent else tint, 0.9 * a), false, maxf(2.0, 2.0 * s))
+	var border_w := maxf(2.0, 2.0 * s)
+	var border_a := 0.9 * a
+	if low_hp: # PV bas : cadre épais qui pulse à 1 Hz (fixe et épais si « Réduire les mouvements »), pas que la couleur
+		border_w = maxf(4.0, 4.0 * s)
+		border_a = 1.0 if GameSettings.reduce_motion() else lerpf(0.45, 1.0, 0.5 + 0.5 * sin(Time.get_ticks_msec() * TAU / 1000.0))
+	draw_rect(r, Color(Palette.hp_low() if low_hp else (COL_ABSENT if absent else tint), border_a), false, border_w)
 	var x0 := r.position.x + (STRIPE + PAD) * s
 	var inner_w := r.end.x - PAD * s - x0
 	var y := r.position.y + PAD * s
@@ -159,26 +169,26 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 		draw_texture_rect(_gold_tex, Rect2(Vector2(gold_x - gs - 4.0 * s, y + (pill - gs) * 0.5), Vector2(gs, gs)), false, Color(1, 1, 1, a))
 		gold_x -= gs + 4.0 * s
 	var name_w := maxf(gold_x - (x0 + pill + 8.0 * s) - 8.0 * s, 20.0)
-	_text_clip(Vector2(x0 + pill + 8.0 * s, y + pill * 0.5), line1, fs1, Color(COL_TEXT, a), name_w)
+	_text_clip(Vector2(x0 + pill + 8.0 * s, y + pill * 0.5), line1, fs1, COL_TEXT, name_w)
 	y += pill + 6.0 * s
 	# ligne 2 : PV (ou état)
 	var bar_h := 26.0 * s
 	var bar := Rect2(Vector2(x0, y), Vector2(inner_w, bar_h))
 	if absent:
-		_text(Vector2(x0, y + bar_h * 0.5), "Manette déconnectée", fs1, COL_ABSENT)
+		_text_clip(Vector2(x0, y + bar_h * 0.5), "Manette déconnectée", fs1, COL_TEXT, inner_w)
 	elif spectator:
-		_text_clip(Vector2(x0, y + bar_h * 0.5), "Spectateur · retour à l'étage suivant", fs1, Color(COL_DIM, a), inner_w)
+		_text_clip(Vector2(x0, y + bar_h * 0.5), "Spectateur · retour à l'étage suivant", fs1, COL_TEXT, inner_w)
 	elif node != null:
 		var hp := float(node.get(&"hp")) if "hp" in node else 0.0
 		var mx := maxf(float(node.get(&"max_hp")) if "max_hp" in node else 1.0, 1.0)
 		var frac := clampf(hp / mx, 0.0, 1.0)
 		draw_rect(bar, Color(HpBarStyle.COL_BG, 0.92))
 		draw_rect(Rect2(bar.position, Vector2(bar.size.x * frac, bar.size.y)), Palette.hp() if frac > HpBarStyle.LOW_HP_FRAC else Palette.hp_low())
-		_text(bar.get_center(), "%d / %d" % [ceili(hp), ceili(mx)], HudMetrics.font(HudMetrics.T1_HP, s, false), COL_TEXT, true, 4)
+		_text(bar.get_center(), ("! " if low_hp else "") + "%d / %d" % [ceili(hp), ceili(mx)], HudMetrics.font(HudMetrics.T1_HP, s, false), COL_TEXT, true, 4)
 	y += bar_h + 6.0 * s
 	# ligne 3 : sorts 1-4
 	if node == null or spectator or not node.has_method(&"get_spell_cooldowns"):
-		plates.append({"slot": e.id, "rect": r, "spectator": spectator, "absent": absent})
+		plates.append({"slot": e.id, "rect": r, "spectator": spectator, "absent": absent, "low_hp": low_hp})
 		return
 	var isz := minf(ICON * s, r.end.y - PAD * s - y)
 	var cx := x0
@@ -204,7 +214,7 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 		cx += isz + 8.0 * s
 		if cx + isz > r.end.x - PAD * s:
 			break
-	plates.append({"slot": e.id, "rect": r, "spectator": spectator, "absent": absent})
+	plates.append({"slot": e.id, "rect": r, "spectator": spectator, "absent": absent, "low_hp": low_hp})
 
 
 ## Invites d'interaction des joueurs 2-4 au-dessus de leur tête : « 2 · A Ouvrir ».
@@ -222,13 +232,29 @@ func _draw_prompts(s: float) -> void:
 		if it.target == null or not is_instance_valid(it.target) or not bool(it.state.get("visible", true)):
 			continue
 		var label := str(it.state.get("label", "Interagir"))
-		var txt := "%s · %s %s" % [Palette.team_glyph(e.id), _interact_key(e.input), label]
+		var txt := "%s · %s" % [Palette.team_glyph(e.id), label]
 		var head: Vector2 = xf * (e.node.global_position + OverheadBars.head_offset(e.node))
 		var sz := _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
-		var box := Rect2(Vector2(head.x - sz.x * 0.5 - 8.0 * s, head.y - 34.0 * s - sz.y), Vector2(sz.x + 16.0 * s, sz.y + 8.0 * s))
+		# touche : invite existante (pad_a, ou key_1x1 « E » au clavier), sinon la lettre en texte
+		var key := _interact_key(e.input)
+		var ktex := _key_tex(e.input)
+		var isz := maxf(sz.y * 1.5, 28.0 * s) if ktex != null else 0.0
+		var kw := isz + 6.0 * s if ktex != null else 0.0
+		if ktex == null:
+			txt = "%s · %s %s" % [Palette.team_glyph(e.id), key, label]
+			sz = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs)
+		var bh := maxf(sz.y, isz) + 8.0 * s
+		var box := Rect2(Vector2(head.x - (sz.x + kw) * 0.5 - 8.0 * s, head.y - 34.0 * s - bh), Vector2(sz.x + kw + 16.0 * s, bh))
 		draw_rect(box, COL_BG)
 		draw_rect(box, Palette.team_color(e.id), false, 2.0)
-		_text(box.get_center(), txt, fs, COL_TEXT, true)
+		var tx := box.position.x + 8.0 * s
+		if ktex != null:
+			var kr := Rect2(Vector2(tx, box.get_center().y - isz * 0.5), Vector2(isz, isz))
+			draw_texture_rect(ktex, kr, false)
+			if e.input.kind == InputSource.Kind.KBM:
+				_text(kr.get_center(), key, maxi(int(isz * 0.42), 12), Color(0.1, 0.1, 0.12), true)
+			tx += kw
+		_text(Vector2(tx, box.get_center().y), txt, fs, COL_TEXT)
 
 
 # --- Outils ---------------------------------------------------------------------------
@@ -250,6 +276,11 @@ static func _device_label(src: InputSource) -> String:
 		InputSource.Kind.PAD:
 			return "manette"
 	return ""
+
+
+## Invite de la touche d'interaction (assets ui/prompts) : pad_a à la manette, key_1x1 au clavier ; null si absente.
+static func _key_tex(src: InputSource) -> Texture2D:
+	return KeyPrompt._tex("key_1x1" if src != null and src.kind == InputSource.Kind.KBM else "pad_a")
 
 
 static func _interact_key(src: InputSource) -> String:

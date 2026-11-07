@@ -94,6 +94,8 @@ func _ready() -> void:
 	_check(GameSettings.hints() and tg.button_pressed, "Astuces de jeu : défaut activé")
 	tg.button_pressed = false
 	_check(not GameSettings.hints() and bool(GameSettings.get_value("gameplay", "hints", true)) == false, "Astuces de jeu -> gameplay/hints")
+	var zt := panel.toggle("Contours des zones de vos sorts")
+	_check(zt != null and panel.toggle("Contours des zones de sorts") == null and panel._sub_labels.size() >= 1 and panel._sub_labels[0].text.begins_with("Trace le bord net des zones de vos sorts") and panel._sub_labels[0].visible, "réglage « Contours des zones de vos sorts » : libellé précisé et sous-titre visible sans survol")
 	var stg := panel.toggle("Télégraphes renforcés")
 	_check(not GameSettings.strong_telegraphs() and not stg.button_pressed, "Télégraphes renforcés : défaut désactivé")
 	stg.button_pressed = true

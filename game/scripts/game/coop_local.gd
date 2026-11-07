@@ -111,6 +111,10 @@ func restore(slot: int, device: int) -> void:
 		return
 	Players.set_input(slot, InputSource.pad_source(device))
 	Players.note_activity(slot)
+	Input.start_joy_vibration(device, 0.5, 0.5, 0.2) # retour tactile : la manette rendue vibre 200 ms
+	var pm := _pause_menu()
+	if pm != null and pm.has_method(&"notify_pad_restored"):
+		pm.notify_pad_restored(slot) # bandeau de pause : « Manette du joueur N reconnectée » + coche
 	pad_restored.emit(slot, device)
 
 

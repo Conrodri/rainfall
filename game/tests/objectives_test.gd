@@ -35,6 +35,15 @@ static func _overlaps(a: Rect2, b: Rect2) -> bool:
 	return a.size.x > 0.0 and b.size.x > 0.0 and a.grow(-1.0).intersects(b.grow(-1.0))
 
 
+## Avant l'activation du gros pilier : étage classique = panneau masqué ; étage à épreuves = seule la ligne
+## « Épreuves x/N » (jamais « Tuer le boss » ni la charge).
+func _only_epreuves(panel: ObjectivesPanel, stage: StageManager) -> bool:
+	if not stage.epreuves_on:
+		return not panel.visible
+	var t := panel.epreuve_text()
+	return panel.visible and t.begins_with("Épreuves ") and t.contains("/") and not panel._boss_row.visible and not panel._charge_row.visible
+
+
 func _check_layout(hud: Hud, label: String) -> void:
 	await _frames(3)
 	var vp := hud.get_viewport().get_visible_rect().size
@@ -70,7 +79,7 @@ func _ready() -> void:
 		player.call(&"grant_invulnerability", 1.0e6)
 	var panel: ObjectivesPanel = hud.objectives
 	_check(panel != null, "le HUD a un panneau d'objectifs")
-	_check(not panel.visible, "panneau masqué avant l'activation du gros pilier")
+	_check(_only_epreuves(panel, stage), "avant le gros pilier : masqué, ou seulement « Épreuves 0/N » sur un étage à épreuves")
 
 	# --- Petits piliers : le panneau reste masqué
 	var big: Pillar = null
@@ -80,7 +89,7 @@ func _ready() -> void:
 	_check(big != null and big.state == Pillar.STATE_LOCKED, "gros pilier verrouillé au départ")
 	stage.pillars[0].activate()
 	await _frames(2)
-	_check(not panel.visible, "panneau masqué à l'activation d'un petit pilier")
+	_check(_only_epreuves(panel, stage), "à l'activation d'un petit pilier : même état (aucune ligne du gros pilier)")
 	for p in stage.pillars:
 		if p.kind == Pillar.Kind.SMALL:
 			p.activate()
@@ -158,7 +167,7 @@ func _ready() -> void:
 	await _frames(3)
 	var fl := hud.root.get_node_or_null(^"GoldConvertedLabel") as Label
 	_check(fl != null and fl.text.contains("XP (or converti)"), "texte flottant « +N XP (or converti) » (%s)" % (fl.text if fl else "absent"))
-	_check(not panel.visible, "panneau masqué au nouvel étage")
+	_check(_only_epreuves(panel, _main.stage), "nouvel étage : masqué, ou seulement « Épreuves 0/N »")
 
 	# --- Sauvegarde cohérente après conversion
 	var save: Dictionary = _main.build_save_data()

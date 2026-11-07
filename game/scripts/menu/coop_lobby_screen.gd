@@ -25,6 +25,11 @@ const AXIS_OFF := 0.3
 const MODES: Array[StringName] = [&"facile", &"moyen", &"difficile"]
 const MODE_NAMES := {&"facile": "Facile", &"moyen": "Moyen", &"difficile": "Difficile"}
 const KBM_KEY := "kbm"
+const CARD_W_MIN := 280.0 ## largeur d'une carte (px logiques) : clamp((W - 120 - 3 x 24) / 4, 280, 420), sinon grille 2 x 2
+const CARD_W_MAX := 420.0
+const CARD_GAP := 24.0
+const SIDE_MARGIN := 60.0
+const ICON_CHECK := "res://assets/sprites/ui/menu/icon_check.png"
 
 ## Joueurs inscrits, ordre = emplacement : {key, kind ("kbm" | "pad"), device, char, skin, ready}.
 var slots: Array[Dictionary] = []
@@ -35,7 +40,10 @@ var countdown := -1.0 ## secondes avant le lancement (< 0 : pas de compte)
 var launched := false
 
 var _cards: Array[PanelContainer] = []
-var _card_labels: Array[Dictionary] = [] ## {title, device, char, skin, state}
+var _card_labels: Array[Dictionary] = [] ## {title, device, char, skin, state, keys (KeyPrompt), check (TextureRect)}
+var _card_styles: Array[StyleBoxFlat] = []
+var _grid: GridContainer ## 4 colonnes, ou 2 x 2 si 4 cartes de CARD_W_MIN ne tiennent pas (4:3, 5:4)
+var _cmd_row: KeyPrompt ## commandes de la manette avec les invites existantes (pad_a, pad_b, pad_lb, pad_rb)
 var _mode_label: Label
 var _hint: Label
 var _count_label: Label
@@ -65,6 +73,8 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if Input.joy_connection_changed.is_connected(_on_joy_connection_changed):
 		Input.joy_connection_changed.disconnect(_on_joy_connection_changed)
+	if get_viewport() != null and get_viewport().size_changed.is_connected(_layout_cards):
+		get_viewport().size_changed.disconnect(_layout_cards)
 
 
 # --- Construction ----------------------------------------------------------------------
@@ -92,29 +102,45 @@ func _build() -> void:
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_hint.add_theme_font_size_override("font_size", 24)
-	_hint.text = "Manette : A ou Start pour rejoindre · Clavier : Entrée (joueur 1)\n◀ ▶ personnage · ▲ ▼ skin · A / Entrée : prêt · B / Échap : annuler, partir · LB / RB ou Tab : mode"
-	col.add_child(_hint)
-	var row := HBoxContainer.new()
-	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 24)
-	col.add_child(row)
+	_hint.text = "Clavier : Entrée rejoint et valide, Échap annule, Tab change de mode · ◀ ▶ personnage · ▲ ▼ skin"
+	# Commandes de la manette avec les invites livrées (le texte ne porte plus les lettres A / B / LB / RB)
+	_cmd_row = KeyPrompt.new()
+	_cmd_row.set_height(40.0)
+	_cmd_row.add_pad_button("pad_a", "A")
+	_cmd_row.add_text("Rejoindre, prêt")
+	_cmd_row.add_text("·")
+	_cmd_row.add_pad_button("pad_b", "B")
+	_cmd_row.add_text("Annuler, partir")
+	_cmd_row.add_text("·")
+	_cmd_row.add_pad_button("pad_lb", "LB")
+	_cmd_row.add_pad_button("pad_rb", "RB")
+	_cmd_row.add_text("Mode")
+	col.add_child(_cmd_row)
+	col.move_child(_cmd_row, _hint.get_index())
+	var holder := CenterContainer.new()
+	holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	col.add_child(holder)
+	_grid = GridContainer.new()
+	_grid.columns = Balance.MULTI_MAX_PLAYERS
+	_grid.add_theme_constant_override("h_separation", int(CARD_GAP))
+	_grid.add_theme_constant_override("v_separation", int(CARD_GAP))
+	holder.add_child(_grid)
 	for i in Balance.MULTI_MAX_PLAYERS:
 		var card := PanelContainer.new()
-		card.custom_minimum_size = Vector2(380, 420)
-		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		card.custom_minimum_size = Vector2(CARD_W_MAX, 420)
 		var sb := StyleBoxFlat.new()
 		sb.bg_color = Color(0.06, 0.055, 0.05, 0.85)
 		sb.border_color = Palette.team_color(i)
 		sb.set_border_width_all(3)
 		sb.set_content_margin_all(18)
 		card.add_theme_stylebox_override(&"panel", sb)
-		row.add_child(card)
+		_card_styles.append(sb)
+		_grid.add_child(card)
 		var v := VBoxContainer.new()
 		v.add_theme_constant_override("separation", 14)
 		card.add_child(v)
 		var labels := {}
-		for key in ["title", "device", "char", "skin", "state"]:
+		for key in ["title", "device", "char", "skin"]:
 			var l := Label.new()
 			l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			l.add_theme_font_size_override("font_size", 40 if key == "title" else 30 if key == "char" else 24)
@@ -122,8 +148,31 @@ func _build() -> void:
 				l.add_theme_color_override("font_color", Palette.team_color(i))
 			v.add_child(l)
 			labels[key] = l
+		# état : coche (prêt) + texte + invites des boutons à presser
+		var st := HBoxContainer.new()
+		st.add_theme_constant_override("separation", 10)
+		v.add_child(st)
+		var chk := TextureRect.new()
+		chk.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		chk.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		chk.custom_minimum_size = Vector2(44, 44)
+		chk.visible = false
+		if ResourceLoader.exists(ICON_CHECK):
+			chk.texture = load(ICON_CHECK) as Texture2D
+		st.add_child(chk)
+		var sl := Label.new()
+		sl.add_theme_font_size_override("font_size", 28)
+		st.add_child(sl)
+		var keys := KeyPrompt.new()
+		keys.set_height(36.0)
+		st.add_child(keys)
+		labels["state"] = sl
+		labels["check"] = chk
+		labels["keys"] = keys
 		_cards.append(card)
 		_card_labels.append(labels)
+	_layout_cards()
+	get_viewport().size_changed.connect(_layout_cards)
 	var bottom := HBoxContainer.new()
 	bottom.alignment = BoxContainer.ALIGNMENT_CENTER
 	bottom.add_theme_constant_override("separation", 30)
@@ -163,6 +212,34 @@ func _build() -> void:
 	_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_count_label.add_theme_font_size_override("font_size", 30)
 	col.add_child(_count_label)
+
+
+# --- Mise en page ------------------------------------------------------------------------
+
+## Largeur d'une carte pour un écran de largeur `w` : clamp((w - 2 x 60 - 3 x 24) / 4, 280, 420).
+static func card_width(w: float) -> float:
+	return clampf((w - 2.0 * SIDE_MARGIN - 3.0 * CARD_GAP) / float(Balance.MULTI_MAX_PLAYERS), CARD_W_MIN, CARD_W_MAX)
+
+
+## 2 x 2 quand les quatre cartes, même à CARD_W_MIN, débordent de la place disponible.
+static func uses_two_by_two(w: float) -> bool:
+	return float(Balance.MULTI_MAX_PLAYERS) * CARD_W_MIN + 3.0 * CARD_GAP > w - 2.0 * SIDE_MARGIN
+
+
+func _layout_cards() -> void:
+	if _grid == null:
+		return
+	var w := get_viewport_rect().size.x
+	var two := uses_two_by_two(w)
+	_grid.columns = 2 if two else Balance.MULTI_MAX_PLAYERS
+	var cw := card_width(w) if not two else clampf((w - 2.0 * SIDE_MARGIN - CARD_GAP) / 2.0, CARD_W_MIN, CARD_W_MAX)
+	for c in _cards:
+		c.custom_minimum_size = Vector2(cw, 300.0 if two else 420.0)
+
+
+## Colonnes de la grille de cartes (tests).
+func grid_columns() -> int:
+	return _grid.columns if _grid != null else 0
 
 
 # --- Lecture ---------------------------------------------------------------------------
@@ -438,6 +515,15 @@ func _pick_skin(i: int) -> void:
 	slots[i]["skin"] = want
 
 
+## Cadre de la carte `i` : épaisseur et opacité de la teinte d'équipe (inscrit : 60 %, prêt : 100 % et plus épais).
+func _set_border(i: int, width: int, alpha: float) -> void:
+	if i >= _card_styles.size():
+		return
+	var sb := _card_styles[i]
+	sb.set_border_width_all(width)
+	sb.border_color = Color(Palette.team_color(i), alpha)
+
+
 func _cancel_countdown() -> void:
 	countdown = -1.0
 
@@ -480,20 +566,42 @@ func _refresh() -> void:
 	for i in _cards.size():
 		var l: Dictionary = _card_labels[i]
 		(l["title"] as Label).text = "Joueur %s" % Palette.team_glyph(i)
+		var st_keys := l["keys"] as KeyPrompt
+		var st_check := l["check"] as TextureRect
+		st_keys.clear_row()
+		st_check.visible = false
+		_set_border(i, 3, 0.6)
 		if i >= slots.size():
-			(l["device"] as Label).text = ""
+			(l["device"] as Label).text = "Entrée : clavier-souris" if slot_of_key(KBM_KEY) < 0 else ""
 			(l["char"] as Label).text = "Libre"
 			(l["skin"] as Label).text = ""
-			(l["state"] as Label).text = "A / Start pour rejoindre" + ("\nEntrée : clavier-souris" if slot_of_key(KBM_KEY) < 0 else "")
+			(l["state"] as Label).text = "Rejoindre"
+			st_keys.add_pad_button("pad_a", "A")
+			st_keys.add_text("/")
+			st_keys.add_pad_button("pad_start", "Start", "Start")
 			_cards[i].modulate = Color(1, 1, 1, 0.55)
 			continue
 		var s: Dictionary = slots[i]
 		var cid := character_id(i)
 		var c: Dictionary = characters[int(s["char"]) % characters.size()]
 		(l["device"] as Label).text = "Clavier-souris" if str(s["kind"]) == "kbm" else "Manette %d" % (int(s["device"]) + 1)
-		(l["char"] as Label).text = "◀  %s  ▶" % str(c.get("name", cid))
+		var is_ready := bool(s["ready"])
+		(l["char"] as Label).text = ("%s" if is_ready else "◀  %s  ▶") % str(c.get("name", cid))
 		(l["skin"] as Label).text = "Skin : %s" % skin_name(cid, str(s["skin"]))
-		(l["state"] as Label).text = "PRÊT" if bool(s["ready"]) else "A / Entrée : prêt"
+		(l["state"] as Label).text = "PRÊT" if is_ready else "Prêt"
+		(l["state"] as Label).add_theme_color_override("font_color", Palette.team_color(i) if is_ready else Color(0.95, 0.93, 0.88))
+		if is_ready: # cadre épais plein, coche, invite d'annulation
+			st_check.visible = st_check.texture != null
+			_set_border(i, 6, 1.0)
+			if str(s["kind"]) == "pad":
+				st_keys.add_pad_button("pad_b", "B")
+			else:
+				st_keys.add_key_button("Échap")
+			st_keys.add_text("annuler")
+		elif str(s["kind"]) == "pad":
+			st_keys.add_pad_button("pad_a", "A")
+		else:
+			st_keys.add_key_button("Entrée")
 		_cards[i].modulate = Color.WHITE
 	_mode_label.text = "Mode : %s" % MODE_NAMES.get(mode, String(mode))
 	_start_button.disabled = slots.is_empty()

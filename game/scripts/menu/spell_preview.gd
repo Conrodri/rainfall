@@ -693,7 +693,7 @@ func _tick_dummies(delta: float) -> void:
 			d.position = d.position.move_toward(_homes[i], DUMMY_RETURN_PX_S * delta)
 
 
-## Ressources des kits maintenues tant que l'aperçu est actif : eau d'Averse, tension de Vigie, or d'Avare, aiguisage de
+## Ressources des kits maintenues tant que l'aperçu est actif : eau d'Averse, Guet de Vigie, or d'Avare, aiguisage de
 ## Taliant (au-dessus de SHARP_FLOOR). Les besoins propres à un sort sont posés au lancer (_prime_for_cast).
 func _prime() -> void:
 	if not is_instance_valid(player):
@@ -705,7 +705,7 @@ func _prime() -> void:
 	if &"sharpness" in k:
 		k.sharpness = maxf(k.sharpness, SHARP_FLOOR) # plancher voulu : la démo du sort 3 veut une lame entamée
 	elif k.has_method(&"refill_resource") and not k is TocsinKit and not k is BourbeKit:
-		k.refill_resource() # eau d'Averse, tension de Vigie
+		k.refill_resource() # eau d'Averse, Guet de Vigie
 
 
 ## État nécessaire au sort `slot` juste avant son lancer : aiguisage plein (Taliant ; le sort 3 aiguise, il faut donc

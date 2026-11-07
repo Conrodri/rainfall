@@ -80,6 +80,7 @@ var _box: VBoxContainer ## page en cours de construction
 var _bottom: HBoxContainer
 var _rows: Array[Control] = []
 var _labels: Array[Label] = []
+var _sub_labels: Array[Label] = [] ## sous-titres explicatifs des réglages (toujours visibles)
 var _buttons: Array[Button] = []
 var _toggles: Array[Button] = []
 var _steppers: Array[OptionStepper] = []
@@ -268,7 +269,8 @@ func _build() -> void:
 	_shake = ss[0]
 	_shake_pct = ss[1]
 	_reduce_motion = _add_toggle("Réduire les mouvements", func(on: bool) -> void: GameSettings.set_reduce_motion(on))
-	_zone_full = _add_toggle("Contours des zones de sorts", func(on: bool) -> void: GameSettings.set_zone_outline_full(on))
+	_zone_full = _add_toggle("Contours des zones de vos sorts", func(on: bool) -> void: GameSettings.set_zone_outline_full(on),
+		"Trace le bord net des zones de vos sorts (cercles, bandes, cônes). Les attaques ennemies sont toujours contourées.")
 	_strong_tel = _add_toggle("Télégraphes renforcés", func(on: bool) -> void:
 		GameSettings.set_strong_telegraphs(on)
 		EnemyTelegraph.refresh_strong()) # effet immédiat (sinon relu après STRONG_REFRESH_MS)
@@ -394,13 +396,33 @@ func _add_stepper(text: String, items: Array, cb: Callable) -> OptionStepper:
 	return st
 
 
-func _add_toggle(text: String, cb: Callable) -> Button:
+## `sub` : sous-titre explicatif toujours visible sous le libellé (manette et tactile n'ont pas d'infobulle au survol).
+func _add_toggle(text: String, cb: Callable, sub := "") -> Button:
 	var b := ToggleSwitch.new()
-	b.tooltip_text = text
+	b.tooltip_text = text if sub == "" else "%s\n%s" % [text, sub]
 	b.toggled.connect(func(on: bool) -> void:
 		if not _syncing:
 			cb.call(on))
-	_add_row(text, b, null, false)
+	var row := _add_row(text, b, null, false)
+	if sub != "":
+		var l := row.get_child(0) as Label
+		var v := VBoxContainer.new()
+		v.size_flags_horizontal = l.size_flags_horizontal
+		v.size_flags_stretch_ratio = l.size_flags_stretch_ratio
+		v.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		v.add_theme_constant_override("separation", 0)
+		row.remove_child(l)
+		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		v.add_child(l)
+		var sl := Label.new()
+		sl.text = sub
+		sl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		sl.add_theme_color_override("font_color", UiTheme.COL_MUTED)
+		sl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		v.add_child(sl)
+		row.add_child(v)
+		row.move_child(v, 0)
+		_sub_labels.append(sl)
 	_toggles.append(b)
 	return b
 
@@ -743,6 +765,8 @@ func _apply_layout() -> void:
 		tb.custom_minimum_size.y = TAB_H * s
 	for l in _labels:
 		l.add_theme_font_size_override("font_size", int(36 * s))
+	for sl in _sub_labels:
+		sl.add_theme_font_size_override("font_size", int((26 if Platform.input_mode == Platform.InputMode.TOUCH else 22) * s))
 	for r in _rows:
 		r.custom_minimum_size.y = ROW_H * s
 	for key in _pct:
