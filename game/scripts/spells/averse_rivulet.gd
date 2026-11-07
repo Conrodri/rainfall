@@ -3,14 +3,16 @@ extends Node2D
 ## Gouttière-collecteur d'Averse (variante du sort 3, docs/Variantes_Sorts.md §2.4) : ruisseau rectangulaire posé au
 ## sol depuis Averse vers le point visé. Rongé par tick (deal_damage en DoT) ; le kit lit contains() pour tremper et
 ## compter les kills, y verse l'eau collectée (`collected`) et déclenche le déversement (`on_spill`) quand la
-## gouttière finit (expiration ou relance, finish()). PLACEHOLDER dessiné en code : un seul nœud visuel (bande qui se
-## remplit selon `collected / fill_ref`, flash au déversement) que le lot Codex remplace (`rivulet_tile` variante
-## pleine + `rivulet_burst`).
+## gouttière finit (expiration ou relance, finish()). Visuel : tuiles Codex `rivulet_tile` (états `empty` / `full`, le calque plein suit
+## fill_ratio()) ; repli dessiné en code si la tuile manque. Déversement : flash dessiné en code (le sprite
+## `rivulet_burst` a été refusé le 07/11/2026, à refaire en lot Codex dédié).
 
 const _ZONE := preload("res://scripts/spells/zone_effect.gd")
 const FADE_IN_S := 0.12
 const FADE_OUT_S := 0.4
 const BURST_S := 0.3 ## durée du flash de déversement avant disparition
+const TILE_PATH := "res://assets/sprites/characters/averse/variants/rivulet_tile/rivulet_tile.tres"
+const TILE_PX := 128.0 ## cellule de la tuile : 1 u x 1 u à 128 px/u
 const SLACK_U := 0.25 ## marge latérale pour qu'un monstre dont le centre frôle la bande soit pris
 
 var caster: Object = null
@@ -27,6 +29,8 @@ var _t := 0.0
 var _tick_t := 0.0
 var _ending := false
 var _burst_t := 0.0
+var _full: Array[AnimatedSprite2D] = [] ## calques « plein » des tuiles, opacité = fill_ratio()
+var _has_tiles := false
 
 
 func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: Vector2, len_px: float, w_px: float) -> void:
@@ -39,6 +43,7 @@ func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: V
 	duration = new_spell.duration
 	tick = maxf(new_spell.tick, 0.05)
 	z_index = _ZONE.VFX_Z
+	_build_visual()
 	_apply()
 
 
@@ -49,6 +54,34 @@ func contains(p: Vector2) -> bool:
 	if along < 0.0 or along > length_px:
 		return false
 	return absf(v.dot(Vector2(-dir.y, dir.x))) <= width_px * 0.5 + SLACK_U * Balance.UNIT_PX
+
+
+func _build_visual() -> void:
+	if not ResourceLoader.exists(TILE_PATH):
+		return
+	var tf := load(TILE_PATH) as SpriteFrames
+	if tf == null or not tf.has_animation(&"empty") or not tf.has_animation(&"full"):
+		return
+	_has_tiles = true
+	var n := maxi(1, ceili(length_px / Balance.UNIT_PX))
+	var sx := length_px / float(n) / TILE_PX
+	var sy := width_px / TILE_PX
+	var root := Node2D.new()
+	root.name = "Tiles"
+	root.rotation = dir.angle()
+	add_child(root)
+	for i in n:
+		for state in [&"empty", &"full"]:
+			var sp := AnimatedSprite2D.new()
+			sp.sprite_frames = tf
+			sp.scale = Vector2(sx, sy)
+			sp.position = Vector2((float(i) + 0.5) * length_px / float(n), 0.0)
+			root.add_child(sp)
+			sp.play(state)
+			sp.frame = i % 4 # tuiles voisines déphasées
+			if state == &"full":
+				sp.modulate.a = 0.0
+				_full.append(sp)
 
 
 func is_ending() -> bool:
@@ -67,6 +100,9 @@ func finish(spill := true) -> void:
 	if spill and on_spill.is_valid():
 		on_spill.call(self)
 		_burst_t = BURST_S
+		var tiles := get_node_or_null(^"Tiles")
+		if tiles != null:
+			tiles.visible = false
 	else:
 		queue_free()
 
@@ -86,6 +122,10 @@ func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
 		_apply()
 	if _t >= duration:
 		finish(true)
+	if _has_tiles:
+		var f := fill_ratio()
+		for sp in _full:
+			sp.modulate.a = f
 	queue_redraw()
 
 
@@ -103,6 +143,8 @@ func _apply() -> void:
 
 
 func _draw() -> void:
+	if _has_tiles and not _ending:
+		return
 	var c := spell.color if spell != null else Color("#5FD4E8")
 	var n := Vector2(-dir.y, dir.x) * width_px * 0.5
 	var l := dir * length_px

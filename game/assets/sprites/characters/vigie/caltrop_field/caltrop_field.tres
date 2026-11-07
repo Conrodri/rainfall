@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" load_steps=12 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/vigie/caltrop_field/default.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/vigie/caltrop_field/end.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="d0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="d1"]
+atlas = ExtResource("1")
+region = Rect2(576, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="d2"]
+atlas = ExtResource("1")
+region = Rect2(1152, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="d3"]
+atlas = ExtResource("1")
+region = Rect2(1728, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="e0"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="e1"]
+atlas = ExtResource("2")
+region = Rect2(576, 0, 576, 576)
+
+[sub_resource type="AtlasTexture" id="e2"]
+atlas = ExtResource("2")
+region = Rect2(1152, 0, 576, 576)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("d0")}, {"duration": 1.0, "texture": SubResource("d1")}, {"duration": 1.0, "texture": SubResource("d2")}, {"duration": 1.0, "texture": SubResource("d3")}], "loop": true, "name": &"default", "speed": 8.0}, {"frames": [{"duration": 1.0, "texture": SubResource("e0")}, {"duration": 1.0, "texture": SubResource("e1")}, {"duration": 1.0, "texture": SubResource("e2")}], "loop": false, "name": &"end", "speed": 10.0}]

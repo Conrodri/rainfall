@@ -1,0 +1,1027 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+model: gpt-6-luna
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: low
+reasoning summaries: none
+session id: 01a1b5f2-63d3-7801-ac5e-f6b681f636b2
+--------
+user
+ÉCONOMIE DE TOKENS (obligatoire) :
+- Ne lis jamais un fichier entier s'il est long : cherche (rg/Select-String) et lis seulement les lignes utiles. Ne relis pas CLAUDE.md : l'essentiel est dans cette consigne.
+- Limite toute sortie de commande (| Select-Object -First 20, head, -q, scripts silencieux qui n'impriment qu'un résumé PASS/FAIL).
+- Réutilise et modifie les scripts existants plutôt que tout réécrire ; écris de petits scripts ciblés.
+- Ne lis pas les PNG en image sauf une planche contact unique à la fin pour vérifier ; ne liste pas les dossiers en entier.
+- Pas d'explications intermédiaires ni de plan détaillé ; rapport final de 6 lignes maximum.
+BLENDER : la fenêtre Blender interactive ouverte est au joueur : ignore-la. Une seule instance `"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python <script>.py` lancée par toi à la fois. Eevee, échantillons modestes. Pas de dessin PIL (Pillow : rogner/assembler/vérifier seulement).
+CONTRAT : tu REMPLACES des assets provisoires de Claude à l'identique (mêmes noms, dossiers, tailles, frames, _e, .tres inchangés sauf nécessité). Aucun .gd/.tscn.
+PLUS DE NORMAL MAPS (décision du joueur, 22/10/2026, budget mobile) : ne produis ni ne livres AUCUN <f>_n.png (pas de passe Normal en espace écran, cel.install(<profil>, normals=False), pas de cel.quantize_normal_files) ; .tres sans CanvasTexture ni normal_texture ; masques _e conservés. Toute mention de _n dans la consigne qui suit est caduque.
+_e : `_e` livré à demi-résolution ((w+1)//2 × (h+1)//2 du diffus) ou pleine taille (réduit ensuite par art/tools/halve_emission.py) ; jamais d'autre taille ; aucun _e noir ou vide (ne pas le livrer).
+STYLE ULTRACAVE : rapport final et messages en fragments, chaque fait une fois, aucun récapitulatif ; chemins, commandes, erreurs et nombres verbatim.
+RETOUCHES : si un script de construction existe (art/tools/**/<lot>_build.py, gen_*.py), le modifier par paramètres et le relancer ; ne pas relire les briefs complets ni explorer le dépôt.
+BLENDER : préférer `blender.exe --background --python <script>` (script qui n'imprime qu'une ligne de bilan) aux appels MCP ; MCP seulement pour une inspection ponctuelle.
+IMAGES : vérifier par script (dimensions, alpha, contraste, frames distinctes) ; au plus UNE petite planche de contrôle (≤ 1024 px de large) regardée en fin de lot.
+SORTIES : rediriger les journaux Blender/Godot/Python dans des fichiers ; ne lire que la fin ou les erreurs (tail -n 20, grep -i error).
+
+RACINE (OBLIGATOIRE : ton shell démarre dans C:\Users\const\Documents ; commence chaque commande par cd "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1" ; tous les chemins ci-dessous sont relatifs à ce dossier, ne touche pas au dépôt parent).
+OBJECTIF : (a) refaire `rivulet_tile` en deux états vide/plein ; (b) créer `rivulet_burst` (Gouttière d'Averse, déversement d'eau le long d'une bande).
+TOUCHER : game/assets/sprites/characters/averse/variants/rivulet_tile/ et .../rivulet_burst/, art/blender/ (.blend nouveau), art/tools/vigie_vfx/rivulet_build.py, journal art/tools/vigie_vfx/_rivulet_log.txt. Lire seulement art/tools/night/avsv_build.py (branche rivulet_tile) et rivulet_tile.tres.
+NE PAS LIRE : docs/, CLAUDE.md, briefs complets, autres lots.
+(a) rivulet_tile : même format que l'actuel (cellule 128x128 = 1 u de long x 1 u de large à 128 px/u, raccordable bord gauche = bord droit, _e demi-résolution) mais 8 cellules : frames 0-3 = état VIDE (lit sec : pierre/gouttière sombre, quelques gouttes, filet fin), frames 4-7 = état PLEIN (eau sombre à petites ondes, filets clairs, bords d'écume, accent cyan #5FD4E8 sur les crêtes en _e), les 4 frames de chaque état bouclent. Planche 1024x128. .tres : animations `empty` (frames 0-3, boucle, 10 fps) et `full` (frames 4-7, boucle, 10 fps) ; garder aussi `default` = frames 4-7 pour l'ancien code.
+(b) rivulet_burst : le déversement d'un coup le long d'une bande de 6 u de long (768 px) x pic ~2 u de large (256 px), à 128 px/u, orientée vers +X, centrée verticalement ; 7 frames non bouclées, 22 fps (~0,3 s) : un front d'eau blanc-cyan part de la gauche, parcourt la bande (frame 1 -> 6), crête d'écume et gouttes projetées, puis la nappe retombe et s'amincit à 1 u de large (frame 7). Additif : fond transparent, seules crêtes et écume brillent. Cellule 768 x 256, planches <= 4096 px (par ex. 4 colonnes x 2 lignes = 3072 x 512). _e crêtes cyan. Animation `default`, sans boucle.
+STYLE : cel (art/briefs/STYLE_cel.md, art/tools/cel/cel_style.py, cel.install(<profil>, normals=False)), DA sombre désaturée, un seul accent cyan, pas de _n.
+VÉRIF : script (dimensions, alpha, frames distinctes, raccord gauche/droite de rivulet_tile), `python art/tools/texture_budget.py --apply-policy`, UNE planche <= 1024 px. Aucun .gd/.tscn.
+RAPPORT (6 lignes, ultracave) : fichiers, tailles Ko, vérif.
+codex
+Je localise les scripts et ressources ciblés, puis je réutilise le générateur prévu pour produire et vérifier les deux lots.
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; rg --files art/tools/vigie_vfx art/tools/cel art/tools | rg \"(avsv_build\\.py|rivulet_build\\.py|cel_style\\.py|texture_budget\\.py|halve_emission\\.py)"'$"; rg --files game/assets/sprites/characters/averse/variants/rivulet_tile game/assets/sprites/characters/averse/variants/rivulet_burst | Select-Object -First 20' in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ exited 1 in 100ms:
+rg: game/assets/sprites/characters/averse/variants/rivulet_burst: The system cannot find the file specified. (os error 2)
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile_emission.tres
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile_e.png.import
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile_e.png
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile.tres
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile.png.import
+game/assets/sprites/characters/averse/variants/rivulet_tile\rivulet_tile.png
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; rg --files art/tools art/blender | rg \"(avsv_build\\.py|rivulet_build\\.py|cel_style\\.py|texture_budget\\.py|halve_emission\\.py)"'$"; rg -n -C 5 "rivulet_tile" art/tools/night/avsv_build.py; Get-Content game/assets/sprites/characters/averse/variants/rivulet_tile/rivulet_tile.tres -TotalCount 80' in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 63ms:
+3-from pathlib import Path
+4-ROOT=Path(__file__).resolve().parents[3]
+5-WORK=ROOT/'art/blender/avsv'
+6-OUT=ROOT/'game/assets/sprites/characters/averse/variants'
+7-sys.path[:0]=[str(ROOT/'art/tools/cel'),str(ROOT/'art/tools/bosses')]
+8:SPECS={'droplet_small':(48,4,True,12),'geyser':(640,8,False,16),'rivulet_tile':(128,4,True,10),'monsoon_zone':(1408,12,True,12)}
+9-
+10-def render():
+11- import bpy, cel_style as cel, boss_common as common
+12- from mathutils import Vector
+13- def compositor(path):
+--
+46-    pulse=1+.10*math.sin(frame*math.pi/2)
+47-    sway=math.cos(frame*math.pi/2)
+48-    poly([(-20,sway),(-7,5*pulse),(4,5*pulse),(22,0),(4,-5*pulse),(-7,-4*pulse)],1)
+49-    poly([(-12,1),(0,3),(18,0),(0,-2)],3,3)
+50-    line([(-21,-1+sway),(-12,-2+sway*.5),(-7,-1)],.8,2,4)
+51:   elif name=='rivulet_tile':
+52-    poly([(-66,-64),(66,-64),(66,64),(-66,64)],0,0)
+53-    for k in range(16):
+54-     y=-60+k*8; off=rng.random()*6.28
+55-     pts=[(-66+j*132/96,y+2*math.sin(math.tau*(-66+j*132/96)/128+off-phase*2)) for j in range(97)]
+56-     line(pts,1.2 if k%3 else 2,1 if k%3 else 3,1+k*.01)
+--
+128-   n=min(per,count-start); rows=math.ceil(n/cols); width=cols*size; height=rows*size
+129-   sheets=[Image.new('RGBA',(width,height)),Image.new('RGBA',(width//2,height//2))]
+130-   for j in range(n):
+131-    f=start+j; path=WORK/name/('%02d.png'%f); im=Image.open(path).convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
+132-    ep=next(path.parent.glob(path.stem+'_e__*.png')); em=Image.open(ep).convert('RGBA').resize((size//2,size//2),Image.Resampling.LANCZOS)
+133:    if name=='rivulet_tile':
+134-     # Exact periodic pixel boundary, including emission; no painted content.
+135-     im.paste(im.crop((0,0,1,size)),(size-1,0)); em.paste(em.crop((0,0,1,size//2)),(size//2-1,0))
+136-    assert im.getbbox()
+137-    glow=np.asarray(em)
+138-    assert (glow[:,:,:3].max(axis=2)*glow[:,:,3].astype(float)/255).max()>2
+139-    digest=hashlib.sha256(im.tobytes()).digest()
+140-    assert digest not in seen,(name,f,'duplicate frame')
+141-    seen.add(digest)
+142:    if name=='rivulet_tile':
+143-     for image in [im,em]:
+144-      assert image.crop((0,0,1,image.height)).tobytes()==image.crop((image.width-1,0,image.width,image.height)).tobytes()
+145-    x=j%cols*size; y=j//cols*size
+146-    sheets[0].paste(im,(x,y)); sheets[1].paste(em,(x//2,y//2)); entries.append((len(sheetnames),x,y))
+147-    samples.append((name,f,im.copy()))
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_tile/rivulet_tile.png" id="0"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("0")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f1"]
+atlas = ExtResource("0")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f2"]
+atlas = ExtResource("0")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="f3"]
+atlas = ExtResource("0")
+region = Rect2(384, 0, 128, 128)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("f0")}, {"duration": 1.0, "texture": SubResource("f1")}, {"duration": 1.0, "texture": SubResource("f2")}, {"duration": 1.0, "texture": SubResource("f3")}], "loop": true, "name": &"default", "speed": 10}]
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; Get-Content art/tools/night/avsv_build.py -TotalCount 18; rg -n -C 3 \"def install|def render|SPECS|quantize|Image\\.new|rivulet_tile\" art/tools/cel/cel_style.py art/tools/night/avsv_build.py; rg --files art/blender | Select-Object -First 15; rg --files art/tools/vigie_vfx | Select-Object -First 15" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 243ms:
+"""AVSV: Blender Eevee cel geometry, then atlas packing (system Python --pack)."""
+import sys, math, random, shutil, hashlib
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[3]
+WORK=ROOT/'art/blender/avsv'
+OUT=ROOT/'game/assets/sprites/characters/averse/variants'
+sys.path[:0]=[str(ROOT/'art/tools/cel'),str(ROOT/'art/tools/bosses')]
+SPECS={'droplet_small':(48,4,True,12),'geyser':(640,8,False,16),'rivulet_tile':(128,4,True,10),'monsoon_zone':(1408,12,True,12)}
+
+def render():
+ import bpy, cel_style as cel, boss_common as common
+ from mathutils import Vector
+ def compositor(path):
+  s=bpy.context.scene
+  tree=bpy.data.node_groups.new('AVSV passes','CompositorNodeTree'); s.compositing_node_group=tree
+  tree.interface.new_socket(name='Image',in_out='OUTPUT',socket_type='NodeSocketColor')
+  n=tree.nodes; l=tree.links; rl=n.new('CompositorNodeRLayers'); out=n.new('NodeGroupOutput'); l.new(rl.outputs['Image'],out.inputs['Image'])
+  f=n.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; l.new(rl.outputs['Image'],f.inputs[0])
+art/tools/night/avsv_build.py-5-WORK=ROOT/'art/blender/avsv'
+art/tools/night/avsv_build.py-6-OUT=ROOT/'game/assets/sprites/characters/averse/variants'
+art/tools/night/avsv_build.py-7-sys.path[:0]=[str(ROOT/'art/tools/cel'),str(ROOT/'art/tools/bosses')]
+art/tools/night/avsv_build.py:8:SPECS={'droplet_small':(48,4,True,12),'geyser':(640,8,False,16),'rivulet_tile':(128,4,True,10),'monsoon_zone':(1408,12,True,12)}
+art/tools/night/avsv_build.py-9-
+art/tools/night/avsv_build.py:10:def render():
+art/tools/night/avsv_build.py-11- import bpy, cel_style as cel, boss_common as common
+art/tools/night/avsv_build.py-12- from mathutils import Vector
+art/tools/night/avsv_build.py-13- def compositor(path):
+--
+art/tools/night/avsv_build.py-17-  n=tree.nodes; l=tree.links; rl=n.new('CompositorNodeRLayers'); out=n.new('NodeGroupOutput'); l.new(rl.outputs['Image'],out.inputs['Image'])
+art/tools/night/avsv_build.py-18-  f=n.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; l.new(rl.outputs['Image'],f.inputs[0])
+art/tools/night/avsv_build.py-19- common.configure_passes=compositor
+art/tools/night/avsv_build.py:20: for name,(size,count,loop,fps) in SPECS.items():
+art/tools/night/avsv_build.py-21-  bpy.ops.wm.read_factory_settings(use_empty=True)
+art/tools/night/avsv_build.py-22-  s=bpy.context.scene; cel.setup_scene(s,8); s.render.resolution_x=size*2; s.render.resolution_y=size*2; s.render.resolution_percentage=100
+art/tools/night/avsv_build.py-23-  cam=bpy.data.cameras.new('TOP 128px/u' if size>48 else 'projectile 64px/u'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob; ob.location=(0,0,2000); cam.type='ORTHO'; cam.ortho_scale=size; cam.clip_end=4000
+--
+art/tools/night/avsv_build.py-48-    poly([(-20,sway),(-7,5*pulse),(4,5*pulse),(22,0),(4,-5*pulse),(-7,-4*pulse)],1)
+art/tools/night/avsv_build.py-49-    poly([(-12,1),(0,3),(18,0),(0,-2)],3,3)
+art/tools/night/avsv_build.py-50-    line([(-21,-1+sway),(-12,-2+sway*.5),(-7,-1)],.8,2,4)
+art/tools/night/avsv_build.py:51:   elif name=='rivulet_tile':
+art/tools/night/avsv_build.py-52-    poly([(-66,-64),(66,-64),(66,64),(-66,64)],0,0)
+art/tools/night/avsv_build.py-53-    for k in range(16):
+art/tools/night/avsv_build.py-54-     y=-60+k*8; off=rng.random()*6.28
+--
+art/tools/night/avsv_build.py-121- import numpy as np
+art/tools/night/avsv_build.py-122- import cel_style as cel
+art/tools/night/avsv_build.py-123- samples=[]
+art/tools/night/avsv_build.py:124: for name,(size,count,loop,fps) in SPECS.items():
+art/tools/night/avsv_build.py-125-  dest=OUT/name; dest.mkdir(parents=True,exist_ok=True)
+art/tools/night/avsv_build.py-126-  per=(4096//size)**2; cols=min(4096//size,count); entries=[]; sheetnames=[]; seen=set()
+art/tools/night/avsv_build.py-127-  for start in range(0,count,per):
+art/tools/night/avsv_build.py-128-   n=min(per,count-start); rows=math.ceil(n/cols); width=cols*size; height=rows*size
+art/tools/night/avsv_build.py:129:   sheets=[Image.new('RGBA',(width,height)),Image.new('RGBA',(width//2,height//2))]
+art/tools/night/avsv_build.py-130-   for j in range(n):
+art/tools/night/avsv_build.py-131-    f=start+j; path=WORK/name/('%02d.png'%f); im=Image.open(path).convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
+art/tools/night/avsv_build.py-132-    ep=next(path.parent.glob(path.stem+'_e__*.png')); em=Image.open(ep).convert('RGBA').resize((size//2,size//2),Image.Resampling.LANCZOS)
+art/tools/night/avsv_build.py:133:    if name=='rivulet_tile':
+art/tools/night/avsv_build.py-134-     # Exact periodic pixel boundary, including emission; no painted content.
+art/tools/night/avsv_build.py-135-     im.paste(im.crop((0,0,1,size)),(size-1,0)); em.paste(em.crop((0,0,1,size//2)),(size//2-1,0))
+art/tools/night/avsv_build.py-136-    assert im.getbbox()
+--
+art/tools/night/avsv_build.py-139-    digest=hashlib.sha256(im.tobytes()).digest()
+art/tools/night/avsv_build.py-140-    assert digest not in seen,(name,f,'duplicate frame')
+art/tools/night/avsv_build.py-141-    seen.add(digest)
+art/tools/night/avsv_build.py:142:    if name=='rivulet_tile':
+art/tools/night/avsv_build.py-143-     for image in [im,em]:
+art/tools/night/avsv_build.py-144-      assert image.crop((0,0,1,image.height)).tobytes()==image.crop((image.width-1,0,image.width,image.height)).tobytes()
+art/tools/night/avsv_build.py-145-    x=j%cols*size; y=j//cols*size
+--
+art/tools/night/avsv_build.py-169-   if p.suffix=='.png': shutil.copy2(p,mirror/p.name)
+art/tools/night/avsv_build.py-170-   elif p.suffix=='.tres': (mirror/p.name).write_text(p.read_text().replace('/averse/','/averse_cel/'))
+art/tools/night/avsv_build.py-171- # Pillow only assembles/resizes rendered images. No drawing.
+art/tools/night/avsv_build.py:172: thumb=112; sheet=Image.new('RGB',(12*thumb,8*thumb))
+art/tools/night/avsv_build.py-173- for bi,bg in enumerate(['#0A0D12','#2E3238']):
+art/tools/night/avsv_build.py:174:  for row,name in enumerate(SPECS):
+art/tools/night/avsv_build.py-175-   for nm,f,im in samples:
+art/tools/night/avsv_build.py-176-    if nm!=name: continue
+art/tools/night/avsv_build.py:177:    tile=Image.new('RGBA',(thumb,thumb),bg); im.thumbnail((thumb,thumb),Image.Resampling.LANCZOS); tile.alpha_composite(im,((thumb-im.width)//2,(thumb-im.height)//2)); sheet.paste(tile.convert('RGB'),(f*thumb,(bi*4+row)*thumb))
+art/tools/night/avsv_build.py-178- sheet.save(ROOT/'art/tools/night/_avsv_contact.png')
+art/tools/night/avsv_build.py-179- print('AVSV PACK PASS: 28 frames, 4 effects, cel mirrors, emission half-size, no normals')
+art/tools/night/avsv_build.py-180-
+--
+art/tools/cel/cel_style.py-10-                                 scripts de rendu d'origine tournent ENSUITE sans modification.
+art/tools/cel/cel_style.py-11-      toon_materials(profile) -> convertit les matériaux PBR en rampes constantes (appelé par install).
+art/tools/cel/cel_style.py-12-      setup_scene(scene)      -> Eevee 8 échantillons, Standard, passes Normal/Emit + AOV d'accent.
+art/tools/cel/cel_style.py:13:      quantize_normal_files() -> re-quantifie les _n APRÈS réduction/assemblage (Blender, compositeur).
+art/tools/cel/cel_style.py-14-      PLUS DE NORMAL MAPS LIVRÉES (décision du joueur, 22/10/2026, budget mobile) : passer
+art/tools/cel/cel_style.py-15-      install(profile, normals=False) ; la passe Normal reste calculée (plis d'encre) mais aucun
+art/tools/cel/cel_style.py-16-      fichier <f>_n n'est écrit. Le défaut normals=True ne sert qu'aux lots lancés avant cette date.
+--
+art/tools/cel/cel_style.py-59-# Profils par famille. ink_px = épaisseur de la silhouette À LA TAILLE D'AFFICHAGE (px finaux).
+art/tools/cel/cel_style.py-60-# CS1 (créatures 96-192 px) : érosion 3 px à 2x = 1,5 px final. Plis = 1 px Sobel à 2x (~0,5-1 px final).
+art/tools/cel/cel_style.py-61-PROFILES = {
+art/tools/cel/cel_style.py:62:    'creature': dict(tones=3, ink_px=1.5, creases=True, quantize_normals=True, keep_normals=True),
+art/tools/cel/cel_style.py:63:    'boss':     dict(tones=3, ink_px=2.0, creases=True, quantize_normals=True, keep_normals=True),
+art/tools/cel/cel_style.py:64:    'prop':     dict(tones=3, ink_px=1.5, creases=True, quantize_normals=True, keep_normals=True),
+art/tools/cel/cel_style.py-65-    # Tuiles : JAMAIS de contour de silhouette (les tuiles se raccordent : l'encre dessinerait la grille).
+art/tools/cel/cel_style.py:66:    'tile':     dict(tones=3, ink_px=0.0, creases=True, quantize_normals=True, keep_normals=True,
+art/tools/cel/cel_style.py-67-                     keep_texture=True),
+art/tools/cel/cel_style.py:68:    'icon':     dict(tones=3, ink_px=1.0, creases=True, quantize_normals=False, keep_normals=False),
+art/tools/cel/cel_style.py:69:    'ui':       dict(tones=2, ink_px=1.0, creases=False, quantize_normals=False, keep_normals=False),
+art/tools/cel/cel_style.py-70-    # VFX additifs (lumière pure) : pas d'encre, pas de normale ; seuls les VFX à corps (rochers, lames,
+art/tools/cel/cel_style.py-71-    # météores, eau) passent en tons, l'émission reste continue (le glow HDR du jeu s'en charge).
+art/tools/cel/cel_style.py:72:    'vfx':      dict(tones=2, ink_px=0.0, creases=False, quantize_normals=False, keep_normals=False),
+art/tools/cel/cel_style.py-73-}
+art/tools/cel/cel_style.py-74-
+art/tools/cel/cel_style.py-75-
+--
+art/tools/cel/cel_style.py-218-        for f in [f for f in files if '_n__' in (f.file_name if hasattr(f, 'file_name') else f.file_slots[0].path)]:
+art/tools/cel/cel_style.py-219-            files.remove(f)
+art/tools/cel/cel_style.py-220-            nodes.remove(f)
+art/tools/cel/cel_style.py:221:    if p['quantize_normals'] and normals:
+art/tools/cel/cel_style.py-222-        # Trois paliers signés par composante écran puis renormalisation : 26 directions finies.
+art/tools/cel/cel_style.py-223-        quant = nodes.new('ShaderNodeCombineXYZ')
+art/tools/cel/cel_style.py-224-        dots = [n for n in nodes if n.bl_idname == 'ShaderNodeVectorMath' and n.operation == 'DOT_PRODUCT']
+--
+art/tools/cel/cel_style.py-232-        normals = set_alpha(enc.outputs['Vector'])
+art/tools/cel/cel_style.py-233-    for f in files:
+art/tools/cel/cel_style.py-234-        name = f.file_name if hasattr(f, 'file_name') else f.file_slots[0].path
+art/tools/cel/cel_style.py:235:        if '_n__' in name and p['quantize_normals'] and normals:
+art/tools/cel/cel_style.py-236-            links.new(normals, f.inputs[0])
+art/tools/cel/cel_style.py-237-        elif '_e__' in name:
+art/tools/cel/cel_style.py-238-            links.new(set_alpha(rl.outputs[AOV]), f.inputs[0])
+--
+art/tools/cel/cel_style.py-266-_installed = {}
+art/tools/cel/cel_style.py-267-
+art/tools/cel/cel_style.py-268-
+art/tools/cel/cel_style.py:269:def install(prof='creature', keep_black_emission=True, normals=True):
+art/tools/cel/cel_style.py-270-    """Branche le cel sur le pipeline d'origine. À appeler après bpy.ops.wm.open_mainfile / la
+art/tools/cel/cel_style.py-271-    construction de scène et AVANT les rendus ; chaque rendu passant par configure_passes (iso_rig,
+art/tools/cel/cel_style.py-272-    boss_common) reçoit alors matériaux toon + compositeur cel. keep_black_emission : garde les _e
+--
+art/tools/cel/cel_style.py-310-                iso.optimize_png = _installed.pop('optimize_png')
+art/tools/cel/cel_style.py-311-
+art/tools/cel/cel_style.py-312-
+art/tools/cel/cel_style.py:313:def quantize_normal_files(paths, work=None):
+art/tools/cel/cel_style.py-314-    """Re-quantifie des _n déjà réduits/assemblés (le filtrage LANCZOS recrée des dégradés aux bords
+art/tools/cel/cel_style.py-315-    des paliers). Compositeur Blender : décode, ROUND par composante, renormalise, ré-encode.
+art/tools/cel/cel_style.py-316-    L'original filtré est gardé une fois dans work/ (idempotent : on repart toujours de lui)."""
+--
+art/tools/cel/cel_style.py-468-    """
+art/tools/cel/cel_style.py-469-    from PIL import Image
+art/tools/cel/cel_style.py-470-    g = Image.open(GAME_SPRITES / ground).convert('RGBA')
+art/tools/cel/cel_style.py:471:    canvas = Image.new('RGBA', size, (18, 22, 23, 255))
+art/tools/cel/cel_style.py-472-    row_h = size[1] // max(1, len(samples))
+art/tools/cel/cel_style.py-473-    half = size[0] // 2
+art/tools/cel/cel_style.py-474-    for r, line in enumerate(samples):
+art/blender\vfx\verify_spells.py
+art/blender\vfx\v2_projectile.blend
+art/blender\vfx\v2_impact.blend
+art/blender\vfx\telegraph_cone.blend
+art/blender\vfx\telegraph_circle.blend
+art/blender\vfx\status_poison.blend
+art/blender\vfx\status_frost.blend
+art/blender\vfx\status_burn.blend
+art/blender\vfx\spell_before.json
+art/blender\vfx\spells_verification.json
+art/blender\vfx\spells_contact.jpg
+art/blender\vfx\rebuild_spells.py
+art/blender\vfx\raid_kit.blend
+art/blender\vfx\pillar_zone_ring.blend
+art/blender\vfx\phoenix.blend
+art/tools/vigie_vfx\_rivulet_log.txt.last.txt
+art/tools/vigie_vfx\_rivulet_log.txt
+art/tools/vigie_vfx\_rivulet.txt
+art/tools/vigie_vfx\_caltrop_log.txt.last.txt
+art/tools/vigie_vfx\_caltrop_log.txt
+art/tools/vigie_vfx\_caltrop_fix_log.txt
+art/tools/vigie_vfx\_caltrop_fix.txt
+art/tools/vigie_vfx\_caltrop.txt
+art/tools/vigie_vfx\caltrop_build.py
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 48 -First 18; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 85 -First 28; Get-Content art/tools/vigie_vfx/_rivulet_log.txt -Tail 10; Get-Content art/tools/vigie_vfx/caltrop_build.py -TotalCount 4; rg -n \"texture_budget|apply-policy|usage|argparse\" art/tools/texture_budget.py" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 30ms:
+    poly([(-12,1),(0,3),(18,0),(0,-2)],3,3)
+    line([(-21,-1+sway),(-12,-2+sway*.5),(-7,-1)],.8,2,4)
+   elif name=='rivulet_tile':
+    poly([(-66,-64),(66,-64),(66,64),(-66,64)],0,0)
+    for k in range(16):
+     y=-60+k*8; off=rng.random()*6.28
+     pts=[(-66+j*132/96,y+2*math.sin(math.tau*(-66+j*132/96)/128+off-phase*2)) for j in range(97)]
+     line(pts,1.2 if k%3 else 2,1 if k%3 else 3,1+k*.01)
+    for y in [-60,60]:
+     pts=[(x,y+1.2*math.sin(math.tau*x/128+phase*2)) for x in range(-66,67)]
+     line(pts,2,2,4)
+   elif name=='geyser':
+    energy=[.23,.45,.85,1,.93,.7,.45,.16][frame]
+    extent=[.55,.78,.96,1,1,1,.96,.9][frame]
+    if frame<7:
+     # Broken concentric water facets, rather than an opaque effect disc.
+     for band in range(7):
+      r=(band+1)*34*extent
+       t=j/8; width=(1-t)*22+3
+       line(pts[j:j+2],width,1 if k%3 else 2,5+k*.03)
+      line(pts,2.3,3,6+k*.03)
+     for k in range(12):
+      a=k*math.tau/12; r=(16+8*math.sin(k+phase))*energy
+      disk(r*math.cos(a),r*math.sin(a),18*energy,13*energy,2,8+k*.01)
+      arc(r*math.cos(a),r*math.sin(a),12*energy,a,a+2.5,2,3,9)
+     for k in range(42):
+      a=rng.random()*math.tau; r=(90+rng.random()*180)*energy
+      disk(r*math.cos(a),r*math.sin(a),2,4,3,8)
+   else:
+    fade=1 if frame<8 else [0.8,.55,.3,.1][frame-8]
+    for k in range(110):
+     a=k*math.tau/110
+     arc(0,0,637-2*math.sin(phase*2+k),a,a+.028*fade,1.8,3,3)
+    for k in range(720):
+     x=rng.uniform(-620,620); y=rng.uniform(-620,620); drift=(frame%8)*21
+     y=(y+drift+620)%1240-620
+     length=(8+22*rng.random())*fade
+     if math.hypot(x,y+length)<625 and k%10<max(1,10*fade):
+      line([(x,y),(x-.8,y+length)],.8+rng.random()*.7,3 if k%4 else 2,4)
+      if k%5==0: arc(x,y,3+4*rng.random(),phase+k,phase+k+4,1,3,2)
+    for k in range(80):
+     a=rng.random()*math.tau; r=math.sqrt(rng.random())*600
+     arc(r*math.cos(a),r*math.sin(a),(4+8*rng.random())*fade,phase+k,phase+k+3,1.1,3,2)
+   for mat,(verts,faces) in zip(mats,batches):
+    if not faces: continue
+    mesh=bpy.data.meshes.new('water facets'); mesh.from_pydata(verts,[],faces); mesh.materials.append(mat); obj=bpy.data.objects.new('water facets',mesh); s.collection.objects.link(obj)
+art/tools/vigie_vfx\_rivulet.txt
+art/tools/vigie_vfx\_caltrop_log.txt.last.txt
+art/tools/vigie_vfx\_caltrop_log.txt
+art/tools/vigie_vfx\_caltrop_fix_log.txt
+art/tools/vigie_vfx\_caltrop_fix.txt
+art/tools/vigie_vfx\_caltrop.txt
+art/tools/vigie_vfx\caltrop_build.py
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 48 -First 18; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 85 -First 28; Get-Content art/tools/vigie_vfx/_rivulet_log.txt -Tail 10; Get-Content art/tools/vigie_vfx/caltrop_build.py -TotalCount 4; rg -n \"texture_budget|apply-policy|usage|argparse\" art/tools/texture_budget.py" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+import bpy, math, os
+from mathutils import Vector
+ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','..'))
+OUT=os.path.join(ROOT,'game/assets/sprites/characters/vigie/caltrop_field')
+3:Usage : python art/tools/texture_budget.py [--strict] [--json <out.json>] [--top N]
+4:        python art/tools/texture_budget.py --apply-policy   (réécrit les .import hors politique)
+7:Lit les budgets dans game/tests/texture_budget.json (partagés avec game/tests/texture_budget_test).
+19:Sans --apply-policy, rien n'est modifié (mesure seulement).
+33:BUDGET = os.path.join(GAME, "tests", "texture_budget.json")
+196:    if "--apply-policy" in argv:
+241:        violations.append(f"{len(off_policy)} .import hors import_policy (corriger : texture_budget.py --apply-policy) : {off_policy[:4]}")
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 18 -First 28; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 103 -First 30" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 16ms:
+ common.configure_passes=compositor
+ for name,(size,count,loop,fps) in SPECS.items():
+  bpy.ops.wm.read_factory_settings(use_empty=True)
+  s=bpy.context.scene; cel.setup_scene(s,8); s.render.resolution_x=size*2; s.render.resolution_y=size*2; s.render.resolution_percentage=100
+  cam=bpy.data.cameras.new('TOP 128px/u' if size>48 else 'projectile 64px/u'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob; ob.location=(0,0,2000); cam.type='ORTHO'; cam.ortho_scale=size; cam.clip_end=4000
+  light=bpy.data.lights.new('studio','SUN'); light.energy=2.5; lo=bpy.data.objects.new('studio',light); s.collection.objects.link(lo); lo.rotation_euler=(.4,-.5,-.5)
+  mats=[]
+  for title,col,em in [('deep',(0.035,.075,.09),0),('water',(.07,.17,.20),0),('foam',(.54,.7,.73),0),('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),1)]:
+   mats.append(common.material(title,col,emission=em))
+  configure=cel.install('vfx',normals=False)
+  for frame in range(count):
+   target=WORK/name/('%02d.png'%frame); target.parent.mkdir(parents=True,exist_ok=True)
+   if target.exists() and list(target.parent.glob(target.stem+'_e__*.png')): continue
+   for ob in list(s.objects):
+    if ob.type=='MESH': bpy.data.objects.remove(ob,do_unlink=True)
+   batches=[([],[]) for _ in mats]; phase=2*math.pi*(frame%8)/8; rng=random.Random(812)
+   def poly(pts,mat=3,z=1):
+    vv,ff=batches[mat]; start=len(vv); vv.extend([(x,y,z) for x,y in pts]); ff.append(tuple(range(start,start+len(pts))))
+   def line(pts,width=2,mat=3,z=2):
+    for a,b in zip(pts,pts[1:]):
+     dx=b[0]-a[0]; dy=b[1]-a[1]; length=math.hypot(dx,dy) or 1; x=-dy/length*width/2; y=dx/length*width/2
+     poly([(a[0]+x,a[1]+y),(a[0]-x,a[1]-y),(b[0]-x,b[1]-y),(b[0]+x,b[1]+y)],mat,z)
+   def arc(x,y,r,a=0,b=math.tau,width=2,mat=3,z=2):
+    line([(x+r*math.cos(a+(b-a)*j/32),y+r*math.sin(a+(b-a)*j/32)) for j in range(33)],width,mat,z)
+   def disk(x,y,rx,ry,mat=0,z=0):
+    poly([(x+rx*math.cos(j*math.tau/48),y+ry*math.sin(j*math.tau/48)) for j in range(48)],mat,z)
+   if name=='droplet_small':
+    pulse=1+.10*math.sin(frame*math.pi/2)
+     length=(8+22*rng.random())*fade
+     if math.hypot(x,y+length)<625 and k%10<max(1,10*fade):
+      line([(x,y),(x-.8,y+length)],.8+rng.random()*.7,3 if k%4 else 2,4)
+      if k%5==0: arc(x,y,3+4*rng.random(),phase+k,phase+k+4,1,3,2)
+    for k in range(80):
+     a=rng.random()*math.tau; r=math.sqrt(rng.random())*600
+     arc(r*math.cos(a),r*math.sin(a),(4+8*rng.random())*fade,phase+k,phase+k+3,1.1,3,2)
+   for mat,(verts,faces) in zip(mats,batches):
+    if not faces: continue
+    mesh=bpy.data.meshes.new('water facets'); mesh.from_pydata(verts,[],faces); mesh.materials.append(mat); obj=bpy.data.objects.new('water facets',mesh); s.collection.objects.link(obj)
+   configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
+   print('AVSV rendered',name,frame,flush=True)
+  cel.uninstall()
+ print('AVSV RENDER PASS',flush=True)
+
+def pack():
+ from PIL import Image
+ import numpy as np
+ import cel_style as cel
+ samples=[]
+ for name,(size,count,loop,fps) in SPECS.items():
+  dest=OUT/name; dest.mkdir(parents=True,exist_ok=True)
+  per=(4096//size)**2; cols=min(4096//size,count); entries=[]; sheetnames=[]; seen=set()
+  for start in range(0,count,per):
+   n=min(per,count-start); rows=math.ceil(n/cols); width=cols*size; height=rows*size
+   sheets=[Image.new('RGBA',(width,height)),Image.new('RGBA',(width//2,height//2))]
+   for j in range(n):
+    f=start+j; path=WORK/name/('%02d.png'%f); im=Image.open(path).convert('RGBA').resize((size,size),Image.Resampling.LANCZOS)
+    ep=next(path.parent.glob(path.stem+'_e__*.png')); em=Image.open(ep).convert('RGBA').resize((size//2,size//2),Image.Resampling.LANCZOS)
+    if name=='rivulet_tile':
+
+codex
+Le générateur existant ne sait faire que 4 frames pour la tuile. Je crée un script de lot dédié qui réutilise son pipeline cel, avec atlas et ressources adaptés aux deux animations.
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; Get-Content art/tools/night/avsv_build.py | Select-Object -Skip 145 -First 48; rg -n \"def setup_scene|def configure_passes\" art/tools/cel/cel_style.py" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 24ms:
+    sheets[0].paste(im,(x,y)); sheets[1].paste(em,(x//2,y//2)); entries.append((len(sheetnames),x,y))
+    samples.append((name,f,im.copy()))
+   stem=name+('_'+str(len(sheetnames)) if count>per else '')
+   for sheet,suffix in zip(sheets,['','_e']): sheet.save(dest/(stem+suffix+'.png'),optimize=True)
+   sheetnames.append(stem)
+   cel.check_sheet(str((dest/(stem+'.png')).relative_to(ROOT/'game/assets/sprites')),normals=False)
+  for emission in [False,True]:
+   text=['[gd_resource type="SpriteFrames" format=3]']
+   for i,stem in enumerate(sheetnames):
+    suffix='_e' if emission else ''; path=(dest/(stem+suffix+'.png')).relative_to(ROOT/'game').as_posix()
+    text.append(f'[ext_resource type="Texture2D" path="res://{path}" id="{i}"]')
+   for f,(idx,x,y) in enumerate(entries):
+    # Existing Averse convention: emission regions stay in diffuse coordinates.
+    factor=1
+    text.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = ExtResource("{idx}")\nregion = Rect2({x//factor}, {y//factor}, {size//factor}, {size//factor})')
+   anims=[]
+   for anim,ids,lp in [('default',range(8 if name=='monsoon_zone' else count),loop)]+([('end',range(8,12),False)] if name=='monsoon_zone' else []):
+    frames=', '.join('{"duration": 1.0, "texture": SubResource("f%d")}'%f for f in ids)
+    anims.append('{"frames": [%s], "loop": %s, "name": &"%s", "speed": %s}'%(frames,str(lp).lower(),anim,fps))
+   text.append('[resource]\nanimations = ['+', '.join(anims)+']')
+   (dest/(name+('_emission' if emission else '')+'.tres')).write_text('\n\n'.join(text)+'\n')
+  mirror=ROOT/'game/assets/sprites/characters/averse_cel/variants'/name; mirror.mkdir(parents=True,exist_ok=True)
+  for p in dest.iterdir():
+   if p.suffix=='.png': shutil.copy2(p,mirror/p.name)
+   elif p.suffix=='.tres': (mirror/p.name).write_text(p.read_text().replace('/averse/','/averse_cel/'))
+ # Pillow only assembles/resizes rendered images. No drawing.
+ thumb=112; sheet=Image.new('RGB',(12*thumb,8*thumb))
+ for bi,bg in enumerate(['#0A0D12','#2E3238']):
+  for row,name in enumerate(SPECS):
+   for nm,f,im in samples:
+    if nm!=name: continue
+    tile=Image.new('RGBA',(thumb,thumb),bg); im.thumbnail((thumb,thumb),Image.Resampling.LANCZOS); tile.alpha_composite(im,((thumb-im.width)//2,(thumb-im.height)//2)); sheet.paste(tile.convert('RGB'),(f*thumb,(bi*4+row)*thumb))
+ sheet.save(ROOT/'art/tools/night/_avsv_contact.png')
+ print('AVSV PACK PASS: 28 frames, 4 effects, cel mirrors, emission half-size, no normals')
+
+if __name__=='__main__':
+ if '--pack' in sys.argv: pack()
+ else: render()
+
+84:def setup_scene(scene=None, samples=EEVEE_SAMPLES):
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1\art\tools\vigie_vfx\rivulet_build.py
+diff --git a/art/tools/vigie_vfx/rivulet_build.py b/art/tools/vigie_vfx/rivulet_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..808ee3c89d82add3e48ae18d525cb097eb40edcb
+--- /dev/null
++++ b/art/tools/vigie_vfx/rivulet_build.py
+@@ -0,0 +1,121 @@
++"""Build rivulet tile and burst sprite sheets with Blender cel materials."""
++import math, os, random, subprocess, sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants'
++WORK = ROOT / 'art/blender/rivulet'
++sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++
++def render():
++    import bpy, cel_style as cel
++    from mathutils import Vector
++    from pathlib import Path
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import boss_common as common
++    for name, w, h, count in [('rivulet_tile',128,128,8),('rivulet_burst',768,256,7)]:
++        bpy.ops.wm.read_factory_settings(use_empty=True)
++        s=bpy.context.scene; cel.setup_scene(s,8)
++        s.render.resolution_x=w*2; s.render.resolution_y=h*2; s.render.resolution_percentage=100
++        cam=bpy.data.cameras.new('Orthographic'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob
++        ob.location=(0,0,2000); cam.type='ORTHO'; cam.ortho_scale=max(w,h); cam.clip_end=4000
++        light=bpy.data.lights.new('studio','SUN'); light.energy=2.5; lo=bpy.data.objects.new('studio',light); s.collection.objects.link(lo); lo.rotation_euler=(.4,-.5,-.5)
++        mats=[common.material('deep',(.035,.075,.09)), common.material('water',(.07,.17,.20)), common.material('foam',(.54,.7,.73)), common.material('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),emission=1)]
++        def compositor(path):
++            tree=bpy.data.node_groups.new('Rivulet emission','CompositorNodeTree'); s.compositing_node_group=tree
++            tree.interface.new_socket(name='Image',in_out='OUTPUT',socket_type='NodeSocketColor')
++            nodes=tree.nodes; links=tree.links; rl=nodes.new('CompositorNodeRLayers'); out=nodes.new('NodeGroupOutput'); links.new(rl.outputs['Image'],out.inputs['Image'])
++            f=nodes.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; links.new(rl.outputs['Image'],f.inputs[0])
++        common.configure_passes=compositor; cel.install('vfx',normals=False)
++        for frame in range(count):
++            for obj in list(s.objects):
++                if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
++            batch=[([],[]) for _ in mats]
++            def poly(points,mat,z):
++                verts,faces=batch[mat]; start=len(verts); verts.extend([(x,y,z) for x,y in points]); faces.append(tuple(range(start,start+len(points))))
++            def stroke(points,width,mat,z):
++                for a,b in zip(points,points[1:]):
++                    dx=b[0]-a[0]; dy=b[1]-a[1]; ln=math.hypot(dx,dy) or 1; x=-dy/ln*width/2; y=dx/ln*width/2
++                    poly([(a[0]+x,a[1]+y),(a[0]-x,a[1]-y),(b[0]-x,b[1]-y),(b[0]+x,b[1]+y)],mat,z)
++            def ellipse(x,y,rx,ry,mat,z):
++                poly([(x+rx*math.cos(j*math.tau/32),y+ry*math.sin(j*math.tau/32)) for j in range(33)],mat,z)
++            if name=='rivulet_tile':
++                full=frame>=4; phase=math.tau*(frame%4)/4
++                # Dark stone channel and edge gutters, precisely periodic at the atlas seam.
++                poly([(-64,-64),(64,-64),(64,64),(-64,64)],0,0)
++                for y in (-56,56): stroke([(-64,y),(64,y)],5,1,1)
++                if not full:
++                    for x,y in [(-47,-25),(21,30),(52,-41),(-8,48)]:
++                        ellipse(x+4*math.sin(phase),y,2,3,2,2)
++                    stroke([(-64,3*math.sin(phase)),(0,2*math.sin(phase+1)),(64,3*math.sin(phase))],1.6,2,2)
++                else:
++                    for k in range(7):
++                        y=-40+k*13; pts=[(x, y+4*math.sin(x/17+phase+k*.7)) for x in range(-64,65,2)]
++                        stroke(pts,4 if k%2 else 6,1,2); stroke(pts,1.5,2,3)
++                    for y in (-55,55):
++                        pts=[(x,y+2*math.sin(x/12+phase)) for x in range(-64,65,2)]
++                        stroke(pts,2,2,3); stroke(pts,1.2,3,4)
++            else:
++                # Six-unit trough with a left-to-right surge, narrowing on the last frame.
++                t=frame/6; front=-370+760*t; width=80 if frame<6 else 42
++                poly([(-384,-26),(384,-26),(384,26),(-384,26)],1,0)
++                for x in range(-372,373,32): stroke([(x,-24),(x,24)],1,0,1)
++                rng=random.Random(991+frame)
++                for k in range(15):
++                    x=-360+k*48
++                    if x <= front:
++                        y=math.sin(k*2.1+frame)*width*.22
++                        pts=[(x+j*5,y+6*math.sin(j*.32+k+frame*.7)) for j in range(10)]
++                        stroke(pts,7,1,2); stroke(pts,2.4,2,3)
++                if frame<6:
++                    for j in range(7):
++                        y=(j-3)*width/4
++                        x=front+8*math.sin(j*2+frame)
++                        stroke([(x-46,y-4),(x-24,y+5),(x,y),(x+18,y+8)],5 if j%2 else 8,2 if j%2 else 3,4)
++                    for k in range(16):
++                        x=front+rng.uniform(-58,34); y=rng.choice([-1,1])*rng.uniform(18,112)
++                        ellipse(x,y,2,4,2 if k%3 else 3,4)
++                else:
++                    stroke([(x,24+3*math.sin(x/18)) for x in range(-384,385,4)],2,2,3)
++            for idx,(verts,faces) in enumerate(batch):
++                if faces:
++                    mesh=bpy.data.meshes.new('water facets'); mesh.from_pydata(verts,[],faces); mesh.materials.append(mats[idx]); obj=bpy.data.objects.new('water facets',mesh); s.collection.objects.link(obj)
++            target=WORK/name/f'{frame:02d}.png'; target.parent.mkdir(parents=True,exist_ok=True)
++            configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
++        cel.uninstall()
++    print('RIVULET RENDER PASS',flush=True)
++
++def pack():
++    from PIL import Image
++    specs=[('rivulet_tile',128,128,8,1024,128),('rivulet_burst',768,256,7,3072,512)]
++    for name,w,h,count,sw,sh in specs:
++        dest=OUT/name; dest.mkdir(parents=True,exist_ok=True)
++        diffuse=Image.new('RGBA',(sw,sh)); emission=Image.new('RGBA',(sw//2,sh//2))
++        cols=8 if name.endswith('tile') else 4
++        for f in range(count):
++            src=Image.open(WORK/name/f'{f:02d}.png').convert('RGBA').resize((w,h),Image.Resampling.LANCZOS)
++            ep=next((WORK/name).glob(f'{f:02d}_e__*.png')); glow=Image.open(ep).convert('RGBA').resize((w//2,h//2),Image.Resampling.LANCZOS)
++            if name=='rivulet_tile':
++                src.paste(src.crop((0,0,1,h)),(w-1,0)); glow.paste(glow.crop((0,0,1,h//2)),(w//2-1,0))
++            x=(f%cols)*w; y=(f//cols)*h; diffuse.paste(src,(x,y)); emission.paste(glow,(x//2,y//2))
++        diffuse.save(dest/f'{name}.png',optimize=True); emission.save(dest/f'{name}_e.png',optimize=True)
++        frames=[]
++        for f in range(count):
++            x=(f%cols)*w; y=(f//cols)*h
++            frames.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = ExtResource("0")\nregion = Rect2({x}, {y}, {w}, {h})')
++        ext=f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/{name}/{name}.png" id="0"]'
++        def anim(label,ids,loop,fps):
++            fs=', '.join(f'{{"duration": 1.0, "texture": SubResource("f{i}")}}' for i in ids)
++            return f'{{"frames": [{fs}], "loop": {str(loop).lower()}, "name": &"{label}", "speed": {fps}}}'
++        if name=='rivulet_tile': animations=[anim('empty',range(4),True,10),anim('full',range(4,8),True,10),anim('default',range(4,8),True,10)]
++        else: animations=[anim('default',range(7),False,22)]
++        text='[gd_resource type="SpriteFrames" format=3]\n\n'+ext+'\n\n'+'\n\n'.join(frames)+'\n\n[resource]\nanimations = ['+', '.join(animations)+']\n'
++        (dest/f'{name}.tres').write_text(text,encoding='utf-8')
++        if name=='rivulet_tile':
++            # Keep compatibility resource synchronized with new animations.
++            (dest/f'{name}_emission.tres').write_text(text.replace(f'{name}.png',f'{name}_e.png'),encoding='utf-8')
++    print('RIVULET PACK PASS',flush=True)
++
++if __name__=='__main__':
++    if '--pack' in sys.argv: pack()
++    else: render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; rg -n \"def material\" art/tools/bosses/boss_common.py; Get-Content art/tools/bosses/boss_common.py | Select-Object -First 36" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 28ms:
+9:def material(name, color, metallic=0, roughness=.5, emission=0, grain=False):
+"""Pipeline Blender des boss. Axe avant = -Y, Z vertical, 1 u = 1 m."""
+import bpy, math
+from pathlib import Path
+from mathutils import Vector
+ROOT = Path(__file__).resolve().parents[3]
+DIRECTIONS = {'e': math.pi/2, 'se': math.pi/4, 's': 0, 'sw': -math.pi/4,
+              'w': -math.pi/2, 'nw': -3*math.pi/4, 'n': math.pi, 'ne': 3*math.pi/4}
+
+def material(name, color, metallic=0, roughness=.5, emission=0, grain=False):
+    m=bpy.data.materials.new(name); m.diffuse_color=(*color,1); m.use_nodes=True
+    n=m.node_tree.nodes; p=n.get('Principled BSDF')
+    p.inputs['Base Color'].default_value=(*color,1)
+    p.inputs['Metallic'].default_value=metallic; p.inputs['Roughness'].default_value=roughness
+    p.inputs['Emission Color'].default_value=(*color,1); p.inputs['Emission Strength'].default_value=emission
+    if grain:
+        tex=n.new('ShaderNodeTexNoise'); tex.inputs['Scale'].default_value=7
+        tex.inputs['Detail'].default_value=3
+        coord=n.new('ShaderNodeTexCoord'); mapping=n.new('ShaderNodeVectorMath'); mapping.operation='MULTIPLY'; mapping.inputs[1].default_value=(5,5,.4)
+        m.node_tree.links.new(coord.outputs['Generated'],mapping.inputs[0]); m.node_tree.links.new(mapping.outputs[0],tex.inputs['Vector'])
+        bump=n.new('ShaderNodeBump'); bump.inputs['Strength'].default_value=.23; bump.inputs['Distance'].default_value=.045
+        m.node_tree.links.new(tex.outputs['Fac'],bump.inputs['Height']); m.node_tree.links.new(bump.outputs[0],p.inputs['Normal'])
+    return m
+
+def empty(name, loc=(0,0,0), parent=None):
+    ob=bpy.data.objects.new(name,None); bpy.context.collection.objects.link(ob); ob.location=loc; ob.parent=parent; return ob
+
+def finish(ob,name,mat,parent=None,bevel=0):
+    ob.name=name; ob.parent=parent
+    if mat: ob.data.materials.append(mat)
+    if bevel:
+        mod=ob.modifiers.new('Aretes usees','BEVEL'); mod.width=bevel; mod.segments=3
+        mod=ob.modifiers.new('Normales ponderees','WEIGHTED_NORMAL')
+    return ob
+
+def box(name,loc,size,mat,parent=None,bevel=.035):
+    bpy.ops.mesh.primitive_cube_add(size=1,location=loc); ob=bpy.context.object
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\";" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 4ms:
+codex
+Je corrige maintenant la caméra pour les cellules non carrées, puis lance un rendu Blender unique en arrière-plan et l’assemblage.
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1\art\tools\vigie_vfx\rivulet_build.py
+diff --git a/art/tools/vigie_vfx/rivulet_build.py b/art/tools/vigie_vfx/rivulet_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..351f7f8e0778f85b90a6fb1753f64b596cd53ca2
+--- /dev/null
++++ b/art/tools/vigie_vfx/rivulet_build.py
+@@ -0,0 +1,123 @@
++"""Build rivulet tile and burst sprite sheets with Blender cel materials."""
++import math, os, random, subprocess, sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants'
++WORK = ROOT / 'art/blender/rivulet'
++sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++
++def render():
++    import bpy, cel_style as cel
++    from mathutils import Vector
++    from pathlib import Path
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import boss_common as common
++    for name, w, h, count in [('rivulet_tile',128,128,8),('rivulet_burst',768,256,7)]:
++        bpy.ops.wm.read_factory_settings(use_empty=True)
++        s=bpy.context.scene; cel.setup_scene(s,8)
++        s.render.resolution_x=w*2; s.render.resolution_y=h*2; s.render.resolution_percentage=100
++        cam=bpy.data.cameras.new('Orthographic'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob
++        ob.location=(0,0,2000); cam.type='ORTHO'; cam.ortho_scale=h; cam.clip_end=4000
++        cam.lens=50
++        s.render.resolution_x=w*2; s.render.resolution_y=h*2
++        light=bpy.data.lights.new('studio','SUN'); light.energy=2.5; lo=bpy.data.objects.new('studio',light); s.collection.objects.link(lo); lo.rotation_euler=(.4,-.5,-.5)
++        mats=[common.material('deep',(.035,.075,.09)), common.material('water',(.07,.17,.20)), common.material('foam',(.54,.7,.73)), common.material('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),emission=1)]
++        def compositor(path):
++            tree=bpy.data.node_groups.new('Rivulet emission','CompositorNodeTree'); s.compositing_node_group=tree
++            tree.interface.new_socket(name='Image',in_out='OUTPUT',socket_type='NodeSocketColor')
++            nodes=tree.nodes; links=tree.links; rl=nodes.new('CompositorNodeRLayers'); out=nodes.new('NodeGroupOutput'); links.new(rl.outputs['Image'],out.inputs['Image'])
++            f=nodes.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; links.new(rl.outputs['Image'],f.inputs[0])
++        common.configure_passes=compositor; cel.install('vfx',normals=False)
++        for frame in range(count):
++            for obj in list(s.objects):
++                if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
++            batch=[([],[]) for _ in mats]
++            def poly(points,mat,z):
++                verts,faces=batch[mat]; start=len(verts); verts.extend([(x,y,z) for x,y in points]); faces.append(tuple(range(start,start+len(points))))
++            def stroke(points,width,mat,z):
++                for a,b in zip(points,points[1:]):
++                    dx=b[0]-a[0]; dy=b[1]-a[1]; ln=math.hypot(dx,dy) or 1; x=-dy/ln*width/2; y=dx/ln*width/2
++                    poly([(a[0]+x,a[1]+y),(a[0]-x,a[1]-y),(b[0]-x,b[1]-y),(b[0]+x,b[1]+y)],mat,z)
++            def ellipse(x,y,rx,ry,mat,z):
++                poly([(x+rx*math.cos(j*math.tau/32),y+ry*math.sin(j*math.tau/32)) for j in range(33)],mat,z)
++            if name=='rivulet_tile':
++                full=frame>=4; phase=math.tau*(frame%4)/4
++                # Dark stone channel and edge gutters, precisely periodic at the atlas seam.
++                poly([(-64,-64),(64,-64),(64,64),(-64,64)],0,0)
++                for y in (-56,56): stroke([(-64,y),(64,y)],5,1,1)
++                if not full:
++                    for x,y in [(-47,-25),(21,30),(52,-41),(-8,48)]:
++                        ellipse(x+4*math.sin(phase),y,2,3,2,2)
++                    stroke([(-64,3*math.sin(phase)),(0,2*math.sin(phase+1)),(64,3*math.sin(phase))],1.6,2,2)
++                else:
++                    for k in range(7):
++                        y=-40+k*13; pts=[(x, y+4*math.sin(x/17+phase+k*.7)) for x in range(-64,65,2)]
++                        stroke(pts,4 if k%2 else 6,1,2); stroke(pts,1.5,2,3)
++                    for y in (-55,55):
++                        pts=[(x,y+2*math.sin(x/12+phase)) for x in range(-64,65,2)]
++                        stroke(pts,2,2,3); stroke(pts,1.2,3,4)
++            else:
++                # Six-unit trough with a left-to-right surge, narrowing on the last frame.
++                t=frame/6; front=-370+760*t; width=80 if frame<6 else 42
++                poly([(-384,-26),(384,-26),(384,26),(-384,26)],1,0)
++                for x in range(-372,373,32): stroke([(x,-24),(x,24)],1,0,1)
++                rng=random.Random(991+frame)
++                for k in range(15):
++                    x=-360+k*48
++                    if x <= front:
++                        y=math.sin(k*2.1+frame)*width*.22
++                        pts=[(x+j*5,y+6*math.sin(j*.32+k+frame*.7)) for j in range(10)]
++                        stroke(pts,7,1,2); stroke(pts,2.4,2,3)
++                if frame<6:
++                    for j in range(7):
++                        y=(j-3)*width/4
++                        x=front+8*math.sin(j*2+frame)
++                        stroke([(x-46,y-4),(x-24,y+5),(x,y),(x+18,y+8)],5 if j%2 else 8,2 if j%2 else 3,4)
++                    for k in range(16):
++                        x=front+rng.uniform(-58,34); y=rng.choice([-1,1])*rng.uniform(18,112)
++                        ellipse(x,y,2,4,2 if k%3 else 3,4)
++                else:
++                    stroke([(x,24+3*math.sin(x/18)) for x in range(-384,385,4)],2,2,3)
++            for idx,(verts,faces) in enumerate(batch):
++                if faces:
++                    mesh=bpy.data.meshes.new('water facets'); mesh.from_pydata(verts,[],faces); mesh.materials.append(mats[idx]); obj=bpy.data.objects.new('water facets',mesh); s.collection.objects.link(obj)
++            target=WORK/name/f'{frame:02d}.png'; target.parent.mkdir(parents=True,exist_ok=True)
++            configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
++        cel.uninstall()
++    print('RIVULET RENDER PASS',flush=True)
++
++def pack():
++    from PIL import Image
++    specs=[('rivulet_tile',128,128,8,1024,128),('rivulet_burst',768,256,7,3072,512)]
++    for name,w,h,count,sw,sh in specs:
++        dest=OUT/name; dest.mkdir(parents=True,exist_ok=True)
++        diffuse=Image.new('RGBA',(sw,sh)); emission=Image.new('RGBA',(sw//2,sh//2))
++        cols=8 if name.endswith('tile') else 4
++        for f in range(count):
++            src=Image.open(WORK/name/f'{f:02d}.png').convert('RGBA').resize((w,h),Image.Resampling.LANCZOS)
++            ep=next((WORK/name).glob(f'{f:02d}_e__*.png')); glow=Image.open(ep).convert('RGBA').resize((w//2,h//2),Image.Resampling.LANCZOS)
++            if name=='rivulet_tile':
++                src.paste(src.crop((0,0,1,h)),(w-1,0)); glow.paste(glow.crop((0,0,1,h//2)),(w//2-1,0))
++            x=(f%cols)*w; y=(f//cols)*h; diffuse.paste(src,(x,y)); emission.paste(glow,(x//2,y//2))
++        diffuse.save(dest/f'{name}.png',optimize=True); emission.save(dest/f'{name}_e.png',optimize=True)
++        frames=[]
++        for f in range(count):
++            x=(f%cols)*w; y=(f//cols)*h
++            frames.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = ExtResource("0")\nregion = Rect2({x}, {y}, {w}, {h})')
++        ext=f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/{name}/{name}.png" id="0"]'
++        def anim(label,ids,loop,fps):
++            fs=', '.join(f'{{"duration": 1.0, "texture": SubResource("f{i}")}}' for i in ids)
++            return f'{{"frames": [{fs}], "loop": {str(loop).lower()}, "name": &"{label}", "speed": {fps}}}'
++        if name=='rivulet_tile': animations=[anim('empty',range(4),True,10),anim('full',range(4,8),True,10),anim('default',range(4,8),True,10)]
++        else: animations=[anim('default',range(7),False,22)]
++        text='[gd_resource type="SpriteFrames" format=3]\n\n'+ext+'\n\n'+'\n\n'.join(frames)+'\n\n[resource]\nanimations = ['+', '.join(animations)+']\n'
++        (dest/f'{name}.tres').write_text(text,encoding='utf-8')
++        if name=='rivulet_tile':
++            # Keep compatibility resource synchronized with new animations.
++            (dest/f'{name}_emission.tres').write_text(text.replace(f'{name}.png',f'{name}_e.png'),encoding='utf-8')
++    print('RIVULET PACK PASS',flush=True)
++
++if __name__=='__main__':
++    if '--pack' in sys.argv: pack()
++    else: render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/vigie_vfx/rivulet_build.py *> art/tools/vigie_vfx/_rivulet_log.txt; python art/tools/vigie_vfx/rivulet_build.py --pack *> art/tools/vigie_vfx/_rivulet_pack_log.txt; Get-Content art/tools/vigie_vfx/_rivulet_log.txt -Tail 3; Get-Content art/tools/vigie_vfx/_rivulet_pack_log.txt -Tail 3" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 2730ms:
+out-file : The process cannot access the file 
+'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1\art\tools\vigie_vfx\_rivulet_log.txt' 
+because it is being used by another process.
+At line:2 char:83
++ ... a90582fc1"; & "C:\Program Files\Blender Foundation\Blender 5.2\blende ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OpenError: (:) [Out-File], IOException
+    + FullyQualifiedErrorId : FileOpenFailure,Microsoft.PowerShell.Commands.OutFileCommand
+ 
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/vigie_vfx/rivulet_build.py *> art/tools/vigie_vfx/_rivulet_log.txt; python art/tools/vigie_vfx/rivulet_build.py --pack *> art/tools/vigie_vfx/_rivulet_pack_log.txt; Get-Content art/tools/vigie_vfx/_rivulet_log.txt -Tail 3; Get-Content art/tools/vigie_vfx/_rivulet_pack_log.txt -Tail 3" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\age
+nt-a94b6f23a90582fc1\\art\\blender\\rivulet\\rivulet_tile\\00.png'
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/vigie_vfx/rivulet_build.py *> art/tools/vigie_vfx/_rivulet_build_run.txt; Get-Content art/tools/vigie_vfx/_rivulet_build_run.txt -Tail 12" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 2426ms:
+line 123, in <module>
+    else: render()
+          ~~~~~~^^
+  File 
+"C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1\art\tools\vigie_vfx\rivulet_build.py", 
+line 86, in render
+    configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
+    ^^^^^^^^^
+NameError: name 'configure' is not defined
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+
+apply patch
+patch: completed
+C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1\art\tools\vigie_vfx\rivulet_build.py
+diff --git a/art/tools/vigie_vfx/rivulet_build.py b/art/tools/vigie_vfx/rivulet_build.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b9cf86cceae993af797a4173c4308d2645538898
+--- /dev/null
++++ b/art/tools/vigie_vfx/rivulet_build.py
+@@ -0,0 +1,123 @@
++"""Build rivulet tile and burst sprite sheets with Blender cel materials."""
++import math, os, random, subprocess, sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[3]
++OUT = ROOT / 'game/assets/sprites/characters/averse/variants'
++WORK = ROOT / 'art/blender/rivulet'
++sys.path.insert(0, str(ROOT / 'art/tools/cel'))
++
++def render():
++    import bpy, cel_style as cel
++    from mathutils import Vector
++    from pathlib import Path
++    sys.path.insert(0, str(ROOT / 'art/tools/bosses'))
++    import boss_common as common
++    for name, w, h, count in [('rivulet_tile',128,128,8),('rivulet_burst',768,256,7)]:
++        bpy.ops.wm.read_factory_settings(use_empty=True)
++        s=bpy.context.scene; cel.setup_scene(s,8)
++        s.render.resolution_x=w*2; s.render.resolution_y=h*2; s.render.resolution_percentage=100
++        cam=bpy.data.cameras.new('Orthographic'); ob=bpy.data.objects.new('Camera',cam); s.collection.objects.link(ob); s.camera=ob
++        ob.location=(0,0,2000); cam.type='ORTHO'; cam.ortho_scale=h; cam.clip_end=4000
++        cam.lens=50
++        s.render.resolution_x=w*2; s.render.resolution_y=h*2
++        light=bpy.data.lights.new('studio','SUN'); light.energy=2.5; lo=bpy.data.objects.new('studio',light); s.collection.objects.link(lo); lo.rotation_euler=(.4,-.5,-.5)
++        mats=[common.material('deep',(.035,.075,.09)), common.material('water',(.07,.17,.20)), common.material('foam',(.54,.7,.73)), common.material('cyan',tuple(((v/255+.055)/1.055)**2.4 for v in (95,212,232)),emission=1)]
++        def compositor(path):
++            tree=bpy.data.node_groups.new('Rivulet emission','CompositorNodeTree'); s.compositing_node_group=tree
++            tree.interface.new_socket(name='Image',in_out='OUTPUT',socket_type='NodeSocketColor')
++            nodes=tree.nodes; links=tree.links; rl=nodes.new('CompositorNodeRLayers'); out=nodes.new('NodeGroupOutput'); links.new(rl.outputs['Image'],out.inputs['Image'])
++            f=nodes.new('CompositorNodeOutputFile'); f.directory=str(path.parent); f.file_name=path.stem+'_e__'; f.file_output_items.new('RGBA','Image'); f.format.media_type='IMAGE'; f.format.file_format='PNG'; f.format.color_mode='RGBA'; f.format.color_depth='8'; links.new(rl.outputs['Image'],f.inputs[0])
++        common.configure_passes=compositor; configure=cel.install('vfx',normals=False)
++        for frame in range(count):
++            for obj in list(s.objects):
++                if obj.type=='MESH': bpy.data.objects.remove(obj,do_unlink=True)
++            batch=[([],[]) for _ in mats]
++            def poly(points,mat,z):
++                verts,faces=batch[mat]; start=len(verts); verts.extend([(x,y,z) for x,y in points]); faces.append(tuple(range(start,start+len(points))))
++            def stroke(points,width,mat,z):
++                for a,b in zip(points,points[1:]):
++                    dx=b[0]-a[0]; dy=b[1]-a[1]; ln=math.hypot(dx,dy) or 1; x=-dy/ln*width/2; y=dx/ln*width/2
++                    poly([(a[0]+x,a[1]+y),(a[0]-x,a[1]-y),(b[0]-x,b[1]-y),(b[0]+x,b[1]+y)],mat,z)
++            def ellipse(x,y,rx,ry,mat,z):
++                poly([(x+rx*math.cos(j*math.tau/32),y+ry*math.sin(j*math.tau/32)) for j in range(33)],mat,z)
++            if name=='rivulet_tile':
++                full=frame>=4; phase=math.tau*(frame%4)/4
++                # Dark stone channel and edge gutters, precisely periodic at the atlas seam.
++                poly([(-64,-64),(64,-64),(64,64),(-64,64)],0,0)
++                for y in (-56,56): stroke([(-64,y),(64,y)],5,1,1)
++                if not full:
++                    for x,y in [(-47,-25),(21,30),(52,-41),(-8,48)]:
++                        ellipse(x+4*math.sin(phase),y,2,3,2,2)
++                    stroke([(-64,3*math.sin(phase)),(0,2*math.sin(phase+1)),(64,3*math.sin(phase))],1.6,2,2)
++                else:
++                    for k in range(7):
++                        y=-40+k*13; pts=[(x, y+4*math.sin(x/17+phase+k*.7)) for x in range(-64,65,2)]
++                        stroke(pts,4 if k%2 else 6,1,2); stroke(pts,1.5,2,3)
++                    for y in (-55,55):
++                        pts=[(x,y+2*math.sin(x/12+phase)) for x in range(-64,65,2)]
++                        stroke(pts,2,2,3); stroke(pts,1.2,3,4)
++            else:
++                # Six-unit trough with a left-to-right surge, narrowing on the last frame.
++                t=frame/6; front=-370+760*t; width=80 if frame<6 else 42
++                poly([(-384,-26),(384,-26),(384,26),(-384,26)],1,0)
++                for x in range(-372,373,32): stroke([(x,-24),(x,24)],1,0,1)
++                rng=random.Random(991+frame)
++                for k in range(15):
++                    x=-360+k*48
++                    if x <= front:
++                        y=math.sin(k*2.1+frame)*width*.22
++                        pts=[(x+j*5,y+6*math.sin(j*.32+k+frame*.7)) for j in range(10)]
++                        stroke(pts,7,1,2); stroke(pts,2.4,2,3)
++                if frame<6:
++                    for j in range(7):
++                        y=(j-3)*width/4
++                        x=front+8*math.sin(j*2+frame)
++                        stroke([(x-46,y-4),(x-24,y+5),(x,y),(x+18,y+8)],5 if j%2 else 8,2 if j%2 else 3,4)
++                    for k in range(16):
++                        x=front+rng.uniform(-58,34); y=rng.choice([-1,1])*rng.uniform(18,112)
++                        ellipse(x,y,2,4,2 if k%3 else 3,4)
++                else:
++                    stroke([(x,24+3*math.sin(x/18)) for x in range(-384,385,4)],2,2,3)
++            for idx,(verts,faces) in enumerate(batch):
++                if faces:
++                    mesh=bpy.data.meshes.new('water facets'); mesh.from_pydata(verts,[],faces); mesh.materials.append(mats[idx]); obj=bpy.data.objects.new('water facets',mesh); s.collection.objects.link(obj)
++            target=WORK/name/f'{frame:02d}.png'; target.parent.mkdir(parents=True,exist_ok=True)
++            configure(target); s.render.filepath=str(target); bpy.ops.render.render(write_still=True)
++        cel.uninstall()
++    print('RIVULET RENDER PASS',flush=True)
++
++def pack():
++    from PIL import Image
++    specs=[('rivulet_tile',128,128,8,1024,128),('rivulet_burst',768,256,7,3072,512)]
++    for name,w,h,count,sw,sh in specs:
++        dest=OUT/name; dest.mkdir(parents=True,exist_ok=True)
++        diffuse=Image.new('RGBA',(sw,sh)); emission=Image.new('RGBA',(sw//2,sh//2))
++        cols=8 if name.endswith('tile') else 4
++        for f in range(count):
++            src=Image.open(WORK/name/f'{f:02d}.png').convert('RGBA').resize((w,h),Image.Resampling.LANCZOS)
++            ep=next((WORK/name).glob(f'{f:02d}_e__*.png')); glow=Image.open(ep).convert('RGBA').resize((w//2,h//2),Image.Resampling.LANCZOS)
++            if name=='rivulet_tile':
++                src.paste(src.crop((0,0,1,h)),(w-1,0)); glow.paste(glow.crop((0,0,1,h//2)),(w//2-1,0))
++            x=(f%cols)*w; y=(f//cols)*h; diffuse.paste(src,(x,y)); emission.paste(glow,(x//2,y//2))
++        diffuse.save(dest/f'{name}.png',optimize=True); emission.save(dest/f'{name}_e.png',optimize=True)
++        frames=[]
++        for f in range(count):
++            x=(f%cols)*w; y=(f//cols)*h
++            frames.append(f'[sub_resource type="AtlasTexture" id="f{f}"]\natlas = ExtResource("0")\nregion = Rect2({x}, {y}, {w}, {h})')
++        ext=f'[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/{name}/{name}.png" id="0"]'
++        def anim(label,ids,loop,fps):
++            fs=', '.join(f'{{"duration": 1.0, "texture": SubResource("f{i}")}}' for i in ids)
++            return f'{{"frames": [{fs}], "loop": {str(loop).lower()}, "name": &"{label}", "speed": {fps}}}'
++        if name=='rivulet_tile': animations=[anim('empty',range(4),True,10),anim('full',range(4,8),True,10),anim('default',range(4,8),True,10)]
++        else: animations=[anim('default',range(7),False,22)]
++        text='[gd_resource type="SpriteFrames" format=3]\n\n'+ext+'\n\n'+'\n\n'.join(frames)+'\n\n[resource]\nanimations = ['+', '.join(animations)+']\n'
++        (dest/f'{name}.tres').write_text(text,encoding='utf-8')
++        if name=='rivulet_tile':
++            # Keep compatibility resource synchronized with new animations.
++            (dest/f'{name}_emission.tres').write_text(text.replace(f'{name}.png',f'{name}_e.png'),encoding='utf-8')
++    print('RIVULET PACK PASS',flush=True)
++
++if __name__=='__main__':
++    if '--pack' in sys.argv: pack()
++    else: render()
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; & \"C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe\" --background --python art/tools/vigie_vfx/rivulet_build.py *> art/tools/vigie_vfx/_rivulet_build_run.txt; Get-Content art/tools/vigie_vfx/_rivulet_build_run.txt -Tail 3" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 3772ms:
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; python art/tools/vigie_vfx/rivulet_build.py --pack *> art/tools/vigie_vfx/_rivulet_pack_log.txt; Get-Content art/tools/vigie_vfx/_rivulet_pack_log.txt -Tail 3" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ succeeded in 449ms:
+RIVULET PACK PASS
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; python art/tools/texture_budget.py --apply-policy *> art/tools/vigie_vfx/_rivulet_budget_log.txt; Get-Content art/tools/vigie_vfx/_rivulet_budget_log.txt -Tail 3; python -c 'from PIL import Image; from pathlib import Path; import hashlib; root=Path(\"game/assets/sprites/characters/averse/variants\"); errors=[]; print(\"files\", [(n,Image.open(root/n/(n+\".png\")).size,Image.open(root/n/(n+\"_e.png\")).size) for n in (\"rivulet_tile\",\"rivulet_burst\")]);
+for n,w,h,count,cols in [(\"rivulet_tile\",128,128,8,8),(\"rivulet_burst\",768,256,7,4)]:
+ im=Image.open(root/n/(n+\".png\")).convert(\"RGBA\"); em=Image.open(root/n/(n+\"_e.png\")).convert(\"RGBA\"); seen=set()
+ for f in range(count):
+  x=f%cols*w; y=f//cols*h; fr=im.crop((x,y,x+w,y+h)); seen.add(hashlib.sha256(fr.tobytes()).hexdigest())
+  if n==\"rivulet_tile\" and fr.crop((0,0,1,h)).tobytes()"'!=fr.crop((w-1,0,w,h)).tobytes(): errors.append("seam"+str(f))
+ if len(seen)!=count: errors.append(n+" dup")
+ if em.getchannel("A").getbbox() is None: errors.append(n+" empty emission")
+ print(n,"PASS" if not errors else errors, "diffuse_Ko",round((root/n/(n+".png")).stat().st_size/1024),"emission_Ko",round((root/n/(n+"_e.png")).stat().st_size/1024))
+print("VERIFY", "PASS" if not errors else "FAIL "+str(errors))
+'"'" in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ exited 1 in 607ms:
+2 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import
+  File "<string>", line 1
+    from PIL import Image; from pathlib import Path; import hashlib; root=Path(game/assets/sprites/characters/averse/variants); errors=[]; print(files, [(n,Image.open(root/n/(n+.png)).size,Image.open(root/n/(n+_e.png)).size) for n in (rivulet_tile,rivulet_burst)]);
+                                                                                                                                                                                 ^
+SyntaxError: invalid syntax
+
+codex
+Les textures sont générées. Je termine les contrôles alpha, raccord et diversité des frames, puis applique la politique d’import signalée par le script budget.
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "cd \"C:\\Users\\const\\Documents\\Rainfall\\.claude\\worktrees\\agent-a94b6f23a90582fc1\"; @'
+from PIL import Image, ImageDraw
+from pathlib import Path
+import hashlib
+root=Path(\"game/assets/sprites/characters/averse/variants\")
+errors=[]
+contact=Image.new(\"RGB\",(1024,512),(18,22,24))
+for name,w,h,count,cols,atlas in [(\"rivulet_tile\",128,128,8,8,(1024,128)),(\"rivulet_burst\",768,256,7,4,(3072,512))]:
+ d=root/name; p=d/(name+\".png\"); ep=d/(name+\"_e.png\")
+ im=Image.open(p).convert(\"RGBA\"); em=Image.open(ep).convert(\"RGBA\")
+ print(name,im.size,round(p.stat().st_size/1024),\"Ko\",em.size,round(ep.stat().st_size/1024),\"Ko\")
+ if im.size"'!=atlas or em.size!=(atlas[0]//2,atlas[1]//2): errors.append(name+" dimensions")
+ hashes=set()
+ for f in range(count):
+  x=f%cols*w; y=f//cols*h; fr=im.crop((x,y,x+w,y+h)); hashes.add(hashlib.sha256(fr.tobytes()).hexdigest())
+  if fr.getbbox() is None: errors.append(name+" empty "+str(f))
+  if name=="rivulet_tile" and fr.crop((0,0,1,h)).tobytes()!=fr.crop((w-1,0,w,h)).tobytes(): errors.append("seam "+str(f))
+  thumb=fr.resize((128,128)); contact.paste(thumb,(f*128,0) if name=="rivulet_tile" else ((f%4)*128,256+(f//4)*128))
+ if len(hashes)!=count: errors.append(name+" duplicate frames")
+ if em.getchannel("A").getbbox() is None: errors.append(name+" empty emission")
+contact.save("art/tools/vigie_vfx/_rivulet_contact.png")
+print("VERIFY", "PASS 15 frames, seams" if not errors else "FAIL "+str(errors))
+'"'@ | python -; python art/tools/texture_budget.py --apply-policy *> art/tools/vigie_vfx/_rivulet_budget_log.txt; Get-Content art/tools/vigie_vfx/_rivulet_budget_log.txt -Tail 2; rg --files game/assets/sprites/characters/averse/variants/rivulet_tile game/assets/sprites/characters/averse/variants/rivulet_burst | rg \"_n\\.png"'$"' in C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1
+ exited 1 in 548ms:
+rivulet_tile (1024, 128) 82 Ko (512, 64) 4 Ko
+rivulet_burst (3072, 512) 223 Ko (1536, 256) 21 Ko
+VERIFY PASS 15 frames, seams
+0 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import
+
+codex
+- [rivulet_build.py](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/art/tools/vigie_vfx/rivulet_build.py) ; [rivulet_tile](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/game/assets/sprites/characters/averse/variants/rivulet_tile/) : 1024×128, _e 512×64, 82/4 Ko.
+- [rivulet_burst](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/game/assets/sprites/characters/averse/variants/rivulet_burst/) : 3072×512, _e 1536×256, 223/21 Ko.
+- Vérif PASS : 15 frames distinctes, raccords OK, _e non vide ; aucun _n.
+- Budget : 0 import hors politique ; [planche de contrôle](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/art/tools/vigie_vfx/_rivulet_contact.png).
+tokens used
+51,090
+- [rivulet_build.py](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/art/tools/vigie_vfx/rivulet_build.py) ; [rivulet_tile](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/game/assets/sprites/characters/averse/variants/rivulet_tile/) : 1024×128, _e 512×64, 82/4 Ko.
+- [rivulet_burst](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/game/assets/sprites/characters/averse/variants/rivulet_burst/) : 3072×512, _e 1536×256, 223/21 Ko.
+- Vérif PASS : 15 frames distinctes, raccords OK, _e non vide ; aucun _n.
+- Budget : 0 import hors politique ; [planche de contrôle](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/art/tools/vigie_vfx/_rivulet_contact.png).
