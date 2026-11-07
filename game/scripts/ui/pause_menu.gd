@@ -838,10 +838,12 @@ func _show_alert(state: StringName, slot: int) -> void:
 			_alert_body.text = "Le joueur %s n'a toujours pas de manette." % Palette.team_glyph(still)
 		else:
 			_alert_body.text = "Appuyez sur Reprendre quand tout le monde est prêt."
+		_alert_icon.texture = load(ICON_CHECK) as Texture2D if ResourceLoader.exists(ICON_CHECK) else null
 		_alert_icon.visible = _alert_icon.texture != null
 	else:
 		_alert_title.text = "Manette%s déconnectée" % who
-		_alert_icon.visible = false
+		_alert_icon.texture = KeyPrompt.icon("device_gamepad_off") # UX-A : manette barrée
+		_alert_icon.visible = _alert_icon.texture != null
 		if slot < 0:
 			_alert_body.text = "Rebranchez la manette, puis appuyez sur"
 			_alert_keys.add_pad_button("pad_start", "Start", "Start")

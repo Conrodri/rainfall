@@ -1,0 +1,7 @@
+OBJECTIF : produire les 10 sprites UI du lot UX-C (icônes de verbe d'épreuve 64 px, médaillons de note 128 px, chevron cue_epreuve 96 px). Brief complet : art/briefs/ux_c_epreuves.md (le lire, seul document à lire).
+CHEMIN : le workdir EST la racine du dépôt ; chemins RELATIFS. Le chemin absolu contient un dossier caché .claude : ne pas chercher avec rg sans --hidden. Ne jamais écrire hors du workdir.
+TOUCHER : créer art/tools/ui/ux_c_build.py (modèle : art/tools/ui/prompts.py + ui_kit.py ; pour le chevron : art/tools/night/uxl9_build.py), sorties dans game/assets/sprites/ui/da/ et game/assets/sprites/ui/cues/cue_epreuve.png ; rendus bruts art/renders/ui/ux_c/. Pas de .blend hors art/blender/.
+NE PAS LIRE : docs/, CLAUDE.md, autres briefs.
+RELANCER : blender.exe --background --python art/tools/ui/ux_c_build.py ; journal art/tools/ui/_ux_c_blender.log.
+VÉRIF : script silencieux : tailles exactes, RGBA, alpha non vide, _e à (w+1)//2 non vide, poids de chaque PNG (optimiser sans dégrader : quantification PIL autorisée seulement pour la compression, pas pour dessiner). Planche contrôle (assemblage Pillow seulement, x3, <=1024 px de large) -> art/renders/ux_c_control.png ; regarde-la, itère jusqu'à lisible (max 3 passes) : silhouettes des 5 verbes distinctes sans couleur, 3 médaillons distincts par la forme.
+RAPPORT (6 lignes max, ultracave) : fichiers, poids totaux, problèmes.

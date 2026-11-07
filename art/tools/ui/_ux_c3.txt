@@ -1,0 +1,8 @@
+OBJECTIF : dernière retouche UX-C (script art/tools/ui/ux_c_build.py). Mesure sur les PNG livrés : bbox alpha trop grande, sprites collés/coupés au bord (ex. minimap_epreuve_* bbox 0..64, epreuve_grade_bien 0..128), et epreuve_grade_fait trop petit (14..114) par rapport aux autres.
+ CIBLE : bbox alpha incluse dans [3, 61] pour les 64 px, [4, 124] pour les 128 px, [3, 93] pour cue_epreuve (96 px) ; AUCUN pixel opaque sur le bord ; les 3 médaillons de même emprise (~ 120 px de large, centrés) ; silhouettes inchangées (barque, anneau 3 plots, flamme, cristal, cloche ; médaillons 3 pointes / 2 pointes / disque).
+ Conserver epreuve_grade_parfait_e.png 64x64 non vide. Poids : accepté tel quel (< 16 Ko).
+RACINE ABSOLUE : C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ab51961a518389c5b . Si le shell démarre ailleurs, commence CHAQUE commande par Set-Location sur cette racine (accès autorisé). Chemins relatifs ensuite. Ne jamais écrire hors de cette racine. Ne pas chercher avec rg sans --hidden.
+TOUCHER : art/tools/ui/ux_c_build.py ; game/assets/sprites/ui/da/{minimap_epreuve_*,epreuve_grade_*}.png ; game/assets/sprites/ui/cues/cue_epreuve.png.
+RELANCER : blender.exe --background --python art/tools/ui/ux_c_build.py (journal art/tools/ui/_ux_c_blender.log, UTF-8).
+VÉRIF : script qui imprime les bbox alpha de chaque PNG et PASS/FAIL contre la cible. Pas de planche à regarder (je la fais).
+RAPPORT (4 lignes max, ultracave).

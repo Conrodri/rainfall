@@ -9,7 +9,13 @@ const DIR := "res://assets/sprites/ui/prompts/"
 const MOUSE_ICONS := {MOUSE_BUTTON_LEFT: "mouse_left", MOUSE_BUTTON_RIGHT: "mouse_right",
 	MOUSE_BUTTON_MIDDLE: "mouse_wheel", MOUSE_BUTTON_WHEEL_UP: "mouse_wheel", MOUSE_BUTTON_WHEEL_DOWN: "mouse_wheel"}
 const PAD_ICONS := {JOY_BUTTON_A: "pad_a", JOY_BUTTON_B: "pad_b", JOY_BUTTON_X: "pad_x", JOY_BUTTON_Y: "pad_y",
-	JOY_BUTTON_LEFT_SHOULDER: "pad_lb", JOY_BUTTON_RIGHT_SHOULDER: "pad_rb"}
+	JOY_BUTTON_LEFT_SHOULDER: "pad_lb", JOY_BUTTON_RIGHT_SHOULDER: "pad_rb",
+	JOY_BUTTON_START: "pad_start", JOY_BUTTON_BACK: "pad_select", JOY_BUTTON_DPAD_LEFT: "pad_dpad_lr",
+	JOY_BUTTON_DPAD_RIGHT: "pad_dpad_lr", JOY_BUTTON_DPAD_UP: "pad_dpad_ud", JOY_BUTTON_DPAD_DOWN: "pad_dpad_ud"}
+
+## Icône d'un fichier du dossier des invites (null si absente) : lobby, plaques, bandeau de pause.
+static func icon(file_name: String) -> Texture2D:
+	return _tex(file_name)
 
 var action: StringName = &""
 var fixed_text := "" ## texte imposé (ex. « Auto » pour le sort 1)

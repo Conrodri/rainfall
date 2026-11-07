@@ -4,7 +4,8 @@ extends Control
 ## de note « Parfait / Bien / Fait » pendant GRADE_SHOW_S après la fin, et flèche au bord de l'écran vers l'épreuve quand elle
 ## est hors champ. Aucune position codée en dur : tout dérive du viewport, de l'échelle du HUD (HudMetrics) et des marges
 ## sûres (Platform.safe_margins) ; PC, mobile et manette partagent le même rendu (aucune entrée).
-## Formes et textes en code = PLACEHOLDER (la barre pourra être remplacée par un cadre Codex sans toucher à la logique).
+## Sprites Codex (lot UX-C) : icône du verbe (ui/da/minimap_epreuve_<verbe>.png), médaillon de note (ui/da/epreuve_grade_<note>.png)
+## et chevron (ui/cues/cue_epreuve.png, gris neutre teinté au verbe). Formes et textes en code = REPLI si la ressource manque.
 ## Instancié par Hud (`epreuve_hud`), au-dessus de la minimap ; ne capte aucune entrée.
 
 const GRADE_SHOW_S := 2.0
@@ -13,6 +14,10 @@ const BAR_W := 420.0 ## à 1080 px de haut
 const BAR_H := 14.0
 const ARROW_PX := 44.0
 const MARGIN_PX := 16.0
+const ICON_DIR := "res://assets/sprites/ui/da/"
+const CUE_PATH := "res://assets/sprites/ui/cues/cue_epreuve.png"
+const GRADE_PX := 128.0 ## médaillon de note à 1080 px de haut
+const VERB_ICON_PX := 40.0
 const COL_BAR_BG := Color(0.0, 0.0, 0.0, 0.62)
 const COL_BAR := Color(0.95, 0.78, 0.35)
 const VERB_COLORS := {
@@ -32,6 +37,14 @@ var _grade: StringName = &""
 var _grade_t := 0.0
 var _grade_verb: StringName = &""
 var _acc := 0.0
+static var _tex_cache: Dictionary = {}
+
+
+## Texture livrée (cache), null si la ressource manque (repli en formes).
+static func _load_tex(path: String) -> Texture2D:
+	if not _tex_cache.has(path):
+		_tex_cache[path] = load(path) as Texture2D if ResourceLoader.exists(path) else null
+	return _tex_cache[path]
 
 
 func _ready() -> void:
@@ -140,6 +153,10 @@ func _draw() -> void:
 		draw_rect(bar_rect.grow(3.0 * s), Color(1, 1, 1, 0.35), false, 1.0)
 		var title := "%s  %d %%" % [EpreuveData.verb_name(String(epreuve.verb)), roundi(progress_value * 100.0)]
 		var tp := Vector2(bar_rect.position.x, bar_rect.position.y - 8.0 * s)
+		var vtex := _load_tex(ICON_DIR + "minimap_epreuve_%s.png" % String(epreuve.verb))
+		if vtex != null: # icône du verbe à gauche de la barre (la forme double la couleur)
+			var vp_px := VERB_ICON_PX * s
+			draw_texture_rect(vtex, Rect2(Vector2(bar_rect.position.x - vp_px - 10.0 * s, bar_rect.position.y + (bar_rect.size.y - vp_px) * 0.5), Vector2(vp_px, vp_px)), false)
 		draw_string_outline(font, tp, title, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, fs, HudMetrics.OUTLINE_T3, Color(0, 0, 0, 0.9))
 		draw_string(font, tp, title, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, fs, Color(1, 1, 1))
 	if grade_text != "" and _grade_t > 0.0:
@@ -148,12 +165,23 @@ func _draw() -> void:
 		var gfs := HudMetrics.font(HudMetrics.T2_TIME, _font_scale())
 		var gp := Vector2(bar_rect.position.x, bar_rect.position.y + bar_rect.size.y + 12.0 * s + float(gfs))
 		var ol := Color(0, 0, 0, gc.a * 0.9)
+		var gtex := _load_tex(ICON_DIR + "epreuve_grade_%s.png" % String(_grade))
+		if gtex != null: # médaillon : la forme porte la note, le libellé la double
+			var gpx := GRADE_PX * s
+			draw_texture_rect(gtex, Rect2(Vector2(bar_rect.get_center().x - gpx * 0.5, gp.y - float(gfs) - gpx - 4.0 * s), Vector2(gpx, gpx)), false, Color(1, 1, 1, gc.a))
 		draw_string_outline(font, gp, grade_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, gfs, HudMetrics.OUTLINE_T1, ol)
 		draw_string(font, gp, grade_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, gfs, gc)
 	if arrow_pos.x >= 0.0 and epreuve != null:
 		var px2 := ARROW_PX * s
 		var ac: Color = VERB_COLORS.get(epreuve.verb, COL_BAR)
 		var d := Vector2.from_angle(arrow_angle)
+		var ctex := _load_tex(CUE_PATH)
+		if ctex != null: # chevron Codex orienté vers +X, teinté au verbe
+			var cpx := ARROW_PX * s * 1.6
+			draw_set_transform(arrow_pos, arrow_angle, Vector2.ONE)
+			draw_texture_rect(ctex, Rect2(-Vector2(cpx, cpx) * 0.5, Vector2(cpx, cpx)), false, ac)
+			draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+			return
 		var o := d.orthogonal()
 		var tri := PackedVector2Array([arrow_pos + d * px2 * 0.5, arrow_pos - d * px2 * 0.4 + o * px2 * 0.4, arrow_pos - d * px2 * 0.4 - o * px2 * 0.4])
 		draw_colored_polygon(tri, ac)

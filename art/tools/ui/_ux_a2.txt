@@ -1,0 +1,9 @@
+OBJECTIF : corriger 4 des 7 icônes UX-A (64x64). Défauts vus sur la planche art/renders/ux_a_control.png (la regarder d'abord) :
+ - pad_start : doit montrer TROIS traits horizontaux (menu), pas 2 pastilles ; pad_select : DEUX rectangles superposés/décalés (vue). Aujourd'hui les deux se ressemblent.
+ - pad_dpad_lr / pad_dpad_ud : branches ambre déformées (blobs). Croix nette, 4 branches rectangulaires, branches actives ambre pleines, les 2 autres gris métal.
+ - device_gamepad_off : doit rester une manette reconnaissable (corps sombre désaturé, croix, boutons grisés) barrée d'UNE diagonale épaisse ambre-rouge (#E0502A), pas un X.
+CHEMIN : le workdir EST la racine du dépôt ; chemins RELATIFS. art/tools/ui/prompts.py existe ; le chemin absolu contient un dossier caché .claude : ne pas chercher avec rg sans --hidden, ouvrir directement. Ne jamais écrire hors du workdir.
+TOUCHER : art/tools/ui/prompts.py (fonctions concernées), game/assets/sprites/ui/prompts/{pad_start,pad_select,pad_dpad_lr,pad_dpad_ud,device_gamepad_off}.png, art/renders/ui/prompts/.
+RELANCER : blender.exe --background --python art/tools/ui/prompts.py -- pad_start pad_select pad_dpad_lr pad_dpad_ud device_gamepad_off ; journal art/tools/ui/_ux_a2_blender.log.
+VÉRIF : 64x64 RGBA. Planche contrôle (assemblage Pillow, icônes x4) -> art/renders/ux_a_control.png ; regarde-la, itère jusqu'à lisible (max 3 passes).
+RAPPORT (5 lignes max, ultracave).
