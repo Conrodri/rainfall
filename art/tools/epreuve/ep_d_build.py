@@ -5,6 +5,7 @@ ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../..'))
 P=os.path.join(ROOT,'game/assets/sprites/props/epreuve'); V=os.path.join(ROOT,'game/assets/sprites/vfx/epreuve')
 os.makedirs(P,exist_ok=True); os.makedirs(V,exist_ok=True); os.makedirs(os.path.join(ROOT,'art/blender/props'),exist_ok=True)
 SKINS={'fog_forest':((.24,.115,.065,1),(.76,.294,1,1)),'crypts':((.20,.235,.27,1),(.749,.957,1,1))}
+GEYSER={'fog_forest':((91/255,74/255,120/255,1),(156/255,134/255,196/255,1)), 'crypts':((70/255,113/255,125/255,1),(156/255,198/255,207/255,1))}
 def mat(n,c,e=0):
  m=bpy.data.materials.new(n); m.diffuse_color=c; m.use_nodes=True; p=m.node_tree.nodes.get('Principled BSDF'); p.inputs['Base Color'].default_value=c; p.inputs['Roughness'].default_value=.9
  if e: p.inputs['Emission Color'].default_value=c; p.inputs['Emission Strength'].default_value=e
@@ -62,21 +63,30 @@ def disc(skin):
  for i in range(4): os.remove(os.path.join(V,f'.vein_disc_{skin}_{i}.png'))
 def geyser(skin):
  # create six 128x192 images via same scene, animate height and concatenate using bpy pixels
- reset(); base,accent=SKINS[skin]; glow=mat('geyser accent',accent,1.8); stone=mat('dark shard',base)
+ reset(); base,accent=GEYSER[skin]; body=mat('geyser water',(*base[:3],.76)); body.surface_render_method='DITHERED'; glow=mat('geyser foam',accent,.15)
  tiles=[]
  for f in range(6):
-  reset(); h=(.55,2.15,2.75,2.95,2.45,.62)[f]; spread=(.32,.72,.88,.92,.78,.36)[f]
-  # broad luminous fountain with dark crystal ribs; animated silhouette and height
-  for i in range(13):
-   x=(i-6)*spread/6; hh=h*(.62+.36*((i*7+f*3)%13)/12); lean=x*.18
-   bpy.ops.mesh.primitive_cone_add(vertices=6,radius1=.09+spread*.09,radius2=.012,depth=hh,location=(x+lean,0,.08+hh*.5)); q=bpy.context.object; q.rotation_euler[1]=-.18 if x>0 else .18; q.data.materials.append(glow if i%4 else stone)
-  # bright central plume and a wide foot flare
-  bpy.ops.mesh.primitive_cone_add(vertices=8,radius1=spread*.82,radius2=.025,depth=h*.94,location=(0,-.01,.14+h*.47)); bpy.context.object.data.materials.append(glow)
-  bpy.ops.mesh.primitive_torus_add(major_radius=spread*.62,minor_radius=.055,major_segments=16,minor_segments=5,location=(0,-.02,.12)); bpy.context.object.data.materials.append(glow)
-  # Secondary droplets widen the erupting base.
-  for i in range(7):
-   x=(i-3)*spread*.23; z=.28+(.16*((i*5+f)%4)); bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=1,location=(x,-.04,z)); bpy.context.object.scale=(.11,.09,.13); bpy.context.object.data.materials.append(glow)
-  setup(128,192,3.35,(0,0,1.15)); path=os.path.join(V,f'.vein_geyser_{skin}_{f}.png'); render(path); tiles.append(bpy.data.images.load(path,check_existing=False))
+  reset(); heights=(.34,.88,1.32,1.54,1.10,.30); h=heights[f]; phase=f*.47
+  # Broad flattened splash ring, with a narrow, slightly twisted tapered jet.
+  bpy.ops.mesh.primitive_torus_add(major_radius=.70 if f not in (0,5) else .62,minor_radius=.075,major_segments=40,minor_segments=8,location=(0,0,.055)); q=bpy.context.object; q.scale.z=.34; q.data.materials.append(glow)
+  bpy.ops.mesh.primitive_uv_sphere_add(segments=24,ring_count=12,radius=1,location=(0,0,.035)); q=bpy.context.object; q.scale=(.68,.50,.055); q.data.materials.append(body)
+  if h>.36:
+   bpy.ops.mesh.primitive_cone_add(vertices=32,radius1=.22,radius2=.13,depth=h,location=(.025*math.sin(phase),0,.10+h*.5)); q=bpy.context.object; q.name='water jet'; q.data.materials.append(body)
+   bpy.ops.mesh.primitive_uv_sphere_add(segments=20,ring_count=12,radius=1,location=(.035*math.sin(phase+1),-.01,.10+h*.52)); q=bpy.context.object; q.scale=(.22,.19,h*.53); q.data.materials.append(body)
+  # Irregular outward foam crown, varying with the jet height.
+  crown_z=.13+h
+  if f in (0,5): crown_z=.30
+  for i in range(4):
+   a=math.tau*i/4+phase; x=.22*math.cos(a); y=.12*math.sin(a)-.035
+   bpy.ops.mesh.primitive_uv_sphere_add(segments=16,ring_count=10,radius=1,location=(x,y,crown_z+.045*math.sin(a*2+phase))); q=bpy.context.object; q.scale=(.13,.11,.10); q.data.materials.append(glow)
+  # Falling droplets follow short parabolic arcs around the splash.
+  for i in range(8):
+   side=-1 if i%2 else 1; t=i//2; progress=(f-1.5)/3.0
+   x=side*(.48+.09*t+.12*progress); z=.28+.22*t+(.34*(1-progress*progress) if f in (2,3,4) else .04*math.sin(phase+i))
+   if f==0: z=.16+.08*t
+   if f==5: z=.18+.05*t
+   bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=8,radius=1,location=(x,-.08,z)); q=bpy.context.object; q.scale=(.045,.05,.065); q.data.materials.append(glow)
+  setup(128,192,2.25,(0,0,.92)); path=os.path.join(V,f'.vein_geyser_{skin}_{f}.png'); render(path); tiles.append(bpy.data.images.load(path,check_existing=False))
  out=bpy.data.images.new('geyser strip',width=768,height=192,alpha=True); px=[0.0]*(768*192*4)
  for i,img in enumerate(tiles):
   data=list(img.pixels[:]);
@@ -84,8 +94,5 @@ def geyser(skin):
  out.pixels[:]=px; out.filepath_raw=os.path.join(V,f'vein_geyser_{skin}.png'); out.file_format='PNG'; out.save()
  for f in range(6): os.remove(os.path.join(V,f'.vein_geyser_{skin}_{f}.png'))
 reset(); setup(128,160,2,(0,0,.4));
-for skin in SKINS:
- for state in ('off','on'): source(skin,state)
- disc(skin); geyser(skin)
-bpy.ops.wm.save_as_mainfile(filepath=os.path.join(ROOT,'art/blender/props/ep_d_vein.blend'))
-print('EP-D build complete')
+for skin in SKINS: geyser(skin)
+print('EP-H geysers complete')

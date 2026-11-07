@@ -6,12 +6,18 @@ OUT=os.path.join(ROOT,'game/assets/sprites/props/epreuve')
 BLEND=os.path.join(ROOT,'art/blender/props/ep_b_chase_post.blend')
 os.makedirs(OUT,exist_ok=True); os.makedirs(os.path.dirname(BLEND),exist_ok=True)
 SKINS={'fog_forest':((.23,.20,.22,1),(.76,.294,1,1)), 'crypts':((.22,.24,.25,1),(.749,.957,1,1))}
+CRYPT_STONE=(58/255,64/255,70/255,1); CRYPT_CRYSTAL=(94/255,135/255,148/255,1); CRYPT_CORE=(191/255,244/255,255/255,1)
+CRYPT_STONE=(58/255,64/255,70/255,1); CRYPT_CRYSTAL=(94/255,135/255,148/255,1); CRYPT_CORE=(191/255,244/255,255/255,1)
 
 def mat(name,color,emit=0):
  m=bpy.data.materials.new(name); m.diffuse_color=color; m.use_nodes=True
  n=m.node_tree.nodes; n.clear(); o=n.new('ShaderNodeOutputMaterial'); p=n.new('ShaderNodeBsdfPrincipled'); p.inputs['Base Color'].default_value=color; p.inputs['Roughness'].default_value=.86; p.inputs['Metallic'].default_value=.16
  if emit: p.inputs['Emission Color'].default_value=color; p.inputs['Emission Strength'].default_value=emit
  m.node_tree.links.new(p.outputs['BSDF'],o.inputs['Surface']); return m
+def render_emit(path):
+ s=bpy.context.scene; old=(s.render.resolution_x,s.render.resolution_y)
+ s.render.resolution_x=64; s.render.resolution_y=80; s.render.filepath=path; bpy.ops.render.render(write_still=True)
+ s.render.resolution_x,s.render.resolution_y=old
 def cube(name,loc,dim,ma,bevel=.035):
  bpy.ops.mesh.primitive_cube_add(size=1,location=loc); o=bpy.context.object; o.name=name; o.dimensions=dim; bpy.ops.object.transform_apply(location=False,rotation=False,scale=True); o.data.materials.append(ma)
  if bevel: b=o.modifiers.new('worn edges','BEVEL'); b.width=bevel; b.segments=1; o.modifiers.new('weighted corners','WEIGHTED_NORMAL')
@@ -22,7 +28,9 @@ def clear():
  for o in list(bpy.context.scene.objects):
   if o.type=='MESH': bpy.data.objects.remove(o,do_unlink=True)
 def build(skin,state):
- clear(); base,accent=SKINS[skin]; factor={'off':.25,'lit':3.2,'done':3.2,'altar':1.35}[state]; stone=mat('weathered stone',base); dark=mat('charcoal iron',(.075,.075,.085,1)); glow=mat('single skin accent',accent,factor); rune=mat('rune cuts',accent,factor*.72)
+ clear(); base,accent=SKINS[skin]; factor={'off':.25,'lit':1.25,'done':1.25,'altar':1.0}[state]; stone=mat('weathered stone',base); dark=mat('charcoal iron',(.075,.075,.085,1)); glow=mat('single skin accent',accent,factor); rune=mat('rune cuts',accent,factor*.72)
+ if skin=='crypts':
+  base=CRYPT_STONE; accent=CRYPT_CORE; stone=mat('weathered stone',base); glow=mat('single skin accent',CRYPT_CRYSTAL,.12); rune=mat('rune cuts',CRYPT_CORE,.45)
  altar=state=='altar'; k=1.4 if altar else 1.0
  cube('broad chipped foot',(0,0,.10*k),(.70*k,.52*k,.20*k),stone,.07)
  if state=='done':
@@ -37,7 +45,12 @@ def build(skin,state):
  else:
   # dark plinth, tapered crystal prism
   cube('crystal socket',(0,0,.30*k),(.43*k,.38*k,.22*k),dark,.035)
-  bpy.ops.mesh.primitive_cone_add(vertices=6,radius1=.29*k,radius2=.035*k,depth=.93*k,location=(0,0,.83*k),rotation=(.08,.12,.1)); bpy.context.object.name='faceted crystal'; bpy.context.object.data.materials.append(glow)
+  crystal=mat('faceted crystal body',CRYPT_CRYSTAL,.08) if skin=='crypts' else glow
+  bpy.ops.mesh.primitive_cone_add(vertices=6,radius1=.29*k,radius2=.035*k,depth=.93*k,location=(0,0,.83*k),rotation=(.08,.12,.1)); bpy.context.object.name='faceted crystal'; bpy.context.object.data.materials.append(crystal)
+  if skin=='crypts':
+   cube('crystal heart',(0,-.205*k,.86*k),(.075*k,.025*k,.40*k),mat('ice heart',CRYPT_CORE,.85),.012)
+   for x in (-.16,.16): cube('crystal edge',(x*k,-.19*k,.80*k),(.022*k,.024*k,.42*k),mat('ice edge',CRYPT_CORE,.65),.008)
+   if state=='lit': ico('bright heart',(0,-.23*k,.86*k),(.09*k,.035*k,.12*k),mat('lit heart',CRYPT_CORE,1.0),1)
  # common carved side runes; accent is limited to the skin color
  for side in (-1,1):
   x=side*.29*k
@@ -64,11 +77,11 @@ def render_skin(skin):
      if m and m.name in ('single skin accent','rune cuts'):
       for p in m.node_tree.nodes:
        if p.type=='BSDF_PRINCIPLED': p.inputs['Base Color'].default_value=(0,0,0,1); p.inputs['Emission Color'].default_value=(1,1,1,1)
-  s.render.filepath=os.path.join(OUT,name+'_e.png'); bpy.ops.render.render(write_still=True)
+  render_emit(os.path.join(OUT,name+'_e.png'))
   # Restore the original base colors after the emission-only pass.
   for m in bpy.data.materials:
-   if m.name=='single skin accent': m.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=accent
-   elif m.name=='rune cuts': m.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=accent
+   if m.name=='single skin accent': m.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=(CRYPT_CRYSTAL if skin=='crypts' else accent)
+   elif m.name=='rune cuts': m.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value=(CRYPT_CORE if skin=='crypts' else accent)
  clear(); sh=mat('soft charcoal shadow',(.012,.01,.016,1)); bpy.ops.mesh.primitive_uv_sphere_add(segments=16,ring_count=8,location=(0,0,.01)); o=bpy.context.object; o.name='shared soft shadow'; o.scale=(.61,.38,.025); o.data.materials.append(sh); s.render.filepath=os.path.join(OUT,f'chase_post_{skin}_shadow.png'); bpy.ops.render.render(write_still=True)
 
 setup()
