@@ -683,6 +683,9 @@ static func ruby_breakdown(d: Dictionary) -> String:
 	var om := int(d.get("omen_rubies", 0))
 	if om > 0:
 		parts.append("Présages +%d" % om)
+	var ep := int(d.get("epreuve_rubies", 0))
+	if ep > 0:
+		parts.append("Épreuves +%d" % ep)
 	var part := float(d.get("participation", 1.0))
 	if part < 1.0: # coop : part des rubis selon les dégâts infligés
 		parts.append("Participation ×%s" % String.num(part, 2).replace(".", ","))

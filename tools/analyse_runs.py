@@ -395,6 +395,49 @@ def section_epreuves(logs):
     return "\n".join(lines)
 
 
+def section_epreuves_verbes(logs):
+    """Épreuves, tous étages (docs/Design_Epreuves.md §7.6) : note moyenne et mesures (extra) par verbe, part du temps en
+    épreuve et durée après-boss par étage. Note moyenne : parfait = 2, bien = 1, fait = 0."""
+    lines = ["## Épreuves par verbe (tous étages)", ""]
+    score = {"parfait": 2, "bien": 1, "fait": 0}
+    by_verb = defaultdict(lambda: {"n": 0, "score": [], "s": [], "parfait": 0, "extra": defaultdict(list)})
+    share = defaultdict(list)
+    post = defaultdict(list)
+    for d in logs:
+        for f in d.get("floors", []):
+            dur = f.get("t_clear", -1) - f.get("t_in", 0)
+            if f.get("epreuves_on") and f.get("t_clear", -1) >= 0 and dur > 0:
+                share[f["stage"]].append(f.get("epreuve_s", 0) / dur)
+            if f.get("epreuves_on") and "post_boss_s" in f:
+                post[f["stage"]].append(float(f["post_boss_s"]))
+            for e in f.get("epreuves", []):
+                g = e.get("grade")
+                if not g:
+                    continue
+                v = by_verb[e["kind"]]
+                v["n"] += 1
+                v["score"].append(score.get(g, 0))
+                v["s"].append(e.get("s", 0.0))
+                v["parfait"] += g == "parfait"
+                for k, x in (e.get("extra") or {}).items():
+                    if isinstance(x, (int, float)):
+                        v["extra"][k].append(float(x))
+    if not by_verb:
+        return "\n".join(lines + ["_Aucune épreuve terminée._"])
+    rows = []
+    for verb, v in sorted(by_verb.items()):
+        extra = ", ".join(f"{k} {fmt(sum(xs) / len(xs), 1)}" for k, xs in sorted(v["extra"].items())
+                          if k in ("stalls", "hits", "pulses", "points", "misses", "out_s", "intercepted", "packets"))
+        rows.append([verb, v["n"], fmt(sum(v["score"]) / len(v["score"]), 2), pct(v["parfait"] / v["n"]),
+                     fmt(quantile(v["s"], 0.5), 1), extra or "-"])
+    lines.append(table(["Verbe", "n", "Note moyenne (0-2)", "Parfait", "Durée méd. (s)", "Mesures moyennes"], rows))
+    if share:
+        rows = [[st, len(share[st]), pct(quantile(share[st], 0.5)), fmt(quantile(post[st], 0.5)) if post[st] else "-"]
+                for st in sorted(share)]
+        lines += ["", "### Par étage", "", table(["Étage", "n", "Part en épreuve (méd.)", "Après-boss (s, méd.)"], rows)]
+    return "\n".join(lines)
+
+
 def section_taken(logs):
     src = Counter()
     for d in logs:
@@ -417,7 +460,7 @@ def report(logs, skipped, min_n):
         parts.append("Aucun journal lisible.")
         return "\n".join(parts)
     for sec in (section_summary(logs), section_ttk(logs, min_n), section_dps(logs, min_n), section_items(logs, min_n),
-                section_deaths(logs), section_economy(logs), section_epreuves(logs), section_taken(logs)):
+                section_deaths(logs), section_economy(logs), section_epreuves(logs), section_epreuves_verbes(logs), section_taken(logs)):
         parts += [sec, ""]
     return "\n".join(parts)
 
