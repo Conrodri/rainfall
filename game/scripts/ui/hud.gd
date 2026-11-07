@@ -55,6 +55,9 @@ var _frames: Array = [] ## [barre, NinePatchRect, Vector4 marges] : cadres DA po
 var _hp_label: Label
 var _xp_bar: ProgressBar
 var _gold_label: Label
+var _core_box: HBoxContainer ## noyaux d'orage portés (icône + « n/max »), masqué à 0
+var _core_label: Label
+const CORE_ICON := "res://assets/sprites/icons/storm_core.png"
 var scrap_pips: ScrapPips ## pastilles de scorie (ateliers), dans la rangée d'or
 var _time_label: Label
 var _diff_caption: Label ## titre « Difficulté » au-dessus du bandeau (le repère seul resterait muet pour un nouveau joueur)
@@ -216,14 +219,17 @@ func _bind_state() -> void:
 		if _state != null:
 			_state.gold_changed.disconnect(_on_gold)
 			_state.scrap_changed.disconnect(_place_gold)
+			_state.catalysts_changed.disconnect(_on_catalysts)
 			_state.xp_changed.disconnect(_on_xp)
 			_state.level_up.disconnect(_on_level)
 		_state = st
 		_state.gold_changed.connect(_on_gold)
+		_state.catalysts_changed.connect(_on_catalysts)
 		_state.scrap_changed.connect(_place_gold) # une pastille de plus ou de moins change la largeur de la rangée d'or
 		_state.xp_changed.connect(_on_xp)
 		_state.level_up.connect(_on_level)
 	_on_gold(_state.gold)
+	_on_catalysts(_state.catalysts)
 	_on_xp(_state.xp, Balance.xp_required(_state.level))
 	_on_level(_state.level)
 
@@ -353,6 +359,21 @@ func _on_gold(g: float) -> void:
 	_gold_label.text = "%d" % int(g)
 	_place_gold()
 	_progress_gold_changed(g) # Choix-L4 : impulsion du compteur à l'arrivée des pièces
+
+
+## Compteur de noyaux d'orage : visible seulement à partir d'un noyau porté.
+func _on_catalysts(n: int) -> void:
+	if _core_box == null:
+		return
+	_core_label.text = "%d/%d" % [n, Balance.CRAFT_CATALYST_CAP]
+	_core_box.visible = n >= 1
+	_place_gold()
+
+
+## Compteur de noyaux (tests).
+func core_counter() -> Dictionary:
+	return {"visible": _core_box != null and _core_box.visible, "text": _core_label.text if _core_label != null else "",
+		"rect": _core_box.get_global_rect() if _core_box != null else Rect2()}
 
 
 ## Or : rangée calée à DROITE contre le bouton pause (grandit vers la gauche quand le nombre s'allonge).
@@ -530,6 +551,31 @@ func _build() -> void:
 	root.add_child(_gold_box)
 	scrap_pips = ScrapPips.new() # scories des ateliers : pastilles à gauche de l'or, discrètes
 	_gold_box.add_child(scrap_pips)
+	# noyaux d'orage portés (forge) : icône + « 1/2 », seulement s'il y en a au moins un
+	_core_box = HBoxContainer.new()
+	_core_box.name = &"CoreBox"
+	_core_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_core_box.add_theme_constant_override("separation", 4)
+	_core_box.visible = false
+	_gold_box.add_child(_core_box)
+	_gold_box.move_child(_core_box, 0)
+	var ci := TextureRect.new()
+	ci.name = &"CoreIcon"
+	ci.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ci.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ci.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ci.custom_minimum_size = Vector2(40, 40)
+	if ResourceLoader.exists(CORE_ICON):
+		ci.texture = load(CORE_ICON) as Texture2D
+	_core_box.add_child(ci)
+	_core_label = Label.new()
+	_core_label.name = &"CoreLabel"
+	_core_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_core_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_core_label.add_theme_color_override("font_color", Color(0.62, 0.86, 1.0))
+	_core_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	_core_label.add_theme_constant_override("outline_size", 4)
+	_core_box.add_child(_core_label)
 	var gi := TextureRect.new()
 	gi.name = &"GoldIcon"
 	gi.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -812,6 +858,8 @@ func _apply_layout() -> void:
 	var gold_px: float = HudMetrics.pick(HudMetrics.GOLD_ICON_PX, mobile)
 	gi.custom_minimum_size = Vector2(gold_px, gold_px) * s
 	scrap_pips.set_ui_scale(s)
+	(_core_box.get_node(^"CoreIcon") as Control).custom_minimum_size = Vector2(gold_px, gold_px) * s * 0.85
+	_core_label.add_theme_font_size_override("font_size", HudMetrics.font(HudMetrics.T2_GOLD, s, mobile))
 	_place_gold()
 	# tactile : plus petite (boutons de sorts et Interagir à droite), 300 px au lieu de 274 (audit § 4.2)
 	var mm: float = (float(HudMetrics.MINIMAP_PX[1]) if touch_mode else Minimap.compact_px()) * s

@@ -138,6 +138,32 @@ func _lobby() -> void:
 	_check("lobby : largeur de carte clamp((W-192)/4, 280, 420)", is_equal_approx(CoopLobbyScreen.card_width(1920.0), 420.0) and is_equal_approx(CoopLobbyScreen.card_width(1440.0), 312.0) and is_equal_approx(CoopLobbyScreen.card_width(800.0), 280.0))
 	_check("lobby : 2 x 2 seulement quand 4 cartes de 280 px ne tiennent pas", not CoopLobbyScreen.uses_two_by_two(1920.0) and not CoopLobbyScreen.uses_two_by_two(1440.0) and CoopLobbyScreen.uses_two_by_two(1200.0))
 	_check("lobby : 4 colonnes en 16:9", lob.grid_columns() == 4)
+	var p0 := lob.card_portrait(0)
+	_check("lobby : portrait du perso présent sur la carte 1", p0 != null)
+	var lob3 := CoopLobbyScreen.new() # vrais personnages (le lobby du test porte des fiches sans sorts)
+	for rc in CharacterCard.load_characters():
+		if rc is Dictionary and str(rc.get("id", "")) == "ardent":
+			lob3.characters = [rc]
+	add_child(lob3)
+	lob3.join(CoopLobbyScreen.KBM_KEY, "kbm", -1)
+	var n_sp: int = (lob3.characters[0].get("spells", []) as Array).size() if not lob3.characters.is_empty() else 0
+	_check("lobby : icônes de sorts sur la carte (1 par sort du perso)", n_sp >= 1 and lob3.card_spell_icon_count(0) == n_sp and lob3.card_portrait(0) != null)
+	lob3.queue_free()
+	_check("lobby : carte libre sans portrait", lob.card_portrait(3) == null)
+	var was_ready := bool(lob.slots[0]["ready"])
+	lob.set_ready(0, false) # un joueur prêt ne change plus de perso ni de skin
+	var cid0 := lob.character_id(0)
+	var skins0 := lob.skin_options(cid0)
+	if skins0.size() > 1:
+		lob.handle_event(_keyev(KEY_S))
+		_check("lobby : le portrait change avec le skin", lob.card_portrait(0) != p0)
+		lob.handle_event(_keyev(KEY_W))
+	if lob.characters.size() > 1:
+		var before := lob.card_portrait(0)
+		lob.handle_event(_keyev(KEY_D))
+		_check("lobby : le portrait change avec le perso", lob.card_portrait(0) != before)
+		lob.handle_event(_keyev(KEY_A))
+	lob.set_ready(0, was_ready)
 	var chk := (lob._card_labels[0]["check"] as TextureRect)
 	_check("lobby : état prêt = coche + cadre épais ; non prêt = ni l'un ni l'autre", chk.visible == bool(lob.slots[0]["ready"]) and lob._card_styles[0].border_width_left == (6 if bool(lob.slots[0]["ready"]) else 3))
 	var back := [0]

@@ -127,6 +127,12 @@ func _layout_case(size: Vector2i, touch: bool) -> void:
 	_check(hud._diff_box.font_size >= HudMetrics.floor_px() and hud._diff_box.size.y >= 10.0 * s, "%s : difficulté lisible" % tag)
 	var cap: Rect2 = hud._diff_caption.get_global_rect()
 	_check(hud._diff_caption.text == "Difficulté" and cap.end.y <= diff.position.y + 0.5 and cap.position.y >= mm.end.y - 0.5, "%s : titre « Difficulté » entre minimap et jauge %s" % [tag, cap])
+	_check(not hud.core_counter()["visible"], "%s : compteur de noyaux masqué à 0" % tag)
+	hud._state.add_catalyst(1)
+	await _wait(0.3)
+	var cc: Dictionary = hud.core_counter()
+	_check(cc["visible"] and cc["text"] == "1/%d" % Balance.CRAFT_CATALYST_CAP, "%s : compteur de noyaux visible à 1 (%s)" % [tag, cc["text"]])
+	_check(vp.encloses(cc["rect"]) and hud._gold_box.get_global_rect().encloses(cc["rect"]), "%s : compteur de noyaux dans la rangée d'or et dans l'écran %s" % [tag, cc["rect"]])
 	var rects := {
 		"fiche": (hud._hp_bar.get_parent().get_parent().get_parent() as Control).get_global_rect(),
 		"chrono": hud._time_plate.get_global_rect(),
@@ -167,6 +173,8 @@ func _layout_case(size: Vector2i, touch: bool) -> void:
 	_check(absf(hud.boss_bars.get_global_rect().position.y - bb.position.y) < 1.0, "%s : barre du boss stable après la mort du mini-boss" % tag)
 	hud.boss_bars._on_killed(floor_boss, true)
 	await _wait(0.2)
+	hud._state.spend_catalyst(1)
+	_check(not hud.core_counter()["visible"], "%s : compteur de noyaux masqué après dépense" % tag)
 	var ch2: Rect2 = hud._time_plate.get_global_rect()
 	_check(not hud._time_plate.top_level and absf(ch2.get_center().x - vp.size.x * 0.5) < 8.0, "%s : chrono revenu en haut au centre %s" % [tag, ch2])
 	sv.queue_free()
