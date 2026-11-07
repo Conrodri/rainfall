@@ -35,6 +35,7 @@ const COFFRE_ARC_FRAMES := FX_DIR + "coffre_arc/coffre_arc.tres"
 const COFFRE_ARC_REACH_PX := 58.0
 ## Pièce en vol (AA2, CREA 48, 4 frames en boucle, `default`, vers +X).
 const COIN_PROJECTILE_FRAMES := FX_DIR + "coin_projectile/coin_projectile.tres"
+const COIN_PROJECTILE_SCALE := 0.55 ## pièce en vol à la taille des pièces au sol (GroundPickup : 48 px × SPRITE_K ; joueur, 07/11/2026)
 ## Pièce au sol (AA2, CREA 48, 8 frames en boucle, `default`). Absente = coin.png des pickups.
 const COIN_PICKUP_FRAMES := FX_DIR + "coin_pickup/coin_pickup.tres"
 const COIN_FALLBACK_TEX := "res://assets/sprites/pickups/coin.png"
@@ -282,6 +283,7 @@ static func character() -> CharacterData:
 	s2.target_mode = &"densest"
 	s2.trigger_range_u = COINS_RANGE_U
 	s2.projectile_frames = COIN_PROJECTILE_FRAMES
+	s2.projectile_visual_scale = COIN_PROJECTILE_SCALE
 
 	var s3 := _spell(&"avare_rancon", "Rançon", 3, SpellData.Behavior.KIT, RANSOM_COEF, RANSOM_CD)
 	s3.radius_u = RANSOM_RADIUS_U

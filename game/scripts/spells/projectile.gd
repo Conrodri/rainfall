@@ -49,6 +49,8 @@ func launch(from: Vector2, dir: Vector2, new_spell: SpellData, new_caster: Objec
 	stop_on_walls = false
 	rest_on_hit = false
 	_apply_frames(new_spell.projectile_frames if new_spell != null else "")
+	var vs := new_spell.projectile_visual_scale if new_spell != null else 1.0
+	_visual.scale = Vector2(vs, vs) # pool : remis à chaque lancer
 	global_position = from
 	direction = dir.normalized()
 	_visual.rotation = Iso.screen_angle(direction)

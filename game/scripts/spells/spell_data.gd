@@ -40,6 +40,7 @@ enum Behavior { PROJECTILE, NOVA, GROUND_ZONE, ARC, FAN, SPIN, DECOYS, KIT }
 @export var target_mode: StringName = &"nearest"
 ## SpriteFrames du projectile (vide = éclat de braise de la scène).
 @export var projectile_frames := ""
+@export var projectile_visual_scale := 1.0 ## échelle du visuel du projectile (frames rendues plus grandes que la taille voulue en jeu)
 
 @export_group("VFX de zone (rendu Blender)")
 ## SpriteFrames de l'effet de zone (ZoneEffect) ; vide ou absent sur disque = repli dessiné (contour fin).
