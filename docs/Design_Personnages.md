@@ -500,46 +500,46 @@ Côté Godot : `CompanionSprite` (S15 : un sprite synchronisé, à hauteur `lift
 - **Ardent** (`ArdentKit.NOVA_COEF`, `BRASIER_COEF`) : Nova 3,0 -> 2,5, Brasier 10 -> 8. Il reste le débutant sûr (kite, zone) mais ne domine plus la cible unique (DPS L6 106 -> 92, zone inchangée).
 - Hooks ajoutés pour cette passe (game/CONTRACTS.md) : `damage_taken_mult`, `auto_cast_ok`, `on_spell_hit`, `Decoy.lures_bosses`.
 
-### 2.8 Vigie, la guetteuse de la digue (fiche complète ; archère, distance / tir chargé, ressource = Tension)
+### 2.8 Vigie, la guetteuse de la digue (fiche complète ; archère, distance / tir chargé, ressource = Guet)
 
 Demande du joueur (22/10/2026) : « il manque un personnage classique comme un archer ». Fiche joueur autonome : `docs/fiches/vigie.md`. Code : `game/scripts/spells/vigie_kit.gd` (VigieKit, toutes les valeurs en constantes) + `vigie_flare.gd` (VigieFlare) ; test `game/tests/vigie_test.tscn` ; capture `game/tests/vigie_capture.tscn` ; lots Codex VG1 / VG2 (`art/tools/night/_vg1.txt`, `_vg2.txt`).
 
 #### 2.8.1 Lore (court)
 Sur les Terrasses, chaque digue avait sa tour de guet et chaque tour sa vigie : une archère chargée de **tirer une fusée rouge quand l'eau montait**. La nuit de la Grande Crue, la pluie a noyé ses fusées en plein ciel avant qu'elles éclatent ; personne n'a vu le signal, la vallée s'est noyée sous ses yeux. Elle a survécu sur le toit de sa tour. Depuis, elle trempe ses pointes dans le **magnésium des phares**, un feu que la pluie n'éteint pas, et descend la rivière en tirant : plus personne ne manquera le signal.
 
-Titre : **« Guetteuse de la digue »**. Style : distance, tir chargé, contrôle léger. Config : **4 sorts / 0 passif** (la Tension est la ressource, pas un slot). Déblocage proposé : **visible**, « Tuer 100 monstres à plus de 8 u de soi en une run » (indice : « le signal ne s'éteint pas sous la pluie »). Pendant les tests : ouverte (`characters.json` : `unlocked` true, `hidden` false, `difficulty` 2). mesure : tué à plus de 8 u du tueur, 100 dans une même run. **Codé le 06/11/2026** (`UnlockTracker`, `Profile.UNLOCK_ON_*`, `tests/unlock_conditions_test`).
+Titre : **« Guetteuse de la digue »**. Style : distance, tir chargé, contrôle léger. Config : **4 sorts / 1 passif** (Guet). Déblocage proposé : **visible**, « Tuer 100 monstres à plus de 8 u de soi en une run » (indice : « le signal ne s'éteint pas sous la pluie »). Pendant les tests : ouverte (`characters.json` : `unlocked` true, `hidden` false, `difficulty` 2). mesure : tué à plus de 8 u du tueur, 100 dans une même run. **Codé le 06/11/2026** (`UnlockTracker`, `Profile.UNLOCK_ON_*`, `tests/unlock_conditions_test`).
 
 #### 2.8.2 Le principe
-Le personnage **classique** qui manquait : une archère qui tire seule, se lit en une seconde et se joue sans gestion. Son identité Rainfall : elle **apporte la lumière** (ses fusées sont de vraies lumières rouges dans la nuit pluvieuse) et elle **bande son arc** : la **Tension** se remplit toute seule (2,2 s en marchant, **1 s ancrée**, c'est-à-dire immobile) ; pleine, le prochain tir automatique devient un **Trait d'allonge** qui perce toute la ligne. Le rythme naturel « je bouge, je m'arrête une seconde, la flèche lourde part » est la seule chose à apprendre. Ce qui la distingue du roster : Ardent kite et brûle en zone autour de lui (novas) ; Rictus récupère des couteaux plantés (elle ne ramasse rien) ; Arpenteuse ne frappe qu'en bougeant (Vigie charge mieux à l'arrêt) ; Averse gère une jauge qui ralentit ; Vigie **expose** (marque de dégâts subis) et **cloue** pour aligner ses tirs perçants.
+Le personnage **classique** qui manquait : une archère qui tire seule, se lit en une seconde et se joue sans gestion. Son identité Rainfall : elle **apporte la lumière** (ses fusées sont de vraies lumières rouges dans la nuit pluvieuse) et elle **guette** : le passif **Guet** (jauge 0-1) se remplit tout seul (12 s en marchant, **8 s ancrée**, c'est-à-dire immobile) et ne change **rien** aux tirs automatiques ; il ne sert qu'à **gonfler le Filet lesté**, qui vide toute la jauge au lancement. Le rythme naturel « je m'arrête, je guette, puis je jette le filet plein » est la seule chose à apprendre. Ce qui la distingue du roster : Ardent kite et brûle en zone autour de lui (novas) ; Rictus récupère des couteaux plantés (elle ne ramasse rien) ; Arpenteuse ne frappe qu'en bougeant (Vigie guette mieux à l'arrêt) ; Averse gère une jauge qui ralentit ; Vigie **expose** (marque de dégâts subis) et **cloue** pour aligner ses tirs.
 
 #### 2.8.3 Les sorts
 
 | Slot | Sort | Entrée | Recharge | Coef | Portée / rayon | proc_coef |
 |---|---|---|---|---|---|---|
-| 1 auto | **Trait** | automatique | 0,6 s | 0,8 (traverse 1) | 9 u, 16 u/s | 1,0 |
-| 1 (Tension pleine) | **Trait d'allonge** | automatique | — | 2,0 à chaque monstre de la ligne | 12 u, 24 u/s, perce tout, recul 0,8 u | 1,0 |
+| 1 auto | **Trait** | automatique | 0,6 s | 1,0 (traverse 1) | 9 u, 16 u/s | 1,0 |
 | 2 | **Fusée de détresse** | clic gauche / spell_2 | 8 s | 1,2 (flèche) ; fusée 5 s : **exposés +10 %** | 9 u ; lumière 3 u | 1,0 |
-| 3 | **Filet lesté** | clic droit / spell_3 | 9 s | 0,5 (flèche) + 1,2 (filet) ; **immobilisés 1,5 s** ; **Tension pleine** | 7 u ; filet 3 u | 0,5 |
+| 3 | **Filet lesté** | clic droit / spell_3 | 9 s | 0,5 (flèche) + zone **1,2 + 2,4 g** ; **immobilisés 1,5 + 1,5 g s** ; consomme tout le **Guet** | 7 u ; filet **3 + 1,5 g** u | 0,5 |
 | 4 ultime | **Grêle** | clic molette / spell_4 | 20 s | 0,7 / 0,25 s pendant 2,5 s (11 volées ≈ 7,7) ; ralentit 25 %, expose | 10 u ; pluie 4,5 u ; arrivée 0,45 s | 0,4 |
 
-- **Trait (auto)** : vers l'ennemi le plus proche (jamais le curseur), rien sans cible. Anim `attack` (impact frame 2). Tension pleine : `vigie_allonge` (SpellData hors barre, `is_auto` : bonus d'auto, `item_pierce` faux), anim `draw` (impact frame 4) ; la Tension tombe à 0 au lancement.
+- **Trait (auto)** : vers l'ennemi le plus proche (jamais le curseur), rien sans cible. Anim `attack` (impact frame 2). Plus de Trait d'allonge (supprimé le 07/11/2026) : le Guet n'agit pas sur les tirs automatiques ; coef 0,8 -> 1,0 en compensation.
 - **Fusée de détresse** : visée souris / stick, sinon paquet le plus dense (S5). La flèche s'arrête au premier monstre (`rests_on_hit`) ou au point visé (portée du tir = distance visée), plante une `VigieFlare` : aucune dégât propre, lumière `vigie_flare` (crachotement 9 Hz, ombres), toutes les 0,2 s les monstres à 3 u (+ `zone_size_add`) reçoivent `Enemy.add_damage_taken_mod(&"vigie_expose", 1,1, 0,35 s)` (toutes sources, objets compris). Anim `flare` (impact frame 3).
-- **Filet lesté** : même tir posé que la Fusée ; à l'ouverture, statut `imprisoned` 1,5 s (Tocsin/Arpenteuse, jamais les boss : ralentissement 40 % 1,5 s) puis zone instantanée coef 1,2 sans recul ; **Tension pleine**. Anim `net` (impact frame 2). Auto-cast : seulement si la Tension est sous 50 % (sinon il la gâche).
+- **Filet lesté** : même tir posé que la Fusée ; **consomme toute la jauge de Guet g au lancement** (g lu avant la remise à zéro) : rayon **3 + 1,5 g u**, tenue (`imprisoned`) **1,5 + 1,5 g s** (Tocsin/Arpenteuse, jamais les boss : ralentissement 40 % pour la même durée), puis zone instantanée coef **1,2 + 2,4 g** sans recul. À g ≥ 0,99, la flèche du Filet utilise le visuel `arrow_charged`. Le Filet ne remplit plus la jauge. Anim `net` (impact frame 2). Auto-cast (accessibilité / simulateur) : permis si g ≥ 0,6 ou si un monstre est à moins de 2 u (sinon il gâche le Guet).
 - **Grêle** : volée au ciel à la frame d'impact de `volley` (frame 4), pluie 0,45 s plus tard au point visé (≤ 10 u, sinon paquet le plus dense) : `ZoneEffect` persistante (ticks DoT), ralentissement 25 % 0,5 s rafraîchi, exposition comme la fusée.
 
-#### 2.8.4 Ressource : Tension (0-1)
-- Remplissage : `(1 + attack_speed) / T` par seconde, T = **2,2 s** en marchant, **1,0 s ancrée** (immobile depuis 0,15 s, roulade = pas ancrée). Gardée entre les étages et dans la sauvegarde (`save_state`).
-- Pleine : le prochain Trait est un Trait d'allonge ; lueur `vigie_tension` sur la corde, petit éclat au moment où elle s'arme, jauge HUD « PRÊTE » qui pulse (`KitResource` id `tension`, label « Tension »).
-- Masque `_e` du sprite (corde, pointes) : énergie 0,6 → 3,2 selon la Tension (10 paliers), lisible même sans HUD.
-- Aucun malus caché : se faire toucher ne vide pas la Tension (personnage débutant).
+#### 2.8.4 Passif : Guet (0-1)
+- Remplissage : `1 / T` par seconde, T = **12 s** en marchant, **8 s ancrée** (immobile depuis 0,15 s, roulade = pas ancrée) ; la vitesse d'attaque n'agit plus dessus. **+8 %** par pas de Repli (esquive) achevé. Gardé entre les étages et dans la sauvegarde (`save_state`).
+- Pleine : lueur `vigie_tension` sur la corde (rouge), jauge HUD « PLEIN » qui pulse (`KitResource` id interne `tension` et icône `tension` conservés, label « Guet »).
+- Dépense : seul le Filet lesté la consomme (tout, au lancement) et scale avec elle ; aucun effet sur le Trait.
+- Masque `_e` du sprite (corde, pointes) : énergie 0,6 → 3,2 selon le Guet (10 paliers), lisible même sans HUD.
+- Aucun malus : se faire toucher ne vide pas le Guet (personnage débutant).
 
 #### 2.8.5 Table d'états
-| État | Déplacement | Tension | Sort 1 | Sorts 2-4 | Roulade | Anim |
+| État | Déplacement | Guet | Sort 1 | Sorts 2-4 | Roulade | Anim |
 |---|---|---|---|---|---|---|
-| marche | 4,2 u/s | +1 / 2,2 s | Trait | oui | 3 u | `run` |
-| ancrée (immobile ≥ 0,15 s) | — | +1 / 1 s | Trait | oui | oui | `brace` (arc à demi bandé) |
-| Tension pleine | idem | — | **Trait d'allonge** | oui | oui | `brace` / `run`, corde rouge |
-| roulade | 3 u | marche | — | — | — | roulade + fantômes |
+| marche | 4,2 u/s | +1 / 12 s | Trait | oui | 3 u | `run` |
+| ancrée (immobile ≥ 0,15 s) | — | +1 / 8 s | Trait | oui | oui | `brace` (arc à demi bandé) |
+| Guet plein | idem | — | Trait | oui (Filet à pleine puissance) | oui | `brace` / `run`, corde rouge |
+| roulade | 3 u | +8 % par pas | — | — | — | roulade + fantômes |
 
 #### 2.8.6 Statistiques (comparé à Ardent)
 | Stat | Ardent | **Vigie** | Note |
@@ -550,16 +550,16 @@ Le personnage **classique** qui manquait : une archère qui tire seule, se lit e
 | Vitesse | 4,0 | **4,2** | elle doit pouvoir reculer |
 | Roulade | 3 u | **3 u** | standard |
 | Hitbox | 0,5 u | **0,45 u** | silhouette fine (l'arc ne compte pas) |
-| Coef/s mono-cible | ≈ 2,8 | ≈ **2,8** (Trait 1,33 + allonge 0,46 + filet 0,32 + fusée 0,15 + grêle 0,39, × exposition ≈ 1,06) | |
+| Coef/s mono-cible | ≈ 2,8 | (à recalculer, voir balance_sim) | refonte Guet 07/11/2026 |
 
 #### 2.8.7 Items
-- **Vitesse d'attaque** (Carquois affûté, Sifflet de chasse, Rafale d'acier) : plus de Traits **et** Tension plus rapide. **Lame jumelle** : le Trait et le Trait d'allonge sont des autos. **Cœur de glace** : cibles ralenties (Grêle) ou immobilisées (Filet, `is_slowed` vrai). **Pointe perforante** : Trait seulement (l'Allonge perce déjà tout). **Éclair en bouteille** : chaque cible de l'Allonge (proc 1,0). **Rune de portée** : lumière de la fusée, filet, Grêle (+15 % de zone sur filet et Grêle). **Danseur** : anti-synergie assumée (bonus en marche, elle charge mieux à l'arrêt).
+- **Vitesse d'attaque** (Carquois affûté, Sifflet de chasse, Rafale d'acier) : plus de Traits seulement (n'accélère plus le Guet). **Lame jumelle** : le Trait est un auto. **Cœur de glace** : cibles ralenties (Grêle) ou immobilisées (Filet, `is_slowed` vrai). **Pointe perforante** : Trait seulement. **Éclair en bouteille** : sur les tirs qui touchent (plus d'Allonge). **Rune de portée** : lumière de la fusée, filet, Grêle (+15 % de zone sur filet et Grêle). **Danseur** : anti-synergie assumée (bonus en marche, le Guet se remplit plus vite à l'arrêt).
 - **3 items synergiques** : Carquois affûté, Lame jumelle, Cœur de glace.
 
 #### 2.8.8 Prise en main, forces, faiblesses
-- **Courbe** : **2/5** (débutant à intermédiaire) : tout se joue « au bouton », la seule subtilité est de s'arrêter une seconde. Tips : « Arrête-toi une seconde : ta corde se bande trois fois plus vite », « Le Filet remplit ta Tension : tire dans le paquet que tu viens de clouer », « Ce qui est dans la lumière de ta fusée prend plus de dégâts ».
+- **Courbe** : **2/5** (débutant à intermédiaire) : tout se joue « au bouton », la seule subtilité est de s'arrêter pour guetter avant le Filet. Tips : « Arrête-toi : ton Guet se remplit plus vite », « Le Filet vide ton Guet : lance-le plein sur le gros paquet », « Ce qui est dans la lumière de ta fusée prend plus de dégâts ».
 - **Forces** : cible unique, élites et boss, portée 9-12 u, lignes de monstres traversées, contrôle (filet), éclaire la nuit.
-- **Faiblesses** : fragile (90 PV, 0 armure), moins de zone qu'Ardent au niveau 1, s'arrêter pour charger est un risque dans les essaims.
+- **Faiblesses** : fragile (90 PV, 0 armure), moins de zone qu'Ardent au niveau 1, s'arrêter pour guetter est un risque dans les essaims.
 
 #### 2.8.9 Entrées par plateforme
 | Plateforme | Fusée | Filet | Grêle | Visée |
@@ -570,7 +570,7 @@ Le personnage **classique** qui manquait : une archère qui tire seule, se lit e
 
 #### 2.8.10 Aspect
 - **Vigie (1,35 u)** : grande, sèche, un peu voûtée. Lisible parmi 250 monstres par **trois formes** : l'**arc long plus haut qu'elle** (bois de digue noirci `#2A2522`, cerclages de cuivre vert-de-gris `#4F6B5E`, corde de chanvre trempée), la **pèlerine de roseaux tressés** (`#5A5540`, triangle hirsute qui goutte sur les épaules, au-dessus d'une capuche de ciré ardoise `#3A4048`), le **carquois-tube de laiton** à la hanche d'où dépassent les têtes des fusées. Écharpe remontée sur le nez, longue-vue cabossée à la ceinture, jambières de pêcheur couvertes de vase. Peau pâle `#C9B8A8`, regard fatigué. Réaliste et usée (STYLE_boss_da), jamais héroïque ni cartoon.
-- **Accent émissif unique : rouge de fusée de détresse `#FF3A4F`** : têtes des fusées dans le carquois, mèche fumante à la hanche, **corde de l'arc** (masque `_e` modulé par la Tension). Rien d'autre n'émet. Lumière du joueur : blanc de pluie à peine rosé `#E3CFC9`, cœur rouge `#FF5A66` (la mèche).
+- **Accent émissif unique : rouge de fusée de détresse `#FF3A4F`** : têtes des fusées dans le carquois, mèche fumante à la hanche, **corde de l'arc** (masque `_e` modulé par le Guet). Rien d'autre n'émet. Lumière du joueur : blanc de pluie à peine rosé `#E3CFC9`, cœur rouge `#FF5A66` (la mèche).
 - **Rendu** : CEL validé (contrat `_cel`, lot CS1) : aplats 2-3 tons, encrage brun-noir, accent conservé.
 
 #### 2.8.11 Animations et rendu (Codex, lots VG1 / VG2)
@@ -580,7 +580,7 @@ Le personnage **classique** qui manquait : une archère qui tire seule, se lit e
 | `run` | 8 | 8 | | marche (arc tenu bas) |
 | `brace` | 4 | 8 | | ancrée : arc à demi bandé, boucle (s'affiche immobile) |
 | `attack` | 4 | 8 | 2 | Trait (tir rapide) |
-| `draw` | 6 | 8 | 4 | Trait d'allonge (bande à fond, relâche) |
+| `draw` | 6 | 8 | 4 | (inutilisée depuis la refonte Guet du 07/11/2026 : l'ancien Trait d'allonge est supprimé) |
 | `flare` | 5 | 8 | 3 | Fusée (tir tendu, mèche allumée) |
 | `net` | 5 | 8 | 2 | Filet (tir lourd, filet qui se déroule) |
 | `volley` | 7 | 8 | 4 | Grêle (tir vertical) |
@@ -592,7 +592,9 @@ Assets séparés (VG2) : `arrow` (CREA 4, pointe +X), `arrow_charged` (CREA 4, t
 Replis en attendant : sprite d'Ardent teinté roseau/ardoise (`PLACEHOLDER_TINT`), anims d'action génériques (`attack`, `cast`, `cast_ult`), flèches = lame de Rictus (jamais la braise d'Ardent), fusée = cœur incandescent + anneau dessinés + vraie lumière rouge, filet / Grêle = contours ZoneEffect.
 
 #### 2.8.12 Équilibrage du 22/10/2026 (simulateur `art/tools/night/balance_sim.py --chars vigie --seeds 3`)
-Première version (Trait 0,85 sans traversée, Allonge 2,6, Tension 3 s en marche, exposition +20 %, Grêle 0,8 sur 4 u, filet 1,0 sur 2,5 u / 10 s) : cible unique **+36 %**, essaim **−39 %** au niveau 1. Valeurs retenues (celles des tableaux ci-dessus) : Trait 0,8 **traverse 1**, Allonge 2,0, Tension 2,2 s en marche, exposition +10 %, Grêle 0,7 sur 4,5 u, filet 1,2 sur 3 u / 9 s. Résultat vs Ardent : **L6** zone −6 %, mixte +1 %, cible +16 %, subis −34 % (29 vs 44 % PV/min) ; **L12** zone +15 %, mixte −5 %, cible +1 % ; **L1** zone −20 %, mixte +29 %, cible +16 % (Ardent L1 mixte est bas : 41). 0 mort au niveau 6 et 12.
+Première version (Trait 0,85 sans traversée, Allonge 2,6, Tension 3 s en marche, exposition +20 %, Grêle 0,8 sur 4 u, filet 1,0 sur 2,5 u / 10 s) : cible unique **+36 %**, essaim **−39 %** au niveau 1. Valeurs retenues alors : Trait 0,8 **traverse 1**, Allonge 2,0, Tension 2,2 s en marche, exposition +10 %, Grêle 0,7 sur 4,5 u, filet 1,2 sur 3 u / 9 s. Résultat vs Ardent : **L6** zone −6 %, mixte +1 %, cible +16 %, subis −34 % (29 vs 44 % PV/min) ; **L12** zone +15 %, mixte −5 %, cible +1 % ; **L1** zone −20 %, mixte +29 %, cible +16 % (Ardent L1 mixte est bas : 41). 0 mort au niveau 6 et 12.
+
+**Refonte Guet, 07/11/2026 (décision du joueur)** : l'ancienne Tension (Trait d'allonge et Volée d'allonge) est remplacée par le passif Guet, qui ne boost plus que le Filet lesté. Compensation : Trait 0,8 -> 1,0. Les chiffres ci-dessus datent d'avant la refonte et sont à refaire avec `balance_sim`.
 
 ### 2.9 Taliant, le rōnin d'écorce (fiche complète ; samouraï-arbre, mêlée lourde, ressource = Aiguisage)
 
@@ -764,7 +766,7 @@ Replis en attendant (code) : sprite d'Ardent teinté écorce (`PLACEHOLDER_TINT`
 | Avare | mêlée / tank | **or** (puissance, saignement) | 120 + 36 | 15 | 0,8 + 0,16 | 3,8 | 2,5 u | 4 sorts | 2/5 | 2 | 304 |
 | Bourbe | invocatrice / mêlée | **PV max = familiers** | 150 + 45 | 10 | 1,5 + 0,3 | 3,6-4,2 | 2,5 u | 4 sorts | 3/5 | 3 | 288 + 128 |
 | **Rictus** | mêlée / leurres / burst | **pantin + fantôme** (toupie, doublures explosives, levée aérienne) | 95 + 28 | 10 | 0,6 + 0,12 (+2 %/sort) | 4,2 (4,8 toupie) | levée 3 u | 4 sorts | 2/5 | **3** | 424 + 60 |
-| Vigie | distance / archère (§2.8) | **Tension** (tir chargé qui perce, fusées qui exposent, filet) | 90 + 27 | 0 | 1 + 0,2 | 4,2 | 3 u | 4 sorts | 2/5 | 2 | 424 + ≈ 40 |
+| Vigie | distance / archère (§2.8) | **Guet** (filet qui grossit avec la jauge, fusées qui exposent) | 90 + 27 | 0 | 1 + 0,2 | 4,2 | 3 u | 4 sorts / 1 passif | 2/5 | 2 | 424 + ≈ 40 |
 | **Taliant** | mêlée lourde / bretteur (§2.9) | **Aiguisage** (dégâts × aiguisage/100, usure par coup, ultime ≥ 90 % qui double les coups) | 115 + 35 | 25 | 0,8 + 0,16 | 3,9 | Iaï 3 u (tranche) | 4 sorts | 3/5 | 2 | ≈ 830 + 40 |
 
 Roster proposé au lancement (8) : Ardent + Tocsin disponibles, Averse / Arpenteuse / Bourbe visibles, Rainette / Avare / Rictus cachés. Les 5 personnages du GDD §5 (Veilleuse, Brise-Os, Chronomancienne, Invocateur, Faux-Roi) deviennent la **réserve LiveOps** (« nouveau personnage tous les 2 mois ») ou sont fusionnés (Bourbe reprend l'objectif de l'Invocateur). `characters.json` est à mettre à jour par l'orchestrateur (hors périmètre de ce doc).

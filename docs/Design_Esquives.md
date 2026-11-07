@@ -14,7 +14,7 @@ Sommaire : 1. Règles communes · 2. Tableau · 3. Fiches · 4. Entrées et HUD 
 3. **Jamais à travers un mur, jamais dans le vide.** Toute esquive est un déplacement **balayé** (`move_and_collide` + glissement le long du mur, puis `Player.keep_walkable()` : bornes de la carte et cases de mur du NavField). Vaut pour les cartes à contours organiques (vide `VOID_CHAR " "` hors carte), les remparts de bord, l'eau profonde `~` (rectangle de collision), les blocs dynamiques des boss. Un blink dos au mur parcourt ce qu'il peut et **consomme quand même** sa recharge (lisibilité > clémence).
 4. **Monstres** : aucune esquive n'est bloquée par un monstre (masque monde seulement). Rictus et Rainette passent **au-dessus** (hauteur + ombre), les autres **à travers** (fantômes, traînée).
 5. **Lisibilité** : un marqueur de départ et un marqueur d'arrivée, visibles en moins de 0,5 s ; aucun téléport invisible (Ardent laisse sa silhouette de braises au départ et une gerbe à l'arrivée, à 3 u l'une de l'autre).
-6. **Pas un sort offensif** : effets secondaires = contrôle léger (ralentissement), ressource (Tension, pièces) ou cosmétique ; seul l'Iaï de Taliant blesse (≈ 13 % de son DPS, décision du 22/10). Aucun effet d'esquive ne dépasse 5 % du DPS d'un kit.
+6. **Pas un sort offensif** : effets secondaires = contrôle léger (ralentissement), ressource (Guet, pièces) ou cosmétique ; seul l'Iaï de Taliant blesse (≈ 13 % de son DPS, décision du 22/10). Aucun effet d'esquive ne dépasse 5 % du DPS d'un kit.
 7. **Plafond mobile** : un seul nœud persistant par esquive (traînée ou zone, ≤ 2 s), pas d'ombre dynamique nouvelle.
 8. **Équilibrage** : `Balance.DODGE_*` reste la roulade par défaut ; toute valeur propre vit dans le kit (`<id>_kit.gd`, constantes) ou dans la classe d'esquive (`BlinkDodge`, `SlideDodge`). Jamais en dur dans `player.gd`. Aucune réduction de recharge par les items. **Mode test** : « Recharge 100 % » (`TestMode.cdr_full`) met la recharge à 0 et les charges au maximum ; « Ressource pleine » garde l'eau d'Averse au maximum.
 9. **Téléporteur, coffres, secrets** : une esquive ne déclenche jamais « interagir » (le téléporteur ne part que sur l'action `interact`) ; les plaques de pression des zones secrètes se déclenchent au passage comme à la marche (Ardent qui blinke par-dessus une plaque sans la toucher ne l'enfonce pas : lisible, pas un exploit).
@@ -31,7 +31,7 @@ Sommaire : 1. Règles communes · 2. Tableau · 3. Fiches · 4. Entrées et HUD 
 | Rainette | **Bond** | saut aérien à reculons | 3,5 u | 0,29 s (12 u/s) | 0,29 s | 3 s | — | au-dessus des monstres, anneau d'atterrissage (existant) |
 | Avare | **Râfle** | dash lourd | 2,5 u | 0,25 s (10 u/s) | 0,25 s | 3 s | — | ses pièces à 1,2 u ramassées pendant + 0,3 s ; fantômes or |
 | Bourbe | **Coulée** | dash lourd | 3 u | 0,30 s (10 u/s) | 0,30 s | 3 s | — | hitbox 0,35 u pendant ; traînée de vase 3 × 0,8 u, 2 s : `slow` 30 % |
-| Vigie | **Repli** | 3 petits dashs enchaînables | 3 × 1 u | 3 × 0,083 s (12 u/s) | 3 × 0,083 s = 0,25 s | 1 charge / 1 s (3 s pour les 3) | — | recule depuis la visée par défaut ; +8 % de Tension par dash ; fantômes rouges |
+| Vigie | **Repli** | 3 petits dashs enchaînables | 3 × 1 u | 3 × 0,083 s (12 u/s) | 3 × 0,083 s = 0,25 s | 1 charge / 1 s (3 s pour les 3) | — | recule depuis la visée par défaut ; +8 % de Guet par dash ; fantômes rouges |
 | Taliant | **Iaï** | dash tranchant | 3 u | 0,25 s | 0,25 s | 3 s | 4 % d'aiguisage s'il touche | coef 1,5 à 0,9 u du trajet (existant) |
 
 Budget : tous à 3 u / 0,25 s / 3 s sauf Ardent (0,20 s d'i-frames : −20 %, compensé par zéro exposition pendant le trajet et un repositionnement instantané), Averse (i-frames −40 % mais mobilité illimitée tant qu'elle a de l'eau : payée en sorts), Avare (2,5 u : −17 %, il est le plus blindé du roster), Bourbe (0,30 s : +20 %, elle est la plus lente et finit sa coulée à portée du paquet traversé), Rainette (3,5 u et 0,29 s : +17 %, inchangé ; mobilité engagée partout ailleurs).
@@ -75,7 +75,7 @@ Elle se liquéfie : **3 u à 10 u/s** (0,30 s, i-frames 0,30 s, surplus assumé 
 ### 3.9 Vigie : « Repli » (`RollDodge` à 3 charges, demande du joueur)
 - **3 charges** (`DODGE_CHARGES`) de **1 u** chacune (`DODGE_U`) à 12 u/s (0,083 s d'i-frames par dash) : même distance et mêmes i-frames totales que la roulade. Une charge se régénère à la fois en **1 s** (3 s pour les trois). Un appui pendant un dash **relance tout de suite** dans la nouvelle direction (zigzag).
 - Sans entrée de déplacement : elle rompt **à l'opposé de la visée** (curseur / l'avant) en gardant la cible en face ; au joystick, elle part où il pousse.
-- Chaque dash achevé bande l'arc : **+8 % de Tension** (`DODGE_TENSION_GAIN`, +24 % pour les trois ; ≈ +0,08 Tension/s au plus contre +0,45/s en marche : un appoint). Fantômes rouge fusée. Pastilles de charges sur le bouton.
+- Chaque dash achevé bande l'arc : **+8 % de Guet** (`DODGE_TENSION_GAIN`, +24 % pour les trois ; ≈ +0,08 Guet/s au plus, autant que la marche (+0,083/s) : un appoint). Fantômes rouge fusée. Pastilles de charges sur le bouton.
 
 ### 3.10 Taliant : « Iaï » (existant, `RollDodge`)
 Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doublé sous Lames jumelles). Libellé « Iaï ».
@@ -100,7 +100,7 @@ Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doubl�
 
 ## 6. Tests et protocole joueur
 
-- `tests/dodge_test.tscn` : par personnage genre, distance, i-frames, recharge ; Vigie 3 charges + Tension + enchaînement ; Ardent et Rictus arrêtés devant un mur ; Averse maintien, eau consommée et arrêt à vide, contact ignoré, projectile encaissé, mur de face ; mode test recharge 0 ; changement de personnage. `tests/averse_test` (bloc Glissade), `avare_test`, `arpenteuse_*`, `test_mode_test`, `run_flow_test`, `spell_auto_aim_test`.
+- `tests/dodge_test.tscn` : par personnage genre, distance, i-frames, recharge ; Vigie 3 charges + Guet + enchaînement ; Ardent et Rictus arrêtés devant un mur ; Averse maintien, eau consommée et arrêt à vide, contact ignoré, projectile encaissé, mur de face ; mode test recharge 0 ; changement de personnage. `tests/averse_test` (bloc Glissade), `avare_test`, `arpenteuse_*`, `test_mode_test`, `run_flow_test`, `spell_auto_aim_test`.
 - **Protocole en mode test** (titre → « Mode test », TAB = panneau) : voir le rapport d'intégration ; par personnage, touche Maj, attendu = la ligne du tableau §2.
 
 ## 7. Leviers et risques

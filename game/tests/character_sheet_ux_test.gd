@@ -92,7 +92,7 @@ func _test_passives() -> void:
 	_check(not PB.info_for(&"ardent").is_empty(), "Ardent : passif affiché au HUD (décision du joueur, 26/10)")
 	_check(bool(PB.info_for(&"vigie").get("hud", false)) and bool(PB.info_for(&"morfil").get("hud", false)), "Vigie et Taliant : icône au HUD")
 	var vig: String = PB.info_for(&"vigie").desc
-	_check(vig.contains(KitResource.fmt(VigieKit.TENSION_MOVING_S)) and vig.contains(KitResource.fmt(VigieKit.ALLONGE_RANGE_U)), "Vigie : chiffres lus dans le kit")
+	_check(vig.contains(KitResource.fmt(VigieKit.GUET_MOVING_S)) and vig.contains(KitResource.fmt(VigieKit.NET_RADIUS_GAIN_U)), "Vigie : chiffres lus dans le kit")
 	var mor: String = PB.info_for(&"morfil").desc
 	_check(mor.contains(KitResource.fmt(MorfilKit.COST_CRESCENT)) and mor.contains(KitResource.fmt(MorfilKit.SHARP_ULT_MIN)), "Taliant : coûts d'aiguisage lus dans le kit")
 

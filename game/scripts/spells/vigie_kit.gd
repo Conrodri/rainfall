@@ -1,14 +1,15 @@
 class_name VigieKit
 extends Node
 ## Kit de Vigie, la guetteuse de la digue (docs/Design_Personnages.md §2.8, fiche joueur docs/fiches/vigie.md).
-## Archère « classique » : 4 sorts / 0 passif, ressource « Tension » (la corde bandée).
-## - Tension 0-1 : se remplit seule (TENSION_MOVING_S en marchant, TENSION_STILL_S ancrée = immobile), × (1 +
-##   vitesse d'attaque). Pleine : le prochain tir automatique est un « Trait d'allonge » (perce tout, 12 u) qui la vide.
-## - Sort 1 Trait (auto) : flèche vers l'ennemi le plus proche ; Trait d'allonge quand la Tension est pleine.
+## Archère « classique » : 4 sorts / 1 passif, « Guet » (jauge g de 0 à 1 ; refonte du 07/11/2026, ex-« Tension »).
+## - Guet : se remplit seul (GUET_MOVING_S en marchant, GUET_STILL_S ancrée = immobile ; la vitesse d'attaque n'y
+##   change rien) ; +DODGE_TENSION_GAIN par pas de Repli ; le Fanal la met à 100 %. Les tirs automatiques n'en
+##   dépendent pas : seul le Filet lesté la consomme (tout, d'un coup) et grandit avec elle.
+## - Sort 1 Trait (auto) : flèche vers l'ennemi le plus proche.
 ## - Sort 2 Fusée de détresse : flèche-fusée au point visé ; une fusée de magnésium reste plantée 5 s : les monstres
 ##   dans sa lumière sont « exposés » (+20 % de dégâts subis, Enemy.add_damage_taken_mod).
 ## - Sort 3 Filet lesté : flèche lestée ; le filet s'ouvre au premier monstre (ou au point visé) : emprisonne 1,5 s
-##   (boss : ralentis) et remplit la Tension (« le temps d'ajuster »).
+##   (boss : ralentis) ; rayon, durée et dégâts croissent avec le Guet, qu'il vide.
 ## - Sort 4 Grêle : volée tirée au ciel ; 0,45 s après, pluie de flèches 2,5 s sur 4 u (ralentit, expose).
 ## Tous les sorts : Behavior.KIT (SpellCaster -> cast_spell), effet à la frame d'impact de l'anim d'action
 ## (Player.action_impact). Assets absents (lots Codex VG1/VG2) : Ardent teinté, flèches = couteau de Rictus,
@@ -18,7 +19,7 @@ extends Node
 const ASSET_DIR := "res://assets/sprites/characters/vigie/"
 const SPRITE_FRAMES := ASSET_DIR + "vigie.tres" ## idle/run/attack/draw/brace/flare/net/volley/death _<dir>
 const ARROW_FRAMES := ASSET_DIR + "arrow/arrow.tres" ## CREA 4, pointe vers +X
-const ARROW_CHARGED_FRAMES := ASSET_DIR + "arrow_charged/arrow_charged.tres" ## Trait d'allonge, traînée rouge
+const ARROW_CHARGED_FRAMES := ASSET_DIR + "arrow_charged/arrow_charged.tres" ## Filet lesté chargé (Guet plein), traînée rouge
 const FLARE_ARROW_FRAMES := ASSET_DIR + "flare_arrow/flare_arrow.tres"
 const NET_ARROW_FRAMES := ASSET_DIR + "net_arrow/net_arrow.tres"
 const FLARE_FRAMES := ASSET_DIR + "flare/flare.tres" ## CREA : `default` (boucle), `end` facultative
@@ -46,25 +47,21 @@ const REGEN_PER_LEVEL := 0.2
 const SPEED_U := 4.2
 const HITBOX_U := 0.45
 
-# --- Tension --------------------------------------------------------------------------------------
-const TENSION_MOVING_S := 2.2 ## de 0 à pleine en marchant
-const TENSION_STILL_S := 1.0 ## de 0 à pleine ancrée (immobile)
+# --- Guet (ex-Tension) -------------------------------------------------------------------------------
+const GUET_MOVING_S := 12.0 ## de 0 à pleine en marchant
+const GUET_STILL_S := 8.0 ## de 0 à pleine ancrée (immobile)
+const GUET_FULL := 0.99 ## g à partir duquel le Filet est « chargé » (flèche arrow_charged)
 const ANCHOR_DELAY_S := 0.15 ## immobile depuis ce temps = ancrée (pas de clignotement au joystick)
-const EMISSION_LOW := 0.6 ## énergie du masque _e (corde, pointes) à Tension nulle
+const EMISSION_LOW := 0.6 ## énergie du masque _e (corde, pointes) à Guet nul
 const EMISSION_FULL := 3.2
 const EMISSION_STEPS := 10
 
-# --- Sort 1 : Trait / Trait d'allonge ---------------------------------------------------------------
-const TRAIT_COEF := 0.8
+# --- Sort 1 : Trait ----------------------------------------------------------------------------------
+const TRAIT_COEF := 1.0 ## refonte Guet 07/11 : 0,8 -> 1,0 (l'Allonge n'existe plus)
 const TRAIT_CD := 0.6
 const TRAIT_RANGE_U := 9.0
 const TRAIT_SPEED_U := 16.0
-const TRAIT_PIERCE := 1 ## traverse 1 monstre (comme l'Éclat d'Ardent) : la ligne compte aussi hors allonge
-const ALLONGE_COEF := 1.8 ## combos 29/10 : 2,0 -> 1,8 (compensation de l'Allonge sur exposé)
-const ALLONGE_RANGE_U := 12.0
-const ALLONGE_SPEED_U := 24.0
-const ALLONGE_PIERCE := 30 ## « perce tout » (plafond de sécurité)
-const ALLONGE_KNOCK_U := 0.8
+const TRAIT_PIERCE := 1 ## traverse 1 monstre (comme l'Éclat d'Ardent) 
 
 # --- Sort 2 : Fusée de détresse ---------------------------------------------------------------------
 const FUSEE_CD := 8.0
@@ -77,14 +74,10 @@ const EXPOSE_MULT := 1.1 ## +10 % de dégâts subis dans la lumière (toutes sou
 const EXPOSE_ID := &"vigie_expose"
 const EXPOSE_REFRESH_S := 0.2
 const EXPOSE_HOLD_S := 0.35 ## durée de la marque posée à chaque rafraîchissement
-## Combos (docs/Design_Combos.md §5.6) : Filet -> Fusée -> Allonge ; Grêle sur cloués ; Repli -> Allonge.
-const ALLONGE_EXPOSED_COEF := 2.6 ## Trait d'allonge sur un exposé (1,8 sinon)
+## Combos (docs/Design_Combos.md §5.6) : Filet -> Fusée (exposition x1,25) ; Grêle sur cloués.
 const NET_FLARE_EXPOSE := 1.25 ## exposition d'un cloué sous une fusée posée sur lui (1,1 sinon), tant que le filet tient
 const NET_FLARE_EXTEND_S := 0.5 ## le filet tient 0,5 s de plus sous cette fusée
 const NET_FLARE_REACH_U := 1.0 ## la fusée « s'arrête sur un cloué » : un emprisonné à cette distance du point d'arrêt
-const FLARE_REVIVE_S := 1.0 ## une Allonge sur un exposé ravive la fusée qui l'éclaire (+1 s)
-const FLARE_MAX_LIFE_S := 7.0 ## plafond de vie d'une fusée ravivée
-const REVIVE_GAP_MS := 250 ## une avivée par volée (le trait perce plusieurs monstres)
 const HAIL_NETTED_MULT := 1.4 ## Grêle : chaque volée sur un cloué
 const SIGNAL_NETTED_MULT := 1.2 ## Tir de signal sur un monstre déjà cloué avant l'impact
 const DODGE_CHAIN_GAP_S := 1.0 ## deux replis séparés de moins que cela font partie de la même série
@@ -93,13 +86,18 @@ const ANCHOR_FREE_S := 0.5 ## après le 3e repli de la série : comptée ancrée
 # --- Sort 3 : Filet lesté ------------------------------------------------------------------------
 const FILET_CD := 9.0
 const FILET_COEF := 0.5 ## flèche lestée (premier monstre)
-const NET_COEF := 1.2 ## ouverture du filet (zone)
+const NET_COEF := 1.2 ## ouverture du filet (zone) à g = 0 ; + NET_COEF_GAIN × g
+const NET_COEF_GAIN := 2.4
 const FILET_RANGE_U := 7.0
 const FILET_SPEED_U := 13.0
-const NET_RADIUS_U := 3.0
-const NET_HOLD_S := 1.5
+const NET_RADIUS_U := 3.0 ## à g = 0 ; + NET_RADIUS_GAIN_U × g
+const NET_RADIUS_GAIN_U := 1.5
+const NET_HOLD_S := 1.5 ## à g = 0 ; + NET_HOLD_GAIN_S × g
+const NET_HOLD_GAIN_S := 1.5
 const NET_BOSS_SLOW_PCT := 0.4
 const AUTO_WAIT_NET_S := 0.5 ## auto-cast : la Fusée attend un Filet qui revient dans ce délai
+const AUTO_NET_G := 0.6 ## auto-cast du Filet : Guet >= ce seuil ...
+const AUTO_NET_NEAR_U := 2.0 ## ... ou un monstre à moins de cette distance
 const MIN_SHOT_U := 1.5 ## un tir visé trop près part quand même à cette distance
 
 # --- Sort 4 : Grêle ------------------------------------------------------------------------------
@@ -123,21 +121,15 @@ const COUNTER_EXPOSED := "vigie_exposed" ## monstre exposé par une Fusée de d�
 const COUNTER_NETTED := "vigie_netted" ## monstre immobilisé par le Filet lesté
 const COUNTER_GRELE_KILLS := "vigie_grele_kills" ## monstre dont le dernier coup vient de la Grêle
 const META_LAST_HIT := &"vigie_last_hit"
-# Tir double : 2 flèches légères, Tension pleine -> volée de 3 traits en éventail
-const DOUBLE_COEF := 0.42
+const META_GUET := &"vigie_guet" ## g (0-1) du Filet au lancement, posé sur la flèche
+# Tir double : 2 flèches légères
+const DOUBLE_COEF := 0.52 ## refonte Guet 07/11 : 0,42 -> 0,52
 const DOUBLE_RANGE_U := 8.0
 const DOUBLE_PROC := 0.8
-const VOLLEY_COEF := 1.2
-const VOLLEY_COUNT := 3
-const VOLLEY_FAN_DEG := 20.0 ## ouverture totale de l'éventail
-const VOLLEY_RANGE_U := 12.0
-const VOLLEY_KNOCK_U := 0.5
-# Fanal : lumière attachée à Vigie ; la corde se bande « ancrée » même en marche
-const FANAL_CD := 8.0
+# Fanal : lumière attachée à Vigie ; met le Guet à 100 % d'un coup
+const FANAL_CD := 14.0 ## refonte Guet 07/11 : 8 -> 14
 const FANAL_LIFE_S := 5.0
-const FANAL_TENSION_MOVING_S := 1.0 ## marche pendant le Fanal (au lieu de 2,2)
-const FANAL_TENSION_STILL_S := 0.7 ## ancrée pendant le Fanal (au lieu de 1,0)
-# Chausse-trapes : champ de pointes, dégâts + ralentissement + Tension à l'entrée
+# Chausse-trapes : champ de pointes, dégâts + ralentissement + Guet à l'entrée
 const CHAUSSE_CD := 9.0
 const CHAUSSE_ARROW_COEF := 0.5
 const CHAUSSE_RADIUS_U := 3.0
@@ -147,7 +139,7 @@ const CHAUSSE_ENTRY_PROC := 0.5
 const CHAUSSE_SLOW_PCT := 0.5
 const CHAUSSE_BOSS_SLOW_PCT := 0.25
 const CHAUSSE_SLOW_S := 1.0
-const CHAUSSE_TENSION := 0.25
+const CHAUSSE_TENSION := 0.05 ## Guet gagné à l'entrée d'un monstre
 const CHAUSSE_FRAMES := ASSET_DIR + "caltrop_field/caltrop_field.tres" ## TOP, `default` en boucle + `end`
 const CHAUSSE_RADIUS_PX := 288.0 ## rayon du champ dans la frame (TOP 96 px/u x 3 u)
 # Tir de signal : flèche au ciel, télégraphe, impact lourd, lumière 8 s
@@ -176,7 +168,7 @@ const PENDING_SAFETY_S := 1.0 ## effet jamais déclenché (anim coupée) : part 
 # --- Repli (esquive, docs/Design_Esquives.md §Vigie) : 3 petits dashs enchaînables ------------------------
 const DODGE_CHARGES := 3
 const DODGE_U := 1.6 ## par charge (4,8 u en tout ; retour joueur 31/10 : 1,0 trop court)
-const DODGE_TENSION_GAIN := 0.08 ## par dash achevé : reculer bande l'arc (0,24 pour les 3)
+const DODGE_TENSION_GAIN := 0.08 ## Guet par pas de Repli achevé : reculer bande l'arc (+8 %, 24 % pour les 3)
 const DODGE_GHOST_COLOR := Color(1.0, 0.23, 0.31, 0.35) ## #FF3A4F, rouge de fusée
 const DODGE_SOUND := [&"spell.cendres.cast_light", -8.0, 1.6]
 
@@ -185,7 +177,6 @@ var tension := 0.0
 var still_t := 0.0 ## temps immobile continu
 var flares: Array = [] ## VigieFlare plantées
 var hails: Array = [] ## ZoneEffect de Grêle vivantes
-var allonge_spell: SpellData = null
 var _visual: AnimatedSprite2D = null
 var _pending: Array = [] ## {base, fn, t}
 var _timers: Array = [] ## {t, fn} (vol de la Grêle)
@@ -198,10 +189,7 @@ var _dash_chain := 0 ## replis achevés dans la série en cours
 var _dash_gap_t := 0.0
 var _anchor_free_t := 0.0 ## > 0 : ancrage sans délai (après le 3e repli)
 var _pre_netted := {} ## Tir de signal : instance_id des monstres déjà cloués avant son impact
-var _revive_ms := -10000
-var _allonge_cast := false ## Trait d'allonge lancé : l'anim d'action du slot 1 est `draw`
-var volley_spell: SpellData = null ## Volée d'allonge (Tir double)
-var fanal_t := 0.0 ## s restantes du Fanal (Tension au rythme ancré)
+var fanal_t := 0.0 ## s restantes du Fanal
 var caltrops: Array = [] ## VigieCaltrops vivants
 var _spike: SpellData = null
 
@@ -229,22 +217,6 @@ static func _spell(sid: StringName, name: String, slot: int, coef: float, cd: fl
 	s.zone_outline_color = ZONE_COLOR
 	s.light_preset = &"vigie_arrow"
 	return s
-
-
-## Trait d'allonge : tir automatique chargé (hors barre de sorts : même slot 1, bonus d'auto).
-static func make_allonge() -> SpellData:
-	var a := _spell(&"vigie_allonge", "Trait d'allonge", 1, ALLONGE_COEF, TRAIT_CD)
-	a.is_auto = true
-	a.is_zone = false
-	a.range_u = ALLONGE_RANGE_U
-	a.speed_u = ALLONGE_SPEED_U
-	a.pierce = ALLONGE_PIERCE
-	a.item_pierce = false
-	a.proc_coef = 1.0
-	a.hit_force = _force_for(ALLONGE_KNOCK_U)
-	a.light_preset = &"vigie_allonge"
-	a.projectile_frames = _frames_or_fallback(ARROW_CHARGED_FRAMES)
-	return a
 
 
 static func character() -> CharacterData:
@@ -334,22 +306,6 @@ static func make_net_burst() -> SpellData:
 	return n
 
 
-## Volée d'allonge du Tir double (hors barre de sorts : même slot 1, bonus d'auto).
-static func make_volley() -> SpellData:
-	var a := _spell(&"vigie_volee", "Volée d'allonge", 1, VOLLEY_COEF, TRAIT_CD)
-	a.is_auto = true
-	a.is_zone = false
-	a.range_u = VOLLEY_RANGE_U
-	a.speed_u = ALLONGE_SPEED_U
-	a.pierce = ALLONGE_PIERCE
-	a.item_pierce = false
-	a.proc_coef = 1.0
-	a.hit_force = _force_for(VOLLEY_KNOCK_U)
-	a.light_preset = &"vigie_allonge"
-	a.projectile_frames = _frames_or_fallback(ARROW_CHARGED_FRAMES)
-	return a
-
-
 ## Entrée dans le champ de pointes (Chausse-trapes) : un coup de CHAUSSE_ENTRY_COEF, sans recul.
 static func make_spike() -> SpellData:
 	var n := _spell(&"vigie_pointes", "Chausse-trapes", 3, CHAUSSE_ENTRY_COEF, CHAUSSE_CD)
@@ -421,9 +377,7 @@ var _net_burst: SpellData = null
 func setup(p: CharacterBody2D) -> void:
 	player = p
 	_visual = p.get_node_or_null(^"Visual") as AnimatedSprite2D
-	allonge_spell = make_allonge()
 	_net_burst = make_net_burst()
-	volley_spell = make_volley()
 	_spike = make_spike()
 	Events.enemy_killed.connect(_on_enemy_killed)
 	Events.floor_started.connect(_on_floor_started)
@@ -458,22 +412,19 @@ func _spell_of(slot: int) -> SpellData:
 	return null
 
 
-# --- Tension (ressource) ----------------------------------------------------------------------------
+# --- Guet (ressource ; membre `tension` gardé pour les sauvegardes et le contrat) --------------------------------
 
 func is_full() -> bool:
-	return tension >= 1.0
+	return tension >= GUET_FULL
 
 
 func is_anchored() -> bool:
 	return still_t >= ANCHOR_DELAY_S or _anchor_free_t > 0.0
 
 
-## Remplissage par seconde (0-1/s) : ancrée ou en marche, accéléré par la vitesse d'attaque des items.
+## Remplissage par seconde (0-1/s) : ancrée ou en marche. La vitesse d'attaque n'y change rien.
 func tension_rate() -> float:
-	var base_s := TENSION_STILL_S if is_anchored() else TENSION_MOVING_S
-	if fanal_t > 0.0: # Fanal : la corde se bande au rythme ancré même en marche, plus vite ancrée
-		base_s = FANAL_TENSION_STILL_S if is_anchored() else FANAL_TENSION_MOVING_S
-	return (1.0 + maxf(player.stat(&"attack_speed"), 0.0)) / base_s
+	return 1.0 / (GUET_STILL_S if is_anchored() else GUET_MOVING_S)
 
 
 func set_tension(v: float) -> void:
@@ -481,15 +432,15 @@ func set_tension(v: float) -> void:
 	_update_emission()
 
 
-## Mode test « ressource pleine » et aperçu : tension au maximum.
+## Mode test « ressource pleine » et aperçu : Guet au maximum.
 func refill_resource() -> void:
 	set_tension(1.0)
 
 
-## Contrat KitResource : jauge continue, « PRÊTE » qui pulse quand le Trait d'allonge est armé.
+## Contrat KitResource : jauge continue, « PLEIN » qui pulse quand le Filet partira chargé.
 func resource_state() -> Dictionary:
-	var txt := "PRÊTE" if is_full() else "%d %%" % floori(tension * 100.0)
-	return KitResource.make(&"tension", "Tension", tension, ACCENT, {"text": txt, "boost": is_full()})
+	var txt := "PLEIN" if is_full() else "%d %%" % floori(tension * 100.0)
+	return KitResource.make(&"tension", "Guet", tension, ACCENT, {"text": txt, "boost": is_full()})
 
 
 func save_state() -> Dictionary:
@@ -500,7 +451,7 @@ func load_state(d: Dictionary) -> void:
 	set_tension(float(d.get("tension", 0.0)))
 
 
-## Corde et pointes (masque _e) : l'énergie suit la Tension, par paliers (pas de réécriture par image).
+## Corde et pointes (masque _e) : l'énergie suit le Guet, par paliers (pas de réécriture par image).
 func _update_emission() -> void:
 	if _visual == null:
 		return
@@ -521,15 +472,27 @@ func can_dodge() -> bool:
 	return true
 
 
-## Auto-cast (accessibilité, simulateur) : le Filet sert à recharger la Tension, pas à la gâcher ; la Fusée attend
-## un Filet qui revient dans la demi-seconde (elle doit s'arrêter sur un cloué), sauf si un filet tient déjà.
+## Auto-cast (accessibilité, simulateur) : le Filet attend un Guet bien rempli (g >= AUTO_NET_G) ou un monstre au contact
+## (à moins de AUTO_NET_NEAR_U) ; la Fusée attend un Filet qui revient dans la demi-seconde (elle doit s'arrêter sur un
+## cloué), sauf si un filet tient déjà ou si le Filet ne partirait de toute façon pas.
 func auto_cast_ok(slot: int) -> bool:
 	if slot == 3:
-		return tension < 0.5
+		return tension >= AUTO_NET_G or _enemy_within(AUTO_NET_NEAR_U)
 	if slot == 2 and _net_t <= 0.0 and _caster() != null and _caster().has_slot(3):
 		var rem := _caster().cooldown_remaining(3)
-		return not (rem > 0.0 and rem <= AUTO_WAIT_NET_S and tension < 0.5)
+		return not (rem > 0.0 and rem <= AUTO_WAIT_NET_S and tension >= AUTO_NET_G)
 	return true
+
+
+## Un monstre vivant à moins de `u` unités du joueur.
+func _enemy_within(u: float) -> bool:
+	if player == null:
+		return false
+	var r2 := pow(u * Balance.UNIT_PX, 2.0)
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and is_instance_valid(e) and (e as Node2D).global_position.distance_squared_to(player.global_position) <= r2:
+			return true
+	return false
 
 
 ## Monstre cloué (filet, signal) : emprisonné.
@@ -540,13 +503,6 @@ func is_netted(e: Node) -> bool:
 ## Monstre exposé (lumière de fusée ou pluie de Grêle).
 func is_exposed(e: Node) -> bool:
 	return is_instance_valid(e) and e.has_method(&"has_damage_taken_mod") and e.has_damage_taken_mod(EXPOSE_ID)
-
-
-## SpellCaster.compute_damage : Trait d'allonge sur un exposé, 1,8 -> 2,6.
-func combo_coef_add(s: SpellData, enemy: Node) -> float:
-	if s.id == &"vigie_allonge" and is_exposed(enemy):
-		return ALLONGE_EXPOSED_COEF - ALLONGE_COEF
-	return 0.0
 
 
 ## SpellCaster.compute_damage : Grêle sur un cloué x1,4 ; Tir de signal sur un monstre cloué avant l'impact x1,2.
@@ -560,7 +516,7 @@ func combo_mult(s: SpellData, enemy: Node) -> float:
 
 ## SpellCaster.deal_damage : chiffre en accent et son lourd pour ces coups.
 func combo_hit(s: SpellData, enemy: Node) -> bool:
-	return combo_coef_add(s, enemy) > 0.0 or combo_mult(s, enemy) > 1.0
+	return combo_mult(s, enemy) > 1.0
 
 
 ## SpellCaster (aide de visée mobile) : cloués et exposés pèsent plus dans le paquet visé.
@@ -630,7 +586,7 @@ func on_dodge_end(_from: Vector2, _to: Vector2) -> void:
 	set_tension(tension + DODGE_TENSION_GAIN)
 	_dash_chain = _dash_chain + 1 if _dash_gap_t > 0.0 else 1
 	_dash_gap_t = DODGE_CHAIN_GAP_S
-	if _dash_chain >= DODGE_CHARGES: # 3e repli : l'Allonge qui suit part sans attendre l'ancrage
+	if _dash_chain >= DODGE_CHARGES: # 3e repli : comptée ancrée tout de suite (anim `brace`, remplissage ancré)
 		_dash_chain = 0
 		_dash_gap_t = 0.0
 		_anchor_free_t = ANCHOR_FREE_S
@@ -641,14 +597,14 @@ func _no_move_input() -> bool:
 
 
 func on_cast(_s: SpellData) -> void:
-	_allonge_cast = false
+	pass
 
 
 ## Anim d'action de chaque sort (base livrée par VG1, sinon base générique d'Ardent).
 func action_for(s: SpellData) -> StringName:
 	match s.slot:
 		1:
-			return _act(&"draw" if _allonge_cast or s.id == &"vigie_allonge" or s.id == &"vigie_volee" else &"attack")
+			return _act(&"attack")
 		2:
 			return _act(&"flare")
 		3:
@@ -675,18 +631,13 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 		1:
 			if s.id == V_DOUBLE:
 				return _cast_double(s, c, origin)
-			var shot: SpellData = allonge_spell if is_full() else s
-			var target := c.nearest_enemy(c.range_px(shot))
+			var target := c.nearest_enemy(c.range_px(s))
 			if target == null:
 				return false # l'auto ne consomme rien sans cible
 			var dir := (target.global_position - origin).normalized()
 			if dir != Vector2.ZERO:
 				player.facing = dir
-			if shot == allonge_spell:
-				set_tension(0.0) # la corde se relâche au lancement (jamais deux allonges)
-				_set_ready_fx(false)
-				_allonge_cast = true # action_for (Player.on_cast, juste après) joue `draw`
-			_queue(action_for(s), func() -> void: c.fire_at(shot, target, dir))
+			_queue(action_for(s), func() -> void: c.fire_at(s, target, dir))
 		2, 3:
 			if s.id == V_FANAL:
 				_queue(action_for(s), func() -> void: start_fanal())
@@ -698,6 +649,13 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 			player.facing = dir.normalized()
 			var shot := s.duplicate() as SpellData # portée = distance du point visé (la flèche s'y pose)
 			shot.range_u = maxf(dir.length(), MIN_SHOT_U * Balance.UNIT_PX) / (Balance.UNIT_PX * (1.0 + player.stat(&"range_add")))
+			if s.id == &"vigie_filet": # le Filet vide tout le Guet au lancement et en garde la valeur (g) pour l'ouverture
+				var g := clampf(tension, 0.0, 1.0)
+				shot.set_meta(META_GUET, g)
+				if g >= GUET_FULL:
+					shot.projectile_frames = _frames_or_fallback(ARROW_CHARGED_FRAMES)
+				set_tension(0.0)
+				_set_ready_fx(false)
 			var fdir := dir.normalized()
 			_queue(action_for(s), func() -> void: c.fire_at(shot, null, fdir))
 		4:
@@ -741,7 +699,7 @@ func on_projectile_rest(s: SpellData, at: Vector2, _group: Dictionary) -> void:
 		&"vigie_fusee":
 			plant_flare(at)
 		&"vigie_filet":
-			open_net(at)
+			open_net(at, float(s.get_meta(META_GUET, 0.0)))
 		V_CHAUSSE:
 			plant_caltrops(s, at)
 
@@ -815,35 +773,47 @@ func flare_radius_px() -> float:
 	return FLARE_RADIUS_U * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
 
 
-func net_radius_px() -> float:
-	return NET_RADIUS_U * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
+func net_radius_px(g := 0.0) -> float:
+	return (NET_RADIUS_U + NET_RADIUS_GAIN_U * g) * Balance.UNIT_PX * (1.0 + player.stat(&"zone_size_add"))
 
 
-## Filet : emprisonne (boss : ralentit) puis frappe la zone ; la Tension est pleine (« le temps d'ajuster »).
-func open_net(at: Vector2) -> void:
-	var r := net_radius_px()
+## Durée d'emprisonnement du filet pour un Guet g (s).
+static func net_hold_s(g: float) -> float:
+	return NET_HOLD_S + NET_HOLD_GAIN_S * clampf(g, 0.0, 1.0)
+
+
+## Coef de l'ouverture du filet pour un Guet g.
+static func net_coef(g: float) -> float:
+	return NET_COEF + NET_COEF_GAIN * clampf(g, 0.0, 1.0)
+
+
+## Filet : emprisonne (boss : ralentit) puis frappe la zone. `g` = Guet consommé au lancement : rayon, tenue et coef en
+## dépendent (3 + 1,5 g u, 1,5 + 1,5 g s, 1,2 + 2,4 g).
+func open_net(at: Vector2, g := 0.0) -> void:
+	g = clampf(g, 0.0, 1.0)
+	var hold := net_hold_s(g)
+	var r := net_radius_px(g)
 	for e in player.get_tree().get_nodes_in_group(&"enemies"):
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"apply_status"):
 			continue
 		if (e as Node2D).global_position.distance_to(at) > r or not StageMap.los(player.get_tree(), at, (e as Node2D).global_position):
 			continue
 		if e.get(&"is_boss") == true:
-			e.apply_status(&"slow", {"pct": NET_BOSS_SLOW_PCT, "duration": NET_HOLD_S})
+			e.apply_status(&"slow", {"pct": NET_BOSS_SLOW_PCT, "duration": hold})
 		else:
-			e.apply_status(&"imprisoned", {"duration": NET_HOLD_S})
+			e.apply_status(&"imprisoned", {"duration": hold})
 			PlayerRef.state_of(player).add_counter(COUNTER_NETTED) # déblocage des Chausse-trapes
-	_net_t = NET_HOLD_S
-	_caster().spawn_zone(_net_burst, at) # plus de cercle d'emprisonnement (joueur, 07/11/2026 : inutile)
+	_net_t = hold
+	var burst := _net_burst.duplicate() as SpellData
+	burst.coef = net_coef(g)
+	burst.radius_u = NET_RADIUS_U + NET_RADIUS_GAIN_U * g
+	_caster().spawn_zone(burst, at) # plus de cercle d'emprisonnement (joueur, 07/11/2026 : inutile)
 	LightRig.flash(at, &"vigie_net", 0.3)
-	set_tension(1.0)
-	_set_ready_fx(true)
 
 
-## Tir double : deux flèches sur les deux monstres les plus proches ; Tension pleine : volée de trois traits.
+## Tir double : deux flèches sur les deux monstres les plus proches.
 func _cast_double(s: SpellData, c: SpellCaster, origin: Vector2) -> bool:
-	var full := is_full()
-	var shot: SpellData = volley_spell if full else s
-	var near: Array = c.nearest_enemies(origin, c.range_px(shot), 2)
+	var near: Array = c.nearest_enemies(origin, c.range_px(s), 2)
 	if near.is_empty():
 		return false # l'auto ne consomme rien sans cible
 	var first: Node2D = near[0]
@@ -851,28 +821,14 @@ func _cast_double(s: SpellData, c: SpellCaster, origin: Vector2) -> bool:
 	var dir := (first.global_position - origin).normalized()
 	if dir != Vector2.ZERO:
 		player.facing = dir
-	if full:
-		set_tension(0.0)
-		_set_ready_fx(false)
-		_allonge_cast = true
-		_queue(action_for(s), func() -> void: fire_volley(shot, dir))
-	else:
-		var dir2 := (second.global_position - origin).normalized()
-		_queue(action_for(s), func() -> void:
-			c.fire_at(shot, first, dir)
-			c.fire_at(shot, second, dir2))
+	var dir2 := (second.global_position - origin).normalized()
+	_queue(action_for(s), func() -> void:
+		c.fire_at(s, first, dir)
+		c.fire_at(s, second, dir2))
 	return true
 
 
-## Volée d'allonge : VOLLEY_COUNT traits en éventail de VOLLEY_FAN_DEG centré sur `dir`.
-func fire_volley(shot: SpellData, dir: Vector2) -> void:
-	var c := _caster()
-	for i in VOLLEY_COUNT:
-		var k := 0.0 if VOLLEY_COUNT <= 1 else (float(i) / float(VOLLEY_COUNT - 1) - 0.5)
-		c.fire_at(shot, null, dir.rotated(deg_to_rad(VOLLEY_FAN_DEG) * k))
-
-
-## Fanal : la lumière de la fusée suit Vigie FANAL_LIFE_S ; la Tension se bande au rythme ancré.
+## Fanal : la lumière de la fusée suit Vigie FANAL_LIFE_S ; le Guet passe à 100 % d'un coup.
 func start_fanal() -> Node2D:
 	for f in flares.duplicate():
 		if is_instance_valid(f) and f.follow != null:
@@ -886,6 +842,8 @@ func start_fanal() -> Node2D:
 	f.follow = player
 	flares.append(f)
 	fanal_t = FANAL_LIFE_S
+	set_tension(1.0)
+	_set_ready_fx(true)
 	LightRig.flash(player.global_position, &"vigie_flare", 0.35, {"radius": 1.4})
 	_expose_t = 0.0
 	return f
@@ -902,7 +860,7 @@ func plant_caltrops(s: SpellData, at: Vector2) -> Node2D:
 	return f
 
 
-## Entrée d'un monstre dans les pointes (VigieCaltrops) : la corde se bande.
+## Entrée d'un monstre dans les pointes (VigieCaltrops) : le Guet monte de CHAUSSE_TENSION.
 func on_caltrop_entry(_enemy: Node2D) -> void:
 	set_tension(tension + CHAUSSE_TENSION)
 	if is_full():
@@ -965,20 +923,6 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 		enemy.set_meta(META_LAST_HIT, true)
 	elif enemy.has_meta(META_LAST_HIT):
 		enemy.remove_meta(META_LAST_HIT)
-	if s.id == &"vigie_allonge" and enemy is Node2D and is_exposed(enemy):
-		_revive_flare(enemy as Node2D)
-
-
-## Le Trait d'allonge sur un exposé ravive la fusée qui l'éclaire (+1 s, plafond 7 s), une fois par trait.
-func _revive_flare(e: Node2D) -> void:
-	var now := Time.get_ticks_msec()
-	if now - _revive_ms < REVIVE_GAP_MS:
-		return
-	for f in flares:
-		if is_instance_valid(f) and not f.is_ending() and e.global_position.distance_to(f.global_position) <= float(f.radius):
-			_revive_ms = now
-			f.revive(FLARE_REVIVE_S, FLARE_MAX_LIFE_S)
-			return
 
 
 func _on_enemy_killed(enemy: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
@@ -1042,7 +986,7 @@ func _expose_tick() -> void:
 			e.apply_status(&"slow", {"pct": HAIL_SLOW_PCT, "duration": HAIL_SLOW_S})
 
 
-## Allonge armée : petite lueur rouge sur la corde (lumière vigie_tension).
+## Filet chargé (Guet plein) : petite lueur rouge sur la corde (lumière vigie_tension).
 func _set_ready_fx(on: bool) -> void:
 	if _ready_light != null:
 		_ready_light.set_enabled(on)
@@ -1114,7 +1058,7 @@ func clear_transients() -> void:
 
 
 func _on_floor_started(_n: int) -> void:
-	clear_transients() # la Tension est gardée d'un étage à l'autre
+	clear_transients() # le Guet est gardé d'un étage à l'autre
 
 
 ## Coop : seule la mort de CE joueur (Events.player_died_by ; solo : joueur 1).
@@ -1156,9 +1100,10 @@ func visual_anim(fallback: StringName) -> StringName:
 
 static func passive_info() -> Dictionary:
 	var f := KitResource.fmt
-	return KitResource.passive("Tension", &"tension",
-		"La corde de Vigie se bande toute seule. Pleine, elle arme ton prochain tir automatique.",
-		"0 à 100 %% en %s s en marchant, %s s immobile (ancrée) ; la vitesse d'attaque accélère le tout. Le Filet lesté la remplit d'un coup." % [f.call(TENSION_MOVING_S), f.call(TENSION_STILL_S)],
-		"le tir qui part à 100 % relâche la corde : retour à 0.",
-		"à 100 %% (« PRÊTE »), le Trait devient un Trait d'allonge : dégâts ×%s (coef %s au lieu de %s), perce tous les monstres, portée %s u au lieu de %s." % [
-			f.call(ALLONGE_COEF / TRAIT_COEF), f.call(ALLONGE_COEF), f.call(TRAIT_COEF), f.call(ALLONGE_RANGE_U), f.call(TRAIT_RANGE_U)])
+	return KitResource.passive("Guet", &"tension",
+		"Vigie guette : sa jauge de Guet monte toute seule et grandit son prochain Filet lesté. Les tirs automatiques n'en dépendent pas.",
+		"0 à 100 %% en %s s en marchant, %s s immobile (ancrée) ; +%s %% par pas de Repli ; le Fanal la met à 100 %% d'un coup." % [
+			f.call(GUET_MOVING_S), f.call(GUET_STILL_S), f.call(DODGE_TENSION_GAIN * 100.0)],
+		"le Filet lesté la consomme en entier au lancement.",
+		"le Filet gagne avec le Guet g : rayon %s + %s g u, tenue %s + %s g s, dégâts de zone coef %s + %s g ; à 100 %% la flèche part chargée." % [
+			f.call(NET_RADIUS_U), f.call(NET_RADIUS_GAIN_U), f.call(NET_HOLD_S), f.call(NET_HOLD_GAIN_S), f.call(NET_COEF), f.call(NET_COEF_GAIN)])
