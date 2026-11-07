@@ -98,6 +98,7 @@ func _ready() -> void:
 	super._ready()
 	if source != null:
 		source.tint = _tint()
+		source.skin = _skin_name()
 		source.refresh()
 
 
@@ -108,6 +109,10 @@ func _tint() -> Color:
 		if b != null:
 			s = StringName(String(b))
 	return COL_CRYPTS if s == &"cryptes" or s == &"crypts" else COL_FOREST
+
+
+func _skin_name() -> String:
+	return "crypts" if _tint() == COL_CRYPTS else "fog_forest"
 
 
 func zone_radius() -> float:
@@ -370,9 +375,16 @@ func draw_overlay(c: Node2D) -> void:
 		c.draw_arc(c.to_local(m.to_global(path[0])), SECRET_RING_PX, 0.0, TAU, 32, Color(col.r, col.g, col.b, 0.5), 3.0)
 		return
 	var rad := disc_radius()
-	var glow := 0.30 if _inside and active else 0.16
-	c.draw_circle(Vector2.ZERO, rad, Color(col.r, col.g, col.b, glow))
-	c.draw_arc(Vector2.ZERO, rad, 0.0, TAU, 96, Color(col.r, col.g, col.b, 0.85 if _inside else 0.5), 6.0)
+	var disc := EpreuveSprites.tex(EpreuveSprites.VFX_DIR, "vein_disc_%s.png" % _skin_name())
+	if disc != null: # lot EP-D : planche 4 frames de pulsation, anneau à ~96 % du bord
+		var fw := float(disc.get_height())
+		var fr := int(Time.get_ticks_msec() / 160) % maxi(int(disc.get_width() / fw), 1)
+		var half := rad / 0.96
+		c.draw_texture_rect_region(disc, Rect2(-half, -half, half * 2.0, half * 2.0), Rect2(fr * fw, 0.0, fw, fw), Color(1, 1, 1, 1.0 if _inside else 0.7))
+	else:
+		var glow := 0.30 if _inside and active else 0.16
+		c.draw_circle(Vector2.ZERO, rad, Color(col.r, col.g, col.b, glow))
+		c.draw_arc(Vector2.ZERO, rad, 0.0, TAU, 96, Color(col.r, col.g, col.b, 0.85 if _inside else 0.5), 6.0)
 	if not active:
 		return
 	# charge : arc plein autour du disque
@@ -386,5 +398,15 @@ func draw_overlay(c: Node2D) -> void:
 			c.draw_circle(gp, gr, Color(1.0, 0.25, 0.2, 0.06 + 0.14 * k))
 			c.draw_arc(gp, gr, 0.0, TAU, 48, Color(1.0, 0.3, 0.2, 0.35 + 0.55 * k), 4.0)
 		else:
-			c.draw_circle(gp, gr, Color(1.0, 1.0, 1.0, 0.75))
+			var gtex := EpreuveSprites.tex(EpreuveSprites.VFX_DIR, "vein_geyser_%s.png" % _skin_name())
+			if gtex != null: # lot EP-D : 6 frames 128x192 sur la durée de l'éruption
+				var gw := float(gtex.get_width()) / 6.0
+				var gh := float(gtex.get_height())
+				var gf := clampi(int(Time.get_ticks_msec() / 70) % 6, 0, 5)
+				c.draw_circle(gp, gr, Color(1.0, 1.0, 1.0, 0.25))
+				c.draw_set_transform(gp, 0.0, Iso.UNSQUASH * (gr * 2.0 / gw))
+				c.draw_texture_rect_region(gtex, Rect2(-gw * 0.5, -gh * 0.85, gw, gh), Rect2(gf * gw, 0.0, gw, gh))
+				c.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+			else:
+				c.draw_circle(gp, gr, Color(1.0, 1.0, 1.0, 0.75))
 

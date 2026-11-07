@@ -9,7 +9,9 @@ const SIZE_PX := 64.0 ## emprise provisoire 1 u
 
 var epreuve: Node = null ## EpreuveVein propriétaire (non typé : pas de dépendance circulaire de classes)
 var tint := Color(0.76, 0.48, 1.0)
-var _visual: Polygon2D = null
+var _visual: Polygon2D = null ## repli code
+var _sprite: Sprite2D = null
+var skin := "fog_forest" ## "fog_forest" | "crypts" (sprites `vein_source_<skin>_{off,on}`, lot EP-D)
 
 
 func _ready() -> void:
@@ -27,6 +29,16 @@ func refresh() -> void:
 	if _visual == null:
 		return
 	var idle: bool = epreuve != null and is_instance_valid(epreuve) and epreuve.state == Pillar.STATE_READY
+	var tex := EpreuveSprites.tex(EpreuveSprites.PROPS_DIR, "vein_source_%s_%s.png" % [skin, "off" if idle else "on"])
+	if tex != null:
+		_visual.visible = false
+		if _sprite == null:
+			_sprite = EpreuveSprites.make(tex, 0.80)
+			_sprite.name = &"Sprite"
+			add_child(_sprite)
+		EpreuveSprites.set_tex(_sprite, tex, 0.80)
+		return
+	_visual.visible = true
 	_visual.color = tint.darkened(0.45) if idle else tint
 
 

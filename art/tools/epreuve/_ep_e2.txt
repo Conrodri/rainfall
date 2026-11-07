@@ -1,0 +1,5 @@
+
+LOT EP-E2 (retouche, à faire APRÈS EP-D2). Reprends art/tools/epreuve/ep_e_build.py, modifie par paramètres, relance en --background. Noms, tailles (cadres 160x224, ringing = 640x224) INCHANGÉS.
+DÉFAUTS (planche art/renders/ep_e_contact.png) : la cloche est un mince lampadaire noir qui n'occupe que ~20 % de la largeur du cadre ; le _e est quasi noir.
+VEUX : grande cloche de fonte trapue, évasée, ~60 % de la largeur du cadre et ~80 % de sa hauteur, suspendue à un portique/potence en poutres rouillées angulaires (silhouette sombre, anguleuse), battant visible. off = rouille brune, accent braise #F23809 faible (fente à la base du pavillon et rivets). ringing = 4 frames, cloche qui se balance ±6° autour du point de suspension, bande de runes et bouche incandescentes (émission forte 3,0). dim = noircie, sans émission. ringing_e = seulement les parties incandescentes, en blanc/braise vif sur fond transparent, bien visibles (non noir), demi-résolution.
+Mêmes règles : cel-shadé, éclairage haut-gauche, pas de _n, aucun .gd/.tscn, chemins relatifs à la racine. Planche de contrôle <= 1024 px : art/renders/ep_e_contact.png (écrase).

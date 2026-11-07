@@ -23,7 +23,9 @@ var hold: Node = null ## EpreuveHold propriétaire (non typé : pas de dépendan
 var state: StringName = STATE_OFF
 var max_hp := 0.0
 var hp := 0.0
-var _body: Polygon2D = null
+var _body: Polygon2D = null ## repli code
+var _sprite: Sprite2D = null
+var skin := "rust_city" ## sprites `hold_bell_<skin>_{off,ringing,dim}` (lot EP-E)
 var _t := 0.0
 
 
@@ -43,7 +45,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if state == STATE_RINGING and _body != null:
+	if _sprite != null and state == STATE_RINGING:
+		_t += delta
+		_sprite.frame = int(_t * 8.0) % maxi(_sprite.hframes, 1) # 4 frames de battant à 8 fps
+	elif state == STATE_RINGING and _body != null:
 		_t += delta
 		var k := 0.5 + 0.5 * sin(_t * 6.0)
 		_body.color = COL_RINGING.lerp(Color(1.0, 0.95, 0.7), 0.25 * k)
@@ -95,6 +100,19 @@ func restore(saved_hp: float, saved_max: float, dim: bool, ringing: bool) -> voi
 func _refresh_visual() -> void:
 	if _body == null:
 		return
+	var st := "ringing" if state == STATE_RINGING else ("dim" if state == STATE_DIM else "off")
+	var tex := EpreuveSprites.tex(EpreuveSprites.PROPS_DIR, "hold_bell_%s_%s.png" % [skin, st])
+	if tex != null:
+		_body.visible = false
+		var hf := 4 if state == STATE_RINGING else 1
+		if _sprite == null:
+			_sprite = EpreuveSprites.make(tex, 0.85, hf)
+			_sprite.name = &"Sprite"
+			add_child(_sprite)
+		EpreuveSprites.set_tex(_sprite, tex, 0.85, hf)
+		_sprite.frame = 0
+		return
+	_body.visible = true
 	match state:
 		STATE_RINGING:
 			_body.color = COL_RINGING
