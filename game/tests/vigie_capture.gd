@@ -1,7 +1,7 @@
 extends Node
 ## Capture de contrôle de Vigie (modèle : averse_capture.gd), debug seulement :
 ## godot --path game --write-movie <dossier>/vigie.png --fixed-fps 30 --resolution 1280x720 res://tests/vigie_capture.tscn
-## (s) : 0,3 monstres (traits auto) ; 1,0 Fusée (visée à droite) ; 2,0 Filet (bas-droite) ; 2,6 Trait d'allonge
+## (s) : 0,3 monstres (traits auto) ; 1,0 Fusée (visée à droite) ; 2,0 Filet (bas-droite) ; 2,6 Trait (Guet plein : autos inchangés)
 ## (Tension pleine après le filet) ; 3,4 Grêle sur le paquet ; 6,5 fin. Imprime « CAST frame=<n> <sort> ».
 
 var _main: Node
@@ -60,7 +60,7 @@ func _process(delta: float) -> void:
 		_step = 4
 		p.kit.set_tension(1.0)
 		p.spells._remaining[1] = 0.0
-		_cast(1, "allonge")
+		_cast(1, "trait")
 	if _step == 4 and _t > 3.4:
 		_step = 5
 		p.spells.aim_override = p.global_position + Vector2(300, 0)

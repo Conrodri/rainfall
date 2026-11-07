@@ -1,7 +1,7 @@
 extends Node
-## Test headless de Vigie (docs/Design_Personnages.md §2.8, docs/fiches/vigie.md) : stats, Tension (marche,
-## ancrage, vitesse d'attaque, jauge, sauvegarde), 4 sorts (Behavior.KIT, effet à la frame d'impact), Trait
-## d'allonge qui perce, Fusée (lumière, exposition), Filet (emprisonne, boss ralenti, Tension pleine),
+## Test headless de Vigie (docs/Design_Personnages.md §2.8, docs/fiches/vigie.md) : stats, Guet (marche,
+## ancrage, vitesse d'attaque sans effet, jauge, sauvegarde), 4 sorts (Behavior.KIT, effet à la frame d'impact), Trait
+## non affecté par le Guet, Fusée (lumière, exposition), Filet (échelle avec g, vide la jauge), Fanal,
 ## Grêle (délai, ticks, ralentit, expose), lumières, partie réelle.
 ## godot --headless --path game res://tests/vigie_test.tscn
 
@@ -190,7 +190,7 @@ func _run() -> void:
 	_reset()
 	_check("vitesse 4,2 u/s", _near(_player.move_speed(), 4.2 * U, 0.1), str(_player.move_speed()))
 	var lights_ok := true
-	for sp in VigieKit.character().spells + [VigieKit.make_allonge(), VigieKit.make_net_burst()]:
+	for sp in VigieKit.character().spells + [VigieKit.make_net_burst()]:
 		lights_ok = lights_ok and String(sp.light_preset).begins_with("vigie_") and LightRig.has_preset(sp.light_preset)
 		lights_ok = lights_ok and sp.behavior == SpellData.Behavior.KIT
 	lights_ok = lights_ok and LightRig.has_preset(&"vigie_tension")
@@ -205,29 +205,31 @@ func _run() -> void:
 	_check("flèches : asset VG2 ou repli lame (jamais la braise)", cd.spells[0].projectile_frames != "" and ResourceLoader.exists(cd.spells[0].projectile_frames))
 	_check("characters.json : entrée vigie (sorts, difficulté)", _json_entry_ok())
 
-	print("Tension")
+	print("Guet")
+	_check("constantes : 12 s en marchant, 8 s ancrée", _near(VigieKit.GUET_MOVING_S, 12.0) and _near(VigieKit.GUET_STILL_S, 8.0))
 	_reset(0.0)
-	_advance(1.5, false, true)
-	_check("en marche : TENSION_MOVING_S pour la remplir", _near(_kit.tension, 1.5 / VigieKit.TENSION_MOVING_S, 0.02), str(_kit.tension))
+	_advance(6.0, false, true)
+	_check("en marchant : 50 % en 6 s (12 s pour la remplir)", _near(_kit.tension, 0.5, 0.02), str(_kit.tension))
 	_reset(0.0)
 	_advance(0.1)
 	_check("immobile < 0,15 s : pas encore ancrée", not _kit.is_anchored())
-	_advance(0.6)
-	_check("ancrée : remplissage ×3", _kit.is_anchored() and _kit.tension > 0.5, str(_kit.tension))
-	_advance(0.6)
-	_check("pleine en ~1 s ancrée", _kit.is_full())
+	_advance(4.0)
+	_check("ancrée : 50 % en ~4 s (8 s pour la remplir)", _kit.is_anchored() and _near(_kit.tension, 0.5, 0.03), str(_kit.tension))
+	_advance(4.0)
+	_check("pleine en ~8 s ancrée", _kit.is_full())
 	var rs := KitResource.of(_player)
-	_check("jauge KitResource « Tension », PRÊTE qui pulse", rs.get("id") == &"tension" and rs.get("text") == "PRÊTE" and rs.get("boost") == true, str(rs))
+	_check("jauge KitResource « Guet », PLEIN qui pulse", rs.get("id") == &"tension" and rs.get("label") == "Guet" and rs.get("text") == "PLEIN" and rs.get("boost") == true, str(rs))
 	_reset(0.0)
 	_player.apply_stats({"crit_chance": -0.05, "attack_speed": 0.5})
-	_advance(1.0, false, true)
-	_check("vitesse d'attaque +50 % : remplissage ×1,5", _near(_kit.tension, 1.5 / VigieKit.TENSION_MOVING_S, 0.02), str(_kit.tension))
+	_advance(6.0, false, true)
+	_check("vitesse d'attaque +50 % : aucun effet sur le remplissage", _near(_kit.tension, 0.5, 0.02), str(_kit.tension))
 	_player.apply_stats({"crit_chance": -0.05, "attack_speed": 0.0})
 	_kit.set_tension(0.42)
 	var sv := _kit.save_state()
 	_kit.set_tension(0.0)
 	_kit.load_state(sv)
-	_check("sauvegarde de la Tension", _near(_kit.tension, 0.42))
+	_check("sauvegarde du Guet", _near(_kit.tension, 0.42))
+	_check("passif nommé Guet", VigieKit.passive_info().get("name") == "Guet")
 
 	print("Sort 1 : Trait")
 	_reset(0.0)
@@ -243,26 +245,29 @@ func _run() -> void:
 	await _frames(40)
 	_check("coef 0,8, traverse 1 monstre (2 cibles, pas la 3e)", b1.taken.size() == 1 and _near(b1.taken[0], VigieKit.TRAIT_COEF * BASE, 0.05) and b2.taken.size() == 1 and b3.taken.is_empty(), "%s %s %s" % [b1.taken, b2.taken, b3.taken])
 
-	print("Trait d'allonge (Tension pleine)")
+	print("Autos non affectés par le Guet")
 	_reset(1.0)
 	var line: Array = []
 	for i in 4:
 		line.append(_body(Vector2((2 + 2 * i) * U, 0)))
-	_check("allonge lancée", _player.spells.cast(1))
-	_check("Tension vidée au lancement", _near(_kit.tension, 0.0))
-	var base_ok: bool = _player.action_base() == &"draw" or _player.action_base() == &"attack"
-	_check("anim draw (ou attack en repli)", base_ok, str(_player.action_base()))
+	_check("trait lancé à Guet plein", _player.spells.cast(1))
+	_check("Guet intact après un tir auto", _near(_kit.tension, 1.0, 0.01), str(_kit.tension))
+	_check("anim attack (plus de draw)", _player.action_base() == &"attack", str(_player.action_base()))
 	_flush()
 	await _frames(45)
-	var all_hit := true
+	var hit_n := 0
+	var coef_ok := true
 	for b in line:
-		all_hit = all_hit and b.taken.size() == 1 and _near(b.taken[0], VigieKit.ALLONGE_COEF * BASE, 0.05)
-	_check("perce toute la ligne à 2,0 (4 cibles jusqu'à 8 u)", all_hit, str(line.map(func(b): return b.taken)))
+		hit_n += b.taken.size()
+		for d in b.taken:
+			coef_ok = coef_ok and _near(d, VigieKit.TRAIT_COEF * BASE, 0.05)
+	_check("Guet plein : même flèche qu'à vide (coef 1,0, traverse 1 monstre : 2 cibles)", hit_n == 2 and coef_ok, str(line.map(func(b): return b.taken)))
 	_reset(0.0)
 	_body(Vector2(11 * U, 0))
-	_check("Trait normal : rien au-delà de 9 u", not _player.spells.cast(1))
+	_check("Trait : rien au-delà de 9 u, même à Guet plein", not _player.spells.cast(1))
 	_kit.set_tension(1.0)
-	_check("allonge : portée 12 u", _player.spells.cast(1))
+	_check("toujours rien à 9 u avec Guet plein", not _player.spells.cast(1))
+	_check("TRAIT_COEF 1,0 ; DOUBLE_COEF 0,52 ; FANAL_CD 14 ; CHAUSSE_TENSION 0,05", _near(VigieKit.TRAIT_COEF, 1.0) and _near(VigieKit.DOUBLE_COEF, 0.52) and _near(VigieKit.FANAL_CD, 14.0) and _near(VigieKit.CHAUSSE_TENSION, 0.05))
 
 	print("Sort 2 : Fusée de détresse")
 	_reset()
@@ -299,14 +304,66 @@ func _run() -> void:
 	_check("filet lancé", _player.spells.cast(3))
 	_flush()
 	await _wait_projectiles()
-	_check("emprisonnés 1,5 s dans 3 u", n1.has_status(&"imprisoned") and n2.has_status(&"imprisoned") and not far.has_status(&"imprisoned"))
+	_check("g = 0 : emprisonnés 1,5 s dans 3 u", n1.has_status(&"imprisoned") and n2.has_status(&"imprisoned") and not far.has_status(&"imprisoned") and _near(float(n1.statuses[0][1]["duration"]), 1.5))
 	_check("boss : ralenti, jamais emprisonné", boss.has_status(&"slow") and not boss.has_status(&"imprisoned"))
-	_check("ouverture du filet coef 1,2", n1.taken.size() == 1 and _near(n1.taken[0], VigieKit.NET_COEF * BASE, 0.05), str(n1.taken))
-	_check("Tension pleine après le filet", _kit.is_full())
+	_check("g = 0 : ouverture du filet coef 1,2", n1.taken.size() == 1 and _near(n1.taken[0], 1.2 * BASE, 0.05), str(n1.taken))
+	_check("le filet ne remplit plus le Guet", _kit.tension < 0.1, str(_kit.tension))
+
+	print("Filet : échelle avec le Guet g, vide la jauge")
+	_reset(0.5)
+	_player.spells.aim_override = Vector2(5 * U, 0)
+	var g1 := _fake(Vector2(5 * U, 3.5 * U)) # 3,5 u du point d'impact : dans le rayon à g = 0,5 (3,75 u), hors rayon à g = 0 (3 u)
+	var g2 := _fake(Vector2(5 * U, 0.5 * U))
+	_check("filet lancé à g = 0,5", _player.spells.cast(3))
+	_check("Guet entièrement consommé au lancement", _near(_kit.tension, 0.0, 0.01), str(_kit.tension))
+	_flush()
+	await _wait_projectiles()
+	_check("g = 0,5 : rayon 3,75 u (le monstre à 3,5 u est pris)", g1.has_status(&"imprisoned") and g2.has_status(&"imprisoned"))
+	_check("g = 0,5 : tenue 2,25 s", _near(float(g2.statuses[0][1]["duration"]), 2.25, 0.01), str(g2.statuses))
+	_check("g = 0,5 : coef 2,4", g2.taken.size() == 1 and _near(g2.taken[0], (1.2 + 2.4 * 0.5) * BASE, 0.1), str(g2.taken))
+	_reset(1.0)
+	_player.spells.aim_override = Vector2(5 * U, 0)
+	var f1 := _fake(Vector2(5 * U, 4.4 * U)) # dans 4,5 u
+	var f2 := _fake(Vector2(5 * U, 0.5 * U))
+	_player.spells.cast(3)
+	_flush()
+	await _wait_projectiles()
+	_check("g = 1 : rayon 4,5 u", f1.has_status(&"imprisoned"))
+	_check("g = 1 : tenue 3 s", _near(float(f2.statuses[0][1]["duration"]), 3.0, 0.01), str(f2.statuses))
+	_check("g = 1 : coef 3,6", f2.taken.size() == 1 and _near(f2.taken[0], 3.6 * BASE, 0.1), str(f2.taken))
+	_check("Guet vidé", _kit.tension < 0.1)
+	for gg in [1.0, 0.5]:
+		_reset(gg)
+		_player.spells.aim_override = Vector2(5 * U, 0)
+		_fake(Vector2(5 * U, 0))
+		_player.spells.cast(3)
+		_flush()
+		var frames_used := ""
+		for pr in _player.spells._pool:
+			if pr.active and pr.spell != null and pr.spell.id == &"vigie_filet":
+				frames_used = pr.spell.projectile_frames
+		var want: String = VigieKit.ARROW_CHARGED_FRAMES if gg >= 0.99 else VigieKit.NET_ARROW_FRAMES
+		_check("g = %s : flèche du Filet = %s" % [gg, "arrow_charged" if gg >= 0.99 else "net_arrow"], frames_used == want, frames_used)
+		await _wait_projectiles()
+
+	print("Auto-cast du Filet : g >= 0,6 ou monstre à moins de 2 u")
+	_reset(0.2)
+	_check("g = 0,2, aucun monstre : filet gardé", not _kit.auto_cast_ok(3))
+	_fake(Vector2(5 * U, 0))
+	_check("g = 0,2, monstre à 5 u : gardé", not _kit.auto_cast_ok(3))
+	_kit.set_tension(0.6)
+	_check("g = 0,6 : permis", _kit.auto_cast_ok(3))
 	_kit.set_tension(0.2)
-	_check("auto-cast : filet permis Tension basse", _kit.auto_cast_ok(3))
-	_kit.set_tension(0.8)
-	_check("auto-cast : filet gardé Tension haute", not _kit.auto_cast_ok(3))
+	_fake(Vector2(1.5 * U, 0))
+	_check("g = 0,2, monstre à 1,5 u : permis", _kit.auto_cast_ok(3))
+
+	print("Fanal : Guet à 100 % d'un coup")
+	_reset(0.1)
+	var fan := VigieKit.variant(2, VigieKit.V_FANAL)
+	_check("Fanal : recharge 14 s", fan != null and _near(fan.base_cooldown, 14.0))
+	_kit.start_fanal()
+	_check("Fanal : Guet = 1", _near(_kit.tension, 1.0) and _kit.is_full())
+	_check("Fanal : lumière 5 s", _near(_kit.fanal_t, 5.0, 0.01))
 
 	print("Filet : plus de cercle d'emprisonnement (joueur, 07/11/2026)")
 	_reset()
@@ -345,7 +402,7 @@ func _run() -> void:
 	print("Nettoyage")
 	_kit.plant_flare(Vector2.ZERO)
 	Events.floor_started.emit(2)
-	_check("changement d'étage : fusées et grêle retirées, Tension gardée", _kit.flares.is_empty() and _kit.hails.is_empty())
+	_check("changement d'étage : fusées et grêle retirées, Guet gardé", _kit.flares.is_empty() and _kit.hails.is_empty())
 	_reset()
 	_player.spells.aim_override = null
 

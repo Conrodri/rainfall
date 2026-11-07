@@ -119,7 +119,7 @@ func _run() -> void:
 			_check("refusée en recharge", not _player.dodge(dir))
 		_check("plus en esquive", not _player.is_dodging())
 
-	print("Vigie : 3 petits dashs enchaînables, Tension")
+	print("Vigie : 3 petits dashs enchaînables, Guet")
 	await _spawn(&"vigie")
 	var vk: Node = _player.kit
 	vk.set_tension(0.0)
@@ -130,7 +130,7 @@ func _run() -> void:
 	var total_u: float = VigieKit.DODGE_U * VigieKit.DODGE_CHARGES
 	_check("%.1f u en tout (recul)" % total_u, _near((_player.global_position.x - x0) / U, -total_u, 0.15), str((_player.global_position.x - x0) / U))
 	_check("4e refusé (0 charge)", not _player.dodge(Vector2.RIGHT))
-	_check("+0,24 de Tension (plus la Tension gagnée en marchant)", vk.tension >= 3.0 * VigieKit.DODGE_TENSION_GAIN - 0.001 and vk.tension < 3.0 * VigieKit.DODGE_TENSION_GAIN + 0.2, str(vk.tension))
+	_check("+0,24 de Guet (plus le Guet gagné en marchant)", vk.tension >= 3.0 * VigieKit.DODGE_TENSION_GAIN - 0.001 and vk.tension < 3.0 * VigieKit.DODGE_TENSION_GAIN + 0.2, str(vk.tension))
 	_player.tick(1.05)
 	_check("1 charge après 1 s", int(_player.get_dodge_cooldown()["charges"]) == 1, str(_player.get_dodge_cooldown()))
 	_player.tick(1.0)

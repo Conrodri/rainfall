@@ -6,9 +6,9 @@
 |---|---|
 | **Rôle** | Archère : distance, tir chargé, contrôle léger |
 | **Difficulté** | ★★☆☆☆ (2/5) : débutant à intermédiaire |
-| **Ressource** | **Tension** (la corde bandée) |
+| **Passif** | **Guet** (l'œil qui veille) |
 | **Accent** | rouge de fusée de détresse `#FF3A4F` |
-| **Points forts** | cible unique, élites et boss, portée, tir qui perce toute une ligne |
+| **Points forts** | cible unique, élites et boss, portée, filet qui grossit avec son guet |
 | **Points faibles** | fragile (90 PV, aucune armure), moins de dégâts de zone qu'Ardent au tout début |
 
 ---
@@ -28,24 +28,24 @@ Elle a survécu sur le toit de sa tour, l'arc à la main. Depuis, elle trempe se
   - une **pèlerine de roseaux tressés** sur les épaules : un triangle hirsute qui goutte, comme un toit de chaume ;
   - un **carquois-tube de laiton** à la hanche, d'où dépassent les têtes rouges des fusées.
 - **Détails** : capuche de ciré ardoise sous les roseaux, écharpe remontée jusqu'au nez, une longue-vue cabossée à la ceinture, jambières de pêcheur couvertes de vase jusqu'aux genoux. Les yeux sont fatigués, jamais fermés.
-- **Palette** : roseau délavé `#5A5540`, ciré ardoise `#3A4048`, bois noirci `#2A2522`, cuivre vert-de-gris `#4F6B5E`, peau pâle `#C9B8A8`. Tout est mat et mouillé, sauf **une seule chose qui brille : le rouge de détresse `#FF3A4F`**, sur les têtes des fusées, la mèche qui fume à sa hanche et la corde de l'arc, qui rougeoie à mesure que la Tension monte.
+- **Palette** : roseau délavé `#5A5540`, ciré ardoise `#3A4048`, bois noirci `#2A2522`, cuivre vert-de-gris `#4F6B5E`, peau pâle `#C9B8A8`. Tout est mat et mouillé, sauf **une seule chose qui brille : le rouge de détresse `#FF3A4F`**, sur les têtes des fusées, la mèche qui fume à sa hanche et la corde de l'arc, qui rougeoie à mesure que le Guet monte.
 - **En jeu, elle éclaire la nuit** : ses fusées sont de vraies lumières rouges qui crachotent sur les flaques. Dans les cartes sombres, on la suit à ses signaux.
 
 ---
 
-## Sa mécanique : la Tension
+## Son passif : le Guet
 
 Une jauge simple, qui se remplit **toute seule** :
 
-| Situation | Temps pour remplir la Tension |
+| Situation | Temps pour remplir le Guet |
 |---|---|
-| Elle **marche** | 2,2 s |
-| Elle est **ancrée** (immobile depuis 0,15 s) | 1 s |
-| Bonus | la **vitesse d'attaque** des objets la remplit plus vite (+25 % = 25 % plus vite) |
+| Elle **marche** | 12 s |
+| Elle est **ancrée** (immobile depuis 0,15 s) | 8 s |
+| Un pas de **Repli** (esquive) | +8 % d'un coup |
 
-Quand la jauge est pleine (« **PRÊTE** », la corde brille, un petit éclat rouge), **son prochain tir automatique devient un Trait d'allonge** : une flèche lourde qui **traverse toute la ligne** jusqu'à 12 u. La jauge retombe à zéro et recommence.
+La vitesse d'attaque ne l'accélère plus, et le Guet **ne change rien à ses tirs automatiques** : le Trait reste le Trait. Quand la jauge est pleine (« **PLEIN** », la corde brille en rouge), elle est prête à être **dépensée d'un coup par le Filet lesté**, qui devient d'autant plus grand, long et dur que le Guet est haut. Aucun malus : se faire toucher ne la vide pas.
 
-**Comment la jouer** : bouge pour survivre, puis **arrête-toi une seconde** quand la voie est libre : la flèche chargée part trois fois plus souvent. Plus besoin de rien gérer d'autre.
+**Comment la jouer** : bouge pour survivre, **arrête-toi** quand la voie est libre pour que ta jauge monte, puis jette le Filet sur le gros paquet.
 
 ---
 
@@ -53,8 +53,7 @@ Quand la jauge est pleine (« **PRÊTE** », la corde brille, un petit éclat ro
 
 ### 1. Trait (automatique)
 Flèche vers l'ennemi le plus proche, toutes les **0,6 s**.
-- Dégâts : **0,8** × dégât de base · portée **9 u** · traverse **1** monstre · proc 1,0
-- **Tension pleine → Trait d'allonge** : **2,0** × dégât de base à **chaque** monstre de la ligne, portée **12 u**, recul fort. Vide la Tension.
+- Dégâts : **1,0** × dégât de base · portée **9 u** · traverse **1** monstre · proc 1,0
 
 ### 2. Fusée de détresse (clic gauche · recharge 8 s)
 Une flèche-fusée vers le point visé (portée **9 u**). Elle frappe le premier monstre (**1,2**), puis **la fusée de magnésium reste plantée 5 s** et éclaire **3 u** autour d'elle.
@@ -63,8 +62,8 @@ Une flèche-fusée vers le point visé (portée **9 u**). Elle frappe le premier
 
 ### 3. Filet lesté (clic droit · recharge 9 s)
 Une flèche lestée qui traîne un filet de pêcheur (portée **7 u**). Le filet s'ouvre sur **le premier monstre touché** (ou au point visé) :
-- tout ce qu'il couvre (**3 u**) est **immobilisé 1,5 s** et prend **1,2** (les boss sont seulement ralentis de 40 %) ;
-- **ta Tension est aussitôt pleine** : le Trait d'allonge suivant traverse le paquet que tu viens de clouer.
+- il consomme **toute ta jauge de Guet** (g, de 0 à 1) : rayon **3 + 1,5 g u** (3 à 4,5 u), tout ce qu'il couvre est **immobilisé 1,5 + 1,5 g s** (1,5 à 3 s) et prend **1,2 + 2,4 g** (1,2 à 3,6) ; les boss sont seulement ralentis de 40 % pour la même durée ;
+- Guet plein : la flèche devient la flèche chargée (traînée rouge). Le Filet ne remplit plus la jauge : il la vide. Lancé à vide, il reste un petit filet de secours.
 
 ### 4. Grêle (ultime, molette · recharge 20 s)
 Elle tire une volée droit vers le ciel. **0,45 s** plus tard, une pluie de flèches tombe pendant **2,5 s** sur **4,5 u** autour du point visé (portée **10 u**) :
@@ -76,8 +75,8 @@ Elle tire une volée droit vers le ciel. **0,45 s** plus tard, une pluie de flè
 ## Le combo à retenir
 
 1. **Fusée** sur le gros paquet : il s'allume en rouge.
-2. **Filet** dans la lumière : tout est cloué et ta Tension est pleine.
-3. Ne bouge pas : le **Trait d'allonge** traverse toute la ligne immobilisée et exposée.
+2. Arrête-toi une poignée de secondes : ton **Guet** monte.
+3. **Filet** plein dans la lumière : tout est cloué longtemps, exposé, et prend de gros dégâts.
 4. Garde la **Grêle** pour l'élite ou le boss : il reste dessous, ralenti, pendant que tu tires.
 
 ---
@@ -86,16 +85,16 @@ Elle tire une volée droit vers le ciel. **0,45 s** plus tard, une pluie de flè
 
 | Objet | Pourquoi |
 |---|---|
-| **Carquois affûté** | tirs plus rapides **et** Tension plus rapide (+25 %) : son meilleur objet |
-| **Lame jumelle** | +25 % aux dégâts automatiques : le Trait **et** le Trait d'allonge en profitent |
+| **Carquois affûté** | tirs plus rapides (+25 %) : son meilleur objet |
+| **Lame jumelle** | +25 % aux dégâts automatiques : le Trait en profite |
 | **Cœur de glace** | ses cibles sont souvent ralenties (Grêle) ou immobilisées (Filet) |
-| Sifflet de chasse, Rafale d'acier | vitesse d'attaque = plus de tirs et de Tension |
+| Sifflet de chasse, Rafale d'acier | vitesse d'attaque = plus de tirs |
 | Plume d'empenne | portée et vitesse des flèches |
-| Pointe perforante | le Trait traverse un monstre de plus (l'Allonge perce déjà tout) |
-| Éclair en bouteille | chaque monstre traversé par l'Allonge tente sa foudre |
+| Pointe perforante | le Trait traverse un monstre de plus |
+| Éclair en bouteille | chaque tir qui touche tente sa foudre |
 | Marque du chasseur, Œil du prédateur | spécialiste des élites et des boss |
 | Rune de portée | lumière de la fusée, filet et Grêle plus larges |
-| Danseur | à double tranchant : bonus en marche, mais elle charge mieux à l'arrêt |
+| Danseur | à double tranchant : bonus en marche, mais le Guet se remplit plus vite à l'arrêt |
 
 ---
 

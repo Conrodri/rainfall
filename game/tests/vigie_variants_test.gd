@@ -1,6 +1,6 @@
 extends Node
 ## Test headless des variantes de sorts de Vigie (docs/Variantes_Sorts.md §2.9, CONTRACTS.md « Variantes de sorts ») :
-## substitution par CharacterData.for_id, Tir double (+ volée), Fanal, Chausse-trapes, Tir de signal, compteurs
+## substitution par CharacterData.for_id, Tir double, Fanal (Guet à 100 %), Chausse-trapes, Tir de signal, compteurs
 ## (vigie_exposed / vigie_netted / vigie_grele_kills) et règles de déblocage de characters.json.
 ## godot --headless --path game res://tests/vigie_variants_test.tscn  (scène : les autoloads doivent exister)
 
@@ -231,7 +231,7 @@ func _run() -> void:
 	_flush()
 	_check("2 flèches parties", _player.spells.active_projectile_count() == 2, str(_player.spells.active_projectile_count()))
 	await _frames(40)
-	_check("coef 0,42 sur les deux plus proches, pas la 3e", d1.taken.size() == 1 and d2.taken.size() == 1 and d3.taken.is_empty()
+	_check("coef 0,52 sur les deux plus proches, pas la 3e", d1.taken.size() == 1 and d2.taken.size() == 1 and d3.taken.is_empty()
 			and _near(d1.taken[0], VigieKit.DOUBLE_COEF * BASE, 0.05), "%s %s %s" % [d1.taken, d2.taken, d3.taken])
 	_reset(0.0)
 	var lone := _fake(Vector2(4 * U, 0))
@@ -245,30 +245,27 @@ func _run() -> void:
 	out_of_range.global_position = Vector2(7.5 * U, 0)
 	_check("à 7,5 u : tire", _player.spells.cast(1))
 
-	print("Volée d'allonge (Tension pleine)")
+	print("Plus de volée : Guet plein = toujours 2 flèches légères, jauge intacte")
 	_reset(1.0)
 	var line: Array = []
 	for i in 3:
 		line.append(_fake(Vector2((3 + 3 * i) * U, 0)))
-	var up := _fake(Vector2(6 * U, 6 * U * tan(deg_to_rad(10.0)))) # sur le trait haut de l'éventail (10 deg)
-	_check("volée lancée", _player.spells.cast(1))
-	_check("Tension vidée", _near(_kit.tension, 0.0))
+	_check("tir lancé à Guet plein", _player.spells.cast(1))
+	_check("Guet intact", _near(_kit.tension, 1.0, 0.01), str(_kit.tension))
 	_flush()
-	_check("3 traits", _player.spells.active_projectile_count() == 3, str(_player.spells.active_projectile_count()))
+	_check("2 flèches (pas 3)", _player.spells.active_projectile_count() == 2, str(_player.spells.active_projectile_count()))
 	await _frames(50)
-	var all_hit := true
-	for b in line:
-		all_hit = all_hit and b.taken.size() == 1 and _near(b.taken[0], VigieKit.VOLLEY_COEF * BASE, 0.05)
-	_check("trait central perce toute la ligne à 1,2", all_hit, str(line.map(func(b): return b.taken)))
-	_check("trait en éventail touche la cible décalée de 10 deg", up.taken.size() >= 1, str(up.taken))
+	_check("coef 0,52 (DOUBLE_COEF), pas de volée", line[0].taken.size() >= 1 and _near(line[0].taken[0], VigieKit.DOUBLE_COEF * BASE, 0.05) and _near(VigieKit.DOUBLE_COEF, 0.52), str(line.map(func(b): return b.taken)))
 
 	print("Sort 2 : Fanal")
 	_reset(0.0)
 	var near_e := _fake(Vector2(2 * U, 0))
 	var far_e := _fake(Vector2(5 * U, 0))
 	_check("fanal lancé", _player.spells.cast(2))
-	_check("recharge 8 s", _near(_player.get_spell_cooldowns()[1].total, 8.0, 0.01))
+	_check("recharge 14 s", _near(_player.get_spell_cooldowns()[1].total, 14.0, 0.01))
+	_check("Guet encore bas avant l'effet", _kit.tension < 0.5, str(_kit.tension))
 	_flush()
+	_check("Fanal : Guet à 100 % d'un coup", _near(_kit.tension, 1.0, 0.001) and _kit.is_full(), str(_kit.tension))
 	_check("lumière attachée à Vigie", _kit.flares.size() == 1 and (_kit.flares[0] as Node2D).global_position.distance_to(_player.global_position) < 1.0)
 	_player.global_position = Vector2(0, 2 * U)
 	_advance(0.3)
@@ -276,15 +273,7 @@ func _run() -> void:
 	_check("monstre proche exposé, loin non", near_e.exposed() and not far_e.exposed())
 	_check("aucun dégât propre", near_e.taken.is_empty())
 	_check("compteur vigie_exposed incrémenté", int(RunState.counters.get("vigie_exposed", 0)) >= 1, str(RunState.counters))
-	_kit.fanal_t = 0.0
-	_player.is_moving = true
-	_kit.still_t = 0.0
-	var rate_off := _kit.tension_rate()
-	_kit.fanal_t = 5.0
-	var rate_on := _kit.tension_rate()
-	_check("Fanal en marche : corde au rythme ancré (1 s)", rate_on > rate_off * 2.0, "%s %s" % [rate_on, rate_off])
-	_kit.fanal_t = 0.0
-	_player.is_moving = false
+	_check("Fanal : lumière 5 s", _near(_kit.fanal_t, VigieKit.FANAL_LIFE_S, 0.5), str(_kit.fanal_t))
 
 	print("Sort 3 : Chausse-trapes")
 	_reset(0.0)
@@ -306,7 +295,7 @@ func _run() -> void:
 	_check("ralenti 50 %, boss 25 %", _near(float(c1.status_data(&"slow").get("pct", 0)), 0.5) and _near(float(cboss.status_data(&"slow").get("pct", 0)), 0.25), str(c1.statuses))
 	_check("hors champ : intact", cfar.taken.is_empty() and not cfar.has_status(&"slow"))
 	_check("pas emprisonné (ce n'est pas un filet)", not c1.has_status(&"imprisoned"))
-	_check("Tension +25 % par entrée (2 entrées)", _kit.tension >= 0.5 - 0.001, str(_kit.tension))
+	_check("Guet +5 % par entrée (2 entrées)", _kit.tension >= 0.1 - 0.001 and _kit.tension < 0.35, str(_kit.tension))
 	_check("pas de compteur vigie_netted", not RunState.counters.has("vigie_netted"))
 	_advance(6.5)
 	_check("champ disparu après 6 s", _kit.caltrops.is_empty() or (_kit.caltrops[0] as VigieCaltrops).is_ending())

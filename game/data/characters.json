@@ -519,9 +519,9 @@
         "id": "vigie_trait",
         "name": "Trait",
         "slot": "auto",
-        "desc": "Flèche automatique vers l'ennemi le plus proche. Tension pleine : le tir suivant est un Trait d'allonge qui perce toute la ligne. Sur un exposé par la Fusée : Trait d'allonge 2,6 au lieu de 1,8 ; ravive la Fusée (+1 s).",
+        "desc": "Flèche automatique vers l'ennemi le plus proche. Passif Guet : sa jauge (0 à 100 % en 12 s en marchant, 8 s immobile) n'agit pas sur les tirs automatiques ; elle grandit le Filet lesté.",
         "variants": [
-          {"id": "vigie_tir_double", "name": "Tir double", "desc": "Deux flèches légères sur les deux monstres les plus proches. Tension pleine : volée de trois traits perçants.", "unlock_text": "Gagner une run avec Vigie.", "unlock_key": "spell:vigie_tir_double", "unlock_rule": {"type": "win_with", "character": "vigie"}}
+          {"id": "vigie_tir_double", "name": "Tir double", "desc": "Deux flèches légères sur les deux monstres les plus proches. Dégâts par flèche relevés pour compenser.", "unlock_text": "Gagner une run avec Vigie.", "unlock_key": "spell:vigie_tir_double", "unlock_rule": {"type": "win_with", "character": "vigie"}}
         ]
       },
       {
@@ -530,16 +530,16 @@
         "slot": "cd",
         "desc": "Flèche-fusée au point visé : la fusée de magnésium reste plantée 5 s ; les monstres dans sa lumière subissent +20 % de dégâts. Sur un cloué par le Filet : exposition ×1,25 et le filet tient 0,5 s de plus.",
         "variants": [
-          {"id": "vigie_fanal", "name": "Fanal", "desc": "La fusée brûle sur ton arc : 5 s de lumière autour de toi qui expose et bande ta corde même en marchant.", "unlock_text": "Exposer 1 000 monstres avec la Fusée de détresse.", "unlock_key": "spell:vigie_fanal", "unlock_rule": {"type": "counter", "key": "vigie_exposed", "value": 1000}}
+          {"id": "vigie_fanal", "name": "Fanal", "desc": "La fusée brûle sur ton arc : 5 s de lumière autour de toi qui expose, et remplit ton Guet à 100 % d'un coup (recharge 14 s).", "unlock_text": "Exposer 1 000 monstres avec la Fusée de détresse.", "unlock_key": "spell:vigie_fanal", "unlock_rule": {"type": "counter", "key": "vigie_exposed", "value": 1000}}
         ]
       },
       {
         "id": "vigie_filet",
         "name": "Filet lesté",
         "slot": "cd",
-        "desc": "Le filet s'ouvre sur le premier monstre touché : tout ce qu'il couvre est immobilisé 1,5 s et ta Tension est aussitôt pleine. Cloué : la Fusée qui s'arrête dans le filet l'expose ; l'Allonge le frappe alors à 2,6.",
+        "desc": "Le filet s'ouvre sur le premier monstre touché : tout ce qu'il couvre est immobilisé et frappé. Il vide ton Guet g : rayon 3 + 1,5 g u, tenue 1,5 + 1,5 g s, dégâts ×(1,2 + 2,4 g). Cloué : la Fusée qui s'arrête dans le filet l'expose.",
         "variants": [
-          {"id": "vigie_chausse_trapes", "name": "Chausse-trapes", "desc": "La flèche sème des pointes sur 3 u pendant 6 s : ce qui entre est ralenti, blessé, et bande ta corde.", "unlock_text": "Immobiliser 500 monstres avec le Filet lesté.", "unlock_key": "spell:vigie_chausse_trapes", "unlock_rule": {"type": "counter", "key": "vigie_netted", "value": 500}}
+          {"id": "vigie_chausse_trapes", "name": "Chausse-trapes", "desc": "La flèche sème des pointes sur 3 u pendant 6 s : ce qui entre est ralenti, blessé, et remplit un peu ton Guet (+5 % par monstre qui entre).", "unlock_text": "Immobiliser 500 monstres avec le Filet lesté.", "unlock_key": "spell:vigie_chausse_trapes", "unlock_rule": {"type": "counter", "key": "vigie_netted", "value": 500}}
         ]
       },
       {

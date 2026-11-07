@@ -64,8 +64,8 @@ func _ready() -> void:
 	await _frames(4)
 	_check(hint.tip.visible and hint.passive_anchor == badge, "survol de l'icône -> infobulle de passif")
 	var txt := hint.text_content()
-	_check(txt.contains("Tension") and txt.contains("Passif"), "texte : nom du passif : %s" % txt.replace("\n", " | ").left(120))
-	_check(txt.contains(KitResource.fmt(VigieKit.TENSION_MOVING_S)) and txt.contains(KitResource.fmt(VigieKit.ALLONGE_RANGE_U)), "texte : chiffres du kit (%s s, %s u)" % [KitResource.fmt(VigieKit.TENSION_MOVING_S), KitResource.fmt(VigieKit.ALLONGE_RANGE_U)])
+	_check(txt.contains("Guet") and txt.contains("Passif"), "texte : nom du passif : %s" % txt.replace("\n", " | ").left(120))
+	_check(txt.contains(KitResource.fmt(VigieKit.GUET_MOVING_S)) and txt.contains(KitResource.fmt(VigieKit.NET_RADIUS_GAIN_U)), "texte : chiffres du kit (%s s, %s u)" % [KitResource.fmt(VigieKit.GUET_MOVING_S), KitResource.fmt(VigieKit.NET_RADIUS_GAIN_U)])
 	_check(txt.contains("Remplit") and txt.contains("Vide") and txt.contains("Effet"), "texte : ce qui remplit, vide, effet de palier")
 	_check(vis.encloses(hint.tip.get_global_rect()), "infobulle dans l'écran")
 	# --- PC : survol de la jauge de ressource ---

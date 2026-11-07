@@ -1,7 +1,7 @@
 extends Node
-## Combos de Vigie (docs/Design_Combos.md §5.6) : Filet -> Fusée (x1,25, filet +0,5 s) -> Allonge (2,6, ravive la fusée),
-## ordre inverse sans x1,25, Grêle sur cloués (x1,4), Tir de signal sur déjà cloués (x1,2), Repli x3 -> ancrage sans délai,
-## compensations, combo_ready / auto_cast_ok / is_marked.
+## Combos de Vigie (docs/Design_Combos.md §5.6) : Filet -> Fusée (x1,25, filet +0,5 s), ordre inverse sans x1,25,
+## Grêle sur cloués (x1,4), Tir de signal sur déjà cloués (x1,2), Repli x3 -> ancrage sans délai (+8 % de Guet par pas),
+## compensations, combo_ready / auto_cast_ok / is_marked. L'Allonge n'existe plus (refonte Guet, 07/11/2026).
 ## godot --headless --path game res://tests/vigie_combos_test.tscn
 
 class FakeEnemy extends Node2D:
@@ -132,7 +132,8 @@ func _run() -> void:
 	_check("kit Vigie", _kit != null)
 
 	print("Compensations de base")
-	_check("ALLONGE 1,8 ; FUSEE 1,1 ; GRELE 0,64", _near(VigieKit.ALLONGE_COEF, 1.8) and _near(VigieKit.FUSEE_COEF, 1.1) and _near(VigieKit.GRELE_COEF, 0.64))
+	_check("TRAIT 1,0 ; FUSEE 1,1 ; GRELE 0,64", _near(VigieKit.TRAIT_COEF, 1.0) and _near(VigieKit.FUSEE_COEF, 1.1) and _near(VigieKit.GRELE_COEF, 0.64))
+	_check("plus d'Allonge ni de Volée", not ("allonge_spell" in _kit) and not ("volley_spell" in _kit))
 
 	print("Filet -> Fusée : exposition x1,25 et filet +0,5 s")
 	_reset()
@@ -154,20 +155,14 @@ func _run() -> void:
 	_advance(0.3)
 	_check("filet lâché : retour à x1,1", _near(held2.expose_mult(), VigieKit.EXPOSE_MULT), str(held2.expose_mult()))
 
-	print("... -> Allonge sur exposé")
-	var al := _kit.allonge_spell
-	_check("allonge existe", al != null)
+	print("Trait sur exposé : plus de bonus (ni d'avivée de la fusée)")
+	var trait_s := VigieKit.character().spells[0]
 	var plain := _fake(Vector2(0, 6 * U))
-	_check("sur exposé : 2,6", _near(_hit(held1, al), VigieKit.ALLONGE_EXPOSED_COEF * BASE, 0.05), str(held1.taken))
-	_check("hors lumière : 1,8", _near(_hit(plain, al), VigieKit.ALLONGE_COEF * BASE, 0.05), str(plain.taken))
-	_check("combo_hit seulement sur exposé", _kit.combo_hit(al, held1) and not _kit.combo_hit(al, plain))
-	_check("la fusée est ravivée de 1 s", _near(fl.life, VigieKit.FLARE_LIFE_S + VigieKit.FLARE_REVIVE_S, 0.01), str(fl.life))
-	_hit(held1, al) # même trait / même instant : pas de seconde avivée
-	_check("une avivée par trait (250 ms)", _near(fl.life, VigieKit.FLARE_LIFE_S + VigieKit.FLARE_REVIVE_S, 0.01), str(fl.life))
-	fl.life = 6.5
-	_kit._revive_ms = -10000 # l'intervalle de 250 ms est en temps réel
-	_hit(held1, al)
-	_check("plafond de vie 7 s", _near(fl.life, VigieKit.FLARE_MAX_LIFE_S, 0.01), str(fl.life))
+	var life0 := fl.life
+	_check("exposé : coef nu", _near(_hit(held1, trait_s), VigieKit.TRAIT_COEF * BASE, 0.05), str(held1.taken))
+	_check("hors lumière : coef nu", _near(_hit(plain, trait_s), VigieKit.TRAIT_COEF * BASE, 0.05), str(plain.taken))
+	_check("combo_hit : jamais pour le Trait", not _kit.combo_hit(trait_s, held1))
+	_check("la fusée n'est pas ravivée", _near(fl.life, life0, 0.01), str(fl.life))
 
 	print("Ordre inverse : Fusée -> Filet")
 	_reset()
@@ -179,7 +174,6 @@ func _run() -> void:
 	_advance(0.3)
 	_check("cloué après : toujours x1,1 (pas de x1,25)", rv1.is_imprisoned() and rfl.netted.is_empty() and _near(rv1.expose_mult(), VigieKit.EXPOSE_MULT), str(rv1.expose_mult()))
 	_check("filet non prolongé", _near(rv1._held_left, VigieKit.NET_HOLD_S))
-	_check("l'Allonge profite quand même de l'exposition", _near(_hit(rv1, al), VigieKit.ALLONGE_EXPOSED_COEF * BASE, 0.05))
 
 	print("Fusée qui ne s'arrête pas sur un cloué")
 	_reset()
@@ -211,7 +205,7 @@ func _run() -> void:
 		_check("déjà cloué : x1,2", _near(pre.last(), VigieKit.SIGNAL_COEF * VigieKit.SIGNAL_NETTED_MULT * BASE, 0.1), str(pre.taken))
 		_check("cloué par le signal lui-même : coef nu", _near(fresh.last(), VigieKit.SIGNAL_COEF * BASE, 0.1), str(fresh.taken))
 
-	print("Repli x3 -> Allonge sans délai d'ancrage")
+	print("Repli x3 -> ancrage sans délai (+8 % de Guet par pas)")
 	_reset()
 	_kit.clear_transients()
 	_advance(0.05, true) # en marche : pas ancrée
@@ -224,7 +218,7 @@ func _run() -> void:
 	_advance(0.1, true)
 	_kit.on_dodge_end(Vector2.ZERO, Vector2.ZERO)
 	_check("après le 3e : ancrée sans délai (still_t = 0)", _kit.is_anchored() and _kit.still_t < VigieKit.ANCHOR_DELAY_S)
-	_check("Tension +24 % pour les 3", _near(_kit.tension - t0, 3.0 * VigieKit.DODGE_TENSION_GAIN, 0.2))
+	_check("Guet +8 % par pas : +24 % pour les 3", _near(_kit.tension - t0, 3.0 * VigieKit.DODGE_TENSION_GAIN, 0.04), str(_kit.tension - t0))
 	_advance(VigieKit.ANCHOR_FREE_S + 0.1, true)
 	_check("0,5 s plus tard : retour à la règle normale", not _kit.is_anchored())
 	_kit.on_dodge_end(Vector2.ZERO, Vector2.ZERO)
@@ -237,12 +231,11 @@ func _run() -> void:
 	print("auto_cast_ok(2) et is_marked")
 	_reset(0.2)
 	_player.spells._remaining[3] = 0.3
-	_check("Filet dans 0,3 s, Tension basse : la Fusée attend", not _kit.auto_cast_ok(2))
+	_check("Filet dans 0,3 s, Guet bas (le Filet ne partirait pas) : la Fusée part", _kit.auto_cast_ok(2))
+	_kit.set_tension(0.9)
+	_check("Filet dans 0,3 s, Guet haut : la Fusée attend", not _kit.auto_cast_ok(2))
 	_player.spells._remaining[3] = 0.0
 	_check("Filet prêt : la Fusée part", _kit.auto_cast_ok(2))
-	_player.spells._remaining[3] = 0.3
-	_kit.set_tension(0.9)
-	_check("Tension haute : la Fusée part", _kit.auto_cast_ok(2))
 	_kit.set_tension(0.2)
 	_kit.open_net(at)
 	_check("filet déjà posé : la Fusée part", _kit.auto_cast_ok(2))
