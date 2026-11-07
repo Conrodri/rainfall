@@ -82,6 +82,8 @@ var last_unlocks: Array[StringName] = []
 var party_setup: Array[Dictionary] = []
 ## Nœuds des joueurs de la partie, index = emplacement (players[0] == player).
 var players: Array[Node2D] = []
+## Coop locale (étape 4) : manettes perdues / reprises, jonction du mode test (null en solo hors mode test).
+var coop_local: CoopLocal = null
 var _final_boss_time_s := 0.0 ## temps actif à l'abattage du boss final (étage final nettoyé) ; 0 = pas encore
 var end_screen: RunScreens = null ## EndRunScreen (hérite de RunScreens)
 var victory_screen: RunScreens = null
@@ -100,8 +102,9 @@ var _shake_t := 0.0
 
 ## Entrée de `party_setup` : source d'entrée du joueur (null = source globale), personnage (vide = celui déjà choisi
 ## pour cet emplacement, RunState.character pour le joueur 1) et variantes de sorts (vide = gardées).
-static func party_entry(input: InputSource = null, character: StringName = &"", loadout: Dictionary = {}) -> Dictionary:
-	return {"input": input, "character": character, "loadout": loadout}
+## `skin` : apparence de ce joueur (coop locale, écran de jonction) ; "" = skin équipé au profil, "default" = base.
+static func party_entry(input: InputSource = null, character: StringName = &"", loadout: Dictionary = {}, skin: String = "") -> Dictionary:
+	return {"input": input, "character": character, "loadout": loadout, "skin": skin}
 
 
 func _ready() -> void:
@@ -183,14 +186,22 @@ func _build() -> void:
 	world.add_child(stage) # avant le joueur : la carte se dessine sous les entités
 
 	player = load(PLAYER).instantiate()
+	_apply_party_skin(player, 0)
 	world.add_child(player)
 	camera = player.get_node_or_null(^"Camera2D") as Camera2D
 	if "auto_cast_spells" in player:
 		player.set(&"auto_cast_spells", GameSettings.auto_cast())
 	_spawn_party()
+	if is_local_coop():
+		_setup_shared_camera()
+	_sync_player_interactions()
 
 	hud = load(HUD).instantiate()
 	add_child(hud)
+	if is_local_coop() or TestMode.active: # manettes : déconnexion / reconnexion ; mode test : jonction d'une manette
+		coop_local = CoopLocal.new()
+		coop_local.main = self
+		add_child(coop_local)
 	if TestMode.active:
 		TestOverlay.attach(self) # panneau du mode test + bouton tactile (À RETIRER AVANT LA SORTIE)
 	else:
@@ -281,16 +292,104 @@ func _spawn_party() -> void:
 	for e in Players.entries():
 		if e.id == 0:
 			continue
-		var p := load(PLAYER).instantiate() as Node2D
-		p.set(&"player_id", e.id)
+		players.append(_make_player(e.id))
+
+
+## Nœud d'un joueur supplémentaire (sans caméra : la caméra commune ou celle du joueur 1 suit la partie).
+func _make_player(id: int) -> Node2D:
+	var p := load(PLAYER).instantiate() as Node2D
+	p.set(&"player_id", id)
+	_apply_party_skin(p, id)
+	var cam := p.get_node_or_null(^"Camera2D") as Camera2D
+	if cam != null:
+		cam.enabled = false
+	if "auto_cast_spells" in p:
+		p.set(&"auto_cast_spells", GameSettings.auto_cast())
+	world.add_child(p)
+	Players.set_node(id, p)
+	return p
+
+
+## Skin choisi à l'écran de jonction (party_setup[id]["skin"]) : posé avant l'entrée dans l'arbre.
+func _apply_party_skin(p: Node, id: int) -> void:
+	if id < party_setup.size() and "skin_id" in p:
+		p.set(&"skin_id", str(party_setup[id].get("skin", "")))
+
+
+## Coop locale : plus d'un joueur, tous sur cette machine (caméra commune, plaques du HUD, manettes).
+func is_local_coop() -> bool:
+	if Players.count() <= 1:
+		return false
+	for e in Players.entries():
+		if not e.is_local:
+			return false
+	return true
+
+
+## Caméra commune (SharedCamera) à la place de celle du joueur 1 ; Main.shake et les limites de carte la visent.
+func _setup_shared_camera() -> void:
+	if camera is SharedCamera:
+		return
+	for p in players:
+		if not is_instance_valid(p):
+			continue
 		var cam := p.get_node_or_null(^"Camera2D") as Camera2D
 		if cam != null:
 			cam.enabled = false
-		if "auto_cast_spells" in p:
-			p.set(&"auto_cast_spells", GameSettings.auto_cast())
-		world.add_child(p)
-		Players.set_node(e.id, p)
-		players.append(p)
+	var sc := SharedCamera.new()
+	add_child(sc)
+	sc.make_current()
+	camera = sc
+	if stage != null and stage.map != null:
+		_apply_camera_limits()
+
+
+## Coop locale PC (même condition que les plaques du HUD, Hud.is_local_coop) : chaque joueur interagit avec SA source
+## (PlayerInteract) ; le HUD ne garde que l'invite du joueur 1. Solo / mobile : répartiteur unique du HUD, inchangé.
+func _sync_player_interactions() -> void:
+	var on := Hud.is_local_coop()
+	for p in players:
+		if is_instance_valid(p) and "interaction" in p:
+			(p.get(&"interaction") as PlayerInteract).enabled = on
+
+
+## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : ajoute un joueur local en cours de run (manette `input`), même
+## personnage et niveau que le joueur 1, posé à côté de lui. Le joueur 1, s'il lisait toutes les entrées (source
+## globale), passe au clavier-souris, ou à une autre manette connectée si le jeu se joue à la manette. Rend
+## l'emplacement, -1 si la partie est pleine.
+func add_local_player(input: InputSource) -> int:
+	if run_over or Players.count() >= Balance.MULTI_MAX_PLAYERS:
+		return -1
+	if Players.entries().is_empty():
+		Players.register(player, InputSource.global_source(), 0)
+	var src0 := Players.input_of(0)
+	if src0 != null and src0.kind == InputSource.Kind.GLOBAL:
+		var other := -1
+		for d in Input.get_connected_joypads():
+			if input == null or d != input.device:
+				other = d
+				break
+		var use_pad := other >= 0 and Platform.is_gamepad_mode()
+		Players.set_input(0, InputSource.pad_source(other) if use_pad else InputSource.kbm_source())
+	var p1 := RunState.local()
+	var id := Players.register(null, input)
+	if id < 0:
+		return -1
+	var st := RunState.player_state(id)
+	st.reset(p1.level)
+	st.xp = p1.xp
+	st.character = p1.character
+	st.loadout = p1.loadout.duplicate()
+	var p := _make_player(id)
+	while players.size() <= id:
+		players.append(null)
+	players[id] = p
+	p.global_position = player.global_position + Vector2(96.0, 0.0)
+	_setup_shared_camera()
+	if camera is SharedCamera:
+		(camera as SharedCamera).snap()
+	_sync_player_interactions()
+	return id
 
 
 # --- Compteurs de déblocage d'objets (ItemUnlocks) --------------------------
@@ -393,6 +492,8 @@ func _apply_camera_limits() -> void:
 	camera.limit_right = int(r.end.x)
 	camera.limit_bottom = int(r.end.y)
 	camera.reset_smoothing()
+	if camera is SharedCamera: # coop locale : recadrage immédiat sur les joueurs posés au début d'étage
+		(camera as SharedCamera).snap()
 
 
 func _on_pillar_state(_p: Node, state: StringName) -> void:

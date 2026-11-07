@@ -47,6 +47,12 @@ const MAX_ROWS := 4 ## lignes max au clavier-souris / manette
 const MAX_ROWS_TOUCH := 2 ## lignes max en tactile (moins de place sous les PV)
 
 var wrap := true
+## Coop locale PC (HUD à plaques) : la barre reste masquée, les objets se consultent par TAB / Select.
+var suppressed := false:
+	set(v):
+		suppressed = v
+		if v:
+			visible = false
 var max_width := 400.0
 var slot_px := 56.0
 var gap := 6.0
@@ -309,7 +315,7 @@ func relayout() -> void:
 	horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	custom_minimum_size = Vector2(minf(content.x, max_width), content.y)
-	visible = n > 0
+	visible = n > 0 and not suppressed
 	size = custom_minimum_size
 
 

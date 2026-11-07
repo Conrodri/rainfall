@@ -26,6 +26,9 @@ const ZoneEffectScript := preload("res://scripts/spells/zone_effect.gd")
 ## Coop 1-4 : emplacement du joueur (0 = joueur 1, clé du registre Players). À poser AVANT l'entrée dans l'arbre
 ## (ou via bind_player). Son état (or, niveau, objets, personnage) : player_state() ; ses entrées : input_source().
 @export var player_id := 0
+## Coop locale (écran de jonction) : skin de CE joueur ; "" = skin équipé au profil (Skins.equipped), "default" = base.
+## À poser avant l'entrée dans l'arbre. Les calques propres à un kit (Tocsin) suivent toujours le skin du profil.
+@export var skin_id := ""
 @export var character: CharacterData ## null -> CharacterData.for_id(player_state().character)
 @export var auto_cast_spells := false: ## accessibilité : sorts 2-4 automatiques
 	set(v):
@@ -484,6 +487,10 @@ func _apply_character_look() -> void:
 		spr.self_modulate = _look_scene_modulate
 	# Skin équipé (Skins.resolve_frames) : SpriteFrames du skin s'il est livré, sinon ceux du kit (aucun skin rendu = inchangé).
 	var frames_path := Skins.resolve_frames(character.id, character.sprite_frames_path)
+	if skin_id == "default":
+		frames_path = character.sprite_frames_path # coop : apparence de base imposée pour ce joueur
+	elif skin_id != "" and Skins.has_assets(character.id, skin_id):
+		frames_path = Skins.skin_frames_path(character.id, skin_id) # coop : skin choisi à la jonction
 	if frames_path == "":
 		if _look_scene_frames != null and spr.sprite_frames != _look_scene_frames:
 			EmissiveOverlay.apply(spr, _look_scene_frames)

@@ -837,10 +837,18 @@ func _skip_locked() -> bool:
 func _input(event: InputEvent) -> void:
 	if session == null and not _animating:
 		return
+	if non_blocking and not _from_owner(event):
+		# coop locale : un autre joueur ne choisit jamais à la place du propriétaire ; ses appuis ne vont ni aux cartes
+		# ni au focus de l'overlay (son jeu, lu par sondage de SA source, n'en dépend pas). Pause et inventaire passent.
+		if not (event is InputEventMouseMotion or event.is_action(&"pause") or event.is_action(&"chest_items") \
+				or (event is InputEventJoypadButton and ((event as InputEventJoypadButton).button_index == JOY_BUTTON_START \
+				or (event as InputEventJoypadButton).button_index == JOY_BUTTON_BACK))):
+			get_viewport().set_input_as_handled()
+		return
 	if non_blocking and not _overlay_wants(event):
 		return
 	if items_open(): # consultation des objets par-dessus : le coffre ne lit rien (Retour / Échap / B : menu pause)
-		if event.is_action_pressed(&"chest_items"):
+		if _act(event, &"chest_items"):
 			get_viewport().set_input_as_handled()
 			var pm := _pause_menu()
 			if pm != null and pm.has_method(&"close_items"):
@@ -868,22 +876,22 @@ func _input(event: InputEvent) -> void:
 		return
 	# raccourcis par actions (remappables) ; ils valident à l'appui, le choix au doigt / à la souris au relâcher
 	var idx := -1
-	if event.is_action_pressed(&"chest_pick_1"):
+	if _act(event, &"chest_pick_1"):
 		idx = 0
-	elif event.is_action_pressed(&"chest_pick_2"):
+	elif _act(event, &"chest_pick_2"):
 		idx = 1
-	elif event.is_action_pressed(&"chest_reroll_free"):
+	elif _act(event, &"chest_reroll_free"):
 		get_viewport().set_input_as_handled()
 		if session.can_free_reroll():
 			_on_free_reroll()
 		elif session.can_gold_reroll():
 			_on_gold_reroll()
 		return
-	elif event.is_action_pressed(&"chest_reroll_gold"):
+	elif _act(event, &"chest_reroll_gold"):
 		get_viewport().set_input_as_handled()
 		_on_gold_reroll()
 		return
-	elif event.is_action_pressed(&"chest_items"):
+	elif _act(event, &"chest_items"):
 		get_viewport().set_input_as_handled()
 		open_items()
 		return
@@ -1667,7 +1675,7 @@ func _tick_overlay(delta: float) -> void:
 ## sorts du joueur ne sont jamais avalés ; replié, une touche de choix ou d'objets le déplie.
 func _overlay_wants(event: InputEvent) -> bool:
 	if collapsed:
-		if event.is_action_pressed(&"chest_pick_1") or event.is_action_pressed(&"chest_pick_2") or event.is_action_pressed(&"chest_items"):
+		if _act(event, &"chest_pick_1") or _act(event, &"chest_pick_2") or _act(event, &"chest_items"):
 			set_collapsed(false)
 			get_viewport().set_input_as_handled()
 		return false
@@ -1677,6 +1685,38 @@ func _overlay_wants(event: InputEvent) -> bool:
 		var pos: Vector2 = (event as InputEventMouseButton).position if event is InputEventMouseButton else (event as InputEventScreenTouch).position
 		return _panel != null and _panel.get_global_rect().has_point(pos)
 	for a in [&"chest_pick_1", &"chest_pick_2", &"chest_reroll_free", &"chest_reroll_gold", &"chest_items"]:
-		if event.is_action(a):
+		if event.is_action(a) or _act(event, a, false):
+			return true
+	return false
+
+
+## Coop locale (étape 4) : l'événement vient-il de la source d'entrée du propriétaire du coffre (session.state) ?
+## Solo, source globale ou tactile : toujours vrai. Souris : seulement si le propriétaire joue au clavier-souris.
+func _from_owner(event: InputEvent) -> bool:
+	if Players.count() <= 1 or session == null or session.state == null:
+		return true
+	var src := Players.input_of(session.state.slot)
+	if src == null or src.kind == InputSource.Kind.GLOBAL or src.kind == InputSource.Kind.TOUCH:
+		return true
+	if event is InputEventMouse or event is InputEventScreenTouch or event is InputEventScreenDrag:
+		return src.kind == InputSource.Kind.KBM
+	return src.owns_event(event)
+
+
+## Action `action` portée par l'événement (appui seulement si `pressed_only`), y compris pour une manette autre que
+## la 0 (les liaisons manette de l'InputMap créées par le code ne visent que l'appareil 0). Pas d'allocation hors des
+## événements d'entrée.
+static func _act(event: InputEvent, action: StringName, pressed_only: bool = true) -> bool:
+	if pressed_only and event.is_action_pressed(action):
+		return true
+	if not pressed_only and event.is_action(action):
+		return true
+	if not (event is InputEventJoypadButton) or not InputMap.has_action(action):
+		return false
+	var jb := event as InputEventJoypadButton
+	if pressed_only and (not jb.pressed or jb.is_echo()):
+		return false
+	for ev in InputMap.action_get_events(action):
+		if ev is InputEventJoypadButton and (ev as InputEventJoypadButton).button_index == jb.button_index:
 			return true
 	return false
