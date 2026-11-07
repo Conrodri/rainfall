@@ -2,12 +2,18 @@ class_name AverseRivulet
 extends Node2D
 ## Gouttière d'Averse (variante du sort 3, docs/Variantes_Sorts.md §2.4) : ruisseau rectangulaire posé au sol
 ## depuis Averse vers le point visé. Rongé par tick (deal_damage en DoT) ; le kit lit contains() pour rendre
-## de l'eau à Averse et la faire courir plus vite. PLACEHOLDER dessiné en code (bande cyan + filets qui défilent) :
-## le lot Codex AVSV (`rivulet_tile`) le remplace.
+## de l'eau à Averse et la faire courir plus vite. Visuel : tuiles `rivulet_tile` (états `empty` / `full`, la bande
+## se remplit selon fill_ratio()) + `rivulet_burst` (déversement à la pose). Repli dessiné en code si un sprite manque.
 
 const _ZONE := preload("res://scripts/spells/zone_effect.gd")
 const FADE_IN_S := 0.12
 const FADE_OUT_S := 0.4
+const FILL_S := 0.35 ## durée de remplissage de la bande (fill_ratio de 0 à 1)
+const TILE_PATH := "res://assets/sprites/characters/averse/variants/rivulet_tile/rivulet_tile.tres"
+const BURST_PATH := "res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.tres"
+const TILE_PX := 128.0 ## cellule de la tuile : 1 u x 1 u à 128 px/u
+const BURST_LEN_PX := 768.0 ## bande de 6 u dans la cellule du déversement
+const BURST_H_PX := 256.0 ## pic de 2 u
 const SLACK_U := 0.25 ## marge latérale pour qu'un monstre dont le centre frôle la bande soit pris
 
 var caster: Object = null
@@ -20,6 +26,8 @@ var tick := 0.5
 var _t := 0.0
 var _tick_t := 0.0
 var _ending := false
+var _full: Array[AnimatedSprite2D] = [] ## calques « plein » des tuiles, opacité = fill_ratio()
+var _has_tiles := false
 
 
 func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: Vector2, len_px: float, w_px: float) -> void:
@@ -32,6 +40,7 @@ func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: V
 	duration = new_spell.duration
 	tick = maxf(new_spell.tick, 0.05)
 	z_index = _ZONE.VFX_Z
+	_build_visual()
 	_apply()
 
 
@@ -42,6 +51,55 @@ func contains(p: Vector2) -> bool:
 	if along < 0.0 or along > length_px:
 		return false
 	return absf(v.dot(Vector2(-dir.y, dir.x))) <= width_px * 0.5 + SLACK_U * Balance.UNIT_PX
+
+
+## Remplissage de la bande (0 = lit vide, 1 = pleine) : monte à la pose, redescend à la fin.
+func fill_ratio() -> float:
+	return minf(clampf(_t / FILL_S, 0.0, 1.0), clampf((duration - _t) / FADE_OUT_S, 0.0, 1.0))
+
+
+func _build_visual() -> void:
+	if not ResourceLoader.exists(TILE_PATH):
+		return
+	var tf := load(TILE_PATH) as SpriteFrames
+	if tf == null or not tf.has_animation(&"empty") or not tf.has_animation(&"full"):
+		return
+	_has_tiles = true
+	var n := maxi(1, ceili(length_px / Balance.UNIT_PX))
+	var sx := length_px / float(n) / TILE_PX
+	var sy := width_px / TILE_PX
+	var root := Node2D.new()
+	root.name = "Tiles"
+	root.rotation = dir.angle()
+	add_child(root)
+	for i in n:
+		for state in [&"empty", &"full"]:
+			var sp := AnimatedSprite2D.new()
+			sp.sprite_frames = tf
+			sp.scale = Vector2(sx, sy)
+			sp.position = Vector2((float(i) + 0.5) * length_px / float(n), 0.0)
+			root.add_child(sp)
+			sp.play(state)
+			sp.frame = i % 4 # tuiles voisines déphasées
+			if state == &"full":
+				sp.modulate.a = 0.0
+				_full.append(sp)
+	if ResourceLoader.exists(BURST_PATH):
+		var bf := load(BURST_PATH) as SpriteFrames
+		if bf != null and bf.has_animation(&"default"):
+			var b := AnimatedSprite2D.new()
+			b.name = "Burst"
+			b.sprite_frames = bf
+			bf.set_animation_loop(&"default", false)
+			var m := CanvasItemMaterial.new()
+			m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+			b.material = m
+			b.scale = Vector2(length_px / BURST_LEN_PX, width_px * 2.0 / BURST_H_PX)
+			b.position = dir * (length_px * 0.5)
+			b.rotation = dir.angle()
+			add_child(b)
+			b.play(&"default")
+			b.animation_finished.connect(b.queue_free)
 
 
 func is_ending() -> bool:
@@ -59,7 +117,12 @@ func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
 	if _t >= duration:
 		_ending = true
 		queue_free()
-	queue_redraw()
+	if _has_tiles:
+		var f := fill_ratio()
+		for sp in _full:
+			sp.modulate.a = f
+	else:
+		queue_redraw()
 
 
 func _process(delta: float) -> void:
@@ -76,6 +139,8 @@ func _apply() -> void:
 
 
 func _draw() -> void:
+	if _has_tiles:
+		return
 	var a := minf(clampf(_t / FADE_IN_S, 0.0, 1.0), clampf((duration - _t) / FADE_OUT_S, 0.0, 1.0))
 	var c := spell.color if spell != null else Color("#5FD4E8")
 	var n := Vector2(-dir.y, dir.x) * width_px * 0.5

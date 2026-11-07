@@ -1,0 +1,5 @@
+- `caltrop_build.py` modifié ; Blender 5.2.2 terminé, 4 frames `default`, 3 `end`, sorties et `.tres` conservés.
+- Pointes acier agrandies, ombres décalées bas-droite, poussière clairsemée et lueurs rouges étendues.
+- Planche unique vérifiée : [caltrop_contact.png](C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/game/assets/sprites/characters/vigie/caltrop_field/caltrop_contact.png), 1024×171.
+- Alpha diffus moyen : `default 0.2311`, `end 0.227` ; seuil demandé `< 0.2` non atteint.
+- `texture_budget.py --apply-policy` : `1 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import`

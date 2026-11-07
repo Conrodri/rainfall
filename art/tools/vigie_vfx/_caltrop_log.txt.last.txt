@@ -1,0 +1,4 @@
+- Assets livrés : `default.png` 2304×576 (696 Ko), `default_e.png` 1152×288 (161 Ko), `end.png` 1728×576 (697 Ko), `end_e.png` 864×288 (122 Ko).
+- Ressources : `caltrop_field.tres` (1,5 Ko), `caltrop_field.blend` (195 Ko), `caltrop_build.py`.
+- Vérif : alpha présent, planches conformes, frames distinctes (2/4 en boucle, 3/3 en fin).
+- `python art/tools/texture_budget.py --apply-policy` : 17 fichiers `.import` corrigés.
