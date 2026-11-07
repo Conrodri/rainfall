@@ -46,6 +46,7 @@ func _new_main() -> void:
 ## Veine autonome posée dans la carte courante, sans physique propre (on la fait avancer par tick()).
 func _spawn(pts: PackedVector2Array, closed: bool) -> EpreuveVein:
 	var e := EpreuveVein.make(pts, closed)
+	e.biome = &"foret" # le libellé d'invite vient de data/epreuves.json (biome de la carte)
 	_next_id += 1
 	e.setup(Pillar.Kind.SMALL, _next_id, false)
 	(_main.stage as StageManager).map.add_child(e)
