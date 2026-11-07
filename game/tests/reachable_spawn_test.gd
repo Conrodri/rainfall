@@ -157,10 +157,12 @@ func _check_stage(mgr: StageManager, director: Node2D, player: Node2D, verbose: 
 		print("%s : %d cellules accessibles, %d cellules de poche fermée (1 u) dans la carte, %d hors remparts, %d cases « ~ »" % [id, nav.reach_cells.size(), pocket, outside, deep_n])
 	_check("%s : eau profonde « ~ » jamais accessible" % id, deep_ok)
 	# plus aucune poche fermée sur aucune carte (22/10/2026 : la poche de la carte 1 est devenue un bassin « ~ »)
-	# exception : la salle d'une porte scellée (cases « : » = 4 cellules de 1 u par case de 2 u) est close tant que la porte tient
+	# exception : la salle d'une porte scellée (cases « : » = 4 cellules de 1 u par case de 2 u) est close tant que la porte tient ;
+	# secret non tiré sur l'étage : la salle est du mur plein (stage_map._seal_unarmed_rooms), donc aucune poche
 	var sealed := 0
-	for row: String in grid_rows(data0):
-		sealed += row.count(":")
+	if map.secret_armed:
+		for row: String in grid_rows(data0):
+			sealed += row.count(":")
 	_check("%s : aucune case praticable enclose dans la carte hors salles scellées (%d cellules, %d scellées)" % [id, pocket, sealed * 4], pocket == sealed * 4)
 	if id == "terrasses_noyees":
 		# ancien rectangle creux de murs, cases (17-18, 20-23) de la grille de 2 u : bassin d'eau profonde

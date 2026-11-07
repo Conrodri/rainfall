@@ -521,6 +521,8 @@ func _purge_kit_nodes() -> void:
 		keep.append(_hitbox_ring)
 	if item_fx != null:
 		keep.append(item_fx)
+	if craft_fx != null:
+		keep.append(craft_fx)
 	if _cosmetic_trail != null:
 		keep.append(_cosmetic_trail)
 	var holders: Array[Node] = [self]
