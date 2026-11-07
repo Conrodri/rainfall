@@ -49,13 +49,15 @@ def rouage_traque():
     disk(-.30,.32,.035,cyan,y=-.34,depth=.02)
 
 def seve_rampante():
-    bark=mat('#292D25');mid=mat('#4C5140');light=mat('#72785A');copper=mat('#D9803A',metal=.55);sap=mat('#7FA35B',emit_hex='#7FA35B',emit_strength=.8)
-    line([(-.58,-.80),(-.38,-.44),(-.48,-.08),(-.24,.22),(-.32,.56),(.02,.83)],bark,.16,name='Knotted root')
-    line([(-.48,-.35),(-.08,-.23),(.22,-.42),(.45,-.26),(.52,.06),(.34,.31),(.50,.56),(.78,.69)],mid,.12,y=-.05,name='Creeping tendril')
-    line([(-.61,-.48),(-.28,-.12),(-.31,.23),(-.08,.56)],light,.045,y=-.19,name='Root ridge')
-    line([(.10,.10),(.28,.04),(.33,-.08)],sap,.048,y=-.22,name='Seeping sap')
-    sphere((.34,-.25,-.10),(.10,.055,.14),sap,'Sap bead')
-    for x,z in [(-.43,-.39),(-.17,.30),(.34,-.30)]:disk(x,z,.065,copper,y=-.24,depth=.035)
+    bark=mat('#363B2D');mid=mat('#68704D');light=mat('#B0B780');copper=mat('#D9803A',metal=.55);sap=mat('#7FA35B',emit_hex='#A5E65B',emit_strength=1.5)
+    line([(-.58,-.80),(-.38,-.44),(-.48,-.08),(-.24,.22),(-.32,.56),(.02,.83)],bark,.205,name='Knotted root')
+    line([(-.48,-.35),(-.08,-.23),(.22,-.42),(.45,-.26),(.52,.06),(.34,.31),(.50,.56),(.78,.69)],mid,.155,y=-.05,name='Creeping tendril')
+    line([(-.67,-.58),(-.48,-.31),(-.57,-.07),(-.33,.25),(-.40,.55),(-.09,.82)],light,.075,y=-.22,name='Root ridge')
+    line([(-.03,-.17),(.23,-.34),(.40,-.20),(.46,.05)],light,.039,y=-.205,name='Tendril lit edge')
+    line([(-.28,.27),(-.05,.19),(.10,.03),(.15,-.17)],sap,.066,y=-.285,name='Seeping sap')
+    sphere((.15,-.31,-.23),(.145,.085,.205),sap,'Sap bead')
+    for x,z in [(-.43,-.39),(-.17,.30),(.34,-.30)]:disk(x,z,.065,copper,y=-.28,depth=.035)
+
 
 def ecorce_pluie():
     bark=mat('#514337');face=mat('#796249');dark=mat('#342F2A');bronze=mat('#657B67',metal=.68);copper=mat('#D9803A',metal=.68);cyan=mat('#5FD4E8',emit_hex='#5FD4E8',emit_strength=.55)
