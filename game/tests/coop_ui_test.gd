@@ -226,6 +226,25 @@ func _coop() -> void:
 	_check(hud._gold_label.text.contains("25"), "HUD : l'or du joueur local s'affiche (%s)" % hud._gold_label.text)
 	Players.state_of(1).add_gold(7000.0)
 	_check(not hud._gold_label.text.contains("7000"), "HUD : l'or d'un allié ne s'affiche pas")
+	# compteur de noyaux d'orage dans la plaque de chaque joueur : visible à 1, masqué à 0
+	var cp: CoopPlates = hud.coop_plates
+	cp.queue_redraw()
+	await _frames(2)
+	_check(cp.core_rects.is_empty(), "plaques : pas de compteur de noyaux à 0 noyau")
+	Players.state_of(1).add_catalyst(1)
+	cp.queue_redraw()
+	await _frames(2)
+	_check(cp.core_rects.has(1) and not cp.core_rects.has(0), "plaques : compteur de noyaux sur la plaque du joueur 2 seulement")
+	if cp.core_rects.has(1):
+		var plate_r := Rect2()
+		for pl in cp.plates:
+			if int(pl["slot"]) == 1:
+				plate_r = pl["rect"]
+		_check(plate_r.encloses(cp.core_rects[1]), "plaques : compteur de noyaux dans sa plaque")
+	Players.state_of(1).spend_catalyst(1)
+	cp.queue_redraw()
+	await _frames(2)
+	_check(not cp.core_rects.has(1), "plaques : compteur masqué quand le noyau est dépensé")
 	hud.queue_free()
 
 

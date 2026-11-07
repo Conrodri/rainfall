@@ -28,6 +28,7 @@ const COL_TEXT := Color(0.95, 0.93, 0.88)
 const COL_DIM := Color(0.62, 0.6, 0.56)
 const COL_ABSENT := Color(0.55, 0.55, 0.55)
 const COL_GOLD := Color(1.0, 0.82, 0.38)
+const CORE_ICON := "res://assets/sprites/icons/storm_core.png"
 const COL_VEIL := Color(0.0, 0.0, 0.0, 0.62)
 
 var ui_scale := 1.0
@@ -37,6 +38,9 @@ var plates: Array[Dictionary] = []
 var _font: Font = ThemeDB.fallback_font
 var _icons := {} ## spell id -> Texture2D (ou null)
 var _gold_tex: Texture2D = null
+var _core_tex: Texture2D = null
+## Compteur de noyaux d'orage dessiné par joueur (id -> Rect2) ; absent à 0 noyau (tests).
+var core_rects := {}
 var _acc := 0.0
 
 
@@ -52,6 +56,8 @@ func _ready() -> void:
 		_font = f
 	if ResourceLoader.exists(Minimap.UI_DIR + "icon_gold.png"):
 		_gold_tex = Minimap.ui_texture("icon_gold.png")
+	if ResourceLoader.exists(CORE_ICON):
+		_core_tex = load(CORE_ICON) as Texture2D
 
 
 func _process(delta: float) -> void:
@@ -168,6 +174,21 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 		var gs := 24.0 * s
 		draw_texture_rect(_gold_tex, Rect2(Vector2(gold_x - gs - 4.0 * s, y + (pill - gs) * 0.5), Vector2(gs, gs)), false, Color(1, 1, 1, a))
 		gold_x -= gs + 4.0 * s
+	# noyaux d'orage portés : icône + « 1/2 » à gauche de l'or, seulement s'il y en a au moins un
+	var cores: int = st.catalysts if st != null else 0
+	if cores >= 1:
+		var core_txt := "%d/%d" % [cores, Balance.CRAFT_CATALYST_CAP]
+		var core_w := _font.get_string_size(core_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, fs_gold).x
+		gold_x -= 14.0 * s + core_w
+		var core_x := gold_x
+		_text(Vector2(gold_x, y + pill * 0.5), core_txt, fs_gold, Color(0.62, 0.86, 1.0, a))
+		if _core_tex != null:
+			var cs := 24.0 * s
+			draw_texture_rect(_core_tex, Rect2(Vector2(gold_x - cs - 4.0 * s, y + (pill - cs) * 0.5), Vector2(cs, cs)), false, Color(1, 1, 1, a))
+			gold_x -= cs + 4.0 * s
+		core_rects[e.id] = Rect2(Vector2(gold_x, y), Vector2(core_x + core_w - gold_x, pill))
+	else:
+		core_rects.erase(e.id)
 	var name_w := maxf(gold_x - (x0 + pill + 8.0 * s) - 8.0 * s, 20.0)
 	_text_clip(Vector2(x0 + pill + 8.0 * s, y + pill * 0.5), line1, fs1, COL_TEXT, name_w)
 	y += pill + 6.0 * s

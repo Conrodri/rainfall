@@ -29,6 +29,12 @@ const CARD_W_MIN := 280.0 ## largeur d'une carte (px logiques) : clamp((W - 120 
 const CARD_W_MAX := 420.0
 const CARD_GAP := 24.0
 const SIDE_MARGIN := 60.0
+const CARD_H_FULL := 580.0 ## hauteur d'une carte en rangée de 4 ; en grille 2 x 2 : CARD_H_TWO
+const CARD_H_TWO := 290.0
+const PORTRAIT_H_FULL := 240.0 ## portrait = moitié haute de la carte (il absorbe la place restante)
+const PORTRAIT_H_TWO := 70.0
+const SPELL_ICON_FULL := 56.0
+const SPELL_ICON_TWO := 40.0
 const ICON_CHECK := "res://assets/sprites/ui/menu/icon_check.png"
 
 ## Joueurs inscrits, ordre = emplacement : {key, kind ("kbm" | "pad"), device, char, skin, ready}.
@@ -43,6 +49,7 @@ var _cards: Array[PanelContainer] = []
 var _card_labels: Array[Dictionary] = [] ## {title, device, char, skin, state, keys (KeyPrompt), check (TextureRect)}
 var _card_styles: Array[StyleBoxFlat] = []
 var _grid: GridContainer ## 4 colonnes, ou 2 x 2 si 4 cartes de CARD_W_MIN ne tiennent pas (4:3, 5:4)
+var _two_by_two := false
 var _cmd_row: KeyPrompt ## commandes de la manette avec les invites existantes (pad_a, pad_b, pad_lb, pad_rb)
 var _mode_label: Label
 var _hint: Label
@@ -127,19 +134,46 @@ func _build() -> void:
 	holder.add_child(_grid)
 	for i in Balance.MULTI_MAX_PLAYERS:
 		var card := PanelContainer.new()
-		card.custom_minimum_size = Vector2(CARD_W_MAX, 420)
+		card.custom_minimum_size = Vector2(CARD_W_MAX, CARD_H_FULL)
+		# fond : plaque DA teintée à la couleur du joueur (repli : boîte plate) ; le cadre prêt/inscrit est un
+		# calque transparent par-dessus (_card_styles)
+		var bgbox: StyleBox = UiTheme.da_box("panel_small_9slice", 0.5)
+		if bgbox is StyleBoxTexture:
+			(bgbox as StyleBoxTexture).modulate_color = Palette.team_color(i).lerp(Color.WHITE, 0.45)
+			bgbox.content_margin_left = 18
+			bgbox.content_margin_right = 18
+			bgbox.content_margin_top = 18
+			bgbox.content_margin_bottom = 18
+		else:
+			var flat := StyleBoxFlat.new()
+			flat.bg_color = Color(0.06, 0.055, 0.05, 0.85)
+			flat.set_content_margin_all(18)
+			bgbox = flat
+		card.add_theme_stylebox_override(&"panel", bgbox)
 		var sb := StyleBoxFlat.new()
-		sb.bg_color = Color(0.06, 0.055, 0.05, 0.85)
+		sb.draw_center = false
 		sb.border_color = Palette.team_color(i)
 		sb.set_border_width_all(3)
-		sb.set_content_margin_all(18)
-		card.add_theme_stylebox_override(&"panel", sb)
 		_card_styles.append(sb)
 		_grid.add_child(card)
 		var v := VBoxContainer.new()
-		v.add_theme_constant_override("separation", 14)
+		v.add_theme_constant_override("separation", 10)
 		card.add_child(v)
+		var frame := Panel.new()
+		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		frame.add_theme_stylebox_override(&"panel", sb)
+		card.add_child(frame)
 		var labels := {}
+		# moitié haute : portrait du personnage dans le skin choisi
+		var portrait := TextureRect.new()
+		portrait.name = "Portrait"
+		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		portrait.custom_minimum_size = Vector2(0, PORTRAIT_H_FULL)
+		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		v.add_child(portrait)
+		labels["portrait"] = portrait
 		for key in ["title", "device", "char", "skin"]:
 			var l := Label.new()
 			l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -148,6 +182,15 @@ func _build() -> void:
 				l.add_theme_color_override("font_color", Palette.team_color(i))
 			v.add_child(l)
 			labels[key] = l
+		v.move_child(portrait, 1) # titre « Joueur n », puis portrait, appareil, nom, skin
+		# icônes des sorts du personnage (remplies par _refresh)
+		var spell_row := HBoxContainer.new()
+		spell_row.name = "SpellIcons"
+		spell_row.alignment = BoxContainer.ALIGNMENT_CENTER
+		spell_row.add_theme_constant_override("separation", 8)
+		spell_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		v.add_child(spell_row)
+		labels["spells"] = spell_row
 		# état : coche (prêt) + texte + invites des boutons à presser
 		var st := HBoxContainer.new()
 		st.add_theme_constant_override("separation", 10)
@@ -234,7 +277,17 @@ func _layout_cards() -> void:
 	_grid.columns = 2 if two else Balance.MULTI_MAX_PLAYERS
 	var cw := card_width(w) if not two else clampf((w - 2.0 * SIDE_MARGIN - CARD_GAP) / 2.0, CARD_W_MIN, CARD_W_MAX)
 	for c in _cards:
-		c.custom_minimum_size = Vector2(cw, 300.0 if two else 420.0)
+		c.custom_minimum_size = Vector2(cw, CARD_H_TWO if two else CARD_H_FULL)
+	for l in _card_labels: # 2 x 2 (4:3) : tout doit tenir en deux rangées, textes et icônes resserrés
+		(l["portrait"] as Control).custom_minimum_size.y = PORTRAIT_H_TWO if two else PORTRAIT_H_FULL
+		(l["title"] as Label).add_theme_font_size_override("font_size", 30 if two else 40)
+		(l["device"] as Label).add_theme_font_size_override("font_size", 18 if two else 24)
+		(l["char"] as Label).add_theme_font_size_override("font_size", 26 if two else 30)
+		(l["skin"] as Label).add_theme_font_size_override("font_size", 20 if two else 24)
+		((l["portrait"] as Control).get_parent() as VBoxContainer).add_theme_constant_override("separation", 6 if two else 10)
+	_two_by_two = two
+	if not _cards.is_empty() and not slots.is_empty():
+		_refresh() # la taille des icônes de sorts suit la grille
 
 
 ## Colonnes de la grille de cartes (tests).
@@ -560,6 +613,46 @@ func launch() -> void:
 
 # --- Affichage ---------------------------------------------------------------------------
 
+## Portrait de la carte `i` : personnage choisi dans le skin choisi (CharacterCard.portrait_info), null si aucun.
+func portrait_texture(i: int) -> Texture2D:
+	if i < 0 or i >= slots.size():
+		return null
+	var c: Dictionary = characters[int(slots[i]["char"]) % characters.size()]
+	var sk := str(slots[i]["skin"])
+	var info := CharacterCard.portrait_info(c, "default" if sk == "" else sk)
+	return info.get("tex") as Texture2D
+
+
+## Portrait affiché sur la carte `i` (tests).
+func card_portrait(i: int) -> Texture2D:
+	return (_card_labels[i]["portrait"] as TextureRect).texture if i >= 0 and i < _card_labels.size() else null
+
+
+## Nombre d'icônes de sorts affichées sur la carte `i` (tests).
+func card_spell_icon_count(i: int) -> int:
+	return (_card_labels[i]["spells"] as HBoxContainer).get_child_count() if i >= 0 and i < _card_labels.size() else 0
+
+
+## Une icône par sort du personnage (variante mémorisée au profil, comme la fiche perso) ; pas d'icône livrée : initiale.
+func _fill_spell_icons(row: HBoxContainer, c: Dictionary) -> void:
+	var loadout := CharacterSheet.resolve_loadout(profile, c)
+	var spells: Array = c.get("spells", []) if c.get("spells") is Array else []
+	var px := SPELL_ICON_TWO if _two_by_two else SPELL_ICON_FULL
+	for k in spells.size():
+		var sp: Dictionary = spells[k]
+		var sid := StringName(str(loadout.get(k + 1, sp.get("id", ""))))
+		var tex := ArdentKit.spell_icon(sid)
+		if tex == null:
+			tex = ArdentKit.spell_icon(StringName(str(sp.get("id", ""))))
+		var icon := TextureRect.new()
+		icon.name = "Spell%d" % (k + 1)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = Vector2(px, px)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon.texture = tex
+		row.add_child(icon)
+
 func _refresh() -> void:
 	if _cards.is_empty():
 		return
@@ -571,7 +664,13 @@ func _refresh() -> void:
 		st_keys.clear_row()
 		st_check.visible = false
 		_set_border(i, 3, 0.6)
+		var spell_row := l["spells"] as HBoxContainer
+		for ch in spell_row.get_children():
+			spell_row.remove_child(ch)
+			ch.queue_free()
+		(l["device"] as Label).visible = not _two_by_two
 		if i >= slots.size():
+			(l["portrait"] as TextureRect).texture = null
 			(l["device"] as Label).text = "Entrée : clavier-souris" if slot_of_key(KBM_KEY) < 0 else ""
 			(l["char"] as Label).text = "Libre"
 			(l["skin"] as Label).text = ""
@@ -585,6 +684,10 @@ func _refresh() -> void:
 		var cid := character_id(i)
 		var c: Dictionary = characters[int(s["char"]) % characters.size()]
 		(l["device"] as Label).text = "Clavier-souris" if str(s["kind"]) == "kbm" else "Manette %d" % (int(s["device"]) + 1)
+		if _two_by_two: # pas de ligne d'appareil en 2 x 2 : il passe dans le titre
+			(l["title"] as Label).text += " · %s" % ("clavier" if str(s["kind"]) == "kbm" else "manette %d" % (int(s["device"]) + 1))
+		(l["portrait"] as TextureRect).texture = portrait_texture(i)
+		_fill_spell_icons(spell_row, c)
 		var is_ready := bool(s["ready"])
 		(l["char"] as Label).text = ("%s" if is_ready else "◀  %s  ▶") % str(c.get("name", cid))
 		(l["skin"] as Label).text = "Skin : %s" % skin_name(cid, str(s["skin"]))
