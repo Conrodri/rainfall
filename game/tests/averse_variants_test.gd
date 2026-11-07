@@ -417,8 +417,8 @@ func _run() -> void:
 	_check("pluie forte : remboursement plafonné à 9 (GOUTTIERE_REFUND_CAP)", _kit.water - (40.0 - AverseKit.GOUTTIERE_COST) <= AverseKit.GOUTTIERE_REFUND_CAP + AverseKit.RAIN_GAIN_PER_S * AverseKit.RAIN_MULT_MAX * 6.3 + 0.1, str(_kit.water))
 
 	print("Gouttière : déversement")
-	_check("coef de déversement : 1,9 + 0,1 × eau, plafond 4,0",
-			_near(AverseKit.spill_coef(0.0), 1.9) and _near(AverseKit.spill_coef(10.0), 2.9) and _near(AverseKit.spill_coef(25.0), 4.0) and _near(AverseKit.spill_coef(100.0), 4.0))
+	_check("coef de déversement : 1,85 + 0,1 × eau, plafond 4,0",
+			_near(AverseKit.spill_coef(0.0), 1.85) and _near(AverseKit.spill_coef(10.0), 2.85) and _near(AverseKit.spill_coef(25.0), 4.0) and _near(AverseKit.spill_coef(100.0), 4.0))
 	_reset(60.0)
 	var sp_a := _fake(Vector2(3.0 * U, 0.3 * U))
 	var sp_b := _fake(Vector2(3.0 * U, 1.3 * U))
@@ -434,7 +434,7 @@ func _run() -> void:
 	var sp_c := _fake(Vector2(0.3 * U, 3.0 * U))
 	_check("relance de la gouttière", _player.spells.cast(3))
 	_kit.flush_pending()
-	_check("la relance déverse l'ancienne : un coup de (1,9 + 0,1 × 10) × base sur la ligne", sp_a.taken.size() == n_a + 1 and _near(sp_a.taken[-1], 2.9 * BASE, 0.1) and sp_b.taken.is_empty(), str(sp_a.taken))
+	_check("la relance déverse l'ancienne : un coup de (1,85 + 0,1 × 10) × base sur la ligne", sp_a.taken.size() == n_a + 1 and _near(sp_a.taken[-1], 2.85 * BASE, 0.1) and sp_b.taken.is_empty(), str(sp_a.taken))
 	_check("déversement : trempe forte 8 s / −40 %", sp_a.statuses.any(func(st): return st[0] == &"slow" and _near(float(st[1]["pct"]), 0.4) and _near(float(st[1]["duration"]), 8.0)))
 	_check("déversement : recul prévu 1,5 u", _near(AverseKit.GOUTTIERE_SPILL_KNOCK_U, 1.5))
 	var live: Array = _kit.rivulets.filter(func(r): return is_instance_valid(r) and not r.is_ending())
@@ -444,7 +444,7 @@ func _run() -> void:
 	_check("le flash de l'ancienne disparaît", not is_instance_valid(rv) or rv.is_queued_for_deletion())
 	var cn := sp_c.taken.size()
 	_advance(6.0)
-	_check("expiration : déversement 1,9 × base (rien collecté sans pluie)", sp_c.taken.size() > cn and _near(sp_c.taken[-1], AverseKit.GOUTTIERE_SPILL_COEF * BASE, 0.1), str(sp_c.taken))
+	_check("expiration : déversement 1,85 × base (rien collecté sans pluie)", sp_c.taken.size() > cn and _near(sp_c.taken[-1], AverseKit.GOUTTIERE_SPILL_COEF * BASE, 0.1), str(sp_c.taken))
 	_check("fin de vie : plus rien", _kit.rivulets.is_empty() or _kit.rivulets.all(func(r): return not is_instance_valid(r) or r.is_ending()))
 
 	print("Compteur : eau gagnée en Flaque-miroir")
