@@ -9,7 +9,8 @@ extends Node
 ##  3. chaque région d'AtlasTexture des .tres tient dans sa planche (découpes en atlases ; régions posées
 ##     sur un _e réduit = coordonnées du diffus) ;
 ##  4. import 2D : pas de mipmaps, paramètres conformes à import_policy (VRAM haute qualité, UI lossless) ;
-##  5. textures embarquées sur mobile (ASTC deflaté comme dans l'APK) <= apk_textures_mb.
+##  5. textures embarquées sur mobile (ASTC deflaté comme dans l'APK) <= apk_textures_mb ;
+##  6. planches inutilisées exclues d'Android (android_unused_excluded) : dans le preset et citées par aucun fichier exporté.
 ## Lecture des en-têtes PNG et du texte des .tres seulement : aucune texture n'est chargée en mémoire.
 
 const BUDGET_PATH := "res://tests/texture_budget.json"
@@ -93,7 +94,9 @@ func _ready() -> void:
 		var imp := _read_import(p + ".import")
 		if imp.get("mipmaps/generate", "false") == "true":
 			mips.append(p.get_file())
-		var want := _expected_params(p.trim_prefix("res://"), policy)
+		# importer="skip" : planche lue par un autre importeur (page d'une police BMFont, embarquée
+		# dans le .fontdata) ; elle n'est pas importée comme texture, la politique ne s'y applique pas.
+		var want := {} if imp.get("importer", "") == "\"skip\"" else _expected_params(p.trim_prefix("res://"), policy)
 		for k: String in want:
 			if str(imp.get(k, "")) != _fmt(want[k]):
 				off_policy.append("%s %s=%s (attendu %s)" % [p.trim_prefix("res://assets/sprites/"), k, imp.get(k, "?"), _fmt(want[k])])
@@ -116,8 +119,35 @@ func _ready() -> void:
 	print("  info mémoire GPU si tout était chargé : %.0f Mo" % (vram_bytes / MB))
 	print("  info %d PNG exclues de l'export Android (exclude_filter du preset) non comptées" % n_excl)
 	var cap := float(budget["apk_textures_mb"])
-	_check(mobile_bytes / MB <= cap, "textures embarquées sur mobile (ASTC deflaté) : %.0f Mo <= %.0f Mo" % [mobile_bytes / MB, cap])
+	_check(mobile_bytes / MB <= cap, "textures embarquées sur mobile (ASTC deflaté) : %.1f Mo <= %.0f Mo" % [mobile_bytes / MB, cap])
+	_check_unused_excluded(budget.get("android_unused_excluded", []), android_excl)
 	_finish()
+
+
+## 6. Planches inutilisées exclues d'Android (android_unused_excluded) : chaque entrée figure dans le
+## exclude_filter du preset et aucun fichier texte exporté sur Android ne la cite (sinon elle manquerait
+## sur téléphone alors qu'elle s'affiche sur PC).
+func _check_unused_excluded(entries: Array, android_excl: PackedStringArray) -> void:
+	var not_in_preset: Array[String] = []
+	var needles: Array[String] = []
+	for e: String in entries:
+		if not android_excl.has(e):
+			not_in_preset.append(e)
+		needles.append("\"res://" + e.trim_suffix("*"))
+	_check(not_in_preset.is_empty(), "%d planches inutilisées toutes exclues du preset Android %s" % [entries.size(), not_in_preset])
+	var texts: Array[String] = []
+	for ext in [".tres", ".tscn", ".gd", ".json", ".gdshader"]:
+		_walk("res://", texts, ext)
+	var cited: Array[String] = []
+	for t in texts:
+		var rel := t.trim_prefix("res://")
+		if rel.begins_with("tests/") or rel.begins_with(".godot/") or _export_excluded(rel, android_excl):
+			continue
+		var txt := FileAccess.get_file_as_string(t)
+		for i in needles.size():
+			if needles[i] in txt:
+				cited.append("%s cité par %s" % [entries[i], rel])
+	_check(cited.is_empty(), "aucune planche inutilisée exclue d'Android n'est citée par un fichier exporté (%d fichiers lus) %s" % [texts.size(), cited.slice(0, 5)])
 
 
 func _finish() -> void:

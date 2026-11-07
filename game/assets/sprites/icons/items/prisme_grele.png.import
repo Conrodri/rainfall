@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://t30wp2libgvy"
-path.bptc="res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.bptc.ctex"
-path.astc="res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.astc.ctex"
+path="res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/prisme_grele.png"
-dest_files=["res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.bptc.ctex", "res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.astc.ctex"]
+dest_files=["res://.godot/imported/prisme_grele.png-fec8983e01801df9b0e4d89cc6e7335a.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0

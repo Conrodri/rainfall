@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://djdf2o7mt8qp"
-path.bptc="res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.bptc.ctex"
-path.astc="res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.astc.ctex"
+path="res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/ecorce_pluie.png"
-dest_files=["res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.bptc.ctex", "res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.astc.ctex"]
+dest_files=["res://.godot/imported/ecorce_pluie.png-b6e774f83817bdcb764fab1ceccdebe7.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0

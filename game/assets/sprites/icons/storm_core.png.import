@@ -3,21 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpoyo48edmda"
-path.bptc="res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.bptc.ctex"
-path.astc="res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.astc.ctex"
+path="res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/storm_core.png"
-dest_files=["res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.bptc.ctex", "res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.astc.ctex"]
+dest_files=["res://.godot/imported/storm_core.png-0e2d2d2831d6ebfaae10c5bcf8c6321b.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
