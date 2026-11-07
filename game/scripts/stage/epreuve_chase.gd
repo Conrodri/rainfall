@@ -1,22 +1,15 @@
 class_name EpreuveChase
 extends Epreuve
 ## Poursuite (docs/Design_Epreuves.md §3.3) : 6 bornes (EpreuveChasePost) espacées de 9-17 u le long d'un itinéraire ; la
-## borne 0 est l'autel. « Interagir » sur l'autel pose une lumière dessus. Toutes les CHASE_JUMP_S s elle SAUTE vers une
+## borne 0 est l'autel. « Interagir » sur l'autel pose une lumière dessus. Toutes les Balance.CHASE_JUMP_S s elle SAUTE vers une
 ## borne à 9-17 u de la courante (jamais celle qu'elle vient de quitter si un autre choix existe) après avoir vacillé
-## CHASE_WARN_S. Un joueur vivant à <= CHASE_REACH_U de la borne allumée avant le saut marque 1 point (la borne reste
-## allumée, « done »). Borne ratée : la lumière saute quand même, `misses` +1, plus de « parfait ». CHASE_POINTS points :
+## Balance.CHASE_WARN_S. Un joueur vivant à <= Balance.CHASE_REACH_U de la borne allumée avant le saut marque 1 point (la borne reste
+## allumée, « done »). Borne ratée : la lumière saute quand même, `misses` +1, plus de « parfait ». Balance.CHASE_POINTS points :
 ## la lumière se fixe, le mini-boss sort de terre dessous. `global_position` de l'épreuve = borne allumée : la zone de
 ## monstres et la flèche hors écran suivent la lumière. Coop : n'importe quel joueur compte, cible « parfait » x
 ## Balance.epreuve_target_party_mult(n). Placeholders : losange par borne, disque de lumière et traînée sur l'overlay.
 
-# TODO E0 : constantes à basculer dans Balance (mêmes noms, docs/Design_Epreuves.md §8)
-const CHASE_POSTS := 6 # TODO E0 : Balance.CHASE_POSTS
-const CHASE_JUMP_S := 8.0 # TODO E0 : Balance.CHASE_JUMP_S
-const CHASE_POINTS := 5 # TODO E0 : Balance.CHASE_POINTS
-const CHASE_JUMP_MIN_U := 9.0 # TODO E0 : Balance.CHASE_JUMP_MIN_U
-const CHASE_JUMP_MAX_U := 17.0 # TODO E0 : Balance.CHASE_JUMP_MAX_U
-const CHASE_REACH_U := 2.0 # TODO E0 : Balance.CHASE_REACH_U
-const CHASE_WARN_S := 1.5 # TODO E0 : Balance.CHASE_WARN_S
+# Réglages : Balance.CHASE_* (docs/Design_Epreuves.md §8).
 
 const TRAIL_S := 0.5 ## durée d'affichage de la traînée après un saut
 const TINT_GOUFFRE := Color("#C27BFF") ## améthyste (Design_Etage2_Grotte.md §2)
@@ -74,12 +67,8 @@ func _biome_id() -> StringName:
 	return StringName(String(b)) if b != null else &""
 
 
-func interact_label() -> String:
-	return "Éveiller l'éclat" if _biome_id() == &"cryptes" else "Réveiller le follet"
-
-
 func progress() -> float:
-	return clampf(float(points) / float(CHASE_POINTS), 0.0, 1.0)
+	return clampf(float(points) / float(Balance.CHASE_POINTS), 0.0, 1.0)
 
 
 # --- Bornes fixes pendant que l'épreuve bouge
@@ -115,7 +104,7 @@ func _begin() -> void:
 	_trail_t = 0.0
 	_rng.seed = hash([RunState.run_seed, RunState.stage, post_pts.size()])
 	_move_to(0)
-	jump_left = CHASE_JUMP_S
+	jump_left = Balance.CHASE_JUMP_S
 	_check_reach()
 
 
@@ -134,11 +123,11 @@ func _run(delta: float) -> void:
 		_check_reach()
 
 
-## Un joueur vivant à <= CHASE_REACH_U de la borne allumée avant le saut = 1 point (une fois par borne allumée).
+## Un joueur vivant à <= Balance.CHASE_REACH_U de la borne allumée avant le saut = 1 point (une fois par borne allumée).
 func _check_reach() -> void:
 	if _scored_here or resolved or not is_inside_tree():
 		return
-	if not CoopRules.any_within(global_position, CHASE_REACH_U * Balance.UNIT_PX, true):
+	if not CoopRules.any_within(global_position, Balance.CHASE_REACH_U * Balance.UNIT_PX, true):
 		return
 	_scored_here = true
 	points += 1
@@ -146,11 +135,11 @@ func _check_reach() -> void:
 		done_posts.append(lit)
 	_refresh_posts()
 	point_scored.emit(lit, points)
-	if points >= CHASE_POINTS and is_running():
-		_resolve(compute_grade())
+	if points >= Balance.CHASE_POINTS and is_running():
+		_resolve() # note calculée par la base (cible × coop, Poursuite dans EPREUVE_SHARED_VERBS)
 
 
-## Note de la durée écoulée : cible « parfait » x multiplicateur de coop (verbe partagé).
+## Lecture (tests, HUD) de la note que donnerait la base maintenant (même calcul que Epreuve._resolve).
 func compute_grade() -> StringName:
 	var mult := Balance.epreuve_target_party_mult(CoopRules.party_n())
 	return Balance.epreuve_grade(verb, elapsed / maxf(mult, 0.01), clean)
@@ -165,7 +154,7 @@ func pick_next() -> int:
 		if i == lit:
 			continue
 		var d := post_pts[i].distance_to(post_pts[lit]) / Balance.UNIT_PX
-		if d < CHASE_JUMP_MIN_U or d > CHASE_JUMP_MAX_U:
+		if d < Balance.CHASE_JUMP_MIN_U or d > Balance.CHASE_JUMP_MAX_U:
 			continue
 		if i != prev:
 			fallback.append(i)
@@ -189,7 +178,7 @@ func pick_next() -> int:
 
 func _jump() -> void:
 	var to_i := pick_next()
-	jump_left = CHASE_JUMP_S
+	jump_left = Balance.CHASE_JUMP_S
 	_scored_here = false
 	if to_i < 0:
 		return
@@ -202,7 +191,7 @@ func _jump() -> void:
 
 
 func is_warning() -> bool:
-	return is_running() and not _scored_here and jump_left <= CHASE_WARN_S
+	return is_running() and not _scored_here and jump_left <= Balance.CHASE_WARN_S
 
 
 func _on_resolved() -> void:
@@ -223,7 +212,7 @@ func _extra_restore(d: Dictionary) -> void:
 	points = int(d.get("points", 0))
 	misses = int(d.get("misses", 0))
 	prev = int(d.get("prev", -1))
-	jump_left = float(d.get("jump_left", CHASE_JUMP_S))
+	jump_left = float(d.get("jump_left", Balance.CHASE_JUMP_S))
 	_scored_here = bool(d.get("scored", false))
 	_rng.seed = hash([RunState.run_seed, RunState.stage, post_pts.size(), points, misses])
 	_trail_t = 0.0
@@ -242,8 +231,8 @@ func draw_overlay(c: Node2D) -> void:
 		c.draw_line(c.to_local(_trail_from), Vector2.ZERO, Color(col.r, col.g, col.b, 0.7 * a), 5.0 * a + 1.0)
 	if is_running():
 		# anneau de portée de la borne allumée, jauge du saut
-		c.draw_arc(Vector2.ZERO, CHASE_REACH_U * u, 0.0, TAU, 40, Color(col.r, col.g, col.b, 0.25 if _scored_here else 0.7), 3.0)
-		var fill := clampf(jump_left / CHASE_JUMP_S, 0.0, 1.0)
+		c.draw_arc(Vector2.ZERO, Balance.CHASE_REACH_U * u, 0.0, TAU, 40, Color(col.r, col.g, col.b, 0.25 if _scored_here else 0.7), 3.0)
+		var fill := clampf(jump_left / Balance.CHASE_JUMP_S, 0.0, 1.0)
 		c.draw_arc(Vector2.ZERO, 56.0, -PI * 0.5, -PI * 0.5 + TAU * fill, 40, Color(1.0, 0.85, 0.5, 0.85), 4.0)
 	# lumière : disque 0,6 u, vacille à 6 Hz avant le saut
 	var alpha := 1.0

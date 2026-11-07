@@ -62,14 +62,18 @@ func _run() -> void:
 	var far := Vector2(4000.0, 4000.0)
 	var pts := _ring(origin, 6, 12.0)
 
-	print("-- constantes locales (TODO E0)")
-	_check("6 bornes, 8 s, 5 points, [9, 17] u, portée 2 u, vacillement 1,5 s", EpreuveChase.CHASE_POSTS == 6 and is_equal_approx(EpreuveChase.CHASE_JUMP_S, 8.0) and EpreuveChase.CHASE_POINTS == 5 and is_equal_approx(EpreuveChase.CHASE_JUMP_MIN_U, 9.0) and is_equal_approx(EpreuveChase.CHASE_JUMP_MAX_U, 17.0) and is_equal_approx(EpreuveChase.CHASE_REACH_U, 2.0) and is_equal_approx(EpreuveChase.CHASE_WARN_S, 1.5))
+	print("-- constantes (Balance)")
+	_check("6 bornes, 8 s, 5 points, [9, 17] u, portée 2 u, vacillement 1,5 s", Balance.CHASE_POSTS == 6 and is_equal_approx(Balance.CHASE_JUMP_S, 8.0) and Balance.CHASE_POINTS == 5 and is_equal_approx(Balance.CHASE_JUMP_MIN_U, 9.0) and is_equal_approx(Balance.CHASE_JUMP_MAX_U, 17.0) and is_equal_approx(Balance.CHASE_REACH_U, 2.0) and is_equal_approx(Balance.CHASE_WARN_S, 1.5))
 	_check("cible « parfait » 45 s", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"poursuite"]), 45.0))
 
 	print("-- lancement et saut raté")
 	var e := await _spawn(stage, pts, 191)
 	_check("prête : 6 bornes, position = autel", e.state == Pillar.STATE_READY and e.posts.size() == 6 and e.position.distance_to(pts[0]) < 0.01 and e.verb == &"poursuite")
-	_check("libellé du Gouffre", e.interact_label() == "Réveiller le follet")
+	e.biome = &"foret"
+	_check("libellé du Gouffre (data/epreuves.json)", e.interact_label() == "Réveiller le follet")
+	e.biome = &"cryptes"
+	_check("libellé des Cryptes (data/epreuves.json)", e.interact_label() == "Éveiller l'éclat")
+	e.biome = &""
 	_check("bornes fixes (position locale relative)", e.posts[3].global_position.distance_to(e.get_parent().to_global(pts[3])) < 0.5)
 	player.global_position = far
 	var gold0: float = RunState.gold

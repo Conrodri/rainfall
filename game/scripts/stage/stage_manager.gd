@@ -950,8 +950,8 @@ func _make_epreuve(verb: String) -> Pillar:
 			e = EpreuveEscort.make(g["path"])
 		"rituel":
 			e = EpreuveRitual.make(g["heart"], g["relays"], EpreuveData.lever_skin(biome))
-		"poursuite": # branché à la fusion du lot E1 : e = EpreuveChase.make(g["posts"])
-			pass
+		"poursuite":
+			e = EpreuveChase.make(g["posts"])
 		"veine":
 			e = EpreuveVein.make(g["path"], bool(g["closed"]))
 		"tenue": # branché à la fusion du lot E3 : e = EpreuveHold.make(g["pos"], g["sides"])
