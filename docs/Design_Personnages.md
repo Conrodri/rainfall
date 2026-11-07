@@ -516,12 +516,12 @@ Le personnage **classique** qui manquait : une archère qui tire seule, se lit e
 
 | Slot | Sort | Entrée | Recharge | Coef | Portée / rayon | proc_coef |
 |---|---|---|---|---|---|---|
-| 1 auto | **Trait** | automatique | 0,6 s | 1,1 (traverse 1) | 9 u, 16 u/s | 1,0 |
+| 1 auto | **Trait** | automatique | 0,6 s | 1,15 (traverse 1) | 9 u, 16 u/s | 1,0 |
 | 2 | **Fusée de détresse** | clic gauche / spell_2 | 8 s | 1,2 (flèche) ; fusée 5 s : **exposés +10 %** | 9 u ; lumière 3 u | 1,0 |
 | 3 | **Filet lesté** | clic droit / spell_3 | 9 s | 0,5 (flèche) + zone **1,2 + 2,4 g** ; **immobilisés 1,5 + 1,5 g s** ; consomme tout le **Guet** | 7 u ; filet **3 + 1,5 g** u | 0,5 |
 | 4 ultime | **Grêle** | clic molette / spell_4 | 20 s | 0,7 / 0,25 s pendant 2,5 s (11 volées ≈ 7,7) ; ralentit 25 %, expose | 10 u ; pluie 4,5 u ; arrivée 0,45 s | 0,4 |
 
-- **Trait (auto)** : vers l'ennemi le plus proche (jamais le curseur), rien sans cible. Anim `attack` (impact frame 2). Plus de Trait d'allonge (supprimé le 07/11/2026) : le Guet n'agit pas sur les tirs automatiques ; coef 0,8 -> 1,0 en compensation, puis 1,1 (équilibrage élite/mini-boss).
+- **Trait (auto)** : vers l'ennemi le plus proche (jamais le curseur), rien sans cible. Anim `attack` (impact frame 2). Plus de Trait d'allonge (supprimé le 07/11/2026) : le Guet n'agit pas sur les tirs automatiques ; coef 0,8 -> 1,0 en compensation, puis 1,1, puis 1,15 (équilibrage mini-boss L12, 07/11/2026).
 - **Fusée de détresse** : visée souris / stick, sinon paquet le plus dense (S5). La flèche s'arrête au premier monstre (`rests_on_hit`) ou au point visé (portée du tir = distance visée), plante une `VigieFlare` : aucune dégât propre, lumière `vigie_flare` (crachotement 9 Hz, ombres), toutes les 0,2 s les monstres à 3 u (+ `zone_size_add`) reçoivent `Enemy.add_damage_taken_mod(&"vigie_expose", 1,1, 0,35 s)` (toutes sources, objets compris). Anim `flare` (impact frame 3).
 - **Filet lesté** : même tir posé que la Fusée ; **consomme toute la jauge de Guet g au lancement** (g lu avant la remise à zéro) : rayon **3 + 1,5 g u**, tenue (`imprisoned`) **1,5 + 1,5 g s** (Tocsin/Arpenteuse, jamais les boss : ralentissement 40 % pour la même durée), puis zone instantanée coef **1,2 + 2,4 g** sans recul. À g ≥ 0,99, la flèche du Filet utilise le visuel `arrow_charged`. Le Filet ne remplit plus la jauge. Anim `net` (impact frame 2). Auto-cast (accessibilité / simulateur) : permis si g ≥ 0,6 ou si un monstre est à moins de 2 u (sinon il gâche le Guet).
 - **Grêle** : volée au ciel à la frame d'impact de `volley` (frame 4), pluie 0,45 s plus tard au point visé (≤ 10 u, sinon paquet le plus dense) : `ZoneEffect` persistante (ticks DoT), ralentissement 25 % 0,5 s rafraîchi, exposition comme la fusée.

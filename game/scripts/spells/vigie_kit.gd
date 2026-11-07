@@ -57,7 +57,7 @@ const EMISSION_FULL := 3.2
 const EMISSION_STEPS := 10
 
 # --- Sort 1 : Trait ----------------------------------------------------------------------------------
-const TRAIT_COEF := 1.1 ## refonte Guet 07/11 : 0,8 -> 1,0 (l'Allonge n'existe plus), puis 1,1 (équilibrage élite/mini-boss)
+const TRAIT_COEF := 1.15 ## refonte Guet 07/11 : 0,8 -> 1,0 (l'Allonge n'existe plus), puis 1,1, puis 1,15 (équilibrage mini-boss L12, 07/11)
 const TRAIT_CD := 0.6
 const TRAIT_RANGE_U := 9.0
 const TRAIT_SPEED_U := 16.0

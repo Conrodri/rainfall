@@ -243,7 +243,7 @@ func _run() -> void:
 	_flush()
 	_check("projectile parti à l'impact", _player.spells.active_projectile_count() == 1)
 	await _frames(40)
-	_check("coef 1,1, traverse 1 monstre (2 cibles, pas la 3e)", b1.taken.size() == 1 and _near(b1.taken[0], VigieKit.TRAIT_COEF * BASE, 0.05) and b2.taken.size() == 1 and b3.taken.is_empty(), "%s %s %s" % [b1.taken, b2.taken, b3.taken])
+	_check("coef 1,15, traverse 1 monstre (2 cibles, pas la 3e)", b1.taken.size() == 1 and _near(b1.taken[0], VigieKit.TRAIT_COEF * BASE, 0.05) and b2.taken.size() == 1 and b3.taken.is_empty(), "%s %s %s" % [b1.taken, b2.taken, b3.taken])
 
 	print("Autos non affectés par le Guet")
 	_reset(1.0)
@@ -267,7 +267,7 @@ func _run() -> void:
 	_check("Trait : rien au-delà de 9 u, même à Guet plein", not _player.spells.cast(1))
 	_kit.set_tension(1.0)
 	_check("toujours rien à 9 u avec Guet plein", not _player.spells.cast(1))
-	_check("TRAIT_COEF 1,1 ; DOUBLE_COEF 0,52 ; FANAL_CD 14 ; CHAUSSE_TENSION 0,05", _near(VigieKit.TRAIT_COEF, 1.1) and _near(VigieKit.DOUBLE_COEF, 0.52) and _near(VigieKit.FANAL_CD, 14.0) and _near(VigieKit.CHAUSSE_TENSION, 0.05))
+	_check("TRAIT_COEF 1,15 ; DOUBLE_COEF 0,52 ; FANAL_CD 14 ; CHAUSSE_TENSION 0,05", _near(VigieKit.TRAIT_COEF, 1.15) and _near(VigieKit.DOUBLE_COEF, 0.52) and _near(VigieKit.FANAL_CD, 14.0) and _near(VigieKit.CHAUSSE_TENSION, 0.05))
 
 	print("Sort 2 : Fusée de détresse")
 	_reset()
