@@ -1,0 +1,12 @@
+OBJECTIF : retouche du lot UX-C (script déjà là : art/tools/ui/ux_c_build.py ; brief art/briefs/ux_c_epreuves.md). Planche actuelle à regarder : art/renders/ux_c_control_tmp.png. Défauts :
+ 1. Tous les sprites n'occupent que ~50 % du cadre (bbox 32..96 sur 128, 16..48 sur 64) : agrandir pour remplir (marge 3 px à 64 px, 4 px à 128 px, 3 px à 96 px).
+ 2. epreuve_grade_parfait et _bien sont deux hexagones quasi identiques : la FORME doit porter la note. parfait = médaillon à TROIS pointes (étoile/couronne à 3 pointes), or #D9A441, accent émissif ; bien = médaillon à DEUX pointes (cornes/ailes), vert-de-gris #6FA08A ; fait = disque rond simple, fer #8E9AA0. Silhouettes lisibles en niveaux de gris à 32 px.
+ 3. epreuve_grade_parfait_e.png doit faire 64x64 (moitié de 128), non vide, accent seulement (centre et pointes dorées), pas de copie du diffus.
+ 4. Icônes de verbe 64 px : silhouettes bien distinctes en niveaux de gris (barque pointue / anneau à 3 plots / flamme penchée / cristal à filon / cloche), remplir le cadre.
+ 5. Poids : chaque PNG < 4 Ko (64 px) / < 12 Ko (128 px), quantification PIL autorisée pour la compression seulement.
+RACINE ABSOLUE : C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ab51961a518389c5b . Si le shell démarre ailleurs (ex. C:\Users\const\Documents), commence CHAQUE commande par Set-Location sur cette racine (elle existe, accès autorisé).
+CHEMIN : le workdir EST la racine du dépôt ; chemins RELATIFS. Chemin absolu avec dossier caché .claude : ne pas chercher avec rg sans --hidden, ouvrir directement. Ne jamais écrire hors du workdir.
+TOUCHER : art/tools/ui/ux_c_build.py, game/assets/sprites/ui/da/{minimap_epreuve_*,epreuve_grade_*}.png, game/assets/sprites/ui/cues/cue_epreuve.png (inchangé sauf besoin), art/renders/ui/ux_c/.
+RELANCER : blender.exe --background --python art/tools/ui/ux_c_build.py ; journal art/tools/ui/_ux_c_blender.log (UTF-8, rediriger avec cmd /c ... > fichier 2>&1 ou Start-Process -RedirectStandardOutput, pas le > de PowerShell 5 qui écrit en UTF-16).
+VÉRIF : tailles exactes, RGBA, _e 64x64 non vide ; planche contrôle (assemblage Pillow, x3, <=1024 px de large) -> art/renders/ux_c_control.png ; la regarder ; itérer max 3 passes.
+RAPPORT (6 lignes max, ultracave) : fichiers, poids, problèmes.

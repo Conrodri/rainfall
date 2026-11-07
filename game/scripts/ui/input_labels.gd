@@ -143,6 +143,11 @@ static func pad_icon(ev: InputEvent, fam := "") -> String:
 			return FACE_XBOX_ICONS[b]
 		if FACE_POS_ICONS.has(b):
 			return FACE_POS_ICONS[b]
+		match b:
+			JOY_BUTTON_START: return "pad_start"
+			JOY_BUTTON_BACK: return "pad_select"
+			JOY_BUTTON_DPAD_LEFT, JOY_BUTTON_DPAD_RIGHT: return "pad_dpad_lr"
+			JOY_BUTTON_DPAD_UP, JOY_BUTTON_DPAD_DOWN: return "pad_dpad_ud"
 		if b == JOY_BUTTON_LEFT_SHOULDER:
 			return "pad_lb"
 		if b == JOY_BUTTON_RIGHT_SHOULDER:

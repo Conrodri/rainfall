@@ -92,8 +92,9 @@ func _build() -> void:
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_hint.add_theme_font_size_override("font_size", 24)
-	_hint.text = "Manette : A ou Start pour rejoindre · Clavier : Entrée (joueur 1)\n◀ ▶ personnage · ▲ ▼ skin · A / Entrée : prêt · B / Échap : annuler, partir · LB / RB ou Tab : mode"
+	_hint.text = "Manette : A ou Start pour rejoindre · Clavier : Entrée (joueur 1)\nGauche/droite personnage · haut/bas skin · A / Entrée : prêt · B / Échap : annuler, partir · LB / RB ou Tab : mode"
 	col.add_child(_hint)
+	col.add_child(_legend_row())
 	var row := HBoxContainer.new()
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -470,6 +471,30 @@ func launch() -> void:
 	launched = true
 	countdown = -1.0
 	start_requested.emit(party_config())
+
+
+## Rangée de commandes en icônes (UX-A) : Start, croix gauche/droite, haut/bas, A, B, LB/RB. Sans icône livrée, repli
+## sur « NOM : libellé » (le texte de _hint reste la référence lisible).
+func _legend_row() -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	for e in [["pad_start", "Rejoindre"], ["pad_dpad_lr", "Personnage"], ["pad_dpad_ud", "Skin"], ["pad_a", "Prêt"],
+			["pad_b", "Annuler"], ["pad_lb", ""], ["pad_rb", "Mode"]]:
+		var tex := KeyPrompt.icon(e[0])
+		if tex != null:
+			var r := TextureRect.new()
+			r.texture = tex
+			r.custom_minimum_size = Vector2(44, 44)
+			r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			row.add_child(r)
+		if e[1] != "":
+			var l := Label.new()
+			l.text = e[1] if tex != null else "%s : %s" % [str(e[0]).trim_prefix("pad_").to_upper(), e[1]]
+			l.add_theme_font_size_override("font_size", 22)
+			row.add_child(l)
+	return row
 
 
 # --- Affichage ---------------------------------------------------------------------------

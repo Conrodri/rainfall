@@ -40,6 +40,7 @@ var _titles: Array[Label] = []
 var _quit_button: Button
 var _bg: Panel ## fond opaque arrondi du panneau (menu principal et Objets)
 var _info: Label ## chrono + étage de la run
+var _pad_lost_icon: TextureRect ## manette barrée (déconnexion), masquée sinon
 var _grid: GridContainer ## boutons du menu principal (1 ou 2 colonnes selon la place)
 var _pads: Array[VBoxContainer] = [] ## panneaux à marge interne
 var _hint: Label
@@ -109,6 +110,13 @@ func _build() -> void:
 	_root.add_child(_wide_center)
 
 	_panel_main = _make_panel(holder, "PAUSE")
+	_pad_lost_icon = TextureRect.new() # UX-A : manette barrée au-dessus du message de déconnexion
+	_pad_lost_icon.texture = KeyPrompt.icon("device_gamepad_off")
+	_pad_lost_icon.custom_minimum_size = Vector2(72, 72)
+	_pad_lost_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_pad_lost_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_pad_lost_icon.visible = false
+	_panel_main.add_child(_pad_lost_icon)
 	_info = Label.new()
 	_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_info.add_theme_color_override("font_color", UiTheme.COL_MUTED)
@@ -571,6 +579,7 @@ func open() -> void:
 	_items_button.text = "Objets (%d)" % LocalState.state().items.size()
 	var t := int(RunState.active_time_s)
 	_info.text = "%02d:%02d  ·  Étage %d" % [t / 60, t % 60, RunState.stage]
+	_pad_lost_icon.visible = false
 	var regen := Hud.regen_summary(Players.local()) # taux PV / ressource (vague 3)
 	if regen != "":
 		_info.text += "\n" + regen
@@ -708,6 +717,7 @@ func notify_pad_lost(slot: int) -> void:
 	var msg := "Manette du joueur %s déconnectée : rebranchez-la ou appuyez sur A / Start sur une manette libre" % Palette.team_glyph(slot)
 	if is_open and not _info.text.begins_with(msg):
 		_info.text = msg + "\n" + _info.text
+	_pad_lost_icon.visible = is_open and _pad_lost_icon.texture != null
 
 
 ## Onglet de l'écran Objets : &"items" (grille) ou &"forge" (recettes). Sans effet hors de l'écran Objets.
@@ -912,6 +922,7 @@ func on_pad_disconnected(_device: int) -> void:
 		open()
 	if is_open and not _info.text.begins_with(PAD_LOST_TEXT):
 		_info.text = PAD_LOST_TEXT + "\n" + _info.text
+	_pad_lost_icon.visible = is_open and _pad_lost_icon.texture != null
 
 
 func _exit_tree() -> void:

@@ -165,7 +165,13 @@ func _draw_plate(e, r: Rect2, s: float) -> void: # e : Players.Entry (classe int
 	var bar_h := 26.0 * s
 	var bar := Rect2(Vector2(x0, y), Vector2(inner_w, bar_h))
 	if absent:
-		_text(Vector2(x0, y + bar_h * 0.5), "Manette déconnectée", fs1, COL_ABSENT)
+		var off_x := x0
+		var off_tex := KeyPrompt.icon("device_gamepad_off")
+		if off_tex != null: # UX-A : manette barrée (le texte reste le signal principal)
+			var isz := bar_h * 1.3
+			draw_texture_rect(off_tex, Rect2(Vector2(x0, y + bar_h * 0.5 - isz * 0.5), Vector2(isz, isz)), false, Color(1, 1, 1, a))
+			off_x += isz + 6.0 * s
+		_text(Vector2(off_x, y + bar_h * 0.5), "Manette déconnectée", fs1, COL_ABSENT)
 	elif spectator:
 		_text_clip(Vector2(x0, y + bar_h * 0.5), "Spectateur · retour à l'étage suivant", fs1, Color(COL_DIM, a), inner_w)
 	elif node != null:

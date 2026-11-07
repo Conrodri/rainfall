@@ -1,0 +1,6 @@
+OBJECTIF : produire 7 icônes UI 64x64 (pad_start, pad_select, pad_dpad_lr, pad_dpad_ud, device_keyboard, device_gamepad, device_gamepad_off) dans le style des pad_lb/pad_rb existants.
+TOUCHER : art/tools/ui/prompts.py (ajouter fonctions + entrées ITEMS), game/assets/sprites/ui/prompts/<nom>.png, art/renders/ui/prompts/. Brief : art/briefs/ux_a_prompts.md (seul à lire).
+NE PAS LIRE : docs/, CLAUDE.md, autres briefs.
+SCRIPT À REPRENDRE : art/tools/ui/prompts.py ; relancer `"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python art/tools/ui/prompts.py -- pad_start pad_select pad_dpad_lr pad_dpad_ud device_keyboard device_gamepad device_gamepad_off` ; journal art/tools/ui/_ux_a_blender.log. Ne régénère PAS les invites existantes. Pas de .blend hors art/blender/.
+VÉRIF : script silencieux : 7 PNG 64x64 RGBA, alpha non vide, coins transparents. Planche contrôle (assemblage Pillow seulement, 7 icônes x4) -> art/renders/ux_a_control.png (<=1024 px de large), regarde-la, corrige si illisible.
+RAPPORT (6 lignes max, ultracave).

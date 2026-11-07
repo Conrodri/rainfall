@@ -1,4 +1,4 @@
-"""Icônes d'invite de touches 3D neutres (aucune marque, aucun texte). Blender background.
+﻿"""Icônes d'invite de touches 3D neutres (aucune marque, aucun texte). Blender background.
 Specs : key_1x1 64x64, key_2x1 128x64, mouse_* / pad_* 64x64, crosshair 96x96. Sorties game/assets/sprites/ui/prompts/ (+ crosshair.png dans ui/).
 Usage : blender --background --python prompts.py [-- nom ...]"""
 import sys, math
@@ -71,6 +71,48 @@ def pad_stick(side):
         a.disk((x,-.46,z),.26,.22,mat('#E9EDF4',.35,.15) if hot else mat('#8E9AAB',.4,.3))
         sphere((x,-.58,z),(.2,.08,.2),mat('#FFFFFF',.3) if hot else mat('#6A7686',.4,.3))
 
+# ---------------------------------------------------------------- invites de périphériques
+def pad_small(which):
+    body=mat('#3A4458',.5,.35)
+    bevelled_box((0,0,0),(2.3,.5,1.5),body,.25,'Corps')
+    steel=mat('#8E9AAB',.4,.4)
+    if which=='start':
+        for z in (-.22,.12,.46):
+            bevelled_box((0,-.34,z),(.72,.18,.09),EMB(1.8),.035,'Menu')
+    else:
+        bevelled_box((-.13,-.34,.15),(.88,.18,.42),steel,.04,'Select dessous')
+        bevelled_box((.13,-.39,.31),(.88,.18,.42),EMB(1.8),.04,'Select dessus')
+
+def pad_dpad(axis):
+    a.disk((0,0,0),1.0,.12,mat('#2B3340',.55,.3))
+    steel=mat('#5E6B7D',.5,.3); hot=EMB(1.5)
+    for name,(x,z) in {'left':(-.44,0),'right':(.44,0),'top':(0,.44),'bottom':(0,-.44)}.items():
+        active=(name in ('left','right')) if axis=='lr' else (name in ('top','bottom'))
+        bevelled_box((x,-.19,z),(.4,.18,.34) if x else (.34,.18,.4),hot if active else steel,.045,'Branche')
+
+def device_keyboard():
+    base=mat('#3A4458',.5,.35); cap=mat('#C9D2DF',.4,.2)
+    bevelled_box((0,0,0),(2.4,.35,1.5),base,.18,'Clavier')
+    for row,(count,z) in enumerate([(5,.42),(5,0),(4,-.4)]):
+        span=(count-1)*.38
+        for i in range(count):
+            x=-span/2+i*.38
+            bevelled_box((x,-.22,z),(.29,.12,.25),EMB(1.4) if row==0 and i==2 else cap,.035,'Touche')
+    bevelled_box((0,-.23,-.68),(.88,.12,.2),cap,.04,'Espace')
+
+def device_gamepad(off=False):
+    body=mat('#343B46' if off else '#3A4458',.5,.35)
+    shape=[(-1.0,.42),(-.72,.68),(.72,.68),(1.0,.42),(.82,-.52),(.53,-.72),(.24,-.35),(-.24,-.35),(-.53,-.72),(-.82,-.52)]
+    slab(shape,body,.48,0,.16,'Manette')
+    dark=mat('#202733',.6,.2)
+    grey=mat('#59616C',.55,.2) if off else dark
+    bevelled_box((-.48,-.3,.1),(.68,.15,.2),grey,.035,'Croix')
+    bevelled_box((-.48,-.3,.1),(.2,.15,.68),grey,.035,'Croix')
+    for x,z in [(.48,.28),(.7,0),(.26,0),(.48,-.25)]:
+        a.disk((x,-.32,z),.13,.1,mat('#737B85',.5,.2) if off else EMB(1.3))
+    if off:
+        curve([(-.72,-.48,-.64),(.72,-.48,.64)],.12,mat('#E0502A',.3,0,'#E0502A',1.5),'Désactivé')
+
 # ---------------------------------------------------------------- réticule
 def crosshair():
     c=mat('#FFE9A8',.3,0,'#FFE9A8',1.2)
@@ -101,6 +143,13 @@ ITEMS=[
  ('pad_rb',B(pad_shoulder,'b','r'),'icon',(64,64)),
  ('pad_stick_left',B(pad_stick,'l'),'icon',(64,64)),
  ('pad_stick_right',B(pad_stick,'r'),'icon',(64,64)),
+ ('pad_start',B(pad_small,'start'),'icon',(64,64)),
+ ('pad_select',B(pad_small,'select'),'icon',(64,64)),
+ ('pad_dpad_lr',B(pad_dpad,'lr'),'icon',(64,64)),
+ ('pad_dpad_ud',B(pad_dpad,'ud'),'icon',(64,64)),
+ ('device_keyboard',device_keyboard,'icon',(64,64)),
+ ('device_gamepad',B(device_gamepad,False),'icon',(64,64)),
+ ('device_gamepad_off',B(device_gamepad,True),'icon',(64,64)),
 ]
 
 def main():
@@ -117,3 +166,4 @@ def main():
         raw=RAW/'crosshair.png'; render_to(raw); post(dict(mode='resize',src=str(raw),dst=str(UI/'crosshair.png'),w=96,h=96)); print('UI_OK crosshair',flush=True)
     flush_post(); save_blend('prompts.blend' if not only else 'prompts_part.blend')
 if __name__=='__main__':main()
+
