@@ -24,7 +24,9 @@ def render():
     RAW.mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.read_factory_settings(use_empty=True)
     s = bpy.context.scene
-    cel.setup_scene(s, 8)
+    cel.setup_scene(s, 12)
+    for layer in s.view_layers:
+        layer.use_pass_normal = False
     s.render.resolution_x = 768
     s.render.resolution_y = 512
     s.render.resolution_percentage = 100
@@ -40,15 +42,15 @@ def render():
     cam.ortho_scale = 3  # horizontal span: three periods, cropped to central period
     s.camera = ob
     sun = bpy.data.lights.new('Upper left', 'SUN')
-    sun.energy = 1.05
+    sun.energy = 3.6
     lo = bpy.data.objects.new('Upper left', sun)
     s.collection.objects.link(lo)
     lo.rotation_euler = Vector((3, 4, -7)).to_track_quat('-Z', 'Y').to_euler()
     s.world = bpy.data.worlds.new('Dark ambient')
     s.world.color = (.025, .025, .025)
-    water = common.material('Water - slate teal', (.035, .078, .09))
+    water = common.material('Water - slate teal', (.052, .115, .124))
     inner = common.material('Hollow underside', (.018, .036, .043))
-    foam = common.material('Foam - desaturated silver', (.25, .30, .30))
+    foam = common.material('Foam - desaturated silver', (.24, .32, .33))
     cyan = tuple(((v / 255 + .055) / 1.055) ** 2.4 for v in (95, 212, 232))
     accent = common.material('Crest #5FD4E8', cyan, emission=1)
     mats = [water, inner, foam, accent]
@@ -71,7 +73,7 @@ def render():
         tree.links.new(rl.outputs['Image'], f.inputs[0])
 
     common.configure_passes = compositor
-    profile = dict(cel.profile('vfx'), tones=3)
+    profile = dict(cel.profile('vfx'), tones=3, creases=False)
     configure = cel.install(profile, normals=False)
 
     def mesh(name, verts, faces, indices=None):
@@ -84,7 +86,7 @@ def render():
             data.materials.append(mat)
         for i, poly in enumerate(data.polygons):
             poly.material_index = indices[i] if indices else 0
-            poly.use_smooth = True
+            poly.use_smooth = False
         return obj
 
     def tube(name, points, radius, material):
@@ -100,26 +102,33 @@ def render():
                 faces.append((a, b, b + 8, a + 8))
         return mesh(name, verts, faces, [material] * len(faces))
 
-    # A closed, thick overturned wave section: convex back, curled lip, concave throat.
-    section = [(0, .03), (.16, .09), (.30, .32), (.40, .66), (.53, .92),
-               (.70, 1.02), (.87, .94), (.97, .76), (.94, .57), (.85, .56),
-               (.84, .74), (.74, .82), (.63, .79), (.56, .62), (.51, .34),
-               (.46, .11), (.77, .045), (1, .02), (.90, 0), (0, 0)]
+    # Closed breaker cross-section: broad shoulder, overhanging nose, hollow throat.
+    # Both surfaces and the thick lip are geometry; foam occupies short crest patches.
+    section = [(0, .035), (.10, .18), (.18, .48), (.24, .77),
+               (.34, 1.00), (.49, 1.12), (.65, 1.10), (.77, .96),
+               (.79, .77), (.71, .65), (.61, .68), (.61, .82),
+               (.55, .90), (.45, .88), (.40, .72), (.39, .44),
+               (.44, .18), (.62, .07), (.98, .025), (.98, 0), (0, 0)]
     all_frames = []
-    for frame, (width, height) in enumerate(zip((.49, .68, .91, 1., .99, .97),
-                                               (.32, .65, .96, .78, .33, .11))):
+    widths = (.20, .48, .77, 1.00, .95, .63)
+    heights = (.27, .65, .94, .78, .25, .035)
+    for frame, (width, height) in enumerate(zip(widths, heights)):
         before = set(s.objects)
-        phase = frame * .71
+        phase = frame * .30
         def point(x, yz, sign):
             y, z = yz
-            swell = math.sin(TAU * x + phase)
-            ripple = 1 + .18 * swell + .065 * math.sin(3 * TAU * x - phase)
-            bulge = .12 * math.sin(2 * TAU * x + phase) * math.sin(math.pi * y)
-            rear = .66 if sign == 1 else 1
-            return (x, sign * width * (y + bulge), .018 + rear * height * z * ripple)
+            # One sculpted dome per period; X=integer boundaries carry the trough.
+            swell = .68 + .32 * math.cos(TAU * (x - phase * .12))
+            crest_weight = min(1, z / .6)
+            transverse = .055 * math.sin(TAU * x + phase) * math.sin(math.pi * y)
+            rear = .78 if sign == 1 else 1
+            return (x, sign * width * (y + transverse),
+                    .015 + rear * height * z * (1 - crest_weight + crest_weight * swell))
         for sign in (-1, 1):
+            if frame == 5:
+                continue
             verts, faces, ids = [], [], []
-            steps = 144
+            steps = 120
             for i in range(steps + 1):
                 x = -1.5 + 3 * i / steps
                 verts.extend(point(x, p, sign) for p in section)
@@ -129,39 +138,67 @@ def render():
                     a, b = i * n + j, i * n + (j + 1) % n
                     face = (a, b, b + n, a + n)
                     faces.append(face[::-1] if sign == 1 else face)
-                    ids.append(1 if 10 <= j <= 14 else (2 if j == 5 else 0))
-            mesh('F%d closed wave %d' % (frame, sign), verts, faces, ids)
-            for j, mat, rad in ((6, 2, .033), (6, 3, .012), (8, 0, .030), (12, 0, .018)):
-                pts = [point(-1.5 + 3 * i / 192, section[j], sign) for i in range(193)]
-                if mat == 3:
-                    pts = [(x, y - .022, z + .022) for x, y, z in pts]
-                tube('F%d curled crest %d %d' % (frame, sign, j), pts, rad, mat)
-            # Raised curved ribs on the falling face; dark sides and lit shoulders.
+                    ids.append(1 if 10 <= j <= 15 else 0)
+            obj = mesh('F%d thick hollow breaker %d' % (frame, sign), verts, faces, ids)
+            import bmesh
+            bm = bmesh.new(); bm.from_mesh(obj.data)
+            bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+            bm.to_mesh(obj.data); bm.free()
+            # Foam and cyan only on the crown, never a horizontal continuous band.
             for period in range(-2, 3):
-                for k in range(3):
+                for k, (start, length) in enumerate(((-.30, .19), (.015, .12), (.23, .10))):
                     pts = []
-                    for j in range(18):
-                        t = j / 17
-                        x = period + k / 3 + .045 * math.sin(t * math.pi + phase + k)
-                        p = point(x, (.88 - .35 * t, .90 - .70 * t), sign)
-                        pts.append((p[0], p[1] + sign * .022, p[2]))
-                    tube('F%d water shoulder' % frame, pts, .018 if k % 2 else .025, 0)
-        # Deterministic spherical drops, copied every X unit; cast shading reveals volume.
+                    for j in range(17):
+                        x = period + start + length * j / 16 + phase * .12
+                        p = point(x, (.49 + .025 * math.sin(j * .34), 1.125), sign)
+                        pts.append((p[0], p[1], p[2] + .006))
+                    tube('F%d crest foam patch' % frame, pts, .017 if frame < 4 else .009, 2)
+                    pts = [(x, y - .006, z + .012) for x, y, z in pts[2:-2]]
+                    tube('F%d thin cyan crest' % frame, pts, .006, 3)
+        # Ballistic droplets, identical period copies; sphere shading gives round volume.
         if frame > 0:
+            t = (frame - 1) / 4
             for period in range(-2, 3):
-                for k in range(12):
+                for k in range(9):
                     x = period + ((k * .381966) % 1) - .5
                     side = 1 if k % 2 else -1
-                    y = side * width * (.62 + .34 * ((k * 7 % 11) / 11))
-                    z = height * (.65 + .40 * ((k * 3 % 7) / 7)) + (.13 if frame < 4 else .06)
-                    radius = (.025 + .012 * (k % 3)) * (1 if frame < 5 else .72)
+                    y = side * (.15 + t * (.65 + .10 * (k % 3)))
+                    z = max(.045, .13 + (.95 + .12 * (k % 4)) * t - 1.25 * t*t)
+                    if frame == 1:
+                        z += .16 + .06 * (k % 3)
+                    radius = (.021 + .009 * (k % 3)) * (1 if frame < 5 else .68)
                     bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=8, radius=radius, location=(x, y, z))
                     drop = bpy.context.object
-                    drop.name = 'F%d shaded spherical drop' % frame
-                    drop.scale.z = 1.28 if frame < 4 else 1.6
-                    drop.data.materials.append(water if k % 3 else foam)
+                    drop.name = 'F%d ballistic sphere' % frame
+                    drop.scale.z = 1.13
+                    drop.data.materials.append(water if k % 4 else foam)
                     for poly in drop.data.polygons:
                         poly.use_smooth = True
+        # Falling water hits the ground: low hollow crowns, spreading and shrinking.
+        if frame >= 4:
+            for period in range(-2, 3):
+                for side in (-1, 1):
+                    verts, faces, ids = [], [], []
+                    radius = .21 if frame == 4 else .31
+                    for j in range(49):
+                        a = TAU * j / 48
+                        spike = (.5 + .5 * math.cos(7*a)) ** 5
+                        top = (.09 + .13 * spike) * (1 if frame == 4 else .24)
+                        for r, z in ((radius*.70, .015), (radius, top), (radius+.025, top*.7), (radius*1.14, .012)):
+                            verts.append((period + .12 + r * math.cos(a), side*.70 + r*.64*math.sin(a), z))
+                    for j in range(48):
+                        for k in range(3):
+                            q = j*4+k
+                            faces.append((q,q+4,q+5,q+1)); ids.append(2 if k == 1 and j%7 < 2 else 0)
+                    mesh('F%d hollow impact crown' % frame, verts, faces, ids)
+                    if frame == 5:
+                        for start in (.3, 2.3, 4.3):
+                            pts = []
+                            for j in range(13):
+                                a = start + .55*j/12
+                                z = (.09 + .13*(.5+.5*math.cos(7*a))**5)*.24
+                                pts.append((period+.12+radius*math.cos(a), side*.70+radius*.64*math.sin(a), z+.009))
+                            tube('F5 fading cyan impact rim', pts, .012, 3)
         objects = set(s.objects) - before
         for obj in objects:
             for f in range(1, 7):
@@ -183,6 +220,25 @@ def render():
     print('BURST RENDER PASS: 6 frames, closed 3D waves, periodic X, no normal maps')
 
 
+def optimize_png(path):
+    # Lossless recompression: preserve all RGBA samples, including seam columns.
+    import struct, zlib
+    import zopfli.zlib
+    data = path.read_bytes(); chunks = []; offset = 8
+    while offset < len(data):
+        n = struct.unpack('>I', data[offset:offset+4])[0]
+        chunks.append((data[offset+4:offset+8], data[offset+8:offset+8+n]))
+        offset += n+12
+    compressed = zopfli.zlib.compress(zlib.decompress(b''.join(v for k,v in chunks if k == b'IDAT')), numiterations=5)
+    result = bytearray(data[:8]); written = False
+    for kind, value in chunks:
+        if kind == b'IDAT':
+            if written: continue
+            value = compressed; written = True
+        result.extend(struct.pack('>I',len(value)) + kind + value + struct.pack('>I',zlib.crc32(kind+value)))
+    if len(result) < len(data): path.write_bytes(result)
+
+
 def pack():
     from PIL import Image
     OUT.mkdir(parents=True, exist_ok=True)
@@ -198,23 +254,17 @@ def pack():
             sheet.paste(tile, (f * size[0], 0))
     diffuse.save(OUT / 'rivulet_burst.png', optimize=True, compress_level=9)
     emission.save(OUT / 'rivulet_burst_e.png', optimize=True, compress_level=9)
-    resource = ['[gd_resource type="SpriteFrames" format=3]',
-                '[ext_resource type="Texture2D" path="res://assets/sprites/characters/averse/variants/rivulet_burst/rivulet_burst.png" id="0"]']
+    for name in ('rivulet_burst.png', 'rivulet_burst_e.png'):
+        optimize_png(OUT / name)
+    # Pillow only crops/assembles/resizes the rendered images.
+    contact = Image.new('RGBA', (768, 1280), (30, 32, 36, 255))
     for f in range(6):
-        resource.append('[sub_resource type="AtlasTexture" id="f%d"]\natlas = ExtResource("0")\nregion = Rect2(%d, 0, 128, 256)' % (f, f * 128))
-    frames = ', '.join('{"duration": 1.0, "texture": SubResource("f%d")}' % f for f in range(6))
-    resource.append('[resource]\nanimations = [{"frames": [%s], "loop": false, "name": &"default", "speed": 20.0}]' % frames)
-    (OUT / 'rivulet_burst.tres').write_text('\n\n'.join(resource) + '\n', encoding='utf-8')
-    # Contact: enlarged crops of each crest and six full-width repetitions of the peak.
-    contact = Image.new('RGBA', (960, 680), (26, 29, 33, 255))
-    for f in range(6):
-        tile = diffuse.crop((128 * f, 0, 128 * (f + 1), 256))
-        crop = tile.resize((160, 320), Image.Resampling.NEAREST)
-        contact.alpha_composite(crop, (160 * f, 0))
+        tile = diffuse.crop((128*f, 0, 128*(f+1), 256))
+        contact.alpha_composite(tile.resize((256,512), Image.Resampling.NEAREST), ((f%3)*256, (f//3)*512))
     peak = diffuse.crop((256, 0, 384, 256))
     for j in range(6):
-        contact.alpha_composite(peak.resize((160, 320), Image.Resampling.NEAREST), (j * 160, 350))
-    dest = ROOT / 'art/renders/averse_burst_contact.png'
+        contact.alpha_composite(peak, (j*128, 1024))
+    dest = ROOT / 'art/renders/averse_burst_v3_contact.png'
     dest.parent.mkdir(parents=True, exist_ok=True)
     contact.save(dest, optimize=True)
     verify()
@@ -244,9 +294,12 @@ def verify():
                 assert ((tile[:, :, :3].max(axis=2) > 50) & visible).sum() > 10
         assert a[0, :, 3].max() == 0 and a[-1, :, 3].max() == 0, 'vertical clipping'
     assert len(set(hashes)) == 6
+    assert (OUT / 'rivulet_burst.png').stat().st_size <= 74464
+    assert (OUT / 'rivulet_burst_e.png').stat().st_size <= 15948
     assert not list(OUT.glob('*_n.png'))
     tres = (OUT / 'rivulet_burst.tres').read_text()
     assert tres.count('type="AtlasTexture"') == 6 and '"loop": false' in tres and '"speed": 20.0' in tres
+    assert all(('region = Rect2(%d, 0, 128, 256)' % (f*128)) in tres for f in range(6))
     assert 'CanvasTexture' not in tres and 'normal_texture' not in tres
     print('BURST VERIFY PASS: 768x256 / 384x128; alpha; 6 distinct frames; G/D exact 12/12; contrast %s; bounds %s' % (ranges, boxes))
 

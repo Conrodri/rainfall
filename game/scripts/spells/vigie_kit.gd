@@ -446,7 +446,7 @@ func resource_state() -> Dictionary:
 		opts["regen"] = tension_rate() * 100.0
 		if is_anchored():
 			opts["text"] = "ANCRÉE  " + txt
-	# id interne `tension` gardé (icône ui/icons/passives/tension.png, sauvegarde, contrat) ; libellé visible « Guet ».
+	# id interne `tension` gardé (icône ui/icons/passives/guet.png, sauvegarde, contrat) ; libellé visible « Guet ».
 	return KitResource.make(&"tension", "Guet", tension, ACCENT, opts)
 
 
@@ -1108,7 +1108,7 @@ func visual_anim(fallback: StringName) -> StringName:
 
 static func passive_info() -> Dictionary:
 	var f := KitResource.fmt
-	return KitResource.passive("Guet", &"tension",
+	return KitResource.passive("Guet", &"guet",
 		"Vigie guette : sa jauge de Guet monte toute seule et grandit son prochain Filet lesté. Les tirs automatiques n'en dépendent pas.",
 		"0 à 100 %% en %s s en marchant, %s s immobile (ancrée) ; +%s %% par pas de Repli ; le Fanal la met à 100 %% d'un coup." % [
 			f.call(GUET_MOVING_S), f.call(GUET_STILL_S), f.call(DODGE_TENSION_GAIN * 100.0)],
