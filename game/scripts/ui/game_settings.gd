@@ -63,6 +63,7 @@ const SHAKE_DEFAULT := 1.0
 static var _cache_path := "<unset>"
 static var _shake := SHAKE_DEFAULT
 static var _reduce := false
+static var _zone_full := false
 
 
 static func _ensure_cache() -> void:
@@ -71,6 +72,7 @@ static func _ensure_cache() -> void:
 	_cache_path = cfg_path
 	_shake = clampf(float(get_value("gameplay", "shake", SHAKE_DEFAULT)), 0.0, 1.0)
 	_reduce = bool(get_value("gameplay", "reduce_motion", false))
+	_zone_full = bool(get_value("gameplay", "zone_outline_full", false))
 
 
 ## Échelle des flashs [0, 1] : 0 aucun, 0,25 réduits, 1 complets. Lit l'état d'exécution (Quality, resynchronisé
@@ -105,13 +107,17 @@ static func set_reduce_motion(on: bool) -> void:
 	set_value("gameplay", "reduce_motion", on)
 
 
-## « Contours de zones complets » (accessibilité, 30/10/2026) : les zones au sol des joueurs gardent leur voile et leur
-## liseré appuyés ; par défaut seul un liseré discret reste, la forme de la zone se lit dans l'effet rendu.
+## « Contours des zones de sorts » (accessibilité, 30/10/2026 ; 07/11/2026 : défaut = aucun contour) : les zones au sol
+## des joueurs affichent leur voile et leur liseré ; désactivé, la forme de la zone se lit dans l'effet rendu seul.
+## Les contours d'ennemis et de raids ne dépendent pas de ce réglage.
 static func zone_outline_full() -> bool:
-	return bool(get_value("gameplay", "zone_outline_full", false))
+	_ensure_cache() # lu à chaque image par les contours : jamais de relecture du fichier
+	return _zone_full
 
 
 static func set_zone_outline_full(on: bool) -> void:
+	_ensure_cache()
+	_zone_full = on
 	set_value("gameplay", "zone_outline_full", on)
 
 
@@ -353,6 +359,7 @@ static func reset_all(tree: SceneTree = null) -> void:
 	_show_fps_live = -1 # section graphics effacée : compteur FPS relu (défaut caché)
 	_shake = SHAKE_DEFAULT
 	_reduce = false
+	_zone_full = false
 	apply_fullscreen(false)
 	apply_fps_limit() # section graphics effacée : limite et V-Sync d'origine
 	var ml := Engine.get_main_loop() as SceneTree

@@ -219,17 +219,17 @@ func _kit_zones() -> void:
 	var vk: VigieKit = pv.kit
 	var fl := vk.plant_flare(Vector2(200, 0)) as VigieFlare
 	var of := ZoneOutline.of(fl)
-	_check("Vigie / fusée : contour ambre (ZONE_COLOR), rayon d'exposition", of != null and _same_rgb(of.color, VigieKit.ZONE_COLOR) and _near(of.radius, fl.radius, 0.6))
+	_check("Vigie / fusée : plus de contour (retiré le 07/11/2026, repère d'exposition seul)", of == null)
 	var ct := vk.plant_caltrops(vk.character().spells[2], Vector2(-200, 0)) as VigieCaltrops
 	var oct := ZoneOutline.of(ct)
 	_check("Vigie / chausse-trapes : contour au rayon réel", oct != null and _near(oct.radius, ct.radius, 0.6))
 	fl.queue_free()
 	ct.queue_free()
 	await get_tree().process_frame
-	_check("Vigie : contours en sortie quand la zone est libérée", of.is_releasing() and oct.is_releasing())
+	_check("Vigie : contours en sortie quand la zone est libérée", oct.is_releasing())
 	_step_outlines(1.0)
 	await get_tree().process_frame
-	_check("Vigie : contours libérés", not is_instance_valid(of) and not is_instance_valid(oct))
+	_check("Vigie : contours libérés", not is_instance_valid(oct))
 	await _free_player(pv)
 
 	# Rainette : flaque de Gluant
@@ -291,6 +291,30 @@ func _kit_zones() -> void:
 		t += DT
 	var opeg := ZoneOutline.of(ak._peg_node)
 	_check("Arpenteuse / Piquet : contour en capsule sur la ligne du poteau", ak.peg_active() and opeg != null and opeg.shape == ZoneOutline.Shape.CAPSULE and _near(opeg.radius, ArpenteuseKit.CHAIN_HALF_WIDTH_U * U, 0.6))
+	_step_outlines(0.2)
+	var prange: Node = ak._peg_node.get_node_or_null("PegRange")
+	var oprange := ZoneOutline.of(prange)
+	_check("défaut (réglage off) : contour de joueur masqué (capsule du Piquet)", not GameSettings.zone_outline_full() and opeg != null and not opeg.visible)
+	_check("exception : cercle de portée max du Piquet toujours affiché", oprange != null and oprange.always and oprange.visible)
+	GameSettings.set_zone_outline_full(true)
+	_step_outlines(0.1)
+	_check("réglage actif : contour de joueur présent (capsule du Piquet)", opeg.visible)
+	GameSettings.set_zone_outline_full(false)
+	_step_outlines(0.1)
+	_check("réglage retiré : masqué de nouveau", not opeg.visible and oprange.visible)
+	var eh := Node2D.new()
+	get_tree().root.add_child(eh)
+	var oe := ZoneOutline.attach(eh, 96.0, Color(1, 0.2, 0.2), 0.0, ZoneOutline.Shape.DISC, true)
+	_step_outlines(0.1)
+	_check("contour ennemi / raid : toujours visible, réglage off", oe != null and oe.visible)
+	var ph := Node2D.new()
+	get_tree().root.add_child(ph)
+	var op := ZoneOutline.attach(ph, 96.0, Color(1, 0.8, 0.2))
+	_check("contour de joueur par défaut : masqué dès la pose", op != null and not op.visible)
+	oe.release()
+	op.release()
+	eh.queue_free()
+	ph.queue_free()
 	ak._end_peg(false)
 	await get_tree().process_frame
 	_step_outlines(1.0)

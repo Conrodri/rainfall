@@ -16,6 +16,7 @@ func setup(at: Vector2, radius_px: float, life_s: float, col: Color) -> void:
 	life = life_s
 	color = col
 	z_index = -1
+	visible = GameSettings.zone_outline_full() # 07/11/2026 : cercle de télégraphe d'un sort joueur, masqué par défaut
 
 
 func _ready() -> void:

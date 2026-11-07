@@ -298,6 +298,7 @@ func _run() -> void:
 	_flush()
 	await _wait_projectiles()
 	_check("champ posé", _kit.caltrops.size() == 1)
+	_check("champ : >= 40 pointes de repli réparties dans la zone (était 14)", (_kit.caltrops[0] as VigieCaltrops)._spikes.size() >= 40)
 	_advance(0.3)
 	_check("entrée : coup 0,6 une seule fois", c1.taken.size() == 1 and _near(c1.taken[0], VigieKit.CHAUSSE_ENTRY_COEF * BASE, 0.05), str(c1.taken))
 	_advance(1.0)

@@ -1022,6 +1022,8 @@ func _spawn_peg_visual() -> void:
 	_peg_node.add_child(range_host)
 	var ring := ZoneOutline.attach(range_host, PEG_SNAP_U * Balance.UNIT_PX, ZoneOutline.color_for(_spell_of(3), _caster()), peg_left)
 	if ring != null:
+		ring.always = true # exception voulue par le joueur (07/11/2026) : la portée max du Piquet reste toujours affichée
+		ring.visible = true
 		ring.fill_alpha = 0.0
 		ring.halo = true
 	if not ResourceLoader.exists(PEG_FRAMES):

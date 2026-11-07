@@ -38,6 +38,10 @@ var width := WIDTH
 var fill_alpha := FILL_ALPHA
 var edge_alpha := EDGE_ALPHA
 var halo := false
+## Contour toujours visible (ennemis, raids, repères voulus par le joueur). Par défaut (sorts des JOUEURS) le contour
+## n'est affiché que si le réglage d'accessibilité « Contours des zones de sorts » est actif (07/11/2026) : point
+## central, tous les contours de zones des joueurs passent par ici. Le nœud existe toujours (les kits le lisent).
+var always := false
 var strong := false ## contour appuyé (emphasize) : jamais atténué
 var radius := 64.0 ## DISC : rayon ; BAND : rayon extérieur ; CAPSULE : demi-largeur de la bande
 var inner := 0.0 ## BAND : rayon intérieur
@@ -58,11 +62,14 @@ var _poly := PackedVector2Array() ## contour de capsule, tableau réutilisé
 
 
 ## Pose un contour sous `p_host`. `p_life` : durée de la zone (s), 0 = jusqu'à la libération de l'hôte.
-static func attach(p_host: Node2D, p_radius_px: float, p_color: Color, p_life := 0.0, p_shape := Shape.DISC) -> ZoneOutline:
+## `p_always` : contour d'ennemi / de raid, affiché même sans le réglage « Contours des zones de sorts ».
+static func attach(p_host: Node2D, p_radius_px: float, p_color: Color, p_life := 0.0, p_shape := Shape.DISC, p_always := false) -> ZoneOutline:
 	if p_host == null or not p_host.is_inside_tree():
 		return null
 	var f := ZoneOutline.new()
 	f.name = NAME
+	f.always = p_always
+	f.visible = p_always or GameSettings.zone_outline_full()
 	f.shape = p_shape
 	f.host = p_host
 	f.radius = p_radius_px
@@ -217,6 +224,7 @@ func alpha_now() -> float:
 ## Avance d'une image (public pour les tests sans boucle de rendu).
 func step(delta: float) -> void:
 	_age += delta
+	visible = always or GameSettings.zone_outline_full() # réglage changé en cours de partie : effet immédiat
 	if _follow:
 		if is_instance_valid(host):
 			if global_position != host.global_position:

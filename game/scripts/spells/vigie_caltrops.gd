@@ -7,6 +7,9 @@ extends Node2D
 
 const FADE_S := 0.4
 const TICK_S := 0.1
+const SPIKE_AREA_PX2 := 2400.0 ## une pointe par ~2400 px² de zone (3 u = 192 px de rayon : ~48 pointes)
+const MIN_SPIKES := 24
+const MAX_SPIKES := 90
 
 var kit: Object = null
 var spike: SpellData = null
@@ -38,11 +41,15 @@ func setup(new_kit: Object, spike_spell: SpellData, at: Vector2, radius_px: floa
 			var k := radius / VigieKit.CHAUSSE_RADIUS_PX
 			_vfx.scale = Vector2(k, k) # rig TOP : jamais pré-écrasé (comme la Grêle)
 			_vfx.play(&"default")
+	# Pointes du repli, fixes pour la durée de vie (07/11/2026 : 14 -> ~48 à 3 u, trop clairsemé). Spirale de Vogel
+	# (angle d'or) légèrement bruitée : répartition régulière sur tout le disque, densité constante quel que soit le rayon.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(at.x * 31.0 + at.y * 17.0)
-	for i in 14: # pointes du repli, fixes pour la durée de vie
-		var a := rng.randf() * TAU
-		_spikes.append(Vector2.from_angle(a) * radius * sqrt(rng.randf()) * 0.92)
+	var n := clampi(int(PI * radius * radius / SPIKE_AREA_PX2), MIN_SPIKES, MAX_SPIKES)
+	for i in n:
+		var rr := sqrt((float(i) + 0.5) / n) * radius * 0.94
+		var a := float(i) * 2.399963 + rng.randf() * 0.5
+		_spikes.append(Vector2.from_angle(a) * rr + Vector2(rng.randf_range(-3.0, 3.0), rng.randf_range(-3.0, 3.0)))
 	ZoneOutline.attach(self, radius, VigieKit.ZONE_COLOR, life) # contour de la zone (ZoneOutline)
 	_scan() # les monstres déjà dans le champ à la pose comptent comme une entrée
 
@@ -72,7 +79,7 @@ func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
 		modulate.a = 1.0 - k
 		if k >= 1.0:
 			queue_free()
-	if _vfx == null:
+	if _vfx == null and (_ending or _t < 0.05): # le repli est fixe : redessiné seulement au fondu de sortie
 		queue_redraw()
 
 
