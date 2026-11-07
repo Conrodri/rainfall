@@ -68,7 +68,7 @@ Voir `epreuve_escort.gd`, `Balance.ESCORT_*`, `docs/Boucle_Etage_Refonte.md` §1
 - **Objets** : `CHASE_POSTS` 6 bornes (`chase_posts` du JSON : champignons-lanternes de mycélium au Gouffre, cristaux éteints aux Cryptes), espacées de 9-17 u le long d'un itinéraire ; la borne 0 est l'autel de départ (sprite `_altar`).
 - **Règle** : « interagir » sur la borne 0 (« Réveiller le follet » / « Éveiller l'éclat ») : une lumière se pose dessus. Toutes les `CHASE_JUMP_S` 8 s elle **saute** vers une borne à `[CHASE_JUMP_MIN_U, CHASE_JUMP_MAX_U]` = [9, 17] u de la borne courante, jamais la borne qu'elle vient de quitter si un autre choix existe (sans candidat : la plus proche). Elle **vacille** `CHASE_WARN_S` 1,5 s avant de sauter (lisibilité). Un joueur vivant à ≤ `CHASE_REACH_U` 2 u de la borne allumée **avant le saut** = 1 point (la borne reste allumée en « done », son `_e` fixe). Borne ratée : la lumière saute quand même, `misses += 1`, `clean = false`. `CHASE_POINTS` 5 points → la lumière se fixe sur la borne courante, le mini-boss **sort de terre** dessous (`_spawn_mini()` à `global_position + BOSS_OFFSET`).
 - **Position de l'épreuve** : `global_position` = borne allumée (l'`Epreuve` se déplace ; `uses_sprite = false`, les bornes sont des enfants `EpreuveChasePost` fixes). La zone ×1,5 et la flèche hors écran suivent donc la lumière.
-- **Durée** : minimum ≈ 5 × 8 s = 40 s moins l'avance sur la dernière borne ; `EPREUVE_TARGET_S[&"poursuite"]` 40 s (E5, était 45 s ; une borne ratée = +8 s) ; « bien » jusqu'à 60 s ; 3 bornes ratées = « bien », 4 = « fait » ; délai de sécurité 75 s.
+- **Durée** : minimum ≈ 5 × 8 s = 40 s moins l'avance sur la dernière borne ; `EPREUVE_TARGET_S[&"poursuite"]` 40 s (E5, était 45 s ; une borne ratée = +8 s) ; « bien » jusqu'à 54 s (multiplicateur propre `EPREUVE_GOOD_MULT_BY_VERB[poursuite]` 1,35 au lieu de 1,5) : 0 borne ratée = parfait, 1-2 = bien, 3+ = fait ; délai de sécurité 75 s.
 - **Coop** : n'importe quel joueur compte ; seuil « parfait » non multiplié (E5 : Poursuite retirée de `EPREUVE_SHARED_VERBS`).
 - **Habileté** : itinéraire et vitesse sous pression (4 u/s pour 9-17 u = 2,3-4,3 s de course par fenêtre de 8 s, monstres compris) ; renoncer à une borne trop loin pour prendre la suivante.
 - **Placeholder** : borne = `Polygon2D` losange 1 u, teinte du biome ; lumière = `draw_circle` 0,6 u + `Line2D` de traînée sur l'`EpreuveOverlay` ; vacillement = alpha qui clignote à 6 Hz.
@@ -229,7 +229,7 @@ Clés de carte par verbe : `escort_path`, `ritual {heart, relays}` (existantes),
 | *`EPREUVE_GOLD_P`* | `{parfait: 0.8, bien: 0.5, fait: 0.2}` (E5, était 1,5 / 1,0 / 0,5) | plan : bien 0,9-1,0 (repli appliqué, §15) | §6.1, §15 |
 | *`EPREUVE_ZONE_GOLD_MULT`* | 0,4 (E5, était 0,5) | 0,4-0,5 | |
 | *`EPREUVE_TARGET_S`* | `{escorte: 40, rituel: 35, poursuite: 40, veine: 40, tenue: 40}` (E5, poursuite 45 → 40) | ±10 s | existante |
-| *`EPREUVE_GOOD_MULT`* / *`EPREUVE_BACKSTOP_S`* / *`EPREUVE_ZONE_RADIUS_U`* | 1,5 / 75 / 7 | | existantes |
+| *`EPREUVE_GOOD_MULT`* / *`EPREUVE_BACKSTOP_S`* / *`EPREUVE_ZONE_RADIUS_U`* | 1,5 (Poursuite : `EPREUVE_GOOD_MULT_BY_VERB` 1,35) / 75 / 7 | | existantes |
 | **`CHASE_POSTS`** / **`CHASE_JUMP_S`** / **`CHASE_POINTS`** | 6 / 8,0 / 5 | 5-6 / 7-10 / 4-6 | §3.3 |
 | **`CHASE_JUMP_MIN_U`** / **`CHASE_JUMP_MAX_U`** | 9,0 / 17,0 | 8-10 / 15-18 | portée d'un saut |
 | **`CHASE_REACH_U`** / **`CHASE_WARN_S`** | 2,0 / 1,5 | 1,5-2,5 / 1,0-2,0 | rayon de la borne, vacillement avant le saut |
@@ -339,7 +339,7 @@ Valeurs relues dans `game/scripts/core/balance.gd` ; elles remplacent celles cit
 - `EPREUVE_GOLD_P` = `{parfait: 0.8, bien: 0.5, fait: 0.2}` (était 1,5 / 1,0 / 0,5).
 - `EPREUVE_ZONE_GOLD_MULT` = 0,4 (était 0,5).
 - `EPREUVE_SHARED_VERBS` = `[rituel]` : la Poursuite n'est plus partagée en coop pour le seuil « parfait ».
-- `EPREUVE_TARGET_S[poursuite]` = 40 s (était 45) ; « bien » jusqu'à 60 s ; 3 bornes ratées = « bien », 4 = « fait ».
+- `EPREUVE_TARGET_S[poursuite]` = 40 s (était 45) ; « bien » jusqu'à 54 s (`EPREUVE_GOOD_MULT_BY_VERB[poursuite]` = 1,35, réglage du 07/11) : 0 borne ratée = parfait, 1-2 = bien, 3+ = fait.
 - Veine : le geyser se pose sous un joueur vivant du disque, tour à tour (en sautant ceux qui ont un coffre ouvert) ; `VEIN_GEYSER_AHEAD_U` 0,75 u dans le sens d'avance ; `VEIN_GEYSER_TELEGRAPH_S` 1,2 s (était 1,0) ; `VEIN_GEYSER_ON_PLAYER` = true ; sans joueur éligible, repli `VEIN_GEYSER_FALLBACK_AHEAD_U` 3 u devant le centre.
 - Coffres : `EPREUVE_CHEST_MIN_U` = 3,0 u (aucun coffre tiré à moins de 3 u d'un objet d'épreuve). Carte `cite_fonderie_canal` : repère C ajouté en (55 ; 17), 20 coffres.
 - `EPREUVES_ENABLED` = true depuis le 07/11/2026. `-- --no-epreuves` reste l'interrupteur de secours.
