@@ -179,7 +179,7 @@ Contrat à signaler : **Ardent de base n'a pas de nœud kit** (`ArdentVariantKit
   - Lisibilité : `puddle_mirror` grossit 15 % pendant 0,3 s, vague au son plus grave.
   - Mobile : la Flaque est posée sur le paquet dense, la Vague vise le paquet dense : le cône traverse la flaque dans la majorité des cas. Naturel.
   - Équilibrage : +0,5 sur ≈ 50 % des Vagues ; compensation `WAVE_COEF` 3,5 → **3,3**.
-  - Variantes : Gouttière (ligne 6 u depuis Averse) : Vague lancée dans l'axe de la Gouttière (angle ≤ 35°) : même bonus ; Geyser sur Flaque : projection 0,8 → 1,2 s et trempe 8 s.
+  - Variantes : Gouttière (ligne 6 u depuis Averse) : la Gouttière-collecteur (07/11/2026) n'a pas de bonus de Vague de fond ; Geyser sur Flaque : projection 0,8 → 1,2 s et trempe 8 s.
 
 ### 2.5 Arpenteuse, géomètre de la Cité (`arpenteuse_kit.gd`)
 

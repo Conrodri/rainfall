@@ -153,7 +153,7 @@ Rien d'autre. Arpenteuse reste 5/5 : ne pas toucher `TENDEUR_COEF`, `PEG_IMMUNIT
 - **Ordre inverse** (Vague → Flaque) : valide : la Flaque posée sur le paquet trempé prolonge la trempe et rend l'eau (`PUDDLE_GAIN_PER_S` 2,5 si Averse y reste) : c'est l'ordre « économie ».
 - **Mobile** : Flaque et Vague visent le paquet dense : le cône traverse la Flaque dans la majorité des cas. **Naturel.**
 - **Équilibrage** : +0,5 sur ≈ 50 % des Vagues ; `WAVE_COEF` 3,5 → **3,4** (3,3 si le simulateur manuel le demande). Trempe 8 s : la fenêtre de AV-1 double ; avec AV-3 l'eau revient plus vite sur un boss : surveiller l'économie d'eau (§4.4).
-- **Variantes** : Gouttière (ligne 6 u) : Vague dans l'axe (≤ 35°) : même bonus ; Geyser sur Flaque : projection 0,8 → 1,2 s, trempe 8 s.
+- **Variantes** : Gouttière-collecteur (ligne 6 u, refonte 07/11/2026) : pas de bonus de Vague de fond (elle sert à la collecte et au déversement, pas à la Vague) ; Geyser sur Flaque : projection 0,8 → 1,2 s, trempe 8 s.
 
 ### 4.3 AV-3 « Goutte sur trempé » (le sort 1 recharge la fenêtre)
 

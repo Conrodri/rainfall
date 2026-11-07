@@ -196,16 +196,29 @@ const GEYSER_TELEGRAPH_S := 0.3
 const GEYSER_LIFT_S := 0.8
 const GEYSER_LIFT_U := 1.0 ## hauteur du sommet de l'arc
 
-## Gouttière : ligne LENGTH x WIDTH u depuis Averse vers le point visé, LIFE s, un coup de GOUTTIERE_COEF par tick ;
-## dessus, Averse regagne PUDDLE_GAIN_PER_S d'eau/s et court GOUTTIERE_SPEED_MULT fois plus vite. 2 au plus.
-const GOUTTIERE_COEF := 0.45
+## Gouttière-collecteur (07/11/2026) : ligne LENGTH x WIDTH u depuis Averse vers le point visé, LIFE s, un coup de
+## GOUTTIERE_COEF par tick (trempe). Pendant sa vie, Averse regagne GOUTTIERE_COLLECT_PER_S x pluie de la carte d'eau/s
+## OÙ QU'ELLE SOIT ; un monstre tué sur la bande rend KILL_GAIN en plus. À l'expiration ou à la relance, elle se
+## déverse d'un coup sur toute sa ligne : GOUTTIERE_SPILL_COEF + GOUTTIERE_SPILL_PER_WATER x eau collectée (plafond
+## GOUTTIERE_SPILL_CAP), recul, trempe forte. Une seule à la fois.
+const GOUTTIERE_COST := 18.0
+const GOUTTIERE_CD := 5.0
+const GOUTTIERE_COEF := 0.3
+const GOUTTIERE_COLLECT_PER_S := 1.5 ## x rain_mult() : 9 d'eau sur 6 s en pluie normale (50 % du coût), 0 à sec
+const GOUTTIERE_SPILL_COEF := 1.5
+const GOUTTIERE_SPILL_PER_WATER := 0.1
+const GOUTTIERE_SPILL_CAP := 4.0
+const GOUTTIERE_SPILL_KNOCK_U := 1.5
+const GOUTTIERE_SPILL_SOAK_S := 8.0
+const GOUTTIERE_SPILL_SOAK_PCT := 0.4
+const GOUTTIERE_KILL_MULT := 2.0 ## gain d'eau d'un kill sur la bande = KILL_GAIN x 2
+const GOUTTIERE_FILL_REF := 9.0 ## eau collectée = bande « pleine » (indicateur seulement)
 const GOUTTIERE_RANGE_U := 7.0 ## portée du ciblage du paquet (mobile)
 const GOUTTIERE_LENGTH_U := 6.0
 const GOUTTIERE_WIDTH_U := 1.0
 const GOUTTIERE_LIFE_S := 6.0
 const GOUTTIERE_TICK_S := 0.5
-const GOUTTIERE_SPEED_MULT := 1.25
-const GOUTTIERE_MAX := 2
+const GOUTTIERE_MAX := 1
 
 ## Mousson : toute l'eau (min CRUE_MIN) -> zone de MOUSSON_RADIUS_U attachée à Averse pendant MOUSSON_LIFE_S ; dégâts
 ## totaux = crue_coef(eau) x MOUSSON_TOTAL_MULT répartis en ticks ; MOUSSON_WATER_PER_S d'eau/s rendus. Pas de boucle :
@@ -423,7 +436,7 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 			s2.light_preset = &"averse_wave"
 			return s2
 		[3, V_GOUTTIERE]:
-			var s3 := _spell(V_GOUTTIERE, "Gouttière", 3, GOUTTIERE_COEF, PUDDLE_CD)
+			var s3 := _spell(V_GOUTTIERE, "Gouttière", 3, GOUTTIERE_COEF, GOUTTIERE_CD)
 			s3.range_u = GOUTTIERE_RANGE_U
 			s3.radius_u = GOUTTIERE_LENGTH_U # longueur de la ligne (affichage et portée utile)
 			s3.duration = GOUTTIERE_LIFE_S
@@ -536,7 +549,7 @@ func resource_regen_per_s() -> float:
 func cost_of(slot: int) -> float:
 	match slot:
 		2: return WAVE_COST * _cost_mult()
-		3: return PUDDLE_COST * _cost_mult()
+		3: return (GOUTTIERE_COST if _slot3_is_rivulet() else PUDDLE_COST) * _cost_mult()
 		4: return CRUE_MIN
 	return 0.0
 
@@ -621,9 +634,15 @@ func _on_enemy_killed_by(id: int, e: Node2D, pos: Vector2, tier: int, elite: boo
 		_on_enemy_killed(e, pos, tier, elite)
 
 
-func _on_enemy_killed(_e: Node2D, _pos: Vector2, _tier: int, _elite: bool) -> void:
+func _on_enemy_killed(_e: Node2D, pos: Vector2, _tier: int, _elite: bool) -> void:
 	if player != null and not player.dead:
 		gain_water(KILL_GAIN)
+		for r in rivulets: # Gouttière : un kill sur la bande rend double (et grossit le déversement)
+			if is_instance_valid(r) and not r.is_ending() and r.contains(pos):
+				var extra := KILL_GAIN * (GOUTTIERE_KILL_MULT - 1.0)
+				gain_water(extra)
+				r.collected += extra
+				break
 
 
 ## Niveau d'eau lisible : la fenêtre de verre de l'amphore (masque `_e`) brille selon le remplissage.
@@ -885,8 +904,6 @@ func on_spell_hit(s: SpellData, enemy: Node, _amount: float) -> void:
 ## 4,4 u/s à vide -> 3,4 u/s pleine (linéaire, avant les items) ; ×0,6 en se relevant d'un trébuchement.
 func speed_mult() -> float:
 	var m := lerpf(1.0, SPEED_FULL_U / SPEED_EMPTY_U, water_ratio())
-	if in_rivulet:
-		m *= GOUTTIERE_SPEED_MULT # le courant de la Gouttière porte Averse, même amphore pleine
 	if stumble_left > 0.0 and not player.is_dodging():
 		m *= STUMBLE_SPEED_MULT
 	return m
@@ -1405,24 +1422,52 @@ class _GeyserShadow extends Node2D:
 		draw_circle(Vector2.ZERO, radius_px, Color(0.0, 0.0, 0.0, 0.35))
 
 
-## Gouttière : ruisseau posé depuis Averse vers `dir`. 2 au plus (la plus ancienne s'assèche).
+## Gouttière : ruisseau posé depuis Averse vers `dir`. Une seule : la relance déverse l'ancienne.
 func spawn_rivulet(s: SpellData, origin: Vector2, dir: Vector2) -> Node2D:
 	var live: Array = []
 	for r in rivulets:
 		if is_instance_valid(r) and not r.is_ending():
 			live.append(r)
-	while live.size() >= GOUTTIERE_MAX:
-		var old: Node = live.pop_front()
-		rivulets.erase(old)
-		old.queue_free()
+	while live.size() >= GOUTTIERE_MAX: # la relance déverse l'ancienne
+		var old: AverseRivulet = live.pop_front()
+		old.finish(true)
 	var k: float = 1.0 + player.stat(&"zone_size_add")
 	var rv := AverseRivulet.new()
 	_caster().effects_parent().add_child(rv)
 	rv.setup(_caster(), s, origin, dir, GOUTTIERE_LENGTH_U * Balance.UNIT_PX * k, GOUTTIERE_WIDTH_U * Balance.UNIT_PX * k)
+	rv.fill_ref = GOUTTIERE_FILL_REF
+	rv.on_spill = _rivulet_spill
 	if VfxSwap.enabled() and VfxSwap.spawn_follow(rv, "averse/averse_gouttiere", dir, false, {"src": "rivulet", "line_px": rv.length_px, "width_u": GOUTTIERE_WIDTH_U * k}) != null: VfxSwap.hide_original(rv) # mode test
 	rivulets.append(rv)
 	rv.tree_exiting.connect(func() -> void: rivulets.erase(rv))
 	return rv
+
+
+## Déversement de la Gouttière : un coup sur toute la ligne (coef selon l'eau collectée), recul, trempe forte.
+func _rivulet_spill(rv: AverseRivulet) -> void:
+	if player == null or player.dead or not is_instance_valid(rv):
+		return
+	var sp := rv.spell.duplicate() as SpellData
+	sp.coef = spill_coef(rv.collected)
+	var origin := rv.global_position
+	for e in player.get_tree().get_nodes_in_group(&"enemies"):
+		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
+			continue
+		var ep := (e as Node2D).global_position
+		if not rv.contains(ep) or not StageMap.los(player.get_tree(), origin, ep):
+			continue
+		var along := clampf((ep - origin).dot(rv.dir), 0.0, rv.length_px)
+		var from := origin + rv.dir * along # recul perpendiculaire à la ligne
+		if (ep - from).length_squared() < 1.0:
+			from = origin
+		_caster().deal_damage(e, sp, {"source_pos": from, "anim": true})
+		_soak(e, GOUTTIERE_SPILL_SOAK_S, GOUTTIERE_SPILL_SOAK_PCT)
+		_shove(e, from, GOUTTIERE_SPILL_KNOCK_U)
+	LightRig.flash(origin + rv.dir * rv.length_px * 0.5, rv.spell.light_preset, 0.5)
+
+
+static func spill_coef(collected: float) -> float:
+	return minf(GOUTTIERE_SPILL_COEF + GOUTTIERE_SPILL_PER_WATER * collected, GOUTTIERE_SPILL_CAP)
 
 
 ## Mousson : zone attachée à Averse (suit chaque image), dégâts totaux = crue_coef(eau) x MOUSSON_TOTAL_MULT en
@@ -1526,10 +1571,15 @@ func tick(delta: float) -> void:
 	gain_water(RAIN_GAIN_PER_S * _rain_mult * delta, false)
 	if in_map_water:
 		gain_water(MAP_WATER_GAIN_PER_S * delta)
-	if in_puddle or in_rivulet: # une seule source comptée (Flaque ou Gouttière)
+	for r in rivulets: # Gouttière : collecte la pluie où qu'Averse soit
+		if is_instance_valid(r) and not r.is_ending():
+			var got := GOUTTIERE_COLLECT_PER_S * _rain_mult * delta
+			gain_water(got)
+			r.collected += got
+	if in_puddle:
 		var before := water
 		gain_water(PUDDLE_GAIN_PER_S * delta)
-		if in_puddle and water > before:
+		if water > before:
 			PlayerRef.state_of(player).add_counter(COUNTER_PUDDLE_WATER, water - before) # déblocage de la Gouttière
 	if monsoon_left > 0.0:
 		monsoon_left = maxf(monsoon_left - delta, 0.0)

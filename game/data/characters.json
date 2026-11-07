@@ -267,7 +267,7 @@
         "slot": "cd",
         "desc": "18 d'eau, recharge 5 s : miroir d'eau de 6 s qui ronge et trempe les monstres ; Averse y remplit son amphore (+4/s). Deux flaques au plus.",
         "variants": [
-          {"id": "averse_gouttiere", "name": "Gouttière", "desc": "18 d'eau : un ruisseau de 6 u coule devant toi 6 s ; il ronge les monstres et te porte plus vite.", "unlock_text": "Récupérer 1 500 d'eau dans tes Flaques-miroir.", "unlock_key": "spell:averse_gouttiere", "unlock_rule": {"type": "counter", "key": "averse.puddle_water", "value": 1500}}
+          {"id": "averse_gouttiere", "name": "Gouttière", "desc": "18 d'eau : une gouttière recueille la pluie 6 s et te la rend, puis se déverse d'un coup sur sa ligne.", "unlock_text": "Récupérer 1 500 d'eau dans tes Flaques-miroir.", "unlock_key": "spell:averse_gouttiere", "unlock_rule": {"type": "counter", "key": "averse.puddle_water", "value": 1500}}
         ],
         "role": "18 d'eau · 5 s"
       },
