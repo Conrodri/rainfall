@@ -12,7 +12,9 @@ const STATE_DONE := &"done"
 var index := 0 ## rang dans l'itinéraire (0 = autel de départ)
 var tint := Color(0.76, 0.48, 1.0) ## teinte du biome
 var state: StringName = STATE_IDLE
-var _body: Polygon2D = null
+var skin := "fog_forest" ## "fog_forest" | "crypts" : choisit les sprites Codex `chase_post_<skin>_<état>` (lot EP-B)
+var _body: Polygon2D = null ## repli dessiné en code si les sprites manquent
+var _sprite: Sprite2D = null
 
 
 func _ready() -> void:
@@ -22,6 +24,19 @@ func _ready() -> void:
 	_body.polygon = PackedVector2Array([Vector2(0.0, -34.0) * s, Vector2(32.0, 0.0) * s, Vector2(0.0, 20.0) * s, Vector2(-32.0, 0.0) * s])
 	add_child(_body)
 	_refresh()
+
+
+func set_skin(s: String) -> void:
+	if s == skin:
+		return
+	skin = s
+	_refresh()
+
+
+## Sprite Codex de l'état courant (l'autel pour la borne 0) ; null : repli en forme code.
+func _state_tex() -> Texture2D:
+	var st := "altar" if index == 0 else ("done" if state == STATE_DONE else ("lit" if state == STATE_LIT else "off"))
+	return EpreuveSprites.tex(EpreuveSprites.PROPS_DIR, "chase_post_%s_%s.png" % [skin, st])
 
 
 func set_tint(c: Color) -> void:
@@ -39,6 +54,18 @@ func set_state(s: StringName) -> void:
 func _refresh() -> void:
 	if _body == null:
 		return
+	var tex := _state_tex()
+	if tex != null:
+		_body.visible = false
+		if _sprite == null:
+			_sprite = EpreuveSprites.make(tex, 0.80)
+			_sprite.name = &"Sprite"
+			add_child(_sprite)
+		EpreuveSprites.set_tex(_sprite, tex, 0.80)
+		# l'autel n'a qu'un sprite : on éclaire selon l'état
+		_sprite.modulate = Color(1.25, 1.25, 1.25) if index == 0 and state != STATE_IDLE else Color.WHITE
+		return
+	_body.visible = true
 	match state:
 		STATE_DONE: # accent émissif fixe
 			_body.color = Color(tint.r * 1.6, tint.g * 1.6, tint.b * 1.6, 1.0)

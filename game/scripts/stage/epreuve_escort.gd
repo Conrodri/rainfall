@@ -21,7 +21,7 @@ var leash_blocked := false ## le joueur est trop loin : la barque attend
 var leash_wait_s := 0.0 ## cumul d'attente à la corde (mesure)
 var _seg_len := PackedFloat32Array()
 var _hit_t := 0.0
-var _body: Polygon2D = null
+var _body: Node2D = null ## Sprite2D Codex (lot EP-A, 8 directions) ou repli Polygon2D
 var _heading := Vector2.RIGHT
 
 
@@ -54,12 +54,21 @@ func set_path(pts: PackedVector2Array) -> void:
 
 func _ready() -> void:
 	super._ready()
-	_body = Polygon2D.new()
-	_body.name = &"Barque"
-	_body.polygon = PackedVector2Array([Vector2(-48, -26), Vector2(30, -26), Vector2(56, 0), Vector2(30, 26), Vector2(-48, 26)])
-	_body.color = Color(0.46, 0.30, 0.17)
-	add_child(_body)
-	_body.rotation = _heading.angle()
+	var boat := EpreuveSprites.make(EpreuveSprites.tex(EpreuveSprites.PROPS_DIR, "escort_boat_terraces.png"), 0.62, 8)
+	if boat != null:
+		_body = boat
+		_body.name = &"Barque"
+		add_child(_body)
+		NormalMaps.apply_to_sprite(boat)
+		boat.frame = EpreuveSprites.dir8(_heading)
+	else:
+		var poly := Polygon2D.new()
+		poly.name = &"Barque"
+		poly.polygon = PackedVector2Array([Vector2(-48, -26), Vector2(30, -26), Vector2(56, 0), Vector2(30, 26), Vector2(-48, 26)])
+		poly.color = Color(0.46, 0.30, 0.17)
+		add_child(poly)
+		poly.rotation = _heading.angle()
+		_body = poly
 
 
 func zone_radius() -> float:
@@ -150,7 +159,9 @@ func damage(amount: float) -> void:
 func _place() -> void:
 	position = point_at(dist_along)
 	_heading = _heading_at(dist_along)
-	if _body != null:
+	if _body is Sprite2D:
+		(_body as Sprite2D).frame = EpreuveSprites.dir8(_heading)
+	elif _body != null:
 		_body.rotation = _heading.angle()
 
 

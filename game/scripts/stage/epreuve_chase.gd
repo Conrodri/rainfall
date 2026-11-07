@@ -58,6 +58,7 @@ func _ready() -> void:
 	var tint := TINT_CRYPTES if _biome_id() == &"cryptes" else TINT_GOUFFRE
 	for p in posts:
 		p.set_tint(tint)
+		p.set_skin("crypts" if _biome_id() == &"cryptes" else "fog_forest")
 	_refresh_posts()
 
 
