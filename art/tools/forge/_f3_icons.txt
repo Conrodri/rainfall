@@ -1,0 +1,7 @@
+RACINE (OBLIGATOIRE) : worktree C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ab80bc16cfd1f5211 . Chaque commande : cd dedans. Chemins relatifs à cette racine. NE JAMAIS écrire dans C:\Users\const\Documents\Rainfall (dépôt principal). Style ultracave.
+LIRE : art/briefs/forge_ux_b.md seul (sections « règles de valeur » + « Les 6 icônes »).
+OBJECTIF : refaire 6 icônes Forge 256x256 (meche_silex, rosee_figee, rouage_traque, seve_rampante, ecorce_pluie, prisme_grele) : valeurs moyennes/claires, liseré d'arête clair, 6 silhouettes distinctes, contraste >= 3:1 sur #30201C.
+TOUCHER : art/tools/forge/f3_icons_build.py (à créer, copie de f1_build.py), art/blender/forge/f3_icons.blend, art/renders/forge/f3_contact.png, game/assets/sprites/icons/items/<id>.png et <id>_e.png (meche_silex, rosee_figee, prisme_grele). Rien d'autre.
+RENDU : Blender --background, rendre DIRECT à 256 px (aucun resize PIL), cel, film transparent, marge >= 14 px, PNG <= 60 Ko. La sève : reprendre le sujet de seve_rampante() de f1_build.py (retouche récente).
+VÉRIF : C:\Users\const\AppData\Local\Python\bin\python.exe art/tools/forge/f1b_check.py ; itérer jusqu'à RESULT: OK (corps et liseré >= 3, IoU48 <= 0,72), regarder une planche art/renders/forge/f3_contact.png (<= 1024 px).
+RAPPORT 6 lignes max, ultracave : contraste/IoU par icône, tailles Ko.
