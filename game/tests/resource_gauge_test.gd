@@ -41,12 +41,14 @@ func _ready() -> void:
 	var g := ResourceGauge.new()
 	add_child(g)
 	g.apply_scale(1.0)
-	_check(g.custom_minimum_size == ResourceGauge.BASE_SIZE, "PC : 250 x 76")
+	# La base (250 x 76) est un plancher : la hauteur s'agrandit si la police et les marges verticales du thème
+	# (UiTheme.v_margin) ne tiennent pas dedans (cf. required_size), le texte ne déborde jamais du cadre.
+	_check(g.custom_minimum_size == g.required_size() and g.custom_minimum_size.x == ResourceGauge.BASE_SIZE.x and g.custom_minimum_size.y >= ResourceGauge.BASE_SIZE.y, "PC : 250 x 76 au moins (%s)" % str(g.custom_minimum_size))
 	_check(ResourceGauge.min_font() == 18, "PC : police min 18")
 	Platform.mobile_preview = true
 	if Platform.is_mobile():
 		g.apply_scale(1.0)
-		_check(g.custom_minimum_size == ResourceGauge.MOBILE_SIZE, "mobile : 330 x 96")
+		_check(g.custom_minimum_size == g.required_size() and g.custom_minimum_size.x == ResourceGauge.MOBILE_SIZE.x and g.custom_minimum_size.y >= ResourceGauge.MOBILE_SIZE.y, "mobile : 330 x 96 au moins")
 		_check(ResourceGauge.min_font() == 26 and AverseWaterText.font_px() == 26, "mobile : polices >= 26")
 	else:
 		print("skip mobile (Platform.is_mobile() faux sur PC : tailles mobiles à vérifier par capture)")
