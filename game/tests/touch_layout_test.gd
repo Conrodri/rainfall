@@ -43,12 +43,20 @@ func _frames(n := 3) -> void:
 
 func _ready() -> void:
 	var prev_mode: int = Platform.input_mode
+	# Réglages par défaut : le fichier réel du joueur (taille d'interface 90 %, etc.) ne doit pas fausser les tailles
+	# attendues (sorts 150 px, écart 40 px). Fichier vide injecté pour toute la durée du test.
+	var prev_cfg: String = GameSettings.cfg_path
+	var empty_cfg := "user://_touch_layout_test_defaults.cfg"
+	ConfigFile.new().save(empty_cfg)
+	GameSettings.cfg_path = empty_cfg
 	for size in SIZES:
 		await _case(size, true)
 		await _case(size, false)
 	await _safe_case()
 	_joystick_case()
 	_back_case()
+	GameSettings.cfg_path = prev_cfg
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(empty_cfg))
 	Platform.set_input_mode(prev_mode)
 	print("RESULT: ", "OK" if _fails == 0 else "FAIL (%d)" % _fails)
 	get_tree().quit(0 if _fails == 0 else 1)

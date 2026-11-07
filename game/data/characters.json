@@ -117,12 +117,12 @@
         "id": "couteau_ficele",
         "name": "Couteau ficelé",
         "slot": "cd",
-        "desc": "Lance un couteau lourd au bout d'un fil (8 u) : il se plante dans le premier monstre touché, qui reste ficelé 5 s et se fait scier toutes les 0,5 s tant qu'il est à moins de 9 u. Un seul monstre ficelé à la fois. Grisé tant que le couteau n'est pas revenu en main (Saccade, ou en marchant dessus).",
+        "desc": "Lance un couteau lourd au bout d'un fil (8 u) : planté dans le premier monstre touché, ficelé 5 s et scié toutes les 0,5 s à moins de 9 u. Un seul ficelé. Grisé tant que le couteau n'est pas revenu (Saccade, ou marcher dessus).",
         "variants": [
           {
             "id": "rictus_eventail",
             "name": "Éventail",
-            "desc": "Cinq couteaux légers en éventail à la place du couteau lourd : le multi-cible. Un couteau planté au sol rend 1 s de recharge quand on le ramasse, et la Saccade les rappelle tous en ligne. Ils chargent les doublures qu'ils traversent (3 par salve). Lancé pendant la Toupie : quatre éventails tout autour de toi, soit 20 couteaux.",
+            "desc": "Cinq couteaux légers en éventail au lieu du lourd. Un couteau au sol rend 1 s de recharge au ramassage ; la Saccade les rappelle. Ils chargent les doublures traversées (3 par salve). Pendant la Toupie : 4 éventails, 20 couteaux.",
             "unlock_text": "Ramasser 150 couteaux plantés.",
             "unlock_key": "spell:rictus_eventail",
             "unlock_rule": {"type": "counter", "key": "rictus.knives_picked", "value": 150}
@@ -133,12 +133,12 @@
         "id": "rictus_saccade",
         "name": "Saccade",
         "slot": "cd",
-        "desc": "Le Montreur tire le fil : le couteau s'arrache du monstre ficelé (plus fort avec chaque tour de fil enroulé par tes demi-lunes, 3 au plus), revient en ligne en blessant tout sur son chemin, et le Couteau ficelé est de nouveau prêt. Un monstre ficelé (sauf un boss) est tiré de 1,5 u vers toi ; les doublures posées explosent d'un coup, 30 % plus fort si un monstre est ficelé. Recharge 3 s.",
+        "desc": "Le couteau s'arrache du ficelé (plus fort par tour de fil, 3 au plus) et revient en blessant tout ; Couteau ficelé prêt. Le ficelé (sauf boss) est tiré de 1,5 u ; doublures : explosion d'un coup, +30 % si un monstre est ficelé. Recharge 3 s.",
         "variants": [
           {
             "id": "rictus_toupie",
             "name": "Toupie",
-            "desc": "Rictus tourne 2,5 s en glissant, invulnérable, et frappe tout autour de lui ; chaque tour, un coup de pointe de plus sur l'ennemi le plus proche, et le fil scie le monstre ficelé. Percute les doublures en étoile. Pas de roulade pendant, vertige à la fin. Avec l'Éventail : lancé pendant la Toupie, il part en quatre éventails tout autour. Recharge 8 s, sans Saccade.",
+            "desc": "Tourne 2,5 s, invulnérable, frappe tout autour ; chaque tour, une pointe de plus sur le plus proche, le fil scie le ficelé. Percute les doublures. Pas de roulade, vertige à la fin. Éventail pendant : 4 éventails. Recharge 8 s.",
             "unlock_text": "Tuer 100 monstres à moins de 2 u.",
             "unlock_key": "spell:rictus_toupie",
             "unlock_rule": {"type": "counter", "key": "rictus.close_kills", "value": 100}
@@ -149,7 +149,7 @@
         "id": "doublures",
         "name": "Les Doublures",
         "slot": "ultime",
-        "desc": "Lance six doublures en hexagone autour du monstre ficelé (sinon autour du point visé, du paquet ou de toi) : elles attirent les monstres puis explosent en grand (2,4 u). La Saccade les fait exploser d'un coup, 30 % plus fort si un monstre est ficelé ; la Levée près d'elles aussi.",
+        "desc": "Lance six doublures en hexagone autour du ficelé (sinon du point visé, du paquet ou de toi) : elles attirent les monstres puis explosent (2,4 u). La Saccade les fait exploser d'un coup (+30 % si un ficelé), la Levée aussi.",
         "variants": [
           {
             "id": "rictus_rideau",
@@ -357,7 +357,7 @@
         "id": "rainette_langue",
         "name": "Langue",
         "slot": "auto",
-        "desc": "Coup de langue automatique de 4,5 u : la cible principale (le boss, sinon l'élite, sinon le plus proche) prend un gros coup, le reste de la ligne un coup réduit ; tire les monstres ; un petit monstre tué est avalé (+1 % PV). Sur un monstre étourdi ou collé : 1,6 et tirée de 0,75 u.",
+        "desc": "Coup de langue automatique de 4,5 u : la cible principale (boss, élite, sinon le plus proche) prend un gros coup, la ligne un coup réduit ; tire les monstres ; petit monstre tué avalé (+1 % PV). Sur étourdi ou collé : 1,6 et tirée de 0,75 u.",
         "variants": [
           {"id": "rainette_croassement", "name": "Croassement", "desc": "Un croassement repousse tout à 2,5 u autour de toi ; chaque petit monstre qu'il tue raccourcit de 0,25 s la recharge du Grand saut (1 s au plus par croassement).", "unlock_text": "Gagner une run avec Rainette.", "unlock_key": "spell:rainette_croassement", "unlock_rule": {"type": "win_with", "character": "rainette"}}
         ]
@@ -411,7 +411,7 @@
         "id": "avare_coup_de_coffre",
         "name": "Coup de coffre",
         "slot": "auto",
-        "desc": "Balance le coffre-fort au bout de sa chaîne : arc large vers l'ennemi le plus proche. Ta BOURSE (l'or en poche) donne +15 % de dégâts à tous tes sorts par prix d'un petit coffre, jusqu'à +30 %. Sur un marqué : marque +0,5 s (max 6 s), coffre-bouclier raffermi.",
+        "desc": "Balance le coffre-fort au bout de sa chaîne : arc large vers le plus proche. La BOURSE (or en poche) donne +15 % de dégâts à tous tes sorts par prix d'un petit coffre, jusqu'à +30 %. Sur un marqué : marque +0,5 s (max 6 s), bouclier raffermi.",
         "variants": [
           {"id": "avare_coffre_belier", "name": "Coffre-bélier", "desc": "Le coffre part droit devant en bélier : ligne de 3,5 u, plus forte, qui repousse. Le bouclier dure plus.", "unlock_text": "Gagner une run avec Avare.", "unlock_key": "spell:avare_coffre_belier", "unlock_rule": {"type": "win_with", "character": "avare"}}
         ]
@@ -420,7 +420,7 @@
         "id": "avare_poignee_de_pieces",
         "name": "Poignée de pièces",
         "slot": "cd",
-        "desc": "Jette 5 pièces en éventail, payées par la bourse (2 % de l'or). Chaque pièce retombe où elle s'arrête et reste au sol : marche dessus pour remettre 80 % du prix dans la bourse. Sur un marqué par la Rançon : 1,8 par pièce, la pièce rend tout son coût (4 s).",
+        "desc": "Jette 5 pièces en éventail, payées par la bourse (2 % de l'or). Chaque pièce reste au sol où elle retombe : marche dessus pour remettre 80 % du prix dans la bourse. Sur un marqué par la Rançon : 1,8 par pièce, qui rend tout son coût (4 s).",
         "variants": [
           {"id": "avare_piece_truquee", "name": "Pièce truquée", "desc": "Une seule pièce, payée par la bourse, qui rebondit 4 fois de monstre en monstre avant de tomber au sol.", "unlock_text": "Ramasser 500 de tes propres pièces.", "unlock_key": "spell:avare_piece_truquee", "unlock_rule": {"type": "counter", "key": "avare.coins_picked", "value": 500}}
         ]
