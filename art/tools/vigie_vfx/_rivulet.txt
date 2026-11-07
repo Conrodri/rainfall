@@ -1,3 +1,4 @@
+NOTE : partie (b) rivulet_burst refusée (07/11/2026), à refaire en profil full, effort medium, vague volumique ; seule la partie (a) est validée.
 RACINE (OBLIGATOIRE : ton shell démarre dans C:\Users\const\Documents ; commence chaque commande par cd "C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a94b6f23a90582fc1" ; tous les chemins ci-dessous sont relatifs à ce dossier, ne touche pas au dépôt parent).
 OBJECTIF : (a) refaire `rivulet_tile` en deux états vide/plein ; (b) créer `rivulet_burst` (Gouttière d'Averse, déversement d'eau le long d'une bande).
 TOUCHER : game/assets/sprites/characters/averse/variants/rivulet_tile/ et .../rivulet_burst/, art/blender/ (.blend nouveau), art/tools/vigie_vfx/rivulet_build.py, journal art/tools/vigie_vfx/_rivulet_log.txt. Lire seulement art/tools/night/avsv_build.py (branche rivulet_tile) et rivulet_tile.tres.

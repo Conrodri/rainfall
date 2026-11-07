@@ -16,7 +16,7 @@ def mat(name,color,metal=0,rough=.8,emit=0):
  bs=m.node_tree.nodes.get('Principled BSDF'); bs.inputs['Base Color'].default_value=(*color,1); bs.inputs['Metallic'].default_value=metal; bs.inputs['Roughness'].default_value=rough
  if emit: bs.inputs['Emission Color'].default_value=(*color,1); bs.inputs['Emission Strength'].default_value=emit
  return m
-iron=mat('forged dark steel',(.105,.135,.155),.82,.3); edge=mat('sharpened steel edges',(.46,.53,.56),.72,.27); red=mat('signal ember',(1,.025,.065),.1,.5,2.3)
+iron=mat('forged bright steel',(.34,.39,.43),.72,.3); edge=mat('cel-cut bright steel ridge',(.88,.93,.96),.35,.27); red=mat('signal ember',(1,.025,.065),.1,.5,2.3)
 def set_alpha(m,a):
  m.node_tree.nodes.get('Principled BSDF').inputs['Alpha'].default_value=a
  m.surface_render_method='DITHERED'
@@ -25,7 +25,7 @@ ld=bpy.data.lights.new('large upper-left','AREA'); lo=bpy.data.objects.new('larg
 ld2=bpy.data.lights.new('soft fill','AREA'); lo2=bpy.data.objects.new('soft fill',ld2); sc.collection.objects.link(lo2); lo2.location=(4,-3,5); ld2.energy=110; ld2.size=5
 cd=bpy.data.cameras.new('TOP 96px per unit'); cam=bpy.data.objects.new('TOP 96px per unit',cd); sc.collection.objects.link(cam); cam.location=(0,0,12); cam.rotation_euler=(0,0,0); cd.type='ORTHO'; cd.ortho_scale=6; sc.camera=cam
 # 48 Vogel distribution, four long conical tetrahedral prongs each
-shadow=mat('tight dark contact shadow',(.008,.012,.016))
+shadow=mat('soft short contact shadow',(.018,.024,.032))
 def spike(name,base,tip,radius,material):
  axis=Vector(tip)-Vector(base); mid=(Vector(tip)+Vector(base))*.5
  bpy.ops.mesh.primitive_cone_add(vertices=5, radius1=radius, radius2=.006, depth=axis.length, location=mid)
@@ -35,15 +35,15 @@ def spike(name,base,tip,radius,material):
  return ob
 for i in range(48):
  r=2.82*math.sqrt((i+.5)/48); a=i*math.pi*(3-math.sqrt(5)); x=r*math.cos(a); y=r*math.sin(a); z=-.04
- size=.30+(.035*((i*7)%5)); rot=(i*2.399963)% (2*math.pi); spread=size*.28; length=size*.91
- bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=6,radius=1,location=(x,y,-.115)); sh=bpy.context.object; sh.name='tight contact shadow'; sh.scale=(size*.49,size*.18,.006); sh.data.materials.append(shadow)
+ size=.375+(.025*((i*7)%5)); rot=(i*2.399963)% (2*math.pi); spread=size*.28; length=size*.91
+ bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=6,radius=1,location=(x+.045,y-.045,-.115)); sh=bpy.context.object; sh.name='soft short contact shadow'; sh.scale=(size*.52,size*.22,.006); sh.data.materials.append(shadow)
  # Three ground spikes radiate evenly; the fourth rises vertically.
  for j in range(3):
   ang=rot+j*2*math.pi/3; dx=math.cos(ang); dy=math.sin(ang)
-  spike('Caltrop_%02d_ground_%d'%(i,j),(x-dx*length*.5,y-dy*length*.5,z),(x+dx*length*.5,y+dy*length*.5,z+.018),size*.065,iron)
+  spike('Caltrop_%02d_ground_%d'%(i,j),(x-dx*length*.5,y-dy*length*.5,z),(x+dx*length*.5,y+dy*length*.5,z+.018),size*.072,iron)
   # narrow bright ridge along the exposed side
-  spike('Caltrop_%02d_edge_%d'%(i,j),(x-dx*length*.42-dy*size*.035,y-dy*length*.42+dx*size*.035,z+.012),(x+dx*length*.43-dy*size*.035,y+dy*length*.43+dx*size*.035,z+.025),size*.015,edge)
- spike('Caltrop_%02d_upright'%i,(x,y,z),(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length),size*.075,iron)
+  spike('Caltrop_%02d_edge_%d'%(i,j),(x-dx*length*.42-dy*size*.035,y-dy*length*.42+dx*size*.035,z+.012),(x+dx*length*.43-dy*size*.035,y+dy*length*.43+dx*size*.035,z+.025),size*.023,edge)
+ spike('Caltrop_%02d_upright'%i,(x,y,z),(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length),size*.082,iron)
  if i in (2,8,14,20,26,32,38,44):
   bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=.026,location=(x+math.cos(rot)*spread,y+math.sin(rot)*spread,z+length*.94)); bpy.context.object.name='red ember'; bpy.context.object.data.materials.append(red)
 # utility render atlases from same fixed scene; end alpha fade and rust tint

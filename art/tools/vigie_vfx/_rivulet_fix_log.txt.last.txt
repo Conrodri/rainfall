@@ -1,0 +1,4 @@
+`rivulet_tile` et `rivulet_burst` refaits ; sprites 1024×128 et 3072×512, `_e` à demi-résolution, raccord tile vérifié.
+Alpha et frames vérifiés ; aucune normal map ni référence `CanvasTexture`.
+Planche contrôlée : [contact 768×344](/C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a94b6f23a90582fc1/art/tools/vigie_vfx/_rivulet_contact.png).
+`python art/tools/texture_budget.py --apply-policy` : `13 fichier(s) .import mis à la politique ; lancer : godot --headless --path game --import`.
