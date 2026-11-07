@@ -348,3 +348,19 @@ Variantes numerotees ; chaplet 01..05, stele 01..04, volley light/medium/heavy.
 | `enemy.gunner_stoker_walk.loop` | `ambience/enemy_gunner_stoker_walk_loop.ogg` | gunner_stoker_walk |
 | `enemy.salt_king_tide.loop` | `ambience/enemy_salt_king_tide_loop.ogg` | salt_king_tide |
 | `amb.salt_court` | `ambience/amb_salt_court.ogg` | salt_court |
+
+## Lot UX-H (07/11/2026) : sons d'interface des ajouts récents
+
+Script : `art/tools/audio/gen_ux.py` (sortie `ux_manifest.json`). Deux variantes `_01/_02` par id, branchés par `Audio.play_ui` (ids déclarés famille `ui` dans `data/audio/sounds.json`).
+
+| id | fichiers | durée |
+|---|---|---|
+| `lobby_join` | `ui/lobby_join_0[12].ogg` | 0,8-0,9 s |
+| `lobby_ready` | `ui/lobby_ready_0[12].ogg` | 0,7 s |
+| `lobby_tick` | `ui/lobby_tick_0[12].ogg` | 0,09 s |
+| `lobby_go` | `ui/lobby_go_0[12].ogg` | 1,5 s |
+| `pad_lost` / `pad_restored` | `ui/pad_lost_0[12].ogg`, `ui/pad_restored_0[12].ogg` | 0,7 s |
+| `forge_craft` | `ui/forge_craft_0[12].ogg` | 1,1 s |
+| `storm_core_gain` | `ui/storm_core_gain_0[12].ogg` | 1,2 s |
+| `vigie_guet_full` | `ui/vigie_guet_full_0[12].ogg` | 0,65 s (RMS -26 dB) |
+| `epreuve_grade_{parfait,bien,fait}` | `epreuves/epreuve_grade_*_0[12].ogg` | 1,2 / 0,95 / 0,56 s |

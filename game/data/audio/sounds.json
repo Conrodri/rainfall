@@ -277,6 +277,44 @@
       "family": "ui",
       "priority": 100
     },
+    "lobby_join": {
+      "family": "ui"
+    },
+    "lobby_ready": {
+      "family": "ui"
+    },
+    "lobby_tick": {
+      "family": "ui",
+      "min_interval_ms": 300
+    },
+    "lobby_go": {
+      "family": "ui"
+    },
+    "pad_lost": {
+      "family": "ui"
+    },
+    "pad_restored": {
+      "family": "ui"
+    },
+    "forge_craft": {
+      "family": "ui"
+    },
+    "storm_core_gain": {
+      "family": "ui"
+    },
+    "vigie_guet_full": {
+      "family": "ui",
+      "min_interval_ms": 500
+    },
+    "epreuve_grade_parfait": {
+      "family": "ui"
+    },
+    "epreuve_grade_bien": {
+      "family": "ui"
+    },
+    "epreuve_grade_fait": {
+      "family": "ui"
+    },
     "ui.click": {
       "min_interval_ms": 40,
       "vol_db": -4.0
