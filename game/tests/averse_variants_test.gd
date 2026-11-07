@@ -381,6 +381,12 @@ func _run() -> void:
 	_advance(2.0)
 	_check("hors de la ligne : collecte 1,5/s en pluie normale", not _kit.in_rivulet and _near(rv.collected, 3.0, 0.1), str(rv.collected))
 	_check("l'eau collectée arrive dans l'amphore (+ pluie de base)", _near(_kit.water - w_before, 3.0 + AverseKit.RAIN_GAIN_PER_S * 2.0, 0.2), str(_kit.water - w_before))
+	var coll_saved: float = rv.collected
+	rv.collected = rv.fill_ref * 0.5
+	rv.step(0.0)
+	var fa: Array = rv._full.map(func(s): return s.modulate.a)
+	_check("remplissage tuile par tuile : 50 %, 6 tuiles = 3 premières pleines, 3 dernières vides", rv._has_tiles and fa.size() == 6 and _near(fa[0], 1.0, 0.001) and _near(fa[2], 1.0, 0.001) and _near(fa[3], 0.0, 0.001) and _near(fa[5], 0.0, 0.001), str(fa))
+	rv.collected = coll_saved
 	_kit._rain_mult = 0.5
 	var c0: float = rv.collected
 	_advance(2.0)

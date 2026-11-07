@@ -150,9 +150,10 @@ func step(delta: float) -> void: ## public pour les tests sans boucle de rendu
 	if _t >= duration:
 		finish(true)
 	if _has_tiles:
-		var f := fill_ratio()
-		for sp in _full:
-			sp.modulate.a = f
+		# Remplissage tuile par tuile depuis l'embouchure (i = 0, côté Averse).
+		var fn := fill_ratio() * float(_full.size())
+		for i in _full.size():
+			_full[i].modulate.a = clampf(fn - float(i), 0.0, 1.0)
 	queue_redraw()
 
 
