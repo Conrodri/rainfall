@@ -1341,6 +1341,19 @@ const COOP_BOSS_RETARGET_S := 6.0
 ## Menace : pour le choix de cible d'un boss, la distance au dernier joueur qui l'a frappé compte × ce facteur
 ## (ex-Director.COOP_BOSS_THREAT_DIST_MULT).
 const COOP_BOSS_THREAT_DIST_MULT := 0.7
+## Coop locale PC (étape 4, docs/multi/Design_Coop.md §4.5 option B) : caméra commune (SharedCamera) qui cadre les
+## joueurs vivants et dézoome au plus de ce facteur (1,4 : monstres 30 % plus petits, lisible à 1920×1080).
+const COOP_LOCAL_CAM_ZOOM_MAX := 1.4
+## Marge (u, repère logique) entre un joueur et le bord du cadre ; la tête des sprites ajoute COOP_LOCAL_CAM_HEAD_U en haut.
+const COOP_LOCAL_CAM_MARGIN_U := 1.5
+const COOP_LOCAL_CAM_HEAD_U := 1.8
+## Suivi et zoom lissés (Hz : 1 - exp(-hz·dt) par image) ; le dézoom va plus vite que le rezoom.
+const COOP_LOCAL_CAM_FOLLOW_HZ := 6.0
+const COOP_LOCAL_CAM_ZOOM_OUT_HZ := 4.0
+const COOP_LOCAL_CAM_ZOOM_IN_HZ := 1.5
+## Plaques du HUD de coop locale (rangée du bas, CoopPlates) : bande d'écran (px logiques, hauteur 1080) que le
+## cadrage laisse libre en bas pour que les plaques ne couvrent pas les joueurs.
+const COOP_LOCAL_CAM_HUD_BOTTOM_PX := 150.0
 
 
 static func _party_n(n: int) -> int:

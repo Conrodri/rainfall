@@ -607,6 +607,7 @@ func _spawn_wave_queue(ppos: Vector2, alive_cap: int) -> void:
 
 ## Point hors écran au-delà du bord `normal`, autour de la position `along` ([-1, 1]) le long du bord.
 func _side_point(ppos: Vector2, normal: Vector2, along: float) -> Vector2:
+	ppos = _view_anchor(ppos)
 	var box := _spawn_box()
 	var half := box.size * 0.5
 	var center := ppos + box.get_center() # décalé vers le bas de la moitié de la marge iso
@@ -685,6 +686,13 @@ func _spawn_half_extent() -> Vector2:
 	return vp / zoom * 0.5
 
 
+## Coop locale (SharedCamera) : les apparitions se calculent autour du centre du cadre COMMUN (la vue n'est pas
+## centrée sur chaque joueur) ; sinon autour du joueur `ppos` (solo, en ligne : inchangé).
+func _view_anchor(ppos: Vector2) -> Vector2:
+	var sc := SharedCamera.active
+	return sc.view_center() if sc != null and sc.is_inside_tree() else ppos
+
+
 ## Marge du bas (px logiques) : hauteur de sprite d'un monstre exprimée en y logique (§6.2).
 func _bottom_margin_px() -> float:
 	return -Iso.lift_logical(SPAWN_SPRITE_HEIGHT_U)
@@ -703,6 +711,7 @@ func _spawn_box() -> Rect2:
 func _spawn_point(ppos: Vector2) -> Vector2:
 	var box := _spawn_box()
 	var zone = _player_zone(ppos)
+	ppos = _view_anchor(ppos) # coop locale : hors du cadre commun (zone : celle du joueur visé)
 	var want := 3 if zone != null else 1
 	var found := 0
 	var best := Vector2.INF
@@ -1006,7 +1015,7 @@ func _spawn_point_party(_ppos: Vector2) -> Vector2:
 
 ## Vrai si `p` est dans le rectangle d'apparition (vue + marge) d'un joueur vivant autre que celui en `anchor`.
 func _seen_by_other(p: Vector2, anchor: Vector2) -> bool:
-	if _np <= 1:
+	if _np <= 1 or SharedCamera.active != null: # caméra commune : le cadre commun suffit (_view_anchor)
 		return false
 	var box := _spawn_box()
 	for k in _np:

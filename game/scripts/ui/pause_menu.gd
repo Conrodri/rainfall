@@ -59,6 +59,8 @@ var _forge_panel: ForgePanel ## onglet Forge (scripts/ui/forge_panel.gd)
 var items_tab: StringName = &"items" ## onglet affiché de l'écran Objets : items | forge
 var inventory_mode := false ## écran ouvert par open_inventory (TAB, Select, pastille) : Retour / TAB le referme d'un coup
 var _inv_paused := false ## cet écran a mis le jeu en pause (solo) : il la lève à la fermeture
+## Coop locale : joueur dont l'inventaire et la Forge sont affichés (Select de SA manette, TAB du clavier) ; -1 = local.
+var viewer_slot := -1
 var _resume_button: Button ## pleine largeur au-dessus de la grille
 var _abandon_dialog: ConfirmDialog
 var _current: Control ## panneau affiché (null pendant le compte à rebours)
@@ -233,7 +235,7 @@ func _fill_items() -> void:
 	_items_box.columns = _item_cols(_layout())
 	_items_box.add_theme_constant_override("h_separation", int(ITEM_GAP_PX * s))
 	_items_box.add_theme_constant_override("v_separation", int(ITEM_GAP_PX * s))
-	var my_items: Dictionary = LocalState.state().items # objets du joueur LOCAL
+	var my_items: Dictionary = viewer_state().items # objets du joueur LOCAL (coop locale : de celui qui a ouvert)
 	if my_items.is_empty():
 		_item_texts.append("Aucun objet pour l'instant.")
 		_items_box.columns = 1
@@ -335,7 +337,7 @@ func _make_item_cell(id: Variant, stacks: int, s: float) -> Button:
 func _show_item_detail(id: Variant) -> void:
 	var it := ItemDB.get_item(id)
 	var q := StringName(str(it.get("quality", "commun")))
-	var stacks := int(LocalState.state().items.get(id, 0))
+	var stacks := int(viewer_state().items.get(id, 0))
 	_detail_name.text = "%s%s  ·  %s" % [str(it.get("name", id)), "  ×%d" % stacks if stacks > 1 else "", QUALITY_WORDS.get(q, "Commun")]
 	_detail_name.add_theme_color_override("font_color", Palette.rarity(q))
 	_detail_effect.text = str(it.get("effect_text", ""))
@@ -604,13 +606,18 @@ func open_items() -> void:
 ## Solo : met le jeu en pause (temps actif figé), Retour / TAB / Échap referment et rendent la main tout de suite.
 ## Coop : JAMAIS de pause globale (ChestSession.is_blocking), l'écran est un overlay et la partie continue.
 ## Sans effet si un autre écran tient déjà la pause (coffre, atelier, menu pause) ou si l'inventaire est déjà ouvert.
-func open_inventory(tab: StringName = &"items") -> void:
+## `slot` (coop locale) : joueur dont on montre les objets et la Forge (-1 = joueur local).
+func open_inventory(tab: StringName = &"items", slot: int = -1) -> void:
 	if is_open:
 		if inventory_mode and not counting_down:
+			if slot != viewer_slot:
+				_set_viewer(slot)
+				_fill_items()
 			set_items_tab(tab)
 		return
 	if get_tree().paused:
 		return
+	_set_viewer(slot)
 	inventory_mode = true
 	items_only = true
 	is_open = true
@@ -645,7 +652,62 @@ func close_items() -> void:
 		if _inv_paused:
 			_inv_paused = false
 			get_tree().paused = false
+	_set_viewer(-1)
 	items_closed.emit()
+
+
+## État affiché par l'écran Objets / Forge : celui de viewer_slot (coop locale), sinon le joueur local.
+func viewer_state() -> PlayerState:
+	if viewer_slot >= 0:
+		var st := Players.state_of(viewer_slot)
+		if st != null:
+			return st
+	return LocalState.state()
+
+
+## Change le joueur affiché par l'inventaire (Forge comprise) ; onglet « Objets · J2 » en coop.
+func _set_viewer(slot: int) -> void:
+	viewer_slot = slot if slot >= 0 and Players.state_of(slot) != null else -1
+	if _forge_panel != null:
+		_forge_panel.state = Players.state_of(viewer_slot) if viewer_slot >= 0 else null
+	if _tab_items != null:
+		_tab_items.text = "Objets · J%s" % Palette.team_glyph(viewer_slot) if viewer_slot >= 0 and LocalState.is_coop() else "Objets"
+
+
+## Emplacement du joueur dont la source d'entrée a produit `event` (coop locale), sinon -1.
+static func slot_of_event(event: InputEvent) -> int:
+	if Players.count() <= 1:
+		return -1
+	for e in Players.entries():
+		if e.input != null and e.input.kind != InputSource.Kind.GLOBAL and e.input.owns_event(event):
+			return e.id
+	return -1
+
+
+## Coop locale : Start de la manette de N'IMPORTE QUEL joueur met en pause (les liaisons de l'InputMap créées par
+## InputSetup ne visent que la manette 0). Solo : faux (l'action `pause` suffit, comportement inchangé).
+static func _any_pad_start(event: InputEvent) -> bool:
+	if not (event is InputEventJoypadButton) or Players.count() <= 1:
+		return false
+	var jb := event as InputEventJoypadButton
+	return jb.pressed and jb.button_index == JOY_BUTTON_START and slot_of_event(event) >= 0 and not event.is_action(&"pause")
+
+
+## Coop locale : la manette du joueur `slot` est débranchée (CoopLocal) : pause, « Manette du joueur N déconnectée ».
+func notify_pad_lost(slot: int) -> void:
+	if not is_inside_tree():
+		return
+	if inventory_mode and is_open:
+		close_items() # inventaire coop (sans pause) : le menu pause prend sa place
+	if counting_down:
+		counting_down = false
+		_count_label.visible = false
+		_show_only(_panel_main)
+	elif not is_open:
+		open()
+	var msg := "Manette du joueur %s déconnectée : rebranchez-la ou appuyez sur A / Start sur une manette libre" % Palette.team_glyph(slot)
+	if is_open and not _info.text.begins_with(msg):
+		_info.text = msg + "\n" + _info.text
 
 
 ## Onglet de l'écran Objets : &"items" (grille) ou &"forge" (recettes). Sans effet hors de l'écran Objets.
@@ -768,7 +830,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _handle_inventory_input(event):
 		get_viewport().set_input_as_handled()
 		return
-	var back := event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel")
+	var pause_pressed := event.is_action_pressed("pause") or _any_pad_start(event)
+	var back := pause_pressed or event.is_action_pressed("ui_cancel")
 	if not back or event.is_echo():
 		return
 	if _abandon_dialog != null:
@@ -787,7 +850,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		# sous-panneau : Échap / B revient au menu pause (Commandes → d'où l'on vient)
 		_show_only(_controls_from if _current == _panel_controls and _controls_from != null else _panel_main)
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("pause"):
+	elif pause_pressed:
 		if not is_open:
 			open()
 		elif not counting_down:
@@ -802,18 +865,25 @@ func _handle_inventory_input(event: InputEvent) -> bool:
 	if event.is_echo():
 		return false
 	var pad_back := event is InputEventJoypadButton and (event as InputEventJoypadButton).button_index == JOY_BUTTON_BACK
+	var slot := slot_of_event(event) # coop locale : l'inventaire de CELUI qui appuie
 	var toggle := false
 	if TestMode.active and pad_back:
 		toggle = not (event as InputEventJoypadButton).pressed and not TestOverlay.select_consumed
 	else:
-		toggle = event.is_action_pressed(&"chest_items")
+		# coop : Select de n'importe quelle manette d'un joueur (les liaisons de l'InputMap ne visent que la manette 0)
+		toggle = event.is_action_pressed(&"chest_items") or (pad_back and slot >= 0 and (event as InputEventJoypadButton).pressed)
 	if toggle:
 		if inventory_mode and is_open:
+			if slot >= 0 and slot != viewer_slot and not counting_down: # un autre joueur : on bascule sur ses objets
+				_set_viewer(slot)
+				_fill_items()
+				set_items_tab(items_tab)
+				return true
 			if not (_forge_panel.visible and is_instance_valid(_forge_panel.picker)):
 				close_items()
 			return true
 		if not is_open and not get_tree().paused and not counting_down:
-			open_inventory(&"items")
+			open_inventory(&"items", slot)
 			return true
 		return false
 	if inventory_mode and is_open and _current == _panel_items and event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
@@ -832,6 +902,8 @@ func _handle_inventory_input(event: InputEvent) -> bool:
 func on_pad_disconnected(_device: int) -> void:
 	if not is_inside_tree() or not Platform.is_gamepad_mode():
 		return
+	if LocalState.is_coop():
+		return # coop locale : CoopLocal sait à qui était la manette (notify_pad_lost)
 	if counting_down:
 		counting_down = false
 		_count_label.visible = false

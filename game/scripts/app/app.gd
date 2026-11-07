@@ -151,6 +151,7 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			t.daily_requested.connect(func() -> void: show(&"daily"))
 			t.shop_requested.connect(func() -> void: show(&"shop"))
 			t.test_mode_requested.connect(start_test_mode) # À RETIRER OU MASQUER AVANT LA SORTIE
+			t.coop_local_requested.connect(func() -> void: show(&"coop_lobby"))
 			t.quit_requested.connect(_on_quit)
 			add_child(t)
 			current = t
@@ -166,6 +167,11 @@ func _build_screen(screen: StringName, toast: String) -> void:
 			n.start_requested.connect(start_run)
 			n.back_requested.connect(return_to_title)
 			current = _wrap_control(n)
+		&"coop_lobby": # coop locale PC (étape 4) : jonction des manettes, personnages, skins, « Prêt »
+			var cl := CoopLobbyScreen.new()
+			cl.start_requested.connect(start_run)
+			cl.back_requested.connect(return_to_title)
+			current = _wrap_control(cl)
 		&"achievements":
 			var ac := ACHIEVEMENTS_SCENE.instantiate() as AchievementsScreen
 			ac.back_requested.connect(return_to_title)
@@ -224,6 +230,9 @@ func _build_main(config: Dictionary, resume: Dictionary) -> void:
 	if resume.is_empty():
 		RunState.character = StringName(str(config.get("character", "ardent")))
 		RunState.loadout = RunState.normalize_loadout(config.get("spells", {})) # variantes de sorts choisies
+		var party: Variant = config.get("party", [])
+		if party is Array and not (party as Array).is_empty(): # coop locale : un joueur par appareil (CoopLobbyScreen)
+			m.set(&"party_setup", party_setup_from(party))
 	m.connect(&"title_requested", func() -> void: return_to_title())
 	m.connect(&"replay_requested", func() -> void: start_run(last_config))
 	m.connect(&"game_ready", func() -> void: run_started.emit())
@@ -231,6 +240,24 @@ func _build_main(config: Dictionary, resume: Dictionary) -> void:
 	main = m
 	current = m
 	screen_changed.emit(current_name)
+
+
+## Coop locale : `party` de la config (CoopLobbyScreen.party_config, une entrée par emplacement :
+## {kind: "kbm" | "pad", device, character, spells, skin}) -> Main.party_setup (sources d'entrée neuves à chaque
+## lancement : « Rejouer » recrée les mêmes attributions).
+static func party_setup_from(party: Array) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for p in party:
+		if not (p is Dictionary):
+			continue
+		var d := p as Dictionary
+		var src: InputSource = InputSource.kbm_source() if str(d.get("kind", "")) == "kbm" else InputSource.pad_source(int(d.get("device", 0)))
+		var lo: Variant = d.get("spells", {})
+		# même forme que Main.party_entry (main.gd n'a pas de class_name)
+		out.append({"input": src, "character": StringName(str(d.get("character", ""))),
+			"loadout": RunState.normalize_loadout(lo) if lo is Dictionary and not (lo as Dictionary).is_empty() else {},
+			"skin": str(d.get("skin", ""))})
+	return out
 
 
 func _on_quit() -> void:

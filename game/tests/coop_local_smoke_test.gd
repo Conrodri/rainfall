@@ -111,7 +111,9 @@ func _run() -> void:
 	_check("niveau de départ coop", RunState.player_state(1).level == Balance.player_start_level(2) and RunState.local().level == Balance.player_start_level(2))
 	var cam0 := p0.get_node_or_null(^"Camera2D") as Camera2D
 	var cam1 := p1.get_node_or_null(^"Camera2D") as Camera2D
-	_check("une seule caméra active (joueur 1)", cam0 != null and cam0.enabled and (cam1 == null or not cam1.enabled))
+	# étape 4 : en coop locale, une seule caméra = la caméra commune (SharedCamera), celles des joueurs sont coupées
+	_check("une seule caméra active (commune)", _main.get(&"camera") is SharedCamera and (_main.get(&"camera") as Camera2D).is_current()
+		and (cam0 == null or not cam0.enabled) and (cam1 == null or not cam1.enabled))
 
 	print("Étage 1")
 	var stage: StageManager = _main.get(&"stage")
@@ -133,11 +135,14 @@ func _run() -> void:
 	director.credits = 150.0
 	director.wave_credits = 150.0
 	director.trigger_wave()
-	for i in 240:
+	# les monstres apparaissent hors du cadre et marchent jusqu'aux joueurs : on attend le premier coup (12 s au plus)
+	for i in 720:
 		_note_activity()
 		await get_tree().physics_frame
+		if i >= 240 and not _dmg_by.is_empty():
+			break
 	_check("monstres apparus", director.spawned_total > total0, str(director.spawned_total - total0))
-	_check("Events.enemy_damaged_by porte le tireur", _dmg_by.has(0) or _dmg_by.has(1), str(_dmg_by))
+	_check("Events.enemy_damaged_by porte le tireur", _dmg_by.has(0) or _dmg_by.has(1), "%s, monstre le plus proche à %.0f px" % [str(_dmg_by), _nearest_enemy(players)])
 	for p: Pillar in stage.pillars:
 		if p.kind == Pillar.Kind.SMALL:
 			await _clear_pillar(p, players)
@@ -189,6 +194,15 @@ func _run() -> void:
 func _note_activity() -> void:
 	Players.note_activity(0)
 	Players.note_activity(1)
+
+
+func _nearest_enemy(players: Array) -> float:
+	var best := INF
+	for e in get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and (e as Node2D).visible:
+			for pl in players:
+				best = minf(best, (e as Node2D).global_position.distance_to((pl as Node2D).global_position))
+	return best
 
 
 func _kill(p: Node2D) -> void:

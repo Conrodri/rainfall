@@ -86,6 +86,10 @@ var omen_badge: OmenBadge ## rappel du présage d'étage actif (icône + nom, d�
 var spell_hint: SpellHint ## description d'un sort : survol (souris) / appui long (tactile)
 var _overlay_tick := 0.0
 var ally_bars: AllyBars ## PV des alliés au-dessus de leur tête (coop, teinte d'équipe)
+## Coop locale PC : une plaque par joueur en bas (CoopPlates) ; la fiche du joueur 1, l'or du haut et la barre de
+## sorts sont alors masqués. Solo, en ligne et mobile : jamais affichées, HUD inchangé.
+var coop_plates: CoopPlates
+var _coop_hud := false
 var overhead: OverheadBars ## PV + ressource au-dessus de la tête du personnage (réglage GameSettings.overhead_bars)
 var _diff_box: DifficultyBanner ## bandeau de difficulté défilant (un rectangle nommé par palier) : sous la minimap, colonne de droite
 var _hp_regen: Label ## « +X/s » (Player.regen_per_s) dans la barre de PV
@@ -131,7 +135,8 @@ func _ready() -> void:
 	add_child(spell_hint)
 	_apply_mode()
 	_bind_state()
-	Events.party_changed.connect(func(_n: int) -> void: _bind_state()) # inscription des joueurs après le HUD
+	Events.party_changed.connect(_on_party_changed) # inscription des joueurs après le HUD
+	_apply_coop_hud()
 	RunState.difficulty_changed.connect(_on_difficulty)
 	Events.gold_converted.connect(_on_gold_converted)
 	Events.boss_shield_changed.connect(_on_boss_shield_changed)
@@ -163,6 +168,43 @@ func _find_player() -> void:
 	var p := Players.local()
 	if p != null:
 		bind_player(p)
+
+
+func _on_party_changed(_n: int) -> void:
+	if not is_inside_tree(): # Players.clear() pendant la libération de la scène de jeu
+		return
+	_bind_state()
+	_apply_coop_hud()
+
+
+## Coop locale PC : plus d'un joueur, tous sur cette machine, hors mobile (étape 4 ; en ligne : HUD solo + alliés).
+static func is_local_coop() -> bool:
+	if Players.count() <= 1 or HudMetrics.is_mobile():
+		return false
+	for e in Players.entries():
+		if not e.is_local:
+			return false
+	return true
+
+
+## Bascule HUD solo <-> plaques de coop locale (au démarrage et à chaque changement de composition de la partie).
+func _apply_coop_hud() -> void:
+	var on := is_local_coop()
+	if on == _coop_hud and coop_plates.visible == on:
+		return
+	_coop_hud = on
+	coop_plates.visible = on
+	_player_plate.visible = not on # fiche du joueur 1 (portrait, PV, XP) : sur sa plaque
+	item_bar.suppressed = on # objets : TAB / Select (inventaire de chacun) ; la colonne garde sa place (chrono centré)
+	if not on:
+		item_bar.relayout()
+	_gold_box.visible = not on # or individuel : sur chaque plaque
+	_apply_mode() # barre de sorts, jauge, badge du passif, mise en page
+
+
+## Fiche du joueur 1 que le HUD dessine encore (faux en coop locale : les plaques prennent le relais). Tests.
+func coop_hud_active() -> bool:
+	return _coop_hud
 
 
 ## Branche or, XP, niveau et scories sur le PlayerState du joueur LOCAL (LocalState : RunState.local() en solo).
@@ -355,6 +397,9 @@ func _build() -> void:
 	root.add_child(overhead)
 	ally_bars = AllyBars.new() # coop : PV des alliés (teinte d'équipe), vide en solo
 	root.add_child(ally_bars)
+	coop_plates = CoopPlates.new() # coop locale PC : plaques des joueurs (masquées en solo)
+	coop_plates.visible = false
+	root.add_child(coop_plates)
 
 	# Couche tactile (joystick, boutons de sorts, Interagir) : visible seulement en mode tactile.
 	touch_layer = Control.new()
@@ -674,6 +719,8 @@ func _apply_layout() -> void:
 	touch_gauge.apply_scale(s)
 	passive_badge.apply_scale(s)
 	passive_badge.sync_input_mode()
+	if _coop_hud:
+		passive_badge.visible = false
 	omen_badge.sync_input_mode()
 	touch_gauge.mouse_filter = Control.MOUSE_FILTER_STOP if Platform.input_mode == Platform.InputMode.TOUCH else Control.MOUSE_FILTER_IGNORE
 	bar_dodge_key.set_height(56.0 * s)
@@ -682,6 +729,9 @@ func _apply_layout() -> void:
 	_spell_bar.offset_bottom = -int(24 * s)
 	# invite d'interaction : au-dessus de la barre de sorts quand elle est affichée
 	_prompt_panel.offset_bottom = -int((70.0 + 180.0) * s) if _spell_bar.visible else -int(70 * s)
+	coop_plates.ui_scale = s
+	if _coop_hud: # au-dessus de la rangée des plaques
+		_prompt_panel.offset_bottom = -int(vp.y - coop_plates.top_y() + 20.0 * s)
 	_layout_help(s)
 
 	pause_button.apply_scale(s)
@@ -790,7 +840,7 @@ func _apply_mode() -> void:
 	var touch: bool = Platform.input_mode == Platform.InputMode.TOUCH
 	touch_layer.visible = touch
 	touch_gauge.mouse_filter = Control.MOUSE_FILTER_STOP if touch else Control.MOUSE_FILTER_IGNORE
-	_spell_bar.visible = not touch
+	_spell_bar.visible = not touch and not _coop_hud # coop locale : sorts de chacun sur sa plaque
 	for i in bar_keys.size():
 		bar_keys[i].set_action(StringName("spell_%d" % (i + 1)), "Auto" if i == 0 else "")
 	bar_dodge_key.set_action(&"dodge")
@@ -1279,6 +1329,8 @@ func _update_interact() -> void:
 			_hold_t = 0.0
 			_hold_done = false
 			# l'appui reste dans la file : un appui fait pendant une pause ne se rejoue pas à la reprise
+		elif _coop_hud:
+			pass # coop locale : chaque joueur interagit avec SA source (PlayerInteract, posé par Main) ; ici l'invite seule
 		elif hold_s <= 0.0:
 			if Input.is_action_just_pressed("interact"):
 				var tgt := interact_target
@@ -1297,6 +1349,8 @@ func _update_interact() -> void:
 				if not is_instance_valid(tgt) or tgt.is_queued_for_deletion():
 					interact_target = null
 	var progress := 1.0 if _hold_done else (clampf(_hold_t / hold_s, 0.0, 1.0) if hold_s > 0.0 else 0.0)
+	if _coop_hud and player != null and is_instance_valid(player) and "interaction" in player:
+		progress = (player.get(&"interaction") as PlayerInteract).progress
 	if interact_target == null:
 		interact_button.update_target(null)
 	else:

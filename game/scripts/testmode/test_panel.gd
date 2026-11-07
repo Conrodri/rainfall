@@ -1085,6 +1085,44 @@ func _build_cheats() -> void:
 	_set_btn_icon(gold, ICON_GOLD)
 	gold.name = "GoldPlus"
 	acts.add_child(_expand(gold))
+	_build_coop_join()
+
+
+## Coop locale (étape 4) : ajoute un joueur à la manette en cours de partie pour vérifier caméra commune, plaques,
+## visée au stick droit, inventaire par joueur. Le bouton arme CoopLocal : la prochaine manette LIBRE qui appuie sur
+## A ou Start rejoint (le joueur 1 passe au clavier-souris, ou à l'autre manette si l'on joue à la manette).
+func _build_coop_join() -> void:
+	if not Platform.is_pc() and not OS.has_feature("editor"):
+		return
+	var cl: CoopLocal = _coop_local()
+	if cl == null:
+		return
+	var join := _btn("Ajouter un joueur (manette)", func() -> void:
+		if Players.count() >= Balance.MULTI_MAX_PLAYERS:
+			say("Partie pleine (4 joueurs).")
+			return
+		cl.arm_join()
+		say("Appuyez sur A ou Start sur une manette libre pour rejoindre (%d connectée(s), %d libre(s))." % [Input.get_connected_joypads().size(), CoopLocal.free_pads().size()]))
+	join.name = "CoopJoin"
+	_body.add_child(join)
+	if not cl.player_joined.is_connected(_on_coop_joined):
+		cl.player_joined.connect(_on_coop_joined)
+	_body.add_child(_note("Coop locale : la manette rejoint comme joueur %d ; caméra commune, plaques en bas, Select = inventaire de ce joueur, Start = pause pour tous." % (Players.count() + 1)))
+
+
+func _coop_local() -> CoopLocal:
+	var scene := get_tree().current_scene
+	for host: Node in [scene, get_tree().root]:
+		if host == null:
+			continue
+		var n := host.find_child("CoopLocal", true, false)
+		if n is CoopLocal:
+			return n
+	return null
+
+
+func _on_coop_joined(slot: int) -> void:
+	say("Joueur %d ajouté (manette %d)." % [slot + 1, Players.input_of(slot).device + 1 if Players.input_of(slot) != null else 0])
 
 
 ## Présage d'étage actif (scripts/omens/) : aucun en mode test sauf si on le force ici. Les effets suivent aussitôt

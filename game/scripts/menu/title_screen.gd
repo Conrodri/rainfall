@@ -19,6 +19,8 @@ signal history_requested
 signal shop_requested ## Boutique de skins (rubis)
 ## Mode test (À RETIRER OU MASQUER AVANT LA SORTIE) : arène d'invocation, triches ; rien n'est écrit au profil.
 signal test_mode_requested
+## Coop locale PC (étape 4) : écran de jonction des manettes (CoopLobbyScreen). Bouton visible sur PC seulement.
+signal coop_local_requested
 signal quit_requested
 signal quick_start_requested(config: Dictionary) ## {character, mode, spells} : relance du dernier personnage
 
@@ -67,6 +69,7 @@ var achievements_button: Button
 var history_button: Button ## « Historique » : parties passées, records, objets, skins
 var shop_button: Button ## « Boutique » : skins payés en rubis
 var quit_button: Button
+var coop_button: Button ## « Coop locale » (PC seulement, null ailleurs)
 var ruby_label: Label
 var toast_label: Label
 var hints_label: Label
@@ -315,7 +318,14 @@ func _rebuild_column() -> void:
 	settings_button.name = "Settings"
 	credits_button = sc[1]
 	credits_button.name = "Credits"
-	var test_button := _add_sub("Mode test", func(): test_mode_requested.emit()) # À RETIRER OU MASQUER AVANT LA SORTIE
+	var test_button: MenuBtn
+	if Platform.is_pc(): # coop locale (manettes sur un PC) : PC seulement ; partage la ligne du mode test
+		var ct := _add_pair("Coop locale", func(): coop_local_requested.emit(), "Mode test", func(): test_mode_requested.emit())
+		coop_button = ct[0]
+		coop_button.name = "CoopLocal"
+		test_button = ct[1]
+	else:
+		test_button = _add_sub("Mode test", func(): test_mode_requested.emit()) # À RETIRER OU MASQUER AVANT LA SORTIE
 	test_button.name = "TestMode"
 	if Platform.can_quit() and not ios_override:
 		quit_button = _add_sub("Quitter", _on_quit_pressed)
