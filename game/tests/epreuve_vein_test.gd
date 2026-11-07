@@ -91,9 +91,9 @@ func _run() -> void:
 # --- Constantes locales et validation de longueur
 func _check_static() -> void:
 	print("-- constantes et longueur")
-	_check("télégraphe du geyser >= 0,8 s", EpreuveVein.VEIN_GEYSER_TELEGRAPH_S >= 0.8)
-	_check("rayon 6 u, vitesse 1,5 u/s, charge 30 s", EpreuveVein.VEIN_RADIUS_U == 6.0 and EpreuveVein.VEIN_SPEED_U == 1.5 and EpreuveVein.VEIN_CHARGE_S == 30.0)
-	_check("geyser : 6 s, rayon 2 u, 3 u devant, coef 1,0", EpreuveVein.VEIN_GEYSER_EVERY_S == 6.0 and EpreuveVein.VEIN_GEYSER_RADIUS_U == 2.0 and EpreuveVein.VEIN_GEYSER_AHEAD_U == 3.0 and EpreuveVein.VEIN_GEYSER_COEF == 1.0)
+	_check("télégraphe du geyser >= 0,8 s", Balance.VEIN_GEYSER_TELEGRAPH_S >= 0.8)
+	_check("rayon 6 u, vitesse 1,5 u/s, charge 30 s", Balance.VEIN_RADIUS_U == 6.0 and Balance.VEIN_SPEED_U == 1.5 and Balance.VEIN_CHARGE_S == 30.0)
+	_check("geyser : 6 s, rayon 2 u, 3 u devant, coef 1,0", Balance.VEIN_GEYSER_EVERY_S == 6.0 and Balance.VEIN_GEYSER_RADIUS_U == 2.0 and Balance.VEIN_GEYSER_AHEAD_U == 3.0 and Balance.VEIN_GEYSER_COEF == 1.0)
 	_check("note : cible 40 s, la veine n'est pas un verbe partagé", is_equal_approx(float(Balance.EPREUVE_TARGET_S[&"veine"]), 40.0))
 	var u := Balance.UNIT_PX
 	var sq := _square(Vector2.ZERO, 12.0)

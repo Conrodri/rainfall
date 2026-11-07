@@ -1,27 +1,16 @@
 class_name EpreuveVein
 extends Epreuve
 ## Veine (docs/Design_Epreuves.md §3.4, Gouffre et Cryptes) : à la source (EpreuveVeinSource, « Suivre la veine »), un
-## DISQUE de lumière de rayon VEIN_RADIUS_U glisse à VEIN_SPEED_U le long de `vein_path` (boucle continue si `closed`,
-## aller-retour sinon). La charge (VEIN_CHARGE_S) n'avance que si un joueur vivant est DANS le disque (coop : au prorata
-## des vivants dedans, plancher Balance.COOP_CHARGE_FLOOR) et ne retombe jamais. Toutes les VEIN_GEYSER_EVERY_S, un geyser
-## est annoncé SUR le tracé, VEIN_GEYSER_AHEAD_U devant le centre du disque (télégraphe >= 0,8 s) : un joueur dedans à
+## DISQUE de lumière de rayon Balance.VEIN_RADIUS_U glisse à Balance.VEIN_SPEED_U le long de `vein_path` (boucle continue si `closed`,
+## aller-retour sinon). La charge (Balance.VEIN_CHARGE_S) n'avance que si un joueur vivant est DANS le disque (coop : au prorata
+## des vivants dedans, plancher Balance.COOP_CHARGE_FLOOR) et ne retombe jamais. Toutes les Balance.VEIN_GEYSER_EVERY_S, un geyser
+## est annoncé SUR le tracé, Balance.VEIN_GEYSER_AHEAD_U devant le centre du disque (télégraphe >= 0,8 s) : un joueur dedans à
 ## l'éruption reçoit un coup de mini-boss (une fois par geyser et par joueur) et la note « parfait » est perdue. Charge
 ## pleine : le disque s'arrête, le mini-boss apparaît (base Epreuve : BOSS_OFFSET du centre, donc dans le disque).
 ## `global_position` = centre du disque (la zone de monstres et la flèche hors écran le suivent) ; la source est un enfant
 ## recalé pour rester fixe. Visuel provisoire : disque et anneau sur l'EpreuveOverlay, source en losange.
 
-# TODO E0 : Balance.<NOM> pour chaque constante (valeurs de docs/Design_Epreuves.md §8)
-const VEIN_RADIUS_U := 6.0 # TODO E0 : Balance.VEIN_RADIUS_U
-const VEIN_SPEED_U := 1.5 # TODO E0 : Balance.VEIN_SPEED_U
-const VEIN_CHARGE_S := 30.0 # TODO E0 : Balance.VEIN_CHARGE_S
-const VEIN_LOOP_MIN_U := 40.0 # TODO E0 : Balance.VEIN_LOOP_MIN_U
-const VEIN_LOOP_MAX_U := 70.0 # TODO E0 : Balance.VEIN_LOOP_MAX_U
-const VEIN_GEYSER_EVERY_S := 6.0 # TODO E0 : Balance.VEIN_GEYSER_EVERY_S
-const VEIN_GEYSER_RADIUS_U := 2.0 # TODO E0 : Balance.VEIN_GEYSER_RADIUS_U
-const VEIN_GEYSER_TELEGRAPH_S := 1.0 # TODO E0 : Balance.VEIN_GEYSER_TELEGRAPH_S (>= 0,8)
-const VEIN_GEYSER_COEF := 1.0 # TODO E0 : Balance.VEIN_GEYSER_COEF
-const VEIN_GEYSER_AHEAD_U := 3.0 # TODO E0 : Balance.VEIN_GEYSER_AHEAD_U
-const VEIN_ZONE_RADIUS_U := 7.0 # TODO E0 : Balance.VEIN_ZONE_RADIUS_U
+# Réglages : Balance.VEIN_* (docs/Design_Epreuves.md §8).
 const VEIN_GEYSER_ERUPT_S := 0.4 ## durée de l'éruption (pas dans le tableau §8 : constante de présentation)
 
 const COL_FOREST := Color(0.76, 0.48, 1.0) ## améthyste #C27BFF (Gouffre)
@@ -46,7 +35,7 @@ var start_label := "Suivre la veine" ## libellé d'interaction (E0 : lu dans dat
 var source: EpreuveVeinSource = null
 var _pts := PackedVector2Array() ## sommets + fermeture éventuelle
 var _seg_len := PackedFloat32Array()
-var _geyser_left := VEIN_GEYSER_EVERY_S ## s avant le prochain geyser
+var _geyser_left := Balance.VEIN_GEYSER_EVERY_S ## s avant le prochain geyser
 var _gey_phase := GEY_NONE
 var _gey_t := 0.0 ## s restantes de la phase courante
 var _gey_pos := Vector2.ZERO ## repère local de la carte
@@ -66,7 +55,7 @@ static func make(pts: PackedVector2Array, is_closed: bool = true) -> EpreuveVein
 	return e
 
 
-## Longueur (u) d'un tracé, fermeture comprise si `is_closed` : sert à la validation (VEIN_LOOP_MIN_U..VEIN_LOOP_MAX_U).
+## Longueur (u) d'un tracé, fermeture comprise si `is_closed` : sert à la validation (Balance.VEIN_LOOP_MIN_U..VEIN_LOOP_MAX_U).
 static func path_length_u(pts: PackedVector2Array, is_closed: bool) -> float:
 	var total := 0.0
 	for i in range(pts.size() - 1):
@@ -78,7 +67,7 @@ static func path_length_u(pts: PackedVector2Array, is_closed: bool) -> float:
 
 static func length_in_range(pts: PackedVector2Array, is_closed: bool) -> bool:
 	var l := path_length_u(pts, is_closed)
-	return l >= VEIN_LOOP_MIN_U and l <= VEIN_LOOP_MAX_U
+	return l >= Balance.VEIN_LOOP_MIN_U and l <= Balance.VEIN_LOOP_MAX_U
 
 
 func _init() -> void:
@@ -121,11 +110,11 @@ func _tint() -> Color:
 
 
 func zone_radius() -> float:
-	return VEIN_ZONE_RADIUS_U * Balance.UNIT_PX
+	return Balance.VEIN_ZONE_RADIUS_U * Balance.UNIT_PX
 
 
 func disc_radius() -> float:
-	return VEIN_RADIUS_U * Balance.UNIT_PX
+	return Balance.VEIN_RADIUS_U * Balance.UNIT_PX
 
 
 func interact_label() -> String:
@@ -138,7 +127,7 @@ func can_interact() -> bool:
 
 
 func progress() -> float:
-	return clampf(vein_charge / VEIN_CHARGE_S, 0.0, 1.0)
+	return clampf(vein_charge / Balance.VEIN_CHARGE_S, 0.0, 1.0)
 
 
 # --- Géométrie du tracé
@@ -202,7 +191,7 @@ func _begin() -> void:
 	pulses = 0
 	dist_along = 0.0
 	dir = 1
-	_geyser_left = VEIN_GEYSER_EVERY_S
+	_geyser_left = Balance.VEIN_GEYSER_EVERY_S
 	_gey_phase = GEY_NONE
 	_gey_hit_ids.clear()
 	_inside = false
@@ -212,10 +201,10 @@ func _begin() -> void:
 
 
 func _run(delta: float) -> void:
-	advance(VEIN_SPEED_U * Balance.UNIT_PX * delta)
+	advance(Balance.VEIN_SPEED_U * Balance.UNIT_PX * delta)
 	_step_charge(delta)
 	_step_geyser(delta)
-	if vein_charge >= VEIN_CHARGE_S and is_running():
+	if vein_charge >= Balance.VEIN_CHARGE_S and is_running():
 		_resolve()
 
 
@@ -236,7 +225,7 @@ func _step_charge(delta: float) -> void:
 	var rate := vein_rate()
 	_inside = rate > 0.0
 	if _inside:
-		vein_charge = minf(vein_charge + delta * rate, VEIN_CHARGE_S)
+		vein_charge = minf(vein_charge + delta * rate, Balance.VEIN_CHARGE_S)
 	else:
 		out_s += delta
 
@@ -246,9 +235,9 @@ func _step_geyser(delta: float) -> void:
 		GEY_NONE:
 			_geyser_left -= delta
 			if _geyser_left <= 0.0:
-				_gey_pos = point_ahead(VEIN_GEYSER_AHEAD_U * Balance.UNIT_PX)
+				_gey_pos = point_ahead(Balance.VEIN_GEYSER_AHEAD_U * Balance.UNIT_PX)
 				_gey_phase = GEY_TELEGRAPH
-				_gey_t = VEIN_GEYSER_TELEGRAPH_S
+				_gey_t = Balance.VEIN_GEYSER_TELEGRAPH_S
 		GEY_TELEGRAPH:
 			_gey_t -= delta
 			if _gey_t <= 0.0:
@@ -262,7 +251,7 @@ func _step_geyser(delta: float) -> void:
 			_gey_t -= delta
 			if _gey_t <= 0.0:
 				_gey_phase = GEY_NONE
-				_geyser_left = VEIN_GEYSER_EVERY_S
+				_geyser_left = Balance.VEIN_GEYSER_EVERY_S
 
 
 ## Un coup par joueur et par geyser : les joueurs vivants dans le cercle de l'éruption.
@@ -271,7 +260,7 @@ func _erupt_hit() -> void:
 		return
 	var m := get_parent() as Node2D
 	var gp: Vector2 = m.to_global(_gey_pos) if m != null else _gey_pos
-	var r := VEIN_GEYSER_RADIUS_U * Balance.UNIT_PX
+	var r := Balance.VEIN_GEYSER_RADIUS_U * Balance.UNIT_PX
 	for pl: Node2D in Players.alive().duplicate():
 		if _gey_hit_ids.has(pl.get_instance_id()):
 			continue
@@ -283,9 +272,9 @@ func _erupt_hit() -> void:
 				pl.call(&"take_damage", geyser_damage(), self)
 
 
-## Coup d'un geyser : coup de mini-boss de coef VEIN_GEYSER_COEF.
+## Coup d'un geyser : coup de mini-boss de coef Balance.VEIN_GEYSER_COEF.
 func geyser_damage() -> float:
-	return Balance.mini_attack_damage(Balance.boss_damage(&"mini", RunState.difficulty()), VEIN_GEYSER_COEF) # TODO E0 : Balance.vein_geyser_damage(D)
+	return Balance.vein_geyser_damage(RunState.difficulty())
 
 
 func geyser_phase() -> int:
@@ -315,11 +304,11 @@ func _extra_dict() -> Dictionary:
 func _extra_restore(d: Dictionary) -> void:
 	dist_along = clampf(float(d.get("dist", 0.0)), 0.0, length)
 	dir = -1 if int(d.get("dir", 1)) < 0 else 1
-	vein_charge = clampf(float(d.get("charge", 0.0)), 0.0, VEIN_CHARGE_S)
+	vein_charge = clampf(float(d.get("charge", 0.0)), 0.0, Balance.VEIN_CHARGE_S)
 	hits = int(d.get("hits", 0))
 	out_s = float(d.get("out_s", 0.0))
 	pulses = int(d.get("pulses", 0))
-	_geyser_left = float(d.get("geyser_left", VEIN_GEYSER_EVERY_S))
+	_geyser_left = float(d.get("geyser_left", Balance.VEIN_GEYSER_EVERY_S))
 	_gey_phase = GEY_NONE
 	_gey_hit_ids.clear()
 	_place()
@@ -352,9 +341,9 @@ func draw_overlay(c: Node2D) -> void:
 	# geyser : télégraphe rouge qui se renforce, puis flash blanc
 	if _gey_phase != GEY_NONE:
 		var gp := c.to_local(m.to_global(_gey_pos))
-		var gr := VEIN_GEYSER_RADIUS_U * Balance.UNIT_PX
+		var gr := Balance.VEIN_GEYSER_RADIUS_U * Balance.UNIT_PX
 		if _gey_phase == GEY_TELEGRAPH:
-			var k := 1.0 - clampf(_gey_t / VEIN_GEYSER_TELEGRAPH_S, 0.0, 1.0)
+			var k := 1.0 - clampf(_gey_t / Balance.VEIN_GEYSER_TELEGRAPH_S, 0.0, 1.0)
 			c.draw_circle(gp, gr, Color(1.0, 0.25, 0.2, 0.06 + 0.14 * k))
 			c.draw_arc(gp, gr, 0.0, TAU, 48, Color(1.0, 0.3, 0.2, 0.35 + 0.55 * k), 4.0)
 		else:
