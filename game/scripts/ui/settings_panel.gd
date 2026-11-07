@@ -268,7 +268,7 @@ func _build() -> void:
 	_shake = ss[0]
 	_shake_pct = ss[1]
 	_reduce_motion = _add_toggle("Réduire les mouvements", func(on: bool) -> void: GameSettings.set_reduce_motion(on))
-	_zone_full = _add_toggle("Contours de zones complets", func(on: bool) -> void: GameSettings.set_zone_outline_full(on))
+	_zone_full = _add_toggle("Contours des zones de sorts", func(on: bool) -> void: GameSettings.set_zone_outline_full(on))
 	_strong_tel = _add_toggle("Télégraphes renforcés", func(on: bool) -> void:
 		GameSettings.set_strong_telegraphs(on)
 		EnemyTelegraph.refresh_strong()) # effet immédiat (sinon relu après STRONG_REFRESH_MS)

@@ -107,7 +107,7 @@ func _lock() -> void:
 		_mark.rotation = 0.0
 		RaidFx.set_value(_mark, 1.0)
 		RaidFx.set_state(_mark, 1)
-	_zone = ZoneOutline.attach(self, radius_u * RaidKit.U, RaidFx.DANGER if mode != &"return" else RaidFx.CYAN)
+	_zone = ZoneOutline.attach(self, radius_u * RaidKit.U, RaidFx.DANGER if mode != &"return" else RaidFx.CYAN, 0.0, ZoneOutline.Shape.DISC, true)
 	if _zone != null:
 		_zone.emphasize()
 	RaidFx.sfx(&"enemy.raid_fixate_lock.medium", point)

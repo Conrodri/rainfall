@@ -46,7 +46,7 @@ static func spawn(p_boss: Node2D, at: Vector2, opts: Dictionary = {}, p_on_fille
 	RaidKit.world_of(p_boss).add_child(z)
 	z.global_position = RaidKit.place(p_boss, at)
 	z.add_to_group(RaidFx.CUE_GROUP)
-	z._outline = ZoneOutline.attach(z, z.r_u * RaidKit.U, RaidFx.CYAN)
+	z._outline = ZoneOutline.attach(z, z.r_u * RaidKit.U, RaidFx.CYAN, 0.0, ZoneOutline.Shape.DISC, true)
 	if z._outline != null:
 		z._outline.emphasize()
 	z._gauge = RaidFx.attach_ground(z, RaidFx.visual(&"soak_fill", RaidFx.Kind.SOAK, RaidFx.CYAN, z.r_u * RaidKit.U))

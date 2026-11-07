@@ -164,7 +164,7 @@ func _draw() -> void:
 		return
 	var a := clampf(_t / FADE_IN_S, 0.0, 1.0) * clampf((duration - _t) / FADE_OUT_S, 0.0, 1.0)
 	draw_circle(Vector2.ZERO, radius, Color(FILL.r, FILL.g, FILL.b, FILL.a * a))
-	if outline == null: # sans couche de contour (ZoneOutline) : contour jade fin d'avant
+	if outline == null and GameSettings.zone_outline_full(): # sans couche de contour (ZoneOutline) : contour jade fin d'avant
 		var c := spell.color
 		draw_arc(Vector2.ZERO, radius, 0.0, TAU, 64, Color(c.r, c.g, c.b, 0.55 * a), 2.0)
 		draw_arc(Vector2.ZERO, radius * 0.62, 0.0, TAU, 48, Color(c.r, c.g, c.b, 0.18 * a), 1.0)
