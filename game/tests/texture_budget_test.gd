@@ -10,7 +10,8 @@ extends Node
 ##     sur un _e réduit = coordonnées du diffus) ;
 ##  4. import 2D : pas de mipmaps, paramètres conformes à import_policy (VRAM haute qualité, UI lossless) ;
 ##  5. textures embarquées sur mobile (ASTC deflaté comme dans l'APK) <= apk_textures_mb ;
-##  6. planches inutilisées exclues d'Android (android_unused_excluded) : dans le preset et citées par aucun fichier exporté.
+##  6. planches inutilisées exclues d'Android (android_unused_excluded) : dans le preset et citées par aucun fichier exporté ;
+##  7. _e de skins exclus d'Android : identiques au _e du personnage de base, livré, vers lequel NormalMaps retombe.
 ## Lecture des en-têtes PNG et du texte des .tres seulement : aucune texture n'est chargée en mémoire.
 
 const BUDGET_PATH := "res://tests/texture_budget.json"
@@ -121,7 +122,35 @@ func _ready() -> void:
 	var cap := float(budget["apk_textures_mb"])
 	_check(mobile_bytes / MB <= cap, "textures embarquées sur mobile (ASTC deflaté) : %.1f Mo <= %.0f Mo" % [mobile_bytes / MB, cap])
 	_check_unused_excluded(budget.get("android_unused_excluded", []), android_excl)
+	_check_skin_emission_fallback(budget.get("android_unused_excluded", []), android_excl)
 	_finish()
+
+
+## 7. Masques _e de skins exclus d'Android (`…/<perso>/skins/<skin>/<f>_e.png`) : le _e de même nom du personnage
+## de base est livré sur Android et identique octet pour octet, et NormalMaps.resolve_emission_path y retombe quand
+## le _e du skin manque (sinon le skin perdrait son émission sur téléphone).
+func _check_skin_emission_fallback(entries: Array, android_excl: PackedStringArray) -> void:
+	var bad: Array[String] = []
+	var n := 0
+	for e: String in entries:
+		var i := e.find("/skins/")
+		if i < 0 or not e.ends_with("_e.png") or e.ends_with("*"):
+			continue
+		if _export_excluded(e.trim_suffix("_e.png") + ".png", android_excl):
+			continue # diffus exclu lui aussi (planche inutilisée entière) : aucun repli nécessaire
+		var j := e.find("/", i + 7)
+		var base := e.substr(0, i) + e.substr(j)
+		n += 1
+		if _export_excluded(base, android_excl):
+			bad.append("%s : %s exclu aussi" % [e, base])
+		elif FileAccess.get_file_as_bytes("res://" + e) != FileAccess.get_file_as_bytes("res://" + base):
+			bad.append("%s != %s" % [e, base])
+	# Repli : un skin sans _e (cas Android) prend le _e du personnage de base ; un skin qui a le sien le garde.
+	var fake := NormalMaps.resolve_emission_path("res://assets/sprites/characters/averse/skins/_sans_e/idle.png")
+	var own := NormalMaps.resolve_emission_path("res://assets/sprites/characters/averse/skins/averse_skin1/idle.png")
+	_check(n > 50 and bad.is_empty(), "%d _e de skins exclus d'Android = _e du personnage de base livré %s" % [n, bad.slice(0, 5)])
+	_check(fake == "res://assets/sprites/characters/averse/idle_e.png" and own == "res://assets/sprites/characters/averse/skins/averse_skin1/idle_e.png",
+		"repli NormalMaps.resolve_emission_path du _e de skin vers le personnage de base (%s, %s)" % [fake, own])
 
 
 ## 6. Planches inutilisées exclues d'Android (android_unused_excluded) : chaque entrée figure dans le
