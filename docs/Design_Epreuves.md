@@ -321,10 +321,10 @@ Fusion : E0 d'abord ; E1, E2, E3 en parallèle (fichiers disjoints, un `match` �
 
 ---
 
-## 14. Questions ouvertes pour le joueur
+## 14. Décisions du joueur (07/11/2026)
 
-1. **Cryptes = mêmes verbes que le Gouffre** (Veine + Poursuite, tracés et habillage différents), comme prévu par la refonte ; ou un verbe propre aux Cryptes plus tard (ex. « Procession » : porter une lanterne qui s'éteint hors des cristaux) ? Reco : garder la paire, mesurer la lassitude dans `RunLog`.
-2. **Sans fin** : épreuves aux étages 6-9 (reco : oui, `EPREUVE_IN_ENDLESS` true) ?
-3. **Rubis cosmétiques** : 1 rubis par « parfait », plafond 8 par run (reco : oui, valeur par défaut 0 tant que non tranché) ?
-4. **Tenue en coop** : PV de la cloche × 1,3 / 1,6 / 1,9 à 2 / 3 / 4 joueurs, ou PV fixes et paquets × n ? Reco : PV scalés (moins de monstres à l'écran sur mobile).
-5. **Bascule** : `EPREUVES_ENABLED = true` dès la fusion d'E0-E5 (reco), ou après la livraison des assets Codex EP-B à EP-E (placeholders visibles sinon) ?
+1. **Cryptes** : même paire que le Gouffre (Veine + Poursuite), tracés et habillage propres ; lassitude mesurée dans `RunLog`.
+2. **Sans fin** : épreuves aux étages 6-9 (`EPREUVE_IN_ENDLESS = true`).
+3. **Rubis** : 1 rubis par épreuve « parfaite », plafond 8 par run.
+4. **Tenue en coop** : PV de la cloche × 1,3 / 1,6 / 1,9 à 2 / 3 / 4 joueurs, paquets inchangés.
+5. **Bascule** : `EPREUVES_ENABLED = true` dès la fusion d'E0-E5 (placeholders visibles jusqu'aux assets Codex).
