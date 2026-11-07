@@ -998,6 +998,7 @@ func _set_ready_fx(on: bool) -> void:
 	if _ready_light != null:
 		_ready_light.set_enabled(on)
 	if on and not _was_full and player != null:
+		Audio.play_ui(&"vigie_guet_full")
 		LightRig.flash(player.global_position, &"vigie_tension", 0.25, {"radius": 1.6})
 	_was_full = on
 

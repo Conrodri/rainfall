@@ -476,6 +476,7 @@ func join(key: String, kind: String, device: int) -> int:
 	var at := 0 if kind == "kbm" else slots.size()
 	slots.insert(at, s)
 	_pick_skin(at)
+	Audio.play_ui(&"lobby_join")
 	_cancel_countdown()
 	_refresh()
 	return at
@@ -504,6 +505,8 @@ func set_ready(i: int, on: bool) -> void:
 	if i < 0 or i >= slots.size():
 		return
 	slots[i]["ready"] = on
+	if on:
+		Audio.play_ui(&"lobby_ready")
 	if all_ready():
 		countdown = LAUNCH_S
 	else:
@@ -591,10 +594,13 @@ func _cancel_countdown() -> void:
 func _process(delta: float) -> void:
 	if launched or countdown < 0.0:
 		return
+	var prev_sec := ceili(countdown)
 	countdown -= delta
 	if countdown <= 0.0:
 		launch()
 	else:
+		if ceili(countdown) != prev_sec:
+			Audio.play_ui(&"lobby_tick")
 		_count_label.text = "Lancement dans %d…" % ceili(countdown)
 
 
@@ -615,6 +621,7 @@ func launch() -> void:
 		return
 	launched = true
 	countdown = -1.0
+	Audio.play_ui(&"lobby_go")
 	start_requested.emit(party_config())
 
 

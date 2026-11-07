@@ -738,6 +738,7 @@ static func _any_pad_start(event: InputEvent) -> bool:
 func notify_pad_lost(slot: int) -> void:
 	if not is_inside_tree():
 		return
+	Audio.play_ui(&"pad_lost")
 	if inventory_mode and is_open:
 		close_items() # inventaire coop (sans pause) : le menu pause prend sa place
 	if counting_down:
@@ -754,6 +755,7 @@ func notify_pad_lost(slot: int) -> void:
 ## (coche). Le jeu reste en pause, le joueur reprend lui-même. Sans bandeau « perdu » affiché : sans effet.
 func notify_pad_restored(slot: int) -> void:
 	if is_open and _alert_state == &"lost":
+		Audio.play_ui(&"pad_restored")
 		_show_alert(&"restored", slot)
 
 

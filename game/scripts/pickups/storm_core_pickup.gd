@@ -105,7 +105,18 @@ func _on_collected(_g: GroundPickup) -> void:
 		return
 	state.pending_catalysts = maxi(state.pending_catalysts - 1, 0)
 	state.add_catalyst(1)
+	_play_gain_sound()
 	_announce()
+
+
+## Son de gain : seulement pour un joueur local.
+func _play_gain_sound() -> void:
+	if not is_inside_tree():
+		return
+	var e: Variant = Players.entry(state.slot) if Players.count() > 1 else null
+	if e != null and not e.is_local:
+		return
+	Audio.play_ui(&"storm_core_gain")
 
 
 ## Annonce de ramassage : toast d'AchievementToast (hébergé par MetaTracker) « Noyau d'orage +1 » et compteur x/2.

@@ -456,6 +456,7 @@ func do_craft() -> Dictionary:
 	var res := Forge.craft(get_tree(), _pending_recipe.get("id", &""), _pending_ids, _st())
 	if bool(res["ok"]):
 		var item: StringName = res["item"]
+		Audio.play_ui(&"forge_craft")
 		refresh()
 		say("Forgé : %s" % str(ItemDB.get_item(item).get("name", item)), true)
 		crafted.emit(item)

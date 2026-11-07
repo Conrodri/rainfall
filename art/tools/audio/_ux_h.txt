@@ -1,0 +1,20 @@
+RACINE : C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-ab9fa8d1f24592e33 (travailler UNIQUEMENT ici ; jamais dans C:\Users\const\Documents\Rainfall hors de .claude\worktrees). Chemins ci-dessous relatifs à cette racine.
+OBJECTIF : lot audio UX-H, 12 sons UI de synthèse procédurale, style des sons UI existants.
+TOUCHER : art/tools/audio/gen_ux.py (nouveau, copier la structure de art/tools/audio/gen_ui.py : trim_tail, mix, wet, glass, sl.finish_oneshot, ac.write_ogg), art/tools/audio/ux_manifest.json (sortie), game/assets/audio/ui/*.ogg, game/assets/audio/epreuves/*.ogg.
+NE PAS LIRE : docs/, CLAUDE.md, autres gen_*.py (sauf gen_ui.py ; synth_lib.py par grep).
+SONS (ogg 44,1 kHz, <= 1,2 s sauf mention, 2 variantes _01/_02 chacun, crête ~ -2 dBFS, RMS ~ -20 dB comme ui_spell_ready) :
+- ui/lobby_join_NN.ogg : tintement montant bref (quinte, verre), accueil.
+- ui/lobby_ready_NN.ogg : deux notes montantes brillantes + petit déclic, validation.
+- ui/lobby_tick_NN.ogg : tic sec 0,12 s, bois/métal mat, neutre (répété chaque seconde).
+- ui/lobby_go_NN.ogg : départ, accord plein + balayage ascendant + coup sourd, 1,2 s.
+- ui/pad_lost_NN.ogg : deux notes descendantes mates, 0,5 s, un peu alarmant sans agresser.
+- ui/pad_restored_NN.ogg : deux notes montantes claires, 0,45 s.
+- ui/forge_craft_NN.ogg : frappe d'enclume/marteau métallique + scintillement aigu, 1,2 s.
+- ui/storm_core_gain_NN.ogg : crépitement électrique bref + note cristalline montante, 0,9 s.
+- ui/vigie_guet_full_NN.ogg : discret, une note de souffle/cloche aiguë douce 0,5 s, volume bas (RMS ~ -26).
+- epreuves/epreuve_grade_parfait_NN.ogg : fanfare cristalline 3 notes montantes + scintillement, 1,5 s max (la plus brillante des trois).
+- epreuves/epreuve_grade_bien_NN.ogg : 2 notes montantes, plus sobre, 1,2 s.
+- epreuves/epreuve_grade_fait_NN.ogg : 1 note ronde puis déclic, 0,8 s, la plus modeste.
+Nommage exact <id>_01.ogg, <id>_02.ogg. Lancer : uv run --with numpy --with scipy python art/tools/audio/gen_ux.py. Écrire ux_manifest.json (path, duration_s, peak_dbfs, rms_dbfs).
+VÉRIF : script résumé : durée, crête <= -1,5 dB, pas de clipping, fichiers non vides, 2 variantes différentes.
+RAPPORT (6 lignes max, ultracave) : fichiers, durées, poids, problèmes.
