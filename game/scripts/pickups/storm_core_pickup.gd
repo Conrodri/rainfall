@@ -8,10 +8,14 @@ extends GroundPickup
 
 const TEX_PATH := "res://assets/sprites/pickups/storm_core.png"
 const ICON_PATH := "res://assets/sprites/icons/storm_core.png"
+const EMIT_PATH := "res://assets/sprites/pickups/storm_core_e.png" ## masque d'émission (additif, non éclairé)
+const SHADOW_PATH := "res://assets/sprites/pickups/storm_core_shadow.png" ## ombre cuite (même cadrage que le diffus)
+const EMIT_ENERGY := 1.4
 const NEVER_S := 1.0e9
 
 var state: PlayerState = null
 var _vis: Sprite2D = null
+var _emit: Sprite2D = null
 
 
 ## Pose un noyau pour `st` (porté par `owner_node`) à `at` si la place le permet. Retourne le pickup, ou null si
@@ -55,8 +59,28 @@ func _make_core_visual() -> void:
 	_vis = Sprite2D.new()
 	_vis.texture = load(TEX_PATH)
 	_vis.scale = Iso.UNSQUASH * Iso.SPRITE_K
-	_vis.offset = Vector2(0.0, -float(_vis.texture.get_height()) * 0.25)
+	_vis.offset = Vector2(0.0, -float(_vis.texture.get_height()) * 0.32) # le point d'appui du noyau (bas de la sphère, ~y 80/96) tombe sur l'origine du nœud
+	if ResourceLoader.exists(SHADOW_PATH): # ombre cuite : décalque sous le noyau, même cadrage, jamais éclairé
+		var sh := Sprite2D.new()
+		sh.name = &"BakedShadow"
+		sh.texture = load(SHADOW_PATH)
+		sh.scale = _vis.scale
+		sh.offset = _vis.offset
+		sh.light_mask = 0
+		sh.z_index = -1
+		add_child(sh)
 	add_child(_vis)
+	if ResourceLoader.exists(EMIT_PATH): # émission cyan par-dessus, additive, indépendante de l'éclairage 2D
+		_emit = Sprite2D.new()
+		_emit.name = &"Emission"
+		_emit.texture = load(EMIT_PATH)
+		_emit.offset = _vis.offset # enfant de _vis : échelle et teinte héritées, seul le décalage se répète
+		var cm := CanvasItemMaterial.new()
+		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		cm.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		_emit.material = cm
+		_emit.modulate = Color(EMIT_ENERGY, EMIT_ENERGY, EMIT_ENERGY, 1.0)
+		_vis.add_child(_emit)
 	# Coop : teinte de la couleur d'équipe du propriétaire (Palette.team_color, redondance : le chiffre est sur la plaque).
 	var base := Color.WHITE
 	if Players.count() > 1 and state != null:
