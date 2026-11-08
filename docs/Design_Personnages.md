@@ -5,6 +5,7 @@
 > Contrôles (CLAUDE.md) : sort 1 automatique partout ; PC : sorts 2-4 visent la souris (clic gauche = sort 2, clic droit = sort 3, clic molette = sort 4, touches 2-4 en secours) ; manette : stick droit, sinon l'ennemi le plus proche ; mobile : ciblage automatique, 3 boutons. DA : `art/briefs/STYLE.md` + `STYLE_boss_da.md` (PBR usé, palette sombre, **un** accent émissif) ; rendu rig CREA iso 30°, 8 directions `e, se, s, sw, w, nw, n, ne`, cadre joueur 192² à R = 90,51 px/u (`docs/Design_Isometrique.md` §4.4).
 
 Sommaire : 1. **Tocsin** (le robot démontable, fiche complète) · 2. Cinq autres personnages (Averse, Arpenteuse, Rainette, Avare, Bourbe) · 2.6 **Rictus** (le pantin du Montreur, fiche complète) · 3. Tableau comparatif, ordre de production, systèmes à ajouter.
+Fiches autonomes : `docs/fiches/vigie.md`, `docs/fiches/morfil.md` (Taliant), `docs/fiches/gresille.md` (**Grésille**, la paratonnerrière : 11e personnage proposé, électricité, 08/11/2026). Lore du monde et des dix Porteurs : `docs/Lore.md`.
 
 ---
 
