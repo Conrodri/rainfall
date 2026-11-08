@@ -311,7 +311,7 @@ Les nombres sont identiques dans les deux modes : la difficulté du Difficile vi
      "text": "Pas de coffre de boss à cet étage. Coffres et forge 20 % moins chers.",
      "effects": {"boss_chest": false, "chest_price_mult": 0.8}},
     {"id": "maree", "name": "Marée", "group": "butin", "floors": [2, 3, 4],
-     "text": "Plus de monstres, donc plus d'or et d'XP.",
+     "text": "+25 % de monstres (+15 % à l'étage 2), donc plus d'or et d'XP.",
      "effects": {"director_credit_mult": 1.25},
      "effects_by_floor": {"2": {"director_credit_mult": 1.15}}}
   ],
