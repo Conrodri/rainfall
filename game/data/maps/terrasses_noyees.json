@@ -223,7 +223,21 @@
  "ambient_event": {
   "threshold_difficulty": 2.5,
   "name": "Bassins débordants",
-  "effect": "visuel : les cases ',' du sud s'élargissent d'1 u"
+  "effect": "visuel : les cases ',' du sud s'élargissent d'1 u",
+  "effects": [
+   {
+    "type": "flood",
+    "from": ",",
+    "region_u": [
+     0,
+     54,
+     64,
+     72
+    ],
+    "extend_u": 1.0,
+    "rise_s": 12
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

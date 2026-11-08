@@ -23,6 +23,10 @@ var _fall_px := 0.0
 var _gust_t := 0.0
 var _view := Rect2()
 var _defs: Array = []
+## Événements ambiants (AmbientEvents) : multiplicateur de quantité par nom de système (`name` du profil, ex.
+## « poussière » éteinte par « Puits voilés ») et poussée de vent (px/s²) sur les particules légères (bouffées).
+var _particle_mult: Dictionary = {}
+var _push := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -103,6 +107,9 @@ func _rebuild() -> void:
 		node.z_index = Z_AMBIENT - Z_RAIN
 		add_child(node)
 		ambient.append({"node": node, "def": def, "slot": i, "max": mx})
+	var push := _push
+	_push = Vector2.INF
+	set_gust_push(push) # systèmes reconstruits (palier de qualité) : la bouffée en cours garde sa poussée
 
 
 ## Mise à jour par image : rectangle de vue (monde), paramètres lissés, delta.
@@ -147,12 +154,42 @@ func update_weather(view: Rect2, p: Dictionary, delta: float) -> void:
 		node.position = center
 		_set_box(node, view.size * 0.5 + Vector2(VIEW_MARGIN, VIEW_MARGIN))
 		var amount := float(p[[&"p1_amount", &"p2_amount", &"p3_amount"][int(a["slot"])]])
+		if not _particle_mult.is_empty():
+			amount *= float(_particle_mult.get(String((a["def"] as Dictionary).get("name", "")), 1.0))
 		set_ratio(node, amount / float(a["max"]))
 		var def: Dictionary = a["def"]
 		if StringName(def.get("behavior", &"")) == &"wind":
 			var sp := float(def.get("speed_u", 1.0)) * U * float(p[&"wind_mult"])
 			_set_dir(node, Vector2.from_angle(deg_to_rad(200.0))) # vent de la carte 3 : 200-230°
 			_set_vel(node, sp * 0.8, sp * 1.2)
+
+
+## Multiplicateur de quantité d'un système d'ambiance du profil, par son nom (1 = profil ; 0 = éteint).
+func set_particle_mult(system_name: String, mult: float) -> void:
+	if is_equal_approx(mult, 1.0):
+		_particle_mult.erase(system_name)
+	else:
+		_particle_mult[system_name] = mult
+
+
+## Poussée de vent (px/s², repère monde) sur les particules d'ambiance légères (comportements autres que « fall » :
+## spores, poussière, cendres, lucioles). Vector2.ZERO la retire. Aucune allocation : gravité du matériau existant.
+func set_gust_push(v: Vector2) -> void:
+	if v.is_equal_approx(_push):
+		return
+	_push = v
+	for a in ambient:
+		if StringName((a["def"] as Dictionary).get("behavior", &"")) == &"fall":
+			continue
+		var n: Node2D = a["node"]
+		if n is GPUParticles2D:
+			((n as GPUParticles2D).process_material as ParticleProcessMaterial).gravity = Vector3(v.x, v.y, 0.0)
+		elif n is CPUParticles2D:
+			(n as CPUParticles2D).gravity = v
+
+
+func gust_push() -> Vector2:
+	return _push
 
 
 ## Nombre de particules d'ambiance max configurées (tests de budget).

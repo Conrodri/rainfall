@@ -212,7 +212,31 @@
  "ambient_event": {
   "threshold_difficulty": 2.5,
   "name": "Vent de gouffre",
-  "effect": "visuel et sonore : bouffées de vent froid dans les galeries (spores et brume qui filent, mycélium qui vacille, souffle grave) toutes les 20-30 s ; aucun effet de jeu"
+  "effect": "visuel et sonore : bouffées de vent froid dans les galeries (spores et brume qui filent, mycélium qui vacille, souffle grave) toutes les 20-30 s ; aucun effet de jeu",
+  "effects": [
+   {
+    "type": "gusts",
+    "gap_s": [
+     20,
+     30
+    ],
+    "duration_s": 4,
+    "wind": 2.0,
+    "push_deg": 200,
+    "push_u": 1.5,
+    "flicker_preset": "mycelium_glow",
+    "flicker": [
+     0.08,
+     2.0
+    ],
+    "streaks": [
+     0,
+     16,
+     32
+    ],
+    "sound": "amb.gust"
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

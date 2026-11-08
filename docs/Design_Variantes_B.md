@@ -19,7 +19,7 @@ Lu dans `tools/gen_maps.py`, `scripts/stage/stage_map.gd`, `stage_manager.gd`, `
 - Une poche de `.` entourée de `#` est exclue des apparitions et des capsules (`NavField`, `is_reachable_local`) : c'est ainsi que les **salles secrètes** sont posées ici, porte comprise en `#`, en attendant le code des secrets.
 - Le téléporteur se pose sous le gros pilier tiré (`TELEPORTER_OFFSET` = (0, 300) px logiques ≈ +3,3 u / +3,3 u en repère carte) : chaque `G` des B a cette case libre.
 - Les props sont **par biome** (`props/<biome>/props.json`), jamais par carte ; les « props fixes » (`fixed`) s'appliqueraient à toutes les variantes du biome. **Besoin de code** si l'on veut un jour des props propres à B (§7).
-- Les clés `secrets` et `hour_shift_min` ajoutées aux JSON B ne sont lues par aucun code aujourd'hui (données pour les lots secrets et ambiance) ; `ambient_event` et `events.types` ne sont, eux non plus, lus par aucun script (texte de design, comme dans les A).
+- Les clés `secrets` et `hour_shift_min` ajoutées aux JSON B ne sont lues par aucun code aujourd'hui (données pour les lots secrets et ambiance) ; `events.types` n'est lu par aucun script (texte de design, comme dans les A). `ambient_event` est lu depuis le 08/11/2026 (§7.2).
 
 ## 1. Règles communes aux quatre B (identiques aux A)
 
@@ -371,8 +371,8 @@ Pas de soleil, donc pas de décalage horaire : la nuance de B est le **puits de 
 | Caractères `D` (porte scellée, collision séparée) et `:` (sol scellé) | les salles secrètes sont fermées en `#` ; la porte est décrite dans `secrets.door_cells` | Design_Zones_Secretes §4.1, `gen_maps.py`, `StageMap` |
 | Recopie de `secrets` / `hour_shift_min` | régénération sans perte | `gen_maps.py` |
 | ~~Props fixes **par carte**~~ **livré (08/11/2026)** | `props.json` est par biome : un `fixed` toucherait A et B | clé `props_fixed` du JSON de carte, `StageMap._build_props_fixed`, recopiée par `gen_maps.py` ; format et placements : §7.1 |
-| Pluie locale (colonne sous le puits de l'Ossuaire) | la pluie est un calque global | `AmbianceManager` |
-| Événement ambiant par carte | `ambient_event` n'est lu par aucun script (A comprises) | AmbianceManager / Audio |
+| ~~Pluie locale (colonne sous le puits de l'Ossuaire)~~ **livré (08/11/2026)** | la pluie est un calque global | effet `local_rain` de l'événement de l'Ossuaire, §7.2 |
+| ~~Événement ambiant par carte~~ **livré (08/11/2026)** | `ambient_event` n'était lu par aucun script (A comprises) | `scripts/ambiance/events/`, liste `ambient_event.effects` du JSON de carte, §7.2 |
 
 ### 7.1 Props fixes par carte (livré le 08/11/2026)
 
@@ -394,6 +394,32 @@ Décision du joueur (06/11/2026) : les props propres aux B sont produits avant l
 | Ossuaire | `well_rim` (10;20) 2×2 à la rive du bassin du puits ; `crypt_stairs` (9;7), (18;13) miroir, (9;28), (13;6) sur les fentes des murs de galerie |
 
 Règles tenues (test `tests/props_fixed_test`) : emprise entièrement sur du sol, jamais sur ou contre (1 case pour les props à collision) un départ, coffre, pilier, événement, salle / porte / plaque / gardien / déclencheur du secret, repère d'épreuve ; 3 cases autour d'un gros pilier (téléporteur) ; pas de chevauchement entre props à collision ; chemin du départ vers tous les repères conservé même avec une case de marge autour de chaque prop à collision ; cartes A et Source sans `props_fixed`.
+
+### 7.2 Événements ambiants par carte (livré le 08/11/2026)
+
+Purement visuels et sonores : aucun effet de jeu. L'événement démarre quand `RunState.difficulty()` franchit son seuil et s'arrête s'il redescend (mode sans fin, test) ; certains effets ne démarrent qu'à un palier plus haut quand le texte de design le dit.
+
+**Format** : l'objet `ambient_event` du JSON de carte garde `threshold_difficulty`, `name` et `effect` (texte de design) et reçoit une liste `effects` d'entrées `{type, …paramètres}`. Une entrée peut porter `"tier": "Furieux"` (ou un autre palier ; seuil = D minimale du palier) ou son propre `threshold_difficulty`. La liste est écrite par `tools/gen_maps.py` (`AMBIENT_EFFECTS`), donc la régénération la conserve. Paramètres par type : en tête de chaque `scripts/ambiance/events/fx_<type>.gd`.
+
+**Code** : `AmbientEvents` (nœud enfant d'`AmbianceManager`, `events/ambient_events.gd`) lit l'objet, instancie une petite classe par effet (`AmbientEffect`) et les démarre ou arrête au franchissement du seuil. Aucun coût tant qu'un effet est inactif (rien créé avant `start()`, tout libéré à `stop()`), aucune allocation par image ; les quantités (particules, traînées) et lumières décor suivent le réglage de qualité Bas/Moyen/Haut. Changement d'étage et de qualité gérés (effets reconstruits, niveau de crue et fondus gardés).
+
+| Type | Effet | Cartes |
+|---|---|---|
+| `flood` | les cases d'eau (`,` ou `~`) débordent d'1 u sur le sol voisin (masque d'eau peu profonde, alpha = cases inondables, montée progressive) ; **visuel seulement**, la grille ne change pas | Terrasses (Bassins débordants), Cryptes (Crue), Rizières, Ossuaire ; Cité et Fonderie au palier Cataclysme (`~`) |
+| `decor_lightning` | éclair de décor toutes les 10-20 s (sans effet de jeu ; ignoré si le profil d'orage fait déjà mieux) | Cité (Orage), Fonderie |
+| `prop_pulse` | les creusets (`props_fixed` `crucible`) pulsent orange : masque d'émission modulé + lumière `crucible_glow` (décor, plafonnée par qualité) | Fonderie (Coulée) |
+| `light_waves` | les cristaux s'éteignent par vagues (lumières `crystal_vein` + émission des props cristal, délai = distance) | Cryptes, Ossuaire (palier Furieux) |
+| `shaft_veil` | puits de lumière voilés (×0,4), mycélium ravivé, rayons atténués, poussière coupée | Forêt (Puits voilés) |
+| `gusts` | rafales de gouffre toutes les 20-30 s : poussée des particules d'ambiance, scintillement des lanternes, traînées de vent (0/16/32 selon la qualité), son `amb.gust` | Mangrove (Vent de gouffre) |
+| `rain_column` | la colonne de pluie centrale s'épaissit (×1,6 en largeur, lumière ×1,4) entre le seuil et D 8 | La Source |
+| `local_rain` | pluie LOCALE sous la margelle `well_rim` : gouttes (`drop_32`, 24/48/96 selon la qualité), éclaboussures (0/8/16 par s), boucle `amb.rain.light` spatialisée, bornée au puits | Ossuaire (Pluie du puits) |
+| `prop_anim` | la noria repart : échange du sprite fixe contre le SpriteFrames `noria_spin` (jamais de rotation en code) ; **en attente de l'asset**, rien ne bouge tant qu'il n'est pas livré | Rizières (La noria repart) |
+
+**Assets attendus (Codex)** : `res://assets/sprites/props/terraces/noria_spin.tres` (SpriteFrames, animation `spin` en boucle, mêmes cadrage, pied et taille que `noria.png` (416 × 432 px), 8 à 12 images, masque `_e` facultatif) ; sons `amb.gust` (souffle grave de gouffre, ~4 s, ponctuel) et `amb.noria` (boucle grincement de roue et ruissellement). Absents, ils sont ignorés sans erreur (`AmbientEvents.missing_assets()`).
+
+**Incohérence connue** : l'eau peu profonde `,` a déjà des effets de jeu (Averse, mini-boss `in_water`, raids `in_shallow`, sons de pas) ; la crue étant visuelle, la bande inondée ne les déclenche pas. Point d'accroche prévu : `fx_flood.gd` `is_flooded_cell()`, non branché.
+
+**Vérifier** : lancer une run normale avec `-- --force-map=<id> --ambient-d=7.5` (D forcée pour les effets ambiants seulement, À RETIRER OU MASQUER AVANT LA SORTIE) ; le mode test (arène plate) n'ouvre pas les vraies cartes. Tests : `tests/ambient_events_test`, captures `tests/capture_ambient_events.tscn -- --out=<dossier> --force-map=<id>` (sans `--headless`).
 
 ## 8. Risques
 

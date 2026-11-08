@@ -217,7 +217,18 @@
  "ambient_event": {
   "threshold_difficulty": 4.0,
   "name": "Puits voilés",
-  "effect": "visuel : l'orage de surface voile les puits de jour (lumière et rai à 40 %), le mycélium monte (la salle passe du blanc-chaud au violet), jamais d'obscurité ; aucun effet de jeu"
+  "effect": "visuel : l'orage de surface voile les puits de jour (lumière et rai à 40 %), le mycélium monte (la salle passe du blanc-chaud au violet), jamais d'obscurité ; aucun effet de jeu",
+  "effects": [
+   {
+    "type": "shaft_veil",
+    "preset": "light_shaft",
+    "light_mult": 0.4,
+    "ray_mult": 0.343,
+    "boost_preset": "mycelium_glow",
+    "boost_mult": 1.35,
+    "mute_particles": "poussière"
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [
