@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[3]
 sys.dont_write_bytecode=True
 sys.path[:0]=[str(ROOT/'art/tools/iso'),str(ROOT/'art/tools/cel')]
 OUT=ROOT/'game/assets/sprites/vfx/raid'
-SPECS=[('raid_orb',96,96,8),('raid_orb_pickup',128,192,6),('shield_bubble',320,352,8),('shield_crack',320,352,12),('shield_burst',384,384,6),('soak_zone',320,320,6),('soak_fill',320,320,8),('soak_burst',640,640,6),('safe_sector',1152,1152,8),('danger_sheet',1152,1152,6),('sector_arrow',128,128,4),('fixate_mark',160,160,12),('fixate_link',512,32,4),('weak_point',96,96,12),('weak_point_break',160,160,6),('shelter_shadow',128,384,6),('raid_progress_pip',48,48,2),('enrage_aura',352,352,8)]
+SPECS=[('raid_orb',96,96,8),('raid_orb_pickup',128,192,6),('shield_bubble',320,352,8),('shield_crack',320,352,12),('shield_burst',384,384,6),('soak_zone',320,320,6),('soak_fill',320,320,8),('soak_burst',640,640,6),('safe_sector',576,576,8),('danger_sheet',1152,1152,6),('sector_arrow',128,128,4),('fixate_mark',160,160,12),('fixate_link',512,32,4),('weak_point',96,96,12),('weak_point_break',160,160,6),('shelter_shadow',128,384,6),('raid_progress_pip',48,48,2),('enrage_aura',352,352,8)]
 CY='BFF4FF'; RED='E0463C'; WHITE='FFFFFF'
 
 def build():
@@ -13,19 +13,21 @@ def build():
  from mathutils import Vector
  from PIL import Image
  OUT.mkdir(parents=True,exist_ok=True)
+ only='--only-safe-sector' in sys.argv
+ if only:SPECS[:]=[x for x in SPECS if x[0]=='safe_sector']
  tmp=Path(tempfile.mkdtemp(prefix='rainfall_raid_'))
  bpy.context.preferences.filepaths.save_version=0
  resources=[]; atlases=[]; anims=[]; samples=[]
  for name,w,h,count in SPECS:
   top=name in ['soak_zone','soak_fill','soak_burst','safe_sector','danger_sheet','sector_arrow','fixate_mark','fixate_link','shelter_shadow','raid_progress_pip']
   s=iso_rig.create_rig('TOP' if top else 'CREA',(w,h))
-  s.camera.data.ortho_scale=w/64
+  s.camera.data.ortho_scale=(2*w if name=='safe_sector' else w)/64
   s.render.engine='BLENDER_EEVEE'; s.render.film_transparent=True
   s.render.threads_mode='FIXED';s.render.threads=8
   if hasattr(s,'eevee'): s.eevee.taa_render_samples=8
   basis=s.camera.rotation_euler.to_matrix()
   cel.install('icon' if name=='raid_progress_pip' else 'vfx',normals=False)
-  cols=min(count,4096//w); rows=math.ceil(count/cols)
+  cols=3 if name=='safe_sector' else min(count,4096//w); rows=math.ceil(count/cols)
   pages={}; frames=[]; ends=[]
   for f in range(count):
    for ob in list(s.objects):
@@ -156,12 +158,12 @@ def build():
   samples.append((name,ends));print('RAID PASS '+name,flush=True)
   if name=='shield_bubble':
    dest=ROOT/'art/blender/vfx/raid_kit.blend';dest.parent.mkdir(parents=True,exist_ok=True);bpy.ops.wm.save_as_mainfile(filepath=str(dest))
- (OUT/'raid.tres').write_text('[gd_resource type="SpriteFrames" load_steps='+str(1+len(resources)+len(atlases))+' format=3]\n\n'+'\n\n'.join(resources+atlases)+'\n\n[resource]\nanimations = ['+',\n'.join(anims)+']\n',encoding='utf-8')
+ if not only:(OUT/'raid.tres').write_text('[gd_resource type="SpriteFrames" load_steps='+str(1+len(resources)+len(atlases))+' format=3]\n\n'+'\n\n'.join(resources+atlases)+'\n\n[resource]\nanimations = ['+',\n'.join(anims)+']\n',encoding='utf-8')
  contact=Image.new('RGB',(768,len(samples)*142),'#2E3238')
  for j,(name,ims) in enumerate(samples):
   for k,im in enumerate(ims):
    im.thumbnail((330,132),Image.Resampling.LANCZOS);contact.paste(im,(k*384+(384-im.width)//2,j*142+(142-im.height)//2),im)
- contact.save(Path(__file__).with_name('_raid_kit_contact.png'))
+ if not only:contact.save(Path(__file__).with_name('_raid_kit_contact.png'))
  print(f'RAID_KIT PASS {len(SPECS)} animations {sum(x[3] for x in SPECS)} frames',flush=True)
 if __name__=='__main__':build()
 

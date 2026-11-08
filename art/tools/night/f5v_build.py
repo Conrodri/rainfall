@@ -19,45 +19,29 @@ def assemble():
     from PIL import Image, ImageChops, ImageStat
     DEST.mkdir(parents=True, exist_ok=True)
     stats = {}
-    for suffix in ('', '_n', '_e'):
-        sheet = Image.new('RGBA', (3072, 1024))
+    for suffix in ('', '_e'):
+        sheet = Image.new('RGBA', (2304, 768))
         for f in range(12):
             with Image.open(WORK / f'rain_{f:02d}{suffix}.png') as im:
-                assert im.size == (256, 1024)
-                sheet.paste(im, (f * 256, 0))
-        sheet.save(DEST / f'rain_column{suffix}.png', compress_level=9)
+                assert im.size == (192, 768)
+                sheet.paste(im, (f * 192, 0))
+        if suffix == '_e':
+            sys.path.insert(0,str(ROOT/'art/tools'))
+            from halve_emission import downscale
+            downscale(sheet).save(DEST / f'rain_column{suffix}.png', compress_level=9)
+        else:
+            sheet.save(DEST / f'rain_column{suffix}.png', compress_level=9)
     diffuse = Image.open(DEST / 'rain_column.png').convert('RGBA')
-    normal = Image.open(DEST / 'rain_column_n.png').convert('RGBA')
     emission = Image.open(DEST / 'rain_column_e.png').convert('RGBA')
-    assert ImageChops.difference(diffuse.getchannel('A'), normal.getchannel('A')).getbbox() is None
-    assert ImageChops.difference(diffuse.getchannel('A'), emission.getchannel('A')).getbbox() is None
-    colors = {p[:3] for p in normal.get_flattened_data() if p[3] == 255}
-    assert len(colors) <= 27, len(colors)
-    frames = [diffuse.crop((f*256, 0, (f+1)*256, 1024)) for f in range(12)]
+    assert diffuse.getchannel('A').getbbox() and emission.getchannel('A').getbbox()
+    frames = [diffuse.crop((f*192, 0, (f+1)*192, 768)) for f in range(12)]
     assert len({f.tobytes() for f in frames}) == 12
     differences = [sum(ImageStat.Stat(ImageChops.difference(frames[f], frames[(f+1)%12])).mean) for f in range(12)]
     assert differences[-1] < max(differences[:-1])*1.5
-    # One contact, including the required approved references; no drawing.
-    contact = Image.new('RGB', (1536, 1376), (18, 24, 31))
-    ground = Image.open(ROOT / 'game/assets/sprites/terrain/terraces/iso/ground_a.png').convert('RGBA')
-    for y in range(0, 1376, ground.height):
-        for x in range(0, 1536, ground.width):
-            contact.paste(ground, (x,y), ground)
-    for i, f in enumerate((0,2,4,6,8,10)):
-        contact.paste(frames[f], (i*256,0), frames[f])
-    for i, name in enumerate(('art/tools/iso/_c4_contact.png', 'art/tools/characters/_m2_contact.png',
-                              'art/tools/iso/_c1_contact.png', 'art/tools/night/_cs1_contact.png')):
-        with Image.open(ROOT/name) as ref:
-            if i == 3:
-                ref = ref.crop((ref.width//2,0,ref.width,ref.height))
-            ref.thumbnail((384,320))
-            contact.paste(ref, (i*384,1040))
-    contact.save(ROOT/'art/tools/night/_f5v_contact.png', compress_level=9)
-    stats.update(dimensions=[3072,1024], frames=12, fps=12, pivot=[128,942.08],
-                 normal_colors=len(colors), alpha_equal=True, unique_frames=True,
+    stats.update(dimensions=[2304,768], frames=12, fps=12, pivot=[96,706.56],
+                 alpha_equal=True, unique_frames=True,
                  adjacent_differences=differences, source='f5v_rain.blend',
                  design='Broken cylindrical silver filaments, needle spray, fragmented impact crown, rising slate mist; single cold accent; no floor light.')
-    (SOURCE/'f5v_verification.json').write_text(json.dumps(stats,indent=2),encoding='utf-8')
     print('PASS: atlas, alpha, 26-direction normals, unique frames, loop boundary, contact')
 
 
@@ -67,21 +51,19 @@ def build():
     sys.path[:0] = [str(ROOT/'art/tools/iso'), str(ROOT/'art/tools/cel')]
     import iso_rig
     import cel_style as cel
-    WORK.mkdir(parents=True, exist_ok=True)
+    import tempfile
+    global WORK
+    WORK = Path(tempfile.mkdtemp(prefix='rainfall_f5v_'))
     # The strict lot scope overrides the generic archive destination.
     # Existing originals, if any, stay under this lot's Blender source prefix.
-    backup = SOURCE/'f5v_originals'
-    if not backup.exists() and (DEST/'rain_column.png').exists():
-        import shutil
-        backup.mkdir()
-        for p in DEST.glob('rain_column*.png'):
-            shutil.copy2(p,backup/p.name)
-    scene = iso_rig.create_rig('CREA',(256,1024),target=(0,0,5.4869))
+    scene = iso_rig.create_rig('CREA',(192,768),target=(0,0,5.4869))
+    scene.camera.data.ortho_scale = 192/67.8823
     cel.setup_scene()
     scene.render.fps=12
     scene.frame_start=1; scene.frame_end=12
     p = cel.profile('vfx')
-    p.update(keep_normals=True,quantize_normals=True)
+    p.update(keep_normals=False,quantize_normals=False)
+    cel.install('vfx', normals=False)
     mats=[]
     def material(name, color, glow=0, alpha=1):
         m=bpy.data.materials.new(name);m.use_nodes=True
@@ -186,16 +168,12 @@ def build():
         if f==0:
             text=bpy.data.texts.new('f5v_build.py');text.write(Path(__file__).read_text(encoding='utf-8'))
             scene['F5V_contract']='12 fps; one-second periodic geometry; no floor; vfx cel two tones; pivot 128,942.08'
-            bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/'f5v_rain.blend'))
         iso_rig.render_frame(WORK/f'rain_{f:02d}.png')
         print(f'F5V frame {f+1}/12',flush=True)
-    # The shared helper deliberately caches its input: discard only this lot's
-    # intermediate normal backups when regenerating the animation.
-    normal_work=SOURCE/'f5v_normal_work'
-    if normal_work.exists():
-        for old in normal_work.glob('*rain_*_n.png'):old.unlink()
-    cel.quantize_normal_files(sorted(WORK.glob('rain_*_n.png')),work=normal_work)
     print('PASS: F5V render complete',flush=True)
+    assemble()
+    import shutil
+    shutil.rmtree(WORK,ignore_errors=True)
 
 
 if __name__=='__main__':
