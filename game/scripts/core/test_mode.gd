@@ -22,6 +22,7 @@ const ARENA_SCENE := "res://scenes/stage/test/test_arena.tscn"
 const D_MIN := 1.0
 const D_MAX := 30.0
 const GOLD_FLOOR := 99999.0 ## or affiché en mode « or infini »
+const AMBIENT_D_ARG := "--ambient-d=" ## `-- --ambient-d=<D>` : même effet que le réglage « D d'ambiance » du panneau (hors mode test aussi)
 
 var active := false
 ## Triches (chacune indépendante).
@@ -42,6 +43,14 @@ var pause_on_open := true ## le jeu est mis en pause tant que le panneau est ouv
 var d_value := 1.0 ## difficulté D imposée (RunState.difficulty())
 ## Apparence forcée : id de personnage (texte) -> id de skin ("" = apparence par défaut). Lu par Skins.equipped().
 var skin_override := {}
+## Cartes réelles (onglet « Cartes », scripts/testmode/test_maps.gd) : "" = arène plate, sinon id d'une carte de data/maps.
+var map_id := ""
+var map_secret := false ## carte réelle : le secret de l'étage est armé (FloorPlan.force_secret)
+var map_trigger := &"" ## déclencheur de secret imposé ("" = tirage ; plates / lever / wall / pillar)
+## D d'ambiance imposé aux SEULS événements ambiants (AmbientEvents) : visuel, aucun effet de jeu. -1 = aucun.
+var ambient_d := -1.0
+## Valeurs de FloorPlan avant la première carte réelle chargée (rendues par restore_plan()) ; vide = rien à rendre.
+var _plan_saved := {}
 
 
 ## `-- --test-mode` : le jeu démarre directement en mode test (App).
@@ -84,6 +93,42 @@ func _reset_flags() -> void:
 	pause_on_open = true
 	d_value = D_MIN
 	skin_override = {}
+	map_id = ""
+	map_secret = false
+	map_trigger = &""
+	ambient_d = -1.0
+	restore_plan()
+
+
+## D d'ambiance effectif : le réglage du panneau, sinon l'option `-- --ambient-d=<D>` (valable aussi hors mode test), sinon -1.
+func ambient_forced_d() -> float:
+	if ambient_d > 0.0:
+		return ambient_d
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with(AMBIENT_D_ARG):
+			return a.trim_prefix(AMBIENT_D_ARG).to_float()
+	return -1.0
+
+
+## Règle le D d'ambiance (<= 0 : aucun) et prévient les écouteurs.
+func set_ambient_d(d: float) -> void:
+	ambient_d = d if d > 0.0 else -1.0
+	changed.emit()
+
+
+## Mémorise une fois les réglages statiques de FloorPlan que l'onglet Cartes modifie (rendus par restore_plan()).
+func save_plan() -> void:
+	if _plan_saved.is_empty():
+		_plan_saved = {"map": FloorPlan.test_map, "secret": FloorPlan.force_secret, "trigger": FloorPlan.force_trigger}
+
+
+func restore_plan() -> void:
+	if _plan_saved.is_empty():
+		return
+	FloorPlan.test_map = _plan_saved["map"]
+	FloorPlan.force_secret = _plan_saved["secret"]
+	FloorPlan.force_trigger = _plan_saved["trigger"]
+	_plan_saved = {}
 
 
 ## Pose un drapeau par son nom (panneau) et prévient les écouteurs.

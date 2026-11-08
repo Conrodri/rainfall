@@ -32,17 +32,9 @@ var effects: Array[AmbientEffect] = []
 var unknown_types: PackedStringArray = PackedStringArray() ## types de `effects` sans script (tests)
 var difficulty := 1.0
 var _active_n := 0
-## Vérification à l'œil (À RETIRER OU MASQUER AVANT LA SORTIE) : `-- --ambient-d=<D>` impose une difficulté
-## minimale aux SEULS événements ambiants (aucun effet de jeu : spawns, PV, or suivent toujours RunState), pour voir
-## chaque carte réelle à Hostile / Furieux / Cataclysme sans attendre (le mode test n'ouvre que l'arène plate).
-static var forced_d := _read_forced_d()
-
-
-static func _read_forced_d() -> float:
-	for a in OS.get_cmdline_user_args():
-		if a.begins_with("--ambient-d="):
-			return a.trim_prefix("--ambient-d=").to_float()
-	return -1.0
+## Vérification à l'œil (À RETIRER OU MASQUER AVANT LA SORTIE) : le forçage de D d'ambiance vit dans TestMode
+## (`TestMode.ambient_d`, réglé par le panneau du mode test, onglet Cartes, ou par `-- --ambient-d=<D>`). Il impose une
+## difficulté minimale aux SEULS événements ambiants (aucun effet de jeu : spawns, PV, or suivent toujours RunState).
 
 
 func _ready() -> void:
@@ -127,6 +119,7 @@ func on_quality() -> void:
 ## Appelé à chaque image par l'AmbianceManager : démarre / arrête au franchissement des seuils, fait vivre les
 ## effets actifs.
 func tick(delta: float, D: float) -> void:
+	var forced_d := TestMode.ambient_forced_d()
 	if forced_d > 0.0:
 		D = maxf(D, forced_d)
 	difficulty = D
@@ -153,7 +146,7 @@ func tick(delta: float, D: float) -> void:
 
 ## Vrai si l'événement de la carte est en cours (D >= seuil de l'événement).
 func event_active(D: float) -> bool:
-	return event_name != "" and maxf(D, forced_d) >= threshold
+	return event_name != "" and maxf(D, TestMode.ambient_forced_d()) >= threshold
 
 
 func active_count() -> int:

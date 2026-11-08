@@ -5,7 +5,7 @@ extends Control
 ## ont la taille tactile minimale (UiTheme.MIN_TOUCH) et la liste défile. Les actions passent par TestTools / TestMode.
 ## À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test.
 
-const TABS: Array = [["Monstres", &"monsters"], ["Objets", &"items"], ["Personnage", &"character"], ["Triches", &"cheats"], ["Difficulté", &"difficulty"], ["Galerie VFX", &"vfx"]]
+const TABS: Array = [["Monstres", &"monsters"], ["Objets", &"items"], ["Personnage", &"character"], ["Triches", &"cheats"], ["Difficulté", &"difficulty"], ["Cartes", &"maps"], ["Galerie VFX", &"vfx"]]
 const QUANTITIES: Array[int] = [1, 2, 3, 5, 10, 15, 25, 50, 100]
 const FS_BODY := 28
 const FS_SMALL := 23
@@ -372,9 +372,85 @@ func _select_tab(t: StringName) -> void:
 		&"character": _build_character()
 		&"cheats": _build_cheats()
 		&"difficulty": _build_difficulty()
+		&"maps": _build_maps()
 		&"vfx": _build_vfx()
 	_scroll.scroll_vertical = 0
 	UiTheme.hook_sounds(_body)
+
+
+# --- Onglet Cartes -----------------------------------------------------------------------
+
+const AMBIENT_STEPS: Array = [[-1.0, "Aucun"], [1.0, "1 Calme"], [2.5, "2,5 Hostile"], [4.5, "4,5 Furieux"], [7.5, "7,5 Cataclysme"]]
+const TRIGGERS: Array = [[&"", "Tiré"], [&"plates", "Plaques"], [&"lever", "Levier"], [&"wall", "Mur fissuré"], [&"pillar", "Pilier"]]
+
+
+## Cartes réelles en bac à sable (TestMaps) : variantes B, props fixes, événements d'ambiance, secrets, Épreuves.
+func _build_maps() -> void:
+	_body.add_child(_heading("Carte réelle (rien n'est écrit au profil)"))
+	var grid := _grid(2)
+	_body.add_child(grid)
+	var arena := _btn(("▶ " if TestMode.map_id == "" else "") + "Arène plate (test)", func() -> void: _load_map(""))
+	arena.name = "MapArena"
+	grid.add_child(_expand(arena))
+	for e in TestMaps.catalog():
+		var entry: Dictionary = e
+		var txt: String = ("▶ " if TestMode.map_id == String(entry.id) else "") + String(entry.label)
+		var bits: Array[String] = []
+		if String(entry.event) != "":
+			bits.append("ambiance : %s" % entry.event)
+		if bool(entry.secret):
+			bits.append("secret")
+		if bool(entry.final):
+			bits.append("boss final")
+		if not bits.is_empty():
+			txt += "\n" + ", ".join(bits)
+		var b := _btn(txt, func() -> void: _load_map(String(entry.id)))
+		b.name = "Map_%s" % entry.id
+		grid.add_child(_expand(b))
+	var again := _btn("Recharger la carte", func() -> void: _load_map(TestMode.map_id))
+	again.name = "MapReload"
+	_body.add_child(again)
+	_body.add_child(_note("Chemin normal : plan de run reconstruit, étage et biome de la carte, coffres, piliers, Épreuves, ateliers et téléporteur en place. Pas d'apparitions seules : onglet Triches. Le téléporteur enchaîne sur l'étage suivant du plan."))
+	_body.add_child(_heading("Secret de la carte"))
+	var sec := _check("Armer le secret (cartes à secret, étages 1-4)", TestMode.map_secret, func(on: bool) -> void:
+		TestMode.map_secret = on
+		say("Secret %s au prochain chargement." % ("armé" if on else "désarmé")))
+	sec.name = "MapSecret"
+	_body.add_child(sec)
+	var trig := _grid(3)
+	_body.add_child(trig)
+	for t in TRIGGERS:
+		var tid: StringName = t[0]
+		var tb := _btn(("● " if TestMode.map_trigger == tid else "") + String(t[1]), func() -> void:
+			TestMode.map_trigger = tid
+			say("Déclencheur : %s (au prochain chargement)." % ("tiré au hasard" if tid == &"" else String(tid)))
+			_reselect_keep_scroll())
+		tb.name = "Trigger_%s" % (String(tid) if tid != &"" else "auto")
+		trig.add_child(_expand(tb))
+	_body.add_child(_heading("D d'ambiance (événements de la carte, visuel seulement)"))
+	var amb := _grid(3)
+	_body.add_child(amb)
+	for st in AMBIENT_STEPS:
+		var v: float = st[0]
+		var on := is_equal_approx(TestMode.ambient_d, v)
+		var ab := _btn(("● " if on else "") + String(st[1]), func() -> void:
+			TestMode.set_ambient_d(v)
+			say("D d'ambiance : %s." % ("aucun (suit D)" if v < 0.0 else str(v).replace(".", ",")))
+			_reselect_keep_scroll())
+		ab.name = "Ambient_%s" % ("none" if v < 0.0 else str(v).replace(".", "_"))
+		amb.add_child(_expand(ab))
+	var tp := _btn("Téléporter au repère (puits, noria, creusets)", func() -> void:
+		var n := TestMaps.teleport_to_landmark(get_tree())
+		say("Téléporté près de : %s." % n if n != "" else "Pas de repère sur cette carte."))
+	tp.name = "MapLandmark"
+	_body.add_child(tp)
+	_body.add_child(_note("Le D d'ambiance ne touche que l'événement de la carte (crue, éclairs, creusets, cristaux, puits, rafales, colonne de pluie) ; les PV et les apparitions suivent le D de l'onglet Difficulté. Option ligne de commande : -- --ambient-d=<D>."))
+
+
+func _load_map(id: String) -> void:
+	var ok := TestMaps.load_map(get_tree(), id)
+	say(("Carte chargée : %s." % (id if id != "" else "arène plate")) if ok else "Chargement impossible.")
+	_reselect_keep_scroll()
 
 
 # --- Onglet Galerie VFX ------------------------------------------------------------------

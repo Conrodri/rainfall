@@ -419,7 +419,14 @@ Purement visuels et sonores : aucun effet de jeu. L'événement démarre quand `
 
 **Incohérence connue** : l'eau peu profonde `,` a déjà des effets de jeu (Averse, mini-boss `in_water`, raids `in_shallow`, sons de pas) ; la crue étant visuelle, la bande inondée ne les déclenche pas. Point d'accroche prévu : `fx_flood.gd` `is_flooded_cell()`, non branché.
 
-**Vérifier** : lancer une run normale avec `-- --force-map=<id> --ambient-d=7.5` (D forcée pour les effets ambiants seulement, À RETIRER OU MASQUER AVANT LA SORTIE) ; le mode test (arène plate) n'ouvre pas les vraies cartes. Tests : `tests/ambient_events_test`, captures `tests/capture_ambient_events.tscn -- --out=<dossier> --force-map=<id>` (sans `--headless`).
+**Vérifier en mode test (depuis le 08/11/2026, À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test)** : le panneau a un onglet « Cartes » qui charge n'importe quelle carte réelle en bac à sable (rien au profil). Pas à pas :
+1. Titre > « Mode test » (ou `-- --test-mode`), ouvrir le panneau (F1 / Select maintenu / bouton TEST) > onglet **Cartes**.
+2. Toucher une carte (9 : étages 1-4 en A et B, La Source). Le plan de run est reconstruit avec cette carte (`FloorPlan.test_map`, comme `--force-map`), l'étage et le biome suivent, coffres, piliers, Épreuves, ateliers et téléporteur sont posés comme en run. Le joueur est reposé au départ.
+3. **D d'ambiance** : « 2,5 Hostile », « 4,5 Furieux », « 7,5 Cataclysme » imposent le D des seuls événements ambiants (`TestMode.ambient_d`, visuel seulement) ; « Aucun » rend la main au D de l'onglet Difficulté. Fermer le panneau pour voir l'effet.
+4. **Téléporter au repère** : place le joueur près du premier prop fixe visé par l'événement (creusets, puits de l'Ossuaire, noria) ; message « Pas de repère » pour les autres cartes.
+5. **Secret** : cocher « Armer le secret », choisir le déclencheur (Tiré / Plaques / Levier / Mur fissuré / Pilier), puis recharger la carte (cartes B à secret, étages 1-4).
+6. Retour : « Arène plate (test) ». Les forçages de `FloorPlan` sont rendus à la sortie du mode test.
+Hors mode test, l'option `-- --ambient-d=<D>` (lue par `TestMode.ambient_forced_d()`) garde son effet, avec `-- --force-map=<id>` pour une run normale. Tests : `tests/test_mode_test` (onglet Cartes), `tests/ambient_events_test`, captures `tests/capture_ambient_events.tscn -- --out=<dossier> --force-map=<id>` (sans `--headless`).
 
 ## 8. Risques
 
