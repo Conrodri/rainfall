@@ -340,6 +340,102 @@
    }
   }
  ],
+ "props_fixed": [
+  {
+   "name": "noria",
+   "cell": [
+    12,
+    20
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "collision": "box"
+  },
+  {
+   "name": "scarecrow",
+   "cell": [
+    11,
+    13
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  },
+  {
+   "name": "scarecrow",
+   "cell": [
+    21,
+    13
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  },
+  {
+   "name": "scarecrow",
+   "cell": [
+    12,
+    26
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  },
+  {
+   "name": "scarecrow",
+   "cell": [
+    20,
+    26
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  },
+  {
+   "name": "stone_stairs",
+   "cell": [
+    11,
+    11
+   ],
+   "size": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "stone_stairs",
+   "cell": [
+    15,
+    15
+   ],
+   "size": [
+    1,
+    2
+   ],
+   "flip": true
+  },
+  {
+   "name": "stone_stairs",
+   "cell": [
+    20,
+    24
+   ],
+   "size": [
+    1,
+    2
+   ]
+  }
+ ],
  "escort_path": [
   [
    19,

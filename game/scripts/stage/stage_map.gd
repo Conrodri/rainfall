@@ -179,6 +179,7 @@ func _build_ground() -> void:
 		_ground_overlap = int(ISO_GROUND_OVERLAP.get(biome, 0)) if _tint.is_empty() else 0
 		_build_iso(grid, origin, size_px, iso_dir, ground, cells)
 		_build_props(grid, origin, biome)
+		_build_props_fixed(data.get("props_fixed", []), origin, biome)
 		return
 	var ts_path: String = BIOME_TILESETS.get(biome, "")
 	if ts_path == "" or not ResourceLoader.exists(ts_path):
@@ -362,7 +363,8 @@ func _marker_cells() -> Array[Vector2i]:
 ## Décor NON bloquant, seulement sur les cases « . » libres, loin du départ et des emplacements de coffres /
 ## piliers / événements ; tirage stable (hachage de case). Un prop bloquant passe par la grille (« # »).
 const BIOME_PROPS := {"foret": "res://assets/sprites/props/fog_forest/", "cite": "res://assets/sprites/props/rust_city/",
-	"cryptes": "res://assets/sprites/props/crypts/", "source": "res://assets/sprites/props/source/"} ## F4p / F5p (requests_floor45.md)
+	"cryptes": "res://assets/sprites/props/crypts/", "source": "res://assets/sprites/props/source/",
+	"terrasses": "res://assets/sprites/props/terraces/"} ## F4p / F5p (requests_floor45.md) ; terrasses : seulement les `props_fixed` de la B
 const PROPS_CLEAR_CELLS := 2 ## cases (2 u) laissées libres autour des repères de la carte
 
 
@@ -435,6 +437,79 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 				_blocks[c] = spr # fondu devant le joueur (_process)
 			n += 1
 	set_meta(&"props_count", n)
+
+
+static var _warned_props := {} ## chemins de props_fixed absents déjà signalés (une fois par session, build debug)
+
+
+## Props posés par CARTE (clé `props_fixed` du JSON de carte, docs/Design_Variantes_B.md §7) : décor propre à une
+## variante (noria, pontons, creusets, margelle…), sans toucher aux autres cartes du biome. Entrée :
+## {"name", "cell": [cx, cy] (case en haut à gauche de l'emprise), "size": [w, h] (cases de 2 u, défaut [1, 1]),
+##  "flip": bool (miroir horizontal), "collision": "box" (emprise pleine) | "fine" (demi-case centrée) | absent,
+##  "foot", "px_per_u", "fade", "shadow_rig" (défaut "top") comme `fixed` de props.json}.
+## Le sprite est posé au centre de l'emprise (`foot` = pixel du cadre posé à ce centre) et trié en profondeur
+## avec les autres props sous « Blocks » ; `<name>_shadow.png` (décalque cuit) et `<name>_e.png` sont repris par
+## BakedShadows / NormalMaps comme pour les props existants. La collision (couche 1) est ajoutée au corps
+## `Obstacles/Walls` : NavField et OccluderBuilder la lisent comme un mur. Texture absente = entrée ignorée
+## (collision comprise), avec un avertissement unique en build debug seulement.
+func _build_props_fixed(entries: Array, origin: Vector2, biome: String) -> void:
+	var dir: String = BIOME_PROPS.get(biome, "")
+	var root := get_node_or_null(^"Blocks")
+	if dir == "" or root == null or entries.is_empty():
+		return
+	var walls := get_node_or_null(^"Obstacles/Walls") as StaticBody2D
+	var n := 0
+	for pr in entries:
+		if not pr is Dictionary or not (pr as Dictionary).get("cell") is Array:
+			continue
+		var pname := String(pr.get("name", ""))
+		var path := dir + pname + ".png"
+		if pname == "" or not ResourceLoader.exists(path):
+			if pname != "" and OS.is_debug_build() and not _warned_props.has(path):
+				_warned_props[path] = true
+				push_warning("props_fixed : texture absente, entrée ignorée (%s)" % path)
+			continue
+		var cell_a: Array = pr["cell"]
+		var size_a: Array = pr.get("size", [1, 1])
+		if cell_a.size() != 2 or size_a.size() != 2:
+			continue
+		var cell := Vector2i(int(cell_a[0]), int(cell_a[1]))
+		var fsize := Vector2i(maxi(int(size_a[0]), 1), maxi(int(size_a[1]), 1))
+		var center_map := origin + (Vector2(cell) + Vector2(fsize) * 0.5) * OUTLINE_CELL_PX
+		var center := from_map(center_map)
+		var tex: Texture2D = load(path)
+		var size := tex.get_size()
+		var foot: Array = pr.get("foot", [size.x * 0.5, size.y * 0.85])
+		var flip := bool(pr.get("flip", false))
+		var spr := Sprite2D.new()
+		spr.name = "FP_%s_%d_%d" % [pname, cell.x, cell.y]
+		spr.texture = tex
+		spr.scale = Iso.UNSQUASH * (UNIT_PX / float(pr.get("px_per_u", Iso.RENDER_PX_PER_U)))
+		var off := size * 0.5 - Vector2(float(foot[0]), float(foot[1]))
+		spr.flip_h = flip
+		spr.offset = Vector2(-off.x if flip else off.x, off.y) # le miroir inverse la position du pied dans le cadre
+		spr.position = center
+		NormalMaps.apply_to_sprite(spr)
+		if String(pr.get("shadow_rig", "top")) == "top":
+			spr.set_meta(&"shadow_decal_local", Transform2D(deg_to_rad(Iso.MAP_YAW_DEG) if is_iso() else 0.0, Vector2(-0.5 if flip else 0.5, 0.5), 0.0, center))
+		spr.set_meta(&"prop", true)
+		spr.set_meta(&"prop_fixed", true)
+		root.add_child(spr)
+		var col := String(pr.get("collision", ""))
+		if col != "" and walls != null:
+			var shape := RectangleShape2D.new()
+			shape.size = (Vector2(fsize) * OUTLINE_CELL_PX - Vector2(8.0, 8.0)) if col == "box" else Vector2.ONE * OUTLINE_CELL_PX * 0.5
+			var cs := CollisionShape2D.new()
+			cs.name = "FP_%s_%d_%d" % [pname, cell.x, cell.y]
+			cs.shape = shape
+			cs.position = center_map
+			walls.add_child(cs)
+			_rects_ready = false
+		var fc := cell + fsize / 2
+		if bool(pr.get("fade", col != "" and fsize.x * fsize.y >= 4)) and not _blocks.has(fc):
+			_blocks[fc] = spr
+		n += 1
+	set_meta(&"props_fixed_count", n)
 
 
 ## Prop plat posé au sol (manifeste `"flat": true`, rig TOP, ex. `gour_rim` de la grotte) : décalque dans le repère
