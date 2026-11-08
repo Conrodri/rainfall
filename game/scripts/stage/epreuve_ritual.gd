@@ -160,13 +160,17 @@ func draw_overlay(c: Node2D) -> void:
 		if not EpreuveSprites.draw_ring(c, "ring_zone.png", p, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX, col):
 			c.draw_arc(p, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX, 0.0, TAU, 32, col, 3.0)
 		if active:
-			c.draw_line(Vector2.ZERO, p, Color(col.r, col.g, col.b, 0.18), 2.0)
+			if not EpreuveSprites.draw_strip(c, "ep2_link.png", Vector2.ZERO, p, 22.0, Color(col.r, col.g, col.b, 0.7)): # lot EP-II : liaison Codex
+				c.draw_line(Vector2.ZERO, p, Color(col.r, col.g, col.b, 0.18), 2.0)
 	if not active:
 		return
 	# cœur : jauge du prochain anneau
 	var cadence := Balance.ritual_pulse_s(closed)
 	var fill := 1.0 - clampf(_pulse_t / cadence, 0.0, 1.0) if _tele_t <= 0.0 and _wave_r < 0.0 else 1.0
-	c.draw_arc(Vector2.ZERO, 70.0, -PI * 0.5, -PI * 0.5 + TAU * fill, 48, Color(1.0, 0.55, 0.3, 0.9), 6.0)
+	if EpreuveSprites.draw_pie(c, Vector2.ZERO, 76.0, 1.0, Color(0.1, 0.1, 0.1, 0.45)): # lot EP-II : jauge du cœur, rail + secteur Codex
+		EpreuveSprites.draw_pie(c, Vector2.ZERO, 76.0, fill, Color(1.0, 0.55, 0.3, 0.95))
+	else:
+		c.draw_arc(Vector2.ZERO, 70.0, -PI * 0.5, -PI * 0.5 + TAU * fill, 48, Color(1.0, 0.55, 0.3, 0.9), 6.0)
 	var rmax := Balance.RITUAL_WAVE_MAX_U * Balance.UNIT_PX
 	if _tele_t > 0.0: # télégraphe : disque annoncé, bord qui se renforce
 		var k := 1.0 - _tele_t / Balance.RITUAL_TELEGRAPH_S

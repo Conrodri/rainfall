@@ -325,8 +325,14 @@ func draw_overlay(c: Node2D) -> void:
 		var perp := dir_px.orthogonal()
 		for j in 3: # 3 chevrons
 			var base := origin + dir_px * (HOLD_CHEVRON_DIST_U + 0.9 * float(j)) * u
-			c.draw_colored_polygon(PackedVector2Array([base + dir_px * 22.0, base - dir_px * 14.0 + perp * 22.0, base - dir_px * 14.0 - perp * 22.0]), col)
+			if not EpreuveSprites.draw_ground(c, "ep2_chevron.png", base, 64.0, Color(col.r, col.g, col.b, minf(col.a * 2.0, 1.0)), dir_px.angle()): # lot EP-II
+				c.draw_colored_polygon(PackedVector2Array([base + dir_px * 22.0, base - dir_px * 14.0 + perp * 22.0, base - dir_px * 14.0 - perp * 22.0]), col)
 		if i == announced:
-			c.draw_arc(origin + dir_px * Balance.HOLD_SPAWN_DIST_U * u, 1.2 * u, 0.0, TAU, 24, Color(1.0, 0.3, 0.2, 0.3 + 0.5 * k), 4.0)
+			var spawn_col := Color(1.0, 0.3, 0.2, 0.3 + 0.5 * k)
+			if not EpreuveSprites.draw_ring(c, "ring_zone.png", origin + dir_px * Balance.HOLD_SPAWN_DIST_U * u, 1.2 * u, spawn_col):
+				c.draw_arc(origin + dir_px * Balance.HOLD_SPAWN_DIST_U * u, 1.2 * u, 0.0, TAU, 24, spawn_col, 4.0)
 	if active:
-		c.draw_arc(origin, 1.3 * u, -PI * 0.5, -PI * 0.5 + TAU * progress(), 48, Color(0.95, 0.8, 0.4, 0.8), 5.0) # temps écoulé
+		if EpreuveSprites.draw_pie(c, origin, 1.3 * u, 1.0, Color(0.1, 0.1, 0.1, 0.4)): # lot EP-II : temps écoulé, rail + secteur Codex
+			EpreuveSprites.draw_pie(c, origin, 1.3 * u, progress(), Color(0.95, 0.8, 0.4, 0.9))
+		else:
+			c.draw_arc(origin, 1.3 * u, -PI * 0.5, -PI * 0.5 + TAU * progress(), 48, Color(0.95, 0.8, 0.4, 0.8), 5.0) # temps écoulé

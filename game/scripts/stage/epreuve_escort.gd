@@ -205,9 +205,14 @@ func draw_overlay(c: Node2D) -> void:
 		pts.append(c.to_local(m.to_global(p)))
 	var on := state != Pillar.STATE_DONE
 	if on:
-		c.draw_polyline(pts, Color(0.55, 0.9, 1.0, 0.30), 4.0)
-		c.draw_circle(pts[0], 26.0, Color(0.55, 0.9, 1.0, 0.25)) # ponton de départ
-		c.draw_arc(pts[pts.size() - 1], 40.0, 0.0, TAU, 32, Color(1.0, 0.8, 0.4, 0.7), 4.0) # ponton d'arrivée
+		for i in pts.size() - 1: # lot EP-II : tuile de trajet Codex, repli polyligne
+			if not EpreuveSprites.draw_strip(c, "ep2_path_tile.png", pts[i], pts[i + 1], 34.0, Color(0.55, 0.9, 1.0, 0.75)):
+				c.draw_polyline(pts, Color(0.55, 0.9, 1.0, 0.30), 4.0)
+				break
+		if not EpreuveSprites.draw_ground(c, "ep2_pad_start.png", pts[0], 96.0, Color(0.55, 0.9, 1.0, 0.85)):
+			c.draw_circle(pts[0], 26.0, Color(0.55, 0.9, 1.0, 0.25)) # ponton de départ
+		if not EpreuveSprites.draw_ground(c, "ep2_pad_end.png", pts[pts.size() - 1], 120.0, Color(1.0, 0.8, 0.4, 0.9)):
+			c.draw_arc(pts[pts.size() - 1], 40.0, 0.0, TAU, 32, Color(1.0, 0.8, 0.4, 0.7), 4.0) # ponton d'arrivée
 	if not is_running():
 		return
 	# corde et PV
@@ -215,12 +220,18 @@ func draw_overlay(c: Node2D) -> void:
 	if pl != null:
 		var tp := c.to_local(pl.global_position)
 		var k := clampf(pl.global_position.distance_to(global_position) / (Balance.ESCORT_LEASH_U * Balance.UNIT_PX), 0.0, 1.0)
-		c.draw_line(Vector2.ZERO, tp, Color(1.0, 1.0, 1.0).lerp(Color(1.0, 0.25, 0.2), k * k), 3.0)
+		var rope_col := Color(1.0, 1.0, 1.0).lerp(Color(1.0, 0.25, 0.2), k * k)
+		if not EpreuveSprites.draw_strip(c, "ep2_rope.png", Vector2.ZERO, tp, 12.0, rope_col): # lot EP-II : corde Codex
+			c.draw_line(Vector2.ZERO, tp, rope_col, 3.0)
 	if leash_blocked:
-		c.draw_arc(Vector2.ZERO, Balance.ESCORT_LEASH_U * Balance.UNIT_PX, 0.0, TAU, 64, Color(1.0, 0.3, 0.2, 0.35), 3.0)
+		var leash_col := Color(1.0, 0.3, 0.2, 0.5)
+		if not EpreuveSprites.draw_ring(c, "ring_zone.png", Vector2.ZERO, Balance.ESCORT_LEASH_U * Balance.UNIT_PX, leash_col):
+			c.draw_arc(Vector2.ZERO, Balance.ESCORT_LEASH_U * Balance.UNIT_PX, 0.0, TAU, 64, Color(1.0, 0.3, 0.2, 0.35), 3.0)
 	var w := 96.0
 	var frac := clampf(hp / max_hp, 0.0, 1.0) if max_hp > 0.0 else 1.0
-	c.draw_rect(Rect2(-w * 0.5, -60.0, w, 8.0), Color(0, 0, 0, 0.6))
-	c.draw_rect(Rect2(-w * 0.5, -60.0, w * frac, 8.0), Color(0.3, 0.9, 0.4) if stall_left <= 0.0 else Color(0.9, 0.3, 0.2))
+	var bar_col := Color(0.3, 0.9, 0.4) if stall_left <= 0.0 else Color(0.9, 0.3, 0.2)
+	if not EpreuveSprites.draw_bar(c, Vector2(0.0, -56.0), w, frac, bar_col): # lot EP-II : jauge Codex
+		c.draw_rect(Rect2(-w * 0.5, -60.0, w, 8.0), Color(0, 0, 0, 0.6))
+		c.draw_rect(Rect2(-w * 0.5, -60.0, w * frac, 8.0), bar_col)
 	if _body != null:
 		_body.modulate = Color(1.0, 0.55, 0.5) if stall_left > 0.0 else Color.WHITE
