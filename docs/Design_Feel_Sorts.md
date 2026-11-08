@@ -262,3 +262,5 @@ Séquence du joueur (AV-1) en frames : Vague appui f 0, impact f 12 → Crue acc
 - Monster Hunter : hitstop qui grandit avec l'arme ; plafond pour garder le rythme.
 - Super Smash Bros., Celeste : vocabulaire startup / active / endlag, buffer de 8-10 f, dash-cancel.
 - Projet : `docs/Design_Combos.md`, `docs/Design_Esquives.md`, `art/briefs/STYLE_cel.md`, `art/briefs/vfx.md`, `game/scripts/core/balance.gd` (§« Poids des coups », `BOSS_PACE_*`), `game/scripts/player/player.gd` (`play_action`, repli procédural), `game/scripts/ui/game_settings.gd` (accessibilité), `game/scripts/audio/audio_manager.gd` (`play_cast`, `power_level`).
+
+Visuels d'état sur les monstres (poison, brûlure, trempé, électrique, étourdi) : docs/Design_Etats_Visuels.md (08/11/2026).

@@ -1092,6 +1092,7 @@ func _soak(e: Node, duration := SOAK_S, pct := SOAK_PCT) -> void:
 		if fresh or end >= until:
 			e.apply_status(&"slow", {"pct": pct, "duration": duration})
 			_soaked_until[id] = end
+			StatusFx.wet(e, duration) # gouttes + corps assombri tant que la trempe dure (visuel seul)
 
 
 ## Trempé (état lu par les combos AV-1 à AV-3 et l'aide de visée) ; la fin de trempe est suivie par l'horloge du kit.

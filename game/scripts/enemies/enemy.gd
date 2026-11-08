@@ -129,6 +129,7 @@ var walk_target: Node2D = null
 var variant := VARIANT_SHOOTER ## tier 2 : tireur ou bondisseur
 
 var pool_index := -1 ## index dans la liste active du Director (gestion interne)
+var status_fx_slot := -1 ## case dans StatusFx (visuels d'état), -1 = non suivi (gestion interne de StatusFx)
 
 # --- Coop 1-4 (docs/multi/Archi_Reseau.md §1.2 lignes 6-8) ---------------------------------------------------------
 ## Attribution des kills : id (registre Players) du dernier joueur qui a touché ce monstre, lu dans `hit["by"]`
@@ -219,6 +220,7 @@ func _ready() -> void:
 		if _light != null:
 			_light.release())
 	HitFx.ensure(director if director != null else get_parent()) # pool de particules unique, créé avec le pool
+	StatusFx.ensure(director if director != null else get_parent()) # visuels d'état (poison, brûlure, trempé…)
 
 
 # --- Contrat
@@ -241,6 +243,8 @@ func take_damage(amount: float, is_crit: bool = false, element: StringName = &""
 	if is_boss and hp > 0.0 and not test_dummy:
 		visual.set_phase(boss_phase())
 	Events.emit_enemy_damaged(self, amount, is_crit, element, by) # + jumeau enemy_damaged_by (tireur, coop)
+	if element == &"lightning" and hp > 0.0: # arcs électriques brefs sur le corps (visuel seul)
+		StatusFx.shock(self)
 	var center := position + Vector2(0.0, -radius_px * 0.8 * Iso.UNSQUASH.y) # corps (pieds à l'origine ; hauteur en y logique = billboard × 2)
 	if hit.get("is_dot", element == &"burn" or element == &"poison"):
 		HitFx.dot(center, element)
@@ -311,6 +315,7 @@ func stun(seconds: float) -> void:
 	_stop_left = maxf(_stop_left, seconds)
 	_stop_cd = maxf(_stop_cd, _stop_left + Balance.HITSTOP_REARM_S)
 	visual.set_frozen(true)
+	StatusFx.stun(self, seconds) # étoiles au-dessus de la tête (visuel seul)
 
 
 ## Étourdi (gel en cours), pour les tests et les kits.
@@ -382,12 +387,14 @@ func apply_status(status: StringName, data: Dictionary) -> void:
 				_sfx(&"status.burn.light")
 			_add_dot_stack(_burn_stack_left, _burn_dps, dur, total / dur)
 			_burn_left = maxf(_burn_left, dur)
+			StatusFx.track(self) # flammèches, braises et cendres sur le corps (visuel seul)
 		&"poison":
 			var dur: float = data.get("duration", POISON_DURATION)
 			if _poison_left.is_empty():
 				_poison_tick = DOT_TICK
 				_sfx(&"status.poison.light")
 			_add_dot_stack(_poison_left, _poison_dps, dur, total / dur)
+			StatusFx.track(self) # bulles vertes qui montent du corps (visuel seul)
 		&"slow": # Flocon -30 % 1,5 s ; Givre {pct 0.4, duration 2 (+2 par exemplaire)}
 			var pct: float = data.get("pct", SLOW_DEFAULT_PCT)
 			var dur: float = data.get("duration", SLOW_DEFAULT_DURATION)
@@ -590,6 +597,8 @@ func _sfx(id: StringName, vol_db := 0.0, important := false) -> void:
 
 
 func _common_activate(pos: Vector2) -> void:
+	if status_fx_slot >= 0:
+		StatusFx.forget(self) # visuels d'état d'une vie précédente (pool)
 	test_dummy = false
 	last_hit_by = -1
 	last_hit_via = &""
@@ -636,6 +645,8 @@ func _common_activate(pos: Vector2) -> void:
 
 func deactivate() -> void:
 	active = false
+	if status_fx_slot >= 0:
+		StatusFx.forget(self)
 	if brain != null:
 		brain.clear()
 		brain = null

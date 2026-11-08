@@ -238,6 +238,7 @@ func _pillar_tick() -> void:
 			e.apply_status(&"slow", {"pct": TocsinKit.PILLAR_SLOW_PCT, "duration": TocsinKit.PILLAR_TICK_S + 0.2})
 			if e.has_method(&"add_damage_taken_mod"): # « électrisé » : étiquette sans effet propre, lue par la Tête-cloche
 				e.add_damage_taken_mod(TocsinKit.CHARGE_TAG, 1.0, TocsinKit.CHARGE_TAG_S)
+				StatusFx.shock(e, TocsinKit.CHARGE_TAG_S) # arcs sur le corps tant qu'il est électrisé (visuel seul)
 	Audio.play(&"hit.heavy", c, -14.0, 1.9) # crépitement : un coup sec par tick
 	kit.on_pillar_tick(self, c)
 

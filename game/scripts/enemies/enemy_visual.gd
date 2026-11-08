@@ -13,6 +13,7 @@ extends Node2D
 ##   play_attack(action, impact_in, dir)  boss : coup armé, frame d'impact calée sur impact_in (s)
 ##   boss_tick(delta)           boss : fente / fin du coup (appelé par Enemy.tick)
 ##   set_frozen(on: bool)       hitstop : animation en pause
+##   set_wet(on: bool)          trempé (StatusFx) : corps assombri, composé avec le flash et le self_modulate existant
 ## Table tier -> sprites : si assets/sprites/monsters/<nom>/<nom>.tres existe, il est utilisé
 ## automatiquement. Échelle/pivot : 1 u = 64 px ; offset_y place les pieds à l'origine du nœud.
 
@@ -99,6 +100,12 @@ static var _style_ver := -1 ## RenderStyle.version des caches de SpriteFrames (s
 var _tier := 1
 var _radius := 20.0
 var _flash := false
+## Trempé (StatusFx, docs/Design_Etats_Visuels.md) : self_modulate du corps × WET_MOD (vêtements mouillés : plus sombre,
+## un peu bleuté, jamais noir). L'émission (enfant, modulate hérité) n'est pas touchée. Pendant un flash de coup la
+## teinte est levée : FLASH_MOD × WET_MOD repasserait sous le seuil 1,5 du drapeau de flash (sprite_flash.gdshader).
+const WET_MOD := Color(0.6, 0.66, 0.78, 1.0)
+var _wet := false
+var _wet_base := Color.WHITE ## self_modulate du corps avant la teinte (gain d'invocation, BODY_GAIN des boss…)
 var _charge_mod := Color.WHITE ## teinte d'armement (set_charge), rendue après un flash de coup
 var _charge_level := 0
 var _base_scale := Vector2.ONE ## échelle de repos du sprite (écrasement / étirement d'armement et d'impact, cadavre)
@@ -449,6 +456,7 @@ func configure(tier: int, radius_px: float, is_boss: bool, variant: int = 0, bos
 	_key = LEAPER_KEY if tier == 2 and variant == 1 else tier
 	_radius = radius_px
 	_flash = false
+	_wet = false # le self_modulate est remis à neuf par _setup_sprite ; un boss l'a déjà rendu via StatusFx.forget
 	_fx_end(false)
 	_charge_mod = Color.WHITE
 	_charge_level = 0
@@ -1040,8 +1048,42 @@ func set_flash(on: bool) -> void:
 	_flash = on
 	if _use_sprite:
 		_sprite.modulate = FLASH_MOD if on else _charge_mod
+		if _wet:
+			_apply_wet()
 	else:
 		queue_redraw()
+
+
+## Trempé (StatusFx) : assombrit le corps (self_modulate × WET_MOD), composé avec la valeur déjà posée par un autre
+## système (gain d'invocation, BODY_GAIN des cerveaux de boss). Sans effet sur un placeholder.
+func set_wet(on: bool) -> void:
+	if _sprite == null or not _use_sprite:
+		_wet = false
+		return
+	if on == _wet:
+		return
+	if on:
+		_wet_base = _sprite.self_modulate
+		_wet = true
+		_apply_wet()
+	else:
+		_wet = false
+		var cur := _sprite.self_modulate
+		if cur == _wet_base * WET_MOD or cur == _wet_base: # sinon un autre système l'a réécrit : on le laisse
+			_sprite.self_modulate = _wet_base
+
+
+func is_wet() -> bool:
+	return _wet
+
+
+func _apply_wet() -> void:
+	var cur := _sprite.self_modulate
+	var dark := _wet_base * WET_MOD
+	if cur != dark and cur != _wet_base:
+		_wet_base = cur # réécrit par un autre système pendant la trempe : nouvelle base
+		dark = _wet_base * WET_MOD
+	_sprite.self_modulate = _wet_base if _flash else dark
 
 
 ## Armement d'un coup (monstres : tireur, brute, bondisseur ; docs/Comportements_Monstres.md) : teinte chaude
