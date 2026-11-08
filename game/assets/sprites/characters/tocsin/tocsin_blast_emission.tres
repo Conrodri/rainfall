@@ -4,75 +4,83 @@
 
 [sub_resource type="AtlasTexture" id="head_blast_0_0"]
 atlas = ExtResource("head_blast")
-region = Rect2(0, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(0, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_1"]
 atlas = ExtResource("head_blast")
-region = Rect2(150, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(75, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_2"]
 atlas = ExtResource("head_blast")
-region = Rect2(300, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(150, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_3"]
 atlas = ExtResource("head_blast")
-region = Rect2(450, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(225, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_4"]
 atlas = ExtResource("head_blast")
-region = Rect2(600, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(300, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_5"]
 atlas = ExtResource("head_blast")
-region = Rect2(750, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(375, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_6"]
 atlas = ExtResource("head_blast")
-region = Rect2(900, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(450, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_0_7"]
 atlas = ExtResource("head_blast")
-region = Rect2(1050, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(525, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_0"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(0, 0, 1032, 1032)
+region = Rect2(0, 0, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_1"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(1032, 0, 1032, 1032)
+region = Rect2(516, 0, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_2"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(2064, 0, 1032, 1032)
+region = Rect2(1032, 0, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_3"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(0, 1032, 1032, 1032)
+region = Rect2(0, 516, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_4"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(1032, 1032, 1032, 1032)
+region = Rect2(516, 516, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_5"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(2064, 1032, 1032, 1032)
+region = Rect2(1032, 516, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_6"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(0, 2064, 1032, 1032)
+region = Rect2(0, 1032, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="head_blast_top_0_7"]
 atlas = ExtResource("head_blast_top")
-region = Rect2(1032, 2064, 1032, 1032)
+region = Rect2(516, 1032, 516, 516)
+margin = Rect2(0, 0, 0, 0)
 
 [resource]
 animations = [{"frames": [{"duration": 1.0, "texture": SubResource("head_blast_0_0")}, {"duration": 1.0, "texture": SubResource("head_blast_0_1")}, {"duration": 1.0, "texture": SubResource("head_blast_0_2")}, {"duration": 1.0, "texture": SubResource("head_blast_0_3")}, {"duration": 1.0, "texture": SubResource("head_blast_0_4")}, {"duration": 1.0, "texture": SubResource("head_blast_0_5")}, {"duration": 1.0, "texture": SubResource("head_blast_0_6")}, {"duration": 1.0, "texture": SubResource("head_blast_0_7")}], "loop": false, "name": &"head_blast", "speed": 12.0},

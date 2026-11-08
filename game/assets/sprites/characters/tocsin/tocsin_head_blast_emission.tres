@@ -1,46 +1,46 @@
-[gd_resource type="SpriteFrames" load_steps=11 format=3]
+[gd_resource type="SpriteFrames" load_steps=10 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/head_blast_e.png" id="1"]
 
 [sub_resource type="AtlasTexture" id="f0_0"]
 atlas = ExtResource("1")
-region = Rect2(0, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(0, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_1"]
 atlas = ExtResource("1")
-region = Rect2(150, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(75, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_2"]
 atlas = ExtResource("1")
-region = Rect2(300, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(150, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_3"]
 atlas = ExtResource("1")
-region = Rect2(450, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(225, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_4"]
 atlas = ExtResource("1")
-region = Rect2(600, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(300, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_5"]
 atlas = ExtResource("1")
-region = Rect2(750, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(375, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_6"]
 atlas = ExtResource("1")
-region = Rect2(900, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(450, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [sub_resource type="AtlasTexture" id="f0_7"]
 atlas = ExtResource("1")
-region = Rect2(1050, 0, 150, 98)
-margin = Rect2(26, 54, 42, 94)
+region = Rect2(525, 0, 75, 49)
+margin = Rect2(13, 27, 21, 47)
 
 [resource]
 animations = [

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=556 format=3]
+[gd_resource type="SpriteFrames" load_steps=563 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/idle.png" id="1"]
 
@@ -21,6 +21,20 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_head.png" id="35"]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/neck_steam.png" id="37"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/attack.png" id="carillon_19"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/cast.png" id="carillon_21"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/cast_ult.png" id="carillon_23"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_arm_l.png" id="carillon_27"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_arm_r.png" id="carillon_29"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/packed/throw_head.png" id="carillon_35"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/layers/neck_steam/throw_head.png" id="carillon_source_35"]
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1")
@@ -982,726 +996,6 @@ atlas = ExtResource("15")
 region = Rect2(90, 170, 30, 29)
 margin = Rect2(99, 75, 162, 163)
 
-[sub_resource type="AtlasTexture" id="a483"]
-atlas = ExtResource("19")
-region = Rect2(83, 38, 17, 33)
-margin = Rect2(86, 30, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a484"]
-atlas = ExtResource("19")
-region = Rect2(0, 0, 17, 38)
-margin = Rect2(86, 26, 175, 154)
-
-[sub_resource type="AtlasTexture" id="a485"]
-atlas = ExtResource("19")
-region = Rect2(100, 38, 17, 33)
-margin = Rect2(86, 30, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a486"]
-atlas = ExtResource("19")
-region = Rect2(225, 0, 17, 34)
-margin = Rect2(86, 26, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a487"]
-atlas = ExtResource("19")
-region = Rect2(97, 72, 17, 32)
-margin = Rect2(86, 28, 175, 160)
-
-[sub_resource type="AtlasTexture" id="a488"]
-atlas = ExtResource("19")
-region = Rect2(196, 72, 17, 31)
-margin = Rect2(86, 30, 175, 161)
-
-[sub_resource type="AtlasTexture" id="a489"]
-atlas = ExtResource("19")
-region = Rect2(22, 104, 20, 30)
-margin = Rect2(85, 32, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a490"]
-atlas = ExtResource("19")
-region = Rect2(17, 0, 20, 37)
-margin = Rect2(85, 26, 172, 155)
-
-[sub_resource type="AtlasTexture" id="a491"]
-atlas = ExtResource("19")
-region = Rect2(64, 38, 19, 33)
-margin = Rect2(86, 30, 173, 159)
-
-[sub_resource type="AtlasTexture" id="a492"]
-atlas = ExtResource("19")
-region = Rect2(61, 72, 19, 32)
-margin = Rect2(85, 28, 173, 160)
-
-[sub_resource type="AtlasTexture" id="a493"]
-atlas = ExtResource("19")
-region = Rect2(232, 38, 22, 32)
-margin = Rect2(84, 29, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a494"]
-atlas = ExtResource("19")
-region = Rect2(166, 104, 21, 29)
-margin = Rect2(85, 32, 171, 163)
-
-[sub_resource type="AtlasTexture" id="a495"]
-atlas = ExtResource("19")
-region = Rect2(96, 104, 24, 29)
-margin = Rect2(84, 32, 168, 163)
-
-[sub_resource type="AtlasTexture" id="a496"]
-atlas = ExtResource("19")
-region = Rect2(114, 72, 24, 31)
-margin = Rect2(84, 30, 168, 161)
-
-[sub_resource type="AtlasTexture" id="a497"]
-atlas = ExtResource("19")
-region = Rect2(229, 104, 22, 28)
-margin = Rect2(85, 34, 170, 164)
-
-[sub_resource type="AtlasTexture" id="a498"]
-atlas = ExtResource("19")
-region = Rect2(120, 104, 24, 29)
-margin = Rect2(84, 30, 168, 163)
-
-[sub_resource type="AtlasTexture" id="a499"]
-atlas = ExtResource("19")
-region = Rect2(117, 38, 25, 32)
-margin = Rect2(84, 28, 167, 160)
-
-[sub_resource type="AtlasTexture" id="a500"]
-atlas = ExtResource("19")
-region = Rect2(207, 104, 22, 28)
-margin = Rect2(85, 32, 170, 164)
-
-[sub_resource type="AtlasTexture" id="a501"]
-atlas = ExtResource("19")
-region = Rect2(0, 104, 22, 30)
-margin = Rect2(86, 31, 170, 162)
-
-[sub_resource type="AtlasTexture" id="a502"]
-atlas = ExtResource("19")
-region = Rect2(77, 0, 23, 35)
-margin = Rect2(85, 27, 169, 157)
-
-[sub_resource type="AtlasTexture" id="a503"]
-atlas = ExtResource("19")
-region = Rect2(138, 72, 21, 31)
-margin = Rect2(86, 31, 171, 161)
-
-[sub_resource type="AtlasTexture" id="a504"]
-atlas = ExtResource("19")
-region = Rect2(42, 38, 22, 33)
-margin = Rect2(86, 27, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a505"]
-atlas = ExtResource("19")
-region = Rect2(100, 0, 21, 35)
-margin = Rect2(87, 27, 171, 157)
-
-[sub_resource type="AtlasTexture" id="a506"]
-atlas = ExtResource("19")
-region = Rect2(159, 72, 19, 31)
-margin = Rect2(88, 31, 173, 161)
-
-[sub_resource type="AtlasTexture" id="a507"]
-atlas = ExtResource("19")
-region = Rect2(79, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a508"]
-atlas = ExtResource("19")
-region = Rect2(37, 0, 17, 36)
-margin = Rect2(89, 27, 175, 156)
-
-[sub_resource type="AtlasTexture" id="a509"]
-atlas = ExtResource("19")
-region = Rect2(80, 72, 17, 32)
-margin = Rect2(89, 31, 175, 160)
-
-[sub_resource type="AtlasTexture" id="a510"]
-atlas = ExtResource("19")
-region = Rect2(208, 0, 17, 34)
-margin = Rect2(89, 27, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a511"]
-atlas = ExtResource("19")
-region = Rect2(0, 38, 17, 34)
-margin = Rect2(89, 27, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a512"]
-atlas = ExtResource("19")
-region = Rect2(62, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a513"]
-atlas = ExtResource("19")
-region = Rect2(187, 104, 20, 29)
-margin = Rect2(87, 34, 172, 163)
-
-[sub_resource type="AtlasTexture" id="a514"]
-atlas = ExtResource("19")
-region = Rect2(142, 0, 20, 35)
-margin = Rect2(87, 29, 172, 157)
-
-[sub_resource type="AtlasTexture" id="a515"]
-atlas = ExtResource("19")
-region = Rect2(178, 72, 18, 31)
-margin = Rect2(88, 33, 174, 161)
-
-[sub_resource type="AtlasTexture" id="a516"]
-atlas = ExtResource("19")
-region = Rect2(41, 72, 20, 32)
-margin = Rect2(87, 30, 172, 160)
-
-[sub_resource type="AtlasTexture" id="a517"]
-atlas = ExtResource("19")
-region = Rect2(186, 0, 22, 34)
-margin = Rect2(86, 29, 170, 158)
-
-[sub_resource type="AtlasTexture" id="a518"]
-atlas = ExtResource("19")
-region = Rect2(42, 104, 20, 30)
-margin = Rect2(87, 33, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a519"]
-atlas = ExtResource("19")
-region = Rect2(213, 72, 24, 30)
-margin = Rect2(84, 33, 168, 162)
-
-[sub_resource type="AtlasTexture" id="a520"]
-atlas = ExtResource("19")
-region = Rect2(162, 0, 24, 34)
-margin = Rect2(84, 29, 168, 158)
-
-[sub_resource type="AtlasTexture" id="a521"]
-atlas = ExtResource("19")
-region = Rect2(188, 38, 22, 32)
-margin = Rect2(85, 32, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a522"]
-atlas = ExtResource("19")
-region = Rect2(142, 38, 24, 32)
-margin = Rect2(84, 29, 168, 160)
-
-[sub_resource type="AtlasTexture" id="a523"]
-atlas = ExtResource("19")
-region = Rect2(17, 38, 25, 33)
-margin = Rect2(83, 29, 167, 159)
-
-[sub_resource type="AtlasTexture" id="a524"]
-atlas = ExtResource("19")
-region = Rect2(144, 104, 22, 29)
-margin = Rect2(85, 33, 170, 163)
-
-[sub_resource type="AtlasTexture" id="a525"]
-atlas = ExtResource("19")
-region = Rect2(166, 38, 22, 32)
-margin = Rect2(84, 31, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a526"]
-atlas = ExtResource("19")
-region = Rect2(54, 0, 23, 35)
-margin = Rect2(84, 28, 169, 157)
-
-[sub_resource type="AtlasTexture" id="a527"]
-atlas = ExtResource("19")
-region = Rect2(0, 72, 21, 32)
-margin = Rect2(85, 31, 171, 160)
-
-[sub_resource type="AtlasTexture" id="a528"]
-atlas = ExtResource("19")
-region = Rect2(210, 38, 22, 32)
-margin = Rect2(84, 29, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a529"]
-atlas = ExtResource("19")
-region = Rect2(121, 0, 21, 35)
-margin = Rect2(84, 28, 171, 157)
-
-[sub_resource type="AtlasTexture" id="a530"]
-atlas = ExtResource("19")
-region = Rect2(21, 72, 20, 32)
-margin = Rect2(85, 31, 172, 160)
-
-[sub_resource type="AtlasTexture" id="a532"]
-atlas = ExtResource("21")
-region = Rect2(0, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a533"]
-atlas = ExtResource("21")
-region = Rect2(24, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a534"]
-atlas = ExtResource("21")
-region = Rect2(48, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a535"]
-atlas = ExtResource("21")
-region = Rect2(72, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a536"]
-atlas = ExtResource("21")
-region = Rect2(96, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a537"]
-atlas = ExtResource("21")
-region = Rect2(120, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a538"]
-atlas = ExtResource("21")
-region = Rect2(0, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a539"]
-atlas = ExtResource("21")
-region = Rect2(24, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a540"]
-atlas = ExtResource("21")
-region = Rect2(48, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a541"]
-atlas = ExtResource("21")
-region = Rect2(72, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a542"]
-atlas = ExtResource("21")
-region = Rect2(96, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a543"]
-atlas = ExtResource("21")
-region = Rect2(120, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a544"]
-atlas = ExtResource("21")
-region = Rect2(0, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a545"]
-atlas = ExtResource("21")
-region = Rect2(24, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a546"]
-atlas = ExtResource("21")
-region = Rect2(48, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a547"]
-atlas = ExtResource("21")
-region = Rect2(72, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a548"]
-atlas = ExtResource("21")
-region = Rect2(96, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a549"]
-atlas = ExtResource("21")
-region = Rect2(120, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a550"]
-atlas = ExtResource("21")
-region = Rect2(0, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a551"]
-atlas = ExtResource("21")
-region = Rect2(24, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a552"]
-atlas = ExtResource("21")
-region = Rect2(48, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a553"]
-atlas = ExtResource("21")
-region = Rect2(72, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a554"]
-atlas = ExtResource("21")
-region = Rect2(96, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a555"]
-atlas = ExtResource("21")
-region = Rect2(120, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a556"]
-atlas = ExtResource("21")
-region = Rect2(0, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a557"]
-atlas = ExtResource("21")
-region = Rect2(24, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a558"]
-atlas = ExtResource("21")
-region = Rect2(48, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a559"]
-atlas = ExtResource("21")
-region = Rect2(72, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a560"]
-atlas = ExtResource("21")
-region = Rect2(96, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a561"]
-atlas = ExtResource("21")
-region = Rect2(120, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a562"]
-atlas = ExtResource("21")
-region = Rect2(0, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a563"]
-atlas = ExtResource("21")
-region = Rect2(24, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a564"]
-atlas = ExtResource("21")
-region = Rect2(48, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a565"]
-atlas = ExtResource("21")
-region = Rect2(72, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a566"]
-atlas = ExtResource("21")
-region = Rect2(96, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a567"]
-atlas = ExtResource("21")
-region = Rect2(120, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a568"]
-atlas = ExtResource("21")
-region = Rect2(0, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a569"]
-atlas = ExtResource("21")
-region = Rect2(24, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a570"]
-atlas = ExtResource("21")
-region = Rect2(48, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a571"]
-atlas = ExtResource("21")
-region = Rect2(72, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a572"]
-atlas = ExtResource("21")
-region = Rect2(96, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a573"]
-atlas = ExtResource("21")
-region = Rect2(120, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a574"]
-atlas = ExtResource("21")
-region = Rect2(0, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a575"]
-atlas = ExtResource("21")
-region = Rect2(24, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a576"]
-atlas = ExtResource("21")
-region = Rect2(48, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a577"]
-atlas = ExtResource("21")
-region = Rect2(72, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a578"]
-atlas = ExtResource("21")
-region = Rect2(96, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a579"]
-atlas = ExtResource("21")
-region = Rect2(120, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a581"]
-atlas = ExtResource("23")
-region = Rect2(156, 38, 17, 33)
-margin = Rect2(86, 30, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a582"]
-atlas = ExtResource("23")
-region = Rect2(0, 0, 17, 38)
-margin = Rect2(86, 25, 175, 154)
-
-[sub_resource type="AtlasTexture" id="a583"]
-atlas = ExtResource("23")
-region = Rect2(51, 38, 17, 34)
-margin = Rect2(86, 28, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a584"]
-atlas = ExtResource("23")
-region = Rect2(162, 0, 17, 35)
-margin = Rect2(86, 30, 175, 157)
-
-[sub_resource type="AtlasTexture" id="a585"]
-atlas = ExtResource("23")
-region = Rect2(34, 38, 17, 34)
-margin = Rect2(86, 27, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a586"]
-atlas = ExtResource("23")
-region = Rect2(206, 72, 17, 31)
-margin = Rect2(86, 30, 175, 161)
-
-[sub_resource type="AtlasTexture" id="a587"]
-atlas = ExtResource("23")
-region = Rect2(46, 104, 20, 30)
-margin = Rect2(85, 32, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a588"]
-atlas = ExtResource("23")
-region = Rect2(17, 0, 20, 37)
-margin = Rect2(85, 25, 172, 155)
-
-[sub_resource type="AtlasTexture" id="a589"]
-atlas = ExtResource("23")
-region = Rect2(137, 38, 19, 33)
-margin = Rect2(86, 28, 173, 159)
-
-[sub_resource type="AtlasTexture" id="a590"]
-atlas = ExtResource("23")
-region = Rect2(225, 0, 19, 34)
-margin = Rect2(85, 30, 173, 158)
-
-[sub_resource type="AtlasTexture" id="a591"]
-atlas = ExtResource("23")
-region = Rect2(115, 38, 22, 33)
-margin = Rect2(84, 29, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a592"]
-atlas = ExtResource("23")
-region = Rect2(188, 104, 21, 29)
-margin = Rect2(85, 32, 171, 163)
-
-[sub_resource type="AtlasTexture" id="a593"]
-atlas = ExtResource("23")
-region = Rect2(120, 104, 24, 29)
-margin = Rect2(84, 32, 168, 163)
-
-[sub_resource type="AtlasTexture" id="a594"]
-atlas = ExtResource("23")
-region = Rect2(58, 72, 24, 31)
-margin = Rect2(84, 29, 168, 161)
-
-[sub_resource type="AtlasTexture" id="a595"]
-atlas = ExtResource("23")
-region = Rect2(144, 104, 22, 29)
-margin = Rect2(85, 31, 170, 163)
-
-[sub_resource type="AtlasTexture" id="a596"]
-atlas = ExtResource("23")
-region = Rect2(0, 104, 24, 30)
-margin = Rect2(84, 32, 168, 162)
-
-[sub_resource type="AtlasTexture" id="a597"]
-atlas = ExtResource("23")
-region = Rect2(173, 38, 25, 32)
-margin = Rect2(84, 29, 167, 160)
-
-[sub_resource type="AtlasTexture" id="a598"]
-atlas = ExtResource("23")
-region = Rect2(229, 104, 22, 28)
-margin = Rect2(85, 32, 170, 164)
-
-[sub_resource type="AtlasTexture" id="a599"]
-atlas = ExtResource("23")
-region = Rect2(24, 104, 22, 30)
-margin = Rect2(86, 31, 170, 162)
-
-[sub_resource type="AtlasTexture" id="a600"]
-atlas = ExtResource("23")
-region = Rect2(75, 0, 23, 35)
-margin = Rect2(85, 26, 169, 157)
-
-[sub_resource type="AtlasTexture" id="a601"]
-atlas = ExtResource("23")
-region = Rect2(128, 72, 21, 31)
-margin = Rect2(86, 29, 171, 161)
-
-[sub_resource type="AtlasTexture" id="a602"]
-atlas = ExtResource("23")
-region = Rect2(220, 38, 22, 32)
-margin = Rect2(86, 31, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a603"]
-atlas = ExtResource("23")
-region = Rect2(121, 0, 21, 35)
-margin = Rect2(87, 28, 171, 157)
-
-[sub_resource type="AtlasTexture" id="a604"]
-atlas = ExtResource("23")
-region = Rect2(169, 72, 19, 31)
-margin = Rect2(88, 31, 173, 161)
-
-[sub_resource type="AtlasTexture" id="a605"]
-atlas = ExtResource("23")
-region = Rect2(103, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a606"]
-atlas = ExtResource("23")
-region = Rect2(58, 0, 17, 36)
-margin = Rect2(89, 26, 175, 156)
-
-[sub_resource type="AtlasTexture" id="a607"]
-atlas = ExtResource("23")
-region = Rect2(41, 72, 17, 32)
-margin = Rect2(89, 29, 175, 160)
-
-[sub_resource type="AtlasTexture" id="a608"]
-atlas = ExtResource("23")
-region = Rect2(0, 38, 17, 34)
-margin = Rect2(89, 31, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a609"]
-atlas = ExtResource("23")
-region = Rect2(17, 38, 17, 34)
-margin = Rect2(89, 28, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a610"]
-atlas = ExtResource("23")
-region = Rect2(86, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a611"]
-atlas = ExtResource("23")
-region = Rect2(209, 104, 20, 29)
-margin = Rect2(87, 34, 172, 163)
-
-[sub_resource type="AtlasTexture" id="a612"]
-atlas = ExtResource("23")
-region = Rect2(142, 0, 20, 35)
-margin = Rect2(87, 28, 172, 157)
-
-[sub_resource type="AtlasTexture" id="a613"]
-atlas = ExtResource("23")
-region = Rect2(188, 72, 18, 31)
-margin = Rect2(88, 31, 174, 161)
-
-[sub_resource type="AtlasTexture" id="a614"]
-atlas = ExtResource("23")
-region = Rect2(149, 72, 20, 31)
-margin = Rect2(87, 34, 172, 161)
-
-[sub_resource type="AtlasTexture" id="a615"]
-atlas = ExtResource("23")
-region = Rect2(93, 38, 22, 33)
-margin = Rect2(86, 31, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a616"]
-atlas = ExtResource("23")
-region = Rect2(66, 104, 20, 30)
-margin = Rect2(87, 33, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a617"]
-atlas = ExtResource("23")
-region = Rect2(223, 72, 24, 30)
-margin = Rect2(84, 33, 168, 162)
-
-[sub_resource type="AtlasTexture" id="a618"]
-atlas = ExtResource("23")
-region = Rect2(179, 0, 24, 34)
-margin = Rect2(84, 28, 168, 158)
-
-[sub_resource type="AtlasTexture" id="a619"]
-atlas = ExtResource("23")
-region = Rect2(106, 72, 22, 31)
-margin = Rect2(85, 31, 170, 161)
-
-[sub_resource type="AtlasTexture" id="a620"]
-atlas = ExtResource("23")
-region = Rect2(82, 72, 24, 31)
-margin = Rect2(84, 33, 168, 161)
-
-[sub_resource type="AtlasTexture" id="a621"]
-atlas = ExtResource("23")
-region = Rect2(68, 38, 25, 33)
-margin = Rect2(83, 30, 167, 159)
-
-[sub_resource type="AtlasTexture" id="a622"]
-atlas = ExtResource("23")
-region = Rect2(166, 104, 22, 29)
-margin = Rect2(85, 33, 170, 163)
-
-[sub_resource type="AtlasTexture" id="a623"]
-atlas = ExtResource("23")
-region = Rect2(198, 38, 22, 32)
-margin = Rect2(84, 31, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a624"]
-atlas = ExtResource("23")
-region = Rect2(98, 0, 23, 35)
-margin = Rect2(84, 27, 169, 157)
-
-[sub_resource type="AtlasTexture" id="a625"]
-atlas = ExtResource("23")
-region = Rect2(0, 72, 21, 32)
-margin = Rect2(85, 30, 171, 160)
-
-[sub_resource type="AtlasTexture" id="a626"]
-atlas = ExtResource("23")
-region = Rect2(203, 0, 22, 34)
-margin = Rect2(84, 31, 170, 158)
-
-[sub_resource type="AtlasTexture" id="a627"]
-atlas = ExtResource("23")
-region = Rect2(37, 0, 21, 36)
-margin = Rect2(84, 28, 171, 156)
-
-[sub_resource type="AtlasTexture" id="a628"]
-atlas = ExtResource("23")
-region = Rect2(21, 72, 20, 32)
-margin = Rect2(85, 31, 172, 160)
-
 [sub_resource type="AtlasTexture" id="a630"]
 atlas = ExtResource("25")
 region = Rect2(42, 0, 17, 35)
@@ -1941,566 +1235,6 @@ margin = Rect2(85, 64, 172, 167)
 atlas = ExtResource("25")
 region = Rect2(45, 93, 20, 23)
 margin = Rect2(85, 70, 172, 169)
-
-[sub_resource type="AtlasTexture" id="a679"]
-atlas = ExtResource("27")
-region = Rect2(0, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a680"]
-atlas = ExtResource("27")
-region = Rect2(24, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a681"]
-atlas = ExtResource("27")
-region = Rect2(48, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a682"]
-atlas = ExtResource("27")
-region = Rect2(72, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a683"]
-atlas = ExtResource("27")
-region = Rect2(0, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a684"]
-atlas = ExtResource("27")
-region = Rect2(24, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a685"]
-atlas = ExtResource("27")
-region = Rect2(48, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a686"]
-atlas = ExtResource("27")
-region = Rect2(72, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a687"]
-atlas = ExtResource("27")
-region = Rect2(0, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a688"]
-atlas = ExtResource("27")
-region = Rect2(24, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a689"]
-atlas = ExtResource("27")
-region = Rect2(48, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a690"]
-atlas = ExtResource("27")
-region = Rect2(72, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a691"]
-atlas = ExtResource("27")
-region = Rect2(0, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a692"]
-atlas = ExtResource("27")
-region = Rect2(24, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a693"]
-atlas = ExtResource("27")
-region = Rect2(48, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a694"]
-atlas = ExtResource("27")
-region = Rect2(72, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a695"]
-atlas = ExtResource("27")
-region = Rect2(0, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a696"]
-atlas = ExtResource("27")
-region = Rect2(24, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a697"]
-atlas = ExtResource("27")
-region = Rect2(48, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a698"]
-atlas = ExtResource("27")
-region = Rect2(72, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a699"]
-atlas = ExtResource("27")
-region = Rect2(0, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a700"]
-atlas = ExtResource("27")
-region = Rect2(24, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a701"]
-atlas = ExtResource("27")
-region = Rect2(48, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a702"]
-atlas = ExtResource("27")
-region = Rect2(72, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a703"]
-atlas = ExtResource("27")
-region = Rect2(0, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a704"]
-atlas = ExtResource("27")
-region = Rect2(24, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a705"]
-atlas = ExtResource("27")
-region = Rect2(48, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a706"]
-atlas = ExtResource("27")
-region = Rect2(72, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a707"]
-atlas = ExtResource("27")
-region = Rect2(0, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a708"]
-atlas = ExtResource("27")
-region = Rect2(24, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a709"]
-atlas = ExtResource("27")
-region = Rect2(48, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a710"]
-atlas = ExtResource("27")
-region = Rect2(72, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a712"]
-atlas = ExtResource("29")
-region = Rect2(0, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a713"]
-atlas = ExtResource("29")
-region = Rect2(24, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a714"]
-atlas = ExtResource("29")
-region = Rect2(48, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a715"]
-atlas = ExtResource("29")
-region = Rect2(72, 0, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a716"]
-atlas = ExtResource("29")
-region = Rect2(0, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a717"]
-atlas = ExtResource("29")
-region = Rect2(24, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a718"]
-atlas = ExtResource("29")
-region = Rect2(48, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a719"]
-atlas = ExtResource("29")
-region = Rect2(72, 37, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a720"]
-atlas = ExtResource("29")
-region = Rect2(0, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a721"]
-atlas = ExtResource("29")
-region = Rect2(24, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a722"]
-atlas = ExtResource("29")
-region = Rect2(48, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a723"]
-atlas = ExtResource("29")
-region = Rect2(72, 74, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a724"]
-atlas = ExtResource("29")
-region = Rect2(0, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a725"]
-atlas = ExtResource("29")
-region = Rect2(24, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a726"]
-atlas = ExtResource("29")
-region = Rect2(48, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a727"]
-atlas = ExtResource("29")
-region = Rect2(72, 111, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a728"]
-atlas = ExtResource("29")
-region = Rect2(0, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a729"]
-atlas = ExtResource("29")
-region = Rect2(24, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a730"]
-atlas = ExtResource("29")
-region = Rect2(48, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a731"]
-atlas = ExtResource("29")
-region = Rect2(72, 148, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a732"]
-atlas = ExtResource("29")
-region = Rect2(0, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a733"]
-atlas = ExtResource("29")
-region = Rect2(24, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a734"]
-atlas = ExtResource("29")
-region = Rect2(48, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a735"]
-atlas = ExtResource("29")
-region = Rect2(72, 185, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a736"]
-atlas = ExtResource("29")
-region = Rect2(0, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a737"]
-atlas = ExtResource("29")
-region = Rect2(24, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a738"]
-atlas = ExtResource("29")
-region = Rect2(48, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a739"]
-atlas = ExtResource("29")
-region = Rect2(72, 222, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a740"]
-atlas = ExtResource("29")
-region = Rect2(0, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a741"]
-atlas = ExtResource("29")
-region = Rect2(24, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a742"]
-atlas = ExtResource("29")
-region = Rect2(48, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a743"]
-atlas = ExtResource("29")
-region = Rect2(72, 259, 24, 37)
-margin = Rect2(84, 26, 168, 155)
-
-[sub_resource type="AtlasTexture" id="a811"]
-atlas = ExtResource("35")
-region = Rect2(181, 38, 17, 33)
-margin = Rect2(86, 30, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a812"]
-atlas = ExtResource("35")
-region = Rect2(0, 0, 17, 38)
-margin = Rect2(86, 26, 175, 154)
-
-[sub_resource type="AtlasTexture" id="a813"]
-atlas = ExtResource("35")
-region = Rect2(147, 38, 17, 33)
-margin = Rect2(86, 31, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a814"]
-atlas = ExtResource("35")
-region = Rect2(180, 0, 17, 35)
-margin = Rect2(86, 28, 175, 157)
-
-[sub_resource type="AtlasTexture" id="a815"]
-atlas = ExtResource("35")
-region = Rect2(163, 0, 17, 35)
-margin = Rect2(86, 26, 175, 157)
-
-[sub_resource type="AtlasTexture" id="a816"]
-atlas = ExtResource("35")
-region = Rect2(205, 72, 17, 31)
-margin = Rect2(86, 30, 175, 161)
-
-[sub_resource type="AtlasTexture" id="a817"]
-atlas = ExtResource("35")
-region = Rect2(43, 104, 20, 30)
-margin = Rect2(85, 32, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a818"]
-atlas = ExtResource("35")
-region = Rect2(17, 0, 20, 37)
-margin = Rect2(85, 26, 172, 155)
-
-[sub_resource type="AtlasTexture" id="a819"]
-atlas = ExtResource("35")
-region = Rect2(149, 72, 19, 31)
-margin = Rect2(86, 32, 173, 161)
-
-[sub_resource type="AtlasTexture" id="a820"]
-atlas = ExtResource("35")
-region = Rect2(63, 72, 20, 32)
-margin = Rect2(85, 30, 172, 160)
-
-[sub_resource type="AtlasTexture" id="a821"]
-atlas = ExtResource("35")
-region = Rect2(125, 38, 22, 33)
-margin = Rect2(84, 29, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a822"]
-atlas = ExtResource("35")
-region = Rect2(163, 104, 21, 29)
-margin = Rect2(85, 32, 171, 163)
-
-[sub_resource type="AtlasTexture" id="a823"]
-atlas = ExtResource("35")
-region = Rect2(117, 104, 24, 29)
-margin = Rect2(84, 32, 168, 163)
-
-[sub_resource type="AtlasTexture" id="a824"]
-atlas = ExtResource("35")
-region = Rect2(197, 0, 24, 34)
-margin = Rect2(84, 28, 168, 158)
-
-[sub_resource type="AtlasTexture" id="a825"]
-atlas = ExtResource("35")
-region = Rect2(226, 104, 22, 28)
-margin = Rect2(85, 34, 170, 164)
-
-[sub_resource type="AtlasTexture" id="a826"]
-atlas = ExtResource("35")
-region = Rect2(103, 72, 24, 31)
-margin = Rect2(84, 30, 168, 161)
-
-[sub_resource type="AtlasTexture" id="a827"]
-atlas = ExtResource("35")
-region = Rect2(198, 38, 25, 32)
-margin = Rect2(84, 28, 167, 160)
-
-[sub_resource type="AtlasTexture" id="a828"]
-atlas = ExtResource("35")
-region = Rect2(204, 104, 22, 28)
-margin = Rect2(85, 32, 170, 164)
-
-[sub_resource type="AtlasTexture" id="a829"]
-atlas = ExtResource("35")
-region = Rect2(0, 104, 22, 30)
-margin = Rect2(86, 31, 170, 162)
-
-[sub_resource type="AtlasTexture" id="a830"]
-atlas = ExtResource("35")
-region = Rect2(221, 0, 23, 34)
-margin = Rect2(85, 28, 169, 158)
-
-[sub_resource type="AtlasTexture" id="a831"]
-atlas = ExtResource("35")
-region = Rect2(22, 104, 21, 30)
-margin = Rect2(86, 32, 171, 162)
-
-[sub_resource type="AtlasTexture" id="a832"]
-atlas = ExtResource("35")
-region = Rect2(81, 38, 22, 33)
-margin = Rect2(86, 29, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a833"]
-atlas = ExtResource("35")
-region = Rect2(122, 0, 21, 35)
-margin = Rect2(87, 27, 171, 157)
-
-[sub_resource type="AtlasTexture" id="a834"]
-atlas = ExtResource("35")
-region = Rect2(168, 72, 19, 31)
-margin = Rect2(88, 31, 173, 161)
-
-[sub_resource type="AtlasTexture" id="a835"]
-atlas = ExtResource("35")
-region = Rect2(100, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a836"]
-atlas = ExtResource("35")
-region = Rect2(58, 0, 17, 36)
-margin = Rect2(89, 27, 175, 156)
-
-[sub_resource type="AtlasTexture" id="a837"]
-atlas = ExtResource("35")
-region = Rect2(164, 38, 17, 33)
-margin = Rect2(89, 31, 175, 159)
-
-[sub_resource type="AtlasTexture" id="a838"]
-atlas = ExtResource("35")
-region = Rect2(22, 38, 17, 34)
-margin = Rect2(89, 29, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a839"]
-atlas = ExtResource("35")
-region = Rect2(39, 38, 17, 34)
-margin = Rect2(89, 27, 175, 158)
-
-[sub_resource type="AtlasTexture" id="a840"]
-atlas = ExtResource("35")
-region = Rect2(83, 104, 17, 30)
-margin = Rect2(89, 31, 175, 162)
-
-[sub_resource type="AtlasTexture" id="a841"]
-atlas = ExtResource("35")
-region = Rect2(184, 104, 20, 29)
-margin = Rect2(87, 34, 172, 163)
-
-[sub_resource type="AtlasTexture" id="a842"]
-atlas = ExtResource("35")
-region = Rect2(143, 0, 20, 35)
-margin = Rect2(87, 29, 172, 157)
-
-[sub_resource type="AtlasTexture" id="a843"]
-atlas = ExtResource("35")
-region = Rect2(187, 72, 18, 31)
-margin = Rect2(88, 33, 174, 161)
-
-[sub_resource type="AtlasTexture" id="a844"]
-atlas = ExtResource("35")
-region = Rect2(83, 72, 20, 32)
-margin = Rect2(87, 32, 172, 160)
-
-[sub_resource type="AtlasTexture" id="a845"]
-atlas = ExtResource("35")
-region = Rect2(103, 38, 22, 33)
-margin = Rect2(86, 30, 170, 159)
-
-[sub_resource type="AtlasTexture" id="a846"]
-atlas = ExtResource("35")
-region = Rect2(63, 104, 20, 30)
-margin = Rect2(87, 33, 172, 162)
-
-[sub_resource type="AtlasTexture" id="a847"]
-atlas = ExtResource("35")
-region = Rect2(222, 72, 24, 30)
-margin = Rect2(84, 33, 168, 162)
-
-[sub_resource type="AtlasTexture" id="a848"]
-atlas = ExtResource("35")
-region = Rect2(75, 0, 24, 35)
-margin = Rect2(84, 29, 168, 157)
-
-[sub_resource type="AtlasTexture" id="a849"]
-atlas = ExtResource("35")
-region = Rect2(127, 72, 22, 31)
-margin = Rect2(85, 33, 170, 161)
-
-[sub_resource type="AtlasTexture" id="a850"]
-atlas = ExtResource("35")
-region = Rect2(223, 38, 24, 32)
-margin = Rect2(84, 31, 168, 160)
-
-[sub_resource type="AtlasTexture" id="a851"]
-atlas = ExtResource("35")
-region = Rect2(56, 38, 25, 33)
-margin = Rect2(83, 29, 167, 159)
-
-[sub_resource type="AtlasTexture" id="a852"]
-atlas = ExtResource("35")
-region = Rect2(141, 104, 22, 29)
-margin = Rect2(85, 33, 170, 163)
-
-[sub_resource type="AtlasTexture" id="a853"]
-atlas = ExtResource("35")
-region = Rect2(0, 72, 22, 32)
-margin = Rect2(84, 31, 170, 160)
-
-[sub_resource type="AtlasTexture" id="a854"]
-atlas = ExtResource("35")
-region = Rect2(99, 0, 23, 35)
-margin = Rect2(84, 28, 169, 157)
-
-[sub_resource type="AtlasTexture" id="a855"]
-atlas = ExtResource("35")
-region = Rect2(22, 72, 21, 32)
-margin = Rect2(85, 32, 171, 160)
-
-[sub_resource type="AtlasTexture" id="a856"]
-atlas = ExtResource("35")
-region = Rect2(0, 38, 22, 34)
-margin = Rect2(84, 29, 170, 158)
-
-[sub_resource type="AtlasTexture" id="a857"]
-atlas = ExtResource("35")
-region = Rect2(37, 0, 21, 36)
-margin = Rect2(84, 27, 171, 156)
-
-[sub_resource type="AtlasTexture" id="a858"]
-atlas = ExtResource("35")
-region = Rect2(43, 72, 20, 32)
-margin = Rect2(85, 31, 172, 160)
 
 [sub_resource type="AtlasTexture" id="a860"]
 atlas = ExtResource("37")
@@ -2742,6 +1476,1286 @@ atlas = ExtResource("37")
 region = Rect2(21, 71, 20, 32)
 margin = Rect2(85, 31, 172, 160)
 
+[sub_resource type="AtlasTexture" id="carillon_a483"]
+atlas = ExtResource("carillon_19")
+region = Rect2(186, 0, 10, 33)
+margin = Rect2(85, 29, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a484"]
+atlas = ExtResource("carillon_19")
+region = Rect2(164, 31, 10, 33)
+margin = Rect2(77, 32, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a485"]
+atlas = ExtResource("carillon_19")
+region = Rect2(174, 31, 10, 33)
+margin = Rect2(71, 37, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a486"]
+atlas = ExtResource("carillon_19")
+region = Rect2(164, 64, 10, 33)
+margin = Rect2(107, 14, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a487"]
+atlas = ExtResource("carillon_19")
+region = Rect2(164, 97, 10, 33)
+margin = Rect2(97, 23, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a488"]
+atlas = ExtResource("carillon_19")
+region = Rect2(174, 64, 10, 33)
+margin = Rect2(91, 25, 182, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a489"]
+atlas = ExtResource("carillon_19")
+region = Rect2(108, 0, 15, 31)
+margin = Rect2(83, 30, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a490"]
+atlas = ExtResource("carillon_19")
+region = Rect2(108, 31, 15, 31)
+margin = Rect2(75, 32, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a491"]
+atlas = ExtResource("carillon_19")
+region = Rect2(108, 62, 15, 31)
+margin = Rect2(69, 36, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a492"]
+atlas = ExtResource("carillon_19")
+region = Rect2(108, 93, 15, 31)
+margin = Rect2(105, 16, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a493"]
+atlas = ExtResource("carillon_19")
+region = Rect2(123, 0, 15, 31)
+margin = Rect2(95, 26, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a494"]
+atlas = ExtResource("carillon_19")
+region = Rect2(123, 31, 15, 31)
+margin = Rect2(89, 28, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a495"]
+atlas = ExtResource("carillon_19")
+region = Rect2(19, 58, 19, 28)
+margin = Rect2(82, 32, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a496"]
+atlas = ExtResource("carillon_19")
+region = Rect2(19, 86, 19, 28)
+margin = Rect2(74, 34, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a497"]
+atlas = ExtResource("carillon_19")
+region = Rect2(38, 0, 19, 28)
+margin = Rect2(68, 40, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a498"]
+atlas = ExtResource("carillon_19")
+region = Rect2(38, 28, 19, 28)
+margin = Rect2(104, 17, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a499"]
+atlas = ExtResource("carillon_19")
+region = Rect2(38, 56, 19, 28)
+margin = Rect2(94, 26, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a500"]
+atlas = ExtResource("carillon_19")
+region = Rect2(38, 84, 19, 28)
+margin = Rect2(88, 28, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a501"]
+atlas = ExtResource("carillon_19")
+region = Rect2(74, 62, 17, 30)
+margin = Rect2(84, 31, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a502"]
+atlas = ExtResource("carillon_19")
+region = Rect2(74, 92, 17, 30)
+margin = Rect2(76, 33, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a503"]
+atlas = ExtResource("carillon_19")
+region = Rect2(91, 0, 17, 30)
+margin = Rect2(70, 37, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a504"]
+atlas = ExtResource("carillon_19")
+region = Rect2(91, 30, 17, 30)
+margin = Rect2(107, 16, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a505"]
+atlas = ExtResource("carillon_19")
+region = Rect2(91, 60, 17, 30)
+margin = Rect2(96, 26, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a506"]
+atlas = ExtResource("carillon_19")
+region = Rect2(91, 90, 17, 30)
+margin = Rect2(90, 27, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a507"]
+atlas = ExtResource("carillon_19")
+region = Rect2(153, 0, 11, 31)
+margin = Rect2(88, 30, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a508"]
+atlas = ExtResource("carillon_19")
+region = Rect2(153, 31, 11, 31)
+margin = Rect2(80, 34, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a509"]
+atlas = ExtResource("carillon_19")
+region = Rect2(153, 62, 11, 31)
+margin = Rect2(74, 38, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a510"]
+atlas = ExtResource("carillon_19")
+region = Rect2(153, 93, 11, 31)
+margin = Rect2(112, 16, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a511"]
+atlas = ExtResource("carillon_19")
+region = Rect2(164, 0, 11, 31)
+margin = Rect2(100, 25, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a512"]
+atlas = ExtResource("carillon_19")
+region = Rect2(175, 0, 11, 31)
+margin = Rect2(93, 26, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a513"]
+atlas = ExtResource("carillon_19")
+region = Rect2(123, 62, 15, 30)
+margin = Rect2(85, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a514"]
+atlas = ExtResource("carillon_19")
+region = Rect2(123, 92, 15, 30)
+margin = Rect2(77, 35, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a515"]
+atlas = ExtResource("carillon_19")
+region = Rect2(138, 0, 15, 30)
+margin = Rect2(71, 40, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a516"]
+atlas = ExtResource("carillon_19")
+region = Rect2(138, 30, 15, 30)
+margin = Rect2(108, 19, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a517"]
+atlas = ExtResource("carillon_19")
+region = Rect2(138, 60, 15, 30)
+margin = Rect2(97, 28, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a518"]
+atlas = ExtResource("carillon_19")
+region = Rect2(138, 90, 15, 30)
+margin = Rect2(91, 29, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a519"]
+atlas = ExtResource("carillon_19")
+region = Rect2(0, 0, 19, 29)
+margin = Rect2(82, 33, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a520"]
+atlas = ExtResource("carillon_19")
+region = Rect2(0, 29, 19, 29)
+margin = Rect2(75, 35, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a521"]
+atlas = ExtResource("carillon_19")
+region = Rect2(0, 58, 19, 29)
+margin = Rect2(69, 40, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a522"]
+atlas = ExtResource("carillon_19")
+region = Rect2(0, 87, 19, 29)
+margin = Rect2(104, 19, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a523"]
+atlas = ExtResource("carillon_19")
+region = Rect2(19, 0, 19, 29)
+margin = Rect2(94, 27, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a524"]
+atlas = ExtResource("carillon_19")
+region = Rect2(19, 29, 19, 29)
+margin = Rect2(87, 29, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a525"]
+atlas = ExtResource("carillon_19")
+region = Rect2(57, 0, 17, 31)
+margin = Rect2(82, 31, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a526"]
+atlas = ExtResource("carillon_19")
+region = Rect2(57, 31, 17, 31)
+margin = Rect2(75, 34, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a527"]
+atlas = ExtResource("carillon_19")
+region = Rect2(57, 62, 17, 31)
+margin = Rect2(68, 39, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a528"]
+atlas = ExtResource("carillon_19")
+region = Rect2(57, 93, 17, 31)
+margin = Rect2(104, 17, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a529"]
+atlas = ExtResource("carillon_19")
+region = Rect2(74, 0, 17, 31)
+margin = Rect2(94, 26, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a530"]
+atlas = ExtResource("carillon_19")
+region = Rect2(74, 31, 17, 31)
+margin = Rect2(87, 27, 175, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a532"]
+atlas = ExtResource("carillon_21")
+region = Rect2(6, 2, 11, 33)
+margin = Rect2(83, 28, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a533"]
+atlas = ExtResource("carillon_21")
+region = Rect2(30, 2, 11, 33)
+margin = Rect2(73, 29, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a534"]
+atlas = ExtResource("carillon_21")
+region = Rect2(54, 2, 11, 33)
+margin = Rect2(79, 30, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a535"]
+atlas = ExtResource("carillon_21")
+region = Rect2(78, 2, 11, 33)
+margin = Rect2(111, 28, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a536"]
+atlas = ExtResource("carillon_21")
+region = Rect2(102, 2, 11, 33)
+margin = Rect2(97, 29, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a537"]
+atlas = ExtResource("carillon_21")
+region = Rect2(126, 2, 11, 33)
+margin = Rect2(89, 25, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a538"]
+atlas = ExtResource("carillon_21")
+region = Rect2(4, 41, 15, 29)
+margin = Rect2(82, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a539"]
+atlas = ExtResource("carillon_21")
+region = Rect2(28, 41, 15, 29)
+margin = Rect2(72, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a540"]
+atlas = ExtResource("carillon_21")
+region = Rect2(52, 41, 15, 29)
+margin = Rect2(78, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a541"]
+atlas = ExtResource("carillon_21")
+region = Rect2(76, 41, 15, 29)
+margin = Rect2(110, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a542"]
+atlas = ExtResource("carillon_21")
+region = Rect2(100, 41, 15, 29)
+margin = Rect2(96, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a543"]
+atlas = ExtResource("carillon_21")
+region = Rect2(124, 41, 15, 29)
+margin = Rect2(88, 29, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a544"]
+atlas = ExtResource("carillon_21")
+region = Rect2(2, 78, 19, 28)
+margin = Rect2(81, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a545"]
+atlas = ExtResource("carillon_21")
+region = Rect2(26, 78, 19, 28)
+margin = Rect2(71, 33, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a546"]
+atlas = ExtResource("carillon_21")
+region = Rect2(50, 78, 19, 28)
+margin = Rect2(77, 33, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a547"]
+atlas = ExtResource("carillon_21")
+region = Rect2(74, 78, 19, 28)
+margin = Rect2(109, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a548"]
+atlas = ExtResource("carillon_21")
+region = Rect2(98, 78, 19, 28)
+margin = Rect2(95, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a549"]
+atlas = ExtResource("carillon_21")
+region = Rect2(122, 78, 19, 28)
+margin = Rect2(88, 29, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a550"]
+atlas = ExtResource("carillon_21")
+region = Rect2(3, 115, 17, 29)
+margin = Rect2(83, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a551"]
+atlas = ExtResource("carillon_21")
+region = Rect2(27, 115, 17, 29)
+margin = Rect2(73, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a552"]
+atlas = ExtResource("carillon_21")
+region = Rect2(51, 115, 17, 29)
+margin = Rect2(79, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a553"]
+atlas = ExtResource("carillon_21")
+region = Rect2(75, 115, 17, 29)
+margin = Rect2(111, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a554"]
+atlas = ExtResource("carillon_21")
+region = Rect2(99, 115, 17, 29)
+margin = Rect2(97, 32, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a555"]
+atlas = ExtResource("carillon_21")
+region = Rect2(123, 115, 17, 29)
+margin = Rect2(90, 29, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a556"]
+atlas = ExtResource("carillon_21")
+region = Rect2(7, 150, 10, 32)
+margin = Rect2(87, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a557"]
+atlas = ExtResource("carillon_21")
+region = Rect2(31, 150, 10, 32)
+margin = Rect2(77, 30, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a558"]
+atlas = ExtResource("carillon_21")
+region = Rect2(55, 150, 10, 32)
+margin = Rect2(84, 30, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a559"]
+atlas = ExtResource("carillon_21")
+region = Rect2(79, 150, 10, 32)
+margin = Rect2(116, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a560"]
+atlas = ExtResource("carillon_21")
+region = Rect2(103, 150, 10, 32)
+margin = Rect2(101, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a561"]
+atlas = ExtResource("carillon_21")
+region = Rect2(127, 150, 10, 32)
+margin = Rect2(93, 27, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a562"]
+atlas = ExtResource("carillon_21")
+region = Rect2(4, 188, 15, 30)
+margin = Rect2(84, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a563"]
+atlas = ExtResource("carillon_21")
+region = Rect2(28, 188, 15, 30)
+margin = Rect2(74, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a564"]
+atlas = ExtResource("carillon_21")
+region = Rect2(52, 188, 15, 30)
+margin = Rect2(80, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a565"]
+atlas = ExtResource("carillon_21")
+region = Rect2(76, 188, 15, 30)
+margin = Rect2(112, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a566"]
+atlas = ExtResource("carillon_21")
+region = Rect2(100, 188, 15, 30)
+margin = Rect2(98, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a567"]
+atlas = ExtResource("carillon_21")
+region = Rect2(124, 188, 15, 30)
+margin = Rect2(90, 30, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a568"]
+atlas = ExtResource("carillon_21")
+region = Rect2(2, 226, 19, 29)
+margin = Rect2(81, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a569"]
+atlas = ExtResource("carillon_21")
+region = Rect2(26, 226, 19, 29)
+margin = Rect2(71, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a570"]
+atlas = ExtResource("carillon_21")
+region = Rect2(50, 226, 19, 29)
+margin = Rect2(78, 33, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a571"]
+atlas = ExtResource("carillon_21")
+region = Rect2(74, 226, 19, 29)
+margin = Rect2(109, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a572"]
+atlas = ExtResource("carillon_21")
+region = Rect2(98, 226, 19, 29)
+margin = Rect2(94, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a573"]
+atlas = ExtResource("carillon_21")
+region = Rect2(122, 226, 19, 29)
+margin = Rect2(87, 30, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a574"]
+atlas = ExtResource("carillon_21")
+region = Rect2(4, 262, 16, 31)
+margin = Rect2(81, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a575"]
+atlas = ExtResource("carillon_21")
+region = Rect2(28, 262, 16, 31)
+margin = Rect2(71, 31, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a576"]
+atlas = ExtResource("carillon_21")
+region = Rect2(52, 262, 16, 31)
+margin = Rect2(78, 31, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a577"]
+atlas = ExtResource("carillon_21")
+region = Rect2(76, 262, 16, 31)
+margin = Rect2(109, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a578"]
+atlas = ExtResource("carillon_21")
+region = Rect2(100, 262, 16, 31)
+margin = Rect2(95, 32, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a579"]
+atlas = ExtResource("carillon_21")
+region = Rect2(124, 262, 16, 31)
+margin = Rect2(87, 28, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a581"]
+atlas = ExtResource("carillon_23")
+region = Rect2(6, 2, 11, 33)
+margin = Rect2(83, 28, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a582"]
+atlas = ExtResource("carillon_23")
+region = Rect2(30, 2, 11, 33)
+margin = Rect2(73, 29, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a583"]
+atlas = ExtResource("carillon_23")
+region = Rect2(54, 2, 11, 33)
+margin = Rect2(79, 30, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a584"]
+atlas = ExtResource("carillon_23")
+region = Rect2(78, 2, 11, 33)
+margin = Rect2(111, 28, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a585"]
+atlas = ExtResource("carillon_23")
+region = Rect2(102, 2, 11, 33)
+margin = Rect2(97, 29, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a586"]
+atlas = ExtResource("carillon_23")
+region = Rect2(126, 2, 11, 33)
+margin = Rect2(89, 25, 181, 159)
+
+[sub_resource type="AtlasTexture" id="carillon_a587"]
+atlas = ExtResource("carillon_23")
+region = Rect2(4, 41, 15, 29)
+margin = Rect2(82, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a588"]
+atlas = ExtResource("carillon_23")
+region = Rect2(28, 41, 15, 29)
+margin = Rect2(72, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a589"]
+atlas = ExtResource("carillon_23")
+region = Rect2(52, 41, 15, 29)
+margin = Rect2(78, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a590"]
+atlas = ExtResource("carillon_23")
+region = Rect2(76, 41, 15, 29)
+margin = Rect2(110, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a591"]
+atlas = ExtResource("carillon_23")
+region = Rect2(100, 41, 15, 29)
+margin = Rect2(96, 31, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a592"]
+atlas = ExtResource("carillon_23")
+region = Rect2(124, 41, 15, 29)
+margin = Rect2(88, 29, 177, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a593"]
+atlas = ExtResource("carillon_23")
+region = Rect2(2, 78, 19, 28)
+margin = Rect2(81, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a594"]
+atlas = ExtResource("carillon_23")
+region = Rect2(26, 78, 19, 28)
+margin = Rect2(71, 33, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a595"]
+atlas = ExtResource("carillon_23")
+region = Rect2(50, 78, 19, 28)
+margin = Rect2(77, 33, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a596"]
+atlas = ExtResource("carillon_23")
+region = Rect2(74, 78, 19, 28)
+margin = Rect2(109, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a597"]
+atlas = ExtResource("carillon_23")
+region = Rect2(98, 78, 19, 28)
+margin = Rect2(95, 31, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a598"]
+atlas = ExtResource("carillon_23")
+region = Rect2(122, 78, 19, 28)
+margin = Rect2(88, 29, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a599"]
+atlas = ExtResource("carillon_23")
+region = Rect2(3, 115, 17, 29)
+margin = Rect2(83, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a600"]
+atlas = ExtResource("carillon_23")
+region = Rect2(27, 115, 17, 29)
+margin = Rect2(73, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a601"]
+atlas = ExtResource("carillon_23")
+region = Rect2(51, 115, 17, 29)
+margin = Rect2(79, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a602"]
+atlas = ExtResource("carillon_23")
+region = Rect2(75, 115, 17, 29)
+margin = Rect2(111, 31, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a603"]
+atlas = ExtResource("carillon_23")
+region = Rect2(99, 115, 17, 29)
+margin = Rect2(97, 32, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a604"]
+atlas = ExtResource("carillon_23")
+region = Rect2(123, 115, 17, 29)
+margin = Rect2(90, 29, 175, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a605"]
+atlas = ExtResource("carillon_23")
+region = Rect2(7, 150, 10, 32)
+margin = Rect2(87, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a606"]
+atlas = ExtResource("carillon_23")
+region = Rect2(31, 150, 10, 32)
+margin = Rect2(77, 30, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a607"]
+atlas = ExtResource("carillon_23")
+region = Rect2(55, 150, 10, 32)
+margin = Rect2(84, 30, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a608"]
+atlas = ExtResource("carillon_23")
+region = Rect2(79, 150, 10, 32)
+margin = Rect2(116, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a609"]
+atlas = ExtResource("carillon_23")
+region = Rect2(103, 150, 10, 32)
+margin = Rect2(101, 29, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a610"]
+atlas = ExtResource("carillon_23")
+region = Rect2(127, 150, 10, 32)
+margin = Rect2(93, 27, 182, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a611"]
+atlas = ExtResource("carillon_23")
+region = Rect2(4, 188, 15, 30)
+margin = Rect2(84, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a612"]
+atlas = ExtResource("carillon_23")
+region = Rect2(28, 188, 15, 30)
+margin = Rect2(74, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a613"]
+atlas = ExtResource("carillon_23")
+region = Rect2(52, 188, 15, 30)
+margin = Rect2(80, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a614"]
+atlas = ExtResource("carillon_23")
+region = Rect2(76, 188, 15, 30)
+margin = Rect2(112, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a615"]
+atlas = ExtResource("carillon_23")
+region = Rect2(100, 188, 15, 30)
+margin = Rect2(98, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a616"]
+atlas = ExtResource("carillon_23")
+region = Rect2(124, 188, 15, 30)
+margin = Rect2(90, 30, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a617"]
+atlas = ExtResource("carillon_23")
+region = Rect2(2, 226, 19, 29)
+margin = Rect2(81, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a618"]
+atlas = ExtResource("carillon_23")
+region = Rect2(26, 226, 19, 29)
+margin = Rect2(71, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a619"]
+atlas = ExtResource("carillon_23")
+region = Rect2(50, 226, 19, 29)
+margin = Rect2(78, 33, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a620"]
+atlas = ExtResource("carillon_23")
+region = Rect2(74, 226, 19, 29)
+margin = Rect2(109, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a621"]
+atlas = ExtResource("carillon_23")
+region = Rect2(98, 226, 19, 29)
+margin = Rect2(94, 32, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a622"]
+atlas = ExtResource("carillon_23")
+region = Rect2(122, 226, 19, 29)
+margin = Rect2(87, 30, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a623"]
+atlas = ExtResource("carillon_23")
+region = Rect2(4, 262, 16, 31)
+margin = Rect2(81, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a624"]
+atlas = ExtResource("carillon_23")
+region = Rect2(28, 262, 16, 31)
+margin = Rect2(71, 31, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a625"]
+atlas = ExtResource("carillon_23")
+region = Rect2(52, 262, 16, 31)
+margin = Rect2(78, 31, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a626"]
+atlas = ExtResource("carillon_23")
+region = Rect2(76, 262, 16, 31)
+margin = Rect2(109, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a627"]
+atlas = ExtResource("carillon_23")
+region = Rect2(100, 262, 16, 31)
+margin = Rect2(95, 32, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a628"]
+atlas = ExtResource("carillon_23")
+region = Rect2(124, 262, 16, 31)
+margin = Rect2(87, 28, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a679"]
+atlas = ExtResource("carillon_27")
+region = Rect2(7, 3, 10, 30)
+margin = Rect2(82, 31, 182, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a680"]
+atlas = ExtResource("carillon_27")
+region = Rect2(31, 3, 10, 30)
+margin = Rect2(73, 33, 182, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a681"]
+atlas = ExtResource("carillon_27")
+region = Rect2(55, 3, 10, 30)
+margin = Rect2(106, 28, 182, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a682"]
+atlas = ExtResource("carillon_27")
+region = Rect2(79, 3, 10, 30)
+margin = Rect2(90, 29, 182, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a683"]
+atlas = ExtResource("carillon_27")
+region = Rect2(4, 40, 16, 31)
+margin = Rect2(80, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a684"]
+atlas = ExtResource("carillon_27")
+region = Rect2(28, 40, 16, 31)
+margin = Rect2(70, 33, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a685"]
+atlas = ExtResource("carillon_27")
+region = Rect2(52, 40, 16, 31)
+margin = Rect2(103, 27, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a686"]
+atlas = ExtResource("carillon_27")
+region = Rect2(76, 40, 16, 31)
+margin = Rect2(88, 30, 176, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a687"]
+atlas = ExtResource("carillon_27")
+region = Rect2(2, 78, 19, 28)
+margin = Rect2(79, 32, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a688"]
+atlas = ExtResource("carillon_27")
+region = Rect2(26, 78, 19, 28)
+margin = Rect2(70, 34, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a689"]
+atlas = ExtResource("carillon_27")
+region = Rect2(50, 78, 19, 28)
+margin = Rect2(103, 30, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a690"]
+atlas = ExtResource("carillon_27")
+region = Rect2(74, 78, 19, 28)
+margin = Rect2(87, 30, 173, 164)
+
+[sub_resource type="AtlasTexture" id="carillon_a691"]
+atlas = ExtResource("carillon_27")
+region = Rect2(4, 114, 16, 30)
+margin = Rect2(82, 31, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a692"]
+atlas = ExtResource("carillon_27")
+region = Rect2(28, 114, 16, 30)
+margin = Rect2(72, 33, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a693"]
+atlas = ExtResource("carillon_27")
+region = Rect2(52, 114, 16, 30)
+margin = Rect2(105, 27, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a694"]
+atlas = ExtResource("carillon_27")
+region = Rect2(76, 114, 16, 30)
+margin = Rect2(90, 29, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a695"]
+atlas = ExtResource("carillon_27")
+region = Rect2(6, 151, 11, 31)
+margin = Rect2(85, 30, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a696"]
+atlas = ExtResource("carillon_27")
+region = Rect2(30, 151, 11, 31)
+margin = Rect2(76, 32, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a697"]
+atlas = ExtResource("carillon_27")
+region = Rect2(54, 151, 11, 31)
+margin = Rect2(109, 28, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a698"]
+atlas = ExtResource("carillon_27")
+region = Rect2(78, 151, 11, 31)
+margin = Rect2(93, 30, 181, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a699"]
+atlas = ExtResource("carillon_27")
+region = Rect2(4, 188, 16, 30)
+margin = Rect2(82, 33, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a700"]
+atlas = ExtResource("carillon_27")
+region = Rect2(28, 188, 16, 30)
+margin = Rect2(73, 35, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a701"]
+atlas = ExtResource("carillon_27")
+region = Rect2(52, 188, 16, 30)
+margin = Rect2(105, 29, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a702"]
+atlas = ExtResource("carillon_27")
+region = Rect2(76, 188, 16, 30)
+margin = Rect2(90, 32, 176, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a703"]
+atlas = ExtResource("carillon_27")
+region = Rect2(2, 226, 19, 29)
+margin = Rect2(79, 33, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a704"]
+atlas = ExtResource("carillon_27")
+region = Rect2(26, 226, 19, 29)
+margin = Rect2(70, 35, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a705"]
+atlas = ExtResource("carillon_27")
+region = Rect2(50, 226, 19, 29)
+margin = Rect2(103, 30, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a706"]
+atlas = ExtResource("carillon_27")
+region = Rect2(74, 226, 19, 29)
+margin = Rect2(87, 31, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a707"]
+atlas = ExtResource("carillon_27")
+region = Rect2(3, 261, 17, 32)
+margin = Rect2(79, 31, 175, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a708"]
+atlas = ExtResource("carillon_27")
+region = Rect2(27, 261, 17, 32)
+margin = Rect2(71, 33, 175, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a709"]
+atlas = ExtResource("carillon_27")
+region = Rect2(51, 261, 17, 32)
+margin = Rect2(103, 27, 175, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a710"]
+atlas = ExtResource("carillon_27")
+region = Rect2(75, 261, 17, 32)
+margin = Rect2(87, 29, 175, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a712"]
+atlas = ExtResource("carillon_29")
+region = Rect2(6, 3, 11, 30)
+margin = Rect2(96, 31, 181, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a713"]
+atlas = ExtResource("carillon_29")
+region = Rect2(30, 3, 11, 30)
+margin = Rect2(105, 34, 181, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a714"]
+atlas = ExtResource("carillon_29")
+region = Rect2(54, 3, 11, 30)
+margin = Rect2(72, 28, 181, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a715"]
+atlas = ExtResource("carillon_29")
+region = Rect2(78, 3, 11, 30)
+margin = Rect2(88, 29, 181, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a716"]
+atlas = ExtResource("carillon_29")
+region = Rect2(4, 40, 15, 31)
+margin = Rect2(95, 30, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a717"]
+atlas = ExtResource("carillon_29")
+region = Rect2(28, 40, 15, 31)
+margin = Rect2(104, 33, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a718"]
+atlas = ExtResource("carillon_29")
+region = Rect2(52, 40, 15, 31)
+margin = Rect2(71, 28, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a719"]
+atlas = ExtResource("carillon_29")
+region = Rect2(76, 40, 15, 31)
+margin = Rect2(87, 30, 177, 161)
+
+[sub_resource type="AtlasTexture" id="carillon_a720"]
+atlas = ExtResource("carillon_29")
+region = Rect2(2, 79, 19, 26)
+margin = Rect2(94, 34, 173, 166)
+
+[sub_resource type="AtlasTexture" id="carillon_a721"]
+atlas = ExtResource("carillon_29")
+region = Rect2(26, 79, 19, 26)
+margin = Rect2(102, 36, 173, 166)
+
+[sub_resource type="AtlasTexture" id="carillon_a722"]
+atlas = ExtResource("carillon_29")
+region = Rect2(50, 79, 19, 26)
+margin = Rect2(70, 30, 173, 166)
+
+[sub_resource type="AtlasTexture" id="carillon_a723"]
+atlas = ExtResource("carillon_29")
+region = Rect2(74, 79, 19, 26)
+margin = Rect2(86, 32, 173, 166)
+
+[sub_resource type="AtlasTexture" id="carillon_a724"]
+atlas = ExtResource("carillon_29")
+region = Rect2(3, 114, 17, 30)
+margin = Rect2(96, 31, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a725"]
+atlas = ExtResource("carillon_29")
+region = Rect2(27, 114, 17, 30)
+margin = Rect2(104, 33, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a726"]
+atlas = ExtResource("carillon_29")
+region = Rect2(51, 114, 17, 30)
+margin = Rect2(72, 27, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a727"]
+atlas = ExtResource("carillon_29")
+region = Rect2(75, 114, 17, 30)
+margin = Rect2(88, 29, 175, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a728"]
+atlas = ExtResource("carillon_29")
+region = Rect2(7, 152, 10, 29)
+margin = Rect2(100, 32, 182, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a729"]
+atlas = ExtResource("carillon_29")
+region = Rect2(31, 152, 10, 29)
+margin = Rect2(109, 34, 182, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a730"]
+atlas = ExtResource("carillon_29")
+region = Rect2(55, 152, 10, 29)
+margin = Rect2(76, 28, 182, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a731"]
+atlas = ExtResource("carillon_29")
+region = Rect2(79, 152, 10, 29)
+margin = Rect2(92, 30, 182, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a732"]
+atlas = ExtResource("carillon_29")
+region = Rect2(4, 188, 15, 30)
+margin = Rect2(97, 33, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a733"]
+atlas = ExtResource("carillon_29")
+region = Rect2(28, 188, 15, 30)
+margin = Rect2(105, 34, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a734"]
+atlas = ExtResource("carillon_29")
+region = Rect2(52, 188, 15, 30)
+margin = Rect2(73, 29, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a735"]
+atlas = ExtResource("carillon_29")
+region = Rect2(76, 188, 15, 30)
+margin = Rect2(89, 32, 177, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a736"]
+atlas = ExtResource("carillon_29")
+region = Rect2(2, 226, 19, 29)
+margin = Rect2(94, 33, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a737"]
+atlas = ExtResource("carillon_29")
+region = Rect2(26, 226, 19, 29)
+margin = Rect2(103, 35, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a738"]
+atlas = ExtResource("carillon_29")
+region = Rect2(50, 226, 19, 29)
+margin = Rect2(70, 30, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a739"]
+atlas = ExtResource("carillon_29")
+region = Rect2(74, 226, 19, 29)
+margin = Rect2(86, 31, 173, 163)
+
+[sub_resource type="AtlasTexture" id="carillon_a740"]
+atlas = ExtResource("carillon_29")
+region = Rect2(4, 261, 16, 32)
+margin = Rect2(94, 31, 176, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a741"]
+atlas = ExtResource("carillon_29")
+region = Rect2(28, 261, 16, 32)
+margin = Rect2(104, 33, 176, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a742"]
+atlas = ExtResource("carillon_29")
+region = Rect2(52, 261, 16, 32)
+margin = Rect2(71, 27, 176, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a743"]
+atlas = ExtResource("carillon_29")
+region = Rect2(76, 261, 16, 32)
+margin = Rect2(86, 30, 176, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a811"]
+atlas = ExtResource("carillon_35")
+region = Rect2(139, 0, 12, 35)
+margin = Rect2(88, 26, 180, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a812"]
+atlas = ExtResource("carillon_35")
+region = Rect2(139, 35, 12, 35)
+margin = Rect2(87, 30, 180, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a813"]
+atlas = ExtResource("carillon_35")
+region = Rect2(139, 70, 12, 35)
+margin = Rect2(86, 34, 180, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a814"]
+atlas = ExtResource("carillon_35")
+region = Rect2(0, 0, 14, 43)
+margin = Rect2(85, 18, 178, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a815"]
+atlas = ExtResource("carillon_35")
+region = Rect2(0, 43, 14, 43)
+margin = Rect2(87, 19, 178, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a816"]
+atlas = ExtResource("carillon_35")
+region = Rect2(0, 86, 14, 43)
+margin = Rect2(87, 20, 178, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a817"]
+atlas = ExtResource("carillon_35")
+region = Rect2(102, 0, 18, 36)
+margin = Rect2(86, 26, 174, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a818"]
+atlas = ExtResource("carillon_35")
+region = Rect2(102, 36, 18, 36)
+margin = Rect2(86, 28, 174, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a819"]
+atlas = ExtResource("carillon_35")
+region = Rect2(102, 72, 18, 36)
+margin = Rect2(85, 32, 174, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a820"]
+atlas = ExtResource("carillon_35")
+region = Rect2(14, 0, 24, 43)
+margin = Rect2(82, 18, 168, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a821"]
+atlas = ExtResource("carillon_35")
+region = Rect2(14, 43, 24, 43)
+margin = Rect2(82, 20, 168, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a822"]
+atlas = ExtResource("carillon_35")
+region = Rect2(14, 86, 24, 43)
+margin = Rect2(83, 22, 168, 149)
+
+[sub_resource type="AtlasTexture" id="carillon_a823"]
+atlas = ExtResource("carillon_35")
+region = Rect2(220, 102, 22, 30)
+margin = Rect2(85, 29, 170, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a824"]
+atlas = ExtResource("carillon_35")
+region = Rect2(169, 69, 22, 30)
+margin = Rect2(85, 33, 170, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a825"]
+atlas = ExtResource("carillon_35")
+region = Rect2(226, 68, 22, 30)
+margin = Rect2(85, 37, 170, 162)
+
+[sub_resource type="AtlasTexture" id="carillon_a826"]
+atlas = ExtResource("carillon_35")
+region = Rect2(151, 0, 31, 35)
+margin = Rect2(81, 22, 161, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a827"]
+atlas = ExtResource("carillon_35")
+region = Rect2(182, 0, 31, 35)
+margin = Rect2(81, 24, 161, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a828"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(88, 35, 31, 35)
+margin = Rect2(81, 25, 161, 157)
+
+[sub_resource type="AtlasTexture" id="carillon_a829"]
+atlas = ExtResource("carillon_35")
+region = Rect2(169, 35, 19, 34)
+margin = Rect2(88, 27, 173, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a830"]
+atlas = ExtResource("carillon_35")
+region = Rect2(188, 35, 19, 34)
+margin = Rect2(88, 29, 173, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a831"]
+atlas = ExtResource("carillon_35")
+region = Rect2(207, 68, 19, 34)
+margin = Rect2(88, 33, 173, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a832"]
+atlas = ExtResource("carillon_35")
+region = Rect2(76, 0, 26, 39)
+margin = Rect2(85, 20, 166, 153)
+
+[sub_resource type="AtlasTexture" id="carillon_a833"]
+atlas = ExtResource("carillon_35")
+region = Rect2(76, 39, 26, 39)
+margin = Rect2(85, 22, 166, 153)
+
+[sub_resource type="AtlasTexture" id="carillon_a834"]
+atlas = ExtResource("carillon_35")
+region = Rect2(76, 78, 26, 39)
+margin = Rect2(85, 24, 166, 153)
+
+[sub_resource type="AtlasTexture" id="carillon_a835"]
+atlas = ExtResource("carillon_35")
+region = Rect2(213, 0, 12, 34)
+margin = Rect2(92, 27, 180, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a836"]
+atlas = ExtResource("carillon_35")
+region = Rect2(225, 0, 12, 34)
+margin = Rect2(93, 31, 180, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a837"]
+atlas = ExtResource("carillon_35")
+region = Rect2(237, 0, 12, 34)
+margin = Rect2(94, 35, 180, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a838"]
+atlas = ExtResource("carillon_35")
+region = Rect2(38, 0, 14, 42)
+margin = Rect2(93, 19, 178, 150)
+
+[sub_resource type="AtlasTexture" id="carillon_a839"]
+atlas = ExtResource("carillon_35")
+region = Rect2(38, 42, 14, 42)
+margin = Rect2(91, 20, 178, 150)
+
+[sub_resource type="AtlasTexture" id="carillon_a840"]
+atlas = ExtResource("carillon_35")
+region = Rect2(38, 84, 14, 42)
+margin = Rect2(91, 22, 178, 150)
+
+[sub_resource type="AtlasTexture" id="carillon_a841"]
+atlas = ExtResource("carillon_35")
+region = Rect2(213, 34, 18, 34)
+margin = Rect2(88, 30, 174, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a842"]
+atlas = ExtResource("carillon_35")
+region = Rect2(231, 34, 18, 34)
+margin = Rect2(88, 32, 174, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a843"]
+atlas = ExtResource("carillon_35")
+region = Rect2(151, 68, 18, 34)
+margin = Rect2(90, 37, 174, 158)
+
+[sub_resource type="AtlasTexture" id="carillon_a844"]
+atlas = ExtResource("carillon_35")
+region = Rect2(52, 0, 24, 41)
+margin = Rect2(86, 23, 168, 151)
+
+[sub_resource type="AtlasTexture" id="carillon_a845"]
+atlas = ExtResource("carillon_35")
+region = Rect2(52, 41, 24, 41)
+margin = Rect2(86, 24, 168, 151)
+
+[sub_resource type="AtlasTexture" id="carillon_a846"]
+atlas = ExtResource("carillon_35")
+region = Rect2(52, 82, 24, 41)
+margin = Rect2(85, 25, 168, 151)
+
+[sub_resource type="AtlasTexture" id="carillon_a847"]
+atlas = ExtResource("carillon_35")
+region = Rect2(151, 102, 23, 32)
+margin = Rect2(84, 30, 169, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a848"]
+atlas = ExtResource("carillon_35")
+region = Rect2(174, 102, 23, 32)
+margin = Rect2(84, 34, 169, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a849"]
+atlas = ExtResource("carillon_35")
+region = Rect2(197, 102, 23, 32)
+margin = Rect2(85, 38, 169, 160)
+
+[sub_resource type="AtlasTexture" id="carillon_a850"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(0, 0, 31, 38)
+margin = Rect2(80, 24, 161, 154)
+
+[sub_resource type="AtlasTexture" id="carillon_a851"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(0, 0, 31, 38)
+margin = Rect2(80, 24, 161, 154)
+
+[sub_resource type="AtlasTexture" id="carillon_a852"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(31, 0, 31, 38)
+margin = Rect2(80, 25, 161, 154)
+
+[sub_resource type="AtlasTexture" id="carillon_a853"]
+atlas = ExtResource("carillon_35")
+region = Rect2(120, 0, 19, 36)
+margin = Rect2(85, 27, 173, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a854"]
+atlas = ExtResource("carillon_35")
+region = Rect2(120, 36, 19, 36)
+margin = Rect2(85, 31, 173, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a855"]
+atlas = ExtResource("carillon_35")
+region = Rect2(120, 72, 19, 36)
+margin = Rect2(85, 35, 173, 156)
+
+[sub_resource type="AtlasTexture" id="carillon_a856"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(62, 0, 26, 42)
+margin = Rect2(81, 20, 166, 150)
+
+[sub_resource type="AtlasTexture" id="carillon_a857"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(0, 38, 26, 42)
+margin = Rect2(81, 21, 166, 150)
+
+[sub_resource type="AtlasTexture" id="carillon_a858"]
+atlas = ExtResource("carillon_source_35")
+region = Rect2(26, 38, 26, 42)
+margin = Rect2(81, 22, 166, 150)
+
 [resource]
 animations = [
 {"frames": [{"duration": 1.0, "texture": SubResource("a2")}, {"duration": 1.0, "texture": SubResource("a3")}, {"duration": 1.0, "texture": SubResource("a4")}, {"duration": 1.0, "texture": SubResource("a5")}, {"duration": 1.0, "texture": SubResource("a6")}, {"duration": 1.0, "texture": SubResource("a7")}, {"duration": 1.0, "texture": SubResource("a8")}, {"duration": 1.0, "texture": SubResource("a9")}], "loop": true, "name": &"idle_e", "speed": 10.0},
@@ -2768,30 +2782,6 @@ animations = [
 {"frames": [{"duration": 1.0, "texture": SubResource("a433")}, {"duration": 1.0, "texture": SubResource("a434")}, {"duration": 1.0, "texture": SubResource("a435")}, {"duration": 1.0, "texture": SubResource("a436")}, {"duration": 1.0, "texture": SubResource("a437")}, {"duration": 1.0, "texture": SubResource("a438")}, {"duration": 1.0, "texture": SubResource("a439")}, {"duration": 1.0, "texture": SubResource("a440")}], "loop": true, "name": &"roll_nw", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a441")}, {"duration": 1.0, "texture": SubResource("a442")}, {"duration": 1.0, "texture": SubResource("a443")}, {"duration": 1.0, "texture": SubResource("a444")}, {"duration": 1.0, "texture": SubResource("a445")}, {"duration": 1.0, "texture": SubResource("a446")}, {"duration": 1.0, "texture": SubResource("a447")}, {"duration": 1.0, "texture": SubResource("a448")}], "loop": true, "name": &"roll_n", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a449")}, {"duration": 1.0, "texture": SubResource("a450")}, {"duration": 1.0, "texture": SubResource("a451")}, {"duration": 1.0, "texture": SubResource("a452")}, {"duration": 1.0, "texture": SubResource("a453")}, {"duration": 1.0, "texture": SubResource("a454")}, {"duration": 1.0, "texture": SubResource("a455")}, {"duration": 1.0, "texture": SubResource("a456")}], "loop": true, "name": &"roll_ne", "speed": 10.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a483")}, {"duration": 1.0, "texture": SubResource("a484")}, {"duration": 1.0, "texture": SubResource("a485")}, {"duration": 1.0, "texture": SubResource("a486")}, {"duration": 1.0, "texture": SubResource("a487")}, {"duration": 1.0, "texture": SubResource("a488")}], "loop": false, "name": &"attack_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a489")}, {"duration": 1.0, "texture": SubResource("a490")}, {"duration": 1.0, "texture": SubResource("a491")}, {"duration": 1.0, "texture": SubResource("a492")}, {"duration": 1.0, "texture": SubResource("a493")}, {"duration": 1.0, "texture": SubResource("a494")}], "loop": false, "name": &"attack_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a495")}, {"duration": 1.0, "texture": SubResource("a496")}, {"duration": 1.0, "texture": SubResource("a497")}, {"duration": 1.0, "texture": SubResource("a498")}, {"duration": 1.0, "texture": SubResource("a499")}, {"duration": 1.0, "texture": SubResource("a500")}], "loop": false, "name": &"attack_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a501")}, {"duration": 1.0, "texture": SubResource("a502")}, {"duration": 1.0, "texture": SubResource("a503")}, {"duration": 1.0, "texture": SubResource("a504")}, {"duration": 1.0, "texture": SubResource("a505")}, {"duration": 1.0, "texture": SubResource("a506")}], "loop": false, "name": &"attack_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a507")}, {"duration": 1.0, "texture": SubResource("a508")}, {"duration": 1.0, "texture": SubResource("a509")}, {"duration": 1.0, "texture": SubResource("a510")}, {"duration": 1.0, "texture": SubResource("a511")}, {"duration": 1.0, "texture": SubResource("a512")}], "loop": false, "name": &"attack_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a513")}, {"duration": 1.0, "texture": SubResource("a514")}, {"duration": 1.0, "texture": SubResource("a515")}, {"duration": 1.0, "texture": SubResource("a516")}, {"duration": 1.0, "texture": SubResource("a517")}, {"duration": 1.0, "texture": SubResource("a518")}], "loop": false, "name": &"attack_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a519")}, {"duration": 1.0, "texture": SubResource("a520")}, {"duration": 1.0, "texture": SubResource("a521")}, {"duration": 1.0, "texture": SubResource("a522")}, {"duration": 1.0, "texture": SubResource("a523")}, {"duration": 1.0, "texture": SubResource("a524")}], "loop": false, "name": &"attack_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a525")}, {"duration": 1.0, "texture": SubResource("a526")}, {"duration": 1.0, "texture": SubResource("a527")}, {"duration": 1.0, "texture": SubResource("a528")}, {"duration": 1.0, "texture": SubResource("a529")}, {"duration": 1.0, "texture": SubResource("a530")}], "loop": false, "name": &"attack_ne", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a532")}, {"duration": 1.0, "texture": SubResource("a533")}, {"duration": 1.0, "texture": SubResource("a534")}, {"duration": 1.0, "texture": SubResource("a535")}, {"duration": 1.0, "texture": SubResource("a536")}, {"duration": 1.0, "texture": SubResource("a537")}], "loop": false, "name": &"cast_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a538")}, {"duration": 1.0, "texture": SubResource("a539")}, {"duration": 1.0, "texture": SubResource("a540")}, {"duration": 1.0, "texture": SubResource("a541")}, {"duration": 1.0, "texture": SubResource("a542")}, {"duration": 1.0, "texture": SubResource("a543")}], "loop": false, "name": &"cast_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a544")}, {"duration": 1.0, "texture": SubResource("a545")}, {"duration": 1.0, "texture": SubResource("a546")}, {"duration": 1.0, "texture": SubResource("a547")}, {"duration": 1.0, "texture": SubResource("a548")}, {"duration": 1.0, "texture": SubResource("a549")}], "loop": false, "name": &"cast_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a550")}, {"duration": 1.0, "texture": SubResource("a551")}, {"duration": 1.0, "texture": SubResource("a552")}, {"duration": 1.0, "texture": SubResource("a553")}, {"duration": 1.0, "texture": SubResource("a554")}, {"duration": 1.0, "texture": SubResource("a555")}], "loop": false, "name": &"cast_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a556")}, {"duration": 1.0, "texture": SubResource("a557")}, {"duration": 1.0, "texture": SubResource("a558")}, {"duration": 1.0, "texture": SubResource("a559")}, {"duration": 1.0, "texture": SubResource("a560")}, {"duration": 1.0, "texture": SubResource("a561")}], "loop": false, "name": &"cast_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a562")}, {"duration": 1.0, "texture": SubResource("a563")}, {"duration": 1.0, "texture": SubResource("a564")}, {"duration": 1.0, "texture": SubResource("a565")}, {"duration": 1.0, "texture": SubResource("a566")}, {"duration": 1.0, "texture": SubResource("a567")}], "loop": false, "name": &"cast_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a568")}, {"duration": 1.0, "texture": SubResource("a569")}, {"duration": 1.0, "texture": SubResource("a570")}, {"duration": 1.0, "texture": SubResource("a571")}, {"duration": 1.0, "texture": SubResource("a572")}, {"duration": 1.0, "texture": SubResource("a573")}], "loop": false, "name": &"cast_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a574")}, {"duration": 1.0, "texture": SubResource("a575")}, {"duration": 1.0, "texture": SubResource("a576")}, {"duration": 1.0, "texture": SubResource("a577")}, {"duration": 1.0, "texture": SubResource("a578")}, {"duration": 1.0, "texture": SubResource("a579")}], "loop": false, "name": &"cast_ne", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a581")}, {"duration": 1.0, "texture": SubResource("a582")}, {"duration": 1.0, "texture": SubResource("a583")}, {"duration": 1.0, "texture": SubResource("a584")}, {"duration": 1.0, "texture": SubResource("a585")}, {"duration": 1.0, "texture": SubResource("a586")}], "loop": false, "name": &"cast_ult_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a587")}, {"duration": 1.0, "texture": SubResource("a588")}, {"duration": 1.0, "texture": SubResource("a589")}, {"duration": 1.0, "texture": SubResource("a590")}, {"duration": 1.0, "texture": SubResource("a591")}, {"duration": 1.0, "texture": SubResource("a592")}], "loop": false, "name": &"cast_ult_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a593")}, {"duration": 1.0, "texture": SubResource("a594")}, {"duration": 1.0, "texture": SubResource("a595")}, {"duration": 1.0, "texture": SubResource("a596")}, {"duration": 1.0, "texture": SubResource("a597")}, {"duration": 1.0, "texture": SubResource("a598")}], "loop": false, "name": &"cast_ult_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a599")}, {"duration": 1.0, "texture": SubResource("a600")}, {"duration": 1.0, "texture": SubResource("a601")}, {"duration": 1.0, "texture": SubResource("a602")}, {"duration": 1.0, "texture": SubResource("a603")}, {"duration": 1.0, "texture": SubResource("a604")}], "loop": false, "name": &"cast_ult_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a605")}, {"duration": 1.0, "texture": SubResource("a606")}, {"duration": 1.0, "texture": SubResource("a607")}, {"duration": 1.0, "texture": SubResource("a608")}, {"duration": 1.0, "texture": SubResource("a609")}, {"duration": 1.0, "texture": SubResource("a610")}], "loop": false, "name": &"cast_ult_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a611")}, {"duration": 1.0, "texture": SubResource("a612")}, {"duration": 1.0, "texture": SubResource("a613")}, {"duration": 1.0, "texture": SubResource("a614")}, {"duration": 1.0, "texture": SubResource("a615")}, {"duration": 1.0, "texture": SubResource("a616")}], "loop": false, "name": &"cast_ult_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a617")}, {"duration": 1.0, "texture": SubResource("a618")}, {"duration": 1.0, "texture": SubResource("a619")}, {"duration": 1.0, "texture": SubResource("a620")}, {"duration": 1.0, "texture": SubResource("a621")}, {"duration": 1.0, "texture": SubResource("a622")}], "loop": false, "name": &"cast_ult_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a623")}, {"duration": 1.0, "texture": SubResource("a624")}, {"duration": 1.0, "texture": SubResource("a625")}, {"duration": 1.0, "texture": SubResource("a626")}, {"duration": 1.0, "texture": SubResource("a627")}, {"duration": 1.0, "texture": SubResource("a628")}], "loop": false, "name": &"cast_ult_ne", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a630")}, {"duration": 1.0, "texture": SubResource("a631")}, {"duration": 1.0, "texture": SubResource("a632")}, {"duration": 1.0, "texture": SubResource("a633")}, {"duration": 1.0, "texture": SubResource("a634")}, {"duration": 1.0, "texture": SubResource("a635")}], "loop": false, "name": &"death_e", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a636")}, {"duration": 1.0, "texture": SubResource("a637")}, {"duration": 1.0, "texture": SubResource("a638")}, {"duration": 1.0, "texture": SubResource("a639")}, {"duration": 1.0, "texture": SubResource("a640")}, {"duration": 1.0, "texture": SubResource("a641")}], "loop": false, "name": &"death_se", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a642")}, {"duration": 1.0, "texture": SubResource("a643")}, {"duration": 1.0, "texture": SubResource("a644")}, {"duration": 1.0, "texture": SubResource("a645")}, {"duration": 1.0, "texture": SubResource("a646")}, {"duration": 1.0, "texture": SubResource("a647")}], "loop": false, "name": &"death_s", "speed": 10.0},
@@ -2800,30 +2790,6 @@ animations = [
 {"frames": [{"duration": 1.0, "texture": SubResource("a660")}, {"duration": 1.0, "texture": SubResource("a661")}, {"duration": 1.0, "texture": SubResource("a662")}, {"duration": 1.0, "texture": SubResource("a663")}, {"duration": 1.0, "texture": SubResource("a664")}, {"duration": 1.0, "texture": SubResource("a665")}], "loop": false, "name": &"death_nw", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a666")}, {"duration": 1.0, "texture": SubResource("a667")}, {"duration": 1.0, "texture": SubResource("a668")}, {"duration": 1.0, "texture": SubResource("a669")}, {"duration": 1.0, "texture": SubResource("a670")}, {"duration": 1.0, "texture": SubResource("a671")}], "loop": false, "name": &"death_n", "speed": 10.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a672")}, {"duration": 1.0, "texture": SubResource("a673")}, {"duration": 1.0, "texture": SubResource("a674")}, {"duration": 1.0, "texture": SubResource("a675")}, {"duration": 1.0, "texture": SubResource("a676")}, {"duration": 1.0, "texture": SubResource("a677")}], "loop": false, "name": &"death_ne", "speed": 10.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a679")}, {"duration": 1.0, "texture": SubResource("a680")}, {"duration": 1.0, "texture": SubResource("a681")}, {"duration": 1.0, "texture": SubResource("a682")}], "loop": false, "name": &"throw_arm_l_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a683")}, {"duration": 1.0, "texture": SubResource("a684")}, {"duration": 1.0, "texture": SubResource("a685")}, {"duration": 1.0, "texture": SubResource("a686")}], "loop": false, "name": &"throw_arm_l_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a687")}, {"duration": 1.0, "texture": SubResource("a688")}, {"duration": 1.0, "texture": SubResource("a689")}, {"duration": 1.0, "texture": SubResource("a690")}], "loop": false, "name": &"throw_arm_l_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a691")}, {"duration": 1.0, "texture": SubResource("a692")}, {"duration": 1.0, "texture": SubResource("a693")}, {"duration": 1.0, "texture": SubResource("a694")}], "loop": false, "name": &"throw_arm_l_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a695")}, {"duration": 1.0, "texture": SubResource("a696")}, {"duration": 1.0, "texture": SubResource("a697")}, {"duration": 1.0, "texture": SubResource("a698")}], "loop": false, "name": &"throw_arm_l_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a699")}, {"duration": 1.0, "texture": SubResource("a700")}, {"duration": 1.0, "texture": SubResource("a701")}, {"duration": 1.0, "texture": SubResource("a702")}], "loop": false, "name": &"throw_arm_l_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a703")}, {"duration": 1.0, "texture": SubResource("a704")}, {"duration": 1.0, "texture": SubResource("a705")}, {"duration": 1.0, "texture": SubResource("a706")}], "loop": false, "name": &"throw_arm_l_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a707")}, {"duration": 1.0, "texture": SubResource("a708")}, {"duration": 1.0, "texture": SubResource("a709")}, {"duration": 1.0, "texture": SubResource("a710")}], "loop": false, "name": &"throw_arm_l_ne", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a712")}, {"duration": 1.0, "texture": SubResource("a713")}, {"duration": 1.0, "texture": SubResource("a714")}, {"duration": 1.0, "texture": SubResource("a715")}], "loop": false, "name": &"throw_arm_r_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a716")}, {"duration": 1.0, "texture": SubResource("a717")}, {"duration": 1.0, "texture": SubResource("a718")}, {"duration": 1.0, "texture": SubResource("a719")}], "loop": false, "name": &"throw_arm_r_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a720")}, {"duration": 1.0, "texture": SubResource("a721")}, {"duration": 1.0, "texture": SubResource("a722")}, {"duration": 1.0, "texture": SubResource("a723")}], "loop": false, "name": &"throw_arm_r_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a724")}, {"duration": 1.0, "texture": SubResource("a725")}, {"duration": 1.0, "texture": SubResource("a726")}, {"duration": 1.0, "texture": SubResource("a727")}], "loop": false, "name": &"throw_arm_r_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a728")}, {"duration": 1.0, "texture": SubResource("a729")}, {"duration": 1.0, "texture": SubResource("a730")}, {"duration": 1.0, "texture": SubResource("a731")}], "loop": false, "name": &"throw_arm_r_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a732")}, {"duration": 1.0, "texture": SubResource("a733")}, {"duration": 1.0, "texture": SubResource("a734")}, {"duration": 1.0, "texture": SubResource("a735")}], "loop": false, "name": &"throw_arm_r_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a736")}, {"duration": 1.0, "texture": SubResource("a737")}, {"duration": 1.0, "texture": SubResource("a738")}, {"duration": 1.0, "texture": SubResource("a739")}], "loop": false, "name": &"throw_arm_r_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a740")}, {"duration": 1.0, "texture": SubResource("a741")}, {"duration": 1.0, "texture": SubResource("a742")}, {"duration": 1.0, "texture": SubResource("a743")}], "loop": false, "name": &"throw_arm_r_ne", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a811")}, {"duration": 1.0, "texture": SubResource("a812")}, {"duration": 1.0, "texture": SubResource("a813")}, {"duration": 1.0, "texture": SubResource("a814")}, {"duration": 1.0, "texture": SubResource("a815")}, {"duration": 1.0, "texture": SubResource("a816")}], "loop": false, "name": &"throw_head_e", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a817")}, {"duration": 1.0, "texture": SubResource("a818")}, {"duration": 1.0, "texture": SubResource("a819")}, {"duration": 1.0, "texture": SubResource("a820")}, {"duration": 1.0, "texture": SubResource("a821")}, {"duration": 1.0, "texture": SubResource("a822")}], "loop": false, "name": &"throw_head_se", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a823")}, {"duration": 1.0, "texture": SubResource("a824")}, {"duration": 1.0, "texture": SubResource("a825")}, {"duration": 1.0, "texture": SubResource("a826")}, {"duration": 1.0, "texture": SubResource("a827")}, {"duration": 1.0, "texture": SubResource("a828")}], "loop": false, "name": &"throw_head_s", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a829")}, {"duration": 1.0, "texture": SubResource("a830")}, {"duration": 1.0, "texture": SubResource("a831")}, {"duration": 1.0, "texture": SubResource("a832")}, {"duration": 1.0, "texture": SubResource("a833")}, {"duration": 1.0, "texture": SubResource("a834")}], "loop": false, "name": &"throw_head_sw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a835")}, {"duration": 1.0, "texture": SubResource("a836")}, {"duration": 1.0, "texture": SubResource("a837")}, {"duration": 1.0, "texture": SubResource("a838")}, {"duration": 1.0, "texture": SubResource("a839")}, {"duration": 1.0, "texture": SubResource("a840")}], "loop": false, "name": &"throw_head_w", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a841")}, {"duration": 1.0, "texture": SubResource("a842")}, {"duration": 1.0, "texture": SubResource("a843")}, {"duration": 1.0, "texture": SubResource("a844")}, {"duration": 1.0, "texture": SubResource("a845")}, {"duration": 1.0, "texture": SubResource("a846")}], "loop": false, "name": &"throw_head_nw", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a847")}, {"duration": 1.0, "texture": SubResource("a848")}, {"duration": 1.0, "texture": SubResource("a849")}, {"duration": 1.0, "texture": SubResource("a850")}, {"duration": 1.0, "texture": SubResource("a851")}, {"duration": 1.0, "texture": SubResource("a852")}], "loop": false, "name": &"throw_head_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a853")}, {"duration": 1.0, "texture": SubResource("a854")}, {"duration": 1.0, "texture": SubResource("a855")}, {"duration": 1.0, "texture": SubResource("a856")}, {"duration": 1.0, "texture": SubResource("a857")}, {"duration": 1.0, "texture": SubResource("a858")}], "loop": false, "name": &"throw_head_ne", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a860")}, {"duration": 1.0, "texture": SubResource("a861")}, {"duration": 1.0, "texture": SubResource("a862")}, {"duration": 1.0, "texture": SubResource("a863")}, {"duration": 1.0, "texture": SubResource("a864")}, {"duration": 1.0, "texture": SubResource("a865")}], "loop": true, "name": &"neck_steam_e", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a866")}, {"duration": 1.0, "texture": SubResource("a867")}, {"duration": 1.0, "texture": SubResource("a868")}, {"duration": 1.0, "texture": SubResource("a869")}, {"duration": 1.0, "texture": SubResource("a870")}, {"duration": 1.0, "texture": SubResource("a871")}], "loop": true, "name": &"neck_steam_se", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a872")}, {"duration": 1.0, "texture": SubResource("a873")}, {"duration": 1.0, "texture": SubResource("a874")}, {"duration": 1.0, "texture": SubResource("a875")}, {"duration": 1.0, "texture": SubResource("a876")}, {"duration": 1.0, "texture": SubResource("a877")}], "loop": true, "name": &"neck_steam_s", "speed": 12.0},
@@ -2831,5 +2797,53 @@ animations = [
 {"frames": [{"duration": 1.0, "texture": SubResource("a884")}, {"duration": 1.0, "texture": SubResource("a885")}, {"duration": 1.0, "texture": SubResource("a886")}, {"duration": 1.0, "texture": SubResource("a887")}, {"duration": 1.0, "texture": SubResource("a888")}, {"duration": 1.0, "texture": SubResource("a889")}], "loop": true, "name": &"neck_steam_w", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a890")}, {"duration": 1.0, "texture": SubResource("a891")}, {"duration": 1.0, "texture": SubResource("a892")}, {"duration": 1.0, "texture": SubResource("a893")}, {"duration": 1.0, "texture": SubResource("a894")}, {"duration": 1.0, "texture": SubResource("a895")}], "loop": true, "name": &"neck_steam_nw", "speed": 12.0},
 {"frames": [{"duration": 1.0, "texture": SubResource("a896")}, {"duration": 1.0, "texture": SubResource("a897")}, {"duration": 1.0, "texture": SubResource("a898")}, {"duration": 1.0, "texture": SubResource("a899")}, {"duration": 1.0, "texture": SubResource("a900")}, {"duration": 1.0, "texture": SubResource("a901")}], "loop": true, "name": &"neck_steam_n", "speed": 12.0},
-{"frames": [{"duration": 1.0, "texture": SubResource("a902")}, {"duration": 1.0, "texture": SubResource("a903")}, {"duration": 1.0, "texture": SubResource("a904")}, {"duration": 1.0, "texture": SubResource("a905")}, {"duration": 1.0, "texture": SubResource("a906")}, {"duration": 1.0, "texture": SubResource("a907")}], "loop": true, "name": &"neck_steam_ne", "speed": 12.0}
+{"frames": [{"duration": 1.0, "texture": SubResource("a902")}, {"duration": 1.0, "texture": SubResource("a903")}, {"duration": 1.0, "texture": SubResource("a904")}, {"duration": 1.0, "texture": SubResource("a905")}, {"duration": 1.0, "texture": SubResource("a906")}, {"duration": 1.0, "texture": SubResource("a907")}], "loop": true, "name": &"neck_steam_ne", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a483")}, {"duration": 0.6, "texture": SubResource("carillon_a484")}, {"duration": 0.4, "texture": SubResource("carillon_a485")}, {"duration": 2.4, "texture": SubResource("carillon_a486")}, {"duration": 2.8, "texture": SubResource("carillon_a487")}, {"duration": 4.4, "texture": SubResource("carillon_a488")}], "loop": false, "name": &"attack_e", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a489")}, {"duration": 0.6, "texture": SubResource("carillon_a490")}, {"duration": 0.4, "texture": SubResource("carillon_a491")}, {"duration": 2.4, "texture": SubResource("carillon_a492")}, {"duration": 2.8, "texture": SubResource("carillon_a493")}, {"duration": 4.4, "texture": SubResource("carillon_a494")}], "loop": false, "name": &"attack_se", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a495")}, {"duration": 0.6, "texture": SubResource("carillon_a496")}, {"duration": 0.4, "texture": SubResource("carillon_a497")}, {"duration": 2.4, "texture": SubResource("carillon_a498")}, {"duration": 2.8, "texture": SubResource("carillon_a499")}, {"duration": 4.4, "texture": SubResource("carillon_a500")}], "loop": false, "name": &"attack_s", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a501")}, {"duration": 0.6, "texture": SubResource("carillon_a502")}, {"duration": 0.4, "texture": SubResource("carillon_a503")}, {"duration": 2.4, "texture": SubResource("carillon_a504")}, {"duration": 2.8, "texture": SubResource("carillon_a505")}, {"duration": 4.4, "texture": SubResource("carillon_a506")}], "loop": false, "name": &"attack_sw", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a507")}, {"duration": 0.6, "texture": SubResource("carillon_a508")}, {"duration": 0.4, "texture": SubResource("carillon_a509")}, {"duration": 2.4, "texture": SubResource("carillon_a510")}, {"duration": 2.8, "texture": SubResource("carillon_a511")}, {"duration": 4.4, "texture": SubResource("carillon_a512")}], "loop": false, "name": &"attack_w", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a513")}, {"duration": 0.6, "texture": SubResource("carillon_a514")}, {"duration": 0.4, "texture": SubResource("carillon_a515")}, {"duration": 2.4, "texture": SubResource("carillon_a516")}, {"duration": 2.8, "texture": SubResource("carillon_a517")}, {"duration": 4.4, "texture": SubResource("carillon_a518")}], "loop": false, "name": &"attack_nw", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a519")}, {"duration": 0.6, "texture": SubResource("carillon_a520")}, {"duration": 0.4, "texture": SubResource("carillon_a521")}, {"duration": 2.4, "texture": SubResource("carillon_a522")}, {"duration": 2.8, "texture": SubResource("carillon_a523")}, {"duration": 4.4, "texture": SubResource("carillon_a524")}], "loop": false, "name": &"attack_n", "speed": 12.0},
+{"frames": [{"duration": 0.6, "texture": SubResource("carillon_a525")}, {"duration": 0.6, "texture": SubResource("carillon_a526")}, {"duration": 0.4, "texture": SubResource("carillon_a527")}, {"duration": 2.4, "texture": SubResource("carillon_a528")}, {"duration": 2.8, "texture": SubResource("carillon_a529")}, {"duration": 4.4, "texture": SubResource("carillon_a530")}], "loop": false, "name": &"attack_ne", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a532")}, {"duration": 0.8, "texture": SubResource("carillon_a533")}, {"duration": 0.8, "texture": SubResource("carillon_a534")}, {"duration": 2.8, "texture": SubResource("carillon_a535")}, {"duration": 3.2, "texture": SubResource("carillon_a536")}, {"duration": 5.2, "texture": SubResource("carillon_a537")}], "loop": false, "name": &"cast_e", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a538")}, {"duration": 0.8, "texture": SubResource("carillon_a539")}, {"duration": 0.8, "texture": SubResource("carillon_a540")}, {"duration": 2.8, "texture": SubResource("carillon_a541")}, {"duration": 3.2, "texture": SubResource("carillon_a542")}, {"duration": 5.2, "texture": SubResource("carillon_a543")}], "loop": false, "name": &"cast_se", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a544")}, {"duration": 0.8, "texture": SubResource("carillon_a545")}, {"duration": 0.8, "texture": SubResource("carillon_a546")}, {"duration": 2.8, "texture": SubResource("carillon_a547")}, {"duration": 3.2, "texture": SubResource("carillon_a548")}, {"duration": 5.2, "texture": SubResource("carillon_a549")}], "loop": false, "name": &"cast_s", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a550")}, {"duration": 0.8, "texture": SubResource("carillon_a551")}, {"duration": 0.8, "texture": SubResource("carillon_a552")}, {"duration": 2.8, "texture": SubResource("carillon_a553")}, {"duration": 3.2, "texture": SubResource("carillon_a554")}, {"duration": 5.2, "texture": SubResource("carillon_a555")}], "loop": false, "name": &"cast_sw", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a556")}, {"duration": 0.8, "texture": SubResource("carillon_a557")}, {"duration": 0.8, "texture": SubResource("carillon_a558")}, {"duration": 2.8, "texture": SubResource("carillon_a559")}, {"duration": 3.2, "texture": SubResource("carillon_a560")}, {"duration": 5.2, "texture": SubResource("carillon_a561")}], "loop": false, "name": &"cast_w", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a562")}, {"duration": 0.8, "texture": SubResource("carillon_a563")}, {"duration": 0.8, "texture": SubResource("carillon_a564")}, {"duration": 2.8, "texture": SubResource("carillon_a565")}, {"duration": 3.2, "texture": SubResource("carillon_a566")}, {"duration": 5.2, "texture": SubResource("carillon_a567")}], "loop": false, "name": &"cast_nw", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a568")}, {"duration": 0.8, "texture": SubResource("carillon_a569")}, {"duration": 0.8, "texture": SubResource("carillon_a570")}, {"duration": 2.8, "texture": SubResource("carillon_a571")}, {"duration": 3.2, "texture": SubResource("carillon_a572")}, {"duration": 5.2, "texture": SubResource("carillon_a573")}], "loop": false, "name": &"cast_n", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a574")}, {"duration": 0.8, "texture": SubResource("carillon_a575")}, {"duration": 0.8, "texture": SubResource("carillon_a576")}, {"duration": 2.8, "texture": SubResource("carillon_a577")}, {"duration": 3.2, "texture": SubResource("carillon_a578")}, {"duration": 5.2, "texture": SubResource("carillon_a579")}], "loop": false, "name": &"cast_ne", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a581")}, {"duration": 0.8, "texture": SubResource("carillon_a582")}, {"duration": 0.8, "texture": SubResource("carillon_a583")}, {"duration": 2.8, "texture": SubResource("carillon_a584")}, {"duration": 3.2, "texture": SubResource("carillon_a585")}, {"duration": 5.2, "texture": SubResource("carillon_a586")}], "loop": false, "name": &"cast_ult_e", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a587")}, {"duration": 0.8, "texture": SubResource("carillon_a588")}, {"duration": 0.8, "texture": SubResource("carillon_a589")}, {"duration": 2.8, "texture": SubResource("carillon_a590")}, {"duration": 3.2, "texture": SubResource("carillon_a591")}, {"duration": 5.2, "texture": SubResource("carillon_a592")}], "loop": false, "name": &"cast_ult_se", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a593")}, {"duration": 0.8, "texture": SubResource("carillon_a594")}, {"duration": 0.8, "texture": SubResource("carillon_a595")}, {"duration": 2.8, "texture": SubResource("carillon_a596")}, {"duration": 3.2, "texture": SubResource("carillon_a597")}, {"duration": 5.2, "texture": SubResource("carillon_a598")}], "loop": false, "name": &"cast_ult_s", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a599")}, {"duration": 0.8, "texture": SubResource("carillon_a600")}, {"duration": 0.8, "texture": SubResource("carillon_a601")}, {"duration": 2.8, "texture": SubResource("carillon_a602")}, {"duration": 3.2, "texture": SubResource("carillon_a603")}, {"duration": 5.2, "texture": SubResource("carillon_a604")}], "loop": false, "name": &"cast_ult_sw", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a605")}, {"duration": 0.8, "texture": SubResource("carillon_a606")}, {"duration": 0.8, "texture": SubResource("carillon_a607")}, {"duration": 2.8, "texture": SubResource("carillon_a608")}, {"duration": 3.2, "texture": SubResource("carillon_a609")}, {"duration": 5.2, "texture": SubResource("carillon_a610")}], "loop": false, "name": &"cast_ult_w", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a611")}, {"duration": 0.8, "texture": SubResource("carillon_a612")}, {"duration": 0.8, "texture": SubResource("carillon_a613")}, {"duration": 2.8, "texture": SubResource("carillon_a614")}, {"duration": 3.2, "texture": SubResource("carillon_a615")}, {"duration": 5.2, "texture": SubResource("carillon_a616")}], "loop": false, "name": &"cast_ult_nw", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a617")}, {"duration": 0.8, "texture": SubResource("carillon_a618")}, {"duration": 0.8, "texture": SubResource("carillon_a619")}, {"duration": 2.8, "texture": SubResource("carillon_a620")}, {"duration": 3.2, "texture": SubResource("carillon_a621")}, {"duration": 5.2, "texture": SubResource("carillon_a622")}], "loop": false, "name": &"cast_ult_n", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a623")}, {"duration": 0.8, "texture": SubResource("carillon_a624")}, {"duration": 0.8, "texture": SubResource("carillon_a625")}, {"duration": 2.8, "texture": SubResource("carillon_a626")}, {"duration": 3.2, "texture": SubResource("carillon_a627")}, {"duration": 5.2, "texture": SubResource("carillon_a628")}], "loop": false, "name": &"cast_ult_ne", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a679")}, {"duration": 1.2, "texture": SubResource("carillon_a680")}, {"duration": 1.2, "texture": SubResource("carillon_a681")}, {"duration": 4.8, "texture": SubResource("carillon_a682")}], "loop": false, "name": &"throw_arm_l_e", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a683")}, {"duration": 1.2, "texture": SubResource("carillon_a684")}, {"duration": 1.2, "texture": SubResource("carillon_a685")}, {"duration": 4.8, "texture": SubResource("carillon_a686")}], "loop": false, "name": &"throw_arm_l_se", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a687")}, {"duration": 1.2, "texture": SubResource("carillon_a688")}, {"duration": 1.2, "texture": SubResource("carillon_a689")}, {"duration": 4.8, "texture": SubResource("carillon_a690")}], "loop": false, "name": &"throw_arm_l_s", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a691")}, {"duration": 1.2, "texture": SubResource("carillon_a692")}, {"duration": 1.2, "texture": SubResource("carillon_a693")}, {"duration": 4.8, "texture": SubResource("carillon_a694")}], "loop": false, "name": &"throw_arm_l_sw", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a695")}, {"duration": 1.2, "texture": SubResource("carillon_a696")}, {"duration": 1.2, "texture": SubResource("carillon_a697")}, {"duration": 4.8, "texture": SubResource("carillon_a698")}], "loop": false, "name": &"throw_arm_l_w", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a699")}, {"duration": 1.2, "texture": SubResource("carillon_a700")}, {"duration": 1.2, "texture": SubResource("carillon_a701")}, {"duration": 4.8, "texture": SubResource("carillon_a702")}], "loop": false, "name": &"throw_arm_l_nw", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a703")}, {"duration": 1.2, "texture": SubResource("carillon_a704")}, {"duration": 1.2, "texture": SubResource("carillon_a705")}, {"duration": 4.8, "texture": SubResource("carillon_a706")}], "loop": false, "name": &"throw_arm_l_n", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a707")}, {"duration": 1.2, "texture": SubResource("carillon_a708")}, {"duration": 1.2, "texture": SubResource("carillon_a709")}, {"duration": 4.8, "texture": SubResource("carillon_a710")}], "loop": false, "name": &"throw_arm_l_ne", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a712")}, {"duration": 1.2, "texture": SubResource("carillon_a713")}, {"duration": 1.2, "texture": SubResource("carillon_a714")}, {"duration": 4.8, "texture": SubResource("carillon_a715")}], "loop": false, "name": &"throw_arm_r_e", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a716")}, {"duration": 1.2, "texture": SubResource("carillon_a717")}, {"duration": 1.2, "texture": SubResource("carillon_a718")}, {"duration": 4.8, "texture": SubResource("carillon_a719")}], "loop": false, "name": &"throw_arm_r_se", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a720")}, {"duration": 1.2, "texture": SubResource("carillon_a721")}, {"duration": 1.2, "texture": SubResource("carillon_a722")}, {"duration": 4.8, "texture": SubResource("carillon_a723")}], "loop": false, "name": &"throw_arm_r_s", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a724")}, {"duration": 1.2, "texture": SubResource("carillon_a725")}, {"duration": 1.2, "texture": SubResource("carillon_a726")}, {"duration": 4.8, "texture": SubResource("carillon_a727")}], "loop": false, "name": &"throw_arm_r_sw", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a728")}, {"duration": 1.2, "texture": SubResource("carillon_a729")}, {"duration": 1.2, "texture": SubResource("carillon_a730")}, {"duration": 4.8, "texture": SubResource("carillon_a731")}], "loop": false, "name": &"throw_arm_r_w", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a732")}, {"duration": 1.2, "texture": SubResource("carillon_a733")}, {"duration": 1.2, "texture": SubResource("carillon_a734")}, {"duration": 4.8, "texture": SubResource("carillon_a735")}], "loop": false, "name": &"throw_arm_r_nw", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a736")}, {"duration": 1.2, "texture": SubResource("carillon_a737")}, {"duration": 1.2, "texture": SubResource("carillon_a738")}, {"duration": 4.8, "texture": SubResource("carillon_a739")}], "loop": false, "name": &"throw_arm_r_n", "speed": 12.0},
+{"frames": [{"duration": 1.2, "texture": SubResource("carillon_a740")}, {"duration": 1.2, "texture": SubResource("carillon_a741")}, {"duration": 1.2, "texture": SubResource("carillon_a742")}, {"duration": 4.8, "texture": SubResource("carillon_a743")}], "loop": false, "name": &"throw_arm_r_ne", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a811")}, {"duration": 1.6, "texture": SubResource("carillon_a812")}, {"duration": 1.6, "texture": SubResource("carillon_a813")}, {"duration": 2, "texture": SubResource("carillon_a814")}, {"duration": 3.2, "texture": SubResource("carillon_a815")}, {"duration": 5.6, "texture": SubResource("carillon_a816")}], "loop": false, "name": &"throw_head_e", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a817")}, {"duration": 1.6, "texture": SubResource("carillon_a818")}, {"duration": 1.6, "texture": SubResource("carillon_a819")}, {"duration": 2, "texture": SubResource("carillon_a820")}, {"duration": 3.2, "texture": SubResource("carillon_a821")}, {"duration": 5.6, "texture": SubResource("carillon_a822")}], "loop": false, "name": &"throw_head_se", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a823")}, {"duration": 1.6, "texture": SubResource("carillon_a824")}, {"duration": 1.6, "texture": SubResource("carillon_a825")}, {"duration": 2, "texture": SubResource("carillon_a826")}, {"duration": 3.2, "texture": SubResource("carillon_a827")}, {"duration": 5.6, "texture": SubResource("carillon_a828")}], "loop": false, "name": &"throw_head_s", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a829")}, {"duration": 1.6, "texture": SubResource("carillon_a830")}, {"duration": 1.6, "texture": SubResource("carillon_a831")}, {"duration": 2, "texture": SubResource("carillon_a832")}, {"duration": 3.2, "texture": SubResource("carillon_a833")}, {"duration": 5.6, "texture": SubResource("carillon_a834")}], "loop": false, "name": &"throw_head_sw", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a835")}, {"duration": 1.6, "texture": SubResource("carillon_a836")}, {"duration": 1.6, "texture": SubResource("carillon_a837")}, {"duration": 2, "texture": SubResource("carillon_a838")}, {"duration": 3.2, "texture": SubResource("carillon_a839")}, {"duration": 5.6, "texture": SubResource("carillon_a840")}], "loop": false, "name": &"throw_head_w", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a841")}, {"duration": 1.6, "texture": SubResource("carillon_a842")}, {"duration": 1.6, "texture": SubResource("carillon_a843")}, {"duration": 2, "texture": SubResource("carillon_a844")}, {"duration": 3.2, "texture": SubResource("carillon_a845")}, {"duration": 5.6, "texture": SubResource("carillon_a846")}], "loop": false, "name": &"throw_head_nw", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a847")}, {"duration": 1.6, "texture": SubResource("carillon_a848")}, {"duration": 1.6, "texture": SubResource("carillon_a849")}, {"duration": 2, "texture": SubResource("carillon_a850")}, {"duration": 3.2, "texture": SubResource("carillon_a851")}, {"duration": 5.6, "texture": SubResource("carillon_a852")}], "loop": false, "name": &"throw_head_n", "speed": 12.0},
+{"frames": [{"duration": 1.6, "texture": SubResource("carillon_a853")}, {"duration": 1.6, "texture": SubResource("carillon_a854")}, {"duration": 1.6, "texture": SubResource("carillon_a855")}, {"duration": 2, "texture": SubResource("carillon_a856")}, {"duration": 3.2, "texture": SubResource("carillon_a857")}, {"duration": 5.6, "texture": SubResource("carillon_a858")}], "loop": false, "name": &"throw_head_ne", "speed": 12.0}
 ]
