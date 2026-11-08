@@ -1,8 +1,8 @@
 class_name TocsinSteamFx
 extends Node2D
 ## Effet bref des variantes de Tocsin (cône / anneau de vapeur, onde de traction ou d'atterrissage).
-## PLACEHOLDER temporaire dessiné en code : à remplacer par les rendus Blender du lot TOCV
-## (art/tools/night/_tocv.txt : steam_cone, steam_ring, stomp_ring). Un seul nœud, libéré à la fin.
+## Joue les rendus Blender de `assets/sprites/vfx/tocsin/` (steam_cone, steam_ring, toll_wave) ; repli dessiné en
+## code seulement si ces ressources manquent. Un seul nœud, libéré à la fin.
 
 enum Mode { CONE, RING, WAVE }
 
@@ -26,7 +26,39 @@ static func spawn(parent: Node, at: Vector2, m: Mode, radius: float, d: Vector2,
 	fx.z_index = 5
 	parent.add_child(fx)
 	fx.global_position = at
+	fx._start_sprite()
 	return fx
+
+
+## Rendus Blender (lot feel Tocsin) : cône, anneau et onde TOP, empreinte de 240 px dans la cellule 512.
+## Sans le .tres, le placeholder dessiné en code ci-dessous sert de repli.
+const _FRAMES := {Mode.CONE: "steam_cone", Mode.RING: "steam_ring", Mode.WAVE: "toll_wave"}
+const _FRAMES_DIR := "res://assets/sprites/vfx/tocsin/"
+const _FOOTPRINT_PX := 240.0
+
+var _vfx: AnimatedSprite2D = null
+
+
+func _start_sprite() -> void:
+	var n: String = _FRAMES[mode]
+	var path := "%s%s/%s.tres" % [_FRAMES_DIR, n, n]
+	if not ResourceLoader.exists(path):
+		return
+	var sf := load(path) as SpriteFrames
+	if sf == null or not sf.has_animation(&"default"):
+		return
+	_vfx = AnimatedSprite2D.new()
+	_vfx.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	add_child(_vfx)
+	EmissiveOverlay.apply(_vfx, sf)
+	var k := radius_px / _FOOTPRINT_PX
+	_vfx.scale = Vector2(k, k)
+	if mode == Mode.CONE:
+		_vfx.rotation = dir.angle() # axe du rendu vers +X
+	sf.set_animation_loop(&"default", false)
+	_vfx.play(&"default")
+	_vfx.animation_finished.connect(queue_free)
+	life = 5.0 # filet : l'anim libère le nœud à sa fin
 
 
 func _process(delta: float) -> void:
@@ -34,10 +66,13 @@ func _process(delta: float) -> void:
 	if _t >= life:
 		queue_free()
 		return
-	queue_redraw()
+	if _vfx == null:
+		queue_redraw()
 
 
 func _draw() -> void:
+	if _vfx != null:
+		return
 	var k := clampf(_t / life, 0.0, 1.0)
 	var a := 1.0 - k
 	var warm := Color(1.0, 0.72, 0.42)
