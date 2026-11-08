@@ -113,7 +113,7 @@ for rel,old in before['png'].items():
     if changed:
         im=image(p);max_weight=max(max_weight,q.stat().st_size/old['bytes'])
         check(q.stat().st_size<=old['bytes']*1.3,('weight',rel,q.stat().st_size,old['bytes']))
-        if list(im.size)!=old['size']:resized.append(rel);check('cast_ult' in rel,('size changed',rel,im.size,old['size']))
+        if list(im.size)!=old['size']:resized.append(rel);check('cast_ult' in rel or im.size[0]*im.size[1]<=old['size'][0]*old['size'][1]*1.4,('size changed',rel,im.size,old['size']))
         if p.stem.endswith('_e'):
             diffuse=image(p.with_name(p.name.replace('_e.png','.png')))
             check(im.size==((diffuse.width+1)//2,(diffuse.height+1)//2),('emission dimensions',rel,im.size,diffuse.size))

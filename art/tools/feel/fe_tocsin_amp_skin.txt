@@ -1,0 +1,8 @@
+IMPORTANT : commence par Set-Location C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a91fca9db77d3fa26 ; chemins absolus sous ce worktree UNIQUEMENT (jamais C:/Users/const/Documents/Rainfall/game ni /art hors worktree). Une seule instance Blender à la fois ; journaux dans art/renders/feel_sorts3/ (relis avec Get-Content). Ne modifie aucun script ; si un script plante, donne l'erreur verbatim et arrête-toi.
+CONTEXTE : passe d'amplitude Tocsin, skin Carillon, APRÈS la base (déjà installée dans game/). Mêmes poses : art/tools/feel/tocsin_actions_build.py avec --skin-carillon ; finition : art/tools/feel/tocsin_skin_actions_finish.py (flags --snapshot, --finish, --install). Le snapshot du skin (art/renders/feel_sorts2/tocsin_skin_actions/before.json) peut exister déjà (assert) : s'il existe, ne PAS le relancer ; sinon lance --snapshot AVANT toute installation.
+ÉTAPES :
+1) blender.exe --background --python art/tools/feel/tocsin_actions_build.py -- --skin-carillon --render --rerender . Imprime FAILS/CLIPPED/PASS/Error (CLIPPED doit être 0).
+2) python art/tools/feel/tocsin_skin_actions_finish.py --finish (Pillow, hors Blender). Imprime le résultat (PASS/FAIL, erreurs verbatim). Si FAIL : arrête-toi.
+3) Seulement si PASS : python art/tools/feel/tocsin_skin_actions_finish.py --install puis python art/tools/feel/tocsin_actions_retime.py.
+4) Hors worktree : Get-ChildItem -Recurse -File C:/Users/const/Documents/Rainfall/game/assets/sprites/characters/tocsin | Sort LastWriteTime -desc | select -first 3 : rien de plus récent que ton lancement.
+RAPPORT (6 lignes max, ultracave) : résultat de chaque étape, erreurs verbatim.

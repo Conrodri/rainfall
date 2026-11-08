@@ -1,0 +1,7 @@
+IMPORTANT : commence par Set-Location C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-a91fca9db77d3fa26 ; chemins absolus sous ce worktree UNIQUEMENT (jamais C:/Users/const/Documents/Rainfall/game ni /art hors worktree). Une seule instance Blender ; journaux dans art/renders/feel_sorts3/ (UTF-16 si redirection PowerShell : relis avec Get-Content). Aucun _n.
+CONTEXTE : steam_cone v2 (volutes distinctes, 3 tons cel, coeur dense, bords effilochés, secteur +-30 deg qui s'élargit). Script prêt : art/tools/feel/tocsin_steam_cone_build.py (rendu cel via art/tools/cel/cel_style.py). Rends dans art/renders/feel_sorts3/steam_cone/, NE livre RIEN dans game/ à cette étape.
+ÉTAPES :
+1) blender.exe --background --python art/tools/feel/tocsin_steam_cone_build.py -- --render > art/renders/feel_sorts3/cone_render.log ; imprime les lignes PASS/Error/Traceback (si erreur de script : donne-la verbatim, corrige au plus petit si c'est un bug évident d'API Blender 5.2 (nom de propriété), dis ce que tu as changé).
+2) python art/tools/feel/tocsin_steam_cone_build.py --pack puis --verify (Pillow). Imprime les lignes PASS/assert.
+3) Regarde art/renders/feel_sorts3/after_steam_cone.png (une fois) : les volutes doivent être distinctes (pas une seule masse fusionnée), cône net qui s'élargit.
+RAPPORT (5 lignes max, ultracave) : résultats par étape, mesures verify, ton avis sur la planche.
