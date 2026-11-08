@@ -385,7 +385,11 @@
     2,
     2
    ],
-   "collision": "box"
+   "collision": "box",
+   "foot": [
+    176,
+    288
+   ]
   },
   {
    "name": "crucible",
@@ -397,7 +401,11 @@
     2,
     2
    ],
-   "collision": "box"
+   "collision": "box",
+   "foot": [
+    176,
+    288
+   ]
   },
   {
    "name": "crucible",
@@ -409,7 +417,11 @@
     2,
     2
    ],
-   "collision": "box"
+   "collision": "box",
+   "foot": [
+    176,
+    288
+   ]
   },
   {
    "name": "rails",
@@ -420,6 +432,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    116
    ]
   },
   {
@@ -432,7 +448,12 @@
     1,
     1
    ],
-   "collision": "fine"
+   "collision": "fine",
+   "foot": [
+    128,
+    180
+   ],
+   "flip": true
   },
   {
    "name": "rails",
@@ -443,6 +464,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    116
    ]
   },
   {
@@ -455,7 +480,12 @@
     1,
     1
    ],
-   "collision": "fine"
+   "collision": "fine",
+   "foot": [
+    128,
+    180
+   ],
+   "flip": true
   }
  ],
  "hold": {

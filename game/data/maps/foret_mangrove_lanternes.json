@@ -330,6 +330,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    166
    ]
   },
   {
@@ -341,6 +345,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    166
    ]
   },
   {
@@ -352,6 +360,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    166
    ]
   },
   {
@@ -363,6 +375,10 @@
    "size": [
     1,
     2
+   ],
+   "foot": [
+    200,
+    166
    ]
   },
   {
@@ -375,7 +391,11 @@
     1,
     1
    ],
-   "collision": "fine"
+   "collision": "fine",
+   "foot": [
+    96,
+    208
+   ]
   },
   {
    "name": "firefly_cage",
@@ -387,7 +407,11 @@
     1,
     1
    ],
-   "collision": "fine"
+   "collision": "fine",
+   "foot": [
+    96,
+    208
+   ]
   },
   {
    "name": "fallen_altar",
@@ -399,7 +423,11 @@
     2,
     1
    ],
-   "collision": "box"
+   "collision": "box",
+   "foot": [
+    200,
+    190
+   ]
   }
  ],
  "vein_path": [
