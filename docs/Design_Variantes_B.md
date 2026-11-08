@@ -417,7 +417,7 @@ Purement visuels et sonores : aucun effet de jeu. L'événement démarre quand `
 
 **Assets attendus (Codex)** : `res://assets/sprites/props/terraces/noria_spin.tres` (SpriteFrames, animation `spin` en boucle, mêmes cadrage, pied et taille que `noria.png` (416 × 432 px), 8 à 12 images, masque `_e` facultatif) ; sons `amb.gust` (souffle grave de gouffre, ~4 s, ponctuel) et `amb.noria` (boucle grincement de roue et ruissellement). Absents, ils sont ignorés sans erreur (`AmbientEvents.missing_assets()`).
 
-**Incohérence connue** : l'eau peu profonde `,` a déjà des effets de jeu (Averse, mini-boss `in_water`, raids `in_shallow`, sons de pas) ; la crue étant visuelle, la bande inondée ne les déclenche pas. Point d'accroche prévu : `fx_flood.gd` `is_flooded_cell()`, non branché.
+**Crue visuelle seulement (tranché par le joueur, 08/11/2026)** : l'eau peu profonde `,` a des effets de jeu (Averse, mini-boss `in_water`, raids `in_shallow`, sons de pas), mais la bande inondée par la crue d'ambiance n'en déclenche aucun : c'est un décor qui monte, sans effet d'équilibrage. `fx_flood.gd` `is_flooded_cell()` reste non branché.
 
 **Vérifier en mode test (depuis le 08/11/2026, À RETIRER OU MASQUER AVANT LA SORTIE avec le mode test)** : le panneau a un onglet « Cartes » qui charge n'importe quelle carte réelle en bac à sable (rien au profil). Pas à pas :
 1. Titre > « Mode test » (ou `-- --test-mode`), ouvrir le panneau (F1 / Select maintenu / bouton TEST) > onglet **Cartes**.
