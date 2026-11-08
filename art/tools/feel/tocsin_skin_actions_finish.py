@@ -202,6 +202,7 @@ def verify(install=False):
             assert len(durations)==t.ANIMS[a];clips+=1
     for anim,n in dict(t.ANIMS,cast_ult=6).items():
         for d in t.DIRS:
+            if anim.startswith('throw_'):continue  # clips composites throw_* retirés du skin (retime)
             frames=frame_images(anim,d,STAGE/'tocsin_skin1.tres')
             assert len(frames)==n and all(f.getchannel('A').getbbox() for f in frames),(anim,d)
             assert len({hashlib.sha256(f.tobytes()).hexdigest() for f in frames})>1,(anim,d,'duplicates')

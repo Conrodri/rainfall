@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=331 format=3]
+[gd_resource type="SpriteFrames" load_steps=219 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/idle.png" id="1"]
 
@@ -14,8 +14,11 @@
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/cast_ult.png" id="carillon_23"]
 
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/attack.png" id="carillon_19"]
 
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/cast.png" id="carillon_21"]
 
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/tocsin/skins/tocsin_skin1/cast_ult.png" id="carillon_23"]
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1")
@@ -339,723 +342,723 @@ margin = Rect2(32, 14, 64, 50)
 
 [sub_resource type="AtlasTexture" id="carillon_a483"]
 atlas = ExtResource("carillon_19")
-region = Rect2(492, 633, 58, 130)
-margin = Rect2(64, 23, 134, 62)
+region = Rect2(30, 6, 67, 130)
+margin = Rect2(64, 24, 125, 62)
 
 [sub_resource type="AtlasTexture" id="carillon_a484"]
 atlas = ExtResource("carillon_19")
-region = Rect2(692, 383, 61, 130)
-margin = Rect2(55, 27, 131, 62)
+region = Rect2(148, 7, 87, 128)
+margin = Rect2(56, 30, 105, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a485"]
 atlas = ExtResource("carillon_19")
-region = Rect2(630, 383, 62, 129)
-margin = Rect2(47, 30, 130, 63)
+region = Rect2(274, 7, 91, 128)
+margin = Rect2(51, 34, 101, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a486"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 0, 101, 144)
-margin = Rect2(71, 1, 91, 48)
+region = Rect2(402, 3, 91, 135)
+margin = Rect2(72, 7, 101, 57)
 
 [sub_resource type="AtlasTexture" id="carillon_a487"]
 atlas = ExtResource("carillon_19")
-region = Rect2(79, 644, 68, 134)
-margin = Rect2(68, 15, 124, 58)
+region = Rect2(531, 5, 89, 132)
+margin = Rect2(72, 13, 103, 60)
 
 [sub_resource type="AtlasTexture" id="carillon_a488"]
 atlas = ExtResource("carillon_19")
-region = Rect2(530, 503, 61, 130)
-margin = Rect2(67, 21, 131, 62)
+region = Rect2(674, 6, 59, 130)
+margin = Rect2(69, 20, 133, 62)
 
 [sub_resource type="AtlasTexture" id="carillon_a489"]
 atlas = ExtResource("carillon_19")
-region = Rect2(270, 382, 79, 130)
-margin = Rect2(51, 24, 113, 62)
+region = Rect2(17, 148, 93, 129)
+margin = Rect2(57, 26, 99, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a490"]
 atlas = ExtResource("carillon_19")
-region = Rect2(80, 387, 79, 130)
-margin = Rect2(47, 28, 113, 62)
+region = Rect2(139, 149, 106, 127)
+margin = Rect2(49, 33, 86, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a491"]
 atlas = ExtResource("carillon_19")
-region = Rect2(573, 247, 83, 128)
-margin = Rect2(40, 33, 109, 64)
+region = Rect2(262, 151, 116, 124)
+margin = Rect2(44, 39, 76, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a492"]
 atlas = ExtResource("carillon_19")
-region = Rect2(197, 0, 100, 136)
-margin = Rect2(58, 10, 92, 56)
+region = Rect2(406, 147, 83, 132)
+margin = Rect2(68, 11, 109, 60)
 
 [sub_resource type="AtlasTexture" id="carillon_a493"]
 atlas = ExtResource("carillon_19")
-region = Rect2(297, 127, 86, 133)
-margin = Rect2(54, 16, 106, 59)
+region = Rect2(534, 147, 83, 132)
+margin = Rect2(65, 14, 109, 60)
 
 [sub_resource type="AtlasTexture" id="carillon_a494"]
 atlas = ExtResource("carillon_19")
-region = Rect2(679, 125, 82, 130)
-margin = Rect2(52, 21, 110, 62)
+region = Rect2(664, 147, 80, 131)
+margin = Rect2(62, 20, 112, 61)
 
 [sub_resource type="AtlasTexture" id="carillon_a495"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 144, 87, 125)
-margin = Rect2(48, 25, 105, 67)
+region = Rect2(16, 293, 95, 123)
+margin = Rect2(45, 28, 97, 69)
 
 [sub_resource type="AtlasTexture" id="carillon_a496"]
 atlas = ExtResource("carillon_19")
-region = Rect2(593, 123, 86, 124)
-margin = Rect2(41, 30, 106, 68)
+region = Rect2(139, 295, 105, 119)
+margin = Rect2(35, 36, 87, 73)
 
 [sub_resource type="AtlasTexture" id="carillon_a497"]
 atlas = ExtResource("carillon_19")
-region = Rect2(485, 130, 88, 121)
-margin = Rect2(34, 35, 104, 71)
+region = Rect2(262, 296, 115, 117)
+margin = Rect2(26, 42, 77, 75)
 
 [sub_resource type="AtlasTexture" id="carillon_a498"]
 atlas = ExtResource("carillon_19")
-region = Rect2(197, 136, 88, 127)
-margin = Rect2(70, 15, 104, 65)
+region = Rect2(405, 291, 85, 128)
+margin = Rect2(67, 11, 107, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a499"]
 atlas = ExtResource("carillon_19")
-region = Rect2(101, 142, 87, 126)
-margin = Rect2(60, 19, 105, 66)
+region = Rect2(533, 291, 86, 128)
+margin = Rect2(62, 14, 106, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a500"]
 atlas = ExtResource("carillon_19")
-region = Rect2(681, 0, 86, 125)
-margin = Rect2(54, 22, 106, 67)
+region = Rect2(661, 292, 86, 126)
+margin = Rect2(54, 21, 106, 66)
 
 [sub_resource type="AtlasTexture" id="carillon_a501"]
 atlas = ExtResource("carillon_19")
-region = Rect2(656, 255, 78, 128)
-margin = Rect2(53, 26, 114, 64)
+region = Rect2(18, 433, 92, 127)
+margin = Rect2(35, 28, 100, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a502"]
 atlas = ExtResource("carillon_19")
-region = Rect2(79, 517, 79, 127)
-margin = Rect2(42, 31, 113, 65)
+region = Rect2(140, 435, 104, 124)
+margin = Rect2(18, 36, 88, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a503"]
 atlas = ExtResource("carillon_19")
-region = Rect2(159, 509, 80, 126)
-margin = Rect2(33, 35, 112, 66)
+region = Rect2(263, 436, 113, 122)
+margin = Rect2(7, 41, 79, 70)
 
 [sub_resource type="AtlasTexture" id="carillon_a504"]
 atlas = ExtResource("carillon_19")
-region = Rect2(497, 0, 96, 130)
-margin = Rect2(72, 16, 96, 62)
+region = Rect2(408, 432, 80, 130)
+margin = Rect2(70, 14, 112, 62)
 
 [sub_resource type="AtlasTexture" id="carillon_a505"]
 atlas = ExtResource("carillon_19")
-region = Rect2(371, 379, 81, 127)
-margin = Rect2(69, 22, 111, 65)
+region = Rect2(535, 432, 81, 130)
+margin = Rect2(64, 16, 111, 62)
 
 [sub_resource type="AtlasTexture" id="carillon_a506"]
 atlas = ExtResource("carillon_19")
-region = Rect2(552, 375, 78, 128)
-margin = Rect2(61, 23, 114, 64)
+region = Rect2(664, 433, 80, 128)
+margin = Rect2(52, 23, 112, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a507"]
 atlas = ExtResource("carillon_19")
-region = Rect2(237, 636, 58, 125)
-margin = Rect2(61, 26, 134, 67)
+region = Rect2(30, 577, 67, 124)
+margin = Rect2(54, 28, 125, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a508"]
 atlas = ExtResource("carillon_19")
-region = Rect2(591, 512, 61, 125)
-margin = Rect2(53, 30, 131, 67)
+region = Rect2(148, 577, 87, 123)
+margin = Rect2(32, 33, 105, 69)
 
 [sub_resource type="AtlasTexture" id="carillon_a509"]
 atlas = ExtResource("carillon_19")
-region = Rect2(430, 625, 62, 124)
-margin = Rect2(47, 34, 130, 68)
+region = Rect2(274, 578, 91, 122)
+margin = Rect2(26, 38, 101, 70)
 
 [sub_resource type="AtlasTexture" id="carillon_a510"]
 atlas = ExtResource("carillon_19")
-region = Rect2(397, 0, 100, 126)
-margin = Rect2(57, 17, 92, 66)
+region = Rect2(403, 578, 90, 121)
+margin = Rect2(56, 19, 102, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a511"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 654, 67, 125)
-margin = Rect2(72, 22, 125, 67)
+region = Rect2(531, 577, 90, 123)
+margin = Rect2(49, 20, 102, 69)
 
 [sub_resource type="AtlasTexture" id="carillon_a512"]
 atlas = ExtResource("carillon_19")
-region = Rect2(318, 628, 60, 125)
-margin = Rect2(67, 24, 132, 67)
+region = Rect2(674, 577, 59, 124)
+margin = Rect2(66, 24, 133, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a513"]
 atlas = ExtResource("carillon_19")
-region = Rect2(158, 635, 79, 123)
-margin = Rect2(53, 25, 113, 69)
+region = Rect2(17, 719, 93, 124)
+margin = Rect2(35, 26, 99, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a514"]
 atlas = ExtResource("carillon_19")
-region = Rect2(239, 512, 79, 124)
-margin = Rect2(42, 28, 113, 68)
+region = Rect2(139, 719, 106, 124)
+margin = Rect2(20, 30, 86, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a515"]
 atlas = ExtResource("carillon_19")
-region = Rect2(469, 373, 83, 124)
-margin = Rect2(33, 31, 109, 68)
+region = Rect2(262, 718, 116, 125)
+margin = Rect2(8, 33, 76, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a516"]
 atlas = ExtResource("carillon_19")
-region = Rect2(297, 0, 100, 127)
-margin = Rect2(70, 13, 92, 65)
+region = Rect2(406, 717, 83, 127)
+margin = Rect2(67, 11, 109, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a517"]
 atlas = ExtResource("carillon_19")
-region = Rect2(383, 257, 86, 122)
-margin = Rect2(67, 22, 106, 70)
+region = Rect2(534, 720, 83, 121)
+margin = Rect2(62, 20, 109, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a518"]
 atlas = ExtResource("carillon_19")
-region = Rect2(349, 506, 81, 122)
-margin = Rect2(61, 24, 111, 70)
+region = Rect2(664, 720, 80, 122)
+margin = Rect2(52, 24, 112, 70)
 
 [sub_resource type="AtlasTexture" id="carillon_a519"]
 atlas = ExtResource("carillon_19")
-region = Rect2(485, 251, 87, 122)
-margin = Rect2(48, 24, 105, 70)
+region = Rect2(16, 861, 95, 123)
+margin = Rect2(45, 24, 97, 69)
 
 [sub_resource type="AtlasTexture" id="carillon_a520"]
 atlas = ExtResource("carillon_19")
-region = Rect2(285, 260, 86, 122)
-margin = Rect2(41, 27, 106, 70)
+region = Rect2(139, 861, 105, 123)
+margin = Rect2(35, 28, 87, 69)
 
 [sub_resource type="AtlasTexture" id="carillon_a521"]
 atlas = ExtResource("carillon_19")
-region = Rect2(593, 0, 88, 123)
-margin = Rect2(34, 29, 104, 69)
+region = Rect2(262, 860, 115, 125)
+margin = Rect2(26, 30, 77, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a522"]
 atlas = ExtResource("carillon_19")
-region = Rect2(397, 126, 88, 131)
-margin = Rect2(70, 7, 104, 61)
+region = Rect2(405, 856, 85, 133)
+margin = Rect2(67, 2, 107, 59)
 
 [sub_resource type="AtlasTexture" id="carillon_a523"]
 atlas = ExtResource("carillon_19")
-region = Rect2(87, 268, 87, 119)
-margin = Rect2(60, 22, 105, 73)
+region = Rect2(533, 861, 86, 124)
+margin = Rect2(62, 14, 106, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a524"]
 atlas = ExtResource("carillon_19")
-region = Rect2(159, 390, 86, 119)
-margin = Rect2(54, 24, 106, 73)
+region = Rect2(661, 863, 86, 120)
+margin = Rect2(54, 23, 106, 72)
 
 [sub_resource type="AtlasTexture" id="carillon_a525"]
 atlas = ExtResource("carillon_19")
-region = Rect2(452, 497, 78, 128)
-margin = Rect2(52, 23, 114, 64)
+region = Rect2(18, 1001, 92, 128)
+margin = Rect2(58, 24, 100, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a526"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 398, 79, 129)
-margin = Rect2(47, 26, 113, 63)
+region = Rect2(140, 1000, 104, 129)
+margin = Rect2(53, 28, 88, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a527"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 269, 80, 129)
-margin = Rect2(43, 29, 112, 63)
+region = Rect2(264, 1000, 112, 129)
+margin = Rect2(48, 31, 80, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a528"]
 atlas = ExtResource("carillon_19")
-region = Rect2(101, 0, 96, 142)
-margin = Rect2(60, 1, 96, 50)
+region = Rect2(408, 995, 80, 140)
+margin = Rect2(68, 1, 112, 52)
 
 [sub_resource type="AtlasTexture" id="carillon_a529"]
 atlas = ExtResource("carillon_19")
-region = Rect2(188, 263, 82, 127)
-margin = Rect2(57, 19, 110, 65)
+region = Rect2(535, 999, 81, 132)
+margin = Rect2(65, 11, 111, 60)
 
 [sub_resource type="AtlasTexture" id="carillon_a530"]
 atlas = ExtResource("carillon_19")
-region = Rect2(0, 527, 79, 127)
-margin = Rect2(55, 21, 113, 65)
+region = Rect2(664, 1001, 80, 127)
+margin = Rect2(62, 21, 112, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a532"]
 atlas = ExtResource("carillon_21")
-region = Rect2(300, 509, 85, 129)
-margin = Rect2(63, 22, 107, 63)
+region = Rect2(174, 892, 78, 129)
+margin = Rect2(59, 22, 114, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a533"]
 atlas = ExtResource("carillon_21")
-region = Rect2(98, 618, 76, 142)
-margin = Rect2(51, 9, 116, 50)
+region = Rect2(207, 498, 84, 144)
+margin = Rect2(43, 7, 108, 48)
 
 [sub_resource type="AtlasTexture" id="carillon_a534"]
 atlas = ExtResource("carillon_21")
-region = Rect2(192, 512, 85, 128)
-margin = Rect2(59, 23, 107, 64)
+region = Rect2(391, 626, 85, 129)
+margin = Rect2(55, 22, 107, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a535"]
 atlas = ExtResource("carillon_21")
-region = Rect2(174, 640, 80, 123)
-margin = Rect2(76, 28, 112, 69)
+region = Rect2(489, 510, 87, 127)
+margin = Rect2(76, 24, 105, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a536"]
 atlas = ExtResource("carillon_21")
-region = Rect2(464, 724, 71, 127)
-margin = Rect2(69, 24, 121, 65)
+region = Rect2(660, 534, 74, 128)
+margin = Rect2(76, 23, 118, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a537"]
 atlas = ExtResource("carillon_21")
-region = Rect2(535, 724, 58, 129)
+region = Rect2(689, 0, 58, 129)
 margin = Rect2(69, 22, 134, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a538"]
 atlas = ExtResource("carillon_21")
-region = Rect2(440, 245, 97, 129)
-margin = Rect2(56, 22, 95, 63)
+region = Rect2(110, 390, 97, 129)
+margin = Rect2(53, 22, 95, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a539"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 370, 98, 142)
-margin = Rect2(45, 9, 94, 50)
+region = Rect2(592, 0, 97, 143)
+margin = Rect2(39, 8, 95, 49)
 
 [sub_resource type="AtlasTexture" id="carillon_a540"]
 atlas = ExtResource("carillon_21")
-region = Rect2(645, 241, 96, 128)
-margin = Rect2(51, 23, 96, 64)
+region = Rect2(440, 377, 96, 129)
+margin = Rect2(47, 22, 96, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a541"]
 atlas = ExtResource("carillon_21")
-region = Rect2(419, 499, 93, 123)
-margin = Rect2(67, 28, 99, 69)
+region = Rect2(392, 506, 97, 120)
+margin = Rect2(67, 31, 95, 72)
 
 [sub_resource type="AtlasTexture" id="carillon_a542"]
 atlas = ExtResource("carillon_21")
-region = Rect2(76, 881, 73, 127)
-margin = Rect2(67, 24, 119, 65)
+region = Rect2(276, 735, 87, 125)
+margin = Rect2(67, 26, 105, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a543"]
 atlas = ExtResource("carillon_21")
-region = Rect2(385, 622, 79, 130)
-margin = Rect2(62, 21, 113, 62)
+region = Rect2(94, 892, 80, 129)
+margin = Rect2(62, 22, 112, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a544"]
 atlas = ExtResource("carillon_21")
-region = Rect2(229, 0, 115, 125)
-margin = Rect2(35, 23, 77, 67)
+region = Rect2(0, 128, 123, 125)
+margin = Rect2(24, 23, 69, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a545"]
 atlas = ExtResource("carillon_21")
-region = Rect2(342, 126, 98, 138)
-margin = Rect2(42, 10, 94, 54)
+region = Rect2(578, 143, 98, 139)
+margin = Rect2(35, 9, 94, 53)
 
 [sub_resource type="AtlasTexture" id="carillon_a546"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 0, 121, 125)
-margin = Rect2(26, 23, 71, 67)
+region = Rect2(238, 0, 120, 125)
+margin = Rect2(23, 23, 72, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a547"]
 atlas = ExtResource("carillon_21")
-region = Rect2(440, 126, 107, 119)
-margin = Rect2(71, 29, 85, 73)
+region = Rect2(567, 282, 112, 111)
+margin = Rect2(71, 37, 80, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a548"]
 atlas = ExtResource("carillon_21")
-region = Rect2(537, 369, 98, 123)
-margin = Rect2(66, 25, 94, 69)
+region = Rect2(536, 393, 102, 117)
+margin = Rect2(71, 31, 90, 75)
 
 [sub_resource type="AtlasTexture" id="carillon_a549"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 245, 112, 125)
+region = Rect2(0, 253, 112, 125)
 margin = Rect2(44, 23, 80, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a550"]
 atlas = ExtResource("carillon_21")
-region = Rect2(457, 0, 110, 126)
-margin = Rect2(15, 25, 82, 66)
+region = Rect2(112, 263, 110, 127)
+margin = Rect2(12, 24, 82, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a551"]
 atlas = ExtResource("carillon_21")
-region = Rect2(277, 638, 71, 140)
-margin = Rect2(45, 11, 121, 52)
+region = Rect2(679, 143, 76, 141)
+margin = Rect2(39, 10, 116, 51)
 
 [sub_resource type="AtlasTexture" id="carillon_a552"]
 atlas = ExtResource("carillon_21")
-region = Rect2(344, 0, 113, 126)
-margin = Rect2(9, 25, 79, 66)
+region = Rect2(478, 0, 114, 127)
+margin = Rect2(5, 24, 78, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a553"]
 atlas = ExtResource("carillon_21")
-region = Rect2(98, 371, 108, 120)
-margin = Rect2(72, 31, 84, 72)
+region = Rect2(222, 268, 113, 113)
+margin = Rect2(72, 38, 79, 79)
 
 [sub_resource type="AtlasTexture" id="carillon_a554"]
 atlas = ExtResource("carillon_21")
-region = Rect2(424, 374, 96, 125)
-margin = Rect2(69, 26, 96, 67)
+region = Rect2(329, 383, 103, 118)
+margin = Rect2(72, 33, 89, 74)
 
 [sub_resource type="AtlasTexture" id="carillon_a555"]
 atlas = ExtResource("carillon_21")
-region = Rect2(206, 385, 94, 127)
+region = Rect2(0, 630, 94, 127)
 margin = Rect2(45, 24, 98, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a556"]
 atlas = ExtResource("carillon_21")
-region = Rect2(621, 602, 85, 124)
-margin = Rect2(33, 25, 107, 68)
+region = Rect2(94, 646, 79, 142)
+margin = Rect2(37, 7, 113, 50)
 
 [sub_resource type="AtlasTexture" id="carillon_a557"]
 atlas = ExtResource("carillon_21")
-region = Rect2(682, 0, 74, 138)
-margin = Rect2(42, 11, 118, 54)
+region = Rect2(195, 642, 81, 139)
+margin = Rect2(35, 10, 111, 53)
 
 [sub_resource type="AtlasTexture" id="carillon_a558"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 632, 86, 125)
-margin = Rect2(30, 24, 106, 67)
+region = Rect2(0, 757, 89, 126)
+margin = Rect2(27, 23, 103, 66)
 
 [sub_resource type="AtlasTexture" id="carillon_a559"]
 atlas = ExtResource("carillon_21")
-region = Rect2(512, 606, 89, 118)
-margin = Rect2(65, 31, 103, 74)
+region = Rect2(0, 883, 94, 111)
+margin = Rect2(65, 38, 98, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a560"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 897, 74, 122)
-margin = Rect2(65, 27, 118, 70)
+region = Rect2(576, 534, 84, 115)
+margin = Rect2(65, 34, 108, 77)
 
 [sub_resource type="AtlasTexture" id="carillon_a561"]
 atlas = ExtResource("carillon_21")
-region = Rect2(348, 752, 59, 124)
-margin = Rect2(65, 25, 133, 68)
+region = Rect2(476, 637, 60, 124)
+margin = Rect2(65, 25, 132, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a562"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 512, 98, 120)
-margin = Rect2(27, 25, 94, 72)
+region = Rect2(238, 125, 101, 143)
+margin = Rect2(24, 2, 91, 49)
 
 [sub_resource type="AtlasTexture" id="carillon_a563"]
 atlas = ExtResource("carillon_21")
-region = Rect2(121, 0, 108, 135)
-margin = Rect2(17, 10, 84, 57)
+region = Rect2(123, 0, 115, 136)
+margin = Rect2(10, 9, 77, 56)
 
 [sub_resource type="AtlasTexture" id="carillon_a564"]
 atlas = ExtResource("carillon_21")
-region = Rect2(547, 241, 98, 128)
-margin = Rect2(27, 17, 94, 64)
+region = Rect2(465, 248, 102, 129)
+margin = Rect2(23, 16, 90, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a565"]
 atlas = ExtResource("carillon_21")
-region = Rect2(635, 488, 101, 114)
-margin = Rect2(59, 31, 91, 78)
+region = Rect2(222, 381, 107, 117)
+margin = Rect2(59, 32, 85, 75)
 
 [sub_resource type="AtlasTexture" id="carillon_a566"]
 atlas = ExtResource("carillon_21")
-region = Rect2(156, 763, 81, 119)
-margin = Rect2(59, 26, 111, 73)
+region = Rect2(173, 781, 95, 111)
+margin = Rect2(59, 34, 97, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a567"]
 atlas = ExtResource("carillon_21")
-region = Rect2(76, 760, 80, 121)
+region = Rect2(252, 892, 80, 121)
 margin = Rect2(52, 24, 112, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a568"]
 atlas = ExtResource("carillon_21")
-region = Rect2(567, 0, 115, 120)
-margin = Rect2(31, 24, 77, 72)
+region = Rect2(0, 0, 123, 128)
+margin = Rect2(27, 16, 69, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a569"]
 atlas = ExtResource("carillon_21")
-region = Rect2(223, 251, 100, 134)
-margin = Rect2(21, 10, 92, 58)
+region = Rect2(358, 121, 107, 135)
+margin = Rect2(14, 9, 85, 57)
 
 [sub_resource type="AtlasTexture" id="carillon_a570"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 125, 121, 120)
-margin = Rect2(27, 24, 71, 72)
+region = Rect2(358, 0, 120, 121)
+margin = Rect2(24, 23, 72, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a571"]
 atlas = ExtResource("carillon_21")
-region = Rect2(520, 492, 101, 114)
-margin = Rect2(59, 30, 91, 78)
+region = Rect2(291, 501, 101, 119)
+margin = Rect2(64, 25, 91, 73)
 
 [sub_resource type="AtlasTexture" id="carillon_a572"]
 atlas = ExtResource("carillon_21")
-region = Rect2(635, 369, 97, 119)
-margin = Rect2(44, 25, 95, 73)
+region = Rect2(291, 620, 100, 115)
+margin = Rect2(54, 29, 92, 77)
 
 [sub_resource type="AtlasTexture" id="carillon_a573"]
 atlas = ExtResource("carillon_21")
-region = Rect2(567, 120, 112, 121)
-margin = Rect2(37, 23, 80, 71)
+region = Rect2(465, 127, 113, 121)
+margin = Rect2(37, 23, 79, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a574"]
 atlas = ExtResource("carillon_21")
-region = Rect2(112, 245, 111, 126)
-margin = Rect2(55, 23, 81, 66)
+region = Rect2(0, 378, 110, 127)
+margin = Rect2(52, 22, 82, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a575"]
 atlas = ExtResource("carillon_21")
-region = Rect2(0, 757, 76, 140)
-margin = Rect2(44, 9, 116, 52)
+region = Rect2(638, 393, 84, 141)
+margin = Rect2(36, 8, 108, 51)
 
 [sub_resource type="AtlasTexture" id="carillon_a576"]
 atlas = ExtResource("carillon_21")
-region = Rect2(229, 125, 113, 126)
-margin = Rect2(52, 23, 79, 66)
+region = Rect2(123, 136, 113, 127)
+margin = Rect2(48, 22, 79, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a577"]
 atlas = ExtResource("carillon_21")
-region = Rect2(323, 264, 101, 120)
-margin = Rect2(57, 29, 91, 72)
+region = Rect2(339, 256, 101, 127)
+margin = Rect2(62, 22, 91, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a578"]
 atlas = ExtResource("carillon_21")
-region = Rect2(323, 384, 96, 125)
-margin = Rect2(43, 24, 96, 67)
+region = Rect2(0, 505, 100, 125)
+margin = Rect2(52, 24, 92, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a579"]
 atlas = ExtResource("carillon_21")
-region = Rect2(98, 491, 94, 127)
-margin = Rect2(54, 22, 98, 65)
+region = Rect2(100, 519, 95, 127)
+margin = Rect2(54, 22, 97, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a581"]
 atlas = ExtResource("carillon_23")
-region = Rect2(300, 509, 85, 129)
-margin = Rect2(63, 22, 107, 63)
+region = Rect2(174, 892, 78, 129)
+margin = Rect2(59, 22, 114, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a582"]
 atlas = ExtResource("carillon_23")
-region = Rect2(98, 618, 76, 142)
-margin = Rect2(51, 9, 116, 50)
+region = Rect2(207, 498, 84, 144)
+margin = Rect2(43, 7, 108, 48)
 
 [sub_resource type="AtlasTexture" id="carillon_a583"]
 atlas = ExtResource("carillon_23")
-region = Rect2(192, 512, 85, 128)
-margin = Rect2(59, 23, 107, 64)
+region = Rect2(391, 626, 85, 129)
+margin = Rect2(55, 22, 107, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a584"]
 atlas = ExtResource("carillon_23")
-region = Rect2(174, 640, 80, 123)
-margin = Rect2(76, 28, 112, 69)
+region = Rect2(489, 510, 87, 127)
+margin = Rect2(76, 24, 105, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a585"]
 atlas = ExtResource("carillon_23")
-region = Rect2(464, 724, 71, 127)
-margin = Rect2(69, 24, 121, 65)
+region = Rect2(660, 534, 74, 128)
+margin = Rect2(76, 23, 118, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a586"]
 atlas = ExtResource("carillon_23")
-region = Rect2(535, 724, 58, 129)
+region = Rect2(689, 0, 58, 129)
 margin = Rect2(69, 22, 134, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a587"]
 atlas = ExtResource("carillon_23")
-region = Rect2(440, 245, 97, 129)
-margin = Rect2(56, 22, 95, 63)
+region = Rect2(110, 390, 97, 129)
+margin = Rect2(53, 22, 95, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a588"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 370, 98, 142)
-margin = Rect2(45, 9, 94, 50)
+region = Rect2(592, 0, 97, 143)
+margin = Rect2(39, 8, 95, 49)
 
 [sub_resource type="AtlasTexture" id="carillon_a589"]
 atlas = ExtResource("carillon_23")
-region = Rect2(645, 241, 96, 128)
-margin = Rect2(51, 23, 96, 64)
+region = Rect2(440, 377, 96, 129)
+margin = Rect2(47, 22, 96, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a590"]
 atlas = ExtResource("carillon_23")
-region = Rect2(419, 499, 93, 123)
-margin = Rect2(67, 28, 99, 69)
+region = Rect2(392, 506, 97, 120)
+margin = Rect2(67, 31, 95, 72)
 
 [sub_resource type="AtlasTexture" id="carillon_a591"]
 atlas = ExtResource("carillon_23")
-region = Rect2(76, 881, 73, 127)
-margin = Rect2(67, 24, 119, 65)
+region = Rect2(276, 735, 87, 125)
+margin = Rect2(67, 26, 105, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a592"]
 atlas = ExtResource("carillon_23")
-region = Rect2(385, 622, 79, 130)
-margin = Rect2(62, 21, 113, 62)
+region = Rect2(94, 892, 80, 129)
+margin = Rect2(62, 22, 112, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a593"]
 atlas = ExtResource("carillon_23")
-region = Rect2(229, 0, 115, 125)
-margin = Rect2(35, 23, 77, 67)
+region = Rect2(0, 128, 123, 125)
+margin = Rect2(24, 23, 69, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a594"]
 atlas = ExtResource("carillon_23")
-region = Rect2(342, 126, 98, 138)
-margin = Rect2(42, 10, 94, 54)
+region = Rect2(578, 143, 98, 139)
+margin = Rect2(35, 9, 94, 53)
 
 [sub_resource type="AtlasTexture" id="carillon_a595"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 0, 121, 125)
-margin = Rect2(26, 23, 71, 67)
+region = Rect2(238, 0, 120, 125)
+margin = Rect2(23, 23, 72, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a596"]
 atlas = ExtResource("carillon_23")
-region = Rect2(440, 126, 107, 119)
-margin = Rect2(71, 29, 85, 73)
+region = Rect2(567, 282, 112, 111)
+margin = Rect2(71, 37, 80, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a597"]
 atlas = ExtResource("carillon_23")
-region = Rect2(537, 369, 98, 123)
-margin = Rect2(66, 25, 94, 69)
+region = Rect2(536, 393, 102, 117)
+margin = Rect2(71, 31, 90, 75)
 
 [sub_resource type="AtlasTexture" id="carillon_a598"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 245, 112, 125)
+region = Rect2(0, 253, 112, 125)
 margin = Rect2(44, 23, 80, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a599"]
 atlas = ExtResource("carillon_23")
-region = Rect2(457, 0, 110, 126)
-margin = Rect2(15, 25, 82, 66)
+region = Rect2(112, 263, 110, 127)
+margin = Rect2(12, 24, 82, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a600"]
 atlas = ExtResource("carillon_23")
-region = Rect2(277, 638, 71, 140)
-margin = Rect2(45, 11, 121, 52)
+region = Rect2(679, 143, 76, 141)
+margin = Rect2(39, 10, 116, 51)
 
 [sub_resource type="AtlasTexture" id="carillon_a601"]
 atlas = ExtResource("carillon_23")
-region = Rect2(344, 0, 113, 126)
-margin = Rect2(9, 25, 79, 66)
+region = Rect2(478, 0, 114, 127)
+margin = Rect2(5, 24, 78, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a602"]
 atlas = ExtResource("carillon_23")
-region = Rect2(98, 371, 108, 120)
-margin = Rect2(72, 31, 84, 72)
+region = Rect2(222, 268, 113, 113)
+margin = Rect2(72, 38, 79, 79)
 
 [sub_resource type="AtlasTexture" id="carillon_a603"]
 atlas = ExtResource("carillon_23")
-region = Rect2(424, 374, 96, 125)
-margin = Rect2(69, 26, 96, 67)
+region = Rect2(329, 383, 103, 118)
+margin = Rect2(72, 33, 89, 74)
 
 [sub_resource type="AtlasTexture" id="carillon_a604"]
 atlas = ExtResource("carillon_23")
-region = Rect2(206, 385, 94, 127)
+region = Rect2(0, 630, 94, 127)
 margin = Rect2(45, 24, 98, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a605"]
 atlas = ExtResource("carillon_23")
-region = Rect2(621, 602, 85, 124)
-margin = Rect2(33, 25, 107, 68)
+region = Rect2(94, 646, 79, 142)
+margin = Rect2(37, 7, 113, 50)
 
 [sub_resource type="AtlasTexture" id="carillon_a606"]
 atlas = ExtResource("carillon_23")
-region = Rect2(682, 0, 74, 138)
-margin = Rect2(42, 11, 118, 54)
+region = Rect2(195, 642, 81, 139)
+margin = Rect2(35, 10, 111, 53)
 
 [sub_resource type="AtlasTexture" id="carillon_a607"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 632, 86, 125)
-margin = Rect2(30, 24, 106, 67)
+region = Rect2(0, 757, 89, 126)
+margin = Rect2(27, 23, 103, 66)
 
 [sub_resource type="AtlasTexture" id="carillon_a608"]
 atlas = ExtResource("carillon_23")
-region = Rect2(512, 606, 89, 118)
-margin = Rect2(65, 31, 103, 74)
+region = Rect2(0, 883, 94, 111)
+margin = Rect2(65, 38, 98, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a609"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 897, 74, 122)
-margin = Rect2(65, 27, 118, 70)
+region = Rect2(576, 534, 84, 115)
+margin = Rect2(65, 34, 108, 77)
 
 [sub_resource type="AtlasTexture" id="carillon_a610"]
 atlas = ExtResource("carillon_23")
-region = Rect2(348, 752, 59, 124)
-margin = Rect2(65, 25, 133, 68)
+region = Rect2(476, 637, 60, 124)
+margin = Rect2(65, 25, 132, 68)
 
 [sub_resource type="AtlasTexture" id="carillon_a611"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 512, 98, 120)
-margin = Rect2(27, 25, 94, 72)
+region = Rect2(238, 125, 101, 143)
+margin = Rect2(24, 2, 91, 49)
 
 [sub_resource type="AtlasTexture" id="carillon_a612"]
 atlas = ExtResource("carillon_23")
-region = Rect2(121, 0, 108, 135)
-margin = Rect2(17, 10, 84, 57)
+region = Rect2(123, 0, 115, 136)
+margin = Rect2(10, 9, 77, 56)
 
 [sub_resource type="AtlasTexture" id="carillon_a613"]
 atlas = ExtResource("carillon_23")
-region = Rect2(547, 241, 98, 128)
-margin = Rect2(27, 17, 94, 64)
+region = Rect2(465, 248, 102, 129)
+margin = Rect2(23, 16, 90, 63)
 
 [sub_resource type="AtlasTexture" id="carillon_a614"]
 atlas = ExtResource("carillon_23")
-region = Rect2(635, 488, 101, 114)
-margin = Rect2(59, 31, 91, 78)
+region = Rect2(222, 381, 107, 117)
+margin = Rect2(59, 32, 85, 75)
 
 [sub_resource type="AtlasTexture" id="carillon_a615"]
 atlas = ExtResource("carillon_23")
-region = Rect2(156, 763, 81, 119)
-margin = Rect2(59, 26, 111, 73)
+region = Rect2(173, 781, 95, 111)
+margin = Rect2(59, 34, 97, 81)
 
 [sub_resource type="AtlasTexture" id="carillon_a616"]
 atlas = ExtResource("carillon_23")
-region = Rect2(76, 760, 80, 121)
+region = Rect2(252, 892, 80, 121)
 margin = Rect2(52, 24, 112, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a617"]
 atlas = ExtResource("carillon_23")
-region = Rect2(567, 0, 115, 120)
-margin = Rect2(31, 24, 77, 72)
+region = Rect2(0, 0, 123, 128)
+margin = Rect2(27, 16, 69, 64)
 
 [sub_resource type="AtlasTexture" id="carillon_a618"]
 atlas = ExtResource("carillon_23")
-region = Rect2(223, 251, 100, 134)
-margin = Rect2(21, 10, 92, 58)
+region = Rect2(358, 121, 107, 135)
+margin = Rect2(14, 9, 85, 57)
 
 [sub_resource type="AtlasTexture" id="carillon_a619"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 125, 121, 120)
-margin = Rect2(27, 24, 71, 72)
+region = Rect2(358, 0, 120, 121)
+margin = Rect2(24, 23, 72, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a620"]
 atlas = ExtResource("carillon_23")
-region = Rect2(520, 492, 101, 114)
-margin = Rect2(59, 30, 91, 78)
+region = Rect2(291, 501, 101, 119)
+margin = Rect2(64, 25, 91, 73)
 
 [sub_resource type="AtlasTexture" id="carillon_a621"]
 atlas = ExtResource("carillon_23")
-region = Rect2(635, 369, 97, 119)
-margin = Rect2(44, 25, 95, 73)
+region = Rect2(291, 620, 100, 115)
+margin = Rect2(54, 29, 92, 77)
 
 [sub_resource type="AtlasTexture" id="carillon_a622"]
 atlas = ExtResource("carillon_23")
-region = Rect2(567, 120, 112, 121)
-margin = Rect2(37, 23, 80, 71)
+region = Rect2(465, 127, 113, 121)
+margin = Rect2(37, 23, 79, 71)
 
 [sub_resource type="AtlasTexture" id="carillon_a623"]
 atlas = ExtResource("carillon_23")
-region = Rect2(112, 245, 111, 126)
-margin = Rect2(55, 23, 81, 66)
+region = Rect2(0, 378, 110, 127)
+margin = Rect2(52, 22, 82, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a624"]
 atlas = ExtResource("carillon_23")
-region = Rect2(0, 757, 76, 140)
-margin = Rect2(44, 9, 116, 52)
+region = Rect2(638, 393, 84, 141)
+margin = Rect2(36, 8, 108, 51)
 
 [sub_resource type="AtlasTexture" id="carillon_a625"]
 atlas = ExtResource("carillon_23")
-region = Rect2(229, 125, 113, 126)
-margin = Rect2(52, 23, 79, 66)
+region = Rect2(123, 136, 113, 127)
+margin = Rect2(48, 22, 79, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a626"]
 atlas = ExtResource("carillon_23")
-region = Rect2(323, 264, 101, 120)
-margin = Rect2(57, 29, 91, 72)
+region = Rect2(339, 256, 101, 127)
+margin = Rect2(62, 22, 91, 65)
 
 [sub_resource type="AtlasTexture" id="carillon_a627"]
 atlas = ExtResource("carillon_23")
-region = Rect2(323, 384, 96, 125)
-margin = Rect2(43, 24, 96, 67)
+region = Rect2(0, 505, 100, 125)
+margin = Rect2(52, 24, 92, 67)
 
 [sub_resource type="AtlasTexture" id="carillon_a628"]
 atlas = ExtResource("carillon_23")
-region = Rect2(98, 491, 94, 127)
-margin = Rect2(54, 22, 98, 65)
+region = Rect2(100, 519, 95, 127)
+margin = Rect2(54, 22, 97, 65)
 
 [resource]
 animations = [
@@ -1090,5 +1093,5 @@ animations = [
 {"frames": [{"duration": 0.8, "texture": SubResource("carillon_a605")}, {"duration": 0.8, "texture": SubResource("carillon_a606")}, {"duration": 0.8, "texture": SubResource("carillon_a607")}, {"duration": 2.8, "texture": SubResource("carillon_a608")}, {"duration": 3.2, "texture": SubResource("carillon_a609")}, {"duration": 5.2, "texture": SubResource("carillon_a610")}], "loop": false, "name": &"cast_ult_w", "speed": 12.0},
 {"frames": [{"duration": 0.8, "texture": SubResource("carillon_a611")}, {"duration": 0.8, "texture": SubResource("carillon_a612")}, {"duration": 0.8, "texture": SubResource("carillon_a613")}, {"duration": 2.8, "texture": SubResource("carillon_a614")}, {"duration": 3.2, "texture": SubResource("carillon_a615")}, {"duration": 5.2, "texture": SubResource("carillon_a616")}], "loop": false, "name": &"cast_ult_nw", "speed": 12.0},
 {"frames": [{"duration": 0.8, "texture": SubResource("carillon_a617")}, {"duration": 0.8, "texture": SubResource("carillon_a618")}, {"duration": 0.8, "texture": SubResource("carillon_a619")}, {"duration": 2.8, "texture": SubResource("carillon_a620")}, {"duration": 3.2, "texture": SubResource("carillon_a621")}, {"duration": 5.2, "texture": SubResource("carillon_a622")}], "loop": false, "name": &"cast_ult_n", "speed": 12.0},
-{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a623")}, {"duration": 0.8, "texture": SubResource("carillon_a624")}, {"duration": 0.8, "texture": SubResource("carillon_a625")}, {"duration": 2.8, "texture": SubResource("carillon_a626")}, {"duration": 3.2, "texture": SubResource("carillon_a627")}, {"duration": 5.2, "texture": SubResource("carillon_a628")}], "loop": false, "name": &"cast_ult_ne", "speed": 12.0},
+{"frames": [{"duration": 0.8, "texture": SubResource("carillon_a623")}, {"duration": 0.8, "texture": SubResource("carillon_a624")}, {"duration": 0.8, "texture": SubResource("carillon_a625")}, {"duration": 2.8, "texture": SubResource("carillon_a626")}, {"duration": 3.2, "texture": SubResource("carillon_a627")}, {"duration": 5.2, "texture": SubResource("carillon_a628")}], "loop": false, "name": &"cast_ult_ne", "speed": 12.0}
 ]
