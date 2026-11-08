@@ -3,16 +3,16 @@ extends Node2D
 ## Colonne de pluie de la Source (docs/Design_Etages.md §4) : la pluie tombe en une seule colonne au centre
 ## de l'arène, sur le paratonnerre-mère. Posée par StageManager à l'étage final.
 ## - VFX Codex livré (art/tools/night/requests_floor45.md §5) : `assets/sprites/vfx/source/rain_column.png`
-##   (planche horizontale de 12 cellules 256 × 1024, + `_n` / `_e`), jouée en boucle, pied au sol ;
+##   (planche horizontale de 12 cellules 192 × 768, + `_n` / `_e`), jouée en boucle, pied au sol ;
 ## - sinon PLACEHOLDER temporaire : particules de gouttes (texture Blender `drop_32` d'AmbianceTextures)
 ##   qui tombent dans un disque de COLUMN_RADIUS_U, quantité selon le palier de qualité.
 ## Lumière froide de la colonne : profil d'ambiance la_source.tres (point_lights au centre).
 
 const SHEET := "res://assets/sprites/vfx/source/rain_column.png"
 const SHEET_FPS := 12.0
-const SHEET_PX_PER_U := 90.51 ## rig CREA / TOP iso (comme les props)
+const SHEET_PX_PER_U := 67.8823 ## rig CREA / TOP iso, cellules 192 x 768 (re-rendu allégé RR1 : 75 % de 90,51)
 const SHEET_FOOT_Y := 0.92 ## pied de la colonne à 92 % de la hauteur de frame
-const SHEET_CELL_ASPECT := 4.0 ## cellule hauteur / largeur (256 × 1024)
+const SHEET_CELL_ASPECT := 4.0 ## cellule hauteur / largeur (192 × 768)
 const COLUMN_RADIUS_U := 2.2
 const COLUMN_HEIGHT_U := 9.0 ## hauteur de chute visible (écran)
 const AMOUNT := [24, 48, 80] ## Bas, Moyen, Haut
