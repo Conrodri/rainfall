@@ -427,7 +427,7 @@ func _run() -> void:
 			_near(AverseKit.spill_coef(0.0), 1.85) and _near(AverseKit.spill_coef(10.0), 2.85) and _near(AverseKit.spill_coef(25.0), 4.0) and _near(AverseKit.spill_coef(100.0), 4.0))
 	_reset(60.0)
 	var sp_a := _fake(Vector2(3.0 * U, 0.3 * U))
-	var sp_b := _fake(Vector2(3.0 * U, 1.3 * U))
+	var sp_b := _fake(Vector2(3.0 * U, 1.6 * U))
 	_player.spells.aim_override = Vector2(5.0 * U, 0)
 	_check("gouttière lancée (déversement)", _player.spells.cast(3))
 	_kit.flush_pending()
@@ -443,6 +443,9 @@ func _run() -> void:
 	_check("la relance déverse l'ancienne : un coup de (1,85 + 0,1 × 10) × base sur la ligne", sp_a.taken.size() == n_a + 1 and _near(sp_a.taken[-1], 2.85 * BASE, 0.1) and sp_b.taken.is_empty(), str(sp_a.taken))
 	_check("déversement : trempe forte 8 s / −40 %", sp_a.statuses.any(func(st): return st[0] == &"slow" and _near(float(st[1]["pct"]), 0.4) and _near(float(st[1]["duration"]), 8.0)))
 	_check("déversement : recul prévu 1,5 u", _near(AverseKit.GOUTTIERE_SPILL_KNOCK_U, 1.5))
+	_check("déversement plus large que la bande (vague de 2,25 u), terme de niveau 0,012 par niveau",
+			rv.contains_spill(Vector2(2.0 * U, 1.2 * U)) and not rv.contains(Vector2(2.0 * U, 1.2 * U)) and not rv.contains_spill(Vector2(2.0 * U, 1.6 * U))
+			and _near(AverseKit.gouttiere_level_add(1), 0.0) and _near(AverseKit.gouttiere_level_add(12), 0.132))
 	var live: Array = _kit.rivulets.filter(func(r): return is_instance_valid(r) and not r.is_ending())
 	_check("une seule gouttière vivante (GOUTTIERE_MAX 1)", live.size() == 1 and AverseKit.GOUTTIERE_MAX == 1, str(live.size()))
 	_check("la nouvelle ne touche que sa ligne au 1er tick", sp_c.taken.size() == 1 and _near(sp_c.taken[0], AverseKit.GOUTTIERE_COEF * BASE, 0.05), str(sp_c.taken))

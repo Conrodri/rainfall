@@ -53,21 +53,21 @@ La vitesse d'attaque ne l'accélère plus, et le Guet **ne change rien à ses ti
 
 ### 1. Trait (automatique)
 Flèche vers l'ennemi le plus proche, toutes les **0,6 s**.
-- Dégâts : **1,15** × dégât de base (0,8 -> 1,0 à la refonte Guet du 07/11/2026, puis 1,1, puis 1,15 à l'équilibrage mini-boss L12) · portée **9 u** · traverse **1** monstre · proc 1,0
+- Dégâts : **0,8** × dégât de base (0,8 -> 1,0 à la refonte Guet du 07/11/2026, puis 1,1, 1,15, puis **0,8** à l'équilibrage par niveau du 08/11/2026 : le poids passe du Trait aux sorts à recharge, que les objets de hâte et de dégâts à recharge font grandir) · portée **9 u** · traverse **1** monstre · proc 1,0
 
 ### 2. Fusée de détresse (clic gauche · recharge 8 s)
-Une flèche-fusée vers le point visé (portée **9 u**). Elle frappe le premier monstre (**1,2**), puis **la fusée de magnésium reste plantée 5 s** et éclaire **3 u** autour d'elle.
+Une flèche-fusée vers le point visé (portée **9 u**). Elle frappe le premier monstre (**2,1**), puis **la fusée de magnésium reste plantée 5 s** et éclaire **3 u** autour d'elle.
 - Les monstres **dans la lumière** sont **exposés** : **+10 % de dégâts subis**, de toutes les sources (objets compris).
 - Mobile / manette sans visée : vise le paquet le plus dense.
 
 ### 3. Filet lesté (clic droit · recharge 9 s)
 Une flèche lestée qui traîne un filet de pêcheur (portée **7 u**). Le filet s'ouvre sur **le premier monstre touché** (ou au point visé) :
-- il consomme **toute ta jauge de Guet** (g, de 0 à 1) : rayon **3 + 1,5 g u** (3 à 4,5 u), tout ce qu'il couvre est **immobilisé 1,5 + 1,5 g s** (1,5 à 3 s) et prend **1,2 + 2,4 g** (1,2 à 3,6) ; les boss sont seulement ralentis de 40 % pour la même durée ;
+- il consomme **toute ta jauge de Guet** (g, de 0 à 1) : rayon **3 + 1,5 g u** (3 à 4,5 u), tout ce qu'il couvre est **immobilisé 1,5 + 1,5 g s** (1,5 à 3 s) et prend **2,0 + 2,4 g** (2,0 à 4,4) ; les boss sont seulement ralentis de 40 % pour la même durée ;
 - Guet plein : la flèche devient la flèche chargée (traînée rouge). Le Filet ne remplit plus la jauge : il la vide. Lancé à vide, il reste un petit filet de secours.
 
 ### 4. Grêle (ultime, molette · recharge 20 s)
 Elle tire une volée droit vers le ciel. **0,45 s** plus tard, une pluie de flèches tombe pendant **2,5 s** sur **4,5 u** autour du point visé (portée **10 u**) :
-- **0,7** par volée toutes les 0,25 s (≈ **7,7** au total sur un monstre qui reste dessous) ;
+- **0,85** par volée toutes les 0,25 s (≈ **9,4** au total sur un monstre qui reste dessous) ;
 - les monstres dessous sont **ralentis de 25 %** et **exposés** (+10 %).
 
 ---

@@ -231,7 +231,7 @@ func _run() -> void:
 	_flush()
 	_check("2 flèches parties", _player.spells.active_projectile_count() == 2, str(_player.spells.active_projectile_count()))
 	await _frames(40)
-	_check("coef 0,52 sur les deux plus proches, pas la 3e", d1.taken.size() == 1 and d2.taken.size() == 1 and d3.taken.is_empty()
+	_check("coef 0,4 sur les deux plus proches, pas la 3e", d1.taken.size() == 1 and d2.taken.size() == 1 and d3.taken.is_empty()
 			and _near(d1.taken[0], VigieKit.DOUBLE_COEF * BASE, 0.05), "%s %s %s" % [d1.taken, d2.taken, d3.taken])
 	_reset(0.0)
 	var lone := _fake(Vector2(4 * U, 0))
@@ -255,7 +255,7 @@ func _run() -> void:
 	_flush()
 	_check("2 flèches (pas 3)", _player.spells.active_projectile_count() == 2, str(_player.spells.active_projectile_count()))
 	await _frames(50)
-	_check("coef 0,52 (DOUBLE_COEF), pas de volée", line[0].taken.size() >= 1 and _near(line[0].taken[0], VigieKit.DOUBLE_COEF * BASE, 0.05) and _near(VigieKit.DOUBLE_COEF, 0.52), str(line.map(func(b): return b.taken)))
+	_check("coef 0,4 (DOUBLE_COEF), pas de volée", line[0].taken.size() >= 1 and _near(line[0].taken[0], VigieKit.DOUBLE_COEF * BASE, 0.05) and _near(VigieKit.DOUBLE_COEF, 0.4), str(line.map(func(b): return b.taken)))
 
 	print("Sort 2 : Fanal")
 	_reset(0.0)
