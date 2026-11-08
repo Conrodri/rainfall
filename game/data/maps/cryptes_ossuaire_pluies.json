@@ -358,6 +358,65 @@
    }
   }
  ],
+ "props_fixed": [
+  {
+   "name": "well_rim",
+   "cell": [
+    10,
+    20
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "collision": "box"
+  },
+  {
+   "name": "crypt_stairs",
+   "cell": [
+    9,
+    7
+   ],
+   "size": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "crypt_stairs",
+   "cell": [
+    18,
+    13
+   ],
+   "size": [
+    1,
+    2
+   ],
+   "flip": true
+  },
+  {
+   "name": "crypt_stairs",
+   "cell": [
+    9,
+    28
+   ],
+   "size": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "crypt_stairs",
+   "cell": [
+    13,
+    6
+   ],
+   "size": [
+    1,
+    2
+   ]
+  }
+ ],
  "vein_path": [
   [
    15,

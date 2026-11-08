@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/props_fixed_test.gd" id="1"]
+
+[node name="PropsFixedTest" type="Node"]
+script = ExtResource("1")

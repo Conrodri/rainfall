@@ -133,7 +133,7 @@ Surfaces dans la tolérance « même taille ± 15 % » (3 456 à 4 096 u² contr
 18 h 10 au lieu de 17 h 40 : soleil plus rasant qui **éclaire les escaliers de biais** et allonge les ombres des murets (repère de lecture du relief). Valeurs relatives au profil livré `data/ambiance/terrasses_noyees.tres` : `sun_rotation_deg` 310 → 305, `sun_height` 0,15 → 0,11, `sun_energy` 0,50 → 0,45, `sun_shadow_length_u` 3,2 → 3,7, `sun_color` un cran plus orangé (`#FFC890`), `rays_count` +1 (rayons entre les murets), `fog_low_opacity` 0,08 → 0,10 (brume de rizière dans les paliers bas). Pluie, palette, accent émissif, `light_rules` et paliers de difficulté **inchangés** (mêmes plafonds de lumières : 8 reflets + 10 lanternes). Événement ambiant B : « La noria repart » à Hostile (son de roue, éclaboussures sur le bassin central, cases `,` élargies d'1 u).
 
 ### 2.6 Props manquants
-**Zéro.** Le biome terrasses n'a pas de dossier `props/` (la A non plus) ; noria, épouvantails et escaliers de pierre (Design_Etages §2.4) restent un **bonus** non bloquant, à n'envisager qu'avec le besoin de code « props fixes par carte » (§7).
+**Zéro.** Le biome terrasses n'a pas de dossier `props/` (la A non plus) ; noria, épouvantails et escaliers de pierre (Design_Etages §2.4) sont produits avant la sortie (décision du 06/11/2026) comme props fixes de la B (§7.1) : `noria`, `scarecrow`, `stone_stairs` dans `props/terraces/`.
 
 ---
 
@@ -196,7 +196,7 @@ Départ sud-est → pilier A sur la rive sud ou le lobe nord-est (0:40-1:10, pic
 4 h 40 au lieu de 5 h 10 : **avant l'aube**, plus bleu, les lanternes deviennent le guide. Relatif à `foret_brume.tres` : `ambient_color` −5 % de luminance (le garde-fou de lisibilité de l'AmbianceManager reste actif), `sun_energy` 0,42 → 0,36, `map_lights_energy` 1,0 → 1,15, `fog_low_opacity` 0,10 → 0,12 (brume au ras du chenal). **Règle de lumière** : la A pose ses `shrine_lantern` sur les bords de `#` (16 u, 8 max) ; la B a peu de murs (10 rectangles) → même préréglage sur les bords de `~` (`"char": "~"`, `spacing_u` 12, **`max` 8 inchangé**) : lanternes sur pilotis le long du chenal, même coût. Événement ambiant B : « Marée montante » à Furieux (cases `,` des pontons et rives élargies d'1 u, lucioles éteintes, brume 15 %).
 
 ### 3.6 Props manquants
-**Zéro.** Les 6 props livrés (`stump`, `mushrooms`, `standing_stone`, `root_arch_a`, `lantern_shrine_se`, `cedar_giant`) suffisent ; les pontons sont des cases `,` (tuile d'eau peu profonde). Pontons de bois, cages à lucioles et autel effondré = bonus non bloquant.
+**Zéro.** Les 6 props livrés (`stump`, `mushrooms`, `standing_stone`, `root_arch_a`, `lantern_shrine_se`, `cedar_giant`) suffisent ; les pontons sont des cases `,` (tuile d'eau peu profonde). Pontons de bois, cages à lucioles et autel effondré : produits avant la sortie (décision du 06/11/2026), props fixes de la B (§7.1) : `pontoon`, `firefly_cage`, `fallen_altar` dans `props/fog_forest/`.
 
 ---
 
@@ -266,7 +266,7 @@ Atelier SO (achats) → pilier A dans un secteur extérieur (pic 1) → quart d'
 20 h 00 : nuit tombée, la **fonderie éclaire** à la place du ciel. Relatif à `cite_rouille.tres` : `ambient_color` −4 % de luminance, `sun_energy` 0,40 → 0,34, `sun_shadow_length_u` 1,8 → 1,4. Lumières : règle `steam_lamp` sur les bords de `~` gardée (8 u) mais **`max` 24 → 20**, plus 4 `point_lights` aux creusets (préréglage `steam_lamp`, orange, énergie ×1,3) : 24 lumières au plus, comme la A (24 + cloche). La cloche d'alerte (`alarm_bell`) passe au centre de la cour (32;32). Événement ambiant B : « Coulée » (creusets qui pulsent orange ; orage à Furieux ; canal qui monte à Cataclysme).
 
 ### 4.6 Props manquants et réglage
-**Zéro** prop requis (caisses, tonneaux, vannes, cuves livrés ; les creusets sont des cases `#` avec les blocs du biome). Creuset, rails et wagonnets = bonus non bloquant. **Levier de durée** si les tests montrent un étage trop long (+10 s estimé) : passer les coffres (13;5) et (49;61) sur l'anneau 1, ou réduire la carte à 60 × 60 u (même plan, cour inchangée).
+**Zéro** prop requis (caisses, tonneaux, vannes, cuves livrés ; les creusets sont des cases `#` avec les blocs du biome). Creuset, rails et wagonnets : produits avant la sortie (décision du 06/11/2026), props fixes de la B (§7.1) : `crucible`, `rails`, `minecart` dans `props/rust_city/`. **Levier de durée** si les tests montrent un étage trop long (+10 s estimé) : passer les coffres (13;5) et (49;61) sur l'anneau 1, ou réduire la carte à 60 × 60 u (même plan, cour inchangée).
 
 ---
 
@@ -342,7 +342,7 @@ Galerie ouest (achats, dalle a) → pilier A dans une galerie (pic 1) → traver
 Pas de soleil, donc pas de décalage horaire : la nuance de B est le **puits de lumière**. Relatif à `cryptes_noyees.tres` : 1 `point_light` au centre du puits (24;37), préréglage `crystal_vein` en énergie ×1,6 (colonne froide, la seule « lumière du jour » de l'étage) ; `light_rules` inchangées (36 veines sur les murs + 8 sur l'eau, mêmes plafonds) ; `rain_intensity` 0 → 0,15 et `drops_amount` +30 % pour la pluie qui tombe du puits (globale tant qu'une zone de pluie locale n'existe pas, §7). Événement ambiant B : « Pluie du puits » (le bassin déborde, cases `,` élargies ; Furieux : cristaux qui s'éteignent par vagues, comme la A).
 
 ### 5.6 Props manquants
-**Zéro.** Les 8 props livrés (`bone_pile`, `ossuary_niche`, `salt_crust`, `crystal_cluster`, `stalagmite`, `broken_column`, `crystal_lantern`, `sarcophagus_lid`) couvrent galeries et niches. Puits de lumière (margelle) et escaliers = bonus non bloquant.
+**Zéro.** Les 8 props livrés (`bone_pile`, `ossuary_niche`, `salt_crust`, `crystal_cluster`, `stalagmite`, `broken_column`, `crystal_lantern`, `sarcophagus_lid`) couvrent galeries et niches. Margelle du puits et escaliers : produits avant la sortie (décision du 06/11/2026), props fixes de la B (§7.1) : `well_rim`, `crypt_stairs` dans `props/crypts/`.
 
 ---
 
@@ -370,9 +370,30 @@ Pas de soleil, donc pas de décalage horaire : la nuance de B est le **puits de 
 |---|---|---|
 | Caractères `D` (porte scellée, collision séparée) et `:` (sol scellé) | les salles secrètes sont fermées en `#` ; la porte est décrite dans `secrets.door_cells` | Design_Zones_Secretes §4.1, `gen_maps.py`, `StageMap` |
 | Recopie de `secrets` / `hour_shift_min` | régénération sans perte | `gen_maps.py` |
-| Props fixes **par carte** (noria, creusets, margelle du puits) | `props.json` est par biome : un `fixed` toucherait A et B | `StageMap._build_fixed_props` (clé `props_fixed` du JSON de carte) |
+| ~~Props fixes **par carte**~~ **livré (08/11/2026)** | `props.json` est par biome : un `fixed` toucherait A et B | clé `props_fixed` du JSON de carte, `StageMap._build_props_fixed`, recopiée par `gen_maps.py` ; format et placements : §7.1 |
 | Pluie locale (colonne sous le puits de l'Ossuaire) | la pluie est un calque global | `AmbianceManager` |
 | Événement ambiant par carte | `ambient_event` n'est lu par aucun script (A comprises) | AmbianceManager / Audio |
+
+### 7.1 Props fixes par carte (livré le 08/11/2026)
+
+Décision du joueur (06/11/2026) : les props propres aux B sont produits avant la sortie ; Codex fournit les sprites, le code et les placements sont en place. Une texture absente est ignorée (sprite et collision), avec un avertissement unique en build debug : les cartes se jouent donc telles quelles tant que les sprites ne sont pas livrés.
+
+**Format** (clé `props_fixed` du JSON de carte, liste d'entrées, lue en plus du `fixed` de `props.json`) :
+`{"name", "cell": [cx, cy], "size": [w, h], "flip": true?, "collision": "box" | "fine" ?, "foot"?, "px_per_u"?, "fade"?, "shadow_rig"?}`.
+- `cell` = case (2 u) en haut à gauche de l'emprise, `size` = emprise en cases ; le sprite est posé au centre de l'emprise (`foot` par défaut `[l/2, 0,85 h]`, `px_per_u` 90,51 comme les props existants ; `flip` mirroir horizontal, pied et décalque d'ombre compris).
+- `collision` : `box` = emprise pleine (moins 4 px de chaque côté), `fine` = demi-case centrée (épouvantail, cage, wagonnet), absent = décor au sol sans collision. Le rectangle est ajouté à `Obstacles/Walls` (couche 1) : NavField et occluders le lisent comme un mur.
+- Ombre cuite `<name>_shadow.png` (rig TOP, `shadow_rig` "top" par défaut), `<name>_e.png` si présent, tri en profondeur dans `Blocks` ; `fade` par défaut pour les props à collision de 2 × 2 cases ou plus.
+- Dossier : `props/<biome>/` (`terrasses` ajouté à `BIOME_PROPS` : `props/terraces/`, sans `props.json`, donc la A ne change pas).
+
+**Placements** (cases de la grille, `[cx;cy]`) :
+| Carte | Props |
+|---|---|
+| Rizières hautes | `noria` (12;20) 2×2 bassin central ; `scarecrow` (11;13), (21;13), (12;26), (20;26) dans les rizières étroites ; `stone_stairs` (11;11), (15;15) miroir, (20;24) sur les fentes de muret |
+| Mangrove | `pontoon` (27;7), (16;16), (36;18), (6;14) sur les cases `,` des franchissements ; `firefly_cage` (22;9), (32;14) ; `fallen_altar` (25;21) 2×1 |
+| Fonderie | `crucible` (17;13), (19;13), (18;23) 2×2 dans les alcôves de la cour ; `rails` (5;21), (31;14) + `minecart` (5;22), (31;15) dans les ateliers d'angle |
+| Ossuaire | `well_rim` (10;20) 2×2 à la rive du bassin du puits ; `crypt_stairs` (9;7), (18;13) miroir, (9;28), (13;6) sur les fentes des murs de galerie |
+
+Règles tenues (test `tests/props_fixed_test`) : emprise entièrement sur du sol, jamais sur ou contre (1 case pour les props à collision) un départ, coffre, pilier, événement, salle / porte / plaque / gardien / déclencheur du secret, repère d'épreuve ; 3 cases autour d'un gros pilier (téléporteur) ; pas de chevauchement entre props à collision ; chemin du départ vers tous les repères conservé même avec une case de marge autour de chaque prop à collision ; cartes A et Source sans `props_fixed`.
 
 ## 8. Risques
 
@@ -382,7 +403,7 @@ Pas de soleil, donc pas de décalage horaire : la nuance de B est le **puits de 
 - **Lisibilité mobile** : les murets des Rizières sont de longues diagonales ↘ ; leurs escaliers doivent rester lisibles à 6 pouces (contour de mur `_build_outlines` présent ; la minimap doit les montrer, à confirmer avec ux-designer).
 - **Durée** : Fonderie +10 s estimé ; à valider en partie réelle (`balance_sim_test`, partie chronométrée).
 - **Boss** : aucun nouveau boss ; les boss d'étage et mini-boss des biomes apparaissent au gros pilier tiré comme dans les A. Le Cèdre-Ermite ou la Grue n'ont pas été testés contre les obstacles centraux (cèdre, creusets) : vérifier qu'ils ne s'y coincent pas.
-- **À trancher par le joueur** : (1) départ excentré sur les 4 B (proposé) ou départ central comme les A ; (2) Terrasses B : porte scellée (proposée, mécanique déjà validée) ou « écluse » (vanne qui vide un bassin, Design_Zones_Secretes §2.1) que Design_Etages §2.4 associait aux Rizières ; (3) props propres aux B (noria, creusets, pontons…) : bonus ou à produire avant la sortie.
+- **À trancher par le joueur** : (1) départ excentré sur les 4 B (proposé) ou départ central comme les A ; (2) Terrasses B : porte scellée (proposée, mécanique déjà validée) ou « écluse » (vanne qui vide un bassin, Design_Zones_Secretes §2.1) que Design_Etages §2.4 associait aux Rizières ; (3) props propres aux B (noria, creusets, pontons…) : tranché le 06/11/2026, produits avant la sortie (§7.1).
 
 ## 9. Fréquence des secrets (joueur, 29/10/2026)
 

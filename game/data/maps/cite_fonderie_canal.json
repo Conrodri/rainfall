@@ -374,6 +374,90 @@
    }
   }
  ],
+ "props_fixed": [
+  {
+   "name": "crucible",
+   "cell": [
+    17,
+    13
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "collision": "box"
+  },
+  {
+   "name": "crucible",
+   "cell": [
+    19,
+    13
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "collision": "box"
+  },
+  {
+   "name": "crucible",
+   "cell": [
+    18,
+    23
+   ],
+   "size": [
+    2,
+    2
+   ],
+   "collision": "box"
+  },
+  {
+   "name": "rails",
+   "cell": [
+    5,
+    21
+   ],
+   "size": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "minecart",
+   "cell": [
+    5,
+    22
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  },
+  {
+   "name": "rails",
+   "cell": [
+    31,
+    14
+   ],
+   "size": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "minecart",
+   "cell": [
+    31,
+    15
+   ],
+   "size": [
+    1,
+    1
+   ],
+   "collision": "fine"
+  }
+ ],
  "hold": {
   "pos": [
    39,
