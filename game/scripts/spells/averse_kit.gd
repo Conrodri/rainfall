@@ -208,6 +208,8 @@ const GOUTTIERE_COLLECT_PER_S := 1.5 ## x rain_mult() : 9 d'eau sur 6 s en pluie
 const GOUTTIERE_SPILL_COEF := 1.85
 const GOUTTIERE_SPILL_PER_WATER := 0.1
 const GOUTTIERE_SPILL_CAP := 4.0
+const GOUTTIERE_LEVEL_ADD := 0.012 ## coef ajouté par niveau au-dessus du 1er (tick et déversement)
+const GOUTTIERE_SPILL_WIDTH_U := 2.25 ## largeur touchée par le déversement (la vague visuelle fait 2 u ; la bande, 1 u)
 const GOUTTIERE_SPILL_KNOCK_U := 1.5
 const GOUTTIERE_SPILL_SOAK_S := 8.0
 const GOUTTIERE_SPILL_SOAK_PCT := 0.4
@@ -216,7 +218,7 @@ const GOUTTIERE_FILL_REF := 9.0 ## eau collectée = bande « pleine » (indicate
 const GOUTTIERE_REFUND_CAP := 9.0 ## remboursement max par gouttière (50 % du coût, même sous pluie forte) ; la collecte continue de grossir le déversement
 const GOUTTIERE_RANGE_U := 7.0 ## portée du ciblage du paquet (mobile)
 const GOUTTIERE_LENGTH_U := 6.0
-const GOUTTIERE_WIDTH_U := 1.0
+const GOUTTIERE_WIDTH_U := 1.25
 const GOUTTIERE_LIFE_S := 6.0
 const GOUTTIERE_TICK_S := 0.5
 const GOUTTIERE_MAX := 1
@@ -1108,7 +1110,16 @@ func combo_coef_add(s: SpellData, enemy: Node) -> float:
 		return SOAK_GOUTTE_ADD
 	if s.slot == 2 and _wave_deep:
 		return WAVE_PUDDLE_ADD
+	if s.id == V_GOUTTIERE:
+		return gouttiere_level_add(PlayerRef.state_of(player).level)
 	return 0.0
+
+
+## Gouttière : coef ajouté par niveau du joueur (rongement ET déversement). La bande est une zone fine et fixe : elle
+## rate de plus en plus les cibles mobiles et fuit moins bien qu'une Flaque quand les objets s'empilent ; ce terme
+## suit le niveau comme le font les objets de l'étalon (balance_sim, 8 graines).
+static func gouttiere_level_add(level: int) -> float:
+	return GOUTTIERE_LEVEL_ADD * float(maxi(level - 1, 0))
 
 
 ## SpellCaster.compute_damage : multiplicateur. Crue / Mousson sur trempé (AV-1).
@@ -1436,6 +1447,7 @@ func spawn_rivulet(s: SpellData, origin: Vector2, dir: Vector2) -> Node2D:
 	var rv := AverseRivulet.new()
 	_caster().effects_parent().add_child(rv)
 	rv.setup(_caster(), s, origin, dir, GOUTTIERE_LENGTH_U * Balance.UNIT_PX * k, GOUTTIERE_WIDTH_U * Balance.UNIT_PX * k)
+	rv.spill_width_px = GOUTTIERE_SPILL_WIDTH_U * Balance.UNIT_PX * k
 	rv.fill_ref = GOUTTIERE_FILL_REF
 	rv.on_spill = _rivulet_spill
 	if VfxSwap.enabled() and VfxSwap.spawn_follow(rv, "averse/averse_gouttiere", dir, false, {"src": "rivulet", "line_px": rv.length_px, "width_u": GOUTTIERE_WIDTH_U * k}) != null: VfxSwap.hide_original(rv) # mode test
@@ -1455,7 +1467,7 @@ func _rivulet_spill(rv: AverseRivulet) -> void:
 		if not (e is Node2D) or not is_instance_valid(e) or not e.has_method(&"take_damage"):
 			continue
 		var ep := (e as Node2D).global_position
-		if not rv.contains(ep) or not StageMap.los(player.get_tree(), origin, ep):
+		if not rv.contains_spill(ep) or not StageMap.los(player.get_tree(), origin, ep):
 			continue
 		var along := clampf((ep - origin).dot(rv.dir), 0.0, rv.length_px)
 		var from := origin + rv.dir * along # recul perpendiculaire à la ligne

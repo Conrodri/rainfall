@@ -21,6 +21,7 @@ var spell: SpellData = null
 var dir := Vector2.RIGHT
 var length_px := 384.0
 var width_px := 64.0
+var spill_width_px := 64.0 ## largeur touchée par le déversement (la vague visuelle fait 2 u) ; la bande ne ronge que sur width_px
 var duration := 6.0
 var tick := 0.5
 var collected := 0.0 ## eau recueillie (pluie + kills), lue au déversement
@@ -42,6 +43,7 @@ func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: V
 	dir = new_dir.normalized() if new_dir.length_squared() > 0.0 else Vector2.RIGHT
 	length_px = len_px
 	width_px = w_px
+	spill_width_px = w_px
 	duration = new_spell.duration
 	tick = maxf(new_spell.tick, 0.05)
 	z_index = _ZONE.VFX_Z
@@ -51,11 +53,20 @@ func setup(new_caster: Object, new_spell: SpellData, origin: Vector2, new_dir: V
 
 ## Point `p` (monde) sur la bande ? (marge latérale SLACK_U)
 func contains(p: Vector2) -> bool:
+	return _inside(p, width_px)
+
+
+## Point `p` touché par le déversement ? Même ligne, mais la vague déborde de la bande (spill_width_px).
+func contains_spill(p: Vector2) -> bool:
+	return _inside(p, maxf(spill_width_px, width_px))
+
+
+func _inside(p: Vector2, w_px: float) -> bool:
 	var v := p - global_position
 	var along := v.dot(dir)
 	if along < 0.0 or along > length_px:
 		return false
-	return absf(v.dot(Vector2(-dir.y, dir.x))) <= width_px * 0.5 + SLACK_U * Balance.UNIT_PX
+	return absf(v.dot(Vector2(-dir.y, dir.x))) <= w_px * 0.5 + SLACK_U * Balance.UNIT_PX
 
 
 func _build_visual() -> void:

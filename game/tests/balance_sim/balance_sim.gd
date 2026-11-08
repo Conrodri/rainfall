@@ -37,6 +37,9 @@ const CONFIGS := {
 	"L6": {"label": "Niv 6, Moyen 6 min", "level": 6, "mode": "moyen", "stage": 1, "t": 360.0, "gold": 150.0,
 		"items": {"pierre_a_aiguiser": 1, "sifflet_de_chasse": 1, "bague_de_vigueur": 1, "amulette_de_cuir": 1,
 			"sablier_fele": 1, "lentille_aiguisee": 1}},
+	"L9": {"label": "Niv 9, Moyen ét.2 10 min", "level": 9, "mode": "moyen", "stage": 2, "t": 600.0, "gold": 300.0,
+		"items": {"pierre_a_aiguiser": 3, "sifflet_de_chasse": 2, "bague_de_vigueur": 3, "amulette_de_cuir": 2,
+			"sablier_fele": 2, "lentille_aiguisee": 2, "rune_de_portee": 1, "horloge_arcanique": 1}},
 	"L12": {"label": "Niv 12, Difficile ét.3 4 min", "level": 12, "mode": "difficile", "stage": 3, "t": 240.0, "gold": 400.0,
 		"items": {"pierre_a_aiguiser": 2, "sifflet_de_chasse": 2, "bague_de_vigueur": 2, "amulette_de_cuir": 2,
 			"sablier_fele": 2, "lentille_aiguisee": 2, "rune_de_portee": 1, "horloge_arcanique": 1, "tonique_vital": 1}},
@@ -213,6 +216,10 @@ func run_fight(cid: String, cdata: CharacterData, scen_id: String, cfg_id: Strin
 	if cast_sig:
 		player.spells.spell_cast.connect(func(sp: SpellData) -> void: casts[sp.slot] = int(casts.get(sp.slot, 0)) + 1)
 
+	var by_slot := {} # dégâts par slot de sort (spell_hit), pour lire d'où vient la courbe
+	if player.spells != null and player.spells.has_signal(&"spell_hit"):
+		player.spells.spell_hit.connect(func(sp: SpellData, _e: Node, amount: float) -> void:
+			by_slot[sp.slot] = float(by_slot.get(sp.slot, 0.0)) + amount)
 	var on_dmg := func(e: Node2D, amount: float, _crit: bool, _el: StringName) -> void:
 		var hp_after: float = float(e.get(&"hp")) if e != null else 0.0
 		var eff := amount + minf(hp_after, 0.0) # sans overkill
@@ -319,7 +326,7 @@ func run_fight(cid: String, cdata: CharacterData, scen_id: String, cfg_id: Strin
 		"kills": _kills, "kpm": _kills / dur * 60.0, "dealt": _dealt, "dps": _dealt / dur,
 		"taken": _taken, "dtps": _taken / dur, "hits_taken": _hits_taken, "deaths": deaths, "first_death_t": death_t,
 		"hp_min": hp_min_frac, "max_hp": max_hp_end,
-		"casts": casts, "dodges": bot.dodges, "pref_u": bot.base_pref_u,
+		"casts": casts, "by_slot": by_slot, "dodges": bot.dodges, "pref_u": bot.base_pref_u,
 		"resource": res_name, "res_mean": (res_sum / res_n if res_n > 0 else -1.0),
 		"res_uptime": (res_up / res_n if res_n > 0 else -1.0),
 		"errors": errs,

@@ -252,7 +252,7 @@ func _run() -> void:
 	_flush()
 	_check("projectile parti à l'impact", _player.spells.active_projectile_count() == 1)
 	await _frames(40)
-	_check("coef 1,15, traverse 1 monstre (2 cibles, pas la 3e)", b1.taken.size() == 1 and _near(b1.taken[0], VigieKit.TRAIT_COEF * BASE, 0.05) and b2.taken.size() == 1 and b3.taken.is_empty(), "%s %s %s" % [b1.taken, b2.taken, b3.taken])
+	_check("coef 0,8, traverse 1 monstre (2 cibles, pas la 3e)", b1.taken.size() == 1 and _near(b1.taken[0], VigieKit.TRAIT_COEF * BASE, 0.05) and b2.taken.size() == 1 and b3.taken.is_empty(), "%s %s %s" % [b1.taken, b2.taken, b3.taken])
 
 	print("Autos non affectés par le Guet")
 	_reset(1.0)
@@ -276,7 +276,7 @@ func _run() -> void:
 	_check("Trait : rien au-delà de 9 u, même à Guet plein", not _player.spells.cast(1))
 	_kit.set_tension(1.0)
 	_check("toujours rien à 9 u avec Guet plein", not _player.spells.cast(1))
-	_check("TRAIT_COEF 1,15 ; DOUBLE_COEF 0,52 ; FANAL_CD 14 ; CHAUSSE_TENSION 0,05", _near(VigieKit.TRAIT_COEF, 1.15) and _near(VigieKit.DOUBLE_COEF, 0.52) and _near(VigieKit.FANAL_CD, 14.0) and _near(VigieKit.CHAUSSE_TENSION, 0.05))
+	_check("TRAIT_COEF 0,8 ; DOUBLE_COEF 0,4 ; FANAL_CD 14 ; CHAUSSE_TENSION 0,05", _near(VigieKit.TRAIT_COEF, 0.8) and _near(VigieKit.DOUBLE_COEF, 0.4) and _near(VigieKit.FANAL_CD, 14.0) and _near(VigieKit.CHAUSSE_TENSION, 0.05))
 
 	print("Sort 2 : Fusée de détresse")
 	_reset()
@@ -300,7 +300,7 @@ func _run() -> void:
 	_player.spells.cast(2)
 	_flush()
 	await _wait_projectiles()
-	_check("flèche-fusée : coef 1,2 au premier monstre, fusée plantée sur lui", first.taken.size() == 1 and _near(first.taken[0], VigieKit.FUSEE_COEF * BASE, 0.05) and _kit.flares.size() == 1 and (_kit.flares[0] as Node2D).global_position.distance_to(first.global_position) < 0.6 * U, str(first.taken))
+	_check("flèche-fusée : coef 2,1 au premier monstre, fusée plantée sur lui", first.taken.size() == 1 and _near(first.taken[0], VigieKit.FUSEE_COEF * BASE, 0.05) and _kit.flares.size() == 1 and (_kit.flares[0] as Node2D).global_position.distance_to(first.global_position) < 0.6 * U, str(first.taken))
 
 	print("Sort 3 : Filet lesté")
 	_reset(0.0)
@@ -315,7 +315,7 @@ func _run() -> void:
 	await _wait_projectiles()
 	_check("g = 0 : emprisonnés 1,5 s dans 3 u", n1.has_status(&"imprisoned") and n2.has_status(&"imprisoned") and not far.has_status(&"imprisoned") and _near(float(n1.statuses[0][1]["duration"]), 1.5))
 	_check("boss : ralenti, jamais emprisonné", boss.has_status(&"slow") and not boss.has_status(&"imprisoned"))
-	_check("g = 0 : ouverture du filet coef 1,2", n1.taken.size() == 1 and _near(n1.taken[0], 1.2 * BASE, 0.05), str(n1.taken))
+	_check("g = 0 : ouverture du filet coef 2,0", n1.taken.size() == 1 and _near(n1.taken[0], VigieKit.NET_COEF * BASE, 0.05), str(n1.taken))
 	_check("le filet ne remplit plus le Guet", _kit.tension < 0.1, str(_kit.tension))
 
 	print("Filet : échelle avec le Guet g, vide la jauge")
@@ -329,7 +329,7 @@ func _run() -> void:
 	await _wait_projectiles()
 	_check("g = 0,5 : rayon 3,75 u (le monstre à 3,5 u est pris)", g1.has_status(&"imprisoned") and g2.has_status(&"imprisoned"))
 	_check("g = 0,5 : tenue 2,25 s", _near(float(g2.statuses[0][1]["duration"]), 2.25, 0.01), str(g2.statuses))
-	_check("g = 0,5 : coef 2,4", g2.taken.size() == 1 and _near(g2.taken[0], (1.2 + 2.4 * 0.5) * BASE, 0.1), str(g2.taken))
+	_check("g = 0,5 : coef 3,2", g2.taken.size() == 1 and _near(g2.taken[0], (VigieKit.NET_COEF + VigieKit.NET_COEF_GAIN * 0.5) * BASE, 0.1), str(g2.taken))
 	_reset(1.0)
 	_player.spells.aim_override = Vector2(5 * U, 0)
 	var f1 := _fake(Vector2(5 * U, 4.4 * U)) # dans 4,5 u
@@ -339,7 +339,7 @@ func _run() -> void:
 	await _wait_projectiles()
 	_check("g = 1 : rayon 4,5 u", f1.has_status(&"imprisoned"))
 	_check("g = 1 : tenue 3 s", _near(float(f2.statuses[0][1]["duration"]), 3.0, 0.01), str(f2.statuses))
-	_check("g = 1 : coef 3,6", f2.taken.size() == 1 and _near(f2.taken[0], 3.6 * BASE, 0.1), str(f2.taken))
+	_check("g = 1 : coef 4,4", f2.taken.size() == 1 and _near(f2.taken[0], (VigieKit.NET_COEF + VigieKit.NET_COEF_GAIN) * BASE, 0.1), str(f2.taken))
 	_check("Guet vidé", _kit.tension < 0.1)
 	for gg in [1.0, 0.5]:
 		_reset(gg)

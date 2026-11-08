@@ -537,7 +537,7 @@
         "id": "vigie_filet",
         "name": "Filet lesté",
         "slot": "cd",
-        "desc": "Le filet s'ouvre sur le premier monstre touché : tout ce qu'il couvre est immobilisé et frappé. Il vide ton Guet g : rayon 3 + 1,5 g u, tenue 1,5 + 1,5 g s, dégâts ×(1,2 + 2,4 g). Cloué : la Fusée qui s'arrête dans le filet l'expose.",
+        "desc": "Le filet s'ouvre sur le premier monstre touché : tout ce qu'il couvre est immobilisé et frappé. Il vide ton Guet g : rayon 3 + 1,5 g u, tenue 1,5 + 1,5 g s, dégâts ×(2 + 2,4 g). Cloué : la Fusée qui s'arrête dans le filet l'expose.",
         "variants": [
           {"id": "vigie_chausse_trapes", "name": "Chausse-trapes", "desc": "La flèche sème des pointes sur 3 u pendant 6 s : ce qui entre est ralenti, blessé, et remplit un peu ton Guet (+5 % par monstre qui entre).", "unlock_text": "Immobiliser 500 monstres avec le Filet lesté.", "unlock_key": "spell:vigie_chausse_trapes", "unlock_rule": {"type": "counter", "key": "vigie_netted", "value": 500}}
         ]

@@ -132,7 +132,7 @@ func _run() -> void:
 	_check("kit Vigie", _kit != null)
 
 	print("Compensations de base")
-	_check("TRAIT 1,15 ; FUSEE 1,1 ; GRELE 0,64", _near(VigieKit.TRAIT_COEF, 1.15) and _near(VigieKit.FUSEE_COEF, 1.1) and _near(VigieKit.GRELE_COEF, 0.64))
+	_check("TRAIT 0,8 ; FUSEE 2,1 ; GRELE 0,85", _near(VigieKit.TRAIT_COEF, 0.8) and _near(VigieKit.FUSEE_COEF, 2.1) and _near(VigieKit.GRELE_COEF, 0.85))
 	_check("plus d'Allonge ni de Volée", not ("allonge_spell" in _kit) and not ("volley_spell" in _kit))
 
 	print("Filet -> Fusée : exposition x1,25 et filet +0,5 s")

@@ -57,7 +57,7 @@ const EMISSION_FULL := 3.2
 const EMISSION_STEPS := 10
 
 # --- Sort 1 : Trait ----------------------------------------------------------------------------------
-const TRAIT_COEF := 1.15 ## refonte Guet 07/11 : 0,8 -> 1,0 (l'Allonge n'existe plus), puis 1,1, puis 1,15 (équilibrage mini-boss L12, 07/11)
+const TRAIT_COEF := 0.8 ## refonte Guet 07/11 : 0,8 -> 1,0 (l'Allonge n'existe plus), puis 1,1, puis 1,15 (équilibrage mini-boss L12, 07/11)
 const TRAIT_CD := 0.6
 const TRAIT_RANGE_U := 9.0
 const TRAIT_SPEED_U := 16.0
@@ -65,7 +65,7 @@ const TRAIT_PIERCE := 1 ## traverse 1 monstre (comme l'Éclat d'Ardent)
 
 # --- Sort 2 : Fusée de détresse ---------------------------------------------------------------------
 const FUSEE_CD := 8.0
-const FUSEE_COEF := 1.1 ## flèche-fusée sur le premier monstre touché ; combos 29/10 : 1,2 -> 1,1
+const FUSEE_COEF := 2.1 ## flèche-fusée sur le premier monstre touché ; combos 29/10 : 1,2 -> 1,1
 const FUSEE_RANGE_U := 9.0
 const FUSEE_SPEED_U := 14.0
 const FLARE_RADIUS_U := 3.0
@@ -85,8 +85,8 @@ const ANCHOR_FREE_S := 0.5 ## après le 3e repli de la série : comptée ancrée
 
 # --- Sort 3 : Filet lesté ------------------------------------------------------------------------
 const FILET_CD := 9.0
-const FILET_COEF := 0.5 ## flèche lestée (premier monstre)
-const NET_COEF := 1.2 ## ouverture du filet (zone) à g = 0 ; + NET_COEF_GAIN × g
+const FILET_COEF := 1.0 ## flèche lestée (premier monstre)
+const NET_COEF := 2.0 ## ouverture du filet (zone) à g = 0 ; + NET_COEF_GAIN × g
 const NET_COEF_GAIN := 2.4
 const FILET_RANGE_U := 7.0
 const FILET_SPEED_U := 13.0
@@ -102,7 +102,7 @@ const MIN_SHOT_U := 1.5 ## un tir visé trop près part quand même à cette dis
 
 # --- Sort 4 : Grêle ------------------------------------------------------------------------------
 const GRELE_CD := 20.0
-const GRELE_COEF := 0.64 ## par volée (toutes les HAIL_TICK_S, première à l'arrivée) ; combos 29/10 : 0,7 -> 0,64
+const GRELE_COEF := 0.85 ## par volée (toutes les HAIL_TICK_S, première à l'arrivée) ; combos 29/10 : 0,7 -> 0,64
 const GRELE_RANGE_U := 10.0
 const HAIL_RADIUS_U := 4.5
 const HAIL_LIFE_S := 2.5
@@ -123,7 +123,7 @@ const COUNTER_GRELE_KILLS := "vigie_grele_kills" ## monstre dont le dernier coup
 const META_LAST_HIT := &"vigie_last_hit"
 const META_GUET := &"vigie_guet" ## g (0-1) du Filet au lancement, posé sur la flèche
 # Tir double : 2 flèches légères
-const DOUBLE_COEF := 0.52 ## refonte Guet 07/11 : 0,42 -> 0,52
+const DOUBLE_COEF := 0.4 ## refonte Guet 07/11 : 0,42 -> 0,52 ; courbe par niveau 08/11 : 0,4 (2 x 0,4 = le Trait de 0,8)
 const DOUBLE_RANGE_U := 8.0
 const DOUBLE_PROC := 0.8
 # Fanal : lumière attachée à Vigie ; met le Guet à 100 % d'un coup
