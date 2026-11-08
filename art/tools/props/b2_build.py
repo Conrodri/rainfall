@@ -66,7 +66,7 @@ def build():
     source=inspect.getsource(rig.render_frame).replace("('_n','_e')", "('_e',)")
     exec(compile(source, str(Path(rig.__file__)), "exec"), rig.__dict__)
     C=rig.common
-    for name in (() if '--retry' in sys.argv else SPECS):
+    for name in (() if '--retry' in sys.argv or '--along-y' in sys.argv else SPECS):
         assert not (OUT/(name+'.png')).exists(), 'G4 refuses overwrite: '+name
         assert not (SRC/('b2_'+name+'.blend')).exists(), 'Existing blend: '+name
     def lin(h):
@@ -74,6 +74,7 @@ def build():
         return tuple(x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in v)
     def mat(n,h): return C.material(n,lin(h),roughness=.8)
     for name,(size,foot) in SPECS.items():
+        if '--along-y' in sys.argv and name != 'crypt_stairs': continue
         if '--only' in sys.argv and name!=sys.argv[sys.argv.index('--only')+1]: continue
         s=rig.create_rig('MAP',size)
         s.camera.location+=s.camera.rotation_euler.to_matrix()@Vector((0,(foot[1]-size[1]/2)/rig.R,0))
@@ -135,6 +136,15 @@ def build():
             for j in range(9):
                 x=rng.uniform(-1.8,1.8);y=-.98
                 pebble('Rough broken flank',(x,y,.06),(.09,.045,.06),m['slate'],root,300+j)
+        if '--along-y' in sys.argv:
+            assert name == 'crypt_stairs', 'B5 target only'
+            # MAP camera projects +y upper-right: reverse the stair run so risers face lower-left.
+            from mathutils import Matrix
+            turn = Matrix.Rotation(math.pi, 4, 'Z')
+            for child in root.children:
+                child.matrix_basis = turn @ child.matrix_basis
+            root.rotation_euler.z += math.pi/2
+            s['b5_along_y'] = True
         bpy.context.view_layer.update()
         q=world_to_camera_view(s,s.camera,Vector((0,0,0)))
         assert abs(q.x*size[0]-foot[0])<.01 and abs((1-q.y)*size[1]-foot[1])<.01
@@ -152,8 +162,9 @@ def build():
             # Blender image scaling: PIL is only used by the shared render pipeline.
             im=bpy.data.images.load(str(ep),check_existing=False);im.scale((size[0]+1)//2,(size[1]+1)//2);im.filepath_raw=str(ep);im.file_format='PNG';im.save();bpy.data.images.remove(im)
         s['b2_foot']=list(foot);s['b2_profile']='prop';s['b2_normals']=False
-        blend=SRC/('b2_'+name+'.blend')
-        if not blend.exists(): bpy.ops.wm.save_as_mainfile(filepath=str(blend),compress=True)
+        blend=SRC/(('b5_' if '--along-y' in sys.argv else 'b2_')+name+'.blend')
+        bpy.context.preferences.filepaths.save_version=0
+        if '--along-y' in sys.argv or not blend.exists(): bpy.ops.wm.save_as_mainfile(filepath=str(blend),compress=True)
         # Preserve MAP sun direction through TOP setup, full DA cast length.
         rot=bpy.data.objects['Sun_chaud_haut_gauche'].rotation_euler.copy()
         rig.create_rig('TOP',(512,512),reset=False)

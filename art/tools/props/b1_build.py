@@ -79,7 +79,7 @@ def build():
             im=bpy.data.images.load(str(f),check_existing=False)
             im.scale(*tuple(sc['iso_frame']));im.filepath_raw=str(f);im.file_format='PNG';im.save();bpy.data.images.remove(im)
     rig.render_frame=render_no_normals
-    for name in (() if '--retry' in sys.argv else SPECS):
+    for name in (() if '--retry' in sys.argv or '--along-y' in sys.argv else SPECS):
         assert not (OUT/(name+'.png')).exists(), 'B1 refuses overwrite: '+name
         assert not (SRC/('b1_'+name+'.blend')).exists(), 'Existing blend: '+name
     def lin(h):
@@ -87,6 +87,7 @@ def build():
         return tuple(x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in v)
     def mat(n,h): return C.material(n,lin(h),roughness=.8)
     for name,(size,foot) in SPECS.items():
+        if '--along-y' in sys.argv and name != 'rails': continue
         if '--only' in sys.argv and name!=sys.argv[sys.argv.index('--only')+1]: continue
         s=rig.create_rig('MAP',size)
         s.camera.location+=s.camera.rotation_euler.to_matrix()@Vector((0,(foot[1]-size[1]/2)/rig.R,0))
@@ -172,6 +173,10 @@ def build():
                 ob=box('Broken scrap iron',(rng.uniform(-.66,.66),rng.uniform(-.44,.44),rng.uniform(.92,1.22)),(rng.uniform(.20,.62),.09,.09),m['iron'] if i%3 else m['rust'])
                 ob.rotation_euler=(rng.uniform(-.4,.4),rng.uniform(-.5,.5),rng.random()*math.pi)
             for x in (-1,1):box('Tow coupling',(x*1.04,0,.54),(.26,.16,.10),m['iron'])
+        if '--along-y' in sys.argv:
+            assert name == 'rails', 'B5 target only'
+            root.rotation_euler.z += math.pi/2
+            s['b5_along_y'] = True
         bpy.context.view_layer.update()
         q=world_to_camera_view(s,s.camera,Vector((0,0,0)))
         assert abs(q.x*size[0]-foot[0])<.01 and abs((1-q.y)*size[1]-foot[1])<.01
@@ -184,7 +189,7 @@ def build():
             # Blender image scaling: PIL is only used by the shared render pipeline.
             im=bpy.data.images.load(str(ep),check_existing=False);im.scale((size[0]+1)//2,(size[1]+1)//2);im.filepath_raw=str(ep);im.file_format='PNG';im.save();bpy.data.images.remove(im)
         s['b1_foot']=list(foot);s['b1_profile']='prop';s['b1_normals']=False
-        blend=SRC/('b1_'+name+('_v2' if '--revision' in sys.argv else '')+'.blend')
+        blend=SRC/(('b5_' if '--along-y' in sys.argv else 'b1_')+name+('_v2' if '--revision' in sys.argv else '')+'.blend')
         bpy.context.preferences.filepaths.save_version=0
         bpy.ops.wm.save_as_mainfile(filepath=str(blend),compress=True)
         # Shared TOP projector, unshortened DA sun, soft alpha in compositor.

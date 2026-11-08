@@ -63,8 +63,8 @@ def build():
     C=rig.common
     OUT.mkdir(parents=True,exist_ok=True);SRC.mkdir(parents=True,exist_ok=True)
     baseline=HERE/'_b3_main_baseline.json'
-    if not baseline.exists():baseline.write_text(json.dumps(main_snapshot(),sort_keys=True))
-    for name in (() if '--retry' in sys.argv else SPECS):
+    if '--along-y' not in sys.argv and not baseline.exists():baseline.write_text(json.dumps(main_snapshot(),sort_keys=True))
+    for name in (() if '--retry' in sys.argv or '--along-y' in sys.argv else SPECS):
         assert not (OUT/(name+'.png')).exists(), 'G4 refuses overwrite: '+name
         assert not (SRC/('b3_'+name+'.blend')).exists(), 'Existing blend: '+name
     def lin(h):
@@ -72,6 +72,7 @@ def build():
         return tuple(x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in v)
     def mat(n,h): return C.material(n,lin(h),roughness=.8)
     for name,(size,foot) in SPECS.items():
+        if '--along-y' in sys.argv and name != 'pontoon': continue
         if '--only' in sys.argv and name!=sys.argv[sys.argv.index('--only')+1]: continue
         s=rig.create_rig('MAP',size)
         s.camera.location+=s.camera.rotation_euler.to_matrix()@Vector((0,(foot[1]-size[1]/2)/rig.R,0))
@@ -177,6 +178,10 @@ def build():
                 x=rng.uniform(-1.32,.10);y=rng.uniform(-.49,.48)
                 if (x+.65)**2+y*y<.15: continue
                 stone('Beige calcite crust',(x,y,.925+.09*(x+.65)),(rng.uniform(.07,.18),rng.uniform(.05,.12),.018),m['calcite'],401+i)
+        if '--along-y' in sys.argv:
+            assert name == 'pontoon', 'B5 target only'
+            root.rotation_euler.z += math.pi/2
+            s['b5_along_y'] = True
         bpy.context.view_layer.update()
         q=world_to_camera_view(s,s.camera,Vector((0,0,0)))
         assert abs(q.x*size[0]-foot[0])<.01 and abs((1-q.y)*size[1]-foot[1])<.01
@@ -206,7 +211,7 @@ def build():
             # Blender image scaling: PIL is only used by the shared render pipeline.
             im=bpy.data.images.load(str(ep),check_existing=False);im.scale((size[0]+1)//2,(size[1]+1)//2);im.filepath_raw=str(ep);im.file_format='PNG';im.save();bpy.data.images.remove(im)
         s['g4_foot']=list(foot);s['g4_profile']='prop';s['g4_normals']=False
-        blend=SRC/('b3_'+name+('_v2' if '--revision' in sys.argv else '')+'.blend')
+        blend=SRC/(('b5_' if '--along-y' in sys.argv else 'b3_')+name+('_v2' if '--revision' in sys.argv else '')+'.blend')
         bpy.context.preferences.filepaths.save_version=0
         bpy.ops.wm.save_as_mainfile(filepath=str(blend))
         # Shared TOP projector, shorter cast vector (x0.6), soft alpha in compositor.

@@ -58,6 +58,7 @@ def build():
         return tuple(x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in v)
     def mat(n,h): return C.material(n,lin(h),roughness=.8)
     for name,(size,foot) in SPECS.items():
+        if '--along-y' in sys.argv and name != 'stone_stairs': continue
         if '--only' in sys.argv and name!=sys.argv[sys.argv.index('--only')+1]: continue
         s=rig.create_rig('MAP',size)
         s.camera.location+=s.camera.rotation_euler.to_matrix()@Vector((0,(foot[1]-size[1]/2)/rig.R,0))
@@ -117,6 +118,15 @@ def build():
                 for j in range(7):
                     pebble('Moss in tread seams',(x+rng.uniform(-.35,.35),rng.uniform(-.8,.8),h+.01),(.1,.07,.016),m['moss'],root,10*i+j)
                 rod('Stone fracture',[(x-.2,-.3,h+.012),(x+.04,-.18,h+.012),(x+.12,.02,h+.012)],.008,'iron')
+        if '--along-y' in sys.argv:
+            assert name == 'stone_stairs', 'B5 target only'
+            # MAP camera projects +y upper-right: reverse the stair run so risers face lower-left.
+            from mathutils import Matrix
+            turn = Matrix.Rotation(math.pi, 4, 'Z')
+            for child in root.children:
+                child.matrix_basis = turn @ child.matrix_basis
+            root.rotation_euler.z += math.pi/2
+            s['b5_along_y'] = True
         bpy.context.view_layer.update()
         q=world_to_camera_view(s,s.camera,Vector((0,0,0)))
         assert abs(q.x*size[0]-foot[0])<.01 and abs((1-q.y)*size[1]-foot[1])<.01
@@ -131,7 +141,7 @@ def build():
         (OUT/(name+'_e.png')).unlink(missing_ok=True)
         s['b4_foot']=list(foot);s['b4_normals']=False
         bpy.context.preferences.filepaths.save_version=0
-        bpy.ops.wm.save_as_mainfile(filepath=str(SRC/('b4_'+name+'.blend')),compress=True)
+        bpy.ops.wm.save_as_mainfile(filepath=str(SRC/(('b5_' if '--along-y' in sys.argv else 'b4_')+name+'.blend')),compress=True)
         # Shared TOP projector, shorter cast vector (x0.6), soft alpha in compositor.
         sun=bpy.data.objects['Sun_chaud_haut_gauche']; rot=sun.rotation_euler.copy()
         rig.create_rig('TOP',(512,512),reset=False);sun.rotation_euler=rot; s.camera.data.ortho_scale=8

@@ -1,0 +1,10 @@
+Set-Location C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-aa553204504c45f1c
+RACINE = ce dossier (worktree). Écris UNIQUEMENT sous RACINE, jamais dans C:\Users\const\Documents\Rainfall\game ni \art (dépôt principal). Chemins Blender absolus sous RACINE.
+LOT B5 (ré-orientation) : les props longs 1x2 cases doivent avoir leur grand axe le long de l'axe monde +y (diagonale BAS-GAUCHE de l'écran) et non +x : le code de carte les place « verticaux » et sait seulement les retourner en miroir horizontal. Re-rendre, à partir des scripts existants, avec le modèle tourné de 90 deg autour de Z (root.rotation_euler.z += pi/2, x -> y) ; même canvas, même foot (le footprint est symétrique), même rig, mêmes matières, mêmes ombres TOP (re-rendues, soleil inchangé haut-gauche) :
+- rust_city\rails.png + _shadow (RACINE\art\tools\props\b1_build.py, 400x224 foot (200,116))
+- crypts\crypt_stairs.png + _shadow (b2_build.py, 400x304 foot (200,196)) : la montée va vers -y (haut-droite écran), contremarches côté +y (bas-gauche, visibles)
+- fog_forest\pontoon.png + _shadow (b3_build.py, 400x272 foot (200,166)) ; ombre x0,6 comme avant
+- terraces\stone_stairs.png + _shadow (b4_build.py, même règle que crypt_stairs ; si le lot B4 l'a déjà orienté le long de +y, ne pas y toucher)
+Sources : RACINE\game\assets\sprites\props\<dossier>\. Écraser seulement ces fichiers (git les a en historique : rien à archiver). Nouveau paramètre/option dans chaque build (ex. --along-y) ; nouveaux .blend art\blender\props\b5_<nom>.blend (ne rien écraser). Ne PAS toucher crucible, minecart, well_rim, firefly_cage, fallen_altar, noria, scarecrow. Blender --background, Eevee modeste, pas de Godot.
+VÉRIF : le canvas et le foot restent identiques (assert), le grand axe suit bien la diagonale bas-gauche (compare au rendu précédent : miroir horizontal à peu près, relu), ombres 512x512 alpha <= 140, aucun fichier dans le dépôt principal. Planche : art\renders\props_b\b5_codex.png (<= 1024 px).
+RAPPORT (4 lignes max, ultracave).
