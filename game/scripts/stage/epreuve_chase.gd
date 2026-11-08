@@ -232,12 +232,17 @@ func draw_overlay(c: Node2D) -> void:
 		c.draw_line(c.to_local(_trail_from), Vector2.ZERO, Color(col.r, col.g, col.b, 0.7 * a), 5.0 * a + 1.0)
 	if is_running():
 		# anneau de portée de la borne allumée, jauge du saut
-		c.draw_arc(Vector2.ZERO, Balance.CHASE_REACH_U * u, 0.0, TAU, 40, Color(col.r, col.g, col.b, 0.25 if _scored_here else 0.7), 3.0)
+		var ring_col := Color(col.r, col.g, col.b, 0.25 if _scored_here else 0.7)
+		if not EpreuveSprites.draw_ring(c, "ring_zone.png", Vector2.ZERO, Balance.CHASE_REACH_U * u, ring_col):
+			c.draw_arc(Vector2.ZERO, Balance.CHASE_REACH_U * u, 0.0, TAU, 40, ring_col, 3.0)
 		var fill := clampf(jump_left / Balance.CHASE_JUMP_S, 0.0, 1.0)
 		c.draw_arc(Vector2.ZERO, 56.0, -PI * 0.5, -PI * 0.5 + TAU * fill, 40, Color(1.0, 0.85, 0.5, 0.85), 4.0)
 	# lumière : disque 0,6 u, vacille à 6 Hz avant le saut
 	var alpha := 1.0
 	if is_warning():
 		alpha = 1.0 if int(floor(elapsed * 12.0)) % 2 == 0 else 0.25
+	var skin := "crypts" if _biome_id() == &"cryptes" else "fog_forest"
+	if EpreuveSprites.draw_light(c, skin, Vector2.ZERO, 2.4 * u, alpha): # lot EP-I (feu follet / éclat Codex)
+		return
 	c.draw_circle(Vector2.ZERO, 0.6 * u * 1.6, Color(col.r, col.g, col.b, 0.18 * alpha))
 	c.draw_circle(Vector2.ZERO, 0.6 * u, Color(1.0, 1.0, 1.0, 0.9 * alpha).lerp(Color(col.r, col.g, col.b, 0.9 * alpha), 0.35))

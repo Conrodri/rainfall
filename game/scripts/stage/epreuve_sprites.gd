@@ -42,6 +42,30 @@ static func set_tex(s: Sprite2D, texture: Texture2D, base_y: float, hframes: int
 	NormalMaps.apply_to_sprite(s)
 
 
+## Anneau au sol Codex (`ring_zone.png` / `ring_wave.png`, vue verticale, anneau à `ring_frac` du bord) dessiné sur l'overlay
+## en repère carte (l'iso l'écrase). Retourne false si la texture manque : l'appelant trace alors son repli `draw_arc`.
+static func draw_ring(c: CanvasItem, file: String, center: Vector2, radius: float, col: Color, ring_frac: float = 0.96) -> bool:
+	var t := tex(VFX_DIR, file)
+	if t == null:
+		return false
+	var half := radius / ring_frac
+	c.draw_texture_rect(t, Rect2(center - Vector2(half, half), Vector2(half, half) * 2.0), false, col)
+	return true
+
+
+## Lumière de Poursuite (planche `chase_light_<skin>.png`, frames carrées) en billboard iso sur l'overlay ; false si absente.
+static func draw_light(c: CanvasItem, skin: String, center: Vector2, size_px: float, alpha: float) -> bool:
+	var t := tex(VFX_DIR, "chase_light_%s.png" % skin)
+	if t == null:
+		return false
+	var fw := float(t.get_height())
+	var fr := int(Time.get_ticks_msec() / 100) % maxi(int(t.get_width() / fw), 1)
+	c.draw_set_transform(center, 0.0, Iso.UNSQUASH)
+	c.draw_texture_rect_region(t, Rect2(-size_px * 0.5, -size_px * 0.5, size_px, size_px), Rect2(fr * fw, 0.0, fw, fw), Color(1, 1, 1, alpha))
+	c.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	return true
+
+
 ## Indice 0-7 (e, ne, n, nw, w, sw, s, se) de la direction à l'écran d'un cap exprimé dans le repère de la carte.
 static func dir8(heading_map: Vector2) -> int:
 	var logical := Iso.map_xform().basis_xform(heading_map)

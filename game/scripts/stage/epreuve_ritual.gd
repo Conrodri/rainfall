@@ -157,7 +157,8 @@ func draw_overlay(c: Node2D) -> void:
 	for r in relays:
 		var p := c.to_local(r.global_position)
 		var col := Color(0.4, 0.95, 0.5, 0.55) if r.used else (Color(0.55, 0.9, 1.0, 0.65) if active else Color(0.55, 0.9, 1.0, 0.25))
-		c.draw_arc(p, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX, 0.0, TAU, 32, col, 3.0)
+		if not EpreuveSprites.draw_ring(c, "ring_zone.png", p, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX, col):
+			c.draw_arc(p, Balance.SECRET_LEVER_RANGE_U * Balance.UNIT_PX, 0.0, TAU, 32, col, 3.0)
 		if active:
 			c.draw_line(Vector2.ZERO, p, Color(col.r, col.g, col.b, 0.18), 2.0)
 	if not active:
@@ -170,6 +171,11 @@ func draw_overlay(c: Node2D) -> void:
 	if _tele_t > 0.0: # télégraphe : disque annoncé, bord qui se renforce
 		var k := 1.0 - _tele_t / Balance.RITUAL_TELEGRAPH_S
 		c.draw_circle(Vector2.ZERO, rmax, Color(1.0, 0.25, 0.2, 0.05 + 0.10 * k))
-		c.draw_arc(Vector2.ZERO, rmax, 0.0, TAU, 96, Color(1.0, 0.3, 0.2, 0.35 + 0.5 * k), 4.0)
+		var tele_col := Color(1.0, 0.3, 0.2, 0.35 + 0.5 * k)
+		if not EpreuveSprites.draw_ring(c, "ring_zone.png", Vector2.ZERO, rmax, tele_col):
+			c.draw_arc(Vector2.ZERO, rmax, 0.0, TAU, 96, tele_col, 4.0)
 	if _wave_r >= 0.0:
-		c.draw_arc(Vector2.ZERO, _wave_r, 0.0, TAU, 96, Color(1.0, 0.35, 0.25, 0.85), Balance.RITUAL_WAVE_HALF_U * Balance.UNIT_PX * 2.0)
+		var wave_col := Color(1.0, 0.35, 0.25, 0.85)
+		# l'anneau d'onde est à 90 % du bord de la texture, épaisseur ~12 % : on dimensionne sur le rayon de l'onde
+		if not EpreuveSprites.draw_ring(c, "ring_wave.png", Vector2.ZERO, _wave_r, wave_col, 0.9):
+			c.draw_arc(Vector2.ZERO, _wave_r, 0.0, TAU, 96, wave_col, Balance.RITUAL_WAVE_HALF_U * Balance.UNIT_PX * 2.0)
