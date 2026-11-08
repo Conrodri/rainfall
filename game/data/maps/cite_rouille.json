@@ -237,7 +237,24 @@
  "ambient_event": {
   "threshold_difficulty": 4.0,
   "name": "Orage",
-  "effect": "visuel : éclair de décor toutes les 10-20 s ; à Cataclysme le canal monte"
+  "effect": "visuel : éclair de décor toutes les 10-20 s ; à Cataclysme le canal monte",
+  "effects": [
+   {
+    "type": "decor_lightning",
+    "interval_s": [
+     10,
+     20
+    ],
+    "intensity": 0.6
+   },
+   {
+    "type": "flood",
+    "tier": "Cataclysme",
+    "from": "~",
+    "extend_u": 1.0,
+    "rise_s": 15
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

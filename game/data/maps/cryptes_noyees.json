@@ -228,7 +228,30 @@
  "ambient_event": {
   "threshold_difficulty": 2.5,
   "name": "Crue",
-  "effect": "visuel : la crue monte (cases ',' élargies) ; Furieux : cristaux qui s'éteignent par vagues"
+  "effect": "visuel : la crue monte (cases ',' élargies) ; Furieux : cristaux qui s'éteignent par vagues",
+  "effects": [
+   {
+    "type": "flood",
+    "from": ",",
+    "extend_u": 1.0,
+    "rise_s": 12
+   },
+   {
+    "type": "light_waves",
+    "tier": "Furieux",
+    "preset": "crystal_vein",
+    "rules_only": true,
+    "props_match": "crystal",
+    "gap_s": [
+     6,
+     10
+    ],
+    "speed_u": 10,
+    "hold_s": 3,
+    "dim": 0.15,
+    "edge_s": 0.4
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

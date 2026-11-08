@@ -228,7 +228,23 @@
  "ambient_event": {
   "threshold_difficulty": 2.5,
   "name": "La noria repart",
-  "effect": "visuel et sonore : la noria du bassin central se remet à tourner (grincement, éclaboussures) ; les cases ',' des rizières s'élargissent d'1 u"
+  "effect": "visuel et sonore : la noria du bassin central se remet à tourner (grincement, éclaboussures) ; les cases ',' des rizières s'élargissent d'1 u",
+  "effects": [
+   {
+    "type": "prop_anim",
+    "prop": "noria",
+    "frames": "res://assets/sprites/props/terraces/noria_spin.tres",
+    "anim": "spin",
+    "sound": "amb.noria",
+    "sound_db": -6
+   },
+   {
+    "type": "flood",
+    "from": ",",
+    "extend_u": 1.0,
+    "rise_s": 12
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

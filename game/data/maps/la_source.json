@@ -153,7 +153,18 @@
  "ambient_event": {
   "threshold_difficulty": 4.0,
   "name": "Colonne de pluie",
-  "effect": "visuel : la colonne de pluie centrale s'épaissit avec la difficulté"
+  "effect": "visuel : la colonne de pluie centrale s'épaissit avec la difficulté",
+  "effects": [
+   {
+    "type": "rain_column",
+    "node": "SourceColumn",
+    "width_max": 1.6,
+    "alpha_max": 1.15,
+    "d_full": 8.0,
+    "light_preset": "source_column",
+    "light_max": 1.4
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

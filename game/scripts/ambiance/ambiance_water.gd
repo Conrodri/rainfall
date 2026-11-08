@@ -37,6 +37,16 @@ var _off_b := Vector2.ZERO
 var _sky_scroll := 0.0
 var _flash := 0.0
 var _flash_t := 0.0
+## Crue visuelle (événement ambiant « flood », AmbientEvents) : canal alpha du masque de l'eau peu profonde = cases
+## inondables ; le shader lit G + A × _flood_level (0 = carte d'origine, 0,5 = bord avancé d'une demi-case, 1 u).
+var _flood_level := 0.0
+var _flood_ready := false
+var _grid := PackedStringArray()
+var _cols := 0
+var _rows := 0
+var _origin := Vector2.ZERO
+var _size := Vector2.ZERO
+var _map_key := ""
 
 
 func _ready() -> void:
@@ -72,6 +82,9 @@ func setup(map: Node2D, profile: AmbianceProfile) -> void:
 			c.queue_free()
 	shallow_rects = 0
 	deep_rects = 0
+	_flood_level = 0.0
+	_flood_ready = false
+	_grid = PackedStringArray()
 	var rip := AmbianceTextures.get_tex(&"ripple_normal_256")
 	var sky: Texture2D = null
 	if profile != null and profile.sky_texture != &"":
@@ -111,6 +124,12 @@ func setup(map: Node2D, profile: AmbianceProfile) -> void:
 	var size := Vector2(cols, rows) * cell
 	var tex := ImageTexture.create_from_image(GroundSplat.bake_water_mask(Array(grid), cols, rows))
 	var key := String(map.get_meta(&"map_id", ""))
+	_grid = grid
+	_cols = cols
+	_rows = rows
+	_origin = origin
+	_size = size
+	_map_key = key
 	var detail := 1 if int(Quality.get_setting(&"puddles")) >= 1 else 0
 	GroundSplat.set_region(_shallow_mat, tex, Vector4(0.0, 1.0, 0.0, 0.0), size, key, detail)
 	GroundSplat.set_region(_deep_mat, tex, Vector4(1.0, 0.0, 0.0, 0.0), size, key, detail)
@@ -125,6 +144,48 @@ func setup(map: Node2D, profile: AmbianceProfile) -> void:
 	if has_deep:
 		deep_root.add_child(_region_rect(origin, size, _deep_mat))
 		deep_rects = 1
+
+
+## Prépare la crue visuelle : `flags` = un octet par case de la grille (cols × rows, 255 = case inondable). Le masque
+## de l'eau peu profonde est recuit une fois avec ces cases dans son canal alpha (même lissage cubique que
+## GroundSplat.bake_water_mask) ; ensuite set_flood_level() ne change qu'un uniform (aucune allocation, aucun quad
+## de plus). Retourne false sans grille. À appeler au chargement de l'étage (≈ 25 000 texels, une fois).
+func prepare_flood(flags: PackedByteArray) -> bool:
+	if _grid.is_empty() or flags.size() != _cols * _rows:
+		return false
+	var base := GroundSplat.bake_water_mask(Array(_grid), _cols, _rows)
+	var data := base.get_data()
+	var fl := Image.create_from_data(_cols, _rows, false, Image.FORMAT_L8, flags)
+	fl.resize(base.get_width(), base.get_height(), Image.INTERPOLATE_CUBIC)
+	var fd := fl.get_data()
+	var n := mini(fd.size(), data.size() / 4)
+	for i in n:
+		data[i * 4 + 3] = fd[i]
+	var img := Image.create_from_data(base.get_width(), base.get_height(), false, Image.FORMAT_RGBA8, data)
+	var tex := ImageTexture.create_from_image(img)
+	var detail := 1 if int(Quality.get_setting(&"puddles")) >= 1 else 0
+	GroundSplat.set_region(_shallow_mat, tex, Vector4(0.0, 1.0, 0.0, 0.0), _size, _map_key, detail)
+	if shallow_rects == 0: # carte sans « , » : la crue a besoin du calque d'eau peu profonde
+		shallow_root.add_child(_region_rect(_origin, _size, _shallow_mat))
+		shallow_rects = 1
+	_flood_ready = true
+	set_flood_level(_flood_level)
+	return true
+
+
+## Niveau de la crue : 0 = rives d'origine ; 0,5 = cases inondables couvertes jusqu'à leur centre (+1 u).
+func set_flood_level(k: float) -> void:
+	_flood_level = maxf(k, 0.0)
+	if _flood_ready:
+		_shallow_mat.set_shader_parameter(&"region_chan", Vector4(0.0, 1.0, 0.0, _flood_level))
+
+
+func flood_level() -> float:
+	return _flood_level if _flood_ready else 0.0
+
+
+func flood_ready() -> bool:
+	return _flood_ready
 
 
 func _region_rect(origin: Vector2, size: Vector2, mat: ShaderMaterial) -> ColorRect:

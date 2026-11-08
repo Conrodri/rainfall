@@ -238,7 +238,35 @@
  "ambient_event": {
   "threshold_difficulty": 4.0,
   "name": "Coulée",
-  "effect": "visuel : les creusets de la cour pulsent orange (coulée de métal) ; orage à Furieux ; à Cataclysme le canal circulaire monte"
+  "effect": "visuel : les creusets de la cour pulsent orange (coulée de métal) ; orage à Furieux ; à Cataclysme le canal circulaire monte",
+  "effects": [
+   {
+    "type": "prop_pulse",
+    "prop": "crucible",
+    "color": "#FFB070",
+    "hz": 0.3,
+    "amp": 0.45,
+    "gain": 1.8,
+    "light_preset": "crucible_glow",
+    "light_offset_u": 0.8,
+    "fade_s": 3
+   },
+   {
+    "type": "decor_lightning",
+    "interval_s": [
+     10,
+     20
+    ],
+    "intensity": 0.6
+   },
+   {
+    "type": "flood",
+    "tier": "Cataclysme",
+    "from": "~",
+    "extend_u": 1.0,
+    "rise_s": 15
+   }
+  ]
  },
  "monster_spawn": {
   "margin_u": [

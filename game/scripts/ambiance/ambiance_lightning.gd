@@ -122,6 +122,19 @@ func strike_decor(p: Dictionary) -> bool:
 	return true
 
 
+## Éclair de décor imposé par un événement ambiant (AmbientEvents, effet « decor_lightning ») : même séquence et
+## mêmes garde-fous photosensibles que strike_decor, intensité donnée (le palier du profil peut n'en avoir aucune).
+func strike_ambient(intensity: float) -> bool:
+	if mgr == null or not can_flash():
+		return false
+	var p: Dictionary = mgr.current_params()
+	if p.is_empty():
+		return false
+	var double := randf() < float(p.get(&"lightning_double_chance", 0.0))
+	_strike(intensity, double, p, Vector2.INF, false)
+	return true
+
+
 ## Foudre de gameplay (Sonneur phase 2 : 0,35 ; pilier terminé : 0,5). Pas de garde-fou de
 ## fréquence pour le gameplay, mais l'option d'accessibilité s'applique.
 func strike_gameplay(world_pos: Vector2, alpha: float, immediate_thunder: bool) -> void:

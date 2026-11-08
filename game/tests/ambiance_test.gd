@@ -244,16 +244,13 @@ func _test_gouffre() -> void:
 		if StringName(ml["def"]["preset"]) == &"light_shaft":
 			shaft_handles.append(ml["handle"])
 	_check(shaft_handles.size() == 3, "gouffre A : 3 puits de jour posés (%d)" % shaft_handles.size())
-	if mgr.event_name() != "Puits voilés": # data/maps/foret_brume.json pas encore régénéré (tools/gen_maps.py) : on force le nom
-		print("NOTE : carte A pas régénérée (événement « %s »), « Puits voilés » forcé" % mgr.event_name())
-		mgr._event_name = "Puits voilés"
-		mgr._event_threshold = 4.0
+	_check(mgr.event_name() == "Puits voilés" and mgr.events.find("shaft_veil") != null, "gouffre A : événement « Puits voilés » (%s)" % mgr.event_name())
 	mgr.set_difficulty(2.0)
 	mgr._process(0.1)
 	_check(not mgr.event_active() and is_equal_approx((shaft_handles[0] as LightRig.Handle).energy_mult, 1.0), "puits à pleine énergie avant Furieux")
 	mgr.set_difficulty(5.0)
 	mgr._process(0.1)
-	_check(mgr.event_active() and is_equal_approx((shaft_handles[0] as LightRig.Handle).energy_mult, AmbianceManager.VEIL_LIGHT_MULT), "Furieux : puits voilés (x0,4)")
+	_check(mgr.event_active() and is_equal_approx((shaft_handles[0] as LightRig.Handle).energy_mult, 0.4), "Furieux : puits voilés (x0,4)")
 	for i in 120:
 		mgr._process(0.1)
 	var amb: Color = mgr.canvas_modulate.color
@@ -275,21 +272,20 @@ func _test_gouffre() -> void:
 		if StringName(ml["def"]["preset"]) == &"light_shaft":
 			shafts_b += 1
 	_check(shafts_b == 0, "gouffre B : aucun puits de jour")
-	if mgr.event_name() != "Vent de gouffre":
-		print("NOTE : carte B pas régénérée (événement « %s »), « Vent de gouffre » forcé" % mgr.event_name())
-		mgr._event_name = "Vent de gouffre"
-		mgr._event_threshold = 2.5
+	var gust_fx := mgr.events.find("gusts")
+	_check(mgr.event_name() == "Vent de gouffre" and gust_fx != null, "gouffre B : événement « Vent de gouffre » (%s)" % mgr.event_name())
 	mgr.set_difficulty(1.0)
 	mgr._process(0.1)
-	_check(not mgr.event_active() and mgr._gust == 0.0, "pas de bouffée avant Hostile")
+	_check(not mgr.event_active() and mgr.gust_level == 0.0, "pas de bouffée avant Hostile")
 	mgr.set_difficulty(3.0)
-	mgr._gust_wait = 0.0
+	mgr._process(0.1)
+	gust_fx.call(&"force_gust")
 	var peak := 0.0
 	var wind_base := float(mgr.current_params()[&"wind_mult"])
 	var wind_seen := 0.0
 	for i in 60:
 		mgr._process(0.1)
-		peak = maxf(peak, mgr._gust)
+		peak = maxf(peak, mgr.gust_level)
 		wind_seen = maxf(wind_seen, float(mgr.current_params()[&"wind_mult"]))
 	_check(mgr.event_active() and peak > 0.9, "Hostile : une bouffée de vent (pic %.2f)" % peak)
 	_check(absf(wind_seen - wind_base) < 0.02 and absf(float(mgr.current_params()[&"wind_mult"]) - wind_base) < 0.02, "wind_mult du profil restauré après _push")

@@ -688,6 +688,42 @@ def rects(grid, chars):
                 out.append((x, y, x2-x+1, y2-y+1))
     return out
 
+# Événements ambiants (docs/Design_Variantes_B.md §7, scripts/ambiance/events/) : effets structurés recopiés dans
+# `ambient_event.effects` de data/maps/<id>.json, lus par AmbientEvents (un script par "type"). "tier" = palier de la
+# jauge où l'effet démarre (défaut : `threshold_difficulty` de l'événement). Visuel et sonore seulement.
+_CRYSTAL_WAVES = dict(type="light_waves", tier="Furieux", preset="crystal_vein", rules_only=True, props_match="crystal",
+                      gap_s=[6, 10], speed_u=10, hold_s=3, dim=0.15, edge_s=0.4)
+AMBIENT_EFFECTS = {
+ "terrasses_noyees": [dict(type="flood", **{"from": ","}, region_u=[0, 54, 64, 72], extend_u=1.0, rise_s=12)],
+ "foret_brume": [dict(type="shaft_veil", preset="light_shaft", light_mult=0.4, ray_mult=0.343,
+                      boost_preset="mycelium_glow", boost_mult=1.35, mute_particles="poussière")],
+ "cite_rouille": [dict(type="decor_lightning", interval_s=[10, 20], intensity=0.6),
+                  dict(type="flood", tier="Cataclysme", **{"from": "~"}, extend_u=1.0, rise_s=15)],
+ "cryptes_noyees": [dict(type="flood", **{"from": ","}, extend_u=1.0, rise_s=12), _CRYSTAL_WAVES],
+ "la_source": [dict(type="rain_column", node="SourceColumn", width_max=1.6, alpha_max=1.15, d_full=8.0,
+                    light_preset="source_column", light_max=1.4)],
+ "terrasses_rizieres_hautes": [dict(type="prop_anim", prop="noria", frames="res://assets/sprites/props/terraces/noria_spin.tres",
+                                    anim="spin", sound="amb.noria", sound_db=-6),
+                               dict(type="flood", **{"from": ","}, extend_u=1.0, rise_s=12)],
+ "foret_mangrove_lanternes": [dict(type="gusts", gap_s=[20, 30], duration_s=4, wind=2.0, push_deg=200, push_u=1.5,
+                                   flicker_preset="mycelium_glow", flicker=[0.08, 2.0], streaks=[0, 16, 32], sound="amb.gust")],
+ "cite_fonderie_canal": [dict(type="prop_pulse", prop="crucible", color="#FFB070", hz=0.3, amp=0.45, gain=1.8,
+                              light_preset="crucible_glow", light_offset_u=0.8, fade_s=3),
+                         dict(type="decor_lightning", interval_s=[10, 20], intensity=0.6),
+                         dict(type="flood", tier="Cataclysme", **{"from": "~"}, extend_u=1.0, rise_s=15)],
+ "cryptes_ossuaire_pluies": [dict(type="local_rain", prop="well_rim", radius_u=1.6, height_u=7, drops=[24, 48, 96],
+                                  splashes=[0, 8, 16], fade_s=4, loop_sound="amb.rain.light", loop_db=-8),
+                             dict(type="flood", **{"from": ","}, region_u=[10, 34, 36, 50], extend_u=1.0, rise_s=12),
+                             _CRYSTAL_WAVES],
+}
+
+def ambient_event(m):
+    """`ambient_event` du JSON : texte de design (`ambient=`) + effets structurés (AMBIENT_EFFECTS)."""
+    ev = dict(m["ambient"])
+    if m["id"] in AMBIENT_EFFECTS:
+        ev["effects"] = [dict(e) for e in AMBIENT_EFFECTS[m["id"]]]
+    return ev
+
 def main():
     warn = []
     # Arguments = ids à régénérer (défaut : toutes les cartes). Ex. : python tools/gen_maps.py cryptes_noyees la_source
@@ -798,7 +834,7 @@ def main():
                 pillar_walkable_ratio_min=0.70, pillar_zone_radius_u=dict(small=7, big=9),
                 legendary_chest_min_spawn_distance_u=24, trapped_chest_min_spawn_distance_u=12), **m.get("rules", {})),
             events=dict(chance=0.6, max_per_floor=1, types=m["event_names"]),
-            ambient_event=m["ambient"],
+            ambient_event=ambient_event(m),
             monster_spawn=dict(margin_u=[2,4], allowed_cells=[".", ","], forbidden_cells=["#","~"," "]),
             **({"hour_shift_min": m["hour_shift_min"]} if "hour_shift_min" in m else {}),
             **({"secrets": m["secrets"]} if "secrets" in m else {}),

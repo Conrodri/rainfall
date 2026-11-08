@@ -25,6 +25,10 @@ extends Node2D
 ## spawn_rays(), set_ultimate_warmth(), outage_random_lamp(), telegraph_layer(tree) (statique),
 ## current_params(), view_rect(). Signaux : profile_applied, lightning_struck, thunder,
 ## thunder_rumble, shake_requested.
+##
+## Événement ambiant de la carte (clé `ambient_event` du JSON, crue, orage, creusets, cristaux, puits voilés, vent,
+## colonne de pluie, pluie locale, noria) : enfant `events` (AmbientEvents, scripts/ambiance/events/), un petit
+## script par type d'effet ; visuel et sonore seulement.
 
 signal profile_applied(map_id: StringName)
 signal lightning_struck(world_pos: Vector2, intensity: float, gameplay: bool)
@@ -63,18 +67,12 @@ const VIGNETTE_SHADER := preload("res://shaders/vignette_mul.gdshader")
 const LDR_SUN_REF := 1.0
 const LDR_POINT_ENERGY := 0.5
 const LDR_POINT_RADIUS := 1.0
-## Étage 2 « Le Gouffre luisant » : puits de jour (préréglage `light_shaft`) et leur rai billboard, événements ambiants
-## de la carte (`ambient_event` du JSON : « Puits voilés » en A, « Vent de gouffre » en B ; aucun effet de jeu).
+## Étage 2 « Le Gouffre luisant » : puits de jour (préréglage `light_shaft`) et leur rai billboard (voilés par
+## l'événement « Puits voilés », effet `shaft_veil` d'AmbientEvents).
 const SHAFT_PRESET := &"light_shaft"
 const SHAFT_TEX := &"lightshaft_256x1024"
 const SHAFT_ALPHA := 0.35 ## alpha du rai (additif)
 const SHAFT_SCALE := 1.6
-const VEIL_LIGHT_MULT := 0.4 ## « Puits voilés » : énergie des puits x0,4 (fondu de LIGHT_FADE_S)
-const VEIL_RAY_MULT := 0.12 / 0.35 ## alpha du rai 0,35 -> 0,12
-const GUST_WIND := 2.0 ## « Vent de gouffre » : wind_mult pendant une bouffée
-const GUST_DURATION_S := 4.0
-const GUST_GAP_S := Vector2(20.0, 30.0)
-const GUST_FLICKER := Vector2(0.08, 2.0) ## (amplitude, Hz) du mycélium pendant une bouffée
 
 @export var enforce_ground_z := true ## place le nœud « Visual » de la carte à z -20
 @export var auto_bind := true ## se branche seul sur Events.floor_started / RunState
@@ -132,14 +130,13 @@ static var ldr_mode := false
 var _smooth_src := -1
 var shafts: Node2D ## rais des puits de jour (un Sprite2D additif par lumière `light_shaft`)
 var _shaft_sprites: Array[Sprite2D] = []
-var _event_name := "" ## `ambient_event.name` de la carte (JSON), "" si aucun
-var _event_threshold := 99.0
-var _veil_on := false ## « Puits voilés » en cours
+var events: AmbientEvents ## événement ambiant de la carte (clé `ambient_event`), un effet par entrée
 var _ray_k := 1.0 ## multiplicateur lissé de l'alpha des rais
-var _gust := 0.0 ## enveloppe 0..1 de la bouffée « Vent de gouffre »
-var _gust_t := -1.0 ## temps écoulé dans la bouffée (< 0 : au repos)
-var _gust_wait := 0.0
-var _gust_flicker := false
+## Réglages posés par les effets d'AmbientEvents (rétablis à leur arrêt) :
+var shaft_ray_target := 1.0 ## alpha visé des rais des puits (« Puits voilés » : 0,343), fondu de LIGHT_FADE_S
+var gust_level := 0.0 ## enveloppe 0..1 d'une bouffée de vent (« Vent de gouffre ») : wind_mult -> gust_wind
+var gust_wind := 2.0
+var _preset_mult: Dictionary = {} ## préréglage de lumière de la carte -> multiplicateur d'énergie (1 = profil)
 
 
 # --- Statique ---------------------------------------------------------------
@@ -326,6 +323,8 @@ func _build() -> void:
 	lightning.thunder.connect(func(i, d): thunder.emit(i, d))
 	lightning.thunder_rumble.connect(func(i): thunder_rumble.emit(i))
 	lightning.shake_requested.connect(func(a, h, d): shake_requested.emit(a, h, d))
+	events = AmbientEvents.new()
+	add_child(events)
 
 
 func _flash_sprite(nm: String, tex_id: StringName) -> Sprite2D:
@@ -462,8 +461,8 @@ func _rebuild_map_dependent() -> void:
 		OccluderBuilder.build(map, occluders)
 	else:
 		OccluderBuilder.clear(occluders)
-	_load_ambient_event()
 	_build_map_lights()
+	events.bind(self, map) # après les lumières : les effets actifs relisent les nouvelles
 
 
 func _map_rect() -> Rect2:
@@ -568,15 +567,34 @@ func _rule_lights() -> Array:
 
 
 func _update_map_lights_tier() -> void:
-	var idx := AmbianceProfile.tier_index(tier_name)
 	for ml in _map_lights:
-		var h: LightRig.Handle = ml["handle"]
-		var d: Dictionary = ml["def"]
-		var on := AmbianceProfile.tier_in_range(idx, d)
-		var e := float(d.get("energy", 1.0)) if on else 0.0
-		if _veil_on and StringName(d["preset"]) == SHAFT_PRESET:
-			e *= VEIL_LIGHT_MULT
-		h.set_energy(e)
+		(ml["handle"] as LightRig.Handle).set_energy(map_light_base_energy(ml["def"]))
+
+
+## Énergie d'une source de la carte au palier courant : énergie du profil (0 hors min_tier..max_tier) × multiplicateur
+## de son préréglage posé par un événement ambiant (set_preset_light_mult).
+func map_light_base_energy(d: Dictionary) -> float:
+	if not AmbianceProfile.tier_in_range(AmbianceProfile.tier_index(tier_name), d):
+		return 0.0
+	return float(d.get("energy", 1.0)) * float(_preset_mult.get(StringName(d.get("preset", &"")), 1.0))
+
+
+## Multiplie l'énergie de toutes les sources de la carte d'un préréglage (fondu du handle : 10 s pour les sources de
+## la carte) ; 1 = valeur du profil. Gardé à la reconstruction des lumières (palier de qualité).
+func set_preset_light_mult(preset: StringName, mult: float) -> void:
+	if is_equal_approx(mult, 1.0):
+		if not _preset_mult.has(preset):
+			return
+		_preset_mult.erase(preset)
+	elif is_equal_approx(float(_preset_mult.get(preset, 1.0)), mult):
+		return
+	else:
+		_preset_mult[preset] = mult
+	_update_map_lights_tier()
+
+
+func preset_light_mult(preset: StringName) -> float:
+	return float(_preset_mult.get(preset, 1.0))
 
 
 # --- Étage 2 : puits de jour (rais) et événements ambiants --------------------
@@ -610,78 +628,26 @@ func _add_shaft(world_pos: Vector2) -> void:
 	_shaft_sprites.append(sp)
 
 
-## Lit `ambient_event` du JSON de la carte (nom + seuil de difficulté) ; événements connus : voir _process_event.
-func _load_ambient_event() -> void:
-	_event_name = ""
-	_event_threshold = 99.0
-	_veil_on = false
-	_ray_k = 1.0
-	_gust = 0.0
-	_gust_t = -1.0
-	_gust_wait = randf_range(GUST_GAP_S.x, GUST_GAP_S.y)
-	if map == null:
-		return
-	var path := "res://data/maps/%s.json" % String(map.get_meta(&"map_id", ""))
-	if not FileAccess.file_exists(path):
-		return
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
-	if data is Dictionary and (data as Dictionary).get("ambient_event") is Dictionary:
-		var ev: Dictionary = (data as Dictionary)["ambient_event"]
-		_event_name = String(ev.get("name", ""))
-		_event_threshold = float(ev.get("threshold_difficulty", 99.0))
-
-
 func event_name() -> String:
-	return _event_name
+	return events.event_name
 
 
-## Vrai si l'événement ambiant de la carte est en cours (difficulté >= seuil).
+## Vrai si l'événement ambiant de la carte est en cours (difficulté >= seuil de l'événement).
 func event_active() -> bool:
-	return _event_name != "" and difficulty >= _event_threshold
+	return events.event_active(difficulty)
 
 
-## « Puits voilés » (Furieux, A) : les puits s'estompent, le mycélium domine. « Vent de gouffre » (Hostile, B) : bouffées.
-func _process_event(delta: float) -> void:
-	var active := event_active()
-	var veil := active and _event_name == "Puits voilés"
-	if veil != _veil_on:
-		_veil_on = veil
-		_update_map_lights_tier() # énergie des puits : fondu de LIGHT_FADE_S via le handle
-	var ray_target := VEIL_RAY_MULT if _veil_on else 1.0
-	_ray_k = move_toward(_ray_k, ray_target, delta * (1.0 - VEIL_RAY_MULT) / LIGHT_FADE_S)
-	if not _shaft_sprites.is_empty():
-		var rays_ok := int(Quality.get_setting(&"rays_max")) > 0
-		for sp in _shaft_sprites:
-			if is_instance_valid(sp):
-				sp.visible = rays_ok
-				sp.modulate.a = SHAFT_ALPHA * _ray_k
-	var gusting := active and _event_name == "Vent de gouffre"
-	if gusting:
-		if _gust_t >= 0.0:
-			_gust_t += delta
-			var u := _gust_t / GUST_DURATION_S
-			_gust = smoothstep(0.0, 0.15, u) * (1.0 - smoothstep(0.7, 1.0, u))
-			if _gust_t >= GUST_DURATION_S:
-				_gust_t = -1.0
-				_gust = 0.0
-				_gust_wait = randf_range(GUST_GAP_S.x, GUST_GAP_S.y)
-		else:
-			_gust_wait -= delta
-			if _gust_wait <= 0.0:
-				_gust_t = 0.0
-	else:
-		_gust = 0.0
-		_gust_t = -1.0
-	var want_flicker := _gust > 0.05
-	if want_flicker != _gust_flicker:
-		_gust_flicker = want_flicker
-		for ml in _map_lights:
-			if StringName((ml["def"] as Dictionary)["preset"]) == &"mycelium_glow":
-				var lh: LightRig.Handle = ml["handle"]
-				if want_flicker:
-					lh.set_flicker_override(GUST_FLICKER.x, GUST_FLICKER.y)
-				else:
-					lh.set_flicker_override(-1.0)
+## Alpha des rais des puits : glisse vers shaft_ray_target (fondu de LIGHT_FADE_S). Rien sans rai.
+func _update_rays(delta: float) -> void:
+	if _shaft_sprites.is_empty():
+		_ray_k = shaft_ray_target
+		return
+	_ray_k = move_toward(_ray_k, shaft_ray_target, delta / LIGHT_FADE_S)
+	var rays_ok := int(Quality.get_setting(&"rays_max")) > 0
+	for sp in _shaft_sprites:
+		if is_instance_valid(sp):
+			sp.visible = rays_ok
+			sp.modulate.a = SHAFT_ALPHA * _ray_k
 
 
 ## Nombre de sources de la carte (tests).
@@ -774,7 +740,8 @@ func _process(delta: float) -> void:
 		_lights_tier = tier_name
 		_update_map_lights_tier()
 	_warmth = move_toward(_warmth, _warmth_target, delta / 0.5)
-	_process_event(delta)
+	events.tick(delta, difficulty)
+	_update_rays(delta)
 	if _bell_t >= 0.0:
 		_bell_t += delta
 		if _bell_t > 0.3 and _bell != null:
@@ -883,8 +850,8 @@ func _push(delta: float) -> void:
 		return
 	var p := _current
 	var wind_saved: Variant = p.get(&"wind_mult")
-	if _gust > 0.0 and wind_saved != null:
-		p[&"wind_mult"] = lerpf(float(wind_saved), maxf(float(wind_saved), GUST_WIND), _gust)
+	if gust_level > 0.0 and wind_saved != null:
+		p[&"wind_mult"] = lerpf(float(wind_saved), maxf(float(wind_saved), gust_wind), gust_level)
 	_push_body(p, delta)
 	if wind_saved != null:
 		p[&"wind_mult"] = wind_saved
