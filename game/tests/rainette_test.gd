@@ -255,7 +255,7 @@ func _run() -> void:
 	_check("Langue lancée", _player.spells.cast(1))
 	_check("anim attack orientée", String(_player.action_anim()).begins_with("attack_e"), str(_player.action_anim()))
 	var t_imp := _to_impact()
-	_check("impact à la frame 3 de attack (0,25 s)", _near(t_imp, 0.25, 0.04), str(t_imp))
+	_check("impact à la frame 3 de attack (0,13 s, ressenti 8 f à 60 Hz)", _near(t_imp, 0.13, 0.03), str(t_imp))
 	_check("cible principale (la plus proche) : gros coup 1,15", _near(tgt.total(), RainetteKit.TONGUE_COEF * BASE), str(tgt.taken))
 	_check("fouet de 4,5 u : le reste de la ligne prend le coup réduit 0,9", _near(on_line.total(), RainetteKit.TONGUE_LINE_COEF * BASE), str(on_line.taken))
 	_check("rien hors de la ligne / au-delà de 4,5 u", off_line.taken.is_empty() and beyond.taken.is_empty())

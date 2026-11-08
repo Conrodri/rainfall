@@ -11,7 +11,56 @@ WORK=ROOT/'art/blender/cel/skins'
 BLEND=WORK/'rainette_skin1.blend'
 BLENDER=r'C:\Program Files\Blender Foundation\Blender 5.2\blender.exe'
 
+def materials():
+    import bpy
+    from cd_cd1_common import rgb
+    for mat in bpy.data.materials:
+        if not mat.use_nodes:continue
+        bs=next((n for n in mat.node_tree.nodes if n.type=='BSDF_PRINCIPLED'),None)
+        if not bs:continue
+        if bs.inputs['Emission Strength'].default_value>.01:continue
+        name=mat.name.lower()
+        color=None;metal=0.;rough=.35
+        if any(x in name for x in ('skin','amphib','frog','olive','mottle')):color='232A33';rough=.21
+        elif any(x in name for x in ('iron','rust','armor','armour','cuirass','bronze')):color='4A4030';metal=.8;rough=.34
+        elif any(x in name for x in ('leather','strap','reed','wood','haft')):color='17191C';rough=.6
+        elif any(x in name for x in ('steel','silver','blade','spear','metal')):color='8E8E86';metal=.85
+        if color:
+            bs.inputs['Base Color'].default_value=rgb(color)
+            bs.inputs['Roughness'].default_value=rough;bs.inputs['Metallic'].default_value=metal
+            for node in mat.node_tree.nodes:
+                if node.type=='VALTORGB':
+                    for e in node.color_ramp.elements:e.color=rgb(color)
+    # Surface markings only: preserve every vertex, silhouette, rig and pose.
+    import math
+    for ob in bpy.context.scene.objects:
+        if ob.type!='MESH':continue
+        if 'spear' in ob.name.lower() and any(x in ob.name.lower() for x in ('head','tip','blade','point')):
+            silver=ob.data.materials[0].copy();silver.name='Skin1 silver spear #8E8E86'
+            bs=next(n for n in silver.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
+            bs.inputs['Base Color'].default_value=rgb('8E8E86');bs.inputs['Metallic'].default_value=.85
+            for node in silver.node_tree.nodes:
+                if node.type=='VALTORGB':
+                    for e in node.color_ramp.elements:e.color=rgb('8E8E86')
+            ob.data.materials[0]=silver
+        for index,mat in list(enumerate(ob.data.materials)):
+            if not mat or 'amphibian skin' not in mat.name.lower():continue
+            pale=mat.copy();pale.name='Skin1 pale grey marbling #7A8078'
+            bs=next(n for n in pale.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
+            bs.inputs['Base Color'].default_value=rgb('7A8078')
+            for node in pale.node_tree.nodes:
+                if node.type=='VALTORGB':
+                    for e in node.color_ramp.elements:e.color=rgb('7A8078')
+            ob.data.materials.append(pale);slot=len(ob.data.materials)-1
+            for p in ob.data.polygons:
+                if p.material_index!=index:continue
+                c=p.center
+                if ('thigh' in ob.name.lower() or 'hip' in ob.name.lower() or c.y>0) and math.sin(c.x*29+math.sin(c.z*17)*2)+math.cos(c.z*31+c.y*12)>1.35:p.material_index=slot
+
+
 def render():
+    if "--actions" in sys.argv:
+        render_actions();return
     import bpy, iso_rig as iso, ra1_build as ra, cel_heroes_d_build as hd
     import faulthandler
     faulthandler.dump_traceback_later(60,repeat=True)
@@ -43,48 +92,7 @@ def render():
         bpy.ops.wm.open_mainfile(filepath=str(ra.SOURCE))
         print('MATERIALS '+json.dumps([m.name for m in bpy.data.materials]),flush=True)
         if '--inspect' in sys.argv:return
-        for mat in bpy.data.materials:
-            if not mat.use_nodes:continue
-            bs=next((n for n in mat.node_tree.nodes if n.type=='BSDF_PRINCIPLED'),None)
-            if not bs:continue
-            if bs.inputs['Emission Strength'].default_value>.01:continue
-            name=mat.name.lower()
-            color=None;metal=0.;rough=.35
-            if any(x in name for x in ('skin','amphib','frog','olive','mottle')):color='232A33';rough=.21
-            elif any(x in name for x in ('iron','rust','armor','armour','cuirass','bronze')):color='4A4030';metal=.8;rough=.34
-            elif any(x in name for x in ('leather','strap','reed','wood','haft')):color='17191C';rough=.6
-            elif any(x in name for x in ('steel','silver','blade','spear','metal')):color='8E8E86';metal=.85
-            if color:
-                bs.inputs['Base Color'].default_value=rgb(color)
-                bs.inputs['Roughness'].default_value=rough;bs.inputs['Metallic'].default_value=metal
-                for node in mat.node_tree.nodes:
-                    if node.type=='VALTORGB':
-                        for e in node.color_ramp.elements:e.color=rgb(color)
-        # Surface markings only: preserve every vertex, silhouette, rig and pose.
-        import math
-        for ob in bpy.context.scene.objects:
-            if ob.type!='MESH':continue
-            if 'spear' in ob.name.lower() and any(x in ob.name.lower() for x in ('head','tip','blade','point')):
-                silver=ob.data.materials[0].copy();silver.name='Skin1 silver spear #8E8E86'
-                bs=next(n for n in silver.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
-                bs.inputs['Base Color'].default_value=rgb('8E8E86');bs.inputs['Metallic'].default_value=.85
-                for node in silver.node_tree.nodes:
-                    if node.type=='VALTORGB':
-                        for e in node.color_ramp.elements:e.color=rgb('8E8E86')
-                ob.data.materials[0]=silver
-            for index,mat in list(enumerate(ob.data.materials)):
-                if not mat or 'amphibian skin' not in mat.name.lower():continue
-                pale=mat.copy();pale.name='Skin1 pale grey marbling #7A8078'
-                bs=next(n for n in pale.node_tree.nodes if n.type=='BSDF_PRINCIPLED')
-                bs.inputs['Base Color'].default_value=rgb('7A8078')
-                for node in pale.node_tree.nodes:
-                    if node.type=='VALTORGB':
-                        for e in node.color_ramp.elements:e.color=rgb('7A8078')
-                ob.data.materials.append(pale);slot=len(ob.data.materials)-1
-                for p in ob.data.polygons:
-                    if p.material_index!=index:continue
-                    c=p.center
-                    if ('thigh' in ob.name.lower() or 'hip' in ob.name.lower() or c.y>0) and math.sin(c.x*29+math.sin(c.z*17)*2)+math.cos(c.z*31+c.y*12)>1.35:p.material_index=slot
+        materials()
         bpy.context.preferences.filepaths.save_version=0
         bpy.ops.wm.save_as_mainfile(filepath=str(BLEND))
         if '--prepare' in sys.argv:return
@@ -139,6 +147,15 @@ def render():
                 for slot in ob.material_slots:
                     if slot.material and slot.material.name in replacements:slot.material=replacements[slot.material.name]
     frame(OUT/'portrait.png')
+
+def render_actions():
+    import time
+    sys.path.insert(0,str(ROOT/'art/tools/feel'))
+    import rainette_actions_build as actions
+    work=WORK/('rainette_skin1_actions_'+str(time.time_ns()))
+    work.mkdir(parents=True)
+    actions.build(surface=materials,destination=OUT,work=work)
+
 
 def driver():
     OUT.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
@@ -211,4 +228,8 @@ def verify():
 if __name__=='__main__':
     if '--render' in sys.argv:render()
     elif '--verify' in sys.argv:verify()
+    elif "--actions" in sys.argv:
+        sys.path.insert(0,str(ROOT/"art/tools/feel"))
+        from rainette_skin1_actions_finish import driver_actions
+        driver_actions()
     else:driver()
