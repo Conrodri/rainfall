@@ -270,8 +270,14 @@ static func forced_variant() -> String:
 	return ""
 
 
+## Carte imposée par le mode test (onglet « Cartes »), prioritaire sur `--force-map` ; "" = aucune.
+static var test_map := ""
+
+
 ## Test (`godot ... -- --force-map=cite_fonderie_canal`) : impose cette carte si elle fait partie de celles de l'étage, sinon "".
 static func forced_map(maps: Array) -> String:
+	if test_map != "": # onglet « Cartes » du mode test (TestMode.save_plan / restore_plan)
+		return test_map if test_map in maps else ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--force-map="):
 			var id := arg.trim_prefix("--force-map=")

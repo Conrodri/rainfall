@@ -31,6 +31,84 @@ func _frames(n: int) -> void:
 		await get_tree().physics_frame
 
 
+## Onglet Cartes : chaque carte réelle se charge depuis le panneau, profil intact, D d'ambiance appliqué, retour à l'arène.
+func _test_maps(overlay: Node) -> void:
+	var panel: TestPanel = overlay.panel
+	var stage: StageManager = _main.get(&"stage")
+	var amb: AmbianceManager = _main.get(&"ambiance")
+	panel._select_tab(&"maps")
+	await get_tree().process_frame
+	var cat := TestMaps.catalog()
+	_check("cartes : 9 cartes réelles au catalogue", cat.size() == 9, str(cat.size()))
+	_check("cartes : l'arène n'est pas au catalogue", cat.all(func(e): return e.id != "test_arena"))
+	TestMode.set_difficulty(1.0)
+	var started := [0]
+	var on_start := func(_n: int) -> void: started[0] += 1
+	stage.stage_started.connect(on_start)
+	for e in cat:
+		var b: Button = panel.find_child("Map_%s" % e.id, true, false)
+		_check("carte %s : bouton" % e.id, b != null)
+		if b == null:
+			continue
+		b.pressed.emit()
+		await _frames(4)
+		_check("carte %s : chargée" % e.id, stage.map_id == e.id and stage.map != null and not stage.bare_arena and TestMode.map_id == e.id, stage.map_id)
+		_check("carte %s : étage %d" % [e.id, e.floor], RunState.stage == int(e.floor))
+		_check("carte %s : joueur au départ" % e.id, _player.global_position.distance_to(stage.map.to_global(stage.map.get_player_start())) < 400.0)
+		_check("carte %s : profil intact" % e.id, Profile.sandbox and not FileAccess.file_exists(PROFILE_PATH))
+		panel._select_tab(&"maps")
+		if String(e.event) != "":
+			var ab: Button = panel.find_child("Ambient_7_5", true, false)
+			ab.pressed.emit()
+			await _frames(12)
+			_check("carte %s : D d'ambiance 7,5 appliqué" % e.id, is_equal_approx(TestMode.ambient_d, 7.5) and amb.events.event_name == String(e.event) and amb.events.difficulty >= 7.5 and amb.events.event_active(1.0), "%s %s profil=%s proc=%s pause=%s mgr=%s" % [amb.events.event_name, amb.events.difficulty, amb.profile != null, amb.is_processing(), get_tree().paused, amb.is_inside_tree()])
+			_check("carte %s : effets sans type inconnu" % e.id, amb.events.unknown_types.is_empty())
+			panel.find_child("Ambient_none", true, false).pressed.emit()
+			await _frames(2)
+			_check("carte %s : D d'ambiance retiré" % e.id, TestMode.ambient_d < 0.0 and not amb.events.event_active(1.0))
+	_check("cartes : une émission stage_started par carte", started[0] == cat.size(), str(started[0]))
+	# repère : creusets (cité), puits (ossuaire), noria (rizières hautes)
+	for id in ["cite_rouille", "cryptes_ossuaire_pluies", "terrasses_rizieres_hautes"]:
+		panel._select_tab(&"maps")
+		await get_tree().process_frame
+		(panel.find_child("Map_%s" % id, true, false) as Button).pressed.emit()
+		await _frames(3)
+		var lm := TestMaps.landmark(get_tree())
+		if not lm.is_empty():
+			_player.global_position = stage.map.to_global(stage.map.get_player_start())
+			var far: float = _player.global_position.distance_to(lm.pos)
+			panel._select_tab(&"maps")
+			await get_tree().process_frame
+			(panel.find_child("MapLandmark", true, false) as Button).pressed.emit()
+			_check("repère %s (%s) : téléporté plus près" % [id, lm.name], _player.global_position.distance_to(lm.pos) < maxf(far, 1.0) or far < 300.0)
+	# secret armé sur une carte à secret
+	var sec_id := ""
+	for e in cat:
+		if bool(e.secret) and int(e.floor) <= Balance.SECRET_MAX_FLOOR:
+			sec_id = e.id
+			break
+	if sec_id != "":
+		panel._select_tab(&"maps")
+		await get_tree().process_frame
+		(panel.find_child("MapSecret", true, false) as CheckButton).button_pressed = true
+		(panel.find_child("Trigger_lever", true, false) as Button).pressed.emit()
+		await get_tree().process_frame
+		(panel.find_child("Map_%s" % sec_id, true, false) as Button).pressed.emit()
+		await _frames(3)
+		_check("secret armé sur %s" % sec_id, not stage.secrets.is_empty() and FloorPlan.secret_floor(stage.floor_plan) > 0)
+	# retour à l'arène
+	panel._select_tab(&"maps")
+	await get_tree().process_frame
+	(panel.find_child("MapArena", true, false) as Button).pressed.emit()
+	await _frames(3)
+	_check("retour à l'arène plate", stage.map_id == "test_arena" and stage.bare_arena and TestMode.map_id == "" and RunState.stage == 1)
+	_check("retour : profil intact", Profile.sandbox and not FileAccess.file_exists(PROFILE_PATH))
+	stage.stage_started.disconnect(on_start)
+	TestMode.map_secret = false
+	TestMode.map_trigger = &""
+	_player = _main.get(&"player")
+
+
 func _alive() -> Array:
 	return get_tree().get_nodes_in_group(&"enemies").filter(func(e): return e is Enemy and e.active)
 
@@ -120,7 +198,7 @@ func _run() -> void:
 			spawned += 1
 		else:
 			_check("boss %s invoqué" % e.get("boss_id", ""), false)
-		await _frames(6)
+		await _frames(12)
 		TestTools.clean(get_tree())
 		await _frames(2)
 	_check("tous les boss et mini-boss invoqués puis retirés", spawned == cat.size() - kinds.get(&"tier", 0), "%d" % spawned)
@@ -158,7 +236,7 @@ func _run() -> void:
 	var gold0: float = RunState.gold
 	var first = chests[0]
 	_check("or infini : ouverture acceptée, or non débité", first.try_open() and RunState.gold >= gold0)
-	await _frames(6)
+	await _frames(12)
 	var uis: Array = get_tree().root.find_children("*", "ChestUI", true, false)
 	_check("ouverture : ChestUI et tirage (session, qualité)", uis.size() == 1 and uis[0].session != null and str(uis[0].session.quality) != "", str(uis.size()))
 	for u in uis:
@@ -353,6 +431,7 @@ func _run() -> void:
 			TestTools.switch_character(get_tree(), &"ardent")
 		overlay.close()
 		_check("panneau fermé : pause levée", not get_tree().paused)
+		await _test_maps(overlay)
 		# F1 ouvre et ferme le panneau ; il ne déplace pas le focus des menus quand le panneau est ouvert
 		var tab_ev := InputEventKey.new()
 		tab_ev.keycode = KEY_F1
@@ -385,6 +464,7 @@ func _run() -> void:
 	_check("sortie : mode test coupé", not TestMode.active and not Profile.sandbox)
 	_check("sortie : profil identique à l'entrée", JSON.stringify(Profile.to_dict()) == _snapshot)
 	_check("sortie : drapeaux remis", not TestMode.god and not TestMode.inf_range and not TestMode.inf_gold and TestMode.skin_override.is_empty())
+	_check("sortie : forçages de FloorPlan et D d'ambiance rendus", FloorPlan.test_map == "" and FloorPlan.force_secret == -1 and FloorPlan.force_trigger == &"" and TestMode.ambient_d < 0.0 and TestMode.map_id == "")
 	if FileAccess.file_exists(PROFILE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(PROFILE_PATH))
 	Profile.path = _old_path

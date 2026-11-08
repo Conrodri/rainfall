@@ -178,7 +178,7 @@ func _build() -> void:
 	stage = StageManager.new()
 	stage.name = "Stage"
 	stage.map_scene = map_scene
-	stage.bare_arena = TestMode.active # mode test : arène vide, sans coffre ni téléporteur
+	stage.bare_arena = TestMode.active and TestMode.map_id == "" # mode test : arène vide (sauf carte réelle choisie dans l'onglet Cartes), sans coffre ni téléporteur
 	stage.stage_started.connect(_on_stage_started)
 	stage.victory_choice_requested.connect(_on_victory_choice)
 	stage.run_won.connect(func() -> void: end_run(true))
@@ -430,7 +430,7 @@ func _on_stage_started(n: int) -> void:
 	for p in players:
 		if is_instance_valid(p) and p.has_method(&"clear_statuses"):
 			p.clear_statuses()
-	if n > 1 and is_ready and not run_over: # pas à la reprise de sauvegarde ni au 1er étage
+	if n > 1 and is_ready and not run_over and not TestMode.active: # pas à la reprise de sauvegarde ni au 1er étage
 		_show_floor_card(n)
 		if RunState.omen_pending and is_instance_valid(floor_card): # présage : après le carton, avant la reprise du jeu
 			floor_card.finished.connect(_show_omen_screen, CONNECT_ONE_SHOT)

@@ -84,9 +84,9 @@ func _run() -> void:
 			break
 	cam.zoom = Vector2(0.8, 0.8)
 	cam.global_position = target
-	AmbientEvents.forced_d = -1.0
+	TestMode.ambient_d = -1.0
 	await _shot("1_avant")
-	AmbientEvents.forced_d = 7.5
+	TestMode.ambient_d = 7.5
 	await get_tree().create_timer(16.0).timeout
 	await _shot("2_pendant")
 	print("effets ", mgr.events.active_count() if mgr != null else -1, " / ", mgr.events.effects.size() if mgr != null else -1, " pause ", get_tree().paused, " manquants ", mgr.events.missing_assets() if mgr != null else [])
