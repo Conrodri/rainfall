@@ -38,6 +38,8 @@ const GOLD := Color("#FFE9A8")
 const EMBER := Color("#FFB347")
 const MODE_NAMES := {"facile": "Facile", "moyen": "Moyen", "difficile": "Difficile"}
 const QUICK_HOLD_S := 0.6 ## appui long sur « Jouer » = relancer le dernier personnage (E-08 : 0,6 s)
+const COOP_ICON := "res://assets/sprites/ui/coop/icon_coop_local.png"
+const COOP_ICON_PX := 48 ## icône du bouton « Coop locale » (livrée en 96 px, réduite à 48 dans un bouton de 96 de haut)
 const PAIR_FONT := 34 ## libellé des boutons côte à côte (302 px de large)
 const VERSION_FONT := 22
 const VERSION_ALPHA := 0.6
@@ -323,6 +325,7 @@ func _rebuild_column() -> void:
 		var ct := _add_pair("Coop locale", func(): coop_local_requested.emit(), "Mode test", func(): test_mode_requested.emit())
 		coop_button = ct[0]
 		coop_button.name = "CoopLocal"
+		_set_button_icon(coop_button, COOP_ICON, COOP_ICON_PX)
 		test_button = ct[1]
 	else:
 		test_button = _add_sub("Mode test", func(): test_mode_requested.emit()) # À RETIRER OU MASQUER AVANT LA SORTIE
@@ -346,6 +349,17 @@ func _rebuild_column() -> void:
 			b.focus_neighbor_left = b.get_path_to(row[ci - 1] if ci > 0 else b)
 			b.focus_neighbor_right = b.get_path_to(row[ci + 1] if ci + 1 < row.size() else b)
 	UiTheme.hook_sounds(root)
+
+
+## Icône à gauche du libellé (Button.icon, calée par `icon_max_width`) ; sans fichier livré le bouton reste texte seul.
+static func _set_button_icon(b: Button, path: String, px: int) -> void:
+	if not ResourceLoader.exists(path):
+		return
+	b.icon = load(path) as Texture2D
+	b.expand_icon = true
+	b.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_constant_override(&"icon_max_width", px)
+	b.add_theme_constant_override(&"h_separation", 10)
 
 
 func _add_sub(txt: String, cb: Callable) -> MenuBtn:

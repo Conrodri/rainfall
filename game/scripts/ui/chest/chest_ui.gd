@@ -144,6 +144,14 @@ var _quality: Label
 var _title: Label
 var _cards: Array[PanelContainer] = []
 var _card_front: Array[Control] = []
+## Libellés de chaque carte, par référence (plus d'accès par index d'enfant).
+var _card_name: Array[Label] = []
+var _card_eff: Array[Label] = []
+var _card_tags: Array[Label] = []
+var _card_own: Array[Label] = []
+var _card_rar: Array[Label] = []
+var _card_tag_icons: Array[Control] = [] ## rangée de pictos d'étiquettes (TagIcons.row), reconstruite par _fit_card
+var _card_tag_list: Array = [[], []] ## étiquettes de l'objet affiché sur chaque carte
 var fit_report: Array = [{}, {}] ## par carte : zones et dimensions mesurées du texte (tests)
 var _card_back: Array[Label] = []
 var _card_icons: Array[TextureRect] = []
@@ -595,6 +603,7 @@ func _build() -> void:
 		card.focus_entered.connect(_hover_card.bind(i, true))
 		card.focus_exited.connect(_hover_card.bind(i, false))
 		var sizes := [38, 30, 26, 28]
+		var lbls: Array[Label] = []
 		for n in 4:
 			var l := _label(sizes[n], Color.WHITE)
 			l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -602,6 +611,15 @@ func _build() -> void:
 			if n == 1:
 				l.size_flags_vertical = Control.SIZE_EXPAND_FILL
 			front.add_child(l)
+			lbls.append(l)
+		_card_name.append(lbls[0])
+		_card_eff.append(lbls[1])
+		_card_tags.append(lbls[2])
+		_card_own.append(lbls[3])
+		var tag_icons := Control.new() # pictos d'étiquettes, posés par _fit_card à gauche du libellé des étiquettes
+		tag_icons.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		front.add_child(tag_icons)
+		_card_tag_icons.append(tag_icons)
 		# nom de la rareté écrit sur la carte (enfant 5), pastille sombre au bas de l'illustration
 		var rl := _label(22, Color.WHITE)
 		rl.autowrap_mode = TextServer.AUTOWRAP_OFF
@@ -617,6 +635,7 @@ func _build() -> void:
 		rsb.content_margin_bottom = 0
 		rl.add_theme_stylebox_override("normal", rsb)
 		front.add_child(rl)
+		_card_rar.append(rl)
 		# contour de focus (manette / clavier), au-dessus de tout le reste de la carte
 		var ring := Panel.new()
 		var rgsb := StyleBoxFlat.new()
@@ -716,14 +735,14 @@ func _fit_card(i: int) -> void:
 		tr.custom_minimum_size = Vector2(px, px)
 		tr.size = Vector2(px, px)
 	# rareté écrite : pastille au bas de l'illustration
-	var rar_l := f.get_child(5) as Label
+	var rar_l := _card_rar[i]
 	var rh := clampf(art.size.y * 0.14, 22.0, 40.0)
 	rar_l.position = Vector2(art.position.x + art.size.x * 0.12, art.end.y - rh - 6.0)
 	rar_l.size = Vector2(art.size.x * 0.76, rh)
 	rar_l.add_theme_font_size_override("font_size", mini(Accessibility.fs(clampi(int(rh * 0.62), 14, 24)), int(rh * 0.9)))
 	# nom
 	var band := _zone(ZONE_BAND, sz, Vector2(ZONE_PAD.x, 0.004))
-	var name_l := f.get_child(1) as Label
+	var name_l := _card_name[i]
 	name_l.autowrap_mode = TextServer.AUTOWRAP_OFF
 	name_l.clip_text = true
 	name_l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -738,10 +757,11 @@ func _fit_card(i: int) -> void:
 	var name_w := font.get_string_size(name_l.text, HORIZONTAL_ALIGNMENT_LEFT, -1, nfs).x
 	# description : effet, étiquettes, « Nouveau » / exemplaires possédés
 	var tz := _zone(ZONE_TEXT, sz)
-	var eff := f.get_child(2) as Label
-	var tags := f.get_child(3) as Label
-	var own := f.get_child(4) as Label
+	var eff := _card_eff[i]
+	var tags := _card_tags[i]
+	var own := _card_own[i]
 	var lines: Array[Label] = [eff, tags, own]
+	var n_ic := _tag_icon_count(_card_tag_list[i])
 	var gap := 3.0
 	var fs := Accessibility.fs(clampi(int(tz.size.y * 0.15), 12, 30)) # « Taille du texte » : la boucle ci-dessous réduit jusqu'à ce que ça tienne
 	var total := 0.0
@@ -752,7 +772,8 @@ func _fit_card(i: int) -> void:
 		for k in 3:
 			var l := lines[k]
 			var lf := fs if k == 0 else maxi(fs - 3, 10)
-			hs[k] = 0.0 if l.text.is_empty() else font.get_multiline_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, tz.size.x, lf, -1, BREAK_FLAGS).y * 1.05
+			var lw := tz.size.x - (_tag_icons_width(n_ic, lf) if k == 1 else 0.0) # la ligne d'étiquettes cède la place aux pictos
+			hs[k] = 0.0 if l.text.is_empty() else font.get_multiline_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, lw, lf, -1, BREAK_FLAGS).y * 1.05
 			if hs[k] > 0.0:
 				total += hs[k] + (gap if shown > 0 else 0.0)
 				shown += 1
@@ -767,11 +788,14 @@ func _fit_card(i: int) -> void:
 		l.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 		l.add_theme_constant_override("line_spacing", 0) # la mesure de _fit_card ignore l'interligne du thème
 		l.add_theme_font_size_override("font_size", fs if k == 0 else maxi(fs - 3, 10))
-		l.position = Vector2(tz.position.x, y)
-		l.size = Vector2(tz.size.x, minf(hs[k], tz.end.y - y))
+		var ix := _tag_icons_width(n_ic, maxi(fs - 3, 10)) if k == 1 else 0.0
+		l.position = Vector2(tz.position.x + ix, y)
+		l.size = Vector2(tz.size.x - ix, minf(hs[k], tz.end.y - y))
+		if k == 1:
+			_place_tag_icons(i, Vector2(tz.position.x, y), maxi(fs - 3, 10), hs[k] > 0.0)
 		if hs[k] > 0.0:
 			y += hs[k] + gap
-	fit_report[i] = {"art": art, "band": band, "text": tz, "text_h": total, "name_w": name_w, "font": fs}
+	fit_report[i] = {"tag_icons": _card_tag_icons[i], "art": art, "band": band, "text": tz, "text_h": total, "name_w": name_w, "font": fs}
 
 
 func _layout_stage() -> void:
@@ -1295,7 +1319,7 @@ func _spin_card(i: int, u: float) -> void:
 		var id := str(seq[k])
 		var it := ItemDB.get_item(id)
 		_card_icons[i].texture = _tex(ITEM_ICON % id)
-		var name_l := _card_front[i].get_child(1) as Label
+		var name_l := _card_name[i]
 		name_l.text = str(it.get("name", id))
 		name_l.add_theme_color_override("font_color", (Palette.rarity(session.quality) as Color).darkened(0.25))
 		_fit_card(i)
@@ -1315,7 +1339,52 @@ func _show_front(i: int) -> void:
 	_card_rarity[i].texture = _tex(RARITY_FRAME % session.quality)
 	_set_rarity_label(i, session.quality)
 	for c in [2, 3, 4]:
-		(_card_front[i].get_child(c) as Label).text = ""
+		(_card_text(i, c) as Label).text = ""
+
+
+## Libellé de description d'une carte par numéro (2 effet, 3 étiquettes, 4 exemplaires).
+func _card_text(i: int, c: int) -> Label:
+	return [_card_eff, _card_tags, _card_own][c - 2][i]
+
+
+## Étiquettes de la carte : texte « [Étiquette] » (toujours là, le picto ne porte jamais seul le sens) et pictos.
+func set_card_tags(i: int, tags: Array) -> void:
+	_card_tag_list[i] = tags.duplicate()
+	var tag_texts: Array = []
+	for t in tags:
+		tag_texts.append("[%s]" % str(t))
+	_card_tags[i].text = "  ".join(tag_texts)
+
+
+## Nombre de pictos distincts disponibles pour ces étiquettes.
+func _tag_icon_count(tags: Array) -> int:
+	var seen := {}
+	for t in tags:
+		if TagIcons.texture(str(t)) != null:
+			seen[str(t)] = true
+	return seen.size()
+
+
+func _tag_icons_width(n: int, px: int) -> float:
+	return 0.0 if n == 0 else float(n * (px + 4) + 4)
+
+
+## Reconstruit la rangée de pictos (px de côté) à `pos`, à gauche du libellé des étiquettes.
+func _place_tag_icons(i: int, pos: Vector2, px: int, shown: bool) -> void:
+	var holder := _card_tag_icons[i]
+	for c in holder.get_children():
+		holder.remove_child(c)
+		c.queue_free()
+	holder.visible = shown
+	if not shown:
+		return
+	var row := TagIcons.row(_card_tag_list[i], float(px))
+	if row.get_child_count() == 0:
+		row.free()
+		return
+	holder.add_child(row)
+	holder.position = pos
+	row.position = Vector2.ZERO
 
 
 ## Carte posée sur l'item tiré (texte complet) ; `fx` = rebond et son.
@@ -1369,7 +1438,7 @@ func _set_card_hidden(i: int) -> void:
 
 ## Nom de la rareté en capitales sur la carte (la couleur n'est jamais seule à la porter).
 func _set_rarity_label(i: int, q: StringName) -> void:
-	var l := _card_front[i].get_child(5) as Label
+	var l := _card_rar[i]
 	l.text = String(QUALITY_NAMES.get(q, "")).to_upper() + Palette.rank_suffix(q)
 	l.add_theme_color_override("font_color", (Palette.rarity(q) as Color).lerp(Color.WHITE, 0.2))
 
@@ -1383,17 +1452,14 @@ func _fill_card(i: int) -> void:
 	var q := str(it.get("quality", session.quality))
 	_card_rarity[i].texture = _tex(RARITY_FRAME % q)
 	_set_rarity_label(i, StringName(q))
-	f.get_child(1).text = str(it.get("name", id))
-	f.get_child(1).add_theme_color_override("font_color", qc)
-	f.get_child(2).text = str(it.get("effect_text", ""))
-	var tag_texts: Array = []
-	for t in it.get("tags", []):
-		tag_texts.append("[%s]" % str(t))
-	f.get_child(3).text = "  ".join(tag_texts)
-	f.get_child(3).add_theme_color_override("font_color", Color(0.6, 0.8, 1.0))
+	_card_name[i].text = str(it.get("name", id))
+	_card_name[i].add_theme_color_override("font_color", qc)
+	_card_eff[i].text = str(it.get("effect_text", ""))
+	set_card_tags(i, it.get("tags", []))
+	_card_tags[i].add_theme_color_override("font_color", Color(0.6, 0.8, 1.0))
 	var owned := _owner().stacks(StringName(id))
-	f.get_child(4).text = stack_line(id, owned) if owned > 0 else "Nouveau"
-	f.get_child(4).add_theme_color_override("font_color", Color(1, 0.85, 0.4) if owned > 0 else Color(0.5, 1, 0.6))
+	_card_own[i].text = stack_line(id, owned) if owned > 0 else "Nouveau"
+	_card_own[i].add_theme_color_override("font_color", Color(1, 0.85, 0.4) if owned > 0 else Color(0.5, 1, 0.6))
 	var sb := _front_sb[i]
 	if sb is StyleBoxFlat:
 		(sb as StyleBoxFlat).border_color = qc

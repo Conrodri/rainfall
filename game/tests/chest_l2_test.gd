@@ -84,7 +84,7 @@ func _ready() -> void:
 	_check(absf(ar.position.y - gr.position.y) < 2.0 and gr.position.x >= ar.end.x + 40.0, "boutons côte à côte, écart >= 40 px")
 	_check(ui._gold_btn.has_theme_stylebox_override("normal") and not ui._free_btn.has_theme_stylebox_override("normal"), "bouton d'or au style distinct")
 	for i in 2:
-		var rl := ui._card_front[i].get_child(5) as Label
+		var rl := ui._card_rar[i]
 		var qn := String(ChestUI.QUALITY_NAMES[ui.session.quality]).to_upper()
 		_check(rl.text == qn and rl.size.x > 20.0, "rareté écrite sur la carte %d (« %s »)" % [i, rl.text])
 	_check(ui._pick_keys[0].text() != "" and ui._free_key.text() != "" and ui._gold_key.text() != "", "invites présentes au clavier-souris (%s / %s)" % [ui._pick_keys[0].text(), ui._gold_key.text()])

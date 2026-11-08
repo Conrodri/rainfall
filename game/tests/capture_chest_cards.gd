@@ -21,9 +21,8 @@ func _ready() -> void:
 	while ui._busy:
 		await get_tree().process_frame
 	for i in 2:
-		var f := ui._card_front[i]
-		(f.get_child(1) as Label).text = long_name
-		(f.get_child(2) as Label).text = long_eff
-		(f.get_child(3) as Label).text = "[Zone] [Survie] [Boss]"
-		(f.get_child(4) as Label).text = "Vous en avez déjà 12"
+		ui._card_name[i].text = long_name
+		ui._card_eff[i].text = long_eff
+		ui.set_card_tags(i, ["Zone", "Survie", "Feu", "Boss"])
+		ui._card_own[i].text = "Vous en avez déjà 12"
 		ui._fit_card(i)
