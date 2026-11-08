@@ -158,5 +158,8 @@ func _draw() -> void:
 		return
 	var w := 96.0
 	var y := -HEIGHT_U * Balance.UNIT_PX - 18.0
+	var bar_col := Color(0.95, 0.75, 0.3) if state == STATE_RINGING else Color(0.5, 0.2, 0.2)
+	if EpreuveSprites.draw_bar(self, Vector2(0.0, y + 4.0), w, hp_ratio(), bar_col): # lot EP-II : jauge Codex
+		return
 	draw_rect(Rect2(-w * 0.5, y, w, 8.0), Color(0, 0, 0, 0.6))
-	draw_rect(Rect2(-w * 0.5, y, w * hp_ratio(), 8.0), Color(0.95, 0.75, 0.3) if state == STATE_RINGING else Color(0.5, 0.2, 0.2))
+	draw_rect(Rect2(-w * 0.5, y, w * hp_ratio(), 8.0), bar_col)

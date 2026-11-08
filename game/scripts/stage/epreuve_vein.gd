@@ -369,10 +369,16 @@ func draw_overlay(c: Node2D) -> void:
 	var pl := PackedVector2Array()
 	for p in _pts:
 		pl.append(c.to_local(m.to_global(p)))
-	c.draw_polyline(pl, Color(col.r, col.g, col.b, 0.28), 4.0)
+	var trail_col := Color(col.r, col.g, col.b, 0.55)
+	for i in pl.size() - 1: # lot EP-II : tuile de trajet Codex, repli polyligne
+		if not EpreuveSprites.draw_strip(c, "ep2_path_tile.png", pl[i], pl[i + 1], 30.0, trail_col):
+			c.draw_polyline(pl, Color(col.r, col.g, col.b, 0.28), 4.0)
+			break
 	var active := is_running()
 	if state == Pillar.STATE_READY:
-		c.draw_arc(c.to_local(m.to_global(path[0])), SECRET_RING_PX, 0.0, TAU, 32, Color(col.r, col.g, col.b, 0.5), 3.0)
+		var ready_col := Color(col.r, col.g, col.b, 0.5)
+		if not EpreuveSprites.draw_ring(c, "ring_zone.png", c.to_local(m.to_global(path[0])), SECRET_RING_PX, ready_col):
+			c.draw_arc(c.to_local(m.to_global(path[0])), SECRET_RING_PX, 0.0, TAU, 32, ready_col, 3.0)
 		return
 	var rad := disc_radius()
 	var disc := EpreuveSprites.tex(EpreuveSprites.VFX_DIR, "vein_disc_%s.png" % _skin_name())
@@ -388,22 +394,27 @@ func draw_overlay(c: Node2D) -> void:
 	if not active:
 		return
 	# charge : arc plein autour du disque
-	c.draw_arc(Vector2.ZERO, rad + 14.0, -PI * 0.5, -PI * 0.5 + TAU * progress(), 64, Color(1.0, 0.9, 0.5, 0.9), 6.0)
+	if EpreuveSprites.draw_pie(c, Vector2.ZERO, rad + 18.0, 1.0, Color(0.1, 0.1, 0.1, 0.45)): # lot EP-II : rail sombre + secteur Codex
+		EpreuveSprites.draw_pie(c, Vector2.ZERO, rad + 18.0, progress(), Color(1.0, 0.9, 0.5, 0.95))
+	else:
+		c.draw_arc(Vector2.ZERO, rad + 14.0, -PI * 0.5, -PI * 0.5 + TAU * progress(), 64, Color(1.0, 0.9, 0.5, 0.9), 6.0)
 	# geyser : télégraphe rouge qui se renforce, puis flash blanc
 	if _gey_phase != GEY_NONE:
 		var gp := c.to_local(m.to_global(_gey_pos))
 		var gr := Balance.VEIN_GEYSER_RADIUS_U * Balance.UNIT_PX
 		if _gey_phase == GEY_TELEGRAPH:
 			var k := 1.0 - clampf(_gey_t / Balance.VEIN_GEYSER_TELEGRAPH_S, 0.0, 1.0)
-			c.draw_circle(gp, gr, Color(1.0, 0.25, 0.2, 0.06 + 0.14 * k))
-			c.draw_arc(gp, gr, 0.0, TAU, 48, Color(1.0, 0.3, 0.2, 0.35 + 0.55 * k), 4.0)
+			if not EpreuveSprites.draw_ground(c, "ep2_geyser_tele.png", gp, gr * 2.0 / 0.96, Color(1.0, 0.3, 0.2, 0.35 + 0.6 * k)): # lot EP-II
+				c.draw_circle(gp, gr, Color(1.0, 0.25, 0.2, 0.06 + 0.14 * k))
+				c.draw_arc(gp, gr, 0.0, TAU, 48, Color(1.0, 0.3, 0.2, 0.35 + 0.55 * k), 4.0)
 		else:
 			var gtex := EpreuveSprites.tex(EpreuveSprites.VFX_DIR, "vein_geyser_%s.png" % _skin_name())
 			if gtex != null: # lot EP-D : 6 frames 128x192 sur la durée de l'éruption
 				var gw := float(gtex.get_width()) / 6.0
 				var gh := float(gtex.get_height())
 				var gf := clampi(int(Time.get_ticks_msec() / 70) % 6, 0, 5)
-				c.draw_circle(gp, gr, Color(1.0, 1.0, 1.0, 0.25))
+				if not EpreuveSprites.draw_ground(c, "ep2_geyser_flash.png", gp, gr * 2.4, Color(1.0, 1.0, 1.0, 0.8)):
+					c.draw_circle(gp, gr, Color(1.0, 1.0, 1.0, 0.25))
 				c.draw_set_transform(gp, 0.0, Iso.UNSQUASH * (gr * 2.0 / gw))
 				c.draw_texture_rect_region(gtex, Rect2(-gw * 0.5, -gh * 0.85, gw, gh), Rect2(gf * gw, 0.0, gw, gh))
 				c.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
