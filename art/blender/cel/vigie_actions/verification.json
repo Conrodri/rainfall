@@ -1,0 +1,142 @@
+{
+  "attack": {
+    "frames": 5,
+    "impact": 2,
+    "F60": [
+      3,
+      2,
+      5,
+      5,
+      6
+    ],
+    "impact_at_F60": 5,
+    "bytes": 417444,
+    "bytes_e": 63172,
+    "anticipation_bbox_ratio": 1.8888888888888888,
+    "impact_bbox_ratio": 2.2777777777777777,
+    "anticipation_frame": 0,
+    "impact_bbox": [
+      45,
+      26,
+      168,
+      138
+    ],
+    "core_bbox_areas_se": [
+      11110,
+      12650,
+      13530,
+      8512,
+      7475
+    ],
+    "min_adjacent_delta": 0.20593896068188067
+  },
+  "flare": {
+    "frames": 6,
+    "impact": 3,
+    "F60": [
+      3,
+      3,
+      2,
+      7,
+      6,
+      7
+    ],
+    "impact_at_F60": 8,
+    "bytes": 509443,
+    "bytes_e": 73638,
+    "anticipation_bbox_ratio": 1.4814814814814814,
+    "impact_bbox_ratio": 2.037037037037037,
+    "anticipation_frame": 1,
+    "impact_bbox": [
+      53,
+      19,
+      163,
+      138
+    ],
+    "core_bbox_areas_se": [
+      8400,
+      9480,
+      10912,
+      12852,
+      6490,
+      7475
+    ],
+    "min_adjacent_delta": 0.15476190476190477
+  },
+  "net": {
+    "frames": 5,
+    "impact": 2,
+    "F60": [
+      5,
+      2,
+      7,
+      6,
+      7
+    ],
+    "impact_at_F60": 7,
+    "bytes": 509037,
+    "bytes_e": 71802,
+    "anticipation_bbox_ratio": 2.037037037037037,
+    "impact_bbox_ratio": 2.314814814814815,
+    "anticipation_frame": 0,
+    "impact_bbox": [
+      45,
+      28,
+      170,
+      138
+    ],
+    "core_bbox_areas_se": [
+      12426,
+      13328,
+      13516,
+      8073,
+      7475
+    ],
+    "min_adjacent_delta": 0.6186499652052888
+  },
+  "volley": {
+    "frames": 8,
+    "impact": 4,
+    "F60": [
+      4,
+      4,
+      4,
+      2,
+      10,
+      7,
+      8,
+      9
+    ],
+    "impact_at_F60": 14,
+    "bytes": 662980,
+    "bytes_e": 103055,
+    "anticipation_bbox_ratio": 1.6296296296296295,
+    "impact_bbox_ratio": 2.111111111111111,
+    "anticipation_frame": 2,
+    "impact_bbox": [
+      47,
+      14,
+      161,
+      138
+    ],
+    "core_bbox_areas_se": [
+      8418,
+      9394,
+      10614,
+      11224,
+      13786,
+      6664,
+      6655,
+      7475
+    ],
+    "min_adjacent_delta": 0.16042626728110598
+  },
+  "idle_bbox": [
+    71,
+    20,
+    125,
+    143
+  ],
+  "errors": [],
+  "status": "PASS"
+}

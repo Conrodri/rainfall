@@ -1,0 +1,35 @@
+ M game/assets/sprites/characters/vigie/attack.png
+ M game/assets/sprites/characters/vigie/attack_e.png
+ M game/assets/sprites/characters/vigie/flare.png
+ M game/assets/sprites/characters/vigie/flare_e.png
+ M game/assets/sprites/characters/vigie/hail_zone/default.png
+ M game/assets/sprites/characters/vigie/hail_zone/default_e.png
+ M game/assets/sprites/characters/vigie/hail_zone/end.png
+ M game/assets/sprites/characters/vigie/hail_zone/end_e.png
+ M game/assets/sprites/characters/vigie/net.png
+ M game/assets/sprites/characters/vigie/net_e.png
+ M game/assets/sprites/characters/vigie/vigie.tres
+ M game/assets/sprites/characters/vigie/volley.png
+ M game/assets/sprites/characters/vigie/volley_e.png
+?? art/blender/cel/feel2/vigie_fx_hail_zone.blend
+?? art/blender/cel/vigie_actions/before.json
+?? art/blender/cel/vigie_actions/blend_verification.json
+?? art/blender/cel/vigie_actions/outside_before.json
+?? art/blender/cel/vigie_actions/outside_verification.json
+?? art/blender/cel/vigie_actions/preflight.json
+?? art/blender/cel/vigie_actions/source_original.blend
+?? art/blender/cel/vigie_actions/verification.json
+?? art/blender/cel/vigie_actions/vigie.blend
+?? art/blender/cel/vigie_actions/vigie.tres
+?? art/tools/feel/fe_vigie_anim.txt
+?? art/tools/feel/fe_vigie_vfx.txt
+?? art/tools/feel/fe_vigie_vfx2.txt
+?? art/tools/feel/vigie_actions_build.py
+?? art/tools/feel/vigie_actions_verify.py
+?? art/tools/feel/vigie_actions_verify_blend.py
+?? art/tools/vigie_vfx/_vigie_fx_build_log.txt
+?? art/tools/vigie_vfx/_vigie_fx_flare.py
+?? art/tools/vigie_vfx/_vigie_fx_flare_log.txt
+?? art/tools/vigie_vfx/_vigie_fx_flare_python_log.txt
+?? art/tools/vigie_vfx/_vigie_fx_flare_run.py
+?? art/tools/vigie_vfx/vigie_fx_build.py

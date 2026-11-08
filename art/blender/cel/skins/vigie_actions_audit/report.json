@@ -1,0 +1,54 @@
+{
+  "vigie_skin1": {
+    "attack": {
+      "before": 339029,
+      "after": 401373,
+      "emission_before": 50402,
+      "emission_after": 63172
+    },
+    "flare": {
+      "before": 418499,
+      "after": 494347,
+      "emission_before": 62206,
+      "emission_after": 73638
+    },
+    "net": {
+      "before": 417034,
+      "after": 489641,
+      "emission_before": 61708,
+      "emission_after": 71802
+    },
+    "volley": {
+      "before": 567702,
+      "after": 640886,
+      "emission_before": 82165,
+      "emission_after": 103055
+    }
+  },
+  "vigie_avant_la_pluie": {
+    "attack": {
+      "before": 354546,
+      "after": 423148,
+      "emission_before": 50402,
+      "emission_after": 63172
+    },
+    "flare": {
+      "before": 436865,
+      "after": 519216,
+      "emission_before": 62206,
+      "emission_after": 73638
+    },
+    "net": {
+      "before": 435977,
+      "after": 512983,
+      "emission_before": 61708,
+      "emission_after": 71802
+    },
+    "volley": {
+      "before": 595601,
+      "after": 674177,
+      "emission_before": 82165,
+      "emission_after": 103055
+    }
+  }
+}

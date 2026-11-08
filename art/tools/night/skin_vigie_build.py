@@ -41,15 +41,23 @@ def materials():
 
 def render():
     import bpy
+    global WORK
+    actions='--actions' in sys.argv
+    if actions:
+        sys.path.insert(0,str(ROOT/'art/tools/feel'))
+        import vigie_actions_build as action
+        vg.ANIMS=action.ANIMS;vg.POSES=action.POSES;vg.F60=action.F60
+        WORK=WORK/'actions_v2'
     SOURCE.parent.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
-    if not SOURCE.exists():shutil.copy2(vg.SOURCE,SOURCE)
+    if not actions and not SOURCE.exists():shutil.copy2(vg.SOURCE,SOURCE)
     vg.SOURCE=SOURCE;vg.RAW=WORK
     # Reuse the original nested pose() and accent_base() without copying them.
-    src=inspect.getsource(vg.build).split('    # Validate projected geometry')[0]
+    src=(action.action_source() if actions else inspect.getsource(vg.build)).split('    # Validate projected geometry')[0]
+    src=src.replace('    bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE))','    pass')
     src=src.replace("    cel.install('creature',normals=False)","    skin_materials()\n    cel.install('creature',normals=False)")
     vg.skin_materials=materials
     exec(compile(src,str(vg.__file__),'exec'),vg.__dict__);vg.build()
-    s=bpy.context.scene;s.render.engine='BLENDER_EEVEE'
+    s=bpy.context.scene;s.render.engine='BLENDER_EEVEE';s.eevee.taa_render_samples=8
     s.render.image_settings.compression=35
     facing=bpy.data.objects['Vigie_facing_8_directions']
     for ai,(a,n) in enumerate(vg.ANIMS.items()):
@@ -64,8 +72,8 @@ def render():
                 with Image.open(WORK/'current.png') as im:im.convert('RGBA').resize((192,192),Image.Resampling.LANCZOS).save(p,optimize=True,compress_level=9)
                 for q in WORK.glob('current_e__*.png'):q.unlink()
         assemble(a)
-        print('SKIN COMPLETE '+a,flush=True)
-    if '--only' in sys.argv:return
+        pass
+    if actions or '--only' in sys.argv:return
     from mathutils import Vector
     s.frame_set(1);facing.rotation_euler.z=math.radians(12)
     for ob in bpy.data.objects['Longbow_hand_socket'].children_recursive:ob.hide_render=True
@@ -134,6 +142,7 @@ def driver():
     log=HERE/'_skin_vigie_render.log'
     with log.open('w') as f:code=subprocess.call([BLENDER,'--background','--python',str(Path(__file__).resolve()),'--','--render']+[a for a in sys.argv[1:] if a!='--verify'],stdout=f,stderr=subprocess.STDOUT,cwd=ROOT)
     if code:raise RuntimeError('Blender exit '+str(code)+'; '+str(log))
+    if '--actions' in sys.argv:return
     if all((OUT/(a+'.png')).exists() for a in [*vg.ANIMS,'portrait']):
         text=(BASE/'vigie.tres').read_text();text=text.replace('res://assets/sprites/characters/vigie/','res://assets/sprites/characters/vigie/skins/vigie_skin1/');(OUT/'vigie_skin1.tres').write_text(text)
     verify()
