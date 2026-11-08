@@ -83,7 +83,7 @@ func _key(code: Key) -> void:
 
 
 func _names(ui: ChestUI) -> Array:
-	return [(ui._card_front[0].get_child(1) as Label).text, (ui._card_front[1].get_child(1) as Label).text]
+	return [ui._card_name[0].text, ui._card_name[1].text]
 
 
 func _ready() -> void:

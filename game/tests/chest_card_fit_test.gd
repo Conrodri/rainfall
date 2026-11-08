@@ -44,10 +44,10 @@ func _ready() -> void:
 		await _frames(4)
 		for i in 2:
 			var f := ui._card_front[i]
-			(f.get_child(1) as Label).text = long_name
-			(f.get_child(2) as Label).text = long_eff
-			(f.get_child(3) as Label).text = "[Zone] [Survie] [Boss]"
-			(f.get_child(4) as Label).text = "Vous en avez déjà 12"
+			ui._card_name[i].text = long_name
+			ui._card_eff[i].text = long_eff
+			ui.set_card_tags(i, ["Zone", "Survie", "Feu", "Boss"])
+			ui._card_own[i].text = "Vous en avez déjà 12"
 			ui._fit_card(i)
 			await _frames(2)
 			var r: Dictionary = ui.fit_report[i]
@@ -58,10 +58,19 @@ func _ready() -> void:
 			_check(float(r["text_h"]) <= (r["text"] as Rect2).size.y + 0.5, "%s : description tient dans la zone (%.0f <= %.0f, police %d)" % [tag, r["text_h"], (r["text"] as Rect2).size.y, r["font"]])
 			_check(float(r["name_w"]) <= (r["band"] as Rect2).size.x + 0.5, "%s : nom tient dans le bandeau (%.0f <= %.0f)" % [tag, r["name_w"], (r["band"] as Rect2).size.x])
 			var tz: Rect2 = (r["text"] as Rect2).grow(1.0)
+			var labels: Array[Label] = [ui._card_eff[i], ui._card_tags[i], ui._card_own[i]]
 			for k in [2, 3, 4]:
-				var l := f.get_child(k) as Label
+				var l := labels[k - 2]
 				_check(tz.encloses(Rect2(l.position, l.size)), "%s : étiquette %d dans la zone de texte" % [tag, k])
 				_check(l.get_visible_line_count() >= l.get_line_count(), "%s : étiquette %d entièrement visible (%d/%d lignes)" % [tag, k, l.get_visible_line_count(), l.get_line_count()])
+			var ic: Control = ui._card_tag_icons[i]
+			var row: Control = ic.get_node_or_null("TagIcons")
+			_check(row != null and row.get_child_count() == 3, "%s : 3 pictos d'étiquettes (Zone, Survie, Feu ; Boss sans picto)" % tag)
+			if row != null:
+				var rr := Rect2(ic.position + row.position, row.get_combined_minimum_size())
+				_check(tz.encloses(rr), "%s : pictos dans la zone de texte" % tag)
+				var tl: Label = ui._card_tags[i]
+				_check(rr.end.x <= tl.position.x + 0.5, "%s : pictos à gauche du libellé, sans chevauchement" % tag)
 			var box := ui._card_boxes[i]
 			_check((r["art"] as Rect2).grow(1.0).encloses(Rect2(box.position, box.size)), "%s : icône dans la zone d'illustration" % tag)
 			var icon := ui._card_icons[i]
