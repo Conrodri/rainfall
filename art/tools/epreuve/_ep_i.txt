@@ -1,0 +1,7 @@
+PREMIERE COMMANDE : Set-Location 'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a68b34a02473f6d74'. Tous les chemins sont relatifs a cette racine ; n'ecris RIEN hors de ce depot (surtout pas dans C:\Users\const\Documents\Rainfall).
+STYLE : DA sombre desaturee, UN accent emissif, cel-shade (art/briefs/STYLE_cel.md), eclairage haut-gauche, camera iso du projet pour les billboards. 1 u = 64 px. Pas de _n. Geometrie minimale, PNG petits. Blender : "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python. Aucun .gd/.tscn.
+LOT EP-I. Brief : art/briefs/epreuve_fx_chase_rings.md (court, a lire).
+MODELE : art/tools/epreuve/ep_d_build.py (disque vue au sol, planche 4 frames, memes conventions). Creer art/tools/epreuve/ep_i_build.py ; .blend dans art/blender/props/ep_i_fx.blend.
+SORTIES : game/assets/sprites/vfx/epreuve/chase_light_fog_forest.png et chase_light_crypts.png (768x96, 8 frames distinctes), ring_zone.png et ring_wave.png (256x256). Pas de _e.
+VERIF : tailles, alpha (fond transparent, centre de chaque frame opaque), frames distinctes, poids total <= 1 Mo ; planche art/renders/ep_i_contact.png <= 1024 px.
+RAPPORT 6 lignes max, ultracave.
