@@ -15,104 +15,266 @@ import cel_style as cel
 OUT=ROOT/'art/renders/gresille'
 OUT.mkdir(parents=True,exist_ok=True)
 
-def build(k):
-    root=empty('Grésille '+k)
-    def mat(n,a,b,metal=0):return worn(k+' / '+n,a,b,metal)
-    wool=mat('laine','42464D','687079');rubber=mat('gutta-percha','15191C','30363A')
-    canvas=mat('toile','332C23','615243');skin=mat('peau olive','897565','C4AD93')
-    copper=mat('cuivre patiné','344A40','607D6C',.55);edge=mat('cuivre poli','755844','A58A62',.65)
-    glass=mat('verre fumé','273747','52677A',.25);wood=mat('bois ciré','29251F','5A4938')
-    hair=mat('cheveux','161B1D','3B3F3E');ink=mat('coutures','171B20','25292D')
-    accent=emit(k+' / unique accent','D8EEFF' if k=='B' else 'B9A6FF',1.6)
-    accent['rainfall_emissive']=True
-    # Heavy work boots, short sturdy legs; head crown at 1.35 u.
-    for x in [-.135,.135]:
-        cube('Semelle rainurée',(x,-.05,.047),(.19,.32,.085),rubber,root)
-        ell('Botte',(x,-.055,.145),(.10,.17,.115),rubber,root)
-        loft('Tige botte',[(.12,.095,.11,0),(.34,.083,.08,0)],rubber,root,N=16).location.x=x
-        torus('Rebord botte',(x,0,.33),.084,.014,copper,root,sc=(1,.9,1))
-        rod('Pantalon',[(x,0,.29),(x,.02,.52),(x*.8,0,.69)],.103,wool,root)
-        for z in [.075,.10]:cube('Stries semelle',(x,-.207,z),(.17,.008,.009),ink,root,b=.002)
-    loft('Veste épaisse',[(.53,.19,.135,0),(.67,.22,.145,0),(.89,.255,.145,0),(.99,.235,.13,0),(1.04,.17,.12,0)],wool,root,N=20)
-    cube('Plastron toile',(0,-.14,.80),(.31,.035,.34),canvas,root)
-    for x in [-.13,.13]:
-        tube('Bretelle',[(x,.10,1.01),(x,-.12,1.01),(x,-.17,.74)],.022,rubber,root)
-        cube('Boucle bretelle',(x,-.182,.89),(.048,.016,.045),edge,root,b=.004)
-    for z in [.76,.83,.90]:ell('Bouton',(0,-.171,z),(.012,.008,.012),edge,root)
-    loft('Ceinture',[(.61,.225,.16,0),(.67,.225,.16,0)],rubber,root,N=24)
-    cube('Boucle ceinture',(0,-.177,.641),(.065,.02,.047),edge,root,b=.004)
-    for x in [-.19,.19]:cube('Poche outils',(x,-.14,.58),(.09,.07,.12),canvas,root)
-    for x in [.14,.19]:rod('Pince manche',[(x,-.19,.58),(x+.018,-.19,.73)],.012,edge,root)
-    rod('Pince bec',[(.15,-.19,.73),(.18,-.19,.76),(.20,-.19,.73)],.012,copper,root)
-    cube('Brosse laiton',(-.20,-.19,.66),(.045,.035,.072),wood,root)
-    for i in range(6):rod('Soies',[(-.22+i*.008,-.19,.69),(-.22+i*.008,-.19,.73)],.003,edge,root)
-    torus('Mètre ruban',(-.27,-.07,.63),.035,.012,edge,root,rot=(math.pi/2,0,0))
-    # Realistic tired face; strong nose, recessed eyes, tight mouth, copper hairpins.
-    rod('Cou',[(0,0,1.0),(0,0,1.12)],.066,skin,root)
-    ell('Crâne',(0,-.005,1.205),(.092,.086,.121),skin,root)
-    ell('Mâchoire',(0,-.038,1.15),(.074,.064,.064),skin,root)
-    ell('Chevelure',(0,.029,1.245),(.096,.075,.097),hair,root)
-    ell('Cheveux tirés sur le crâne',(0,.002,1.288),(.094,.085,.046),hair,root)
-    for i in range(7):
-        x=-.075+i*.025
-        tube('Mèche plaquée',[(x,-.06,1.281),(x*.9,.015,1.331),(x*.6,.09,1.30)],.003,ink,root)
-    ell('Chignon',(0,.104,1.26),(.065,.053,.060),hair,root)
-    for x in [-.092,.092]:ell('Oreille',(x,-.005,1.20),(.018,.018,.032),skin,root)
-    for x in [-.035,.035]:
-        ell('Cernes',(x,-.083,1.198),(.023,.005,.008),canvas,root)
-        rod('Paupière',[(x-.018,-.091,1.211),(x+.015,-.091,1.209)],.0025,ink,root)
-        rod('Sourcil',[(x-.023,-.083,1.231),(x+.02,-.084,1.23)],.006,hair,root)
-    ell('Nez',(0,-.09,1.183),(.013,.021,.027),skin,root)
-    rod('Bouche serrée',[(-.027,-.094,1.145),(.024,-.094,1.145)],.0035,ink,root)
-    for i in range(3):rod('Épingle cuivre',[(-.07+i*.035,.07,1.28),(.055+i*.022,.13,1.345)],.004,edge,root)
-    for i in range(5):tube('Mèche',[(-.07+i*.025,.02,1.30),(-.075+i*.027,-.02,1.325),(-.08+i*.029,-.025,1.34)],.003,hair,root)
-    # Copper mesh cape: individually modelled diagonal weave over a fabric backing.
-    low=.30 if k=='C' else .71
-    levels=[(low,.27,.15,.115),(.78,.31,.17,.06),(.98,.30,.16,.025),(1.035,.19,.12,.02)]
-    vs=[];fs=[]
-    for z,xr,yr,cy in levels:
-        for j in range(17):
-            t=-math.pi/2+j*math.pi/16;vs.append((xr*math.sin(t),cy+yr*math.cos(t),z))
-    for h in range(3):
-        for j in range(16):a=h*17+j;fs.append((a,a+1,a+18,a+17))
-    mesh('Cape treillis support',vs,fs,canvas,root)
-    rows=18 if k=='C' else 9
-    for row in range(rows):
-        z=low+(1.02-low)*row/rows
-        for j in range(15):
-            t=-1.45+j*.20;xr=.28 if z<.96 else .24
-            x=xr*math.sin(t);y=.08+.18*math.cos(t)
-            torus('Maille cuivre',(x,y,z),.017,.003,copper,root,rot=(math.pi/2,0,-t),sc=(.78,1,1))
-    cube('Râtelier bois',(0,.223,.85 if k!='C' else .65),(.47,.07,.40),wood,root)
-    for z in [.73,.96]:cube('Traverse cuivre',(0,.272,z if k!='C' else z-.20),(.52,.027,.035),copper,root)
+# Revision 2: a single 1.35 u woman (head 0.20 u), linked across three studies.
+# Clothing follows anatomy; no ball shoulders, mitten hands or block boots.
+RETOUCH=dict(wool=('3F434B','5A5E66'),hair=('0D0B0B','221B18'),
+    cape_bottom={'A':.885,'B':1.049,'C':.977},
+    cape_width={'A':.237,'B':.218,'C':.229},weave_radius=.0028,
+    coil_radius=.089,accent_power=1.6)
+def sweep(name, sections, material, parent, N=24):
+    """Continuous tapered limb, circular sections perpendicular to its centreline."""
+    vs=[]
+    for i,(co,rx,ry) in enumerate(sections):
+        v=Vector(co)
+        axis=Vector(sections[min(i+1,len(sections)-1)][0])-Vector(sections[max(0,i-1)][0])
+        q=axis.to_track_quat('Z','Y')
+        for j in range(N):
+            t=j*math.tau/N;vs.append(v+q@Vector((rx*math.cos(t),ry*math.sin(t),0)))
+    fs=[(i*N+j,i*N+(j+1)%N,(i+1)*N+(j+1)%N,(i+1)*N+j) for i in range(len(sections)-1) for j in range(N)]
+    fs += [tuple(range(N-1,-1,-1)),tuple(range((len(sections)-1)*N,len(sections)*N))]
+    o=mesh(name,vs,fs,material,parent)
+    for f in o.data.polygons:f.use_smooth=True
+    return o
+
+
+def materials():
+    def m(n,a,b,metal=0,rough=.8):
+        ma=worn('Grésille / '+n,a,b,metal,rough);ma['gresille_surface']=n;return ma
+    return dict(wool=m('laine mouillée',*RETOUCH['wool']),rubber=m('gutta-percha lisse','111619','30373B',0,.37),
+        canvas=m('toile caoutchoutée','383228','65594B'),skin=m('peau olive','9C846E','C7AF95',0,.72),
+        copper=m('cuivre vert-de-gris','405B4E','4F6B5E',.65,.27),edge=m('cuivre frotté','66503C','A58A64',.7,.32),
+        patina=m('fond treillis oxydé','263B33','344B40',.55,.35),
+        glass=m('verre fumé','263544','536579',.3,.26),wood=m('bois ciré','28241E','584B36',0,.48),
+        hair=m('cheveux bruns tirés',*RETOUCH['hair']),ink=m('coutures et creux','171B20','2A2D30'),
+        lip=m('lèvres sourdes','887061','B19A84'),eye=m('blanc des yeux terne','8F958C','C5C6B5'))
+
+
+def build_body(M):
+    root=empty('Grésille A / corps unique 6.75 têtes')
+    root['height_u']=1.35;root['head_height_u']=.20;root['body_revision']=2
+    wool,rubber,canvas,skin,copper,edge,glass,wood,hair,ink,lip,eye=[M[n] for n in ('wool','rubber','canvas','skin','copper','edge','glass','wood','hair','ink','lip','eye')]
+    # Hips, long femurs and knees: crotch 0.675, waist 0.86, shoulders 1.10.
+    loft('Bassin féminin / pantalon ajusté',[(.68,.114,.082,.012),(.725,.164,.100,.012),(.78,.169,.101,.006),(.825,.128,.085,0),(.862,.105,.078,0)],wool,root,N=32)
     for side in [-1,1]:
-        x=side*(.23 if k!='C' else .285);y=.23 if k!='C' else .105
-        base=.70 if k!='C' else .47;radius=.112 if k=='B' else .091
-        loft('Bouteille Leyde',[(base,radius*.8,radius*.8,y),(base+.035,radius,radius,y),(base+.31,radius,radius,y),(base+.36,radius*.67,radius*.67,y),(base+.40,radius*.55,radius*.55,y)],glass,root,N=20).location.x=x
-        for dz in [.035,.14,.30,.36]:torus('Cerclage bouteille',(x,y,base+dz),radius if dz<.35 else radius*.63,.009,copper,root)
-        cube('Contact Leyde',(x,y,base+.411),(.08,.06,.025),edge,root)
-        ax=x+side*radius*.68;ay=y-radius*.78
-        rod('Arc interne',[(ax-.018,ay,base+.065),(ax+.018,ay,base+.14),(ax-.018,ay,base+.21),(ax+.018,ay,base+.29)],.007,accent,root)
-        shoulder=(side*.245,0,.97);elbow=(side*(.36 if k=='B' else .30),-.025,.81);hand=(side*(.40 if k=='B' else .32),-.14,.69)
-        ell('Épaule',shoulder,(.107,.135,.11),wool,root)
-        rod('Manche',[shoulder,elbow],.09,wool,root);rod('Manchette',[elbow,hand],.081,canvas,root)
-        ell('Gant',hand,(.073,.08,.086),canvas,root)
-        for i in range(3):rod('Couture gant',[(hand[0]-.03+i*.025,-.215,.69),(hand[0]-.03+i*.025,-.21,.72)],.003,ink,root)
-        tube('Câble gainé',[(x,y,base+.41),(side*.38,.16,1.02),(side*.44,-.02,.84),hand],.018,rubber,root)
-        if k=='B':
-            for z in [.73,.755,.78,.805,.83]:torus('Bobine gantelet',(side*.39,-.115,z),.102,.012,edge,root)
-            torus('Anneau arc',(side*.39,-.115,.85),.089,.007,accent,root)
-        if k=='C':
-            tube('Boucle de câble au sol',[(x,y,.82),(side*.48,-.06,.59),(side*.57,-.21,.15),(side*.47,-.34,.033),(side*.34,-.25,.04),(side*.48,-.02,.30),hand],.023,rubber,root)
-            for z in [.36,.43]:torus('Collier câble',(side*.48,-.02,z),.026,.005,copper,root)
-    if k!='B':
-        x=.34 if k=='A' else -.23;y=-.15 if k=='A' else .35;z=.22 if k=='A' else .40
-        rod('Paratonnerre',[(x,y,z),(x,y,z+1.0 if k=='A' else z+.72)],.015,copper,root)
-        for dz in [.68,.75,.82] if k=='A' else [.48,.54,.60]:
-            torus('Isolateur verre',(x,y,z+dz),.054,.012,glass,root)
-            torus('Charge isolateur',(x,y,z+dz+.01),.038,.005,accent,root)
-        rod('Pointe polie',[(x,y,z+(.85 if k=='A' else .63)),(x,y,z+(1.10 if k=='A' else .77))],.009,edge,root)
+        x=side*.092;fy=-.025 if side==1 else .025
+        sweep('Jambe longue / genou anatomique',[
+            ((x,.012,.758),.081,.086),((x+side*.005,.006,.675),.077,.077),
+            ((x+side*.010,-.014+fy,.565),.060,.061),((x+side*.012,-.022+fy,.49),.050,.051),
+            ((x+side*.013,-.014+fy,.435),.052,.052),((x+side*.012,.004+fy,.35),.053,.055)],wool,root)
+        # Smooth moulded rubber: ankle, instep, rounded toe and calf in one surface.
+        xx=x+side*.012
+        boot=loft('Botte gutta-percha / tige lisse',[(.042,.049,.086,-.036+fy),(.068,.052,.095,-.043+fy),
+            (.098,.047,.082,-.033+fy),(.135,.039,.048,fy),(.19,.039,.045,fy),(.28,.050,.052,.010+fy),
+            (.35,.057,.054,.005+fy),(.405,.056,.052,.004+fy)],rubber,root,N=32);boot.location.x=xx
+        sole=loft('Semelle moulée arrondie',[(.018,.044,.088,-.043+fy),(.025,.053,.101,-.045+fy),(.043,.053,.101,-.045+fy),(.051,.049,.096,-.041+fy)],ink,root,N=32);sole.location.x=xx
+        torus('Lèvre souple de botte',(xx,.004+fy,.404),.054,.004,rubber,root,sc=(1,.96,1))
+        tube('Couture arrière botte',[(xx,.054+fy,.14),(xx,.061+fy,.28),(xx,.056+fy,.392)],.0014,ink,root)
+        for i in range(3):
+            z=.455+i*.024
+            tube('Plis obliques du genou',[(xx-.039,-.043+fy,z+.008),(xx,-.063+fy,z),(xx+.032,-.049+fy,z+.007)],.0027,ink if i==1 else wool,root)
+    # Tailored working jacket: narrow waist, modest chest, square shoulder line.
+    jacket=loft('Veste de laine cintrée',[(.745,.164,.102,.002),(.785,.163,.107,0),(.825,.128,.089,-.002),
+        (.86,.105,.078,0),(.91,.116,.088,0),(.96,.134,.103,-.006),
+        (1.005,.144,.108,-.005),(1.052,.145,.087,0),(1.09,.147,.067,.008),
+        (1.108,.120,.058,.008),(1.13,.048,.045,.004)],wool,root,N=40,rough=.006)
+    # Bust is contained inside the continuous garment, never separate spheres.
+    for v in jacket.data.vertices:
+        if v.co.y<-.035:
+            v.co.y-=.024*math.exp(-((v.co.z-.99)/.051)**2)*math.exp(-((abs(v.co.x)-.057)/.036)**2)
+    for side in [-1,1]:
+        plate('Revers laine cassé',[(side*.020,1.122),(side*.079,1.090),(side*.060,1.067),(side*.075,1.055),(side*.016,1.012)],-.106,.008,wool,root,.002)
+        tube('Surpiqûre taille',[(side*.135,-.049,.794),(side*.111,-.073,.862),(side*.133,-.086,.947)],.0016,ink,root)
+        tube('Bretelle du râtelier',[(side*.119,.064,1.086),(side*.115,-.074,1.091),(side*.094,-.111,.982),(side*.089,-.091,.86)],.010,rubber,root)
+        cube('Boucle de harnais',(side*.098,-.119,1.003),(.024,.009,.031),edge,root,.003)
+    tube('Patte de boutonnage',[(.009,-.112,1.014),(.007,-.092,.91),(.005,-.087,.837)],.004,canvas,root)
+    for z,y in [(1.018,-.118),(.961,-.118),(.906,-.098),(.85,-.089)]:ell('Petit bouton terne',(.007,y,z),(.005,.003,.005),edge,root)
+    # Narrow belt retains the waist; tools hang over the hips, never a square apron.
+    loft('Ceinture de métier',[(.824,.129,.092,0),(.85,.112,.083,0)],rubber,root,N=32)
+    cube('Boucle martelée',(0,-.095,.839),(.040,.012,.027),edge,root,.003)
+    for side in [-1,1]:
+        ob=cube('étui de toile cousu',(side*.139,-.059,.758),(.057,.037,.096),canvas,root,.009);ob.rotation_euler.y=side*.10
+        for i in range(5):tube('Points de couture étui',[(side*.139-.021+i*.010,-.079,.722),(side*.139-.019+i*.010,-.079,.728)],.0009,edge,root)
+    for x in [.128,.15]:rod('Manche de pince',[(x,-.087,.754),(x+.005,-.087,.846)],.005,rubber,root)
+    rod('Mâchoires de pince',[(.133,-.087,.847),(.145,-.087,.863),(.16,-.087,.847)],.005,edge,root)
+    cube('Brosse de laiton',(-.14,-.086,.794),(.025,.018,.043),wood,root,.002)
+    for i in range(6):rod('Soie de brosse',[(-.15+i*.004,-.089,.814),(-.15+i*.004,-.089,.838)],.0013,edge,root)
+    torus('Mètre à ruban',(-.172,.018,.814),.021,.005,edge,root,rot=(math.pi/2,0,0))
+    # Continuous tapered sleeves, with elbow folds, slender wrists and five digits.
+    for side in [-1,1]:
+        sweep('Manche sans épaulière',[
+            ((side*.128,.004,1.075),.042,.045),((side*.157,.002,1.048),.038,.040),
+            ((side*.178,-.005,.985),.034,.036),((side*.201,-.025,.919),.031,.033),
+            ((side*.222,-.058,.858),.029,.029),((side*.239,-.088,.798),.025,.026)],wool,root)
+        for j in range(3):
+            z=.901+j*.016
+            tube('Plis de coude',[(side*.178,-.046,z+.008),(side*.207,-.058,z),(side*.23,-.045,z+.009)],.0025,ink if j==0 else wool,root)
+        sweep('Manchette de toile caoutchoutée',[((side*.238,-.085,.813),.035,.036),((side*.244,-.103,.776),.031,.030)],canvas,root)
+        sweep('Paume du gant fin',[((side*.244,-.103,.783),.025,.022),((side*.247,-.109,.757),.027,.021),((side*.247,-.113,.739),.023,.017)],canvas,root,N=20)
+        for j in range(4):
+            x=side*(.229+j*.012);end=.688+[.009,0,.003,.014][j]
+            pts=[(x,-.116,.744),(x+side*.002,-.128,.722),(x+side*.001,-.123,end+.012),(x,-.109,end)]
+            sweep('Doigt articulé %d'%j,[(pts[0],.0061,.0064),(pts[1],.0059,.006),(pts[2],.0048,.005),(pts[3],.003,.0035)],canvas,root,N=10)
+            tube('Couture de doigt',[(x,-.135,.728),(x,-.132,.714)],.0008,ink,root)
+        sweep('Pouce opposable',[((side*.226,-.105,.767),.009,.009),((side*.211,-.124,.749),.008,.008),((side*.215,-.14,.732),.005,.005)],canvas,root,N=12)
+    # Head: fine chin, cheekbones, brow, crown. 0.20 u = 6.75 heads total.
+    loft('Cou fin',[(1.09,.035,.034,.006),(1.14,.031,.030,.003),(1.177,.032,.031,.003)],skin,root,N=24)
+    head=loft('Visage sculpté / menton fin',[(1.15,.019,.025,-.018),(1.159,.032,.034,-.014),
+        (1.178,.040,.040,-.009),(1.205,.055,.051,-.004),(1.219,.064,.054,-.001),(1.227,.067,.056,0),(1.233,.068,.057,.001),
+        (1.254,.065,.058,.005),(1.278,.065,.060,.010),(1.307,.059,.057,.013),
+        (1.331,.043,.045,.015),(1.341,.022,.025,.016),(1.344,.003,.004,.016)],skin,root,N=40)
+    # Locally project facial plane while keeping narrow temples and an unbroken jaw.
+    for v in head.data.vertices:
+        if v.co.y<-.025:
+            v.co.y-=.008*math.exp(-((v.co.z-1.205)/.025)**2)*math.exp(-((abs(v.co.x)-.036)/.025)**2)
+            v.co.y-=.014*math.exp(-((v.co.z-1.229)/.015)**2)*math.exp(-(v.co.x/.010)**2)
+    for side in [-1,1]:
+        ell('Oreille fine',(side*.064,.005,1.239),(.010,.013,.022),skin,root)
+        tube('Pli du pavillon',[(side*.069,-.004,1.25),(side*.073,-.008,1.24),(side*.07,-.006,1.227)],.0014,lip,root)
+        x=side*.027
+        ell('Cerne discret',(x,-.052,1.237),(.015,.002,.0025),lip,root)
+        ell('Oeil étroit',(x,-.056,1.247),(.014,.0034,.0042),eye,root)
+        ell('Iris sombre',(x,-.059,1.247),(.0032,.0014,.0035),hair,root)
+        tube('Paupière supérieure',[(x-.014,-.055,1.247),(x,-.060,1.251),(x+.014,-.055,1.248)],.0011,lip,root)
+        tube('Sourcil fin',[(side*.014,-.054,1.263),(side*.029,-.056,1.265),(side*.045,-.048,1.26)],.0014,hair,root)
+    tube('Bouche fine',[(-.010,-.057,1.192),(0,-.061,1.191),(.010,-.057,1.192)],.0008,lip,root)
+    # Swept hair cap has a high forehead; bun and copper pins at the back.
+    vs=[];fs=[];N=40
+    for row in range(7):
+        f=row/6
+        for j in range(N):
+            t=j*math.tau/N
+            lower=1.254+.035*math.cos(t)+.005*math.sin(t) # front hairline, nape lower
+            z=lower+(1.350-lower)*f
+            r=math.sqrt(max(0,1-((z-1.265)/.085)**2))
+            vs.append((.074*r*math.sin(t),.009-.071*r*math.cos(t),z))
+    for i in range(6):
+        for j in range(N):fs.append((i*N+j,i*N+(j+1)%N,(i+1)*N+(j+1)%N,(i+1)*N+j))
+    cap=mesh('Cheveux tirés / front dégagé',vs,fs,hair,root)
+    for f in cap.data.polygons:f.use_smooth=True
+    ell('Chignon serré',(-.060,.062,1.324),(.043,.040,.041),hair,root)
+    for j in range(14):
+        t=(j+.4)*math.tau/14
+        tube('Mèche peignée',[(.069*math.sin(t),.009-.068*math.cos(t),1.258+.035*math.cos(t)+.005*math.sin(t)),(.052*math.sin(t+.08),.012-.051*math.cos(t+.08),1.326),(-.054,.067,1.345)],.0018,hair,root)
+    for i in range(3):rod('Épingle en cuivre',[(-.097+i*.013,.031,1.322),(-.018+i*.008,.071,1.36)],.0024,edge,root)
+    for i in range(4):
+        x=-.046+i*.022
+        tube('Mèche dressée',[(x,-.020,1.327),(x-.006,-.018,1.355),(x-.016,-.016,1.377+i%2*.009)],.0024,hair,root)
     return root
+
+
+def clone_body(source,k):
+    root=empty('Grésille '+k+' / même corps lié');root['body_revision']=2
+    for ob in source.children_recursive:
+        cp=ob.copy();cp.data=ob.data;bpy.context.collection.objects.link(cp);cp.parent=root
+    return root
+
+
+def build_variant(root,k,M):
+    wool,rubber,canvas,skin,copper,edge,glass,wood,hair,ink=[M[n] for n in ('wool','rubber','canvas','skin','copper','edge','glass','wood','hair','ink')]
+    accent=emit(k+' / unique accent','D8EEFF' if k=='B' else 'B9A6FF',RETOUCH['accent_power']);accent['rainfall_emissive']=True
+    # Partial shoulder mantle, open at the chest so the waist stays visible.
+    bottom=RETOUCH['cape_bottom'][k]
+    vs=[];fs=[];N=49;rows=13;opening=2.60
+    def cape_point(t,f,lift=0):
+        shoulder=min(1,f/.30);drape=max(0,(f-.30)/.70)
+        outer=RETOUCH['cape_width'][k]
+        fold=.009*math.cos(11*t)*math.sin(math.pi*f*.85)
+        rx=.055+(outer-.055)*shoulder-.012*drape+fold+lift
+        ry=.052+(.143-.052)*shoulder+.015*drape+fold+lift
+        z=1.137-.052*shoulder+(bottom-1.085)*drape+.006*math.cos(7*t)*f
+        return (rx*math.sin(t),.008+ry*math.cos(t),z)
+    for r in range(rows):
+        for j in range(N):vs.append(cape_point(-opening+j*2*opening/(N-1),r/(rows-1)))
+    for r in range(rows-1):
+        for j in range(N-1):a=r*N+j;fs.append((a,a+1,a+N+1,a+N))
+    mantle=mesh('Cape-treillis / volume oxydé',vs,fs,M['patina'],root)
+    solid=mantle.modifiers.new('Épaisseur du treillis mouillé','SOLIDIFY');solid.thickness=.006
+    # Actual diagonal copper weave: integrated fine mesh, not spherical shoulder pads.
+    for j in range(39):
+        t=-3.4+j*6.8/38
+        for slope in [-1,1]:
+            pts=[cape_point(t+slope*1.50*(r/20-.5),r/20,.006) for r in range(21) if abs(t+slope*1.50*(r/20-.5))<=opening]
+            if len(pts)>1:tube('Maille cuivre diagonale',pts,RETOUCH['weave_radius'],copper,root)
+    for f in [.30,1]:tube('Lisière treillis',[cape_point(-opening+j*2*opening/64,f,.007) for j in range(65)],.0032,edge if f==1 else copper,root)
+    for side in [-1,1]:
+        tube('Bord retombant du treillis',[cape_point(side*opening,r/12,.007) for r in range(13)],.0035,copper,root)
+    for j in range(9):
+        t=-2.5+j*.61
+        tube('Reflet mouillé sur maille',[cape_point(t+.07*f,f,.009) for f in [.34,.39,.44]],.0018,edge,root)
+    # Waxed rack sits behind the figure; silhouette changes are structural.
+    jar_specs={'A':[(-.157,.102,.875,.064,.305),(.157,.102,.875,.064,.305)],
+        'B':[(0,.145,.747,.105,.325)],
+        'C':[(-.177,.115,1.033,.057,.36),(0,.139,1.065,.059,.38),(.177,.115,1.033,.057,.36)]}[k]
+    rz={'A':.99,'B':.86,'C':1.16}[k];width={'A':.30,'B':.245,'C':.38}[k]
+    for x in [-width*.42,width*.42]:cube('Montant de bois ciré',(x,.166,rz),(.022,.033,.33 if k!='C' else .46),wood,root,.003)
+    for z in [rz-.115,rz+.105]:cube('Traverse du râtelier',(0,.17,z),(width,.028,.025),wood,root,.003)
+    for x,y,base,r,h in jar_specs:
+        loft('Leyde / verre fumé cerclé',[(base,r*.70,r*.70,y),(base+.016,r,r,y),(base+h*.78,r,r,y),(base+h*.88,r*.65,r*.65,y),(base+h,r*.48,r*.48,y)],glass,root,N=28).location.x=x
+        for dz in [.025,h*.42,h*.77,h*.91]:torus('Cerclage Leyde',(x,y,base+dz),r if dz<h*.85 else r*.57,.0055,copper,root)
+        cube('Borne de cuivre',(x,y,base+h+.008),(r*.65,r*.62,.017),edge,root,.003)
+        # Front and outer side arc traces remain legible through the smoked housing.
+        for sign in [-1,1]:
+            ax=x+sign*r*.45;ay=y-r*.96-.006
+            rod('Arc dans la Leyde',[(ax,ay,base+.052),(ax-sign*.018,ay-.001,base+h*.37),(ax+sign*.006,ay,base+h*.54),(ax-sign*.015,ay,base+h*.73)],.0055,accent,root)
+        torus('Charge isolateur Leyde',(x,y,base+h*.91),r*.57,.0055,accent,root)
+        if k!='B' and abs(x)>.1:
+            side=1 if x>0 else -1;ax=x+side*(r+.006);ay=y-r*.28
+            tube('Filament latéral Leyde',[(ax,ay,base+.055),(ax+side*.004,ay,base+h*.38),(ax-side*.003,ay,base+h*.57),(ax,ay,base+h*.74)],.0055,accent,root)
+        tube('Reflet de verre mouillé',[(x-r*.66,y-r*.73,base+.05),(x-r*.69,y-r*.73,base+h*.73)],.0017,glass,root)
+    for side in [-1,1]:
+        jar=jar_specs[0 if side==-1 else -1];x,y,base,r,h=jar
+        if k=='C':pts=[(x,y,base+h), (side*.257,.10,1.23),(side*.326,-.013,1.02),(side*.29,-.16,.89),(side*.244,-.11,.79)]
+        else:pts=[(x,y,base+h),(side*.205,.13,1.105),(side*.272,.012,.99),(side*.274,-.05,.85),(side*.244,-.11,.79)]
+        tube('Câble gainé de tissu',pts,.008,rubber,root)
+        for z in [.855,.878]:torus('Collier de câble',(side*.27,-.04,z),.009,.002,copper,root)
+        if k=='B':
+            a=Vector((side*.240,-.057,.923));b=Vector((side*.266,-.108,.787));axis=(b-a).normalized();q=axis.to_track_quat('Z','Y');radius=RETOUCH['coil_radius']
+            sweep('Gaine du gantelet bobine',[(a,radius*.98,radius*.94),(b,radius*.91,radius*.88)],rubber,root)
+            for i in range(12):
+                p=a.lerp(b,i/11);ob=torus('Spire de cuivre du gantelet',p,radius,.006,edge,root);ob.rotation_euler=q.to_euler()
+            for f in [.06,.94]:
+                ob=torus('Charge de bobine',a.lerp(b,f),radius+.003,.0045,accent,root);ob.rotation_euler=q.to_euler()
+    if k!='B':
+        for x in [-.041,.003]:
+            tube('Mèche chargée lilas',[(x,-.019,1.353),(x-.006,-.018,1.371),(x-.014,-.016,1.381)],.0028,accent,root)
+    if k=='A':
+        # Exactly 0.9 u including the polished point, planted like a walking stick.
+        x=.263;y=-.119;z=.023
+        rod('Tige courte bronze 0.9 u',[(x,y,z),(x,y,z+.785)],.0065,copper,root)
+        for dz in [.681,.726,.771]:
+            loft('Isolateur verre / assiette',[(z+dz-.009,.014,.014,y),(z+dz-.003,.034,.034,y),(z+dz+.004,.034,.034,y),(z+dz+.011,.014,.014,y)],glass,root,N=28).location.x=x
+            torus('Arc sur isolateur',(x,y,z+dz+.004),.026,.0045,accent,root)
+        sweep('Pointe polie', [((x,y,z+.79),.009,.009),((x,y,z+.9),.0008,.0008)],edge,root,N=12)
+    return root
+
+
+def surface_finish(M):
+    """Retain ash-lord worn material grain within the shared three-tone CEL shader."""
+    palettes={'wool':('353941','43474F','5A5E66'),
+        'hair':('090707','16110F','2A211D'),
+        'patina':('273A31','344B40','415C4E'),
+        'copper':('344E40','4F6B5E','70917D')}
+    for key,colors in palettes.items():
+        ramp=M[key].node_tree.nodes.get('CEL tones')
+        if ramp:
+            for stop,h in zip(ramp.color_ramp.elements,colors):stop.color=rgb(h)
+    for ma in M.values():
+        nodes,links=ma.node_tree.nodes,ma.node_tree.links
+        diffuse=next((n for n in nodes if n.type=='BSDF_DIFFUSE'),None)
+        emission=next((n for n in nodes if n.type=='EMISSION'),None)
+        ramp=nodes.get('CEL tones')
+        if not diffuse or not ramp:continue
+        n=nodes.new('ShaderNodeTexNoise');n.inputs['Scale'].default_value=180;n.inputs['Detail'].default_value=2
+        r=nodes.new('ShaderNodeMapRange');r.inputs['To Min'].default_value=.82;r.inputs['To Max'].default_value=1.05
+        if ma==M['wool']:
+            n.inputs['Scale'].default_value=55;r.inputs['To Min'].default_value=.72;r.inputs['To Max'].default_value=1.02
+        links.new(n.outputs['Fac'],r.inputs[0])
+        mul=nodes.new('ShaderNodeVectorMath');mul.operation='SCALE';links.new(ramp.outputs['Color'],mul.inputs[0]);links.new(r.outputs[0],mul.inputs['Scale']);links.new(mul.outputs[0],emission.inputs['Color'])
+        bump=nodes.new('ShaderNodeBump');bump.inputs['Strength'].default_value=.09;bump.inputs['Distance'].default_value=.001
+        if ma['gresille_surface']=='gutta-percha lisse':bump.inputs['Strength'].default_value=.015
+        if ma['gresille_surface']=='peau olive':bump.inputs['Strength'].default_value=.025
+        links.new(n.outputs['Fac'],bump.inputs['Height']);links.new(bump.outputs['Normal'],diffuse.inputs['Normal'])
+
 
 def raw_render(path,w,h,target,scale,az=-25,elev=18):
     # Native common render, CEL configure, no normal output and no asset resizing.
@@ -156,7 +318,7 @@ def make_layout():
         for f in ob.data.polygons:
             for li,co in zip(f.loop_indices,[(0,0),(1,0),(1,1),(0,1)]):uv.data[li].uv=co
     text('GRÉSILLE',52,70,48);text('PARATONNERRIÈRE  /  ÉTUDE DE SILHOUETTES  /  1,35 u',382,65,24,muted)
-    for j,(k,name,desc) in enumerate([('A','MÂT','Tige longue · trois isolateurs'),('B','BOBINES','Gantelets-bobines · Leyde élargies'),('C','CÂBLES','Boucles au sol · cape longue')]):
+    for j,(k,name,desc) in enumerate([('A','TIGE COURTE','Tige 0,9 u · deux Leyde dorsales'),('B','BOBINES','Gantelets-bobines · une Leyde basse'),('C','RÂTELIER HAUT','Trois Leyde hautes · câbles gainés')]):
         x=48+j*792
         text(k+'  /  '+name,x,131,32);text(desc,x,167,21,muted)
         panel('big_'+k+'.png',x+60,182,640,660)
@@ -174,25 +336,28 @@ def make_layout():
 
 def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
+    bpy.context.preferences.filepaths.save_version=0
     s=bpy.context.scene;s.world=bpy.data.worlds.new('Studio');s.world.color=(.12,.12,.12)
     s.render.engine='BLENDER_EEVEE';s.eevee.taa_render_samples=16
     s.render.threads_mode='FIXED';s.render.threads=8
-    roots=[build(k) for k in 'ABC']
+    M=materials();base=build_body(M)
+    roots=[base,clone_body(base,'B'),clone_body(base,'C')]
+    for k,r in zip('ABC',roots):build_variant(r,k,M)
     cd.area('Key',(-3,-4,6),650,(1,.87,.72),4);cd.area('Fill',(3,-1,4),350,(.64,.76,1),4);cd.area('Rim',(0,4,4),500,(.75,.82,1),3)
     bpy.ops.object.camera_add();s.camera=bpy.context.object
     # Preserve all three complete hierarchies side by side in the source .blend.
     for i,r in enumerate(roots):r.location.x=(i-1)*1.5
     cd.aim(s.camera,(0,0,.7));s.camera.location=(3,-7,3);cd.aim(s.camera,(0,0,.7));s.camera.data.type='ORTHO';s.camera.data.ortho_scale=5.3
-    s['brief']='Grésille / A Mât, B Bobines, C Câbles / concept only';s['height_u']=1.35
+    s['brief']='Grésille RÉVISION 2 / corps féminin unique 6,75 têtes / A tige courte, B bobines, C râtelier haut';s['height_u']=1.35
     blend=ROOT/'art/blender/characters/gresille_concept.blend';blend.parent.mkdir(parents=True,exist_ok=True)
-    cel.install('creature',normals=False,keep_black_emission=False);cel.toon_materials('creature')
+    cel.install('creature',normals=False,keep_black_emission=False);cel.toon_materials('creature');surface_finish(M)
     bpy.ops.wm.save_as_mainfile(filepath=str(blend))
     for r in roots:r.location.x=0
     def show(active):
         for r in roots:
             for o in [r,*r.children_recursive]:o.hide_render=r!=active
     for k,r in zip('ABC',roots):
-        show(r);raw_render(OUT/f'big_{k}.png',900,930,(0,0,.67),1.78,-30,18)
+        show(r);r.rotation_euler.z=0;raw_render(OUT/f'big_{k}.png',900,930,(0,0,.73),1.67,-26,16)
         cd.iso_rig.create_rig('CREA',(192,192),target=(0,0,.66),reset=False)
         r.rotation_euler.z=cd.iso_rig.DIRECTIONS['se']
         s.render.resolution_x=192;s.render.resolution_y=192;s.render.resolution_percentage=100
@@ -223,6 +388,11 @@ def main():
         s.render.resolution_x=480;s.render.resolution_y=192;s.render.resolution_percentage=100;s.render.film_transparent=False;s.eevee.taa_render_samples=16
         s.render.filepath=str(OUT/f'jeu_{k}.png');bpy.ops.render.render(write_still=True);r.location.x=0
     make_layout()
-    print('PASS Grésille: 3 models, 9 renders, 2400x1350 board; normals=False',flush=True)
+    from PIL import Image
+    board=OUT/'planche_silhouettes.png'
+    with Image.open(board) as im:
+        im.convert('RGB').quantize(colors=256,method=Image.Quantize.MEDIANCUT,dither=Image.Dither.NONE).save(board,optimize=True)
+    assert board.stat().st_size<2*1024*1024
+    print('PASS Gresille R2 retouch: female body retained; copper mantles A/C, collar B; dark wool/hair; visible accents; massive B coils; 9 renders; normals=False',flush=True)
 
 if __name__=='__main__':main()
