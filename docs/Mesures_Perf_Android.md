@@ -65,7 +65,8 @@ plus de 10 %, ou qui ont plus de cases d'eau profonde que leur A.
 - colonne « c~ » (cases d'eau profonde) et l'écart de temps d'image B / A de la Mangrove et de la Fonderie (sections
   « VARIANTES B CONTRE A » et « ALERTES » du fichier texte) ;
 - la Rizière (`terrasses_rizieres_hautes`) en **Bas** : seule configuration lente sur PC (§4), à confirmer ;
-- si le jeu se fige (écran gelé plus de 30 s) : noter la carte, le palier et le nombre de monstres affichés dans le
+- si le banc semble figé : si le menu pause est affiché (appel, notification, changement d'app), appuyer sur
+  « Reprendre » ; sinon, si l'écran reste gelé plus de 30 s, noter la carte, le palier et le nombre de monstres du
   bandeau, puis forcer l'arrêt de l'app (voir §7).
 - toute ligne où p99 dépasse 2 fois le p95 (saccades : chargement de texture, compilation de shader, ramasse-miettes).
 
@@ -195,38 +196,23 @@ Lecture :
   boss, ou glissement le long des murs quand le boss n'avance plus ; à défaut, écarter des obstacles centraux les gros
   piliers candidats de la Fonderie et de la Mangrove (`candidates.big_pillars` des cartes).
 
-## 7. Gel observé pendant le banc PC (09/11/2026)
+## 7. Gel observé pendant le banc PC (09/11/2026) : cause établie
 
-Deux gels complets du jeu en mode fenêtré (jamais en `--headless`, 4 passages) : fenêtre « ne répond pas », un cœur à
-100 %, plus aucune image.
+Deux « gels » en mode fenêtré (jamais en `--headless`) : fenêtre « ne répond pas », un cœur à 100 %, plus aucune
+progression (`foret_brume` Moyen 80 monstres ; `terrasses_rizieres_hautes` Haut 0 monstre).
 
-1. passage complet, configuration 23 / 81 : `foret_brume`, Moyen, 80 monstres (≈ 50 s après le chargement de la carte) ;
-2. passage `terrasses_rizieres_hautes` seule (Haut, puis Moyen, puis Bas), configuration 1 / 9 : juste après la
-   préchauffe à 250 monstres et le passage en Haut, ≈ 3 s après le chargement de la carte.
+**Cause** : ce n'était pas un blocage du moteur. Une capture des deux fenêtres figées montre le **menu pause ouvert** :
+la fenêtre du jeu avait perdu le focus (autres fenêtres ouvertes pendant le banc), `PauseMenu` ouvre la pause sur
+`NOTIFICATION_APPLICATION_FOCUS_OUT`, et le banc prolongeait sa mesure tant que l'arbre était en pause, donc sans fin.
+La boucle de jeu tournait toujours (vsync coupée : 100 % d'un cœur, d'où « ne répond pas » côté Windows), et le fil de
+garde ne se déclenchait pas puisque les images avançaient. Reproduit en headless avec `--focus-out-at=<s> --keep-pause`.
 
-Trois autres passages fenêtrés des mêmes cartes (dont le passage complet 81 / 81 avec débogueur distant) n'ont pas gelé :
-le gel est rare et aléatoire. Le fil de garde du lanceur PC (`--watchdog`, simple fil GDScript) n'a **pas** réussi à
-terminer le processus lors du 2e gel : le fil principal est donc probablement bloqué dans le moteur en tenant un verrou
-(une boucle GDScript infinie aurait laissé le fil de garde tourner).
+**Correctif** : le lanceur PC (`tests/map_perf_bench`) reprend automatiquement la partie (`PauseMenu.resume()`) si la
+pause s'ouvre pendant le banc, et le fil de garde signale « jeu en pause » au lieu de rester muet. Sur téléphone, la
+reprise reste manuelle : le joueur appuie sur « Reprendre ». Au passage, le préchargement des boss
+(`EnemyVisual`) est désormais récupéré une seule fois au lieu d'être redemandé sans fin, et `BakedShadows` n'attend plus
+aucune tâche sur le fil principal (test `tests/threaded_loads_test`).
 
-Cause non établie (aucune pile relevée). Suspects, par ordre de probabilité :
-
-- **Chargements en fil jamais récupérés** : `EnemyVisual._warm_bosses` (`scripts/enemies/enemy_visual.gd`) appelle
-  `ResourceLoader.load_threaded_request` sur les SpriteFrames des 6 boss de l'étage 1,5 s après la création d'un monstre,
-  au plus toutes les 3 s, et ne fait jamais `load_threaded_get` : le cache `_boss_cache` reste vide tant qu'aucun boss
-  n'apparaît (cas du banc), donc les demandes se répètent pendant toute la partie, et chaque changement de carte en lance
-  6 nouvelles (textures lourdes chargées sur les fils du `WorkerThreadPool`).
-- **Attente bloquante du fil principal** : `BakedShadows._cancel_task` et `_process` (`scripts/ambiance/baked_shadows.gd`)
-  appellent `WorkerThreadPool.wait_for_task_completion` sur une tâche de basse priorité (re-cuisson d'ombre lancée quand
-  la longueur d'ombre varie avec D, ce que fait le banc à chaque carte). Si les fils de basse priorité sont occupés par
-  les chargements ci-dessus et que ceux-ci attendent le fil principal (création de textures), l'ensemble peut se bloquer.
-
-Pistes de correctif (à valider avec une pile, pas à l'aveugle) : récupérer les préchargements (`load_threaded_get_status`
-puis `load_threaded_get` dans `_boss_cache`, et ne plus redemander un chemin déjà demandé) ; dans `BakedShadows`, ne plus
-attendre la tâche sur le fil principal (numéro de génération : un résultat périmé est ignoré) ou la lancer en haute
-priorité. Pour relever une pile au prochain gel : lancer le banc PC avec un débogueur distant
-(`--remote-debug tcp://127.0.0.1:<port>` et un client qui envoie `break` puis `get_stack_dump`), ou créer un fichier de
-vidage du processus figé (Gestionnaire des tâches > clic droit > « Créer un fichier de vidage ») avant de le fermer.
-
-Sur téléphone : si l'écran reste figé plus de 30 s pendant le banc, noter la carte, le palier et le nombre de monstres du
-bandeau, puis forcer l'arrêt (Réglages > Applications > Rainfall > Forcer l'arrêt) et le signaler.
+Sur téléphone : si le menu pause s'affiche pendant le banc, appuyer sur « Reprendre ». Si l'écran reste réellement figé
+plus de 30 s, noter la carte, le palier et le nombre de monstres du bandeau, puis forcer l'arrêt (Réglages >
+Applications > Rainfall > Forcer l'arrêt) et le signaler.

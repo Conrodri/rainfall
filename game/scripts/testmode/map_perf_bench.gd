@@ -209,9 +209,9 @@ func _resume_pause_menu() -> void:
 	if not resume_on_pause or not get_tree().paused:
 		return
 	var pm := get_tree().get_first_node_in_group(&"pause_menu")
-	if pm != null and bool(pm.get(&"is_open")) and not bool(pm.get(&"counting_down")) and pm.has_method(&"_on_resume"):
+	if pm != null and bool(pm.get(&"is_open")) and not bool(pm.get(&"counting_down")) and pm.has_method(&"resume"):
 		print("MapPerfBench : menu pause ouvert pendant le banc (perte de focus ?) : reprise automatique")
-		pm.call(&"_on_resume")
+		pm.call(&"resume")
 
 
 ## Une configuration (carte, palier, N) : chauffe puis mesure. Aucune allocation dans la boucle de mesure.
