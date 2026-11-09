@@ -445,6 +445,49 @@ func _build_maps() -> void:
 	tp.name = "MapLandmark"
 	_body.add_child(tp)
 	_body.add_child(_note("Le D d'ambiance ne touche que l'événement de la carte (crue, éclairs, creusets, cristaux, puits, rafales, colonne de pluie) ; les PV et les apparitions suivent le D de l'onglet Difficulté. Option ligne de commande : -- --ambient-d=<D>."))
+	_build_perf_bench()
+
+
+# --- Banc de perf (MapPerfBench) ----------------------------------------------------------
+
+const BENCH_RUNS: Array = [
+	["Banc de perf : carte courante (10 s)", &"current", 10.0],
+	["Banc de perf : 9 cartes, rapide (4 s)", &"all", 4.0],
+	["Banc de perf : 9 cartes, complet (10 s)", &"all", 10.0],
+]
+
+
+## Lance le banc de performance par carte (Bas / Moyen / Haut, 0 / 80 / 250 monstres, événement à D 7,5).
+func _build_perf_bench() -> void:
+	_body.add_child(_heading("Banc de perf (Bas / Moyen / Haut, 0 / 80 / 250 monstres, D d'ambiance 7,5)"))
+	for r in BENCH_RUNS:
+		var scope: StringName = r[1]
+		var secs: float = r[2]
+		var n_maps := 1 if scope == &"current" else TestMaps.catalog().size()
+		var est := MapPerfBench.estimate_s(n_maps, 3, 3, secs)
+		var b := _btn("%s, ≈ %d min" % [String(r[0]), ceili(est / 60.0)], func() -> void: _start_bench(scope, secs))
+		b.name = "Bench_%s_%d" % [scope, int(secs)]
+		_body.add_child(b)
+	var ex := _btn("Exporter les résultats du banc", func() -> void:
+		var res := MapPerfBench.export_results()
+		say(String(res.get("where", ""))))
+	ex.name = "BenchExport"
+	_body.add_child(ex)
+	_body.add_child(_note("Le panneau se ferme pendant le banc : ne touche à rien, garde l'écran allumé et le téléphone branché. Résultat affiché à la fin et écrit dans user://perf_bench (JSON + tableau texte). Protocole : docs/Mesures_Perf_Android.md."))
+
+
+func _start_bench(scope: StringName, secs: float) -> void:
+	var opts := {"seconds": secs}
+	if scope == &"current":
+		if TestMode.map_id == "":
+			say("Charge d'abord une carte réelle (ci-dessus).")
+			return
+		opts["maps"] = [TestMode.map_id]
+	if overlay != null:
+		overlay.close()
+	var b := MapPerfBench.launch(get_tree(), opts)
+	if b == null:
+		say("Banc impossible (déjà en cours ou hors partie).")
 
 
 func _load_map(id: String) -> void:
