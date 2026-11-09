@@ -20,6 +20,13 @@ extends RefCounted
 ##   dedans (compteur par cellule, les murs statiques restent), entrent dans l'index de résolution (resolve,
 ##   steer_walls_many, is_spawnable) et invalident LOCALEMENT le cache de direction ; le champ est relancé une
 ##   fois (BFS étalé comme un changement de cellule du joueur), jamais recalculé par image.
+## - GROS CORPS (boss d'étage 1,4 u, mini-boss 1,1 u : rayon > INDEX_GROW) : steer_body() suit un champ propre à
+##   la classe de rayon, calculé sur la grille DILATÉE du rayon (cellule bloquée si son centre est à moins de
+##   rayon - BODY_SLACK d'un obstacle) : le chemin ne passe que là où le corps tient, et chaque cellule visée a
+##   assez de dégagement (plus de coins rabotés ni de boss plantés contre un obstacle). Une couche par classe
+##   (au plus MAX_BODY_LAYERS), créée à la première demande, relancée quand les sources du champ principal changent
+##   (au plus toutes les BODY_MIN_RECOMPUTE_S), étalée sur les images où le champ principal ne calcule pas (pic par
+##   image inchangé), mise en sommeil sans boss (BODY_IDLE_S). Les monstres normaux n'y touchent pas.
 
 const CELL := 64.0
 const INV_CELL := 1.0 / CELL
@@ -59,6 +66,7 @@ var _near := PackedByteArray() ## 1 si un rectangle est à portée de résolutio
 var _off := PackedInt32Array()
 var _offx := PackedInt32Array()
 var _offy := PackedInt32Array()
+var _coff := PackedInt32Array()
 var _q_tail := 0
 var _since_start := 0.0
 const MIN_RECOMPUTE_S := 0.4 ## au plus 2,5 recalculs par seconde (la ligne de vue couvre les abords du joueur)
@@ -92,6 +100,50 @@ var _job_cells := PackedInt32Array()
 var _job_ids := PackedInt32Array()
 var _want_cells := PackedInt32Array() ## tampon réutilisé (update_multi)
 
+# --- Gros corps : un champ de flux par classe de rayon, sur la grille dilatée (voir l'en-tête et steer_body)
+const BODY_SLACK := 16.0 ## dilatation = rayon - 16 px : tout passage où le corps tient garde une rangée de centres libres
+const BODY_RADIUS_STEP := 8.0 ## classes de rayon arrondies à 8 px (1,1 u -> 72 px, 1,4 u -> 88 px)
+const MAX_BODY_LAYERS := 3
+const BODY_MIN_RECOMPUTE_S := 0.6
+const BODY_BUDGET_PER_FRAME := 900 ## cellules par image, seulement quand le champ principal ne calcule pas
+const BODY_IDLE_S := 3.0 ## couche non demandée depuis 3 s (aucun gros corps) : plus recalculée
+
+
+## Champ d'une classe de rayon. Cellule « dilatée » (blk) : son centre est à moins de `dil` d'un obstacle.
+class BodyLayer:
+	var radius := 0.0 ## rayon de classe (px)
+	var dil := 0.0 ## rayon de dilatation (px)
+	var escape := 2 ## autour d'une source (joueur collé à un mur), BFS permis dans les cellules dilatées jusqu'à cette distance
+	var static_blk := PackedByteArray()
+	## 1 si le coin haut-gauche de la cellule est à au moins `dil` de tout obstacle : une diagonale entre deux cellules
+	## libres dont les deux orthogonales sont dilatées passe par ce coin (porte en diagonale juste assez large).
+	var corner_ok := PackedByteArray()
+	var dyn_cnt := PackedByteArray()
+	var blk := PackedByteArray()
+	var dist := PackedInt32Array()
+	var back := PackedInt32Array()
+	var queue := PackedInt32Array()
+	var root := PackedInt32Array()
+	var back_root := PackedInt32Array()
+	var stamp := PackedInt32Array()
+	var nxt := PackedInt32Array() ## cellule visée (-1 : foncer droit, -2 : repli sur le champ principal)
+	var version := 0
+	var multi := false
+	var sources := PackedInt32Array()
+	var src_ids := PackedInt32Array()
+	var job_sources := PackedInt32Array()
+	var job_ids := PackedInt32Array()
+	var job_multi := false
+	var job_active := false
+	var q_head := 0
+	var q_tail := 0
+	var since := 1000.0
+	var idle := 0.0
+	var dirty := false
+
+var _layers := {} ## classe (int) -> BodyLayer
+var _layer_list: Array[BodyLayer] = []
+
 
 ## Construit la grille à partir des StaticBody2D (couche 1) sous `map` (déjà dans l'arbre).
 func build_from_map(map: Node) -> void:
@@ -106,6 +158,8 @@ func build_from_map(map: Node) -> void:
 	_dyn_count = 0
 	_cell_dyn.clear()
 	_dirty = false
+	_layers.clear()
+	_layer_list.clear()
 	if rects.is_empty():
 		w = 0
 		h = 0
@@ -131,6 +185,7 @@ func build_from_map(map: Node) -> void:
 		blocked[y * w] = 1
 		blocked[y * w + w - 1] = 1
 	_off = PackedInt32Array([1, -1, w, -w, w + 1, -w + 1, w - 1, -w - 1])
+	_coff = PackedInt32Array([0, 0, 0, 0, w + 1, 1, w, 0]) # diagonale k : cellule dont le coin haut-gauche est franchi
 	_offx = PackedInt32Array([1, -1, 0, 0, 1, 1, -1, -1])
 	_offy = PackedInt32Array([0, 0, w, -w, w, -w, w, -w])
 	_cell_rects.resize(n)
@@ -251,6 +306,8 @@ func update(player_pos: Vector2, delta: float = 1.0 / 60.0, player_id: int = 0) 
 			_start(pc, player_id)
 	if _job_active:
 		_step(BUDGET_PER_FRAME)
+	elif not _layer_list.is_empty():
+		_update_layers(delta)
 
 
 ## Coop : comme update() avec plusieurs sources (positions logiques des joueurs vivants, `count` premières entrées
@@ -280,6 +337,8 @@ func update_multi(positions: PackedVector2Array, ids: PackedInt32Array, count: i
 			_start_multi(_want_cells, ids, count)
 	if _job_active:
 		_step(BUDGET_PER_FRAME)
+	elif not _layer_list.is_empty():
+		_update_layers(delta)
 
 
 ## Calcule tout le champ immédiatement (liaison de carte, tests).
@@ -290,6 +349,7 @@ func compute_now(player_pos: Vector2, player_id: int = 0) -> void:
 	_dirty = false
 	_start(pc, player_id)
 	_step(1 << 30)
+	_compute_layers_now()
 
 
 ## compute_now à plusieurs sources (liaison de carte en coop, tests).
@@ -306,6 +366,7 @@ func compute_now_multi(positions: PackedVector2Array, ids: PackedInt32Array, cou
 	_dirty = false
 	_start_multi(_want_cells, ids, count)
 	_step(1 << 30)
+	_compute_layers_now()
 
 
 func _start(pc: int, player_id: int = 0) -> void:
@@ -398,11 +459,22 @@ func _step(budget: int) -> void:
 
 ## Id du joueur (registre Players) que le champ courant mène vers `pos` : la source la plus proche à pied.
 ## Solo : l'id de l'unique source. -1 sans champ, hors grille ou cellule non atteinte. O(1) + au plus 4 comparaisons.
-func root_id_at(pos: Vector2) -> int:
+## `radius` > INDEX_GROW (gros corps) : la source que rejoint le champ de sa classe (steer_body), s'il est prêt.
+func root_id_at(pos: Vector2, radius: float = 0.0) -> int:
 	if version == 0 or source_ids.is_empty():
 		return -1
 	if not _multi:
 		return source_ids[0]
+	if radius > INDEX_GROW:
+		var L := _body_layer(radius)
+		if L != null and L.version > 0 and L.multi:
+			var lc := cell_of(pos)
+			if lc < 0:
+				return -1
+			var bc := lc if L.dist[lc] != UNREACHED else _body_best(L, lc, 2)
+			if bc < 0 or L.root[bc] < 0:
+				return -1
+			return L.src_ids[L.root[bc] & 3]
 	var c := cell_of(pos)
 	if c < 0 or _dist[c] == UNREACHED:
 		return -1
@@ -569,6 +641,424 @@ func _line_clear(a: int, b: int) -> bool:
 	for s in range(1, steps):
 		var c := _cell_m(pa.lerp(pb, float(s) / steps))
 		if c < 0 or blocked[c] != 0:
+			return false
+	return true
+
+
+# --- Gros corps (boss d'étage, mini-boss)
+## Direction (unitaire, repère logique) pour un corps de rayon `radius` en `pos` : comme steer(), mais sur le champ
+## de sa classe de rayon (grille dilatée : le chemin ne passe que là où le corps tient). Vector2.ZERO = foncer droit
+## (ligne de vue « épaisse » libre, ou sur la source). Corps <= INDEX_GROW, couche pas encore prête, ou corps sans
+## aucune cellule du champ à 2 cases (enfermé) : steer(pos). Vise le centre de la cellule à 2 pas depuis la position
+## réelle (pas depuis le centre de la cellule) : le corps glisse le long des murs au lieu de s'y planter.
+## Coût : O(1) amorti (cache par cellule et par version de la couche) ; une couche est créée à la première demande.
+func steer_body(pos: Vector2, radius: float) -> Vector2:
+	if radius <= INDEX_GROW or w == 0:
+		return steer(pos)
+	var L := _body_layer(radius)
+	if L == null or L.version == 0:
+		return steer(pos)
+	var pm := to_map(pos)
+	var c := _cell_m(pm)
+	if c < 0 or not _interior(c):
+		return steer(pos)
+	if L.stamp[c] != L.version:
+		_fill_body(L, c)
+	var a := L.nxt[c]
+	if a == -1:
+		return Vector2.ZERO
+	if a < 0:
+		return steer(pos)
+	var d := _center_m(a) - pm
+	if d.length_squared() < 4.0:
+		return Vector2.ZERO
+	d = d.normalized()
+	return d if _flat else _m2l.basis_xform(d)
+
+
+## Vrai si un corps de rayon `radius` tient en `p` d'après la grille dilatée de sa classe (cellule libre, accessible).
+## Corps <= INDEX_GROW : is_reachable(p).
+func is_body_free(p: Vector2, radius: float) -> bool:
+	if radius <= INDEX_GROW or w == 0:
+		return is_reachable(p)
+	var L := _body_layer(radius)
+	var c := cell_of(p)
+	return c >= 0 and L.blk[c] == 0 and blocked[c] == 0 and (_reach.is_empty() or _reach[c] != 0)
+
+
+## Point d'apparition d'un gros corps près de `p` : `p` s'il y tient (is_body_free), sinon le centre de la cellule
+## libre de la grille dilatée et accessible la plus proche (anneaux jusqu'à `max_ring`), sinon nearest_reachable(p).
+## Jamais dans un mur, jamais dans une poche fermée. Ponctuel (apparition d'un boss).
+func body_spawn_point(p: Vector2, radius: float, max_ring: int = 6) -> Vector2:
+	if w == 0:
+		return p
+	if radius <= INDEX_GROW:
+		return nearest_reachable(p)
+	if is_body_free(p, radius):
+		return p
+	var L := _body_layer(radius)
+	var pm := _clamp_m(to_map(p), 1.0)
+	var c := _cell_m(pm)
+	if c < 0:
+		return nearest_reachable(p)
+	var cx := c % w
+	var cy := c / w
+	var best := -1
+	var best_d := INF
+	var found_ring := -1
+	for r in range(1, max_ring + 1):
+		if found_ring >= 0 and r > found_ring + 1: # l'anneau suivant peut encore être plus proche en euclidien
+			break
+		for y in range(cy - r, cy + r + 1):
+			if y < 0 or y >= h:
+				continue
+			var step := 1 if (y == cy - r or y == cy + r) else 2 * r
+			var x := cx - r
+			while x <= cx + r:
+				if x >= 0 and x < w:
+					var nc := y * w + x
+					if L.blk[nc] == 0 and blocked[nc] == 0 and (_reach.is_empty() or _reach[nc] != 0):
+						var d := _center_m(nc).distance_squared_to(pm)
+						if d < best_d:
+							best_d = d
+							best = nc
+							if found_ring < 0:
+								found_ring = r
+				x += step
+	return from_map(_center_m(best)) if best >= 0 else nearest_reachable(p)
+
+
+func _interior(c: int) -> bool:
+	var x := c % w
+	var y := c / w
+	return x > 0 and y > 0 and x < w - 1 and y < h - 1
+
+
+## Couche de la classe de `radius` (créée à la demande ; au-delà de MAX_BODY_LAYERS : la classe existante la plus
+## proche par excès, sinon la plus grande). Rend null sans grille.
+func _body_layer(radius: float) -> BodyLayer:
+	if w == 0:
+		return null
+	var key := roundi(radius / BODY_RADIUS_STEP)
+	var L: BodyLayer = _layers.get(key)
+	if L != null:
+		L.idle = 0.0
+		return L
+	if _layer_list.size() >= MAX_BODY_LAYERS:
+		var best: BodyLayer = null # la plus petite classe qui couvre le rayon, sinon la plus grande
+		for o in _layer_list:
+			if best == null:
+				best = o
+			elif best.radius < radius:
+				if o.radius > best.radius:
+					best = o
+			elif o.radius >= radius and o.radius < best.radius:
+				best = o
+		best.idle = 0.0
+		return best
+	L = _make_layer(float(key) * BODY_RADIUS_STEP)
+	_layers[key] = L
+	_layer_list.append(L)
+	if version > 0: # champ principal prêt : la couche se calcule sur les prochaines images (repli sur steer d'ici là)
+		_start_body(L)
+	return L
+
+
+func _make_layer(radius: float) -> BodyLayer:
+	var L := BodyLayer.new()
+	L.radius = radius
+	L.dil = maxf(radius - BODY_SLACK, INDEX_GROW)
+	L.escape = int(ceil(L.dil / CELL)) + 1
+	var n := w * h
+	L.static_blk = _static_blocked.duplicate()
+	var d2 := L.dil * L.dil
+	for r in rects:
+		var g := r.grow(L.dil)
+		var x0 := maxi(int(ceil((g.position.x - _origin.x) / CELL - 0.5)), 0)
+		var x1 := mini(int(floor((g.end.x - _origin.x) / CELL - 0.5)), w - 1)
+		var y0 := maxi(int(ceil((g.position.y - _origin.y) / CELL - 0.5)), 0)
+		var y1 := mini(int(floor((g.end.y - _origin.y) / CELL - 0.5)), h - 1)
+		for y in range(y0, y1 + 1):
+			for x in range(x0, x1 + 1):
+				var c := y * w + x
+				if L.static_blk[c] != 0:
+					continue
+				var p := _center_m(c)
+				var q := Vector2(clampf(p.x, r.position.x, r.end.x), clampf(p.y, r.position.y, r.end.y))
+				if p.distance_squared_to(q) < d2:
+					L.static_blk[c] = 1
+	L.corner_ok.resize(n)
+	L.corner_ok.fill(1)
+	for r in rects:
+		var g := r.grow(L.dil)
+		var x0 := maxi(int(ceil((g.position.x - _origin.x) / CELL)), 0)
+		var x1 := mini(int(floor((g.end.x - _origin.x) / CELL)), w - 1)
+		var y0 := maxi(int(ceil((g.position.y - _origin.y) / CELL)), 0)
+		var y1 := mini(int(floor((g.end.y - _origin.y) / CELL)), h - 1)
+		for y in range(y0, y1 + 1):
+			for x in range(x0, x1 + 1):
+				var c := y * w + x
+				if L.corner_ok[c] == 0:
+					continue
+				var p := _origin + Vector2(x, y) * CELL
+				var q := Vector2(clampf(p.x, r.position.x, r.end.x), clampf(p.y, r.position.y, r.end.y))
+				if p.distance_squared_to(q) < d2:
+					L.corner_ok[c] = 0
+	L.dyn_cnt.resize(n)
+	L.dyn_cnt.fill(0)
+	L.blk = L.static_blk.duplicate()
+	L.dist.resize(n)
+	L.dist.fill(UNREACHED)
+	L.back.resize(n)
+	L.queue.resize(n)
+	L.stamp.resize(n)
+	L.stamp.fill(-1)
+	L.nxt.resize(n)
+	for id in _dyn:
+		var o: Dictionary = _dyn[id]
+		if not bool(o.get("small", false)):
+			_stamp_dyn_layer(L, o, 1)
+	L.dirty = false
+	return L
+
+
+## Obstacle dynamique dans une couche : cellules dont le centre est à moins de `dil` de l'obstacle.
+func _stamp_dyn_layer(L: BodyLayer, o: Dictionary, sgn: int) -> void:
+	var bound := float(o["r"]) if float(o["r"]) > 0.0 else (o["half"] as Vector2).length()
+	var k := 1.0 if _flat else maxf(_l2m.x.length(), _l2m.y.length())
+	var cm := to_map(o["c"])
+	var ext := bound * k + L.dil + CELL
+	var x0 := maxi(int(floor((cm.x - ext - _origin.x) * INV_CELL)), 0)
+	var x1 := mini(int(floor((cm.x + ext - _origin.x) * INV_CELL)), w - 1)
+	var y0 := maxi(int(floor((cm.y - ext - _origin.y) * INV_CELL)), 0)
+	var y1 := mini(int(floor((cm.y + ext - _origin.y) * INV_CELL)), h - 1)
+	for y in range(y0, y1 + 1):
+		for x in range(x0, x1 + 1):
+			var c := y * w + x
+			if _in_dyn(o, from_map(_center_m(c)), L.dil / k):
+				L.dyn_cnt[c] = clampi(L.dyn_cnt[c] + sgn, 0, 255)
+				L.blk[c] = 1 if (L.static_blk[c] != 0 or L.dyn_cnt[c] > 0) else 0
+	var g := DYN_STAMP_RING
+	for y in range(maxi(y0 - g, 0), mini(y1 + g, h - 1) + 1):
+		for x in range(maxi(x0 - g, 0), mini(x1 + g, w - 1) + 1):
+			L.stamp[y * w + x] = -1
+	L.dirty = true
+
+
+## Appelé par update() / update_multi() aux images où le champ principal ne calcule pas : relance une couche quand
+## les sources du champ principal ont changé (ou un obstacle), au plus toutes les BODY_MIN_RECOMPUTE_S, et avance
+## un seul calcul de couche d'au plus BODY_BUDGET_PER_FRAME cellules (pic par image = celui du champ principal).
+func _update_layers(delta: float) -> void:
+	var budget := BODY_BUDGET_PER_FRAME
+	for L in _layer_list:
+		L.idle += delta
+		L.since += delta
+		if L.idle > BODY_IDLE_S:
+			continue
+		if not L.job_active and version > 0 and L.since >= BODY_MIN_RECOMPUTE_S and (L.dirty or _sources_changed(L)):
+			_start_body(L)
+		if L.job_active and budget > 0:
+			budget -= _step_body(L, budget)
+
+
+func _sources_changed(L: BodyLayer) -> bool:
+	if L.version == 0 or L.sources.size() != source_cells.size() or L.multi != _multi:
+		return true
+	for k in source_cells.size():
+		if L.sources[k] != source_cells[k] or L.src_ids[k] != source_ids[k]:
+			return true
+	return false
+
+
+## Calcul immédiat de toutes les couches (compute_now : liaison de carte, tests).
+func _compute_layers_now() -> void:
+	for L in _layer_list:
+		_start_body(L)
+		_step_body(L, 1 << 30)
+
+
+func _start_body(L: BodyLayer) -> void:
+	var n := w * h
+	L.back.fill(UNREACHED)
+	L.job_multi = _multi
+	if _multi and L.back_root.size() != n:
+		L.back_root.resize(n)
+		L.root.resize(n)
+		L.root.fill(-1)
+	if _multi:
+		L.back_root.fill(-1)
+	L.job_sources.resize(source_cells.size())
+	L.job_ids.resize(source_ids.size())
+	L.q_head = 0
+	L.q_tail = 0
+	for k in source_cells.size():
+		var pc := source_cells[k]
+		L.job_sources[k] = pc
+		L.job_ids[k] = source_ids[k]
+		if pc < 0 or L.back[pc] == 0:
+			continue
+		L.back[pc] = 0
+		if _multi:
+			L.back_root[pc] = pc * 4 + k
+		L.queue[L.q_tail] = pc
+		L.q_tail += 1
+	L.job_active = L.q_tail > 0
+	L.since = 0.0
+	L.dirty = false
+
+
+## BFS 8 voisins de la couche : cellules de vrai mur (`blocked`) jamais franchies ; cellules dilatées seulement à
+## moins de `escape` pas d'une source (joueur collé à un mur) ; diagonale refusée si elle coupe un coin de vrai mur, ou
+## si ses deux cellules orthogonales sont dilatées et que le coin franchi n'a pas `dil` de dégagement (corner_ok). Rend
+## le nombre de cellules traitées.
+func _step_body(L: BodyLayer, budget: int) -> int:
+	var done := 0
+	var off := _off
+	var offx := _offx
+	var offy := _offy
+	var blk := L.blk
+	var back := L.back
+	var queue := L.queue
+	var esc := L.escape
+	var corner := L.corner_ok
+	var coff := _coff
+	var multi := L.job_multi
+	var head := L.q_head
+	var tail := L.q_tail
+	while head < tail and done < budget:
+		var c := queue[head]
+		head += 1
+		done += 1
+		var nd := back[c] + 1
+		var loose := nd <= esc
+		for k in 8:
+			var nc := c + off[k]
+			if back[nc] != UNREACHED or blocked[nc] != 0:
+				continue
+			if blk[nc] != 0 and not loose:
+				continue
+			if k >= 4:
+				var ox := c + offx[k]
+				var oy := c + offy[k]
+				if blocked[ox] != 0 or blocked[oy] != 0:
+					continue
+				if not loose and blk[ox] != 0 and blk[oy] != 0 and corner[c + coff[k]] == 0:
+					continue
+			back[nc] = nd
+			if multi:
+				L.back_root[nc] = L.back_root[c]
+			queue[tail] = nc
+			tail += 1
+	L.q_head = head
+	L.q_tail = tail
+	L.back = back # tableaux compactés passés par référence : réaffectation sans copie (sûreté)
+	L.queue = queue
+	if head >= tail:
+		var tmp := L.dist
+		L.dist = L.back
+		L.back = tmp
+		if multi:
+			var tr := L.root
+			L.root = L.back_root
+			L.back_root = tr
+		L.multi = multi
+		L.sources.resize(L.job_sources.size())
+		L.src_ids.resize(L.job_ids.size())
+		for k in L.job_sources.size():
+			L.sources[k] = L.job_sources[k]
+			L.src_ids[k] = L.job_ids[k]
+		L.version += 1
+		L.job_active = false
+	return done
+
+
+## Voisin de plus petite distance (transition permise par le BFS) ; cellule non atteinte (corps collé à un mur, dans
+## une cellule dilatée) : anneau de 2 si l'anneau de 1 n'a rien. -1 si rien.
+func _body_best(L: BodyLayer, c: int, ring: int) -> int:
+	var best := -1
+	var best_d := L.dist[c]
+	for k in 8:
+		var nc := c + _off[k]
+		var dn := L.dist[nc]
+		if dn >= best_d:
+			continue
+		if k >= 4 and (blocked[c + _offx[k]] != 0 or blocked[c + _offy[k]] != 0):
+			continue
+		best = nc
+		best_d = dn
+	if best >= 0 or ring < 2 or L.dist[c] != UNREACHED:
+		return best
+	var cx := c % w
+	var cy := c / w
+	for dy in range(-2, 3):
+		var y := cy + dy
+		if y < 0 or y >= h:
+			continue
+		for dx in range(-2, 3):
+			if absi(dx) < 2 and absi(dy) < 2:
+				continue
+			var x := cx + dx
+			if x < 0 or x >= w:
+				continue
+			var nc := y * w + x
+			if L.dist[nc] < best_d and _line_clear_cells(c, nc):
+				best = nc
+				best_d = L.dist[nc]
+	return best
+
+
+## Aucune cellule de vrai mur entre deux centres (échantillons tous les 1/2 cellule).
+func _line_clear_cells(a: int, b: int) -> bool:
+	var pa := _center_m(a)
+	var pb := _center_m(b)
+	var steps := int(pa.distance_to(pb) / (CELL * 0.5))
+	for s in range(1, steps):
+		var c := _cell_m(pa.lerp(pb, float(s) / steps))
+		if c < 0 or blocked[c] != 0:
+			return false
+	return true
+
+
+func _fill_body(L: BodyLayer, c: int) -> void:
+	L.stamp[c] = L.version
+	var d := L.dist[c]
+	if d == 0:
+		L.nxt[c] = -1
+		return
+	var best := _body_best(L, c, 2)
+	if best < 0:
+		L.nxt[c] = -2 # enfermé (aucune cellule du champ à 2 cases) : champ principal
+		return
+	var src := L.sources[0] if not L.sources.is_empty() else -1
+	if L.multi:
+		var rc := L.root[c] if d != UNREACHED else L.root[best]
+		if rc >= 0:
+			src = rc >> 2
+	if src >= 0 and _line_clear_body(L, c, src):
+		L.nxt[c] = -1
+		return
+	if d == UNREACHED or L.dist[best] == 0:
+		L.nxt[c] = best # vise directement la cellule libre (ou la source)
+		return
+	var nb := _body_best(L, best, 1) # vise 2 cellules plus loin : trajectoire plus lisse
+	L.nxt[c] = nb if nb >= 0 else best
+
+
+## Ligne de vue « épaisse » : aucune cellule de vrai mur ni cellule dilatée entre les centres, sauf les cellules
+## dilatées aux abords de la source (escape : joueur collé à un mur, le corps finit en glissant).
+func _line_clear_body(L: BodyLayer, a: int, b: int) -> bool:
+	var pa := _center_m(a)
+	var pb := _center_m(b)
+	var steps := int(pa.distance_to(pb) / (CELL * 0.5))
+	if steps > 40:
+		return false
+	var bx := b % w
+	var by := b / w
+	for s in range(1, steps):
+		var c := _cell_m(pa.lerp(pb, float(s) / steps))
+		if c < 0 or blocked[c] != 0:
+			return false
+		if L.blk[c] != 0 and maxi(absi(c % w - bx), absi(c / w - by)) > L.escape:
 			return false
 	return true
 
@@ -968,6 +1458,9 @@ func _stamp_dyn(id: Variant, o: Dictionary, sgn: int) -> void:
 			if _in_dyn(o, cl, DYN_BLOCK_MARGIN / k):
 				_dyn_block[c] = clampi(_dyn_block[c] + sgn, 0, 255)
 				blocked[c] = 1 if (_static_blocked[c] != 0 or _dyn_block[c] > 0) else 0
+	if not bool(o.get("small", false)): # « small_only » : les gros corps l'enjambent
+		for L in _layer_list:
+			_stamp_dyn_layer(L, o, sgn)
 	# cache de direction invalidé autour : les cellules voisines re-choisissent leur pas au prochain steer
 	var g := DYN_STAMP_RING
 	for y in range(maxi(y0 - g, 0), mini(y1 + g, h - 1) + 1):

@@ -80,6 +80,8 @@ const FLOOD_ADD_U := 2.0
 const FLOOD_S := 2.5
 const GLOOM_K := 0.35 ## cristaux noyés
 const RIM_IN_U := 0.4 ## point d'émergence : juste dedans du bord
+const RIM_SEARCH_STEP := PI / 18.0 ## point du bord inaccessible : recherche en angle par pas de 10°
+const RIM_SEARCH_STEPS := 12
 ## Rythme (BossPace, Balance.BOSS_PACE_*) : morsure = &"auto" ; émergence = &"charge" (armement planté dans
 ## l'eau, bond, échouage = récupération STRAND_S) ; décharge et eau vive = &"spell". La nage n'est pas un coup ;
 ## après un coup elle reste en surface, immobile, le temps de sa récupération, puis replonge.
@@ -591,7 +593,23 @@ func _rim_toward(p: Vector2) -> Vector2:
 	var d := p - center
 	if d.length() <= pool_r - RIM_IN_U * U:
 		return p # le joueur est dans l'eau : elle vient sous lui
-	return center + d.normalized() * (pool_r - RIM_IN_U * U)
+	var q := center + d.normalized() * (pool_r - RIM_IN_U * U)
+	if e.nav == null or e.nav.is_reachable(q):
+		return q
+	# Point du bord dans un mur, l'emprise d'un prop (margelle du puits) ou l'eau profonde de la carte : elle n'y
+	# émergerait hors d'atteinte. Point du bord accessible le plus proche en angle (pas de 10°, jusqu'à 120°), puis
+	# un peu plus dedans ; à défaut, le point d'origine.
+	var a0 := d.angle()
+	for rin in [RIM_IN_U, RIM_IN_U + 0.8, RIM_IN_U + 1.6]:
+		var rr := pool_r - float(rin) * U
+		if rr <= 0.5 * U:
+			break
+		for k in range(0, RIM_SEARCH_STEPS + 1):
+			for sgn in [1.0, -1.0]:
+				var c := center + Vector2.from_angle(a0 + sgn * k * RIM_SEARCH_STEP) * rr
+				if e.nav.is_reachable(c):
+					return c
+	return q
 
 
 func _nearest_water(p: Vector2) -> Vector2:
