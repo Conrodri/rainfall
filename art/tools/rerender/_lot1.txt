@@ -1,0 +1,15 @@
+Set-Location C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-aa2579f474d2694dd
+WORKTREE = C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-aa2579f474d2694dd (tous les chemins ci-dessous en sont relatifs ; ne touche JAMAIS C:/Users/const/Documents/Rainfall hors de ce dossier).
+
+OBJECTIF : lot RR1 de re-rendus plus légers (budget textures mobile) : 4 assets re-rendus à cellule réduite, MÊME cadrage monde, MÊMES frames, noms, ordre, atlas (grille), fps, pivots relatifs, MÊME contenu et MÊMES couleurs. Seule la résolution des cellules change ; le re-rendu se fait dans Blender à la nouvelle résolution (JAMAIS de redimensionnement PIL d'une image existante). Qualité : arêtes nettes, pas plus floues qu'avant à la taille d'affichage (le jeu agrandira ×2 les trois premiers).
+
+ASSETS (script de construction existant à modifier par paramètre, tâche seule, puis relancer en --background) :
+1. game/assets/sprites/ui/da/vignette_hit.png : art/tools/ui/u1_build.py ligne `make('vignette_hit',1024,1024,vignette)` -> 512x512. Un seul PNG, pas de _e.
+2. game/assets/sprites/bosses/etage/drowned_idol/carillon_ring.png (+ carillon_ring_e.png) : art/tools/night/raid_drowned_idol_build.py, entrée EXTRA 'carillon_ring':(1152,1152,8,True,True) -> (576,576,8,True,True). Même rayon monde (rad 8.3359375), même épaisseur : l'anneau doit remplir la cellule comme avant (rayon extérieur = moitié de la cellule). Sheet 3x3 de cellules 576 -> 1728x1728 (8 frames, grille 3 colonnes comme avant). _e à demi-résolution du diffus (864x864) via art/tools/halve_emission.py comme avant. Ne re-rendre QUE cette tâche, pas bell/dike/etc.
+3. game/assets/sprites/vfx/raid/safe_sector.png : art/tools/night/raid_kit_build.py SPECS ('safe_sector',1152,1152,8) -> (576,576,8) ; même secteur (même rayon monde, rempli comme avant), 8 frames, grille 3 colonnes : 1728x1728. Ne re-rendre QUE safe_sector (pas danger_sheet, pas les autres).
+4. game/assets/sprites/vfx/source/rain_column.png (+ rain_column_e.png) : art/tools/night/f5v_build.py (contrat 12 x 256x1024, CREA 30 deg, 90.5097 px/u) -> 12 cellules de 192x768, MÊME cadrage monde (pied à 92 % de la hauteur, colonne de même largeur monde) donc 67.8823 px/u ; sheet 2304x768 horizontal ; _e demi-résolution (1152x384). Les gouttes restent des traînées fines nettes (pas de flou).
+
+AVANT de rendre, les originaux sont déjà copiés dans art/renders/rerender/lot1_before/ (ne pas y toucher). Un re-rendu qui change un autre fichier que les cinq-six PNG ci-dessus : le restaurer (git checkout -- <chemin>). Ne touche ni .tres ni .gd ni .import.
+
+VÉRIF : script court : dimensions finales exactes ci-dessus, alpha présent, frames distinctes, _e aux bonnes tailles. UNE planche avant/après art/renders/rerender/lot1_compare.png (<= 1600 px de large : pour chaque asset, premier cadre avant (réduit pour tenir) à gauche, après à droite, même échelle d'affichage), regardée en fin de lot.
+RAPPORT (6 lignes max, ultracave) : fichiers touchés, tailles, vérif, problèmes.

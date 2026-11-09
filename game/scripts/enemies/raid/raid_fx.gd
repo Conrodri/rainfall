@@ -20,7 +20,8 @@ const WARM := Color(1.0, 0.62, 0.25) ## fenêtre de vulnérabilité
 const CUE_GROUP := &"raid_cues"
 
 ## Anims « sol » de la planche (vues de dessus : échelle 1, centrées) ; les autres sont des billboards (pied en bas).
-const GROUND_ANIMS := [&"soak_zone", &"soak_fill", &"soak_burst", &"safe_sector", &"danger_sheet", &"sector_arrow",
+const SAFE_SECTOR_SCALE := 2.0 ## safe_sector.png : cellules de 576 px pour 1152 px de monde
+const GROUND_ANIMS := [&"soak_zone", &"soak_fill", &"soak_burst", &"safe_sector", &"sector_arrow",
 	&"fixate_mark", &"fixate_link", &"shelter_shadow"]
 
 enum Kind { ORB, BUBBLE, SOAK, SECTOR, FIXATE, LINK, WEAK, PYLON, SHADOW, ENRAGE, PROP, RING }
@@ -64,6 +65,8 @@ static func visual(anim: StringName, p_kind: Kind, p_color: Color = CYAN, p_radi
 				s.offset = Vector2(0.0, -tex0.get_height() * 0.5)
 		elif anim in GROUND_ANIMS:
 			s.centered = true
+			if anim == &"safe_sector": # cellule re-rendue à 576 px (allègement RR1) : couvre toujours 1152 px au sol
+				s.scale = Vector2(SAFE_SECTOR_SCALE, SAFE_SECTOR_SCALE)
 		else: # billboard : pied au bas de la cellule (iso_rig), écrasement compensé
 			s.scale = Iso.UNSQUASH * Iso.SPRITE_K
 			var tex := sf.get_frame_texture(anim, 0)
