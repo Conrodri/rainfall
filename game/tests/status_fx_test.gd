@@ -1,6 +1,6 @@
 extends Node
 ## Visuels d'état sur les monstres (StatusFx, docs/Design_Etats_Visuels.md).
-## godot --headless --fixed-fps 60 --path game res://tests/status_fx_test.tscn
+## godot --headless --path game res://tests/status_fx_test.tscn (avec ou sans --fixed-fps 60 : attentes en temps de jeu)
 ## 1. Chaque état est visible quand il est actif (poison -> bulles, brûlure -> flammèches + cendres, trempé -> gouttes
 ##    + corps assombri, coup électrique -> arcs, étourdi -> étoiles) et retiré à la fin (suivi relâché, teinte rendue).
 ## 2. Le flash de coup se compose avec la teinte mouillée (blanc pendant le flash, sombre après).
@@ -36,9 +36,17 @@ func _fx() -> StatusFx:
 	return StatusFx.instance()
 
 
+## Attend n images ET au moins n/60 s de temps de jeu : le test lit des durées (vie des particules, états,
+## relecture toutes les 50-100 ms). Sans --fixed-fps, le temps réel d'une image headless (quelques ms) remplace le 1/60 s et
+## compter des images ne mesurait plus le temps (gouttes et arcs pas encore émis, particules encore vivantes).
 func _frames(n: int) -> void:
-	for i in n:
+	var t := 0.0
+	var want := float(n) / 60.0 - 0.0001
+	var i := 0
+	while i < n or t < want:
 		await get_tree().process_frame
+		t += get_process_delta_time()
+		i += 1
 
 
 func _run() -> void:
@@ -204,8 +212,12 @@ func _caps(fx: StatusFx) -> void:
 		var max_kind := PackedInt32Array([0, 0, 0, 0, 0, 0, 0])
 		var max_live := 0
 		var ok_caps := true
-		for f in 90:
+		var t_s := 0.0
+		var f := 0
+		while f < 90 or t_s < 1.5: # 1,5 s de jeu échantillonnées, quel que soit le débit d'images
 			await get_tree().process_frame
+			t_s += get_process_delta_time()
+			f += 1
 			for s in StatusFx.ST_COUNT:
 				max_em[s] = maxi(max_em[s], fx.emitter_count(s))
 				ok_caps = ok_caps and fx.emitter_count(s) <= StatusFx.EMITTERS[tier]
