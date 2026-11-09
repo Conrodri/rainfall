@@ -36,6 +36,11 @@ var load_wait_s := 1.0
 var prewarm_s := 2.0
 var restore_after := true ## remet la carte, la qualité, les triches et la vsync d'avant à la fin
 var with_ui := true ## bandeau de progression et fenêtre de résultat (le test PC le coupe)
+## Reprend aussitôt le menu pause s'il s'ouvre pendant le banc (perte de focus de la fenêtre :
+## PauseMenu._notification). Sans cela, la mesure attend indéfiniment la reprise (le menu pause reste
+## affiché, la boucle tourne sans vsync à 100 % d'un cœur) : c'étaient les « gels » du banc PC du
+## 09/11/2026 (docs/Mesures_Perf_Android.md §7). Le lanceur PC l'active ; sur téléphone, le joueur reprend lui-même.
+var resume_on_pause := false
 var aborted := false
 var result: Dictionary = {}
 var json_path := ""
@@ -140,6 +145,7 @@ func run() -> Dictionary:
 		var pre_t := Time.get_ticks_msec()
 		var pl: Node2D = Players.all()[0] as Node2D if not Players.all().is_empty() else null
 		while Time.get_ticks_msec() - pre_t < int(prewarm_s * 1000.0) and not aborted:
+			_resume_pause_menu()
 			_top_up(director, pl, counts.max() if not counts.is_empty() else 0, 60)
 			await tree.process_frame
 		director.despawn_all()
@@ -194,7 +200,18 @@ func run() -> Dictionary:
 func _wait_s(s: float) -> void:
 	var t0 := Time.get_ticks_msec()
 	while Time.get_ticks_msec() - t0 < int(s * 1000.0) and not aborted:
+		_resume_pause_menu()
 		await get_tree().process_frame
+
+
+## resume_on_pause : relance « Reprendre » (compte à rebours compris) sur un menu pause ouvert.
+func _resume_pause_menu() -> void:
+	if not resume_on_pause or not get_tree().paused:
+		return
+	var pm := get_tree().get_first_node_in_group(&"pause_menu")
+	if pm != null and bool(pm.get(&"is_open")) and not bool(pm.get(&"counting_down")) and pm.has_method(&"_on_resume"):
+		print("MapPerfBench : menu pause ouvert pendant le banc (perte de focus ?) : reprise automatique")
+		pm.call(&"_on_resume")
 
 
 ## Une configuration (carte, palier, N) : chauffe puis mesure. Aucune allocation dans la boucle de mesure.
@@ -208,6 +225,7 @@ func _measure_config(director: Director, sm: StageManager, n: int, label: String
 	director.despawn_all()
 	var t0 := Time.get_ticks_msec()
 	while Time.get_ticks_msec() - t0 < int(warmup_s * 1000.0) and not aborted:
+		_resume_pause_menu()
 		_top_up(director, player, n, 400)
 		await tree.process_frame
 	var vp := get_viewport().get_viewport_rid()
@@ -219,6 +237,7 @@ func _measure_config(director: Director, sm: StageManager, n: int, label: String
 	var shown := 0
 	while Time.get_ticks_usec() < t_end and frames < MAX_FRAMES and not aborted:
 		if tree.paused: # panneau ou menu ouvert pendant le banc : images non comptées, fenêtre prolongée
+			_resume_pause_menu()
 			await tree.process_frame
 			var now_p := Time.get_ticks_usec()
 			t_end += now_p - last

@@ -8,11 +8,17 @@ extends Node
 ## --watchdog=<s> (défaut 60) : si aucune image n'avance pendant <s> secondes (boucle infinie, gel), un fil de garde
 ## écrit « WATCHDOG » avec la dernière configuration et termine le processus (aucun Godot figé laissé en fond) ;
 ## --watchdog-grace=<s> retarde la fin de <s> secondes (pour relever la pile avec un débogueur distant).
+## Les images passées en pause ne comptent pas : un menu pause resté ouvert est signalé comme tel par le fil de garde.
+## Perte de focus (menu pause ouvert par PauseMenu) : reprise automatique (MapPerfBench.resume_on_pause), sauf
+## --keep-pause. --focus-out-at=<s> simule une perte de focus <s> secondes après le début du banc (reproduction
+## du « gel » du 09/11/2026, docs/Mesures_Perf_Android.md §7, possible aussi en --headless).
 ## Sortie : lignes « BENCHROW | {json} » au fil des mesures, tableau texte, fichiers user://perf_bench/bench_<date>.json / .txt, puis « RESULT: OK ».
 
 const PROFILE_PATH := "user://map_perf_bench_profile.json"
 
-var _beat := 0 ## images écoulées (lu par le fil de garde)
+var _beat := 0 ## images écoulées hors pause (lu par le fil de garde)
+var _paused := false ## jeu en pause à la dernière image (lu par le fil de garde)
+var _focus_out_ms := -1 ## --focus-out-at : instant (ticks) de la perte de focus simulée
 var _step := "démarrage" ## dernière étape annoncée par le banc (lue par le fil de garde)
 var _wd: Thread
 var _wd_stop := false
@@ -24,7 +30,13 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	_beat += 1
+	_paused = get_tree().paused
+	if not _paused:
+		_beat += 1
+	if _focus_out_ms >= 0 and Time.get_ticks_msec() >= _focus_out_ms:
+		_focus_out_ms = -1
+		print("Perte de focus simulée (--focus-out-at)")
+		get_tree().root.propagate_notification(NOTIFICATION_APPLICATION_FOCUS_OUT)
 
 
 ## Fil de garde : termine le processus si les images n'avancent plus pendant `limit_s` secondes.
@@ -38,8 +50,9 @@ func _watchdog(limit_s: float, grace_s: float) -> void:
 			last = b
 			t_last = Time.get_ticks_msec()
 		elif Time.get_ticks_msec() - t_last > int(limit_s * 1000.0):
-			printerr("WATCHDOG : aucune image depuis %.0f s ; dernière étape : %s" % [limit_s, _step])
-			print("RESULT: FAIL (gel pendant « %s »)" % _step)
+			var why := "jeu en pause (menu pause resté ouvert)" if _paused else "aucune image"
+			printerr("WATCHDOG : %s depuis %.0f s ; dernière étape : %s" % [why, limit_s, _step])
+			print("RESULT: FAIL (%s pendant « %s »)" % [why, _step])
 			OS.delay_msec(int(grace_s * 1000.0)) # laisse un débogueur distant relever la pile GDScript
 			OS.kill(OS.get_process_id())
 			return
@@ -73,6 +86,7 @@ func _run() -> void:
 		await get_tree().process_frame
 	var bench := MapPerfBench.new()
 	bench.with_ui = args.has("ui")
+	bench.resume_on_pause = not args.has("keep-pause")
 	bench.restore_after = false
 	if args.has("maps"):
 		bench.maps.assign(Array(str(args["maps"]).split(",", false)))
@@ -86,6 +100,8 @@ func _run() -> void:
 	bench.progress.connect(func(t: String) -> void: _step = t)
 	bench.row_done.connect(func(r: Dictionary) -> void: print("BENCHROW | ", JSON.stringify(r)))
 	main.add_child(bench)
+	if args.has("focus-out-at"):
+		_focus_out_ms = Time.get_ticks_msec() + int(float(args["focus-out-at"]) * 1000.0)
 	var res: Dictionary = await bench.run()
 	var rows: Array = res.get("rows", [])
 	var ok := not rows.is_empty()
