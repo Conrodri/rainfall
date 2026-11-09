@@ -1,0 +1,8 @@
+DÉPÔT: C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-ab4cbf0b8b4da664a (worktree) ; Set-Location d'abord, rien hors de lui.
+LOT: RETOUCHE de la planche Grésille v2 (corps féminin OK, garde-le). Modifie art/tools/gresille/gresille_build.py par paramètres et relance. Défauts à corriger, vérifie big_A/B/C et sprite_A/B/C toi-même :
+1) La cape-treillis de mailles de cuivre (vert-de-gris #4F6B5E, maille visible, mouillée, qui retombe des épaules jusqu'au milieu du dos, accrochant la lumière) est ABSENTE/invisible : la modéliser en volume net sur A (longue) et C (courte), collerette sur B ; lisible à 192 px.
+2) Veste/combinaison trop claire et plate (gris bleu clair) : la foncer (laine #3F434B à #5A5E66 avec usure, plis, mouillé), contraste sombre comme Vigie/Ardent.
+3) Cheveux : ils lisent comme un bonnet vert ; cheveux noirs/bruns sombres, chignon avec épingles de cuivre, quelques mèches dressées ; visage fin, supprimer toute marque lisible comme moustache.
+4) Accent émissif unique plus lisible à 192 px (lilas #B9A6FF dans bouteilles, isolateurs, mèches sur A et C ; bleu-blanc #D8EEFF sur B), sans empâter la silhouette.
+5) B doit différer davantage de A au premier coup d'oeil (bobines plus massives aux avant-bras, plus larges, pas de tige).
+Garde planche < 2 Mo, mêmes sorties. Rapport 5 lignes.
