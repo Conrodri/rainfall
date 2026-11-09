@@ -3,7 +3,7 @@ import bpy, math, random
 from pathlib import Path
 
 ROOT = Path(r'C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a00f1c2bdb6d72b46')
-RAW = ROOT / 'art/renders/status_fx/raw'
+RAW = ROOT / 'game/assets/sprites/vfx/status'
 RAW.mkdir(parents=True, exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
@@ -14,6 +14,8 @@ scene.render.image_settings.file_format = 'PNG'
 scene.render.image_settings.color_mode = 'RGBA'
 scene.render.image_settings.color_depth = '8'
 scene.render.resolution_percentage = 100
+scene.render.filter_size = 1.0
+scene.eevee.taa_render_samples = 64
 scene.render.image_settings.compression = 100
 scene.view_settings.view_transform = 'Standard'
 scene.view_settings.look = 'None'
@@ -102,9 +104,12 @@ def start(w,h):
         if ob != cam:
             bpy.data.objects.remove(ob,do_unlink=True)
     z=0
-    scene.render.resolution_x=w*2;scene.render.resolution_y=h*2
+    scene.render.resolution_x=w;scene.render.resolution_y=h
+    scene.render.pixel_aspect_x=1;scene.render.pixel_aspect_y=1
     cam.location=(w/2,h/2,100)
-    cam.data.ortho_scale=max(w,h)
+    # Explicit horizontal fit: one scene unit per pixel, including portraits.
+    cam.data.sensor_fit='HORIZONTAL'
+    cam.data.ortho_scale=w
 
 def save(name):
     scene.render.filepath=str(RAW/(name+'.png'))
@@ -153,9 +158,9 @@ for i in range(4):
         pts.append((12+math.cos(t)*r,12+math.sin(t)*r*.8))
     poly(pts,'#262527')
     inner=[(12+(x-12)*.83,12+(y-12)*.83) for x,y in pts]
-    poly(inner,'#3A3634')
-    poly([inner[1],inner[2],inner[3],inner[4],(12,11),(11,13)],'#5A5450')
-    if i in (1,3):line([pts[7],pts[8],pts[9]],.6,'#C23B12')
+    poly(inner,'#5E5853')
+    poly([inner[1],inner[2],inner[3],inner[4],(12,11),(11,13)],'#8A817A')
+    if i in (1,3):line([pts[7],pts[8],pts[9]],.6,'#E0522A')
     save(f'burn_ash_{i+1:02}')
 
 def drop(cx,cy,rx,height):
@@ -172,7 +177,7 @@ for i in range(4):
     start(16,32)
     drop(8,13,3.2 if i==0 else 3.3,18 if i!=1 else 14)
     if i==2: line([(8,25.5),(8,27)],.8,'#CFE8FF',.8)
-    if i==3: drop(8,25,1.3,3.6)
+    if i==3: drop(8.4,22,1.3,3.6)
     save(f'wet_drip_{i+1:02}')
 
 arcs=[
@@ -199,7 +204,7 @@ for i in range(2):
     poly([(16,18.2),(17.2,16),(16,13.8),(14.8,16)],'#FFFFFF')
     save(f'stun_star_{i+1:02}')
 
-print('PASS: 24 mesh sprites rendered at 2x; no normals; no emission masks')
+print('PASS: 24 mesh sprites rendered at exact final dimensions; no normals; no emission masks')
 
 
 
