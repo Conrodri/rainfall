@@ -84,6 +84,13 @@ static var _flash_material: ShaderMaterial = null
 static var _boss_cache: Dictionary = {} ## id -> SpriteFrames (ou null si absent/invalide)
 static var _mini_count := 0
 static var _warm_ms := -100000
+## Préchargement des sprites de boss de l'étage (_warm_bosses) : UN seul chargement en fil à la fois,
+## récupéré par load_threaded_get dès qu'il est fini (jamais redemandé ni laissé en suspens).
+static var _warm_floor: StringName = &"" ## boss d'étage dont la file a été construite
+static var _warm_queue: Array[StringName] = [] ## ids restant à précharger
+static var _warm_id: StringName = &"" ## id du chargement en cours (&"" = aucun)
+static var _warm_path := ""
+static var _warm_polling := false ## une minuterie de suivi est déjà armée
 # --- faune par biome (data/fauna.json)
 static var _fauna: Dictionary = {}
 static var _fauna_loaded := false
@@ -169,6 +176,7 @@ static func _sync_style() -> void:
 		_frames_cache.clear()
 		_mon_cache.clear()
 		_boss_cache.clear()
+		_warm_floor = &"" # la file de préchargement se reconstruit (chemins du nouveau style)
 
 
 static func frames_for_tier(tier: int) -> SpriteFrames:
@@ -506,13 +514,26 @@ static func boss_frames(boss_id: StringName) -> SpriteFrames:
 		return _boss_cache[boss_id]
 	var path := RenderStyle.resolve("%s%s/%s.tres" % [BOSS_DIR, cfg["dir"], String(boss_id)])
 	var frames: SpriteFrames = null
-	if ResourceLoader.exists(path):
-		var f := load(path) as SpriteFrames
-		var probe := &"idle_p1_s" if cfg["floor"] else &"idle_s"
-		if f != null and f.has_animation(probe):
-			frames = f
+	if boss_id == _warm_id and path == _warm_path:
+		# préchargement en cours pour ce boss : on le récupère (attend sa fin) plutôt que de lancer un
+		# second chargement synchrone du même fichier ; la file reprend à la prochaine minuterie
+		var r := ResourceLoader.load_threaded_get(path)
+		_warm_id = &""
+		_warm_path = ""
+		frames = _valid_boss_frames(boss_id, r)
+	elif ResourceLoader.exists(path):
+		frames = _valid_boss_frames(boss_id, load(path))
 	_boss_cache[boss_id] = frames
 	return frames
+
+
+## SpriteFrames de boss utilisables (anim de repos attendue présente), sinon null (placeholder).
+static func _valid_boss_frames(boss_id: StringName, res: Resource) -> SpriteFrames:
+	var f := res as SpriteFrames
+	var cfg := boss_cfg(boss_id)
+	if f == null or cfg.is_empty():
+		return null
+	return f if f.has_animation(&"idle_p1_s" if cfg["floor"] else &"idle_s") else null
 
 
 ## Identifiant de sprite du boss qui apparaît : boss d'étage = floor_boss de la carte (StageManager ou
@@ -541,21 +562,78 @@ static func resolve_boss_id(tree: SceneTree, kind: StringName, director: Node = 
 
 ## Précharge en tâche de fond (sans bloquer) les .tres du boss d'étage et des mini-boss de la carte,
 ## pour que l'apparition ne charge rien de lourd en pleine partie.
+## Règles (gel fenêtré du banc PC, docs/Mesures_Perf_Android.md §7) : un seul chargement en fil à la
+## fois ; chaque demande est RÉCUPÉRÉE (load_threaded_get_status puis load_threaded_get, une fois) et
+## rangée dans _boss_cache ; un chemin demandé n'est jamais redemandé ; le fil principal n'attend
+## jamais un chargement en cours (sauf boss_frames, si le boss apparaît avant la fin du sien).
+## Changement d'étage : les sprites de boss des autres étages sortent du cache (mémoire vidéo mobile).
 static func _warm_bosses(tree: SceneTree) -> void:
 	if tree == null:
 		return
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if sm == null or sm.get(&"floor_boss") == null:
 		return
+	_sync_style()
 	var fid := StringName(sm.get(&"floor_boss"))
 	fid = BOSS_ALIASES.get(fid, fid)
-	var ids: Array = [fid]
-	ids.append_array(mini_pool(fid))
-	for id in ids:
-		if not _boss_cache.has(id):
-			var path := boss_path(id)
-			if path != "" and ResourceLoader.exists(path):
-				ResourceLoader.load_threaded_request(path)
+	if fid != _warm_floor:
+		_warm_floor = fid
+		var ids: Array[StringName] = [fid]
+		for m in mini_pool(fid):
+			if not ids.has(StringName(m)):
+				ids.append(StringName(m))
+		for k in _boss_cache.keys():
+			if not ids.has(k):
+				_boss_cache.erase(k)
+		_warm_queue = ids
+	_warm_pump(tree)
+
+
+## Fait avancer la file de préchargement : récupère le chargement fini, lance le suivant, et se
+## réarme (minuterie) tant qu'il reste du travail. Ne bloque jamais.
+static func _warm_pump(tree: SceneTree) -> void:
+	if _warm_id != &"":
+		var st := ResourceLoader.load_threaded_get_status(_warm_path)
+		if st == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			_warm_arm(tree)
+			return
+		if st == ResourceLoader.THREAD_LOAD_LOADED:
+			var r := ResourceLoader.load_threaded_get(_warm_path) # fini : ne bloque pas, libère la demande
+			if not _boss_cache.has(_warm_id) and _warm_path == RenderStyle.resolve(boss_path(_warm_id)):
+				_boss_cache[_warm_id] = _valid_boss_frames(_warm_id, r)
+		# échec ou demande déjà récupérée ailleurs : abandon (boss_frames chargera à l'apparition)
+		_warm_id = &""
+		_warm_path = ""
+	while not _warm_queue.is_empty():
+		var id: StringName = _warm_queue.pop_front()
+		if _boss_cache.has(id):
+			continue
+		var path := RenderStyle.resolve(boss_path(id))
+		if path == "" or not ResourceLoader.exists(path):
+			continue
+		if ResourceLoader.load_threaded_request(path, "SpriteFrames") != OK:
+			continue
+		_warm_id = id
+		_warm_path = path
+		_warm_arm(tree)
+		return
+
+
+static func _warm_arm(tree: SceneTree) -> void:
+	if _warm_polling or tree == null:
+		return
+	_warm_polling = true
+	tree.create_timer(0.25).timeout.connect(EnemyVisual._warm_tick.bind(tree))
+
+
+static func _warm_tick(tree: SceneTree) -> void:
+	_warm_polling = false
+	_warm_pump(tree)
+
+
+## État du préchargement (tests) : {floor, pending, loading, cached}.
+static func warm_state() -> Dictionary:
+	return {"floor": _warm_floor, "pending": _warm_queue.size(), "loading": _warm_id, "cached": _boss_cache.keys()}
 
 
 func _setup_boss_sprite(frames: SpriteFrames) -> void:

@@ -41,9 +41,13 @@ var texture_size := Vector2i.ZERO
 
 var _task := -1
 var _pending: Dictionary = {}
-var _result: Image = null
-var _result_bounds := Rect2()
-var _mutex := Mutex.new()
+var _task_box: Dictionary = {} ## sortie de la tâche en cours ({"img": Image}), écrite par le fil, lue après la fin
+
+## Tâches abandonnées (annulées ou nœud sorti de l'arbre avant la fin) : libérées par
+## wait_for_task_completion SEULEMENT une fois terminées. Le fil principal n'attend jamais une tâche
+## du WorkerThreadPool en cours : une telle attente peut s'interbloquer avec les chargements en fil
+## (gel fenêtré du banc PC, docs/Mesures_Perf_Android.md §7).
+static var _orphans: Array[int] = []
 
 
 func _init() -> void:
@@ -129,21 +133,20 @@ func is_baking() -> bool:
 
 
 func _process(_delta: float) -> void:
+	if not _orphans.is_empty():
+		_reap_orphans()
 	if _task < 0:
 		return
 	if not WorkerThreadPool.is_task_completed(_task):
 		return
-	WorkerThreadPool.wait_for_task_completion(_task)
+	WorkerThreadPool.wait_for_task_completion(_task) # tâche terminée : ne bloque pas, libère la tâche
 	_task = -1
-	_mutex.lock()
-	var img := _result
-	var b := _result_bounds
-	_result = null
-	_mutex.unlock()
-	if img != null:
-		_apply(img, b)
-		baked_length_u = _pending["length_u"]
-		baked_rotation_deg = _pending["rotation_deg"]
+	var img: Image = _task_box.get("img")
+	_task_box = {}
+	# Résultat appliqué même nul (carte sans obstacle) : sinon la même cuisson repartirait à chaque image.
+	_apply(img, _pending["bounds"])
+	baked_length_u = _pending["length_u"]
+	baked_rotation_deg = _pending["rotation_deg"]
 
 
 func _exit_tree() -> void:
@@ -184,20 +187,42 @@ func _rebake_async(p: Dictionary) -> void:
 	if _task >= 0:
 		return # une cuisson à la fois ; la suivante partira à la prochaine mise à jour
 	_pending = _job(map, p)
-	var job := _pending
-	_task = WorkerThreadPool.add_task(func() -> void:
-		var img := BakedShadows._rasterize(job)
-		_mutex.lock()
-		_result = img
-		_result_bounds = job["bounds"]
-		_mutex.unlock(), false, "BakedShadows")
+	_task_box = {}
+	# Callable STATIQUE (aucune référence à self : le nœud peut être libéré pendant la tâche) ; haute
+	# priorité : quelques ms de calcul, ne doit pas attendre derrière les chargements de ressources.
+	_task = WorkerThreadPool.add_task(BakedShadows._rebake_job.bind(_pending, _task_box), true, "BakedShadows")
 
 
+## Corps de la tâche de fond : seul le dictionnaire `box` est écrit ; le fil principal ne le lit
+## qu'après is_task_completed (barrière du WorkerThreadPool).
+static func _rebake_job(job: Dictionary, box: Dictionary) -> void:
+	box["img"] = _rasterize(job)
+
+
+## Abandonne la cuisson de fond en cours SANS l'attendre (son résultat est ignoré).
 func _cancel_task() -> void:
 	if _task >= 0:
-		WorkerThreadPool.wait_for_task_completion(_task)
+		if WorkerThreadPool.is_task_completed(_task):
+			WorkerThreadPool.wait_for_task_completion(_task)
+		else:
+			_orphans.append(_task)
 		_task = -1
-		_result = null
+		_task_box = {}
+	if not _orphans.is_empty():
+		_reap_orphans()
+
+
+## Libère les tâches abandonnées déjà terminées (jamais d'attente bloquante).
+static func _reap_orphans() -> void:
+	for i in range(_orphans.size() - 1, -1, -1):
+		if WorkerThreadPool.is_task_completed(_orphans[i]):
+			WorkerThreadPool.wait_for_task_completion(_orphans[i])
+			_orphans.remove_at(i)
+
+
+## Nombre de tâches abandonnées pas encore libérées (tests).
+static func orphan_count() -> int:
+	return _orphans.size()
 
 
 func _apply(img: Image, bounds: Rect2) -> void:
