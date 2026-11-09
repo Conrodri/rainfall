@@ -2,12 +2,13 @@
 
 > *« Un mât qu'on retourne appelle. Je sais aussi retourner. »*
 
-> Statut : **proposition de game design** (Fable, designer-fable, 08/11/2026), sur demande du joueur : *« il faudrait un personnage avec des dégâts électriques »*. Rien n'est implémenté ; aucun fichier de `game/` ni de `data/` n'est modifié. Lore : `docs/Lore.md` §11.11. Modèle de fiche : `docs/fiches/vigie.md` (lecture joueur) et `docs/fiches/morfil.md` (détail technique) ; cadre d'équilibrage : `docs/Equilibrage_Personnages.md` (mono-cible dans [0,85 ; 1,20] × Ardent), `docs/Design_Combos.md` (un état par personnage, +20 à +30 % sur les cibles préparées), `docs/Design_Feel_Sorts.md` (frames d'impact, hitstop, cancel), `docs/Variantes_Sorts.md` (±15 % du sort de base), `docs/Design_Esquives.md` (l'esquive ne dépasse jamais 5 % du DPS), `docs/Skins.md`.
+> Statut : **proposition de game design** (Fable, designer-fable, 08/11/2026), sur demande du joueur : *« il faudrait un personnage avec des dégâts électriques »*. Rien n'est implémenté ; aucun fichier de `game/` ni de `data/` n'est modifié. Lore : `docs/Lore.md` §11.11.
+> **Décisions du joueur (09/11/2026)** : le nom **Grésille** est retenu ; le déblocage est « **Foudroyer 100 monstres avec l'Éclair en bouteille** » ; le Semeur de pluie est un **vengeur** qui noie le Val volontairement, par rancune contre la Cité et ses paratonnerres (`docs/Lore.md` §1.2-1.3, §2) : §1 de cette fiche révisé en conséquence. Restent à trancher : §13 (accent lilas, statut « mouillé » partagé). Modèle de fiche : `docs/fiches/vigie.md` (lecture joueur) et `docs/fiches/morfil.md` (détail technique) ; cadre d'équilibrage : `docs/Equilibrage_Personnages.md` (mono-cible dans [0,85 ; 1,20] × Ardent), `docs/Design_Combos.md` (un état par personnage, +20 à +30 % sur les cibles préparées), `docs/Design_Feel_Sorts.md` (frames d'impact, hitstop, cancel), `docs/Variantes_Sorts.md` (±15 % du sort de base), `docs/Design_Esquives.md` (l'esquive ne dépasse jamais 5 % du DPS), `docs/Skins.md`.
 > Conventions : 1 u = 64 px ; « coef » = multiple de `Balance.player_base_damage(L)` = 12 + 2,4 (L−1), commun à tous ; recharge effective = base × `cooldown_mult`, plancher `Balance.COOLDOWN_FLOOR` = 0,35 ; procs = chance × proc_coef. Télégraphes ennemis ≥ 0,8 s ; aucune mort instantanée ; trois plateformes (sort 1 automatique partout, sorts 2-4 au curseur sur PC, stick droit à la manette, ciblage automatique sur mobile).
 
 | | |
 |---|---|
-| **Nom** | **Grésille** (id technique proposé : `gresille`) : *grésiller*, le crépitement d'un arc électrique sous la pluie ; *grésil*, la pluie qui pique. Un mot, féminin, comme Averse, Vigie, Bourbe. Alternatives en §13. |
+| **Nom** | **Grésille** (id technique : `gresille` ; nom tranché le 09/11/2026) : *grésiller*, le crépitement d'un arc électrique sous la pluie ; *grésil*, la pluie qui pique. Un mot, féminin, comme Averse, Vigie, Bourbe. |
 | **Titre** | « Paratonnerrière de la Cité » |
 | **Rôle** | Électricité : distance moyenne (7-8 u), arcs qui rebondissent, **Statique** qui s'empile et foudroie ; conduction dans l'eau |
 | **Difficulté** | ★★☆☆☆ (2/5) : se joue au bouton ; la subtilité est de laisser monter la Statique avant de décharger |
@@ -22,9 +23,11 @@
 
 La Cité avait semé des paratonnerres du canal jusqu'aux rizières, et il fallait quelqu'un pour **grimper dessus** : polir le bronze, vérifier la mise à la terre, remplacer les isolateurs de verre. C'était son métier. Elle montait aux mâts par tous les temps, des bouteilles de Leyde dans le dos pour **mesurer la charge** qu'ils rendaient au sol, et elle connaissait chaque mât du Val au toucher.
 
+Elle savait aussi ce que les mâts coûtaient. On ne grimpe pas cent fois par an au-dessus du Val sans voir les rizières se fendre, les norias tourner à vide, la file des Terrasses descendre boire à la Source l'année sans mousson. Elle l'a dit aux fondeurs, à sa hauteur d'ouvrière, et on lui a répondu ce qu'on avait répondu au Fontainier : le canal est plein. Elle a continué à polir. C'était son métier, et elle avait des bouteilles à remplir.
+
 La nuit de la Grande Crue, elle était en haut d'un mât quand l'orage est arrivé. Elle a senti, par la paume, **le bronze tirer dans le mauvais sens** : le mât n'écoulait plus la foudre vers la terre, il la **tirait du ciel**. Tous les mâts du Val se sont mis à appeler la même nuit, parce que le mât-mère, à la Source, venait d'être retourné. Elle est redescendue vivante parce qu'elle portait ses bottes de gutta-percha. Ses bouteilles de Leyde, elles, étaient pleines à craquer. Elles le sont restées.
 
-Depuis, elle descend le chemin de l'eau avec la foudre dans le dos. Elle est la seule du Val à savoir **ce qui s'est passé** : l'orage n'est pas venu, il a été appelé ; et un mât qui appelle, on peut le remettre à l'endroit. Elle ne veut pas tuer le Semeur de pluie. Elle veut **mettre la main sur le mât**, et il faudra passer par lui.
+Depuis, elle descend le chemin de l'eau avec la foudre dans le dos. Elle est la seule du Val à savoir **ce qui s'est passé** : l'orage n'est pas venu, il a été appelé, et elle sait par qui et pourquoi : par le gardien de la Source à qui la Cité avait planté un clou dans son lac, et que personne n'a écouté, elle comprise. Elle ne conteste pas la rancune. Elle conteste la sentence : on n'assèche pas un tort en noyant une vallée, et un mât qui appelle, on peut le remettre à l'endroit. Elle ne veut pas tuer le Semeur de pluie. Elle veut **mettre la main sur le mât**, et il faudra passer par lui : de tout le Val, elle est la main qu'il a le plus de raisons de haïr, celle qui polissait le bronze.
 
 ---
 
@@ -36,7 +39,7 @@ Depuis, elle descend le chemin de l'eau avec la foudre dans le dos. Elle est la 
   - une **cape-treillis** : une cotte de mailles fines de cuivre sur les épaules, qui goutte et scintille (sa cage de Faraday : c'est pour ça qu'elle est encore vivante).
 - **Détails** : **bottes de gutta-percha** noires, lourdes et lisses comme des bottes de scaphandrier ; gants de toile caoutchoutée à manchettes ; une **ceinture d'outils** (pince, brosse de laiton, mètre à ruban) ; cheveux serrés en chignon traversé d'épingles de cuivre (quelques mèches **se dressent** quand la Statique monte autour d'elle) ; peau olive, cernes, bouche serrée. Pas d'héroïsme : une ouvrière des hauteurs.
 - **Palette** : cuivre vert-de-gris `#4F6B5E` (tige, cerclages, cape), cuir ciré noir `#1F2124` (bottes, râtelier), verre fumé `#3B4A5C` (bouteilles, isolateurs éteints), laine grise `#5A5E66` (veste), toile brune `#4A3F33` (gants, ceinture), peau olive `#B89E86`. Tout est mat et mouillé sauf **une seule chose qui luit : le lilas d'arc `#B9A6FF`**, dans les bouteilles de Leyde (un arc qui court à l'intérieur, plus vif quand une Décharge est prête), sur les isolateurs de la tige, et dans ses cheveux dressés quand elle canalise l'ultime. Le masque `_e` des bouteilles est **modulé par le code** : recharge de la Décharge 0 → 100 % = énergie 0,6 → 3,0 (10 paliers, même mécanisme que l'amphore d'Averse).
-- **Lisibilité** : la seule chose **violette** du roster ; ses arcs sont des `Line2D` lumineuses d'un blanc lilas, les seules lignes brisées à l'écran (la chaîne d'Arpenteuse est continue et cuivre). Dans le Gouffre luisant (mycélium `#C27BFF`), le lilas est plus pâle et plus bleu que le biome ; si la planche de contact montre une confusion, le liseré `body_gain` du biome ou un cœur plus blanc tranchera (question §13).
+- **Lisibilité** : la seule chose **violette** du roster ; ses arcs sont des `Line2D` lumineuses d'un blanc lilas, les seules lignes brisées à l'écran (la chaîne d'Arpenteuse est continue et cuivre). Dans le Gouffre luisant (mycélium `#C27BFF`), le lilas est plus pâle et plus bleu que le biome ; si la planche de contact montre une confusion, le liseré `body_gain` du biome ou un cœur plus blanc tranchera (question §13.1).
 - **Rendu** : CEL (contrat `_cel`, aplats 2-3 tons, encrage brun-noir), DA `STYLE_boss_da.md`, rig CREA iso 30°, 8 directions, cadre 192² à R = 90,51 px/u, pas de `_n`, `_e` pour l'accent.
 
 ---
@@ -208,8 +211,8 @@ Fichiers propres au personnage (dossier `game/scripts/spells/`) :
 ## 12. Déblocage, variantes, skin
 
 ### 12.1 Déblocage (à la sortie ; ouverte pendant les tests comme les autres)
-- **Visible** : « **Foudroyer 100 monstres avec l'Éclair en bouteille** » (cumul sur le profil, n'importe quel personnage : tout dernier coup d'élément `lightning` venu d'un proc d'objet ; compteur `lightning_kills`). Indice (si cachée un jour) : « Elle a mis l'orage en bouteille la première. »
-- Pourquoi : l'objet existe, il est peu commun (débloqué après 3 runs), il **apprend la conduction** avant le personnage, et il relie lore et kit (les bouteilles de Leyde). Alternative : « Vaincre le Sonneur » (lore parfait, mais le boss de l'étage 3 est tiré parmi 4 : la condition dépend du hasard). Question §13.
+- **Visible, tranché le 09/11/2026** : « **Foudroyer 100 monstres avec l'Éclair en bouteille** » (cumul sur le profil, n'importe quel personnage : tout dernier coup d'élément `lightning` venu d'un proc d'objet ; compteur `lightning_kills`). Indice (si cachée un jour) : « Elle a mis l'orage en bouteille la première. »
+- Pourquoi : l'objet existe, il est peu commun (débloqué après 3 runs), il **apprend la conduction** avant le personnage, et il relie lore et kit (les bouteilles de Leyde). L'alternative « Vaincre le Sonneur » a été écartée : le boss de l'étage 3 est tiré parmi 4, la condition dépendait du hasard.
 
 ### 12.2 Variantes de sorts (2 ; règle ±15 % du sort de base)
 
@@ -235,10 +238,10 @@ Fichiers propres au personnage (dossier `game/scripts/spells/`) :
 
 ## 13. Points à trancher par le joueur (avec recommandation)
 
-1. **Le nom.** *Grésille* (reco : un mot, féminin, le son de l'arc et la pluie qui pique, la forme des autres noms du roster) ; alternatives : *Foudrière* (plus martial, sonne comme « poudrière »), *Voltige* (le volt caché, mais évoque la mobilité, qui est le domaine de Rainette).
-2. **L'accent lilas `#B9A6FF` face au mycélium du Gouffre `#C27BFF`.** Reco : **garder le lilas** (c'est la couleur de l'arc électrique, la seule teinte libre du roster) et vérifier sur la planche de contact de l'étage 2 ; repli : cœur plus blanc (`#F2EEFF` dominant) ou liseré `body_gain` du biome. Alternative : bleu-blanc d'arc `#A9D4FF`, mais il se confond avec Averse (`#5FD4E8`) et les cristaux des Cryptes (`#BFF4FF`).
-3. **Le statut « mouillé » partagé (`Enemy.is_wet()`).** Reco : **oui**, c'est un contrat d'une méthode qui profite à Averse (coop), aux mini-boss à flaques et à Grésille ; sans lui, la synergie Averse × Grésille ne marche qu'à moitié. Alternative : lecture directe de `AverseKit.is_soaked` par le kit de Grésille (couplage entre kits, à éviter).
-4. **La condition de déblocage.** Reco : **« 100 monstres foudroyés avec l'Éclair en bouteille »** (visible, apprend la conduction, lore cohérent) ; alternative : « Vaincre le Sonneur » (lore parfait, mais dépend du tirage du boss de l'étage 3 et peut demander plusieurs runs sans faute du joueur).
+Tranchés le 09/11/2026 : le nom (**Grésille**) et la condition de déblocage (§12.1). Restent :
+
+1. **L'accent lilas `#B9A6FF` face au mycélium du Gouffre `#C27BFF`.** Reco : **garder le lilas** (c'est la couleur de l'arc électrique, la seule teinte libre du roster) et vérifier sur la planche de contact de l'étage 2 ; repli : cœur plus blanc (`#F2EEFF` dominant) ou liseré `body_gain` du biome. Alternative : bleu-blanc d'arc `#A9D4FF`, mais il se confond avec Averse (`#5FD4E8`) et les cristaux des Cryptes (`#BFF4FF`).
+2. **Le statut « mouillé » partagé (`Enemy.is_wet()`).** Reco : **oui**, c'est un contrat d'une méthode qui profite à Averse (coop), aux mini-boss à flaques et à Grésille ; sans lui, la synergie Averse × Grésille ne marche qu'à moitié. Alternative : lecture directe de `AverseKit.is_soaked` par le kit de Grésille (couplage entre kits, à éviter).
 
 ---
 
