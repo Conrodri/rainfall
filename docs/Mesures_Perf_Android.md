@@ -164,10 +164,10 @@ mini-boss du biome à l'endroit où `Pillar.activate` les pose. Le joueur (invul
 boss refait l'essai avec le joueur à la même distance mais à découvert. Un boss est « bloqué par l'obstacle » s'il
 n'approche plus (moins de 1 u parcouru sur les 5 dernières secondes) alors qu'il approche à découvert (écart de plus de
 3 u). Les boss qui gardent leurs distances (tireurs, lanceurs) s'arrêtent aussi loin dans les deux cas et ne sont pas
-comptés. Le test échoue seulement si un boss n'apparaît pas ; `--strict` compte aussi chaque alerte (à activer une fois
-la navigation des gros corps corrigée).
+comptés. Le test échoue si un boss n'apparaît pas **ou sur toute alerte** (strict par défaut depuis le correctif du 09/11/2026 ;
+`--lenient` rend l'ancien comportement). Options : `--bosses=a,b`, `--trace`.
 
-Résultats (09/11/2026) :
+Résultats AVANT correctif (09/11/2026) :
 
 Résultat identique sur deux passages (simulation déterministe). Rayon du corps : 1,4 u pour les boss d'étage, 1,1 u
 pour les mini-boss. Boss identifiés par leur id (`data/floors.json`) :
@@ -195,6 +195,20 @@ Lecture :
   `scripts/director/` et `scripts/enemies/`) : champ de flux « gros corps » calculé sur les obstacles dilatés du rayon du
   boss, ou glissement le long des murs quand le boss n'avance plus ; à défaut, écarter des obstacles centraux les gros
   piliers candidats de la Fonderie et de la Mangrove (`candidates.big_pillars` des cartes).
+
+**Correctif (09/11/2026, soir)** : `NavField.steer_body(pos, radius)` donne aux gros corps un champ de flux par
+classe de rayon (obstacles dilatés du rayon, diagonales permises si le coin est dégagé, visée à 2 cellules depuis la
+position réelle pour glisser le long des murs, repli sur `steer()` tant que la couche n'est pas prête) ; le Director
+l'utilise pour les boss (solo et coop) et `spawn_boss` passe par `body_spawn_point` (jamais à cheval sur un obstacle) ;
+`deep_eel` émerge sur le point du bord accessible le plus proche. Coût : couche créée une fois par classe au premier boss
+de l'étage (≈ 2,6 ms sur PC), BFS étalé sur les images libres, ≈ 235 Ko par couche, rien sans boss.
+
+Résultats APRÈS correctif (distance minimale au joueur en 20 s, avant → après) : Fonderie `sonneur` 8,6 → atteint,
+`smelter` 8,6 → atteint, `ash_lord` 8,5 → atteint, `blind_pump` → atteint, `crane` en route (lent, sans alerte) ;
+Mangrove `brood_mother` et `lantern_owl` → atteints, `cerf`, `hermit_cedar`, `bramble_queen` en route à 20 s (long
+détour par le pont du chenal) et arrivés à 3,4-4,5 u en 40 s ; `deep_eel` n'émerge plus dans la margelle. 0 alerte.
+La Fonderie reste praticable de justesse pour un boss d'étage (portes diagonales de 2,83 u pour un corps de 2,8 u) :
+si le frottement se voit en jeu, élargir une porte de la carte.
 
 ## 7. Gel observé pendant le banc PC (09/11/2026) : cause établie
 
