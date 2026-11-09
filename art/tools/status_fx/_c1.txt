@@ -1,0 +1,10 @@
+Set-Location C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a00f1c2bdb6d72b46
+OBJECTIF : produire 7 familles de particules d'etat monstre (DA sombre cel-shadee, Blender --background, rendu 2x puis LANCZOS). Specs EXACTES (forme, couleurs, tailles, variantes) dans C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a00f1c2bdb6d72b46\art\briefs\status_fx.md : LIRE ce seul brief, tableau "Fichiers".
+Fichiers : poison_bubble_01..04 (32x32), burn_flame_01..04 (32x48), burn_ember_01..02 (16x16), burn_ash_01..04 (24x24), wet_drip_01..04 (16x32), shock_arc_01..04 (64x64), stun_star_01..02 (32x32). PNG RGBA fond transparent, marge >= 2 px.
+Precisions : bulle = ronde avec reflet net haut-gauche ; goutte = larme nette avec reflet blanc (pas un trait gris) ; cendre = gris-noir (PAS beige) ; arc = zigzag bleu-blanc froid (#7AB8FF/#CFE8FF/blanc), JAMAIS de lilas #B9A6FF ; etoile doree a branches fines ; flamme, braise, arc, etoile = additifs (RVB vif, alpha = intensite, aucun halo sombre).
+TOUCHER : C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a00f1c2bdb6d72b46\art\tools\status_fx\ (scripts), ...\art\blender\status_fx.blend (si besoin), sortie ...\game\assets\sprites\vfx\status\ ; brouillons dans ...\art\renders\status_fx\ (tous sous le worktree ci-dessus). Chemins absolus du worktree uniquement, ne rien ecrire dans C:\Users\const\Documents\Rainfall\game.
+NE PAS LIRE : docs/, CLAUDE.md, autres lots.
+Optimiser les PNG (palette/optimize) : total du lot <= 0,3 Mo.
+VERIF : script dimensions + alpha + marge, une planche <= 1024 px.
+RAPPORT 6 lignes max.
+IMPORTANT : aucun script existant, aucun dossier de sortie : TU DOIS ECRIRE toi-meme art/tools/status_fx/build.py (script Blender bpy, --background) et creer game/assets/sprites/vfx/status/. Ne t'arrete pas pour ces absences, produis les 26 PNG. Les replis dans vfx/particles sont des repliements du jeu, a ne pas copier.
