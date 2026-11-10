@@ -622,7 +622,7 @@
     "playable": true,
     "scene": "res://scenes/player/player.tscn",
     "sprite_frames": "res://assets/sprites/characters/gresille/gresille.tres",
-    "skins": [],
+    "skins": [{"id": "gresille_skin1", "name": "Fulgurite", "desc": "La foudre de la Source a cuit son attirail : tige de fulgurite noire, bouteilles de verre fumé cerclées d'argent, mailles d'argent sur les épaules et bottes blanchies ; l'arc court toujours dans les mêmes bocaux.", "unlock_text": "Gagner une run en mode Difficile avec Grésille.", "unlock_key": "skin:gresille_skin1", "unlock_rule": {"type": "win_with", "character": "gresille", "mode": "difficile"}}],
     "spells": [
       {
         "id": "gresille_arc",
