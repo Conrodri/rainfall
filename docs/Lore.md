@@ -396,9 +396,9 @@ Recommandation : **1, 2, 3, 4, 8 dans la 1.0** (≈ 3 j-agent, zéro asset nouve
 
 ---
 
-## Mode sans fin (proposition, à valider par le joueur)
+## Mode sans fin (« le compte rouvert », validé par le joueur le 11/11/2026)
 
-> Proposition du 10/11/2026 ; rien d'implémenté. Si elle est validée, elle complète la note « Mode sans fin » du §2.4 et répond à la question ci-dessus. Mécanique de référence (`stage_manager.gd`, `floor_plan.gd`, `balance.gd`) : après le Semeur, « Continuer » enchaîne les étages 6-9 (biomes 1-4, **variante de carte opposée**), puis la Source à l'étage 10 avec le Semeur, et ainsi de suite sans nouveau choix de fin ; la difficulté ne redescend jamais ; Épreuves gardées aux étages 6-9 ; plus de présage ni de Marchand de l'ombre ; la run finit par la mort du Porteur (fin attendue après 2 à 4 étages, `Maths_Scaling.md` §11).
+> Proposition du 10/11/2026, **validée par le joueur le 11/11/2026** (« le compte rouvert ») ; texte en jeu pas encore implémenté. Elle complète la note « Mode sans fin » du §2.4 et répond à la question ci-dessus. Mécanique de référence (`stage_manager.gd`, `floor_plan.gd`, `balance.gd`) : après le Semeur, « Continuer » enchaîne les étages 6-9 (biomes 1-4, **variante de carte opposée**), puis la Source à l'étage 10 avec le Semeur, et ainsi de suite sans nouveau choix de fin ; la difficulté ne redescend jamais ; Épreuves gardées aux étages 6-9 ; plus de présage ni de Marchand de l'ombre ; la run finit par la mort du Porteur (fin attendue après 2 à 4 étages, `Maths_Scaling.md` §11).
 
 **Recommandation : « le compte rouvert ».** Le Semeur est tombé, mais le mât-mère est toujours planté la pointe en bas, et les paratonnerres que le Porteur a rechargés en descendant brillent maintenant dans tout le Val : pour le bronze qui a pris la rancune, c'est la Cité revenue, et la pluie reprend plus fort qu'avant. « Continuer », c'est remonter et redescendre par l'autre chemin pour rallumer les mâts qui restent, en croyant tenir le déluge à distance comme les fondeurs ; à la Source, le mât a refait un Fontainier avec ce qu'il a trouvé, et le compte ne se ferme plus. Le Porteur est devenu la Cité : c'est lui que la pluie finit par prendre.
 
