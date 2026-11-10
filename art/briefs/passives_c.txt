@@ -1,0 +1,6 @@
+LOT PASSIFS C : 2 icones de passif HUD (statique = Gresille, accent lilas #B9A6FF ; avalement = Rainette, accent vert #69BD79).
+Meme format que art/tools/ui/_passive_icons_b.txt (PNG RGBA 128x128, bbox alpha (10,8,121,120), emission _e 64x64, pas de normal).
+Script de rendu deja ecrit : art/tools/ui/passives_c_build.py (+ passives_c_finish.py), adapte de passives_b. Travaille dans ce dossier (worktree), pas ailleurs.
+1) Lance : "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" --background --python art/tools/ui/passives_c_build.py
+2) Si erreur, corrige le script (emblem()) jusqu'a PASS statique / PASS avalement. Les emblemes doivent etre lisibles a 48 px : statique = eclair lilas avec etincelles ; avalement = gueule de grenouille ouverte et langue vert clair qui capture une proie.
+3) Puis : python art/tools/ui/passives_c_finish.py (contact sheet). Ne touche aucun autre PNG ni script de jeu. Rapport final court.
