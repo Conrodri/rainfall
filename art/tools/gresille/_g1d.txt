@@ -1,0 +1,8 @@
+DÉPÔT : C:/Users/const/Documents/Rainfall/.claude/worktrees/agent-af4854a05ca0513e8 (worktree git). Travaille et écris UNIQUEMENT là.
+LOT GR1d (retouche). Brief : art/briefs/gresille_sprites.md ; script art/tools/gresille/gresille_rig_build.py (livré : idle, run, attack, cast, ground, call, death).
+Défauts à corriger puis re-rendre TOUT (mêmes noms, tailles, frames, manifest, .tres, portraits) :
+1) Laine encore noire à 192 px : veste et pantalon en gris laine lisible (tons ~#4F545C / #5A5E66 / #7A808A), bras et jambes bien séparés du sol et du torse ; bottes restent sombres.
+2) Tige : bronze vert-de-gris #4F6B5E (pas menthe pâle), plus épaisse (rayon ~0,024 u), isolateurs de verre bleu avec anneaux lilas lisibles.
+3) call : montée à deux mains nette, bras levés au-dessus de la tête tenant la tige verticale, frames 3-8 bouclables ; mèches de cheveux dressées et lumineuses lilas (aussi dans _e), 3 Leyde pleine charge. 
+4) death : plus lisible (genoux, buste, côté, tige lâchée bien visible), silhouette de femme reconnaissable.
+Contrôle : art/renders/gresille/ctrl_gr1d.png (<= 1024 px, fond #5A645F, x2 NEAREST) : call frame 5 et attack impact, directions se, s, nw. PNG total <= 2,5 Mo. Rapport 6 lignes max.

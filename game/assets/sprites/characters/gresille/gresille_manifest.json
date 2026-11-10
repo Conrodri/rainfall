@@ -1,0 +1,93 @@
+{
+  "character": "gresille",
+  "lot": "GR1c",
+  "cell": 192,
+  "pivot": [
+    96,
+    136.32
+  ],
+  "directions": [
+    "e",
+    "se",
+    "s",
+    "sw",
+    "w",
+    "nw",
+    "n",
+    "ne"
+  ],
+  "rig": {
+    "name": "CREA",
+    "elevation": 30,
+    "px_per_unit": 90.50966799187809,
+    "height_u": 1.35
+  },
+  "animations": {
+    "idle": {
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "impact": null,
+      "source_start": 1
+    },
+    "run": {
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "impact": null,
+      "source_start": 21
+    },
+    "attack": {
+      "frames": 4,
+      "fps": 12,
+      "loop": false,
+      "impact": 2,
+      "source_start": 41
+    },
+    "cast": {
+      "frames": 5,
+      "fps": 12,
+      "loop": false,
+      "impact": 3,
+      "source_start": 61
+    },
+    "ground": {
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "impact": 3,
+      "source_start": 81
+    },
+    "call": {
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "impact": 2,
+      "source_start": 101,
+      "loop_from": 3
+    },
+    "death": {
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "impact": null,
+      "source_start": 121
+    }
+  },
+  "planned_animations": {
+    "idle": 8,
+    "run": 8,
+    "attack": 4,
+    "cast": 5,
+    "ground": 6,
+    "call": 8,
+    "death": 6
+  },
+  "aliases": {
+    "cast_ult": "call"
+  },
+  "normal_maps": false,
+  "emission_scale": 0.5,
+  "accent": "#B9A6FF",
+  "unique_renders": 360
+}
