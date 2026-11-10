@@ -14,6 +14,9 @@ SPECS = {
     "discharge_burst": (192, 192, [("default", 0, 6, 20.0, False)]),
     "bolt_strike": (192, 384, [("default", 0, 6, 20.0, False)]),
     "ground_field": (384, 384, [("default", 0, 8, 12.0, True), ("end", 8, 3, 12.0, False)]),
+    "rod_planted": (128, 192, [("appear", 0, 4, 14.0, False), ("idle", 4, 6, 10.0, True)]),
+    "jar_fly": (64, 64, [("default", 0, 8, 16.0, True)]),
+    "jar_burst": (512, 320, [("default", 0, 6, 16.0, False)]),
 }
 
 

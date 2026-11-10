@@ -2,10 +2,11 @@ class_name GresilleLob
 extends Node2D
 ## Bouteille de Leyde en vol (variante de l'Orage, docs/fiches/gresille.md §12.2) : part de Grésille, monte en cloche
 ## (`lift_px` au sommet, ombre au sol) et atterrit en `dur` s, puis appelle `on_land(position)` (l'éclat est fait par le
-## kit). `ring()` : anneau d'éclat. Rendu : PLACEHOLDER (bouteille dessinée en code, rotation), en attendant `jar_fly` et
-## `jar_burst` (à produire par Codex : voir le rapport).
+## kit). Rendu : sprite `vfx/gresille/jar_fly` (8 poses de rotation) ; repli si la ressource manque : bouteille dessinée en
+## code. `ring()` : anneau d'éclat, repli de `jar_burst` (le kit ne l'appelle que si la planche manque).
 
 const ACCENT := Color("#B9A6FF")
+const FRAMES_PATH := "res://assets/sprites/vfx/gresille/jar_fly/jar_fly.tres"
 
 var from := Vector2.ZERO
 var to := Vector2.ZERO
@@ -15,6 +16,7 @@ var landed := false
 var _t := 0.0
 var _on_land := Callable()
 var _body: Node2D = null
+var _sprite: AnimatedSprite2D = null
 
 
 func setup(start: Vector2, target: Vector2, duration: float, lift: float, on_land: Callable) -> void:
@@ -27,8 +29,15 @@ func setup(start: Vector2, target: Vector2, duration: float, lift: float, on_lan
 	z_index = 31
 	_body = Node2D.new()
 	_body.scale = Iso.UNSQUASH
-	_body.draw.connect(_draw_bottle)
 	add_child(_body)
+	var frames := load(FRAMES_PATH) as SpriteFrames if ResourceLoader.exists(FRAMES_PATH) else null
+	if frames != null:
+		_sprite = AnimatedSprite2D.new()
+		_sprite.sprite_frames = frames
+		_body.add_child(_sprite)
+		_sprite.pause()
+	else:
+		_body.draw.connect(_draw_bottle)
 	queue_redraw()
 
 
@@ -44,7 +53,11 @@ func step(delta: float) -> void:
 	var k := progress()
 	global_position = from.lerp(to, k)
 	_body.position = Vector2(0.0, -lift_px * 4.0 * k * (1.0 - k) * 0.5)
-	_body.rotation = k * TAU * 2.5
+	if _sprite != null:
+		var n := _sprite.sprite_frames.get_frame_count(&"default")
+		_sprite.frame = int(k * 2.5 * float(n)) % n # 2,5 tours en vol
+	else:
+		_body.rotation = k * TAU * 2.5
 	queue_redraw()
 	if k >= 1.0:
 		landed = true
