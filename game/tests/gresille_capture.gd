@@ -1,12 +1,15 @@
 extends Node
 ## Capture de contrôle de Grésille en mode test (SANS --headless), debug seulement :
-## godot --path game res://tests/gresille_capture.tscn -- --out=<dossier>
+## godot --path game res://tests/gresille_capture.tscn -- --out=<dossier> [--map=<id>]
+## --map=<id> : carte réelle de data/maps (comme l'onglet Cartes du mode test, TestMaps.load_map) ; Grésille est posée
+## sur la plus grande nappe d'eau de la carte (sinon au départ). Chaque cliché a aussi un recadrage `_crop` autour d'elle.
 ## Un cliché par sort (Arc, arcs sur les chargés, Décharge, Mise à la terre, Orage, sillage) puis les deux variantes
 ## (Paratonnerre, Bouteille de Leyde) : <dossier>/gresille_<nom>.png. Monstres figés (freeze_ai), joueur invulnérable.
 ## Se termine seul (minuterie de sécurité de 150 s) ; la pause sur perte de focus est levée à chaque image.
 
 var _out := ""
 var _main: Node = null
+var _map := ""
 
 
 func _ready() -> void:
@@ -14,6 +17,14 @@ func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--out="):
 			_out = a.substr(6)
+		elif a.begins_with("--map="):
+			_map = a.substr(6)
+	if _out != "":
+		DirAccess.make_dir_recursive_absolute(_out)
+		if not DirAccess.dir_exists_absolute(_out):
+			push_error("capture : dossier --out introuvable et non créable : " + _out)
+			get_tree().quit(3)
+			return
 	Platform.set_input_mode(Platform.InputMode.KBM)
 	get_tree().create_timer(150.0, true, false, true).timeout.connect(func() -> void:
 		print("capture : minuterie de sécurité")
@@ -38,7 +49,14 @@ func _wait(s: float) -> void:
 func _shot(name: String) -> void:
 	await get_tree().process_frame
 	if _out != "":
-		CaptureUtil.save_viewport(get_viewport(), "%s/gresille_%s.png" % [_out, name])
+		var img := CaptureUtil.save_viewport(get_viewport(), "%s/gresille_%s.png" % [_out, name])
+		if img != null and _main != null and is_instance_valid(_main.player):
+			var c: Vector2 = get_viewport().get_canvas_transform() * (_main.player as Node2D).global_position
+			var sz := Vector2(img.get_size())
+			var k := sz.x / 1920.0
+			var r := Rect2(c - Vector2(480, 300) * k, Vector2(960, 540) * k).intersection(Rect2(Vector2.ZERO, sz))
+			if r.size.x > 8.0 and r.size.y > 8.0:
+				img.get_region(Rect2i(r)).save_png("%s/gresille_%s_crop.png" % [_out, name])
 	print("shot ", name)
 
 
@@ -54,6 +72,34 @@ func _charge(kit: GresilleKit, e: Node, n: int) -> void:
 		kit.apply_static(e, false)
 
 
+## Pose le joueur sur la case d'eau dont la nappe connexe est la plus grande (échantillon de cases), sinon ne bouge pas.
+func _to_water() -> void:
+	var p: Node2D = _main.player
+	var ctx := StageMap.water_context(get_tree())
+	if ctx.is_empty():
+		print("carte sans eau : joueur laissé au départ")
+		return
+	var g: Dictionary = ctx["g"]
+	var grid: PackedStringArray = g["grid"]
+	var back: Transform2D = (ctx["to_grid"] as Transform2D).affine_inverse()
+	var best := Vector2.ZERO
+	var best_n := 0
+	var step := 3
+	for y in range(0, grid.size(), step):
+		for x in range(0, grid[y].length(), step):
+			if grid[y][x] != "," and grid[y][x] != "~":
+				continue
+			var lp: Vector2 = (g["origin"] as Vector2) + (Vector2(x, y) + Vector2(0.5, 0.5)) * float(g["cell_px"])
+			var gp: Vector2 = back * lp
+			var n := StageMap.water_patch_at(get_tree(), gp, 113).size()
+			if n > best_n:
+				best_n = n
+				best = gp
+	if best_n > 0:
+		p.global_position = best
+	print("joueur sur l'eau : patch=%d pos=%s" % [best_n, best])
+
+
 func _run() -> void:
 	TestMode.begin()
 	RunState.character = &"gresille"
@@ -62,6 +108,14 @@ func _run() -> void:
 	add_child(_main)
 	await _main.game_ready
 	await _wait(0.5)
+	if _map != "":
+		if not TestMaps.load_map(get_tree(), _map):
+			push_error("capture : carte inconnue " + _map)
+			get_tree().quit(4)
+			return
+		await _wait(2.5)
+		_to_water()
+		await _wait(0.5)
 	TestMode.set_flag(&"god", true)
 	TestMode.set_flag(&"cdr_full", true)
 	TestMode.set_flag(&"freeze_ai", true)
@@ -99,7 +153,9 @@ func _run() -> void:
 	_cast(p, 3)
 	await _wait(0.9)
 	await _shot("04_terre")
-	await _wait(5.0)
+	await _wait(1.5)
+	await _shot("04_terre_b")
+	await _wait(3.5)
 
 	for e in mobs:
 		if is_instance_valid(e):
@@ -131,13 +187,12 @@ func _run() -> void:
 	for e in mobs:
 		if is_instance_valid(e):
 			_charge(kit, e, 4)
-	_cast(p, 4, p.global_position + Vector2(300, 60))
-	await _wait(0.4)
-	await _shot("08_leyde_vol")
+	_cast(p, 4, p.global_position + Vector2(-260, 30)) # à gauche : le Paratonnerre (à droite) ne brouille pas l'éclat
+	# Série après le lancer : vol puis éclat (l'impact tombe vers 0,5-1 s) ; série serrée à partir de 0,5 s.
 	await _wait(0.5)
-	await _shot("08_leyde_eclat")
-	await _wait(0.3)
-	await _shot("08_leyde_anneau")
+	for i in 16:
+		await _wait(0.05)
+		await _shot("08_leyde_t%02d" % i)
 	await _wait(0.5)
 
 	print("capture terminée")
