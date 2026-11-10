@@ -36,7 +36,7 @@ func _ready() -> void:
 	# --- Données ---
 	var roster := CharacterCard.load_characters()
 	var playable := roster.filter(func(c): return bool(c.get("playable", false)))
-	_check(playable.size() == 10, "10 personnages jouables (%d)" % playable.size())
+	_check(playable.size() == 11, "11 personnages jouables (%d)" % playable.size())
 	var ids := {}
 	var all_ok := true
 	for c in playable:
@@ -52,8 +52,8 @@ func _ready() -> void:
 				or str(r.get("type", "")) != "win_with" or str(r.get("character", "")) != str(c.id) or str(r.get("mode", "")) != "difficile":
 			all_ok = false
 			print("   skin incomplet : ", s)
-	_check(all_ok and ids.size() == 10, "un skin par personnage, champs et règle win_with/Difficile complets")
-	_check(Skins.all_skins().filter(func(e): return not bool(e.shop)).size() == 10, "Skins.all_skins : 10 trophées (+ %d Panoplies)" % Skins.all_skins().filter(func(e): return bool(e.shop)).size())
+	_check(all_ok and ids.size() == 11, "un skin par personnage, champs et règle win_with/Difficile complets")
+	_check(Skins.all_skins().filter(func(e): return not bool(e.shop)).size() == 11, "Skins.all_skins : 11 trophées (+ %d Panoplies)" % Skins.all_skins().filter(func(e): return bool(e.shop)).size())
 
 	# --- Déblocage ---
 	var p := _fresh()
