@@ -10,6 +10,9 @@ const TEX_PATH := "res://assets/sprites/pickups/storm_core.png"
 const ICON_PATH := "res://assets/sprites/icons/storm_core.png"
 const EMIT_PATH := "res://assets/sprites/pickups/storm_core_e.png" ## masque d'émission (additif, non éclairé)
 const SHADOW_PATH := "res://assets/sprites/pickups/storm_core_shadow.png" ## ombre cuite (même cadrage que le diffus)
+const HALO_PATH := "res://assets/sprites/pickups/storm_core_halo.png" ## halo additif cyan 128 px (Blender)
+const HALO_SCALE := 1.5 ## taille du halo / taille du noyau (96 px)
+const HALO_ALPHA := 0.7
 const EMIT_ENERGY := 1.4
 const NEVER_S := 1.0e9
 
@@ -69,6 +72,7 @@ func _make_core_visual() -> void:
 		sh.light_mask = 0
 		sh.z_index = -1
 		add_child(sh)
+	_make_halo()
 	add_child(_vis)
 	if ResourceLoader.exists(EMIT_PATH): # émission cyan par-dessus, additive, indépendante de l'éclairage 2D
 		_emit = Sprite2D.new()
@@ -88,6 +92,29 @@ func _make_core_visual() -> void:
 	var tw := create_tween().set_loops()
 	tw.tween_property(_vis, "modulate", Color(base.r * 1.35, base.g * 1.35, base.b * 1.6), 0.7).set_trans(Tween.TRANS_SINE)
 	tw.tween_property(_vis, "modulate", base, 0.7).set_trans(Tween.TRANS_SINE)
+
+
+## Halo cyan doux derrière le noyau (lisibilité du ramassage) : additif, non éclairé, pulsation lente discrète.
+## PNG absent = pas de halo (repli silencieux).
+func _make_halo() -> void:
+	if not ResourceLoader.exists(HALO_PATH):
+		return
+	var h := Sprite2D.new()
+	h.name = &"Halo"
+	h.texture = load(HALO_PATH)
+	h.scale = _vis.scale * HALO_SCALE
+	h.offset = _vis.offset
+	h.light_mask = 0
+	h.z_index = -1
+	var cm := CanvasItemMaterial.new()
+	cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	cm.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	h.material = cm
+	h.modulate = Color(1.0, 1.0, 1.0, HALO_ALPHA)
+	add_child(h)
+	var tw := h.create_tween().set_loops()
+	tw.tween_property(h, "modulate:a", HALO_ALPHA * 0.6, 1.6).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(h, "modulate:a", HALO_ALPHA, 1.6).set_trans(Tween.TRANS_SINE)
 
 
 func step(delta: float) -> void:

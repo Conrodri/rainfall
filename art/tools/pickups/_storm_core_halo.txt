@@ -1,0 +1,6 @@
+OBJECTIF : halo additif cyan doux 128x128 du noyau d'orage, PNG RGBA fond transparent (même convention que game/assets/sprites/ambiance/halo_soft_256.png : disque radial dont l'alpha décroît lissement du centre vers le bord, alpha 0 sur le bord, aucun bord net). Couleur cyan #82D6E5 (celle de pickups/storm_core.png), coeur un peu plus clair, très doux, centré.
+TOUCHER : art/tools/pickups/storm_core_halo_build.py (à écrire, Blender bpy, lancé en --background), art/blender/storm_core_halo.blend (seul .blend), game/assets/sprites/pickups/storm_core_halo.png (sortie finale).
+METHODE : scène Blender : caméra orthographique face à un plan avec shader émissif cyan, alpha = gradient radial (Gradient Texture sphérique/quadratique -> Color Ramp lissée, alpha 0 au bord, ~0.9 au centre), film transparent, Eevee, rendu direct 128x128 RGBA PNG (Standard view transform, pas de Filmic/AgX). PAS de Pillow, aucun redimensionnement : rendu à la taille finale.
+NE PAS LIRE : briefs, docs, CLAUDE.md. Aucun .gd.
+VÉRIF : script qui contrôle 128x128, mode RGBA, alpha coin = 0, alpha centre >= 200, bord (x=0 milieu) = 0, teinte dominante cyan ; affiche PASS/FAIL.
+RAPPORT 6 lignes max.
