@@ -568,7 +568,7 @@ def resource_exports():
                         set_block(rid,frame,image_ratio(rel) if emission else (1,1))
                         refs.append('{"duration": '+f'{F60[anim][i]*12/60:.8g}'+', "texture": SubResource("'+rid+'")}')
                     clip='{"frames": ['+', '.join(refs)+'], "loop": false, "name": &"'+anim+'_'+d+'", "speed": 12.0}'
-                    s=s.rstrip();assert s.endswith(']');s=s[:-1].rstrip()+',\n'+clip+'\n]\n'
+                    s=s.rstrip();assert s.endswith(']');s=s[:-1].rstrip().rstrip(',')+',\n'+clip+'\n]\n'
             for rid,b in replacements.items():
                 if rid not in blocks(s):s=s.replace('[resource]',b+'\n[resource]',1)
         # Correct legacy emission coordinates against the actual half-size PNGs.
