@@ -785,6 +785,11 @@ const HIT_FORCE_REF_COEF := 10.0
 const HIT_FORCE_CRIT_BONUS := 0.25 ## ajouté à f avant le plafond
 const HITSTOP_MIN_S := 0.016 ## 1 frame à 60 Hz (f = 0)
 const HITSTOP_MAX_S := 0.080 ## plafond (f = 1)
+## Réarmement d'étourdissement d'une élite (audit Grésille 10/11/2026) : après un étourdissement (Enemy.stun, toutes sources
+## confondues : Foudroiement de Grésille, Rançon d'Avare, Grand saut de Rainette), une élite ignore tout nouvel
+## étourdissement jusqu'à ce que ce délai se soit écoulé APRÈS la fin du précédent. Empêche le verrou à plusieurs sources
+## (coop à 2-4 Grésille). Les boss et mini-boss ne sont jamais étourdis (leur règle est inchangée).
+const ELITE_STUN_REARM_S := 1.5
 const HITSTOP_REARM_S := 0.10 ## délai minimal entre deux gels d'un même monstre (pas de gel permanent sous un flot de coups)
 const KB_MIN_U := 0.1 ## recul pour f = 0
 const KB_MAX_U := 0.6 ## recul pour f = 1, avant le facteur de masse ; c'est aussi le plafond cumulé

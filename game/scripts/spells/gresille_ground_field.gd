@@ -24,6 +24,7 @@ var _t := 0.0
 var _tick_t := 0.0
 var _age := 0.0
 var ended := false
+var victims := {} ## instance id -> true : monstres déjà électrisés par CETTE nappe (compteur de déblocage, 1 par monstre)
 
 
 func setup(new_caster: SpellCaster, new_spell: SpellData, patch: Array[Vector2], life_s: float, tick: float) -> void:
@@ -74,6 +75,9 @@ func _tick() -> void:
 			if e.has_method(&"mark_wet"):
 				e.mark_wet(tick_s + 0.2) # dans la nappe : tout le monde est mouillé
 			caster.deal_damage(e, spell, {"via": &"zone"})
+			if not victims.has(e.get_instance_id()) and is_instance_valid(e):
+				victims[e.get_instance_id()] = true # variante Paratonnerre : « électriser 300 monstres dans l'eau »
+				PlayerRef.state_of(caster.player).add_counter(GresilleKit.COUNTER_GROUNDED_WET, 1.0)
 
 
 func _draw() -> void:

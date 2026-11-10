@@ -1040,6 +1040,12 @@ func is_slowed() -> bool:
 	return _slow_left > 0.0 or _slow_param < 1.0
 
 
+## Trait « ignore le ralentissement des flaques d'eau des mini-boss » (Isolée de Grésille) : lu par MinibossBrain avant de
+## ralentir le joueur dans une zone `water`. Le kit l'expose par `ignores_water_slow() -> bool` (absent = faux).
+func ignores_water_slow() -> bool:
+	return kit != null and kit.has_method(&"ignores_water_slow") and bool(kit.ignores_water_slow())
+
+
 ## API publique (boss, mini-boss, pièges) : ralentissement paramétré. `mult` = multiplicateur de vitesse
 ## (0,6 = -40 %, fils de la Tisseuse ; 0,8 = -20 %, sillon du Bouvier), `duration` s, `source` = clé (nœud,
 ## StringName…) : la même source rafraîchit son entrée (multiplicateur remplacé, durée prolongée), des

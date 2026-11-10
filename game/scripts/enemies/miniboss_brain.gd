@@ -1099,8 +1099,13 @@ func _zone_fx(kind: MiniFx.Kind, col: Color) -> MiniFx:
 func _zone_tick_on(z: Dictionary, pl: Node2D) -> void:
 	if float(z["coef"]) > 0.0:
 		e._hit_player(pl, Balance.mini_attack_damage(e.damage, float(z["coef"])) * damage_out_mult())
-	_status_on(pl, String(z["status"]), e.damage * maxf(float(z["coef"]), 0.3))
-	if float(z.get("slow_mult", 0.0)) > 0.0 and pl.has_method(&"apply_slow"): # eau, boue : ralenti paramétré
+	# Isolée (Grésille) : une flaque d'eau ne la ralentit pas (Player.ignores_water_slow) ; le reste de la zone s'applique
+	var no_slow: bool = bool(z.get("water", false)) and pl.has_method(&"ignores_water_slow") and bool(pl.ignores_water_slow())
+	var zstatus := String(z["status"])
+	if no_slow and zstatus == "slow":
+		zstatus = ""
+	_status_on(pl, zstatus, e.damage * maxf(float(z["coef"]), 0.3))
+	if not no_slow and float(z.get("slow_mult", 0.0)) > 0.0 and pl.has_method(&"apply_slow"): # eau, boue : ralenti paramétré
 		pl.apply_slow(float(z["slow_mult"]), float(z["tick_s"]) + 0.15, &"mini_zone")
 
 
