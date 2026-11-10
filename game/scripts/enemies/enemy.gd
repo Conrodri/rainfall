@@ -199,6 +199,7 @@ var _light: LightRig.Handle = null ## élites (elite_<affixe>) et boss
 # Poids des coups (coups directs) : simples compteurs du tick, ni Timer ni Tween (Balance §poids des coups)
 var _stop_left := 0.0 ## hitstop : temps de gel restant (animation et déplacement en pause)
 var _stop_cd := 0.0 ## délai avant qu'un nouveau gel soit possible
+var _stun_rearm := 0.0 ## élite : temps restant avant qu'un nouvel étourdissement soit accepté (durée du précédent + Balance.ELITE_STUN_REARM_S)
 var _kb := Vector2.ZERO ## recul restant à parcourir (px), amorti sur quelques frames, bloqué par les murs
 ## IA propre à un boss (Cerf-Lanterne : CerfBrain) ; null = boss prototype générique (branche BOSS_TIER).
 var brain = null ## CerfBrain | SonneurBrain | RecluseBrain | RainSowerBrain (duck typing : tick, owns_motion, clear, damage_taken_mult optionnel)
@@ -309,10 +310,15 @@ func push(offset_px: Vector2) -> void:
 
 
 ## Étourdissement (Rançon d'Avare…) : figé comme un hitstop prolongé (animation, déplacement, attaques).
-## Ne raccourcit jamais un gel en cours. Sans effet sur un boss.
+## Ne raccourcit jamais un gel en cours. Sans effet sur un boss. Une élite ignore tout nouvel étourdissement jusqu'à
+## Balance.ELITE_STUN_REARM_S après la fin du précédent (toutes sources confondues).
 func stun(seconds: float) -> void:
 	if not active or is_boss or seconds <= 0.0:
 		return
+	if is_elite:
+		if _stun_rearm > 0.0:
+			return
+		_stun_rearm = seconds + Balance.ELITE_STUN_REARM_S
 	_stop_left = maxf(_stop_left, seconds)
 	_stop_cd = maxf(_stop_cd, _stop_left + Balance.HITSTOP_REARM_S)
 	visual.set_frozen(true)
@@ -648,6 +654,7 @@ func _common_activate(pos: Vector2) -> void:
 	_near_player = false
 	_stop_left = 0.0
 	_stop_cd = 0.0
+	_stun_rearm = 0.0
 	_kb = Vector2.ZERO
 	visual.set_frozen(false)
 	(_shape.shape as CircleShape2D).radius = radius_px
@@ -716,6 +723,8 @@ func tick(delta: float, player: Node2D, player_pos: Vector2, sep: Vector2, path_
 		_flash_left -= delta
 		if _flash_left <= 0.0:
 			visual.set_flash(false)
+	if _stun_rearm > 0.0:
+		_stun_rearm -= delta
 	if TestMode.freeze_ai or test_dummy:
 		return # mode test : IA figée (ni déplacement, ni attaque, ni cerveau de boss)
 	if _stop_cd > 0.0:

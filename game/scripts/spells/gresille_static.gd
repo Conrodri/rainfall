@@ -13,7 +13,7 @@ const ZAP_AT := 5
 const ZAP_STUN_S := 0.5
 const ZAP_BOSS_MULT := 1.1
 const ZAP_BOSS_MOD_S := 2.0
-const ZAP_IMMUNE_S := 1.5
+const ZAP_IMMUNE_S := 2.5 ## audit 10/11/2026 (R3) : 1,5 -> 2,5, l'étourdissement d'une élite plafonne à ~19 %
 const WET_STACKS := 2 ## cumuls par application sur un monstre mouillé
 const BOSS_MOD_ID := &"gresille_foudre"
 

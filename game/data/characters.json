@@ -643,14 +643,18 @@
         "name": "Mise à la terre",
         "slot": "cd",
         "desc": "Plante la tige sous ses pieds : zone de 3 u pendant 5 s qui blesse, ralentit de 20 % et charge d'un cumul par tick. Sur l'eau, toute la nappe connexe (jusqu'à 6 u de rayon) grésille avec elle ; tout y est mouillé.",
-        "variants": []
+        "variants": [
+          {"id": "gresille_paratonnerre", "name": "Paratonnerre", "desc": "Plante la tige à distance (7 u) : la foudre tombe dessus toutes les secondes pendant 6 s, cercle de 2 u, +1 Statique. Pas de ralentissement : la tige attire au lieu de répandre.", "unlock_text": "Électriser 300 monstres dans l'eau avec la Mise à la terre.", "unlock_key": "spell:gresille_paratonnerre", "unlock_rule": {"type": "counter", "key": "gresille.grounded_wet", "value": 300}}
+        ]
       },
       {
         "id": "gresille_orage",
         "name": "Orage appelé",
         "slot": "ultime",
         "desc": "Canalisé 3 s, à 70 % de vitesse : six coups de foudre sur le monstre le plus chargé (7 u), cercle de 1,5 u, chaque coup charge ce qu'il touche. L'esquive interrompt l'Orage.",
-        "variants": []
+        "variants": [
+          {"id": "gresille_leyde", "name": "Bouteille de Leyde", "desc": "Tu jettes une bouteille (8 u) : elle éclate sur 4 u et libère d'un coup toute la Statique du paquet, plus de dégâts par cumul. Instantané, l'esquive reste libre.", "unlock_text": "Tuer 300 monstres avec l'Orage appelé.", "unlock_key": "spell:gresille_leyde", "unlock_rule": {"type": "counter", "key": "gresille.storm_kills", "value": 300}}
+        ]
       }
     ]
   }
