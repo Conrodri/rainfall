@@ -3,12 +3,14 @@ extends Node2D
 ## Tige du Paratonnerre (variante de la Mise à la terre, docs/fiches/gresille.md §12.2) : plantée au point visé, elle
 ## attire la foudre toutes les `tick_s` secondes pendant `life` s. Le nœud ne fait que le décompte et le visuel ; le coup de
 ## foudre lui-même est le rappel `on_strike(position)` fourni par le kit (dégâts, Statique, sons).
-## Rendu : PLACEHOLDER (tige dessinée en code + anneau lilas qui grossit 0,8 s avant chaque coup), en attendant le prop
-## `rod_planted` (à produire par Codex : icônes et props manquants listés dans le rapport).
+## Rendu : sprite `vfx/gresille/rod_planted` (animations `appear` puis `idle` en boucle, rendu Codex) + anneau lilas qui
+## grossit 0,8 s avant chaque coup. Repli si la ressource manque : tige dessinée en code.
 
 const ACCENT := Color("#B9A6FF")
 const TELEGRAPH_S := 0.8
-const ROD_HEIGHT_PX := 64.0
+const ROD_HEIGHT_PX := 96.0
+const FRAMES_PATH := "res://assets/sprites/vfx/gresille/rod_planted/rod_planted.tres"
+const GROUND_MARGIN_PX := 8.0 ## marge sous le pied de la tige dans la cellule
 
 var life := 6.0
 var tick_s := 1.0
@@ -33,8 +35,17 @@ func setup(at: Vector2, life_s: float, tick: float, r_px: float, on_strike: Call
 	_body = Node2D.new() # la tige se dresse : espace billboard
 	_body.scale = Iso.UNSQUASH
 	_body.z_index = 2
-	_body.draw.connect(_draw_body)
 	add_child(_body)
+	var frames := load(FRAMES_PATH) as SpriteFrames if ResourceLoader.exists(FRAMES_PATH) else null
+	if frames != null:
+		var sp := AnimatedSprite2D.new()
+		sp.sprite_frames = frames
+		sp.position = Vector2(0.0, -(frames.get_frame_texture(&"appear", 0).get_height() * 0.5) + GROUND_MARGIN_PX)
+		sp.animation_finished.connect(func() -> void: sp.play(&"idle"))
+		_body.add_child(sp)
+		sp.play(&"appear")
+	else:
+		_body.draw.connect(_draw_body)
 	queue_redraw()
 
 
@@ -68,7 +79,6 @@ func _draw() -> void:
 		var k := (phase - start) / (1.0 - start)
 		draw_circle(Vector2.ZERO, radius_px * k, Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.10 + 0.12 * k))
 		draw_arc(Vector2.ZERO, radius_px * k, 0.0, TAU, 48, Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.7), 2.0)
-	draw_arc(Vector2.ZERO, 10.0, 0.0, TAU, 16, Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.6), 2.0) # pied de la tige
 
 
 func _draw_body() -> void:

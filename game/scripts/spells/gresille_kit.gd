@@ -858,8 +858,8 @@ func _leyde_burst(s: SpellData, at: Vector2) -> void:
 			_zap_fx(e)
 		else:
 			reg.consume(e, _clock)
-	GresilleLob.ring(player.get_parent(), at, r, ACCENT, 0.4) # placeholder de `jar_burst`
-	if not _play_fx("jar_burst", at, 0.0):
+	if not _play_fx("jar_burst", at, 100.0): # centre de l'étoile = 100 px au-dessus du bas de la cellule
+		GresilleLob.ring(player.get_parent(), at, r, ACCENT, 0.4) # repli si la planche manque
 		_play_fx("discharge_burst", at, 0.0)
 	Audio.play(SOUND_JARS, at, 2.0, 0.8) # verre brisé
 	Audio.play(&"spell.gresille_storm.cast_heavy", at, -2.0) # tonnerre court
