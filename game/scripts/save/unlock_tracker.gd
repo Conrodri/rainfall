@@ -13,6 +13,7 @@ extends Node
 ## - far_kills : monstres tués à plus de FAR_KILL_U du tueur ;
 ## - clean_floors : étages terminés sans aucun coup de contact subi (source = un monstre) ;
 ## - light_boss_kills : boss d'étage tués en ayant subi au plus LIGHT_BOSS_MAX_HITS coups pendant le combat.
+## - lightning_kills : monstres dont le dernier coup est la foudre en chaîne de l'Éclair en bouteille (Grésille, tout personnage) ;
 
 const FAR_KILL_U := 8.0
 const LIGHT_BOSS_MAX_HITS := 3

@@ -65,7 +65,7 @@ func _ready() -> void:
 func _test_defaults() -> void:
 	var p := _profile()
 	_check(p.is_character_unlocked(&"ardent") and p.is_character_unlocked(&"tocsin"), "Tocsin disponible dès le départ")
-	for cid in [&"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil"]:
+	for cid in [&"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil", &"gresille"]:
 		_check(not p.is_character_unlocked(cid), "%s fermé au départ" % cid)
 	p.free()
 
@@ -92,7 +92,7 @@ func _test_run_rules() -> void:
 
 
 func _test_cumulative_rules() -> void:
-	var rules := [["zone_kills", 299, 1, &"arpenteuse"], ["familiar_elite_kills", 2, 1, &"bourbe"]]
+	var rules := [["zone_kills", 299, 1, &"arpenteuse"], ["familiar_elite_kills", 2, 1, &"bourbe"], ["lightning_kills", 99, 1, &"gresille"]]
 	for r in rules:
 		var p := _profile()
 		_run(p, {r[0]: r[1]})

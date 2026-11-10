@@ -5,7 +5,7 @@ extends Node
 ## restent identiques ; aucune fuite de nœuds après ouverture/fermeture répétées et changements de personnage ;
 ## passage par la fiche (preview_spell) et repli propre quand le kit ne peut pas lancer.
 
-const IDS := ["ardent", "rictus", "tocsin", "averse", "arpenteuse", "rainette", "avare", "bourbe", "vigie", "morfil"]
+const IDS := ["ardent", "rictus", "tocsin", "averse", "arpenteuse", "rainette", "avare", "bourbe", "vigie", "morfil", "gresille"]
 const CAST_FRAMES := 150
 const LEAK_TOLERANCE := 6
 

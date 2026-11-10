@@ -6,7 +6,7 @@ extends Node
 
 const U := 64.0
 const DT := 1.0 / 60.0
-const CHARS: Array[StringName] = [&"ardent", &"rictus", &"tocsin", &"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil"]
+const CHARS: Array[StringName] = [&"ardent", &"rictus", &"tocsin", &"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil", &"gresille"]
 
 var _fails := 0
 var _layer: CanvasLayer = null

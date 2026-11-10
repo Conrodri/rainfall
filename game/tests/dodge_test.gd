@@ -17,6 +17,7 @@ const EXPECT := {
 	&"bourbe": [&"roll", 3.0, 0.30, 3.0, 1],
 	&"vigie": [&"roll", VigieKit.DODGE_U, VigieKit.DODGE_U / 12.0, 1.0, 3], # 1,6 u par repli à 12 u/s (cba5f675 : 1,0 -> 1,6) ; distance lue du kit, mesurée en jeu
 	&"morfil": [&"roll", 3.0, 0.25, 3.0, 1],
+	&"gresille": [&"roll", 3.0, 0.25, 3.0, 1], # Court-circuit : roulade de base
 }
 
 var _fails := 0

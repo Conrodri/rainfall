@@ -24,6 +24,7 @@ var _t := 0.0
 var _tick_t := 0.0
 var _age := 0.0
 var ended := false
+var outline: ZoneOutline = null ## contour lilas sur l'emprise de la nappe (disque englobant, centré sur le barycentre)
 var victims := {} ## instance id -> true : monstres déjà électrisés par CETTE nappe (compteur de déblocage, 1 par monstre)
 
 
@@ -37,10 +38,27 @@ func setup(new_caster: SpellCaster, new_spell: SpellData, patch: Array[Vector2],
 	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	m.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	material = m
+	var sum := Vector2.ZERO
 	for c: Vector2 in patch:
 		centers.append(c)
 		cells[cell_of(c)] = true
+		sum += c
+	if not patch.is_empty() and is_inside_tree():
+		global_position = sum / float(patch.size()) # le contour (disque) se centre sur le barycentre de la nappe
 	queue_redraw()
+	_attach_outline()
+
+
+## Contour des zones à durée (ZoneOutline) : la nappe est irrégulière, le contour suit son emprise (disque englobant
+## les cases, plus la demi-case).
+func _attach_outline() -> void:
+	if centers.is_empty() or not is_inside_tree() or spell == null:
+		return
+	var r := 0.0
+	for c: Vector2 in centers:
+		r = maxf(r, c.distance_to(global_position))
+	r += CELL_PX * 0.5
+	outline = ZoneOutline.attach(self, r, ZoneOutline.color_for(spell, caster), life)
 
 
 static func cell_of(p: Vector2) -> Vector2i:

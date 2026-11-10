@@ -165,7 +165,7 @@ func _ready() -> void:
 		trophies += 0 if bool(e.shop) else 1
 	var ardent := Skins.skins_of("ardent")
 	_check(ardent.size() == 2 and str(ardent[1].id) == "t_pano" and Skins.is_panoplie(ardent[1]), "Skins.skins_of : trophée puis Panoplie (%d)" % ardent.size())
-	_check(trophies == 10 and Skins.all_skins().size() == 11, "Skins.all_skins : 10 trophées + 1 Panoplie")
+	_check(trophies == 11 and Skins.all_skins().size() == 12, "Skins.all_skins : 11 trophées + 1 Panoplie")
 	_check(Skins.has_assets("ardent", "t_pano") and SkinShop.price_of("t_pano") == 300, "Panoplie livrée, prix du catalogue cosmétique")
 	var r := _fresh(1000)
 	_check(not r.set_selected_skin(&"ardent", "t_pano"), "Panoplie non possédée : pas équipable")
@@ -277,7 +277,7 @@ func _ready() -> void:
 	add_child(scr)
 	await _frames(3)
 	_check(scr.tab_buttons.size() == 5 and scr.family == &"panoplie", "écran : 5 onglets, Panoplies d'abord")
-	_check(scr.cells.size() == 11, "onglet Panoplies : trophées + Panoplies (%d)" % scr.cells.size())
+	_check(scr.cells.size() == 12, "onglet Panoplies : trophées + Panoplies (%d)" % scr.cells.size())
 	scr.show_family(&"sillage")
 	await _frames(2)
 	_check(scr.cells.size() == 3, "onglet Sillages : 3 articles (%d)" % scr.cells.size())
