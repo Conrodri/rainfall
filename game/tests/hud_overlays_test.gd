@@ -81,7 +81,9 @@ func _ready() -> void:
 	await _wait(0.5)
 	_check(mm.build_count == 1, "aucune reconstruction en jeu")
 	_check(mm._chests.size() == stage.chests.size(), "marqueurs de coffres (%d)" % mm._chests.size())
-	_check(mm._pillars.size() == stage.pillars.size(), "marqueurs de piliers (%d)" % mm._pillars.size())
+	# Les Epreuve (petits piliers remplacés, Balance.EPREUVES_ENABLED) ont leur propre marqueur par verbe (_epreuves).
+	var n_ep := stage.pillars.filter(func(pl: Node) -> bool: return pl is Epreuve).size()
+	_check(mm._pillars.size() == stage.pillars.size() - n_ep and mm._epreuves.size() == n_ep, "marqueurs de piliers (%d) et d'épreuves (%d)" % [mm._pillars.size(), mm._epreuves.size()])
 	_check(mm._has_player and Rect2(0, 0, 1, 1).has_point(mm._player_pos), "marqueur du joueur dans la carte %s" % mm._player_pos)
 	# capsules d'or (groupe gold_capsules) : affichées tant que can_interact()
 	var cap := FakeCapsule.new()

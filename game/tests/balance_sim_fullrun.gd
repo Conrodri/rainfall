@@ -6,9 +6,12 @@ extends Node
 
 const FullRun := preload("res://tests/balance_sim/full_run_sim.gd")
 const Sim := preload("res://tests/balance_sim/balance_sim.gd")
+const FixedFpsRelaunch := preload("res://tests/fixed_fps_relaunch.gd")
 
 
 func _ready() -> void:
+	if await FixedFpsRelaunch.relaunch_if_needed(get_tree(), "res://tests/balance_sim_fullrun.tscn"): # run complète simulée
+		return
 	var args := {}
 	for a in OS.get_cmdline_user_args():
 		var kv := a.trim_prefix("--").split("=", true, 1)

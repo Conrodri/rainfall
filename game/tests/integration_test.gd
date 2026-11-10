@@ -107,11 +107,19 @@ func _ready() -> void:
 		await _frames(2)
 		_check(p.activate(), "activation du pilier %d" % p.zone_id)
 		await _frames(2)
+		# Épreuves actives par défaut (Balance.EPREUVES_ENABLED, 07/11/2026) : les petits piliers des étages 1-4 sont des
+		# Epreuve ; le mini-boss du plan n'apparaît qu'à la fin de l'épreuve, qu'on clôt ici directement.
+		if p is Epreuve:
+			_check((p as Epreuve).is_running(), "épreuve %s lancée" % (p as Epreuve).verb)
+			(p as Epreuve).finish_now()
+			await _frames(2)
 		var zv: Node = p.get(&"_zone_vis")
 		_check(zv != null and zv.get_parent() == layer, "zone du pilier sous la couche des télégraphes")
 		var boss: Node2D = p.get(&"_boss")
 		_check(boss != null and boss.is_in_group(&"bosses"), "mini-boss apparu")
 		_check(_light_of(boss) == &"boss", "lumière de boss")
+		if boss == null:
+			continue
 		boss.take_damage(1.0e9)
 		await _frames(3)
 		_check(p.state == Pillar.STATE_DONE, "pilier %d terminé à la mort du boss" % p.zone_id)

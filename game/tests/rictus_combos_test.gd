@@ -246,7 +246,9 @@ func _run() -> void:
 	var det_before := Decoy.live.size()
 	var plain: SpellData = Decoy.live[0].explode_spell
 	_check("doublures posées sans ficelé", det_before == 6 and not _kit.combo_hit(plain, null))
-	_check("Saccade grisée (couteau en main) : ordre inverse = rien", _player.spells.is_slot_blocked(3) and not _player.spells.cast(3))
+	# Depuis le 07/11/2026 (joueur, docs/Design_Rictus_v2.md) : couteau en main, la Saccade reste disponible tant que des
+	# Doublures sont posées (elle les détone). On ne la lance pas ici : la suite a besoin des doublures posées.
+	_check("Saccade dispo couteau en main grâce aux doublures posées (détonation seule)", not _player.spells.is_slot_blocked(3) and _kit.knife_in_hand())
 	foe.global_position = Vector2(0.5 * U, 0)
 	_player.spells.aim_override = Vector2(500, 0)
 	_player.spells.cast(2)
