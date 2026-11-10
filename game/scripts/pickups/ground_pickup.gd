@@ -81,7 +81,7 @@ func step(delta: float) -> void:
 	if _t >= life_s:
 		queue_free()
 		return
-	if _t >= delay_s and player != null and is_instance_valid(player) and not bool(player.get(&"dead")):
+	if _t >= delay_s and player != null and is_instance_valid(player) and player.get(&"dead") != true:
 		if player.global_position.distance_to(global_position) <= contact_u * Balance.UNIT_PX:
 			collect()
 			return

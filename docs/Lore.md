@@ -393,3 +393,26 @@ Recommandation : **1, 2, 3, 4, 8 dans la 1.0** (≈ 3 j-agent, zéro asset nouve
 ### Question au joueur (lore)
 
 1. **Le sans fin** : « le mât refait un Fontainier » (une ligne à l'écran de victoire, proposition 7) ou ne rien expliquer ? **Reco : une ligne**, pas plus.
+
+---
+
+## Mode sans fin (proposition, à valider par le joueur)
+
+> Proposition du 10/11/2026 ; rien d'implémenté. Si elle est validée, elle complète la note « Mode sans fin » du §2.4 et répond à la question ci-dessus. Mécanique de référence (`stage_manager.gd`, `floor_plan.gd`, `balance.gd`) : après le Semeur, « Continuer » enchaîne les étages 6-9 (biomes 1-4, **variante de carte opposée**), puis la Source à l'étage 10 avec le Semeur, et ainsi de suite sans nouveau choix de fin ; la difficulté ne redescend jamais ; Épreuves gardées aux étages 6-9 ; plus de présage ni de Marchand de l'ombre ; la run finit par la mort du Porteur (fin attendue après 2 à 4 étages, `Maths_Scaling.md` §11).
+
+**Recommandation : « le compte rouvert ».** Le Semeur est tombé, mais le mât-mère est toujours planté la pointe en bas, et les paratonnerres que le Porteur a rechargés en descendant brillent maintenant dans tout le Val : pour le bronze qui a pris la rancune, c'est la Cité revenue, et la pluie reprend plus fort qu'avant. « Continuer », c'est remonter et redescendre par l'autre chemin pour rallumer les mâts qui restent, en croyant tenir le déluge à distance comme les fondeurs ; à la Source, le mât a refait un Fontainier avec ce qu'il a trouvé, et le compte ne se ferme plus. Le Porteur est devenu la Cité : c'est lui que la pluie finit par prendre.
+
+Ce que la proposition explique sans rien changer au jeu :
+
+- **variante opposée** : l'autre chemin du même lieu, donc d'autres mâts à rallumer ;
+- **difficulté qui ne retombe pas** : chaque mât rallumé est une main de plus sur le ciel (§1.4) ;
+- **Épreuves gardées** : les gestes des métiers sont à refaire, l'eau les a oubliés (§10) ;
+- **plus de présage, plus de Marchand** : la pluie n'a plus d'humeurs à lire dans les flaques, elle monte ; le Marchand le sait et il est parti ;
+- **pas de seconde victoire** : personne ne finit le sans fin, on y compte les étages tenus.
+
+Texte en jeu : les cartons déjà proposés suffisent (§12, proposition 7) : « Les mâts tiennent encore. Quelqu'un devra décider quoi en faire. » avant le choix, puis « La pluie reprend. Le bronze n'oublie pas. » en sans fin.
+
+Alternatives :
+
+- **« Le bronze n'oublie pas »** (note actuelle du §2.4) : la Source n'était qu'une bouche, la pluie reprend d'elle-même et le mât refait un Fontainier ; rien n'est dit sur la cause, une ligne suffit.
+- **« La décrue »** : la pluie s'est vraiment arrêtée et le sans fin suit le siècle d'eau qui redescend vers la Source à sec, où l'eau stagnante a **rendu** le Fontainier comme elle rend tout ce qu'elle a noyé (§5) ; plus doux, mais contredit la pluie qui tombe encore à l'écran aux étages 6 et suivants.
