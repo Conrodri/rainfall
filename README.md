@@ -51,7 +51,7 @@ Survivor-like 2D en vue isométrique, inspiré de Vampire Survivors et de Risk o
 
 ## Personnages
 
-Dix personnages jouables, chacun avec quatre sorts (auto, deux à recharge, ultime). Source : `game/data/characters.json`, détails dans `docs/Design_Personnages.md`.
+Onze personnages jouables, chacun avec quatre sorts (auto, deux à recharge, ultime). Source : `game/data/characters.json`, détails dans `docs/Design_Personnages.md`.
 
 | Nom | Idée |
 |---|---|
