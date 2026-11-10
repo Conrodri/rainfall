@@ -27,8 +27,8 @@ DES RUNS COURTES ET INTENSES
 • Plus vous traînez, plus le monde devient hostile : le bandeau de difficulté défile de Calme à Cataclysme.
 • Achetez les coffres avec l'or des monstres, activez les piliers, puis affrontez le boss d'étage dans sa zone de charge.
 
-10 PERSONNAGES, 10 FAÇONS DE JOUER
-• Un mage de braises, une archère qui bande sa corde, un samouraï-arbre qui aiguise sa lame, un sonneur qui lance ses propres bras de cloche, un avare qui se bat avec son or…
+11 PERSONNAGES, 11 FAÇONS DE JOUER
+• Un mage de braises, une archère qui bande sa corde, un samouraï-arbre qui aiguise sa lame, un sonneur qui lance ses propres bras de cloche, une paratonnerrière qui chaîne la foudre, un avare qui se bat avec son or…
 • Chaque héros a un kit de 4 sorts conçus pour se répondre, et des variantes de sorts à débloquer en jouant.
 
 48 OBJETS QUI S'EMPILENT

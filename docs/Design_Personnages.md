@@ -5,7 +5,7 @@
 > Contrôles (CLAUDE.md) : sort 1 automatique partout ; PC : sorts 2-4 visent la souris (clic gauche = sort 2, clic droit = sort 3, clic molette = sort 4, touches 2-4 en secours) ; manette : stick droit, sinon l'ennemi le plus proche ; mobile : ciblage automatique, 3 boutons. DA : `art/briefs/STYLE.md` + `STYLE_boss_da.md` (PBR usé, palette sombre, **un** accent émissif) ; rendu rig CREA iso 30°, 8 directions `e, se, s, sw, w, nw, n, ne`, cadre joueur 192² à R = 90,51 px/u (`docs/Design_Isometrique.md` §4.4).
 
 Sommaire : 1. **Tocsin** (le robot démontable, fiche complète) · 2. Cinq autres personnages (Averse, Arpenteuse, Rainette, Avare, Bourbe) · 2.6 **Rictus** (le pantin du Montreur, fiche complète) · 3. Tableau comparatif, ordre de production, systèmes à ajouter.
-Fiches autonomes : `docs/fiches/vigie.md`, `docs/fiches/morfil.md` (Taliant), `docs/fiches/gresille.md` (**Grésille**, la paratonnerrière : 11e personnage proposé, électricité, 08/11/2026). Lore du monde et des dix Porteurs : `docs/Lore.md`.
+Fiches autonomes : `docs/fiches/vigie.md`, `docs/fiches/morfil.md` (Taliant), `docs/fiches/gresille.md` (**Grésille**, la paratonnerrière : 11e personnage, électricité, proposé le 08/11/2026 et **jouable depuis le 10/11/2026** ; kit `game/scripts/spells/gresille_kit.gd`, audit d'équilibrage `docs/audits/gresille_equilibrage.md`). Lore du monde et des dix Porteurs : `docs/Lore.md`.
 
 ---
 
@@ -769,6 +769,7 @@ Replis en attendant (code) : sprite d'Ardent teinté écorce (`PLACEHOLDER_TINT`
 | **Rictus** | mêlée / leurres / burst | **pantin + fantôme** (toupie, doublures explosives, levée aérienne) | 95 + 28 | 10 | 0,6 + 0,12 (+2 %/sort) | 4,2 (4,8 toupie) | levée 3 u | 4 sorts | 2/5 | **3** | 424 + 60 |
 | Vigie | distance / archère (§2.8) | **Guet** (filet qui grossit avec la jauge, fusées qui exposent) | 90 + 27 | 0 | 1 + 0,2 | 4,2 | 3 u | 4 sorts / 1 passif | 2/5 | 2 | 424 + ≈ 40 |
 | **Taliant** | mêlée lourde / bretteur (§2.9) | **Aiguisage** (dégâts × aiguisage/100, usure par coup, ultime ≥ 90 % qui double les coups) | 115 + 35 | 25 | 0,8 + 0,16 | 3,9 | Iaï 3 u (tranche) | 4 sorts | 3/5 | 2 | ≈ 830 + 40 |
+| **Grésille** | distance moyenne / électricité (`docs/fiches/gresille.md`) | **Statique** portée par les monstres (1-5 cumuls, 3 = crispé, 5 = foudroyé), conduction dans l'eau | 95 + 28 | 5 | 1 + 0,2 | 4,1 (2,9 pendant l'Orage) | Court-circuit 3 u (sillage qui charge) | 4 sorts / 0 passif | 2/5 | 3 (GR1-GR3) | 360 + ≈ 60 images de VFX et d'icônes |
 
 Roster proposé au lancement (8) : Ardent + Tocsin disponibles, Averse / Arpenteuse / Bourbe visibles, Rainette / Avare / Rictus cachés. Les 5 personnages du GDD §5 (Veilleuse, Brise-Os, Chronomancienne, Invocateur, Faux-Roi) deviennent la **réserve LiveOps** (« nouveau personnage tous les 2 mois ») ou sont fusionnés (Bourbe reprend l'objectif de l'Invocateur). `characters.json` est à mettre à jour par l'orchestrateur (hors périmètre de ce doc).
 

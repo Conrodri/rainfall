@@ -8,7 +8,7 @@
 - **Une seule monnaie, les rubis**, gagnés uniquement en jouant. Aucun pack, aucun hasard, aucune rotation, aucun chrono, aucune remise : le catalogue entier est visible et au même prix pour tout le monde, pour toujours.
 - **Tout est cosmétique.** Rien dans `cosmetics.json` ne peut porter un champ d'effet ; un test headless le garantit. Les skins « trophée » existants (`<perso>_skin1`, victoire en Difficile) se gagnent par leur condition **ou s'achètent en rubis** (décision antérieure du joueur, boutique de skins) : prix dans `game/data/shop.json` (`SkinShop.price_of`, 250 par défaut, provisoire), un seul prix par skin ; les deux voies coexistent, la première qui aboutit le débloque (`Profile.unlocked_skins`).
 - **Gain réel mesuré dans le code** : ≈ 40-75 rubis par run perdue aux étages 2-3, ≈ 165-170 rubis par victoire en Moyen au rythme visé (19 min), ≈ 185-195 au rythme actuel des simulations (33-40 min). Soit **300 à 550 rubis par heure** selon le niveau du joueur. Les piliers pèsent 60 % du gain.
-- **Catalogue v1 ≈ 25 500 rubis (≈ 50-85 h selon le joueur), v1 + v2 ≈ 61 500 (≈ 110-200 h, longue traîne des Panoplies)**. Paliers de prix : 60-150 (un achat toutes les 2-3 parties au début), 250-400, 500-800, 1 000.
+- **Catalogue v1 ≈ 25 500 rubis (≈ 50-85 h selon le joueur), v1 + v2 ≈ 64 500 (≈ 115-215 h, longue traîne des Panoplies)**. Paliers de prix : 60-150 (un achat toutes les 2-3 parties au début), 250-400, 500-800, 1 000.
 - **13 familles** : Panoplies (tenues thématiques des personnages), Ciels des biomes (heures et saisons), Veillées (thèmes de l'écran titre), Parements d'interface, Sillages (pas et traînées), Rites (effets de mort et de victoire), Stèles, Partitions (musiques alternatives), Réticules, Saluts (poses de fin de run), Parures du téléporteur, Herbier des pluies (carnet illustré), Chambre claire (mode photo), Suivants (compagnons muets, v2).
 - **Top 5 à produire d'abord (décision du joueur, 01/11/2026)** : Panoplies, Ciels, Sillages, Parements d'interface, Veillées : **11 900 rubis en v1** (catalogue `game/data/cosmetics.json`, briefs `art/briefs/cosmetics/`, consignes `art/tools/cosmetics/`). Le joueur refuse les Teintes (simples recolorations) : les skins achetables sont de **vrais équipements à thème** (§3.1).
 
@@ -101,7 +101,7 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 > **Décision du joueur (01/11/2026)** : pas de Teintes (recolorations) ; les skins achetables sont de **vrais équipements à thème**. **v1 limitée, sans pack `.pck`** : un seul thème (« Avant la pluie ») et le nombre de personnages qui tient dans le budget textures, soit **4 personnages (Averse, Vigie, Ardent, Rictus, 8,4 Mo mobile)**. Les deux autres thèmes restent documentés ici pour plus tard et n'ont aucun article dans `cosmetics.json`.
 
 - **Quoi** : une tenue complète par personnage et par thème (`<perso>_<theme>`), même contrat que `docs/Skins.md` : **même ossature, mêmes animations, mêmes planches** (copie du `.blend` du héros, seuls les matériaux et les accessoires de surface changent, `.tres` à chemins substitués), silhouette IoU > 0,95, **accent émissif conservé** (teinte et zones, IoU > 0,90), aucun accessoire à plus de 2 px hors de la silhouette d'origine. Ce qui change vraiment : **coiffe, armure ou vêtement, arme ou outil, cape ou dos, matières**. Le skin 1 reste le trophée du Difficile (« après la Source ») ; les Panoplies racontent trois autres moments du monde.
-- **Prix** : **1 000 rubis** (palier 4) par Panoplie. v1 : 4 × 1 000 = 4 000. Catalogue complet : 3 thèmes × 10 personnages = 30 000.
+- **Prix** : **1 000 rubis** (palier 4) par Panoplie. v1 : 4 × 1 000 = 4 000. Catalogue complet : 3 thèmes × 11 personnages = 33 000 (Grésille, 11e personnage jouable depuis le 10/11/2026, est ajoutée à chaque thème comme ligne **à produire**, hors v1).
 - **Production** : code **S** (§5 : `Skins.skins_of`, `equipped` lit `owned_cosmetics`). Assets Codex : **un lot par personnage et par thème**, procédé des lots 47-51 (`art/tools/night/skin_<perso>_build.py` repris en paramètres : matériaux, accessoires, chemins de sortie). Brief : `art/briefs/cosmetics/panoplies.md` ; consignes v1 : `art/tools/cosmetics/_panoplie_<perso>_avant_la_pluie.txt`.
 - **Risque** : nul sur la puissance. Lisibilité : contrat IoU ; **L\* du ton moyen ≥ 45** sur le sol du biome (une Panoplie noire, « Cortège », est relevée par ses voiles gris et sa cire, jamais un corps noir) ; **aucune couleur de la palette des télégraphes** (rouge/orange saturé) sur un vêtement ; rien ne change dans `effects/`, `variants/`, VFX ni invocations (la chaîne d'Arpenteuse, les mottes de Bourbe, le Montreur restent partagés).
 
@@ -127,6 +127,7 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 | Avare | Prêteur sur gages | calotte de velours, lorgnon de laiton | redingote de drap vert foncé, gilet de soie à chaîne de montre | coffre de bois verni à ferrures de cuivre (même gabarit) | aucun | or #F2C14E (mêmes jointures) |
 | Bourbe | Terre crue | aucune | argile fraîche lissée #8F6B4E, empreintes de doigts, bandes de lin | mottes inchangées (asset partagé) | jarre de terre cuite dans le dos | feu follet #8DDBA8 |
 | Taliant | Jeune pousse | chapeau de paille neuf | écorce verte et lisse, kimono de lin indigo, dō de cuir fauve | katana de bois clair poli, fourreau laqué | aucun | fil de sève #CDEB6E |
+| Grésille (**à produire**, v2) | Monteuse de mâts | foulard de lin noué, chignon à épingles de cuivre neuves | veste de laine grise à boutons de cuivre neufs, tablier de toile brune, gants de toile, bottes de cuir fauve | tige de bronze polie à isolateurs de verre clair (même longueur de 0,9 u) | râtelier de bois verni, deux bouteilles de Leyde de verre clair cerclées de cuivre neuf (même volume ; le lilas court dedans, mêmes zones) | lilas d'arc #B9A6FF |
 
 #### 3.1.3 Fiches « Garde de crue » (v2)
 
@@ -142,6 +143,7 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 | Bourbe | Digue vive | aucune | vase chargée de sacs de sable, bandes de toile cirée | mottes inchangées | pieux de bois plantés dans le dos | feu follet #8DDBA8 |
 | Vigie | Guetteuse de crue | suroît | pèlerine de ciré, bottes | arc gainé de toile, carquois étanche de cuivre | lanterne au carquois | rouge de fusée #FF3A4F |
 | Taliant | Rōnin de barrage | chapeau de jonc ciré | mino (manteau de paille) sur hakama trempé | katana à fourreau de toile cirée | lanterne à la ceinture | fil de sève #CDEB6E |
+| Grésille (**à produire**, v2) | Veilleuse des mâts | suroît de ciré noir | ciré goudronné à brassard de toile ocre, bottes | tige gainée de toile cirée, isolateurs de verre enveloppés de chanvre | bouteilles de Leyde dans un étui de toile cirée, lanterne de cuivre au râtelier | lilas d'arc #B9A6FF |
 
 #### 3.1.4 Fiches « Cortège des cryptes » (v2)
 
@@ -157,6 +159,7 @@ Pour chaque famille : ce que c'est, production (code Claude : S ≈ 1 jour, M �
 | Bourbe | Terre de cimetière | aucune | vase noire, bandes de crêpe | mottes inchangées | fleurs de papier blanc plantées dans le dos | feu follet #8DDBA8 |
 | Vigie | Veilleuse de cortège | voile noir | pèlerine de crêpe | arc d'os et d'argent, carquois de cierges | aucun | rouge de fusée #FF3A4F (fusées) |
 | Taliant | Rōnin en deuil | chapeau de jonc voilé | kimono blanc de deuil sous haori noir | katana à fourreau d'os | aucun | fil de sève #CDEB6E |
+| Grésille (**à produire**, v2) | Paratonnerrière des mâts éteints | voile gris sur le chignon | veste de crêpe, gants gris, bottes noires | tige d'os et d'argent noirci | bouteilles de Leyde de verre opale cerclées d'argent noirci, drapées d'un crêpe court | lilas d'arc #B9A6FF |
 
 #### 3.1.5 Budget textures : options et décision
 
@@ -174,15 +177,17 @@ Mesure de `docs/Skins.md` (une tenue duplique les planches de corps de son perso
 | Bourbe | 4,1 | 8 |
 | Taliant | 6,8 | 9 |
 | Tocsin | 8,2 | 10 |
-| **10 personnages** | **36** | |
+| Grésille | ≈ 1,2 (mesuré sur le skin Fulgurite livré, 1,34 Mo de PNG ; voir `docs/Skins.md`) | 1 ex æquo avec Averse |
+| **10 personnages (mesurés)** | **36** | |
+| **11 personnages** | **≈ 37** | |
 
 | Option | Contenu | Mo mobile ajoutés | Rubis | Lecture |
 |---|---|---|---|---|
 | **A (retenue, 01/11/2026)** | 1 thème × 4 persos : **Averse, Vigie, Ardent, Rictus** | **8,4** (+3,8 % du total actuel) | 4 000 | les trois personnages de départ les plus joués (Ardent et Vigie en difficulté 1, Averse) + le moins cher au Mo après Averse ; aucun pack, aucun code de plus |
 | A' (minimum) | 1 thème × 3 persos : Averse, Vigie, Ardent | 6,2 | 3 000 | sans Rictus (personnage caché avant la sortie : moins d'acheteurs au lancement) |
 | A'' | 1 thème × 5 persos : A + Arpenteuse | 10,8 | 5 000 | un personnage de difficulté 3 de plus ; au-delà, chaque perso coûte 2,8-8,2 Mo |
-| B | 1 thème × 10 persos | 36 | 10 000 | rejetée sans pack |
-| C | 3 thèmes × 10 persos dans `cosmetics.pck` | 0 embarqués, 108 à la demande | 30 000 | contrat `PlatformServices` (§5), plus tard |
+| B | 1 thème × 11 persos | ≈ 37 | 11 000 | rejetée sans pack |
+| C | 3 thèmes × 11 persos dans `cosmetics.pck` | 0 embarqués, ≈ 112 à la demande (108 + 3 × 1,2) | 33 000 | contrat `PlatformServices` (§5), plus tard |
 | Palier 2 | re-rendu des dossiers par défaut à la taille d'affichage (`art/tools/night/ANDROID.md`) | divise toutes les lignes ci-dessus d'autant | — | les Panoplies suivent le défaut du moment (contrat « mêmes tailles ») : à faire avant les 26 restantes |
 
 Chaque consigne Codex demande la mesure avant/après (`python art/tools/texture_budget.py`) et rapporte les Mo réellement ajoutés ; si une Panoplie dépasse de plus de 20 % l'estimation, l'orchestrateur arbitre avant le lot suivant.
@@ -323,7 +328,7 @@ Chaque consigne Codex demande la mesure avant/après (`python art/tools/texture_
 
 | Famille | v1 (articles × prix) | v1 (rubis) | v2 (rubis) |
 |---|---|---|---|
-| Panoplies | 4 × 1 000 (thème « Avant la pluie », Averse, Vigie, Ardent, Rictus) | 4 000 | +26 000 (6 persos restants du thème 1, puis 2 thèmes × 10) |
+| Panoplies | 4 × 1 000 (thème « Avant la pluie », Averse, Vigie, Ardent, Rictus) | 4 000 | +29 000 (7 persos restants du thème 1, Grésille comprise, puis 2 thèmes × 11) |
 | Ciels | 4 × 600 | 2 400 | +2 400 |
 | Veillées | 4 × 500 | 2 000 | — |
 | Parements | 4 × 400 | 1 600 | — |
@@ -337,9 +342,11 @@ Chaque consigne Codex demande la mesure avant/après (`python art/tools/texture_
 | Chambre claire | 3 filtres + 4 cadres × 100 | 700 | — |
 | Suivants | — | — | +2 800 |
 | Stèles (§4.4, option) | — | — | +1 250 |
-| **Total** | | **≈ 25 500** | **≈ 61 500** |
+| **Total** | | **≈ 25 500** | **≈ 64 500** |
 
-Lecture en temps de jeu : à 400 rubis/h, **v1 ≈ 64 h**, un joueur régulier (500-550/h) la vide en **≈ 50 h**, un débutant (300/h) en ≈ 85 h ; le **top 5 seul (11 900) ≈ 30 h**. **v1 + v2 ≈ 155 h** : la longue traîne vient des 26 Panoplies restantes (26 000 rubis), achetées en pratique pour un ou deux personnages favoris (3 Panoplies d'un même personnage = 3 000 rubis ≈ 7 h 30), jamais toutes. Si le joueur veut resserrer, le prix de Panoplie à 800 ramène v1 + v2 à ≈ 55 500 (≈ 140 h) ; ce document garde 1 000 (palier 4, l'article le plus visible du catalogue).
+_Mise à jour du 10/11/2026 : Grésille (11e personnage) ajoute 3 000 rubis de Panoplies à la v2 (3 thèmes × 1 000), d'où +29 000 sur la ligne Panoplies et ≈ 64 500 au total (61 500 avant). La v1 ne change pas._
+
+Lecture en temps de jeu : à 400 rubis/h, **v1 ≈ 64 h**, un joueur régulier (500-550/h) la vide en **≈ 50 h**, un débutant (300/h) en ≈ 85 h ; le **top 5 seul (11 900) ≈ 30 h**. **v1 + v2 ≈ 160 h** : la longue traîne vient des 29 Panoplies restantes (29 000 rubis), achetées en pratique pour un ou deux personnages favoris (3 Panoplies d'un même personnage = 3 000 rubis ≈ 7 h 30), jamais toutes. Si le joueur veut resserrer, le prix de Panoplie à 800 ramène v1 + v2 à ≈ 57 900 (≈ 145 h) ; ce document garde 1 000 (palier 4, l'article le plus visible du catalogue).
 
 ### 4.3 Cadence vécue par un joueur régulier
 
@@ -386,7 +393,7 @@ Famille retenue en option v2, proposée par le joueur : un marqueur **sans colli
 | 5 | **Veillées** | l'écran titre est vu à chaque session ; valorise les cartes existantes | code S + 4 lots de props |
 | 6-9 | Réticules, Saluts, Rites, Herbier | paliers 1-2, remplissent la cadence « un achat toutes les 2-3 parties » | code S/M, lots légers |
 | 10-11 | Parures du téléporteur, Partitions | palier 3, Partitions liées au pack optionnel | code S + lots moyens, audio |
-| 12 | Panoplies restantes (6 persos du thème 1, puis « Garde de crue » et « Cortège des cryptes ») | dépendent du palier 2 du budget textures (re-rendu à la taille d'affichage) ou du pack optionnel | code 0 + 26 lots (≈ 100 Mo mobile avant palier 2) |
+| 12 | Panoplies restantes (7 persos du thème 1, Grésille comprise, puis « Garde de crue » et « Cortège des cryptes ») | dépendent du palier 2 du budget textures (re-rendu à la taille d'affichage) ou du pack optionnel | code 0 + 29 lots (≈ 100 Mo mobile avant palier 2) |
 | v2 | Suivants, Stèles, piliers, Ciels 2, Partitions 2 | après mesure du comportement d'achat (journal de run : `RunLog` note déjà `skin`) | — |
 
 Mesure après sortie : `RunLog` ajoute les articles équipés par run (`cosmetics: {family: id}`) et le profil le solde de rubis en fin de run ; `tools/analyse_runs.py` sort « rubis gagnés par heure réelle » et « premier achat à la partie n » pour vérifier la cadence 2-3 parties.

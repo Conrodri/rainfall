@@ -8,7 +8,7 @@ Un skin par personnage jouable, débloqué par **une victoire en mode Difficile 
 - **Tenue, matière et palette nettement différentes et prestigieuses**, toujours dans la DA (sombre, usée, désaturée, cel 3 tons + encre ; `art/briefs/STYLE.md`, `STYLE_cel.md`, `STYLE_boss_da.md`). Fil rouge du lore : ce que le personnage est devenu après avoir traversé la Source (étage 5) en Difficile : matières refondues, blanchies, vernies, cuites, argentées ; plus de rouille ni de mousse, mais toujours trempé.
 - Aucun nom ni visuel repris de Risk of Rain ou de Vampire Survivors.
 
-## Les 10 skins
+## Les 11 skins
 
 | Personnage (id) | Skin (id) | Idée | Accent conservé |
 |---|---|---|---|
@@ -22,8 +22,9 @@ Un skin par personnage jouable, débloqué par **une victoire en mode Difficile 
 | Bourbe (`bourbe`) | **Grès noir** (`bourbe_skin1`) | Grès cuit vernissé, craquelures claires, bandes de bronze doré, lichen blanc ; mottes inchangées | feu follet #8DDBA8 |
 | Vigie (`vigie`) | **Cormoran** (`vigie_skin1`) | Pèlerine de plumes huilées, capote cirée noire, arc de frêne pâle cerclé d'argent, carquois d'argent noirci | rouge de fusée #FF3A4F |
 | Taliant (`morfil`) | **Bois flotté** (`morfil_skin1`) | Écorce blanchie, hakama noir, dō de laque noire aux lacets d'or, chapeau de jonc brûlé | fil de sève #CDEB6E |
+| Grésille (`gresille`) | **Fulgurite** (`gresille_skin1`, livré le 10/11/2026) | La foudre de la Source a vitrifié son équipement : tige de fulgurite noire et grenue, bouteilles de Leyde en verre fumé cerclé d'argent, cape-treillis en mailles d'argent, bottes blanchies, manteau de cuir ciré noir ; plus de vert-de-gris | lilas d'arc #B9A6FF |
 
-Noms et descriptions d'une phrase : `art/tools/night/skins.json` (`name`, `desc`, `unlock_text`).
+Noms et descriptions d'une phrase : `art/tools/night/skins.json` (`name`, `desc`, `unlock_text`) ; pour Grésille, directement dans `game/data/characters.json` (entrée `gresille`, `skins`), condition « Gagner une run en mode Difficile avec Grésille » (`win_with`, `mode: difficile`), fiche `docs/fiches/gresille.md` §12.3.
 
 ## Contrat de sortie (assets)
 - Dossier : `game/assets/sprites/characters/<perso>/skins/<perso>_skin1/`.
@@ -54,7 +55,9 @@ Mesure `python art/tools/texture_budget.py` du 26/10/2026 : textures mobiles **2
 | bourbe_skin1 | 24 | 8,2 | 4,1 |
 | vigie_skin1 | 20 | 4,6 | 2,3 |
 | morfil_skin1 | 30 | 16,6 | 6,8 |
-| **Total** | ≈ 388 | **86,6** | **≈ 36** |
+| **Total (10 skins)** | ≈ 388 | **86,6** | **≈ 36** |
+| gresille_skin1 (**mesuré** le 10/11/2026, livré) | 16 (7 planches d'animation + `portrait`, et leurs 8 masques `_e`) | **1,34** (1 405 428 octets ; le dossier par défaut `characters/gresille/` : 1,32) | **≈ 1,2** (mesuré par `art/tools/texture_budget.py`, 16 fichiers importés) |
+| **Total avec Grésille** | ≈ 404 | ≈ 88 | **≈ 37** |
 
 Conséquence : +36 Mo mobile sur un budget déjà dépassé de 39 Mo. Chaque consigne demande à Codex de rapporter la taille réellement ajoutée. Options pour l'orchestrateur, par ordre de préférence :
 1. **Produire les skins après le palier 2** (re-rendus à la taille d'affichage, `art/tools/night/ANDROID.md`) : les dossiers par défaut rétrécis rétrécissent les skins d'autant (le contrat « mêmes tailles » suit le défaut du moment).

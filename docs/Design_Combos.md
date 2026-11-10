@@ -3,7 +3,7 @@
 > Statut : **document de design** (Fable, game-designer, 29/10/2026), sur demande du joueur : « revoir le kit des personnages pour qu'ils aient des combos entre leurs sorts, comme Arpenteuse (dasher sur un boss, poser son piquet, puis avoir une double chaîne qui frappe grâce à son ultime et son 1er sort) ». Rien n'est implémenté ; aucun fichier de `game/` n'est modifié. Ce document **reprend et resserre** `docs/Combos_Kits.md` (v1 du 27/10, « un maximum d'interactions ») en ne gardant que ce qui forme une **séquence** lisible : un geste qui prépare, un geste qui encaisse. Il intègre les esquives **implémentées** de `docs/Design_Esquives.md` (29/10), qui remplacent les roulades v1 citées par `Combos_Kits.md`.
 > Conventions : 1 u = 64 px ; « coef » = multiple de `Balance.player_base_damage(L)` ; les valeurs citées sont celles des kits (`game/scripts/spells/<id>_kit.gd`) au 29/10/2026. Cibles d'équilibrage (`docs/Equilibrage_Personnages.md`) : mono-cible dans [0,85 ; 1,20] × Ardent, Arpenteuse élite 1,30, chaque variante à ±15 % de son sort de base. Règles du projet : télégraphe ≥ 0,8 s pour tout effet différé, aucune mort instantanée, un retour visuel et un retour sonore par combo, **aucun aplat géométrique** (pas de Polygon2D ni de `_draw` : seulement des sprites, des `Line2D` texturées, des modulations HDR et des chiffres colorés).
 
-Sommaire : 1. Grammaire d'un combo (règles, budget, plateformes, esquive) · 2. Arpenteuse · 3. Ardent · 4. Averse · 5. Les sept autres · 6. Lot transverse · 7. Récapitulatif et ordre d'implémentation · 8. Points à trancher.
+Sommaire : 1. Grammaire d'un combo (règles, budget, plateformes, esquive) · 2. Arpenteuse · 3. Ardent · 4. Averse · 5. Les huit autres · 6. Lot transverse · 7. Récapitulatif et ordre d'implémentation · 8. Points à trancher.
 
 ---
 
@@ -180,7 +180,7 @@ AV-1 + AV-3 montent l'eau rendue sur un boss trempé : Goutte 2,0 × 1,67/s = 3,
 
 ---
 
-## 5. Les sept autres personnages
+## 5. Les huit autres personnages
 
 Format court : identité · combo principal (séquence → récompense, chiffres) · esquive · changements de kit · retour · risque et garde-fou. Les détails de variantes et les combos secondaires restent dans `docs/Combos_Kits.md` §2 (références R, T, RN, AVR, B, V, TA) ; seuls les chiffres **repris ici** font foi en cas d'écart.
 
@@ -240,6 +240,13 @@ Format court : identité · combo principal (séquence → récompense, chiffres
 - **Retour** : `iai_trail` qui reste 0,3 s de plus et s'embrase à la Fauche ; scintillement du fil de sève à la parade (Codex : 1 son `morfil_parry`).
 - **Risque** : aucun ; Taliant est déjà 4/5 d'interactivité.
 
+### 5.8 Grésille, paratonnerrière de la Cité (`gresille_kit.gd`, `gresille_static.gd`) : combos livrés avec le personnage
+- **Identité** : elle charge ce qu'elle touche, puis elle décharge. Sortie le 10/11/2026 avec ses combos : rien à ajouter ni à compenser, ce bloc consigne l'état livré (fiche `docs/fiches/gresille.md` §5-§7 ; un seul état, la **Statique**, portée par les monstres via `GresilleStatic`, règle « un état par personnage » du §1).
+- **Combo principal GR-1 « Arc → Décharge »** : 3-5 Arcs sur le même paquet (3 s), puis Décharge sur le plus chargé (`target_mode` `&"most_stacked"`). Fenêtre 6 s (`STATIC_S`). Récompense : Décharge à 2,8 + 0,15 par cumul consommé (**+27 % au plus**, 3,55 à 5 cumuls, dans la règle +20 à +30 %) et un arc de 0,6 par cumul vers des voisins distincts (jusqu'à 5 × 0,6). Ordre inverse : Décharge d'abord, 2,8 sans arc, la cible repart à 1 cumul : utile pour ouvrir. Retour : le bouton 2 pulse lilas (`combo_ready(2)`, au moins `COMBO_READY_STACKS` 4 cumuls à 8 u). Mobile : **naturel**.
+- **GR-2 « Mise à la terre → Orage »** : électriser le sol (idéalement une nappe d'eau), laisser le paquet y entrer (2,5 s → 5 cumuls), puis Orage : 6 coups sur des cibles à 5 cumuls, foudroiements en chaîne, **+25 % par coup au plus** (1,3 + 0,05 × 5). Fenêtre 5 s. Ordre inverse correct (le sol finit le travail). Retour : le bouton 4 pulse quand une cible est à 5 cumuls à 7 u (`combo_ready(4)`). Mobile : **naturel**.
+- **GR-3 « Court-circuit → Arc »** (esquive qui prépare) : le sillage de l'esquive (0,5 s) dépose +1 Statique (2 si mouillé) à tout monstre traversé, sans jamais foudroyer ; les Arcs suivants rebondissent sur des monstres déjà chargés. Fenêtre 6 s. Dans la règle des 5 % de `Design_Esquives.md` (§3.11). Mobile : placement au joystick.
+- **Risque et garde-fou** : le contrôle (Foudroiement 0,5 s) est borné par `ZAP_IMMUNE_S` 2,5 s par monstre et, depuis l'audit du 10/11/2026, par `Balance.ELITE_STUN_REARM_S` 1,5 s pour toute élite (toutes sources) ; boss et mini-boss ne sont jamais étourdis (+10 % de dégâts subis 2 s à la place). Chiffres : `docs/audits/gresille_equilibrage.md`.
+
 ---
 
 ## 6. Lot transverse (orchestrateur, avant les lots par personnage)
@@ -272,6 +279,7 @@ Format court : identité · combo principal (séquence → récompense, chiffres
 | Bourbe | Détacher → Gifle sur motte ; Bourbier avec mottes | soin 10 %, coup suivant ×3 ; éclat 1,0 par motte | vie de la motte / — | **locomotion** (mottes 4,8 u/s dans la traînée) | `SLAP_COEF` 0,85, `MOTTE_CONTACT_COEF` 0,35, `BOG_COEF` 1,1 | placement | `SLAP_FEED_HEAL` 0,1, `SLAP_FEED_MULT` 3,0, `SLAP_FEED_CD_S` 2, `BOG_MOTTE_BURST_COEF` 1,0, `RECALL_HOME_U` 1,0, `FLOW_TRAIL_MOTTE_SPEED_U` 4,8 |
 | Vigie | Filet → Fusée → Allonge ; Grêle sur cloués | ×1,25 + 0,5 s, Allonge 2,6 ; +40 % | 2 s | **prépare** (Tension +24 %, ancrage ignoré) | `ALLONGE_COEF` 1,8, `FUSEE_COEF` 1,0, `GRELE_COEF` 0,64 | naturel, aidé | `ALLONGE_EXPOSED_COEF` 2,6, `NET_FLARE_EXPOSE` 1,25, `NET_FLARE_EXTEND_S` 0,5, `FLARE_REVIVE_S` 1,0, `HAIL_NETTED_MULT` 1,4, `SIGNAL_NETTED_MULT` 1,2 |
 | Taliant | Aiguisage → Lames jumelles → Fauche-lune (existant) ; Iaï → Fauche-lune | coût 15 → 8 %, recul 1,4 u ; parade +2 % | 1,5 s | **prépare** (Iaï dégaine) | aucune | naturel | `IAI_OPEN_S` 1,5, `COST_CRESCENT_AFTER_IAI` 8, `IAI_OPEN_KNOCK_U` 1,4, `PARRY_SHARP` 2, `PARRY_CD_S` 0,3 |
+| Grésille (livrée) | GR-1 Arc → Décharge ; GR-2 Mise à la terre → Orage ; GR-3 Court-circuit → Arc | Décharge +27 % au plus et jusqu'à 5 arcs de 0,6 ; Orage +25 % par coup au plus ; paquet à 5 cumuls un Arc plus tôt | 6 s / 5 s / 6 s | **prépare** (sillage : +1 Statique, jamais de foudroiement) | aucune (inclus dans les coefs de base) | naturel | `DISCHARGE_PER_STACK` 0,15, `STORM_PER_STACK` 0,05, `COMBO_READY_STACKS` 4, `WAKE_S` 0,5 |
 
 ### 7.2 Ordre recommandé
 

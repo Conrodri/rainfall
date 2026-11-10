@@ -4,7 +4,7 @@
 > Conventions : 1 u = 64 px ; « coef » = multiple de Dégât_base(L), commun à tous les personnages ; les valeurs de base citées sont celles des kits (`game/scripts/spells/<id>_kit.gd`) au 27/10/2026, qui prévalent sur les fiches. Cibles d'équilibrage (`docs/Equilibrage_Personnages.md`) : mono-cible dans [0,85 ; 1,20] × Ardent, chaque variante à ±15 % du sort qu'elle remplace, Arpenteuse élite 1,30. Règles de lisibilité : télégraphe ≥ 0,8 s pour tout effet différé, aucune mort instantanée, un retour visuel et sonore par combo.
 > Plateformes : sort 1 automatique partout ; PC : sorts 2-4 visés au curseur ; manette : stick droit sinon le plus proche ; **mobile : ciblage automatique** (S5 : paquet le plus dense). Chaque combo ci-dessous est noté sur ce critère : il doit **se produire naturellement** avec la visée automatique, ou recevoir une aide d'auto-visée explicite.
 
-Sommaire : 1. Analyse : ce qui rend Arpenteuse et Taliant interactifs (cinq patrons réutilisables, boîte à outils du code) · 2. Les dix personnages (carte des interactions, note /5, combos proposés) · 3. Priorisation et lots · 4. Questions ouvertes · Annexe A : récapitulatif.
+Sommaire : 1. Analyse : ce qui rend Arpenteuse et Taliant interactifs (cinq patrons réutilisables, boîte à outils du code) · 2. Les onze personnages (carte des interactions, note /5, combos proposés) · 3. Priorisation et lots · 4. Questions ouvertes · Annexe A : récapitulatif.
 
 ---
 
@@ -61,7 +61,7 @@ Sommaire : 1. Analyse : ce qui rend Arpenteuse et Taliant interactifs (cinq patr
 
 ---
 
-## 2. Les dix personnages
+## 2. Les onze personnages
 
 Format de chaque bloc : carte actuelle des interactions (sorts 1-4, passif, roulade) · note d'interactivité /5 (critères : nombre de paires de sorts qui se lisent, ressource commune, ordre signifiant, objet au sol exploité, découvrabilité sans tip) · combos proposés. Pour chaque combo : **Déclencheur** · **Effet** (chiffré) · **Lisibilité** · **Mobile** · **Équilibrage** (gain estimé et compensation) · **Variantes**.
 
@@ -324,6 +324,19 @@ Contrat à signaler : **Ardent de base n'a pas de nœud kit** (`ArdentVariantKit
   - Équilibrage : ≈ 1 coup paré / 2 s en mêlée dense = +1 %/s d'aiguisage contre 8-9 %/s d'usure : +10 % d'aiguisage moyen au plus en essaim, rien sur un boss lent ; pas de compensation (c'est la faiblesse « début de run » visée).
   - Variantes : Taille lente (garde −35 %) : +1,5 % ; Lames jumelles (garde permanente) : plafonné à +2 % par seconde.
 
+### 2.11 Grésille, paratonnerrière de la Cité (`gresille_kit.gd`, `gresille_static.gd`, `gresille_ground_field.gd`, `gresille_lob.gd`, `gresille_rod.gd`)
+
+**Carte actuelle (livrée, jouable depuis le 10/11/2026).** Grésille a été **conçue avec ses combos** (`docs/fiches/gresille.md` §7) : il n'y a donc **aucune proposition de combo à ajouter**, seulement l'état livré. Un seul état, la **Statique**, porté par le registre `GresilleStatic` (jamais par `Enemy`) : 1 à 5 cumuls pendant `STATIC_S` 6 s ; 3 = crispé (ralenti `CRISP_SLOW` 0,2) ; 5 = le prochain coup foudroie (étourdi `ZAP_STUN_S` 0,5 s ; boss : +10 % de dégâts subis 2 s). Interactions : Arc (`ARC_COEF` 0,8, rebond `BOUNCE_COEF` 0,45) **dépose** la Statique (1 cumul, 2 sur un mouillé, `WET_STACKS`) · Décharge (`DISCHARGE_COEF` 2,8 + `DISCHARGE_PER_STACK` 0,15 par cumul) **lit et consomme** les cumuls de sa cible et les propage en arcs de `DISCHARGE_ARC_COEF` 0,6 · Mise à la terre (`GROUND_COEF` 0,45 par tick de 0,5 s, +1 Statique par tick, nappe d'eau jusqu'à `GROUND_WATER_CELLS_MAX` 113 cases) **charge** tout ce qui s'y tient · Orage (`STORM_COEF` 1,3 + `STORM_PER_STACK` 0,05, 6 coups) **vise le plus chargé** sans consommer · Court-circuit (esquive) **charge** le paquet traversé. Les paires de sorts qui se lisent : toutes (Arc → Décharge, Terre → Orage, Esquive → Arc, Terre → Décharge, Orage → Décharge).
+**Note : 4/5** (estimation de cette mise à jour d'après les critères du §2 : ressource commune portée par la cible, ordre signifiant, terrain exploité ; la découvrabilité demande le chiffre de cumuls au-dessus de la cible visée et le bouton 2 qui pulse, voir le HUD ci-dessous).
+
+**État réutilisé : « chargé »** = `GresilleStatic.stacks(enemy)` ; **« mouillé »** = `Enemy.is_wet()` (trempe d'Averse, case d'eau, flaque).
+
+- **GR-1 « Arc → Décharge »** (combo principal, P2, P3) : 3-5 Arcs sur le même paquet (3 s), puis Décharge sur le monstre le plus chargé (`pick_target`, `target_mode` `&"most_stacked"`). Fenêtre 6 s (durée des cumuls). Gain : +27 % au plus sur la cible (2,8 → 3,55) et jusqu'à 5 arcs de 0,6 sur 5 voisins distincts. Retour : le bouton 2 **pulse lilas** dès qu'une cible a au moins `COMBO_READY_STACKS` 4 cumuls à 8 u (`combo_ready(2)`). Mobile : naturel (cible = le plus chargé). Ordre inverse : Décharge d'abord vaut 2,8 sans arc, la cible repart à 1 cumul.
+- **GR-2 « Mise à la terre → Orage »** (P1, P4) : électriser le sol (idéalement une nappe d'eau), laisser le paquet y entrer (2,5 s → 5 cumuls), puis Orage : les 6 coups tombent sur des cibles à 5 cumuls, foudroiements en chaîne, +25 % par coup au plus. Fenêtre 5 s. Le bouton 4 pulse quand une cible est à 5 cumuls à 7 u (`combo_ready(4)`). Mobile : naturel (l'Orage vise le plus chargé). Ordre inverse correct (le sol finit le travail).
+- **GR-3 « Court-circuit → Arc »** (l'esquive qui prépare, P4) : traverser le paquet (1 cumul chacun, jamais de foudroiement par le sillage), puis les Arcs rebondissent sur des monstres déjà chargés : le paquet atteint 5 cumuls un Arc plus tôt. Fenêtre 6 s. Mobile : placement au joystick.
+- **Équilibrage** : les gains sont dans les coefficients mesurés par `docs/audits/gresille_equilibrage.md` (global 0,97 à sec et 1,10 dans l'eau × Ardent après les recommandations R1 à R3) ; la règle +20 à +30 % sur les cibles préparées est tenue (Décharge +27 %, Orage +25 %). Aucune compensation de base à prévoir. Valeurs à ne pas toucher : `ARC_COEF`, `BOUNCE_COEF`, `DISCHARGE_COEF`, `STORM_COEF`, `GROUND_COEF`.
+- **Variantes** : Paratonnerre (remplace la Mise à la terre : pas de nappe, la foudre tombe sur une tige à distance, +1 Statique par coup) garde GR-1 et GR-3, perd la propagation par nappe de GR-2 mais l'Orage lit toujours les cumuls ; Bouteille de Leyde (remplace l'Orage : éclat de 4 u qui **consomme** toute la Statique) transforme GR-2 en « Mise à la terre → Leyde » (6,5 + 0,3 par cumul).
+
 ---
 
 ## 3. Priorisation et lots
@@ -342,6 +355,7 @@ Contrat à signaler : **Ardent de base n'a pas de nœud kit** (`ArdentVariantKit
 | 8 | **Bourbe** | 3 → 4 | B1, B2, B3 | Mottes = position ; B1 change le placement de la joueuse. Touche `bourbe_motte.gd` (champ `pushed_coef` ou équivalent). |
 | 9 | Taliant | 4 → 4,5 | TA1, TA2 | Léger. |
 | 10 | Arpenteuse | 5 → 5 | AR1 (facultatif) | Référence ; ne pas toucher à la cible élite 1,30. |
+| 11 | Grésille | 4 → 4 | GR-1, GR-2, GR-3 (déjà dans le kit livré) | Aucun lot : les combos naissent de la Statique, conçus avec le personnage (`docs/fiches/gresille.md` §7). |
 
 ### 3.2 Lot 0 transverse (orchestrateur, avant les lots par personnage)
 
@@ -400,3 +414,4 @@ Le pilote auto-cast lance les sorts par règles simples ; les combos à ordre (P
 | Bourbe | 3 → 4 | B1 Gifle sur motte : soin 10 %, coup suivant ×3 | B2 mottes qui éclatent au Bourbier (1,0) ; B3 Rappel au contact = plouf | `BourbeMotte`, `MOTTE_LAND_COEF` | `SLAP_COEF` 0,85, `MOTTE_CONTACT_COEF` 0,35, `BOG_COEF` 1,1 |
 | Vigie | 3 → 4 | (V1 supprimée, 07/11/2026) | V2 Fusée dans le Filet : ×1,25, +0,5 s ; V3 Grêle +40 % sur cloués | `&"vigie_expose"`, `is_imprisoned` | `FUSEE_COEF` 1,0, `GRELE_COEF` 0,64 |
 | Taliant | 4 → 4,5 | TA1 Fauche-lune à 8 % après un Iaï qui touche | TA2 parade sous garde +2 % d'aiguisage | `_iai_paid`, `guard_left` | aucune |
+| Grésille | 4 (livrée) | GR-1 Arc → Décharge : +27 % sur le plus chargé, jusqu'à 5 arcs | GR-2 Mise à la terre → Orage (+25 % par coup) ; GR-3 Court-circuit → Arc | `GresilleStatic` (cumuls portés par les monstres), `Enemy.is_wet()` | aucune (inclus dans les coefs) |
