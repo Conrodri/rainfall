@@ -84,6 +84,7 @@ const STORM_RANGE_U := 7.0
 const STORM_RADIUS_U := 1.5
 const STORM_PROC := 1.0
 const STORM_KNOCK_U := 0.8
+const VFX_DIR := "res://assets/sprites/vfx/gresille/"
 const STORM_SKY_PX := 320.0 ## hauteur logique du point de départ de la foudre (arc ChainLightningFx, repli de bolt_strike)
 
 const WAKE_S := 0.5 ## sillage du Court-circuit
@@ -195,6 +196,9 @@ static func character() -> CharacterData:
 	s3.trigger_range_u = GROUND_RADIUS_U
 	s3.range_u = 0.0
 	s3.zone_outline_color = ACCENT
+	s3.vfx_frames = VFX_DIR + "ground_field/ground_field.tres" # disque à sec (GR2) ; la nappe d'eau utilise ground_tile
+	s3.vfx_radius_px = 190.0 # rayon du disque dans la frame 384x384
+	s3.vfx_floor_aspect = 1.0 # rig TOP : jamais pré-écrasé
 
 	var s4 := _spell(&"gresille_orage", "Orage appelé", 4, STORM_COEF, STORM_CD)
 	s4.radius_u = STORM_RADIUS_U
@@ -540,7 +544,8 @@ func _zap_fx(e: Node) -> void:
 	if not (e is Node2D):
 		return
 	var pos := (e as Node2D).global_position
-	StatusFx.shock(e, 0.5)
+	if not _play_fx("zap_flash", pos, 4.0):
+		StatusFx.shock(e, 0.5)
 	Audio.play(SOUND_ZAP, pos, 0.0, 0.85) # PLACEHOLDER : `gresille.zap` (claquement blanc) à produire
 	if Quality.flashes_level > 0:
 		LightRig.flash(pos, &"spell_lightning", FLASH_S)
@@ -590,7 +595,7 @@ func _nearest_neighbor(from: Node2D, base_u: float, exclude: Dictionary, wet_bon
 
 
 func _arc_fx(pts: Array) -> void:
-	ChainLightningFx.chain(pts, player.get_parent()) # arcs existants (teinte neutre : variante lilas à venir avec arc_tile)
+	ChainLightningFx.chain(pts, player.get_parent(), true) # arc_tile lilas (repli : arcs neutres si la planche manque)
 
 
 ## Décharge : n = cumuls de la cible (consommés ; 5 = foudroyée), coef 2,8 + 0,15 n, puis n arcs de 0,6 vers n voisins
@@ -625,6 +630,7 @@ func _discharge(s: SpellData, target: Node2D) -> void:
 		c.deal_damage(nb, _discharge_arc_spell)
 		left -= 1
 	_arc_fx(pts)
+	_play_fx("discharge_burst", target.global_position, 0.0)
 	Audio.play(SOUND_CHAIN, target.global_position) # PLACEHOLDER : `spell.gresille_decharge.*` à produire
 
 
@@ -694,11 +700,41 @@ func _storm_strike(s: SpellData) -> void:
 	for e in victims:
 		if is_instance_valid(e):
 			c.deal_damage(e, shot)
-	# PLACEHOLDER de `bolt_strike` (lot GR2) : arc ChainLightningFx du ciel au point d'impact + éclair de lumière
-	ChainLightningFx.chain([at + Vector2(0.0, -STORM_SKY_PX), at], player.get_parent())
+	# `bolt_strike` (GR2) ; repli si la planche manque : arc ChainLightningFx du ciel au point d'impact
+	if not _play_fx("bolt_strike", at, 0.0):
+		ChainLightningFx.chain([at + Vector2(0.0, -STORM_SKY_PX), at], player.get_parent(), true)
 	Audio.play(SOUND_CHAIN, at, 0.0, 0.8) # PLACEHOLDER : `spell.gresille_storm.*` (tonnerre sec) à produire
 	if Quality.flashes_level > 0:
 		LightRig.flash(at, &"spell_lightning", 0.15 if Quality.flashes_level == 2 else FLASH_S)
+
+
+## Joue une fois l'animation `default` de vfx/gresille/<name>/<name>.tres, ancrée au sol en `at` (espace billboard,
+## bas de la cellule au point). Faux si la ressource manque.
+func _play_fx(fx_name: String, at: Vector2, lift_px: float) -> bool:
+	var path := VFX_DIR + fx_name + "/" + fx_name + ".tres"
+	if player == null or player.get_parent() == null or not ResourceLoader.exists(path):
+		return false
+	var frames := load(path) as SpriteFrames
+	if frames == null:
+		return false
+	var root := Node2D.new()
+	root.top_level = true
+	root.scale = Iso.UNSQUASH
+	root.position = at
+	root.z_index = 31
+	var sp := AnimatedSprite2D.new()
+	sp.sprite_frames = frames
+	var tex := frames.get_frame_texture(&"default", 0)
+	sp.position = Vector2(0.0, -(tex.get_height() * 0.5) + lift_px)
+	var add := CanvasItemMaterial.new()
+	add.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	add.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	sp.material = add
+	sp.animation_finished.connect(root.queue_free)
+	root.add_child(sp)
+	player.get_parent().add_child(root)
+	sp.play(&"default")
+	return true
 
 
 static func storm_coef(n: int, base := STORM_COEF) -> float:
@@ -786,7 +822,7 @@ func _tick_wake(delta: float) -> void:
 				break
 
 
-## PLACEHOLDER du sillage (texture `arc_tile` du lot GR2) : Line2D lilas additive qui s'efface.
+## Sillage : Line2D additive texturée par `arc_tile` (GR2), repli lilas uni ; s'efface.
 func _start_wake_line() -> void:
 	_end_wake_line(true)
 	if player == null or player.get_parent() == null:
@@ -795,6 +831,14 @@ func _start_wake_line() -> void:
 	l.width = WAKE_WIDTH_U * Balance.UNIT_PX
 	l.default_color = Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.55)
 	l.z_index = -1
+	var tp := VFX_DIR + "arc_tile/arc_tile.png"
+	if ResourceLoader.exists(tp):
+		var at := AtlasTexture.new()
+		at.atlas = load(tp) as Texture2D
+		at.region = Rect2(0.0, 0.0, 256.0, 48.0) # variante 0, frame 0 de la grille 4x4
+		l.texture = at
+		l.texture_mode = Line2D.LINE_TEXTURE_STRETCH
+		l.default_color = Color(1.0, 1.0, 1.0, 0.8)
 	var m := CanvasItemMaterial.new()
 	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	l.material = m

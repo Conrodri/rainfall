@@ -5,11 +5,14 @@ extends Node2D
 ## GresilleKit.GROUND_WATER_CELLS_MAX = 113 = rayon 6 u). Un tick toutes les `tick` s : chaque monstre dont le pied est
 ## dans une case du champ reçoit un coup du sort (SpellCaster.deal_damage : la Statique, le ralentissement et les procs
 ## passent par les hooks du kit) et devient mouillé. Dure `life` s puis disparaît.
-## RENDU PLACEHOLDER (à remplacer par la tuile `ground_field` du lot Codex GR2) : un losange translucide lilas par case
-## (Polygon2D-like via _draw), de la couleur de l'accent ; aucun asset final dessiné ici.
+## Rendu : la tuile `ground_tile` (lot Codex GR2, 64x64 top-down répétable) par case ; repli sur un aplat lilas translucide
+## si la texture manque.
 
 const CELL_PX := 64.0
 const COLOR := Color("#B9A6FF")
+const TILE_PATH := "res://assets/sprites/vfx/gresille/ground_tile/ground_tile.png"
+
+static var _tile: Texture2D = null
 
 var caster: SpellCaster = null
 var spell: SpellData = null
@@ -74,9 +77,15 @@ func _tick() -> void:
 
 
 func _draw() -> void:
+	if _tile == null and ResourceLoader.exists(TILE_PATH):
+		_tile = load(TILE_PATH) as Texture2D
 	var a := 0.16 + 0.1 * sin(_age * 12.0 * TAU * 0.1) # scintillement
 	var fade := clampf((life - _age) / 0.6, 0.0, 1.0)
 	var h := CELL_PX * 0.5 - 1.0
 	for c: Vector2 in centers:
 		var p := c - global_position
-		draw_rect(Rect2(p - Vector2(h, h), Vector2(h, h) * 2.0), Color(COLOR.r, COLOR.g, COLOR.b, a * fade))
+		var r := Rect2(p - Vector2(h + 1.0, h + 1.0), Vector2(h + 1.0, h + 1.0) * 2.0)
+		if _tile != null:
+			draw_texture_rect(_tile, r, false, Color(1.0, 1.0, 1.0, (0.85 + 2.0 * a) * fade))
+		else:
+			draw_rect(r, Color(COLOR.r, COLOR.g, COLOR.b, a * fade))
