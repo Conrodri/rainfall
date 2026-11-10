@@ -1,4 +1,4 @@
-"""GR1 articulated C silhouette. Native CREA renders; resumable raw CEL/AOV pairs.
+"""GR1d articulated C silhouette. Native CREA renders; resumable raw CEL/AOV pairs.
 Blender: -- --render [--test]. Python: --finish / --verify.
 """
 import sys, math, json, hashlib, shutil
@@ -6,7 +6,7 @@ from pathlib import Path
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[3]
 sys.path[:0]=[str(ROOT/'art/tools/iso'),str(ROOT/'art/tools/cel'),str(Path(__file__).parent)]
-RAW=ROOT/'art/renders/gresille/gr1c_frames'
+RAW=ROOT/'art/renders/gresille/gr1d_frames'
 DEST=ROOT/'game/assets/sprites/characters/gresille'
 SOURCE=ROOT/'art/blender/characters/gresille.blend'
 DIRS=['e','se','s','sw','w','nw','n','ne']
@@ -59,8 +59,7 @@ def finish():
     for su in ('','_e'):
         p=RAW/f'portrait{su}.png'
         if p.exists():shutil.copyfile(p,DEST/p.name)
-    resources()
-    (DEST/'gresille_manifest.json').write_text(json.dumps(manifest(),ensure_ascii=False,indent=2),encoding='utf8')
+    # Existing SpriteFrames and manifest remain byte-for-byte unchanged.
     if sum(p.stat().st_size for p in DEST.glob('*.png'))>2_500_000:
         import subprocess,zipfile
         exe=ROOT/'art/tools/ardent_pngquant/pngquant.exe'
@@ -72,15 +71,14 @@ def finish():
         for p in DEST.glob('*.png'):
             if p.stem.endswith('_e'):continue
             subprocess.run([str(exe),'256','--quality=85-100','--speed','1','--nofs','--force','--ext','.png',str(p)],check=True,capture_output=True)
-    contact=Image.new('RGBA',(1024,3*CELL*2+512),(90,100,95,255))
-    for i,(a,f) in enumerate([('idle',0),('run',2),('attack',1),('cast',2),('ground',2),('call',4),('death',5)]):
-        with Image.open(DEST/f'{a}.png') as im:
-            frame=im.convert('RGBA').crop((f*CELL,CELL,(f+1)*CELL,2*CELL))
-            contact.alpha_composite(frame.resize((CELL*2,CELL*2),Image.Resampling.NEAREST),((i%2)*CELL*2,(i//2)*CELL*2))
-    with Image.open(DEST/'portrait.png') as im:
-        contact.alpha_composite(im.convert('RGBA').resize((512,512),Image.Resampling.NEAREST),(512,3*CELL*2))
-    out=ROOT/'art/renders/gresille/ctrl_gr1c.png';out.parent.mkdir(parents=True,exist_ok=True)
-    contact.convert('RGB').save(out,optimize=True)
+    contact=Image.new('RGBA',(768,1152),(90,100,95,255))
+    for row,d in enumerate(['se','s','nw']):
+        for col,(a,f) in enumerate([('call',4),('attack',1)]):
+            with Image.open(DEST/f'{a}.png') as im:
+                y=DIRS.index(d)*CELL
+                frame=im.convert('RGBA').crop((f*CELL,y,(f+1)*CELL,y+CELL))
+                contact.alpha_composite(frame.resize((384,384),Image.Resampling.NEAREST),(col*384,row*384))
+    contact.convert('RGB').save(ROOT/'art/renders/gresille/ctrl_gr1d.png',optimize=True)
     verify()
 
 def verify():
@@ -117,7 +115,7 @@ def verify():
     weight=sum(p.stat().st_size for p in DEST.glob('*.png'))
     assert weight<=2_500_000,weight
     assert count==360,count
-    print(f'GR1c PASS: {count} frames; margin {margin}px; PNG {weight} bytes; native 192; emission half; no normals',flush=True)
+    print(f'GR1d PASS: {count} frames; margin {margin}px; PNG {weight} bytes; native 192; emission half; no normals',flush=True)
 
 def build():
     import bpy
@@ -127,7 +125,7 @@ def build():
     s=iso_rig.create_rig('CREA',CELL,target=(0,0,0));s.camera.data.shift_y=.21
     s.render.resolution_x=s.render.resolution_y=CELL
     s.render.threads_mode='FIXED';s.render.threads=6;s.render.fps=10
-    g.RETOUCH['wool']=('4A4F58','6A707A')
+    g.RETOUCH['wool']=('5A5E66','7A808A')
     M=g.materials();body=g.build_body(M);body.name='Gresille_pelvis'
     g.build_variant(body,'C',M)
     for ob in body.children:
@@ -186,15 +184,18 @@ def build():
     staff=node('Short_rod_right_socket',(0,0,0),limbs[1][4])
     accent=next(m for m in bpy.data.materials if m.get('rainfall_emissive'))
     M['staff_bronze']=M['copper'].copy();M['staff_edge']=M['edge'].copy()
-    g.sweep('Short_rod_bronze',[((0,0,-.70),.018,.018),((0,0,.18),.018,.018)],M['staff_bronze'],staff,N=12)
+    g.sweep('Short_rod_bronze',[((0,0,-.70),.024,.024),((0,0,.18),.024,.024)],M['staff_bronze'],staff,N=12)
     for z in [.05,.10,.15]:
         ob=g.loft('Blue_glass_insulator',[(z-.013,.024,.024,0),(z-.005,.058,.058,0),(z+.006,.058,.058,0),(z+.014,.024,.024,0)],M['glass'],staff,N=24)
         g.torus('Lilac_insulator_ring',(0,0,z+.007),.054,.010,accent,staff)
-    g.sweep('Polished_point',[((0,0,.18),.018,.018),((0,0,.28),.0008,.0008)],M['staff_edge'],staff,N=12)
+    g.sweep('Polished_point',[((0,0,.18),.024,.024),((0,0,.28),.0008,.0008)],M['staff_edge'],staff,N=12)
     tip=g.ell('Attack_lilac_tip',(0,0,.257),(.015,.015,.024),accent,staff)
     charged=[]
     for i,x in enumerate([-.050,-.025,0,.025,.050]):
-        charged.append(g.tube('Call_rising_lilac_lock',[(x,-.024,.21),(x*1.16,-.028,.28),(x*1.35,-.022,.36+(i%2)*.025)],.006,accent,head))
+        charged.append(g.tube('Call_rising_lilac_lock',[(x,-.024,.21),(x*1.16,-.028,.28),(x*1.35,-.022,.36+(i%2)*.025)],.009,accent,head))
+    for x,y,base,r,h in [(-.177,.115,1.033,.057,.36),(0,.139,1.065,.059,.38),(.177,.115,1.033,.057,.36)]:
+        for z in (base+h*.30,base+h*.63):
+            ob=g.torus('Call_full_Leyde',(x,y,z),r*1.04,.007,accent,None);attach(ob,torso);charged.append(ob)
     glow_objects=[o for o in bpy.data.objects if o.type in ('MESH','CURVE') and any(m and m.get('rainfall_emissive') for m in o.data.materials)]
     cables={side:g.tube('Dynamic_sheathed_cable_'+str(side),[(0,0,0)]*5,.012,M['rubber'],body) for side in [-1,1]}
     def solve(upper,lower,start,joint,end,target,pole):
@@ -206,7 +207,7 @@ def build():
         q=(joint-start).rotation_difference(mid-start);upper.rotation_mode='QUATERNION';upper.rotation_quaternion=q
         lower.rotation_mode='QUATERNION';lower.rotation_quaternion=(end-joint).rotation_difference(q.inverted()@(start+direction*dist-mid))
     def pose(a,f,n,bake=True):
-        t=f/n;phase=math.tau*t;breath=math.sin(phase);stride=math.sin(phase)
+        t=f/n;phase=math.tau*((f-2)/6 if a=='call' and f>=2 else t);breath=math.sin(phase);stride=math.sin(phase)
         action={'attack':[0,1,.65,.12],'cast':[0,.45,1,.7,.10],'ground':[0,.45,1,.85,.32,.08]}.get(a,[0]*n)[f]
         body.location=(0,0,0);body.rotation_euler=(0,0,0)
         torso.location=(0,0,.84);torso.rotation_euler=(0,0,0);head.rotation_euler=(0,0,0)
@@ -223,7 +224,8 @@ def build():
             torso.rotation_euler=(.025*breath,0,.045*math.cos(phase))
             head.rotation_euler=(-.09-.025*breath,.04*math.cos(phase),0)
         if a=='death':
-            fall=max(0,(f-1)/(n-2));body.rotation_euler.y=-math.pi*.49*fall
+            fall=[0,0,.12,.48,.82,1][f];body.rotation_euler.y=-math.pi*.49*fall
+            torso.rotation_euler.x=[0,.30,.48,.35,.18,.12][f]
             body.location.x=.58*fall;body.location.z=-.28*min(1,f)
         bpy.context.view_layer.update()
         for side,ls in limbs.items():
@@ -233,7 +235,7 @@ def build():
                 swing=stride*side;target=ankle+Vector((0,-.25*swing,.10*max(0,swing)-body.location.z))
                 solve(th,sh,hip,knee,ankle,target,(0,-1,0))
             elif a=='death':
-                th.rotation_quaternion=Quaternion((1,0,0),-.6*f/(n-1));sh.rotation_quaternion=Quaternion((1,0,0),1.15*f/(n-1))
+                th.rotation_quaternion=Quaternion((1,0,0),[0,-.85,-1.10,-.85,-.65,-.58][f]);sh.rotation_quaternion=Quaternion((1,0,0),[0,1.65,1.9,1.6,1.3,1.2][f])
             target=wrist.copy()
             if a=='idle' and side==1:target=Vector((.275,-.135,.723))
             if a=='run':target+=Vector((0,.115*stride*side,.035+.035*stride*side))
@@ -243,7 +245,7 @@ def build():
             if a=='ground':target=Vector((.035,-.20,.73+(.085 if side==-1 else 0)+.15*(1-action)))
             if a=='call':
                 lift=[0,.55,1,1,1,1,1,1][f]
-                target=wrist.lerp(Vector((.045,-.13,1.28+side*.035+.008*breath)),lift)
+                target=wrist.lerp(Vector((.025,-.14,1.335+side*.035+.006*breath)),lift)
             # Targets are in original body coordinates; torso motions are removed for IK.
             bpy.context.view_layer.update()
             if a=='idle' and side==1:
@@ -262,20 +264,20 @@ def build():
             direction=Vector((0,-1,.08)) if a=='attack' else Vector((.12,.45,1)) if a=='cast' else Vector((0,0,1))
             staff.matrix_world=direction.to_track_quat('Z','Y').to_matrix().to_4x4();staff.matrix_world.translation=grip
         if a=='call':
-            staff.matrix_world=body.matrix_world.copy();staff.matrix_world.translation=limbs[1][4].matrix_world.translation
+            staff.matrix_world=facing.matrix_world.copy();staff.matrix_world.translation=limbs[1][4].matrix_world.translation-Vector((0,0,.12*min(1,f/2)))
         if a=='death':
             bpy.context.view_layer.update()
             floor=min((o.matrix_world@Vector(c)).z for o in body.children_recursive if o.type=='MESH' and o not in staff.children_recursive for c in o.bound_box)
             body.location.z+=.025-floor;bpy.context.view_layer.update()
             if f>=2:
                 direction=Vector((.91,.40,.035 if f==2 else 0))
-                staff.matrix_world=direction.to_track_quat('Z','Y').to_matrix().to_4x4()
-                staff.matrix_world.translation=Vector((.13,-.25,.095))
+                staff.matrix_world=facing.matrix_world@direction.to_track_quat('Z','Y').to_matrix().to_4x4()
+                staff.matrix_world.translation=facing.matrix_world@Vector((.05,-.32,.095))
         for ob in glow_objects:
             visible=not (a=='death' and f==n-1)
             if ob in charged:visible=visible and a=='call' and f>=1
             ob.scale=(1,1,1) if visible else (.00001,.00001,.00001)
-            if ob in charged and visible:ob.scale=(1,1,.55+.45*min(1,f/2)+.06*breath)
+            if ob in charged and visible and ob.name.startswith('Call_rising'):ob.scale=(1,1,.55+.45*min(1,f/2)+.06*breath)
             if bake:ob.keyframe_insert('scale')
         tip.scale=(1,1,1) if a=='attack' and action>.5 else (.001,.001,.001)
         if bake:tip.keyframe_insert('scale')
@@ -284,6 +286,7 @@ def build():
             grip=body.matrix_world.inverted()@limbs[side][4].matrix_world.translation
             top=body.matrix_world.inverted()@(torso.matrix_world@Vector((side*.177,.115,1.393-.84)))
             pts=[top,top+Vector((side*.065,-.015,-.15)),grip+Vector((side*.075,.085,.18)),grip+Vector((side*.035,-.02,.07)),grip]
+            if a=='call':pts=[top,top+Vector((side*.04,-.02,-.12)),grip+Vector((side*.04,.07,-.08)),grip+Vector((side*.025,.02,-.035)),grip]
             for p,co in zip(cable.data.splines[0].bezier_points,pts):
                 p.co=co
                 if bake:p.keyframe_insert('co')
@@ -295,10 +298,13 @@ def build():
         for f in range(n):s.frame_set(start+f);pose(a,f,n)
     s.frame_start=1;s.frame_end=126;s['GR1_manifest']=json.dumps(manifest())
     cel.install('creature',normals=False);cel.setup_scene(s,samples=16);cel.toon_materials('creature');g.surface_finish(M)
-    for key,colors in {'wool':('373C45','4A4F58','6A707A'),'glass':('638DAB','9BCDE0','D5EEEF'),'staff_bronze':('638674','9ABDAB','C4D8BE'),'staff_edge':('79998A','B4CBBE','E0E9D2'),'edge':('4D695B','79998A','ACBBA2')}.items():
+    for key,colors in {'wool':('4F545C','5A5E66','7A808A'),'glass':('638DAB','9BCDE0','D5EEEF'),'staff_bronze':('344E40','4F6B5E','70917D'),'staff_edge':('4F6B5E','70917D','8BA394'),'edge':('4D695B','79998A','ACBBA2')}.items():
         ramp=M[key].node_tree.nodes.get('CEL tones')
         if ramp:
             for stop,h in zip(ramp.color_ramp.elements,colors):stop.color=g.rgb(h)
+    for node in M['wool'].node_tree.nodes:
+        if node.bl_idname=='ShaderNodeMapRange':
+            node.inputs['To Min'].default_value=.94;node.inputs['To Max'].default_value=1.02
     def accent_base(path):
         tree=getattr(s,'node_tree',None)
         if tree is None:tree=bpy.data.node_groups.new('Gresille_CEL','CompositorNodeTree');s.compositing_node_group=tree
@@ -307,9 +313,9 @@ def build():
         rl=nodes.new('CompositorNodeRLayers');out=nodes.new('NodeGroupOutput');links.new(rl.outputs['Image'],out.inputs['Image'])
         file=nodes.new('CompositorNodeOutputFile');file.directory=str(path.parent);file.file_name=path.stem+'_e__';file.file_output_items.new('RGBA','Image')
         file.format.media_type='IMAGE';file.format.file_format='PNG';file.format.color_mode='RGBA';file.format.color_depth='8';links.new(rl.outputs[cel.AOV],file.inputs[0])
-    # Keep the prescribed 0.018 u shaft readable through the 2 px CEL outline.
+    # Preserve the 0.024 u bronze shaft and gray wool through native CEL ink.
     layer=s.view_layers[0];aov=layer.aovs.add();aov.name='Staff_readability';aov.type='VALUE'
-    for key in ('staff_bronze','staff_edge'):
+    for key in ('staff_bronze','staff_edge','wool'):
         out=M[key].node_tree.nodes.new('ShaderNodeOutputAOV');out.aov_name='Staff_readability';out.inputs['Value'].default_value=1
     output=RAW/'current.png';cel.cel_passes(output,'creature',base_configure=accent_base,normals=False)
     tree=getattr(s,'node_tree',None) or s.compositing_node_group
@@ -343,7 +349,7 @@ def build():
                     if margin<worst.get(a,(192,))[0]:
                         culprit=min((min(p.x,p.y,1-p.x,1-p.y)*192,o.name) for o in facing.children_recursive if o.type in ('MESH','CURVE') and min(o.scale)>.0001 for p in [world_to_camera_view(s,s.camera,o.matrix_world@Vector(c)) for c in o.bound_box])
                         worst[a]=(round(margin,2),d,f,culprit[1])
-        print('GR1c PREFLIGHT',worst,flush=True);return
+        print('GR1d PREFLIGHT',worst,flush=True);return
     SOURCE.parent.mkdir(parents=True,exist_ok=True);s.render.filepath=str(output)
     # Avoid Blender's .blend1 backup: this lot owns only gresille.blend.
     bpy.context.preferences.filepaths.save_version=0
