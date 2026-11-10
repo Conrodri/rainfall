@@ -1,0 +1,5 @@
+Set-Location C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a989f232cfdebff08
+OBJECTIF : produire les VFX arc_tile, static_crawl, zap_flash, discharge_burst, bolt_strike (lot A) de Grésille. Specs EXACTES dans C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a989f232cfdebff08\art\briefs\gresille_vfx.md (lire ce seul brief, tableau Fichiers). Modèle de scène Blender : ...\art\tools\averse_vfx\burst_build.py.
+Écris ...\art\tools\gresille\vfx_build_a.py (Blender --background), sortie ...\game\assets\sprites\vfx\gresille\<nom>\<nom>.png (+ <nom>_e.png demi-résolution si utile). Chemins absolus du worktree C:\Users\const\Documents\Rainfall\.claude\worktrees\agent-a989f232cfdebff08 UNIQUEMENT ; ne rien écrire dans C:\Users\const\Documents\Rainfall\game. Brouillons : ...\art\renders\gresille_vfx\.
+Vérif : script dimensions + alpha + frames distinctes ; une planche de contrôle <= 1024 px de large dans ...\art\renders\gresille_vfx\controle_a.png. Total <= 1,2 Mo.
+RAPPORT 6 lignes max.

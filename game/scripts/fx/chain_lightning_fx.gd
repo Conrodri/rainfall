@@ -13,6 +13,7 @@ extends Node2D
 const ARC_SHEET := "res://assets/sprites/vfx/chain_arc/chain_arc.png"
 const ARC_EMIT := "res://assets/sprites/vfx/chain_arc/chain_arc_e.png"
 const SPARK_SHEET := "res://assets/sprites/vfx/chain_arc/chain_spark.png"
+const LILAC_SHEET := "res://assets/sprites/vfx/gresille/arc_tile/arc_tile.png" ## variante lilas (Grésille), même grille 4x4 de 256x48
 const FALLBACK_ARC := "res://assets/sprites/ambiance/arc_8x64.png"
 const CELL := Vector2(256.0, 48.0)
 const VARIANTS := 4
@@ -36,6 +37,8 @@ static var _inst: ChainLightningFx = null
 var _arcs: Array[Sprite2D] = []
 var _arc_t: PackedFloat32Array = PackedFloat32Array() ## âge ; < 0 = en attente ; >= LIFE_S + 1 = libre
 var _arc_var: PackedInt32Array = PackedInt32Array()
+var _arc_lilac := PackedByteArray() ## 1 = segment lilas (arc_tile de Grésille)
+var _lilac_tex: Texture2D = null
 var _sparks: Array[Sprite2D] = []
 var _spark_t: PackedFloat32Array = PackedFloat32Array()
 var _spark_hop: PackedInt32Array = PackedInt32Array() ## rang du rebond (0 = premier) ; -1 = son déjà joué
@@ -63,12 +66,12 @@ static func ensure(parent: Node) -> ChainLightningFx:
 
 ## Dessine la chaîne : points = positions logiques des pieds (y logique)
 ## ; la hauteur du corps est ajoutée ici).
-static func chain(points: Array, parent: Node) -> void:
+static func chain(points: Array, parent: Node, lilac := false) -> void:
 	if points.size() < 2:
 		return
 	var fx := ensure(parent)
 	if fx != null:
-		fx._chain(points)
+		fx._chain(points, lilac)
 
 
 func _ready() -> void:
@@ -79,6 +82,8 @@ func _ready() -> void:
 	_rng.randomize()
 	_arc_real = ResourceLoader.exists(ARC_SHEET)
 	_arc_tex = load(ARC_SHEET if _arc_real else FALLBACK_ARC) as Texture2D
+	if ResourceLoader.exists(LILAC_SHEET):
+		_lilac_tex = load(LILAC_SHEET) as Texture2D
 	if ResourceLoader.exists(SPARK_SHEET):
 		_spark_tex = load(SPARK_SHEET) as Texture2D
 	var add := CanvasItemMaterial.new()
@@ -94,6 +99,7 @@ func _ready() -> void:
 		_arcs.append(s)
 		_arc_t.append(LIFE_S + 1.0)
 		_arc_var.append(0)
+		_arc_lilac.append(0)
 	for i in MAX_SPARKS:
 		var s := Sprite2D.new()
 		s.texture = _spark_tex if _spark_tex != null else _arc_tex
@@ -120,7 +126,7 @@ func _local(p: Vector2) -> Vector2:
 	return Vector2(p.x, p.y * 0.5 + Iso.lift_px(HIT_LIFT_U))
 
 
-func _chain(points: Array) -> void:
+func _chain(points: Array, lilac := false) -> void:
 	for i in points.size() - 1:
 		var a := _local(points[i])
 		var b := _local(points[i + 1])
@@ -134,6 +140,8 @@ func _chain(points: Array) -> void:
 		s.scale = Vector2(seg / (CELL.x if _arc_real else 64.0), ARC_H_PX / (CELL.y if _arc_real else 64.0))
 		_arc_t[k] = -STEP_S * i
 		_arc_var[k] = _rng.randi() % VARIANTS
+		_arc_lilac[k] = 1 if (lilac and _arc_real and _lilac_tex != null) else 0
+		s.texture = _lilac_tex if _arc_lilac[k] == 1 else _arc_tex
 		s.visible = false
 		var sk := _next_spark
 		_next_spark = (sk + 1) % MAX_SPARKS
