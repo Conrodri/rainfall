@@ -20,6 +20,7 @@ const OUT_DIR := "user://perf_bench"
 const AMBIENT_D := 7.5
 const DEFAULT_COUNTS: Array[int] = [0, 80, 250]
 const DEFAULT_TIERS: Array[int] = [0, 1, 2]
+const SETTLE_CAP_S := 8.0 ## attente maximale supplémentaire des cuissons en cours (BakedShadows.is_baking)
 const MAX_FRAMES := 8192 ## tampon de temps d'image préalloué (10 s à 800 i/s)
 const TOPUP_PER_FRAME := 8 ## pendant la mesure : remplacement des morts, au plus N apparitions par image
 ## Seuils de jugement (p95 du temps d'image, ms) : Haut 60 i/s, Moyen 45 i/s, Bas 30 i/s.
@@ -31,7 +32,9 @@ var maps: Array[String] = [] ## vide = les 9 cartes du catalogue (TestMaps)
 var tiers: Array[int] = DEFAULT_TIERS.duplicate()
 var counts: Array[int] = DEFAULT_COUNTS.duplicate()
 var seconds := 10.0
-var warmup_s := 1.5
+## Chauffe (s) après chargement de carte, après chaque changement de palier et avant chaque mesure : absorbe compilation de
+## shaders, reconstruction d'ambiance, cuisson d'ombres et chargements en fil, rapportés à part (colonne « trans »).
+var warmup_s := 3.0
 var load_wait_s := 1.0
 var prewarm_s := 2.0
 var restore_after := true ## remet la carte, la qualité, les triches et la vsync d'avant à la fin
@@ -129,6 +132,7 @@ func run() -> Dictionary:
 	var t_start := Time.get_ticks_msec()
 	var total := maps.size() * tiers.size() * counts.size()
 	var done := 0
+	var session_warm := false
 	for id in maps:
 		if aborted:
 			break
@@ -139,7 +143,7 @@ func run() -> Dictionary:
 		director.spawning_enabled = false
 		TestMode.set_difficulty(AMBIENT_D)
 		TestMode.set_ambient_d(AMBIENT_D)
-		await _wait_s(load_wait_s)
+		var load_peak := await _settle(maxf(load_wait_s, warmup_s))
 		# préchauffe non mesurée : charge maximale (compilation des shaders des monstres, pool activé une fois)
 		_say("%s : préchauffe" % id)
 		var pre_t := Time.get_ticks_msec()
@@ -149,11 +153,20 @@ func run() -> Dictionary:
 			_top_up(director, pl, counts.max() if not counts.is_empty() else 0, 60)
 			await tree.process_frame
 		director.despawn_all()
+		if not session_warm: # passe jetable : chaque palier est basculé une fois, rien n'est mesuré ni compté
+			session_warm = true
+			for t0 in tiers:
+				if aborted:
+					break
+				_say("%s : passe jetable %s" % [id, Quality.tier_name(t0)])
+				Quality.set_tier(t0, true)
+				await _settle(warmup_s)
 		for t in tiers:
 			if aborted:
 				break
 			Quality.set_tier(t, true)
-			await _wait_s(0.6)
+			var tier_peak := maxf(load_peak, await _settle(warmup_s))
+			load_peak = 0.0
 			for n in counts:
 				if aborted:
 					break
@@ -161,6 +174,8 @@ func run() -> Dictionary:
 				var label := "%d/%d  %s  %s  %d monstres" % [done, total, id, Quality.tier_name(t), n]
 				_say(label)
 				var row := await _measure_config(director, sm, n, label)
+				row["transition_ms"] = snappedf(maxf(float(row.get("transition_ms", 0.0)), tier_peak), 0.1)
+				tier_peak = 0.0
 				row.merge({"map": id, "floor": int(entry.floor), "variant": String(entry.variant), "event": String(entry.event),
 					"tier": Quality.tier_name(t), "tier_i": t, "n": n}, true)
 				rows.append(row)
@@ -204,6 +219,45 @@ func _wait_s(s: float) -> void:
 		await get_tree().process_frame
 
 
+## Chauffe de `min_s` secondes, prolongée (au plus SETTLE_CAP_S) tant qu'une cuisson d'ombres est en cours, puis 0,3 s de
+## calme. Retourne le pic de temps d'image (ms) vu pendant l'attente : le pic de transition.
+func _settle(min_s: float) -> float:
+	var tree := get_tree()
+	var peak := 0.0
+	var t0 := Time.get_ticks_msec()
+	var last := Time.get_ticks_usec()
+	var quiet_since := -1
+	while not aborted:
+		_resume_pause_menu()
+		await tree.process_frame
+		var now := Time.get_ticks_usec()
+		if not tree.paused:
+			peak = maxf(peak, (now - last) / 1000.0)
+		last = now
+		var el := Time.get_ticks_msec() - t0
+		if el < int(min_s * 1000.0):
+			continue
+		if _any_baking(tree.root):
+			quiet_since = -1
+			if el > int((min_s + SETTLE_CAP_S) * 1000.0):
+				break
+			continue
+		if quiet_since < 0:
+			quiet_since = Time.get_ticks_msec()
+		if Time.get_ticks_msec() - quiet_since >= 300:
+			break
+	return peak
+
+
+static func _any_baking(n: Node) -> bool:
+	if n is BakedShadows and (n as BakedShadows).is_baking():
+		return true
+	for c in n.get_children():
+		if _any_baking(c):
+			return true
+	return false
+
+
 ## resume_on_pause : relance « Reprendre » (compte à rebours compris) sur un menu pause ouvert.
 func _resume_pause_menu() -> void:
 	if not resume_on_pause or not get_tree().paused:
@@ -224,10 +278,16 @@ func _measure_config(director: Director, sm: StageManager, n: int, label: String
 		player.global_position = sm.map.to_global(sm.map.get_player_start())
 	director.despawn_all()
 	var t0 := Time.get_ticks_msec()
+	var trans := 0.0
+	var tl := Time.get_ticks_usec()
 	while Time.get_ticks_msec() - t0 < int(warmup_s * 1000.0) and not aborted:
 		_resume_pause_menu()
 		_top_up(director, player, n, 400)
 		await tree.process_frame
+		var tn := Time.get_ticks_usec()
+		if not tree.paused:
+			trans = maxf(trans, (tn - tl) / 1000.0)
+		tl = tn
 	var vp := get_viewport().get_viewport_rid()
 	var acc := {"gpu": 0.0, "cpu": 0.0, "draw": 0.0, "obj": 0.0, "enemies": 0.0}
 	var draw_max := 0.0
@@ -264,7 +324,7 @@ func _measure_config(director: Director, sm: StageManager, n: int, label: String
 		if left != shown and _ui_label != null:
 			shown = left
 			_ui_label.text = "Banc de perf : %s  (%d s)" % [label, left]
-	var row := {"frames": frames}
+	var row := {"frames": frames, "transition_ms": snappedf(trans, 0.1)}
 	if frames == 0:
 		return row
 	var fr := frames as float
@@ -449,18 +509,18 @@ static func to_text(res: Dictionary) -> String:
 		res.get("date", ""), dev.get("os", ""), dev.get("model", ""), dev.get("gpu", ""), str(dev.get("window", "")),
 		str(res.get("ambient_d", "")).replace(".", ","), str(res.get("seconds", "")), " (ARRÊTÉ)" if res.get("aborted", false) else ""])
 	lines.append("")
-	lines.append("%-26s %-5s %4s | %6s %6s %6s %6s | %6s %6s | %6s %6s | %6s %5s %6s | %5s %3s %3s %3s | %3s %3s %4s %4s" % [
-		"carte", "qual", "N", "i/s", "moy", "p95", "p99", "proc^", "phys^", "dir", "p95", "gpu", "draw", "objets", "noeud", "lum", "omb", "occ", "eau", "~", "c,", "c~"])
+	lines.append("%-26s %-5s %4s | %6s %6s %6s %6s | %6s %6s %6s | %6s %6s | %6s %5s %6s | %5s %3s %3s %3s | %3s %3s %4s %4s" % [
+		"carte", "qual", "N", "i/s", "moy", "p95", "p99", "proc^", "phys^", "trans", "dir", "p95", "gpu", "draw", "objets", "noeud", "lum", "omb", "occ", "eau", "~", "c,", "c~"])
 	for r in res.get("rows", []):
 		var rd := r as Dictionary
 		if int(rd.get("frames", 0)) == 0:
 			continue
-		lines.append("%-26s %-5s %4d | %6.0f %6.2f %6.2f %6.2f | %6.2f %6.2f | %6.2f %6.2f | %6.2f %5.0f %6.0f | %5d %3d %3d %3d | %3d %3d %4d %4d" % [
-			rd.map, rd.tier, rd.n, rd.fps, rd.frame_avg_ms, rd.frame_p95_ms, rd.frame_p99_ms, rd.process_peak_avg_ms, rd.physics_peak_avg_ms,
+		lines.append("%-26s %-5s %4d | %6.0f %6.2f %6.2f %6.2f | %6.2f %6.2f %6.1f | %6.2f %6.2f | %6.2f %5.0f %6.0f | %5d %3d %3d %3d | %3d %3d %4d %4d" % [
+			rd.map, rd.tier, rd.n, rd.fps, rd.frame_avg_ms, rd.frame_p95_ms, rd.frame_p99_ms, rd.process_peak_avg_ms, rd.physics_peak_avg_ms, float(rd.get("transition_ms", 0.0)),
 			rd.director_avg_ms, rd.director_p95_ms, rd.gpu_ms, rd.draw_calls, rd.objects, rd.nodes, rd.lights, rd.shadowed, rd.occluders,
 			rd.water_shallow, rd.water_deep, int(rd.get("water_cells_shallow", 0)), int(rd.get("water_cells_deep", 0))])
 	lines.append("")
-	lines.append("Temps d'image en ms (moy, p95, p99) ; proc^ / phys^ = pic par seconde de _process / physique (moniteurs Godot), dir = physique du Director (monstres) par image ; gpu = rendu GPU mesuré ; lum / omb = lumières visibles / ombrées ; occ = occluders ; eau / ~ = calques d'eau peu profonde / profonde (un quad plein carte chacun) ; c, / c~ = cases d'eau de la grille (surface couverte).")
+	lines.append("Temps d'image en ms (moy, p95, p99) ; proc^ / phys^ = pic par seconde de _process / physique (moniteurs Godot), trans = pic de temps d'image pendant la chauffe (chargement, changement de palier, cuissons : exclu de moy / p95 / p99), dir = physique du Director (monstres) par image ; gpu = rendu GPU mesuré ; lum / omb = lumières visibles / ombrées ; occ = occluders ; eau / ~ = calques d'eau peu profonde / profonde (un quad plein carte chacun) ; c, / c~ = cases d'eau de la grille (surface couverte).")
 	lines.append("Seuils p95 : Haut <= 16,7 ms (60 i/s), Moyen <= 22,3 ms (45 i/s), Bas <= 33,4 ms (30 i/s).")
 	var sm: Dictionary = res.get("summary", {})
 	lines.append("")

@@ -17,8 +17,13 @@ Moyen, Haut) et chaque charge de monstres (0, 80, 250) :
   d'ambiance est forcé à **7,5** (Cataclysme : tous les événements d'ambiance actifs, crue comprise) et le D de jeu aussi ;
 - le joueur reste immobile au départ, PV illimités, sort 1 automatique ; les monstres sont maintenus au nombre visé
   autour de lui (T1 / T2 / T3, 12 % d'élites), comme le banc historique `tests/perf_bench.gd` ;
-- préchauffe non mesurée de 2 s à 250 monstres par carte (compilation des shaders), puis 1,5 s de chauffe et 10 s
-  (ou 4 s en mode rapide) de mesure par configuration ;
+- préchauffe non mesurée de 2 s à 250 monstres par carte (compilation des shaders) ; à la première carte de la session,
+  **passe jetable** : chaque palier est basculé une fois (shaders et ressources de chaque palier compilés avant toute
+  mesure) ; après chaque chargement de carte et chaque changement de palier, **chauffe de 3 s** (`--warmup`, défaut 3)
+  prolongée tant qu une cuisson d'ombres est en cours (`BakedShadows.is_baking`, au plus 8 s de plus) puis 0,3 s de
+  calme ; 3 s de chauffe avec les monstres avant chaque mesure ; enfin 10 s (ou 4 s en mode rapide) de mesure par
+  configuration. Le pic de temps d'image vu pendant toutes ces chauffes est rapporté **à part** (colonne « trans »,
+  champ `transition_ms`) et n'entre ni dans la moyenne, ni dans le p95, ni dans le p99, ni dans les pics « proc^ » ;
 - relevés par image : temps d'image (moyenne, p95, p99, max), coût physique du Director (monstres), rendu GPU et CPU
   mesurés par le moteur, draw calls et objets rendus ; relevés de scène à la fin de la mesure : nombre de nœuds,
   lumières visibles et ombrées, occluders visibles, calques d'eau peu profonde et profonde (`AmbianceWater` : UN quad
@@ -28,6 +33,12 @@ Moyen, Haut) et chaque charge de monstres (0, 80, 250) :
 
 Sortie : `user://perf_bench/bench_<date>.json` (toutes les valeurs) et `bench_<date>.txt` (tableau, résumé, comparaison
 B contre A). Sur Android, `user://` est le dossier privé de l'app : passer par le bouton d'export (§2, étape 7).
+
+**Pic de transition.** Avant le 10/11/2026, le premier palier mesuré d'une carte (souvent Bas) héritait des pics de
+changement de carte ou de palier (compilation de shaders, reconstruction d'ambiance, cuisson d'ombres, chargements en
+fil : 30 à 300 ms sur `_process`), d'où des faux « LENT ». Ces pics sont maintenant isolés dans « trans » : un « trans »
+élevé n'est pas une lenteur de la carte. Si p95 ou « proc^ » sort quand même plus haut en Bas qu'en Moyen, refaire le
+passage avant de conclure.
 
 **Seuils** (p95 du temps d'image à 250 monstres) : Haut ≤ 16,7 ms (60 i/s), Moyen ≤ 22,3 ms (45 i/s), Bas ≤ 33,4 ms
 (30 i/s). Le résumé marque « LENT » toute carte au-dessus du seuil de son palier. La section « ALERTES » liste, à
@@ -64,7 +75,8 @@ plus de 10 %, ou qui ont plus de cases d'eau profonde que leur A.
 - colonnes « occ » (occluders) en **Haut** sur la Fonderie (`cite_fonderie_canal`) : risque si plus de 40 ;
 - colonne « c~ » (cases d'eau profonde) et l'écart de temps d'image B / A de la Mangrove et de la Fonderie (sections
   « VARIANTES B CONTRE A » et « ALERTES » du fichier texte) ;
-- la Rizière (`terrasses_rizieres_hautes`) en **Bas** : seule configuration lente sur PC (§4), à confirmer ;
+- la Rizière (`terrasses_rizieres_hautes`) en **Bas** : lenteur PC ancienne = artefact de transition (§4) ; vérifier que
+  p95 reste proche de Moyen et lire « trans » à part ;
 - si le banc semble figé : si le menu pause est affiché (appel, notification, changement d'app), appuyer sur
   « Reprendre » ; sinon, si l'écran reste gelé plus de 30 s, noter la carte, le palier et le nombre de monstres du
   bandeau, puis forcer l'arrêt de l'app (voir §7).
@@ -77,7 +89,7 @@ sh art/tools/vfx_test/godot_locked.sh res://tests/map_perf_bench.tscn -- --maps=
 ```
 
 Sans `--headless` (rendu réel, fenêtre 1920 × 1080, vsync coupée) ; sans `--maps`, les 9 cartes. Options : `--tiers=0,1,2`,
-`--counts=0,80,250`, `--warmup=<s>`, `--ui` (bandeau et fenêtre de résultat comme sur le téléphone), `--watchdog=<s>`
+`--counts=0,80,250`, `--warmup=<s>` (défaut 3 ; `--warmup=0.2` pour un contrôle rapide en `--headless`), `--ui` (bandeau et fenêtre de résultat comme sur le téléphone), `--watchdog=<s>`
 (défaut 60 : fil de garde qui termine le processus si aucune image n'avance pendant `<s>` s, voir §7) et
 `--watchdog-grace=<s>`. En `--headless` (contrôle de non-régression seulement, chiffres de rendu sans valeur) :
 `--seconds=0.3`. Sortie : lignes `BENCHROW | {json}` au fil des mesures, tableau texte, puis `RESULT: OK`.
@@ -105,9 +117,11 @@ Temps d'image à **250 monstres** (moyenne / p95, ms), occluders visibles en Hau
 | `la_source` (5) | 2,4 / 4,2 | 3,0 / 5,1 | 3,6 / 5,5 | 12 | 0 |
 
 - **Seuils** : les 27 configurations à 250 monstres passent largement (p95 max 16,5 ms en Bas pour un seuil de 33,4).
-- **Rizières en Bas** : seule anomalie, reproduite sur deux passages (p95 10 à 16 ms à 80 et 250 monstres, pic de
-  `_process` ≈ 12 ms, contre ≈ 5 ms en Moyen et Haut). Un coût CPU propre au palier Bas sur cette carte, peut-être lié
-  à l'événement « La noria repart » (crue visuelle) : à confirmer sur téléphone, où un tel écart pèserait 3 à 5 fois plus.
+- **Rizières en Bas** : **artefact de transition, pas un bug** (10/11/2026). Le p95 de 10 à 16 ms et le pic de `_process`
+  de ≈ 12 ms (contre ≈ 5 ms en Moyen et Haut) venaient des pics de chargement de carte et de changement de palier
+  (compilation de shaders, ambiance, ombres cuites), que l'ancien banc imputait au premier palier mesuré de la carte, ici
+  Bas. Le banc isole désormais ces pics (passe jetable, chauffe de 3 s après chargement et changement de palier, colonne
+  « trans ») : voir la mesure de contrôle plus bas.
 - **Occluders** : maximum 38 (Fonderie en Haut), sous le plafond de 40 mais au ras ; l'Ossuaire en a 33 (A : 17).
   Aucun en Bas et Moyen (réglage `occluders = none`).
 - **Eau** : chaque couche d'eau est un seul quad plein carte (1 calque `,` + 1 calque `~` sur toutes les cartes sauf

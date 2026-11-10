@@ -4,6 +4,8 @@ extends Node
 ## événement d'ambiance à D 7,5. À lancer SANS --headless pour un rendu réel (fenêtre 1920 x 1080, vsync coupée) :
 ##   godot --path game res://tests/map_perf_bench.tscn -- --maps=cite_rouille,cite_fonderie_canal --tiers=0,1,2 --counts=0,80,250 --seconds=10 --out=C:/x.json
 ## Sans --maps : les 9 cartes. En --headless (contrôle de non-régression, chiffres de rendu sans valeur) : --seconds=0.3.
+## --warmup=<s> (défaut 3) : chauffe après chargement de carte, changement de palier et avant chaque mesure ; le pic vu pendant la chauffe
+## sort à part (colonne « trans », champ transition_ms), hors moy / p95 / p99. Passe jetable des paliers à la 1re carte.
 ## --ui : bandeau et fenêtre de résultat comme sur le téléphone.
 ## --watchdog=<s> (défaut 60) : si aucune image n'avance pendant <s> secondes (boucle infinie, gel), un fil de garde
 ## écrit « WATCHDOG » avec la dernière configuration et termine le processus (aucun Godot figé laissé en fond) ;
