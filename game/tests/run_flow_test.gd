@@ -103,7 +103,14 @@ func _resolve_omen() -> void:
 func _clear_pillar(p: Pillar, player: Node2D, director: Director, floor_n: int) -> void:
 	player.global_position = p.global_position + Vector2(24, 24)
 	p._on_body_entered(player)
-	var ok := p.can_interact() and p.activate()
+	# Épreuves actives par défaut (Balance.EPREUVES_ENABLED, 07/11/2026) : aux étages 1-4, les petits piliers sont des
+	# Epreuve dont le mini-boss du plan n'apparaît qu'à la fin ; le flux accéléré clôt l'épreuve aussitôt. La Veine et la
+	# Tenue se lancent par un objet voisin (source, cloche : Epreuve.can_interact() faux), d'où activate() direct.
+	var ok := (p is Epreuve or p.can_interact()) and p.activate()
+	if ok and p is Epreuve:
+		_check("étage %d : épreuve %s lancée" % [floor_n, (p as Epreuve).verb], (p as Epreuve).is_running())
+		(p as Epreuve).finish_now()
+		await _frames(2)
 	var boss: Enemy = p.get(&"_boss")
 	var label := "étage %d : %s %s" % [floor_n, "paratonnerre" if p.final_boss else ("gros" if p.kind == Pillar.Kind.BIG else "petit"), String(boss.get(&"_boss_sprite_id")) if boss != null else "?"]
 	_check(label + " : boss apparu", ok and boss != null and boss.active)

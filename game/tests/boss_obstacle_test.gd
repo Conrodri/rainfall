@@ -35,6 +35,7 @@ const STILL_U := 1.0
 const STILL_WINDOW_S := 5.0
 const BEHIND_U := 3.0 ## distance du joueur derrière le bord de l'obstacle
 const U := 64.0
+const FixedFpsRelaunch := preload("res://tests/fixed_fps_relaunch.gd")
 
 var _fails := 0
 var _alerts: Array[String] = [] ## boss bloqués / dans un mur : comptés en échec (sauf --lenient)
@@ -44,6 +45,8 @@ var _trace := false ## --trace : position du boss et direction du champ toutes l
 
 
 func _ready() -> void:
+	if await FixedFpsRelaunch.relaunch_if_needed(get_tree(), "res://tests/boss_obstacle_test.tscn"): # 64 essais de 20 s de jeu
+		return
 	_run.call_deferred()
 
 
