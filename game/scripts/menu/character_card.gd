@@ -21,6 +21,7 @@ const CHAR_SPRITE_DIR := "res://assets/sprites/characters/"
 const ACCENTS := {
 	"ardent": "#FF8A3C", "tocsin": "#FF7A1F", "averse": "#5FD4E8", "arpenteuse": "#FF7A1F",
 	"rainette": "#8DBBA8", "avare": "#F2C14E", "bourbe": "#8DBBA8", "rictus": "#9FC8C0",
+	"vigie": "#FF3A4F", "morfil": "#CDEB6E", "gresille": "#B9A6FF",
 }
 const LOCK_ICON := "res://assets/sprites/ui/menu/icon_lock.png"
 const LOCK_DESIGN_SIZE := 100.0 ## côté du cadenas placeholder, mis à l'échelle ensuite

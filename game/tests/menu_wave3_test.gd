@@ -164,7 +164,7 @@ func _test_spell_text_fits() -> void:
 
 
 func _test_difficulty_data() -> void:
-	var want := {"rainette": 2, "tocsin": 2, "arpenteuse": 3, "ardent": 1, "vigie": 1, "morfil": 1}
+	var want := {"rainette": 2, "tocsin": 2, "arpenteuse": 3, "ardent": 1, "vigie": 1, "morfil": 1, "gresille": 2}
 	for c in CharacterCard.load_characters():
 		var id := str(c.get("id", ""))
 		var d := CharacterCard.difficulty_of(c)
@@ -180,7 +180,7 @@ func _test_icons() -> void:
 		for sp in c.get("spells", []):
 			var sid := StringName(str(sp.get("id", "")))
 			var ok := ArdentKit.spell_icon(sid) != null
-			if id in ["averse", "bourbe", "ardent", "rictus", "tocsin", "arpenteuse", "rainette", "avare"]:
+			if id in ["averse", "bourbe", "ardent", "rictus", "tocsin", "arpenteuse", "rainette", "avare", "gresille"]:
 				_check(ok, "icône du sort %s (%s)" % [sid, id])
 			elif not ok:
 				print("  (info) icône absente : %s (%s)" % [sid, id])

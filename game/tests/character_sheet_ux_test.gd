@@ -16,7 +16,7 @@ class FakeProfile extends RefCounted:
 		return false
 
 const SIZES: Array[Vector2] = [Vector2(1920, 1080), Vector2(2400, 1080), Vector2(1440, 1080)]
-const IDS := ["ardent", "rictus", "tocsin", "averse", "arpenteuse", "rainette", "avare", "bourbe", "vigie", "morfil"]
+const IDS := ["ardent", "rictus", "tocsin", "averse", "arpenteuse", "rainette", "avare", "bourbe", "vigie", "morfil", "gresille"]
 
 var _fails: Array[String] = []
 

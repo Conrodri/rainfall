@@ -158,7 +158,7 @@ func _ready() -> void:
 		_check(false, "Vigie : jauge tactile attendue")
 
 	# --- les 10 personnages : icône visible, dans l'écran, sans chevauchement, infobulle non vide ---
-	var ids: Array[StringName] = [&"ardent", &"rictus", &"tocsin", &"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil"]
+	var ids: Array[StringName] = [&"ardent", &"rictus", &"tocsin", &"averse", &"arpenteuse", &"rainette", &"avare", &"bourbe", &"vigie", &"morfil", &"gresille"]
 	_main.queue_free()
 	await _frames(3)
 	for cid in ids:

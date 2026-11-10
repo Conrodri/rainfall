@@ -133,6 +133,8 @@ const LEYDE_KNOCK_U := 1.5
 ## Sons (registre data/audio/sounds.json). Les `spell.gresille_<sort>.cast_*` et `.hit_*` des sorts du kit sont joués par
 ## SpellCaster (_cast_fx / deal_damage) : le kit ne les double pas ; il ne joue que ce que SpellCaster ne connaît pas.
 const SOUND_ZAP := &"gresille.zap" ## claquement blanc du Foudroiement
+const DODGE_SOUND := [&"gresille.zap", -8.0, 1.3] ## Court-circuit : même claquement, plus aigu et plus bas (fiche §4.5)
+const LIGHT_PRESETS := {1: &"gresille_arc", 2: &"gresille_discharge", 3: &"gresille_ground", 4: &"gresille_storm"} ## light_presets.json, par slot
 const SOUND_JARS := &"gresille.jars" ## cliquetis des bouteilles : la Décharge est de nouveau prête
 const SOUND_GROUND_LOOP := &"spell.gresille_ground.loop"
 const SOUND_GROUND_LOOP_DB := -3.0
@@ -185,7 +187,7 @@ static func _spell(sid: StringName, name: String, slot: int, coef: float, cd: fl
 	s.base_cooldown = cd
 	s.element = &"lightning"
 	s.color = ACCENT
-	s.light_preset = &"spell_lightning"
+	s.light_preset = LIGHT_PRESETS.get(slot, &"spell_lightning")
 	s.is_zone = false
 	return s
 
@@ -276,6 +278,9 @@ static func variant(slot: int, variant_id: StringName) -> SpellData:
 
 
 ## Sorts internes (rebond, arcs de Décharge, coup d'Orage) : jamais dans le kit du personnage, seulement dans deal_damage.
+var _discharge_combo := false ## vrai le temps du coup de Décharge porté à une cible chargée (lu par combo_hit)
+
+
 func _make_internal() -> void:
 	_bounce_spell = _spell(&"gresille_arc_rebond", "Rebond", 1, BOUNCE_COEF, ARC_CD)
 	_bounce_spell.is_auto = true
@@ -430,6 +435,14 @@ func dodge_ghost_color() -> Color:
 	return Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.55)
 
 
+func dodge_label() -> String:
+	return "Court-circuit"
+
+
+func dodge_sound() -> Array:
+	return DODGE_SOUND
+
+
 func action_for(s: SpellData) -> StringName:
 	match s.slot:
 		1: return &"attack"
@@ -499,6 +512,12 @@ func _count_near(at: Vector2, r: float) -> int:
 
 ## Fenêtre de combo (HUD) : le bouton 2 pulse dès qu'une cible a >= COMBO_READY_STACKS cumuls à portée de la Décharge ;
 ## le bouton 4 quand une cible est à 5 cumuls à portée de l'Orage. Sondé toutes les POLL_S.
+## Coup de combo GR-1 (docs/Design_Combos.md §6) : la Décharge sur une cible chargée (>= COMBO_READY_STACKS cumuls) :
+## chiffre et son de combo.
+func combo_hit(s: SpellData, _enemy: Node) -> bool:
+	return _discharge_combo and s.slot == 2
+
+
 func combo_ready(slot: int) -> bool:
 	return bool(_ready_flags.get(slot, false))
 
@@ -662,7 +681,7 @@ func _zap_fx(e: Node) -> void:
 		StatusFx.shock(e, 0.5)
 	Audio.play(SOUND_ZAP, pos)
 	if Quality.flashes_level > 0:
-		LightRig.flash(pos, &"spell_lightning", FLASH_S)
+		LightRig.flash(pos, &"gresille_arc", FLASH_S)
 
 
 # --- Effets -------------------------------------------------------------------------------------------------
@@ -727,7 +746,9 @@ func _discharge(s: SpellData, target: Node2D) -> void:
 	var n := reg.stacks(target, _clock)
 	var shot := s.duplicate() as SpellData
 	shot.coef = discharge_coef(n, s.coef)
+	_discharge_combo = n >= COMBO_READY_STACKS
 	c.deal_damage(target, shot)
+	_discharge_combo = false
 	if reg.can_zap(target, _clock):
 		reg.zap(target, _clock)
 		_zap_fx(target)
@@ -820,7 +841,7 @@ func _rod_strike(s: SpellData, at: Vector2) -> void:
 		ChainLightningFx.chain([at + Vector2(0.0, -STORM_SKY_PX), at], player.get_parent(), true)
 	Audio.play(StringName("spell.gresille_storm.cast_" + Audio.power_level(c.cast_power(s))), at, -4.0)
 	if Quality.flashes_level > 0:
-		LightRig.flash(at, &"spell_lightning", FLASH_S)
+		LightRig.flash(at, &"gresille_ground", FLASH_S)
 
 
 ## Bouteille de Leyde, frame d'impact de `cast` : la bouteille part en cloche vers `at` (LEYDE_LOB_S) puis éclate.
@@ -865,7 +886,7 @@ func _leyde_burst(s: SpellData, at: Vector2) -> void:
 	Audio.play(SOUND_JARS, at, 2.0, 0.8) # verre brisé
 	Audio.play(&"spell.gresille_storm.cast_heavy", at, -2.0) # tonnerre court
 	if Quality.flashes_level > 0:
-		LightRig.flash(at, &"spell_lightning", 0.2)
+		LightRig.flash(at, &"gresille_storm", 0.2)
 
 
 static func leyde_coef(n: int, base := LEYDE_COEF) -> float:
@@ -910,7 +931,7 @@ func _storm_strike(s: SpellData) -> void:
 		ChainLightningFx.chain([at + Vector2(0.0, -STORM_SKY_PX), at], player.get_parent(), true)
 	Audio.play(StringName("spell.gresille_storm.cast_" + Audio.power_level(c.cast_power(shot))), at) # tonnerre de chaque coup ; l'ultime (`.ultimate`) est joué par SpellCaster au lancer
 	if Quality.flashes_level > 0:
-		LightRig.flash(at, &"spell_lightning", 0.15 if Quality.flashes_level == 2 else FLASH_S)
+		LightRig.flash(at, &"gresille_storm", 0.15 if Quality.flashes_level == 2 else FLASH_S)
 
 
 ## Joue une fois l'animation `default` de vfx/gresille/<name>/<name>.tres, ancrée au sol en `at` (espace billboard,

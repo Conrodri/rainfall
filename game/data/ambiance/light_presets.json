@@ -44,6 +44,10 @@
 	"vigie_flare": {"color": "#FF3A4F", "energy": 1.6, "radius_u": 3.0, "height": 40, "category": "spell", "priority": 310, "flicker": 0.22, "flicker_hz": 9.0, "shadow": true, "texture": "light_soft_256", "reflect": true},
 	"vigie_net": {"color": "#FF6A74", "energy": 1.0, "radius_u": 2.5, "height": 24, "category": "spell", "priority": 290, "texture": "light_soft_256"},
 	"vigie_hail": {"color": "#FF5464", "energy": 1.5, "radius_u": 4.2, "height": 64, "category": "spell", "priority": 320, "flicker": 0.15, "flicker_hz": 12.0, "texture": "light_soft_256", "reflect": true},
+	"gresille_arc": {"color": "#B9A6FF", "energy": 0.9, "radius_u": 2.0, "height": 32, "category": "spell", "priority": 290, "flicker": 0.25, "flicker_hz": 14.0, "texture": "light_soft_256"},
+	"gresille_discharge": {"color": "#B9A6FF", "energy": 2.0, "radius_u": 3.5, "height": 40, "category": "spell", "priority": 315, "texture": "light_soft_256", "reflect": true},
+	"gresille_ground": {"color": "#B9A6FF", "energy": 0.8, "radius_u": 3.0, "height": 16, "category": "spell", "priority": 285, "flicker": 0.2, "flicker_hz": 10.0, "texture": "light_soft_256", "reflect": true},
+	"gresille_storm": {"color": "#B9A6FF", "energy": 2.6, "radius_u": 5.0, "height": 48, "category": "spell", "priority": 335, "shadow": true, "texture": "light_soft_256", "reflect": true},
 	"morfil_edge": {"color": "#CDEB6E", "energy": 0.9, "radius_u": 2.2, "height": 24, "category": "spell", "priority": 292, "texture": "light_soft_256"},
 
 	"coin": {"color": "#F2B81A", "energy": 0.0, "radius_u": 0.5, "category": "pickup", "priority": 1, "texture": "light_soft_256", "_note": "DA §4.4 : pas de lumière (émission _e.png + scintillement). Preset gardé pour l'API, énergie 0."},

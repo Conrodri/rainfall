@@ -55,10 +55,10 @@ func _ready() -> void:
 
 	# --- Prix ---
 	var all := Skins.all_skins()
-	var prices_ok := all.filter(func(e): return not bool(e.shop)).size() == 10 # 10 trophées (+ Panoplies de cosmetics.json)
+	var prices_ok := all.filter(func(e): return not bool(e.shop)).size() == 11 # 11 trophées (+ Panoplies de cosmetics.json)
 	for e in all:
 		prices_ok = prices_ok and SkinShop.price_of(e.id) >= 1
-	_check(prices_ok, "10 skins, prix >= 1 rubis (défaut %d)" % SkinShop.price_of("ardent_skin1"))
+	_check(prices_ok, "11 skins, prix >= 1 rubis (défaut %d)" % SkinShop.price_of("ardent_skin1"))
 	SkinShop.data_override = {"skin_default_price": 100, "skin_prices": {"rictus_skin1": 40}}
 	_check(SkinShop.price_of("ardent_skin1") == 100 and SkinShop.price_of("rictus_skin1") == 40, "prix par défaut et prix propre à un skin (données)")
 	SkinShop.data_override = {"skin_default_price": 0}
