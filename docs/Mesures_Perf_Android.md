@@ -65,7 +65,8 @@ plus de 10 %, ou qui ont plus de cases d'eau profonde que leur A.
 - colonne « c~ » (cases d'eau profonde) et l'écart de temps d'image B / A de la Mangrove et de la Fonderie (sections
   « VARIANTES B CONTRE A » et « ALERTES » du fichier texte) ;
 - la Rizière (`terrasses_rizieres_hautes`) en **Bas** : seule configuration lente sur PC (§4), à confirmer ;
-- si le jeu se fige (écran gelé plus de 30 s) : noter la carte, le palier et le nombre de monstres affichés dans le
+- si le banc semble figé : si le menu pause est affiché (appel, notification, changement d'app), appuyer sur
+  « Reprendre » ; sinon, si l'écran reste gelé plus de 30 s, noter la carte, le palier et le nombre de monstres du
   bandeau, puis forcer l'arrêt de l'app (voir §7).
 - toute ligne où p99 dépasse 2 fois le p95 (saccades : chargement de texture, compilation de shader, ramasse-miettes).
 
@@ -163,10 +164,10 @@ mini-boss du biome à l'endroit où `Pillar.activate` les pose. Le joueur (invul
 boss refait l'essai avec le joueur à la même distance mais à découvert. Un boss est « bloqué par l'obstacle » s'il
 n'approche plus (moins de 1 u parcouru sur les 5 dernières secondes) alors qu'il approche à découvert (écart de plus de
 3 u). Les boss qui gardent leurs distances (tireurs, lanceurs) s'arrêtent aussi loin dans les deux cas et ne sont pas
-comptés. Le test échoue seulement si un boss n'apparaît pas ; `--strict` compte aussi chaque alerte (à activer une fois
-la navigation des gros corps corrigée).
+comptés. Le test échoue si un boss n'apparaît pas **ou sur toute alerte** (strict par défaut depuis le correctif du 09/11/2026 ;
+`--lenient` rend l'ancien comportement). Options : `--bosses=a,b`, `--trace`.
 
-Résultats (09/11/2026) :
+Résultats AVANT correctif (09/11/2026) :
 
 Résultat identique sur deux passages (simulation déterministe). Rayon du corps : 1,4 u pour les boss d'étage, 1,1 u
 pour les mini-boss. Boss identifiés par leur id (`data/floors.json`) :
@@ -195,38 +196,37 @@ Lecture :
   boss, ou glissement le long des murs quand le boss n'avance plus ; à défaut, écarter des obstacles centraux les gros
   piliers candidats de la Fonderie et de la Mangrove (`candidates.big_pillars` des cartes).
 
-## 7. Gel observé pendant le banc PC (09/11/2026)
+**Correctif (09/11/2026, soir)** : `NavField.steer_body(pos, radius)` donne aux gros corps un champ de flux par
+classe de rayon (obstacles dilatés du rayon, diagonales permises si le coin est dégagé, visée à 2 cellules depuis la
+position réelle pour glisser le long des murs, repli sur `steer()` tant que la couche n'est pas prête) ; le Director
+l'utilise pour les boss (solo et coop) et `spawn_boss` passe par `body_spawn_point` (jamais à cheval sur un obstacle) ;
+`deep_eel` émerge sur le point du bord accessible le plus proche. Coût : couche créée une fois par classe au premier boss
+de l'étage (≈ 2,6 ms sur PC), BFS étalé sur les images libres, ≈ 235 Ko par couche, rien sans boss.
 
-Deux gels complets du jeu en mode fenêtré (jamais en `--headless`, 4 passages) : fenêtre « ne répond pas », un cœur à
-100 %, plus aucune image.
+Résultats APRÈS correctif (distance minimale au joueur en 20 s, avant → après) : Fonderie `sonneur` 8,6 → atteint,
+`smelter` 8,6 → atteint, `ash_lord` 8,5 → atteint, `blind_pump` → atteint, `crane` en route (lent, sans alerte) ;
+Mangrove `brood_mother` et `lantern_owl` → atteints, `cerf`, `hermit_cedar`, `bramble_queen` en route à 20 s (long
+détour par le pont du chenal) et arrivés à 3,4-4,5 u en 40 s ; `deep_eel` n'émerge plus dans la margelle. 0 alerte.
+La Fonderie reste praticable de justesse pour un boss d'étage (portes diagonales de 2,83 u pour un corps de 2,8 u) :
+si le frottement se voit en jeu, élargir une porte de la carte.
 
-1. passage complet, configuration 23 / 81 : `foret_brume`, Moyen, 80 monstres (≈ 50 s après le chargement de la carte) ;
-2. passage `terrasses_rizieres_hautes` seule (Haut, puis Moyen, puis Bas), configuration 1 / 9 : juste après la
-   préchauffe à 250 monstres et le passage en Haut, ≈ 3 s après le chargement de la carte.
+## 7. Gel observé pendant le banc PC (09/11/2026) : cause établie
 
-Trois autres passages fenêtrés des mêmes cartes (dont le passage complet 81 / 81 avec débogueur distant) n'ont pas gelé :
-le gel est rare et aléatoire. Le fil de garde du lanceur PC (`--watchdog`, simple fil GDScript) n'a **pas** réussi à
-terminer le processus lors du 2e gel : le fil principal est donc probablement bloqué dans le moteur en tenant un verrou
-(une boucle GDScript infinie aurait laissé le fil de garde tourner).
+Deux « gels » en mode fenêtré (jamais en `--headless`) : fenêtre « ne répond pas », un cœur à 100 %, plus aucune
+progression (`foret_brume` Moyen 80 monstres ; `terrasses_rizieres_hautes` Haut 0 monstre).
 
-Cause non établie (aucune pile relevée). Suspects, par ordre de probabilité :
+**Cause** : ce n'était pas un blocage du moteur. Une capture des deux fenêtres figées montre le **menu pause ouvert** :
+la fenêtre du jeu avait perdu le focus (autres fenêtres ouvertes pendant le banc), `PauseMenu` ouvre la pause sur
+`NOTIFICATION_APPLICATION_FOCUS_OUT`, et le banc prolongeait sa mesure tant que l'arbre était en pause, donc sans fin.
+La boucle de jeu tournait toujours (vsync coupée : 100 % d'un cœur, d'où « ne répond pas » côté Windows), et le fil de
+garde ne se déclenchait pas puisque les images avançaient. Reproduit en headless avec `--focus-out-at=<s> --keep-pause`.
 
-- **Chargements en fil jamais récupérés** : `EnemyVisual._warm_bosses` (`scripts/enemies/enemy_visual.gd`) appelle
-  `ResourceLoader.load_threaded_request` sur les SpriteFrames des 6 boss de l'étage 1,5 s après la création d'un monstre,
-  au plus toutes les 3 s, et ne fait jamais `load_threaded_get` : le cache `_boss_cache` reste vide tant qu'aucun boss
-  n'apparaît (cas du banc), donc les demandes se répètent pendant toute la partie, et chaque changement de carte en lance
-  6 nouvelles (textures lourdes chargées sur les fils du `WorkerThreadPool`).
-- **Attente bloquante du fil principal** : `BakedShadows._cancel_task` et `_process` (`scripts/ambiance/baked_shadows.gd`)
-  appellent `WorkerThreadPool.wait_for_task_completion` sur une tâche de basse priorité (re-cuisson d'ombre lancée quand
-  la longueur d'ombre varie avec D, ce que fait le banc à chaque carte). Si les fils de basse priorité sont occupés par
-  les chargements ci-dessus et que ceux-ci attendent le fil principal (création de textures), l'ensemble peut se bloquer.
+**Correctif** : le lanceur PC (`tests/map_perf_bench`) reprend automatiquement la partie (`PauseMenu.resume()`) si la
+pause s'ouvre pendant le banc, et le fil de garde signale « jeu en pause » au lieu de rester muet. Sur téléphone, la
+reprise reste manuelle : le joueur appuie sur « Reprendre ». Au passage, le préchargement des boss
+(`EnemyVisual`) est désormais récupéré une seule fois au lieu d'être redemandé sans fin, et `BakedShadows` n'attend plus
+aucune tâche sur le fil principal (test `tests/threaded_loads_test`).
 
-Pistes de correctif (à valider avec une pile, pas à l'aveugle) : récupérer les préchargements (`load_threaded_get_status`
-puis `load_threaded_get` dans `_boss_cache`, et ne plus redemander un chemin déjà demandé) ; dans `BakedShadows`, ne plus
-attendre la tâche sur le fil principal (numéro de génération : un résultat périmé est ignoré) ou la lancer en haute
-priorité. Pour relever une pile au prochain gel : lancer le banc PC avec un débogueur distant
-(`--remote-debug tcp://127.0.0.1:<port>` et un client qui envoie `break` puis `get_stack_dump`), ou créer un fichier de
-vidage du processus figé (Gestionnaire des tâches > clic droit > « Créer un fichier de vidage ») avant de le fermer.
-
-Sur téléphone : si l'écran reste figé plus de 30 s pendant le banc, noter la carte, le palier et le nombre de monstres du
-bandeau, puis forcer l'arrêt (Réglages > Applications > Rainfall > Forcer l'arrêt) et le signaler.
+Sur téléphone : si le menu pause s'affiche pendant le banc, appuyer sur « Reprendre ». Si l'écran reste réellement figé
+plus de 30 s, noter la carte, le palier et le nombre de monstres du bandeau, puis forcer l'arrêt (Réglages >
+Applications > Rainfall > Forcer l'arrêt) et le signaler.

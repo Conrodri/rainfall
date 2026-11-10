@@ -926,6 +926,11 @@ func _add_tab(text: String, tab: StringName) -> Button:
 	return b
 
 
+## Reprendre (bouton, ou appel externe : reprise auto du banc de perf PC) : lance le compte à rebours.
+func resume() -> void:
+	_on_resume()
+
+
 func _on_resume() -> void:
 	counting_down = true
 	_count = resume_duration()

@@ -176,6 +176,8 @@ func spawn_boss(kind: StringName, pos: Vector2) -> Node2D:
 		b = _free_bosses.pop_back()
 	if nav != null and not nav.is_reachable(pos): # jamais dans un mur ni une poche fermée (aucun boss ne traverse les murs)
 		pos = nav.nearest_reachable(pos)
+	if nav != null: # le corps entier tient (grille dilatée de son rayon) : jamais à cheval sur un obstacle
+		pos = nav.body_spawn_point(pos, float(Enemy.BOSS_RADIUS_U.get(kind, 1.1)) * Enemy.U)
 	b.activate_boss(kind, pos, RunState.difficulty())
 	b.pool_index = _bosses.size()
 	_bosses.append(b)
@@ -438,7 +440,7 @@ func _physics_process(delta: float) -> void:
 	if not _bosses.is_empty():
 		for b in _bosses.duplicate():
 			if b.active:
-				b.tick(delta, _player, ppos if has_player else b.position, Vector2.ZERO, nav.steer(b.position) if nav else Vector2.ZERO)
+				b.tick(delta, _player, ppos if has_player else b.position, Vector2.ZERO, nav.steer_body(b.position, b.radius_px) if nav else Vector2.ZERO) # champ du gros corps (grille dilatée)
 
 	var t3 := Time.get_ticks_usec()
 	_projectiles.update(delta, _player, ppos, nav)
@@ -895,8 +897,8 @@ func _physics_multi(delta: float, t0: int) -> void:
 				b.tick(delta, null, b.position, Vector2.ZERO, Vector2.ZERO)
 				continue
 			var bst := Vector2.ZERO
-			if nav != null and (nav.source_count() <= 1 or nav.root_id_at(b.position) == bt):
-				bst = nav.steer(b.position) # le champ mène à sa cible (sinon poursuite directe)
+			if nav != null and (nav.source_count() <= 1 or nav.root_id_at(b.position, b.radius_px) == bt):
+				bst = nav.steer_body(b.position, b.radius_px) # le champ mène à sa cible (sinon poursuite directe)
 			b.tick(delta, _node_by_id[bt], _pos_by_id[bt], Vector2.ZERO, bst)
 
 	var t3 := Time.get_ticks_usec()

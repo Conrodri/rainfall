@@ -12,12 +12,14 @@ extends Node
 ## qui garde ses distances (tireur, lanceur) s'arrête aussi loin dans les deux cas : seul un boss qui n'approche pas
 ## derrière l'obstacle alors qu'il approche à découvert (écart > 3 u) est « bloqué par l'obstacle ».
 ##   godot --headless --fixed-fps 60 --path game res://tests/boss_obstacle_test.tscn [-- --maps=cite_fonderie_canal --sim=20]
+##   options : --bosses=sonneur,smelter (filtre), --trace (position et direction du champ toutes les 0,5 s), --lenient
 ## Colonnes : r u = rayon du corps, obst u = distance finale du boss au centre de l'obstacle (un boss coincé contre
 ## l'obstacle finit à peu près à « demi-largeur de l'obstacle + rayon »).
 ## Sortie : une ligne par boss, les ALERTES (boss bloqué par l'obstacle, boss fini dans une case bloquée ; un boss d'eau
-## profonde dans une case `~` n'est pas « dans un mur »), puis « RESULT: OK » si tous les boss sont apparus. Avec
-## --strict, chaque alerte est un échec (à activer une fois la navigation des gros corps corrigée, voir
-## docs/Mesures_Perf_Android.md §5).
+## profonde dans une case `~` n'est pas « dans un mur »), puis « RESULT: OK » si tous les boss sont apparus et qu'il n'y a
+## aucune alerte : depuis la navigation des gros corps (NavField.steer_body, champ sur grille dilatée du rayon), chaque
+## alerte est un échec par défaut ; --lenient les signale sans échouer (ancien comportement, --strict accepté et ignoré).
+## Tirages globaux réensemencés avant chaque essai (seed) : les deux essais d'un boss et deux passages se ressemblent.
 
 const B_MAPS := ["terrasses_rizieres_hautes", "foret_mangrove_lanternes", "cite_fonderie_canal", "cryptes_ossuaire_pluies"]
 ## Obstacle central de chaque carte B : nom de prop fixe (`props_fixed`, collision) ou motif de texture (prop de biome).
@@ -35,9 +37,10 @@ const BEHIND_U := 3.0 ## distance du joueur derrière le bord de l'obstacle
 const U := 64.0
 
 var _fails := 0
-var _alerts: Array[String] = [] ## boss bloqués / dans un mur : signalés ; --strict les compte en échec
+var _alerts: Array[String] = [] ## boss bloqués / dans un mur : comptés en échec (sauf --lenient)
 var _main: Node
 var _rows: Array = []
+var _trace := false ## --trace : position du boss et direction du champ toutes les 0,5 s
 
 
 func _ready() -> void:
@@ -66,6 +69,7 @@ func _run() -> void:
 	if args.has("maps"):
 		maps = Array(str(args["maps"]).split(",", false))
 	var sim_s := float(args.get("sim", str(SIM_S)))
+	_trace = args.has("trace")
 	var old_path: String = Profile.path
 	var old_write: bool = Profile.write_enabled
 	Profile.path = "user://boss_obstacle_profile.json"
@@ -99,6 +103,9 @@ func _run() -> void:
 		var p_target := sm.map.to_global(sm.reachable_local(sm.map.to_local(obstacle + away * (2.0 + BEHIND_U) * U)))
 		print("%s : obstacle %s, gros pilier %s (à %.1f u), joueur %s" % [id, obstacle.round(), big.round(), big.distance_to(obstacle) / U, p_target.round()])
 		var bosses := _biome_bosses(int(e.floor))
+		if args.has("bosses"): # filtre : --bosses=sonneur,smelter
+			var keep := Array(str(args["bosses"]).split(",", false))
+			bosses = bosses.filter(func(bk: Array) -> bool: return keep.has(String(bk[0])))
 		var p_open := _open_target(sm, spawn, spawn.distance_to(p_target), away)
 		print("   témoin à découvert : joueur %s (à %.1f u du boss, ligne de vue libre)" % [p_open.round(), spawn.distance_to(p_open) / U])
 		for bk in bosses:
@@ -122,7 +129,7 @@ func _run() -> void:
 	print("ALERTES (%d) :" % _alerts.size())
 	for al in _alerts:
 		print("  ALERTE ", al)
-	if args.has("strict"):
+	if not args.has("lenient"):
 		_fails += _alerts.size()
 	if args.has("out"):
 		var f := FileAccess.open(str(args["out"]), FileAccess.WRITE)
@@ -160,6 +167,7 @@ func _try_boss(sm: StageManager, director: Director, player: Node2D, map_id: Str
 	if spells != null:
 		spells.process_mode = Node.PROCESS_MODE_DISABLED
 	await _frames(2)
+	seed(hash(boss_id)) # tirages globaux (randf : pylônes, cibles…) identiques d'un passage et d'un essai à l'autre
 	var b := TestTools.spawn_boss(get_tree(), boss_id, kind, spawn)
 	var row := {"map": map_id, "boss": String(boss_id), "kind": String(kind), "d0_u": 0.0, "min_u": 0.0, "moved_u": 0.0,
 		"last_window_u": 0.0, "in_wall": false, "verdict": "absent", "radius_u": 0.0, "end_obstacle_u": 0.0}
@@ -181,6 +189,10 @@ func _try_boss(sm: StageManager, director: Director, player: Node2D, map_id: Str
 		max_moved = maxf(max_moved, b.global_position.distance_to(start_pos))
 		if i % 30 == 0:
 			samples.append(b.global_position)
+			if _trace:
+				print("    t=%.1f %s pos=%s d=%.1f u steer_body=%s" % [i / 60.0, boss_id, b.global_position.round(),
+					b.global_position.distance_to(player.global_position) / U,
+					director.nav.steer_body(b.global_position, float(b.get(&"radius_px"))) if director.nav != null else Vector2.ZERO])
 	var window := int(STILL_WINDOW_S * 2.0)
 	var last_window := 0.0
 	if samples.size() > window:
