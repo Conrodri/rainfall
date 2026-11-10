@@ -33,6 +33,10 @@ func setup(new_caster: SpellCaster, new_spell: SpellData, patch: Array[Vector2],
 	life = life_s
 	tick_s = tick
 	z_index = -1 # au ras du sol
+	var m := CanvasItemMaterial.new() # tuile à fond sombre : en additif seul l'éclat des arcs s'ajoute, le sol reste visible
+	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	m.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	material = m
 	for c: Vector2 in patch:
 		centers.append(c)
 		cells[cell_of(c)] = true
