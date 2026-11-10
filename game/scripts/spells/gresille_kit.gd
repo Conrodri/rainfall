@@ -236,6 +236,7 @@ static func character() -> CharacterData:
 	s3.vfx_frames = VFX_DIR + "ground_field/ground_field.tres" # disque à sec (GR2) ; la nappe d'eau utilise ground_tile
 	s3.vfx_radius_px = 190.0 # rayon du disque dans la frame 384x384
 	s3.vfx_floor_aspect = 1.0 # rig TOP : jamais pré-écrasé
+	s3.vfx_additive = true # le fond sombre du disque ne couvre plus le sol : seuls les arcs lilas s'ajoutent
 
 	var s4 := _spell(&"gresille_orage", "Orage appelé", 4, STORM_COEF, STORM_CD)
 	s4.radius_u = STORM_RADIUS_U
@@ -1067,6 +1068,8 @@ func _tick_wake(delta: float) -> void:
 				break
 
 
+static var _wake_tex: ImageTexture = null
+
 ## Sillage : Line2D additive texturée par `arc_tile` (GR2), repli lilas uni ; s'efface.
 func _start_wake_line() -> void:
 	_end_wake_line(true)
@@ -1074,16 +1077,21 @@ func _start_wake_line() -> void:
 		return
 	var l := Line2D.new()
 	l.width = WAKE_WIDTH_U * Balance.UNIT_PX
-	l.default_color = Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.55)
+	l.default_color = Color(ACCENT.r, ACCENT.g, ACCENT.b, 0.9)
 	l.z_index = -1
+	l.joint_mode = Line2D.LINE_JOINT_ROUND
 	var tp := VFX_DIR + "arc_tile/arc_tile.png"
 	if ResourceLoader.exists(tp):
-		var at := AtlasTexture.new()
-		at.atlas = load(tp) as Texture2D
-		at.region = Rect2(0.0, 0.0, 256.0, 48.0) # variante 0, frame 0 de la grille 4x4
-		l.texture = at
-		l.texture_mode = Line2D.LINE_TEXTURE_STRETCH
-		l.default_color = Color(1.0, 1.0, 1.0, 0.8)
+		if _wake_tex == null: # un AtlasTexture ne se répète pas : on découpe la variante 0, frame 0 (256x48) en vraie texture
+			var img := (load(tp) as Texture2D).get_image()
+			if img != null:
+				if img.is_compressed():
+					img.decompress()
+				_wake_tex = ImageTexture.create_from_image(img.get_region(Rect2i(0, 0, 256, 48)))
+		l.texture = _wake_tex
+		l.width = maxf(l.width, 1.8 * Balance.UNIT_PX) # le sol iso écrase y de moitié : large pour que le zigzag reste lisible
+		l.texture_mode = Line2D.LINE_TEXTURE_TILE # l'arc se répète le long du trajet au lieu de s'étirer
+		l.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	var m := CanvasItemMaterial.new()
 	m.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	l.material = m
