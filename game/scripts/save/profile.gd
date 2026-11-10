@@ -34,6 +34,7 @@ const UNLOCK_ON_OBJECTIVE := {
 	"close_kills": [200.0, &"character:rictus"],
 	"zone_kills": [300.0, &"character:arpenteuse"],
 	"familiar_elite_kills": [3.0, &"character:bourbe"],
+	"lightning_kills": [100.0, &"character:gresille"], ## Grésille : 100 monstres foudroyés par l'Éclair en bouteille (tout personnage)
 }
 ## Objectifs « en une run » (pas de cumul : la mesure de la run doit atteindre le seuil) : mesure -> [seuil, clé débloquée].
 ## Averse 60 s dans l'eau, Vigie 100 tués à plus de 8 u, Rainette un étage sans contact subi (caché), Taliant (id morfil) un

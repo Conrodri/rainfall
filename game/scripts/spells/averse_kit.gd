@@ -1092,6 +1092,8 @@ func _soak(e: Node, duration := SOAK_S, pct := SOAK_PCT) -> void:
 		if fresh or end >= until:
 			e.apply_status(&"slow", {"pct": pct, "duration": duration})
 			_soaked_until[id] = end
+			if e.has_method(&"mark_wet"):
+				e.mark_wet(duration) # statut « mouillé » partagé (Enemy.is_wet, lu par Grésille)
 			StatusFx.wet(e, duration) # gouttes + corps assombri tant que la trempe dure (visuel seul)
 
 

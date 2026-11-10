@@ -1,0 +1,82 @@
+class_name GresilleGroundField
+extends Node2D
+## Nappe électrisée de la Mise à la terre (docs/fiches/gresille.md §4.3) : quand la case sous Grésille est de l'eau, la
+## zone n'est plus un disque, elle épouse la nappe d'eau connexe (StageMap.water_patch_at, cases de 1 u, plafond
+## GresilleKit.GROUND_WATER_CELLS_MAX = 113 = rayon 6 u). Un tick toutes les `tick` s : chaque monstre dont le pied est
+## dans une case du champ reçoit un coup du sort (SpellCaster.deal_damage : la Statique, le ralentissement et les procs
+## passent par les hooks du kit) et devient mouillé. Dure `life` s puis disparaît.
+## RENDU PLACEHOLDER (à remplacer par la tuile `ground_field` du lot Codex GR2) : un losange translucide lilas par case
+## (Polygon2D-like via _draw), de la couleur de l'accent ; aucun asset final dessiné ici.
+
+const CELL_PX := 64.0
+const COLOR := Color("#B9A6FF")
+
+var caster: SpellCaster = null
+var spell: SpellData = null
+var cells := {} ## Vector2i (case de 1 u, indice monde) -> true
+var centers: Array[Vector2] = []
+var life := 5.0
+var tick_s := 0.5
+var _t := 0.0
+var _tick_t := 0.0
+var _age := 0.0
+var ended := false
+
+
+func setup(new_caster: SpellCaster, new_spell: SpellData, patch: Array[Vector2], life_s: float, tick: float) -> void:
+	caster = new_caster
+	spell = new_spell
+	life = life_s
+	tick_s = tick
+	z_index = -1 # au ras du sol
+	for c: Vector2 in patch:
+		centers.append(c)
+		cells[cell_of(c)] = true
+	queue_redraw()
+
+
+static func cell_of(p: Vector2) -> Vector2i:
+	return Vector2i((p / CELL_PX).floor())
+
+
+func contains(p: Vector2) -> bool:
+	return cells.has(cell_of(p))
+
+
+## Avance de delta (public : tests sans boucle de rendu).
+func step(delta: float) -> void:
+	if ended:
+		return
+	_age += delta
+	_tick_t += delta
+	while _tick_t >= tick_s and not ended:
+		_tick_t -= tick_s
+		_tick()
+	if _age >= life:
+		ended = true
+		queue_free()
+	else:
+		queue_redraw()
+
+
+func _process(delta: float) -> void:
+	step(delta)
+
+
+func _tick() -> void:
+	if caster == null or caster.player == null or not is_instance_valid(caster.player):
+		return
+	for e in caster.player.get_tree().get_nodes_in_group(&"enemies"):
+		if e is Node2D and is_instance_valid(e) and e.has_method(&"take_damage") and contains((e as Node2D).global_position):
+			if e.has_method(&"mark_wet"):
+				e.mark_wet(tick_s + 0.2) # dans la nappe : tout le monde est mouillé
+			caster.deal_damage(e, spell, {"via": &"zone"})
+
+
+func _draw() -> void:
+	var a := 0.16 + 0.1 * sin(_age * 12.0 * TAU * 0.1) # scintillement
+	var fade := clampf((life - _age) / 0.6, 0.0, 1.0)
+	var h := CELL_PX * 0.5 - 1.0
+	for c: Vector2 in centers:
+		var p := c - global_position
+		draw_rect(Rect2(p - Vector2(h, h), Vector2(h, h) * 2.0), Color(COLOR.r, COLOR.g, COLOR.b, a * fade))

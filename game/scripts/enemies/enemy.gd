@@ -140,6 +140,7 @@ var last_hit_by := -1
 ## Origine du dernier coup (hit["via"]) : &"zone" (zone persistante), &"familiar" (motte, doublure) ; &"" sinon. Lu par
 ## UnlockTracker à la mort (conditions de déblocage des personnages).
 var last_hit_via: StringName = &""
+var _wet_until_ms := 0 ## fin de trempe (Time.get_ticks_msec), voir is_wet()
 ## Cible (coop, posée par le Director) : id du joueur poursuivi, image du dernier changement (inertie), temps avant
 ## le prochain choix de cible d'un boss. Ignorés en solo (target_id reste -1).
 var target_id := -1
@@ -438,6 +439,20 @@ func is_slowed() -> bool:
 	return _slow_left > 0.0 or _held_left > 0.0
 
 
+## Statut « mouillé » partagé (contrat Grésille, 10/11/2026) : l'eau conduit. Vrai si le monstre est trempé (AverseKit
+## y appelle mark_wet : Vague, Flaque-miroir, Crue, Mousson, Gouttière), ou debout sur une case d'eau « , » / « ~ » de
+## la carte. Lecture seule, sans effet de bord.
+func is_wet() -> bool:
+	if Time.get_ticks_msec() < _wet_until_ms:
+		return true
+	return active and is_inside_tree() and StageMap.is_water_at(get_tree(), global_position)
+
+
+## Trempe `seconds` (ne raccourcit jamais une trempe en cours). Appelé par les sources de trempe (AverseKit).
+func mark_wet(seconds: float) -> void:
+	_wet_until_ms = maxi(_wet_until_ms, Time.get_ticks_msec() + int(seconds * 1000.0))
+
+
 ## Flash blanc de coup en cours (cerveaux de boss : corps émissif synchronisé).
 func is_flashing() -> bool:
 	return _flash_left > 0.0
@@ -602,6 +617,7 @@ func _common_activate(pos: Vector2) -> void:
 	test_dummy = false
 	last_hit_by = -1
 	last_hit_via = &""
+	_wet_until_ms = 0
 	target_id = -1
 	target_since = 0
 	retarget_left = 0.0

@@ -21,6 +21,7 @@ var water_s := 0.0
 var zone_kills := 0
 var familiar_elite_kills := 0
 var far_kills := 0
+var lightning_kills := 0 ## dernier coup = foudre en chaîne de l'Éclair en bouteille (via `eclair_bouteille`, tout personnage)
 var clean_floors := 0
 var light_boss_kills := 0
 
@@ -45,6 +46,7 @@ func reset() -> void:
 	zone_kills = 0
 	familiar_elite_kills = 0
 	far_kills = 0
+	lightning_kills = 0
 	clean_floors = 0
 	light_boss_kills = 0
 	_water_by_player.clear()
@@ -57,7 +59,7 @@ func reset() -> void:
 func metrics() -> Dictionary:
 	return {
 		"water_s": water_s, "zone_kills": zone_kills, "familiar_elite_kills": familiar_elite_kills,
-		"far_kills": far_kills, "clean_floors": clean_floors, "light_boss_kills": light_boss_kills,
+		"far_kills": far_kills, "lightning_kills": lightning_kills, "clean_floors": clean_floors, "light_boss_kills": light_boss_kills,
 	}
 
 
@@ -88,6 +90,8 @@ func _on_enemy_killed_by(player_id: int, enemy: Node2D, pos: Vector2, _tier: int
 		zone_kills += 1
 	elif via == &"familiar" and is_elite:
 		familiar_elite_kills += 1
+	if via == &"eclair_bouteille":
+		lightning_kills += 1
 	var killer: Node2D = Players.by_id(player_id) if player_id >= 0 else Players.local()
 	if killer != null and pos.distance_to(killer.global_position) > FAR_KILL_U * Balance.UNIT_PX:
 		far_kills += 1

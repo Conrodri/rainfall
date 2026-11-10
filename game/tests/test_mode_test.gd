@@ -336,7 +336,7 @@ func _run() -> void:
 	_player.global_position += Vector2(300, 100)
 	var pos0: Vector2 = _player.global_position
 	var chars: Array = TestTools.characters()
-	_check("10 personnages", chars.size() == 10, str(chars.size()))
+	_check("11 personnages (Grésille comprise)", chars.size() == 11, str(chars.size()))
 	for c in chars:
 		var cid := StringName(str(c.id))
 		var ok: bool = TestTools.switch_character(get_tree(), cid)
