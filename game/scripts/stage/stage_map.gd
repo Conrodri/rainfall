@@ -141,6 +141,121 @@ static func frame_of(m: Node) -> Transform2D:
 	return (m as StageMap).map_xform() if m is StageMap else Transform2D.IDENTITY
 
 
+# --- Eau de la carte (contrat Grésille, 10/11/2026) ----------------------------------------------------
+## Cases d'eau « , » (peu profonde) et « ~ » (profonde) de la grille JSON (cellule = `grid_cell_u` u, 2 par défaut).
+## Tests : `water_override` = {grid, cell_px, origin} en repère logique global (identité) remplace la carte.
+
+static var water_override := {}
+static var _water_cache := {} ## id d'instance de carte -> AmbianceWater.grid_of (vide = carte sans grille)
+
+
+## Contexte d'eau de la scène : {g: grille (AmbianceWater.grid_of), to_grid: logique global -> repère de la grille}
+## ou {} (pas de carte, pas de grille). Mis en cache par carte.
+static func water_context(tree: SceneTree) -> Dictionary:
+	if not water_override.is_empty():
+		return {"g": water_override, "to_grid": Transform2D.IDENTITY}
+	if tree == null:
+		return {}
+	var sm := tree.get_first_node_in_group(&"stage_manager")
+	var m: Node2D = sm.get(&"map") as Node2D if sm != null else null
+	if m == null or not is_instance_valid(m):
+		var am := AmbianceManager.find(tree)
+		m = am.map if am != null else null
+	if m == null or not is_instance_valid(m) or not m.is_inside_tree():
+		return {}
+	var key := m.get_instance_id()
+	if not _water_cache.has(key):
+		_water_cache.clear()
+		var g := AmbianceWater.grid_of(m)
+		var has := false
+		for row: String in (g.get("grid", PackedStringArray()) as PackedStringArray):
+			if row.contains(",") or row.contains("~"):
+				has = true
+				break
+		_water_cache[key] = g if has else {}
+	var gd: Dictionary = _water_cache[key]
+	if gd.is_empty():
+		return {}
+	return {"g": gd, "to_grid": (m.global_transform * frame_of(m)).affine_inverse(), "map": m}
+
+
+static func _water_char(g: Dictionary, c: Vector2i) -> String:
+	var grid: PackedStringArray = g["grid"]
+	if c.y < 0 or c.y >= grid.size() or c.x < 0 or c.x >= grid[c.y].length():
+		return ""
+	return grid[c.y][c.x]
+
+
+## Vrai si `gpos` (logique global) est sur une case d'eau de la carte.
+static func is_water_at(tree: SceneTree, gpos: Vector2) -> bool:
+	var ctx := water_context(tree)
+	if ctx.is_empty():
+		return false
+	var g: Dictionary = ctx["g"]
+	var l: Vector2 = (ctx["to_grid"] as Transform2D) * gpos
+	var c := Vector2i(((l - (g["origin"] as Vector2)) / float(g["cell_px"])).floor())
+	var ch := _water_char(g, c)
+	return ch == "," or ch == "~"
+
+
+## Remplissage de proche en proche (4-voisins) de la nappe d'eau qui contient la case `cell` de la grille ASCII
+## `grid` (cellules de `cell_u` u de côté), par cellules de 1 u : retourne au plus `max_cells` cases de 1 u
+## (indices Vector2i = case de la grille × cell_u + sous-case), de la plus proche de `cell` à la plus lointaine
+## (le plafond rogne donc la nappe en rond autour du départ). `cell` : sous-case de 1 u de départ. Vide si le départ
+## n'est pas de l'eau. Pur : aucun accès à la scène.
+static func water_cells_connected(grid: PackedStringArray, cell: Vector2i, max_cells: int, cell_u := 2) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	var k := maxi(cell_u, 1)
+	var g := {"grid": grid}
+	var ch := _water_char(g, Vector2i(floori(float(cell.x) / k), floori(float(cell.y) / k)))
+	if max_cells <= 0 or (ch != "," and ch != "~"):
+		return out
+	# front de remplissage : on prend toujours la case du front la plus proche (distance euclidienne) du départ, pour
+	# que le plafond rogne la nappe en rond (et non en losange) autour de `cell`
+	var seen := {cell: true}
+	var front: Array[Vector2i] = [cell]
+	while not front.is_empty() and out.size() < max_cells:
+		var bi := 0
+		var bd := INF
+		for i in front.size():
+			var d2 := Vector2(front[i] - cell).length_squared()
+			if d2 < bd:
+				bd = d2
+				bi = i
+		var cur := front[bi]
+		front.remove_at(bi)
+		out.append(cur)
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n := cur + d
+			if seen.has(n):
+				continue
+			seen[n] = true
+			var nch := _water_char(g, Vector2i(floori(float(n.x) / k), floori(float(n.y) / k)))
+			if nch == "," or nch == "~":
+				front.append(n)
+	return out
+
+
+## Nappe d'eau connexe sous `gpos` (logique global) : centres (logique global) des cases de 1 u, plafonnés à
+## `max_cells` (113 = rayon 6 u). Vide si `gpos` n'est pas sur l'eau.
+static func water_patch_at(tree: SceneTree, gpos: Vector2, max_cells: int) -> Array[Vector2]:
+	var res: Array[Vector2] = []
+	var ctx := water_context(tree)
+	if ctx.is_empty():
+		return res
+	var g: Dictionary = ctx["g"]
+	var xf: Transform2D = ctx["to_grid"]
+	var cell_px := float(g["cell_px"])
+	var k := maxi(roundi(cell_px / UNIT_PX), 1)
+	var org: Vector2 = g["origin"]
+	var l := xf * gpos
+	var start := Vector2i(((l - org) / UNIT_PX).floor())
+	var back := xf.affine_inverse()
+	for sc: Vector2i in water_cells_connected(g["grid"], start, max_cells, k):
+		res.append(back * (org + (Vector2(sc) + Vector2(0.5, 0.5)) * UNIT_PX))
+	return res
+
+
 ## Logique local -> carte.
 func to_map(p: Vector2) -> Vector2:
 	return map_xform().affine_inverse() * p

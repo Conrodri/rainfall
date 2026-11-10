@@ -945,7 +945,7 @@ func _lightning(origin: Node, hit: float, data: Dictionary) -> void:
 	var pid := player_id()
 	for e in chain:
 		if e is Enemy: # coup venu de la cible précédente (recul à l'opposé)
-			e.take_damage(hit * frac, false, &"lightning", {"source_pos": prev.global_position, "by": pid})
+			e.take_damage(hit * frac, false, &"lightning", {"source_pos": prev.global_position, "by": pid, "via": &"eclair_bouteille"})
 		else:
 			e.take_damage(hit * frac, false, &"lightning")
 		note_damage_dealt(hit * frac)
