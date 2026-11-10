@@ -1,7 +1,7 @@
 # Équilibrage des personnages jouables (audit du 23/10/2026)
 
 > Audit **en lecture seule** (méthode `.claude/skills/balance-check`, rôle `systems-designer`). Aucun fichier du jeu modifié.
-> Personnages : Ardent (référence), Rictus, Tocsin, Averse, Arpenteuse, Rainette, Avare, Bourbe, Vigie, Taliant (`morfil`).
+> Personnages : Ardent (référence), Rictus, Tocsin, Averse, Arpenteuse, Rainette, Avare, Bourbe, Vigie, Taliant (`morfil`). **Grésille** (`gresille`, 11e personnage, jouable depuis le 10/11/2026) ajoutée en §2.11 et P9 : audit complet dans `docs/audits/gresille_equilibrage.md`, mesures relancées le 10/11/2026 (le reste du document date du 23/10/2026).
 > Les recommandations Averse sont **indicatives** : un autre agent corrige Averse en parallèle.
 > Les mesures sont dans le scratchpad (`balance_all/sim*.json`, `seed*.json`, `agg2.txt`). Elles n'ont pas été versées dans le dépôt.
 
@@ -13,11 +13,12 @@
 |---|---|
 | `game/scripts/core/balance.gd` (difficulté, monstres, boss, joueur) | TROUVÉ |
 | `game/scripts/spells/<id>_kit.gd` pour les 10 personnages, avec leurs auxiliaires (`decoy`, `tocsin_limb`, `rainette_goo`, `avare_purse_tip`, `bourbe_motte`, `vigie_flare`, `morfil_twin_blade`) | TROUVÉ |
+| `game/scripts/spells/gresille_kit.gd`, `gresille_static.gd`, `gresille_ground_field.gd` (Grésille, ajoutée le 10/11/2026) | TROUVÉ |
 | `game/scripts/spells/spell_caster.gd`, `zone_effect.gd`, `spell_data.gd` | TROUVÉ |
 | `game/data/characters.json`, `game/data/floors.json` (`final_boss_hp_mult` = 2,0) | TROUVÉ |
 | `docs/Maths_Scaling.md` §5, §14 ; `docs/Design_Etages.md` | TROUVÉ |
-| `docs/fiches/vigie.md`, `docs/fiches/morfil.md` | TROUVÉ |
-| Fiches des 8 autres personnages | ABSENT |
+| `docs/fiches/vigie.md`, `docs/fiches/morfil.md`, `docs/fiches/gresille.md`, `docs/audits/gresille_equilibrage.md` | TROUVÉ |
+| Fiches des 8 autres personnages du 23/10 | ABSENT |
 
 ### Commandes lancées
 
@@ -83,6 +84,7 @@ Moyenne géométrique sur 3 graines, en L6 et L12 :
 | Bourbe | 1,04 | 1,17 | 0,81 | **1,31** / 1,13 | boss L6, aucun dégât subi |
 | Vigie | 1,04 | 1,06 | 1,01 | 1,02 / 0,94 | non |
 | Taliant | 0,94 | 0,97 | 0,88 | **0,79** / 0,99 | mono en début de run |
+| Grésille (10/11, 2 graines, L6 et L12) | 0,94 | 1,02 | **0,86** | 0,98 / 0,96 | non (zone en limite : essaim dispersé 0,79) ; voir §2.11 |
 
 ### DPS total sur une run de 18-20 min (vs Ardent, cible ±20 %)
 Le score « Global » sert d'approximation de la run. En lancer automatique, tous les personnages sont dans ±20 %, sauf Arpenteuse (−17 %, en limite, biais du bot). **Mais l'écart réel se joue sur les boss et sur le jeu manuel :**
@@ -275,6 +277,34 @@ Les colonnes « mono » et « zone 5 » sont des **DPS théoriques en B/s**, tou
 - **Bug d'alternance auto :** contre une cible entre 2,3 et 3,2 u, l'auto fait toujours l'estoc (`_cast_auto` l.421-426).
 - **Iaï :** pas de plafond de cibles.
 
+### 2.11 Grésille : `gresille_kit.gd`, `gresille_static.gd`, `gresille_ground_field.gd` (audit du 10/11/2026)
+
+> Ajoutée après l'audit du 23/10/2026 : mesures **relancées le 10/11/2026 sur le code livré** (`balance_sim_run.tscn --chars=ardent,gresille --scen=swarm,mixed,elite,miniboss --cfg=L1,L6,L12,L12m --seeds=2`, soit 2 graines au lieu de 3, arène plate sans eau). Elles recoupent l'audit complet `docs/audits/gresille_equilibrage.md` (consultant systems-designer, même jour), dont viennent les chiffres « eau », les variantes testées et les recommandations. Fiche : `docs/fiches/gresille.md`.
+
+| Sort | Valeurs (constante) | Mono | Zone 5 | Sécurité |
+|---|---|---|---|---|
+| Arc (auto) | `ARC_COEF` 0,8 / `ARC_CD` 0,6 s, hitscan 7 u ; rebond `BOUNCE_COEF` 0,45 à 2,5 u (4,5 u si mouillé) ; +1 Statique par coup (2 si mouillé) | 1,33 | 2,1 / s | distance moyenne, 7 u |
+| Décharge | `DISCHARGE_COEF` 2,8 + `DISCHARGE_PER_STACK` 0,15 par cumul consommé / 7 s, 8 u ; n arcs de `DISCHARGE_ARC_COEF` 0,6 à 3 u (5 u si mouillé) | 0,49 | + 3,0 d'arcs sur 5 voisins | distance |
+| Mise à la terre | `GROUND_COEF` 0,45 par tick de 0,5 s pendant 5 s / 10 s, disque 3 u, ralentit 20 %, +1 Statique par tick ; sur l'eau : nappe connexe, `GROUND_WATER_CELLS_MAX` 113 cases (rayon 6 u) | 0,29 (présence 65 %) | nappe entière | au contact |
+| Orage appelé (ultime) | 6 coups de `STORM_COEF` 1,3 + `STORM_PER_STACK` 0,05 par cumul (cercle 1,5 u) / 22 s, canalisé 3 s à 70 % de vitesse, **le sort 1 continue** ; l'esquive l'interrompt | 0,35 | +25 % par coup au plus | non invulnérable |
+| Court-circuit (esquive) | 3 u / 0,25 s / 3 s ; sillage 0,5 s : +1 Statique | — | — | invulnérable 0,25 s |
+
+Mono / zone théoriques : estimation de la fiche (§8), total ≈ 2,46 B/s en mono contre 2,8-2,96 pour Ardent (**non mesurée**) ; ce qui est mesuré est ci-dessous. PV 95 + 28 par niveau, armure 5, vitesse 4,1 u/s (2,9 pendant l'Orage).
+
+**Mesure (10/11/2026, ratio de DPS effectif vs Ardent, moyenne géométrique)** :
+
+| Configuration | Global | Mono (élite + mini-boss) | Zone (essaim + mixte) | Mini-boss L6 / L12 | Élite L6 / L12 |
+|---|---|---|---|---|---|
+| L6 + L12 (méthode du §1, 2 graines) | **0,94** | **1,02** | **0,86** | 0,98 / 0,96 | 1,16 / 1,00 |
+| L6 + L12 + L12m (méthode de l'audit Grésille) | 0,98 | 1,02 | 0,95 | — | — |
+| Audit, après R1 + R2 + R3, sec (3 graines pour R1+R2) | 0,97 | 1,00 | 0,93 | 1,09 / 0,75 (R1+R2) | 1,13 / 0,99 (R1+R2) |
+| Audit, après R1 + R2 + R3, **eau partout** (borne haute : Cryptes, Source, coop avec Averse) | 1,11 | 1,12 | 1,10 | — | — |
+| Audit, version **avant** corrections (sec) | 0,84 | **0,76** | 0,94 | 1,00 / 0,62 | 0,84 / 0,72 |
+
+Dans la bande [0,85 ; 1,20] en mono. Écarts à garder en tête : **essaim dispersé en début de run** 0,58 (L1) et 0,68 (L6) en mesure du 10/11, structurel (aucun levier chiffré testé ne le bouge de plus de 2 points, audit) ; mini-boss L12 à 0,75 dans la série de l'audit (0,96 dans la mesure du jour : 2 graines seulement, écart de bruit non départagé) ; **dépendance à l'eau** : +13 % de global entre sec et eau. Dégâts subis mesurés (2 graines) : 0 sur l'élite, 33 à 71 PV sur le mini-boss, 14 à 47 PV en mixte.
+
+**Points clés (audit)** : l'état livré applique déjà les corrections R1 (l'Orage ne suspend plus le sort 1), R2 (la Mise à la terre part seule face à une élite ou un boss à ≤ 3 u en « sorts automatiques »), R3 (`ZAP_IMMUNE_S` 1,5 → 2,5 s), R4 (`Balance.ELITE_STUN_REARM_S` 1,5 s pour toute élite) et R5 (performance mobile) ; sans elles le mono valait 0,76. R6 (nappe ramenée de 113 à 80 cases) n'est **pas** appliquée : à décider d'après le journal de run (mini-boss L1-L6 dans l'eau à 1,44-1,55 × Ardent, mesuré sur une arène entièrement en eau). Coop : le simulateur est solo, plusieurs Grésille ne sont pas simulées.
+
 ---
 
 ## 3. Temps pour tuer un boss d'étage (estimé)
@@ -315,7 +345,9 @@ Cible du §14 : 65-75 s pour un boss d'étage ; cible de `Design_Etages` : 75-10
 | Avare | **29** | **34** | **42** | **47** | **102** |
 | Bourbe | 32 | 42 | 58 | 65 | 139 |
 | Vigie | 41 | 52 | 69 | 78 | 167 |
-| Taliant | **53** | 57 | 66 | 74 | 159 |
+| Taliant | 53 | 57 | 66 | 74 | 159 |
+| Grésille, sec (audit 10/11, estimé : TTK d'Ardent ÷ ratio mini-boss, après R1 + R2) | 39 | 57 | **87** | 75 | 162 |
+| Grésille, eau partout (audit 10/11, estimé) | 29 | 42 | 63 | 74 | 159 |
 
 ### Lecture
 - **Étages 1-2 :** tous les personnages sont sous la cible de 65-75 s. Les boss du début meurent vite, sans alerte pour autant.
@@ -445,6 +477,19 @@ Les colonnes sont : fichier:constante, valeur actuelle → proposée, plage sûr
 | `arpenteuse_kit.gd:PEG_IMMUNITY_S` | 0,5 → **0,65** (26/10) | 0,6-0,7 | Corrige surtout le niveau 1 en élite |
 | `arpenteuse_kit.gd:CHAIN_COEF` | 1,0 → **inchangé tant que non mesuré** | — | Théorie ×5 Ardent en zone, mesure ×0,55 |
 | Animations manquantes (directions de `plant`, `whip`, `loop`, `death_se`) | — | — | Erreurs dans le simulateur, à livrer côté assets |
+
+### P9 : Grésille (audit du 10/11/2026, recommandations appliquées)
+
+| Fichier:constante | Avant → après | Plage sûre | Statut |
+|---|---|---|---|
+| R1 `gresille_kit.gd:blocks_slot(1)` pendant l'Orage | vrai → faux | règle | **appliquée** : mono 0,76 → 0,85, global 0,84 → 0,90 (audit) |
+| R2 `gresille_kit.gd:auto_cast_ok(3)` | ≥ 3 monstres à 3 u → idem **ou** élite / boss à ≤ `GROUND_RADIUS_U` | règle | **appliquée** : avec R1 mono 1,00 |
+| R3 `gresille_static.gd:ZAP_IMMUNE_S` | 1,5 → 2,5 s | 2,0-3,0 | **appliquée** : étourdissement d'une élite au pire 31 % → 19 % |
+| R4 `balance.gd:ELITE_STUN_REARM_S` lue par `Enemy.stun` | absent → 1,5 s | 1,0-2,5 | **appliquée** : plus de verrou à plusieurs sources |
+| R5 `gresille_kit.gd` (`_nearest_neighbor`, `_tick_wake`, `_refresh_crisp`) | `is_wet` hors bande, sillage échantillonné (`WAKE_SAMPLE_S` 0,05 s), `CRISP_SHOCK_MAX` 16 | — | **appliquée** (perf mobile ; banc de perf Terrasses palier Haut à refaire) |
+| R6 `gresille_kit.gd:GROUND_WATER_CELLS_MAX` | 113 → 80 si le journal de run montre des mini-boss tués en moins de 0,8 × la durée d'Ardent aux Terrasses et aux Cryptes | 80-113 | **non appliquée, à surveiller** |
+
+Valeurs à ne pas toucher : `ARC_COEF` 0,8, `BOUNCE_COEF` 0,45, `DISCHARGE_COEF` 2,8, `STORM_COEF` 1,3, `GROUND_COEF` 0,45 (chaque relèvement testé pousse élite ou mini-boss au bord de 1,20 sans corriger l'essaim). Détail, variantes écartées et protocole de vérification en mode test : `docs/audits/gresille_equilibrage.md`.
 
 ### Transverse (contrat `CONTRACTS.md`, à trancher par l'orchestrateur)
 - **Attaque auto et `is_zone` :** une attaque auto ne devrait prendre que `auto_damage_add`. Concerné aujourd'hui : `is_zone = true` sur Rictus, Arpenteuse, Bourbe et Taliant.

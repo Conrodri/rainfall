@@ -33,6 +33,7 @@ Sommaire : 1. Règles communes · 2. Tableau · 3. Fiches · 4. Entrées et HUD 
 | Bourbe | **Coulée** | dash lourd | 3 u | 0,30 s (10 u/s) | 0,30 s | 3 s | — | hitbox 0,35 u pendant ; traînée de vase 3 × 0,8 u, 2 s : `slow` 30 % |
 | Vigie | **Repli** | 3 petits dashs enchaînables | 3 × 1 u | 3 × 0,083 s (12 u/s) | 3 × 0,083 s = 0,25 s | 1 charge / 1 s (3 s pour les 3) | — | recule depuis la visée par défaut ; +8 % de Guet par dash ; fantômes rouges |
 | Taliant | **Iaï** | dash tranchant | 3 u | 0,25 s | 0,25 s | 3 s | 4 % d'aiguisage s'il touche | coef 1,5 à 0,9 u du trajet (existant) |
+| Grésille | **Court-circuit** | dash | 3 u | 0,25 s | 0,25 s | 3 s | interrompt l'Orage en cours | sillage lilas 0,5 s : +1 Statique (2 si mouillé) à tout monstre traversé, jamais de Foudroiement, sans dégât |
 
 Budget : tous à 3 u / 0,25 s / 3 s sauf Ardent (0,20 s d'i-frames : −20 %, compensé par zéro exposition pendant le trajet et un repositionnement instantané), Averse (i-frames −40 % mais mobilité illimitée tant qu'elle a de l'eau : payée en sorts), Avare (2,5 u : −17 %, il est le plus blindé du roster), Bourbe (0,30 s : +20 %, elle est la plus lente et finit sa coulée à portée du paquet traversé), Rainette (3,5 u et 0,29 s : +17 %, inchangé ; mobilité engagée partout ailleurs).
 
@@ -80,6 +81,12 @@ Elle se liquéfie : **3 u à 10 u/s** (0,30 s, i-frames 0,30 s, surplus assumé 
 ### 3.10 Taliant : « Iaï » (existant, `RollDodge`)
 Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doublé sous Lames jumelles). Libellé « Iaï ».
 
+### 3.11 Grésille : « Court-circuit » (`RollDodge` + hooks, `gresille_kit.gd`)
+- Roulade standard : **3 u / 0,25 s / 3 s** (`Balance.DODGE_*`, aucune valeur propre), invulnérable, `dodge_ghosts()` vrai, fantômes lilas `#B9A6FF` à 55 % d'opacité (`dodge_ghost_color`). Aucun hook de distance ni de charges.
+- **Sillage** (`on_dodge_start`, `_tick_wake`) : pendant l'esquive la position est échantillonnée toutes les `WAKE_SAMPLE_S` 0,05 s et la traînée dure `WAKE_S` 0,5 s (`Line2D` additive lilas, largeur `WAKE_WIDTH_U` 0,6 u, fondu `WAKE_FADE_S` 0,5 s). Tout monstre dont le centre passe à `WAKE_RADIUS_U` 0,6 u de la traînée reçoit **+1 Statique** (2 s'il est mouillé), **une seule fois par esquive**, et n'est **jamais foudroyé** par le sillage (`apply_static(e, false)`). Aucun dégât : l'esquive prépare, elle n'encaisse jamais (règle 6).
+- **Interrompt l'Orage** : `on_dodge_start` met `storm_left` à 0 et annule le coup en attente ; les coups restants sont perdus (le choix du joueur, fiche §4.4). L'esquive reste libre sous Mise à la terre et Décharge. Aucun sort ne bloque l'esquive (`can_dodge()` vrai).
+- Budget : le trait respecte la règle des 5 % ; il alimente le combo **GR-3** « Court-circuit → Arc » (`docs/fiches/gresille.md` §7, `docs/Design_Combos.md` §5.8). Mobile : placement au joystick, aucune visée. Libellé du bouton : celui par défaut du `DodgeButton` (le kit n'a pas de hook `dodge_label`).
+
 ---
 
 ## 4. Entrées et HUD
@@ -100,7 +107,7 @@ Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doubl�
 
 ## 6. Tests et protocole joueur
 
-- `tests/dodge_test.tscn` : par personnage genre, distance, i-frames, recharge ; Vigie 3 charges + Guet + enchaînement ; Ardent et Rictus arrêtés devant un mur ; Averse maintien, eau consommée et arrêt à vide, contact ignoré, projectile encaissé, mur de face ; mode test recharge 0 ; changement de personnage. `tests/averse_test` (bloc Glissade), `avare_test`, `arpenteuse_*`, `test_mode_test`, `run_flow_test`, `spell_auto_aim_test`.
+- `tests/dodge_test.tscn` : par personnage genre, distance, i-frames, recharge ; Vigie 3 charges + Guet + enchaînement ; Ardent et Rictus arrêtés devant un mur ; Averse maintien, eau consommée et arrêt à vide, contact ignoré, projectile encaissé, mur de face ; mode test recharge 0 ; changement de personnage. `tests/averse_test` (bloc Glissade), `tests/gresille_test` (bloc « Esquive Court-circuit et Isolée » : sillage, +1 Statique, interruption de l'Orage), `avare_test`, `arpenteuse_*`, `test_mode_test`, `run_flow_test`, `spell_auto_aim_test`.
 - **Protocole en mode test** (titre → « Mode test », TAB = panneau) : voir le rapport d'intégration ; par personnage, touche Maj, attendu = la ligne du tableau §2.
 
 ## 7. Leviers et risques

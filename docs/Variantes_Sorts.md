@@ -3,7 +3,7 @@
 > Statut : **document de design** (game-designer, 23/10/2026) sur commande du joueur : « ajouter des sorts alternatifs pour tous les personnages ; la variante de l'auto se débloque en gagnant une run avec le personnage ; pour le reste je te laisse décider ». Rien n'est implémenté. Les chiffres sont des points de départ à passer au simulateur (`art/tools/night/balance_sim.py`, `balance_sim_run.tscn`) puis en playtest ; **systems-designer** valide les coefs avant tout code.
 > Conventions : 1 u = 64 px ; « coef » = multiple de Dégât_base(L) (commun à tous les personnages) ; recharges en secondes avant `cooldown_mult` ; portées en u ; « boss » = mini-boss et boss d'étage. Les valeurs de base citées sont celles des kits (`game/scripts/spells/<id>_kit.gd`) après l'équilibrage du 22/10/2026, qui prévalent sur les fiches.
 
-Sommaire : 1. Principes · 2. Variantes par personnage (10 × 4) · 3. Tableau récapitulatif et ordre d'implémentation · 4. Compteurs à suivre · Annexe A : JSON à fusionner dans `characters.json` · Annexe B : contrat de déblocage (`unlock_rule`).
+Sommaire : 1. Principes · 2. Variantes par personnage (10 × 4 proposées, plus Grésille : 2 livrées) · 3. Tableau récapitulatif et ordre d'implémentation · 4. Compteurs à suivre · Annexe A : JSON à fusionner dans `characters.json` · Annexe B : contrat de déblocage (`unlock_rule`).
 
 ---
 
@@ -322,6 +322,24 @@ Base : Taille et estoc 0,7 s, alternance cercle 2,3 u (1,5) / estoc cône 40° 3
   - Lisibilité : fil de sève `_e` à l'intensité max + reflet d'eau sur la lame (shader `morfil_tempered`, bleu-vert froid), pas de `MorfilTwinBlade`. Son : trempe (sifflement d'eau sur métal) au lancement, coups avec queue cristalline.
   - Déblocage : **Vaincre le boss de l'étage 2 avec Taliant** (`boss_kill`, étage 2).
 
+### 2.11 Grésille (id `gresille`), paratonnerrière de la Cité : état livré le 10/11/2026
+
+> Contrairement aux dix blocs précédents, ce bloc n'est pas une proposition : Grésille est sortie **avec ses variantes codées** (`GresilleKit.variant(slot, id)`, `game/data/characters.json`). Elle n'a que **deux variantes** (fiche `docs/fiches/gresille.md` §12.2) : pas de variante de l'auto (Arc) ni de la Décharge, donc pas de « gagner une run » pour elle ; le skin trophée Fulgurite (`docs/Skins.md`) porte cette condition.
+
+Base : Arc auto 0,6 s, 0,8 + rebond 0,45, hitscan 7 u · Décharge 7 s, 2,8 + 0,15 par cumul, 8 u · Mise à la terre 10 s, disque 3 u ou nappe d'eau (≤ 113 cases), 5 s, 0,45 par tick de 0,5 s · Orage appelé 22 s, canalisé 3 s, 6 coups de 1,3 + 0,05 par cumul (le sort 1 continue pendant la canalisation depuis l'audit du 10/11/2026).
+
+- **Paratonnerre** (id `gresille_paratonnerre`, remplace *Mise à la terre*, emplacement sort 2 / `spell_3`)
+  - *Plante la tige à distance (7 u) : la foudre tombe dessus toutes les secondes pendant 6 s, cercle de 2 u, +1 Statique. Pas de ralentissement : la tige attire au lieu de répandre.*
+  - Mécanique (`ROD_*`) : recharge **10 s**, portée `ROD_RANGE_U` 7 u (mobile et manette au repos : le paquet le plus dense, `target_mode` `&"densest"`), durée `ROD_LIFE_S` 6 s, un coup toutes les `ROD_TICK_S` 1,0 s, cercle `ROD_RADIUS_U` 2 u (+ `zone_size_add`), coef `ROD_COEF` 0,8, proc `ROD_PROC` 0,7, +1 Statique par coup (2 si mouillé, hook `on_spell_hit`). Une seule tige (relancer la déplace). Pas de nappe, pas de ralentissement. Rendu : `GresilleRod` (placeholder : tige tracée en code), foudre `bolt_strike` ou repli `ChainLightningFx`.
+  - Budget (fiche) : 6 × 0,8 = **4,8** à distance contre 4,5 pour la Mise à la terre (10 ticks × 0,45) sans contrôle : +7 %, dans les ±15 %.
+  - Déblocage : **Électriser 300 monstres dans l'eau avec la Mise à la terre** : compteur `gresille.grounded_wet` ≥ 300 (`GresilleKit.COUNTER_GROUNDED_WET`, +1 par monstre et par nappe, versé par `GresilleGroundField` ; seul le champ de nappe d'eau le fait, pas le disque à sec).
+- **Bouteille de Leyde** (id `gresille_leyde`, remplace *Orage appelé*, ultime)
+  - *Tu jettes une bouteille (8 u) : elle éclate sur 4 u et libère d'un coup toute la Statique du paquet, plus de dégâts par cumul. Instantané, l'esquive reste libre.*
+  - Mécanique (`LEYDE_*`) : recharge **22 s**, lob de `LEYDE_LOB_S` 0,8 s (`LEYDE_LIFT_PX` 120, `GresilleLob`) jusqu'à `LEYDE_RANGE_U` 8 u (`target_mode` `&"densest"`), éclat `LEYDE_RADIUS_U` 4 u (+ `zone_size_add`), coef `LEYDE_COEF` 6,5 + `LEYDE_PER_STACK` 0,3 par cumul **consommé** (≤ 5), proc 1,0, recul 1,5 u × masse ; un monstre à 5 cumuls est foudroyé (immunité `ZAP_IMMUNE_S` 2,5 s). Animation `cast` (lancer) au lieu de `call` ; aucune canalisation.
+  - Budget (fiche) : 6,5-8,0 instantanés sur toute la zone contre 7,8-9,3 en 3 s sur une cible : −15 % en mono, zone immédiate.
+  - Déblocage : **Tuer 300 monstres avec l'Orage appelé** : compteur `gresille.storm_kills` ≥ 300 (`COUNTER_STORM_KILLS` : dernier coup d'un coup d'Orage, `hit["via"]` `&"gresille_storm"` lu à `Events.enemy_killed_by` ; les coups de Paratonnerre et de Leyde ne comptent pas).
+  - Lisibilité : `jar_fly` / `jar_burst` sont encore des placeholders (fiche §14, lot GR3).
+
 ---
 
 ## 3. Récapitulatif et ordre d'implémentation
@@ -340,8 +358,9 @@ Base : Taille et estoc 0,7 s, alternance cercle 2,3 u (1,5) / estoc cône 40° 3
 | **Bourbe** | Crachat de vase — gagner une run | Bouture — 200 mottes recollées | Éclatement — 800 écrasés (Rappel) | Marée de vase — 3 mini-boss à 4 mottes |
 | **Vigie** | Tir double — gagner une run | Fanal — 1 000 exposés | Chausse-trapes — 500 immobilisés | Tir de signal — 300 kills Grêle |
 | **Taliant** | Taille lente — gagner une run | Fendoir — 12 monstres d'une Fauche | Sur-aiguisage — 120 aiguisages | Trempe — boss étage 2 |
+| **Grésille** (livrée) | — (aucune variante d'auto) | — | Paratonnerre — 300 électrisés dans l'eau (`gresille.grounded_wet`) | Bouteille de Leyde — 300 kills de l'Orage (`gresille.storm_kills`) |
 
-40 variantes : 10 « gagner une run », 21 compteurs cumulés, 2 records en une run, 4 boss d'étage 2, 2 étages atteints, 1 condition d'état (sans tête).
+40 variantes proposées pour les dix premiers personnages (+ 2 livrées pour Grésille, deux compteurs cumulés) : 10 « gagner une run », 21 compteurs cumulés, 2 records en une run, 4 boss d'étage 2, 2 étages atteints, 1 condition d'état (sans tête).
 
 ### 3.2 Ordre d'implémentation recommandé (un lot par personnage, après un lot 0 transverse)
 
@@ -397,8 +416,10 @@ Mécanisme : `RunState.counters: Dictionary` (clé texte → float), `RunState.c
 | `vigie_exposed` | Vigie | monstre entré dans la lumière d'une fusée (+1 par monstre et par fusée). |
 | `vigie_netted` | Vigie | monstre immobilisé par un filet (+1). |
 | `morfil_sharpen_casts` | Taliant | Aiguisage effectif (non refusé ; +1). |
+| `gresille.grounded_wet` | Grésille | monstre touché par une nappe d'eau électrisée de la Mise à la terre (+1 par monstre et par nappe, `GresilleGroundField._tick`). |
+| `gresille.storm_kills` | Grésille | monstre dont le dernier coup est un coup d'Orage appelé (+1, `GresilleKit._on_enemy_killed_by`, `Enemy.last_hit_via` `&"gresille_storm"`). |
 
-Coût : 17 clés de kit (une ligne `RunState.count` chacune) + 3 hooks génériques dans `SpellCaster`/`Enemy`. Aucune nouvelle sauvegarde de run (les compteurs d'une run interrompue sont perdus avec elle : acceptable ; si la reprise doit les garder, ajouter `counters` au `RunSave`).
+Coût : 17 clés de kit (une ligne `RunState.count` chacune ; 19 avec les deux de Grésille) + 3 hooks génériques dans `SpellCaster`/`Enemy`. Aucune nouvelle sauvegarde de run (les compteurs d'une run interrompue sont perdus avec elle : acceptable ; si la reprise doit les garder, ajouter `counters` au `RunSave`).
 
 ---
 
@@ -467,9 +488,15 @@ Pour chaque personnage, remplacer le tableau `variants` du sort indiqué par le 
     "fauche_lune": [{"id": "morfil_fendoir", "name": "Fendoir", "desc": "Un coup vertical qui fend une ligne de 5 u devant toi, et un pas en avant. Même usure que la Fauche-lune.", "unlock_text": "Toucher 12 monstres d'une seule Fauche-lune.", "unlock_key": "spell:morfil_fendoir", "unlock_rule": {"type": "run_max", "key": "max_hits_one_cast:fauche_lune", "threshold": 12}}],
     "aiguisage": [{"id": "morfil_affutage_en_marche", "name": "Sur-aiguisage", "desc": "Lame remise à 100 % et sur-fil : tes 6 prochains gestes (8 s) frappent ×1,5. Lançable même lame au fil. Recharge 12 s.", "unlock_text": "Aiguiser 120 fois.", "unlock_key": "spell:morfil_affutage_en_marche", "unlock_rule": {"type": "counter", "key": "morfil_sharpen_casts", "threshold": 120}}],
     "lames_jumelles": [{"id": "morfil_trempe", "name": "Trempe", "desc": "Exige 90 %. 15 s de lame trempée : plus d'usure et dégâts ×1,5 ; une seule lame, garde non permanente.", "unlock_text": "Vaincre le boss de l'étage 2 avec Taliant.", "unlock_key": "spell:morfil_trempe", "unlock_rule": {"type": "boss_kill", "character": "morfil", "floor": 2}}]
+  },
+  "gresille": {
+    "gresille_terre": [{"id": "gresille_paratonnerre", "name": "Paratonnerre", "desc": "Plante la tige à distance (7 u) : la foudre tombe dessus toutes les secondes pendant 6 s, cercle de 2 u, +1 Statique. Pas de ralentissement : la tige attire au lieu de répandre.", "unlock_text": "Électriser 300 monstres dans l'eau avec la Mise à la terre.", "unlock_key": "spell:gresille_paratonnerre", "unlock_rule": {"type": "counter", "key": "gresille.grounded_wet", "value": 300}}],
+    "gresille_orage": [{"id": "gresille_leyde", "name": "Bouteille de Leyde", "desc": "Tu jettes une bouteille (8 u) : elle éclate sur 4 u et libère d'un coup toute la Statique du paquet, plus de dégâts par cumul. Instantané, l'esquive reste libre.", "unlock_text": "Tuer 300 monstres avec l'Orage appelé.", "unlock_key": "spell:gresille_leyde", "unlock_rule": {"type": "counter", "key": "gresille.storm_kills", "value": 300}}]
   }
 }
 ```
+
+(Grésille : entrées copiées de `game/data/characters.json`, **format réel** `"value"` ; le reste de cette annexe écrit `"threshold"` : `VariantUnlocks` lit `value`, voir `game/scripts/save/variant_unlocks.gd`.)
 
 (La clé de premier niveau est l'`id` du personnage, la clé de second niveau l'`id` du sort de base ; la valeur est le tableau `variants` à écrire. Les champs `role` d'Averse reprennent ceux des sorts de base pour l'affichage du coût.)
 
