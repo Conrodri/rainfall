@@ -353,6 +353,11 @@ func _build_veillee() -> void:
 		if ResourceLoader.exists(sh):
 			var s := _veillee_sprite(sh, pos, VEILLEE_SHADOW_Z, false)
 			s.name = "VeilleeShadow_" + stem
+		var frames := int(conf.get("frames", 1))
+		if frames > 1:
+			# Petit animé (chat) : planche de `frames` cellules sur une ligne, lue en boucle (layout.json : frames, fps).
+			_veillee_anim(path, frames, float(conf.get("fps", 6.0)), pos, int(conf.get("z", VEILLEE_PROP_Z))).name = "VeilleeAnim_" + stem
+			continue
 		var spr := _veillee_sprite(path, pos, int(conf.get("z", VEILLEE_PROP_Z)), true)
 		spr.name = "VeilleeProp_" + stem
 		var em := path.get_basename() + "_e.png"
@@ -380,6 +385,30 @@ func _build_veillee() -> void:
 			add_child(an)
 			an.play(sf.get_animation_names()[0])
 			veillee_nodes.append(an)
+
+
+func _veillee_anim(path: String, frames: int, fps: float, pos: Vector2, z: int) -> AnimatedSprite2D:
+	var sheet := load(path) as Texture2D
+	var sf := SpriteFrames.new()
+	sf.set_animation_loop(&"default", true)
+	sf.set_animation_speed(&"default", fps)
+	var cw := int(sheet.get_width() / frames)
+	for k in frames:
+		var at := AtlasTexture.new()
+		at.atlas = sheet
+		at.region = Rect2(k * cw, 0, cw, sheet.get_height())
+		sf.add_frame(&"default", at)
+	var an := AnimatedSprite2D.new()
+	an.sprite_frames = sf
+	an.scale = Iso.UNSQUASH * Iso.SPRITE_K
+	an.global_position = pos
+	an.z_index = z
+	an.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	an.offset = Vector2(0.0, -sheet.get_height() * 0.5)
+	add_child(an)
+	an.play(&"default")
+	veillee_nodes.append(an)
+	return an
 
 
 func _veillee_sprite(path: String, pos: Vector2, z: int, standing: bool) -> Sprite2D:

@@ -136,7 +136,7 @@
       "price": 600,
       "target": "foret",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/apres_midi_d_orage.png",
       "assets": {
         "profiles": [
@@ -155,7 +155,7 @@
       "price": 600,
       "target": "cite",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/canicule_de_cendres.png",
       "assets": {
         "profiles": [
@@ -174,7 +174,7 @@
       "price": 600,
       "target": "cryptes",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/maree_haute.png",
       "assets": {
         "profiles": [
@@ -398,7 +398,7 @@
       "price": 500,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/quai_de_la_cite.png",
       "assets": {
         "map": "cite_rouille",
@@ -415,7 +415,7 @@
       "price": 500,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/crypte_veilleuse.png",
       "assets": {
         "map": "cryptes_noyees",
@@ -432,7 +432,7 @@
       "price": 500,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/lanternes_de_riziere.png",
       "assets": {
         "map": "terrasses_rizieres_hautes",
