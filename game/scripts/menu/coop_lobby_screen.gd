@@ -520,6 +520,7 @@ func set_ready(i: int, on: bool) -> void:
 	slots[i]["ready"] = on
 	if on:
 		Audio.play_ui(&"lobby_ready")
+		Haptics.pulse(Haptics.Kind.LOBBY_READY)
 	if all_ready():
 		countdown = LAUNCH_S
 	else:

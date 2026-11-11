@@ -32,6 +32,7 @@ var progress_value := 0.0 ## 0..1 (lecture des tests)
 var bar_rect := Rect2() ## rectangle écran de la barre (tests)
 var arrow_pos := Vector2(-1.0, -1.0) ## position écran de la flèche, (-1, -1) si l'épreuve est à l'écran
 var arrow_angle := 0.0
+var ruby_text := "" ## « +1 rubis » sous la note quand l'épreuve est parfaite (hors mode test : aucun rubis), "" sinon
 var grade_text := "" ## libellé de note affiché, "" sinon
 var _grade: StringName = &""
 var _grade_t := 0.0
@@ -66,6 +67,8 @@ func _on_finished(kind: StringName, g: StringName, _elapsed: float, _gold: float
 	_grade_verb = kind
 	_grade_t = GRADE_SHOW_S
 	grade_text = String(Epreuve.GRADE_NAMES[g])
+	ruby_text = "+1 rubis" if g == &"parfait" and not TestMode.active else ""
+	Haptics.pulse(Haptics.Kind.EPREUVE_PERFECT if g == &"parfait" else Haptics.Kind.EPREUVE_NOTE)
 	refresh()
 
 
@@ -73,6 +76,7 @@ func _process(delta: float) -> void:
 	_grade_t = maxf(_grade_t - delta, 0.0)
 	if _grade_t <= 0.0 and grade_text != "":
 		grade_text = ""
+		ruby_text = ""
 		queue_redraw()
 	_acc += delta
 	if _acc < 1.0 / UPDATE_HZ:
@@ -171,6 +175,12 @@ func _draw() -> void:
 			draw_texture_rect(gtex, Rect2(Vector2(bar_rect.get_center().x - gpx * 0.5, gp.y - float(gfs) - gpx - 4.0 * s), Vector2(gpx, gpx)), false, Color(1, 1, 1, gc.a))
 		draw_string_outline(font, gp, grade_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, gfs, HudMetrics.OUTLINE_T1, ol)
 		draw_string(font, gp, grade_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, gfs, gc)
+		if ruby_text != "": # prime de rubis de la note parfaite, sous le libellé
+			var rfs := HudMetrics.font(HudMetrics.T3_GAUGE, _font_scale())
+			var rp := Vector2(bar_rect.position.x, gp.y + 8.0 * s + float(rfs))
+			var rc := Color(1.0, 0.45, 0.55, gc.a)
+			draw_string_outline(font, rp, ruby_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, rfs, HudMetrics.OUTLINE_T3, Color(0, 0, 0, gc.a * 0.9))
+			draw_string(font, rp, ruby_text, HORIZONTAL_ALIGNMENT_CENTER, bar_rect.size.x, rfs, rc)
 	if arrow_pos.x >= 0.0 and epreuve != null:
 		var px2 := ARROW_PX * s
 		var ac: Color = VERB_COLORS.get(epreuve.verb, COL_BAR)

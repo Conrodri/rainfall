@@ -178,6 +178,7 @@ func _build() -> void:
 		dl.custom_minimum_size = Vector2(1000, 0)
 		_add(dl)
 
+	_add_epreuve_medals()
 	_add_items_strip()
 	_add_party_table()
 	# déblocages sous les stats et les objets de la run (demande du joueur, 27/10/2026)
@@ -567,6 +568,34 @@ func _add_party_table() -> void:
 		var l := _label(txt, 32, COL_TEXT)
 		_labels.append(l)
 		row.add_child(l)
+
+
+## Rangée de médaillons de note, un par épreuve de la run (info.epreuve_grades, ordre d'affichage = ordre donné).
+## La forme du médaillon porte la note ; l'infobulle et le nom du nœud la doublent en texte.
+const MEDAL_DIR := "res://assets/sprites/ui/da/"
+const MEDAL_PX := 48
+const MEDAL_MAX := 24 ## plafond d'affichage (une run a ~5 épreuves)
+
+
+func _add_epreuve_medals() -> void:
+	var grades: Array = info.get("epreuve_grades", [])
+	if grades.is_empty():
+		return
+	var flow := HFlowContainer.new()
+	flow.name = "EpreuveMedals"
+	flow.alignment = FlowContainer.ALIGNMENT_CENTER
+	flow.add_theme_constant_override("h_separation", 12)
+	_content.add_child(flow)
+	for g in grades.slice(0, MEDAL_MAX):
+		if not Epreuve.GRADE_NAMES.has(StringName(g)):
+			continue
+		var m := _icon([MEDAL_DIR + "epreuve_grade_%s.png" % String(g)], MEDAL_PX)
+		if m == null:
+			continue
+		m.name = "Medal_%s_%d" % [String(g), flow.get_child_count()]
+		m.set_meta(&"grade", String(g))
+		m.tooltip_text = "Épreuve : %s" % String(Epreuve.GRADE_NAMES[StringName(g)])
+		flow.add_child(m)
 
 
 func _add(l: Label) -> void:

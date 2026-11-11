@@ -510,6 +510,7 @@ func do_craft() -> Dictionary:
 	if bool(res["ok"]):
 		var item: StringName = res["item"]
 		Audio.play_ui(&"forge_craft")
+		Haptics.pulse(Haptics.Kind.FORGE)
 		refresh()
 		say("Forgé : %s" % str(ItemDB.get_item(item).get("name", item)), true)
 		crafted.emit(item)

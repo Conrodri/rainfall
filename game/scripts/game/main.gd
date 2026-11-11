@@ -406,11 +406,28 @@ func _on_chest_counter(_chest: Node, _quality: StringName, _offered: Array) -> v
 ## Épreuves « parfaites » de la run (compteur sauvegardé avec la run) : 1 rubis chacune à la fin, plafonné
 ## (Balance.epreuve_rubies). Rien en mode test (arène de bac à sable : ni profil ni rubis).
 const COUNTER_EPREUVE_PERFECT := "epreuve_perfect"
+const COUNTER_EPREUVE_PREFIX := "epreuve_grade_" ## + « bien » / « fait »
 
 
 func _on_epreuve_counter(_kind: StringName, grade: StringName, _elapsed_s: float, _gold: float) -> void:
-	if grade == &"parfait" and not TestMode.active:
+	if TestMode.active:
+		return
+	if grade == &"parfait":
 		RunState.add_counter(COUNTER_EPREUVE_PERFECT)
+	elif grade == &"bien" or grade == &"fait":
+		RunState.add_counter(COUNTER_EPREUVE_PREFIX + String(grade)) # médaillons du récap (compteurs sauvegardés avec la run)
+
+
+## Notes des épreuves de la run, de la meilleure à la moins bonne (une entrée par épreuve) : médaillons du récap de fin de run.
+func epreuve_grades() -> Array[StringName]:
+	var out: Array[StringName] = []
+	if TestMode.active:
+		return out
+	for g: StringName in [&"parfait", &"bien", &"fait"]:
+		var key := COUNTER_EPREUVE_PERFECT if g == &"parfait" else COUNTER_EPREUVE_PREFIX + String(g)
+		for i in int(RunState.counters.get(key, 0)):
+			out.append(g)
+	return out
 
 
 ## Rubis des épreuves parfaites de la run en cours (0 en mode test).
@@ -640,7 +657,7 @@ func end_info(victory: bool, reason: StringName) -> Dictionary:
 		"character_name": RunSave.character_name(String(RunState.character)), "mode": RunState.mode,
 		"stage": RunState.stage, "active_time_s": RunState.active_time_s, "level": RunState.level,
 		"pillars": pillars_done, "kills": RunState.kills, "items": n_items, "gold": int(LocalState.state().gold),
-		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()), "epreuve_rubies": epreuve_rubies(),
+		"rubies": last_rubies, "unlocks": last_unlocks, "omen_rubies": Balance.omen_rubies(RunState.omens_accepted()), "epreuve_rubies": epreuve_rubies(), "epreuve_grades": epreuve_grades(),
 		"players": PartyRecap.summary(), "party_n": PartyRecap.n(), "participation": PartyRecap.participation(),
 	}
 
