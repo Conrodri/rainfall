@@ -65,3 +65,6 @@ art/tools/**/_runner_*.txt
 art/tools/vfx_test/_tmp_lit/
 art/blender/cel/**/before/
 art/blender/**/*_17935*.blend
+
+# Steam : fichier AppID local de debug (jamais commité ni exporté, docs/Integration_Steam.md)
+game/steam_appid.txt

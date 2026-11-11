@@ -46,6 +46,9 @@ func _ready() -> void:
 	var fps_counter: Node = preload("res://scripts/ui/fps_counter.gd").new() # réglage « Afficher les FPS » : titre, run et mode test
 	fps_counter.name = "FpsCounter"
 	add_child(fps_counter)
+	# Services de plateforme (Steam sur PC si l'extension et le client sont là, sinon interface vide) : avant le titre,
+	# pour que le profil venu du cloud soit déjà chargé.
+	PlatformServices.install(self, Profile)
 	meta = MetaTracker.new()
 	meta.name = "MetaTracker"
 	add_child(meta)
