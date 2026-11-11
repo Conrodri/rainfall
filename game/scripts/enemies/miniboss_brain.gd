@@ -766,6 +766,27 @@ func make_fx(kind: RecluseFx.Kind, color: Color, is_tele := false) -> RecluseFx:
 	return f
 
 
+## Éclat du rayon du Jugement : planche beam_judgment (étirée sur longueur x largeur du coup) ; repli RecluseFx BEAM
+## si la planche manque. Retourne le nœud (libéré par free_fx).
+func make_beam_flash(pos: Vector2, angle: float, len_px: float, w_px: float, col: Color) -> Node2D:
+	if MiniFx.load_tex("beam_judgment") != null:
+		var mf := MiniFx.make(MiniFx.Kind.BEAM, Color.WHITE, -1)
+		mf.length = len_px
+		mf.width = w_px
+		RecluseFx.add_to_tele_layer(mf, e.get_parent())
+		_fx.append(mf)
+		mf.global_position = pos
+		mf.rotation = angle
+		return mf
+	var f := make_fx(RecluseFx.Kind.BEAM, col)
+	f.global_position = pos
+	f.rotation = angle
+	f.width = w_px
+	f.color2 = Color(1, 1, 1, 0.9)
+	f.set_param(len_px)
+	return f
+
+
 func free_fx(n: Node) -> void:
 	if is_instance_valid(n):
 		n.queue_free()
@@ -990,17 +1011,28 @@ func summon_at(pos: Vector2, tier: int, hp_frac: float, affix: StringName) -> En
 
 
 func add_egg(pos: Vector2, delay: float, tier: int, hp_frac: float) -> void:
-	var f := make_fx(RecluseFx.Kind.DISC, Color(0.85, 0.9, 0.45, 0.85))
+	var f: Node2D = null
+	if MiniFx.load_tex("egg_brood") != null: # œuf texturé (4 images d'éclosion sur le délai), sous les corps
+		var mf := MiniFx.make(MiniFx.Kind.EGG, Color.WHITE, -1)
+		RecluseFx.add_to_tele_layer(mf, e.get_parent())
+		_fx.append(mf)
+		mf.set_progress(0.0)
+		f = mf
+	else:
+		var rf := make_fx(RecluseFx.Kind.DISC, Color(0.85, 0.9, 0.45, 0.85))
+		rf.width = 3.0
+		rf.set_param(0.3 * U)
+		f = rf
 	f.global_position = pos
-	f.width = 3.0
-	f.set_param(0.3 * U)
-	_eggs.append({"pos": pos, "left": delay, "tier": tier, "hp": hp_frac, "node": f})
+	_eggs.append({"pos": pos, "left": delay, "max": maxf(delay, 0.01), "tier": tier, "hp": hp_frac, "node": f})
 
 
 func _update_eggs(delta: float) -> void:
 	for i in range(_eggs.size() - 1, -1, -1):
 		var g: Dictionary = _eggs[i]
 		g["left"] = float(g["left"]) - delta
+		if is_instance_valid(g["node"]) and g["node"] is MiniFx:
+			(g["node"] as MiniFx).set_progress(1.0 - float(g["left"]) / float(g["max"]))
 		if float(g["left"]) <= 0.0:
 			free_fx(g["node"])
 			summon_at(g["pos"], int(g["tier"]), float(g["hp"]), &"")
@@ -1021,9 +1053,18 @@ func add_zone(z: Dictionary, zc: Dictionary) -> void:
 	var style := String(zc.get("style", "water" if zc.get("water", false) else ("salt" if zc.get("salt", false) else "")))
 	if z.has("gaps") and style == "":
 		style = "chain"
+	# planche de sol Codex (fx/minis/zone_<tex>) : `tex` du JSON ; zone sans style ni lumière -> flaque texturée,
+	# repli sur la forme RecluseFx si la planche manque
+	var tex := String(zc.get("tex", ""))
+	var tex_ok := tex != "" and MiniFx.has_sheet(tex)
+	if style == "" and tex_ok and not zc.get("light", false) and z["shape"] != "ring":
+		style = "pool"
 	match style:
-		"water", "salt": # flaque d'eau (héron, crapaud) / croûte de sel (golem) : forme provisoire MiniFx
-			var mf := _zone_fx(MiniFx.Kind.WATER if style == "water" else MiniFx.Kind.SALT, color_of(zc.get("color"), Color(0.33, 0.55, 0.7)))
+		"water", "salt", "pool": # flaque d'eau (héron, crapaud), croûte de sel (golem), mares, braises, huile : MiniFx
+			var mk := MiniFx.Kind.WATER if style == "water" else (MiniFx.Kind.SALT if style == "salt" else MiniFx.Kind.POOL)
+			var mf := _zone_fx(mk, color_of(zc.get("color"), Color(0.33, 0.55, 0.7)))
+			if tex_ok:
+				mf.sheet = tex
 			if String(z["shape"]) == "line":
 				mf.length = float(z["len"])
 				mf.width = float(z["w"])
