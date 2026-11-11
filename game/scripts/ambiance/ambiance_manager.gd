@@ -114,6 +114,13 @@ var _warmth := 0.0
 var _warmth_target := 0.0
 var _warmth_color := WARM_COLOR ## teinte de l'ultime en cours (CharacterData.ultimate_grade_color())
 var _grade_mat: ShaderMaterial
+var _haze_t := 0.0 ## horloge du défilement de la brume de chaleur
+## Amplitude de brume de chaleur poussée au shader à la dernière image (hauteur d'écran ; 0 = inactive).
+var haze_amount_applied := 0.0
+## Décalage maximal (hauteur d'écran) pour une force 1 : ~3 px à 1080 p.
+const HAZE_MAX_SHIFT := 0.003
+## Pluie à partir de laquelle la brume de chaleur a disparu (palier Hostile).
+const HAZE_RAIN_GONE := 0.75
 var _vignette_mat: ShaderMaterial
 var _bell: LightRig.Handle = null
 var _bell_t := -1.0
@@ -973,6 +980,26 @@ func _push_grade(p: Dictionary, view: Rect2) -> void:
 		m.set_shader_parameter(&"contrast", float(p[&"contrast"]))
 		m.set_shader_parameter(&"contrast_pivot", float(p[&"contrast_pivot"]))
 		m.set_shader_parameter(&"saturation", float(p[&"saturation"]))
+		_push_haze(m, p)
+	else:
+		haze_amount_applied = 0.0 # Bas : matériau vignette, rien ne lit l'écran
+
+
+## Brume de chaleur : force du profil x (1 - pluie / 0,75) x palier de qualité, coupée par « Réduire les
+## mouvements ». Seul le matériau d'étalonnage plein (Moyen/Haut) lit l'écran : en Bas, le matériau
+## vignette n'a pas de brume de chaleur (haze_amount_applied retombe à 0 via _push_grade).
+func _push_haze(m: ShaderMaterial, p: Dictionary) -> void:
+	var strength := float(p.get(&"heat_haze_strength", 0.0))
+	var amount := 0.0
+	if strength > 0.0 and profile != null and not GameSettings.reduce_motion():
+		var fade := clampf(1.0 - float(p[&"rain_intensity"]) / HAZE_RAIN_GONE, 0.0, 1.0)
+		amount = strength * fade * float(Quality.get_setting(&"heat_haze")) * HAZE_MAX_SHIFT
+	haze_amount_applied = amount
+	m.set_shader_parameter(&"haze_amount", amount)
+	if amount > 0.0:
+		_haze_t += get_process_delta_time()
+		m.set_shader_parameter(&"time_s", _haze_t)
+		m.set_shader_parameter(&"haze_tex", AmbianceTextures.get_tex(profile.heat_haze_texture))
 
 
 # --- API gameplay -------------------------------------------------------------

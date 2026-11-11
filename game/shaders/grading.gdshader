@@ -21,13 +21,28 @@ uniform vec3 vignette_color : source_color = vec3(0.1);
 uniform float aspect = 1.7778; // largeur / hauteur de l'écran
 uniform float grain_strength = 0.0;
 uniform float time_s = 0.0;
+// Brume de chaleur (Ciel « Canicule de cendres ») : ondulation de l'écran lue dans une tuile de bruit gris
+// qui défile lentement. haze_amount = décalage max en hauteur d'écran (0 = coupé : aucune lecture de la
+// tuile, un seul passage plein écran, pas de copie d'écran en plus). Plus forte vers le bas de l'écran.
+uniform sampler2D haze_tex : filter_linear, repeat_enable;
+uniform float haze_amount = 0.0;
+uniform float haze_scale = 2.5; // répétitions de la tuile par hauteur d'écran
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void fragment() {
-	vec3 c = texture(screen_tex, SCREEN_UV).rgb;
+	vec2 suv = SCREEN_UV;
+	if (haze_amount > 0.0) {
+		vec2 t = vec2(SCREEN_UV.x * aspect, SCREEN_UV.y) * haze_scale;
+		float a = texture(haze_tex, t + vec2(0.0, -time_s * 0.035)).r;
+		float b = texture(haze_tex, t * 1.3 + vec2(time_s * 0.02, -time_s * 0.05) + vec2(0.37, 0.61)).r;
+		// la tuile est quasi plate autour de 0,5 (écart-type ~0,02) : on amplifie l'écart à la moyenne
+		vec2 o = clamp((vec2(a, b) - 0.5) * 12.0, -1.0, 1.0);
+		suv += vec2(o.x / aspect, o.y) * haze_amount * mix(0.45, 1.0, SCREEN_UV.y);
+	}
+	vec3 c = texture(screen_tex, suv).rgb;
 	vec3 s = linear_input ? pow(max(c, vec3(0.0)), vec3(1.0 / 2.2)) : c;
 	vec3 over = max(s - 1.0, vec3(0.0)); // émissions HDR : préservées pour le glow
 	s = min(s, vec3(1.0));
