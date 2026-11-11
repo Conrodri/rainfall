@@ -398,14 +398,8 @@ static func _step_line(b: MiniBossBrain, p: Dictionary) -> bool:
 	if fs > 0.0:
 		b.hide_teles()
 		var lc := MiniBossBrain.color_of(b.cfg.get("light", {}).get("color"), Color(0.6, 0.9, 1.0))
-		var f := b.make_fx(RecluseFx.Kind.BEAM, Color(lc.r, lc.g, lc.b, 0.7))
 		var l0: Array = ls[0]
-		f.global_position = l0[0]
-		f.rotation = float(l0[1])
-		f.width = float(l0[3])
-		f.color2 = Color(1, 1, 1, 0.9)
-		f.set_param(float(l0[2]))
-		p["_flash"] = f
+		p["_flash"] = b.make_beam_flash(l0[0], float(l0[1]), float(l0[2]), float(l0[3]), Color(lc.r, lc.g, lc.b, 0.7))
 		LightRig.flash(b.e.global_position, &"boss", 0.3)
 		b.pace.impact(StringName(p.get("_cat", &"spell"))) # impact à la frame du coup, pas à la fin de l'éclat
 		p["_impacted"] = true
