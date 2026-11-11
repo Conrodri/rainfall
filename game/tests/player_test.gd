@@ -125,10 +125,9 @@ func _run() -> void:
 	_player.spells.flush_pending()
 	# 8 x 12 x (1+0.5+0.1) x 2 = 307,2 (Brasier 10 -> 8, équilibrage 22/10)
 	_check("brasier formule", _near(e3.total(), ArdentKit.BRASIER_COEF * 12.0 * 1.6 * 2.0), str(e3.taken))
-	_player.apply_stats({"max_hp_pct": 0.5, "move_speed": 0.5, "pickup_radius_mult": 0.5})
+	_player.apply_stats({"max_hp_pct": 0.5, "move_speed": 0.5})
 	_check("PV max +50 %", _near(_player.max_hp, 150.0), str(_player.max_hp))
 	_check("vitesse plafonnée +35 %", _near(_player.move_speed(), Balance.PLAYER_SPEED_U * 1.35 * 64.0))
-	_check("rayon de ramassage", _near(_player.pickup_radius, 240.0))
 	_player.apply_stats({"max_hp_pct": 0.05, "max_hp_flat": 15.0})
 	_check("PV max +5 % +15", _near(_player.max_hp, 120.0), str(_player.max_hp))
 

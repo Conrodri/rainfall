@@ -7,7 +7,6 @@ extends CharacterBody2D
 signal hp_changed(hp: float, max_hp: float)
 
 const DIR_NAMES := ["e", "se", "s", "sw", "w", "nw", "n", "ne"]
-const BASE_PICKUP_RADIUS := 160.0 ## 2,5 u
 const INVULN_AFTER_HIT := 0.4
 const DODGE_CAP := 0.75
 const MITIGATION_CAP := 0.90
@@ -39,7 +38,6 @@ const ZoneEffectScript := preload("res://scripts/spells/zone_effect.gd")
 var hp := 100.0
 var max_hp := 100.0
 var shield := 0.0
-var pickup_radius := BASE_PICKUP_RADIUS
 var dead := false
 var is_moving := false
 var facing := Vector2.DOWN
@@ -374,7 +372,6 @@ func _recompute(full_heal: bool) -> void:
 	elif max_hp > old_max:
 		hp += max_hp - old_max # un gain de PV max se ressent tout de suite
 	hp = minf(hp, max_hp)
-	pickup_radius = BASE_PICKUP_RADIUS * (1.0 + stat(&"pickup_radius_mult"))
 	hp_changed.emit(hp, max_hp)
 
 

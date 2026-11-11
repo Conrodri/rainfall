@@ -507,7 +507,7 @@ const PIERCE_CAP := 5
 const ITEM_BONUS_CAPS := {
 	"move_speed": MOVE_SPEED_BONUS_CAP, "attack_speed": ATTACK_SPEED_BONUS_CAP,
 	"projectile_speed": PROJECTILE_SPEED_BONUS_CAP, "zone_size_add": 1.0, "xp_mult": 1.0,
-	"range_add": 0.5, "pickup_radius_mult": 2.0, "pierce": float(PIERCE_CAP),
+	"range_add": 0.5, "pierce": float(PIERCE_CAP),
 	## Audit des objets du 28/10/2026 : Cœur de glace plafonné à +95 % (5 exemplaires),
 	## Œil du prédateur à +150 % de dégâts critiques (critique ×3,5 au plus).
 	"slowed_target_damage_add": 0.95, "crit_mult_add": 1.5,

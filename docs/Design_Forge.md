@@ -45,8 +45,10 @@ Choix de recette (la réalisable est en tête, toutes sont visibles) puis sélec
 ## Mode test
 Le panneau (onglet Objets) donne les noyaux (−1 / +1 / Plein) et les 6 objets forgés (section « Forgés »).
 
-## Assets à produire par Codex (placeholders de code aujourd'hui)
-- 6 icônes d'objets 128 px (Mèche-silex, Rosée figée, Rouage de traque, Sève rampante, Écorce de pluie, Prisme de grêle).
-- Icône du noyau d'orage pour le HUD et son pickup au sol (faits : `icons/storm_core.png`, `pickups/storm_core.png`).
-- Cadre « forgé » cuivré pour les cartes et la barre d'objets.
-- Pastille « Forge possible » (aujourd'hui un point cuivré en code).
+## Assets
+Tous les assets de la Forge existent dans `game/assets/sprites/` (état du 11/11/2026) :
+- 6 icônes d'objets : `icons/items/` (`meche_silex`, `rosee_figee`, `rouage_traque`, `seve_rampante`, `ecorce_pluie`, `prisme_grele`, avec masques `_e` pour une partie).
+- Noyau d'orage : `icons/storm_core.png` (HUD) et `pickups/storm_core.png` (sol, avec halo et ombre cuite).
+- Cadre « forgé » cuivré : `icons/frame_forge.png` et `icons/frame_forge_128.png` (barre d'objets).
+- Pastille « Forge possible » : `icons/forge_ready.png`.
+- Panneaux de l'écran Forge : `ui/forge/` (recette, gain, 9-slices).

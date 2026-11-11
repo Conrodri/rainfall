@@ -1,6 +1,6 @@
 # Rainfall : architecture multijoueur coop (1 à 4 joueurs)
 
-Étude du 01/11/2026 (agent architecte). Aucun code modifié. Base : état du dépôt au commit `088aa022`.
+Étude du 01/11/2026 (agent architecte). Aucun code modifié par l'étude. Mise à jour du 11/11/2026 : les étapes 1 à 4 du plan (§3, coop locale PC) sont codées ; les étapes 5 à 10 (réseau, EOS) ne le sont pas. Base : état du dépôt au commit `088aa022`.
 Objectif du joueur : un mode coopératif 1 à 4 joueurs façon Risk of Rain 2, sur PC (Windows), Android et iOS, sans serveur payant (jeu vendu ~5 €, aucun revenu récurrent).
 
 ---

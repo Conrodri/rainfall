@@ -63,22 +63,16 @@ const ISO_TILES := {
 	"terrasses": "res://assets/sprites/terrain/terraces/iso/",
 	"foret": "res://assets/sprites/terrain/fog_forest/iso/", ## lot F2 (22/10/2026) : mêmes 41 noms que C1, voir art/blender/terrain/f2_report.md
 	"cite": "res://assets/sprites/terrain/rust_city/iso/", ## lot F3 (22/10/2026) : mêmes 41 noms, voir art/blender/terrain/f3_validation.json
-	"cryptes": "res://assets/sprites/terrain/crypts/iso/", ## lot F4 (à venir, art/tools/night/requests_floor45.md §1) : mêmes 41 noms
-	"source": "res://assets/sprites/terrain/source/iso/", ## lot F5 (à venir, requests_floor45.md §3) : mêmes 41 noms
+	"cryptes": "res://assets/sprites/terrain/crypts/iso/", ## lot F4 : mêmes 41 noms
+	"source": "res://assets/sprites/terrain/source/iso/", ## lot F5 : mêmes 41 noms
 }
 ## Biome dont le lot iso n'est pas encore livré (pas de `ground_a..d` dans ISO_TILES) : tuiles d'un autre
 ## biome, teintées vers la palette du biome (docs/Design_Etages.md §3) en attendant Codex. Teintes en
 ## self_modulate (le fondu des murs garde modulate.a) ; `emission` recolore l'accent émissif des `_e`.
-## Entrée : {"dir", "ground", "water", "wall", "void", "emission"}. Vide depuis la livraison de F2 (forêt) ;
-## mécanisme gardé pour un biome futur (ex. cite en iso avant son lot).
-## Cryptes (étage 4) et Source (étage 5) : tuiles des terrasses (pierre, accent cyan d'eau), assombries et
-## refroidies (Design_Etages §3 : sol #2E3238, eau noire #0E1419, cristal #BFF4FF) jusqu'aux lots F4 / F5.
-const ISO_FALLBACK := {
-	"cryptes": {"dir": "res://assets/sprites/terrain/terraces/iso/", "ground": Color(0.76, 0.8, 0.86), "water": Color(0.36, 0.44, 0.52),
-		"wall": Color(0.72, 0.76, 0.84), "void": Color(0.5, 0.56, 0.66), "emission": Color(0.9, 1.0, 1.0)},
-	"source": {"dir": "res://assets/sprites/terrain/terraces/iso/", "ground": Color(0.82, 0.86, 0.92), "water": Color(0.6, 0.78, 0.95),
-		"wall": Color(0.76, 0.8, 0.88), "void": Color(0.45, 0.5, 0.62), "emission": Color(0.95, 1.0, 1.0)},
-}
+## Entrée : {"dir", "ground", "water", "wall", "void", "emission"}. Vide depuis la livraison de F2 à F5 ;
+## mécanisme gardé pour un biome futur.
+## Cryptes et Source ont leurs vraies tuiles (lots F4 / F5) : plus de substitut.
+const ISO_FALLBACK := {}
 ## Recouvrement des tuiles de sol iso (px de texture, par biome) : le bord en losange des tuiles est
 ## antialiasé (alpha 78/196 sur 2 px) et laissait voir l'abîme (pointillés clairs en losange). La grille
 ## est resserrée de (2k, k) px et la couche agrandie d'autant : chaque tuile chevauche ses voisines de
