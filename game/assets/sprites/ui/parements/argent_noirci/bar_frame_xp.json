@@ -1,0 +1,25 @@
+{
+  "name": "bar_frame_xp",
+  "size": [
+    512,
+    28
+  ],
+  "frames": 1,
+  "passes": [
+    "diffuse"
+  ],
+  "normal": "none: face-on UI",
+  "emission": false,
+  "nine_slice": {
+    "left": 18,
+    "top": 10,
+    "right": 18,
+    "bottom": 10
+  },
+  "content_insets": {
+    "left": 18,
+    "top": 10,
+    "right": 18,
+    "bottom": 10
+  }
+}
