@@ -5,7 +5,7 @@ Synthèse des trois études du dossier `docs/multi/` :
 - `Scaling_Multi.md` et `sim_multi.py` : scaling façon Risk of Rain 2, simulation de 1 à 4 joueurs.
 - `Design_Coop.md` : boucle coop, partage, mort, lisibilité, interface.
 
-Statut : **étude, rien n'est codé**. Les points marqués « À trancher » attendent le joueur.
+Statut (11/11/2026) : **la coop locale PC, étapes 1 à 4 du plan, est codée** (registre `Players`, état par joueur, refactor N joueurs, director multi-cibles, lobby de manettes, caméra commune avec laisse, plaques HUD, menus et réticules par joueur ; tests `players_registry_test`, `coop_player_test`, `coop_ui_test`, `coop_stage_test`, `director_multi_perf_test`). **Le jeu en ligne (étapes 5 à 10, EOS) n'est pas codé** : il est prévu dans une mise à jour après la sortie (décision du 06/11/2026). Les points marqués « À trancher » attendent le joueur ; les pings, la roue de messages, le veto du téléporteur et la cagnotte du légendaire restent à arbitrer.
 
 ## 1. Périmètre et technique
 

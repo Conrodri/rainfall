@@ -99,11 +99,7 @@ func _check_floor4(stage: StageManager) -> void:
 	_check("murs en sprites triés (sans prisme)", blocks != null and blocks.y_sort_enabled and sprites > 50 and prisms == 0, "%d sprites, %d prismes" % [sprites, prisms])
 	var real := StageMap._has_textures(F4, StageMap.GROUND_VARIANTS)
 	var tint: Dictionary = map.get(&"_tint")
-	if real:
-		_check("F4 livré : tuiles crypts/iso sans teinte", map.iso_dir_used == F4 and tint.is_empty(), map.iso_dir_used)
-	else:
-		_check("F4 absent : substitut teinté (ISO_FALLBACK cryptes)", not tint.is_empty() and map.iso_dir_used == String(StageMap.ISO_FALLBACK["cryptes"]["dir"]), map.iso_dir_used)
-		_check("substitut : sol assombri", ground.self_modulate.v < 0.95, str(ground.self_modulate))
+	_check("F4 livré : tuiles crypts/iso sans teinte", real and map.iso_dir_used == F4 and tint.is_empty(), map.iso_dir_used)
 	# ambiance
 	var amb: AmbianceManager = _main.get(&"ambiance")
 	_check("ambiance cryptes_noyees", amb.profile != null and amb.profile.map_id == &"cryptes_noyees")

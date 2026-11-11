@@ -58,6 +58,7 @@ func _ready() -> void:
 	_check_flags()
 	_check_no_real_money()
 	_check_tips()
+	_check_steam_app_id()
 	_report()
 
 
@@ -272,6 +273,21 @@ func _check_tips() -> void:
 		elif seen.has(t):
 			_gap(11, "data/tips.json : doublon « %s » -> unique" % String(t).left(40))
 		seen[t] = true
+
+
+# --- 31. AppID Steam ----------------------------------------------------------------------------
+
+## RELEASE_APP_ID = 0 tant que l'AppID Steam n'est pas attribué (contrôle 31). Compté en mode strict seulement.
+func _check_steam_app_id() -> void:
+	if not _strict:
+		return
+	var text := FileAccess.get_file_as_string("res://scripts/meta/steam/steam_services.gd")
+	var re := RegEx.create_from_string("(?m)^const RELEASE_APP_ID\\s*(?::=|=)\\s*(\\d+)")
+	var m := re.search(text)
+	if m == null:
+		_gap(31, "scripts/meta/steam/steam_services.gd RELEASE_APP_ID : constante introuvable -> AppID Steam de release")
+	elif int(m.get_string(1)) == 0:
+		_gap(31, "scripts/meta/steam/steam_services.gd RELEASE_APP_ID : 0 -> AppID Steam de release (≠ 0)")
 
 
 # --- Outils -------------------------------------------------------------------------------------
