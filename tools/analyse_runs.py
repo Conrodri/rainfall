@@ -8,7 +8,9 @@ exportées depuis Réglages > Jeu > « Exporter les journaux ». Sort un rapport
   - taux de prise et taux de victoire par objet ;
   - causes de mort ;
   - courbe or / objets / niveau par minute ;
-  - dégâts reçus par source et recharges effectives par sort.
+  - dégâts reçus par source et recharges effectives par sort ;
+  - Épreuves par verbe, lassitude mesurée Gouffre / Cryptes (durée, note, abandon) ;
+  - Forge : recettes faites, rang, étage, personnage, taux de runs qui forgent.
 
 Usage :
   python tools/analyse_runs.py <dossier|fichier.json|archive.zip> [...] [-o rapport.md] [--min-n 3]
@@ -438,6 +440,125 @@ def section_epreuves_verbes(logs):
     return "\n".join(lines)
 
 
+def _recipe_tiers():
+    """Rang (tier) de chaque objet forgé, lu dans game/data/recipes.json si le dépôt est présent (sinon rang inconnu)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    try:
+        with open(os.path.join(here, "..", "game", "data", "recipes.json"), encoding="utf-8") as fh:
+            return {r["result"]: int(r.get("tier", 0)) for r in json.load(fh)}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}
+
+
+ROMAN = {1: "I", 2: "II"}
+
+
+def section_forge(logs):
+    """Forge (docs/Design_Forge.md) : événements `craft` de floors[].crafts [{t, player, id, ingredients, stage}].
+    Rang = tier de la recette (data/recipes.json). Taux = part des runs ayant forgé ; crafts/run = sur les runs qui forgent."""
+    lines = ["## Forge", ""]
+    tiers = _recipe_tiers()
+    by_id = defaultdict(lambda: {"n": 0, "stages": Counter(), "chars": Counter(), "runs": set()})
+    by_char = defaultdict(lambda: {"runs": 0, "forged_runs": 0, "n": 0})
+    by_stage = Counter()
+    total_runs, forging_runs, total = 0, 0, 0
+    for i, d in enumerate(logs):
+        total_runs += 1
+        ch = d.get("character", "?")
+        by_char[ch]["runs"] += 1
+        n_run = 0
+        for f in d.get("floors", []):
+            for c in f.get("crafts", []) or []:
+                st = c.get("stage", f.get("stage", 0))
+                v = by_id[c.get("id", "?")]
+                v["n"] += 1
+                v["stages"][st] += 1
+                v["chars"][ch] += 1
+                v["runs"].add(i)
+                by_stage[st] += 1
+                n_run += 1
+        if n_run:
+            forging_runs += 1
+            by_char[ch]["forged_runs"] += 1
+            by_char[ch]["n"] += n_run
+            total += n_run
+    if not total:
+        return "\n".join(lines + ["_Aucun craft dans les journaux._"])
+    lines.append(f"{total} crafts sur {forging_runs}/{total_runs} runs ({pct(forging_runs / total_runs)} des runs ont forgé ; "
+                 f"{fmt(total / forging_runs, 2)} crafts par run qui forge).")
+    rows = []
+    for rid, v in sorted(by_id.items(), key=lambda kv: -kv[1]["n"]):
+        t = tiers.get(rid)
+        rows.append([rid, ROMAN.get(t, "?"), v["n"], pct(v["n"] / total), pct(len(v["runs"]) / total_runs),
+                     ", ".join(f"É{s} ×{n}" for s, n in sorted(v["stages"].items())),
+                     ", ".join(f"{c} ×{n}" for c, n in v["chars"].most_common())])
+    lines += ["", "### Recettes faites", "",
+              table(["Objet forgé", "Rang", "Crafts", "Part des crafts", "Runs concernées", "Par étage", "Par personnage"], rows)]
+    rank_n = Counter()
+    for rid, v in by_id.items():
+        rank_n[ROMAN.get(tiers.get(rid), "?")] += v["n"]
+    lines += ["", "### Par rang", "", table(["Rang", "Crafts", "Part"], [[r, n, pct(n / total)] for r, n in sorted(rank_n.items())])]
+    lines += ["", "### Par étage", "", table(["Étage", "Crafts", "Part"], [[s, n, pct(n / total)] for s, n in sorted(by_stage.items())])]
+    rows = [[c, v["runs"], v["forged_runs"], pct(v["forged_runs"] / v["runs"]), v["n"]] for c, v in sorted(by_char.items())]
+    lines += ["", "### Par personnage (taux de runs qui forgent)", "",
+              table(["Personnage", "Runs", "Runs avec craft", "Taux", "Crafts"], rows)]
+    return "\n".join(lines)
+
+
+GOUFFRE_STAGE, CRYPTES_STAGE = 2, 4
+STAGE_NAME = {GOUFFRE_STAGE: "Gouffre (É2)", CRYPTES_STAGE: "Cryptes (É4)"}
+
+
+def section_lassitude(logs):
+    """« Lassitude mesurée » (décision du 07/11, docs/Design_Epreuves.md §14) : Veine et Poursuite jouées aux deux étages
+    qui les partagent. Par verbe et par étage : durée médiane, note moyenne (parfait 2, bien 1, fait 0) et abandon
+    (épreuve lancée jamais résolue : grade vide). Écart = Cryptes - Gouffre ; durée qui raccourcit ou note qui monte sans
+    abandon accru = verbe maîtrisé (ennui probable), abandon qui monte = frustration."""
+    lines = ["## Lassitude des épreuves : Gouffre contre Cryptes", ""]
+    score = {"parfait": 2, "bien": 1, "fait": 0}
+    acc = defaultdict(lambda: {"started": 0, "done": 0, "s": [], "score": [], "parfait": 0})
+    for d in logs:
+        for f in d.get("floors", []):
+            st = f.get("stage")
+            if st not in STAGE_NAME:
+                continue
+            for e in f.get("epreuves", []) or []:
+                a = acc[(e.get("kind", "?"), st)]
+                a["started"] += 1
+                g = e.get("grade")
+                if g:
+                    a["done"] += 1
+                    a["s"].append(float(e.get("s", 0.0)))
+                    a["score"].append(score.get(g, 0))
+                    a["parfait"] += g == "parfait"
+    verbs = sorted({k for k, _ in acc})
+    shared = [v for v in verbs if (v, GOUFFRE_STAGE) in acc and (v, CRYPTES_STAGE) in acc]
+    verbs = shared or verbs
+    if not verbs:
+        return "\n".join(lines + ["_Aucune épreuve au Gouffre ni aux Cryptes._"])
+    rows = []
+    for v in verbs:
+        stat = {}
+        for st in (GOUFFRE_STAGE, CRYPTES_STAGE):
+            a = acc.get((v, st))
+            if not a:
+                stat[st] = None
+                rows.append([v, STAGE_NAME[st], 0, "-", "-", "-", "-"])
+                continue
+            med = quantile(a["s"], 0.5) if a["s"] else float("nan")
+            note = sum(a["score"]) / len(a["score"]) if a["score"] else float("nan")
+            ab = 1 - a["done"] / a["started"]
+            stat[st] = (med, note, ab)
+            rows.append([v, STAGE_NAME[st], a["started"], fmt(med, 1), fmt(note, 2),
+                         pct(a["parfait"] / a["done"]) if a["done"] else "-", pct(ab)])
+        g, c = stat[GOUFFRE_STAGE], stat[CRYPTES_STAGE]
+        if g and c and not any(math.isnan(x) for x in g + c):
+            rows.append([v, "**écart (Cryptes - Gouffre)**", "", f"{c[0] - g[0]:+.1f} s", f"{c[1] - g[1]:+.2f}", "",
+                         f"{100 * (c[2] - g[2]):+.0f} pt"])
+    lines.append(table(["Verbe", "Étage", "Lancées", "Durée méd. (s)", "Note moy. (0-2)", "Parfait", "Abandon"], rows))
+    return "\n".join(lines)
+
+
 def section_taken(logs):
     src = Counter()
     for d in logs:
@@ -460,7 +581,7 @@ def report(logs, skipped, min_n):
         parts.append("Aucun journal lisible.")
         return "\n".join(parts)
     for sec in (section_summary(logs), section_ttk(logs, min_n), section_dps(logs, min_n), section_items(logs, min_n),
-                section_deaths(logs), section_economy(logs), section_epreuves(logs), section_epreuves_verbes(logs), section_taken(logs)):
+                section_deaths(logs), section_economy(logs), section_epreuves(logs), section_epreuves_verbes(logs), section_lassitude(logs), section_forge(logs), section_taken(logs)):
         parts += [sec, ""]
     return "\n".join(parts)
 
@@ -498,6 +619,29 @@ def synth_logs(n, seed=1):
                 fl["chests"].append({"t": ct, "q": rng.choice(["commun", "rare", "legendaire"]), "offered": offer, "taken": pick})
                 fl["items"].append({"t": ct, "id": pick, "src": "coffre"})
                 owned[pick] += 1
+            # Épreuves (verbes par étage comme data/epreuves.json) : Veine et Poursuite plus rapides et mieux notées aux Cryptes
+            # (cas « lassitude »), quelques abandons ; crafts de la Forge (recettes réelles de data/recipes.json).
+            verbs = {1: ["escorte", "rituel"], 2: ["veine", "poursuite"], 3: ["tenue"], 4: ["veine", "poursuite"]}.get(s, [])
+            if verbs:
+                fl["epreuves_on"] = True
+                fl["epreuves"] = []
+                lasse = 0.8 if s == 4 else 1.0
+                for kind in verbs:
+                    t0 = round(t + rng.uniform(20, 80), 1)
+                    if rng.random() < (0.05 if s != 4 else 0.12):
+                        fl["epreuves"].append({"kind": kind, "t0": t0, "t1": -1.0, "grade": "", "s": 0.0, "gold": 0, "extra": {}})
+                        continue
+                    dur_e = round(rng.gauss(45 * lasse / skill, 6), 1)
+                    grade = rng.choices(["parfait", "bien", "fait"], [0.3 / lasse, 0.4, 0.3 * lasse])[0]
+                    fl["epreuves"].append({"kind": kind, "t0": t0, "t1": round(t0 + dur_e, 1), "grade": grade, "s": dur_e,
+                                           "gold": 40 * s, "extra": {"hits": rng.randint(2, 12), "pulses": rng.randint(1, 5)}})
+                fl["epreuve_s"] = round(sum(e["s"] for e in fl["epreuves"]), 1)
+            if s >= 2 and rng.random() < 0.55:
+                fl["crafts"] = []
+                for _ in range(rng.randint(1, 2)):
+                    rid = rng.choice(["meche_silex", "rosee_figee", "rouage_traque", "seve_rampante"])
+                    fl["crafts"].append({"t": round(t + rng.uniform(30, dur), 1), "player": 0, "id": rid,
+                                         "ingredients": rng.sample(items, 3), "stage": s})
             for mini in minis:
                 ttk = rng.gauss(26 / skill, 4)
                 fights.append({"id": mini, "cat": "mini", "stage": s, "hp_max": 1000 * s, "t_spawn": round(t + 40, 1),
