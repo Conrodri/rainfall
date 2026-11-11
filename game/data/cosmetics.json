@@ -209,7 +209,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/petales.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/petales/particle_32.png",
@@ -225,7 +225,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/givre.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/givre/particle_32.png",
@@ -241,7 +241,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/feu_follet.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/feu_follet/particle_32.png",
@@ -257,7 +257,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/encre.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/encre/particle_32.png",
@@ -273,7 +273,7 @@
       "price": 250,
       "target": "pas",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/rouille.png",
       "assets": {
         "particle": "res://assets/sprites/cosmetics/sillages/rouille/particle_32.png",
@@ -289,7 +289,7 @@
       "price": 200,
       "target": "esquive",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/esquive_fumee.png",
       "assets": {
         "wake": "res://assets/sprites/cosmetics/sillages/esquive_fumee/wake.png",
@@ -305,7 +305,7 @@
       "price": 200,
       "target": "esquive",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/esquive_gouttelettes.png",
       "assets": {
         "wake": "res://assets/sprites/cosmetics/sillages/esquive_gouttelettes/wake.png",
@@ -336,7 +336,7 @@
       "price": 400,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/celadon.png",
       "assets": {
         "dir": "res://assets/sprites/ui/parements/celadon/",
@@ -351,7 +351,7 @@
       "price": 400,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/laque_noire.png",
       "assets": {
         "dir": "res://assets/sprites/ui/parements/laque_noire/",
@@ -366,7 +366,7 @@
       "price": 400,
       "target": "",
       "version": "v1",
-      "pending": true,
+      "pending": false,
       "preview": "res://assets/sprites/cosmetics/previews/argent_noirci.png",
       "assets": {
         "dir": "res://assets/sprites/ui/parements/argent_noirci/",

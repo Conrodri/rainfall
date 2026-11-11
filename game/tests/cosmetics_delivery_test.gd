@@ -10,6 +10,8 @@ const DELIVERED: Array[String] = [
 	"averse_avant_la_pluie", "vigie_avant_la_pluie", "ardent_avant_la_pluie", "rictus_avant_la_pluie",
 	"braises", "bronze_de_cloche", "bivouac_des_cedres", "nuit_de_lanternes",
 	"apres_midi_d_orage", "canicule_de_cendres", "maree_haute", "quai_de_la_cite", "crypte_veilleuse", "lanternes_de_riziere",
+	"petales", "givre", "feu_follet", "encre", "rouille", "esquive_fumee", "esquive_gouttelettes",
+	"celadon", "laque_noire", "argent_noirci",
 ]
 ## Livrés mais bloqués : doivent rester `pending` tant que le défaut n'est pas corrigé (aucun pour l'instant).
 const BLOCKED: Array[String] = []
