@@ -77,6 +77,6 @@ def write_ogg(path, x, quality=5):
     wavfile.write(wav,SR,(np.clip(x,-1,1)*32767).astype(np.int16))
     try: subprocess.run(['ffmpeg','-y','-loglevel','error','-i',str(wav),'-c:a','libvorbis','-q:a',str(quality),str(path)],check=True)
     finally: wav.unlink(missing_ok=True)
-def decode(path):
-    b=subprocess.check_output(['ffmpeg','-v','error','-i',str(path),'-f','f32le','-ac','2','-ar',str(SR),'-'])
-    return np.frombuffer(b,dtype='<f4').reshape(-1,2)
+def decode(path, channels=2):
+    b=subprocess.check_output(['ffmpeg','-v','error','-i',str(path),'-f','f32le','-ac',str(channels),'-ar',str(SR),'-'])
+    return np.frombuffer(b,dtype='<f4').reshape(-1,channels)
