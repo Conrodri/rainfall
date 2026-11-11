@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cywyos41vs4xj"
-path.bptc="res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.bptc.ctex"
-path.astc="res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.astc.ctex"
+path.s3tc="res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.s3tc.ctex"
+path.etc2="res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/lanternes_de_riziere/lantern_post.png"
-dest_files=["res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.bptc.ctex", "res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.astc.ctex"]
+dest_files=["res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.s3tc.ctex", "res://.godot/imported/lantern_post.png-202bd9e87c4f6870f4d6841f0d5a05bb.etc2.ctex"]
 
 [params]
 

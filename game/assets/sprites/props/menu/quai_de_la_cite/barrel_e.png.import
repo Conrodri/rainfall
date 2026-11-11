@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ndjohud6duyw"
-path.bptc="res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.bptc.ctex"
-path.astc="res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.astc.ctex"
+path.s3tc="res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.s3tc.ctex"
+path.etc2="res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/quai_de_la_cite/barrel_e.png"
-dest_files=["res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.bptc.ctex", "res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.astc.ctex"]
+dest_files=["res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.s3tc.ctex", "res://.godot/imported/barrel_e.png-bd8422723e3ba96e8e7c47b0d5862e21.etc2.ctex"]
 
 [params]
 

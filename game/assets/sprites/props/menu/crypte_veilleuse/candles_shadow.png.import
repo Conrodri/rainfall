@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7c7mhvi6kcj0"
-path.bptc="res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.bptc.ctex"
-path.astc="res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.astc.ctex"
+path.s3tc="res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.s3tc.ctex"
+path.etc2="res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/crypte_veilleuse/candles_shadow.png"
-dest_files=["res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.bptc.ctex", "res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.astc.ctex"]
+dest_files=["res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.s3tc.ctex", "res://.godot/imported/candles_shadow.png-9007a1269bc656b5b51370aabd14235f.etc2.ctex"]
 
 [params]
 

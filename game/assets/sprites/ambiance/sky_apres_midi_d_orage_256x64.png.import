@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bc7xtcnpfh5y"
-path.bptc="res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.bptc.ctex"
-path.astc="res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.astc.ctex"
+path.s3tc="res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.s3tc.ctex"
+path.etc2="res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/ambiance/sky_apres_midi_d_orage_256x64.png"
-dest_files=["res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.bptc.ctex", "res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.astc.ctex"]
+dest_files=["res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.s3tc.ctex", "res://.godot/imported/sky_apres_midi_d_orage_256x64.png-cd3e607ba6d6e38ffb1a37fe8831d2fa.etc2.ctex"]
 
 [params]
 

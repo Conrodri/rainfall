@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c50rst32f2yvb"
-path.bptc="res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.bptc.ctex"
-path.astc="res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.astc.ctex"
+path.s3tc="res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.s3tc.ctex"
+path.etc2="res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/quai_de_la_cite/crate_shadow.png"
-dest_files=["res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.bptc.ctex", "res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.astc.ctex"]
+dest_files=["res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.s3tc.ctex", "res://.godot/imported/crate_shadow.png-6c1ca544731a1c95dd89389711b27589.etc2.ctex"]
 
 [params]
 

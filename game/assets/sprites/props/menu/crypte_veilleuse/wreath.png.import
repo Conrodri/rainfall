@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://mclr8ffi2xgs"
-path.bptc="res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.bptc.ctex"
-path.astc="res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.astc.ctex"
+path.s3tc="res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.s3tc.ctex"
+path.etc2="res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/crypte_veilleuse/wreath.png"
-dest_files=["res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.bptc.ctex", "res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.astc.ctex"]
+dest_files=["res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.s3tc.ctex", "res://.godot/imported/wreath.png-09a784a02af28bb941f3bfa693facfdf.etc2.ctex"]
 
 [params]
 

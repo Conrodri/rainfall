@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cal1e7lvdixmv"
-path.bptc="res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.bptc.ctex"
-path.astc="res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.astc.ctex"
+path.s3tc="res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.s3tc.ctex"
+path.etc2="res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/lanternes_de_riziere/boat.png"
-dest_files=["res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.bptc.ctex", "res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.astc.ctex"]
+dest_files=["res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.s3tc.ctex", "res://.godot/imported/boat.png-6279257b27b32af0984c28b90292c067.etc2.ctex"]
 
 [params]
 

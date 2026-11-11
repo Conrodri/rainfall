@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h2qj4o1autc0"
-path.bptc="res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.bptc.ctex"
-path.astc="res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.astc.ctex"
+path.s3tc="res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.s3tc.ctex"
+path.etc2="res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/quai_de_la_cite/barrel.png"
-dest_files=["res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.bptc.ctex", "res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.astc.ctex"]
+dest_files=["res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.s3tc.ctex", "res://.godot/imported/barrel.png-2680f3b00f12af8060623946c73116a5.etc2.ctex"]
 
 [params]
 

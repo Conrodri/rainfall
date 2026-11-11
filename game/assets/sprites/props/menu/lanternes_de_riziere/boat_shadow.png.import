@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxg4w4cww7qtx"
-path.bptc="res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.bptc.ctex"
-path.astc="res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.astc.ctex"
+path.s3tc="res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.s3tc.ctex"
+path.etc2="res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/lanternes_de_riziere/boat_shadow.png"
-dest_files=["res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.bptc.ctex", "res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.astc.ctex"]
+dest_files=["res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.s3tc.ctex", "res://.godot/imported/boat_shadow.png-a87e382b9bbb24bcf96842f15220ef37.etc2.ctex"]
 
 [params]
 

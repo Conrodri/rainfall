@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4avb1js2w041"
-path.bptc="res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.bptc.ctex"
-path.astc="res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.astc.ctex"
+path.s3tc="res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.s3tc.ctex"
+path.etc2="res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/quai_de_la_cite/cat.png"
-dest_files=["res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.bptc.ctex", "res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.astc.ctex"]
+dest_files=["res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.s3tc.ctex", "res://.godot/imported/cat.png-a976cdb24b2b9ffcb20c9329ac4ffc0f.etc2.ctex"]
 
 [params]
 

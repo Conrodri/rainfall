@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cbdb8k4ixd68f"
-path.bptc="res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.bptc.ctex"
-path.astc="res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.astc.ctex"
+path.s3tc="res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.s3tc.ctex"
+path.etc2="res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -13,7 +13,7 @@ metadata={
 [deps]
 
 source_file="res://assets/sprites/props/menu/quai_de_la_cite/fire_e.png"
-dest_files=["res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.bptc.ctex", "res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.astc.ctex"]
+dest_files=["res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.s3tc.ctex", "res://.godot/imported/fire_e.png-70fc3e06864d600ce51ff06cee5d82f8.etc2.ctex"]
 
 [params]
 
