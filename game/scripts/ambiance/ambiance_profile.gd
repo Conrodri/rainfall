@@ -46,7 +46,7 @@ const PARAM_KEYS: Array[StringName] = [
 	&"lightning_interval_min", &"lightning_interval_max", &"lightning_flash", &"lightning_double_chance",
 	&"lightning_sun", &"lightning_bolt_chance", &"lightning_rays", &"horizon_interval_min", &"horizon_interval_max",
 	&"lightning_sun_energy", &"map_lights_energy", &"map_lights_radius", &"player_light_scale", &"lamp_outage_scale",
-	&"lights_energy",
+	&"lights_energy", &"heat_haze_strength",
 ]
 
 @export var map_id: StringName = &""
@@ -117,6 +117,15 @@ const PARAM_KEYS: Array[StringName] = [
 @export var cloud_speed_u: Vector2 = Vector2(0.08, 0.03)
 @export var cloud_breathe: float = 0.0 ## respiration d'échelle (0,02 = ±2 %, période 9 s)
 @export var cloud_cover: float = 0.3 ## pilote les rayons (coupés au-dessus de 0,6)
+
+@export_group("Brume de chaleur")
+## Ondulation légère de l'image (Ciel « Canicule de cendres ») : 0 = aucune (défaut, toutes les autres
+## cartes), 1 = amplitude nominale (~3 px à 1080 p, plus forte en bas d'écran). Lue dans la passe
+## d'étalonnage (grading.gdshader : aucune passe ni copie d'écran en plus). AmbianceManager l'estompe
+## quand la pluie revient (nulle dès rain_intensity >= 0,75, palier Hostile) et la module par palier
+## de qualité (Bas coupé, Moyen réduit) et par « Réduire les mouvements » (coupé).
+@export var heat_haze_strength: float = 0.0
+@export var heat_haze_texture: StringName = &"heat_haze_tile_512" ## tuile grise raccordable (AmbianceTextures)
 
 @export_group("Rayons de lumière")
 @export var rays_count: float = 0.0

@@ -13,6 +13,8 @@ var map_id := "cite_rouille"
 var D := 5.0
 var tier := 2
 var shot_path := ""
+var profile_path := "" ## --profile=res://data/ambiance/<x>.tres : Ciel cosmétique à mesurer
+var no_haze := false ## --no-haze : coupe la brume de chaleur (comparaison)
 var _results := {}
 
 
@@ -22,6 +24,8 @@ func _ready() -> void:
 		elif a.begins_with("--d="): D = float(a.substr(4))
 		elif a.begins_with("--tier="): tier = int(a.substr(7))
 		elif a.begins_with("--shot="): shot_path = a.substr(7)
+		elif a.begins_with("--profile="): profile_path = a.substr(10)
+		elif a == "--no-haze": no_haze = true
 	Quality.persist = false
 	Quality.dynamic_degrade = false
 	Quality.set_tier(tier, true)
@@ -44,6 +48,11 @@ func _ready() -> void:
 	add_child(mgr)
 	mgr.set_difficulty(D)
 	mgr.bind_map(map)
+	if profile_path != "":
+		var sky := load(profile_path) as AmbianceProfile
+		if no_haze:
+			sky.heat_haze_strength = 0.0
+		mgr.apply_profile_resource(sky, StringName(map_id), true)
 	_attach_gameplay_lights(start)
 	await _measure("avec ambiance (%s, D=%.2f, %s)" % [map_id, D, Quality.tier_name()])
 	var base: Dictionary = _results["sans ambiance"]

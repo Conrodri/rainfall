@@ -57,6 +57,7 @@ const SETTINGS := {
 		&"glow_bloom": 0.0,
 		&"glow_threshold": 1.2,
 		&"grading": &"vignette", ## vignette seule (pas de lecture de l'écran)
+		&"heat_haze": 0.0, ## brume de chaleur (Ciel Canicule) : coupée en Bas (pas de lecture de l'écran)
 		&"rain_layers": 1,
 		&"rain_density_mult": 0.6,
 		&"rain_gusts": false,
@@ -99,6 +100,7 @@ const SETTINGS := {
 		&"glow_threshold": 1.2, ## v2 : seules les émissions et les cœurs de lumière (> 1,2) fleurissent : pas de voile
 		&"glow_threshold_ldr": 0.82, ## sans HDR 2D les valeurs plafonnent à 1 : seuls les quasi-blancs (émissions, cœurs de lumière) fleurissent
 		&"grading": &"full",
+		&"heat_haze": 0.5, ## brume de chaleur : amplitude réduite en Moyen
 		&"rain_layers": 2,
 		&"rain_density_mult": 1.0,
 		&"rain_gusts": true,
@@ -138,6 +140,7 @@ const SETTINGS := {
 		&"glow_threshold": 1.2,
 		&"glow_threshold_ldr": 0.82, ## si le HDR 2D est forcé coupé (hdr_override)
 		&"grading": &"full",
+		&"heat_haze": 1.0,
 		&"rain_layers": 2,
 		&"rain_density_mult": 1.0,
 		&"rain_gusts": true,

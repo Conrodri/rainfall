@@ -40,6 +40,7 @@ const CATALOG := {
 	&"godray_512x1024": &"none",
 	&"lightcone_256x512": &"none",
 	&"vignette_1024": &"none",
+	&"heat_haze_tile_512": &"none", # Ciel « Canicule de cendres » : tuile de bruit gris de la brume de chaleur
 	# Particules d'ambiance
 	&"spark_16": &"dot",
 	&"mote_16": &"dot",
