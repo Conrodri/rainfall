@@ -9,8 +9,7 @@ extends RefCounted
 ##
 ## Contrat d'assets (game/CONTRACTS.md « Skins de personnage ») : `<dossier du perso>/skins/<skin_id>/` contient les
 ## MÊMES fichiers que le dossier par défaut (mêmes noms, tailles, frames, masques _e, portrait.png) plus
-## `<skin_id>.tres` (SpriteFrames, mêmes animations que `<perso>.tres`). Style cel : `skins/<skin_id>_cel/` optionnel
-## (règle `_cel` de RenderStyle). Rien n'est rendu : tout repli sur le dossier par défaut, jamais d'erreur.
+## `<skin_id>.tres` (SpriteFrames, mêmes animations que `<perso>.tres`).
 
 const VariantUnlocks := preload("res://scripts/save/variant_unlocks.gd")
 const CHARACTERS_PATH := "res://data/characters.json"

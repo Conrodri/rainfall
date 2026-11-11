@@ -11,7 +11,7 @@ const PX_PER_U := 64.0 ## tous les lots sont rendus à 1 u = 64 px (ortho = tail
 
 
 static func tex(dir: String, file: String) -> Texture2D:
-	var path := RenderStyle.resolve(dir + file)
+	var path := dir + file
 	if not ResourceLoader.exists(path):
 		return null
 	return load(path) as Texture2D

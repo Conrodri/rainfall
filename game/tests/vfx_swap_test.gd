@@ -2,7 +2,7 @@ extends Node
 ## Mode test : les VRAIS sorts affichent les VFX de test pixelfx (VfxSwap + VfxTestPlayer en mode follow).
 ## godot --headless --path game res://tests/vfx_swap_test.tscn  -> RESULT: OK
 ## Vérifie :
-## 1. résolution des clés (chemins, `_cel`, anims de boss sans direction, corps et coup auto exclus, meta du point d'appel) ;
+## 1. résolution des clés (chemins, anims de boss sans direction, corps et coup auto exclus, meta du point d'appel) ;
 ## 2. interrupteur coupé (TestMode.vfx_test = false) : aucun VfxTestPlayer, effets d'origine visibles, frames intactes ;
 ## 3. interrupteur allumé : vrais lancers (SpellPreview) d'Ardent (zone, projectile), Averse (sprite de kit via
 ##    EmissiveOverlay, zone), Avare (salve de projectiles), Tocsin (sort de kit au lancement), Rainette (langue) :

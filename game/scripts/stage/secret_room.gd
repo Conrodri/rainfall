@@ -225,7 +225,7 @@ const WALL_BREAK_FRAME_S := 0.09
 
 
 func _wall_path(suffix: String) -> String:
-	return RenderStyle.resolve("%swall_%s_%s.png" % [WALL_DIR, biome, suffix])
+	return "%swall_%s_%s.png" % [WALL_DIR, biome, suffix]
 
 
 func _wall_state_for(ratio: float) -> int:

@@ -27,8 +27,6 @@ static func apply(anim: AnimatedSprite2D, frames: SpriteFrames, energy: float = 
 		return
 	if VfxSwap.enabled() or anim.has_meta(VfxSwap.META_HIDDEN): # mode test : VFX de test à la place (scripts/testmode/vfx_swap.gd)
 		VfxSwap.on_sprite(anim, frames)
-	anim.set_meta(RenderStyle.META_SRC, frames.resource_path) # bascule de style à chaud (RenderStyle.restyle_sprite)
-	anim.set_meta(RenderStyle.META_ENERGY, energy)
 	var ef := NormalMaps.emission_frames(frames)
 	var old := anim.get_node_or_null(NodePath(NormalMaps.EMISSION_NODE)) as AnimatedSprite2D
 	# L'enfant Emission d'une ressource précédente (ex. scène du joueur = Ardent, puis Arpenteuse) doit être recalé
