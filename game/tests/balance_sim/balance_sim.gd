@@ -7,6 +7,8 @@ extends Node
 ## Ne modifie aucun fichier du jeu ; RunState est réinitialisé à chaque combat (jamais de sauvegarde).
 
 const BotPilot := preload("res://tests/balance_sim/bot_pilot.gd")
+const TestTools := preload("res://scripts/testmode/test_tools.gd")
+const FLOORS_JSON := "res://data/floors.json"
 const PLAYER_SCENE := "res://scenes/player/player.tscn"
 const DIRECTOR_SCENE := "res://scenes/enemies/director.tscn"
 const CHARACTERS_JSON := "res://data/characters.json"
@@ -16,6 +18,13 @@ var speed_k := 12
 var seed_base := 1234
 var loadout := {} ## variantes de sorts à tester : {slot: id} (--loadout=1:id,2:id du lanceur)
 var disabled_slots: Array = [] ## ablation : slots retirés du kit (--noslot=4), pour mesurer la part de DPS d'un sort
+## Objets ajoutés à ceux de la configuration (--items=id:n,id:n du lanceur) : sondes de synergies objets × persos.
+var extra_items := {}
+## Index de la graine en cours (0, 1, ...) : le scénario « floorboss » s'en sert pour varier le boss du pool.
+var seed_index := 0
+## Boss d'étage exclus du duel « floorboss » : raids (cloches, boucliers à garde-fou) et Anguille (lac absent de
+## l'arène vide). Leur TTK se mesure en rencontre avec adds (balance_sim_fullrun --inject) ou en mode test.
+const DUEL_EXCLUDED: Array[StringName] = [&"drowned_idol", &"flood_gunner", &"salt_king", &"deep_eel"]
 
 ## Scénarios standard. waves : [{t, packs:[{tier, n, elite, variant, affixes}]}] ; boss : &"mini".
 const SCENARIOS := {
@@ -29,6 +38,12 @@ const SCENARIOS := {
 	"elite": {"label": "Élite T3", "cap_s": 90.0, "single": true, "waves": [
 		{"t": 0.0, "packs": [{"tier": 3, "n": 1, "elite": true, "affixes": ["burn"]}]}]},
 	"miniboss": {"label": "Mini-boss (frost_bear)", "cap_s": 120.0, "single": true, "boss": "mini", "waves": []},
+	## Boss d'étage de l'étage de la configuration, en duel (sans monstres de la charge) : boss du pool de
+	## data/floors.json hors DUEL_EXCLUDED, choisi par l'index de graine (graine 0 = premier du pool) ; étage 5 = boss
+	## final (× FINAL_BOSS_HP_MULT, comme TestTools). Sans adds, 100 % des dégâts vont au boss : le TTK mesuré est
+	## donc ≈ BOSS_FOCUS_HP_MULT × le TTK en jeu ; il sert aux écarts entre personnages (ratios), les durées absolues
+	## se lisent en rencontre avec adds (balance_sim_fullrun --inject, tools/roster_balance.py).
+	"floorboss": {"label": "Boss d'étage (duel, sans adds)", "cap_s": 300.0, "single": true, "boss": "floor", "waves": []},
 }
 
 ## Configurations (niveau joueur, mode, étage, temps actif -> D, or de poche, objets neutres sans proc).
@@ -47,6 +62,37 @@ const CONFIGS := {
 	"L12m": {"label": "Niv 12, Moyen ét.4 14,5 min (D≈4,9)", "level": 12, "mode": "moyen", "stage": 4, "t": 870.0, "gold": 800.0,
 		"items": {"pierre_a_aiguiser": 5, "sifflet_de_chasse": 3, "bague_de_vigueur": 5, "amulette_de_cuir": 3,
 			"sablier_fele": 3, "lentille_aiguisee": 4, "rune_de_portee": 2, "horloge_arcanique": 2, "tonique_vital": 3}},
+	## Fin de run / début du sans fin (audit roster 11/11/2026) : niveau 18, étage 5, 20 min (D ≈ 7,1, niveau ambiant 19),
+	## ≈ 45 objets neutres de la même famille que L6 / L12m (sans proc), pour prolonger la courbe L1-L6-L12m.
+	"L18": {"label": "Niv 18, Moyen ét.5 20 min (D≈7,1)", "level": 18, "mode": "moyen", "stage": 5, "t": 1200.0, "gold": 1500.0,
+		"items": {"pierre_a_aiguiser": 7, "sifflet_de_chasse": 4, "bague_de_vigueur": 7, "amulette_de_cuir": 4,
+			"sablier_fele": 4, "lentille_aiguisee": 5, "rune_de_portee": 3, "horloge_arcanique": 3, "tonique_vital": 4,
+			"botte_rapiecee": 2, "coeur_de_mousse": 2}},
+	## Moments des boss d'étage au rythme visé de 19 min (docs/Audit_Runs_Completes_2026-10-31.md §1) : boss d'étage
+	## à 150 s de l'étage N (t = 240 (N-1) + 150), boss final à 990 s ; niveau et nombre d'objets moyens mesurés à ces
+	## minutes dans les runs complètes (niveau 4 / 8 / 10 / 11 / 12 ; 5 / 13 / 21 / 29 / 33 objets). Inventaire
+	## « moyen réaliste » identique pour tous les personnages : communs surtout, quelques procs (Étincelle, Flocon,
+	## Fiole, Éclair en bouteille), un rare à partir de l'étage 4. Or de poche ≈ 1 prix de petit coffre (Avare).
+	"E1": {"label": "Boss ét.1 : niv 4, 2:30 (D≈1,38)", "level": 4, "mode": "moyen", "stage": 1, "t": 150.0, "gold": 75.0,
+		"items": {"pierre_a_aiguiser": 1, "sifflet_de_chasse": 1, "bague_de_vigueur": 1, "etincelle": 1, "sablier_fele": 1}},
+	"E2": {"label": "Boss ét.2 : niv 8, 6:30 (D≈2,29)", "level": 8, "mode": "moyen", "stage": 2, "t": 390.0, "gold": 150.0,
+		"items": {"pierre_a_aiguiser": 2, "sifflet_de_chasse": 1, "bague_de_vigueur": 2, "amulette_de_cuir": 1,
+			"sablier_fele": 1, "lentille_aiguisee": 1, "etincelle": 1, "flocon": 1, "coeur_de_mousse": 1,
+			"horloge_arcanique": 1, "eclair_en_bouteille": 1}},
+	"E3": {"label": "Boss ét.3 : niv 10, 10:30 (D≈3,43)", "level": 10, "mode": "moyen", "stage": 3, "t": 630.0, "gold": 250.0,
+		"items": {"pierre_a_aiguiser": 3, "sifflet_de_chasse": 2, "bague_de_vigueur": 2, "amulette_de_cuir": 2,
+			"sablier_fele": 2, "lentille_aiguisee": 2, "etincelle": 1, "flocon": 1, "coeur_de_mousse": 1, "botte_rapiecee": 1,
+			"horloge_arcanique": 1, "eclair_en_bouteille": 1, "rune_de_portee": 1, "tonique_vital": 1}},
+	"E4": {"label": "Boss ét.4 : niv 11, 14:30 (D≈4,87)", "level": 11, "mode": "moyen", "stage": 4, "t": 870.0, "gold": 400.0,
+		"items": {"pierre_a_aiguiser": 4, "sifflet_de_chasse": 3, "bague_de_vigueur": 3, "amulette_de_cuir": 2,
+			"sablier_fele": 2, "lentille_aiguisee": 2, "etincelle": 2, "flocon": 1, "fiole_verte": 1, "coeur_de_mousse": 1,
+			"botte_rapiecee": 1, "horloge_arcanique": 1, "eclair_en_bouteille": 1, "rune_de_portee": 1, "tonique_vital": 1,
+			"marque_du_chasseur": 1, "lame_jumelle": 1, "oeil_du_predateur": 1}},
+	"E5": {"label": "Boss final : niv 12, 16:30 (D≈6,13)", "level": 12, "mode": "moyen", "stage": 5, "t": 990.0, "gold": 550.0,
+		"items": {"pierre_a_aiguiser": 5, "sifflet_de_chasse": 3, "bague_de_vigueur": 4, "amulette_de_cuir": 3,
+			"sablier_fele": 2, "lentille_aiguisee": 2, "etincelle": 2, "flocon": 1, "fiole_verte": 1, "coeur_de_mousse": 1,
+			"botte_rapiecee": 1, "horloge_arcanique": 1, "eclair_en_bouteille": 1, "rune_de_portee": 1, "tonique_vital": 2,
+			"marque_du_chasseur": 1, "lame_jumelle": 1, "oeil_du_predateur": 1}},
 }
 
 ## Erreurs captées (Logger) pendant le combat en cours.
@@ -173,6 +219,8 @@ func _reset_run(cid: String, cfg: Dictionary) -> void:
 	RunState.items.clear()
 	for k in cfg["items"]:
 		RunState.items[StringName(k)] = int(cfg["items"][k])
+	for k in extra_items:
+		RunState.items[StringName(k)] = int(RunState.items.get(StringName(k), 0)) + int(extra_items[k])
 
 
 ## Un combat. cap_scale raccourcit la durée maximale (test de fumée).
@@ -246,12 +294,23 @@ func run_fight(cid: String, cdata: CharacterData, scen_id: String, cfg_id: Strin
 	for w in waves:
 		for p in w["packs"]:
 			total += int(p["n"])
+	var boss_id := ""
+	var boss_hp := 0.0
 	if scen.has("boss"):
 		total += 1
-		EnemyVisual._mini_count = 3 # pool par défaut : 4e mini-boss = frost_bear (visuel seulement)
-		var b: Node2D = director.spawn_boss(StringName(scen["boss"]), Vector2(6.0 * U, 0.0))
+		var b: Node2D = null
+		if str(scen["boss"]) == "floor":
+			var fb := floor_boss_for(RunState.stage, seed_index)
+			boss_id = String(fb["id"])
+			if boss_id != "":
+				b = TestTools.spawn_boss(get_tree(), fb["id"], fb["kind"], Vector2(6.0 * U, 0.0))
+		else:
+			EnemyVisual._mini_count = 3 # pool par défaut : 4e mini-boss = frost_bear (visuel seulement)
+			b = director.spawn_boss(StringName(scen["boss"]), Vector2(6.0 * U, 0.0))
 		if b == null:
 			total -= 1
+		else:
+			boss_hp = float(b.get(&"max_hp"))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_base
 	var cap: float = float(scen["cap_s"]) * cap_scale
@@ -316,21 +375,46 @@ func run_fight(cid: String, cdata: CharacterData, scen_id: String, cfg_id: Strin
 	Events.boss_killed.disconnect(on_boss_kill)
 	var errs := errlog.take()
 	var max_hp_end: float = player.max_hp
+	var armor_end: float = player.armor() if player.has_method(&"armor") else 0.0
+	var regen_end: float = player.regen_per_s() if player.has_method(&"regen_per_s") else 0.0
 	world.queue_free()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	var dur := maxf(_t, 0.001)
 	return {
 		"char": cid, "scenario": scen_id, "config": cfg_id, "duration": dur, "cleared": cleared,
+		"boss_id": boss_id, "boss_hp": boss_hp,
 		"ttk": (_last_kill_t if cleared else -1.0), "spawned": spawned + (1 if scen.has("boss") else 0), "total": total,
 		"kills": _kills, "kpm": _kills / dur * 60.0, "dealt": _dealt, "dps": _dealt / dur,
 		"taken": _taken, "dtps": _taken / dur, "hits_taken": _hits_taken, "deaths": deaths, "first_death_t": death_t,
-		"hp_min": hp_min_frac, "max_hp": max_hp_end,
+		"hp_min": hp_min_frac, "max_hp": max_hp_end, "armor": armor_end, "regen": regen_end,
 		"casts": casts, "by_slot": by_slot, "dodges": bot.dodges, "pref_u": bot.base_pref_u,
 		"resource": res_name, "res_mean": (res_sum / res_n if res_n > 0 else -1.0),
 		"res_uptime": (res_up / res_n if res_n > 0 else -1.0),
 		"errors": errs,
 	}
+
+
+## Boss d'étage du duel « floorboss » pour un étage : {id, kind}. Pool de data/floors.json sans DUEL_EXCLUDED, choisi par
+## l'index de graine ; étage final = boss final (kind &"final"). Étage inconnu ou pool vide : id vide (combat sauté).
+static func floor_boss_for(stage: int, index: int) -> Dictionary:
+	var f := FileAccess.open(FLOORS_JSON, FileAccess.READ)
+	if f == null:
+		return {"id": &"", "kind": &"etage"}
+	var data: Variant = JSON.parse_string(f.get_as_text())
+	if not (data is Dictionary):
+		return {"id": &"", "kind": &"etage"}
+	for fl in data.get("floors", []):
+		if int(fl.get("floor", 0)) != stage:
+			continue
+		var pool: Array = []
+		for bid in fl.get("floor_bosses", []):
+			if not (StringName(bid) in DUEL_EXCLUDED):
+				pool.append(StringName(bid))
+		if pool.is_empty():
+			return {"id": &"", "kind": &"etage"}
+		return {"id": pool[posmod(index, pool.size())], "kind": &"final" if bool(fl.get("final", false)) else &"etage"}
+	return {"id": &"", "kind": &"etage"}
 
 
 func _spawn_pack(director: Node, center: Vector2, p: Dictionary, rng: RandomNumberGenerator, a: float) -> int:
@@ -367,10 +451,12 @@ func run_character(cid: String, scen_ids: Array, cfg_ids: Array, cap_scale := 1.
 		for scen_id in scen_ids:
 			for si in seeds:
 				seed_base = 1234 + 1000 * si
+				seed_index = si
 				var fresh := load_character(cid) # kit neuf à chaque combat (un kit peut modifier ses SpellData)
 				var f: Dictionary = await run_fight(cid, fresh.get("data", lc["data"]), scen_id, cfg_id, cap_scale)
 				f["seed"] = seed_base
 				out["fights"].append(f)
-				print("SIM %s %s %s : %.1fs clear=%s dps=%.1f kills=%d taken=%.0f deaths=%d err=%d" % [cid, cfg_id, scen_id,
-					f["duration"], f["cleared"], f["dps"], f["kills"], f["taken"], f["deaths"], (f["errors"] as Array).size()])
+				print("SIM %s %s %s%s : %.1fs clear=%s dps=%.1f kills=%d taken=%.0f deaths=%d err=%d" % [cid, cfg_id, scen_id,
+					(" (%s)" % f["boss_id"]) if f["boss_id"] != "" else "", f["duration"], f["cleared"], f["dps"], f["kills"],
+					f["taken"], f["deaths"], (f["errors"] as Array).size()])
 	return out
