@@ -136,7 +136,7 @@ func _on_collected(_g: GroundPickup) -> void:
 	_announce()
 
 
-## Son de gain : seulement pour un joueur local.
+## Son et vibration de gain : seulement pour un joueur local.
 func _play_gain_sound() -> void:
 	if not is_inside_tree():
 		return
@@ -144,6 +144,7 @@ func _play_gain_sound() -> void:
 	if e != null and not e.is_local:
 		return
 	Audio.play_ui(&"storm_core_gain")
+	Haptics.pulse(Haptics.Kind.CORE)
 
 
 ## Annonce de ramassage : toast d'AchievementToast (hébergé par MetaTracker) « Noyau d'orage +1 » et compteur x/2.

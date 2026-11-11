@@ -9,7 +9,7 @@ extends RefCounted
 ## Branchements : Player.take_damage/_damage_hp/_on_level_up, BossPace.impact, coffre légendaire via Events.chest_opened
 ## (connect_events(), appelé une fois par Player._ready). Tests : sinks et horloge injectables (reset()).
 
-enum Kind { HURT, HURT_BIG, BOSS_IMPACT, LEGENDARY, LEVEL_UP, DEATH }
+enum Kind { HURT, HURT_BIG, BOSS_IMPACT, LEGENDARY, LEVEL_UP, DEATH, EPREUVE_NOTE, EPREUVE_PERFECT, FORGE, CORE, LOBBY_READY, PAD_RECONNECT }
 
 const MIN_GAP_MS := 80
 const MAX_PER_S := 6
@@ -23,6 +23,12 @@ const TABLE := {
 	Kind.LEGENDARY: {"ms": 40, "amp": 0.7, "weak": 0.4, "strong": 0.4, "s": 0.25, "double": true},
 	Kind.LEVEL_UP: {"ms": 40, "amp": 0.7, "weak": 0.4, "strong": 0.4, "s": 0.25, "double": true},
 	Kind.DEATH: {"ms": 120, "amp": 1.0, "weak": 0.6, "strong": 0.9, "s": 0.35},
+	Kind.EPREUVE_NOTE: {"ms": 100, "amp": 0.6, "weak": 0.3, "strong": 0.4, "s": 0.1}, # audit UX E4 : note d'épreuve
+	Kind.EPREUVE_PERFECT: {"ms": 80, "amp": 0.8, "weak": 0.4, "strong": 0.5, "s": 0.08, "double": true}, # parfait : 2 x 80 ms
+	Kind.FORGE: {"ms": 60, "amp": 0.8, "weak": 0.3, "strong": 0.6, "s": 0.15}, # F11 : forge réussie
+	Kind.CORE: {"ms": 40, "amp": 0.6, "weak": 0.2, "strong": 0.4, "s": 0.1}, # F6 : noyau d'orage
+	Kind.LOBBY_READY: {"ms": 30, "amp": 0.5, "weak": 0.2, "strong": 0.2, "s": 0.08}, # L3 : « Prêt » du lobby
+	Kind.PAD_RECONNECT: {"ms": 200, "amp": 0.5, "weak": 0.5, "strong": 0.5, "s": 0.2}, # D2 : manette rendue
 }
 
 # --- Injection (tests) ---
@@ -69,12 +75,13 @@ static func hurt(amount: float, max_hp: float) -> void:
 
 
 ## Retourne vrai si une vibration a été émise.
-static func pulse(kind: int) -> bool:
+## `device` >= 0 : vibre cette manette précise (reconnexion), quel que soit le mode d'entrée ; le réglage s'applique toujours.
+static func pulse(kind: int, device := -1) -> bool:
 	if not TABLE.has(kind) or not GameSettings.haptics():
 		return false
 	var mode := _mode()
-	var pad := mode == 2 # Platform.InputMode.GAMEPAD
-	var phone := mode == 0 and _is_mobile() # TOUCH
+	var pad := mode == 2 or device >= 0 # Platform.InputMode.GAMEPAD
+	var phone := device < 0 and mode == 0 and _is_mobile() # TOUCH
 	if not pad and not phone:
 		return false # clavier-souris : jamais
 	var now := _now()
@@ -90,27 +97,29 @@ static func pulse(kind: int) -> bool:
 	if k <= 0.0:
 		return false
 	var d: Dictionary = TABLE[kind]
-	_fire(d, k, pad)
+	_fire(d, k, pad, device)
 	if d.get("double", false):
 		var tree := Engine.get_main_loop() as SceneTree
 		if tree != null and now_ms_override < 0:
-			tree.create_timer(DOUBLE_GAP_S).timeout.connect(_fire.bind(d, k, pad))
+			tree.create_timer(DOUBLE_GAP_S).timeout.connect(_fire.bind(d, k, pad, device))
 		else:
-			_fire(d, k, pad) # tests : pas d'attente
+			_fire(d, k, pad, device) # tests : pas d'attente
 	return true
 
 
-static func _fire(d: Dictionary, k: float, pad: bool) -> void:
+static func _fire(d: Dictionary, k: float, pad: bool, device := -1) -> void:
 	if pad:
 		var w := clampf(float(d["weak"]) * k, 0.0, 1.0)
 		var s := clampf(float(d["strong"]) * k, 0.0, 1.0)
 		var dev := 0
 		var pads := Input.get_connected_joypads()
-		if not pads.is_empty():
+		if device >= 0:
+			dev = device
+		elif not pads.is_empty():
 			dev = pads[0]
 		if joy_sink.is_valid():
 			joy_sink.call(dev, w, s, float(d["s"]))
-		elif not pads.is_empty():
+		elif device >= 0 or not pads.is_empty():
 			Input.start_joy_vibration(dev, w, s, float(d["s"]))
 	else:
 		var a := clampf(float(d["amp"]) * k, 0.0, 1.0)
