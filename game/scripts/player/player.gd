@@ -171,8 +171,6 @@ func _ready() -> void:
 	spells.setup(self, character)
 	spells.auto_cast_enabled = auto_cast_spells
 	_apply_character_look()
-	add_to_group(RenderStyle.GROUP)
-	apply_render_style() # style de rendu courant (3d / cel) dès l'apparition
 	_capture_visual_base()
 	PlayerHitbox.set_radius(_hit_radius_px, get_instance_id()) # référence (personnage sans hitbox_u)
 	if character.hitbox_u > 0.0:
@@ -436,18 +434,6 @@ func hitbox_ring() -> HitboxRing:
 	return _hitbox_ring
 
 
-## Style de rendu (RenderStyle) : recharge les frames `_cel` / d'origine sans casser l'anim en cours.
-func apply_render_style() -> void:
-	RenderStyle.restyle_sprite(_visual as AnimatedSprite2D)
-
-
-## Debug : F7 bascule le style de rendu 3D / cel-shadé à chaud (joueur et monstres vivants).
-func _unhandled_key_input(event: InputEvent) -> void:
-	if RenderStyle.is_toggle_event(event):
-		RenderStyle.toggle(get_tree())
-		get_viewport().set_input_as_handled()
-
-
 ## Résurrection (Phénix de poche, ItemEffects.try_revive) : brûlure et poison purgés (sinon ils grignotent les PV
 ## rendus pendant le répit, que les DoT ne respectent pas), ralentissements purgés, flash doré du corps et vibration.
 func on_revived() -> void:
@@ -599,7 +585,6 @@ func switch_character(cid: StringName, spell_loadout := {}) -> bool:
 	_dodge_buf = 0.0
 	_fallback_on = false
 	_apply_character_look()
-	apply_render_style()
 	_capture_visual_base()
 	set_hitbox_u(character.hitbox_u if character.hitbox_u > 0.0 else 0.5) # 0,5 u = rayon de référence de la scène
 	if character.kit_script != null:

@@ -1,7 +1,6 @@
-[gd_resource type="SpriteFrames" load_steps=289 format=3]
+[gd_resource type="SpriteFrames" load_steps=296 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/idle.png" id="1"]
-
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/run.png" id="3"]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/attack.png" id="a2_0_0"]
@@ -9,12 +8,6 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/cast.png" id="a2_1_0"]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/cast_ult.png" id="a2_2_0"]
-
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/attack_e.png" id="a2_0_1"]
-
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/cast_e.png" id="a2_1_1"]
-
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/ardent/cast_ult_e.png" id="a2_2_1"]
 
 [sub_resource type="AtlasTexture" id="a2"]
 atlas = ExtResource("1")
@@ -1218,122 +1211,122 @@ animations = [{
 "name": &"run_ne",
 "speed": 14.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_e_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_e_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_e_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_e_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_e_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_e_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_e_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_e_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_e_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_e_4")}],
 "loop": false,
 "name": &"attack_e",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_se_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_se_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_se_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_se_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_se_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_se_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_se_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_se_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_se_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_se_4")}],
 "loop": false,
 "name": &"attack_se",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_s_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_s_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_s_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_s_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_s_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_s_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_s_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_s_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_s_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_s_4")}],
 "loop": false,
 "name": &"attack_s",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_sw_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_sw_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_sw_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_sw_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_sw_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_sw_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_sw_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_sw_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_sw_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_sw_4")}],
 "loop": false,
 "name": &"attack_sw",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_w_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_w_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_w_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_w_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_w_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_w_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_w_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_w_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_w_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_w_4")}],
 "loop": false,
 "name": &"attack_w",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_nw_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_nw_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_nw_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_nw_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_nw_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_nw_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_nw_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_nw_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_nw_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_nw_4")}],
 "loop": false,
 "name": &"attack_nw",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_n_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_n_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_n_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_n_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_n_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_n_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_n_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_n_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_n_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_n_4")}],
 "loop": false,
 "name": &"attack_n",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.8, "texture": SubResource("a2_attack_ne_0")}, {"duration": 0.8, "texture": SubResource("a2_attack_ne_1")}, {"duration": 0.4, "texture": SubResource("a2_attack_ne_2")}, {"duration": 0.8, "texture": SubResource("a2_attack_ne_3")}, {"duration": 0.8, "texture": SubResource("a2_attack_ne_4")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_attack_ne_0")}, {"duration": 1.0, "texture": SubResource("a2_attack_ne_1")}, {"duration": 1.0, "texture": SubResource("a2_attack_ne_2")}, {"duration": 1.0, "texture": SubResource("a2_attack_ne_3")}, {"duration": 1.0, "texture": SubResource("a2_attack_ne_4")}],
 "loop": false,
 "name": &"attack_ne",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_e_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_e_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_e_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_e_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_e_5")}],
 "loop": false,
 "name": &"cast_e",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_se_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_se_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_se_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_se_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_se_5")}],
 "loop": false,
 "name": &"cast_se",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_s_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_s_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_s_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_s_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_s_5")}],
 "loop": false,
 "name": &"cast_s",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_sw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_sw_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_sw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_sw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_sw_5")}],
 "loop": false,
 "name": &"cast_sw",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_w_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_w_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_w_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_w_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_w_5")}],
 "loop": false,
 "name": &"cast_w",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_nw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_nw_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_nw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_nw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_nw_5")}],
 "loop": false,
 "name": &"cast_nw",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_n_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_n_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_n_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_n_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_n_5")}],
 "loop": false,
 "name": &"cast_n",
 "speed": 12.0
 }, {
-"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ne_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_2")}, {"duration": 1.2, "texture": SubResource("a2_cast_ne_3")}, {"duration": 1.2, "texture": SubResource("a2_cast_ne_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_5")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ne_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ne_5")}],
 "loop": false,
 "name": &"cast_ne",
 "speed": 12.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_e_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_e_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_e_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_e_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_e_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_e_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_e_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_e_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_e_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_e_7")}],
 "loop": false,
 "name": &"cast_ult_e",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_se_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_se_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_se_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_se_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_se_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_se_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_se_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_se_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_se_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_se_7")}],
 "loop": false,
 "name": &"cast_ult_se",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_s_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_s_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_s_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_s_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_s_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_s_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_s_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_s_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_s_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_s_7")}],
 "loop": false,
 "name": &"cast_ult_s",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_sw_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_sw_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_sw_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_sw_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_sw_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_sw_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_sw_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_sw_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_sw_7")}],
 "loop": false,
 "name": &"cast_ult_sw",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_w_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_w_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_w_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_w_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_w_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_w_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_w_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_w_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_w_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_w_7")}],
 "loop": false,
 "name": &"cast_ult_w",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_nw_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_nw_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_nw_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_nw_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_nw_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_nw_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_nw_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_nw_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_nw_7")}],
 "loop": false,
 "name": &"cast_ult_nw",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_n_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_n_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_n_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_n_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_n_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_n_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_n_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_n_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_n_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_n_7")}],
 "loop": false,
 "name": &"cast_ult_n",
 "speed": 11.0
 }, {
-"frames": [{"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_ne_0")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_ne_1")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_ne_2")}, {"duration": 0.9166666666666666, "texture": SubResource("a2_cast_ult_ne_3")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_ne_4")}, {"duration": 1.8333333333333333, "texture": SubResource("a2_cast_ult_ne_5")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_ne_6")}, {"duration": 1.65, "texture": SubResource("a2_cast_ult_ne_7")}],
+"frames": [{"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_0")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_1")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_2")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_3")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_4")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_5")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_6")}, {"duration": 1.0, "texture": SubResource("a2_cast_ult_ne_7")}],
 "loop": false,
 "name": &"cast_ult_ne",
 "speed": 11.0

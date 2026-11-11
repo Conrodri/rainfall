@@ -144,6 +144,6 @@ func _check_v2_roles() -> void:
 		for k: int in keys:
 			var cb: Dictionary = EnemyVisual.monster_entry(k, b)[1]
 			_check(is_equal_approx(float(cb["scale"]), 1.0) and is_equal_approx(float(cb["offset_y"]), float(keys[k])) and not cb.has("render_px_per_u"), "%s clé %d : géométrie v2" % [b, k])
-	# v2 jamais redirigé vers un doublon _cel (ancien format)
+	# v2 jamais redirigé vers un ancien doublon (ancien format)
 	var sf := EnemyVisual.monster_frames(1, &"terrasses")
-	_check(sf != null and not sf.resource_path.contains("_cel"), "essaim v2 : pas de redirection _cel")
+	_check(sf != null and sf.resource_path.contains("swarm_tier1"), "essaim v2 : chemin canonique")

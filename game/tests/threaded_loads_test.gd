@@ -98,7 +98,7 @@ func _test_warm_bosses() -> void:
 	for m in EnemyVisual.mini_pool(a):
 		ids.append(StringName(m))
 	for id in ids:
-		var path := RenderStyle.resolve(EnemyVisual.boss_path(id))
+		var path := EnemyVisual.boss_path(id)
 		if path == "" or not ResourceLoader.exists(path):
 			continue
 		_check(EnemyVisual._boss_cache.has(id), "%s rangé dans le cache" % id)
@@ -116,7 +116,7 @@ func _test_warm_bosses() -> void:
 	var cur: StringName = EnemyVisual.warm_state()["loading"]
 	_check(cur != &"", "préchargement du nouvel étage lancé")
 	if cur != &"":
-		var cur_path := RenderStyle.resolve(EnemyVisual.boss_path(cur))
+		var cur_path := EnemyVisual.boss_path(cur)
 		var f := EnemyVisual.boss_frames(cur)
 		_check(f != null, "boss_frames(%s) pendant son préchargement" % cur)
 		_check(EnemyVisual.warm_state()["loading"] == &"", "chargement en cours récupéré par boss_frames")

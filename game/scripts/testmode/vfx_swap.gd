@@ -12,7 +12,7 @@ extends RefCounted
 ## Résolution de la clé "<owner>/<sort>" (dossier de res://assets/sprites/vfx_test/), dans l'ordre :
 ##   1. meta "vfx_key" posée au point d'appel (sprite ou l'un de ses 3 ancêtres, zone, SpellData ; "" = jamais) ;
 ##   2. sort connu (zone, projectile, lancer) : "<id du personnage>/<id du sort>" ;
-##   3. table PATHS (chemin d'origine du .tres, `_cel` normalisé ; "chemin|anim" pour une anim précise) ;
+##   3. table PATHS (chemin d'origine du .tres ; "chemin|anim" pour une anim précise) ;
 ##   4. .tres d'un boss d'étage : "<boss_id>/<anim sans suffixe de direction>" via BOSS_ANIMS (corps exclus) ;
 ## et seulement si l'asset de test existe (VfxTestPlayer.available).
 ##
@@ -66,7 +66,7 @@ const BOSS_DIR := "res://assets/sprites/bosses/etage/"
 const ZONE_SCRIPT := "res://scripts/spells/zone_effect.gd"
 const DIR_SUFFIXES := ["_n", "_ne", "_e", "_se", "_s", "_sw", "_w", "_nw"]
 
-## Chemin d'origine du .tres (normalisé, sans `_cel`) -> clé. "chemin|anim" : seulement pour cette animation.
+## Chemin d'origine du .tres -> clé. "chemin|anim" : seulement pour cette animation.
 ## Sert aux VFX qui ne passent ni par une zone ni par un projectile (kits), et aux zones internes des kits.
 const PATHS := {
 	# Ardent
@@ -314,7 +314,7 @@ static func available(key: String) -> bool:
 # --- Résolution ---------------------------------------------------------------------------------------------
 
 static func _norm(path: String) -> String:
-	return RenderStyle.original_path(path) if path != "" else ""
+	return path
 
 
 static func _strip_dir(anim: String) -> String:

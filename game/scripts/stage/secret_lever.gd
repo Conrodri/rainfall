@@ -71,11 +71,11 @@ func pull(silent: bool = false) -> void:
 
 func _refresh_sprite() -> void:
 	var state := "on" if used else "off"
-	var path := RenderStyle.resolve("%s%s_%s_%s.png" % [SPRITE_DIR, sprite_prefix, biome, state])
+	var path := "%s%s_%s_%s.png" % [SPRITE_DIR, sprite_prefix, biome, state]
 	if not ResourceLoader.exists(path):
-		path = RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, biome, state])
+		path = "%slever_%s_%s.png" % [SPRITE_DIR, biome, state]
 	if not ResourceLoader.exists(path):
-		path = RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, DEFAULT_BIOME, state])
+		path = "%slever_%s_%s.png" % [SPRITE_DIR, DEFAULT_BIOME, state]
 		if not ResourceLoader.exists(path):
 			return
 	if _sprite != null:

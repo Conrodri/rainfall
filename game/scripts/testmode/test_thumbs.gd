@@ -47,7 +47,7 @@ static func monster(entry: Dictionary) -> Dictionary:
 	else:
 		var bid := StringName(entry.get("boss_id", &""))
 		if bid != &"" and EnemyVisual.boss_available(bid):
-			var f := load(RenderStyle.resolve(EnemyVisual.boss_path(bid))) as SpriteFrames
+			var f := load(EnemyVisual.boss_path(bid)) as SpriteFrames
 			frames = f
 		if frames == null:
 			frames = EnemyVisual.monster_frames(3, EnemyVisual.default_biome())

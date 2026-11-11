@@ -363,7 +363,6 @@ static func reset_all(tree: SceneTree = null) -> void:
 	apply_fullscreen(false)
 	apply_fps_limit() # section graphics effacée : limite et V-Sync d'origine
 	var ml := Engine.get_main_loop() as SceneTree
-	RenderStyle.set_style(RenderStyle.DEFAULT, tree if tree != null else ml, false) # section graphics effacée
 	apply_auto_cast(tree if tree != null else ml, false)
 	apply_show_hitbox(tree if tree != null else ml, true) # section gameplay effacée : défaut affiché
 	var au: Node = ml.root.get_node_or_null(^"Audio") if ml != null else null
@@ -414,16 +413,6 @@ static func apply_show_hitbox(tree: SceneTree, on: bool) -> void:
 		return
 	for n in tree.get_nodes_in_group(&"hitbox_ring"):
 		n.set(&"enabled", on)
-
-
-## Style de rendu des sprites : « cel » (défaut, DA validée 22/10/2026) ou « 3d » (ancien rendu). Appliqué par RenderStyle
-## (RenderStyle.set_style persiste ici ; F7 en jeu bascule à chaud).
-static func render_style() -> String:
-	return String(get_value("graphics", "render_style", String(RenderStyle.DEFAULT)))
-
-
-static func set_render_style(s: String) -> void:
-	set_value("graphics", "render_style", s)
 
 
 # --- Vague 2 UX (agent « Réglages ») : coffres, taille de l'interface, astuces, accessibilité, confort -----------

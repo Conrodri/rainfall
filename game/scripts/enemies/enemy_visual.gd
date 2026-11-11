@@ -35,8 +35,7 @@ const SPRITES := {
 	3: {"name": "brute_tier3", "scale": 1.0, "offset_y": -56.0, "energy": 2.0},
 	LEAPER_KEY: {"name": "leaper_tier2", "scale": 1.0, "offset_y": -34.0, "energy": 2.0},
 }
-## Dossiers au format v2 : rendus d'emblée en cel-shadé, donc jamais redirigés vers un `_cel` (interrupteur F7 ;
-## les anciens doublons swarm_tier1_cel et brute_tier3_cel sont supprimés depuis le 28/10/2026).
+## Dossiers au format v2 : rendus d'emblée en cel-shadé (style unique depuis la bascule finale du 11/11/2026).
 const V2_FOLDERS := [
 	"swarm_tier1", "shooter_tier2", "leaper_tier2", "brute_tier3",
 	"swarm_tier1_moss", "shooter_tier2_moss", "leaper_tier2_moss", "brute_tier3_moss",
@@ -102,7 +101,6 @@ static var _biome_map_id := ""
 static var _biome_stage := -1
 static var _biome_frame := -1
 static var _sm_ref: WeakRef = null
-static var _style_ver := -1 ## RenderStyle.version des caches de SpriteFrames (style 3d / cel)
 
 var _tier := 1
 var _radius := 20.0
@@ -169,18 +167,7 @@ var _strike_speed := 1.0
 var _strike_dir := Vector2.ZERO ## direction logique de la fente
 
 
-## Style de rendu changé (RenderStyle) : les caches de SpriteFrames sont vidés (chemins `_cel`).
-static func _sync_style() -> void:
-	if _style_ver != RenderStyle.version:
-		_style_ver = RenderStyle.version
-		_frames_cache.clear()
-		_mon_cache.clear()
-		_boss_cache.clear()
-		_warm_floor = &"" # la file de préchargement se reconstruit (chemins du nouveau style)
-
-
 static func frames_for_tier(tier: int) -> SpriteFrames:
-	_sync_style()
 	if _frames_cache.has(tier):
 		return _frames_cache[tier]
 	var frames: SpriteFrames = null
@@ -346,7 +333,7 @@ static func _role_cfg(biome: StringName, key: int, elite: bool) -> Dictionary:
 
 static func _monster_path(sprite_name: String) -> String:
 	var path := "%s%s/%s.tres" % [MONSTER_DIR, sprite_name, sprite_name]
-	return path if V2_FOLDERS.has(sprite_name) else RenderStyle.resolve(path)
+	return path
 
 
 static func _load_monster_frames(sprite_name: String) -> SpriteFrames:
@@ -359,7 +346,6 @@ static func _load_monster_frames(sprite_name: String) -> SpriteFrames:
 
 ## Sprite d'un monstre courant : [SpriteFrames | null, cfg, clé effective] (cache par biome/clé/élite).
 static func monster_entry(key: int, biome: StringName, elite: bool = false) -> Array:
-	_sync_style()
 	var per: Dictionary = _mon_cache.get(biome, {})
 	if per.is_empty():
 		_mon_cache[biome] = per
@@ -439,7 +425,7 @@ static func summon_frames(summon_id: StringName, biome: StringName = &"") -> Spr
 	var dir: Variant = (biome_data(b).get("summons", {}) as Dictionary).get(String(summon_id))
 	if not (dir is String):
 		return null
-	var path := RenderStyle.resolve("%s%s/%s.tres" % [BOSS_DIR, dir, String(summon_id)])
+	var path := "%s%s/%s.tres" % [BOSS_DIR, dir, String(summon_id)]
 	return load(path) as SpriteFrames if ResourceLoader.exists(path) else null
 
 
@@ -509,10 +495,9 @@ static func boss_frames(boss_id: StringName) -> SpriteFrames:
 	var cfg := boss_cfg(boss_id)
 	if cfg.is_empty():
 		return null
-	_sync_style()
 	if _boss_cache.has(boss_id):
 		return _boss_cache[boss_id]
-	var path := RenderStyle.resolve("%s%s/%s.tres" % [BOSS_DIR, cfg["dir"], String(boss_id)])
+	var path := "%s%s/%s.tres" % [BOSS_DIR, cfg["dir"], String(boss_id)]
 	var frames: SpriteFrames = null
 	if boss_id == _warm_id and path == _warm_path:
 		# préchargement en cours pour ce boss : on le récupère (attend sa fin) plutôt que de lancer un
@@ -573,7 +558,6 @@ static func _warm_bosses(tree: SceneTree) -> void:
 	var sm := tree.get_first_node_in_group(&"stage_manager")
 	if sm == null or sm.get(&"floor_boss") == null:
 		return
-	_sync_style()
 	var fid := StringName(sm.get(&"floor_boss"))
 	fid = BOSS_ALIASES.get(fid, fid)
 	if fid != _warm_floor:
@@ -599,7 +583,7 @@ static func _warm_pump(tree: SceneTree) -> void:
 			return
 		if st == ResourceLoader.THREAD_LOAD_LOADED:
 			var r := ResourceLoader.load_threaded_get(_warm_path) # fini : ne bloque pas, libère la demande
-			if not _boss_cache.has(_warm_id) and _warm_path == RenderStyle.resolve(boss_path(_warm_id)):
+			if not _boss_cache.has(_warm_id) and _warm_path == boss_path(_warm_id):
 				_boss_cache[_warm_id] = _valid_boss_frames(_warm_id, r)
 		# échec ou demande déjà récupérée ailleurs : abandon (boss_frames chargera à l'apparition)
 		_warm_id = &""
@@ -608,7 +592,7 @@ static func _warm_pump(tree: SceneTree) -> void:
 		var id: StringName = _warm_queue.pop_front()
 		if _boss_cache.has(id):
 			continue
-		var path := RenderStyle.resolve(boss_path(id))
+		var path := boss_path(id)
 		if path == "" or not ResourceLoader.exists(path):
 			continue
 		if ResourceLoader.load_threaded_request(path, "SpriteFrames") != OK:
@@ -1027,7 +1011,6 @@ func _setup_sprite(frames: SpriteFrames) -> void:
 ## Les nœuds du sprite (corps + émission) sont créés dès l'instanciation du pool, jamais en jeu.
 func _ready() -> void:
 	set_process(false) # allumé seulement pendant un armement / impact (_fx_begin_*)
-	add_to_group(RenderStyle.GROUP)
 	var f := frames_for_tier(1)
 	if f != null:
 		_ensure_sprite()
@@ -1047,17 +1030,6 @@ func _ready() -> void:
 ## partagé). Contrepartie mineure : l'accent émissif d'un monstre caché derrière un autre reste
 ## visible (quelques pixels additifs). Les boss gardent l'émission collée à leur corps (z 0).
 const EMISSION_Z := 1
-
-
-## Bascule de style à chaud (RenderStyle, F7) : mêmes anim, frame et progression, frames `_cel` ou d'origine.
-func apply_render_style() -> void:
-	if _sprite == null or (_sprite.sprite_frames != null and V2_FOLDERS.has(_sprite.sprite_frames.resource_path.get_base_dir().get_file())):
-		return # monstre v2 : un seul rendu (cel-shadé), pas de bascule F7
-	var f := RenderStyle.restyle_sprite(_sprite)
-	if f != null:
-		_tier_frames = f
-		if not _boss_sprite:
-			_lift_emission()
 
 
 func _lift_emission() -> void:
