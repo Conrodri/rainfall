@@ -731,7 +731,7 @@ Synthèse procédurale (`art/tools/audio/gen_music.py`, `gen_ambience.py`), Vorb
 - `music.la_source.{base,tension,drive,climax}` : `music/music_la_source_<stem>_01.ogg`, 99,31 s, LUFS -20,9 / -25,6 / -25,5 / -23,5, crête vraie <= -8,2 dBTP.
 - `music.boss.la_source` : `music/music_boss_la_source_01.ogg`, 60 s, -15,8 LUFS, -3,1 dBTP ; thème unique en 3 sections montantes (pas de phases dans l'AudioDirector).
 - `amb.wind.la_source`, `amb.la_source.decor` : `ambience/amb_wind_la_source_01.ogg` (-23,5 LUFS), `amb_la_source_decor_01.ogg` (-23,0 LUFS), 64 s.
-=======
+
 <!-- VMR_AUDIO -->
 ## VMR_AUDIO
 - `vigie_trait_cast` : 9 variantes ; 82.2-138.2 ms ; crête max -12.39 dBFS ; RMS -28.04--24.00 dBFS.
@@ -762,4 +762,3 @@ Synthèse procédurale (`art/tools/audio/gen_music.py`, `gen_ambience.py`), Vorb
 - `couteau_ficele_hit` : 6 variantes ; 101.1-164.9 ms ; crête max -6.99 dBFS ; RMS -20.96--19.04 dBFS.
 - `doublures_cast` : 6 variantes ; 421.4-680.4 ms ; crête max -8.97 dBFS ; RMS -24.19--20.36 dBFS.
 - `doublures_hit` : 6 variantes ; 182.9-326.5 ms ; crête max -7.48 dBFS ; RMS -21.65--19.07 dBFS.
->>>>>>> worktree-agent-add272eaaeb23639f
