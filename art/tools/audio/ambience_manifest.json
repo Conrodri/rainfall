@@ -188,5 +188,45 @@
   "peak_dbfs": -6.07,
   "rms_dbfs": -24.09,
   "seam_ratio": "1.07"
+ },
+ {
+  "path": "ambience/amb_wind_cryptes_noyees_01.ogg",
+  "duration_s": 64.0,
+  "loop": true,
+  "level": "none",
+  "usage": "amb.wind.cryptes_noyees: Cryptes noyees : souffle de galerie",
+  "gain_db": 0,
+  "peak_dbfs": -8.87,
+  "rms_dbfs": -24.0
+ },
+ {
+  "path": "ambience/amb_cryptes_noyees_decor_01.ogg",
+  "duration_s": 64.0,
+  "loop": true,
+  "level": "none",
+  "usage": "amb.cryptes_noyees.decor (boucle 64 s)",
+  "gain_db": 0,
+  "peak_dbfs": -9.35,
+  "rms_dbfs": -27.0
+ },
+ {
+  "path": "ambience/amb_wind_la_source_01.ogg",
+  "duration_s": 64.0,
+  "loop": true,
+  "level": "none",
+  "usage": "amb.wind.la_source: La Source : souffle ascendant du puits",
+  "gain_db": 0,
+  "peak_dbfs": -10.12,
+  "rms_dbfs": -24.0
+ },
+ {
+  "path": "ambience/amb_la_source_decor_01.ogg",
+  "duration_s": 64.0,
+  "loop": true,
+  "level": "none",
+  "usage": "amb.la_source.decor (boucle 64 s)",
+  "gain_db": 0,
+  "peak_dbfs": -10.46,
+  "rms_dbfs": -27.0
  }
 ]

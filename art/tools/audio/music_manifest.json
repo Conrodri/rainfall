@@ -158,5 +158,115 @@
   "peak_dbfs": -9.23,
   "rms_dbfs": -25.48,
   "seam_ratio": "0.57"
+ },
+ {
+  "path": "music/music_cryptes_noyees_base_01.ogg",
+  "duration_s": 116.3639,
+  "loop": true,
+  "level": "none",
+  "usage": "music.cryptes_noyees.base (66 BPM, 32 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -8.32,
+  "rms_dbfs": -23.0,
+  "samples": 5131648
+ },
+ {
+  "path": "music/music_cryptes_noyees_tension_01.ogg",
+  "duration_s": 116.3639,
+  "loop": true,
+  "level": "none",
+  "usage": "music.cryptes_noyees.tension (66 BPM, 32 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -8.28,
+  "rms_dbfs": -25.5,
+  "samples": 5131648
+ },
+ {
+  "path": "music/music_cryptes_noyees_drive_01.ogg",
+  "duration_s": 116.3639,
+  "loop": true,
+  "level": "none",
+  "usage": "music.cryptes_noyees.drive (66 BPM, 32 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -10.65,
+  "rms_dbfs": -25.0,
+  "samples": 5131648
+ },
+ {
+  "path": "music/music_cryptes_noyees_climax_01.ogg",
+  "duration_s": 116.3639,
+  "loop": true,
+  "level": "none",
+  "usage": "music.cryptes_noyees.climax (66 BPM, 32 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -10.08,
+  "rms_dbfs": -24.0,
+  "samples": 5131648
+ },
+ {
+  "path": "music/music_la_source_base_01.ogg",
+  "duration_s": 99.3105,
+  "loop": true,
+  "level": "none",
+  "usage": "music.la_source.base (58 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -8.3,
+  "rms_dbfs": -23.0,
+  "samples": 4379592
+ },
+ {
+  "path": "music/music_la_source_tension_01.ogg",
+  "duration_s": 99.3105,
+  "loop": true,
+  "level": "none",
+  "usage": "music.la_source.tension (58 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -9.34,
+  "rms_dbfs": -25.5,
+  "samples": 4379592
+ },
+ {
+  "path": "music/music_la_source_drive_01.ogg",
+  "duration_s": 99.3105,
+  "loop": true,
+  "level": "none",
+  "usage": "music.la_source.drive (58 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -9.69,
+  "rms_dbfs": -25.0,
+  "samples": 4379592
+ },
+ {
+  "path": "music/music_la_source_climax_01.ogg",
+  "duration_s": 99.3105,
+  "loop": true,
+  "level": "none",
+  "usage": "music.la_source.climax (58 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -9.49,
+  "rms_dbfs": -24.0,
+  "samples": 4379592
+ },
+ {
+  "path": "music/music_boss_cryptes_noyees_01.ogg",
+  "duration_s": 55.3845,
+  "loop": true,
+  "level": "none",
+  "usage": "music.boss.cryptes_noyees (104 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -3.35,
+  "rms_dbfs": -17.0,
+  "samples": 2442456
+ },
+ {
+  "path": "music/music_boss_la_source_01.ogg",
+  "duration_s": 60.0,
+  "loop": true,
+  "level": "none",
+  "usage": "music.boss.la_source (96 BPM, 24 mesures)",
+  "gain_db": 0,
+  "peak_dbfs": -3.26,
+  "rms_dbfs": -17.0,
+  "samples": 2646000
  }
 ]

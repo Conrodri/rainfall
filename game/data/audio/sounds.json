@@ -2043,6 +2043,357 @@
         "~": "water",
         "#": "metal"
       }
+    },
+    "cryptes_noyees": {
+      "music": [
+        {
+          "id": "music.cryptes_noyees.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.cryptes_noyees",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -13,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -15,
+            -8,
+            -8,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -16,
+            -6,
+            -3
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.cryptes_noyees",
+          "db": [
+            -20,
+            -17,
+            -14,
+            -11,
+            -8
+          ]
+        },
+        {
+          "id": "amb.cryptes_noyees.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -8
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "wet",
+        "~": "water",
+        "#": "stone"
+      }
+    },
+    "cryptes_ossuaire_pluies": {
+      "music": [
+        {
+          "id": "music.cryptes_noyees.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.cryptes_noyees.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.cryptes_noyees",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -13,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -15,
+            -8,
+            -8,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -16,
+            -6,
+            -3
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.cryptes_noyees",
+          "db": [
+            -20,
+            -17,
+            -14,
+            -11,
+            -8
+          ]
+        },
+        {
+          "id": "amb.cryptes_noyees.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -8
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "wet",
+        "~": "water",
+        "#": "stone"
+      }
+    },
+    "la_source": {
+      "music": [
+        {
+          "id": "music.la_source.base",
+          "db": [
+            0,
+            0,
+            0,
+            -2,
+            -3
+          ]
+        },
+        {
+          "id": "music.la_source.tension",
+          "db": [
+            -80,
+            -3,
+            -1,
+            -3,
+            -4
+          ]
+        },
+        {
+          "id": "music.la_source.drive",
+          "db": [
+            -80,
+            -80,
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "id": "music.la_source.climax",
+          "db": [
+            -80,
+            -80,
+            -80,
+            -4,
+            0
+          ]
+        }
+      ],
+      "boss": [
+        {
+          "id": "music.boss.la_source",
+          "db": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "ambience": [
+        {
+          "id": "amb.rain.light",
+          "db": [
+            -12,
+            -13,
+            -80,
+            -80,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.medium",
+          "db": [
+            -80,
+            -15,
+            -8,
+            -8,
+            -80
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.rain.heavy",
+          "db": [
+            -80,
+            -80,
+            -16,
+            -6,
+            -3
+          ],
+          "rain": true
+        },
+        {
+          "id": "amb.wind.la_source",
+          "db": [
+            -20,
+            -17,
+            -14,
+            -11,
+            -8
+          ]
+        },
+        {
+          "id": "amb.la_source.decor",
+          "db": [
+            -14,
+            -14,
+            -12,
+            -10,
+            -8
+          ]
+        }
+      ],
+      "surfaces": {
+        ".": "stone",
+        ",": "wet",
+        "~": "water",
+        "#": "stone"
+      }
     }
   }
 }

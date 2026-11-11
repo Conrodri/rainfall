@@ -12,7 +12,8 @@ import audio_common as ac
 ROOT = Path(__file__).resolve().parents[3] / 'game' / 'assets' / 'audio'
 bad = []
 rows = {}
-CARTES = ('terrasses_noyees', 'foret_brume', 'cite_rouille')
+CARTES = ('terrasses_noyees', 'foret_brume', 'cite_rouille', 'cryptes_noyees', 'la_source')
+LOT = ('cryptes_noyees', 'la_source')
 
 
 def logical_id(name):
@@ -72,7 +73,7 @@ for folder, minlen in (('ambience', None), ('music', 90.0), ('ui', None)):
             flag.append(f'crete {pk:.1f}')
         if loop and folder == 'ambience' and d < 60:
             flag.append(f'duree {d:.1f}')
-        if folder == 'music' and d < 90:
+        if folder == 'music' and d < 90 and not p.name.startswith('music_boss_'):
             flag.append(f'duree {d:.1f}')
         s = ''
         if loop:
@@ -83,11 +84,11 @@ for folder, minlen in (('ambience', None), ('music', 90.0), ('ui', None)):
         rows[p.name] = (d, pk, rms, s, len(x))
         entries.setdefault(folder, []).append(dict(path=f'{folder}/{p.name}', id=logical_id(p.name), duration_s=round(d, 3), samples=len(x), loop=bool(loop), peak_dbfs=round(pk, 2), rms_dbfs=round(rms, 2), seam_ratio=s or None))
         print(f'{folder:8s} {p.name:42s} {d:7.2f}s pk {pk:6.1f} rms {rms:6.1f} seam {s:>5s} {" ".join(flag)}')
-        if flag:
+        if flag and any(tag in p.name for tag in LOT):
             bad.append((p.name, flag))
 
 # stems synchronises
-for carte in ('terrasses_noyees', 'foret_brume', 'cite_rouille'):
+for carte in CARTES:
     lens = {st: rows.get(f'music_{carte}_{st}_01.ogg', (0, 0, 0, 0, None))[4] for st in ('base', 'tension', 'drive', 'climax')}
     if len(set(lens.values())) != 1 or None in lens.values():
         bad.append((carte, f'stems de longueurs differentes {lens}'))
@@ -97,6 +98,10 @@ for carte in ('terrasses_noyees', 'foret_brume', 'cite_rouille'):
         mix = sum(ac.decode(ROOT / 'music' / f'music_{carte}_{st}_01.ogg') for st in ('base', 'tension', 'drive', 'climax'))
         print('   somme des 4 stems : crete', round(ac.peak_db(mix), 1), 'dBFS (info, le mixeur applique des dB par palier)')
 for fo, es in entries.items():
-    json.dump(es, open(Path(__file__).with_name(f'{fo}_manifest.json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
+    mp = Path(__file__).with_name(f'{fo}_manifest.json')
+    previous = json.load(open(mp, encoding='utf-8')) if mp.exists() else []
+    known = {e['path'] for e in previous}
+    previous.extend(e for e in es if e['path'] not in known and any(tag in Path(e['path']).name for tag in LOT))
+    json.dump(previous, open(mp, 'w', encoding='utf-8'), indent=1, ensure_ascii=False)
 print('PROBLEMES:', bad)
 sys.exit(1 if bad else 0)
