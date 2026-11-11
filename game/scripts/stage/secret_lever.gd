@@ -15,6 +15,8 @@ const SPRITE_BASE_Y := 0.80 ## socle à 80 % de la hauteur de frame : posé sur 
 var used := false
 ## Biome (à fixer avant add_child) : choisit la déclinaison de sprites.
 var biome: StringName = DEFAULT_BIOME
+## Préfixe des sprites (`<préfixe>_<biome>_{off,on}`) ; EpreuveRelay prend « valve » avec repli sur le levier.
+var sprite_prefix := "lever"
 var _sprite: Sprite2D = null
 
 
@@ -69,7 +71,9 @@ func pull(silent: bool = false) -> void:
 
 func _refresh_sprite() -> void:
 	var state := "on" if used else "off"
-	var path := RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, biome, state])
+	var path := RenderStyle.resolve("%s%s_%s_%s.png" % [SPRITE_DIR, sprite_prefix, biome, state])
+	if not ResourceLoader.exists(path):
+		path = RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, biome, state])
 	if not ResourceLoader.exists(path):
 		path = RenderStyle.resolve("%slever_%s_%s.png" % [SPRITE_DIR, DEFAULT_BIOME, state])
 		if not ResourceLoader.exists(path):
