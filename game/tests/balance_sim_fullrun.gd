@@ -2,6 +2,8 @@ extends Node
 ## Audit d'équilibrage : runs complètes simulées (tests/balance_sim/full_run_sim.gd), un personnage par processus.
 ## godot --headless --fixed-fps 60 --path game res://tests/balance_sim_fullrun.tscn -- --char=ardent --seeds=0,1,2 --out=<f.json>
 ## Rencontre ciblée rapide : --inject=<f.json> ({stage, t, level, items, boss?} : un seul combat de boss, sans mini-boss).
+## Rencontre ciblée depuis une configuration de balance_sim : --inject_cfg=E3 [--boss=sonneur] (étage, temps, niveau et objets
+## de Sim.CONFIGS ; boss tiré dans le pool de l'étage par la graine si --boss est absent ; audit roster du 11/11/2026).
 ## Options : --stages=5 --t_boss=180 --mode=moyen ; essais de PV de boss : --boss_k=1.12 --final_mult=1.35 --mini_hp=0.8 --etage_hp=1. Sortie : JSON {runs: [...]} puis « RESULT: OK ».
 
 const FullRun := preload("res://tests/balance_sim/full_run_sim.gd")
@@ -45,6 +47,16 @@ func _ready() -> void:
 		fr.boss_aim_priority = float(args.get("boss_aim", "1"))
 		if args.has("inject"): # rencontre ciblée : JSON {stage, t, level, items, boss?}
 			fr.inject = JSON.parse_string(FileAccess.get_file_as_string(str(args["inject"])))
+		elif args.has("inject_cfg"): # rencontre ciblée depuis Sim.CONFIGS (E1-E5 : moments des boss d'étage)
+			var ic: Dictionary = Sim.CONFIGS.get(str(args["inject_cfg"]), {})
+			if ic.is_empty():
+				print("RESULT: FAIL (config inconnue : %s)" % args["inject_cfg"])
+				get_tree().quit(1)
+				return
+			fr.mode = StringName(ic["mode"])
+			fr.inject = {"stage": int(ic["stage"]), "t": float(ic["t"]), "level": int(ic["level"]), "items": ic["items"]}
+			if args.has("boss"):
+				fr.inject["boss"] = str(args["boss"])
 		add_child(fr)
 		var r: Dictionary = await fr.run(cid, lc["data"])
 		r["errors"] = loader.errlog.take().size()

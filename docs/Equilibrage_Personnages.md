@@ -1,5 +1,11 @@
 # Équilibrage des personnages jouables (audit du 23/10/2026)
 
+> **Mis à jour par l'audit du roster du 11/11/2026 : `docs/audits/roster_equilibrage_2026-11.md`** (11 personnages,
+> DPS L1/L6/L12m/L18, TTK des élites, mini-boss et boss d'étage 1-5 en duel et en rencontre, survie, sondes d'objets,
+> recommandations R1-R8). Ses mesures font foi quand elles divergent de celles-ci. En particulier, les mesures de
+> **Tocsin** ci-dessous sont faussées par un défaut du bot (il tirait hors de portée une fois la tête lancée) : corrigé le
+> 11/11, Tocsin est en réalité le plus fort en mono.
+
 > Audit **en lecture seule** (méthode `.claude/skills/balance-check`, rôle `systems-designer`). Aucun fichier du jeu modifié.
 > Personnages : Ardent (référence), Rictus, Tocsin, Averse, Arpenteuse, Rainette, Avare, Bourbe, Vigie, Taliant (`morfil`). **Grésille** (`gresille`, 11e personnage, jouable depuis le 10/11/2026) ajoutée en §2.11 et P9 : audit complet dans `docs/audits/gresille_equilibrage.md`, mesures relancées le 10/11/2026 (le reste du document date du 23/10/2026).
 > Les recommandations Averse sont **indicatives** : un autre agent corrige Averse en parallèle.
@@ -510,6 +516,14 @@ Valeurs à ne pas toucher : `ARC_COEF` 0,8, `BOUNCE_COEF` 0,45, `DISCHARGE_COEF`
 ---
 
 ## 6. NON ÉVALUÉ
+
+> **Mise à jour du 11/11/2026** : la plupart des points ci-dessous sont maintenant mesurés dans
+> `docs/audits/roster_equilibrage_2026-11.md` : scénario « boss d'étage » (`balance_sim` `--scen=floorboss`, étages 1-5,
+> boss final compris), configurations L18 et E1-E5 (moments des boss au rythme de 19 min, objets moyens réalistes avec
+> procs), rencontres de boss avec monstres (`balance_sim_fullrun --inject_cfg=E<n>`), synergies d'objets par personnage
+> (sondes `--items`) et ablations (`--noslot`). Commandes : `tools/roster_balance.py` (§0.2 du nouvel audit). Restent non
+> évalués : le jeu humain optimisé (membres de Tocsin, chaîne d'Arpenteuse, cloches des raids), les variantes de sorts,
+> la coop et la Forge (§10 du nouvel audit). Le tableau ci-dessous est conservé pour l'historique.
 
 | Point | Ce qui manque |
 |---|---|

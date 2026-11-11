@@ -137,9 +137,11 @@ func tick(delta: float, enemies: Array) -> void:
 	_set_move(move)
 
 
-## Distance voulue : plus courte si un sort 2-4 prêt demande d'aller au contact.
+## Distance voulue : plus courte si un sort 2-4 prêt demande d'aller au contact. La portée du sort 1 est relue à chaque
+## appel : un kit qui la raccourcit en cours de combat (Tocsin sans tête : rivets 8 -> 5 u) ne laisse plus le pilote
+## tirer hors de portée (audit roster du 11/11/2026).
 func _pref_now() -> float:
-	var pref := base_pref_u
+	var pref := minf(base_pref_u, preferred_range_u(player.character))
 	if player.max_hp <= 0.0 or player.hp / player.max_hp < 0.5:
 		return pref
 	var cds: Array = player.get_spell_cooldowns()

@@ -2,6 +2,10 @@ extends Node
 ## Simulateur d'équilibrage complet (rapport) : lancé par art/tools/night/balance_sim.py, un personnage par
 ## processus (un kit en panne ne bloque pas les autres). Arguments après `--` :
 ##   --chars=ardent,rictus  --scen=swarm,mixed,elite,miniboss  --cfg=L1,L6,L12  --out=<fichier.json>  --k=12
+##   --seeds=2  --items=id:n,id:n (objets ajoutés à la configuration : sondes de synergies)
+## Scénario « floorboss » (boss d'étage de l'étage de la config, en duel), configs E1-E5 (moments des boss d'étage au
+## rythme visé) et L18 : audit du roster du 11/11/2026 (docs/audits/roster_equilibrage_2026-11.md, agrégation par
+## tools/roster_balance.py).
 ## godot --headless --path game res://tests/balance_sim_run.tscn -- --chars=ardent --out=C:/.../sim_ardent.json
 ## Sortie : JSON {characters: [{char, ok, skip, note, fights: [...]}]} puis « RESULT: OK ».
 
@@ -30,6 +34,9 @@ func _ready() -> void:
 			sim.loadout[int(lp[0])] = StringName(lp[1])
 	for sl in str(args.get("noslot", "")).split(",", false): # --noslot=4 : ablation d'un sort
 		sim.disabled_slots.append(int(sl))
+	for kv in str(args.get("items", "")).split(",", false): # --items=eclair_en_bouteille:3 : objets en plus
+		var ip := kv.split(":")
+		sim.extra_items[StringName(ip[0])] = int(ip[1]) if ip.size() > 1 else 1
 	add_child(sim)
 	var res: Array = []
 	for cid in chars:
