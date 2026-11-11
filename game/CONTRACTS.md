@@ -11,6 +11,12 @@ Chaque agent code contre ces interfaces, même si l'autre côté n'existe pas en
 - **Zones de frappe tactiles** : `SpellButton.HIT_PAD` (16 px, réduit sous 150 px de côté, 0 si non interactif), `hit_pad()`, `hit_radius()` = côté / 2 + `hit_pad()` (disque centré) ; `PauseButton.HIT_PX` (140, visuel `VISUAL_PX` 110), `hit_pad()` ; `InteractButton.HIT_PAD` (16, rectangle).
 - `action_prompt_parts(action) -> Array` de {kind: "mouse"|"key"|"pad", button, text, icon?, caption?} (délègue à `InputLabels.prompt_parts` ; `icon`/`caption` seulement pour `pad` ; vide en tactile) ; `controls_help()` = `InputLabels.controls_help(input_mode)`.
 
+## Services de plateforme (`PlatformServices`, scripts/meta/platform_services.gd)
+- `PlatformServices.current` : backend actif ; par défaut l'interface vide (repli : `is_available()` faux, méthodes sans effet). `PlatformServices.install(host, profile)` est appelé une fois par `App._ready` avant le titre.
+- Méthodes : `is_available() -> bool`, `report_achievement(id)` (appelé par MetaTracker à chaque succès local débloqué), `submit_daily_score(key, result)`.
+- **Steam (`SteamServices`, scripts/meta/steam/)** : seulement sur PC, hors headless, sans `-- --no-steam`, si l'extension GodotSteam est chargée (`Engine.has_singleton("Steam")`) et que `steamInitEx(app_id, true)` renvoie le statut 0. Aucun autre script ne parle à Steam ; jamais l'identifiant global `Steam` en dur (le jeu doit parser sans l'extension). Succès : API name = id local en majuscules (`SteamServices.api_name`), setAchievement + storeStats, rattrapage de tous les succès locaux à l'installation. AppID : 480 en debug, `SteamServices.RELEASE_APP_ID` en release, variable `RAINFALL_STEAM_APPID` prioritaire.
+- **Steam Cloud (`SteamCloudSync`)** : `user://profile.json` copié dans le fichier distant `profile.json` (Remote Storage). Le local reste la source ; au démarrage le plus récent gagne (horodatage), le perdant est copié dans `user://profile_backups/` (5 au plus) ; envoi au plus toutes les 20 s après `Profile.changed`, à chaque fin de run et à la fermeture (`SteamServicesHost`). Rien en bac à sable ni si `Profile.write_enabled` est faux. Test : `tests/steam_services_test` (faux singleton `tests/steam_fake.gd`).
+
 ## Entrées
 - Le déplacement se lit avec `Input.get_vector("move_left","move_right","move_up","move_down")`.
 - Le joystick tactile et les boutons de sorts **simulent les actions** (`Input.action_press(action, strength)` / `action_release`). Aucun lien direct UI -> joueur.
