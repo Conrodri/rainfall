@@ -14,6 +14,7 @@ extends Epreuve
 # Réglages : Balance.VEIN_* (docs/Design_Epreuves.md §8).
 const VEIN_GEYSER_ERUPT_S := 0.4 ## durée de l'éruption (pas dans le tableau §8 : constante de présentation)
 
+const TICK_EVERY_S := 5.0 ## une pulsation sonore (`vein_tick`) toutes les 5 s de charge
 const COL_FOREST := Color(0.76, 0.48, 1.0) ## améthyste #C27BFF (Gouffre)
 const COL_CRYPTS := Color(0.75, 0.96, 1.0) ## cristal #BFF4FF (Cryptes)
 
@@ -228,7 +229,10 @@ func _step_charge(delta: float) -> void:
 	var rate := vein_rate()
 	_inside = rate > 0.0
 	if _inside:
+		var before := vein_charge
 		vein_charge = minf(vein_charge + delta * rate, Balance.VEIN_CHARGE_S)
+		if int(vein_charge / TICK_EVERY_S) > int(before / TICK_EVERY_S) and vein_charge < Balance.VEIN_CHARGE_S:
+			Audio.play(&"vein_tick", global_position) # lot EP-G : une pulsation toutes les 5 s de charge
 	else:
 		out_s += delta
 
@@ -241,6 +245,7 @@ func _step_geyser(delta: float) -> void:
 				_gey_pos = _pick_geyser_pos()
 				_gey_phase = GEY_TELEGRAPH
 				_gey_t = Balance.VEIN_GEYSER_TELEGRAPH_S
+				Audio.play(&"vein_geyser_warn", _geyser_global())
 		GEY_TELEGRAPH:
 			_gey_t -= delta
 			if _gey_t <= 0.0:
@@ -248,6 +253,7 @@ func _step_geyser(delta: float) -> void:
 				_gey_t = VEIN_GEYSER_ERUPT_S
 				_gey_hit_ids.clear()
 				pulses += 1
+				Audio.play(&"vein_geyser", _geyser_global())
 				_erupt_hit()
 		GEY_ERUPT:
 			_erupt_hit()
@@ -296,6 +302,12 @@ func _has_open_chest(pl: Node2D) -> bool:
 			if c is ChestUI and not c.is_queued_for_deletion() and c.session != null and c.session.state == st:
 				return true
 	return false
+
+
+## Position monde du geyser courant (`_gey_pos` est dans le repère de la carte) ; repli sur l'épreuve sans parent.
+func _geyser_global() -> Vector2:
+	var m := get_parent() as Node2D
+	return m.to_global(_gey_pos) if m != null and is_inside_tree() else global_position
 
 
 ## Un coup par joueur et par geyser : les joueurs vivants dans le cercle de l'éruption.

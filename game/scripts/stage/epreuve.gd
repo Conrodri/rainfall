@@ -142,6 +142,7 @@ func activate() -> bool:
 	else:
 		resolved = false
 		_begin()
+		Audio.play(&"epreuve_start", global_position) # lot EP-G
 		Events.epreuve_started.emit(verb)
 	_tick_zone()
 	queue_redraw()

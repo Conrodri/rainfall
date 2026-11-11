@@ -1,0 +1,98 @@
+[
+ {
+  "id": "epreuve_start",
+  "path": "epreuves/epreuve_start.ogg",
+  "seed": 4206100,
+  "duration_s": 1.2,
+  "peak_dbfs": -8.49,
+  "rms_dbfs": -20.0
+ },
+ {
+  "id": "chase_jump",
+  "path": "epreuves/chase_jump.ogg",
+  "seed": 4206101,
+  "duration_s": 0.45,
+  "peak_dbfs": -5.8,
+  "rms_dbfs": -21.01
+ },
+ {
+  "id": "chase_warn",
+  "path": "epreuves/chase_warn.ogg",
+  "seed": 4206102,
+  "duration_s": 0.55,
+  "peak_dbfs": -8.81,
+  "rms_dbfs": -21.07
+ },
+ {
+  "id": "chase_point",
+  "path": "epreuves/chase_point.ogg",
+  "seed": 4206103,
+  "duration_s": 0.75,
+  "peak_dbfs": -8.72,
+  "rms_dbfs": -21.01
+ },
+ {
+  "id": "chase_miss",
+  "path": "epreuves/chase_miss.ogg",
+  "seed": 4206104,
+  "duration_s": 0.65,
+  "peak_dbfs": -7.87,
+  "rms_dbfs": -21.01
+ },
+ {
+  "id": "vein_tick",
+  "path": "epreuves/vein_tick.ogg",
+  "seed": 4206105,
+  "duration_s": 0.28,
+  "peak_dbfs": -14.28,
+  "rms_dbfs": -26.06
+ },
+ {
+  "id": "vein_geyser_warn",
+  "path": "epreuves/vein_geyser_warn.ogg",
+  "seed": 4206106,
+  "duration_s": 1.0,
+  "peak_dbfs": -8.86,
+  "rms_dbfs": -21.02
+ },
+ {
+  "id": "vein_geyser",
+  "path": "epreuves/vein_geyser.ogg",
+  "seed": 4206107,
+  "duration_s": 1.3,
+  "peak_dbfs": -4.56,
+  "rms_dbfs": -21.01
+ },
+ {
+  "id": "hold_side",
+  "path": "epreuves/hold_side.ogg",
+  "seed": 4206108,
+  "duration_s": 0.85,
+  "peak_dbfs": -10.58,
+  "rms_dbfs": -21.0
+ },
+ {
+  "id": "hold_bell_hit",
+  "path": "epreuves/hold_bell_hit.ogg",
+  "seed": 4206109,
+  "duration_s": 0.6,
+  "peak_dbfs": -6.23,
+  "rms_dbfs": -21.03
+ },
+ {
+  "id": "hold_bell_dim",
+  "path": "epreuves/hold_bell_dim.ogg",
+  "seed": 4206110,
+  "duration_s": 1.45,
+  "peak_dbfs": -7.11,
+  "rms_dbfs": -21.0
+ },
+ {
+  "id": "hold_bell_ring",
+  "path": "epreuves/hold_bell_ring.ogg",
+  "seed": 4206111,
+  "duration_s": 3.0,
+  "peak_dbfs": -6.2,
+  "rms_dbfs": -22.0
+ }
+]

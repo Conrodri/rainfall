@@ -158,6 +158,7 @@ func _run(delta: float) -> void:
 		_announcing = true
 		_announce_left = Balance.HOLD_ANNOUNCE_S
 		last_side = sides[order[next_i]]
+		Audio.play(&"hold_side", bell.global_position + last_side * HOLD_CHEVRON_DIST_U * Balance.UNIT_PX)
 	if not resolved and elapsed >= Balance.HOLD_DURATION_S:
 		_resolve()
 
