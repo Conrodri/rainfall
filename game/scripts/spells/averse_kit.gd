@@ -960,7 +960,7 @@ func cast_spell(s: SpellData, aim: Variant) -> bool:
 			if target == null:
 				return false # l'auto ne consomme rien sans cible
 			var shot := s.duplicate() as SpellData # coef figé au tir (l'eau peut changer avant l'impact)
-			shot.coef = GOUTTE_COEF_MIN + GOUTTE_COEF_WATER * water_ratio()
+			shot.coef = (GOUTTE_COEF_MIN + GOUTTE_COEF_WATER * water_ratio()) * s.coef / GOUTTE_COEF_MIN # × coef reçu (échos de Couronne, objets)
 			var dir := (target.global_position - origin).normalized()
 			if dir != Vector2.ZERO:
 				player.facing = dir
@@ -1315,7 +1315,7 @@ func _cast_bruine(s: SpellData) -> bool:
 	if target == null:
 		return false # l'auto ne consomme rien sans cible
 	var shot := s.duplicate() as SpellData
-	shot.coef = BRUINE_COEF_MIN + BRUINE_COEF_WATER * water_ratio()
+	shot.coef = (BRUINE_COEF_MIN + BRUINE_COEF_WATER * water_ratio()) * s.coef / BRUINE_COEF_MIN # × coef reçu (échos de Couronne, objets)
 	shot.set_meta(&"volley", {"gain": 0.0, "big": false})
 	var dir := (target.global_position - player.global_position).normalized()
 	if dir != Vector2.ZERO:

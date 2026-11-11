@@ -352,6 +352,29 @@ invalidé à chaque écho, une allocation de `SpellData` par écho). Les autres 
 Taliant (l. 374) et Grésille gardent le rapport `s.coef / coef de base` ; la Flambée d'Ardent, la Toupie et le vol de
 Rictus, la remontée de Bourbe sont des sorts 2-4 que les échos ne rejouent pas.
 
+**R1 appliqué le 11/11 (ratios mesurés).** Correctif : `averse_kit.gd` (Goutte-lame et Bruine) multiplie la formule d'eau
+par `s.coef / GOUTTE_COEF_MIN` (resp. `/ BRUINE_COEF_MIN`, le coef nominal avec lequel `_spell` crée le sort) ;
+`rainette_kit.gd` (`_tongue_line_spell`) calcule `TONGUE_LINE_COEF × s.coef / TONGUE_COEF` et reconstruit la copie
+quand ce coef change. Test de non-régression : `tests/coef_echo_test` (un écho à ×0,5 donne ×0,5 de coef pour la
+Goutte, la Bruine et la ligne de la Langue). Autres kits : `grep` des affectations de `coef` dans `*_kit.gd`, aucun
+autre cas identique (ceux de Rictus, Bourbe, Taliant et Grésille gardent le rapport au coef reçu). Restent des coefs
+dérivés de l'eau dans le kit d'Averse (Crue l. 1528, Mousson l. 1498, Déversement l. 1467) : sorts 3-4, jamais rejoués
+avec de l'eau en réserve (la Crue vide l'amphore avant l'écho, coef ≈ 0), laissés tels quels.
+
+Remesure (L12m, mixte + élite + mini-boss, 1 graine, ratio de durée contre le même personnage sans objet) :
+
+| Perso | Avant (ratio géo) | Après : mixte | élite | mini-boss | Après (géo) |
+|---|---|---|---|---|---|
+| Averse, Couronne ×2 | 2,02 | 1,12 | 2,23 | 2,16 | **1,75** |
+| Rainette, Couronne ×2 | 1,21 | 1,03 | 1,21 | 1,46 | **1,22** |
+
+Lecture : le coef des échos est désormais correct (dégâts du sort 1 par tir 94 → ≈ 61 en moyenne sur élite avec 2 échos,
+attendu ≈ 56), mais Averse reste à ×1,75 et non ×1,27 : chaque tir (écho compris) rend de l'eau, donc la Couronne
+triple le flux d'eau et déclenche presque 2 fois plus de Vagues (sort 2 : 4 → 6 lancers sur l'élite, dégâts du sort 2
+×1,85). C'est la synergie eau × écho du kit, pas un coef écrasé ; la prédiction de ×1,27 de la ligne R1 l'ignorait.
+Si ×1,75 reste jugé trop haut, levier suivant : réduire `HIT_WATER` sur les tirs d'écho (non appliqué, à décider).
+Rainette : inchangée (la mesure est mono-cible, la ligne ne sert qu'avec plusieurs monstres alignés).
+
 ### 6.3 Rafale d'acier : dominante pour les sorts 1 de kit
 
 `item_effects.gd:_rafale_on_cast` (l. 486-498) : pour un sort 1 projectile, 2 tirs latéraux à ±14° (qui ratent une cible
@@ -380,7 +403,7 @@ Valeurs **estimées** à partir des parts de dégâts et des ablations mesurées
 
 | # | Prio | Fichier : constante ou clé | Actuel | Proposé | Plage sûre | Effet attendu (estimé) |
 |---|---|---|---|---|---|---|
-| R1 | P1 | `game/scripts/spells/averse_kit.gd` l. 963 et l. 1318 : coef du tir | `GOUTTE_COEF_MIN + GOUTTE_COEF_WATER × eau` (idem Bruine) | même formule **× `s.coef / GOUTTE_COEF_MIN`** (resp. `/ BRUINE_COEF_MIN`) ; `rainette_kit.gd` l. 801 : `TONGUE_LINE_COEF × s.coef / TONGUE_COEF`, cache par valeur de coef | correctif, pas de plage | Averse + Couronne ×2 : ×2,02 → ≈ ×1,27 ; aucun effet sans écho |
+| R1 | P1 | `game/scripts/spells/averse_kit.gd` l. 963 et l. 1318 : coef du tir | `GOUTTE_COEF_MIN + GOUTTE_COEF_WATER × eau` (idem Bruine) | même formule **× `s.coef / GOUTTE_COEF_MIN`** (resp. `/ BRUINE_COEF_MIN`) ; `rainette_kit.gd` l. 801 : `TONGUE_LINE_COEF × s.coef / TONGUE_COEF`, cache par valeur de coef | correctif, pas de plage | **Appliqué le 11/11, ratios mesurés (§6.2)** : Averse + Couronne ×2 : ×2,02 → ×1,75 (la synergie eau × écho garde le reste) ; Rainette ×1,21 → ×1,22 ; aucun effet sans écho |
 | R2 | P1 | `tocsin_kit.gd` : `HEAD_CHARGE_ADD` | 0,5 | 0,3 | 0,25-0,35 | Tête-cloche sur boss électrisé ×1,8 → ×1,6 ; burst d'ouverture −5 % |
 | R3 | P1 | `tocsin_kit.gd` : `PILLAR_RING_CAP` | 5,0 | 3,0 | 2,5-3,5 | pilier qui sonne 10 → 6 coef par Tête-cloche ; avec R2 : burst −17 %, DPS soutenu −7 % ; mono L6+ ×1,58 → ≈ ×1,35, mini-boss ×1,79 → ≈ ×1,5, boss d'étage ×1,22 → ≈ ×1,13 |
 | R4 | P2 | `rictus_kit.gd` : `DECOY_FICELE_MULT` | 1,3 | 1,1 | 1,0-1,2 | Doublures (32 % des dégâts mono) −15 % sur ficelé : mono −5 % ; zone intacte |
@@ -399,7 +422,7 @@ R6 et R8, enfin R7 après vérification en mode test. Si Tocsin reste au-dessus 
 
 ### Risques
 
-- R1 rend Averse plus faible avec la Couronne qu'aujourd'hui : c'est l'alignement attendu (+27 %), pas un nerf du kit.
+- R1 rend Averse plus faible avec la Couronne (×2,02 → ×1,75 mesuré) : correction d'un bug, pas un nerf du kit ; l'écart restant vient de l'eau rendue par les échos (§6.2).
 - R2-R3 touchent aussi le Tocsin humain qui ramasse ses membres ; le bot ne ramasse pas, donc le Tocsin réel est plus fort
   que mesuré : la réduction proposée est prudente.
 - R6 demande 3 lignes de code dans `item_effects.gd` (dossier `scripts/items`, pas `scripts/core`) et une clé JSON.
@@ -442,7 +465,7 @@ Semeur de pluie (Arpenteuse 5), 2-7 contre l'Idole noyée (Rictus 7).
 
 1. Mode test (bouton du titre ou `-- --test-mode`), panneau F1, difficulté D réglée sur la valeur du moment (E3 : 3,4).
 2. **R1** : Averse, ajouter 2 Couronnes d'écho, frapper un mini-boss invoqué : les deux échos doivent afficher environ
-   45 % puis 31 % du chiffre du coup principal (aujourd'hui : le même chiffre).
+   45 % puis 31 % du chiffre du coup principal (avant R1 : le même chiffre ; appliqué le 11/11).
 3. **R2-R3** : Tocsin niveau 6, invoquer un mini-boss, poser les 2 piliers, Coup de tocsin, Tête-cloche : chronométrer
    le mini-boss (aujourd'hui ≈ 3 s, attendu ≈ 4-5 s) ; puis un boss d'étage de l'étage 3 avec 21 objets (≈ 32 s en
    duel aujourd'hui, attendu ≈ 36 s).
