@@ -765,7 +765,7 @@ Synthèse procédurale (`art/tools/audio/gen_music.py`, `gen_ambience.py`), Vorb
 
 <!-- EPREUVES_EPG -->
 ## EPREUVES_EPG
-Lot EP-G (docs/Design_Epreuves.md §9) : sons des verbes d'Épreuve. **PROVISOIRE** : synthèse écrite par Claude (`art/tools/audio/gen_epg.py`, graines 4206100-4206111, manifeste `art/tools/audio/epg_manifest.json`), faute de passage Codex ; à remplacer par un lot Codex sous les mêmes noms. Mono 44,1 kHz, Vorbis q5, `game/assets/audio/epreuves/`. Clés dans `sounds.json` (famille `ui`, `min_interval_ms` contre le spam). Les notes `epreuve_grade_*` existent déjà (lot précédent).
+Lot EP-G (docs/Design_Epreuves.md §9) : sons des verbes d'Épreuve, **produit par Codex** (générateur `art/tools/audio/gen_epg_codex.py`, vérificateur `art/tools/audio/verify_epg.py`, manifeste `art/tools/audio/epg_manifest.json`). Mono 44,1 kHz, Vorbis q5, `game/assets/audio/epreuves/`. Clés dans `sounds.json` (famille `ui`, `min_interval_ms` contre le spam). Les notes `epreuve_grade_*` existent déjà (lot précédent).
 - `epreuve_start` : 1,200 s ; cor grave qui monte ; lancement d'une Épreuve (`epreuve.gd` `activate`).
 - `chase_jump` : 0,450 s ; souffle et pincement qui monte ; la lumière saute.
 - `chase_warn` : 0,550 s ; grappe de tintements qui vacillent ; une fois par saut, à `CHASE_WARN_S`.
