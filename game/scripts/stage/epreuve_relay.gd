@@ -7,6 +7,10 @@ extends SecretLever
 var epreuve: Node = null ## EpreuveRitual propriétaire (non typé : pas de dépendance circulaire de classes)
 
 
+func _init() -> void:
+	sprite_prefix = "valve" ## sprites valve_<skin>_{off,on} (repli : lever_<skin>)
+
+
 func can_interact() -> bool:
 	return not used and epreuve != null and is_instance_valid(epreuve) and epreuve.call(&"is_running") and player_near()
 
