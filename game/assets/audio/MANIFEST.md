@@ -721,3 +721,33 @@ Synthèse numpy/scipy déterministe ; Vorbis q5, 44,1 kHz stéréo.
 - `spell.gresille_orage.ultimate` : 1 variantes, 1.60–1.60 s ; crête max -8.38 dBFS ; RMS -22.16–-22.16 dBFS.
 - `gresille.zap` : 4 variantes, 0.12–0.12 s ; crête max -9.07 dBFS ; RMS -19.43–-19.26 dBFS.
 - `gresille.jars` : 3 variantes, 0.35–0.35 s ; crête max -13.65 dBFS ; RMS -26.09–-26.05 dBFS.
+<!-- VMR_AUDIO -->
+## VMR_AUDIO
+- `vigie_trait_cast` : 9 variantes ; 82.2-138.2 ms ; crête max -12.39 dBFS ; RMS -28.04--24.00 dBFS.
+- `vigie_trait_hit` : 9 variantes ; 73.7-123.0 ms ; crête max -12.85 dBFS ; RMS -25.00--22.86 dBFS.
+- `vigie_fusee_cast` : 6 variantes ; 298.6-512.5 ms ; crête max -8.78 dBFS ; RMS -24.24--20.20 dBFS.
+- `vigie_fusee_hit` : 6 variantes ; 150.6-257.8 ms ; crête max -5.31 dBFS ; RMS -21.20--19.14 dBFS.
+- `vigie_filet_cast` : 6 variantes ; 274.5-461.6 ms ; crête max -10.14 dBFS ; RMS -24.51--20.18 dBFS.
+- `vigie_filet_hit` : 6 variantes ; 133.3-222.0 ms ; crête max -9.80 dBFS ; RMS -21.17--19.14 dBFS.
+- `vigie_filet_burst_hit` : 2 variantes ; 148.1-152.5 ms ; crête max -10.06 dBFS ; RMS -21.10--20.99 dBFS.
+- `vigie_grele_cast` : 6 variantes ; 360.7-610.4 ms ; crête max -9.78 dBFS ; RMS -24.21--20.22 dBFS.
+- `vigie_grele_hit` : 9 variantes ; 79.7-116.4 ms ; crête max -12.54 dBFS ; RMS -24.89--22.89 dBFS.
+- `vigie_pointes_cast` : 6 variantes ; 245.8-401.3 ms ; crête max -10.48 dBFS ; RMS -24.16--20.09 dBFS.
+- `vigie_pointes_hit` : 2 variantes ; 87.3-88.8 ms ; crête max -8.33 dBFS ; RMS -21.07--21.06 dBFS.
+- `vigie_repli` : 3 variantes ; 172.7-186.3 ms ; crête max -15.10 dBFS ; RMS -24.65--24.08 dBFS.
+- `taille_estoc_cast` : 9 variantes ; 122.0-205.0 ms ; crête max -13.16 dBFS ; RMS -28.19--24.13 dBFS.
+- `taille_estoc_hit` : 9 variantes ; 86.6-139.5 ms ; crête max -12.05 dBFS ; RMS -25.02--22.99 dBFS.
+- `fauche_lune_cast` : 6 variantes ; 290.3-500.5 ms ; crête max -10.34 dBFS ; RMS -24.18--20.18 dBFS.
+- `fauche_lune_hit` : 6 variantes ; 121.0-209.4 ms ; crête max -8.17 dBFS ; RMS -20.89--18.93 dBFS.
+- `aiguisage_cast` : 6 variantes ; 294.5-544.7 ms ; crête max -9.05 dBFS ; RMS -24.29--20.21 dBFS.
+- `morfil_aiguisage` : 3 variantes ; 248.2-265.6 ms ; crête max -14.15 dBFS ; RMS -24.49--24.17 dBFS.
+- `lames_jumelles_cast` : 6 variantes ; 268.4-471.9 ms ; crête max -9.70 dBFS ; RMS -24.52--20.20 dBFS.
+- `lames_jumelles_hit` : 6 variantes ; 111.0-176.8 ms ; crête max -8.95 dBFS ; RMS -20.97--19.05 dBFS.
+- `iai_hit` : 9 variantes ; 101.3-169.6 ms ; crête max -8.87 dBFS ; RMS -21.18--18.40 dBFS.
+- `morfil_iai_clic` : 3 variantes ; 105.1-108.0 ms ; crête max -10.19 dBFS ; RMS -24.10--23.94 dBFS.
+- `dagues_demi_lune_cast` : 9 variantes ; 106.1-181.7 ms ; crête max -12.48 dBFS ; RMS -28.11--24.13 dBFS.
+- `dagues_demi_lune_hit` : 9 variantes ; 72.3-129.1 ms ; crête max -10.48 dBFS ; RMS -25.08--23.12 dBFS.
+- `couteau_ficele_cast` : 6 variantes ; 194.2-299.9 ms ; crête max -9.77 dBFS ; RMS -24.16--20.15 dBFS.
+- `couteau_ficele_hit` : 6 variantes ; 101.1-164.9 ms ; crête max -6.99 dBFS ; RMS -20.96--19.04 dBFS.
+- `doublures_cast` : 6 variantes ; 421.4-680.4 ms ; crête max -8.97 dBFS ; RMS -24.19--20.36 dBFS.
+- `doublures_hit` : 6 variantes ; 182.9-326.5 ms ; crête max -7.48 dBFS ; RMS -21.65--19.07 dBFS.
