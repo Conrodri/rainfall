@@ -79,7 +79,7 @@ Elle se liquéfie : **3 u à 10 u/s** (0,30 s, i-frames 0,30 s, surplus assumé 
 - Chaque dash achevé bande l'arc : **+8 % de Guet** (`DODGE_TENSION_GAIN`, +24 % pour les trois ; ≈ +0,08 Guet/s au plus, autant que la marche (+0,083/s) : un appoint). Fantômes rouge fusée. Pastilles de charges sur le bouton.
 
 ### 3.10 Taliant : « Iaï » (existant, `RollDodge`)
-Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doublé sous Lames jumelles). Libellé « Iaï ».
+Dash tranchant inchangé (coef 1,5 à 0,9 u, 4 % d'aiguisage s'il touche, doublé sous Lames jumelles). Libellé « Iaï ». Clic de fourreau (`spell.morfil_iai_clic`) 0,2 s après la fin de la roulade, gardé par décision du joueur le 11/11/2026 ; muet si Taliant meurt ou en pause.
 
 ### 3.11 Grésille : « Court-circuit » (`RollDodge` + hooks, `gresille_kit.gd`)
 - Roulade standard : **3 u / 0,25 s / 3 s** (`Balance.DODGE_*`, aucune valeur propre), invulnérable, `dodge_ghosts()` vrai, fantômes lilas `#B9A6FF` à 55 % d'opacité (`dodge_ghost_color`). Aucun hook de distance ni de charges.

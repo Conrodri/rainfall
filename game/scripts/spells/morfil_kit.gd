@@ -130,6 +130,7 @@ const GUARD_TAKEN_MULT := 0.55
 const GUARD_S := 0.6
 
 # --- Combos (docs/Design_Combos.md §5.7) ----------------------------------------------------------------
+const IAI_CLIC_DELAY_S := 0.2 ## clic de fourreau : délai après la fin de la roulade (décision du 11/11)
 const IAI_OPEN_S := 1.5 ## après un Iaï, la lame est déjà dégainée : fenêtre de la Fauche-lune au rabais
 const COST_CRESCENT_AFTER_IAI := 8.0 ## aiguisage retiré par une Fauche-lune (ou un Fendoir) dans la fenêtre (au lieu de 15)
 const IAI_OPEN_KNOCK_U := 1.4 ## recul de la Fauche-lune dans la fenêtre (au lieu de 1,0 u)
@@ -183,6 +184,7 @@ var cleaves := 0 ## Fendoirs lancés (tests)
 var _guard_mult := GUARD_TAKEN_MULT
 var _iai_hit := {} ## instance_id -> true (une fois par roulade)
 var _iai_spell: SpellData = null
+var iai_clic_count := 0 ## clics de fourreau émis (lu par les tests)
 var _iai_open_left := 0.0 ## fenêtre « Iaï -> Fauche-lune » (s restantes)
 var _combo_hit_left := 0.0 ## la Fauche-lune lancée dans la fenêtre résout encore ses coups
 var _parry_cd := 0.0
@@ -863,6 +865,14 @@ func _end_edge() -> void:
 	edge_strikes = 0
 
 
+## Clic de fourreau, 0,2 s après la fin de l'Iaï. `_delayed` n'avance que dans `tick` : rien en pause ; rien si mort.
+func _iai_clic() -> void:
+	if player == null or not is_instance_valid(player) or player.dead:
+		return
+	iai_clic_count += 1
+	Audio.play(&"spell.morfil_iai_clic", player.global_position, -6.0, 1.0)
+
+
 func _do_sharpen() -> void:
 	sharpen()
 	LightRig.flash(player.global_position, LIGHT_SPELL, 0.5)
@@ -979,6 +989,7 @@ func tick(delta: float) -> void:
 			_iai_active = false
 			_iai_open_left = IAI_OPEN_S # la fenêtre court depuis la fin de la roulade
 			_iai_trail(_iai_from, player.global_position)
+			_delayed.append([IAI_CLIC_DELAY_S, _iai_clic])
 	_update_look()
 
 

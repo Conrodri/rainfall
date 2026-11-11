@@ -166,7 +166,7 @@ Lecture : Ardent et Averse sont les deux vraies ruptures (instantané ; glisse s
 ### 3.10 Taliant : « Iaï » (existant, formalisé)
 
 - Dash **3 u / 0,25 s / i-frames / 3 s** qui **tranche chaque monstre traversé** à 0,9 u du trajet, une fois chacun : coef **1,5** (× aiguisage/100), recul 0,4 u, proc 0,8 ; coûte **4 %** d'aiguisage s'il touche au moins un monstre ; **doublé** sous Lames jumelles (0,12 s plus tard). Murs arrêtent. Seule roulade qui blesse (≈ 0,5 coef/s, ≈ 13 % de son DPS : accepté, c'est son « sort 2 » de bretteur, décision du 22/10).
-- Marques : `iai_trail` (fil de sève tendu sur le trajet, 0,3 s) ; **pas de fantômes braise** ; ajout : **clic de fourreau** 0,2 s après l'arrivée (son à produire) et éclat `morfil_edge` proportionnel à l'aiguisage sur chaque monstre tranché (existant).
+- Marques : `iai_trail` (fil de sève tendu sur le trajet, 0,3 s) ; **pas de fantômes braise** ; ajout : **clic de fourreau** 0,2 s après l'arrivée (branché le 11/11/2026, son `spell.morfil_iai_clic`, `morfil_kit.gd` `_iai_clic`) et éclat `morfil_edge` proportionnel à l'aiguisage sur chaque monstre tranché (existant).
 - Garde : l'Iaï **ne laisse pas de garde** en v1 (levier noté dans la fiche si les dégâts subis au niveau 12 le demandent : « Iaï qui laisse 0,5 s de garde »).
 - HUD : standard. Codex : `dodge` 5 frames et `iai_trail` prévus au lot SA1 ; rien de neuf.
 
