@@ -795,10 +795,11 @@ func _tongue_primary(hit: Array, origin: Vector2) -> Node:
 
 ## Copie de la Langue au coef de ligne (mise en cache : le sort ne change pas en cours de run).
 func _tongue_line_spell(s: SpellData) -> SpellData:
-	if _line_sd == null or _line_src != s:
+	var line_coef := TONGUE_LINE_COEF * s.coef / TONGUE_COEF # suit le coef reçu (échos de Couronne, objets)
+	if _line_sd == null or _line_src != s or not is_equal_approx(_line_sd.coef, line_coef):
 		_line_src = s
 		_line_sd = s.duplicate() as SpellData
-		_line_sd.coef = TONGUE_LINE_COEF
+		_line_sd.coef = line_coef
 	return _line_sd
 
 
