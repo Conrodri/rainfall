@@ -1,0 +1,11 @@
+OBJECTIF : 4 icônes de variantes de Rainette, 128x128 RGBA natifs (rendu Blender à la taille finale, aucun redimensionnement PIL) : game/assets/sprites/icons/spells/rainette_croassement.png, rainette_ricochet.png, rainette_bulle.png, rainette_choeur.png. Même format/cadrage que rainette_gluant.png et gresille_paratonnerre.png (médaillon sombre rond, emblème clair cel-shadé, bbox ~ (10,8,121,120), < 60 Kio, pas de _n, pas de _e).
+TOUCHER : art/tools/rainette/icons_variants_build.py (nouveau), art/renders/rainette_icons/ (rendus bruts), game/assets/sprites/icons/spells/ (4 PNG).
+NE PAS LIRE : docs/, CLAUDE.md, autres lots.
+SCRIPT À REPRENDRE : art/tools/gresille/icons_variants_build.py (copier en art/tools/rainette/icons_variants_build.py ; garder kit = art/tools/night/icons_norm_build, kit.scene(name, emblem, accent), render 128, --pack pour valider). Accent vert marais #69BD79 (comme rainette_gluant/avalement). Regarde rainette_gluant.png (une seule fois) pour la teinte. Travaille uniquement dans le dépôt courant (worktree) ; moteur Eevee valide sous Blender 5.2 (celui du kit existant), pas BLENDER_EEVEE_NEXT.
+EMBLÈMES (lisibles à 64 px, un seul motif dominant chacun, formes anguleuses sérieuses, rien de mignon) :
+- croassement : gueule/sac vocal de grenouille de face, arc de mâchoire ouvert, 3 anneaux d'onde concentriques qui s'élargissent et repoussent 3 petits points (monstres) vers le bord.
+- ricochet : deux arcs de bond en cloche successifs de gauche à droite, deux impacts (anneaux de choc au sol), petite silhouette de grenouille accroupie au premier appui.
+- bulle : grande sphère translucide (cercle + reflet en croissant) contenant deux petites silhouettes de monstres flottantes et quelques gouttes de vase autour.
+- choeur : trois roseaux de hauteurs différentes (tige + épi), sous eux une flaque ovale gluante, deux arcs sonores de chaque côté.
+VÉRIF : script --pack (128x128 RGBA, alpha 0..255, contraste, <60 Kio, 4 hashes distincts + les 4 icônes existantes rainette_*), planche de contrôle art/renders/rainette_icons/controle.png (<= 1024 px, montage).
+RAPPORT (6 lignes max, ultracave).
