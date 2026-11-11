@@ -721,3 +721,13 @@ Synthèse numpy/scipy déterministe ; Vorbis q5, 44,1 kHz stéréo.
 - `spell.gresille_orage.ultimate` : 1 variantes, 1.60–1.60 s ; crête max -8.38 dBFS ; RMS -22.16–-22.16 dBFS.
 - `gresille.zap` : 4 variantes, 0.12–0.12 s ; crête max -9.07 dBFS ; RMS -19.43–-19.26 dBFS.
 - `gresille.jars` : 3 variantes, 0.35–0.35 s ; crête max -13.65 dBFS ; RMS -26.09–-26.05 dBFS.
+
+<!-- AUDIO_ETAGES_4_5 -->
+## AUDIO_ETAGES_4_5 (lot G12, brief art/briefs/audio_cryptes_source.md)
+Synthèse procédurale (`art/tools/audio/gen_music.py`, `gen_ambience.py`), Vorbis q6 48 kHz stéréo, boucles parfaites ; `verify_new.py` OK. Cartes `cryptes_noyees` et `cryptes_ossuaire_pluies` partagent les ids `cryptes_noyees` ; `la_source` a les siens. Pluie : amb.rain.* existantes.
+- `music.cryptes_noyees.{base,tension,drive,climax}` : `music/music_cryptes_noyees_<stem>_01.ogg`, 116,36 s, LUFS -20,8 / -24,7 / -24,7 / -23,6, crête vraie <= -8,2 dBTP.
+- `music.boss.cryptes_noyees` : `music/music_boss_cryptes_noyees_01.ogg`, 55,38 s, -15,9 LUFS, -3,4 dBTP.
+- `amb.wind.cryptes_noyees`, `amb.cryptes_noyees.decor` : `ambience/amb_wind_cryptes_noyees_01.ogg` (-23,4 LUFS), `amb_cryptes_noyees_decor_01.ogg` (-22,9 LUFS), 64 s.
+- `music.la_source.{base,tension,drive,climax}` : `music/music_la_source_<stem>_01.ogg`, 99,31 s, LUFS -20,9 / -25,6 / -25,5 / -23,5, crête vraie <= -8,2 dBTP.
+- `music.boss.la_source` : `music/music_boss_la_source_01.ogg`, 60 s, -15,8 LUFS, -3,1 dBTP ; thème unique en 3 sections montantes (pas de phases dans l'AudioDirector).
+- `amb.wind.la_source`, `amb.la_source.decor` : `ambience/amb_wind_la_source_01.ogg` (-23,5 LUFS), `amb_la_source_decor_01.ogg` (-23,0 LUFS), 64 s.

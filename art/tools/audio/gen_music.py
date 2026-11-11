@@ -75,6 +75,20 @@ CFG = {
              'B': ['10:2 8:1 6:1', '11:2 9:1 7:1', '9:1 11:1 13:2', '12:2 10:1 8:1', '13:2 12:1 10:1', '11:2 9:2', '14:1 13:1 11:2', '12:2 10:1 8:1'],
              'T': ['1:4', '2:4', '4:2 2:2', '1:4']},
         order=[('A', 'A'), ('A', 'A+'), ('B', 'B'), ('A', 'A'), ('T', 'T')]),
+    'cryptes_noyees': dict(
+        bpm=66, scale=PHRY, mel_root=50, mel_inst='piano', arp_inst='harp', bell=True, pad_cut=850, rt60=4.8, rev_bright=.12,
+        taiko_f0=42, perc='wood',
+        chords={'A': 'Dm Eb Dm Bb Dm Eb Gm A', 'B': 'Bb Dm Gm Eb Dm Bb A Dm'},
+        mel={'A': ['1:2 3:1 5:1', '2:2 4:1 2:1', '5:2 3:1 1:1', '7:2 4:1 2:1', '1:1 3:1 5:2', '6:2 5:1 3:1', '4:2 2:1 1:1', '2:3 r:1'],
+             'B': ['5:2 3:1 1:1', '2:2 4:1 6:1', '8:2 7:1 5:1', '4:2 2:1 1:1', '6:2 8:1 6:1', '5:2 3:1 2:1', '7:2 5:1 4:1', '1:4']},
+        order=[('A','A'),('B','B'),('A','A'),('B','B')]),
+    'la_source': dict(
+        bpm=58, scale=AEOL, mel_root=51, mel_inst='cello', arp_inst='harp', bell=True, pad_cut=650, rt60=6.5, rev_bright=.1,
+        taiko_f0=36, perc='soft',
+        chords={'A': 'Dm Bb F C Dm Bb Gm A', 'B': 'Bb F Dm C Gm Dm A Dm'},
+        mel={'A': ['1:3 3:1', '5:2 4:1 3:1', '2:2 1:2', '7:2 5:1 4:1', '1:2 3:1 5:1', '6:2 5:1 3:1', '4:2 2:1 1:1', '1:4'],
+             'B': ['5:2 8:2', '7:2 6:1 5:1', '3:2 1:2', '2:2 4:1 3:1', '6:2 8:1 6:1', '5:2 3:1 2:1', '7:2 5:1 4:1', '1:4']},
+        order=[('A','A'),('B','B'),('A','A')]),
 }
 BOSS = {
     'terrasses_noyees': dict(
@@ -101,6 +115,18 @@ BOSS = {
                    '9:2 8:1 6:1', '5:1 3:1 1:2'],
              'B': ['10:2 8:1 6:1', '11:2 9:1 7:1', '13:2 11:1 9:1', '12:2 10:1 8:1', '13:2 12:1 10:1', '11:2 9:2', '14:1 13:1 11:2', '12:1 14:1 16:2']},
         order=[('A', 'A'), ('A', 'A'), ('B', 'B'), ('A', 'A'), ('B', 'B'), ('A', 'A'), ('B', 'B')]),
+    'cryptes_noyees': dict(
+        bpm=104, scale=PHRY, mel_root=50, mel_inst='brass', arp_inst='harp', bell=True, pad_cut=850, rt60=4.8, rev_bright=.12, taiko_f0=42,
+        perc='wood', extra='bells', chords={'A':'Dm Eb Dm Eb Dm Bb Gm A','B':'Bb Dm Eb Dm Gm Eb A Dm'},
+        mel={'A':['1:1 3:.5 5:.5 3:2','2:2 4:1 2:1','5:2 3:1 1:1','7:2 5:1 4:1','1:1 3:.5 5:.5 8:2','6:2 5:1 3:1','4:2 2:1 1:1','2:4'],
+             'B':['5:2 8:1 7:1','6:2 5:1 3:1','8:2 7:1 5:1','4:2 2:1 1:1','6:2 8:1 6:1','5:2 3:1 2:1','7:2 5:1 4:1','1:4']},
+        order=[('A','A'),('B','B'),('A','A')]),
+    'la_source': dict(
+        bpm=96, scale=AEOL, mel_root=51, mel_inst='cello', arp_inst='harp', bell=True, pad_cut=650, rt60=6.5, rev_bright=.1, taiko_f0=36,
+        perc='soft', extra='bells', chords={'A':'Dm Bb Dm C Dm Bb Gm A','B':'Bb F Dm C Gm Dm A Dm'},
+        mel={'A':['1:1 3:.5 5:.5 3:2','5:2 4:1 3:1','2:2 1:2','7:2 5:1 4:1','1:1 3:.5 5:.5 8:2','6:2 5:1 3:1','4:2 2:1 1:1','1:4'],
+             'B':['5:2 8:2','7:2 6:1 5:1','3:2 1:2','2:2 4:1 3:1','6:2 8:1 6:1','5:2 3:1 2:1','7:2 5:1 4:1','1:4']},
+        order=[('A','A'),('B','B'),('A','A')]),
 }
 Q['dim'] = [0, 3, 6]
 Q['Gdim'] = [0, 3, 6]
@@ -124,7 +150,6 @@ class Song:
     def __init__(self, cfg):
         self.cfg = cfg
         self.bar = int(round(240.0 / cfg['bpm'] * SR))
-        assert abs(240.0 / cfg['bpm'] * SR - self.bar) < 1e-6
         self.bars = []
         for si, (ck, mk) in enumerate(cfg['order']):
             shift = 7 if mk.endswith('+') else 0

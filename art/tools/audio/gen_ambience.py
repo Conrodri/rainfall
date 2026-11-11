@@ -147,8 +147,8 @@ def creak_events(buf, rng, count, f_lo, f_hi, dur_lo, dur_hi, amp, harmonics=5):
 
 
 def gen_wind(kind, seed0):
-    rng = np.random.default_rng({'cite_rouille': 11, 'foret_brume': 12, 'terrasses_noyees': 13, 'generic': 14}[kind] + seed0 * 100)
-    gust = gust_env(rng, {'cite_rouille': .75, 'foret_brume': .3, 'terrasses_noyees': .5, 'generic': .5}[kind])
+    rng = np.random.default_rng({'cite_rouille': 11, 'foret_brume': 12, 'terrasses_noyees': 13, 'generic': 14, 'cryptes_noyees': 15, 'la_source': 16}[kind] + seed0 * 100)
+    gust = gust_env(rng, {'cite_rouille': .75, 'foret_brume': .3, 'terrasses_noyees': .5, 'generic': .5, 'cryptes_noyees': .4, 'la_source': .55}[kind])
     gust2 = gust_env(rng, .5, 11)
     if kind == 'cite_rouille':
         body = stereo_noise(rng, lambda f: (1 / np.sqrt(np.maximum(f, 40) / 40)) * np.exp(-(f / 1400) ** 2)) * 1.0
@@ -186,6 +186,21 @@ def gen_wind(kind, seed0):
         air = stereo_noise(rng, lambda f: np.exp(-((f - 450) / 220) ** 2)) * (gust2 ** 2)[:, None] * .35
         mix = body * 1.0 + rustle * .55 + air
         rms = -26
+    elif kind in ('cryptes_noyees', 'la_source'):
+        body = stereo_noise(rng, lambda f: np.exp(-((f - 95) / 105) ** 2) / np.sqrt(np.maximum(f, 35) / 35)) * (gust ** 1.4)[:, None]
+        hollow = np.zeros((N, 2))
+        for c in (0, 1):
+            n0 = rng.normal(size=N)
+            fc = (180 if kind == 'cryptes_noyees' else 125) + 35 * sl.loop_lfo(N, 6, rng.uniform())
+            w = tiled_resonator(n0, fc, 5 if kind == 'cryptes_noyees' else 8)
+            hollow[:, c] = w / (np.std(w) + 1e-9) * (gust2 ** 1.5) * .75
+        mix = body + hollow * .6
+        if kind == 'cryptes_noyees':
+            bub = stereo_noise(rng, lambda f: np.where((f > 500) & (f < 2400), .45, .02))
+            mix += bub * (np.clip(sl.smooth_rand_env(N, rng, 35, .5), 0, None) ** 3)[:, None] * .12
+        else:
+            mix += stereo_noise(rng, lambda f: np.exp(-((f - 430) / 240) ** 2)) * (gust2 ** 2)[:, None] * .16
+        rms = -24
     else:
         deep = 1 if kind == 'terrasses_noyees' else 0
         body = stereo_noise(rng, lambda f: (1 / np.sqrt(np.maximum(f, 50) / 50)) * np.exp(-(f / 1100) ** 2)) * (gust ** 1.4)[:, None]
@@ -280,7 +295,7 @@ def cave_ambience(n, wind=False):
 
 
 def gen_decor(carte, seed0):
-    rng = np.random.default_rng({'terrasses_noyees': 21, 'foret_brume': 22, 'cite_rouille': 23}[carte] + seed0 * 100)
+    rng = np.random.default_rng({'terrasses_noyees': 21, 'foret_brume': 22, 'cite_rouille': 23, 'cryptes_noyees': 24, 'la_source': 25}[carte] + seed0 * 100)
     dry = np.zeros((N, 2))
     wet = np.zeros((N, 2))
     if carte == 'terrasses_noyees':
@@ -337,6 +352,24 @@ def gen_decor(carte, seed0):
         rev = sl.Reverb(rng, rt60=2.2, brightness=.2)
         x = dry + rev.circular(wet) * 1.5
         rms = -27.5
+    elif carte == 'cryptes_noyees':
+        water = flow_water(rng, .75)
+        dry += sl.loop_filter(water, lambda t: sl.hp(t, 95, 1)) * .65
+        for _ in range(95):
+            sl.put(wet, rng.integers(0, N), drip_event(rng, f=rng.uniform(280, 1500), tau=rng.uniform(.12, .38)), rng.uniform(.08,.3), rng.uniform(-.9,.9))
+        for at, f in ((16.4, 196), (47.2, 164.8)):
+            sl.put(wet, int(at*SR), sl.lp(sl.bell(f, 7, rng=rng, tau=3), 950, 2), .3, rng.uniform(-.5,.5))
+        x = dry + sl.Reverb(rng, rt60=4.8, brightness=.12).circular(wet) * 1.4
+        rms = -27
+    elif carte == 'la_source':
+        water = flow_water(rng, 1.8)
+        dry += sl.loop_filter(water, lambda t: sl.hp(t, 80, 1)) * .8
+        for _ in range(120):
+            sl.put(wet, rng.integers(0, N), drip_event(rng, f=rng.uniform(500, 2600), tau=rng.uniform(.04,.14)), rng.uniform(.05,.22), rng.uniform(-.9,.9))
+        for at in (5.7, 18.9, 33.3, 51.8):
+            sl.put(wet, int(at*SR), drip_event(rng, f=rng.uniform(140,320), tau=.65), .45, rng.uniform(-.7,.7))
+        x = dry + sl.Reverb(rng, rt60=6.5, brightness=.1).circular(wet) * 1.5
+        rms = -27
     else:  # cite_rouille
         # drone industriel grave, tres discret
         t = np.arange(N) / SR
@@ -476,12 +509,12 @@ def main():
             if lv == 'medium':
                 write('amb_rain', x, True, items, 'amb.rain (defaut = intensite moyenne)', 0)
     for k, label in (('cite_rouille', 'Cite de rouille : tres venteux, sifflements metalliques'), ('foret_brume', 'Foret-brume : calme, bruissements'),
-                     ('terrasses_noyees', 'Terrasses noyees : intermediaire, creux, humide'), ('generic', 'vent generique intermediaire')):
+                     ('terrasses_noyees', 'Terrasses noyees : intermediaire, creux, humide'), ('cryptes_noyees', 'Cryptes noyees : souffle de galerie'), ('la_source', 'La Source : souffle ascendant du puits'), ('generic', 'vent generique intermediaire')):
         if want('wind_' + k):
             x = gen_wind(k, a.seed)
             name = 'amb_wind' if k == 'generic' else f'amb_wind_{k}'
             write(name, x, True, items, f'amb.wind{"" if k == "generic" else "." + k}: {label}', 0)
-    for k in ('terrasses_noyees', 'foret_brume', 'cite_rouille'):
+    for k in ('terrasses_noyees', 'foret_brume', 'cite_rouille', 'cryptes_noyees', 'la_source'):
         if want('decor_' + k):
             x = gen_decor(k, a.seed)
             write(f'amb_{k}_decor', x, True, items, f'amb.{k}.decor (boucle 64 s)', 0)
