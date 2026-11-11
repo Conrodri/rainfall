@@ -170,7 +170,7 @@ const DODGE_CHARGES := 3
 const DODGE_U := 1.6 ## par charge (4,8 u en tout ; retour joueur 31/10 : 1,0 trop court)
 const DODGE_TENSION_GAIN := 0.08 ## Guet par pas de Repli achevé : reculer bande l'arc (+8 %, 24 % pour les 3)
 const DODGE_GHOST_COLOR := Color(1.0, 0.23, 0.31, 0.35) ## #FF3A4F, rouge de fusée
-const DODGE_SOUND := [&"spell.cendres.cast_light", -8.0, 1.6]
+const DODGE_SOUND := [&"spell.vigie_repli", -6.0, 1.0] ## son propre du Repli (spell_vigie_repli_NN.ogg)
 
 var player: CharacterBody2D = null
 var tension := 0.0

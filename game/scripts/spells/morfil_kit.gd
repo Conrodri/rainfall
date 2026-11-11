@@ -866,7 +866,7 @@ func _end_edge() -> void:
 func _do_sharpen() -> void:
 	sharpen()
 	LightRig.flash(player.global_position, LIGHT_SPELL, 0.5)
-	Audio.play(&"pickup.coin", player.global_position, -10.0, 2.2) # crissement de pierre (repli sonore)
+	Audio.play(&"spell.morfil_aiguisage", player.global_position, -6.0, 1.0) # crissement de pierre sur bois
 
 
 ## Sur-aiguisage : lame au fil et sur-fil armé pour EDGE_STRIKES gestes (EDGE_S s).

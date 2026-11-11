@@ -1,0 +1,28 @@
+LOT VMR_AUDIO : sons de cast et d'impact des sorts de base de Vigie, Taliant (id technique morfil) et Rictus, + esquive de Vigie + sons propres de Taliant. Travaille UNIQUEMENT dans ce worktree (cwd), jamais dans le dépôt principal.
+Lis d'abord (par extraits) : art/tools/audio/audio_common.py, synth_lib.py, gen_gresille.py (MODÈLE EXACT : structure SPECS, synth déterministe numpy/scipy, boucle d'écriture ogg avec contrôle de crête, manifeste JSON), verify_gresille.py (modèle du vérificateur). Ne copie pas le caractère électrique de Grésille.
+Écris : art/tools/audio/gen_vmr.py, manifeste art/tools/audio/vmr_manifest.json, vérificateur art/tools/audio/verify_vmr.py (PASS/FAIL : durées dans les plages, crête vraie <= -1,5 dBFS, RMS dans la cible +-1,5 dB, variantes distinctes entre elles, light < medium < heavy en durée, aucun fichier > 5 Mo). Sorties : game/assets/audio/spells/ uniquement, ogg q5, 44,1 kHz stéréo, graines fixes différentes de celles des autres générateurs (base 3711000). Rien de téléchargé.
+NOMMAGE (auto-découvert par le jeu, NE TOUCHE NI sounds.json NI aucun .gd) : fichier = `spell_<id>_cast_<light|medium|heavy>_NN.ogg`, `spell_<id>_hit_<light|medium|heavy>_NN.ogg`, ou sans niveau `spell_<id>_hit_NN.ogg` / `spell_<id>_NN.ogg` (NN = 01, 02...). Les niveaux light/medium/heavy suivent la puissance du coup : plus long, plus plein, un peu plus grave, plus de matière (RMS cast light/medium/heavy ~ -24/-22/-20 dBFS ; hit ~ -21/-20/-19 ; sorts auto (trait, taille_estoc, dagues_demi_lune) et hits de grêle 4 dB plus bas, ils tombent toutes les 0,5 s ou par dizaines au milieu de 250 monstres : discrets, jamais fatigants).
+Durées en ms (light / medium / heavy), nombre de variantes réellement différentes (timbres et micro-timings tirés au hasard) :
+VIGIE (archère : bois, corde de boyau, flèches, fusée, filet lesté ; cassant, sec, aérien)
+ vigie_trait cast 3 var 70-100/90-130/110-160 : claquement de corde + sifflement de flèche bref ; hit 3 var 60-90/80-110/100-140 : pointe plantée, toc de bois sec.
+ vigie_fusee cast 2 var 250-350/330-450/420-580 : crachement de fusée de détresse (bruit filtré montant, étincelles) ; hit 2 var 120-180/150-220/200-300 : éclat sec de magnésium.
+ vigie_filet cast 2 var 220-320/300-420/380-520 : corde qui claque + froissement de toile et lests ; hit 2 var 100-160/130-200/170-260 : retombée du filet, cliquetis de lests de plomb.
+ vigie_filet_burst hit (sans niveau) 2 var 120-180 : filet qui s'ouvre sur les monstres, froissement + cliquetis.
+ vigie_grele cast 2 var 300-420/400-550/500-700 : volée, plusieurs cordes décalées + sifflements montants ; hit 3 var 60-100/70-120/90-140 : flèche plantée très court (discret, par dizaines).
+ vigie_pointes cast 2 var 200-300/260-380/320-460 : chausse-trapes jetées, cliquetis de métal sur la pierre ; hit (sans niveau) 2 var 70-110 : clic de pointe métal.
+ vigie_repli (fichier spell_vigie_repli_NN.ogg) 3 var 140-220 ms, RMS ~ -24 : esquive, bond arrière, foulée + froissement de cape + souffle court, sans note musicale.
+TALIANT (rōnin d'écorce : katana de bois noir, sève, vent, fourreau laqué)
+ taille_estoc cast 3 var 100-150/130-190/160-240 : sifflement de lame de bois + souffle ; hit 3 var 70-110/90-140/110-170 : bois qui tranche, craquement de fibres.
+ fauche_lune cast 2 var 250-350/330-450/420-600 : grand balayage en croissant, whoosh large et plus grave ; hit 2 var 100-150/130-200/170-250 : tranche lourde, craquement de bois dense.
+ aiguisage cast 2 var 250-350/350-480/450-620 : lame de bois polie qu'on fait chanter, frottement doux + court zing de fibre (pas de tintement métallique).
+ morfil_aiguisage (spell_morfil_aiguisage_NN.ogg) 3 var 200-320 ms, RMS ~ -24 : crissement de pierre sur bois, joué pendant l'aiguisage.
+ lames_jumelles cast 2 var 220-320/300-420/380-540 : deux dégainés rapides décalés de 60-90 ms, double chuintement de bois ; hit 2 var 90-140/110-170/140-210.
+ iai hit 3 var 80-120/100-150/130-200 : tranche d'un trait en passant, sifflement + coupe nette.
+ morfil_iai_clic (spell_morfil_iai_clic_NN.ogg) 3 var 80-140 ms, RMS ~ -24 : clic sec de fourreau laqué (garde contre bouche de fourreau), un seul « tac » net, court.
+RICTUS (montreur de marionnettes : dagues fines, ficelle tendue, grelots, bois sculpté)
+ dagues_demi_lune cast 3 var 90-130/110-160/140-210 : éventail de lames fines, tintement métallique mince et bref ; hit 3 var 60-90/80-120/100-150 : coup de lame courte.
+ couteau_ficele cast 2 var 160-230/200-290/250-360 : lancer, ficelle qui file avec sifflement ; hit 2 var 80-120/100-150/130-190 : pointe qui mord bois/chair + vibration de ficelle.
+ doublures cast 2 var 350-500/450-650/550-800 : apparition des doublures, souffle de tissu + petits grelots décalés + craquement de bois ; hit 2 var 150-220/200-300/260-400 : explosion sèche de bois et de plâtre + un grelot.
+Pas de réverbération longue. Une graine par fichier, déterministe. Lance gen_vmr.py puis verify_vmr.py, corrige jusqu'à PASS. Ne lance PAS Godot.
+MANIFEST : ajoute (sans toucher au reste) à la FIN de game/assets/audio/MANIFEST.md une section `<!-- VMR_AUDIO -->` / `## VMR_AUDIO` (une ligne par id : variantes, durée min-max, crête max, RMS min-max), le script la réécrit si elle existe déjà (couper sur le marqueur comme gen_gresille.py).
+Python : C:/Users/const/AppData/Local/Python/bin/python.exe. Rapport : 6 lignes max, fichiers, nombre d'ogg, poids total.
