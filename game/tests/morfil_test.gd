@@ -257,6 +257,25 @@ func _run() -> void:
 	_check("monstres traversés tranchés une fois (1,5 × 12)", cut.taken.size() == 1 and cut2.taken.size() == 1
 		and _near(cut.taken[0], MorfilKit.IAI_COEF * BASE, 0.05), "%s %s" % [cut.taken, cut2.taken])
 	_check("un seul coût par roulade (96 %)", _near(_kit.sharpness, 100.0 - MorfilKit.COST_IAI), str(_kit.sharpness))
+	_advance(0.3) # fin de roulade (~0,25 s) + 0,2 s
+	_check("clic de fourreau émis après la roulade", _kit.iai_clic_count == 1, str(_kit.iai_clic_count))
+	_reset()
+	_player.reset_dodge()
+	_kit.iai_clic_count = 0
+	_check("roulade 2 lancée", _player.dodge(Vector2.RIGHT))
+	_advance(0.02)
+	_check("pas de clic pendant la roulade", _kit.iai_clic_count == 0)
+	_reset()
+	_player.reset_dodge()
+	_kit.iai_clic_count = 0
+	_player.dodge(Vector2.RIGHT)
+	_advance(0.3)
+	_player.dead = true
+	_advance(0.4)
+	_player.dead = false
+	_check("pas de clic si mort entre-temps", _kit.iai_clic_count == 0, str(_kit.iai_clic_count))
+	_reset()
+	_player.reset_dodge()
 
 	print("Ressource, sauvegarde, étage")
 	_reset()

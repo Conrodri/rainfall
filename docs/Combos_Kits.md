@@ -312,7 +312,7 @@ Contrat à signaler : **Ardent de base n'a pas de nœud kit** (`ArdentVariantKit
 - **TA1 « Iaï d'ouverture »** (P4, P2)
   - Déclencheur : Fauche-lune (ou Fendoir) lancée **dans les 1,5 s** après un Iaï qui a touché (`_iai_paid`).
   - Effet : coût 15 % → **8 %** d'aiguisage (la lame est déjà dégainée) et recul 1,0 → 1,4 u.
-  - Lisibilité : `iai_trail` qui reste 0,3 s de plus et s'embrase à la Fauche ; clic de fourreau supprimé (la lame ne rentre pas).
+  - Lisibilité : `iai_trail` qui reste 0,3 s de plus et s'embrase à la Fauche ; clic de fourreau **gardé** (décision du joueur, 11/11/2026 ; son `spell.morfil_iai_clic`, 0,2 s après la fin de la roulade).
   - Mobile : roulade (bouton) puis sort 2 (bouton) : deux appuis, aucune visée (la Fauche vise le paquet dense ; Taliant vient de le traverser). Naturel.
   - Équilibrage : −7 % d'usure une fois par 6 s au mieux ≈ +3 % d'aiguisage moyen (0,58 → 0,60) ≈ +3 % de DPS ; pas de compensation (l'audit P6 le trouve faible en début de run).
   - Variantes : Fendoir : idem ; Trempe (usure 0) : sans objet ; Sur-aiguisage : un Iaï compte déjà comme un geste du sur-fil.
