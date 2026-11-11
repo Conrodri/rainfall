@@ -315,6 +315,54 @@
     "epreuve_grade_fait": {
       "family": "ui"
     },
+    "epreuve_start": {
+      "family": "ui",
+      "min_interval_ms": 500
+    },
+    "chase_jump": {
+      "family": "ui",
+      "min_interval_ms": 200
+    },
+    "chase_warn": {
+      "family": "ui",
+      "min_interval_ms": 400
+    },
+    "chase_point": {
+      "family": "ui",
+      "min_interval_ms": 200
+    },
+    "chase_miss": {
+      "family": "ui",
+      "min_interval_ms": 200
+    },
+    "vein_tick": {
+      "family": "ui",
+      "min_interval_ms": 1000
+    },
+    "vein_geyser_warn": {
+      "family": "ui",
+      "min_interval_ms": 800
+    },
+    "vein_geyser": {
+      "family": "ui",
+      "min_interval_ms": 800
+    },
+    "hold_side": {
+      "family": "ui",
+      "min_interval_ms": 1000
+    },
+    "hold_bell_hit": {
+      "family": "ui",
+      "min_interval_ms": 700
+    },
+    "hold_bell_dim": {
+      "family": "ui",
+      "min_interval_ms": 1000
+    },
+    "hold_bell_ring": {
+      "family": "ui",
+      "min_interval_ms": 1000
+    },
     "ui.click": {
       "min_interval_ms": 40,
       "vol_db": -4.0

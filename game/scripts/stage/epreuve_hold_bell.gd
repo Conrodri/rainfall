@@ -59,6 +59,8 @@ func arm(new_max_hp: float) -> void:
 	max_hp = maxf(new_max_hp, 1.0)
 	hp = max_hp
 	set_state(STATE_RINGING)
+	if is_inside_tree():
+		Audio.play(&"hold_bell_ring", global_position) # lot EP-G
 	queue_redraw()
 
 
@@ -77,7 +79,11 @@ func damage(amount: float) -> void:
 	hp = maxf(hp - amount, 0.0)
 	if hp <= 0.0:
 		set_state(STATE_DIM)
+		if is_inside_tree():
+			Audio.play(&"hold_bell_dim", global_position)
 		dimmed.emit()
+	elif is_inside_tree():
+		Audio.play(&"hold_bell_hit", global_position) # limité par min_interval_ms (relevé toutes les 0,25 s)
 	queue_redraw()
 
 

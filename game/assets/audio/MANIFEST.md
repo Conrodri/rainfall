@@ -762,3 +762,19 @@ Synthèse procédurale (`art/tools/audio/gen_music.py`, `gen_ambience.py`), Vorb
 - `couteau_ficele_hit` : 6 variantes ; 101.1-164.9 ms ; crête max -6.99 dBFS ; RMS -20.96--19.04 dBFS.
 - `doublures_cast` : 6 variantes ; 421.4-680.4 ms ; crête max -8.97 dBFS ; RMS -24.19--20.36 dBFS.
 - `doublures_hit` : 6 variantes ; 182.9-326.5 ms ; crête max -7.48 dBFS ; RMS -21.65--19.07 dBFS.
+
+<!-- EPREUVES_EPG -->
+## EPREUVES_EPG
+Lot EP-G (docs/Design_Epreuves.md §9) : sons des verbes d'Épreuve. **PROVISOIRE** : synthèse écrite par Claude (`art/tools/audio/gen_epg.py`, graines 4206100-4206111, manifeste `art/tools/audio/epg_manifest.json`), faute de passage Codex ; à remplacer par un lot Codex sous les mêmes noms. Mono 44,1 kHz, Vorbis q5, `game/assets/audio/epreuves/`. Clés dans `sounds.json` (famille `ui`, `min_interval_ms` contre le spam). Les notes `epreuve_grade_*` existent déjà (lot précédent).
+- `epreuve_start` : 1,200 s ; cor grave qui monte ; lancement d'une Épreuve (`epreuve.gd` `activate`).
+- `chase_jump` : 0,450 s ; souffle et pincement qui monte ; la lumière saute.
+- `chase_warn` : 0,550 s ; grappe de tintements qui vacillent ; une fois par saut, à `CHASE_WARN_S`.
+- `chase_point` : 0,750 s ; deux notes claires montantes ; point marqué (pas le dernier, couvert par la note).
+- `chase_miss` : 0,650 s ; chute sourde dissonante ; borne ratée.
+- `vein_tick` : 0,280 s ; pulsation grave ; toutes les 5 s de charge (`TICK_EVERY_S` dans `epreuve_vein.gd`).
+- `vein_geyser_warn` : 1,000 s ; grondement qui monte ; début du télégraphe, à la position du geyser.
+- `vein_geyser` : 1,300 s ; boum et jet de vapeur ; éruption.
+- `hold_side` : 0,850 s ; cor d'alarme ; annonce d'un paquet, du côté d'arrivée.
+- `hold_bell_hit` : 0,600 s ; choc de cloche ; cloche blessée (limité à 700 ms).
+- `hold_bell_dim` : 1,450 s ; cloche qui s'éteint, hauteur descendante ; PV à 0.
+- `hold_bell_ring` : 3,000 s ; grande cloche à longue queue ; lancement de la Tenue.

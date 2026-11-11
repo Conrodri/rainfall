@@ -30,6 +30,7 @@ var _scored_here := false ## point déjà marqué sur la borne courante
 var _trail_from := Vector2.ZERO ## début de la traînée (global)
 var _trail_t := 0.0
 var _rng := RandomNumberGenerator.new()
+var _warn_played := false ## son d'avertissement déjà joué pour le saut en cours (une fois par saut)
 
 
 ## Poursuite sur les bornes `pts` (au moins 2, la première = autel ; repère local de la carte).
@@ -102,6 +103,7 @@ func _begin() -> void:
 	prev = -1
 	done_posts.clear()
 	_scored_here = false
+	_warn_played = false
 	_trail_t = 0.0
 	_rng.seed = hash([RunState.run_seed, RunState.stage, post_pts.size()])
 	_move_to(0)
@@ -116,10 +118,14 @@ func _run(delta: float) -> void:
 	if resolved:
 		return
 	jump_left -= delta
+	if not _warn_played and is_warning():
+		_warn_played = true
+		Audio.play(&"chase_warn", global_position)
 	if jump_left <= 0.0:
 		if not _scored_here:
 			misses += 1
 			clean = false
+			Audio.play(&"chase_miss", global_position)
 		_jump()
 		_check_reach()
 
@@ -135,6 +141,8 @@ func _check_reach() -> void:
 	if not done_posts.has(lit):
 		done_posts.append(lit)
 	_refresh_posts()
+	if points < Balance.CHASE_POINTS: # le dernier point est couvert par le son de note
+		Audio.play(&"chase_point", global_position)
 	point_scored.emit(lit, points)
 	if points >= Balance.CHASE_POINTS and is_running():
 		_resolve() # note calculée par la base (cible × coop pour les verbes de EPREUVE_SHARED_VERBS ; pas la Poursuite)
@@ -181,6 +189,7 @@ func _jump() -> void:
 	var to_i := pick_next()
 	jump_left = Balance.CHASE_JUMP_S
 	_scored_here = false
+	_warn_played = false
 	if to_i < 0:
 		return
 	var from_i := lit
@@ -188,6 +197,7 @@ func _jump() -> void:
 	_trail_t = TRAIL_S
 	prev = from_i
 	_move_to(to_i)
+	Audio.play(&"chase_jump", global_position)
 	jumped.emit(from_i, to_i)
 
 
