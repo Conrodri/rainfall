@@ -778,3 +778,69 @@ Lot EP-G (docs/Design_Epreuves.md §9) : sons des verbes d'Épreuve. **PROVISOIR
 - `hold_bell_hit` : 0,600 s ; choc de cloche ; cloche blessée (limité à 700 ms).
 - `hold_bell_dim` : 1,450 s ; cloche qui s'éteint, hauteur descendante ; PV à 0.
 - `hold_bell_ring` : 3,000 s ; grande cloche à longue queue ; lancement de la Tenue.
+<!-- VMR_AUDIO -->
+## VMR_AUDIO
+- `vigie_trait_cast` : 9 variantes ; 82.2-138.2 ms ; crête max -12.39 dBFS ; RMS -28.04--24.00 dBFS.
+- `vigie_trait_hit` : 9 variantes ; 73.7-123.0 ms ; crête max -12.85 dBFS ; RMS -25.00--22.86 dBFS.
+- `vigie_fusee_cast` : 6 variantes ; 298.6-512.5 ms ; crête max -8.78 dBFS ; RMS -24.24--20.20 dBFS.
+- `vigie_fusee_hit` : 6 variantes ; 150.6-257.8 ms ; crête max -5.31 dBFS ; RMS -21.20--19.14 dBFS.
+- `vigie_filet_cast` : 6 variantes ; 274.5-461.6 ms ; crête max -10.14 dBFS ; RMS -24.51--20.18 dBFS.
+- `vigie_filet_hit` : 6 variantes ; 133.3-222.0 ms ; crête max -9.80 dBFS ; RMS -21.17--19.14 dBFS.
+- `vigie_filet_burst_hit` : 2 variantes ; 148.1-152.5 ms ; crête max -10.06 dBFS ; RMS -21.10--20.99 dBFS.
+- `vigie_grele_cast` : 6 variantes ; 360.7-610.4 ms ; crête max -9.78 dBFS ; RMS -24.21--20.22 dBFS.
+- `vigie_grele_hit` : 9 variantes ; 79.7-116.4 ms ; crête max -12.54 dBFS ; RMS -24.89--22.89 dBFS.
+- `vigie_pointes_cast` : 6 variantes ; 245.8-401.3 ms ; crête max -10.48 dBFS ; RMS -24.16--20.09 dBFS.
+- `vigie_pointes_hit` : 2 variantes ; 87.3-88.8 ms ; crête max -8.33 dBFS ; RMS -21.07--21.06 dBFS.
+- `vigie_repli` : 3 variantes ; 172.7-186.3 ms ; crête max -15.10 dBFS ; RMS -24.65--24.08 dBFS.
+- `taille_estoc_cast` : 9 variantes ; 122.0-205.0 ms ; crête max -13.16 dBFS ; RMS -28.19--24.13 dBFS.
+- `taille_estoc_hit` : 9 variantes ; 86.6-139.5 ms ; crête max -12.05 dBFS ; RMS -25.02--22.99 dBFS.
+- `fauche_lune_cast` : 6 variantes ; 290.3-500.5 ms ; crête max -10.34 dBFS ; RMS -24.18--20.18 dBFS.
+- `fauche_lune_hit` : 6 variantes ; 121.0-209.4 ms ; crête max -8.17 dBFS ; RMS -20.89--18.93 dBFS.
+- `aiguisage_cast` : 6 variantes ; 294.5-544.7 ms ; crête max -9.05 dBFS ; RMS -24.29--20.21 dBFS.
+- `morfil_aiguisage` : 3 variantes ; 248.2-265.6 ms ; crête max -14.15 dBFS ; RMS -24.49--24.17 dBFS.
+- `lames_jumelles_cast` : 6 variantes ; 268.4-471.9 ms ; crête max -9.70 dBFS ; RMS -24.52--20.20 dBFS.
+- `lames_jumelles_hit` : 6 variantes ; 111.0-176.8 ms ; crête max -8.95 dBFS ; RMS -20.97--19.05 dBFS.
+- `iai_hit` : 9 variantes ; 101.3-169.6 ms ; crête max -8.87 dBFS ; RMS -21.18--18.40 dBFS.
+- `morfil_iai_clic` : 3 variantes ; 105.1-108.0 ms ; crête max -10.19 dBFS ; RMS -24.10--23.94 dBFS.
+- `dagues_demi_lune_cast` : 9 variantes ; 106.1-181.7 ms ; crête max -12.48 dBFS ; RMS -28.11--24.13 dBFS.
+- `dagues_demi_lune_hit` : 9 variantes ; 72.3-129.1 ms ; crête max -10.48 dBFS ; RMS -25.08--23.12 dBFS.
+- `couteau_ficele_cast` : 6 variantes ; 194.2-299.9 ms ; crête max -9.77 dBFS ; RMS -24.16--20.15 dBFS.
+- `couteau_ficele_hit` : 6 variantes ; 101.1-164.9 ms ; crête max -6.99 dBFS ; RMS -20.96--19.04 dBFS.
+- `doublures_cast` : 6 variantes ; 421.4-680.4 ms ; crête max -8.97 dBFS ; RMS -24.19--20.36 dBFS.
+- `doublures_hit` : 6 variantes ; 182.9-326.5 ms ; crête max -7.48 dBFS ; RMS -21.65--19.07 dBFS.
+<!-- VARIANTES_AUDIO -->
+## VARIANTES_AUDIO
+- `tocsin_vapeur` : 12 variantes ; 95.8-286.0 ms ; crête max -10.62 dBFS ; RMS -25.27--20.21 dBFS.
+- `tocsin_tete_fumigene` : 12 variantes ; 92.1-286.3 ms ; crête max -11.98 dBFS ; RMS -24.01--19.03 dBFS.
+- `averse_bruine` : 12 variantes ; 92.1-283.2 ms ; crête max -7.95 dBFS ; RMS -25.10--20.14 dBFS.
+- `averse_geyser` : 12 variantes ; 92.1-272.0 ms ; crête max -10.55 dBFS ; RMS -24.04--19.01 dBFS.
+- `averse_gouttiere` : 12 variantes ; 95.8-282.0 ms ; crête max -10.27 dBFS ; RMS -24.18--19.08 dBFS.
+- `averse_mousson` : 12 variantes ; 95.8-284.4 ms ; crête max -10.66 dBFS ; RMS -24.19--19.23 dBFS.
+- `arpenteuse_chaine_lestee` : 12 variantes ; 92.1-284.0 ms ; crête max -11.92 dBFS ; RMS -24.89--19.94 dBFS.
+- `arpenteuse_noeud` : 12 variantes ; 92.1-278.2 ms ; crête max -12.55 dBFS ; RMS -24.63--18.99 dBFS.
+- `arpenteuse_jalons` : 12 variantes ; 92.1-269.7 ms ; crête max -12.33 dBFS ; RMS -23.92--18.91 dBFS.
+- `arpenteuse_cerceau` : 12 variantes ; 92.1-288.8 ms ; crête max -12.31 dBFS ; RMS -23.93--18.91 dBFS.
+- `rainette_croassement` : 12 variantes ; 92.1-267.0 ms ; crête max -11.45 dBFS ; RMS -24.84--19.89 dBFS.
+- `rainette_ricochet` : 12 variantes ; 92.1-285.3 ms ; crête max -12.30 dBFS ; RMS -23.94--18.88 dBFS.
+- `rainette_bulle` : 12 variantes ; 92.1-286.8 ms ; crête max -12.34 dBFS ; RMS -24.57--18.87 dBFS.
+- `rainette_choeur` : 12 variantes ; 92.1-273.8 ms ; crête max -12.38 dBFS ; RMS -23.95--18.87 dBFS.
+- `avare_coffre_belier` : 12 variantes ; 92.1-289.1 ms ; crête max -11.03 dBFS ; RMS -24.90--20.00 dBFS.
+- `avare_piece_truquee` : 12 variantes ; 92.1-297.5 ms ; crête max -10.07 dBFS ; RMS -24.02--18.89 dBFS.
+- `avare_saisie` : 12 variantes ; 95.8-303.3 ms ; crête max -8.76 dBFS ; RMS -24.22--19.09 dBFS.
+- `avare_tresor_enterre` : 12 variantes ; 92.1-267.4 ms ; crête max -11.27 dBFS ; RMS -24.08--18.98 dBFS.
+- `bourbe_crachat_de_vase` : 12 variantes ; 95.8-284.1 ms ; crête max -13.61 dBFS ; RMS -25.07--19.95 dBFS.
+- `bourbe_bouture` : 12 variantes ; 92.1-275.9 ms ; crête max -9.84 dBFS ; RMS -23.93--18.88 dBFS.
+- `bourbe_eclatement` : 12 variantes ; 95.8-270.6 ms ; crête max -12.10 dBFS ; RMS -23.96--18.95 dBFS.
+- `bourbe_maree_de_vase` : 12 variantes ; 95.8-286.5 ms ; crête max -12.88 dBFS ; RMS -23.95--19.01 dBFS.
+- `rictus_main_du_montreur` : 12 variantes ; 92.1-309.1 ms ; crête max -7.82 dBFS ; RMS -24.85--19.91 dBFS.
+- `rictus_eventail` : 12 variantes ; 92.1-285.3 ms ; crête max -7.46 dBFS ; RMS -24.21--19.06 dBFS.
+- `rictus_toupie` : 12 variantes ; 114.2-303.3 ms ; crête max -12.08 dBFS ; RMS -23.88--18.89 dBFS.
+- `rictus_rideau` : 12 variantes ; 95.8-283.3 ms ; crête max -9.47 dBFS ; RMS -24.59--19.17 dBFS.
+- `vigie_tir_double` : 12 variantes ; 92.1-284.6 ms ; crête max -9.98 dBFS ; RMS -24.92--20.07 dBFS.
+- `vigie_fanal` : 6 variantes ; 166.9-284.3 ms ; crête max -7.97 dBFS ; RMS -24.77--20.06 dBFS.
+- `vigie_chausse_trapes` : 12 variantes ; 95.8-271.4 ms ; crête max -12.03 dBFS ; RMS -24.09--19.05 dBFS.
+- `vigie_tir_de_signal` : 12 variantes ; 92.1-312.0 ms ; crête max -5.99 dBFS ; RMS -24.19--19.11 dBFS.
+- `morfil_taille_lente` : 12 variantes ; 92.1-285.1 ms ; crête max -11.20 dBFS ; RMS -25.04--20.09 dBFS.
+- `morfil_fendoir` : 12 variantes ; 92.1-278.3 ms ; crête max -11.53 dBFS ; RMS -24.11--19.05 dBFS.
+- `morfil_affutage_en_marche` : 6 variantes ; 148.6-284.2 ms ; crête max -9.79 dBFS ; RMS -24.15--20.23 dBFS.
+- `morfil_trempe` : 12 variantes ; 92.1-271.5 ms ; crête max -7.07 dBFS ; RMS -24.19--19.15 dBFS.
