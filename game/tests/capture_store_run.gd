@@ -80,8 +80,10 @@ func _run() -> void:
 	_main.set(&"run_seed", _seed)
 	_main.set(&"save_path", "user://test_capture_store.json")
 	if _scene == "coop":
-		var setup: Array[Dictionary] = [
-			_main.party_entry(FakeSource.new(0), &"ardent"), _main.party_entry(FakeSource.new(1), &"averse")]
+		var chars: Array[StringName] = [&"ardent", &"averse", &"tocsin", &"vigie"]
+		var setup: Array[Dictionary] = []
+		for i in clampi(int(_arg("players", "2")), 2, 4):
+			setup.append(_main.party_entry(FakeSource.new(i), chars[i]))
 		_main.set(&"party_setup", setup)
 	add_child(_main)
 	await _main.game_ready
@@ -118,6 +120,14 @@ func _run() -> void:
 			await _boss(d, p)
 		"forge":
 			await _forge(hud)
+		"raid", "final":
+			await _boss_by_id(d, p)
+		"chest":
+			await _chest(p)
+		"endrun":
+			await _end_run()
+		"landmark":
+			await _landmark(d, p)
 	await _f(8)
 	var img := CaptureUtil.save_viewport(get_viewport(), _out)
 	print("SAVED ", _out, " ", img.get_size() if img else "null")
@@ -169,6 +179,64 @@ func _boss(d: Director, p: Node2D) -> void:
 		if is_instance_valid(b) and b.has_method(&"take_damage"):
 			b.take_damage(b.max_hp * 0.05)
 		_unpause(_main.get(&"hud"))
+
+
+## Boss de raid (--boss=drowned_idol|flood_gunner|salt_king) ou boss final (--scene=final, étage 5, rain_sower).
+func _boss_by_id(d: Director, p: Node2D) -> void:
+	var cam: Camera2D = _main.camera
+	if cam != null:
+		cam.zoom = Iso.camera_zoom(0.7)
+	var pp := p.global_position
+	var def_id := "rain_sower" if _scene == "final" else "drowned_idol"
+	var kind: StringName = &"final" if _scene == "final" else &"etage"
+	var b := TestTools.spawn_boss(get_tree(), StringName(_arg("boss", def_id)), kind, pp + Vector2(0, -330))
+	_ring(d, pp, 8, 320.0, 600.0, 0)
+	for i in 8:
+		await get_tree().create_timer(0.6).timeout
+		for s in [2, 3, 4]:
+			p.spells.cast(s)
+		if is_instance_valid(b) and b.has_method(&"take_damage") and i < 3:
+			b.take_damage(b.max_hp * 0.04)
+		_unpause(_main.get(&"hud"))
+
+
+## Ouverture d'un coffre (choix d'objet) : vrai flux Chest -> ChestUI.
+func _chest(p: Node2D) -> void:
+	RunState.add_gold(5000.0)
+	var c := TestTools.spawn_chest(get_tree(), StringName(_arg("chest", "large")), null) as Chest
+	await _f(10)
+	c.try_open(p)
+	await get_tree().create_timer(2.5).timeout
+
+
+## Récap de victoire (EndRunScreen) avec médaillons d'épreuves ; le profil n'est pas touché (end_run non appelé).
+func _end_run() -> void:
+	var info: Dictionary = _main.end_info(true, &"victory")
+	info["epreuve_grades"] = [&"parfait", &"parfait", &"bien", &"parfait", &"fait"]
+	info["rubies"] = 42
+	info["epreuve_rubies"] = 3
+	info["kills"] = 1873
+	info["unlocks"] = []
+	RunState.running = false
+	var scr := EndRunScreen.create(info)
+	_main.add_child(scr)
+	await get_tree().create_timer(3.0).timeout
+
+
+## Repère d'une variante B (prop fixe : noria, puits...) : téléporte le joueur dessus, horde légère autour.
+func _landmark(d: Director, p: Node2D) -> void:
+	var cam: Camera2D = _main.camera
+	if cam != null:
+		cam.zoom = Iso.camera_zoom(0.85)
+	print("repere ", TestMaps.teleport_to_landmark(get_tree()))
+	await get_tree().create_timer(1.5).timeout
+	var pp := p.global_position
+	_ring(d, pp, 10, 380.0, 700.0, 0)
+	await _f(30)
+	for s in [2, 3]:
+		p.spells.cast(s)
+	await get_tree().create_timer(0.6).timeout
+	_unpause(_main.get(&"hud"))
 
 
 func _forge(hud) -> void:
