@@ -53,9 +53,19 @@ const DEFLECT_RANGE_PX := 104.0
 
 
 func _init() -> void:
+	_ensure_contact_body()
+
+
+## Corps de contact (couche 7, masque 2, cercle de 56 px) : sans lui, body_entered ne vient jamais, donc ni invite ni
+## activation. Idempotent : rappelé dans _ready, car une sous-classe qui définit _init() sans appeler super() saute
+## Pillar._init (Godot n'appelle pas le constructeur parent tout seul ; régression des Épreuves, 12/11/2026).
+func _ensure_contact_body() -> void:
 	collision_layer = 1 << 6
 	collision_mask = 1 << 1
+	if get_node_or_null(^"ContactShape") != null:
+		return
 	var cs := CollisionShape2D.new()
+	cs.name = &"ContactShape"
 	var circle := CircleShape2D.new()
 	circle.radius = 56.0
 	cs.shape = circle
@@ -63,6 +73,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	_ensure_contact_body()
 	add_to_group(&"pillars")
 	add_to_group(&"interactable")
 	body_entered.connect(_on_body_entered)

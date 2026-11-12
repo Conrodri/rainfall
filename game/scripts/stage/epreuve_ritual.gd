@@ -35,6 +35,7 @@ static func make(heart: Vector2, relay_pts: Array, skin: StringName = SecretLeve
 
 
 func _init() -> void:
+	super() # Pillar._init : corps de contact (voir Epreuve, en-tête)
 	verb = &"rituel"
 
 

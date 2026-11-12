@@ -42,6 +42,7 @@ static func make(pos: Vector2, side_dirs: Array) -> EpreuveHold:
 
 
 func _init() -> void:
+	super() # Pillar._init : corps de contact (voir Epreuve, en-tête)
 	verb = &"tenue"
 	uses_sprite = false
 	bell = EpreuveHoldBell.new()

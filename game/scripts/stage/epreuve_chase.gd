@@ -50,6 +50,7 @@ static func make(pts: Array) -> EpreuveChase:
 
 
 func _init() -> void:
+	super() # Pillar._init : corps de contact (voir Epreuve, en-tête)
 	verb = &"poursuite"
 	uses_sprite = false
 

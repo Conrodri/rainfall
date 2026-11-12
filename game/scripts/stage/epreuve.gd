@@ -12,7 +12,8 @@ extends Pillar
 ## Sous-classes (docs/Design_Epreuves.md §3) : EpreuveEscort (barque sur un tracé), EpreuveRitual (3 relais autour d'un
 ## cœur qui pulse), EpreuveChase (Poursuite), EpreuveVein (Veine), EpreuveHold (Tenue).
 ## Contrat d'une sous-classe : `static func make(...)` (géométrie en repère local de la carte) qui fixe `verb` dans
-## `_init()` ; surcharger `_begin()` (démarrage), `_run(delta)` (un pas, appeler `_resolve()` à la réussite ou
+## `_init()`, lequel commence par `super()` (Pillar._init pose le corps de contact ; Godot n'appelle pas le constructeur
+## parent tout seul : sans lui, ni invite ni lancement, régression du 12/11/2026) ; surcharger `_begin()` (démarrage), `_run(delta)` (un pas, appeler `_resolve()` à la réussite ou
 ## `_resolve(note)` pour imposer la note), `progress()`, `draw_overlay(c)`, `_extra_dict()` / `_extra_restore(d)` (sauvegarde),
 ## éventuellement `zone_radius()` et `_on_resolved()`. Un verbe mobile déplace `global_position` (zone et flèche suivent).
 ## Visuels : placeholders (formes en code) tant que les sprites Codex ne sont pas livrés.
