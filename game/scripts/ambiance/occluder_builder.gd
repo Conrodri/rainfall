@@ -66,7 +66,7 @@ static func _gather(map: Node2D, n: Node, out: Array[Rect2]) -> void:
 	if n is StaticBody2D:
 		for c in n.get_children():
 			var cs := c as CollisionShape2D
-			if cs != null and cs.shape is RectangleShape2D and not cs.disabled:
+			if cs != null and cs.shape is RectangleShape2D and not cs.disabled and not cs.has_meta(&"no_occluder"):
 				var sz: Vector2 = (cs.shape as RectangleShape2D).size
 				var xf := inv * _local_xf(map, cs)
 				var ext := Vector2(absf(xf.x.x) * sz.x + absf(xf.y.x) * sz.y, absf(xf.x.y) * sz.x + absf(xf.y.y) * sz.y)
