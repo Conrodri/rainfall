@@ -83,8 +83,8 @@ func _ready() -> void:
 	UiTheme.hook_sounds(_root)
 	_apply_layout()
 	get_viewport().size_changed.connect(_apply_layout)
-	if not _cards.is_empty() and Platform.input_mode != Platform.InputMode.TOUCH:
-		_cards[0].grab_focus.call_deferred()
+	if not _cards.is_empty():
+		FocusFollow.attach(self, _cards) # manette : focus sur la 1re carte ; souris : le contour suit le survol
 
 
 func _label(parent: Control, text: String, col: Color) -> Label:

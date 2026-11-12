@@ -164,6 +164,7 @@ var _gold_key: KeyPrompt
 var _pick_keys: Array[KeyPrompt] = [] ## invite de touche sous chaque carte
 var _items_btn: Button ## « Objets (N) » : liste des objets possédés par-dessus le coffre (lot L6)
 var _items_key: KeyPrompt
+var _focus: FocusFollow = null
 var _focus_rings: Array[Panel] = [] ## contour de focus de chaque carte (manette / clavier)
 var _press_card := -1 ## carte appuyée en attente du relâcher (-1 = aucune)
 var _icon_home := Vector2.ZERO
@@ -655,8 +656,9 @@ func _build() -> void:
 		_card_front.append(front)
 		front.set_meta(&"a11y_skip", true) # textes ajustés à la carte par _fit_card (taille de texte appliquée à l'ajustement)
 		_card_back.append(back)
+	_focus = FocusFollow.attach(self, _cards) # contour qui suit le survol, aucune carte privilégiée à la souris / au toucher
 
-	_btn_row = HBoxContainer.new() # relances côte à côte
+	_btn_row =HBoxContainer.new() # relances côte à côte
 	_btn_row.add_theme_constant_override("separation", BUTTON_GAP)
 	body.add_child(_btn_row)
 	_free_btn = _button("Relancer (gratuit)", &"chest_reroll_free")
@@ -1491,8 +1493,8 @@ func _update_buttons() -> void:
 	_refresh_items_button()
 	if not _busy:
 		var fo := get_viewport().gui_get_focus_owner()
-		if fo == null or (fo is Button and fo.disabled):
-			_cards[0].grab_focus()
+		if (fo == null or (fo is Button and fo.disabled)) and FocusFollow.auto_focus_ok():
+			_cards[0].grab_focus() # seulement à la manette : à la souris le contour suit le survol
 
 
 # ---------------------------------------------------------------- bouton Objets (lot L6, Audit_Choix P10)

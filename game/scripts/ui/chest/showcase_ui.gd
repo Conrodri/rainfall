@@ -33,6 +33,7 @@ var _price_labels: Array[Label] = []
 var _gold_label: Label = null
 var _shake := {}
 var _tex_cache := {}
+var _focus: FocusFollow = null
 
 
 func _init() -> void:
@@ -139,18 +140,29 @@ func _build(title: String, subtitle: String) -> void:
 		close.custom_minimum_size = Vector2(0, 110)
 		close.add_theme_font_size_override("font_size", 36)
 		close.focus_mode = Control.FOCUS_ALL
+		close.add_theme_stylebox_override("focus", _ring())
 		close.pressed.connect(_close)
 		col.add_child(close)
 		_buttons.append(close)
 	_refresh()
+	_focus = FocusFollow.attach(self, _buttons)
 	_focus_first.call_deferred()
 
 
+## Focus posé d'office seulement à la manette ; souris et tactile : aucun contour tant qu'on ne survole rien.
 func _focus_first() -> void:
-	for b in _buttons:
-		if is_instance_valid(b) and not b.disabled:
-			b.grab_focus()
-			return
+	if _focus != null and FocusFollow.auto_focus_ok():
+		_focus.focus_first()
+
+
+## Contour de focus commun à tous les boutons de l'écran.
+static func _ring() -> StyleBoxFlat:
+	var ring := StyleBoxFlat.new()
+	ring.draw_center = false
+	ring.set_border_width_all(6)
+	ring.border_color = Color.WHITE
+	ring.set_corner_radius_all(20)
+	return ring
 
 
 func _make_card(i: int) -> PanelContainer:
@@ -209,12 +221,7 @@ func _make_card(i: int) -> PanelContainer:
 	b.custom_minimum_size = Vector2(0, 100)
 	b.add_theme_font_size_override("font_size", 34)
 	b.focus_mode = Control.FOCUS_ALL
-	var ring := StyleBoxFlat.new()
-	ring.draw_center = false
-	ring.set_border_width_all(6)
-	ring.border_color = Color.WHITE
-	ring.set_corner_radius_all(20)
-	b.add_theme_stylebox_override("focus", ring)
+	b.add_theme_stylebox_override("focus", _ring())
 	b.pressed.connect(_on_pressed.bind(i))
 	v.add_child(b)
 	_buttons.append(b)
