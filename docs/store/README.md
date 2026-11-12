@@ -1,6 +1,6 @@
 # Captures d'écran pour la page Steam
 
-Neuf captures 1920x1080 du vrai jeu (rendu en fenêtre, pas en headless), générées le 11/11/2026. Aucun panneau de test ni texte de debug n'est visible : le mode test n'est pas utilisé, seuls l'invulnérabilité du joueur, quelques objets donnés et les monstres invoqués sont forcés par les scènes de capture. Les épreuves sont coupées (`--no-epreuves`) pour que la carte reste lisible.
+Dix-sept captures 1920x1080 du vrai jeu (rendu en fenêtre, pas en headless), générées le 11/11/2026. Aucun panneau de test ni texte de debug n'est visible : le mode test n'est pas utilisé, seuls l'invulnérabilité du joueur, quelques objets donnés et les monstres invoqués sont forcés par les scènes de capture. Les épreuves sont coupées (`--no-epreuves`) pour que la carte reste lisible.
 
 | Fichier | Sujet |
 |---|---|
@@ -13,12 +13,20 @@ Neuf captures 1920x1080 du vrai jeu (rendu en fenêtre, pas en headless), géné
 | `screenshots/07_coop_locale.png` | Coop locale à deux (Ardent et Averse), cartes de joueur en bas |
 | `screenshots/08_selection_personnage.png` | Écran Nouvelle run, grille des personnages |
 | `screenshots/09_fiche_personnage.png` | Fiche d'un personnage (Taliant : sorts, passif) |
+| `screenshots/10_boss_raid.png` | Boss de raid (L'Idole noyée) dans son cercle, barre de boss, étage 2 |
+| `screenshots/11_boss_final.png` | Boss final (Le Semeur de pluie), étage 5, barre de boss, éclairs et télégraphes |
+| `screenshots/12_coffre.png` | Grand coffre ouvert, choix de deux objets, relance gratuite |
+| `screenshots/13_fin_de_run.png` | Récap de victoire avec rubis et médaillons d'épreuves (valeurs de mise en scène) |
+| `screenshots/14_repere_cite_creusets.png` | Variante B de la Cité (fonderie du canal), creusets en fusion, pluie |
+| `screenshots/15_coop_3_joueurs.png` | Coop locale à trois, cartes de joueur en bas |
+| `screenshots/16_coop_4_joueurs.png` | Coop locale à quatre, cartes de joueur en bas |
+| `screenshots/17_repere_terrasses_noria.png` | Variante B des Terrasses (rizières hautes), noria |
 
 ## Régénérer
 
 Depuis la racine du dépôt, sans `--headless` (la lecture du viewport demande une fenêtre). Le wrapper ajoute `--path game` et prend le verrou partagé. Le premier lancement après un import compile les shaders et peut durer plusieurs minutes.
 
-Scène de run (`game/tests/capture_store_run.tscn`, arguments après `--`) : `--scene=horde|boss|forge|coop`, `--floor=<1-5>`, `--char=<id>`, `--seed=<n>`, `--force-map=<id>` (variante de carte), `--out=<fichier.png>` (chemin absolu conseillé), `--no-epreuves`.
+Scène de run (`game/tests/capture_store_run.tscn`, arguments après `--`) : `--scene=horde|boss|forge|coop|raid|final|chest|endrun|landmark`, `--players=<2-4>` (coop), `--boss=<id>` (raid), `--floor=<1-5>`, `--char=<id>`, `--seed=<n>`, `--force-map=<id>` (variante de carte), `--out=<fichier.png>` (chemin absolu conseillé), `--no-epreuves`.
 
 ```
 G="sh art/tools/vfx_test/godot_locked.sh res://tests/capture_store_run.tscn --"
@@ -30,6 +38,14 @@ $G --scene=horde --floor=4 --char=averse --no-epreuves --out=$O/04_cryptes_horde
 $G --scene=boss  --floor=2 --char=ardent --no-epreuves --out=$O/05_boss_etage.png
 $G --scene=forge --floor=2 --char=ardent --no-epreuves --out=$O/06_forge.png
 $G --scene=coop  --floor=1 --no-epreuves --out=$O/07_coop_locale.png
+$G --scene=raid  --floor=2 --boss=drowned_idol --no-epreuves --out=$O/10_boss_raid.png
+$G --scene=final --floor=5 --no-epreuves --out=$O/11_boss_final.png
+$G --scene=chest --floor=1 --no-epreuves --out=$O/12_coffre.png
+$G --scene=endrun --floor=1 --no-epreuves --out=$O/13_fin_de_run.png
+$G --scene=landmark --floor=3 --force-map=cite_fonderie_canal --no-epreuves --out=$O/14_repere_cite_creusets.png
+$G --scene=coop --floor=1 --players=3 --no-epreuves --out=$O/15_coop_3_joueurs.png
+$G --scene=coop --floor=1 --players=4 --no-epreuves --out=$O/16_coop_4_joueurs.png
+$G --scene=landmark --floor=1 --force-map=terrasses_rizieres_hautes --no-epreuves --out=$O/17_repere_terrasses_noria.png
 ```
 
 Menus (`game/tests/capture_store_menu.tscn`) : écrit `select.png` (grille) et `sheet.png` (fiche de la carte `--pick=<n>`, 2 = Taliant) dans `--out=<dossier>` ; à renommer en `08_` et `09_`.
@@ -41,7 +57,9 @@ sh art/tools/vfx_test/godot_locked.sh res://tests/capture_store_menu.tscn -- --o
 ## Limites connues
 
 - Les PNG ne sont pas recompressés (aucun optimiseur PNG installé) : 0,4 à 2,8 Mo chacun, sous les limites de Steam.
-- Manquent encore : boss de raid, boss final (étage 5, La Source), coffre et choix d'objet, fin de run, coop à 4 joueurs, variantes B des cartes. Ajouter une valeur de `--scene` dans `capture_store_run.gd` pour chacun.
+- Variante B de la forêt (`foret_mangrove_lanternes`) : pas de repère, non capturée. Variante B des Cryptes : non retenue.
+- Fin de run (13) : chiffres de mise en scène incohérents entre eux (00:04, niveau 1, 1873 monstres) ; à ne pas retenir en vitrine telle quelle.
+- Étiquettes de prix de coffre « N or (-N) » visibles sur les captures de run (or du joueur à 0).
 - Les captures de run affichent le niveau 1 et peu d'or : les objets sont donnés d'office, pas gagnés.
 - La texture d'ombre `shadow_blob_256` est signalée absente au lancement (repli neutre), sans effet visible sur ces images.
 - L'écran titre n'est pas retenu : il affiche le bouton « Mode test » et « Version 0.1.0 » (à retirer avant la sortie, voir CLAUDE.md).
