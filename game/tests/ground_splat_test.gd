@@ -87,6 +87,30 @@ func _test_map(id: String) -> void:
 			if row[x] == "," and decor.get_cell_source_id(Vector2i(x, y)) >= 0:
 				shallow_tiles += 1
 	_check(shallow_tiles == 0, "%s : plus de losanges d'eau peu profonde (%d)" % [id, shallow_tiles])
+	# découpe des losanges « ~ » (12/11/2026, « énormes carrés bleus ») : le shader water_tile_cut part de la position
+	# MONDE du sommet (les tuiles sont dessinées par quadrants décalés) ; ses uniformes doivent ramener le centre monde
+	# de chaque tuile sur le centre de sa case dans le repère du masque (coin haut-gauche de la grille à l'origine)
+	var cut := decor.material as ShaderMaterial
+	var deep_tiles := 0
+	var bad_cut := 0
+	if cut != null:
+		var mx: Vector2 = cut.get_shader_parameter(&"map_x")
+		var my: Vector2 = cut.get_shader_parameter(&"map_y")
+		var mo: Vector2 = cut.get_shader_parameter(&"map_o")
+		for y in rows:
+			var row: String = grid[y]
+			for x in cols:
+				if row[x] != "~":
+					continue
+				deep_tiles += 1
+				var w := decor.to_global(decor.map_to_local(Vector2i(x, y)))
+				var loc := mx * w.x + my * w.y + mo
+				if loc.distance_to((Vector2(x, y) + Vector2(0.5, 0.5)) * StageMap.OUTLINE_CELL_PX) > 0.5:
+					bad_cut += 1
+					if bad_cut == 1:
+						print("  %s : case (%d, %d) -> %s" % [id, x, y, loc])
+	_check(deep_tiles == 0 or cut != null, "%s : losanges d'eau profonde découpés (water_tile_cut)" % id)
+	_check(bad_cut == 0, "%s : découpe des losanges d'eau calée sur le masque (%d/%d cases décalées)" % [id, bad_cut, deep_tiles])
 	# matières
 	_check(gs.layer_paths.size() == 4, "%s : 4 matières" % id)
 	for p in gs.layer_paths:

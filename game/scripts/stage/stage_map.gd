@@ -435,8 +435,10 @@ func _cut_water_tiles(cells: TileMapLayer, origin: Vector2, grid: Array) -> void
 	mat.shader = WATER_TILE_CUT
 	var tex := ImageTexture.create_from_image(GroundSplat.bake_water_mask(grid, cols, grid.size()))
 	GroundSplat.set_region(mat, tex, Vector4(1.0, 0.0, 0.0, 0.0), size, String(get_meta(&"map_id", "")), 1)
-	# couche -> repère du GroundSplat (= repère carte, polygone dont le coin est `origin`) -> relatif au coin
-	var rel := ground_splat.get_global_transform().affine_inverse() * cells.get_global_transform()
+	# monde (repère du canevas, MODEL_MATRIX * VERTEX dans le shader : les tuiles sont dessinées par quadrants décalés,
+	# VERTEX seul n'est pas en repère de la couche) -> repère du GroundSplat (= repère carte, polygone dont le coin est
+	# `origin`) -> relatif au coin. La carte ne bouge plus après sa construction.
+	var rel := ground_splat.get_global_transform().affine_inverse()
 	mat.set_shader_parameter(&"map_x", rel.x)
 	mat.set_shader_parameter(&"map_y", rel.y)
 	mat.set_shader_parameter(&"map_o", rel.origin - origin)
@@ -1045,6 +1047,7 @@ const SHORE_FOAM_EDGE_PX := 8.0
 
 var water_bank: Node2D = null ## nœud « WaterBank » sous Visual (tests, captures)
 var _bank_sides: Array = [] ## [[normale vers l'eau (Vector2), segments fusionnés (PackedVector2Array)], …]
+var _shore_foam: Texture2D = null ## écume de rive (SHORE_FOAM_TEX), retenue pour _draw_water_bank
 
 
 const WATER_BANK_SHADER := preload("res://shaders/water_bank.gdshader")
@@ -1124,7 +1127,11 @@ func _build_water_banks(grid: Array, origin: Vector2) -> void:
 
 
 func _draw_water_bank() -> void:
-	var tex: Texture2D = load(SHORE_FOAM_TEX) as Texture2D if ResourceLoader.exists(SHORE_FOAM_TEX) else null
+	# texture gardée par la carte : chargée ici en variable locale, elle serait libérée à la fin du _draw et rendue en
+	# bandes pleines gris-bleu au lieu de l'écume (même défaut que EpreuveSprites.tex, 12/11/2026)
+	if _shore_foam == null and ResourceLoader.exists(SHORE_FOAM_TEX):
+		_shore_foam = load(SHORE_FOAM_TEX) as Texture2D
+	var tex := _shore_foam
 	var clear := Color(BANK_SHADOW, 0.0)
 	var ink := PackedVector2Array()
 	var foam := PackedVector2Array()

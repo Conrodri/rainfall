@@ -10,11 +10,20 @@ const VFX_DIR := "res://assets/sprites/vfx/epreuve/"
 const PX_PER_U := 64.0 ## tous les lots sont rendus à 1 u = 64 px (ortho = taille du cadre / 64)
 
 
+## Cache (chemin -> texture ou null). INDISPENSABLE : les aides draw_* ci-dessous dessinent depuis un `_draw()` ; une
+## texture chargée là sans autre référence est libérée dès la fin de l'appel, son RID meurt avant le rendu et Godot
+## dessine à la place un rectangle blanc teinté par la couleur (« énormes carrés bleus et lignes » signalés le
+## 12/11/2026 : anneaux, tracés, pontons des Épreuves). Le cache garde aussi chaque PNG chargé une seule fois.
+static var _cache := {}
+
+
 static func tex(dir: String, file: String) -> Texture2D:
 	var path := dir + file
-	if not ResourceLoader.exists(path):
-		return null
-	return load(path) as Texture2D
+	if _cache.has(path):
+		return _cache[path]
+	var t: Texture2D = load(path) as Texture2D if ResourceLoader.exists(path) else null
+	_cache[path] = t
+	return t
 
 
 ## Billboard iso prêt à l'emploi ; `hframes` > 1 : planche horizontale (frame réglée par l'appelant).
