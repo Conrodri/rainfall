@@ -471,8 +471,9 @@ func _marker_cells() -> Array[Vector2i]:
 ## - px_per_u : densité du rendu (défaut 90,51 = rig MAP des tuiles iso) ;
 ## - fade : grand prop (cèdre) en fondu quand le joueur passe derrière (comme les murs) ;
 ## - shadow_rig : "top" = décalque `_shadow` rig TOP 128 px/u (comme `block_*`), sinon pas de décalque.
-## Décor NON bloquant, seulement sur les cases « . » libres, loin du départ et des emplacements de coffres /
-## piliers / événements ; tirage stable (hachage de case). Un prop bloquant passe par la grille (« # »).
+## Seulement sur les cases « . » libres, loin du départ et des emplacements de coffres / piliers / événements ;
+## tirage stable (hachage de case). La collision de chaque prop vient de data/prop_collision.json (PropCollision) :
+## solide d'après le bas visible du sprite, ou traversable (plat, bas, suspendu).
 const BIOME_PROPS := {"foret": "res://assets/sprites/props/fog_forest/", "cite": "res://assets/sprites/props/rust_city/",
 	"cryptes": "res://assets/sprites/props/crypts/", "source": "res://assets/sprites/props/source/",
 	"terrasses": "res://assets/sprites/props/terraces/"} ## F4p / F5p (requests_floor45.md) ; terrasses : seulement les `props_fixed` de la B
@@ -493,6 +494,7 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 			list.append(pr)
 			total += maxf(float(pr.get("weight", 1.0)), 0.0)
 	var root := get_node_or_null(^"Blocks")
+	var walls := get_node_or_null(^"Obstacles/Walls") as StaticBody2D
 	if root != null and man.get("fixed") is Array:
 		_build_fixed_props(man["fixed"], origin, dir, root)
 	if list.is_empty() or total <= 0.0 or root == null:
@@ -525,6 +527,8 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 				pick -= maxf(float(cand_pr.get("weight", 1.0)), 0.0)
 				if pick < 0.0:
 					break
+			if not bool(pr.get("flat", false)) and _is_corridor_cell(grid, c) and not PropCollision.rects_px(String(pr["name"])).is_empty():
+				continue # un prop solide ne ferme jamais un couloir d'une case (2 u)
 			var tex: Texture2D = load(dir + String(pr["name"]) + ".png")
 			var size := tex.get_size()
 			var foot: Array = pr.get("foot", [size.x * 0.5, size.y * 0.85])
@@ -544,10 +548,26 @@ func _build_props(grid: Array, origin: Vector2, biome: String) -> void:
 				spr.set_meta(&"shadow_decal_local", Transform2D(deg_to_rad(Iso.MAP_YAW_DEG) if is_iso() else 0.0, Vector2(0.5, 0.5), 0.0, center))
 			spr.set_meta(&"prop", true)
 			root.add_child(spr)
+			_add_prop_collision(walls, String(pr["name"]), origin + (Vector2(c) + Vector2(0.5, 0.5)) * OUTLINE_CELL_PX, false, "P%d_%d" % [x, y], false)
 			if bool(pr.get("fade", false)) and not _blocks.has(c):
 				_blocks[c] = spr # fondu devant le joueur (_process)
 			n += 1
 	set_meta(&"props_count", n)
+
+
+## Vrai si la case est enserrée entre deux cases infranchissables (mur, eau profonde, vide, porte scellée) en x ou en y.
+static func _is_corridor_cell(grid: Array, c: Vector2i) -> bool:
+	for off in [Vector2i(1, 0), Vector2i(0, 1)]:
+		if _cell_blocks(grid, c + off) and _cell_blocks(grid, c - off):
+			return true
+	return false
+
+
+static func _cell_blocks(grid: Array, c: Vector2i) -> bool:
+	if c.y < 0 or c.y >= grid.size():
+		return true
+	var row: String = grid[c.y]
+	return c.x < 0 or c.x >= row.length() or "#~D: ".contains(row[c.x])
 
 
 static var _warned_props := {} ## chemins de props_fixed absents déjà signalés (une fois par session, build debug)
@@ -556,12 +576,14 @@ static var _warned_props := {} ## chemins de props_fixed absents déjà signalé
 ## Props posés par CARTE (clé `props_fixed` du JSON de carte, docs/Design_Variantes_B.md §7) : décor propre à une
 ## variante (noria, pontons, creusets, margelle…), sans toucher aux autres cartes du biome. Entrée :
 ## {"name", "cell": [cx, cy] (case en haut à gauche de l'emprise), "size": [w, h] (cases de 2 u, défaut [1, 1]),
-##  "flip": bool (miroir horizontal), "collision": "box" (emprise pleine) | "fine" (demi-case centrée) | absent,
-##  "foot", "px_per_u", "fade", "shadow_rig" (défaut "top") comme `fixed` de props.json}.
+##  "flip": bool (miroir horizontal), "collision": "none" pour forcer un prop traversable (sinon la collision vient de
+##  data/prop_collision.json, voir PropCollision), "foot", "px_per_u", "fade", "shadow_rig" (défaut "top") comme
+##  `fixed` de props.json}.
 ## Le sprite est posé au centre de l'emprise (`foot` = pixel du cadre posé à ce centre) et trié en profondeur
 ## avec les autres props sous « Blocks » ; `<name>_shadow.png` (décalque cuit) et `<name>_e.png` sont repris par
-## BakedShadows / NormalMaps comme pour les props existants. La collision (couche 1) est ajoutée au corps
-## `Obstacles/Walls` : NavField et OccluderBuilder la lisent comme un mur. Texture absente = entrée ignorée
+## BakedShadows / NormalMaps comme pour les props existants. La collision (couche 1, rectangles de
+## PropCollision posés sur le bas visible du sprite) est ajoutée au corps `Obstacles/Walls` : NavField et
+## OccluderBuilder la lisent comme un mur. Texture absente = entrée ignorée
 ## (collision comprise), avec un avertissement unique en build debug seulement.
 func _build_props_fixed(entries: Array, origin: Vector2, biome: String) -> void:
 	var dir: String = BIOME_PROPS.get(biome, "")
@@ -606,21 +628,38 @@ func _build_props_fixed(entries: Array, origin: Vector2, biome: String) -> void:
 		spr.set_meta(&"prop", true)
 		spr.set_meta(&"prop_fixed", true)
 		root.add_child(spr)
-		var col := String(pr.get("collision", ""))
-		if col != "" and walls != null:
-			var shape := RectangleShape2D.new()
-			shape.size = (Vector2(fsize) * OUTLINE_CELL_PX - Vector2(8.0, 8.0)) if col == "box" else Vector2.ONE * OUTLINE_CELL_PX * 0.5
-			var cs := CollisionShape2D.new()
-			cs.name = "FP_%s_%d_%d" % [pname, cell.x, cell.y]
-			cs.shape = shape
-			cs.position = center_map
-			walls.add_child(cs)
-			_rects_ready = false
+		var ncol := 0
+		if String(pr.get("collision", "")) != "none": # « none » : entrée de carte qui force un prop traversable
+			ncol = _add_prop_collision(walls, pname, center_map, flip, "FP_%s_%d_%d" % [pname, cell.x, cell.y], true)
 		var fc := cell + fsize / 2
-		if bool(pr.get("fade", col != "" and fsize.x * fsize.y >= 4)) and not _blocks.has(fc):
+		if bool(pr.get("fade", PropCollision.fade(pname, ncol > 0 and fsize.x * fsize.y >= 4))) and not _blocks.has(fc):
 			_blocks[fc] = spr
 		n += 1
 	set_meta(&"props_fixed_count", n)
+
+
+## Collision d'un prop d'après data/prop_collision.json : un CollisionShape2D rectangulaire (couche 1, corps
+## `Obstacles/Walls`) par rectangle déclaré, posé relativement au point d'appui `center_map` (repère carte).
+## `occluder` faux : pas d'ombre dynamique (props de biome en nombre : leur ombre est cuite). Renvoie le nombre de formes.
+func _add_prop_collision(walls: StaticBody2D, pname: String, center_map: Vector2, flip: bool, node_name: String, occluder: bool) -> int:
+	if walls == null:
+		return 0
+	var i := 0
+	for r in PropCollision.rects_px(pname, flip):
+		var cs := CollisionShape2D.new()
+		cs.name = node_name if i == 0 else "%s_%d" % [node_name, i]
+		var shape := RectangleShape2D.new()
+		shape.size = r.size
+		cs.shape = shape
+		cs.position = center_map + r.get_center()
+		cs.set_meta(&"prop_solid", true)
+		if not occluder:
+			cs.set_meta(&"no_occluder", true)
+		walls.add_child(cs)
+		i += 1
+	if i > 0:
+		_rects_ready = false
+	return i
 
 
 ## Prop plat posé au sol (manifeste `"flat": true`, rig TOP, ex. `gour_rim` de la grotte) : décalque dans le repère
@@ -650,7 +689,8 @@ func _add_flat_prop(tex: Texture2D, pr: Dictionary, pos_map: Vector2, c: Vector2
 
 ## Props posés à un endroit fixe de la grille (manifeste `fixed` : [{"name", "pos_u": [x, y], "foot",
 ## "px_per_u", "fade", "shadow_rig"}], pos_u en u du repère carte comme les repères du JSON) : chapelles et
-## cristal géant de la Source (requests_floor45.md §4). Décor non bloquant ; la collision vient de la grille.
+## cristal géant de la Source (requests_floor45.md §4). Adossés aux murs de la grille (collision de la grille) :
+## entrées « solid: [] » de data/prop_collision.json.
 func _build_fixed_props(fixed: Array, origin: Vector2, dir: String, root: Node) -> void:
 	for pr in fixed:
 		if not pr is Dictionary or not ResourceLoader.exists(dir + String(pr.get("name", "")) + ".png"):
@@ -711,6 +751,7 @@ func add_light_prop(preset: StringName, cell: Vector2i, water_dir: Vector2i) -> 
 		spr.set_meta(&"shadow_decal_local", Transform2D(deg_to_rad(Iso.MAP_YAW_DEG) if is_iso() else 0.0, Vector2(0.5, 0.5), 0.0, center))
 	spr.set_meta(&"prop", true)
 	root.add_child(spr)
+	_add_prop_collision(get_node_or_null(^"Obstacles/Walls") as StaticBody2D, pname, -size_px * 0.5 + (Vector2(cell) + Vector2(0.5, 0.5)) * OUTLINE_CELL_PX, false, node_name, false)
 	if bool(spec.get("fade", false)) and not _blocks.has(cell):
 		_blocks[cell] = spr
 	return spr
