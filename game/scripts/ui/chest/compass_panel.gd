@@ -79,7 +79,7 @@ func open(p_tags: Array, current: Dictionary = {}) -> void:
 	col.add_child(close)
 	_buttons.append(close)
 	if not _buttons.is_empty():
-		_buttons[0].grab_focus.call_deferred()
+		FocusFollow.attach(self, _buttons)
 
 
 func _label(text: String, size: int, color: Color) -> Label:
