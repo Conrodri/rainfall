@@ -58,8 +58,8 @@ sh art/tools/vfx_test/godot_locked.sh res://tests/capture_store_menu.tscn -- --o
 
 - Les PNG ne sont pas recompressés (aucun optimiseur PNG installé) : 0,4 à 2,8 Mo chacun, sous les limites de Steam.
 - Variante B de la forêt (`foret_mangrove_lanternes`) : pas de repère, non capturée. Variante B des Cryptes : non retenue.
-- Fin de run (13) : chiffres de mise en scène incohérents entre eux (00:04, niveau 1, 1873 monstres) ; à ne pas retenir en vitrine telle quelle.
-- Étiquettes de prix de coffre « N or (-N) » visibles sur les captures de run (or du joueur à 0).
+- Fin de run (13) : victoire mise en scène (étage 5, 19:30, niveau 28, 11 piliers) ; les rubis viennent du vrai calcul (`PartyRecap.rubies`), le niveau du HUD derrière est forcé.
+- Chaque joueur reçoit 3000 or avant la capture : les prix s'affichent en jaune, sans « (-N) ». Coop : horloge forcée à 4 min, niveaux restés bas.
 - Les captures de run affichent le niveau 1 et peu d'or : les objets sont donnés d'office, pas gagnés.
 - La texture d'ombre `shadow_blob_256` est signalée absente au lancement (repli neutre), sans effet visible sur ces images.
 - L'écran titre n'est pas retenu : il affiche le bouton « Mode test » et « Version 0.1.0 » (à retirer avant la sortie, voir CLAUDE.md).

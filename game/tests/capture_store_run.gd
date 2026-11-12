@@ -112,6 +112,11 @@ func _run() -> void:
 	d.spawning_enabled = false
 	var hud = _main.get(&"hud")
 	_items()
+	# or réaliste : les prix des coffres et autels s'affichent normalement (pas en rouge « -N »)
+	for e in Players.entries():
+		Players.state_of(e.id).add_gold(3000.0)
+	if _scene == "coop":
+		RunState.active_time_s = 240.0 # quelques minutes de run
 	await _f(5)
 	match _scene:
 		"horde", "coop":
@@ -193,11 +198,14 @@ func _boss_by_id(d: Director, p: Node2D) -> void:
 	_ring(d, pp, 8, 320.0, 600.0, 0)
 	for i in 8:
 		await get_tree().create_timer(0.6).timeout
-		for s in [2, 3, 4]:
-			p.spells.cast(s)
+		if i < 5:
+			for s in [2, 3, 4]:
+				p.spells.cast(s)
 		if is_instance_valid(b) and b.has_method(&"take_damage") and i < 3:
 			b.take_damage(b.max_hp * 0.04)
 		_unpause(_main.get(&"hud"))
+	# plus de lancer : le flash de coup du boss retombe avant la capture
+	await get_tree().create_timer(1.6).timeout
 
 
 ## Ouverture d'un coffre (choix d'objet) : vrai flux Chest -> ChestUI.
@@ -211,11 +219,21 @@ func _chest(p: Node2D) -> void:
 
 ## Récap de victoire (EndRunScreen) avec médaillons d'épreuves ; le profil n'est pas touché (end_run non appelé).
 func _end_run() -> void:
+	# victoire crédible de fin d'étage 5 ; les rubis passent par le vrai calcul (PartyRecap.rubies)
+	RunState.stage = 5
+	RunState.active_time_s = 19.5 * 60.0
+	RunState.level = 28
+	RunState.kills = 1873
+	_main.set(&"pillars_done", 11)
+	var hud = _main.get(&"hud")
+	if hud != null:
+		hud._badge_label.text = str(RunState.level)
+	await _f(3)
 	var info: Dictionary = _main.end_info(true, &"victory")
 	info["epreuve_grades"] = [&"parfait", &"parfait", &"bien", &"parfait", &"fait"]
-	info["rubies"] = 42
 	info["epreuve_rubies"] = 3
-	info["kills"] = 1873
+	info["omen_rubies"] = 0
+	info["rubies"] = PartyRecap.rubies(RunState.active_time_s / 60.0, RunState.mode, 11, true, LocalState.state().gold) + 3
 	info["unlocks"] = []
 	RunState.running = false
 	var scr := EndRunScreen.create(info)
