@@ -24,9 +24,18 @@ const KEY_FACE_TOP := 0.30 ## face claire de key_1x1 / key_2x1 (fractions de la 
 const KEY_FACE_BOTTOM := 0.86
 
 
+## Cache : CoopPlates dessine ces icônes dans son `_draw()` ; sans référence gardée, la texture serait libérée à la fin
+## de l'appel et rendue en rectangle blanc (même défaut que EpreuveSprites.tex, 12/11/2026).
+static var _tex_cache := {}
+
+
 static func _tex(file_name: String) -> Texture2D:
+	if _tex_cache.has(file_name):
+		return _tex_cache[file_name]
 	var p := DIR + file_name + ".png"
-	return load(p) as Texture2D if ResourceLoader.exists(p) else null
+	var t: Texture2D = load(p) as Texture2D if ResourceLoader.exists(p) else null
+	_tex_cache[file_name] = t
+	return t
 
 
 func _init() -> void:
