@@ -33,6 +33,7 @@ static func make(pts: PackedVector2Array) -> EpreuveEscort:
 
 
 func _init() -> void:
+	super() # Pillar._init : corps de contact (voir Epreuve, en-tête)
 	verb = &"escorte"
 	uses_sprite = false
 

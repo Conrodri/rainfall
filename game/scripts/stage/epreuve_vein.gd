@@ -73,6 +73,7 @@ static func length_in_range(pts: PackedVector2Array, is_closed: bool) -> bool:
 
 
 func _init() -> void:
+	super() # Pillar._init : corps de contact (voir Epreuve, en-tête)
 	verb = &"veine"
 	uses_sprite = false
 
