@@ -204,7 +204,7 @@ func _run() -> void:
 
 	print("Constantes et compensation (kit de base)")
 	_check("DECOY_COEF 1,8 (2,2 -> 1,8 : compensation du monocible)", is_equal_approx(RictusKit.DECOY_COEF, 1.8))
-	_check("détonation +30 %, Levée 2,4 u", is_equal_approx(RictusKit.DECOY_FICELE_MULT, 1.3) and is_equal_approx(RictusKit.LIFT_DETONATE_U, 2.4))
+	_check("détonation +10 %, Levée 2,4 u", is_equal_approx(RictusKit.DECOY_FICELE_MULT, 1.1) and is_equal_approx(RictusKit.LIFT_DETONATE_U, 2.4))
 	_check("sans cible ni doublure : aucune fenêtre", not _kit.combo_ready(2) and not _kit.combo_ready(3))
 
 	print("Fil, lame, saccade : séquence complète sur un ficelé")
@@ -232,7 +232,7 @@ func _run() -> void:
 		if sp.has_meta(&"combo"):
 			combo_hits[0] += 1)
 	_check("4. Saccade", _player.spells.cast(3))
-	_check("arrachement (3 tours) + 6 doublures x1,3 (doublures ficelées)", boss.count_of((RictusKit.SACCADE_COEF + 3.0 * RictusKit.SACCADE_TOUR_ADD) * BASE) == 1 and boss.count_of(1.8 * 1.3 * BASE) == 6, str(boss.taken))
+	_check("arrachement (3 tours) + 6 doublures x1,1 (doublures ficelées)", boss.count_of((RictusKit.SACCADE_COEF + 3.0 * RictusKit.SACCADE_TOUR_ADD) * BASE) == 1 and boss.count_of(1.8 * 1.1 * BASE) == 6, str(boss.taken))
 	_check("boss : jamais tiré", boss.pulled == Vector2.ZERO)
 	_check("les 6 détonations portent la méta combo (couleur d'accent)", combo_hits[0] == 6, str(combo_hits[0]))
 	_drive(1.5, func() -> bool: return _kit.knife_in_hand())
@@ -256,7 +256,7 @@ func _run() -> void:
 	_drive(1.0, func() -> bool: return _kit.kstate != RictusKit.K.FLYING)
 	foe.taken.clear()
 	_check("Saccade après coup : lancée", _player.spells.cast(3))
-	_check("doublures déjà posées détonées avec le +30 % (cible ficelée au moment de la Saccade)", foe.count_of(1.8 * 1.3 * BASE) >= 1 and Decoy.live.is_empty(), str(foe.taken))
+	_check("doublures déjà posées détonées avec le +10 % (cible ficelée au moment de la Saccade)", foe.count_of(1.8 * 1.1 * BASE) >= 1 and Decoy.live.is_empty(), str(foe.taken))
 
 	print("Levée : détone les doublures proches (kit de base)")
 	_reset()

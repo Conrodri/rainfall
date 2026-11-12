@@ -374,10 +374,10 @@ func _run() -> void:
 	_player.hp = 50.0
 	_check("Saccade : tire tous les fils", _player.spells.cast(3))
 	_check("toutes les doublures explosent d'un coup", Decoy.live.is_empty(), str(Decoy.live.size()))
-	_check("6 × (1,8 × 1,3) sur le ficelé", ring_c.count_of(1.8 * 1.3 * BASE) == 6, str(ring_c.taken))
+	_check("6 × (1,8 × 1,1) sur le ficelé", ring_c.count_of(1.8 * 1.1 * BASE) == 6, str(ring_c.taken))
 	_check("+2 % PV une seule fois", _near(_player.hp, 50.0 + 0.02 * 95.0, 0.01), str(_player.hp))
 	hp_before += 0.0
-	# sans ficelé : Saccade détone sans le +30 %, ordre inverse valide
+	# sans ficelé : Saccade détone sans le +10 %, ordre inverse valide
 	_reset()
 	_player.spells.manual_aim_enabled = false # mobile : pas de curseur (en headless la souris n'est pas à l'origine)
 	var pack := _fake(Vector2(3.0 * U, 0))
@@ -394,8 +394,8 @@ func _run() -> void:
 	_throw_at(pack)
 	pack.taken.clear()
 	_player.spells.cast(3)
-	_check("couteau planté APRES les doublures : +30 % (ficelé au moment de la Saccade)", pack.count_of(1.8 * 1.3 * BASE) >= 5, str(pack.taken))
-	# couteau en main + doublures posées : la Saccade détone seulement (pas de +30 %, couteau gardé, sort 2 libre)
+	_check("couteau planté APRES les doublures : +10 % (ficelé au moment de la Saccade)", pack.count_of(1.8 * 1.1 * BASE) >= 5, str(pack.taken))
+	# couteau en main + doublures posées : la Saccade détone seulement (pas de +10 %, couteau gardé, sort 2 libre)
 	_reset()
 	_player.spells.manual_aim_enabled = false
 	var pack2 := _fake(Vector2(3.0 * U, 0))
@@ -404,7 +404,7 @@ func _run() -> void:
 	pack2.taken.clear()
 	_check("Saccade couteau en main : détonation", _player.spells.cast(3))
 	_check("toutes les doublures explosent (couteau en main)", Decoy.live.is_empty(), str(Decoy.live.size()))
-	_check("sans ficelé : pas de +30 %", pack2.count_of(1.8 * 1.3 * BASE) == 0 and pack2.count_of(1.8 * BASE) >= 5, str(pack2.taken))
+	_check("sans ficelé : pas de +10 %", pack2.count_of(1.8 * 1.1 * BASE) == 0 and pack2.count_of(1.8 * BASE) >= 5, str(pack2.taken))
 	_check("couteau toujours en main, sort 2 libre", _kit.knife_in_hand() and not _player.spells.is_slot_blocked(2))
 	_check("Saccade de nouveau grisée (plus de doublures, couteau en main)", _player.spells.is_slot_blocked(3))
 	_reset()

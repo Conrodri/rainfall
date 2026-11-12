@@ -78,7 +78,7 @@ const TOLL_PROC := 1.0
 const TOLL_SHAKE_PX := 6.0
 
 # --- Sort 4 : Tête-cloche -----------------------------------------------------------------------------
-const HEAD_COEF := 9.0 ## équilibrage 23/10 : 12 -> 10 (22/10 : 10 -> 12) ; combos 29/10 : 10 -> 9 (compensation de la cloche sur le pilier)
+const HEAD_COEF := 8.0 ## audit 11/2026 : 9 -> 8 (Tocsin encore à ×1,26 en mono après R2-R3) ; équilibrage 23/10 : 12 -> 10 (22/10 : 10 -> 12) ; combos 29/10 : 10 -> 9 (compensation de la cloche sur le pilier)
 const HEAD_CD_S := 22.0
 const HEAD_RANGE_U := 6.0
 const HEAD_RADIUS_U := 4.0
@@ -91,8 +91,8 @@ const HEAD_BOSS_ADD := 0.3 ## équilibrage 22/10 : la cloche sonne plus fort sur
 ## Combos (docs/Design_Combos.md §5.2). « La cloche sur le pilier » : Bras-pilier -> Tête-cloche ; « Le Coup qui fait sonner ».
 const CHARGE_TAG := &"tocsin_charge" ## étiquette « électrisé » : add_damage_taken_mod(CHARGE_TAG, 1.0, CHARGE_TAG_S), sans effet propre
 const CHARGE_TAG_S := 0.6 ## durée de l'étiquette, rafraîchie à chaque tick du pilier
-const HEAD_CHARGE_ADD := 0.5 ## Tête-cloche sur un électrisé : +50 %, additif avec HEAD_BOSS_ADD (1,8 sur un boss électrisé)
-const PILLAR_RING_CAP := 5.0 ## le pilier qui sonne : PILLAR_COEF x ticks restants, plafonné à ce coef
+const HEAD_CHARGE_ADD := 0.3 ## Tête-cloche sur un électrisé : +30 %, additif avec HEAD_BOSS_ADD (1,6 sur un boss électrisé) ; 0,5 avant l'audit 11/2026 (R2)
+const PILLAR_RING_CAP := 3.0 ## le pilier qui sonne : PILLAR_COEF x ticks restants, plafonné à ce coef
 const PILLAR_RING_COEF := 1.5 ## décharge supplémentaire du pilier atteint par l'onde du Coup de tocsin
 const PILLAR_RING_TICKS := 2 ## ticks gagnés par ce pilier (+1 s), une fois
 const PILLAR_RISE_TICKS := 4 ## un bras au sol atteint par l'onde se redresse 2 s (sans recharge en plus)
@@ -486,7 +486,7 @@ func auto_cast_ok(slot: int) -> bool:
 	return _probe_pillar_ok
 
 
-## SpellCaster.compute_damage : Tête-cloche renforcée sur les boss (+30 %) et sur les électrisés (+50 %), additifs.
+## SpellCaster.compute_damage : Tête-cloche renforcée sur les boss (+30 %) et sur les électrisés (+30 %), additifs.
 func damage_add(s: SpellData, enemy: Node) -> float:
 	if s.slot == 4 and s.id != V_FUMIGENE and is_instance_valid(enemy):
 		var add := 0.0

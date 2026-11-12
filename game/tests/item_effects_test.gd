@@ -610,6 +610,34 @@ func _test_rafale(ch: StringName) -> void:
 		_check("[%s] rafale (kit) : %d tirs = pas de rafale (%d)" % [ch, every - 1, c3], c3 == every - 1)
 		_check("[%s] rafale (kit) : %d tirs = 2 rafales (%d)" % [ch, 2 * every, c8], c8 == 2 * every + 4)
 	print("   (%s : sort 1 comportement %s, %d/%d projectiles)" % [ch, _spell1().behavior, shots, shots3])
+	# Audit 11/2026 (R6) : rejeux d'un sort de kit à kit_replay_mult (0,5) ; un projectile n'entre pas dans la file d'écho.
+	await _spawn(ch)
+	_give({"rafale_d_acier": 1})
+	var kmult := float((rd.get("special_data", {}) as Dictionary).get("kit_replay_mult", 1.0))
+	_check("[%s] rafale : kit_replay_mult = 0,5 (%s)" % [ch, kmult], _near(kmult, 0.5))
+	var fx = _player.item_fx
+	var kit_spell := SpellData.new()
+	kit_spell.behavior = SpellData.Behavior.KIT
+	kit_spell.slot = 1
+	fx.set("_echo_queue", [])
+	fx.set("_rafale_queue", [])
+	fx.set("_rafale_count", every - 1)
+	fx.call("_rafale_on_cast", kit_spell)
+	var kq: Array = fx.get("_echo_queue")
+	var kit_ok := kq.size() == 2
+	for q in kq:
+		kit_ok = kit_ok and _near(float(q.get("mult", 1.0)), kmult)
+	_check("[%s] rafale : sort 1 de kit = 2 rejeux à ×0,5 (%d entrées)" % [ch, kq.size()], kit_ok)
+	var proj_spell := SpellData.new()
+	proj_spell.behavior = SpellData.Behavior.PROJECTILE
+	proj_spell.slot = 1
+	fx.set("_echo_queue", [])
+	fx.set("_rafale_queue", [])
+	fx.set("_rafale_count", every - 1)
+	fx.call("_rafale_on_cast", proj_spell)
+	var pq: Array = fx.get("_rafale_queue")
+	var eq: Array = fx.get("_echo_queue")
+	_check("[%s] rafale : sort projectile = tirs pleins, hors file d'écho (rafale %d, écho %d)" % [ch, pq.size(), eq.size()], pq.size() == 1 and eq.is_empty())
 	_clear_fakes()
 
 

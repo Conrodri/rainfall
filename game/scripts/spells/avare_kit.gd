@@ -190,7 +190,7 @@ const BLEED_MIN_GOLD := 0.5
 const MAX_GROUND_COINS := 40
 
 ## Combos (docs/Design_Combos.md §5.4) : la Rançon marque, la Poignée et la Faillite encaissent sur les marqués.
-const COIN_MARKED_COEF := 1.8 ## Poignée : coef par pièce sur un marqué (au lieu de COINS_COEF) ; levier : 1,6
+const COIN_MARKED_COEF := 1.6 ## Poignée : coef par pièce sur un marqué (au lieu de COINS_COEF) ; audit 11/2026 (R8) : 1,8 -> 1,6
 const COIN_MARKED_REFUND := 1.0 ## part du coût que rend une pièce qui retombe sur un marqué (au lieu de COINS_REFUND_FRAC) ; aucun or neuf
 const COIN_MARKED_NEAR_PX := 70.0 ## une pièce qui s'arrête à cette distance d'un marqué compte comme tombée sur lui
 const RUIN_MARKED_ADD := 1.0 ## Faillite : coef additif sur chaque monstre marqué

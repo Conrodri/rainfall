@@ -32,8 +32,8 @@ const HAND_RAMP_U := 1.0 ## la chaîne monte du sol à la main sur ce dernier tr
 const ACCENT := Color("#FF7A1F") ## cuivre chauffé : accent unique (la chaîne), rien d'émissif sur elle
 
 # --- Gameplay : chaîne (sort 1) --------------------------------------------------------------------
-const HP_BASE := 85.0
-const HP_PER_LEVEL := 25.0
+const HP_BASE := 90.0 ## audit 11/2026 (R7) : 85 -> 90
+const HP_PER_LEVEL := 27.0 ## audit 11/2026 (R7) : 25 -> 27
 const REGEN_BASE := 1.0
 const REGEN_PER_LEVEL := 0.2
 const SPEED_U := 4.2

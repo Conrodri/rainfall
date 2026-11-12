@@ -81,8 +81,8 @@ C'est le pantin qui joue au marionnettiste : il ficelle, il tire, il rappelle.
 |---|---|---|---|---|---|---|
 | 1 auto | Dagues en demi-lune | 0,6 s | 0,8 | 3 u, 180° | 0,8 | inchangé ; sur un ficelé, chaque coup ajoute un **tour** (max 3) |
 | 2 | **Couteau ficelé** | 1,0 s, **nécessite le couteau en main** (repli 6 s si le couteau est perdu) | 2,0 à l'impact, puis **scie 0,4 / 0,5 s** (jusqu'à 10 ticks = 4,0 si on le laisse 5 s) | 8 u, 14 u/s | 0,8 impact, 0,3 scie | plante dans le premier monstre touché : ficelé 5 s ; rien touché : planté au sol en bout de course |
-| 3 | **Saccade** | **3 s** | **1,4 + 0,25 par tour** (max 2,15) sur le ficelé ; **0,6** à tout monstre traversé par le couteau qui revient (perce tout) | 9 u (longueur du fil) | 0,8 | le couteau revient en main : **sort 2 prêt** ; ficelé non-boss **tiré de 1,5 u** vers Rictus ; doublures posées : **détonées** |
-| 4 ultime | **Les Doublures** | 20 s | **1,8** par explosion (×6), **2,35 si ficelées** (+30 %) ; vol 1,2 | anneau de 1,2 u **autour du point visé** (ficelé en priorité), explosion 2,4 u | 1,0 | 3 s de vie, 20 % PV max, provocation 4 u ; mort = explosion à 60 % |
+| 3 | **Saccade** | **3 s** | **1,4 + 0,15 par tour** (max 1,85 ; 0,25 et 2,15 avant l'audit du 12/11/2026) sur le ficelé ; **0,6** à tout monstre traversé par le couteau qui revient (perce tout) | 9 u (longueur du fil) | 0,8 | le couteau revient en main : **sort 2 prêt** ; ficelé non-boss **tiré de 1,5 u** vers Rictus ; doublures posées : **détonées** |
+| 4 ultime | **Les Doublures** | 20 s | **1,8** par explosion (×6), **1,98 si ficelées** (+10 % ; +30 % et 2,35 avant l'audit du 12/11/2026) ; vol 1,2 | anneau de 1,2 u **autour du point visé** (ficelé en priorité), explosion 2,4 u | 1,0 | 3 s de vie, 20 % PV max, provocation 4 u ; mort = explosion à 60 % |
 
 ##### Sort 2 : Couteau ficelé
 - Le couteau lourd (sprite `pendulum_knife`, 4 frames, déjà livré pour la Lame-pendule) part vers la visée à 14 u/s sur 8 u, coef 2,0, recul 0,3 u. Il **se plante dans le premier monstre touché** (ficelé, §2.2) ; sinon au sol en bout de course ou contre un mur (`knife_planted`, 4 s).
@@ -92,7 +92,7 @@ C'est le pantin qui joue au marionnettiste : il ficelle, il tire, il rappelle.
 
 ##### Sort 3 : Saccade
 - **Entrée** : bouton 3 / clic droit ; aucune visée. **Disponible seulement si le couteau est hors de la main** (planté dans un monstre ou au sol) : sinon grisé. Recharge 3 s, plancher 1,05 s avec les hâtes (`COOLDOWN_FLOOR` 0,35).
-- **Sur un ficelé** : le Montreur tire d'un coup sec. La lame s'arrache : coef **1,4 + 0,25 par tour** (tours : §3.3, max 3 → 2,15), recul 0,5 u ; un non-boss est **tiré de 1,5 u vers Rictus** (`push` existant, direction inversée), un boss ne bouge pas. Le couteau **revient en ligne droite** vers la position courante de Rictus (comme le retour de `RictusPendulum`, 14 u/s), coef 0,6 à tout monstre traversé (perce tout, une touche par monstre), puis il est **rattrapé** : sort 2 prêt dans la même frame.
+- **Sur un ficelé** : le Montreur tire d'un coup sec. La lame s'arrache : coef **1,4 + 0,15 par tour** (tours : §3.3, max 3 → 1,85), recul 0,5 u ; un non-boss est **tiré de 1,5 u vers Rictus** (`push` existant, direction inversée), un boss ne bouge pas. Le couteau **revient en ligne droite** vers la position courante de Rictus (comme le retour de `RictusPendulum`, 14 u/s), coef 0,6 à tout monstre traversé (perce tout, une touche par monstre), puis il est **rattrapé** : sort 2 prêt dans la même frame.
 - **Sur un couteau au sol** (lancer raté, ficelé mort, fil cassé) : même retour en ligne (0,6 par monstre traversé), rattrapé, sort 2 prêt. Pas de dégât d'arrachement.
 - **Doublures posées** (quelle que soit la cause) : la Saccade **tire tous leurs fils** : elles explosent toutes dans la même frame (coef 1,8 ; **2,35 si une cible est ficelée au moment de la Saccade** : « ficelées »). La Levée garde son effet (atterrir à 2,4 u les détone aussi, sans bonus).
 - Vertige : aucun. Rictus reste libre de bouger pendant toute la boucle.
@@ -101,7 +101,7 @@ C'est le pantin qui joue au marionnettiste : il ficelle, il tire, il rappelle.
 ##### Sort 4 : Les Doublures (lancées)
 - Rictus lance ses six doublures (anim `throw_ult`, bras projetés, existante) : elles atterrissent en **hexagone de 1,2 u autour du point visé** : PC = curseur (plafond 7 u), sinon le **ficelé**, sinon le paquet le plus dense à 6 u, sinon autour de Rictus (comportement actuel). Chaque doublure fait face vers l'extérieur de son anneau. Position dans un mur : sautée (règle actuelle).
 - Immobiles, 3 s, 20 % des PV max de Rictus, provocation 4 u (jamais les boss), tuée = explosion à 60 %, timer = explosion rayon 2,4 u coef **1,8** (`double_burst`), recul 1 u × masse, +2 % PV max à la première explosion (règle « fils tendus » conservée).
-- **Saccade** : voir ci-dessus (détonation immédiate, +30 % si une cible est ficelée). Sur un boss ficelé au centre de l'hexagone : **6 × 2,35 = 14,1** d'un coup, à 5-7 u de Rictus, sans se déplacer. Comparaison : Brasier d'Ardent 7,4 sur chaque monstre à 6 u ; Doublures actuelles 13,2 sur un boss **collé** à Rictus.
+- **Saccade** : voir ci-dessus (détonation immédiate, +10 % si une cible est ficelée). Sur un boss ficelé au centre de l'hexagone : **6 × 1,98 = 11,9** d'un coup, à 5-7 u de Rictus, sans se déplacer. Comparaison : Brasier d'Ardent 7,4 sur chaque monstre à 6 u ; Doublures actuelles 13,2 sur un boss **collé** à Rictus.
 - Le vol des doublures (`push`, coef 1,2) n'est plus déclenché par le kit de base (plus de Toupie) : il reste câblé pour la variante Toupie (§6).
 
 ### 3.3 Le combo « Fil, lame, saccade »
@@ -176,11 +176,11 @@ SAW_PROC := 0.3
 TOUR_MAX := 3
 SACCADE_CD := 3.0
 SACCADE_COEF := 1.4
-SACCADE_TOUR_ADD := 0.25
+SACCADE_TOUR_ADD := 0.15   ## 0,25 avant l'audit du 12/11/2026
 SACCADE_PULL_U := 1.5
 SACCADE_LINE_COEF := 0.6     ## retour du couteau, perce tout
 DECOY_COEF := 1.8            ## 2,2 -> 1,8
-DECOY_FICELE_MULT := 1.3     ## détonées par la Saccade avec une cible ficelée
+DECOY_FICELE_MULT := 1.1     ## (1,3 avant l'audit du 12/11/2026) détonées par la Saccade avec une cible ficelée
 DECOY_THROW_RANGE_U := 7.0
 DECOY_AUTO_RANGE_U := 6.0
 ```
@@ -298,7 +298,7 @@ Cible du §14 de `Maths_Scaling.md` : 65-75 s (médiane des six personnages en r
 | **Main du Montreur** (`rictus_main_du_montreur`, slot 1) | **Conservée telle quelle** (claquement 1,4 u sur le paquet dense à 4 u, garde si ≤ 1,5 u). Sur un ficelé dans le disque : ajoute un tour (comme la demi-lune). Asset `montreur_hand_slam` inchangé. | Idem. |
 | **Lame-pendule** (`rictus_lame_pendule`, slot 2) | **Remplacée par « Éventail »** (l'ancien sort de base devient la variante, id `rictus_eventail`) : 5 couteaux légers 1,35, 60°, 7 u, perce 1, plantés au sol 4 s. Avec la Saccade : les 5 couteaux plantés **reviennent en ligne** (0,6 chacun, perce tout) et rendent 1 s de recharge chacun (plafond 5 s) ; aucun ficelé : la Saccade ne fait que rappeler. Style : « le multi-cible au lieu du monocible ». Icône : `eventail.png` existante (renommée). L'asset `pendulum_knife` et le code `RictusPendulum` passent au sort de base. Déblocage inchangé : 150 couteaux ramassés (le compteur `rictus.knives_picked` compte aussi les couteaux rappelés par la Saccade). | **Lame-pendule conservée** (aller-retour 7 u, 2,5 / 2,5, sans fil) comme variante multi-ligne du Couteau ficelé. |
 | **Pirouette** (`rictus_pirouette`, slot 3) | **Remplacée par « Toupie »** (l'ancien sort de base devient la variante, id `rictus_toupie`) : 2,5 s invulnérable, 0,42 par tick, 2,2 u, glisse, vertige, pousse les doublures en étoile (code et assets existants : `spin`, `spin_blur`). Avec le fil : chaque tick de Toupie fait aussi un tick de scie sur le ficelé (le fil s'enroule autour de la toupie). Recharge 8 s : le joueur qui veut l'ancienne mêlée invulnérable la retrouve, au prix de la Saccade. Icône `toupie.png` existante. Déblocage : « Tuer 100 monstres à moins de 2 u » (compteur `Player.close_kills` existant, celui du déblocage caché de Rictus à 200). L'asset `pirouette_burst` est réutilisé comme flash d'arrachement de la Saccade. | **Toupie** devient la variante de la Pirouette (même contenu que ci-contre). |
-| **Rideau** (`rictus_rideau`, slot 4) | **Conservée** : 6 doublures en ligne perpendiculaire à la visée à 2 u devant Rictus, 6 s, 30 % PV. La Saccade les détone (+30 % si une cible est ficelée) ; elles ne sont pas lancées à distance (c'est le style « mur devant soi » de la variante). Coef 1,7 → 1,5 (même rapport que la base 2,2 → 1,8). | Conservée, idem. |
+| **Rideau** (`rictus_rideau`, slot 4) | **Conservée** : 6 doublures en ligne perpendiculaire à la visée à 2 u devant Rictus, 6 s, 30 % PV. La Saccade les détone (+10 % si une cible est ficelée) ; elles ne sont pas lancées à distance (c'est le style « mur devant soi » de la variante). Coef 1,7 → 1,5 (même rapport que la base 2,2 → 1,8). | Conservée, idem. |
 
 Compteurs : `rictus.doubles_launched` (déblocage de la Pirouette) n'a plus de sort de base qui l'alimente en option 1 : il est remplacé par `close_kills`. Les textes `data/characters.json` (`desc`, `unlock_text`) et `docs/Variantes_Sorts.md` §2.2 sont à réécrire par l'implémenteur à partir de ce tableau.
 

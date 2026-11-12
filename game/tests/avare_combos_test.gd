@@ -1,5 +1,5 @@
 extends Node
-## Combos d'Avare (docs/Design_Combos.md §5.4) : Rançon -> Poignée (1,8 par pièce, retombée à 100 %, aucun or neuf),
+## Combos d'Avare (docs/Design_Combos.md §5.4) : Rançon -> Poignée (1,6 par pièce, retombée à 100 %, aucun or neuf),
 ## Faillite sur marqués, Coup de coffre qui prolonge la marque, bonus dans la fenêtre seulement, ordre inverse.
 ## godot --headless --path game res://tests/avare_combos_test.tscn
 
@@ -91,7 +91,7 @@ func _run() -> void:
 	print("Constantes et compensations")
 	_check("COINS_COEF 1,1 ; RUIN_BASE_COEF 4,6", _near(AvareKit.COINS_COEF, 1.1) and _near(AvareKit.RUIN_BASE_COEF, 4.6))
 	_check("coefs de base des sorts", _near(s2.coef, 1.1) and _near(s4.coef, 4.6))
-	_check("COIN_MARKED_COEF 1,8 ; refund 1,0 ; Faillite +1,0", _near(AvareKit.COIN_MARKED_COEF, 1.8) and _near(AvareKit.COIN_MARKED_REFUND, 1.0) and _near(AvareKit.RUIN_MARKED_ADD, 1.0))
+	_check("COIN_MARKED_COEF 1,6 ; refund 1,0 ; Faillite +1,0", _near(AvareKit.COIN_MARKED_COEF, 1.6) and _near(AvareKit.COIN_MARKED_REFUND, 1.0) and _near(AvareKit.RUIN_MARKED_ADD, 1.0))
 
 	print("Bonus dans la fenêtre seulement")
 	var e := _fake(Vector2(100, 0))
@@ -99,7 +99,7 @@ func _run() -> void:
 	var base4 := _dmg(s4, e)
 	var base1 := _dmg(s1, e)
 	_mark(e, 4.0)
-	_check("Poignée sur marqué : 1,8 / 1,1", _near(_dmg(s2, e) / base2, 1.8 / 1.1, 0.002), str(_dmg(s2, e) / base2))
+	_check("Poignée sur marqué : 1,6 / 1,1", _near(_dmg(s2, e) / base2, 1.6 / 1.1, 0.002), str(_dmg(s2, e) / base2))
 	_check("Faillite sur marqué : (4,6 + 1) / 4,6", _near(_dmg(s4, e) / base4, 5.6 / 4.6, 0.002))
 	_check("Coup de coffre : pas de bonus de dégâts", _near(_dmg(s1, e), base1))
 	_kit.marks[e.get_instance_id()]["t"] = _kit._clock - 0.1

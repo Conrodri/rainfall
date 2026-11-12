@@ -246,7 +246,7 @@ Tous : 8 directions, rig CREA, un accent émissif, lisibles parmi 250 monstres (
 - **Sort 3 « Piquet » (8 s)** : plante un piquet au point visé (6 u) : la chaîne est tendue du piquet à elle pendant 5 s et **balaie** : coef 1,0 par monstre touché par la ligne (immunité 0,3 s par monstre, proc 0,5). Mobile : piquet sur le paquet le plus dense.
 - **Sort 4 « Tendeur » (20 s)** : la chaîne claque : coef 10,0 à tout ce qui est à 1 u de n'importe quel segment, puis elle **se rembobine en 0,5 s en traînant les monstres touchés** jusqu'à elle (pack) ; ils sont étourdis 1 s (statut `imprisoned` de Tocsin, réutilisé).
 - **Malus signature** : fragile et **inutile à l'arrêt** ; `Boucle` la laisse 3-4 s sans chaîne ; dans un couloir étroit ses boucles sont petites. Config : 4 sorts.
-- **Stats** : PV 85 + 25/niv, armure 0, régén 1 + 0,2, vitesse 4,2 (elle doit courir), roulade 3 u. Prise en main 3/5.
+- **Stats** : PV 90 + 27/niv (85 + 25 avant l'audit du 12/11/2026), armure 0, régén 1 + 0,2, vitesse 4,2 (elle doit courir), roulade 3 u. Prise en main 3/5.
 - **Aspect** : long manteau ciré brun (#3F2B1E), trépied de bronze replié dans le dos, **touret de chaîne** à la hanche ; accent unique **orange de cuivre chauffé** (#FF7A1F) sur la chaîne (texture répétée rendue au rig TOP, `Line2D` avec `_e`), rien d'émissif sur elle (la chaîne la signale).
 - **Animations** : `idle` 8, `run` 8, `plant` 4, `loop` 4, `whip` 6 (×8 dir) = 240 rendus ; `chain_tile` (TOP, 4 frames d'incandescence), `peg` (CREA 1 × 8), `loop_blaze` (TOP 6). **≈ 2 lots**.
 - Déblocage : visible, « Tuer 300 monstres avec un sort de zone persistante (Cendres) ». (cumul sur le profil (comme Rictus), quel que soit le personnage : tout dernier coup venu d'une `zone_effect` persistante). **Codé le 06/11/2026** (`UnlockTracker`, `Profile.UNLOCK_ON_*`, `tests/unlock_conditions_test`).
@@ -257,7 +257,7 @@ Tous : 8 directions, rig CREA, un accent émissif, lisibles parmi 250 monstres (
   - Boucle : exige 3 u de chaîne (sinon refusée sans recharge). Dedans le polygone OU sur son contour (fermeture comprise) : coef 3,0, proc 1,0, attraction ≤ 1 u vers le centroïde (pas les boss). Chaîne consommée. Rendu : loop_blaze au centroïde, à l'échelle de √(aire/π), + contour qui flambe 0,45 s. Impact frame 2 (`loop`).
   - Piquet : portée 6 u (+ range_add), sinon 3 u devant ; recul hors des murs. Ligne piquet→elle 5 s : coef 1,0, proc 0,5, immunité 0,5 s par monstre (fiche 0,3 : borne un boss collé à ~2 coefs/s), recul 0,3 u perpendiculaire. Arrachée au-delà de 10 u. Un nouveau piquet remplace l'ancien. Mobile : paquet le plus dense. Impact frame 2 (`plant`).
   - Tendeur : exige 2 u de chaîne ou un piquet planté. Coef 10 à 1 u (× zone_size_add) de la chaîne ET de la ligne du piquet, proc 1,0. Claque 0,25 s (planche chain_snap) puis rembobinage 0,5 s (chain_rewind) : les non-boss touchés sont tirés jusqu'à 1 u d'elle, statut `imprisoned` 1 s + repli ralentissement 85 % 1 s ; le piquet est arraché. Impact frame 2 (`whip`).
-  - Stats : PV 85 + 25, armure 0, régén 1 + 0,2, vitesse 4,2, hitbox 0,5 u, roulade standard (avec fantômes, elle déroule 3 u de chaîne d'un coup).
+  - Stats : PV 90 + 27, armure 0, régén 1 + 0,2, vitesse 4,2, hitbox 0,5 u, roulade standard (avec fantômes, elle déroule 3 u de chaîne d'un coup).
   - Rendu chaîne : Line2D TILE (bande 0,9 u ; 0,6 trop fin en iso), shaders arpenteuse_chain(_e).gdshader, maillons fixés au sol (décalage d'UV), gradient de chaleur queue 50 % → tête 100 %, émission 2,6 (4,5 quand elle mord) ; 2 lueurs cuivre le long de la chaîne.
   - Lumières : arpenteuse_chain (0,6 / 2,4 u, scintillement), arpenteuse_blaze (2,4 / 4,5 u), arpenteuse_snap (1,8 / 3 u), toutes #FF7A1F–#FF8A2E.
   - Frames d'impact déclarées : plant 2, loop 2, whip 2, attack 3, cast 2, cast_ult 3.
@@ -762,7 +762,7 @@ Replis en attendant (code) : sprite d'Ardent teinté écorce (`PLACEHOLDER_TINT`
 | Ardent (réf.) | zone, débutant | recharges | 100 + 30 | 0 | 1 + 0,2 | 4,0 | 3 u | 4 sorts | 1/5 | 1 (re-rendu iso) | 128 |
 | **Tocsin** | contrôle, combos | **ses membres** (charges, états de locomotion) | 130 + 36 | 20 | 0,8 + 0,16 | 4,0 → 1,4 selon l'état | 3 / 1,5 / 2 u | 4 sorts | 4/5 | **5** | 696 + 180 |
 | Averse | distance / zone | **eau de pluie** (poids = vitesse) | 90 + 27 | 0 | 1 + 0,2 | 3,4-4,4 | 3 u (1,5 pleine) | 4 sorts | 2/5 | 2 | 296 |
-| Arpenteuse | zone / piège | **chaîne au sol** (attaque = trajet) | 85 + 25 | 0 | 1 + 0,2 | 4,2 | 3 u | 4 sorts | 3/5 | 2 | 240 |
+| Arpenteuse | zone / piège | **chaîne au sol** (attaque = trajet) | 90 + 27 | 0 | 1 + 0,2 | 4,2 | 3 u | 4 sorts | 3/5 | 2 | 240 |
 | Rainette | mobilité / burst | **souffle** (bonds discrets) | 90 + 27 | 10 | 1,2 + 0,24 | bonds ≈ 5,5 | bond arrière 3 u | 4 sorts | 3/5 | 2,5 | 296 |
 | Avare | mêlée / tank | **or** (puissance, saignement) | 120 + 36 | 15 | 0,8 + 0,16 | 3,8 | 2,5 u | 4 sorts | 2/5 | 2 | 304 |
 | Bourbe | invocatrice / mêlée | **PV max = familiers** | 150 + 45 | 10 | 1,5 + 0,3 | 3,6-4,2 | 2,5 u | 4 sorts | 3/5 | 3 | 288 + 128 |
