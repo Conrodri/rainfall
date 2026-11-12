@@ -491,9 +491,11 @@ func _rafale_on_cast(s: SpellData) -> void:
 		return
 	if s.behavior != SpellData.Behavior.PROJECTILE:
 		# Sort 1 de kit (zone, mêlée, rayon...) : `extra` rejeux du sort comme la Couronne d'écho (même file, même garde).
+		# Audit 11/2026 (R6) : les rejeux d'un sort de kit font `kit_replay_mult` du coup (0,5), un projectile garde ses tirs pleins.
 		var step := float(data_of(ID_ECHO).get("repeat_delay_s", 0.15))
+		var replay_mult := float(data_of(ID_RAFALE).get("kit_replay_mult", 1.0))
 		for i in maxi(int(data_of(ID_RAFALE).get("extra", 2)), 1):
-			_echo_queue.append({"slot": s.slot, "t": step * (i + 1)})
+			_echo_queue.append({"slot": s.slot, "t": step * (i + 1), "mult": replay_mult})
 	else:
 		_rafale_queue.append({"spell": s, "t": 0.0, "wait": 0.5}) # attend le tir principal (frame d'impact), 0,5 s au plus
 

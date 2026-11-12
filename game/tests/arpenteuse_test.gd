@@ -136,12 +136,12 @@ func _run() -> void:
 	_check("kit Arpenteuse", _kit is ArpenteuseKit)
 	var ids: Array = _player.get_spell_cooldowns().map(func(c): return String(c.id))
 	_check("4 sorts / ids", ids == ["arpenteuse_chaine", "arpenteuse_boucle", "arpenteuse_piquet", "arpenteuse_tendeur"], str(ids))
-	_check("PV L1 = 85", _near(_player.max_hp, 85.0), str(_player.max_hp))
+	_check("PV L1 = 90", _near(_player.max_hp, 90.0), str(_player.max_hp))
 	_check("armure 0", _near(_player.armor(), 0.0))
 	_check("régén 1,0", _near(_player.regen_per_s(), 1.0))
 	_check("vitesse 4,2 u/s", _near(_player.move_speed(), 4.2 * U), str(_player.move_speed()))
 	RunState.level = 3
-	_check("PV L3 = 85 + 2 × 25", _near(_player.character.max_hp_at(3), 135.0))
+	_check("PV L3 = 90 + 2 × 27", _near(_player.character.max_hp_at(3), 144.0))
 	RunState.level = 1
 	var copper := true
 	for sp in ArpenteuseKit.character().spells:

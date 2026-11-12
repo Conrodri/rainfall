@@ -160,7 +160,7 @@ func _run() -> void:
 	_check("kit Tocsin", _kit != null)
 
 	print("Compensations de base")
-	_check("HEAD 9,0 ; TOLL 2,3 ; PILLAR 0,7", _near(TocsinKit.HEAD_COEF, 9.0) and _near(TocsinKit.TOLL_COEF, 2.3) and _near(TocsinKit.PILLAR_COEF, 0.7))
+	_check("HEAD 8,0 ; TOLL 2,3 ; PILLAR 0,7", _near(TocsinKit.HEAD_COEF, 8.0) and _near(TocsinKit.TOLL_COEF, 2.3) and _near(TocsinKit.PILLAR_COEF, 0.7))
 
 	print("Électrisé : chaque tick du pilier pose l'étiquette")
 	_reset()
@@ -180,9 +180,9 @@ func _run() -> void:
 	var prev := _throw_head(2.0, inside)
 	var new_hits: Array = inside.taken.slice(prev)
 	var ring_expect: float = minf(TocsinKit.PILLAR_COEF * float(TocsinKit.PILLAR_TICKS - prev), TocsinKit.PILLAR_RING_CAP)
-	_check("électrisé : Tête x1,5", new_hits.size() >= 1 and _near(float(new_hits[0]), TocsinKit.HEAD_COEF * (1.0 + TocsinKit.HEAD_CHARGE_ADD) * BASE, 0.05), str(new_hits))
+	_check("électrisé : Tête x1,3", new_hits.size() >= 1 and _near(float(new_hits[0]), TocsinKit.HEAD_COEF * (1.0 + TocsinKit.HEAD_CHARGE_ADD) * BASE, 0.05), str(new_hits))
 	_check("le pilier sonne : décharge = PILLAR_COEF x ticks restants (plafond 5,0)", new_hits.size() >= 2 and ring_expect > 0.0 and _near(float(new_hits[1]) / BASE, ring_expect, 0.05), "%s attendu %s" % [new_hits, ring_expect])
-	_check("boss électrisé : +30 % et +50 % additifs (1,8)", boss.taken.size() >= 1 and _near(float(boss.taken[boss.taken.size() - 2]) if boss.taken.size() >= 2 else 0.0, TocsinKit.HEAD_COEF * (1.0 + TocsinKit.HEAD_BOSS_ADD + TocsinKit.HEAD_CHARGE_ADD) * BASE, 0.05), str(boss.taken))
+	_check("boss électrisé : +30 % et +30 % additifs (1,6)", boss.taken.size() >= 1 and _near(float(boss.taken[boss.taken.size() - 2]) if boss.taken.size() >= 2 else 0.0, TocsinKit.HEAD_COEF * (1.0 + TocsinKit.HEAD_BOSS_ADD + TocsinKit.HEAD_CHARGE_ADD) * BASE, 0.05), str(boss.taken))
 	pil = _limb(&"arm_l")
 	_check("le bras tombe, ramassable", pil != null and pil.phase == TocsinLimb.Phase.GROUND and pil.pickup != null)
 	_sim(1.0)

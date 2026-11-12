@@ -429,6 +429,83 @@ R6 et R8, enfin R7 après vérification en mode test. Si Tocsin reste au-dessus 
 - Rafale d'acier × Arpenteuse (−10 %) : à vérifier en mode test ; si confirmé, exclure le sort 1 d'Arpenteuse des rejeux
   (comportement spécial du kit) plutôt que de toucher l'objet.
 
+## 7bis. Application de R2-R8 (12/11/2026)
+
+Le joueur a validé R2-R8 le 12/11/2026. Appliqué dans l'ordre conseillé (R1 déjà fait) ; mesures avec les commandes du §0.2
+(`--set levels` et `--set bosses`, 2 graines, images fixes à 60 i/s, sondes à 1 graine). Lire les ratios à ±0,08 près.
+
+### Valeurs appliquées
+
+| # | Fichier : constante ou clé | Avant | Après |
+|---|---|---|---|
+| R2 | `tocsin_kit.gd` : `HEAD_CHARGE_ADD` | 0,5 | **0,3** |
+| R3 | `tocsin_kit.gd` : `PILLAR_RING_CAP` | 5,0 | **3,0** |
+| (consigne) | `tocsin_kit.gd` : `HEAD_COEF` | 9,0 | **8,0** : après R2-R3, Tocsin mesurait ×1,26 en mono (> ×1,25), la consigne du tableau s'applique |
+| R4 | `rictus_kit.gd` : `DECOY_FICELE_MULT` | 1,3 | **1,1** |
+| R5 | `rictus_kit.gd` : `SACCADE_TOUR_ADD` | 0,25 | **0,15** |
+| R6 | `items.json` `rafale_d_acier.special_data.kit_replay_mult` (clé nouvelle, lue dans `item_effects.gd:_rafale_on_cast`) | absente (= 1,0) | **0,5** (sorts 1 de kit seulement ; les sorts projectiles gardent leurs tirs pleins en éventail) |
+| R7 | `arpenteuse_kit.gd` : `HP_BASE` / `HP_PER_LEVEL` | 85 / 25 | **90 / 27** |
+| R8 | `avare_kit.gd` : `COIN_MARKED_COEF` | 1,8 | **1,6** |
+
+Textes de jeu suivis : `characters.json` (Tête-cloche « +30 % » sur électrisé, explosion « 800 % » au lieu de 1 000 % qui
+était déjà périmé, Doublures et Saccade « +10 % si ficelé », Poignée « 1,6 par pièce »), `items.json` (texte de la Rafale :
+les sorts qui ne sont pas des projectiles se rejouent 2 fois à moitié dégâts). Docs d'origine annotées :
+`Design_Rictus_v2.md`, `Design_Personnages.md`, notes en fin de `Combos_Kits.md` et `Design_Combos.md`.
+
+### Ratios à la médiane remesurés (durée de la médiane / durée du perso)
+
+| Perso | Global L6+ avant → après | Mono L6+ | Zone L6+ | Élite | Mini-boss | Boss d'étage |
+|---|---|---|---|---|---|---|
+| Tocsin | 1,38 → **1,16** | 1,58 → **1,22** | 1,05 → 1,04 | 1,20 → 1,12 | 1,79 → **1,30** | 1,22 → 1,12 |
+| Rictus | 1,11 → **1,03** | 1,21 → **1,08** | 0,94 → 0,94 | 1,16 → 1,10 | 1,29 → 1,15 | 1,19 → 1,10 |
+| Avare | 1,05 → 1,04 | 1,08 → 1,04 | 1,00 → 1,02 | 0,96 → 0,92 | 1,18 → 1,15 | 1,14 → 1,07 |
+| Arpenteuse | 1,01 → 1,01 | 1,15 → 1,16 | 0,76 → 0,76 | 0,94 → 0,95 | 0,84 → 0,84 | 0,79 → 0,76 |
+
+Autres personnages après (la médiane a bougé avec Tocsin et Rictus) : Ardent 0,89 global / 0,85 mono / 0,99 zone ; Averse
+0,94 / 0,91 / 1,00 ; Rainette 1,11 / 1,11 / 1,10 ; Bourbe 0,98 / 0,98 / 0,98 ; Vigie 0,91 / 0,87 / 0,99 ; Taliant 0,93 /
+0,86 / 1,09 ; Grésille 0,93 / 0,87 / 1,06. Étape intermédiaire (R2-R3 seuls) : Tocsin mono 1,26, mini-boss 1,36, boss
+d'étage 1,11, élite 1,15.
+
+Écarts par rapport aux estimations du §7 : Tocsin plus bas que prévu sur le mini-boss (1,30 contre ≈ 1,5 estimé avec
+R2-R3 seuls, grâce à `HEAD_COEF` 8) et au boss d'étage (1,12 pour ≈ 1,13) ; Rictus mono 1,08 pour ≈ 1,12 estimé ; Avare
+boss d'étage 1,07 (≈ 1,08 estimé) ; Arpenteuse inchangée en DPS (R7 ne touche que les PV).
+
+### Sondes remesurées (L12m, ratio contre le même perso sans l'objet, 1 graine)
+
+| Perso | Rafale d'acier ×2 avant → après |
+|---|---|
+| Ardent | 1,03 → 1,05 |
+| Rictus | 1,13 → 1,11 |
+| Tocsin | 1,10 → 1,07 |
+| Averse | 1,30 → **1,18** |
+| Arpenteuse | 0,90 → 0,90 |
+| Rainette | 1,13 → 1,10 |
+| Avare | 1,21 → **1,13** |
+| Bourbe | 1,10 → 1,12 |
+| Vigie | 1,25 → **1,12** |
+| Taliant | 1,14 → 1,14 |
+| Grésille | 1,22 → **1,14** |
+
+Hâte (Sablier ×4 + Horloge ×2 + Chronomètre ×1) : Avare +49 % → **+41 %** (estimé +43 %), Arpenteuse +36 % → +36 %.
+Les sorts 1 de kit (Averse, Vigie, Grésille, Avare) passent de +21-30 % à +12-18 % ; les persos à sort 1 projectile ne
+bougent pas (Ardent, Bourbe, Taliant, Rictus dans le bruit).
+
+### Survie d'Arpenteuse (R7)
+
+PV effectifs L12m 786 → **822** (= Averse et Vigie, objectif ≈ 825) ; L1 90 PV, L6 250, L18 884. Morts en duel de boss
+d'étage : 9 → 10 (bot, bruit de graine ; la survie réelle est à confirmer en mode test, §9). Le duel de boss d'étage reste
+à ×0,76, la cause principale est le DPS (zone 0,76, chaîne tracée au plus court par le bot), pas les PV.
+
+### Écarts restants
+
+- **Tocsin** : mini-boss ×1,30 (au-dessus de la borne 1,25 des consignes de bande) mais mono ×1,22, global ×1,16 ; le bot
+  ne ramasse pas ses membres, le Tocsin humain est plus fort que mesuré. Si le mode test le confirme : `HEAD_COEF` 8 → 7,5.
+- **Arpenteuse** : zone ×0,76 et boss d'étage ×0,76 (biais du bot sur la chaîne), non traités (cf. « Non recommandé »).
+- **Rafale d'acier × Arpenteuse** : toujours ×0,90 (le rejeu de la chaîne gêne son tracé), même avec ×0,5 ; le §8 des
+  risques propose d'exclure son sort 1 des rejeux, non fait (à décider après vérification en mode test).
+- Bas de bande inchangés : Vigie (0,87 mono), Taliant (0,86 mono), Grésille (0,87 mono, mini-boss 0,78), Ardent (0,85 mono).
+- Averse + Couronne ×2 reste à ×1,75 (synergie eau × écho, §6.2).
+
 ## 8. Préparation de la revue des boss (mesures seulement, gel des boss)
 
 ### 8.1 Létalité en duel (bot à 25 % d'esquives ratées ; 11 duels par boss, 22 pour le final)
@@ -466,12 +543,19 @@ Semeur de pluie (Arpenteuse 5), 2-7 contre l'Idole noyée (Rictus 7).
 1. Mode test (bouton du titre ou `-- --test-mode`), panneau F1, difficulté D réglée sur la valeur du moment (E3 : 3,4).
 2. **R1** : Averse, ajouter 2 Couronnes d'écho, frapper un mini-boss invoqué : les deux échos doivent afficher environ
    45 % puis 31 % du chiffre du coup principal (avant R1 : le même chiffre ; appliqué le 11/11).
-3. **R2-R3** : Tocsin niveau 6, invoquer un mini-boss, poser les 2 piliers, Coup de tocsin, Tête-cloche : chronométrer
-   le mini-boss (aujourd'hui ≈ 3 s, attendu ≈ 4-5 s) ; puis un boss d'étage de l'étage 3 avec 21 objets (≈ 32 s en
-   duel aujourd'hui, attendu ≈ 36 s).
-4. **R4-R5** : Rictus, ficeler une élite, poser les Doublures, Saccade à 3 tours : comparer les chiffres d'explosion.
-5. **R6** : Averse ou Vigie avec 2 Rafales d'acier : les 2 rejeux tous les 5 tirs doivent afficher la moitié du coup.
+3. **R2-R3 + HEAD_COEF 8** : Tocsin niveau 6, invoquer un mini-boss, poser les 2 piliers, Coup de tocsin, Tête-cloche :
+   chronométrer le mini-boss (avant 12/11 ≈ 3 s ; mesure bot à D du moment E1 : 4,3 s → 5,1 s ; attendu ≈ 4-5 s). Puis un
+   boss d'étage de l'étage 3 avec 21 objets (bot, duel : 33,3 s → 34,6 s). Le chiffre de la Tête-cloche sur électrisé
+   doit afficher +30 % (et +160 % au total sur un boss électrisé) ; le pilier qui sonne plafonne à 3 coefs.
+4. **R4-R5** : Rictus, ficeler une élite, poser les Doublures, Saccade à 3 tours : l'explosion de chaque doublure vaut
+   1,8 × 1,1 (au lieu de 1,8 × 1,3), l'arrachement à 3 tours 1,4 + 3 × 0,15 = 1,85 (avant 2,15). Attendu : élite 17-21 s
+   en duel, mini-boss ≈ 1 s de plus.
+5. **R6** : Averse ou Vigie avec 2 Rafales d'acier : les 2 rejeux tous les 5 tirs doivent afficher la moitié du coup ; Ardent
+   (projectile) : l'éventail de 3 projectiles pleins, inchangé.
 6. **Rafale × Arpenteuse** et **Idole noyée** : vérifier à la main (limites du bot).
+7. **R7** : Arpenteuse niveau 12 : PV max 90 + 11 × 27 = 387 de base (avant 360) ; refaire un duel de boss d'étage 3
+   et compter les morts (bot : 10, objectif 11 ou moins à la main ; une partie vient du bot).
+8. **R8** : Avare, Rançon puis Poignée sur un mini-boss marqué : la pièce affiche 1,6 (avant 1,8) fois le coup de base.
 
 ## 10. Non évalué
 

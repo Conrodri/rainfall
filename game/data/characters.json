@@ -133,7 +133,7 @@
         "id": "rictus_saccade",
         "name": "Saccade",
         "slot": "cd",
-        "desc": "Le couteau s'arrache du ficelé (plus fort par tour de fil, 3 au plus) et revient en blessant tout ; Couteau ficelé prêt. Le ficelé (sauf boss) est tiré de 1,5 u ; doublures : explosion d'un coup, +30 % si un monstre est ficelé. Recharge 3 s.",
+        "desc": "Le couteau s'arrache du ficelé (plus fort par tour de fil, 3 au plus) et revient en blessant tout ; Couteau ficelé prêt. Le ficelé (sauf boss) est tiré de 1,5 u ; doublures : explosion d'un coup, +10 % si un monstre est ficelé. Recharge 3 s.",
         "variants": [
           {
             "id": "rictus_toupie",
@@ -149,7 +149,7 @@
         "id": "doublures",
         "name": "Les Doublures",
         "slot": "ultime",
-        "desc": "Lance six doublures en hexagone autour du ficelé (sinon du point visé, du paquet ou de toi) : elles attirent les monstres puis explosent (2,4 u). La Saccade les fait exploser d'un coup (+30 % si un ficelé), la Levée aussi.",
+        "desc": "Lance six doublures en hexagone autour du ficelé (sinon du point visé, du paquet ou de toi) : elles attirent les monstres puis explosent (2,4 u). La Saccade les fait exploser d'un coup (+10 % si un ficelé), la Levée aussi.",
         "variants": [
           {
             "id": "rictus_rideau",
@@ -198,7 +198,7 @@
         "id": "tocsin_bras_pilier",
         "name": "Bras-pilier",
         "slot": "cd",
-        "desc": "2 charges. Tocsin lance un bras au point visé : il se plante comme un pilier et décharge de l'électricité autour de lui pendant 5 s (cercle bleu au sol), ce qui blesse et ralentit les monstres. Marche dessus pour le récupérer tout de suite. Les monstres électrisés par la décharge subissent +50 % de Tête-cloche.",
+        "desc": "2 charges. Tocsin lance un bras au point visé : il se plante comme un pilier et décharge de l'électricité autour de lui pendant 5 s (cercle bleu au sol), ce qui blesse et ralentit les monstres. Marche dessus pour le récupérer tout de suite. Les monstres électrisés par la décharge subissent +30 % de Tête-cloche.",
         "variants": []
       },
       {
@@ -212,7 +212,7 @@
         "id": "tocsin_tete_cloche",
         "name": "Tête-cloche",
         "slot": "ultime",
-        "desc": "La pression fait sauter la tête : lob, tintement, explosion de 4 u à 1 000 % (+30 % sur les boss). Sans tête, la portée de ciblage baisse. Sur un électrisé à ≤ 4 u du pilier : +50 %, et le pilier sonne (ses ticks partent d'un coup).",
+        "desc": "La pression fait sauter la tête : lob, tintement, explosion de 4 u à 800 % (+30 % sur les boss). Sans tête, la portée de ciblage baisse. Sur un électrisé à ≤ 4 u du pilier : +30 %, et le pilier sonne (ses ticks partent d'un coup).",
         "variants": [
           {
             "id": "tocsin_tete_fumigene",
@@ -420,7 +420,7 @@
         "id": "avare_poignee_de_pieces",
         "name": "Poignée de pièces",
         "slot": "cd",
-        "desc": "Jette 5 pièces en éventail, payées par la bourse (2 % de l'or). Chaque pièce reste au sol où elle retombe : marche dessus pour remettre 80 % du prix dans la bourse. Sur un marqué par la Rançon : 1,8 par pièce, qui rend tout son coût (4 s).",
+        "desc": "Jette 5 pièces en éventail, payées par la bourse (2 % de l'or). Chaque pièce reste au sol où elle retombe : marche dessus pour remettre 80 % du prix dans la bourse. Sur un marqué par la Rançon : 1,6 par pièce, qui rend tout son coût (4 s).",
         "variants": [
           {"id": "avare_piece_truquee", "name": "Pièce truquée", "desc": "Une seule pièce, payée par la bourse, qui rebondit 4 fois de monstre en monstre avant de tomber au sol.", "unlock_text": "Ramasser 500 de tes propres pièces.", "unlock_key": "spell:avare_piece_truquee", "unlock_rule": {"type": "counter", "key": "avare.coins_picked", "value": 500}}
         ]
